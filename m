@@ -1,152 +1,125 @@
-Return-Path: <stable+bounces-132894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-132895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDC17A91208
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 05:36:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D43BA91236
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 06:25:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683331900684
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 03:36:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5F055A2302
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 04:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E991C84C3;
-	Thu, 17 Apr 2025 03:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9CF1D86ED;
+	Thu, 17 Apr 2025 04:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DamJg50O"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cWd9cHjI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BC419DF9A;
-	Thu, 17 Apr 2025 03:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ABB1C460A
+	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 04:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744861004; cv=none; b=hQUQXlzqOPVFAoDoGmjPkHVkhPbN28/hLqzd25AUrrUq6THzDOdAPDqr8Vltmh88aaNlFBkx9VS+hK7RDzjxTXmJuFbb46WVh5AKC+YpCWUsFnvZ+8btUGg7jKgrin7DoLZHKH6Hvs68HoPEZ4PSaevTcJH8r+L/5xewpeILgaY=
+	t=1744863907; cv=none; b=cjmVnqkLnR8qnx1TkfQe8jD8S1eftFnjy+YV4R7b5D5tzz8EiofAFEYxVia2LbmSfYxTX64XR6mLC3xcGXNW7gcgNnfDDvTbiStvAHpCwn/PlBDuAEDoildwWv6vaxbok2YcFy+IV+wADzbHvUaJQHdSn/P3BLmaxsqC7+kozG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744861004; c=relaxed/simple;
-	bh=tjgZVbfO/LS2IvSCPP6CYXjMnfiSMotogvRwHhyOdDE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PxtTZn3l7oKIOIoiM0qF/xJWki38a87xG8Op+qFv+QRr+bLUQHp4XS0WYnHClyj1PdZpDtArMwwq61ZMekEa9ZZ4EnEi6xa2bHoknQ3EqH0yE26r400ptT8pT2ojr/FokCndV2TSzEhu+VKKnGkj6FqvBWQzsVBuRffHHHQ4K3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DamJg50O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1EAC4CEE7;
-	Thu, 17 Apr 2025 03:36:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744861003;
-	bh=tjgZVbfO/LS2IvSCPP6CYXjMnfiSMotogvRwHhyOdDE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DamJg50OExZrLvODlB/tW0MSDHfBncsX/IXncTTWlOZbCRoCZAv73zuydcd4kbbhz
-	 wsboVLpAgMAZqRkxUOT0pdu7MYgd4gtenvITrSszd/rGl8+UC8iFcIJowg7kMRTJg+
-	 1p+1GkxxP1/3n2qxCZ6oAidUDk9DPBaV3BP3BycofcdoroNC+cuA9MM4SHnmyQZ9ec
-	 bIvX1Y+u6tiPHwsE4WS+rVDF35QFT9N/a2vBPD6YvAXZOPc0BdFRJ4Tq4fZLWxRt8u
-	 uQSB2Aln6jS39GKaZx76bW73DGq4W7LngkYnk/3iJfzXXs2pLPgHm/1KFBf4d2dzQL
-	 X/s2H1FWMJjVw==
-Message-ID: <2655c49e-21be-4316-b4ff-75e205696ee2@kernel.org>
-Date: Thu, 17 Apr 2025 05:36:39 +0200
+	s=arc-20240116; t=1744863907; c=relaxed/simple;
+	bh=MlMsrIFgwNPUXQlQUeeWv3zwmDoBQ1Ow0x+5qtQ/UTU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H+Y1EDSQio5jUI9hzWU30uradnS4BS3zPKUcy5WtSoB3dJy9LBF1M3aL0NIbqCX8ZqVufYT0yDNxShMgOgS9/L67jKojjDcC7vK974RWCfiQK++mIXHdw7ZkrUISpMBZjeI8+S9ZN792jfIl4xa00P86HFKfp1gPtYWpqlEYiIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cWd9cHjI; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-af51596da56so273429a12.0
+        for <stable@vger.kernel.org>; Wed, 16 Apr 2025 21:25:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744863904; x=1745468704; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YmiUHUUBKI8PJIWV5sMJoVG3SND4wAcYpi9OlzawyYI=;
+        b=cWd9cHjIVTvVSQg102VkIRw+6iNTK9k4thWf3OrpsHsGkb9K72QzzvVzMcNaB+NfyX
+         O3+GLEAuLJW91+a8kV/PMc+WUYfxIOfx+Cy7hhRZ3JO18y5+alQ2SJBocZR9D8IWS97V
+         qfjxdfAWUvA2WoXgAjRJl4ZlQV9gm6sKNzeHK1g+mM+PZbzxTeK6z41T6ItOkrdsnXbE
+         lBCsCY4qR2LSjjuK27qoDLvtG2jB2cpWU1QYHjE3T+MtaHtdeA0OOiZwnqZl5pml86Hc
+         CWaVuGOSbhEqpTb1JEIM9aq9wPFkW0h3oIgKF5q8TYkYHDFewkQTbCPn2VhKYLjE8Z1u
+         tcgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744863904; x=1745468704;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YmiUHUUBKI8PJIWV5sMJoVG3SND4wAcYpi9OlzawyYI=;
+        b=unW1gLGK78Euhak8PTiR58djYXwGVdHjNha9axlPP8v4N4eoeWrT6PFd0LP5edts6F
+         xJQ562viL8SuQmNrxSoyYG5+szaP6RH6P+HlQbCG1b4ccIbq2KpRuxkOUpfJS7/fbnlw
+         OvP0HtpJUKyLNmA5X+2Uanb7h7sXqLjWvs6H49ho7mMqp6qOe5jpOGxw+U/80Rp9+82c
+         w3/1nmLWaenNkhT3oEVfeNsZn2jSTb+0/CXc578f2PIQ1OFoViCvGxMHV7q7DM4iTHVE
+         /N2n5/Z64nWlZ55YLAQ9knHbkFb29ickDhUp43osNxKfrK/91q0qm6YdS/wwYxO1c/0S
+         NLPw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0rXxZZck7u1NqG9FAEJpiBJwn4cBVSQ4Oa/tBm3wo0fJk/kCn/rfp1B4kWJEXAosEN8DDJXU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybfWalI6PubjfGuoFtbMBpAMuWPuBoCIOrmDVTSZfrCxKtOIz9
+	lLzUAMCJqqITMPcvYiu9QEYp8eJqpNUJJqk2AUH7MqjCCCn6u3s4uTet3VBCc+XEDeFC+1iA7MB
+	2
+X-Gm-Gg: ASbGncuKintQ0hhYYyTHJyodWkn9ZMU7hqiCx0dNkSe1cHYjcSpPgFH0iMrON/NR2sj
+	8Ickyilkh9dqx8lwtCs7sDFrUPVmy9duugzQGuOqPbeka89K1l+ODrhiLLiuLh/lugNhHltWQWk
+	ocRTpx8k0yLIJSkFwNtwJyjOEA93LswcwxI+QPDHaCqOOzMIs6vRg4h72QSK7R7RilozRiHN4cz
+	W4+1dLe/cTE5A/3D8oAKb+3KYhPmr6ey9YZoITtIl9c/lpocLp/Qb8L92AbtRV3lJLdsYexqTzo
+	Euvc7T8XM9ewM0aYNESPOmjCzbzOzsru518n8F+WcA==
+X-Google-Smtp-Source: AGHT+IG2v69nuDWH4FgYa76B5nKgqy58L4Wid65MFMUFPK5+zr5XnBZE9bRrkKyZECa0wTorHqTLjA==
+X-Received: by 2002:a17:903:1cb:b0:224:721:ed9 with SMTP id d9443c01a7336-22c35981e16mr67570055ad.44.1744863903581;
+        Wed, 16 Apr 2025 21:25:03 -0700 (PDT)
+Received: from localhost ([122.172.83.32])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73bd2333859sm11288413b3a.158.2025.04.16.21.25.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Apr 2025 21:25:02 -0700 (PDT)
+Date: Thu, 17 Apr 2025 09:55:00 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>, linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: fix compile-test defaults
+Message-ID: <20250417042500.tbuupp3jdpfkk7kh@vireshk-i7>
+References: <20250416134331.7604-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14 084/731] wifi: ath11k: update channel list in reg
- notifier instead reg worker
-To: Kang Yang <kang.yang@oss.qualcomm.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Aditya Kumar Singh <quic_adisi@quicinc.com>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Sasha Levin
- <sashal@kernel.org>, quic_bqiang@quicinc.com
-References: <20250408104914.247897328@linuxfoundation.org>
- <20250408104916.224926328@linuxfoundation.org>
- <5cd9db3f-4abf-4b66-b401-633508e905ac@kernel.org>
- <49b98882-6a69-48b8-af0c-01f78373d0ef@quicinc.com>
- <4c5f9d38-ae5d-4599-bd9d-785f6eff48f9@oss.qualcomm.com>
- <ff6d7143-33e3-4df5-ada2-df8c99d1993d@kernel.org>
- <bb3248f1-3a7d-4a60-8e3a-68c0595ea50a@oss.qualcomm.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <bb3248f1-3a7d-4a60-8e3a-68c0595ea50a@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250416134331.7604-1-johan+linaro@kernel.org>
 
-On 17. 04. 25, 5:10, Kang Yang wrote:
+On 16-04-25, 15:43, Johan Hovold wrote:
+> Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+> enabled compile testing of most Arm CPUFreq drivers but left the
+> existing default values unchanged so that many drivers are enabled by
+> default whenever COMPILE_TEST is selected.
 > 
-> On 4/16/2025 4:03 PM, Jiri Slaby wrote:
->> On 16. 04. 25, 9:31, Kang Yang wrote:
->>>>> Ah, what about:
->>>>> commit 02aae8e2f957adc1b15b6b8055316f8a154ac3f5
->>>>> Author: Wen Gong <quic_wgong@quicinc.com>
->>>>> Date:   Fri Jan 17 14:17:37 2025 +0800
->>>>>
->>>>>      wifi: ath11k: update channel list in worker when wait flag is set
->>>>>
->>>>> ?
->>>>
->>>>
->>>> Yes, please add this patch. It will minimize the occupation time of 
->>>> rtnl_lock.
->>>>
->>>> You can retry and check if this warning will show again.
->>>>
->>>>
->>>
->>> Hi, Jiri, Greg:
->>>
->>>      Have you added this patch and verified it?
->>
->> Yes, it works for me for a couple of days already.
+> This specifically results in the S3C64XX CPUFreq driver being enabled
+> and initialised during boot of non-S3C64XX platforms with the following
+> error logged:
 > 
+> 	cpufreq: Unable to obtain ARMCLK: -2
 > 
-> Got it. So do you know when they will backport this patch into 6.14?
+> Fix the default values for drivers that can be compile tested and that
+> should be enabled by default when not compile testing.
 > 
-> Do we need to do something?
+> Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+> Cc: stable@vger.kernel.org	# 6.12
+> Cc: Rob Herring (Arm) <robh@kernel.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/cpufreq/Kconfig.arm | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
 
-I assume wait :). The Greg's inbox tends to be huge.
+I have already applied a similar patch:
+
+https://lore.kernel.org/all/20250404124006.362723-1-krzysztof.kozlowski@linaro.org/
+
+Can you rebase over that please ?
 
 -- 
-js
-suse labs
+viresh
 
