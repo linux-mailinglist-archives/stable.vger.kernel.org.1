@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-133466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B88A925DF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:08:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA7AA927F2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36ED21B62612
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4998E463DC7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CCA25C712;
-	Thu, 17 Apr 2025 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CE025FA19;
+	Thu, 17 Apr 2025 18:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwGUsTzw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3Lbyk7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB81425B678;
-	Thu, 17 Apr 2025 18:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCD42586C5;
+	Thu, 17 Apr 2025 18:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913163; cv=none; b=bUdeOq53e49cfcBD9/ZU1BO0sX4XPZ1Qpo6AhB0EcX8eX1v4k/SZzegPpVPzhU7IuurhOI5TrKs3ddGPgP9KE8sq83roua3JpcpE1Ol0z98iyXelwem+Gk2UJ0SeUqWfptQhxLHWQDqMD8n/ohAUIKWph/QH0ak3NTZUjQzyjxY=
+	t=1744914347; cv=none; b=K6ATvRJk7CrP43h6DVxDAkG/CwKyLDde1FD3EegVZkLclgeQqo/sL6S+cT91pX+P92YXf02dyfMKcLHMLYbjw9YvYwbPuwH2rVWdU8oW78N99B4Qbj6TAy2m5cTrLy6in1vOz6aPh2S/EW2rCo4W/8x0ehxY0RChbh1ViPRDT6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913163; c=relaxed/simple;
-	bh=U46hZxOVGXYm5sWurr6GixRyKhqeLIb2RQ6vdI7D1kA=;
+	s=arc-20240116; t=1744914347; c=relaxed/simple;
+	bh=eSMlAdIQs5jkockXqCaKrv4gWE0QWw9EtqxFh/cQ91M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWORddXdZXNSaggKv2hdQMNvvbcRH3DzjRWm9kq0/cW8IjognCmfblu+4eT6OkUTAlBAeBkZQWPJuJs1Db0RvQ5/sXkDQg7XUTb60WpcDb+q+8QMdPdTiQB59u4fSFIshFyB7rBLQ6sxeASpR0PpRXX99ZTO2ahL5pRyE7lhsKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwGUsTzw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326E9C4CEE4;
-	Thu, 17 Apr 2025 18:06:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VsDsI/o+3owgUOy+yZomLJncTodsW5miRsfT/w4ouyXojo4ADep6o2JET9sChV+aMuLi5oaY6OTvRRZ5WtrT+vS2iYk6QryLT8TlL8ZfRk7g0X7om2lH2/wHaVMRwjVvEoxyAul8qTEisWPFV8RY4Q9my3LVNICsui//NrCVplI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3Lbyk7Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42D5C4CEE7;
+	Thu, 17 Apr 2025 18:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913163;
-	bh=U46hZxOVGXYm5sWurr6GixRyKhqeLIb2RQ6vdI7D1kA=;
+	s=korg; t=1744914346;
+	bh=eSMlAdIQs5jkockXqCaKrv4gWE0QWw9EtqxFh/cQ91M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwGUsTzwsFPB8zNqcZATLXPFb/UCbmn9mJ0qYndkGm4sTsrB7F9LibUvjkKApgJ8l
-	 ZrlRUe3wzoVQkExsp9Hn18fnGhQkctnSBBDRnyHZZYab2mAhpjJNNzyRexZjAPqOV9
-	 pY3km0PIlHKj2Q/XxXTU9UvNLOMEWwUZdupU7Z68=
+	b=h3Lbyk7YgAm0KAPKfJBD0W/gZSvimAGecYGE9wzrWroUXq7fWdMw/Rm2Dan18JxNj
+	 zBs6f8z/BBYacE1WRcITtgghxagjwbchP6Jk+WA9qA4j9PCgCCW74x3KKFpeCVCRMt
+	 72g5c+deXaF5t0ex7Yggo18v4uJieGwKP6HPJU10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.14 247/449] media: platform: stm32: Add check for clk_enable()
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.13 177/414] HID: pidff: Simplify pidff_upload_effect function
 Date: Thu, 17 Apr 2025 19:48:55 +0200
-Message-ID: <20250417175127.936381330@linuxfoundation.org>
+Message-ID: <20250417175118.563747770@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +64,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-commit f883f34b6a46b1a09d44d7f94c3cd72fe0e8f93b upstream.
+[ Upstream commit e4bdc80ef14272ef56c38d8ca2f365fdf59cd0ba ]
 
-Add check for the return value of clk_enable() to gurantee the success.
+Merge a bit of code that reqeusts conditional effects upload.
+Makes it clear, that effect handling should be identical for
+SPRING, DAMPER, INERTIA and FRICTION.
 
-Fixes: 002e8f0d5927 ("media: stm32-dma2d: STM32 DMA2D driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/st/stm32/dma2d/dma2d.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 54 ++++++++++------------------------
+ 1 file changed, 16 insertions(+), 38 deletions(-)
 
---- a/drivers/media/platform/st/stm32/dma2d/dma2d.c
-+++ b/drivers/media/platform/st/stm32/dma2d/dma2d.c
-@@ -490,7 +490,8 @@ static void device_run(void *prv)
- 	dst->sequence = frm_cap->sequence++;
- 	v4l2_m2m_buf_copy_metadata(src, dst, true);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 99b5d3deb40d0..42c951a1d65bf 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -770,48 +770,26 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 		break;
  
--	clk_enable(dev->gate);
-+	if (clk_enable(dev->gate))
-+		goto end;
- 
- 	dma2d_config_fg(dev, frm_out,
- 			vb2_dma_contig_plane_dma_addr(&src->vb2_buf, 0));
+ 	case FF_SPRING:
+-		if (!old) {
+-			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_SPRING]);
+-			if (error)
+-				return error;
+-		}
+-		if (!old || pidff_needs_set_effect(effect, old))
+-			pidff_set_effect_report(pidff, effect);
+-		if (!old || pidff_needs_set_condition(effect, old))
+-			pidff_set_condition_report(pidff, effect);
+-		break;
+-
+-	case FF_FRICTION:
+-		if (!old) {
+-			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_FRICTION]);
+-			if (error)
+-				return error;
+-		}
+-		if (!old || pidff_needs_set_effect(effect, old))
+-			pidff_set_effect_report(pidff, effect);
+-		if (!old || pidff_needs_set_condition(effect, old))
+-			pidff_set_condition_report(pidff, effect);
+-		break;
+-
+ 	case FF_DAMPER:
+-		if (!old) {
+-			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_DAMPER]);
+-			if (error)
+-				return error;
+-		}
+-		if (!old || pidff_needs_set_effect(effect, old))
+-			pidff_set_effect_report(pidff, effect);
+-		if (!old || pidff_needs_set_condition(effect, old))
+-			pidff_set_condition_report(pidff, effect);
+-		break;
+-
+ 	case FF_INERTIA:
++	case FF_FRICTION:
+ 		if (!old) {
++			switch(effect->type) {
++			case FF_SPRING:
++				type_id = PID_SPRING;
++				break;
++			case FF_DAMPER:
++				type_id = PID_DAMPER;
++				break;
++			case FF_INERTIA:
++				type_id = PID_INERTIA;
++				break;
++			case FF_FRICTION:
++				type_id = PID_FRICTION;
++				break;
++			}
+ 			error = pidff_request_effect_upload(pidff,
+-					pidff->type_id[PID_INERTIA]);
++					pidff->type_id[type_id]);
+ 			if (error)
+ 				return error;
+ 		}
+-- 
+2.39.5
+
 
 
 
