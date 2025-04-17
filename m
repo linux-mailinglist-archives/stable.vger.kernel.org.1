@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A717EA92A48
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E5AA925EF
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E40E28E490D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:45:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83AC78A5949
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184F22571C3;
-	Thu, 17 Apr 2025 18:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE062571B2;
+	Thu, 17 Apr 2025 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH97ZuXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xw9WFsxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB623433A5;
-	Thu, 17 Apr 2025 18:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366B62566ED;
+	Thu, 17 Apr 2025 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915555; cv=none; b=LO1ztORvz++HvTKgszU0KgDoClavkHCpxG+/AH8nasUd5HyP3WGgbRb2knkk1Do75luHtDFareCSZf+KEM+1VQ0/Cbeq+JwdA/EMeK/1mdT8MhOigN/dLAym8RKpyqvK1A4kV1ctMvOT/W+rEgCz3zmJ/oPl/5H4/XyWk6O/om0=
+	t=1744913280; cv=none; b=ZWK5c8lIKOwhye0scrUIs3qp6ybGWZ6MQ8pxpGgVgRr1VFZZMmJVuE81/+v+PPoRADyY+V13T96oxM0AKzzFxFoQlNhnh2rR7DRLPGJjZp0MI5LTNy4PWaCqmX2RgrhvxhgV3Nho5FYlC6ucEsexmQyuzSM5JZCT6ulzPrv5lus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915555; c=relaxed/simple;
-	bh=rPQUb4tktoGOFaJ/D4/uLGicL7f0jZB0ERG/f+weYr4=;
+	s=arc-20240116; t=1744913280; c=relaxed/simple;
+	bh=Q+C5IGUfKFGIDJPRMhe9E3PqrBLqMgMss3ffUlkEl6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xn4C2U8Yo4MrfGsGVNa/h2K/j7OXKrqBhVUZ1HKaMUHYdlSE743ZR7xrJHE6IW37uNY9WicW4t8LwwuNFop76/Lu1cVX+aPuqfqVf4kiZnskrljAl4GKi3KBMjlUPAPAJ6JtikI8f07I8ZcZNEp+OCQI88Rg47CiWEkmDa3iYCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH97ZuXe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED90C4CEEA;
-	Thu, 17 Apr 2025 18:45:55 +0000 (UTC)
+	 MIME-Version; b=K3NydBAL1N8/SYj95RAxsPvo52gRL2M7BbwmBMp0VF4pYi66s9Qr8fB31s2brf8uoXsdEX8udt87oapFwx5N4IEQOzXqrmRYw5umkrjXGugSuhxZrmEj3hfc9YSeJCAfcfXCd6opBBrgnzcDggq7YdcAyQ6fSJYQSCcFesq3S7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xw9WFsxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAEEC4CEE4;
+	Thu, 17 Apr 2025 18:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915555;
-	bh=rPQUb4tktoGOFaJ/D4/uLGicL7f0jZB0ERG/f+weYr4=;
+	s=korg; t=1744913280;
+	bh=Q+C5IGUfKFGIDJPRMhe9E3PqrBLqMgMss3ffUlkEl6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wH97ZuXeCtTpRk3YPxHYNZpgIiu3VPd+FwZzNJVqq3NF3kl0VAwoor9+gfiPukU0A
-	 WJQjTcthDS5ZufQ+Zr6oDpRgHvUPupj8D8ZxqDiUGRqUREi3Jn+Ki/PdR7TTlyAACR
-	 yXteqg0M5TKP7G/yNxD7xXUuzUgnOU3IkN1b1mb4=
+	b=Xw9WFsxoBDZ4eiygbYo87YS5ujd1djP6V4EFGWK5P9FEo0E1JZNcnGm42+FWwIVO+
+	 rglBBvQ3396s4od4MKEHsNgh3A57jAIYBRAho/QEixyN4wlPIpDIs44J9DX68pC98h
+	 LlXzeDS1h49P/EraqU9JsrPjMImzgJImlGI+H9f8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 165/393] s390/pci: Fix s390_mmio_read/write syscall page fault handling
+	Sean Wang <sean.wang@mediatek.com>,
+	Caleb Jorden <cjorden@gmail.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.14 286/449] wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd
 Date: Thu, 17 Apr 2025 19:49:34 +0200
-Message-ID: <20250417175114.224779329@linuxfoundation.org>
+Message-ID: <20250417175129.591008584@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 41a0926e82f4963046876ed9a1b5f681be8087a8 ]
+commit cb1353ef34735ec1e5d9efa1fe966f05ff1dc1e1 upstream.
 
-The s390 MMIO syscalls when using the classic PCI instructions do not
-cause a page fault when follow_pfnmap_start() fails due to the page not
-being present. Besides being a general deficiency this breaks vfio-pci's
-mmap() handling once VFIO_PCI_MMAP gets enabled as this lazily maps on
-first access. Fix this by following a failed follow_pfnmap_start() with
-fixup_user_page() and retrying the follow_pfnmap_start(). Also fix
-a VM_READ vs VM_WRITE mixup in the read syscall.
+Integrate *mlo_sta_cmd and *sta_cmd for the MLO firmware.
 
-Link: https://lore.kernel.org/r/20250226-vfio_pci_mmap-v7-1-c5c0f1d26efd@linux.ibm.com
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Cc: stable@vger.kernel.org
+Co-developed-by: Sean Wang <sean.wang@mediatek.com>
+Signed-off-by: Sean Wang <sean.wang@mediatek.com>
+Tested-by: Caleb Jorden <cjorden@gmail.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250305000851.493671-5-sean.wang@kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_mmio.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |   59 +-----------------------
+ 1 file changed, 4 insertions(+), 55 deletions(-)
 
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index de5c0b389a3ec..4779c3cb6cfab 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -171,8 +171,12 @@ SYSCALL_DEFINE3(s390_pci_mmio_write, unsigned long, mmio_addr,
- 	args.address = mmio_addr;
- 	args.vma = vma;
- 	ret = follow_pfnmap_start(&args);
--	if (ret)
--		goto out_unlock_mmap;
-+	if (ret) {
-+		fixup_user_fault(current->mm, mmio_addr, FAULT_FLAG_WRITE, NULL);
-+		ret = follow_pfnmap_start(&args);
-+		if (ret)
-+			goto out_unlock_mmap;
-+	}
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -1818,49 +1818,6 @@ mt7925_mcu_sta_mld_tlv(struct sk_buff *s
+ 	}
+ }
  
- 	io_addr = (void __iomem *)((args.pfn << PAGE_SHIFT) |
- 			(mmio_addr & ~PAGE_MASK));
-@@ -305,14 +309,18 @@ SYSCALL_DEFINE3(s390_pci_mmio_read, unsigned long, mmio_addr,
- 	if (!(vma->vm_flags & (VM_IO | VM_PFNMAP)))
- 		goto out_unlock_mmap;
- 	ret = -EACCES;
--	if (!(vma->vm_flags & VM_WRITE))
-+	if (!(vma->vm_flags & VM_READ))
- 		goto out_unlock_mmap;
+-static int
+-mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+-		   struct mt76_sta_cmd_info *info)
+-{
+-	struct mt76_vif_link *mvif = (struct mt76_vif_link *)info->vif->drv_priv;
+-	struct mt76_dev *dev = phy->dev;
+-	struct sk_buff *skb;
+-	int conn_state;
+-
+-	skb = __mt76_connac_mcu_alloc_sta_req(dev, mvif, info->wcid,
+-					      MT7925_STA_UPDATE_MAX_SIZE);
+-	if (IS_ERR(skb))
+-		return PTR_ERR(skb);
+-
+-	conn_state = info->enable ? CONN_STATE_PORT_SECURE :
+-				    CONN_STATE_DISCONNECT;
+-	if (info->link_sta)
+-		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->link_conf,
+-					      info->link_sta,
+-					      conn_state, info->newly);
+-	if (info->link_sta && info->enable) {
+-		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
+-		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
+-		mt7925_mcu_sta_vht_tlv(skb, info->link_sta);
+-		mt76_connac_mcu_sta_uapsd(skb, info->vif, info->link_sta->sta);
+-		mt7925_mcu_sta_amsdu_tlv(skb, info->vif, info->link_sta);
+-		mt7925_mcu_sta_he_tlv(skb, info->link_sta);
+-		mt7925_mcu_sta_he_6g_tlv(skb, info->link_sta);
+-		mt7925_mcu_sta_eht_tlv(skb, info->link_sta);
+-		mt7925_mcu_sta_rate_ctrl_tlv(skb, info->vif,
+-					     info->link_sta);
+-		mt7925_mcu_sta_state_v2_tlv(phy, skb, info->link_sta,
+-					    info->vif, info->rcpi,
+-					    info->state);
+-		mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
+-	}
+-
+-	if (info->enable)
+-		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+-
+-	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+-}
+-
+ static void
+ mt7925_mcu_sta_remove_tlv(struct sk_buff *skb)
+ {
+@@ -1873,8 +1830,8 @@ mt7925_mcu_sta_remove_tlv(struct sk_buff
+ }
  
- 	args.vma = vma;
- 	args.address = mmio_addr;
- 	ret = follow_pfnmap_start(&args);
--	if (ret)
--		goto out_unlock_mmap;
-+	if (ret) {
-+		fixup_user_fault(current->mm, mmio_addr, 0, NULL);
-+		ret = follow_pfnmap_start(&args);
-+		if (ret)
-+			goto out_unlock_mmap;
-+	}
+ static int
+-mt7925_mcu_mlo_sta_cmd(struct mt76_phy *phy,
+-		       struct mt76_sta_cmd_info *info)
++mt7925_mcu_sta_cmd(struct mt76_phy *phy,
++		   struct mt76_sta_cmd_info *info)
+ {
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)info->vif->drv_priv;
+ 	struct mt76_dev *dev = phy->dev;
+@@ -1888,12 +1845,10 @@ mt7925_mcu_mlo_sta_cmd(struct mt76_phy *
+ 	if (IS_ERR(skb))
+ 		return PTR_ERR(skb);
  
- 	io_addr = (void __iomem *)((args.pfn << PAGE_SHIFT) |
- 			(mmio_addr & ~PAGE_MASK));
--- 
-2.39.5
-
+-	if (info->enable)
++	if (info->enable && info->link_sta) {
+ 		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->link_conf,
+ 					      info->link_sta,
+ 					      info->enable, info->newly);
+-
+-	if (info->enable && info->link_sta) {
+ 		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
+ 		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
+ 		mt7925_mcu_sta_vht_tlv(skb, info->link_sta);
+@@ -1944,7 +1899,6 @@ int mt7925_mcu_sta_update(struct mt792x_
+ 	};
+ 	struct mt792x_sta *msta;
+ 	struct mt792x_link_sta *mlink;
+-	int err;
+ 
+ 	if (link_sta) {
+ 		msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+@@ -1957,12 +1911,7 @@ int mt7925_mcu_sta_update(struct mt792x_
+ 	else
+ 		info.newly = state == MT76_STA_INFO_STATE_ASSOC ? false : true;
+ 
+-	if (ieee80211_vif_is_mld(vif))
+-		err = mt7925_mcu_mlo_sta_cmd(&dev->mphy, &info);
+-	else
+-		err = mt7925_mcu_sta_cmd(&dev->mphy, &info);
+-
+-	return err;
++	return mt7925_mcu_sta_cmd(&dev->mphy, &info);
+ }
+ 
+ int mt7925_mcu_set_beacon_filter(struct mt792x_dev *dev,
 
 
 
