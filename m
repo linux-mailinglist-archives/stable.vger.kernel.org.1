@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-134101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D31A9292A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADEEA9271E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:19:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CB811B62DB0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:40:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6B71906DCB
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03923258CDE;
-	Thu, 17 Apr 2025 18:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD6125523E;
+	Thu, 17 Apr 2025 18:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkF7Kpz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmLvn2d0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5ABA2586FB;
-	Thu, 17 Apr 2025 18:38:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1968E1A3178;
+	Thu, 17 Apr 2025 18:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915097; cv=none; b=sBF2mGTMG+VlvfMLnFpZnMO3Gm5y7TwJXzXPrG+T1oYWhFmoecIQ6bsf7fdl77EEXjeolVvhKPeXLy9R7IXlhYsy9B9d4kJVjA/ukIWGjKECtMGfOKq1f1xxGnprVZrb4+WCBJTdUgtg88TVnVP6cc0RsVHX/tzJA88X6t4I8w8=
+	t=1744913992; cv=none; b=FKo71+4ELBi57iu/Houzdc8HejzLni3H2N3WY7sAVj9DttYPntGMojGsPkWcwu/yiSl31OxFOmQQh3bIHe2KyggZXDARQfERWpgZE78/MsUmEaQDdB3qR4FITn9/eQAKkxj1IL3asTTx7yIootjxRwNhl4pP17N5vlrOj9Lc7js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915097; c=relaxed/simple;
-	bh=t1V0pVJQodvGSW5iWjQxHMmBjV9WOiD1nGco0c1AKuk=;
+	s=arc-20240116; t=1744913992; c=relaxed/simple;
+	bh=EABs2baNU8Qxsl9kLDIL3sAkl2QWdlL1iInvUaMsB4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSzw/oeysfUY/FrMxDHoJGN43iTYXcztaYCLmHyCYgfeAUrilnVz7bXkErZg1MDx5seFIdHy8MovYBWFhZuJ0yyWfwVYhJz5GTqGivDj0MBZN8JmEFXp1damGMC+bMleCN1rObx0wvSlLaFwXFtesxObeB7+DKgcgrJ6awnDCoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkF7Kpz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282A2C4CEE7;
-	Thu, 17 Apr 2025 18:38:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KiER3vkunVPRdAW+0d/JbFndZe6oqXkNwLInHAf7PPcgDkQ1pF460G/UG1Q90g1uaYlyHJIHA4bCLstV9NIXB2XBTsOQe2E4N8HdDU4VbLNx5f+FCjKgBq/b8haosDYtiKLa5y6poFCDVzoEabLvp3HoHXaL4UA+kNMAR7qrGzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmLvn2d0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8196AC4CEE4;
+	Thu, 17 Apr 2025 18:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915097;
-	bh=t1V0pVJQodvGSW5iWjQxHMmBjV9WOiD1nGco0c1AKuk=;
+	s=korg; t=1744913992;
+	bh=EABs2baNU8Qxsl9kLDIL3sAkl2QWdlL1iInvUaMsB4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkF7Kpz8KlI3pBDEiw1WMXkyHEWiThNCjeUMQgEl5K82pBGUuxm1sx8bGfthuPIui
-	 05kBpx92wuNWlBtfoQMme1wg0QC1P3rNAn1x1hFJ9ZqBSem953kCAN3gpZIwbQme4M
-	 GQMEd3yNO5RsHWZuIw+dVhfNo8yFmNiG/g/fotYY=
+	b=dmLvn2d0yFQpMn6L98OSvArAM1ecmJVgVG/hmHqDx5ScYZ9B3AM6nDes+HRPx/7ki
+	 T6aMap/ZNNjHIvWtq8UsS0Q7NwrpYO8JwbJTMicHGpB9RMNiiL43fTDGGg2bu7513c
+	 ns/X7yZ52+gCOlJcFKVtYrGkSbhkjUJnm+zznk4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/393] codel: remove sch->q.qlen check before qdisc_tree_reduce_backlog()
+Subject: [PATCH 6.13 069/414] HID: pidff: Add PERIODIC_SINE_ONLY quirk
 Date: Thu, 17 Apr 2025 19:47:07 +0200
-Message-ID: <20250417175108.328249117@linuxfoundation.org>
+Message-ID: <20250417175114.207354244@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 342debc12183b51773b3345ba267e9263bdfaaef ]
+[ Upstream commit abdbf8764f4962af2a910abb3a213ecf304a73d3 ]
 
-After making all ->qlen_notify() callbacks idempotent, now it is safe to
-remove the check of qlen!=0 from both fq_codel_dequeue() and
-codel_qdisc_dequeue().
+Some devices only support SINE periodic effect although they advertise
+support for all PERIODIC effect in their HID descriptor. Some just do
+nothing when trying to play such an effect (upload goes fine), some express
+undefined behavior like turning to one side.
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Fixes: 4b549a2ef4be ("fq_codel: Fair Queue Codel AQM")
-Fixes: 76e3cc126bb2 ("codel: Controlled Delay AQM")
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211636.166257-1-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This quirk forces all the periodic effects to be uploaded as SINE. This is
+acceptable as all these effects are similar in nature and are mostly used as
+rumble. SINE is the most popular with others seldom used (especially SAW_UP
+and SAW_DOWN).
+
+Fixes periodic effects for PXN and LITE STAR wheels
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_codel.c    | 5 +----
- net/sched/sch_fq_codel.c | 6 ++----
- 2 files changed, 3 insertions(+), 8 deletions(-)
+ drivers/hid/hid-universal-pidff.c | 15 ++++++++++-----
+ drivers/hid/usbhid/hid-pidff.c    |  3 +++
+ include/linux/hid.h               |  1 +
+ 3 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/sch_codel.c b/net/sched/sch_codel.c
-index 3e8d4fe4d91e3..e1f6e7618debd 100644
---- a/net/sched/sch_codel.c
-+++ b/net/sched/sch_codel.c
-@@ -65,10 +65,7 @@ static struct sk_buff *codel_qdisc_dequeue(struct Qdisc *sch)
- 			    &q->stats, qdisc_pkt_len, codel_get_enqueue_time,
- 			    drop_func, dequeue_func);
+diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
+index 55aad2e4ac1b8..7ef5ab9146b1c 100644
+--- a/drivers/hid/hid-universal-pidff.c
++++ b/drivers/hid/hid-universal-pidff.c
+@@ -168,11 +168,16 @@ static const struct hid_device_id universal_pidff_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_FFBEAST, USB_DEVICE_ID_FFBEAST_JOYSTICK), },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_FFBEAST, USB_DEVICE_ID_FFBEAST_RUDDER), },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_FFBEAST, USB_DEVICE_ID_FFBEAST_WHEEL) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V10) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE_2) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V10),
++		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12),
++		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE),
++		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_ID_PXN_V12_LITE_2),
++		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF),
++		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, universal_pidff_devices);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index a37cf852a2836..4c94d8cbac43a 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -637,6 +637,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
+ 				return -EINVAL;
+ 			}
  
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->stats.drop_count && sch->q.qlen) {
-+	if (q->stats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->stats.drop_count, q->stats.drop_len);
- 		q->stats.drop_count = 0;
- 		q->stats.drop_len = 0;
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 4f908c11ba952..778f6e5966be8 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -314,10 +314,8 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *sch)
- 	}
- 	qdisc_bstats_update(sch, skb);
- 	flow->deficit -= qdisc_pkt_len(skb);
--	/* We cant call qdisc_tree_reduce_backlog() if our qlen is 0,
--	 * or HTB crashes. Defer it for next round.
--	 */
--	if (q->cstats.drop_count && sch->q.qlen) {
++			if (pidff->quirks & HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY)
++				type_id = PID_SINE;
 +
-+	if (q->cstats.drop_count) {
- 		qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
- 					  q->cstats.drop_len);
- 		q->cstats.drop_count = 0;
+ 			error = pidff_request_effect_upload(pidff,
+ 					pidff->type_id[type_id]);
+ 			if (error)
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 7a55accf689e0..e180679ab284c 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1235,6 +1235,7 @@ int hid_pidff_init_with_quirks(struct hid_device *hid, __u32 initial_quirks);
+ #define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
+ #define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
+ #define HID_PIDFF_QUIRK_FIX_WHEEL_DIRECTION	BIT(3)
++#define HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY	BIT(4)
+ 
+ #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
+ 
 -- 
 2.39.5
 
