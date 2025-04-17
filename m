@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F8D9A928EB
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 353B5A9266F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F4301B61ABE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD12F1882706
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D337A2641D5;
-	Thu, 17 Apr 2025 18:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9251EB1BF;
+	Thu, 17 Apr 2025 18:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwPSfXh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fs5zXSr6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831D32641C8;
-	Thu, 17 Apr 2025 18:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00B51A3178;
+	Thu, 17 Apr 2025 18:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914815; cv=none; b=jT2zbcNzcOV2WBbpBfiw1EsoM0pTN6op18FDIjxHfX+gr0QOSzJi2Re79nYc4BnQ2QfEdjNEPyw03lZTcK9ftQrvF1l7PVy1c9QHWaY2rgeZR5CnDHbvteSqGSeKBJKN1Dj/n9YuyAJ9UdiYhM/r15hGOEKIkNnualV2ffs11N0=
+	t=1744913567; cv=none; b=b8zP7Ca1R8RtOeovZGba6QgpWqHzdpjce83QuUOakPtnxRVrv58LnI+Ek8DmVQhmz9uvX2TSKghUS/F7O5PFgK+tVF3vgZZrTDW7YPBjsgoEm4k8o8IzRdVFnMhWL7lNY8ik0+DPyrBMHMBpx41UgPGUXSjQgo57MqhwrVmdCVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914815; c=relaxed/simple;
-	bh=IQdDRm2ytiLIt2TTp07xSxx261zBDJykHscNClRe+Yk=;
+	s=arc-20240116; t=1744913567; c=relaxed/simple;
+	bh=4mTWoWL88NeIofSxA6gBl9CMMBW8gW3U+WZjTTFnOEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llwdBGgcKS0D7CsXAT5MvFkOlfddLAk7aJZOnp+51kD1RH8e49ATTSQxotKbu1Wz2euwys1xhMIgjZE19Y8m3m3vfMZ6hetJLKHgV9ZQzbw/p8GEgbYqutqSeIg0mhzWj0Z2Il0bzUAiIyhI1LfFUz2PdOhcCU9Gyr+RhVRzbRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwPSfXh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5758C4CEE4;
-	Thu, 17 Apr 2025 18:33:34 +0000 (UTC)
+	 MIME-Version; b=alVc3fLd+wiAAnhci3PgCl/Fw1hpGo6QcDNjTJvBoVnq67ne6p4phmkmf04l0xdNbZOiBd3ZYrLmw3DFbEoB3bkmjmAwmrQBtd8FvoJKKhhQtyoWDthJ2V3o/FAa+DucaqHzulAQw0OxstL7cLHyAalSbDBuFKigmwinbdXdd18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fs5zXSr6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A59C4CEE4;
+	Thu, 17 Apr 2025 18:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914815;
-	bh=IQdDRm2ytiLIt2TTp07xSxx261zBDJykHscNClRe+Yk=;
+	s=korg; t=1744913566;
+	bh=4mTWoWL88NeIofSxA6gBl9CMMBW8gW3U+WZjTTFnOEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwPSfXh8ZXGILf89XV8RSkqyUyqOy7Zd8ZfhSvv/ulk5n0jYx1DO0a68AZRBFkqu8
-	 zpIHIGIyp72+EPPG6hFUF5yUugNDnxbMeNdPMWQCkMacki0AW1atVcj8z4uN1Ii2sB
-	 338e5JIC7YwkZq30CJer7zjl6AdwpOfle6JZzbPo=
+	b=Fs5zXSr6HvG0BpYLS3UUKk+BmxLWe8ie4mMlAB6yRHGcG/85ubHIsEgxdLOcVa8rq
+	 HSTcLB0JvexjughSsZqxIcS3Z8Vy1SGsJ9gWO+LJA/k4wn+/xgXW0fQCO7XEi+5DdI
+	 KBf6sFgW65CeJJ+UL2OxajupENiogIHxxhkSK/zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.13 311/414] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.14 381/449] clk: qcom: gdsc: Capture pm_genpd_add_subdomain result code
 Date: Thu, 17 Apr 2025 19:51:09 +0200
-Message-ID: <20250417175123.942267194@linuxfoundation.org>
+Message-ID: <20250417175133.595954540@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 276822a00db3c1061382b41e72cafc09d6a0ec30 upstream.
+commit 65a733464553ea192797b889d1533a1a37216f32 upstream.
 
-Lockdep detects the following issue on led-backlight removal:
-  [  142.315935] ------------[ cut here ]------------
-  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
-  ...
-  [  142.500725] Call trace:
-  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
-  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
-  [  142.511742]  platform_remove+0x30/0x58
-  [  142.515501]  device_remove+0x54/0x90
-  ...
+Adding a new clause to this if/else I noticed the existing usage of
+pm_genpd_add_subdomain() wasn't capturing and returning the result code.
 
-Indeed, led_sysfs_enable() has to be called with the led_access
-lock held.
+pm_genpd_add_subdomain() returns an int and can fail. Capture that result
+code and throw it up the call stack if something goes wrong.
 
-Hold the lock when calling led_sysfs_disable().
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Fixes: 1b771839de05 ("clk: qcom: gdsc: enable optional power domain support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-2-13f2bb656dad@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/led_bl.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gdsc.c |   40 +++++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
 
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -229,8 +229,11 @@ static void led_bl_remove(struct platfor
- 	backlight_device_unregister(bl);
- 
- 	led_bl_power_off(priv);
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_enable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -506,6 +506,23 @@ err_disable_supply:
+ 	return ret;
  }
  
- static const struct of_device_id led_bl_of_match[] = {
++static void gdsc_pm_subdomain_remove(struct gdsc_desc *desc, size_t num)
++{
++	struct device *dev = desc->dev;
++	struct gdsc **scs = desc->scs;
++	int i;
++
++	/* Remove subdomains */
++	for (i = num - 1; i >= 0; i--) {
++		if (!scs[i])
++			continue;
++		if (scs[i]->parent)
++			pm_genpd_remove_subdomain(scs[i]->parent, &scs[i]->pd);
++		else if (!IS_ERR_OR_NULL(dev->pm_domain))
++			pm_genpd_remove_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
++	}
++}
++
+ int gdsc_register(struct gdsc_desc *desc,
+ 		  struct reset_controller_dev *rcdev, struct regmap *regmap)
+ {
+@@ -555,30 +572,27 @@ int gdsc_register(struct gdsc_desc *desc
+ 		if (!scs[i])
+ 			continue;
+ 		if (scs[i]->parent)
+-			pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
++			ret = pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
+ 		else if (!IS_ERR_OR_NULL(dev->pm_domain))
+-			pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
++			ret = pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
++		if (ret)
++			goto err_pm_subdomain_remove;
+ 	}
+ 
+ 	return of_genpd_add_provider_onecell(dev->of_node, data);
++
++err_pm_subdomain_remove:
++	gdsc_pm_subdomain_remove(desc, i);
++
++	return ret;
+ }
+ 
+ void gdsc_unregister(struct gdsc_desc *desc)
+ {
+-	int i;
+ 	struct device *dev = desc->dev;
+-	struct gdsc **scs = desc->scs;
+ 	size_t num = desc->num;
+ 
+-	/* Remove subdomains */
+-	for (i = num - 1; i >= 0; i--) {
+-		if (!scs[i])
+-			continue;
+-		if (scs[i]->parent)
+-			pm_genpd_remove_subdomain(scs[i]->parent, &scs[i]->pd);
+-		else if (!IS_ERR_OR_NULL(dev->pm_domain))
+-			pm_genpd_remove_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
+-	}
++	gdsc_pm_subdomain_remove(desc, num);
+ 	of_genpd_del_provider(dev->of_node);
+ }
+ 
 
 
 
