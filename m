@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E197FA92A63
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:50:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29933A9297F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45CF83A96CF
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8DD87A4D5F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BC81E98ED;
-	Thu, 17 Apr 2025 18:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E014257424;
+	Thu, 17 Apr 2025 18:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1j6wT9wT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obCvP6gb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980D54502F;
-	Thu, 17 Apr 2025 18:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B19B255E20;
+	Thu, 17 Apr 2025 18:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915646; cv=none; b=ioQ67E/inToYNky5JwIVZfHhGrj5WEWB0bdNtDApShzx30lSvQbmCE2i/jO/oSjQp5Fh1tTNUpUUprQL2S/3zO7M3HbFXEjv09Qi6clRhGlkn1qYzCPlgRxKizbmOWaMQRHusGJ+5WjeTlwM5kY7twVyS6HUFWNXU9lpbDK/Ykw=
+	t=1744914511; cv=none; b=SY/F3+sDowCfFD0uM/mhfofoQ93InFUeSiVNnpFsO0UDw04z+uGfGy+zffbjFmTAGKa+t3LIWxk1XVCQCjs00NF+Cojf6/GDq23CJQMclrIZ2/sxWMpaQynNRUO6QnnO/hd17FcwxwkN/sf8n0r1+3+xJtz8GTQloUEKQeP0hMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915646; c=relaxed/simple;
-	bh=9J7uXUVgCq8SGoBbrl6pDp7xdYx6yxaxN0ckMq8chIw=;
+	s=arc-20240116; t=1744914511; c=relaxed/simple;
+	bh=/1xj3wqTKZg9oJNLJJq5gHeCZHqamVV59ftOBQJ1tvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5SJbUXkoWXppWXR4RMmGlVyaywRdhxswqw0G3v/sZLrBlzLPtOZY4SPZ0q+wNuaBYLIk90r4HK87CdNNwM2vCht4SQ0IX64ITAjhENNZurEEXg+AJpuyi6R3sHTdnH9g59iEn2dYBJcIiZerprtXWJw+svYlGAyA3VZ+AAmKbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1j6wT9wT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE70C4CEE4;
-	Thu, 17 Apr 2025 18:47:25 +0000 (UTC)
+	 MIME-Version; b=Y9yMayeUun81k1JIpcASSeLVE5FT4hSPC7XZvCuW8xZYNMhVwCqiDsSW//SfJ2SwzLku2fRKcb6FolKTYR7n4fG9s3/bfsTOw7rVHrQhWCgX1vYcBdhOK4LZUNhC1TZcodbZZ96fA+QReA2GvgFRPzS21PYJVdF/Frnf8FmNBUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obCvP6gb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80947C4CEE4;
+	Thu, 17 Apr 2025 18:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915646;
-	bh=9J7uXUVgCq8SGoBbrl6pDp7xdYx6yxaxN0ckMq8chIw=;
+	s=korg; t=1744914510;
+	bh=/1xj3wqTKZg9oJNLJJq5gHeCZHqamVV59ftOBQJ1tvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1j6wT9wT5tGaAmlD6TZEA6XDy9jYkFC0i2buqmm6hopuvgwEBYuBtn/bqwCvSvPiq
-	 PZRXDTbaQ6a7FTs2/FGsuUydZDPsX5R1bayBYaL1LIfOrz2LYi7UXUtIUOuby+hNXi
-	 wsoYIR0szM8FTv5z/2oiiVXcM4sG3HFFzyHMstHQ=
+	b=obCvP6gbPxfbyStf/rXBgkCQny/2IRNXzTwgA4gvz7TNG1a3ALId3nQHOW6/6bh4C
+	 hO972oTueOU85AdYZ0fObxub2sX2+RiBFtygG9Ft6IuuedgE6T/pNgqEnGH+e9g9XP
+	 mBnuTFXl4whKLIyVWAvT3eS1AhG7/kNWvWu70pjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 6.12 187/393] auxdisplay: hd44780: Fix an API misuse in hd44780.c
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.13 238/414] media: i2c: imx319: Rectify runtime PM handling probe and remove
 Date: Thu, 17 Apr 2025 19:49:56 +0200
-Message-ID: <20250417175115.111625011@linuxfoundation.org>
+Message-ID: <20250417175120.998298332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 9b98a7d2e5f4e2beeff88f6571da0cdc5883c7fb upstream.
+commit 5f5ffd3bc62b2e6c478061918b10473d8b90ac2d upstream.
 
-Variable allocated by charlcd_alloc() should be released
-by charlcd_free(). The following patch changed kfree() to
-charlcd_free() to fix an API misuse.
+Idle the device only after the async sub-device has been successfully
+registered. In error handling, set the device's runtime PM status to
+suspended only if it has been set to active previously in probe.
 
-Fixes: 718e05ed92ec ("auxdisplay: Introduce hd44780_common.[ch]")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Also set the device's runtime PM status to suspended in remove only if it
+wasn't so already.
+
+Fixes: 8a89dc62f28c ("media: add imx319 camera sensor driver")
+Cc: stable@vger.kernel.org # for >= v6.12
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/auxdisplay/hd44780.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx319.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/auxdisplay/hd44780.c
-+++ b/drivers/auxdisplay/hd44780.c
-@@ -313,7 +313,7 @@ static int hd44780_probe(struct platform
- fail3:
- 	kfree(hd);
- fail2:
--	kfree(lcd);
-+	charlcd_free(lcd);
- fail1:
- 	kfree(hdc);
- 	return ret;
-@@ -328,7 +328,7 @@ static void hd44780_remove(struct platfo
- 	kfree(hdc->hd44780);
- 	kfree(lcd->drvdata);
+--- a/drivers/media/i2c/imx319.c
++++ b/drivers/media/i2c/imx319.c
+@@ -2442,17 +2442,19 @@ static int imx319_probe(struct i2c_clien
+ 	if (full_power)
+ 		pm_runtime_set_active(&client->dev);
+ 	pm_runtime_enable(&client->dev);
+-	pm_runtime_idle(&client->dev);
  
--	kfree(lcd);
-+	charlcd_free(lcd);
+ 	ret = v4l2_async_register_subdev_sensor(&imx319->sd);
+ 	if (ret < 0)
+ 		goto error_media_entity_pm;
+ 
++	pm_runtime_idle(&client->dev);
++
+ 	return 0;
+ 
+ error_media_entity_pm:
+ 	pm_runtime_disable(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++	if (full_power)
++		pm_runtime_set_suspended(&client->dev);
+ 	media_entity_cleanup(&imx319->sd.entity);
+ 
+ error_handler_free:
+@@ -2474,7 +2476,8 @@ static void imx319_remove(struct i2c_cli
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++	if (!pm_runtime_status_suspended(&client->dev))
++		pm_runtime_set_suspended(&client->dev);
+ 
+ 	mutex_destroy(&imx319->mutex);
  }
- 
- static const struct of_device_id hd44780_of_match[] = {
 
 
 
