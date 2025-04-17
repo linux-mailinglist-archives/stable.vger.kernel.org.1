@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88F6A929EE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E57A92640
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE31C7B8141
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:42:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2692B7B4B7B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38B252566DA;
-	Thu, 17 Apr 2025 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6C22586CA;
+	Thu, 17 Apr 2025 18:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSGfBrXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpQW8Lbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18B71C84D4;
-	Thu, 17 Apr 2025 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD652580F2;
+	Thu, 17 Apr 2025 18:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915373; cv=none; b=je/Sywvvr53bvlIOD58KPLspR1royhBE5XuUpPSL3RIPGyKtuQN1gbl3vVU+4ngdGvbCf0O23znxol9V35y4zzxgluueZTpjsyJMkuWxp+ON6mRjNRjjR0ivPJ5uy4j1ZufqgxV78R9I2/zoKq2jaEZQNoI2aITvvWaH0GCN0z8=
+	t=1744913126; cv=none; b=pdNlCnZluIv5MQ4Xfk66rKhrdtsBzlZ2zwdakgMuBmR9yIzy85qxkMBI4Vt923l4Dw8KvofyyHs4HYc6yQll/AGHy1H1KMt6sxDe+iRQCiA4pxeaPvISa6drMM//09asl8U5hdIDm+tX6JYTPCLlKcij3VJtQPePpWkLOyf+KQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915373; c=relaxed/simple;
-	bh=PN2TIWFV8mtHPotSWKJa0lT5zK4yuaWcVk8eNz4FeQ4=;
+	s=arc-20240116; t=1744913126; c=relaxed/simple;
+	bh=r2M8wVlPr+1Z3sBVq88o21cfEbqlen8xylXr9t3n8mA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SLZ6PGzod6jwz/Pm7pgZGGhYCJEDva0txuD3pniXhXKWKRjzKkcPHrxjbO/4Dynl2CXQtaoPYg1eoNpNyuAOwrNvvaTqrcg300k1/L4zq4bXQtIqtINfiIuHM1YsoC3DohaadAXrA/Zhl3Awws3UaIz35DdtVnVvAKRTUnFp9X4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSGfBrXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1CBC4CEE4;
-	Thu, 17 Apr 2025 18:42:51 +0000 (UTC)
+	 MIME-Version; b=u/cbnLNlMXc6PoHolDi3LXGP0TJgbvXgVGHx9mgCIgTZPaaCE3GVxPZi4FJL7v4xI+EeslTfCvvpTNNDkIfGJt1R5enAL/LZ8vTc+Q6c+xrSopzNEFIpRLSWMoGUcS2p/TCVYu/2ADLSA2qdm8XDJ3q7oaM1wT8f6bnLlyjxExU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpQW8Lbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A045C4CEE4;
+	Thu, 17 Apr 2025 18:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915372;
-	bh=PN2TIWFV8mtHPotSWKJa0lT5zK4yuaWcVk8eNz4FeQ4=;
+	s=korg; t=1744913126;
+	bh=r2M8wVlPr+1Z3sBVq88o21cfEbqlen8xylXr9t3n8mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NSGfBrXvxMBQbBQ5ejxbQ5owiT/Yld0Egyv9Opuwxv1k3KgqTDdk/X8ip6ARBNuCN
-	 JJSX7nFuooNoF47QIMTeniSzRFvpiUQJ7Ns8GbfPXZanBpu+TVJs4/RbMFqUxKsc+O
-	 Cd6vMJNhqE7ENv8Fizjz3RP8d8OzgXycFG8flKA8=
+	b=qpQW8Lbpg1QBvYAgQBjT9xM9Ow7FceBu7UHa57CIt1/jk+8ugQpViDfoPiYHb2uTa
+	 bYKtufQIS7iI25Ml/7Sbmxx9TLilEj2lJa8puA0L5ZpMcukGPaty/A7/lQXaPoVTb5
+	 2ccomJqX9zlFnY+odnLpixi0Yd4TXmJYIYVAV5W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Schiller <ms@dev.tdt.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 107/393] net: sfp: add quirk for FS SFP-10GM-T copper SFP+ module
+	Matthew Majewski <mattwmajewski@gmail.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.14 228/449] media: vim2m: print device name after registering device
 Date: Thu, 17 Apr 2025 19:48:36 +0200
-Message-ID: <20250417175111.895449661@linuxfoundation.org>
+Message-ID: <20250417175127.172679743@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Schiller <ms@dev.tdt.de>
+From: Matthew Majewski <mattwmajewski@gmail.com>
 
-[ Upstream commit 05ec5c085eb7ae044d49e04a3cff194a0b2a3251 ]
+commit 143d75583f2427f3a97dba62413c4f0604867ebf upstream.
 
-Add quirk for a copper SFP that identifies itself as "FS" "SFP-10GM-T".
-It uses RollBall protocol to talk to the PHY and needs 4 sec wait before
-probing the PHY.
+Move the v4l2_info() call displaying the video device name after the
+device is actually registered.
 
-Signed-off-by: Martin Schiller <ms@dev.tdt.de>
-Link: https://patch.msgid.link/20250227071058.1520027-1-ms@dev.tdt.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes a bug where the driver was always displaying "/dev/video0"
+since it was reading from the vfd before it was registered.
+
+Fixes: cf7f34777a5b ("media: vim2m: Register video device after setting up internals")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Majewski <mattwmajewski@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/media/test-drivers/vim2m.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 9a5de80acd2f7..7b33993f7001e 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -385,7 +385,7 @@ static void sfp_fixup_rollball(struct sfp *sfp)
- 	sfp->phy_t_retry = msecs_to_jiffies(1000);
- }
+--- a/drivers/media/test-drivers/vim2m.c
++++ b/drivers/media/test-drivers/vim2m.c
+@@ -1314,9 +1314,6 @@ static int vim2m_probe(struct platform_d
+ 	vfd->v4l2_dev = &dev->v4l2_dev;
  
--static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
-+static void sfp_fixup_rollball_wait4s(struct sfp *sfp)
- {
- 	sfp_fixup_rollball(sfp);
+ 	video_set_drvdata(vfd, dev);
+-	v4l2_info(&dev->v4l2_dev,
+-		  "Device registered as /dev/video%d\n", vfd->num);
+-
+ 	platform_set_drvdata(pdev, dev);
  
-@@ -399,7 +399,7 @@ static void sfp_fixup_fs_2_5gt(struct sfp *sfp)
- static void sfp_fixup_fs_10gt(struct sfp *sfp)
- {
- 	sfp_fixup_10gbaset_30m(sfp);
--	sfp_fixup_fs_2_5gt(sfp);
-+	sfp_fixup_rollball_wait4s(sfp);
- }
+ 	dev->m2m_dev = v4l2_m2m_init(&m2m_ops);
+@@ -1343,6 +1340,9 @@ static int vim2m_probe(struct platform_d
+ 		goto error_m2m;
+ 	}
  
- static void sfp_fixup_halny_gsfp(struct sfp *sfp)
-@@ -479,9 +479,10 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// PHY.
- 	SFP_QUIRK_F("FS", "SFP-10G-T", sfp_fixup_fs_10gt),
- 
--	// Fiberstore SFP-2.5G-T uses Rollball protocol to talk to the PHY and
--	// needs 4 sec wait before probing the PHY.
--	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_fs_2_5gt),
-+	// Fiberstore SFP-2.5G-T and SFP-10GM-T uses Rollball protocol to talk
-+	// to the PHY and needs 4 sec wait before probing the PHY.
-+	SFP_QUIRK_F("FS", "SFP-2.5G-T", sfp_fixup_rollball_wait4s),
-+	SFP_QUIRK_F("FS", "SFP-10GM-T", sfp_fixup_rollball_wait4s),
- 
- 	// Fiberstore GPON-ONU-34-20BI can operate at 2500base-X, but report 1.2GBd
- 	// NRZ in their EEPROM
--- 
-2.39.5
-
++	v4l2_info(&dev->v4l2_dev,
++		  "Device registered as /dev/video%d\n", vfd->num);
++
+ #ifdef CONFIG_MEDIA_CONTROLLER
+ 	ret = v4l2_m2m_register_media_controller(dev->m2m_dev, vfd,
+ 						 MEDIA_ENT_F_PROC_VIDEO_SCALER);
 
 
 
