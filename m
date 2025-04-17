@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-133675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C742A926CC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:16:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E4BA92B16
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:57:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 723D78A67D7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 966D43B5054
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79AAD1E834D;
-	Thu, 17 Apr 2025 18:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDDB257432;
+	Thu, 17 Apr 2025 18:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgvXo9s/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYVstaR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379CD8462;
-	Thu, 17 Apr 2025 18:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE3024BBFD;
+	Thu, 17 Apr 2025 18:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744913797; cv=none; b=L9yvSWv1BTgYRonhQzqUXX/mB9etQCfn8sKackeMI44KruB35WaCKlDYlm7ab1Icsv+H6S7rALBUmz0txvgji6OxMxzMP+duygJ/sNimNqdgMHjUcwycSBI2g2MR06ynWJaNsN0plSnbeZ5HWWI6aGZPdgADxvJSKNLifdb0EW0=
+	t=1744915998; cv=none; b=FmKORuRprbRUe8Cj+kYoUacjvMhAkzdJb9I6XPflUefiWp3LT8iyjj7roPqNfFmgnL1+4gV2njeBFj28pA+yVtR+5ZoUa8aIlxbKdmBc13XDwK0IUnjvtXZ25rdF64PjrS2MuFKA2J4xPzh1WV5m2knV3lI3BzBLzOKIojvZWJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744913797; c=relaxed/simple;
-	bh=gKI0TfxgBU/bE1yteTBE+jR+Idq7KC3eiqTZD01iQN4=;
+	s=arc-20240116; t=1744915998; c=relaxed/simple;
+	bh=dIvgEyjblBNGSuqTUS4egqqRDhI6Sni9i0Ea94PmfoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRGBXLEB46wVjf0mDVZhnnlariGBmTyEqT9vC4uK/yDe4PD8rudE+S3ugSRi4kaa3N4ChMkPoqhmFqQ70ymAHSIneED4e2TTjVY/BFeR+9bWmjqwCNwKx4C/usYzMNbIDbtWNLrnYqYRE9ArKB3tJvmtFx0feZRrYFVYIKmMoJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgvXo9s/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA675C4CEE4;
-	Thu, 17 Apr 2025 18:16:36 +0000 (UTC)
+	 MIME-Version; b=d+A66bPXCBTbv9gJdb2x1tL4be/v8QNuGy+IIjT7XvfUo3II+MHe70jj3QBQPJJ4Zs8cNg5KUYiK8lq1grWhruSAj6nbEwFNjkPv8/9oo17bY3XTAEGav6R8/BPfasmLE1VNQS7qo6zEXamYgy6kwnSB5VacbGSdxRG6ZfjLeMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYVstaR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02080C4CEE7;
+	Thu, 17 Apr 2025 18:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744913797;
-	bh=gKI0TfxgBU/bE1yteTBE+jR+Idq7KC3eiqTZD01iQN4=;
+	s=korg; t=1744915998;
+	bh=dIvgEyjblBNGSuqTUS4egqqRDhI6Sni9i0Ea94PmfoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgvXo9s/qIQF5xeP3iiZQpAbiwX6YOov5ta9KVK/i4oeAQWDrNyu1a2cWu74b09Or
-	 Fhp33IsUcIAfXCgXo/gJRkDSNWNIuVhpkhS88ofm6ZL9ua/ymQEd2m31f+J2B0xTY5
-	 0E1pVMHs3ZJpg6KUcKKMqbeYGzoO/3du+cgsgCY8=
+	b=qYVstaR3cFFzmOgfxL+MRCykdbtCpnQ2YBWDAw6Z3s1vAhh2/uh0EG1l9yuXYrieM
+	 KCapwW92uHtvgloQyLYUBMNjONx57Tlgm7M5FmlpPVR4VLDiAZY6nZ8dVIFvlQI40t
+	 Ajr4mmfS3hDed7xX0WGeqiJtE/PdbUfFBoo+Hkow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.14 430/449] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+	Peter Xu <peterx@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 309/393] mm/userfaultfd: fix release hang over concurrent GUP
 Date: Thu, 17 Apr 2025 19:51:58 +0200
-Message-ID: <20250417175135.606964507@linuxfoundation.org>
+Message-ID: <20250417175120.042694024@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
-References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +66,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Peter Xu <peterx@redhat.com>
 
-commit aecb63e88c5e5fb9afb782a1577264c76f179af9 upstream.
+commit fe4cdc2c4e248f48de23bc778870fd71e772a274 upstream.
 
-Ensure the PHY reset and perst is asserted during power-off to
-guarantee it is in a reset state upon repeated power-on calls. This
-resolves an issue where the PHY may not properly initialize during
-subsequent power-on cycles. Power-on will deassert the reset at the
-appropriate time after tuning the PHY parameters.
+This patch should fix a possible userfaultfd release() hang during
+concurrent GUP.
 
-During suspend/resume cycles, we observed that the PHY PLL failed to
-lock during resume when the CPU temperature increased from 65C to 75C.
-The observed errors were:
-  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
-  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
-  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
-  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+This problem was initially reported by Dimitris Siakavaras in July 2023
+[1] in a firecracker use case.  Firecracker has a separate process
+handling page faults remotely, and when the process releases the
+userfaultfd it can race with a concurrent GUP from KVM trying to fault in
+a guest page during the secondary MMU page fault process.
 
-This resulted in a complete CPU freeze, which is resolved by ensuring
-the PHY is in reset during power-on, thus preventing PHY PLL failures.
+A similar problem was reported recently again by Jinjiang Tu in March 2025
+[2], even though the race happened this time with a mlockall() operation,
+which does GUP in a similar fashion.
 
-Cc: stable@vger.kernel.org
-Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+In 2017, commit 656710a60e36 ("userfaultfd: non-cooperative: closing the
+uffd without triggering SIGBUS") was trying to fix this issue.  AFAIU,
+that fixes well the fault paths but may not work yet for GUP.  In GUP, the
+issue is NOPAGE will be almost treated the same as "page fault resolved"
+in faultin_page(), then the GUP will follow page again, seeing page
+missing, and it'll keep going into a live lock situation as reported.
+
+This change makes core mm return RETRY instead of NOPAGE for both the GUP
+and fault paths, proactively releasing the mmap read lock.  This should
+guarantee the other release thread make progress on taking the write lock
+and avoid the live lock even for GUP.
+
+When at it, rearrange the comments to make sure it's uptodate.
+
+[1] https://lore.kernel.org/r/79375b71-db2e-3e66-346b-254c90d915e2@cslab.ece.ntua.gr
+[2] https://lore.kernel.org/r/20250307072133.3522652-1-tujinjiang@huawei.com
+
+Link: https://lkml.kernel.org/r/20250312145131.1143062-1-peterx@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/userfaultfd.c |   51 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 25 insertions(+), 26 deletions(-)
 
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -162,6 +162,16 @@ static int imx8_pcie_phy_power_on(struct
- 	return ret;
- }
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -396,32 +396,6 @@ vm_fault_t handle_userfault(struct vm_fa
+ 		goto out;
  
-+static int imx8_pcie_phy_power_off(struct phy *phy)
-+{
-+	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
+ 	/*
+-	 * If it's already released don't get it. This avoids to loop
+-	 * in __get_user_pages if userfaultfd_release waits on the
+-	 * caller of handle_userfault to release the mmap_lock.
+-	 */
+-	if (unlikely(READ_ONCE(ctx->released))) {
+-		/*
+-		 * Don't return VM_FAULT_SIGBUS in this case, so a non
+-		 * cooperative manager can close the uffd after the
+-		 * last UFFDIO_COPY, without risking to trigger an
+-		 * involuntary SIGBUS if the process was starting the
+-		 * userfaultfd while the userfaultfd was still armed
+-		 * (but after the last UFFDIO_COPY). If the uffd
+-		 * wasn't already closed when the userfault reached
+-		 * this point, that would normally be solved by
+-		 * userfaultfd_must_wait returning 'false'.
+-		 *
+-		 * If we were to return VM_FAULT_SIGBUS here, the non
+-		 * cooperative manager would be instead forced to
+-		 * always call UFFDIO_UNREGISTER before it can safely
+-		 * close the uffd.
+-		 */
+-		ret = VM_FAULT_NOPAGE;
+-		goto out;
+-	}
+-
+-	/*
+ 	 * Check that we can return VM_FAULT_RETRY.
+ 	 *
+ 	 * NOTE: it should become possible to return VM_FAULT_RETRY
+@@ -457,6 +431,31 @@ vm_fault_t handle_userfault(struct vm_fa
+ 	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
+ 		goto out;
+ 
++	if (unlikely(READ_ONCE(ctx->released))) {
++		/*
++		 * If a concurrent release is detected, do not return
++		 * VM_FAULT_SIGBUS or VM_FAULT_NOPAGE, but instead always
++		 * return VM_FAULT_RETRY with lock released proactively.
++		 *
++		 * If we were to return VM_FAULT_SIGBUS here, the non
++		 * cooperative manager would be instead forced to
++		 * always call UFFDIO_UNREGISTER before it can safely
++		 * close the uffd, to avoid involuntary SIGBUS triggered.
++		 *
++		 * If we were to return VM_FAULT_NOPAGE, it would work for
++		 * the fault path, in which the lock will be released
++		 * later.  However for GUP, faultin_page() does nothing
++		 * special on NOPAGE, so GUP would spin retrying without
++		 * releasing the mmap read lock, causing possible livelock.
++		 *
++		 * Here only VM_FAULT_RETRY would make sure the mmap lock
++		 * be released immediately, so that the thread concurrently
++		 * releasing the userfault would always make progress.
++		 */
++		release_fault_lock(vmf);
++		goto out;
++	}
 +
-+	reset_control_assert(imx8_phy->reset);
-+	reset_control_assert(imx8_phy->perst);
-+
-+	return 0;
-+}
-+
- static int imx8_pcie_phy_init(struct phy *phy)
- {
- 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-@@ -182,6 +192,7 @@ static const struct phy_ops imx8_pcie_ph
- 	.init		= imx8_pcie_phy_init,
- 	.exit		= imx8_pcie_phy_exit,
- 	.power_on	= imx8_pcie_phy_power_on,
-+	.power_off	= imx8_pcie_phy_power_off,
- 	.owner		= THIS_MODULE,
- };
+ 	/* take the reference before dropping the mmap_lock */
+ 	userfaultfd_ctx_get(ctx);
  
 
 
