@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-133831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4425A927FC
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461BBA925AC
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8807D3A8CF4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A45843B1414
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00FF257AC6;
-	Thu, 17 Apr 2025 18:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87593254B12;
+	Thu, 17 Apr 2025 18:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/zQX0a8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YM5ggTke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C04D1D07BA;
-	Thu, 17 Apr 2025 18:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E2618C034;
+	Thu, 17 Apr 2025 18:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914273; cv=none; b=o7/iaC0J5bwK/PxJoA2DRotGOUpBQWInKoZYkjK2zVCtwLv6f3NQfJjvRSE7ZeFvMcjHWoLWQgTlEAn+HsUnbr5C0rGZHIJ1GHWyJ3zmw+NZuGf3JgnSCJ7m1nTjOpoUA1JEXU000wGBJW+VzMdOiH7c3WlWcCNDu+2Knrq3v9k=
+	t=1744913065; cv=none; b=ASSooxvtNrqWuUjCZJQPKgg7udN8mWvUBmjbUDx/E/BSZzFpe8U4TKe5sscBkcyOLivO2kfEls0UENRtk5ActdkQcQRaFGCBw+3YkEwXZRFIP9BoGFpfQbUMbtf5p10OoWN70d4kHTrhX3gbQCSNZUIFmy1N933MCfAhcKRitE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914273; c=relaxed/simple;
-	bh=xZ+GyDP7WQjkjgy5n/swff9+Bx0TuJj4M9yQON5DbGI=;
+	s=arc-20240116; t=1744913065; c=relaxed/simple;
+	bh=L+nsu4luVHUHLfceWy/GdpNdXIR2zv9kepmFhavx6wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMO8HHkrR2wbGQQVUjTf7hX+44yrr4j3+qcvfa0N4TFID/9SkzvktMl+J+c/JYyrQAS6T4VdaOSnapwmH3QfFUlg6BV0WK4RON4pTKKM3kGLz9JomcVGcYGO81bgd5VGqLe+GfdbRVs3EW2P9IXeIFP4Edx1K2Cu2Bmg3EHBcik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/zQX0a8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FD9C4CEE4;
-	Thu, 17 Apr 2025 18:24:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ssBRvezcbtW1v80Sub4mYFODeYJo36Fsu07/2iPM9P3nnmz14LpErhg29UAMP/cYVD5Fx/8gnNdMVJPo1y20msA5pEroyuEt6DsHzCaVLEL4DEyODHzVjecbL5pxmAvrrU0NVO5wdkwi75uDwkSa4siZOH8G1BZWAnTKmveyZpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YM5ggTke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A1EC4CEE4;
+	Thu, 17 Apr 2025 18:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914273;
-	bh=xZ+GyDP7WQjkjgy5n/swff9+Bx0TuJj4M9yQON5DbGI=;
+	s=korg; t=1744913064;
+	bh=L+nsu4luVHUHLfceWy/GdpNdXIR2zv9kepmFhavx6wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/zQX0a8PBqsCja1XIEEQM51s27L9mMQEOHWrcw79R/LRyR4aCLAC0/SFieP2A/XO
-	 lirUgT57wbPuT2yKuGy+HqUv61d78o2zSRZ0SNRrKyK6XerH5Bg2jX1F/KLqvvVZ2G
-	 G5BqgXgJjferfHolR+P+gwzpX2anzMTsOhn7bnMI=
+	b=YM5ggTkeU9vhByRWRCgql+OiDu3RKXMt6saZyHeFCdpo094jK59TEuwMJQ8mfGAlE
+	 kGHjj6naDu6eaB28OgxGU4hD3UOiZU8PEaFPjifGim15ag8VqXbvFrkLJNvaAPXmE7
+	 ykkie235uwKvXGTzCtlFnjb4JD1nWR0psboj+5iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 145/414] drivers: base: devres: Allow to release group on device release
+Subject: [PATCH 6.14 215/449] HID: pidff: Fix 90 degrees direction name North -> East
 Date: Thu, 17 Apr 2025 19:48:23 +0200
-Message-ID: <20250417175117.258210988@linuxfoundation.org>
+Message-ID: <20250417175126.630831328@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +59,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 8e1ddfada4530939a8cb64ee9251aef780474274 ]
+[ Upstream commit f98ecedbeca34a8df1460c3a03cce32639c99a9d ]
 
-When releasing a device, if the release action causes a group to be
-released, a warning is emitted because it can't find the group. This
-happens because devres_release_all() moves the entire list to a todo
-list and also move the group markers. Considering r* normal resource
-nodes and g1 a group resource node:
-
-		    g1 -----------.
-		    v		  v
-	r1 -> r2 -> g1[0] -> r3-> g[1] -> r4
-
-After devres_release_all(), dev->devres_head becomes empty and the todo
-list it iterates on becomes:
-
-			       g1
-			       v
-	r1 -> r2 -> r3-> r4 -> g1[0]
-
-When a call to component_del() is made and takes down the aggregate
-device, a warning like this happen:
-
-	RIP: 0010:devres_release_group+0x362/0x530
-	...
-	Call Trace:
-	 <TASK>
-	 component_unbind+0x156/0x380
-	 component_unbind_all+0x1d0/0x270
-	 mei_component_master_unbind+0x28/0x80 [mei_hdcp]
-	 take_down_aggregate_device+0xc1/0x160
-	 component_del+0x1c6/0x3e0
-	 intel_hdcp_component_fini+0xf1/0x170 [xe]
-	 xe_display_fini+0x1e/0x40 [xe]
-
-Because the devres group corresponding to the hdcp component cannot be
-found. Just ignore this corner case: if the dev->devres_head is empty
-and the caller is trying to remove a group, it's likely in the process
-of device cleanup so just ignore it instead of warning.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250222001051.3012936-2-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 2152eec0c1352..68224f2f83fff 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -687,6 +687,13 @@ int devres_release_group(struct device *dev, void *id)
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index a614438e43bd8..6eb7934c8f53b 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -145,7 +145,7 @@ static const u8 pidff_block_load_status[] = { 0x8c, 0x8d, 0x8e};
+ #define PID_EFFECT_STOP		1
+ static const u8 pidff_effect_operation_status[] = { 0x79, 0x7b };
  
- 		release_nodes(dev, &todo);
-+	} else if (list_empty(&dev->devres_head)) {
-+		/*
-+		 * dev is probably dying via devres_release_all(): groups
-+		 * have already been removed and are on the process of
-+		 * being released - don't touch and don't warn.
-+		 */
-+		spin_unlock_irqrestore(&dev->devres_lock, flags);
- 	} else {
- 		WARN_ON(1);
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+-/* Polar direction 90 degrees (North) */
++/* Polar direction 90 degrees (East) */
+ #define PIDFF_FIXED_WHEEL_DIRECTION	0x4000
+ 
+ struct pidff_usage {
 -- 
 2.39.5
 
