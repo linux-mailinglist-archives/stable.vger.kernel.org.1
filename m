@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-134284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 122CEA92A2E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:47:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6110A92610
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1A481B62D0E
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE09D466F2C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34395253324;
-	Thu, 17 Apr 2025 18:47:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C161DE3A8;
+	Thu, 17 Apr 2025 18:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUTESaZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIF3QOiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9D51DB148;
-	Thu, 17 Apr 2025 18:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026CE18C034;
+	Thu, 17 Apr 2025 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915659; cv=none; b=s1Wy1geORih1NQ3EvYtbNKSl7e5eQuWyqSg77F7fURHv5zFWe3uALrjkuRZrqYheuRWh5eDMiHg9lY2733Sn2/OVqR/uIVkAGiqzI5z4nV+h7gZdwA9fKTohVhvYSzxxCIhXtAyLg8qfjAX5mO5BerMTCJVgxW52/gPUzy9glPg=
+	t=1744913382; cv=none; b=pCizqp+LMeYmMDvMLSN3Mb32gEFrH9NY7EGtT+Q8DNOfQYImSKKPOGOvTRUwKhFlE9xVlgxlyWVLxFzJjQH7fK9repXNHKEzegzrnt3iChuV969OI1D1FpRHIjwXqVFuU/67np6ROQXz1p4VslaVD/LhWrC/LToR9If6CArT7ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915659; c=relaxed/simple;
-	bh=IqCnwFhTp7SKAjiEosVkjkqRDkvsRAeKD6d+66Eo10U=;
+	s=arc-20240116; t=1744913382; c=relaxed/simple;
+	bh=2+RWFI0nDeZdSts0VrUaV9sOZkXSB0PbXwlHwyZCFxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fzr2vergxB68Sl7WbsxgZxHEICOmEgfhA05Y+OSLbouHh7gQVh3IXYHfN24prz7xYoe7AR29EvZNPB0UDHDFX1bf/odfL4N0TR5ZBSsxmA9375xK1pvHj0tnxSDK/qeW+mregopix580TNPQ/vIunWFq+aVodmzj78FD3rrS+lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUTESaZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0C4C4CEE4;
-	Thu, 17 Apr 2025 18:47:38 +0000 (UTC)
+	 MIME-Version; b=F6ynQ+BhAo9yppZ6+64PydwckmdDERPGSZBvdZAL4sjATN6xFzJXLXOFcAKI3Sx57B/0M1fRv0KCkSpGq6T7TZvx8KDbTMNbNdeedTZJSu6Wm1ouDRPgFcHY4vc9lzhraY3tZmuzeQljHA+zgWzEAVREFiJZbHhyhaCCa545NdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIF3QOiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAD7C4CEE4;
+	Thu, 17 Apr 2025 18:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915658;
-	bh=IqCnwFhTp7SKAjiEosVkjkqRDkvsRAeKD6d+66Eo10U=;
+	s=korg; t=1744913381;
+	bh=2+RWFI0nDeZdSts0VrUaV9sOZkXSB0PbXwlHwyZCFxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IUTESaZOdBhxDxxAVHxiEHklAFnhjvM2zfBwqoS007OwX7+6ucum5NTe8FlFU5kmN
-	 uyaKiyLMz59MYM0x7WrvNGABl8gcmk/50lg8EUICRDx2nGfseD+YedCx/g5ICm+dhb
-	 miiIu4I7jCpcamBhd522ppaoQa62MOleYVCfxBNA=
+	b=YIF3QOizH56yrWLcUutMuK/G+zFquG9okt2XDjouyluX6rq5/yQM7eqpfiHHpqQMI
+	 2KkdPjhUlN2KSHJGvuXbSk3hjJsQ3Umq+N/Rrlg95Vrt9lHMg2SF+ShJyjpLXoA8nA
+	 JP3STT7MXV6DPOKYwiTODM+Hy4xq/c43JeGHJnSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuan Can <yuancan@huawei.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 199/393] media: siano: Fix error handling in smsdvb_module_init()
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.14 320/449] jbd2: remove wrong sb->s_sequence check
 Date: Thu, 17 Apr 2025 19:50:08 +0200
-Message-ID: <20250417175115.592383621@linuxfoundation.org>
+Message-ID: <20250417175131.001707011@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuan Can <yuancan@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 734ac57e47b3bdd140a1119e2c4e8e6f8ef8b33d upstream.
+commit e6eff39dd0fe4190c6146069cc16d160e71d1148 upstream.
 
-The smsdvb_module_init() returns without checking the retval from
-smscore_register_hotplug().
-If the smscore_register_hotplug() failed, the module failed to install,
-leaving the smsdvb_debugfs not unregistered.
+Journal emptiness is not determined by sb->s_sequence == 0 but rather by
+sb->s_start == 0 (which is set a few lines above). Furthermore 0 is a
+valid transaction ID so the check can spuriously trigger. Remove the
+invalid WARN_ON.
 
-Fixes: 3f6b87cff66b ("[media] siano: allow showing the complete statistics via debugfs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuan Can <yuancan@huawei.com>
-Acked-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250206094657.20865-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/siano/smsdvb-main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/jbd2/journal.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/common/siano/smsdvb-main.c
-+++ b/drivers/media/common/siano/smsdvb-main.c
-@@ -1243,6 +1243,8 @@ static int __init smsdvb_module_init(voi
- 	smsdvb_debugfs_register();
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1879,7 +1879,6 @@ int jbd2_journal_update_sb_log_tail(jour
  
- 	rc = smscore_register_hotplug(smsdvb_hotplug);
-+	if (rc)
-+		smsdvb_debugfs_unregister();
- 
- 	pr_debug("\n");
+ 	/* Log is no longer empty */
+ 	write_lock(&journal->j_state_lock);
+-	WARN_ON(!sb->s_sequence);
+ 	journal->j_flags &= ~JBD2_FLUSHED;
+ 	write_unlock(&journal->j_state_lock);
  
 
 
