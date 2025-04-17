@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-133825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6278AA927CE
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B6BCA9299F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECBD4A2ADD
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829F31B6371D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9DA256C6C;
-	Thu, 17 Apr 2025 18:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0BC2571A0;
+	Thu, 17 Apr 2025 18:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzhSpO7O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLWeWskE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDA325744F;
-	Thu, 17 Apr 2025 18:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E5F22333D;
+	Thu, 17 Apr 2025 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914256; cv=none; b=HuerW9iKojJUxzuzdJk1uQ7dDVLqnlNE3JWj4M2HYYcLb1RvWAaaEpF5VyDq4vOgatRd1rmMMkEXmqt08KP/Yj/COuzzxFmFhxmUV5BmqVSkHTdYsIwvA4jaM9fyhzJUIuQcBQxI6XpOLfpEKi3CJ2wn+C/ux/NcEWWCqoZWBq8=
+	t=1744915369; cv=none; b=YXg+hYRG/cs9mNiLsO7X1+yK67Ohp/LLquDcA5Td3qZ6BAE/dyW8z0HQsFoAEHmOkp0tQjGbknCsARb1dFFDP0dPgP1Y7Mw2nwOKp8FlDdl8RhdBUfyP0xysJrccD/hTX6leA5XTmJkKG18XGZPrInUXyBzGgSLH2qGknFJdtR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914256; c=relaxed/simple;
-	bh=9+87UxtW2Ih3wIr3BS5bKTJuCjmDAp5FuSdpN8oFQyU=;
+	s=arc-20240116; t=1744915369; c=relaxed/simple;
+	bh=atDA88g4S9sAXzP80GIXWL66QS13euATUyaLnUqcBqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTaNhl/tpFP68k3GFbzspkRvAAn6Pf6FBnoGMFJ/NzgK0QcDzYWdDjMkDXDwxynUb12UBZIerpfbz6HBVwZ9VHkR3dMjBXkG2k21HQ3Ia5etcw18AqFfCcMKNulZ4ySjipabfECV4zu9CTPrj3DuMwuF17C4HPLdYZ/nGczTwVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzhSpO7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4071C4CEE4;
-	Thu, 17 Apr 2025 18:24:14 +0000 (UTC)
+	 MIME-Version; b=I4scFrLw8+fyq6/1jEO+CpZk8l85l1MNvK4ydp09xKV5hBb9kQRy4dqvmscdM5ic0Vw+jHO7IN0cHoqPphpwZftzpdxUiJtkY+IwtOwQoPqrna9rLtPnXLH99TY1H7RGm7MYXPuSijAITTsufbo4Qi9O41UU8FkzRCMTXqSwnsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLWeWskE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E605AC4CEEA;
+	Thu, 17 Apr 2025 18:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914255;
-	bh=9+87UxtW2Ih3wIr3BS5bKTJuCjmDAp5FuSdpN8oFQyU=;
+	s=korg; t=1744915369;
+	bh=atDA88g4S9sAXzP80GIXWL66QS13euATUyaLnUqcBqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PzhSpO7OjhHL190PqL+VasVfOg1e8V+AFncVAi9WABE+ZD34BHtD65poXnUI6PICz
-	 btFY5V9Mf4aXw8rbc2Y8JQoc3dO/9KcNXgMBcHY8h50Wu4Yj6dMD0tfm136MC58HsJ
-	 X5Qc4db4hESg6dhcI4ObkrU9ULaCAkxGgJjvmwNk=
+	b=zLWeWskE29fzHIremWJbUtsJf+z6BLgdcJnPxUSoVF2UzLmO8SOTkDGyH5stzv2o+
+	 A3AzTnOWIYaGQHalxtg8ORT/VT/Xc0MIu+HgIYr+dYrWyXipJst8/v3mrHke1rPVfu
+	 tDG/7KxMBHIjNJAR8tWXxNfl1GMB1ihJFyPVJC7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emily Deng <Emily.Deng@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 157/414] drm/amdgpu: Fix the race condition for draining retry fault
+Subject: [PATCH 6.12 106/393] f2fs: fix to avoid out-of-bounds access in f2fs_truncate_inode_blocks()
 Date: Thu, 17 Apr 2025 19:48:35 +0200
-Message-ID: <20250417175117.754646563@linuxfoundation.org>
+Message-ID: <20250417175111.855873874@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emily Deng <Emily.Deng@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f844732e3ad9c4b78df7436232949b8d2096d1a6 ]
+[ Upstream commit e6494977bd4a83862118a05f57a8df40256951c0 ]
 
-Issue:
-In the scenario where svm_range_restore_pages is called, but
-svm->checkpoint_ts has not been set and the retry fault has not been
-drained, svm_range_unmap_from_cpu is triggered and calls svm_range_free.
-Meanwhile, svm_range_restore_pages continues execution and reaches
-svm_range_from_addr. This results in a "failed to find prange..." error,
- causing the page recovery to fail.
+syzbot reports an UBSAN issue as below:
 
-How to fix:
-Move the timestamp check code under the protection of svm->lock.
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in fs/f2fs/node.h:381:10
+index 18446744073709550692 is out of range for type '__le32[5]' (aka 'unsigned int[5]')
+CPU: 0 UID: 0 PID: 5318 Comm: syz.0.0 Not tainted 6.14.0-rc3-syzkaller-00060-g6537cfb395f3 #0
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
+ get_nid fs/f2fs/node.h:381 [inline]
+ f2fs_truncate_inode_blocks+0xa5e/0xf60 fs/f2fs/node.c:1181
+ f2fs_do_truncate_blocks+0x782/0x1030 fs/f2fs/file.c:808
+ f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:836
+ f2fs_truncate+0x417/0x720 fs/f2fs/file.c:886
+ f2fs_file_write_iter+0x1bdb/0x2550 fs/f2fs/file.c:5093
+ aio_write+0x56b/0x7c0 fs/aio.c:1633
+ io_submit_one+0x8a7/0x18a0 fs/aio.c:2052
+ __do_sys_io_submit fs/aio.c:2111 [inline]
+ __se_sys_io_submit+0x171/0x2e0 fs/aio.c:2081
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f238798cde9
 
-v2:
-Make sure all right locks are released before go out.
+index 18446744073709550692 (decimal, unsigned long long)
+= 0xfffffffffffffc64 (hexadecimal, unsigned long long)
+= -924 (decimal, long long)
 
-v3:
-Directly goto out_unlock_svms, and return -EAGAIN.
+In f2fs_truncate_inode_blocks(), UBSAN detects that get_nid() tries to
+access .i_nid[-924], it means both offset[0] and level should zero.
 
-v4:
-Refine code.
+The possible case should be in f2fs_do_truncate_blocks(), we try to
+truncate inode size to zero, however, dn.ofs_in_node is zero and
+dn.node_page is not an inode page, so it fails to truncate inode page,
+and then pass zeroed free_from to f2fs_truncate_inode_blocks(), result
+in this issue.
 
-Signed-off-by: Emily Deng <Emily.Deng@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+	if (dn.ofs_in_node || IS_INODE(dn.node_page)) {
+		f2fs_truncate_data_blocks_range(&dn, count);
+		free_from += count;
+	}
+
+I guess the reason why dn.node_page is not an inode page could be: there
+are multiple nat entries share the same node block address, once the node
+block address was reused, f2fs_get_node_page() may load a non-inode block.
+
+Let's add a sanity check for such condition to avoid out-of-bounds access
+issue.
+
+Reported-by: syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/66fdcdf3.050a0220.40bef.0025.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 31 +++++++++++++++-------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ fs/f2fs/node.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 1b04d54f9a69c..4eeea51c9a0eb 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -2992,19 +2992,6 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
- 		goto out;
- 	}
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 4d7b9fd6ef31a..9fc07737d8661 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1134,7 +1134,14 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
+ 	trace_f2fs_truncate_inode_blocks_enter(inode, from);
  
--	/* check if this page fault time stamp is before svms->checkpoint_ts */
--	if (svms->checkpoint_ts[gpuidx] != 0) {
--		if (amdgpu_ih_ts_after(ts,  svms->checkpoint_ts[gpuidx])) {
--			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
--			r = 0;
--			goto out;
--		} else
--			/* ts is after svms->checkpoint_ts now, reset svms->checkpoint_ts
--			 * to zero to avoid following ts wrap around give wrong comparing
--			 */
--			svms->checkpoint_ts[gpuidx] = 0;
--	}
--
- 	if (!p->xnack_enabled) {
- 		pr_debug("XNACK not enabled for pasid 0x%x\n", pasid);
- 		r = -EFAULT;
-@@ -3024,6 +3011,21 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
- 	mmap_read_lock(mm);
- retry_write_locked:
- 	mutex_lock(&svms->lock);
-+
-+	/* check if this page fault time stamp is before svms->checkpoint_ts */
-+	if (svms->checkpoint_ts[gpuidx] != 0) {
-+		if (amdgpu_ih_ts_after(ts,  svms->checkpoint_ts[gpuidx])) {
-+			pr_debug("draining retry fault, drop fault 0x%llx\n", addr);
-+			r = -EAGAIN;
-+			goto out_unlock_svms;
-+		} else {
-+			/* ts is after svms->checkpoint_ts now, reset svms->checkpoint_ts
-+			 * to zero to avoid following ts wrap around give wrong comparing
-+			 */
-+			svms->checkpoint_ts[gpuidx] = 0;
+ 	level = get_node_path(inode, from, offset, noffset);
+-	if (level < 0) {
++	if (level <= 0) {
++		if (!level) {
++			level = -EFSCORRUPTED;
++			f2fs_err(sbi, "%s: inode ino=%lx has corrupted node block, from:%lu addrs:%u",
++					__func__, inode->i_ino,
++					from, ADDRS_PER_INODE(inode));
++			set_sbi_flag(sbi, SBI_NEED_FSCK);
 +		}
-+	}
-+
- 	prange = svm_range_from_addr(svms, addr, NULL);
- 	if (!prange) {
- 		pr_debug("failed to find prange svms 0x%p address [0x%llx]\n",
-@@ -3149,7 +3151,8 @@ svm_range_restore_pages(struct amdgpu_device *adev, unsigned int pasid,
- 	mutex_unlock(&svms->lock);
- 	mmap_read_unlock(mm);
- 
--	svm_range_count_fault(node, p, gpuidx);
-+	if (r != -EAGAIN)
-+		svm_range_count_fault(node, p, gpuidx);
- 
- 	mmput(mm);
- out:
+ 		trace_f2fs_truncate_inode_blocks_exit(inode, level);
+ 		return level;
+ 	}
 -- 
 2.39.5
 
