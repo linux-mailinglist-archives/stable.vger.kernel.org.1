@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-133815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18698A927C2
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:28:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0B88A929CD
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:44:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BBAB4A2B3B
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:28:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C49D07A6F40
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DFB257425;
-	Thu, 17 Apr 2025 18:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99A62566CF;
+	Thu, 17 Apr 2025 18:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0XY4JpT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDOfzajf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90C3256C67;
-	Thu, 17 Apr 2025 18:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747DF25745A;
+	Thu, 17 Apr 2025 18:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914224; cv=none; b=tl5T2V7tE0F4fHF5RFajDMyymHL3DzKBjXW3FRmFtZgUce1ex/9sGvtGQoZNcVMMCdV2nC4614lHY2Dy+sggjsL2hHzSSWYpVEtD/5yXa6hQCkdagE8eoP02/cEgf/gooAnWyFRTG6LZZfm5zGZz5iNaNjl+QDUTgJGQEWf3CfU=
+	t=1744915244; cv=none; b=oQqm1w8ROqUbOq+j+DdV468dCD3FnOcjfYYAJ5DUX8EdzZUdVHMQxaT/rlPhIVZewN+1YSHMBWSu8YEmjb8JPcikMxoFgOSP0lcaPeFHq3O8eT+gdnJtfQkcK1WpaKIU3Ll55jhtwwWCFwAyYRokWafrVBRPLsokFpD3vn1u3ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914224; c=relaxed/simple;
-	bh=KJ81qr0h6ZuHP0pPExd+nnMVqkCycMo1b5NpBsJHzLo=;
+	s=arc-20240116; t=1744915244; c=relaxed/simple;
+	bh=PXl3xINe8xjlGwpBFwNkLz54yUrKUfpGKSCH8U5uoAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0VeJZQWlji+eyZFuB01JAu3nZjWPWZtW5vW9tdu0g4eoahirVBQRNjQfkACMpg0toma7xbHewupxN+XmAdJs5N7M2uE1ULQI4lZB/ac947k8cWc/s+AA2j8pLDNnF0yUnsh6yc8ltK8h23cKo4vMwGC+25WHiOGMB2oXphZL1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0XY4JpT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3EFC4CEE4;
-	Thu, 17 Apr 2025 18:23:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HlgTeCxwoxGA3KfeDQEYUf9gatl54iBNUhpoxo71ZYszl6+iF4FE3tC168nJUaGVsjJP1AranDBQ7xqrpfSRbavJRPYjP0nrR/xMwhOd6P2oCThxsG9iZnLW4zKhvwc5E6Oeu9eiNx/pLEAsXCbmgzPxLeFV8XgJZcT9PKrkBzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDOfzajf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7823EC4CEE7;
+	Thu, 17 Apr 2025 18:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914223;
-	bh=KJ81qr0h6ZuHP0pPExd+nnMVqkCycMo1b5NpBsJHzLo=;
+	s=korg; t=1744915244;
+	bh=PXl3xINe8xjlGwpBFwNkLz54yUrKUfpGKSCH8U5uoAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0XY4JpT/IJtqluiBSKlGFxv/9nNlmLRKJ92i2YBASNB+LM3qFbULlXEAET+cxwQH
-	 Ms4kYJS0lsgDY0uF3gISLSc68H3LAYJVUeaBOd4ksMi7wkVLv6Qw1/mTNeJuNNERJO
-	 j6aD5IYvgcwM+ouM5Yihj2TOstnaZLGKQFi9c69w=
+	b=VDOfzajfFbBAhyVjBmKjug+JNKU9vLKIsMhijNzJq7DwLFkwsDbtRLlDD06gUA6oT
+	 BxsV97/BEv6/az34SJXokm92kEzED/RVo5ng9Ch6EnN1Jjra3pkWwrR46ENAT5b5by
+	 daHPsbmwY4AJ0OFIVRElfJT6uE1Z7rqIakctcGpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 116/414] btrfs: harden block_group::bg_list against list_del() races
+Subject: [PATCH 6.12 065/393] HID: pidff: Add PERMISSIVE_CONTROL quirk
 Date: Thu, 17 Apr 2025 19:47:54 +0200
-Message-ID: <20250417175116.099558284@linuxfoundation.org>
+Message-ID: <20250417175110.209391189@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 7511e29cf1355b2c47d0effb39e463119913e2f6 ]
+[ Upstream commit a4119108d2530747e61c7cbf52e2affd089cb1f6 ]
 
-As far as I can tell, these calls of list_del_init() on bg_list cannot
-run concurrently with btrfs_mark_bg_unused() or btrfs_mark_bg_to_reclaim(),
-as they are in transaction error paths and situations where the block
-group is readonly.
+With this quirk, a PID device isn't required to have a strict
+logical_minimum of 1 for the the PID_DEVICE_CONTROL usage page.
 
-However, if there is any chance at all of racing with mark_bg_unused(),
-or a different future user of bg_list, better to be safe than sorry.
+Some devices come with weird values in their device descriptors and
+this quirk enables their initialization even if the logical minimum
+of the DEVICE_CONTROL page is not 1.
 
-Otherwise we risk the following interleaving (bg_list refcount in parens)
+Fixes initialization of VRS Direct Force Pro
 
-T1 (some random op)                       T2 (btrfs_mark_bg_unused)
-                                        !list_empty(&bg->bg_list); (1)
-list_del_init(&bg->bg_list); (1)
-                                        list_move_tail (1)
-btrfs_put_block_group (0)
-                                        btrfs_delete_unused_bgs
-                                             bg = list_first_entry
-                                             list_del_init(&bg->bg_list);
-                                             btrfs_put_block_group(bg); (-1)
+Changes in v6:
+- Change quirk name to better reflect it's intention
 
-Ultimately, this results in a broken ref count that hits zero one deref
-early and the real final deref underflows the refcount, resulting in a WARNING.
-
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c |  8 ++++++++
- fs/btrfs/transaction.c | 12 ++++++++++++
- 2 files changed, 20 insertions(+)
+ drivers/hid/usbhid/hid-pidff.c | 3 ++-
+ include/linux/hid.h            | 5 +++--
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 3c6f7fecbb9aa..840e7959b0772 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -2873,7 +2873,15 @@ int btrfs_finish_extent_commit(struct btrfs_trans_handle *trans)
- 						   block_group->length,
- 						   &trimmed);
- 
-+		/*
-+		 * Not strictly necessary to lock, as the block_group should be
-+		 * read-only from btrfs_delete_unused_bgs().
-+		 */
-+		ASSERT(block_group->ro);
-+		spin_lock(&fs_info->unused_bgs_lock);
- 		list_del_init(&block_group->bg_list);
-+		spin_unlock(&fs_info->unused_bgs_lock);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 503b22feacdbb..5a57ba0d7026a 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -969,7 +969,8 @@ static int pidff_find_special_fields(struct pidff_device *pidff)
+ 					 0x57, 0);
+ 	pidff->device_control =
+ 		pidff_find_special_field(pidff->reports[PID_DEVICE_CONTROL],
+-					 0x96, 1);
++			0x96, !(pidff->quirks & HID_PIDFF_QUIRK_PERMISSIVE_CONTROL));
 +
- 		btrfs_unfreeze_block_group(block_group);
- 		btrfs_put_block_group(block_group);
+ 	pidff->block_load_status =
+ 		pidff_find_special_field(pidff->reports[PID_BLOCK_LOAD],
+ 					 0x8b, 1);
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 088c6688c3f98..cd3fedce48109 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -1228,8 +1228,9 @@ int hid_pidff_init(struct hid_device *hid);
+ #endif
  
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 914a22cc950b5..7c789b4b946b3 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -160,7 +160,13 @@ void btrfs_put_transaction(struct btrfs_transaction *transaction)
- 			cache = list_first_entry(&transaction->deleted_bgs,
- 						 struct btrfs_block_group,
- 						 bg_list);
-+			/*
-+			 * Not strictly necessary to lock, as no other task will be using a
-+			 * block_group on the deleted_bgs list during a transaction abort.
-+			 */
-+			spin_lock(&transaction->fs_info->unused_bgs_lock);
- 			list_del_init(&cache->bg_list);
-+			spin_unlock(&transaction->fs_info->unused_bgs_lock);
- 			btrfs_unfreeze_block_group(cache);
- 			btrfs_put_block_group(cache);
- 		}
-@@ -2097,7 +2103,13 @@ static void btrfs_cleanup_pending_block_groups(struct btrfs_trans_handle *trans)
+ /* HID PIDFF quirks */
+-#define HID_PIDFF_QUIRK_MISSING_DELAY	BIT(0)
+-#define HID_PIDFF_QUIRK_MISSING_PBO	BIT(1)
++#define HID_PIDFF_QUIRK_MISSING_DELAY		BIT(0)
++#define HID_PIDFF_QUIRK_MISSING_PBO		BIT(1)
++#define HID_PIDFF_QUIRK_PERMISSIVE_CONTROL	BIT(2)
  
-        list_for_each_entry_safe(block_group, tmp, &trans->new_bgs, bg_list) {
-                btrfs_dec_delayed_refs_rsv_bg_inserts(fs_info);
-+		/*
-+		* Not strictly necessary to lock, as no other task will be using a
-+		* block_group on the new_bgs list during a transaction abort.
-+		*/
-+	       spin_lock(&fs_info->unused_bgs_lock);
-                list_del_init(&block_group->bg_list);
-+	       spin_unlock(&fs_info->unused_bgs_lock);
-        }
- }
+ #define dbg_hid(fmt, ...) pr_debug("%s: " fmt, __FILE__, ##__VA_ARGS__)
  
 -- 
 2.39.5
