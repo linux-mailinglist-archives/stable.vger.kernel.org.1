@@ -1,168 +1,166 @@
-Return-Path: <stable+bounces-133095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A605FA91D00
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 14:53:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C0DA91D36
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 15:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3F2447A1A
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 12:53:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 207B53AF4A3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 13:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6994C24290F;
-	Thu, 17 Apr 2025 12:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DCF24E4A1;
+	Thu, 17 Apr 2025 13:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0najXf6"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="TgyYH8bU";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Xe3W54XR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2E1199384;
-	Thu, 17 Apr 2025 12:53:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F2524DFE8;
+	Thu, 17 Apr 2025 13:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744894413; cv=none; b=dRDOsVDoLQS47Od7mgnwy1SHHWQaOc2N+oyzRwWCkapU+DRL6Ln3ZQKFJFQbFOrn1ssvtTCSkSgC+Qd0BJp/9yPPM56edhTN3oyhRtVkGLdurIzajoRW2yH8x96L0PZrGayk9GD3Y9EBj11t/IpHNxq3ZColmGAmHcOpQda0X9w=
+	t=1744894902; cv=none; b=tIA0RVieIDr7kud7waqSa5X7Z5gLHX228/z1Ze5z5rO4/coyyVlU9pSpcJIdWefHgwN6KKlSP2buyaOQvRfJ7AkqUGg54+4QywnTkW0FUXHBI2cHYAZoHa5R7dcF2fbLjIfyywkdo3IUGA8svI3vSWu71RPoRVUMznP0FZfDQSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744894413; c=relaxed/simple;
-	bh=V6B+8U2UFhneiRVOZyseKWoyXNpM1iYOpJRLd/qajmM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HjaM9kRltaLdQdOngT14sq/8ASSvzlBQT3w+Pt7XkyK+/1PAHaw02A3yF7PLDsztWKRndaabuG3OWw8uFaPUZxF/6ZpCzWxX4NscOAsJFv1Pm8heeR1MgWLRd2jviSrAiD6C/ff+3pDo9tVBA5ynktvNfMdxhuG4FQofdRKw38s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0najXf6; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-476805acddaso7472061cf.1;
-        Thu, 17 Apr 2025 05:53:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744894410; x=1745499210; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZlVLziAvMwY2q0tZP9ngpJkek12c6+IDEyw24UOz9aY=;
-        b=h0najXf68VlUGTkMQxh39+bXc91IKSqFuCF3x2pK+TQ7icgmGu5FQdLRC3PxDKkOCv
-         HSN2tn82f810tTRFLh4rJnGG+AJELNig/QI8pXoZSu+k3prDr/mWh+JatRvxrYg04DJi
-         RTYefCf0n6GZifYMd6+ba6O/Z10Xn9I2MfOARd21vfeSNNvZNo9/7IVtZi/zwCQ5qvo4
-         9HZEWgwx2d2ER26YvgN4jTcas1oIMBw9YW0BWJlawWGy/EhJQZ1EkuITnFWufLhIsn+l
-         /F3RlJ0Cet2uHS9xOm8+9c8CcNYtw/1fXRneADhLVG/fv9shWJhIvcNdQwVkOYmxfH1K
-         t1WA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744894410; x=1745499210;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZlVLziAvMwY2q0tZP9ngpJkek12c6+IDEyw24UOz9aY=;
-        b=o1qxUtzthzAu+rV0AYUgxwjvSaZqUPmFx0ZdyVH72hXWIWUmzJuUBIJdklV1ZkqCPG
-         Er3kUQuPtHRWHX1a6rsantUvC3QcKTkA0//fmTDrMYpyUysak8U4sbzT6F+M0uFQd0K4
-         NtTsSXPZT7BSfg75Lsn5y5Anfg7cQE8kbZWd1E9Bt7dgMY5wXtMUKxYCCK8cwZZVAsmj
-         fPXOI0F8guUlp4c4H/nL5N/bwoxbSmYrDysI7DsWS0XqJ+beUhkBuWuu2aH7Qs5W2rqL
-         +CS50DglB7tzbNgc6cAv4Q+y6/TtO35KlmPH2DtddnhyptmMKcH8z1Er1zNcF90kgcR7
-         Fm9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUHIgClcsEHEMMkQh8zsE2sbwIiPZS9LKKWmQb/IH09FLuZiSga/SwLHVMpDAK9q8yQZYQsASceR40=@vger.kernel.org, AJvYcCV6raE+G2RuxEAW1U/963YlL5CtNe5G1EE5SuVcIHcVLfyqBXlN3UR2wowrADi2seXc/5rKl8S3pcv3Rygp@vger.kernel.org, AJvYcCXYMJdrI11JvTKZnM0XceJ8pDRs7O3R8d/oDzHh85KHr5RJuAI/GBf0wYsEPsgzbZcPgAYx5WFv@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvGZehucTyS/tdMD4vzN4yl87Xuk/ThB8H8wZG14dbHKMs2O1D
-	gP1TEPqnGVllP9EPXZSAnjigIC+vCa91qmCMl1sfNFMv7Ni9VcG//YqGwvb0iLEsXsDUR+Gtqxa
-	YU8AM9zPSdR6GJT2SpxgA7Yx3njo=
-X-Gm-Gg: ASbGncvTw0TxNSLyJXhal25KstJxKheWVO8Pzto58ATK0vm4NezybNIKL88J6gUQrtn
-	RVStamCzyrzqpFJnZd1psdsaQ7P6N5zrwyI6kVQNuqUSoKh7IZdwOLQqHOT3h6toa9I1GQ0NSA5
-	6JB1jFdbD6nS+/+QYkkPKlxySXQhFvMetKdB3sHxwLLvF/TUNkx23xJH8mi3KqD5c=
-X-Google-Smtp-Source: AGHT+IFEjAoQPgnXW6t27//O1W+0o+CbqBiAp3geF0MsUU262k2xourjdT/yrRcBHz1zdq4ge4SLOhinWOa3F/k2BeI=
-X-Received: by 2002:a05:622a:1349:b0:476:af18:239d with SMTP id
- d75a77b69052e-47ad813ba57mr76197351cf.51.1744894410435; Thu, 17 Apr 2025
- 05:53:30 -0700 (PDT)
+	s=arc-20240116; t=1744894902; c=relaxed/simple;
+	bh=zMwXesIrrYUaxnfmuve6eO/ifbyuRdJeos7XvzZjbGw=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=B6eZeNq0zAHjWyzD4oY0sG+sqzIHV8oH4N3s7buGxIvI8picTZPrJDmSqKP0G2nXX+nnY/rOQzgImRPSLXBzDraKHk/GNzInD/tiedPNNJ8wjADesDlKFnuWZ6KVySpVzJRHra8FWkwQxwcEyswm9a0db9dyDUqnS5+otfwUY7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=TgyYH8bU; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Xe3W54XR; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 17 Apr 2025 13:01:37 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744894899;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KoxKRkUoYCu2TYBYxCJ2tFQSEVpOthLNZDIydkHQRJ8=;
+	b=TgyYH8bUAiklCzbcc74jSl/m2A618ajBIV9GN9YAaM/v8nJ+UfjhlEI65pLGrlnIOp7Y3z
+	epv/TB4XA6CXBW0CD6mOWSPSNUB4jd0aaP9RjxtfH5L5sil/7oX8s88ax4lpOWYuyUKSog
+	yIhzg7rYk27r1CwwcekziIvmO8Ohc6ssFx3i3zERPPGEIT42N24LdyUEEpnFXKTeTG8ckR
+	RCjJOA9XrSaJ3rwEhT9h2c8V6VNTtkw4KaeImX4IDvQ29ZsOZ3GylLtJ7Q7YZuONOeaL5X
+	QLZa5ydvlOtzUiu3k7+JQkXNor3EmlGcvr6JrJ3QQ2PXICeYWoCexhDC8x7IOw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744894899;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KoxKRkUoYCu2TYBYxCJ2tFQSEVpOthLNZDIydkHQRJ8=;
+	b=Xe3W54XRpGKPb/xyWJn3BJN/iyDaz8cthOk0GFtRsu3icriMvMAWXMI5B7UUcYVKbsnRFK
+	sgcgnoObkCyJdaDw==
+From: "tip-bot2 for Dapeng Mi" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/core] perf/x86/intel: Allow to update user space GPRs from
+ PEBS records
+Cc: Dapeng Mi <dapeng1.mi@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250415104135.318169-2-dapeng1.mi@linux.intel.com>
+References: <20250415104135.318169-2-dapeng1.mi@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250415182038.523186-1-gshahrouzi@gmail.com> <fb712c034eda0d5d711a90a00b6382315fb5f929.camel@gmail.com>
-In-Reply-To: <fb712c034eda0d5d711a90a00b6382315fb5f929.camel@gmail.com>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Thu, 17 Apr 2025 08:53:00 -0400
-X-Gm-Features: ATxdqUGK6KuhhM7Fj61ixiHKA90df-58_gkHsmQfZaA-QhOIG8h5HdACWar_0Fk
-Message-ID: <CAKUZ0zL88AyuRxzhoAv2iZO7N7qOMy1G3yKscqG3rQiiOS0gog@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: Revoke valid channel for error path
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
-	sonic.zhang@analog.com, vapier@gentoo.org, skhan@linuxfoundation.org, 
-	kernelmentees@lists.linuxfoundation.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <174489489799.31282.1186680851817307547.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 17, 2025 at 6:06=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.com=
-> wrote:
->
-> On Tue, 2025-04-15 at 14:20 -0400, Gabriel Shahrouzi wrote:
-> > According to the datasheet on page 9 under the channel selection table,
-> > all devices (AD7816/7/8) are able to use the channel marked as 7. This
-> > channel is used for diagnostic purposes by routing the internal 1.23V
-> > bandgap source through the MUX to the input of the ADC.
-> >
-> > Replace checking for string equality with checking for the same chip ID
-> > to reduce time complexity.
-> >
-> > Group invalid channels for all devices together because they are
-> > processed the same way.
-> >
-> > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > ---
-> >  drivers/staging/iio/adc/ad7816.c | 15 +++++----------
-> >  1 file changed, 5 insertions(+), 10 deletions(-)
-> >
-> > diff --git a/drivers/staging/iio/adc/ad7816.c
-> > b/drivers/staging/iio/adc/ad7816.c
-> > index 6c14d7bcdd675..d880fe0257697 100644
-> > --- a/drivers/staging/iio/adc/ad7816.c
-> > +++ b/drivers/staging/iio/adc/ad7816.c
-> > @@ -186,17 +186,12 @@ static ssize_t ad7816_store_channel(struct device=
- *dev,
-> >       if (ret)
-> >               return ret;
-> >
-> > -     if (data > AD7816_CS_MAX && data !=3D AD7816_CS_MASK) {
-> > -             dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for
-> > %s.\n",
-> > -                     data, indio_dev->name);
-> > -             return -EINVAL;
-> > -     } else if (strcmp(indio_dev->name, "ad7818") =3D=3D 0 && data > 1=
-) {
-> > -             dev_err(&chip->spi_dev->dev,
-> > -                     "Invalid channel id %lu for ad7818.\n", data);
-> > -             return -EINVAL;
-> > -     } else if (strcmp(indio_dev->name, "ad7816") =3D=3D 0 && data > 0=
-) {
-> > +     if (data !=3D AD7816_CS_MASK &&
-> > +         (data > AD7816_CS_MAX ||
-> > +         (chip->id =3D=3D ID_AD7818 && data > 1) ||
-> > +         (chip->id =3D=3D ID_AD7816 && data > 0))) {
-> >               dev_err(&chip->spi_dev->dev,
-> > -                     "Invalid channel id %lu for ad7816.\n", data);
-> > +                     "Invalid channel id %lu for %s.\n", data, indio_d=
-ev-
-> > >name);
-> >               return -EINVAL;
-> >       }
->
-> Hmm, maybe I'm missing something but the code just looks the same as befo=
-re
-> (from a functionality point of view)? I'm really not seeing any fix...
-I might have to change it for readability. From my understanding, if
-channel 7 is selected (AD7816_CS_MASK), it never enters the error path
-whereas in the old code, if the chip were either ad7816 or ad7818, it would
-end up returning an error because it skips all channels above either 0
-or 1.
+The following commit has been merged into the perf/core branch of tip:
 
->
-> Having said the above, not sure if grouping helps with readability. But I=
- do
-> agree with moving from string comparison to use chip->id. And we also hav=
-e
-> redundants 'else'
->
-> - Nuno S=C3=A1
->
+Commit-ID:     71dcc11c2cd9e434c34a63154ecadca21c135ddd
+Gitweb:        https://git.kernel.org/tip/71dcc11c2cd9e434c34a63154ecadca21c135ddd
+Author:        Dapeng Mi <dapeng1.mi@linux.intel.com>
+AuthorDate:    Tue, 15 Apr 2025 10:41:35 
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Thu, 17 Apr 2025 14:19:38 +02:00
+
+perf/x86/intel: Allow to update user space GPRs from PEBS records
+
+Currently when a user samples user space GPRs (--user-regs option) with
+PEBS, the user space GPRs actually always come from software PMI
+instead of from PEBS hardware. This leads to the sampled GPRs to
+possibly be inaccurate for single PEBS record case because of the
+skid between counter overflow and GPRs sampling on PMI.
+
+For the large PEBS case, it is even worse. If user sets the
+exclude_kernel attribute, large PEBS would be used to sample user space
+GPRs, but since PEBS GPRs group is not really enabled, it leads to all
+samples in the large PEBS record to share the same piece of user space
+GPRs, like this reproducer shows:
+
+  $ perf record -e branches:pu --user-regs=ip,ax -c 100000 ./foo
+  $ perf report -D | grep "AX"
+
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+  .... AX    0x000000003a0d4ead
+
+So enable GPRs group for user space GPRs sampling and prioritize reading
+GPRs from PEBS. If the PEBS sampled GPRs is not user space GPRs (single
+PEBS record case), perf_sample_regs_user() modifies them to user space
+GPRs.
+
+[ mingo: Clarified the changelog. ]
+
+Fixes: c22497f5838c ("perf/x86/intel: Support adaptive PEBS v4")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250415104135.318169-2-dapeng1.mi@linux.intel.com
+---
+ arch/x86/events/intel/ds.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/events/intel/ds.c b/arch/x86/events/intel/ds.c
+index 1f7e1a6..18c3ab5 100644
+--- a/arch/x86/events/intel/ds.c
++++ b/arch/x86/events/intel/ds.c
+@@ -1399,8 +1399,10 @@ static u64 pebs_update_adaptive_cfg(struct perf_event *event)
+ 	 * + precise_ip < 2 for the non event IP
+ 	 * + For RTM TSX weight we need GPRs for the abort code.
+ 	 */
+-	gprs = (sample_type & PERF_SAMPLE_REGS_INTR) &&
+-	       (attr->sample_regs_intr & PEBS_GP_REGS);
++	gprs = ((sample_type & PERF_SAMPLE_REGS_INTR) &&
++		(attr->sample_regs_intr & PEBS_GP_REGS)) ||
++	       ((sample_type & PERF_SAMPLE_REGS_USER) &&
++		(attr->sample_regs_user & PEBS_GP_REGS));
+ 
+ 	tsx_weight = (sample_type & PERF_SAMPLE_WEIGHT_TYPE) &&
+ 		     ((attr->config & INTEL_ARCH_EVENT_MASK) ==
+@@ -2123,7 +2125,7 @@ static void setup_pebs_adaptive_sample_data(struct perf_event *event,
+ 			regs->flags &= ~PERF_EFLAGS_EXACT;
+ 		}
+ 
+-		if (sample_type & PERF_SAMPLE_REGS_INTR)
++		if (sample_type & (PERF_SAMPLE_REGS_INTR | PERF_SAMPLE_REGS_USER))
+ 			adaptive_pebs_save_regs(regs, gprs);
+ 	}
+ 
 
