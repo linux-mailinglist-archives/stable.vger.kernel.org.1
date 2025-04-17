@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-134324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE25A92AC7
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:54:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D4BA928B2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED298A5755
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:52:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD9A08A64B0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E32525743B;
-	Thu, 17 Apr 2025 18:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A2625A35A;
+	Thu, 17 Apr 2025 18:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6Tgukj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwScvgNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5022571DD;
-	Thu, 17 Apr 2025 18:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D7F259CA8;
+	Thu, 17 Apr 2025 18:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915783; cv=none; b=WGqyKKWb7BDEEH6UnsKJiNiuq+i/u/v+b0QxhI+JpZSx2LI+lRUl29NtQWlPBS8ylX7zizBwlQOj1W8RTerm1MCcf7CZLuKmpPOCfw2rDZ0hi2mOLzH9dyGLDwSlbLJLcrkxC/5sElzhSwrX3DgKTD6bz+LyznQAhx0sQ8LxHYY=
+	t=1744914617; cv=none; b=jiRl20HxCXJc/fUBtZ+bTiViNSuHmX3cLpmrz0wA4/Qvsz1yU79/xO6unTYeFelf+OZCJXjl5c8Y5Cqma5dCqncD0lQc2MXBE7hlhdF/+gWhIPQzgNLBfFeUkiAIdrp+PN/5dsR0azkkaTftJcMm6kN8xrZGfLAAxIpJUg/Oo5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915783; c=relaxed/simple;
-	bh=r4p6OJOcYaraDNTW8T2n3vlqMWcxQvCAPHIVEXnsGg4=;
+	s=arc-20240116; t=1744914617; c=relaxed/simple;
+	bh=ZFmOaTOnGBGtKXgqccBJoc2OzNjPX1SnWjLVu/fhjuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrkUbv2GVzbMwxpYQMwlqWdtq0nT3eSlnzqRfXfB7EEzXiqqEnNksfdaPeP1cf4Fg+hoiAXcAJBTsCNWvc9IZyBw0lLN4FRw0PwNoHseERjr7uInI+1tBtSUWSOUbZEK9zIGmtBQZKbehaB4gs+oURMLhp3sFBBJIEwTcqyAeWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6Tgukj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A43C4CEE4;
-	Thu, 17 Apr 2025 18:49:42 +0000 (UTC)
+	 MIME-Version; b=AmAdoLYlSbgbOiFi+0C7p3Wf1VXJDUGUNMHUQeMsjoUYdqQPG6l2rTy1TGcNy5tSJHhE8Yyixfq9okLkcZKT07qtTGDG3kHWA8GIT2ys9/7hyYLIxJTtbdAC+p24DqmoHFbW7SxUJ+JHHf3ECXUuD/1CImo4u3/I4OjLHWz8st8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwScvgNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D45C4CEE4;
+	Thu, 17 Apr 2025 18:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915782;
-	bh=r4p6OJOcYaraDNTW8T2n3vlqMWcxQvCAPHIVEXnsGg4=;
+	s=korg; t=1744914616;
+	bh=ZFmOaTOnGBGtKXgqccBJoc2OzNjPX1SnWjLVu/fhjuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6Tgukj35enRRtDjXbur0XHHBbMhE5y7Deaib+LIzNjnRg7YeyfzDpXfmTbSEEPXX
-	 L1Z0rpPbRWt4F033qPjO6E8E39UMR+6xTTEcBF2C19SJBNb73I9tyv3RmFrAUn6uhC
-	 d2c55rd3+eoMlfDdddgGbhIPA7kPdZKEJvGXDmMk=
+	b=xwScvgNwMBnK8KHIhOfIHHYpgeiT/rH6yTE63l1Tskwy0LlKlhfu6KRpiwzyal5Cz
+	 QJtwLv9LErVgnnUIjy4zGPJI7Ffw6wSC5Q6px16XX6VtMmPhyI+nxQFAkMTMPgJR53
+	 KL5lyMPy4BybH4TdFFhpaToEImyC/YNKCSdU2z3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 221/393] media: i2c: ov7251: Introduce 1 ms delay between regulators and en GPIO
-Date: Thu, 17 Apr 2025 19:50:30 +0200
-Message-ID: <20250417175116.475859124@linuxfoundation.org>
+	Sharan Kumar M <sharweshraajan@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.13 273/414] ALSA: hda/realtek: Enable Mute LED on HP OMEN 16 Laptop xd000xx
+Date: Thu, 17 Apr 2025 19:50:31 +0200
+Message-ID: <20250417175122.408477992@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Sharan Kumar M <sharweshraajan@gmail.com>
 
-commit 3d391292cdd53984ec1b9a1f6182a62a62751e03 upstream.
+commit e5182305a5199246dbcb4053299dcb1c8867b6ff upstream.
 
-Lift the xshutdown (enable) GPIO 1 ms after enabling the regulators, as
-required by the sensor's power-up sequence.
+This patch adds the HP OMEN 16 Laptop xd000xx to enable mute led.
+it uses ALC245_FIXUP_HP_MUTE_LED_COEFBIT with a slight modification
+setting mute_led_coef.off to 0(it was set to 4 i guess
+in that function) which i referred to your previous patch disscusion
+https://bugzilla.kernel.org/show_bug.cgi?id=214735 .
+i am not sure whether i can modify the current working function so i
+added another version calling
+ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT. and both works for me.
 
-Fixes: d30bb512da3d ("media: Add a driver for the ov7251 camera sensor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested on 6.13.4-arch1-1 to 6.14.0-arch1-1
+
+Signed-off-by: Sharan Kumar M <sharweshraajan@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250329154105.7618-2-sharweshraajan@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov7251.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
---- a/drivers/media/i2c/ov7251.c
-+++ b/drivers/media/i2c/ov7251.c
-@@ -922,6 +922,8 @@ static int ov7251_set_power_on(struct de
- 		return ret;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -4744,6 +4744,22 @@ static void alc245_fixup_hp_mute_led_coe
  	}
+ }
  
-+	usleep_range(1000, 1100);
++static void alc245_fixup_hp_mute_led_v1_coefbit(struct hda_codec *codec,
++					  const struct hda_fixup *fix,
++					  int action)
++{
++	struct alc_spec *spec = codec->spec;
 +
- 	gpiod_set_value_cansleep(ov7251->enable_gpio, 1);
- 
- 	/* wait at least 65536 external clock cycles */
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		spec->mute_led_polarity = 0;
++		spec->mute_led_coef.idx = 0x0b;
++		spec->mute_led_coef.mask = 1 << 3;
++		spec->mute_led_coef.on = 1 << 3;
++		spec->mute_led_coef.off = 0;
++		snd_hda_gen_add_mute_led_cdev(codec, coef_mute_led_set);
++	}
++}
++
+ /* turn on/off mic-mute LED per capture hook by coef bit */
+ static int coef_micmute_led_set(struct led_classdev *led_cdev,
+ 				enum led_brightness brightness)
+@@ -7871,6 +7887,7 @@ enum {
+ 	ALC287_FIXUP_TAS2781_I2C,
+ 	ALC287_FIXUP_YOGA7_14ARB7_I2C,
+ 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
++	ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT,
+ 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
+ 	ALC287_FIXUP_THINKPAD_I2S_SPK,
+ 	ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD,
+@@ -10106,6 +10123,10 @@ static const struct hda_fixup alc269_fix
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc245_fixup_hp_mute_led_coefbit,
+ 	},
++	[ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc245_fixup_hp_mute_led_v1_coefbit,
++	},
+ 	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc245_fixup_hp_mute_led_coefbit,
+@@ -10600,6 +10621,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8bdf, "HP Envy 15", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
