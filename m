@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-134425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF0AA92B04
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:56:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CCBA9292B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42E21B65B7C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:55:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE0704A4A8D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D4B254B1F;
-	Thu, 17 Apr 2025 18:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053CD256C77;
+	Thu, 17 Apr 2025 18:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeN7bo2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py6Mp1Ud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC17258CC0;
-	Thu, 17 Apr 2025 18:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72B2256C63;
+	Thu, 17 Apr 2025 18:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744916087; cv=none; b=uS13xOxDOZyF5cppkxdonCe5+YwRCNeFDcMKQDco5Jmdi6+Li8E3J+R1WN1xjHnogsEvYPGkcS0aGZbHnmcur7rc1z5Y1RSDa7QDwP/QwqUNJXVrG1esGosqO0O16oofATQzXyhQdjiAMwJqaaWQjgEJDaxWRsZCkmL0u4yGHLs=
+	t=1744914966; cv=none; b=kvO1huEDiomA7aXrUrOQnlkV/DcrTf0zQRsgFNE1rcPlWPaHurCGoamR5SoU9Z/40n3nbyPoW1KmXgxL84K1hkHjF3iu6rdVTOkGhLKPDQykOlyMD3RJOHqfl9ZqysE/cmsaI97DN1FJLRbGA6EQRA5BiRGAugDCVNn4Fp5sEc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744916087; c=relaxed/simple;
-	bh=GAYHEHD4wFvfldeS49jqLXA6jp+enET/HQf8Zhy+Ebo=;
+	s=arc-20240116; t=1744914966; c=relaxed/simple;
+	bh=/3Ch5BgHX/VD/tAMhsRGzqrxgzgfnaSU5iHIkyvlz5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tf1INv2rf4HYFEUf5V1Jo/gn79CJ8MJ9egfVNfB6FRCNormfHAfZxfdy9g5xBe5r8yE8iVHabq5ilST8dYknh3IAr+bckwcJkZ3GuPql5O0xvt2GS2UsCnQTQa/aql74QJrGDiGo0Kt4YGy/K0pzhe+u35zrwMeO3RiDxZaOkX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DeN7bo2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DBCC4CEEA;
-	Thu, 17 Apr 2025 18:54:46 +0000 (UTC)
+	 MIME-Version; b=S+aUoigetmWMOEcd4Nm7qHVDH7d7iRRPROuQqPHRkCocj1UKmDNiE1AFBXAdBVZ1vd2snU50AUtaGffnLpQYCOeKiYTrguYtiPeq4KhWIM7YexPKAJsTMl4f4eHKnge0Qkut146yp68dNfDKAtiWMw7DZFetwi/CiUejwl5fxNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py6Mp1Ud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C4CC4CEE4;
+	Thu, 17 Apr 2025 18:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744916086;
-	bh=GAYHEHD4wFvfldeS49jqLXA6jp+enET/HQf8Zhy+Ebo=;
+	s=korg; t=1744914966;
+	bh=/3Ch5BgHX/VD/tAMhsRGzqrxgzgfnaSU5iHIkyvlz5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeN7bo2tKruWqBuBRrx+gEVhalaWy+38qV6yUJBxCXqTzcnSWBDBkSq0QdWq8aUlp
-	 loNZqfhyEBNoBtz1pWVoDQSciAWh5rs6hfg44ruQkiwnZTmwPPsc3x3T9F/dSfJOed
-	 MXxgoNNbRfkrJMwtdIt9Rx0FvGZz5M2bBmajEY/4=
+	b=py6Mp1UdeS3BT8h2fTbaTGD5RN+0pqRkKjtG9CLC6zeyXAVTCYPDZTFqcj+7ENP7L
+	 wN8LS0gVHmpxCLvOrE2+q5Q3pq9Qkzi4QkUw4DSSZ7HoXgVSgiA64ijpxfnYFYFpgd
+	 pJF6CaZTZAfikgDYl+iUCsL0274qZ9ZijhxmmDJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Chiu <andybnac@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 338/393] ftrace: Properly merge notrace hashes
-Date: Thu, 17 Apr 2025 19:52:27 +0200
-Message-ID: <20250417175121.193233332@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.13 390/414] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+Date: Thu, 17 Apr 2025 19:52:28 +0200
+Message-ID: <20250417175127.173584676@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Chiu <andybnac@gmail.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit 04a80a34c22f4db245f553d8696d1318d1c00ece upstream.
+commit aecb63e88c5e5fb9afb782a1577264c76f179af9 upstream.
 
-The global notrace hash should be jointly decided by the intersection of
-each subops's notrace hash, but not the filter hash.
+Ensure the PHY reset and perst is asserted during power-off to
+guarantee it is in a reset state upon repeated power-on calls. This
+resolves an issue where the PHY may not properly initialize during
+subsequent power-on cycles. Power-on will deassert the reset at the
+appropriate time after tuning the PHY parameters.
+
+During suspend/resume cycles, we observed that the PHY PLL failed to
+lock during resume when the CPU temperature increased from 65C to 75C.
+The observed errors were:
+  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
+  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
+  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+
+This resulted in a complete CPU freeze, which is resolved by ensuring
+the PHY is in reset during power-on, thus preventing PHY PLL failures.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250408160258.48563-1-andybnac@gmail.com
-Fixes: 5fccc7552ccb ("ftrace: Add subops logic to allow one ops to manage many")
-Signed-off-by: Andy Chiu <andybnac@gmail.com>
-[ fixed removing of freeing of filter_hash ]
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -3523,16 +3523,16 @@ int ftrace_startup_subops(struct ftrace_
- 	    ftrace_hash_empty(subops->func_hash->notrace_hash)) {
- 		notrace_hash = EMPTY_HASH;
- 	} else {
--		size_bits = max(ops->func_hash->filter_hash->size_bits,
--				subops->func_hash->filter_hash->size_bits);
-+		size_bits = max(ops->func_hash->notrace_hash->size_bits,
-+				subops->func_hash->notrace_hash->size_bits);
- 		notrace_hash = alloc_ftrace_hash(size_bits);
- 		if (!notrace_hash) {
- 			free_ftrace_hash(filter_hash);
- 			return -ENOMEM;
- 		}
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -162,6 +162,16 @@ static int imx8_pcie_phy_power_on(struct
+ 	return ret;
+ }
  
--		ret = intersect_hash(&notrace_hash, ops->func_hash->filter_hash,
--				     subops->func_hash->filter_hash);
-+		ret = intersect_hash(&notrace_hash, ops->func_hash->notrace_hash,
-+				     subops->func_hash->notrace_hash);
- 		if (ret < 0) {
- 			free_ftrace_hash(filter_hash);
- 			free_ftrace_hash(notrace_hash);
++static int imx8_pcie_phy_power_off(struct phy *phy)
++{
++	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
++
++	reset_control_assert(imx8_phy->reset);
++	reset_control_assert(imx8_phy->perst);
++
++	return 0;
++}
++
+ static int imx8_pcie_phy_init(struct phy *phy)
+ {
+ 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
+@@ -182,6 +192,7 @@ static const struct phy_ops imx8_pcie_ph
+ 	.init		= imx8_pcie_phy_init,
+ 	.exit		= imx8_pcie_phy_exit,
+ 	.power_on	= imx8_pcie_phy_power_on,
++	.power_off	= imx8_pcie_phy_power_off,
+ 	.owner		= THIS_MODULE,
+ };
+ 
 
 
 
