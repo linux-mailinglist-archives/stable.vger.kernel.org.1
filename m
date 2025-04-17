@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-133387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C556BA9256D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:03:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3453A9254E
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:02:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32247466FE4
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B328A4853
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A0D22E3E6;
-	Thu, 17 Apr 2025 18:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8B72571AC;
+	Thu, 17 Apr 2025 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0ZBf5tJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSKxi6+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215681E1DEF;
-	Thu, 17 Apr 2025 18:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6391A3178;
+	Thu, 17 Apr 2025 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744912921; cv=none; b=iwOrb+5pqzY1U+H7iuoWyKqqsPay80L3y7V6ECbaj0MnwS8rwpLJGfbIZ09OoH2LqCBUxf5W+m+UFEiu9Fst6hsVffsvU4TnnvVKjjcwq7owJqciL9vctwuHnsWx9p84XdWHslq7pPJlWxc6MEv66yFKI2dDJEwZAsS0qHrDKQ8=
+	t=1744912833; cv=none; b=teYFO2jsb0LbmFZ0DwmetDy61gbib1Tjq1sftNT2w8agfAgCHT9ztsvhSiM76raR/RrXhlMJwbi5e/PRKJj0RLabdI/o571a1+sbscsp3RiI10mq5dRrNphxxlcSANbE9piozHBGpjQiC61a6L95ECRpyRbMnN8jAOlP7L1HADk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744912921; c=relaxed/simple;
-	bh=pBBFYe/K3OjW2wgkuasMeNxUE9W1ef0nLaNRow61o2I=;
+	s=arc-20240116; t=1744912833; c=relaxed/simple;
+	bh=ISjdJaq+T7kNkVAzL+aIsMwh82GzlVRdhpVgoSXXFAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKSv2eBf3YHM29H6l6Wz+5htey+eeGrOefRJRV36azYRrnijLl0iFPqphuq+PkcYotyNpP+72yFLCTjYlipc0wDUp3ckdnp7jFWki2vv8o2TzcXEz33DCr6mECr6HiRQgSJK233lmuCCzuiB9q8Okl6Mg5/qgKE8HRmK+CUNNTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0ZBf5tJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A150C4CEE4;
-	Thu, 17 Apr 2025 18:01:59 +0000 (UTC)
+	 MIME-Version; b=n74sY9RAZ9PgpXucPgFyw6mbaLS1AlCizSuLdaTPiIc6j+C77O6AgC4tDaQZS+OWoocGTcL4gEbC6LZRcuN//Ibw7wHm/co32kAd+8QDwW03qs3g0JAS7a6yiG18S4v16Jc+OH94ppfSAt2qrvcjv7W0Y6/ylcFrRXXnQXMCkdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSKxi6+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F22E2C4CEE4;
+	Thu, 17 Apr 2025 18:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744912920;
-	bh=pBBFYe/K3OjW2wgkuasMeNxUE9W1ef0nLaNRow61o2I=;
+	s=korg; t=1744912833;
+	bh=ISjdJaq+T7kNkVAzL+aIsMwh82GzlVRdhpVgoSXXFAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0ZBf5tJZW8+bCzWc6UjI5TGNBYEnw3LhQ8ROY/akw7ILxkIARj+eCGWuEgEtFmsN
-	 1cN5K0g4wljK5N3GFPIWyiWru46wEM6t2Hrs4yB5/HboG98EQPFcUZ5NX3NExq5wni
-	 qm5Ejy6iJ/0uq7GQgxIN2PqQaIGqNmVAGWAKiZwc=
+	b=VSKxi6+TwhYUzdj28vZbBsRkHyfptR2gmfWiHFM/dsluUr+CWXYZ+5YxYYisfp1Ie
+	 ca9CGbCVa+qYpayIYtQOvi0SzrvJwEcmPRbZ9jTD0XjQUcMGJPdogg42T7DJDoEi3E
+	 D9I9YYM+N9In+J+217RAcCBJWmq1sYXmS0XB7l94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Jiande Lu <jiande.lu@mediatek.com>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 139/449] Bluetooth: hci_uart: fix race during initialization
-Date: Thu, 17 Apr 2025 19:47:07 +0200
-Message-ID: <20250417175123.562648536@linuxfoundation.org>
+Subject: [PATCH 6.14 140/449] Bluetooth: btusb: Add 2 HWIDs for MT7922
+Date: Thu, 17 Apr 2025 19:47:08 +0200
+Message-ID: <20250417175123.601417040@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
 References: <20250417175117.964400335@linuxfoundation.org>
@@ -66,47 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Jiande Lu <jiande.lu@mediatek.com>
 
-[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
+[ Upstream commit a88643b7e48506777e175e80c902c727ddd90851 ]
 
-'hci_register_dev()' calls power up function, which is executed by
-kworker - 'hci_power_on()'. This function does access to bluetooth chip
-using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
-Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
-if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
-'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
-be executed before setting this bit. In that case HCI init logic fails.
+Add below HWIDs for MediaTek MT7922 USB Bluetooth chip.
+VID 0x0489, PID 0xe152
+VID 0x0489, PID 0xe153
 
-Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
-'hci_uart_register_dev()'.
+Patch has been tested successfully and controller is recognized
+device pair successfully.
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+MT7922 module bring up message as below.
+Bluetooth: Core ver 2.22
+Bluetooth: HCI device and connection manager initialized
+Bluetooth: HCI socket layer initialized
+Bluetooth: L2CAP socket layer initialized
+Bluetooth: SCO socket layer initialized
+Bluetooth: hci0: HW/SW Version: 0x008a008a, Build Time: 20241106163512
+Bluetooth: hci0: Device setup in 2284925 usecs
+Bluetooth: hci0: HCI Enhanced Setup Synchronous Connection command is advertised, but not supported.
+Bluetooth: hci0: AOSP extensions version v1.00
+Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Bluetooth: BNEP filters: protocol multicast
+Bluetooth: BNEP socket layer initialized
+Bluetooth: MGMT ver 1.22
+Bluetooth: RFCOMM TTY layer initialized
+Bluetooth: RFCOMM socket layer initialized
+Bluetooth: RFCOMM ver 1.11
+
+Signed-off-by: Jiande Lu <jiande.lu@mediatek.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index d2d6ba8d2f8b1..b955dc96b483a 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -707,12 +707,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
- 
- 	hu->proto = p;
- 
-+	set_bit(HCI_UART_PROTO_READY, &hu->flags);
-+
- 	err = hci_uart_register_dev(hu);
- 	if (err) {
- 		return err;
- 	}
- 
--	set_bit(HCI_UART_PROTO_READY, &hu->flags);
- 	return 0;
- }
- 
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 1295a979a3264..bfd769f2026b3 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -668,6 +668,10 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0489, 0xe102), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe152), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe153), .driver_info = BTUSB_MEDIATEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x04ca, 0x3804), .driver_info = BTUSB_MEDIATEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x04ca, 0x38e4), .driver_info = BTUSB_MEDIATEK |
 -- 
 2.39.5
 
