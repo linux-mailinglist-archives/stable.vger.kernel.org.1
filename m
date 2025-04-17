@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-134219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F5CA929ED
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FF2A9280C
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201BA16A4C8
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ED3F3A95C2
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C16D227EB1;
-	Thu, 17 Apr 2025 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7DB258CC5;
+	Thu, 17 Apr 2025 18:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYbcK1Lt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHE6YaWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7EC8462;
-	Thu, 17 Apr 2025 18:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9C5257AE7;
+	Thu, 17 Apr 2025 18:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915459; cv=none; b=YYY2HXS9qLtK8BSF9UsN9rUeQ5rTvj7sY8uFeZiZso06zaMdijxC5qFFEqPxv+VDhsKr/Jqvgjt8ZmoMl6yYeEtXshHncRy7Y9CvY1wZZ7WAAlcSsqiBFxmLOl/H0Loz9jhq2c7d5nA4e1yGyZOBkG/kt1IkUQ/lrlzhSbQMPG0=
+	t=1744914349; cv=none; b=f6SpR9+rLxaj84KDOV9tywL6XJ7pfWD114Nr6niAClV4yCm8xE8hxyWVoT8dlgAE6pd+4UxWo1jzPK6mHm98IfT753vFK2Fi4TT6CJTPYG22i/yeYENM7Uwi0kNh1GEkwOLqL0vsFc34R7iJP1sams9fU08PHipGlZWnt1RViRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915459; c=relaxed/simple;
-	bh=lMbMUjLNIj1L3aHErb5LTUCoKOlVoR5hPLQn35SpG/A=;
+	s=arc-20240116; t=1744914349; c=relaxed/simple;
+	bh=/luoMvqlRUIX5D3Pu7Msl3izke7E+DxfiGpnpPJgT70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NtTyZw88CoXbVwAuXeZU0Bo3pS4wiI/W32OEvHkPyxShvWp1O6M322acVQAqCEx/ik74+Vq4VpkTkHiP7o8FRpfpdM3Mb03VNAdlndFYQfe/1ahf1721XT9nukS5r+CzivKtAVFukP6+rU8rcZS9q95ux/dXxAIEOvEyqiexviw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYbcK1Lt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723E4C4CEE4;
-	Thu, 17 Apr 2025 18:44:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rArIc9PO+MQNLCn/U1x1a8WygdUo8DhEm3dysZmWhceApjhEXZeYBGc0CZu8K+zu89yjCCa7huoqW4S3pLNCwo+cnLXi1IpR5XgN7g5WuMgAatcpLWCvyBs6jo79nP+PZxPg55Z5fGdWcOGB2MQDpSyzUKVvYxPDqYUHXbtIs1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHE6YaWx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB29C4CEE4;
+	Thu, 17 Apr 2025 18:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915458;
-	bh=lMbMUjLNIj1L3aHErb5LTUCoKOlVoR5hPLQn35SpG/A=;
+	s=korg; t=1744914348;
+	bh=/luoMvqlRUIX5D3Pu7Msl3izke7E+DxfiGpnpPJgT70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYbcK1LtZhV4C4yM/oYBdTtNu/P9NSjQie/TIbaG2OHbOZuEHb/0Awhcw6xCO3om9
-	 6oqqEKyj6MBhyMwggFFkw4T6nod5l/57MpcPEcKTiqjaL2IclQkKke6NQGvOOSkHCD
-	 TylDQmfmTto/9JMpco9GT7isEbYoDcAFnD82F7B4=
+	b=JHE6YaWx0m9pp+LbjwRjzHaTiY3wcG07o/XtUAq3elxzLksShtROmkb0UuWdU1gRS
+	 9e6fw44Lr8+kzQ/irEuVYHGkhukxastvrtdRVQZ90eghfE70mS1idn4HcirpQEzXic
+	 8T0ae0NblibvGHO479kZ0EWJIhjtZo3kUFGtBZZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	=?UTF-8?q?Jo=C3=A3o=20Pedro=20Kurtz?= <joexkurtz@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/393] drm: panel-orientation-quirks: Add quirk for OneXPlayer Mini (Intel)
+Subject: [PATCH 6.13 186/414] HID: hid-universal-pidff: Add Asetek wheelbases support
 Date: Thu, 17 Apr 2025 19:49:04 +0200
-Message-ID: <20250417175113.017052730@linuxfoundation.org>
+Message-ID: <20250417175118.928327577@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,63 +63,91 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit b24dcc183583fc360ae0f0899e286a68f46abbd0 ]
+[ Upstream commit c385f61108d403633e8cfbdae15b35ccf7cee686 ]
 
-The Intel model of the OneXPlayer Mini uses a 1200x1920 portrait LCD panel.
-The DMI strings are the same as the OneXPlayer, which already has a DMI
-quirk, but the panel is different.
+Adds Asetek vendor id and product ids for:
+- Invicta
+- Forte
+- La Prima
+- Tony Kanaan
 
-Add a DMI match to correctly rotate this panel.
+v2:
+- Misc spelling fix in driver loaded info
 
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Co-developed-by: John Edwards <uejji@uejji.net>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: João Pedro Kurtz <joexkurtz@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-6-uejji@uejji.net
+v3:
+- Chanage Oleg's name order
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/hid/hid-ids.h             |  6 ++++++
+ drivers/hid/hid-universal-pidff.c | 10 +++++++---
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 384a8dcf454fb..c554ad8f246b6 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -129,6 +129,12 @@ static const struct drm_dmi_panel_orientation_data lcd1080x1920_rightside_up = {
- 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
- };
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index e1e002df64de2..db88831633466 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -190,6 +190,12 @@
+ #define USB_DEVICE_ID_APPLE_TOUCHBAR_BACKLIGHT 0x8102
+ #define USB_DEVICE_ID_APPLE_TOUCHBAR_DISPLAY 0x8302
  
-+static const struct drm_dmi_panel_orientation_data lcd1200x1920_leftside_up = {
-+	.width = 1200,
-+	.height = 1920,
-+	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
-+};
++#define USB_VENDOR_ID_ASETEK			0x2433
++#define USB_DEVICE_ID_ASETEK_INVICTA		0xf300
++#define USB_DEVICE_ID_ASETEK_FORTE		0xf301
++#define USB_DEVICE_ID_ASETEK_LA_PRIMA		0xf303
++#define USB_DEVICE_ID_ASETEK_TONY_KANAAN	0xf306
 +
- static const struct drm_dmi_panel_orientation_data lcd1200x1920_rightside_up = {
- 	.width = 1200,
- 	.height = 1920,
-@@ -473,6 +479,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_leftside_up,
-+	}, {	/* OneXPlayer Mini (Intel) */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ONE-NETBOOK TECHNOLOGY CO., LTD."),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_leftside_up,
- 	}, {	/* OrangePi Neo */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
+ #define USB_VENDOR_ID_ASUS		0x0486
+ #define USB_DEVICE_ID_ASUS_T91MT	0x0185
+ #define USB_DEVICE_ID_ASUSTEK_MULTITOUCH_YFO	0x0186
+diff --git a/drivers/hid/hid-universal-pidff.c b/drivers/hid/hid-universal-pidff.c
+index 1b713b741d192..5b89ec7b5c26c 100644
+--- a/drivers/hid/hid-universal-pidff.c
++++ b/drivers/hid/hid-universal-pidff.c
+@@ -4,7 +4,7 @@
+  * hid-pidff wrapper for PID-enabled devices
+  * Handles device reports, quirks and extends usable button range
+  *
+- * Copyright (c) 2024, 2025 Makarenko Oleg
++ * Copyright (c) 2024, 2025 Oleg Makarenko
+  * Copyright (c) 2024, 2025 Tomasz Pakuła
+  */
+ 
+@@ -104,7 +104,7 @@ static int universal_pidff_probe(struct hid_device *hdev,
+ 		goto err;
+ 	}
+ 
+-	hid_info(hdev, "Universal pidff driver loaded sucesfully!");
++	hid_info(hdev, "Universal pidff driver loaded sucessfully!");
+ 
+ 	return 0;
+ err:
+@@ -179,6 +179,10 @@ static const struct hid_device_id universal_pidff_devices[] = {
+ 		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_LITE_STAR, USB_DEVICE_LITE_STAR_GT987_FF),
+ 		.driver_data = HID_PIDFF_QUIRK_PERIODIC_SINE_ONLY },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_INVICTA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_FORTE) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_LA_PRIMA) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ASETEK, USB_DEVICE_ID_ASETEK_TONY_KANAAN) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, universal_pidff_devices);
+@@ -194,5 +198,5 @@ module_hid_driver(universal_pidff);
+ 
+ MODULE_DESCRIPTION("Universal driver for USB PID Force Feedback devices");
+ MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Makarenko Oleg <oleg@makarenk.ooo>");
++MODULE_AUTHOR("Oleg Makarenko <oleg@makarenk.ooo>");
+ MODULE_AUTHOR("Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>");
 -- 
 2.39.5
 
