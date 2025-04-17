@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-134355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A11A92AA0
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60862A9290D
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:39:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F1F4A6C77
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:53:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E253AB61F
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BBA25DAFD;
-	Thu, 17 Apr 2025 18:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF65D2638B2;
+	Thu, 17 Apr 2025 18:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxT67EpQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7slyDax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442472571A1;
-	Thu, 17 Apr 2025 18:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D58C258CEB;
+	Thu, 17 Apr 2025 18:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915879; cv=none; b=QZWndYQkUgymQx+LqsdpQQqgJ7EJjoSi8CrKdotnzYmEeis7krAiwkkk8cEE3Xi6mAWjZuXumdXB9kpOzmJMFgaw59Il/r/xl/pioufMrBJb4TLPfJX1rX1k4MVR7LazQnwKw8FwmLcib44FZwBMKLfsGKTcn8NZjEGVHKIzv/4=
+	t=1744914761; cv=none; b=XLgqFkdcYSyWrG/k6e0yhPazZZa2utTg17d1l6fl0PeP/jFlu9q92Eiv4sVvpfyJHldKnG75h5QeLuet2pvH9aYAoh5Az+iBFVBT43liS+DedYmmGxZMkfTD4KleYIAMJ38dZd/6Oxp+wrS0NBmTOz0dsXUzkCT4WvcNtbiRdKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915879; c=relaxed/simple;
-	bh=v8RmElVOyv28pmxJzlLWB/LtirL85tVG5/92maRHqqo=;
+	s=arc-20240116; t=1744914761; c=relaxed/simple;
+	bh=mCZxR591USSgVdQt90E6VTtMA44NES1wNyo3aHE4lsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ppIgetkuJduS9LIsm2h6Rt7eifGY3i/X0gcA8GKHWCNdckKW/AiOIKZm1F6s2e15iSM7e60o/o6pmHim5iat0u2dO5nRO184NvCTeU8juljZiUNZGokpA/u7fEeNGuDdJzoyOS9/aSr12xWjUkIU7KKsBny7+qIVkMIEM2T7wf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxT67EpQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DFC4CEE4;
-	Thu, 17 Apr 2025 18:51:18 +0000 (UTC)
+	 MIME-Version; b=uW+SH8ZC0p0hZvNlcmfNch33r/Fx2uDUjh8ndF2LCwExrhrRJIQW3QbM6kJgyDv8JBGtFT0w8SydkvXRodVGYcLzrEv+8wOkR2f4EPLVeOEojFHgG6+BCphA3/oMBkZ4AklB0fU+ZuBqvdnECzdBcnPp3E/51phsbt70lIadmhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7slyDax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87075C4CEE4;
+	Thu, 17 Apr 2025 18:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915879;
-	bh=v8RmElVOyv28pmxJzlLWB/LtirL85tVG5/92maRHqqo=;
+	s=korg; t=1744914761;
+	bh=mCZxR591USSgVdQt90E6VTtMA44NES1wNyo3aHE4lsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxT67EpQPVO4ftyG+u3x/BvLuD/fx7pbUmM/51HIS77/CB5cFa483AACaVoBxodQh
-	 pJgPPTWjIGaMrrOq4Xuq8eOBC9XUL2n0qYdSqEvs+JN1gnmAiHb5hDiUMCxVcrYc6k
-	 YzQrOWoW7Hr8rpzTfAWg0erlq0iIGAF2vJuxccFs=
+	b=i7slyDaxNax2xcx5TRsQjvAYWgZsHsBMnv3I5/bD08JhgQC+4lWicODcnnuHt32uN
+	 Ew27rwTswCln9Y8eUD636Zi8ufI3s9g+aAbaIGSv5bCWp0Tv0Ij44dQlCMVT0anyFJ
+	 iVMCWfedEWfZwo46fdWHZATHHyXCc9NV24cnulBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.12 270/393] i3c: master: svc: Use readsb helper for reading MDB
-Date: Thu, 17 Apr 2025 19:51:19 +0200
-Message-ID: <20250417175118.465417200@linuxfoundation.org>
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Juergen Gross <jgross@suse.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.13 322/414] sparc/mm: disable preemption in lazy mmu mode
+Date: Thu, 17 Apr 2025 19:51:20 +0200
+Message-ID: <20250417175124.384633667@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
+References: <20250417175111.386381660@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +73,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
+commit a1d416bf9faf4f4871cb5a943614a07f80a7d70f upstream.
 
-The target can send the MDB byte followed by additional data bytes.
-The readl on MRDATAB reads one actual byte, but the readsl advances
-the destination pointer by 4 bytes. This causes the subsequent payload
-to be copied to wrong position in the destination buffer.
+Since commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+updates") it's been possible for arch_[enter|leave]_lazy_mmu_mode() to be
+called without holding a page table lock (for the kernel mappings case),
+and therefore it is possible that preemption may occur while in the lazy
+mmu mode.  The Sparc lazy mmu implementation is not robust to preemption
+since it stores the lazy mode state in a per-cpu structure and does not
+attempt to manage that state on task switch.
 
-Cc: stable@kernel.org
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Powerpc had the same issue and fixed it by explicitly disabling preemption
+in arch_enter_lazy_mmu_mode() and re-enabling in
+arch_leave_lazy_mmu_mode().  See commit b9ef323ea168 ("powerpc/64s:
+Disable preemption in hash lazy mmu mode").
+
+Given Sparc's lazy mmu mode is based on powerpc's, let's fix it in the
+same way here.
+
+Link: https://lkml.kernel.org/r/20250303141542.3371656-4-ryan.roberts@arm.com
+Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Juergen Gross <jgross@suse.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juegren Gross <jgross@suse.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/sparc/mm/tlb.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -378,7 +378,7 @@ static int svc_i3c_master_handle_ibi(str
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
- 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
--		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
-+		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
- 		slot->len += count;
- 		buf += count;
- 	}
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -52,8 +52,10 @@ out:
+ 
+ void arch_enter_lazy_mmu_mode(void)
+ {
+-	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++	struct tlb_batch *tb;
+ 
++	preempt_disable();
++	tb = this_cpu_ptr(&tlb_batch);
+ 	tb->active = 1;
+ }
+ 
+@@ -64,6 +66,7 @@ void arch_leave_lazy_mmu_mode(void)
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+ 	tb->active = 0;
++	preempt_enable();
+ }
+ 
+ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 
 
 
