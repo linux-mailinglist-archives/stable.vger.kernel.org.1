@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-133981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C14A928C9
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:38:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 109BEA92AA7
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5167E4A396C
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:38:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C0E48E700B
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9A162620E8;
-	Thu, 17 Apr 2025 18:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C00625F99C;
+	Thu, 17 Apr 2025 18:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ctr7uV3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGhXQHEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EE9252915;
-	Thu, 17 Apr 2025 18:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382CA25F985;
+	Thu, 17 Apr 2025 18:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744914729; cv=none; b=ihqeMhR07/7JYSGkyAueEbrUoteDyTl806PgUzunOejE29uFUB4UvqNgA0YLGEZ9ZInDepowaCfskFeh1i20zVrbVFnmUA/3nW0f5si9DUtIOHX9k674MZAACdiBCWcX5Iu24sKjU/CReJvlRoEENY9u+T1bBOA3hsxT15mQ55g=
+	t=1744915758; cv=none; b=E+PScmBzP+lETmQ+vlX3HC2Re6WtT7d909OkhDG3W5ayw8KTO8N+TPkojQLeLR9cb+iiwG0fsthg1Be9CgNfC/iGAJsFuAeWcMszWCpoWiLDSHoutZ/Y3+RUz113ma9Zj2FMx3c4zgyXYE6cIQ35kjL5JltmZArxS8iqf29rVvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744914729; c=relaxed/simple;
-	bh=6D5Rst2aJk1/52eUDW7DnQCbpAcfY3sqrZK+OyK8EN4=;
+	s=arc-20240116; t=1744915758; c=relaxed/simple;
+	bh=PQoWSHkiOWjA89c1ocSf/VuZSZtt/16QCXQ7Rl5XDus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYOcA7lp4uBbydIg+vlcMUASz8Lby5c0xlUPPCfVZGeNInHysIbEbz2K02kzRll4HjlvGzoLhJzqJmqr1PAm5pjvKIB6RrNNrdQ80tG69ul+1DpV236cw8VujusHLbksuanCj2l488Jryjs0Mbm3cV7Nr+vfNQ8NbVJRUqXwAHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ctr7uV3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 293F7C4CEE4;
-	Thu, 17 Apr 2025 18:32:09 +0000 (UTC)
+	 MIME-Version; b=bq9LFTXYYeSwyg7sk9yx/0BStwa+uAXyyNQ9GlFSSjR1TiuhGyViX/QzteCqteqYDTo1OQYzBdQ3B1cwyUZ6SVqJcB8Qgw/s43Rldir2oJI2WMh1H/+GHlBCu04OQqBZuBIEjnzAg4ImGbIPLPNRaYpwPrCWlCvVTPyRG8m4fJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGhXQHEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72AFC4CEEA;
+	Thu, 17 Apr 2025 18:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744914729;
-	bh=6D5Rst2aJk1/52eUDW7DnQCbpAcfY3sqrZK+OyK8EN4=;
+	s=korg; t=1744915758;
+	bh=PQoWSHkiOWjA89c1ocSf/VuZSZtt/16QCXQ7Rl5XDus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ctr7uV3tH90qkKf80Pq1IeSBl/Aeosu1xJEGKd/V/HH7sg25OmCBIv1y9DAvIJ113
-	 nHSoSVzIhHAaq1VfEiR/GB/yrtcqUGqOX7Dq5L+CuWuvEdLP5Fa5MRr+kHhZ+uKY6U
-	 lYlfxZMF2aUQecBKgJdDfLaTmMPvjrXCR4o9/abw=
+	b=dGhXQHEQPQQ3zEc8oq3gZIdIfMMYJJTHLe//h0LJRLeZgc3MoGKsF8rTWxMWyjhJA
+	 dS/d+kXa0F9KJML0l1xeuxf4nhyECuVx6wdUKMPCU3cm11ChaCU3QcJiu8IVb3OwZC
+	 UBwhlO9s0w5173MLhLsGEpyPNkCgBFA0HQ1Y1K2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Mike Seo <mikeseohyungjin@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.13 282/414] tpm: do not start chip while suspended
+	"Jackson.lee" <jackson.lee@chipsnmedia.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 231/393] media: chips-media: wave5: Fix a hang after seeking
 Date: Thu, 17 Apr 2025 19:50:40 +0200
-Message-ID: <20250417175122.768483880@linuxfoundation.org>
+Message-ID: <20250417175116.879439444@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175111.386381660@linuxfoundation.org>
-References: <20250417175111.386381660@linuxfoundation.org>
+In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Jackson.lee <jackson.lee@chipsnmedia.com>
 
-commit 17d253af4c2c8a2acf84bb55a0c2045f150b7dfd upstream.
+commit a2c75e964e51b096e9fe6adfa3eaed53594a668b upstream.
 
-Checking TPM_CHIP_FLAG_SUSPENDED after the call to tpm_find_get_ops() can
-lead to a spurious tpm_chip_start() call:
+While seeking, the driver calls the flush command. Before the flush
+command is sent to the VPU, the driver should handle the display buffer
+flags and should get all decoded information from the VPU if the VCORE
+is running.
 
-[35985.503771] i2c i2c-1: Transfer while suspended
-[35985.503796] WARNING: CPU: 0 PID: 74 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xbe/0x810
-[35985.503802] Modules linked in:
-[35985.503808] CPU: 0 UID: 0 PID: 74 Comm: hwrng Tainted: G        W          6.13.0-next-20250203-00005-gfa0cb5642941 #19 9c3d7f78192f2d38e32010ac9c90fdc71109ef6f
-[35985.503814] Tainted: [W]=WARN
-[35985.503817] Hardware name: Google Morphius/Morphius, BIOS Google_Morphius.13434.858.0 10/26/2023
-[35985.503819] RIP: 0010:__i2c_transfer+0xbe/0x810
-[35985.503825] Code: 30 01 00 00 4c 89 f7 e8 40 fe d8 ff 48 8b 93 80 01 00 00 48 85 d2 75 03 49 8b 16 48 c7 c7 0a fb 7c a7 48 89 c6 e8 32 ad b0 fe <0f> 0b b8 94 ff ff ff e9 33 04 00 00 be 02 00 00 00 83 fd 02 0f 5
-[35985.503828] RSP: 0018:ffffa106c0333d30 EFLAGS: 00010246
-[35985.503833] RAX: 074ba64aa20f7000 RBX: ffff8aa4c1167120 RCX: 0000000000000000
-[35985.503836] RDX: 0000000000000000 RSI: ffffffffa77ab0e4 RDI: 0000000000000001
-[35985.503838] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-[35985.503841] R10: 0000000000000004 R11: 00000001000313d5 R12: ffff8aa4c10f1820
-[35985.503843] R13: ffff8aa4c0e243c0 R14: ffff8aa4c1167250 R15: ffff8aa4c1167120
-[35985.503846] FS:  0000000000000000(0000) GS:ffff8aa4eae00000(0000) knlGS:0000000000000000
-[35985.503849] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[35985.503852] CR2: 00007fab0aaf1000 CR3: 0000000105328000 CR4: 00000000003506f0
-[35985.503855] Call Trace:
-[35985.503859]  <TASK>
-[35985.503863]  ? __warn+0xd4/0x260
-[35985.503868]  ? __i2c_transfer+0xbe/0x810
-[35985.503874]  ? report_bug+0xf3/0x210
-[35985.503882]  ? handle_bug+0x63/0xb0
-[35985.503887]  ? exc_invalid_op+0x16/0x50
-[35985.503892]  ? asm_exc_invalid_op+0x16/0x20
-[35985.503904]  ? __i2c_transfer+0xbe/0x810
-[35985.503913]  tpm_cr50_i2c_transfer_message+0x24/0xf0
-[35985.503920]  tpm_cr50_i2c_read+0x8e/0x120
-[35985.503928]  tpm_cr50_request_locality+0x75/0x170
-[35985.503935]  tpm_chip_start+0x116/0x160
-[35985.503942]  tpm_try_get_ops+0x57/0x90
-[35985.503948]  tpm_find_get_ops+0x26/0xd0
-[35985.503955]  tpm_get_random+0x2d/0x80
-
-Don't move forward with tpm_chip_start() inside tpm_try_get_ops(), unless
-TPM_CHIP_FLAG_SUSPENDED is not set. tpm_find_get_ops() will return NULL in
-such a failure case.
-
-Fixes: 9265fed6db60 ("tpm: Lock TPM chip in tpm_pm_suspend() first")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Fixes: 9707a6254a8a ("media: chips-media: wave5: Add the v4l2 layer")
 Cc: stable@vger.kernel.org
-Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-Cc: Mike Seo <mikeseohyungjin@gmail.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jackson.lee <jackson.lee@chipsnmedia.com>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm-chip.c      |    5 +++++
- drivers/char/tpm/tpm-interface.c |    7 -------
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c |   17 ++++++++++++++-
+ drivers/media/platform/chips-media/wave5/wave5-vpuapi.c  |   10 ++++++++
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -168,6 +168,11 @@ int tpm_try_get_ops(struct tpm_chip *chi
- 		goto out_ops;
- 
- 	mutex_lock(&chip->tpm_mutex);
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpu-dec.c
+@@ -1446,6 +1446,16 @@ static int streamoff_output(struct vb2_q
+ 	struct vb2_v4l2_buffer *buf;
+ 	int ret;
+ 	dma_addr_t new_rd_ptr;
++	struct dec_output_info dec_info;
++	unsigned int i;
 +
-+	/* tmp_chip_start may issue IO that is denied while suspended */
-+	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-+		goto out_lock;
++	for (i = 0; i < v4l2_m2m_num_dst_bufs_ready(m2m_ctx); i++) {
++		ret = wave5_vpu_dec_set_disp_flag(inst, i);
++		if (ret)
++			dev_dbg(inst->dev->dev,
++				"%s: Setting display flag of buf index: %u, fail: %d\n",
++				__func__, i, ret);
++	}
+ 
+ 	while ((buf = v4l2_m2m_src_buf_remove(m2m_ctx))) {
+ 		dev_dbg(inst->dev->dev, "%s: (Multiplanar) buf type %4u | index %4u\n",
+@@ -1453,6 +1463,11 @@ static int streamoff_output(struct vb2_q
+ 		v4l2_m2m_buf_done(buf, VB2_BUF_STATE_ERROR);
+ 	}
+ 
++	while (wave5_vpu_dec_get_output_info(inst, &dec_info) == 0) {
++		if (dec_info.index_frame_display >= 0)
++			wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
++	}
 +
- 	rc = tpm_chip_start(chip);
- 	if (rc)
- 		goto out_lock;
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -445,18 +445,11 @@ int tpm_get_random(struct tpm_chip *chip
- 	if (!chip)
- 		return -ENODEV;
+ 	ret = wave5_vpu_flush_instance(inst);
+ 	if (ret)
+ 		return ret;
+@@ -1535,7 +1550,7 @@ static void wave5_vpu_dec_stop_streaming
+ 			break;
  
--	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
--	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED) {
--		rc = 0;
--		goto out;
--	}
--
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		rc = tpm2_get_random(chip, out, max);
- 	else
- 		rc = tpm1_get_random(chip, out, max);
+ 		if (wave5_vpu_dec_get_output_info(inst, &dec_output_info))
+-			dev_dbg(inst->dev->dev, "Getting decoding results from fw, fail\n");
++			dev_dbg(inst->dev->dev, "there is no output info\n");
+ 	}
  
--out:
- 	tpm_put_ops(chip);
- 	return rc;
- }
+ 	v4l2_m2m_update_stop_streaming_state(m2m_ctx, q);
+--- a/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
++++ b/drivers/media/platform/chips-media/wave5/wave5-vpuapi.c
+@@ -73,6 +73,16 @@ int wave5_vpu_flush_instance(struct vpu_
+ 				 inst->type == VPU_INST_TYPE_DEC ? "DECODER" : "ENCODER", inst->id);
+ 			mutex_unlock(&inst->dev->hw_lock);
+ 			return -ETIMEDOUT;
++		} else if (ret == -EBUSY) {
++			struct dec_output_info dec_info;
++
++			mutex_unlock(&inst->dev->hw_lock);
++			wave5_vpu_dec_get_output_info(inst, &dec_info);
++			ret = mutex_lock_interruptible(&inst->dev->hw_lock);
++			if (ret)
++				return ret;
++			if (dec_info.index_frame_display > 0)
++				wave5_vpu_dec_set_disp_flag(inst, dec_info.index_frame_display);
+ 		}
+ 	} while (ret != 0);
+ 	mutex_unlock(&inst->dev->hw_lock);
 
 
 
