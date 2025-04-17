@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-134212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-133427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0C2A929E6
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:45:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23733A925B3
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 20:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 898FB167F1D
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:44:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9D501B61CB0
+	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 18:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25731227EB1;
-	Thu, 17 Apr 2025 18:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE7F2571DC;
+	Thu, 17 Apr 2025 18:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysL5rjte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5CB4fB+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C947622333D;
-	Thu, 17 Apr 2025 18:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DF12566DA;
+	Thu, 17 Apr 2025 18:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744915437; cv=none; b=ue+WSQ6G84LGR/BUaq5bPLB9Uq0YgD/PMPTQEFKsl1mDSevZcaT20XTlqofoBixGWiHGKR0hJBBf/4t/9vmF4wyLFBYVcABRoSsmQIlgLYkvabqdgFhvcvKm6wWFe/r6HD8KXwDTXbV8+GMYUNuGX+9qZudFcPax0ZAkWwxs0TM=
+	t=1744913044; cv=none; b=spN2LLlz4lYwYHGK3Js8w3dGBcHiXjungjiFw+YGv2WRVFbViAN+lxRon37zdHMNGL1/+KAP8JDtEdxNLXb5SN5NPePn9m5TqZSJYwuWBUMB279JxK7O/K9fJYAjGo7B2VAbtsVDMbJtv1LDEUQqDjeCgqQ6eWWqj5XEAk8QKIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744915437; c=relaxed/simple;
-	bh=HfuSKMjEuwoEmV3RbOcFx4L8bnblGk/1W35/68sFE2s=;
+	s=arc-20240116; t=1744913044; c=relaxed/simple;
+	bh=Hc7It6No+0fEMNfI43yplZ8At9dX6aEakIF6ewjdVIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvAa+fmgHRqHRcCXKApYXuuDczNP+jYoOG1CsUIabshtG8khP2ENf7HPZCJ+JHPScuL3R2a0B3tg6bhx7vPzQdwCU7OYlm+KtU/lcjgl0AsQPzWInqkSpUFfMtU5Icpm/YFnBL5L4tP0az3lDsUyGjTWPq86HsU1kFTsF6dnEaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysL5rjte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522D0C4CEE4;
-	Thu, 17 Apr 2025 18:43:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QNW2t1s+R2ekKZcakskUO+Dj6soL1vmRdcGj5Jt+TIwS3mluwxAR7bhbOOa+1jIgzP1TbP4TBW2RuEMfARQ5FrOtEsKbdkFqqlfywQJkms9YZOZTvOvFK3NI3wvgXx+Fha67FramcaHtNaRRgwcAtIut9kevbjEoSura0GeHdWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5CB4fB+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92869C4CEE4;
+	Thu, 17 Apr 2025 18:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744915437;
-	bh=HfuSKMjEuwoEmV3RbOcFx4L8bnblGk/1W35/68sFE2s=;
+	s=korg; t=1744913043;
+	bh=Hc7It6No+0fEMNfI43yplZ8At9dX6aEakIF6ewjdVIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ysL5rjtelZeZCkUGoG2/OFRKvjT2Eo6YgBjOlyYMEcUvquEw+Bn8cFXl4BDbhF3qX
-	 BAN+HZKImD2a8C9UuU79thnFLwXiVC0WcEzncfbQBiqHTwYo+jco8I0L9S5ulCmDSS
-	 bJo28E2Iyn7TCjQlkpM3Sy4kUZL3Y6CgGSXoA4K0=
+	b=H5CB4fB+BEodjuBLqwEE4sbV02sPoQ7sUDC7RJ60ZJmB6ZGZjAW2T3EJ6qO2aD/iT
+	 fd7n51aOTfQqcqaUlG3hXEM9CpiGPkjKQupSl7jcZ1CRiaNjCQQC+K5Q+hMKUAvhVb
+	 hi+xmNPm/1d+5N4hXUu0nfbH6VNl4sx16/NcnYjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 088/393] scsi: mpi3mr: Synchronous access b/w reset and tm thread for reply queue
+Subject: [PATCH 6.14 209/449] HID: pidff: Comment and code style update
 Date: Thu, 17 Apr 2025 19:48:17 +0200
-Message-ID: <20250417175111.136324615@linuxfoundation.org>
+Message-ID: <20250417175126.384118999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+References: <20250417175117.964400335@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,177 +60,195 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit f195fc060c738d303a21fae146dbf85e1595fb4c ]
+[ Upstream commit e19675c2477491401b236ed939ad5a43ddc339af ]
 
-When the task management thread processes reply queues while the reset
-thread resets them, the task management thread accesses an invalid queue ID
-(0xFFFF), set by the reset thread, which points to unallocated memory,
-causing a crash.
+Update comments to fully conform to the Linux comment styling.
+Define Linux infinite effect duration (0) as FF_INFINITE
 
-Add flag 'io_admin_reset_sync' to synchronize access between the reset,
-I/O, and admin threads. Before a reset, the reset handler sets this flag to
-block I/O and admin processing threads. If any thread bypasses the initial
-check, the reset thread waits up to 10 seconds for processing to finish. If
-the wait exceeds 10 seconds, the controller is marked as unrecoverable.
+Chanage Oleg's name order
 
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250129100850.25430-4-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr.h    |  2 +
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 67 +++++++++++++++++++++++++++++++--
- 2 files changed, 66 insertions(+), 3 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 57 +++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
-index 1b049cea98e1f..ee5a75a4b3bb8 100644
---- a/drivers/scsi/mpi3mr/mpi3mr.h
-+++ b/drivers/scsi/mpi3mr/mpi3mr.h
-@@ -1097,6 +1097,7 @@ struct scmd_priv {
-  * @ts_update_interval: Timestamp update interval
-  * @reset_in_progress: Reset in progress flag
-  * @unrecoverable: Controller unrecoverable flag
-+ * @io_admin_reset_sync: Manage state of I/O ops during an admin reset process
-  * @prev_reset_result: Result of previous reset
-  * @reset_mutex: Controller reset mutex
-  * @reset_waitq: Controller reset  wait queue
-@@ -1285,6 +1286,7 @@ struct mpi3mr_ioc {
- 	u16 ts_update_interval;
- 	u8 reset_in_progress;
- 	u8 unrecoverable;
-+	u8 io_admin_reset_sync;
- 	int prev_reset_result;
- 	struct mutex reset_mutex;
- 	wait_queue_head_t reset_waitq;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index 656108dd2ee30..ec5b1ab287177 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -17,7 +17,7 @@ static void mpi3mr_process_factsdata(struct mpi3mr_ioc *mrioc,
- 	struct mpi3_ioc_facts_data *facts_data);
- static void mpi3mr_pel_wait_complete(struct mpi3mr_ioc *mrioc,
- 	struct mpi3mr_drv_cmd *drv_cmd);
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 503f643b59cad..e2508a4d754d3 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -3,13 +3,9 @@
+  *  Force feedback driver for USB HID PID compliant devices
+  *
+  *  Copyright (c) 2005, 2006 Anssi Hannula <anssi.hannula@gmail.com>
++ *  Upgraded 2025 by Oleg Makarenko and Tomasz Pakuła
+  */
+ 
+-/*
+- */
 -
-+static int mpi3mr_check_op_admin_proc(struct mpi3mr_ioc *mrioc);
- static int poll_queues;
- module_param(poll_queues, int, 0444);
- MODULE_PARM_DESC(poll_queues, "Number of queues for io_uring poll mode. (Range 1 - 126)");
-@@ -459,7 +459,7 @@ int mpi3mr_process_admin_reply_q(struct mpi3mr_ioc *mrioc)
- 	}
+-/* #define DEBUG */
+-
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 	do {
--		if (mrioc->unrecoverable)
-+		if (mrioc->unrecoverable || mrioc->io_admin_reset_sync)
- 			break;
+ #include "hid-pidff.h"
+@@ -25,9 +21,9 @@
  
- 		mrioc->admin_req_ci = le16_to_cpu(reply_desc->request_queue_ci);
-@@ -554,7 +554,7 @@ int mpi3mr_process_op_reply_q(struct mpi3mr_ioc *mrioc,
- 	}
+ /* Linux Force Feedback API uses miliseconds as time unit */
+ #define FF_TIME_EXPONENT	-3
++#define FF_INFINITE		0
  
- 	do {
--		if (mrioc->unrecoverable)
-+		if (mrioc->unrecoverable || mrioc->io_admin_reset_sync)
- 			break;
+ /* Report usage table used to put reports into an array */
+-
+ #define PID_SET_EFFECT		0
+ #define PID_EFFECT_OPERATION	1
+ #define PID_DEVICE_GAIN		2
+@@ -48,12 +44,12 @@ static const u8 pidff_reports[] = {
+ 	0x21, 0x77, 0x7d, 0x7f, 0x89, 0x90, 0x96, 0xab,
+ 	0x5a, 0x5f, 0x6e, 0x73, 0x74
+ };
+-
+-/* device_control is really 0x95, but 0x96 specified as it is the usage of
+-the only field in that report */
++/*
++ * device_control is really 0x95, but 0x96 specified
++ * as it is the usage of the only field in that report.
++ */
  
- 		req_q_idx = le16_to_cpu(reply_desc->request_queue_id) - 1;
-@@ -4394,6 +4394,7 @@ int mpi3mr_reinit_ioc(struct mpi3mr_ioc *mrioc, u8 is_resume)
- 		goto out_failed_noretry;
- 	}
+ /* PID special fields */
+-
+ #define PID_EFFECT_TYPE			0x25
+ #define PID_DIRECTION			0x57
+ #define PID_EFFECT_OPERATION_ARRAY	0x78
+@@ -61,7 +57,6 @@ the only field in that report */
+ #define PID_DEVICE_CONTROL_ARRAY	0x96
  
-+	mrioc->io_admin_reset_sync = 0;
- 	if (is_resume || mrioc->block_on_pci_err) {
- 		dprint_reset(mrioc, "setting up single ISR\n");
- 		retval = mpi3mr_setup_isr(mrioc, 1);
-@@ -5252,6 +5253,55 @@ void mpi3mr_pel_get_seqnum_complete(struct mpi3mr_ioc *mrioc,
- 	drv_cmd->retry_count = 0;
+ /* Value usage tables used to put fields and values into arrays */
+-
+ #define PID_EFFECT_BLOCK_INDEX	0
+ 
+ #define PID_DURATION		1
+@@ -119,7 +114,6 @@ static const u8 pidff_device_gain[] = { 0x7e };
+ static const u8 pidff_pool[] = { 0x80, 0x83, 0xa9 };
+ 
+ /* Special field key tables used to put special field keys into arrays */
+-
+ #define PID_ENABLE_ACTUATORS	0
+ #define PID_DISABLE_ACTUATORS	1
+ #define PID_STOP_ALL_EFFECTS	2
+@@ -176,8 +170,10 @@ struct pidff_device {
+ 	struct pidff_usage effect_operation[sizeof(pidff_effect_operation)];
+ 	struct pidff_usage block_free[sizeof(pidff_block_free)];
+ 
+-	/* Special field is a field that is not composed of
+-	   usage<->value pairs that pidff_usage values are */
++	/*
++	 * Special field is a field that is not composed of
++	 * usage<->value pairs that pidff_usage values are
++	 */
+ 
+ 	/* Special field in create_new_effect */
+ 	struct hid_field *create_new_effect_type;
+@@ -222,7 +218,7 @@ static s32 pidff_clamp(s32 i, struct hid_field *field)
+ static int pidff_rescale(int i, int max, struct hid_field *field)
+ {
+ 	return i * (field->logical_maximum - field->logical_minimum) / max +
+-	    field->logical_minimum;
++		field->logical_minimum;
  }
  
-+/**
-+ * mpi3mr_check_op_admin_proc -
-+ * @mrioc: Adapter instance reference
-+ *
-+ * Check if any of the operation reply queues
-+ * or the admin reply queue are currently in use.
-+ * If any queue is in use, this function waits for
-+ * a maximum of 10 seconds for them to become available.
-+ *
-+ * Return: 0 on success, non-zero on failure.
-+ */
-+static int mpi3mr_check_op_admin_proc(struct mpi3mr_ioc *mrioc)
-+{
-+
-+	u16 timeout = 10 * 10;
-+	u16 elapsed_time = 0;
-+	bool op_admin_in_use = false;
-+
-+	do {
-+		op_admin_in_use = false;
-+
-+		/* Check admin_reply queue first to exit early */
-+		if (atomic_read(&mrioc->admin_reply_q_in_use) == 1)
-+			op_admin_in_use = true;
-+		else {
-+			/* Check op_reply queues */
-+			int i;
-+
-+			for (i = 0; i < mrioc->num_queues; i++) {
-+				if (atomic_read(&mrioc->op_reply_qinfo[i].in_use) == 1) {
-+					op_admin_in_use = true;
-+					break;
-+				}
-+			}
-+		}
-+
-+		if (!op_admin_in_use)
-+			break;
-+
-+		msleep(100);
-+
-+	} while (++elapsed_time < timeout);
-+
-+	if (op_admin_in_use)
-+		return 1;
-+
-+	return 0;
-+}
-+
- /**
-  * mpi3mr_soft_reset_handler - Reset the controller
-  * @mrioc: Adapter instance reference
-@@ -5332,6 +5382,7 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
- 	mpi3mr_wait_for_host_io(mrioc, MPI3MR_RESET_HOST_IOWAIT_TIMEOUT);
+ /*
+@@ -282,9 +278,8 @@ static void pidff_set_time(struct pidff_usage *usage, u16 time)
  
- 	mpi3mr_ioc_disable_intr(mrioc);
-+	mrioc->io_admin_reset_sync = 1;
+ static void pidff_set_duration(struct pidff_usage *usage, u16 duration)
+ {
+-	/* Convert infinite length from Linux API (0)
+-	   to PID standard (NULL) if needed */
+-	if (duration == 0)
++	/* Infinite value conversion from Linux API -> PID */
++	if (duration == FF_INFINITE)
+ 		duration = PID_INFINITE;
  
- 	if (snapdump) {
- 		mpi3mr_set_diagsave(mrioc);
-@@ -5359,6 +5410,16 @@ int mpi3mr_soft_reset_handler(struct mpi3mr_ioc *mrioc,
- 		ioc_err(mrioc, "Failed to issue soft reset to the ioc\n");
- 		goto out;
+ 	if (duration == PID_INFINITE) {
+@@ -302,16 +297,16 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
+ 				      struct ff_envelope *envelope)
+ {
+ 	pidff->set_envelope[PID_EFFECT_BLOCK_INDEX].value[0] =
+-	    pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
++		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 
+ 	pidff->set_envelope[PID_ATTACK_LEVEL].value[0] =
+-	    pidff_rescale(envelope->attack_level >
+-			  S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
+-			  pidff->set_envelope[PID_ATTACK_LEVEL].field);
++		pidff_rescale(envelope->attack_level >
++			S16_MAX ? S16_MAX : envelope->attack_level, S16_MAX,
++			pidff->set_envelope[PID_ATTACK_LEVEL].field);
+ 	pidff->set_envelope[PID_FADE_LEVEL].value[0] =
+-	    pidff_rescale(envelope->fade_level >
+-			  S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
+-			  pidff->set_envelope[PID_FADE_LEVEL].field);
++		pidff_rescale(envelope->fade_level >
++			S16_MAX ? S16_MAX : envelope->fade_level, S16_MAX,
++			pidff->set_envelope[PID_FADE_LEVEL].field);
+ 
+ 	pidff_set_time(&pidff->set_envelope[PID_ATTACK_TIME],
+ 			envelope->attack_length);
+@@ -702,9 +697,7 @@ static void pidff_playback_pid(struct pidff_device *pidff, int pid_id, int n)
+ static int pidff_playback(struct input_dev *dev, int effect_id, int value)
+ {
+ 	struct pidff_device *pidff = dev->ff->private;
+-
+ 	pidff_playback_pid(pidff, pidff->pid_id[effect_id], value);
+-
+ 	return 0;
+ }
+ 
+@@ -732,8 +725,11 @@ static int pidff_erase_effect(struct input_dev *dev, int effect_id)
+ 
+ 	hid_dbg(pidff->hid, "starting to erase %d/%d\n",
+ 		effect_id, pidff->pid_id[effect_id]);
+-	/* Wait for the queue to clear. We do not want a full fifo to
+-	   prevent the effect removal. */
++
++	/*
++	 * Wait for the queue to clear. We do not want
++	 * a full fifo to prevent the effect removal.
++	 */
+ 	hid_hw_wait(pidff->hid);
+ 	pidff_playback_pid(pidff, pid_id, 0);
+ 	pidff_erase_pid(pidff, pid_id);
+@@ -1239,7 +1235,6 @@ static int pidff_find_effects(struct pidff_device *pidff,
+ 		set_bit(FF_FRICTION, dev->ffbit);
+ 
+ 	return 0;
+-
+ }
+ 
+ #define PIDFF_FIND_FIELDS(name, report, strict) \
+@@ -1370,12 +1365,10 @@ static int pidff_check_autocenter(struct pidff_device *pidff,
+ 		hid_notice(pidff->hid,
+ 			   "device has unknown autocenter control method\n");
  	}
-+
-+	retval = mpi3mr_check_op_admin_proc(mrioc);
-+	if (retval) {
-+		ioc_err(mrioc, "Soft reset failed due to an Admin or I/O queue polling\n"
-+				"thread still processing replies even after a 10 second\n"
-+				"timeout. Marking the controller as unrecoverable!\n");
-+
-+		goto out;
-+	}
-+
- 	if (mrioc->num_io_throttle_group !=
- 	    mrioc->facts.max_io_throttle_group) {
- 		ioc_err(mrioc,
+-
+ 	pidff_erase_pid(pidff,
+ 			pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0]);
+ 
+ 	return 0;
+-
+ }
+ 
+ /*
 -- 
 2.39.5
 
