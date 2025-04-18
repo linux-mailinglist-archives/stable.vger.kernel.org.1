@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-134634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10D0BA93B9B
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:03:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28066A93B9F
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3667D4A0BBD
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:03:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BC913B910C
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A35217701;
-	Fri, 18 Apr 2025 17:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B639A2165EC;
+	Fri, 18 Apr 2025 17:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="f8rcAPZd"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="XBuFwKOt"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9DA4CB5B;
-	Fri, 18 Apr 2025 17:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC1E4CB5B;
+	Fri, 18 Apr 2025 17:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744995800; cv=none; b=ioVEIsp3/O4KUPOybyXn3VTM5Ac2Wi1NlbAs4YyjTjBxps/cdNOqmZLSPQ1VdoNVLr6uQMr64sZiW+9nSAHvrbj0+ao0n8WQ0llgDo2TbrzABQ2f7xQqBgUqbtkUiAfXHVM/BcsZMkrzXSHHo8oEy4kgVaK2rhpo9ZkjcuIu6WE=
+	t=1744995857; cv=none; b=pOfUgiIEHs19K8gUZZ7y4VX5k48lgmfTptIkwlut4mNe8J/gWCIQyZsMtrJUOL26Fa4mVY3obiHRbMwFdvt9Os9q7k8b6cx7Ru559Dx706MpJ7MzYg/DYqvKz5n8bPebR4wxn/7+choK+PKWD/EQRxG8f984+NZiXYocwzPpJgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744995800; c=relaxed/simple;
-	bh=3yZrrJGOXM7r2a4fOoqHfAicY7yN/Iqf8k1LBE56EDY=;
+	s=arc-20240116; t=1744995857; c=relaxed/simple;
+	bh=36FfVh550f4pi9AMieTF+KKoyEqse6YXhakPyRxFQqk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FreoUO32q0dGPCmSk1jzQSFJiaCRqzzIIGL+zvTMldfganJ4eZFyu4VqaD9aDZ1CkNlNbzMTKqth7yI52sC+08fi53AOZ2usdubN7xvK0WctMXvloLWfPMIF10wHXdncbWPJ+KUKGZnx18fw2Bp380j3WKSZ8+lkYgCK1kTddL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=f8rcAPZd; arc=none smtp.client-ip=89.58.32.78
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mv2FH+eONVvcyzv18f0gVI4oRaXNldy2jqPHoravAoOXG+yiRFMgh9nQedj2r54dYF7roIay3fSgSDrq1y1qBRZP3xC75Cc9MJsFD0KUwOEwKhXieB1VxusQ05NJqyGH/WPeKF9P61nVU7w7LyB/ZwmZG2J3Vo8pxFXmVsN3GKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=XBuFwKOt; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9730E10273DBF;
-	Fri, 18 Apr 2025 19:03:13 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B4A6410273DBF;
+	Fri, 18 Apr 2025 19:04:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744995796; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=OWXzo4OMHnLS4NPQ/xzmDOeZDiOZxuFA/2rUofiU76s=;
-	b=f8rcAPZdZjOYwq/L6E43t7xdHa2uzRG7aoJK1AlbVOvb0Wdex2AB+58FT2G+ra1DgX2jzW
-	GBwvToPhERvW1Onx5v8ydQhHXxgY7s7jPllGOHywOZmeWdX7iIge9fYORMp3hjQTFH9+I1
-	DZkjZ228evpalH8amOCq7QU1Gf2tfZHdLWC37fOQWWV/SkNHtMY/Ee6Dj6goFxurWAP6KC
-	ucbs7wdfripyT0OSheDZ7KbsuXez2ITU2wo7GOywr6ONRcLEzxEhVvo3IAiVT9+wpi7UUA
-	LbHLlWRwremYGaLrssdh+27y2SauRb1ITB8CwwmrP6t/uazu0QOZ4SZUqk+QvA==
-Date: Fri, 18 Apr 2025 19:03:11 +0200
+	t=1744995854; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=hYbGBShskCwfKxd6E/88E+mo7hPZ9ODOyFnjuvRof78=;
+	b=XBuFwKOtM5b1KM663P1iJU5BapOjeTUlUxyrdbartIh7ic+iAo8bRugKVl6dceiPGHnTHs
+	TulwaMRfsmo3ryR6m1am+tksFl7+VlYFP85Tu/CyzRF6tpAopX7pkjl5XkF/wPldopSttA
+	J8gItMnICEcMoZUP0jgWTwcpKSv39qXR/VRtOZzEWm9y+InOnvj3U0j6ixIRLt71W+b+hy
+	AiLCdGdcLTAlZf7NsziESN2MFFc4jDQYq5qj9um/XetQMtkc11OLNtLv23CC083Byo4LTC
+	s1QGwZpuHKvEnJSpuD36lUKi9J79hWpvhPJSOJvj4kdSGuabXrFFbxrY3+1QoA==
+Date: Fri, 18 Apr 2025 19:04:09 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	marcel@holtmann.org, luiz.dentz@gmail.com,
 	linux-bluetooth@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 15/15] Bluetooth: hci_uart: fix race during
- initialization
-Message-ID: <aAKFz3wsy+HOMphC@duo.ucw.cz>
-References: <20250403191002.2678588-1-sashal@kernel.org>
- <20250403191002.2678588-15-sashal@kernel.org>
+Subject: Re: [PATCH AUTOSEL 6.6 26/26] Bluetooth: qca: simplify WCN399x NVM
+ loading
+Message-ID: <aAKGCb+rzIWJjMBb@duo.ucw.cz>
+References: <20250403190745.2677620-1-sashal@kernel.org>
+ <20250403190745.2677620-26-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,70 +61,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Vc6D8ODBsAjs0Y2/"
+	protocol="application/pgp-signature"; boundary="8cxg9z79d2x7/RC+"
 Content-Disposition: inline
-In-Reply-To: <20250403191002.2678588-15-sashal@kernel.org>
+In-Reply-To: <20250403190745.2677620-26-sashal@kernel.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
 
---Vc6D8ODBsAjs0Y2/
+--8cxg9z79d2x7/RC+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Arseniy Krasnov <avkrasnov@salutedevices.com>
->=20
-> [ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
->=20
-> 'hci_register_dev()' calls power up function, which is executed by
-> kworker - 'hci_power_on()'. This function does access to bluetooth chip
-> using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
-> Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
-> if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
-> 'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
-> be executed before setting this bit. In that case HCI init logic fails.
->=20
-> Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
-> 'hci_uart_register_dev()'.
+> The WCN399x code has two separate cases for loading the NVM data. In
+> preparation to adding support for WCN3950, which also requires similar
+> quirk, split the "variant" to be specified explicitly and merge two
+> snprintfs into a single one.
 
-Ok, but do we need to adjust the error handling?
+This is a cleanup, so we should not need it in -stable.
 
-> +++ b/drivers/bluetooth/hci_ldisc.c
-> @@ -706,12 +706,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, =
-int id)
-> =20
->  	hu->proto =3D p;
-> =20
-> +	set_bit(HCI_UART_PROTO_READY, &hu->flags);
-> +
->  	err =3D hci_uart_register_dev(hu);
->  	if (err) {
->  		return err;
->  	}
-> =20
-> -	set_bit(HCI_UART_PROTO_READY, &hu->flags);
->  	return 0;
->  }
-
-Should we clear the bit in the error path to undo the effects?
-
-Best regards,
+Best reagrds,
 								Pavel
+							=09
+> +++ b/drivers/bluetooth/btqca.c
+> @@ -807,6 +807,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baud=
+rate,
+>  		   const char *firmware_name)
+>  {
+>  	struct qca_fw_config config =3D {};
+> +	const char *variant =3D "";
+>  	int err;
+>  	u8 rom_ver =3D 0;
+>  	u32 soc_ver;
+> @@ -901,13 +902,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t ba=
+udrate,
+>  		case QCA_WCN3990:
+>  		case QCA_WCN3991:
+>  		case QCA_WCN3998:
+> -			if (le32_to_cpu(ver.soc_id) =3D=3D QCA_WCN3991_SOC_ID) {
+> -				snprintf(config.fwname, sizeof(config.fwname),
+> -					 "qca/crnv%02xu.bin", rom_ver);
+> -			} else {
+> -				snprintf(config.fwname, sizeof(config.fwname),
+> -					 "qca/crnv%02x.bin", rom_ver);
+> -			}
+> +			if (le32_to_cpu(ver.soc_id) =3D=3D QCA_WCN3991_SOC_ID)
+> +				variant =3D "u";
+> +
+> +			snprintf(config.fwname, sizeof(config.fwname),
+> +				 "qca/crnv%02x%s.bin", rom_ver, variant);
+>  			break;
+>  		case QCA_WCN3988:
+>  			snprintf(config.fwname, sizeof(config.fwname),
+
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---Vc6D8ODBsAjs0Y2/
+--8cxg9z79d2x7/RC+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKFzwAKCRAw5/Bqldv6
-8nteAKC0ZaQK2eqV9AEc2XJ5g+RVdnJTbQCgt9ZXQXxEKNTvTonIxI6BFOcY8kw=
-=+60M
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKGCQAKCRAw5/Bqldv6
+8gOJAJ4ym+QKbXxlQjaBeGlhwjbRIvdZQgCdFSeaCXoXjxRhox9r39yxRQs4b0E=
+=ih9a
 -----END PGP SIGNATURE-----
 
---Vc6D8ODBsAjs0Y2/--
+--8cxg9z79d2x7/RC+--
 
