@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-134582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5610AA93751
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:44:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80784A93752
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2401B626E8
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:44:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA34D7A9C77
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F24FD2749FD;
-	Fri, 18 Apr 2025 12:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A71F2749FD;
+	Fri, 18 Apr 2025 12:44:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C7578F3B
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 12:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F7D78F3B
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 12:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744980250; cv=none; b=BljOBrKjTlYxDegi7m7Y6TbA519DOOCCzFv4HUqhWSneZ+oz9BiIz6yo62X3C5ih3Zd0bsM93I7iNGW3Jfz7B4z2AWDrlDU1YWr/5HysVc8zE02RF9HbYsdby3uEVI+0MEL9/Oklh1HbZRjO8EziQohZnp21eaBoAMGD7uoJIJk=
+	t=1744980265; cv=none; b=Le7gV6S+ixM5ktp5r0W+Mfsp5j+S5Z3m+T0NBycoFlaI+vqgU+zoPNUS1j/n8ZwQOKmlM7vMWOJ3GLqchx0eCXQwjKoZuPnjZsBaiP0dkTgPxWT8JtR56pO/0zA9arW08v9lessb1JEd86gbnv7plEyKXXRhNGPPYu+J52m0ci8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744980250; c=relaxed/simple;
+	s=arc-20240116; t=1744980265; c=relaxed/simple;
 	bh=oz91DBJ4JbMnZ1GTLETAqAe1xYbN0ph5MALXw3iWWFI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ULo4ju4Njo0gXg5s9PMcDo6o5qrzc9L3L/cG5IHO7wynspYRNG82w5B89hVnibnCS065Jvy+UBP55CRW561y0F/8Jor0NJ8T7/5VcuOpZwNNxf89zC9zNASqbY4E/HvvuddZN70fD912zrxrQEzZrVV6CNweUYndsdpyUuhkvq4=
+	 MIME-Version:Content-Type; b=GSpL7L7jKe8FC/Nbjte1O9aNcKgA+R+DnW6rUXzqrIvXXLlO75raU6VblwO0QlygvTeOhBcnvftnDFEDIQDGW49DzKuiOna2vCipc0SRiZex/YVXjfMeANg4sSXwi5bg9rDEVuOEjSRv2A/WhNIJmhPBujVKA/eBM6Sj5sz2vvw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO iyokan3-ex.css.socionext.com) ([172.31.9.54])
-  by mx.socionext.com with ESMTP; 18 Apr 2025 21:44:07 +0900
+Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
+  by mx.socionext.com with ESMTP; 18 Apr 2025 21:44:22 +0900
 Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by iyokan3-ex.css.socionext.com (Postfix) with ESMTP id A2A842091483;
-	Fri, 18 Apr 2025 21:44:07 +0900 (JST)
-Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 18 Apr 2025 21:44:07 +0900
+	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 7C6C0206A2EB;
+	Fri, 18 Apr 2025 21:44:22 +0900 (JST)
+Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 18 Apr 2025 21:44:22 +0900
 Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan3.css.socionext.com (Postfix) with ESMTP id 3FD89701;
-	Fri, 18 Apr 2025 21:44:07 +0900 (JST)
+	by kinkan3.css.socionext.com (Postfix) with ESMTP id AD8C9701;
+	Fri, 18 Apr 2025 21:44:21 +0900 (JST)
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 To: stable@vger.kernel.org
 Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.13.y] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
-Date: Fri, 18 Apr 2025 21:43:57 +0900
-Message-Id: <20250418124357.2045813-1-hayashi.kunihiko@socionext.com>
+Subject: [PATCH 6.12.y] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
+Date: Fri, 18 Apr 2025 21:44:10 +0900
+Message-Id: <20250418124410.2045902-1-hayashi.kunihiko@socionext.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2025041751-humble-landmine-788b@gregkh>
-References: <2025041751-humble-landmine-788b@gregkh>
+In-Reply-To: <2025041751-satirical-strut-f02f@gregkh>
+References: <2025041751-satirical-strut-f02f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
