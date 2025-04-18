@@ -1,176 +1,104 @@
-Return-Path: <stable+bounces-134623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1FF0A93B3A
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 18:46:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEEBA93B7B
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 18:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5C3B8A36DC
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 16:46:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8F51B62222
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 16:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C392153DA;
-	Fri, 18 Apr 2025 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF528217719;
+	Fri, 18 Apr 2025 16:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8ZxL9ee"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="cIVL3/qM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0992CCC0;
-	Fri, 18 Apr 2025 16:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AED1A8F68;
+	Fri, 18 Apr 2025 16:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744994773; cv=none; b=d6ou4rp/M0ulepJDlTZi31z9ol0mXOb3n6Ace20GBrtBJnNRqUgmflX4G/3cq/ZwuFsHlZHVQQR1yC7nYyHV18Tq0oBMnZPnl4dhnkbeP3XfFL18iTglKnat0FXxsQjh2ZB8r6nzCRfi47+Q09Zx3OXI/NjcEzckHltDiT1asp0=
+	t=1744995460; cv=none; b=ueQUV6z3+av6EqYl3iSYS1LrooE7AR+uR46csU3qsng4Z7qsVCPzwAfz+hj6j4EWrLWa2G7FBAgv+NUlF7TwwqKWeATPLcz0d5bhxkRaS4XYImADFHFQhq8nPTpt88b1ezSMX0sNJaOez3H+LtSFeDFmaNTQfWnNvdlH8cQ3tzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744994773; c=relaxed/simple;
-	bh=6Evc0IWJ/vJ/0X/51M2poyLTeZoDAbUjdzxgXD7DUb4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohEyCkFpwmxxBc5baegvBKnUNFkJtOjrIfEiMQ89ePm5RFjK90eG+8FaCNAcO4fvpBeCcvBc18acw8YTIAOjr1CvuRPAruo9Azm+alPCji8Vb/igOaeGBGUglAzWkGci0qyyVcUPhrrew8Ovpl9PR/3Kg2rAfKJtPHmPzoDIIiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8ZxL9ee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5F4C4CEED;
-	Fri, 18 Apr 2025 16:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744994773;
-	bh=6Evc0IWJ/vJ/0X/51M2poyLTeZoDAbUjdzxgXD7DUb4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8ZxL9eeNe0REt+QcB7FhktjhtvLAwg7sNO5d0qkYTqLEGOWfZ29F2LX4YEcjx+z9
-	 eO9kbzPHXrAAPOMMOPQOL7QNWK7I8zvDbK3U/5tURO5qR2y84ZAefmv+tjxPVeqXe0
-	 9Vh/PN/xDEUfIt672afWi4hl3100tDCCDaDcoIaJd4L9Zyd33slZO8FHO3oLVPlfiP
-	 4VQcv2ynGuY8px4EBPErZc6NQzn6OgvpJLxtq+zpDb50ubpnyCA6Wqg6l6N/yhWhIX
-	 MFUptq/R5SbvQPmORxZdxjGDwiw7yilkCi8xW0q0cwl5QIedYvXyXPOBAGNPVuz8xH
-	 8fZ5K49gNsFpQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	sashal@kernel.org,
-	Mat Martineau <martineau@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10.y 3/3] mptcp: sockopt: fix getting IPV6_V6ONLY
-Date: Fri, 18 Apr 2025 18:46:00 +0200
-Message-ID: <20250418164556.3926588-8-matttbe@kernel.org>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250418164556.3926588-5-matttbe@kernel.org>
-References: <20250418164556.3926588-5-matttbe@kernel.org>
+	s=arc-20240116; t=1744995460; c=relaxed/simple;
+	bh=oMUnQpA3i8Z6l1WvnRE2YkrR/PCt4Rv+k/8Npl7LEHI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Soys9FCxodHoYuAOeYXe7BhRMqnOP20bQY3TwPPoDQFNcBRmyuzHW4sTCuEcqOd84duLKaq6FhU/VlvQshVZN+LbNqZ6pLSBUzewBB0pqHW2ZIuTCvbmj/uL7jWAkl3ekbDsIgTDooUcBQVJNeKdAscIOkRhOHpvglXNTeZWHZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=cIVL3/qM; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id A40091C00B2; Fri, 18 Apr 2025 18:51:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1744995098;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PSbe1n/k0ulYtGbIXI96CO1VrCv/UaM1rOskyi49O2s=;
+	b=cIVL3/qMttdCGnkI3NL7gUW1Aii+xIXKQlu+Jek5MvBLY6ydcrFrlqT4Ue5CCsoac2cCnB
+	iHtXGV20tgwSl5izXQJp+I4Ti6t+1MlUjbiBbAd5F+pfSwQ9osFGUkhwKEjmxk/imNvPg4
+	Xel9S8KHEQU4/S5N/eYEo/2ihftbRpQ=
+Date: Fri, 18 Apr 2025 18:51:38 +0200
+From: Pavel Machek <pavel@ucw.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Christian Brauner <brauner@kernel.org>, viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.10] umount: Allow superblock owners to force
+ umount
+Message-ID: <aAKDGmxq/snqaYhQ@duo.ucw.cz>
+References: <20250331143234.1667913-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3816; i=matttbe@kernel.org; h=from:subject; bh=6Evc0IWJ/vJ/0X/51M2poyLTeZoDAbUjdzxgXD7DUb4=; b=owEBbQKS/ZANAwAKAfa3gk9CaaBzAcsmYgBoAoHFuRsWheK+lnVvPxOPIYylIEB/mI4tvq2dL 5FPeswxgW2JAjMEAAEKAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCaAKBxQAKCRD2t4JPQmmg c1usEACrGHdaCffCpk+7uiPeDrdCsCig60Pk8Y6irRUI0TsUXWq+ck11clX4Y4NLc3YPaCHBSnR VX27SolCNk3espOiCRVV3PI/cidUy8nkzqHoRZt7GrPqkbBop9ORQUIw5Xm5Utbu5iZSjPDgcyO acmQBMmo1wCySCYPkiiIFhkwnaLfB1qzrbKUH0QhD324aPaZu/j9+mTgagpKVVkbyU4LdOM5h7A X4rKf+w8W6KBYAhC3wtPo+8CMDeuEGGPDBKt4Bs3l5xQvEehKW5otK1MK4yENLbL47ySEKAu0P3 boAbO0z3rLPCxKL7pKFM/lUJjekOXIofdnPVLAcApf9A0YUi/NgRAq701RO/N92p8CQELZuKMAz vllVlEg1pfXAXZlaJnLSfjLZQb4JN5pO7oDpduBFqW+B4+IfBU4D1Fd0JIgOBau6LXiFxtI64+l OkpDDNn0+W0lBMilO4TFyFkUoFbD54W7vrf8EsZJW3rwQFFt026H6hDXWjuibvaFvf7C92FinDS 1QeM9Mcx8Ds9IMz97p0BFZExoXaokXPsnDLihyFcGVIOvjBmWMuNylo2nEAXks9bdDXvc2HDYlC g5XUSyaXLN2fcgj96Oopo7wSH0LGbg4P3RsM/MulZ+mDbiloHBtbXcG13azWeOOYW5dqeoM9oiE vIGIJ21tPQhujwg==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="hXfHA1BSXmrE6BXK"
+Content-Disposition: inline
+In-Reply-To: <20250331143234.1667913-1-sashal@kernel.org>
 
-commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+--hXfHA1BSXmrE6BXK
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-IPV6_V6ONLY support for the setsockopt part has been added a while ago,
-but it looks like the get part got forgotten. It should have been
-present as a way to verify a setting has been set as expected, and not
-to act differently from TCP or any other socket types.
+Hi!
 
-Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
-to check the default value, before doing extra actions. On Linux, the
-default value is 0, but this can be changed with the net.ipv6.bindv6only
-sysctl knob. On Windows, it is set to 1 by default. So supporting the
-get part, like for all other socket options, is important.
+> From: Trond Myklebust <trond.myklebust@hammerspace.com>
+>=20
+> [ Upstream commit e1ff7aa34dec7e650159fd7ca8ec6af7cc428d9f ]
+>=20
+> Loosen the permission check on forced umount to allow users holding
+> CAP_SYS_ADMIN privileges in namespaces that are privileged with respect
+> to the userns that originally mounted the filesystem.
 
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover this specific getsockopt(), that seems
-safe.
+Should we be tweaking permissions in -stable?
 
-Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in sockopt.c in the context, because commit 0abdde82b163
-  ("mptcp: move sockopt function into a new file") is not in this
-  release. The modifications can still be done in protocol.c without
-  difficulties. A particularity is that the mptcp_put_int_option()
-  helper is required, and imported from newer versions without taking
-  the extra features introduced with them in commit 2c9e77659a0c
-  ("mptcp: add TCP_INQ cmsg support") and commit 3b1e21eb60e8 ("mptcp:
-  getsockopt: add support for IP_TOS"). ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- net/mptcp/protocol.c | 45 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+Best regards,
+								Pavel
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 51b552fa392a..f33c3150e690 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2395,6 +2395,49 @@ static int mptcp_setsockopt(struct sock *sk, int level, int optname,
- 	return -EOPNOTSUPP;
- }
- 
-+static int mptcp_put_int_option(struct mptcp_sock *msk, char __user *optval,
-+				int __user *optlen, int val)
-+{
-+	int len;
-+
-+	if (get_user(len, optlen))
-+		return -EFAULT;
-+	if (len < 0)
-+		return -EINVAL;
-+
-+	if (len < sizeof(int) && len > 0 && val >= 0 && val <= 255) {
-+		unsigned char ucval = (unsigned char)val;
-+
-+		len = 1;
-+		if (put_user(len, optlen))
-+			return -EFAULT;
-+		if (copy_to_user(optval, &ucval, 1))
-+			return -EFAULT;
-+	} else {
-+		len = min_t(unsigned int, len, sizeof(int));
-+		if (put_user(len, optlen))
-+			return -EFAULT;
-+		if (copy_to_user(optval, &val, len))
-+			return -EFAULT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
-+			       char __user *optval, int __user *optlen)
-+{
-+	struct sock *sk = (void *)msk;
-+
-+	switch (optname) {
-+	case IPV6_V6ONLY:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    sk->sk_ipv6only);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- static int mptcp_getsockopt(struct sock *sk, int level, int optname,
- 			    char __user *optval, int __user *option)
- {
-@@ -2415,6 +2458,8 @@ static int mptcp_getsockopt(struct sock *sk, int level, int optname,
- 	if (ssk)
- 		return tcp_getsockopt(ssk, level, optname, optval, option);
- 
-+	if (level == SOL_IPV6)
-+		return mptcp_getsockopt_v6(msk, optname, optval, option);
- 	return -EOPNOTSUPP;
- }
- 
--- 
-2.48.1
+--=20
+I don't work for Nazis and criminals, and neither should you.
+Boycott Putin, Trump, and Musk!
 
+--hXfHA1BSXmrE6BXK
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKDGgAKCRAw5/Bqldv6
+8hXYAJ0VzMdgdBf7hf3v5zp6JfimQyBy2QCdGT8OJNHhSAJADySZcsjEl500YVc=
+=DNza
+-----END PGP SIGNATURE-----
+
+--hXfHA1BSXmrE6BXK--
 
