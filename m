@@ -1,98 +1,75 @@
-Return-Path: <stable+bounces-134522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E40EA930A3
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 05:11:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A97B2A93149
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 06:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9BB466C2A
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 03:11:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 441CE7A8A59
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 04:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7923C267F5D;
-	Fri, 18 Apr 2025 03:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF2A25393D;
+	Fri, 18 Apr 2025 04:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="A8SPxx6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFZoi4P7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D5E2517A8;
-	Fri, 18 Apr 2025 03:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6181DA21;
+	Fri, 18 Apr 2025 04:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744945879; cv=none; b=dwpuPHY5yjXaurk3JIct53fhYIZaXg4Hgcd4tg7G2pMt9mHP5qU4jHN12KPDHT0iDHQi4OZTbETOQO85mULg3qgt/O7cmonGndlmVXaLOuq8WdRkt97qh11wFK++DXDifztQxzW32zwMLwS45ciHj15bTOVoNnJyEmEZ/YPcW8M=
+	t=1744951722; cv=none; b=YNBd28xOWOI9YydVRSA5XKrGkyuDqtHEn/DFfarc60dteIBuUdTUur3jJmoEtFhLFFTtsBMQZ/pKrD0eq7fkiZ0t3iGzEauGsCD8gj8rECagXa4vvX4YYPB1yukkLV9kx92LNuc3k6a1JwfOWkH85dkg3Al8tedY2seUj55mJU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744945879; c=relaxed/simple;
-	bh=v2loZveF/3MQBud5Rd2Oe7sfvhfioh7CO6IJW5945ZU=;
-	h=Date:To:From:Subject:Message-Id; b=OIT9kSlJkG0DkCKh1PY2rw5R/EcWFegHisSqY+G5PdgdwpEAQ68C/DO4HFq6JmupKWAGTF8CvyG0J6H9tpO04NJUFSWcoigQqzg/8n1rWltHnM7jAe8NTv7uOnQ16ymiPD8CPF4+rmCyzZ78eF3C+In+WyD4fCnmokJqIRi8n0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=A8SPxx6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7F9C4AF0B;
-	Fri, 18 Apr 2025 03:11:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744945877;
-	bh=v2loZveF/3MQBud5Rd2Oe7sfvhfioh7CO6IJW5945ZU=;
-	h=Date:To:From:Subject:From;
-	b=A8SPxx6EhQ+NMQDwRHbxOHPc4OtxS/i2AyuKrT3cKHN+FJMbF9kwDp8pcjWVkQLbc
-	 FeXbwbXwG0MbUGnJsakqMWMJmOA0Mkb3YQBYYTcb3OdG/LU+bV/xKpP9FZUx8gJwsH
-	 L02L8Fqso8yKO7D5iNXSHPA41T+Kw2NXoPD3THYc=
-Date: Thu, 17 Apr 2025 20:11:16 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jack@suse.cz,agruenba@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] writeback-fix-false-warning-in-inode_to_wb.patch removed from -mm tree
-Message-Id: <20250418031117.7B7F9C4AF0B@smtp.kernel.org>
+	s=arc-20240116; t=1744951722; c=relaxed/simple;
+	bh=Htlt5EWucHY26lNLwaoPzdYmE0EL7kJ8YEtF5BB0QSE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YHjGGUtfzroOKUf3HNAKjlKB21fBQBVwJSUsHRZ8Sz8BbLx3GP1RVMWW3YbVU0Og/1upiTfvPA3/SILUOSXKAt1BmRyYlqXuLosgq4DHF+iEnrrJOmPVd7ZiHrn5GtLXg+StFUNcYv1m6O22TFjPrV5SCOhk3kbHkJ6Arq1p3zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFZoi4P7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A3CC4CEE2;
+	Fri, 18 Apr 2025 04:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744951720;
+	bh=Htlt5EWucHY26lNLwaoPzdYmE0EL7kJ8YEtF5BB0QSE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oFZoi4P70selAbxRFUsfoWF1RmFJbc1iPax9mLm70fyCM8SOPIAlzkQu1pzys8fJJ
+	 hvAxaWU1/i0dN3PJOXYdK4Mgp9C2vi73qDGNljvx/nrGztPY4oG47G7+7XrC5Uh4Q3
+	 AWVNHuYPOCBc5ucop1q6cIsMO2Bqj3B5klBeKy/E=
+Date: Fri, 18 Apr 2025 06:47:03 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jules Noirant <jules.noirant@orange.fr>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Tomasz =?utf-8?Q?Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?utf-8?B?TWljaGHFgiBLb3BlxIc=?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?iso-8859-1?Q?Crist=F3ferson?= Bueno <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 197/449] HID: pidff: Stop all effects before
+ enabling actuators
+Message-ID: <2025041849-eggshell-squishier-c14b@gregkh>
+References: <20250417175117.964400335@linuxfoundation.org>
+ <20250417175125.905571035@linuxfoundation.org>
+ <763f6566-9806-4e09-a633-b27fe1767f38@orange.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <763f6566-9806-4e09-a633-b27fe1767f38@orange.fr>
 
+On Thu, Apr 17, 2025 at 08:47:05PM +0200, Jules Noirant wrote:
+> Hi,
+> 
+> Thanks for the review. Technically, that patch should at least be Co-authored by me since it's a slightly reworded rebase of a patch I submitted last year: https://lore.kernel.org/lkml/20240304195745.10195-1-jules.noirant@orange.fr/t/
 
-The quilt patch titled
-     Subject: writeback: fix false warning in inode_to_wb()
-has been removed from the -mm tree.  Its filename was
-     writeback-fix-false-warning-in-inode_to_wb.patch
+This is just a copy of what went into Linus's tree, sorry.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Andreas Gruenbacher <agruenba@redhat.com>
-Subject: writeback: fix false warning in inode_to_wb()
-Date: Sat, 12 Apr 2025 18:39:12 +0200
-
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
-
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/include/linux/backing-dev.h~writeback-fix-false-warning-in-inode_to_wb
-+++ a/include/linux/backing-dev.h
-@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inod
- {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
-_
-
-Patches currently in -mm which might be from agruenba@redhat.com are
-
-
+greg k-h
 
