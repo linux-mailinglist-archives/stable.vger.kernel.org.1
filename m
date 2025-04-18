@@ -1,248 +1,418 @@
-Return-Path: <stable+bounces-134531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D99A93239
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:46:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE92EA933F4
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBF7A3AFEDD
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 06:46:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B77C440FD1
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 07:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D43024EA8F;
-	Fri, 18 Apr 2025 06:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2809F1ADC8D;
+	Fri, 18 Apr 2025 07:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="q66smJT2"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51EC19F40A
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 06:46:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744958812; cv=fail; b=a3atpLLJXUyn+zXagRol+1XO8f/XdyX1qnKQx8aOc2Ay0aZh/4Pg9etNRN4OR2VVvyoOLPGIOMy3aoFZsdLSuKwxxQ+TxjXX1DcR3a6TnEBJSdfZt0wxyHe0zsAaG82b47o2P7bZBLbgIs130Ut6g0JxlGAh43Wa85zSkg2e5R4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744958812; c=relaxed/simple;
-	bh=PsaAEUOxHGMfjWJBDV2CjuqmxZPQ3Zixjwii+JAPSjg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=t1PCTwsJTLLMA8lnxVzjzsQE094c1LHHG5xS5UobKMW1MC0oNZO8Oxo6xpgoE1u9Wj76GomjRBp82SH1eTLGvNBPCYfgS/9pZV37rWnMFY9SmHrnC46pdJri+voaDwqOYD1ikyvzH05PkcHrMtbtjGn+VZ+lbCEtRouR42YxO9o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53I6PTOj006626;
-	Thu, 17 Apr 2025 23:46:36 -0700
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45yqpkq57r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Apr 2025 23:46:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VYPAkiB/imiFNIUPuU5u5BMMZQ0Xyq2wILT7Cicu5U8P8ABVRx1zjQ32p2pHPDnS+nHuMyxdviFQX5LuHvyf3BmEIHRK436kSn3sid3RaD79fpG/38m67czUw4w+4lZ0NcZtddmbNDV1J5Afy3pQT07Rif3FIcqN1swwjSOjNAgmPRK4lLX2dELYj/IRJBSXBsFpRBMs091KMZZKu0Oi3W9Dzg1U2PRjxCHBR2mx5Xz26p0JOcrqqVK6EkA1+PIWlWJX+jWh2ryhGsolH8uOzRYAzCI/dOYzmnArPZnMV+3jdYRh6WJp/Qd+m0OqU+Ut6uoFbb/UdRTRfa8ByvkQpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ynUG+l8zuwT+FXyXJ4RT7NvKM63z3LgCTgsq3m6ZKcE=;
- b=h6yO8vGfMTlVyV2UUG2Fssl96MG1n0bWmVgie8BQUi6IcODt6ve/8iiH7YoQ65ZLtdF2WlYrd5USE63uxi+hK5qjTtt+JfPcQHEICYKQve4ShEaWSxD+g/AGK2M38fCMJYtjnciN8p2kvLVLGkRdGLtRVAVVIRr1u/iZ+S/5lLJbuQioO6KX6/QhCGh15hiSLgiU/feEL43Qhg7ddIUWNQSO41/Fc2HmFNppGmyOg7m9T956ZFrszmu99FN9u1LklF5GuCSvtHL1Tpn4gagwD21ZxVhBEEK4/5HTR6SxMRWRdu7+DpCfbzCQROFOPmRDx3Q5QDWoWSmppKlV8xGk6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com (2603:10b6:930:54::6)
- by IA1PR11MB6266.namprd11.prod.outlook.com (2603:10b6:208:3e6::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Fri, 18 Apr
- 2025 06:46:33 +0000
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d]) by CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d%4]) with mapi id 15.20.8632.030; Fri, 18 Apr 2025
- 06:46:33 +0000
-Message-ID: <5e274450-5024-4201-918e-71b8986d9f36@windriver.com>
-Date: Fri, 18 Apr 2025 14:46:23 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: Question about back-porting '8be091338971 crypto:
- hisilicon/debugfs - Fix debugfs uninit process issue'
-To: huangchenghai <huangchenghai2@huawei.com>
-Cc: herbert@gondor.apana.org.au, davem@davemloft.net, stable@vger.kernel.org,
-        qianweili@huawei.com, "fanghao (A)" <fanghao11@huawei.com>,
-        "He, Zhe" <Zhe.He@eng.windriver.com>,
-        "Bi, Peng (CN)" <peng.bi.cn@windriver.com>
-References: <767571bc-1a59-4f7c-a9c7-fb23b79303a9@windriver.com>
- <4725f8e8-7f46-48f6-9869-8bf16eca6f1a@windriver.com>
- <bbb04362-c67e-438e-b15c-85da61563b0f@huawei.com>
-Content-Language: en-US
-From: Cliff Liu <donghua.liu@windriver.com>
-In-Reply-To: <bbb04362-c67e-438e-b15c-85da61563b0f@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SI2P153CA0025.APCP153.PROD.OUTLOOK.COM
- (2603:1096:4:190::12) To CY8PR11MB7012.namprd11.prod.outlook.com
- (2603:10b6:930:54::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C642522A1
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 07:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744962822; cv=none; b=HcbFA9BmKUZA4jOugUEsbLKRIab2yGph0NuWQGeDVWBpZQPdhWhkbyXq+5gY2yRwhy6gGQGH2CXnirWZLRd4gfGma+XYyeSc1FVDvj9nF2pvdF9qj/cV1YkpR0BoTgGeSoK6h4EQzcyqx2e2bMV0AdX2+3Pj/pEZ9QPf/dEGE5s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744962822; c=relaxed/simple;
+	bh=Myoieq5AHAsfCkC471ftyGoDu4Wy2MzuQeBMkPKK1I4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RftJhDWhzlYp+b3QPdcRUPuTFsGFfsrNdP2LSZL4uZ4hK+b2fYnQDHgEn3dAOuJEtgqY9y96Hv7RytrsTvY9KoxTXnr2V8dL6SU4wLE8plpbVH9nNDuqqy0NcnsCrM8hwcoDvmZ/xhQTUL2+3dMFzlstP/c9mZ2pPNGTt1q8cvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=q66smJT2; arc=none smtp.client-ip=209.85.222.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-86fab198f8eso612071241.1
+        for <stable@vger.kernel.org>; Fri, 18 Apr 2025 00:53:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1744962819; x=1745567619; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XIJ0B2TMiV89VsD9zDzHfB8j6876qfCf1ZvV0jOFwPM=;
+        b=q66smJT2x/DFuELB9LHc/51cZc/Xqgkh40viHOEB+CR9LAwgnA5gHtZ7pOG/tKOgHT
+         Z5XAYQFcn6xzbMlByww30PBzn9z7zuzQLjmnNXzmTDYRrkcswbI2rPFaXtMCCZ6MGm4c
+         zMg+/7WFtc32HaONR4v8oZ0ijRITPxI9jn4cvAnk4DUcFBE6KphlITHy0E4grWm4V/4F
+         K9TcbQykxxxXvVwuckeJu/fERbt1jwuPPwWYiGUZZBclIcxjLjhsVFgjQzhv2UvCtcZY
+         kwQDv9ySCxX+Tm+iro8tpakiElVoG/CXvOmZ4Zc4E4itOyVdlV19N8Bo5X7+5KDLn/Jg
+         dmmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744962819; x=1745567619;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XIJ0B2TMiV89VsD9zDzHfB8j6876qfCf1ZvV0jOFwPM=;
+        b=HUfhloeGMI8s4A9MALSv4EuKQ8py8z/9OZZvhuKL9PzqNPWNl2GMYct7/atqGdMZud
+         aGJOZdtMnZu8CxgA9nCjysrUc04nISfMMgGp+ovYVgyIeqXVBrnagIGEnKypNGytbia5
+         UfcH/g/iyNNTNtRnIWujvGd7iGYq5Z6et0kTqpcef7hcVmpz+NCNnhE4/iVcOFs2/xMQ
+         5T3/2IDOzyo3+pmOjMWnluVaqDvgItz7p5s5k1bYK116Toh9wLvJROQwH1/NqaM/tDjV
+         2emhqHFgiLMEmA+FMxMJGK6zBSfUUcbsYq/qmozN8nLe1EArZvhth+ZBH87ikNyZqno5
+         rpxg==
+X-Gm-Message-State: AOJu0YyJxey9xgAFnc5IjDM6NDMfoaBukbD5N77mrldPO1KtabqUennv
+	qbO8yq3eh/k8HnrkiDGxymiuxYq4VmQcUJa1GxOPFSdA3e4LA8JSf8IMOckd5aFvreIOrdAoOrB
+	gty2BGYu81Ek065Oa92/vL8guewhIhxgHm3Oe+Q==
+X-Gm-Gg: ASbGncuKE1PvK2JC/LSGZ1JAsrOhXAYPdbBFq1/+idbyUyM5FTEDzydUZZlduMCIxdC
+	krLP45vwGbnjepLQg5p4iM8ktXaWXTFtySJHJY2YhruBkZOyBBpqEmGPSCVSjcsiEd0eg+nidpB
+	yEMhBJyd7D1+m6GmXeeaJ4Tb2+FJ828cdxjsFEe8PxugTu3bOYQdnKKQ==
+X-Google-Smtp-Source: AGHT+IFTGbVZZetUE9HCWSO8w/F4KeChmScmnZ5AZgW3i5eFumiq5KR6/6167HsmhF0YKOkb6owXP8U1NAq00FSYTwA=
+X-Received: by 2002:a05:6102:1165:b0:4c1:86ff:4af7 with SMTP id
+ ada2fe7eead31-4cb80213764mr1187463137.21.1744962819474; Fri, 18 Apr 2025
+ 00:53:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7012:EE_|IA1PR11MB6266:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5bc4d25a-0274-4e7f-e32b-08dd7e44c1a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q0ZGV2xTZWlxWVlEY0hUWTJtTjhYc0Z3VmRkZzVOeWtqWlZpWHVGRGpibitI?=
- =?utf-8?B?VkhOR0FJazl4d21hV3lJbElIOWhUM25qRUpnaTZqQlRsTTlBRkQrZkhFQm9m?=
- =?utf-8?B?TW4zUUNZSjRUTjdHdzdDYjhaWmdZSWQ2emxrRldRUFhybHl3WXBlVXdJNjdB?=
- =?utf-8?B?RFdPK0wwMnU1Rjhwam01QzU1SkE5cFlHZUswa1dTdUNCWXBpc2NEcWF3NXg0?=
- =?utf-8?B?UmYrcFliRkR4ODIveExxM1Q5d1VOM0EzRjRIVVlYMTRHSmdmV24xQWxWYnNV?=
- =?utf-8?B?UTRnRmNVM2xDVW4wOG9UK0NIbHNZR1plR3N0OThiZEw5Sm9uNXpEL1BnZ2w1?=
- =?utf-8?B?ZlB5dE42bVVOUWtVcDRPY1ZEaENHZXIyalRnVWpqOGdyeW5DV1ltVW9CMXZP?=
- =?utf-8?B?Ty9aTTZEL0NzTGlkd0ZnSGNXSVUwM0ptSGJkZFB2YU5xamZ6Ynh1clduZTcx?=
- =?utf-8?B?VEN4Ym1KMzhFTzFJRFNrTWZBSmNQYStMdEQzM3NqVDdEK0sxQitEVnkwcUt3?=
- =?utf-8?B?SjNVOGE4NWk5ZnMxU0ZFS1pLVTNTL3FrK284UTBWWVF6K2NMT1pGTVdMN2dE?=
- =?utf-8?B?eEQxcWNkcFJKaGVWSE0yNXhCS0RhYytFTmFkZ1ByWERSaHZrdnBvdXJDcW5X?=
- =?utf-8?B?cWJ2YjJjUlAyT092ZjlyOVZZa0d6VXZtenRlTVcyVU1YT2xZb0FLWG1mdHQr?=
- =?utf-8?B?TWw3TVpPcUxkZ3VFWDVTaDY1KzIvQjYwVU9LS2FtYUFyZTB6WFJ2WEU0anky?=
- =?utf-8?B?d0FWTVpkQVpYdFFiVm9EWHFhdXZMWjdtNDFWN3dwSWEvRG15RGJKLzVyWmYw?=
- =?utf-8?B?bHUzamg1akFtc1JlQ3N0QTdUK3N2WkVQUkkwNnlHMW81U2hEaHJITHBzL3g4?=
- =?utf-8?B?bnFJeHZVbU53WFJIWS9FRkdiWVdQbEcxaFZSQVpHY0w1MXN1V1ZKand0UnVE?=
- =?utf-8?B?cEM5RUUrbjNja0Zzdms2aW85MmtsZm5waytONXBidnQ4T2YvSTh3MmRDMHZR?=
- =?utf-8?B?cVNqUVZPQS9BdHhlR0xSTjk1Sk5VQVIwdThsSjNrNTAzMzR6UlNHbG5YbUN5?=
- =?utf-8?B?Y2dwNDFCRXJoZVZhVnpVMnplRGwrZDBMaTdLYWxnZkFqdS9xYStMdE1ZejRz?=
- =?utf-8?B?cXNhMWYyaVZ4MU15NDM1Y1YrY0NaUDVYNUYzZXBHKzhVT0RvNUlNOHpUQlhK?=
- =?utf-8?B?a1pVSTRmR1hXQWg3M1Z0WElpUElXVDcwK01OdkRYTG1pRE5haGpTNzRsSWw0?=
- =?utf-8?B?VEN4UDdTVU45WWdyRVZZWDBPK1VVdktPQXRsaDlOZGFDODgrZDlzMkttK0ZC?=
- =?utf-8?B?aTBzOU9HdStlTWdnRG95d25PQi9Sc295aDNSZExmTEdwYWZOOEFpaFpObmxl?=
- =?utf-8?B?a1VHT2ZIaklrVDIxUmFrOHJCRHlQbWFvZDZkL09rSTNzbHJPOFRHOE9iY2J0?=
- =?utf-8?B?K0xWVlROY1lNSEZTd05vMDViR3pBU1oyUkZDNlY0am53STQ3MDhyLzZnTzIv?=
- =?utf-8?B?dmtMS2FUU09LOG9OaEM1NlhtdVdIRmUwZEtFOHlmZ0ROUHg3T3JNMkVVdTUz?=
- =?utf-8?B?bVFacnByNW1BdjdvTEYyV01rSmdxZ0l5ZjBpZjVGSXBBcWxKNEwrSGdkWUc5?=
- =?utf-8?B?LzZQYlo4NDdJdGsrdHcyYXQybG5uNVlnZWRKZUQ5N2NaM3VMa21rQ3hrNjI1?=
- =?utf-8?B?YnJrZGxzWlZOTjhlT0psQ2poWXB1L1dWZG9Vd2kwMjlFV01lalpPT0FXNjFN?=
- =?utf-8?B?VFhUOUh1NW1zZnNIVEVUbGhlbVJWbWxZZFNneDVUY1E0YjZ1ZTcxT1FQU2sz?=
- =?utf-8?B?UXM1NU1tWHMweDUzeDJ3dU5uMWsxMDhXcGpvYi96TUEwNExMdFl5dXpHQ1BZ?=
- =?utf-8?B?Ni8vcDBPVW1CbkNNWjlWWHliYm5xL0ltNXBjejFGTTJOOFpUcFFHdXpsVTlE?=
- =?utf-8?B?YTRyTWhDNGJ6anpFc096TktLSHlCYjdiTHNuWHNVZGdNSjJYMExuV09JSmVQ?=
- =?utf-8?B?OGtxWVlxQXJ3PT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7012.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RXlYSzJNSVFTOXV1QXpucUFnTTRQL3hXT0hwbjN6UVBHZGEyVmNPRjB6UmRr?=
- =?utf-8?B?a0E2SjJ6bGVzMmMxUGtHOXhicWJxVUMyWDBLd21zYUZGTS90d2w5WE80ckt0?=
- =?utf-8?B?YU5kczkwNkZtRW1CZFlZR1RsdHhVOFNsaDdGRDJLbzA5QnpsRmorY09oWUtL?=
- =?utf-8?B?SjlzdVdwOHBIYWRrVjhTZEF4dW9UaTZzMVZjcjgzbUlscFNyWnduZTVSL2tJ?=
- =?utf-8?B?ak83cFFoV0ljWFZtOVRxNVVnZkJNUW5ubTFucmozMCt4L09EcjlXVEVjK2dG?=
- =?utf-8?B?aXliUTJDY1NZckV5NCs3cmd5eUxzc0FuMHFZalpwaGszdldCZEpNNStPajlV?=
- =?utf-8?B?UWJscjRoaGlMZUIwZ1haWW5MWTMxZy9vQkIzZGRHZUtxMTd5Q2RzaEE3ZTRP?=
- =?utf-8?B?SVVzT29ldUJmT09BVkg5UGR6WnY4VWV5LzY5NEh1b3IydE5mRkZMT1pzVUtF?=
- =?utf-8?B?ZFNWMUxsa2dKTEZMODBIbmZLMnM3ZFNLclkvd1RSUFpHTVVqYm8vbFZmclJs?=
- =?utf-8?B?MVg1M1JieTlmeVZJVGFwRmJ2cHB0QkZvVHBMQ0poN0pKUUZ0eUxYQ202Skw0?=
- =?utf-8?B?VlhZQTVzVzAydlFGRkdwQUE2TmgrcGN6VGdGaE92bHFUSUk4Uml4SkRBUk5z?=
- =?utf-8?B?eEdDdGRHZEovS2hGNG04eEttVk9RZkVScUFWdlBTTllxaTkwT0JSK0VFSi9j?=
- =?utf-8?B?NzNIc1lRUG14SmN3Zkh4dDcxTTkyNURSMFkyTmNXT2w4VmhsZU1SallqRENC?=
- =?utf-8?B?QXFVc3g4Mkc2Tyt1Mzg4LzRBWFVpQ2xaRFp5Tkg1UEVQL1Fsbzd0VE1aTFNy?=
- =?utf-8?B?TjJsK2lpYkZ1dkh1NDQycnYyOWN1ZFFWdlhlSUJyMmNWNHJ2N2hac3N5RlIv?=
- =?utf-8?B?OThjTzIrOVl6dHFMR3R6ZEFVMzBRbnBSN2VKaWJRWUZvN1V4amFqZDJNb0hD?=
- =?utf-8?B?UFMrMUpZRW9PWEM2azJDUXV6b3k4Q2R1YXNhMzAxQUFYeGtVSXpxeWtabWxs?=
- =?utf-8?B?VCtEVWtSVmpqVEFNV0hGdm1nNjRSZ0lGWkJ6dnZzdG9iazRwVWRMYUZubzdo?=
- =?utf-8?B?bUlvUTlzYkh3c3ZEMGhsMGZ2aFpqaEVzTXBDMHhMQ3JqaHNOaSt2a3R4YzNQ?=
- =?utf-8?B?MnRjNzRpQThwVlBPc2lOaHhGVVg5REhKcVlsTFdPN0FHSzUyYVUza0dzVFRS?=
- =?utf-8?B?c25Pc3dXU2hqZnArZ3J5VXFZa2tBN1hXQnM2TXBRaWdSQ3RaYkRtSE9Mditl?=
- =?utf-8?B?MXBSc0Q2SHFNZ2NFejc4K1JMemJUbzNOU2ZGRThoS01xY213RXFjR2tSRDZu?=
- =?utf-8?B?L0IvT3lEODV4UnJBSGM3SmJGZ0dteTB4cEs4bVhTODlJZ3BOOUJuU0tkK2V4?=
- =?utf-8?B?TWFHaFlPM291MlUrTWJjR0VqQzdPYmdOV2JZcnBOMVpreTN0NUk2aTlTbG5S?=
- =?utf-8?B?Yk8wem9laDZLMS9WbmRJSDVEY2dFUEo5S3NnbUxKalp5R1Z0NFdnSi91TTU3?=
- =?utf-8?B?V0hGU3UvYm9Vdm1hVVRwdnJkUkJiSHB6b0ttdzRzc2lWVGt0TmI5Z1ZrZVlK?=
- =?utf-8?B?MTRhNlZ6enBROG9oNHF4VlcvLzhuekZUNytqamlxYlJEMzZkc2VGMXg1cG5k?=
- =?utf-8?B?Q0VsdFNibnNQOW1jeTJWOUZEQ21udHBGczdkZjlGN3J5L2oxZnI0YXV4bVZQ?=
- =?utf-8?B?dGtWWFhpbGJhdkQrdWxuWGNHSkdCRVpYdUxNUTEvUzVzQ2Vac0tKOFFPb25n?=
- =?utf-8?B?Y2wwT3l6NjBNajFWcUNYbytGNm0vZkUzb0E3TjQ1ZFp3WjdONm9EN3hGbWZT?=
- =?utf-8?B?SkxlSFRJSm9peGJWMXJGWFpmcTZaUExzb2RwNW44ZFNSUnpUUFpWYnF3cFlv?=
- =?utf-8?B?cW5pTENaU3E2aHJKZEFpaDdDYlRUaG90aWUwb1ZvcFRsVW5rQnJ6b0o2Qlpz?=
- =?utf-8?B?TzRiUjhrNk9yU0VCU3lrWE14S2pUNGExYktZMm8weWYrSSs5NWQ3NjVqb0p2?=
- =?utf-8?B?RWxjYlJ5Q0J6bHVwSERGODJmcjRHQmNUMkgvQlZHM2tGbHN1cEk4czY3Rnl2?=
- =?utf-8?B?RCtvclc0VWpPbUxMZXBBZ2w2QmFCdWJIUnJ6Qkk5cXpwMStMeFpxNHg4L3ds?=
- =?utf-8?B?Y3dZbG9TckQzWWZpZ290eThuRzNRZjRxeEFkS0JYK01ISGJhdXcyTlViQjB3?=
- =?utf-8?B?RUE9PQ==?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5bc4d25a-0274-4e7f-e32b-08dd7e44c1a2
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7012.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2025 06:46:33.0840
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gQnSFpx5VuYYaovpx2uBJnXZllHYmCLMM8c1pEBKNUQIfvx9XWdyGSa8ROYq7itNQUk5i3A6rrG+LuAaRkeBwt7in0F0G1Nenu3wJfOVbSg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6266
-X-Proofpoint-ORIG-GUID: dk_Ku6ax7t4v6fzGj3xDKjbtz9n5FnYu
-X-Proofpoint-GUID: dk_Ku6ax7t4v6fzGj3xDKjbtz9n5FnYu
-X-Authority-Analysis: v=2.4 cv=UZBRSLSN c=1 sm=1 tr=0 ts=6801f54c cx=c_pps a=9T78G36u1E64A7MtQSounQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=XR8D0OoHHMoA:10 a=q1bzhA5_rk0hHByROAsA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-18_02,2025-04-17_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
- priorityscore=1501 mlxscore=0 impostorscore=0 phishscore=0 malwarescore=0
- spamscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2504180048
+References: <20250417175117.964400335@linuxfoundation.org>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 18 Apr 2025 13:23:27 +0530
+X-Gm-Features: ATxdqUHwgzDJJgGMq17txYu0twdBZhINNv85OP_bUXu-SObSGKCfhxX_v8A_V7E
+Message-ID: <CA+G9fYs+z4-aCriaGHnrU=5A14cQskg=TMxzQ5MKxvjq_zCX6g@mail.gmail.com>
+Subject: Re: [PATCH 6.14 000/449] 6.14.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, Arnd Bergmann <arnd@arndb.de>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Frieder Schrempf <frieder.schrempf@kontron.de>, Marek Vasut <marex@denx.de>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-That's great.
+On Thu, 17 Apr 2025 at 23:23, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.14.3 release.
+> There are 449 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 19 Apr 2025 17:49:48 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.14.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-And thank you so much for your opinion and effort!
+Regressions on arm64 dragonboard 410c boot failed with lkftconfig on
+the stable rc
+6.14.3-rc1. While booting, the following kernel warnings were noticed
+and boot failed.
 
-   Cliff
+First seen on the 6.14.3-rc1
+Good: v6.14.2
+Bad:  v6.14.2-450-g0e7f2bba84c1
 
-On 2025/4/18 14:35, huangchenghai wrote:
-> CAUTION: This email comes from a non Wind River email account!
-> Do not click links or open attachments unless you recognize the sender 
-> and know the content is safe.
->
-> Hello,
->
->
-> Sorry to reply late, I checked, 5.10 and 5.15 do not have the diff regs
-> function.
->
-> So there's no need to fix this in 5.10 and 5.15.
->
-> Thank you for your attention.
->
->
-> Thanks,
->
-> ChengHai
->
->
-> 在 2025/4/17 14:51, Cliff Liu 写道:
->> Hi,
->>
->> I think this patch is not applicable for 5.15 and 5.10.
->> Could you give me any opinions?
->>
->> Any helps from maintainers are very appreciated.
->>
->> Thanks,
->>
->>   Cliff
->>
->> On 2025/4/8 15:45, Cliff Liu wrote:
->>> Hi Chenghai,
->>>
->>> I am trying to back-port commit  8be091338971 ("crypto:
->>> hisilicon/debugfs - Fix debugfs uninit process issue") to 5.15.y and
->>> 5.10.y.  After reviewed the patch and code context, I found there is
->>> no "drivers/crypto/hisilicon/debugfs.c" on both 5.15 and 5.10. So I
->>> think the fix is not suitable for 5.15 and 5.10.
->>>
->>> What do you think? Your opinion is very important to me.
->>>
->>> Thanks,
->>>
->>>  Cliff
->>>
+Regressions found on arm64 dragonboard 410c:
+- Boot/clang-20-lkftconfig
+
+Regression Analysis:
+- New regression? Yes
+- Reproducibility? Yes
+
+Boot regression: arm64 dragonboard 410c WARNING regulator core.c regulator_=
+put
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Boot log arm64 dragonboard 410c
+[    3.924339]  remoteproc:smd-edge: failed to parse smd edge
+[    4.051490] msm_hsusb 78d9000.usb: Failed to create device link
+(0x180) with supplier remoteproc for /soc@0/usb@78d9000/ulpi/phy
+[    4.055155] qcom-clk-smd-rpm
+remoteproc:smd-edge:rpm-requests:clock-controller: Error registering
+SMD clock driver (-1431655766)
+[    4.062274] qcom-clk-smd-rpm
+remoteproc:smd-edge:rpm-requests:clock-controller: probe with driver
+qcom-clk-smd-rpm failed with error -1431655766
+[    4.091319] sdhci_msm 7864900.mmc: Got CD GPIO
+[    4.101827] s3: Bringing 0uV into 1250000-1250000uV
+[    4.101935] s3: failed to enable: (____ptrval____)
+[    4.105657] ------------[ cut here ]------------
+[    4.110395] WARNING: CPU: 3 PID: 14 at
+drivers/regulator/core.c:2450 regulator_put
+(drivers/regulator/core.c:2473 drivers/regulator/core.c:2471)
+[    4.115181] Modules linked in:
+[    4.116774] input: gpio-keys as /devices/platform/gpio-keys/input/input0
+[    4.123575] CPU: 3 UID: 0 PID: 14 Comm: kworker/u16:1 Not tainted
+6.14.3-rc1 #1
+[    4.123587] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
+[    4.123593] Workqueue: async async_run_entry_fn
+[    4.123608] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[    4.123619] pc : regulator_put (drivers/regulator/core.c:2473
+drivers/regulator/core.c:2471)
+[    4.124148] sdhci_msm 7864900.mmc: Got CD GPIO
+[    4.128587] clk: Disabling unused clocks
+[    4.133299] lr : regulator_put (drivers/regulator/core.c:2444
+drivers/regulator/core.c:2471)
+[    4.133312] sp : ffff80008300ba40
+[    4.133317] x29: ffff80008300ba40 x28: 0000000000000000 x27: ffff800081b=
+850f8
+[    4.141083] PM: genpd: Disabling unused power domains
+[    4.147271]
+[    4.147274] x26: ffff800081b850b8 x25: 0000000000000001 x24: 00000000aaa=
+aaaaa
+[    4.147288] x23: ffff000009d64480 x22: ffff000005b10000
+[    4.151676] qcom-rpmpd
+remoteproc:smd-edge:rpm-requests:power-controller: failed to sync cx:
+-1431655766
+[    4.158467]  x21: ffff000005b10000
+[    4.158474] x20: ffff0000044e41c0 x19: ffff0000055f00c0 x18: 00000000000=
+00002
+[    4.158488] x17: 0000000000000000
+[    4.162763] qcom-rpmpd
+remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
+cx_ao: -1431655766
+[    4.166888]  x16: 0000000000000001 x15: 0000000000000003
+[    4.166898] x14: ffff8000828ad200 x13: 0000000000000003 x12: 00000000000=
+00003
+[    4.171011] qcom-rpmpd
+remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
+cx_vfc: -1431655766
+[    4.174872]
+[    4.174876] x11: 0000000000000000 x10: 0000000000000000 x9 : 00000000000=
+00000
+[    4.174889] x8 : 0000000000000001
+[    4.178116] qcom-rpmpd
+remoteproc:smd-edge:rpm-requests:power-controller: failed to sync mx:
+-1431655766
+[    4.185205]  x7 : 0720072007200720 x6 : 0720072007200720
+[    4.185216] x5 : ffff000003201f00 x4 : 0000000000000000 x3 : 00000000000=
+00000
+[    4.190259] qcom-rpmpd
+remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
+mx_ao: -1431655766
+[    4.191806]
+[    4.191809] x2 : 0000000000000000
+[    4.198858] ALSA device list:
+[    4.203876]  x1 : ffff800080201224 x0 : ffff0000055f00c0
+[    4.203888] Call trace:
+[    4.203893] regulator_put (drivers/regulator/core.c:2473
+drivers/regulator/core.c:2471) (P)
+[    4.213658]   No soundcards found.
+[    4.216808] regulator_register (drivers/regulator/core.c:5964)
+[    4.216819] devm_regulator_register (drivers/regulator/devres.c:477)
+[    4.329706] rpm_reg_probe
+(drivers/regulator/qcom_smd-regulator.c:1425
+drivers/regulator/qcom_smd-regulator.c:1462)
+[    4.329719] platform_probe (drivers/base/platform.c:1405)
+[    4.329730] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:658)
+[    4.329743] __driver_probe_device (drivers/base/dd.c:0)
+[    4.329755] driver_probe_device (drivers/base/dd.c:830)
+[    4.329768] __device_attach_driver (drivers/base/dd.c:959)
+[    4.329780] bus_for_each_drv (drivers/base/bus.c:462)
+[    4.329791] __device_attach_async_helper
+(arch/arm64/include/asm/jump_label.h:36 drivers/base/dd.c:988)
+[    4.329804] async_run_entry_fn
+(arch/arm64/include/asm/jump_label.h:36 kernel/async.c:131)
+[    4.329814] process_scheduled_works (kernel/workqueue.c:3243
+kernel/workqueue.c:3319)
+[    4.329827] worker_thread (include/linux/list.h:373
+kernel/workqueue.c:946 kernel/workqueue.c:3401)
+[    4.375850] kthread (kernel/kthread.c:466)
+[    4.379397] ret_from_fork (arch/arm64/kernel/entry.S:863)
+[=C3=AF=C2=BF=C2=BD+HH=C3=AF=C2=BF=C2=BD=C3=AF=C2=BF=C2=BD4.387392] s4: Bri=
+nging 0uV into 1850000-1850000uV
+[    4.387486] s4: failed to enable: (____ptrval____)
+[    4.391254] ------------[ cut here ]------------
+[    4.395957] WARNING: CPU: 2 PID: 14 at
+drivers/regulator/core.c:2450 regulator_put
+(drivers/regulator/core.c:2473 drivers/regulator/core.c:2471)
+[    4.400742] Modules linked in:
+[    4.409148] CPU: 2 UID: 0 PID: 14 Comm: kworker/u16:1 Tainted: G
+    W          6.14.3-rc1 #1
+[    4.412028] Tainted: [W]=3DWARN
+[    4.420949] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
+[    4.421397] sdhci_msm 7864900.mmc: Got CD GPIO
+[    4.423810] Workqueue: async async_run_entry_fn
+[    4.434842] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[    4.439274] pc : regulator_put (drivers/regulator/core.c:2473
+drivers/regulator/core.c:2471)
+[    4.446210] lr : regulator_put (drivers/regulator/core.c:2444
+drivers/regulator/core.c:2471)
+[    4.450376] sp : ffff80008300ba40
+[    4.454281] x29: ffff80008300ba40 x28: 0000000000000000 x27: ffff800081b=
+85118
+[    4.457503] x26: ffff800081b850b8 x25: 0000000000000001 x24: 00000000aaa=
+aaaaa
+[    4.464622] x23: ffff00000459ae80 x22: ffff000004510800 x21: ffff0000045=
+10800
+[    4.471739] x20: ffff0000038e3180 x19: ffff0000055f1000 x18: 00000000000=
+00068
+[    4.478857] x17: 0000000000000000 x16: 0000000000000024 x15: 00000000000=
+00301
+[    4.485976] x14: 0000000000000024 x13: 00000000150d0cc9 x12: fffffffffff=
+ffff0
+[    4.493093] x11: 0000000000000000 x10: 0000000000000000 x9 : 00000000000=
+00000
+[    4.500211] x8 : 0000000000000001 x7 : 0720072007200720 x6 : 07200720072=
+00720
+[    4.507328] x5 : ffff000003201f00 x4 : 0000000000000000 x3 : 00000000000=
+00010
+[    4.514446] x2 : ffff80008300b6d0 x1 : ffff800080201224 x0 : ffff0000055=
+f1000
+[    4.521566] Call trace:
+[    4.528671] regulator_put (drivers/regulator/core.c:2473
+drivers/regulator/core.c:2471) (P)
+[    4.530931] regulator_register (drivers/regulator/core.c:5964)
+[    4.535099] devm_regulator_register (drivers/regulator/devres.c:477)
+[    4.539006] rpm_reg_probe
+(drivers/regulator/qcom_smd-regulator.c:1425
+drivers/regulator/qcom_smd-regulator.c:1462)
+[    4.543518] platform_probe (drivers/base/platform.c:1405)
+[    4.547249] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:658)
+[    4.550983] __driver_probe_device (drivers/base/dd.c:0)
+[    4.554630] driver_probe_device (drivers/base/dd.c:830)
+[    4.558970] __device_attach_driver (drivers/base/dd.c:959)
+[    4.562965] bus_for_each_drv (drivers/base/bus.c:462)
+[    4.567477] __device_attach_async_helper
+(arch/arm64/include/asm/jump_label.h:36 drivers/base/dd.c:988)
+[    4.571646] async_run_entry_fn
+(arch/arm64/include/asm/jump_label.h:36 kernel/async.c:131)
+[    4.576679] process_scheduled_works (kernel/workqueue.c:3243
+kernel/workqueue.c:3319)
+[    4.580586] worker_thread (include/linux/list.h:373
+kernel/workqueue.c:946 kernel/workqueue.c:3401)
+[    4.585358] kthread (kernel/kthread.c:466)
+[    4.588915] ret_from_fork (arch/arm64/kernel/entry.S:863)
+[    4.592304] ---[ end trace 0000000000000000 ]---
+[    4.597057] l2: Bringing 0uV into 1200000-1200000uV
+[    4.600531] qcom_rpm_smd_regulator
+remoteproc:smd-edge:rpm-requests:regulators: l2:
+devm_regulator_register() failed, ret=3D-517
+[    4.605612] Unable to handle kernel paging request at virtual
+address ffffffffaaaaae6a
+[    4.616566] Mem abort info:
+[    4.624438]   ESR =3D 0x0000000096000005
+[    4.627130]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
+[    4.630953]   SET =3D 0, FnV =3D 0
+[    4.636417]   EA =3D 0, S1PTW =3D 0
+[    4.639281]   FSC =3D 0x05: level 1 translation fault
+[    4.642325] Data abort info:
+[    4.647183]   ISV =3D 0, ISS =3D 0x00000005, ISS2 =3D 0x00000000
+[    4.650313]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
+[    4.655606]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
+[    4.660730] swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D00000000824f10=
+00
+[    4.666115] [ffffffffaaaaae6a] pgd=3D0000000000000000,
+p4d=3D0000000082f1c403, pud=3D0000000000000000
+[    4.672816] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+[    4.681201] Modules linked in:
+[    4.687443] CPU: 2 UID: 0 PID: 14 Comm: kworker/u16:1 Tainted: G
+    W          6.14.3-rc1 #1
+[    4.690584] Tainted: [W]=3DWARN
+[    4.699505] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
+[    4.702381] Workqueue: async async_run_entry_fn
+[    4.709147] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
+=3D--)
+[    4.713405] pc : regulator_unregister (drivers/regulator/core.c:5991)
+[    4.720342] lr : devm_rdev_release (drivers/regulator/devres.c:453)
+[    4.725203] sp : ffff80008300bae0
+[    4.729454] x29: ffff80008300bb00 x28: ffff000003301340 x27: 00000000000=
+001c8
+[    4.732683] x26: ffff000003231a00 x25: ffff00000459ae00 x24: ffff0000033=
+01340
+[    4.739794] x23: ffff80008286ed00 x22: ffff8000823fc4a1 x21: ffff0000033=
+aac00
+[    4.746913] x20: ffff000005ac7410 x19: ffff80008300bba8 x18: 00000000000=
+00002
+[    4.754030] x17: 6f74616c75676572 x16: 3a73747365757165 x15: 00000ff0000=
+3fd36
+[    4.761148] x14: 000000000000ffff x13: 0000000000000020 x12: 00000000000=
+00003
+[    4.768267] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff800080b=
+59fe0
+[    4.775384] x8 : 06678d1f10cf8900 x7 : 3d4e5f454c424954 x6 : 000000004e5=
+14553
+[    4.782502] x5 : 0000000000000008 x4 : ffff800082276255 x3 : 00000000000=
+00010
+[    4.789620] x2 : ffff80008300ba60 x1 : ffff0000033aac80 x0 : ffffffffaaa=
+aaaaa
+[    4.796740] Call trace:
+[    4.803845] regulator_unregister (drivers/regulator/core.c:5991) (P)
+[    4.806108] devm_rdev_release (drivers/regulator/devres.c:453)
+[    4.810966] release_nodes (drivers/base/devres.c:506)
+[    4.814872] devres_release_all (drivers/base/devres.c:0)
+[    4.818432] really_probe (drivers/base/dd.c:551 drivers/base/dd.c:724)
+[    4.822423] __driver_probe_device (drivers/base/dd.c:0)
+[    4.826072] driver_probe_device (drivers/base/dd.c:830)
+[    4.830324] __device_attach_driver (drivers/base/dd.c:959)
+[    4.834317] bus_for_each_drv (drivers/base/bus.c:462)
+[    4.838831] __device_attach_async_helper
+(arch/arm64/include/asm/jump_label.h:36 drivers/base/dd.c:988)
+[    4.843001] async_run_entry_fn
+(arch/arm64/include/asm/jump_label.h:36 kernel/async.c:131)
+[    4.848032] process_scheduled_works (kernel/workqueue.c:3243
+kernel/workqueue.c:3319)
+[    4.851941] worker_thread (include/linux/list.h:373
+kernel/workqueue.c:946 kernel/workqueue.c:3401)
+[    4.856713] kthread (kernel/kthread.c:466)
+[    4.860270] ret_from_fork (arch/arm64/kernel/entry.S:863)
+[ 4.863661] Code: d5384108 f9430d08 f81f83a8 b4000bc0 (f941e014)
+All code
+=3D=3D=3D=3D=3D=3D=3D=3D
+
+Code starting with the faulting instruction
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[    4.867227] ---[ end trace 0000000000000000 ]---
+[   14.238655] sdhci_msm 7864900.mmc: Got CD GPIO
+
+## Source
+* Kernel version: 6.14.3-rc1
+* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+* Git sha: 0e7f2bba84c1f492e15812fade27cc0a697f3cb6
+* Git describe: v6.14.2-450-g0e7f2bba84c1
+* Project details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/Boot/v6.14.=
+2-450-g0e7f2bba84c1/
+* Architectures: arm64 dragonboard 410c
+* Toolchains: clang-20
+* Kconfigs: lkftconfig
+
+## Boot
+* Boot log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y=
+/build/v6.14.2-450-g0e7f2bba84c1/testrun/28150326/suite/boot/test/clang-20-=
+lkftconfig/log
+* Boot history:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14=
+.2-450-g0e7f2bba84c1/testrun/28150326/suite/boot/test/clang-20-lkftconfig/
+* Boot details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.14=
+.2-450-g0e7f2bba84c1/testrun/28150326/suite/boot/test/clang-20-lkftconfig/d=
+etails/
+* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrqGz=
+3vUNvc2w9PJfCD1r7ChKx/
+* Kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrqGz3vUNvc2w9PJfCD=
+1r7ChKx/config
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
