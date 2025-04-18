@@ -1,123 +1,143 @@
-Return-Path: <stable+bounces-134595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6764CA938B3
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 16:30:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23297A93980
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC47E920BED
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 990508E4C82
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66116282FA;
-	Fri, 18 Apr 2025 14:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199B720A5F8;
+	Fri, 18 Apr 2025 15:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeWa26oS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOJcSG1Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE184AEE2
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 14:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF25013A265;
+	Fri, 18 Apr 2025 15:18:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744986651; cv=none; b=JZDDcWrP0rzHza50vRIPCQj1afRmz1/plpraUJhtbmAFCR4JPIvQBHY5oRfvlyQlMLNriK4QzkOt90hMpYZKoDsKQt2G3vc1Uss8Ko1eW+qwsMN0m9QWlO+USE4xeSQ6KfSod/RCuxvJws2KRzJhQ9TsWlJx/eJ8JSfKUo/4TEo=
+	t=1744989530; cv=none; b=LVUoD7CQmziPkYLsd0MY13paCyT4d2W3/u/W8VD4DwL+mch+zhD4/Wn3fF4qMFmM6v71FnHq4P++oPauLhWlXinzpz+F/aWV2/noOqdPQsJyQC6oC/P4lDxPlhgAXpSCwNCGrDM6LkLQBSBpHZ7iuQW4/jZOoGwcoAbWaDRBXp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744986651; c=relaxed/simple;
-	bh=oVL2kU5gjstzBGfXvp9kTBe+PNQYdWCgXca3RUgd+N0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZZBxSnm00u/zawgbhP+IGRQ/+X89r3wcc6cvXm7gegqNfRX19rrJF+0GkL/hGW0pnvDVQCtm81DAwnATdJhtHshHBa/kniL9OIzjWGTDhRBF9W/F0wBjG0JGR+zK+SlFVTRQ7Z5ZOr261Ou1n94KEwTj6Os1lYQLHg7CbMIUpIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeWa26oS; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-86135ac9542so61413939f.1
-        for <stable@vger.kernel.org>; Fri, 18 Apr 2025 07:30:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1744986648; x=1745591448; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G5zbYlhCEZEOrkhXJJRlzWrW7M63mHM4S+7WR1Jrdgk=;
-        b=IeWa26oSrWib5Z7OZoCykBgsO6okKwOrqpYx7aO3u/5tyYhWP24CMJAO6VxBMVpcPl
-         kj0FvYcM0vo76UTGamV+HghUVndMrfqom0keSblRNzvFXrbvwJyRS6YN1ybJUUgQ1+qT
-         /zLUh0uNs7N9J4r/4J4nNMOYYzgDty1DK8jOY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744986648; x=1745591448;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G5zbYlhCEZEOrkhXJJRlzWrW7M63mHM4S+7WR1Jrdgk=;
-        b=XO6pkJFSrzfSZn+74HXLD7X/kKFlvF0yKGeyIXSGlH0ND8a5XUV5w2dnJ2sjKVq1AW
-         zmBJN7EtMjpAtQZSqnXBZcYJW0ipsFxWcFExysLa1K3ZzYIcYm1HzyIKRj3NyRxaLyTi
-         Zu/jtuDG9INPcLVr4XqdauQpIzXxqyARSkhZ+EMKfQ3xTFeYA9Zs4i+dAZuwYNHC7RYk
-         1FqwLJ88C1prDhLBfuIqwrqCm3b76QmVqRmLhI8W4V8kWoXoxM8tjB53TtidpV+82sM2
-         iJ769FUsolMsSE1RIKbEu1CaS4RW2qbF+Y7XvufkH/izgIs6de00ptB+1edUXdR+lfuR
-         corg==
-X-Forwarded-Encrypted: i=1; AJvYcCUnyx0//zfodw35p585KiI8KRc328UBlUbbL6cDMHcyB9Sy9VulifFjODoY7y3WESiVqbnBIlY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwujebHXF4MnFUnOSiN1v+msPUKeqo2x1Y++Dvpc2OEiGDEz8ie
-	0ETIJorNBaK+kfwlZUzzCqd72LofcRHUuLmNvkFz5lnTmzu1R4xQKchk2AurlRw=
-X-Gm-Gg: ASbGncsJ+Spo5PHA8mzV1VTWsECWal1iZvHyQjh/uejwVeQ/xLpVhm9KUQvl+8imI0l
-	RnXE7USkKkUMZ2668uqv2w3NOmyABKsJKiQ0XyCkj5pVt/bo9XCgAR5gUgthvPsOYmcW807M6w0
-	QJi4bBbyKMKDFkB0uurlxFR8RyVkSogoYVro7eM5JWg/bhi8ePNdhdtppf4IWYeFUVFoEQB5DJr
-	789kd3M94Z5YYuWXwnowNEBQtvMVtrsxKzyab6TrMJfOydMJeBzIbvUKdtx+6lO8fVPBliH3SN+
-	A77poRIji8+iEbCi4fxQWVZI0CR8pLPWqN9odK2Dl4UfK7eaaK9DS44+UBtOXw==
-X-Google-Smtp-Source: AGHT+IHg6AQYt64hVTa2MyJj6PvmJcGkPqJ51JrQFjKLFrY6PtlcvN7ICxYBR+rpFCkNIDuYhjWG3A==
-X-Received: by 2002:a5e:d718:0:b0:85e:22b3:812b with SMTP id ca18e2360f4ac-861d8a19580mr353447539f.8.1744986648413;
-        Fri, 18 Apr 2025 07:30:48 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f6a37cbb44sm468122173.26.2025.04.18.07.30.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Apr 2025 07:30:48 -0700 (PDT)
-Message-ID: <5c0ae486-f29e-4a7d-bca1-434c82d06b23@linuxfoundation.org>
-Date: Fri, 18 Apr 2025 08:30:47 -0600
+	s=arc-20240116; t=1744989530; c=relaxed/simple;
+	bh=XglS+o5Edeva5i6kHjjB2Rr2O/LCTDY6vEze98CwMc8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RQryOAhIYb5Rd03+Tb3zpjO5BnLkYBXuzSkwv0jCb132StNkDvHz44pt6kT62RDd79hryN3mZb+UR38X6if+X1fcIO0b2bcXjNDsosyzNsfcCLsvH+9ld9PeZ/dR6UFfiTd8yIV8q9/R2QgPPmNZEbuJoqOfcwZY1IZB5kER+Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOJcSG1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DEC1C4CEE2;
+	Fri, 18 Apr 2025 15:18:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744989530;
+	bh=XglS+o5Edeva5i6kHjjB2Rr2O/LCTDY6vEze98CwMc8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AOJcSG1QFr1ePZtdLjwDKd1WP2aeBriV4k2UHBLySKPITOMEUbA5afGQok1glITaL
+	 HzVOz0uSFH9s9w+p5J1bguh2CwUET8mpFj3sQ3QBE0zdOLFxgeRk6PrUsA6clPKXGA
+	 pu2PPJmlmqtUtb/0juEGnuu1rWebNpwIvIGUPWo9f1F9GXw+RzKSo9UmfchWpuNszH
+	 TzOK87dj2fnnZhVyFWI3yC/DfxQcwJ0Adprijj2lrXXS78ckXGoG5LsAV1fUc7f79V
+	 gczZySdYA5z1EFPXdgOEtXocV1r1SA3dlQ3n98hi223F5ymsXPqF9fDJJOJEzOPd8K
+	 kWjsk3JL3F8mw==
+Date: Fri, 18 Apr 2025 16:18:41 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, linux-iio@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+ skhan@linuxfoundation.org, kernelmentees@lists.linuxfoundation.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3] iio: adc: Correct conditional logic for store mode
+Message-ID: <20250418161841.4ba1d05e@jic23-huawei>
+In-Reply-To: <CAKUZ0zLiP_w-4xOXfBDdZbm+M8yVYvd+A=M73fnRT_kMyWwk7Q@mail.gmail.com>
+References: <20250414154050.469482-1-gshahrouzi@gmail.com>
+	<1fb5f1c5e61ce386cb431d48296e952bdd560a6c.camel@gmail.com>
+	<CAKUZ0zLiP_w-4xOXfBDdZbm+M8yVYvd+A=M73fnRT_kMyWwk7Q@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/393] 6.12.24-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250417175107.546547190@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 4/17/25 11:46, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.24 release.
-> There are 393 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 19 Apr 2025 17:49:48 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.24-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Tue, 15 Apr 2025 09:54:00 -0400
+Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-Compiled and booted on my test system. No dmesg regressions.
+> On Tue, Apr 15, 2025 at 5:13=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.c=
+om> wrote:
+> >
+> > On Mon, 2025-04-14 at 11:40 -0400, Gabriel Shahrouzi wrote: =20
+> > > The mode setting logic in ad7816_store_mode was reversed due to
+> > > incorrect handling of the strcmp return value. strcmp returns 0 on
+> > > match, so the `if (strcmp(buf, "full"))` block executed when the
+> > > input was not "full".
+> > >
+> > > This resulted in "full" setting the mode to AD7816_PD (power-down) and
+> > > other inputs setting it to AD7816_FULL.
+> > >
+> > > Fix this by checking it against 0 to correctly check for "full" and
+> > > "power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
+> > >
+> > > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 device=
+s")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > > --- =20
+> >
+> > LGTM, do you happen to have this device? It would more interesting to m=
+ove this
+> > driver out of staging :) =20
+> Unfortunately, I do not have this device. However, I would still be
+> interested in contributing if possible. I was looking over
+> https://lore.kernel.org/all/20230716144024.30ded663@jic23-huawei/T/
+> where the goal seemed to be to modernize it by replacing the sysfs
+> interface with the iio channel. I also looked through the datasheet
+> and it seemed to be missing some stuff like a channel that can be
+> selected.
+> >
+> > Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+Applied to the fixes-togreg branch of iio.git but amended the patch title
+to start wit
+staging: iio: adc: ad7816:=20
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+so people looking at a short log can see what it is touching.
 
-thanks,
--- Shuah
+Thanks,
+
+Jonathan
+
+> > =20
+> > > Changes since v3:
+> > >       - Tag stable@vger.kernel.org instead of an email CC
+> > >       - Use the correct version for patch
+> > > Changes since v2:
+> > >       - Add fixes tag that references commit that introduced the bug.
+> > >         - Replace sysfs_streq with strcmp.
+> > > ---
+> > >  drivers/staging/iio/adc/ad7816.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/staging/iio/adc/ad7816.c
+> > > b/drivers/staging/iio/adc/ad7816.c
+> > > index 6c14d7bcdd675..081b17f498638 100644
+> > > --- a/drivers/staging/iio/adc/ad7816.c
+> > > +++ b/drivers/staging/iio/adc/ad7816.c
+> > > @@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct device *d=
+ev,
+> > >       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> > >       struct ad7816_chip_info *chip =3D iio_priv(indio_dev);
+> > >
+> > > -     if (strcmp(buf, "full")) {
+> > > +     if (strcmp(buf, "full") =3D=3D 0) {
+> > >               gpiod_set_value(chip->rdwr_pin, 1);
+> > >               chip->mode =3D AD7816_FULL;
+> > >       } else { =20
+>=20
+
 
