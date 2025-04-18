@@ -1,164 +1,115 @@
-Return-Path: <stable+bounces-134540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F32A93500
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:59:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D280EA93501
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A7C17B3404
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:58:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8124619E6C2D
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41F726FDBA;
-	Fri, 18 Apr 2025 08:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F3263A9;
+	Fri, 18 Apr 2025 09:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="HnD7GPY/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGDGAwbz"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE2626FD82;
-	Fri, 18 Apr 2025 08:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F81E26FA5A
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 09:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744966764; cv=none; b=RLfR5GgzVpFw9xz9q9rhk6fteV7yje5C4Cd0PXrCCtrZSsPRFNbiwLuW3Ht2lb6ip84bWvA9G5sP23jAY7c+p2T9s27JLkY2bQFe2N1BahQ3es2kyzCHFlh9VYJQwaN1x/7/6AWrPSj2kwNy9VY/i9kouLlS5KdMDZ0GmmrVNwc=
+	t=1744966808; cv=none; b=WoydXsUdxyWe0fzbdPVIqFVk/8396JUJKV035SmFFJYc+v32g2/j3DfnaW059FS79vyUaFVSYs1z+auZnrjvK9I2V7DF328c6LRRXy1sPOuYa/LJAzyQQ6rjvO9UTnE6RvY63ZhjFaPDISEjEO1PXn3nF8lhHJq2PG1jfEde1Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744966764; c=relaxed/simple;
-	bh=KlZox/FhfiDHrEDYrtGoIjJ878K+yX47TPz+ztcPYt0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XXlbUWiHb48WGZNsIjgSTkDJgWSwenVoMKLEFhlZArB1hVQuf5WUdX1ie3uPNRmH4WXrScXJm84GgQ6a4hXHk3WHKF3dftCXPxU1IECKuZeKo+MoEJKLrh3cUnV25T5JOy70XyaMr7HOrWj5BxhMF6xF9R4/RLmhscustmUlKQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=HnD7GPY/; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=2cOFs7O7/L6f8JwExiEKzmQTdI10W4SPn5o+BQaDJHw=; b=HnD7GPY/+mHCutXBYnAlJE3wac
-	EeJ/7Og8qsfX9ScGMa/uxwMJ6ASHNNp28hbX0SLTMqL/GgTy/65C/M+hl0pteLaqkT7z9DdS/0lbu
-	S2X8UGDbfGd8JZi9+GQEKOCpk0tzcmwmo9RJUOS6lJPaG28cSZTIQioaYrDM3EJG3OTgQWuAqQttU
-	FLlyaHGKG3XBFEeDDtSFzKdWlTR5ATR2Gt/wCdNnZu7gqDSoMD5omRurzXix/Sj8sIkv1PSenuB8k
-	ba8d3denksSZfmcbp1GN+DcPxhV9j3axez0gDGbWPHH+w436h4Z3j3XsUI+slB/18Kse+maq4mnuT
-	482TkmZQ==;
-Received: from 114-44-248-24.dynamic-ip.hinet.net ([114.44.248.24] helo=gavin-HP-Z840-Workstation..)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1u5hYp-001AVr-3u; Fri, 18 Apr 2025 10:58:59 +0200
-From: Gavin Guo <gavinguo@igalia.com>
-To: linux-mm@kvack.org,
-	akpm@linux-foundation.org
-Cc: david@redhat.com,
-	willy@infradead.org,
-	ziy@nvidia.com,
-	linmiaohe@huawei.com,
-	hughd@google.com,
-	revest@google.com,
-	kernel-dev@igalia.com,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/huge_memory: fix dereferencing invalid pmd migration entry
-Date: Fri, 18 Apr 2025 16:58:02 +0800
-Message-ID: <20250418085802.2973519-1-gavinguo@igalia.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1744966808; c=relaxed/simple;
+	bh=RSlYFVc9jN6qvgy6kj80nshG+VS+ipaKqljtFD6ofl0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qRO9yj0nGadDAzDT/yNfiEmb83YmwjNfGn5+dw51Qhc/iexdf2DK0k948cNbeMvnshc331bRySVDmMQ005NGWyPRyvdpYjGvHCRldrv03//+AWcl1Ltxgpj4WIMTGyzyQlireadVrGM92G/DoRWyA5zeBfRVdOioXIvDF4LX6qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGDGAwbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFE7C4CEE2;
+	Fri, 18 Apr 2025 09:00:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1744966807;
+	bh=RSlYFVc9jN6qvgy6kj80nshG+VS+ipaKqljtFD6ofl0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UGDGAwbzDW6nXXYDAW/+YcA/psR2wqpn5GvRHbCR6K9anxUa3JcoamnZ9oIN460S3
+	 RCaYta2WatNJtKBNN4LEbV8+W40DSWcGWP40TQqaiBSzSth7GEvMXq4uZwl8IAWNwp
+	 rotHmiYaBQIgNMBLv7TCXfNynTtkt2V6IHu/c4bw=
+Date: Fri, 18 Apr 2025 11:00:05 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>
+Cc: gnoack@google.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] landlock: Add the errata interface"
+ failed to apply to 5.15-stable tree
+Message-ID: <2025041840-gorged-salsa-eb3c@gregkh>
+References: <2025041713-engine-energy-1f26@gregkh>
+ <20250418.Queez5Eeng7v@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250418.Queez5Eeng7v@digikod.net>
 
-When migrating a THP, concurrent access to the PMD migration entry
-during a deferred split scan can lead to a invalid address access, as
-illustrated below. To prevent this page fault, it is necessary to check
-the PMD migration entry and return early. In this context, there is no
-need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-equality of the target folio. Since the PMD migration entry is locked,
-it cannot be served as the target.
+On Fri, Apr 18, 2025 at 10:40:08AM +0200, Mickaël Salaün wrote:
+> Hi Greg,
+> 
+> On Thu, Apr 17, 2025 at 03:39:13PM +0200, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 5.15-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 15383a0d63dbcd63dc7e8d9ec1bf3a0f7ebf64ac
+> 
+> Running this command works for me:
+> 
+>   $ git cherry-pick -x 15383a0d63dbcd63dc7e8d9ec1bf3a0f7ebf64ac
+>   Auto-merging include/uapi/linux/landlock.h
+>   Auto-merging security/landlock/setup.c
+>   Auto-merging security/landlock/setup.h
+>   Auto-merging security/landlock/syscalls.c
+>   Auto-merging tools/testing/selftests/landlock/base_test.c
+>   [linux-5.15.y e2b5baf61146] landlock: Add the errata interface
+>    Date: Tue Mar 18 17:14:37 2025 +0100
+>    6 files changed, 185 insertions(+), 5 deletions(-)
+>    create mode 100644 security/landlock/errata.h
+> 
+>   $ git version # without custom .gitconfig
+>   git version 2.49.0
+> 
+> I previously tested and validated this approach that produces a working
+> commit.
+> 
+> However, trying to apply the raw patch does not work:
+> 
+>   $ git apply this.patch
+>   error: patch failed: security/landlock/setup.c:6
+>   error: security/landlock/setup.c: patch does not apply
+>   error: patch failed: security/landlock/setup.h:11
+>   error: security/landlock/setup.h: patch does not apply
+>   error: patch failed: security/landlock/syscalls.c:169
+>   error: security/landlock/syscalls.c: patch does not apply
+> 
+> This is the case for these stable trees: 5.15, 6.1, and 6.6
+> 
+> Could you please use Git to cherry-pick this commit on these 3 trees?
 
-Mailing list discussion and explanation from Hugh Dickins:
-"An anon_vma lookup points to a location which may contain the folio of
-interest, but might instead contain another folio: and weeding out those
-other folios is precisely what the "folio != pmd_folio((*pmd)" check
-(and the "risk of replacing the wrong folio" comment a few lines above
-it) is for."
+Sorry, but we don't use git cherry-pick, we need them in patch form.
 
-BUG: unable to handle page fault for address: ffffea60001db008
-CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-Call Trace:
-<TASK>
-try_to_migrate_one+0x28c/0x3730
-rmap_walk_anon+0x4f6/0x770
-unmap_folio+0x196/0x1f0
-split_huge_page_to_list_to_order+0x9f6/0x1560
-deferred_split_scan+0xac5/0x12a0
-shrinker_debugfs_scan_write+0x376/0x470
-full_proxy_write+0x15c/0x220
-vfs_write+0x2fc/0xcb0
-ksys_write+0x146/0x250
-do_syscall_64+0x6a/0x120
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+thanks,
 
-The bug is found by syzkaller on an internal kernel, then confirmed on
-upstream.
-
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
----
-V1 -> V2: Add explanation from Hugh and correct the wording from page
-fault to invalid address access.
-
- mm/huge_memory.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2a47682d1ab7..0cb9547dcff2 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3075,6 +3075,8 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
- void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
- 			   pmd_t *pmd, bool freeze, struct folio *folio)
- {
-+	bool pmd_migration = is_pmd_migration_entry(*pmd);
-+
- 	VM_WARN_ON_ONCE(folio && !folio_test_pmd_mappable(folio));
- 	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
- 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
-@@ -3085,10 +3087,18 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
- 	 * require a folio to check the PMD against. Otherwise, there
- 	 * is a risk of replacing the wrong folio.
- 	 */
--	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
--	    is_pmd_migration_entry(*pmd)) {
--		if (folio && folio != pmd_folio(*pmd))
--			return;
-+	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
-+		if (folio) {
-+			/*
-+			 * Do not apply pmd_folio() to a migration entry; and
-+			 * folio lock guarantees that it must be of the wrong
-+			 * folio anyway.
-+			 */
-+			if (pmd_migration)
-+				return;
-+			if (folio != pmd_folio(*pmd))
-+				return;
-+		}
- 		__split_huge_pmd_locked(vma, pmd, address, freeze);
- 	}
- }
-
-base-commit: a24588245776dafc227243a01bfbeb8a59bafba9
--- 
-2.43.0
-
+greg k-h
 
