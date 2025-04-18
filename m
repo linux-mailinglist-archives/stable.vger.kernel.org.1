@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D588A9352E
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:22:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F3EA93530
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9368A2E4D
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951741B64FFB
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715E426F44B;
-	Fri, 18 Apr 2025 09:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C683C26982E;
+	Fri, 18 Apr 2025 09:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="fTtmUd6U"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="aGomBioL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-42ac.mail.infomaniak.ch (smtp-42ac.mail.infomaniak.ch [84.16.66.172])
+Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [83.166.143.168])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039326982E
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 09:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.16.66.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8AF26FA54
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 09:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.168
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744968126; cv=none; b=aIPjCj0AfmtPZRoQfBT4fn8YF/3Xial98a4z0pgu6eUVmSP5XOSLLAcKRkpQWkofPcx/JPMxl1pRTG32F316fgJEtWYxmCzjI7/qPQPHJ7JIZH37q5AB1ZGDp+/va4gt2lscf1bbRrF5Ia7e3X0c6SfF13geSjVBgrSCkQUzvFU=
+	t=1744968192; cv=none; b=NqXLWB8HBTdluQ8uLOMQfMrb/hBiloIj6pA8t8Dzndw6fyBzucNm0CFWkJS/I7cJ4r9bLmrLlI1ItLeIRW6im8jWPOy0Ua23gXA/J607BkITevpMJa/z/jbJXilr/vt0n1yokGesK0Dc8itxLuQZP7EHCZPubonTI+SNP6JE8XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744968126; c=relaxed/simple;
-	bh=+Om+3GNzVhZWSkc1pFtk9yJnM5o7t8yvcgh288BpMb0=;
+	s=arc-20240116; t=1744968192; c=relaxed/simple;
+	bh=dZUTVczhkvzkfkMw2ChU0X1Y96vJRZzaNbEE3jeFDpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UQcxpmlSRKxGxHkqTD1yPYKQaHy49u9h8gPmZxFR+bv1FsHUFaaOAUn3YrRSksduFeHp8EWm8OICOUFUft05dIPmH3+lpm+G2E6M9NFPnTW+/IdCMl2ZrqGb7vx0whUwpCJ9VNYACjWxxS+dBgUvvd0zYkDWgCyNPfgmVmmeaBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=fTtmUd6U; arc=none smtp.client-ip=84.16.66.172
+	 MIME-Version:Content-Type; b=Tayum34uZmbe1RXGY4dNmhz/34WbV1QjpbnDlFRJ1czslURf5Ybcr4ExUutV6O9AXDpvf2vbdItEM9gF9YqfTg1bs4FlFrMkjtWDbLbFhi/HI4zMvaqQPhBeVwvlSFzxBYCyFfSf0kInxhNVDh7HgK3Er8uJ6DmmQhzismymb74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=aGomBioL; arc=none smtp.client-ip=83.166.143.168
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Zf8R96P0hzfyH;
-	Fri, 18 Apr 2025 11:21:57 +0200 (CEST)
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Zf8SM2r3Hzpxg;
+	Fri, 18 Apr 2025 11:22:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1744968117;
-	bh=AfhfFjYuNZdO6i8OsKRaNTIk0OF/s3jqTvh9pjQ/Y1E=;
+	s=20191114; t=1744968179;
+	bh=/ThC9uJv81Ivb9y0c25x42xEpmRtpYPRPrQ/+I/OLi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTtmUd6U7hjJsBdTHmgcAMm+8BWKITrYc98wepgp1Il3Iqh8cmgsl71RjhS/onyUh
-	 7Nmt/YymLIxaVuGL7d3J9O1HyXBrFw7I9da3SSPcCuwbdqbcrXR27lFZW2LYWK10Gc
-	 8MEq7mS3Zkm4URI83gdh+UboveTiBlGXxi0jup50=
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Zf8R92XnmzF6x;
-	Fri, 18 Apr 2025 11:21:57 +0200 (CEST)
+	b=aGomBioL0F0fj1XJ7kSoiJyKgzqxhGHhYburbngFu9B3fZHZ5+6/OsXOMxG+6NKZB
+	 ZUb+1wUjGG+foClXgoD+zK6XHAi5ZeYR9eL90NKSK/R2EegiWPa+Jw0COq+wLU6/bJ
+	 RJk/8uhCWZg9PunqHM9ninQzc4EckpHnDCqDaiOs=
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Zf8SL68pQzKPT;
+	Fri, 18 Apr 2025 11:22:58 +0200 (CEST)
 From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
 To: stable@vger.kernel.org
 Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
-Subject: [PATCH 6.1.y] landlock: Add the errata interface
-Date: Fri, 18 Apr 2025 11:21:48 +0200
-Message-ID: <20250418092148.1989291-1-mic@digikod.net>
-In-Reply-To: <2025041712-remark-lyricist-a86b@gregkh>
-References: <2025041712-remark-lyricist-a86b@gregkh>
+Subject: [PATCH 6.6.y] landlock: Add the errata interface
+Date: Fri, 18 Apr 2025 11:22:49 +0200
+Message-ID: <20250418092249.1989854-1-mic@digikod.net>
+In-Reply-To: <2025041711-awoke-petted-a885@gregkh>
+References: <2025041711-awoke-petted-a885@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,7 +107,7 @@ Signed-off-by: Mickaël Salaün <mic@digikod.net>
  create mode 100644 security/landlock/errata.h
 
 diff --git a/include/uapi/linux/landlock.h b/include/uapi/linux/landlock.h
-index 9c4bcc37a455..17bdfaa9eb87 100644
+index 81d09ef9aa50..f82a66361a1e 100644
 --- a/include/uapi/linux/landlock.h
 +++ b/include/uapi/linux/landlock.h
 @@ -38,9 +38,11 @@ struct landlock_ruleset_attr {
@@ -216,7 +216,7 @@ index 000000000000..f26b28b9873d
 +
 +#endif /* _SECURITY_LANDLOCK_ERRATA_H */
 diff --git a/security/landlock/setup.c b/security/landlock/setup.c
-index f8e8e980454c..cdee579901da 100644
+index 0f6113528fa4..8b46e8748b8a 100644
 --- a/security/landlock/setup.c
 +++ b/security/landlock/setup.c
 @@ -6,11 +6,13 @@
@@ -233,7 +233,7 @@ index f8e8e980454c..cdee579901da 100644
  #include "fs.h"
  #include "ptrace.h"
  #include "setup.h"
-@@ -23,8 +25,36 @@ struct lsm_blob_sizes landlock_blob_sizes __lsm_ro_after_init = {
+@@ -24,8 +26,36 @@ struct lsm_blob_sizes landlock_blob_sizes __ro_after_init = {
  	.lbs_superblock = sizeof(struct landlock_superblock_security),
  };
  
@@ -286,7 +286,7 @@ index 1daffab1ab4b..420dceca35d2 100644
  extern struct lsm_blob_sizes landlock_blob_sizes;
  
 diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
-index d0cb3d0cbf98..7590a74a55e5 100644
+index 336bedaa3af6..eb23df4e836c 100644
 --- a/security/landlock/syscalls.c
 +++ b/security/landlock/syscalls.c
 @@ -150,7 +150,9 @@ static const struct file_operations ruleset_fops = {
@@ -340,7 +340,7 @@ index d0cb3d0cbf98..7590a74a55e5 100644
   * Returns an owned ruleset from a FD. It is thus needed to call
   * landlock_put_ruleset() on the return value.
 diff --git a/tools/testing/selftests/landlock/base_test.c b/tools/testing/selftests/landlock/base_test.c
-index e43831746146..ea970679c5d9 100644
+index 5aa7d2feab10..b06410bd1aa1 100644
 --- a/tools/testing/selftests/landlock/base_test.c
 +++ b/tools/testing/selftests/landlock/base_test.c
 @@ -98,10 +98,54 @@ TEST(abi_version)
