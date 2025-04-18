@@ -1,112 +1,98 @@
-Return-Path: <stable+bounces-134614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B531A93A33
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:57:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E299A93A39
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFF4A1B676DC
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:58:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F30E1B67770
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E792144D2;
-	Fri, 18 Apr 2025 15:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA57D2144D3;
+	Fri, 18 Apr 2025 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHKzG+jZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cc7GqGnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EF515624B
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 15:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C8F2AE66;
+	Fri, 18 Apr 2025 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744991869; cv=none; b=KjZSXyNPwk+HvW87izeJS6sPOb/srChtkqMwQw7UFOk3u/dZbOSuIPUfx9q5gqDdPtf5rHJGY/ueb4UZF4PKNx1SlX8hsTPMcjin08ufXD/kcTgwax1BSFj/HTfvzMiTFOfY90EJgs8vndoVapxuL0fGewCAotg9DBapZaTzyUE=
+	t=1744991941; cv=none; b=QXuscIAvmZmVx+GT+XpsRp+FM09KjI9+50vsuFYkf/2JVTtPAHYTMYnyMgtOu2PK+P+8gHmUMUTAS0fUTpVfcKZGDELD8iXC6GSJWrukC0RvVOReC6Zun7VQSrEBW0IquR4m43ngtsYccv67Ga34SOfd8t4u92RPkMr1K2sdBoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744991869; c=relaxed/simple;
-	bh=6CgIa235sR39lRgrpfRnLM3E/+F0+uJ136bEoha4eos=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s6+i5vWLxvu6srKGwW6tSWQbN+5/Bf3ynja8UedPjDlkZ05TWeK4nRvRQtBRXqtcnTOtwUe/PfTVTC4mFmPemCmQzRuIHtESCkqRnE/HVtaJGGXyT3QJ7UuWTNwsYReXUeoXw7HKYtIHiyQcPjN9hUUpG3Fg6Z221hRcZdqRnrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHKzG+jZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A585C4CEE2;
-	Fri, 18 Apr 2025 15:57:48 +0000 (UTC)
+	s=arc-20240116; t=1744991941; c=relaxed/simple;
+	bh=cktnoaNCPJ5RzKzqfWgqapx2mLM1K1i6EwPjd+tq/uU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LIeLvAZg0RhBK3ubKlMFChryB01uW+Jza6jaRRExyj22g05j63RgqQ1r04puoRAqMim32DTXE6h7njOn/Qlq94VLbP4BQC9Ta6jIdTdOg1QBIJfWndrNNyCYswnoxBryZRf9DJzQLWJg6wKVvLccQ0e1Q2yjbpwaQCS63f+x7tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cc7GqGnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6FCC4CEE2;
+	Fri, 18 Apr 2025 15:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744991868;
-	bh=6CgIa235sR39lRgrpfRnLM3E/+F0+uJ136bEoha4eos=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHKzG+jZEAGg5CkAojS8mcYe/BzD/YKrUcYsenmvoRn+5/cLuH+T+4bR8EXpZczEe
-	 zwk9ftR1b9hGQDs7uqJP4zKxPFaPV/3TbWOYAxmpUf82vhKXuFNSglcP4QVakgSYpG
-	 6EXTTu70nTuD6NvXZHiCx6X51yxaI7jpxkmmufjYJo0BTsKvrSP0JQOHddIx5QIme+
-	 EnBGUDZcHPmXSe1GV1fnSK0r+a9Bm3vnlA061sHoQKTT6Z/eLYm5oHOHvkHIe0Rcmy
-	 ftUGBm7MjdnX5bIzlkLAdRLdzh6J/E24Hy+aLVXG0tytkzfzyH4O5cIv9mYJfV4y0y
-	 UCtqmd+HtcQGw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15/5.10 2/2] blk-iocost: do not WARN if iocg was already offlined
-Date: Fri, 18 Apr 2025 11:57:47 -0400
-Message-Id: <20250418102133-e97be29654583e48@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250417073352.2675645-2-bin.lan.cn@windriver.com>
-References: 
+	s=k20201202; t=1744991941;
+	bh=cktnoaNCPJ5RzKzqfWgqapx2mLM1K1i6EwPjd+tq/uU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cc7GqGnE2rU/uCAZ/FNpZW5pnb8C5Vo9jIGQYnQ0Z86oH14QhCM48vogCc52ztUiF
+	 /VSyaGwFHzGoZksIJuefBaAX8i/NxG5ZF2Rku4O5IvlhxIP1sV8EIspBOONrChCO7n
+	 6QLZb3my3paq4YY5vv5XbOLY0BdY9Z46qDYMngXoYkUsc8kL/qYvMmpHCdMP3g7AvK
+	 SM6ZhHzOOwVZa0BRzEW3ODJGYDjEDA6SFRbd10n0MHAxsWS6jiCePc4MS2SqYGUIKZ
+	 nbjKwvgqcLHx5mWm3SHTrccg72g6BPiFMYYFASlapfTIzF/ZGruA6Z8TOuZ+9yHzdB
+	 Mw9VN27sR86/w==
+Date: Fri, 18 Apr 2025 16:58:58 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.12 000/392] 6.12.24-rc2 review
+Message-ID: <aAJ2wqD7SqI-EMNP@finisterre.sirena.org.uk>
+References: <20250418110359.237869758@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cerCIE8KJ0YQkCGE"
+Content-Disposition: inline
+In-Reply-To: <20250418110359.237869758@linuxfoundation.org>
+X-Cookie: Well begun is half done.
 
-[ Sasha's backport helper bot ]
 
-Hi,
+--cerCIE8KJ0YQkCGE
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+On Fri, Apr 18, 2025 at 01:05:08PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.24 release.
+> There are 392 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-The upstream commit SHA1 provided is correct: 01bc4fda9ea0a6b52f12326486f07a4910666cf6
+Tested-by: Mark Brown <broonie@kernel.org>
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Li Nan<linan122@huawei.com>
+--cerCIE8KJ0YQkCGE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.13.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 1c172ac7afe4)
-6.1.y | Present (different SHA1: 2e962785b508)
-5.15.y | Not found
+-----BEGIN PGP SIGNATURE-----
 
-Note: The patch differs from the upstream commit:
----
-1:  01bc4fda9ea0a ! 1:  62b4e00c59eb3 blk-iocost: do not WARN if iocg was already offlined
-    @@ Metadata
-      ## Commit message ##
-         blk-iocost: do not WARN if iocg was already offlined
-     
-    +    [ Upstream commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 ]
-    +
-         In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
-         is intended to confirm iocg is active when it has debt. However, warn
-         can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
-    @@ Commit message
-         Acked-by: Tejun Heo <tj@kernel.org>
-         Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
-         Signed-off-by: Jens Axboe <axboe@kernel.dk>
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-     
-      ## block/blk-iocost.c ##
-     @@ block/blk-iocost.c: static void iocg_pay_debt(struct ioc_gq *iocg, u64 abs_vpay,
----
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgCdsEACgkQJNaLcl1U
+h9BxfAf/RlMfKGy9u3BCO2vKKkqTx8aj8+5NM9G9ttRaXP6LILuhzSze8eU660du
+GO6johznQ5ZfYaBdQ2iB3gjWiMJduI/PJapI8Y0HNxS+N9FpbSvb8HvhmFu4TLVt
+dwQ3wEySUz25+Ng5DCm+ONy4QJpJ46bhowKjvYL8SVRa++12sULj0b5wMU5df/YX
+2tpb8iAMzg1QWhRwvvEaZDC5gu+5cFF9pdTLNWGQ2HIgi6yD13TbVAcSeyF5amFo
+PZvcQFw9Sq8h0/zlkaFKsjX1nmFjyndXPWSnkEwGFJZSuAcQRQLKtgdqfrpebkzb
+ypa539Ox5TiX79lU9qKKhDgL/PC+BA==
+=dTU7
+-----END PGP SIGNATURE-----
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+--cerCIE8KJ0YQkCGE--
 
