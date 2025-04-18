@@ -1,98 +1,77 @@
-Return-Path: <stable+bounces-134611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B31AA93A2A
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:56:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC26CA93A31
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900DA44617B
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:56:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0551B670B1
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9222144CD;
-	Fri, 18 Apr 2025 15:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E03E21421B;
+	Fri, 18 Apr 2025 15:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mylidbcu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hwoBLWPo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69AA15624B;
-	Fri, 18 Apr 2025 15:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232F15624B
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 15:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744991763; cv=none; b=FbAokOQgqVxkQ+OPl0bmjI8ef49chdjFXX/O4vt7tiQGX+GX41mTT8Ho7H34mZXKDhhHEv2USekMXEi0Gj4NFFPMG2HfKWrABYuXsIKMwMH9rJv4FYNscWH6QFc2tBiedO97GKMcfLHVSb9NrSpztmYzr15oBK825nfa89zfHAg=
+	t=1744991865; cv=none; b=EgknBF4iu1quvh9JAB0GO1JuEz6T1UdHNrua5H/WOEErQBzi8LkwkKb1WWmRG4E2Gmb1yppMHB31T7EzILgVLko9+rgt0yuSRkRah0FZRwd2WhjaveqMfqCjTu8/BGtbuqKQ3TBNwBDZxWsiPSsdjPBo8dZ6HRJwi3QFHMHrulo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744991763; c=relaxed/simple;
-	bh=Lcz6Vi38WInSCEbN55sKa5MN9XK1NMjZLwGK3L2ETks=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OwQqbdDYHvdHza4BC4M2IOotc5klsjqSwwCmzZs9XmTlxYWAqAUHuGrWP/5v+txkkLo8vcvwcUxRs4NMM4HnHHNelNzUa6K/j3wVqo4FB7drmbgnKRN9+Wt/0kwvTyRYMOCYV9KVQ/6Xq3pZ13i741lAOYZ7V6jxHxyYhEtIl9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mylidbcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82303C4CEE2;
-	Fri, 18 Apr 2025 15:56:01 +0000 (UTC)
+	s=arc-20240116; t=1744991865; c=relaxed/simple;
+	bh=F1R5fIBjLEVOw0K8LCtdzq/yHNqsYaFxWD59c+iBF44=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RBOHEPqYgihnvoFfatsIDcw1vn5XOYH5toEZZTJeKFvv7DyFZ0TisVoZuvYM8rx/CIj5ddOBktWEU/f1HKSpS+q0HDs5AMWDcpQtagJK32N6OWqQblgxFw7yu8n2Ap426ix5qeSPAzSV88+2Vq/B4fmtze6FlmHSWOZmTEn30Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hwoBLWPo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC01C4CEE2;
+	Fri, 18 Apr 2025 15:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744991762;
-	bh=Lcz6Vi38WInSCEbN55sKa5MN9XK1NMjZLwGK3L2ETks=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mylidbcu6xSrLAoaqsPHW8pjYjCWx+CKifQcOaNiKqLp8sFNAq8D4zY+Rnvrz6GcI
-	 h7oFZbFODf5zAOOqJMTdKv5EkuCu25DdrjqyFtSNURN/3IOtE8L2U6SiyTAi03NqK7
-	 ElQO64WR7MVDWubpbzRlmou9tHcocgT/2FeRD/JNqOXmnup4Nc6C+2gy4TDQArES+s
-	 8xkFEJIuLKdl1y913EJ5Ae22fEKSgEJZ6+eiN6JgBegwWNQUpqurGlGh1EeFFOle7Y
-	 C0niNsbw4Ri+OQkgp7qkYnwJjP9cdaponec79gNiPIhZf1FDHfyRF7bz/7D4/SW2v3
-	 xtpNwaEhZ+ShA==
-Date: Fri, 18 Apr 2025 16:55:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.13 000/413] 6.13.12-rc2 review
-Message-ID: <aAJ2DpBN10tq2dFG@finisterre.sirena.org.uk>
-References: <20250418110411.049004302@linuxfoundation.org>
+	s=k20201202; t=1744991864;
+	bh=F1R5fIBjLEVOw0K8LCtdzq/yHNqsYaFxWD59c+iBF44=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hwoBLWPoc57bgHhWo4oj6B1JQ1xmqoDM73Ol63D6VdXzx4b5MQfOGIqhUle7fpbV7
+	 //xURMZnloSdykIg69rVPndaqO0+lL4m29f2FK7mQimcHTdCkRXru5NsHmH95Bdn2K
+	 hfCCgWGUc3BydhrG5bW1FAWR3+zmw1I5UDJufrI3/xEaQwJg0BuuYeA7+2knM3fxAx
+	 RG29UM38DXVu1ncjSGhp6AkXB1+OOblZ9hfXnMTO3uBPril+MkysXUg1eIO+5t9IvN
+	 IwOtnFuHqlbyDiLyJj/3u8EFQEwoVatbA/qOhKMmoppiT54v1uP5Hqcb89UK6uRTeT
+	 t5N55oAXrsXPQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org,
+	alex.williamson@redhat.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 6.1] mm: Fix is_zero_page() usage in try_grab_page()
+Date: Fri, 18 Apr 2025 11:57:43 -0400
+Message-Id: <20250418082441-f6f898a7a903c124@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250416202441.3911142-1-alex.williamson@redhat.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HL3UoVhViSFsVcbA"
-Content-Disposition: inline
-In-Reply-To: <20250418110411.049004302@linuxfoundation.org>
-X-Cookie: Well begun is half done.
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+[ Sasha's backport helper bot ]
 
---HL3UoVhViSFsVcbA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Hi,
 
-On Fri, Apr 18, 2025 at 01:05:17PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.12 release.
-> There are 413 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Summary of potential issues:
+⚠️ Could not find matching upstream commit
 
-Tested-by: Mark Brown <broonie@kernel.org>
+No upstream commit was identified. Using temporary commit for testing.
 
---HL3UoVhViSFsVcbA
-Content-Type: application/pgp-signature; name="signature.asc"
+Results of testing on various branches:
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgCdg4ACgkQJNaLcl1U
-h9D7ewf/fVBUJor52ChtTThtcqqi4UycfrvVThIY3JSeZCE0QBpjv2wjGHZgy47g
-IydLd1iSZKjVW2AuUBkTStuTqNpNEOp0NPkdhRmBrRqCe02u2wCVxaol7R5OotrK
-Of6ASHp6iOV1UlYCf5cIS5IcqmJm1M3jNv6sZzXAY9ke8inqk4H3J0DjNavMGU3e
-JDJpVmgnEYWpP1mEFMNrtTRMW8ZXEqUphZfdOAccmbfPb8rXiqcoDxYHk27xRGz0
-EkxxonLZMbYG6wQD+apvd35GXVFYYKwuSQ+6PtVk+TTMQvCTrRO19Rj0gvxk8ZSO
-hUoFETqKQn21H9ZwCe6BL+i2xXnWWQ==
-=AJsB
------END PGP SIGNATURE-----
-
---HL3UoVhViSFsVcbA--
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
