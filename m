@@ -1,153 +1,119 @@
-Return-Path: <stable+bounces-134548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5014A93570
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08C5A935C2
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:02:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06F33B4475
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:44:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A683A9CBD
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04B926A1CF;
-	Fri, 18 Apr 2025 09:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5C6204F78;
+	Fri, 18 Apr 2025 10:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Re3uXAru"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q2M+JHp/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851D71C5D4E;
-	Fri, 18 Apr 2025 09:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB43155C82
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 10:02:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744969459; cv=none; b=o8wDz5C/3ndnakg/bdQ0bnpf0Ch6Bt4x5QZIptMTgJHCdoeBQnyiBV6SWdnViMpLBK2fxAeCuu5460dWdpi6xR3WsvrZe/yGC1c/IyABxG+JDt0w7HTOWycsetGxA9+2ZTXbhfpUOiBr5+sywmv2MHMGZMskF5lk0QWcvlJf/sA=
+	t=1744970564; cv=none; b=q4Afl2DNBHUsrfEYyZudxtvUvC+35eeWcIjvmWletyevSoSthByHOh5WtEXhuPjs01bfx+AwfJ3B3yTmXBPiQSPtcRcQPVbQZ0wJ/jBoPUmGlWa7nGMZPXzMrV4OqASzDS5y5mSJPO0VAEf4WdSs4+m3sBtiKjt1pgdWzytJuYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744969459; c=relaxed/simple;
-	bh=QaRpGF7ohLAl7aOFpsMY4RKxgB9F65skY8MDlEDPlok=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CHy5ZVAbl94SQlKza3Rj67DALeoJAG/vKYRIAilv600IQJOb9Ip6BBskloL7G0UwHPM8aBzs+uv1rcJtdh598yw79rblPZmppXqshQ5ohHlUZM9HAxF4HzjVtpPTa0fGAIgNWIG2/WicfhAyc8fFKL2+FUGjEg6So3VXxcpFLLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Re3uXAru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873DEC4CEE2;
-	Fri, 18 Apr 2025 09:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744969459;
-	bh=QaRpGF7ohLAl7aOFpsMY4RKxgB9F65skY8MDlEDPlok=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Re3uXAru6hq1XgUUwyV2xA/vOOFFJlPtmy+iqH81m73/RxY6lip5tFW1p46hAqIqq
-	 RF2Ot7/J5TMXAIEKPFd5cqlaIlN73N89+eCHPmRBAZ5tUy/x2EJS0lEs8Vpr1p1SEp
-	 csNg7qe4UnH8L+H6H5aV3RwPRuax4l+ckSoWSa1lkT7UAhRIccJU792lWWDPCq+0dG
-	 o6C46/fhIUDyDxjf2/Vzh4bHjM9JLoTTBbxsRD+p8wrY4DmG4cgeMM6kIKH0dWXRux
-	 A9y8qTaeKTsC9S55PUQ/bod2M+yyzAP0yiuDgYJq0U2xVYOFPOQMvuuLeDzn3dmnuE
-	 hZJy0gAq96dbQ==
-Message-ID: <9681ac5a-b37d-421c-873a-44860a7dbbe4@kernel.org>
-Date: Fri, 18 Apr 2025 11:44:15 +0200
+	s=arc-20240116; t=1744970564; c=relaxed/simple;
+	bh=a4wNsOa0/Hjb7GS8LEX4zQpt7vFLbt9oI4xxdgoFhJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mFX4+I1x4b/Za43vHrmTshrbtQ5h+MMlWdyP3Z8PP0bME/OKLcwUQnIQ4UiiEMxGVm3ppsZ4PXFCcIugiNu2k1NSgfxN3BAonJrnnFPbWaoY54x0CBFRDLdYgLW7Y2Cy0M8v5lmRALJEW/OtjMK3tKZTcjIJXPC++ozx3n2IKyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q2M+JHp/; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5eb92df4fcbso3135167a12.0
+        for <stable@vger.kernel.org>; Fri, 18 Apr 2025 03:02:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744970561; x=1745575361; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=a4wNsOa0/Hjb7GS8LEX4zQpt7vFLbt9oI4xxdgoFhJ8=;
+        b=Q2M+JHp/OlhVUPiwmPiLgcSVsmJpKFQ/VuIaGtyZf2FdpdKpwksrvUngH7b30y+LyG
+         VOXQTTNtdt5ZnbHzNacHeoPAdKkOQvM8zohd8Npgy2Kq/DJdGAf2qzy2X9zSAIkufTFF
+         oziafwrlJtYTpvHMrfYoj8c30X/1YBAoxsE7b/qkG8fL6BXGzRFw7stjgnZHawRIDUpe
+         kk2KXiTdT1/+Smkp8tosqVXJ8E2TPjrXZK+sxFaxrST3GjTGT6vvVIsXppU5OudhYUSB
+         7XJqCBzZwU17KxZfHl4kolCqvszxtSEKDs4cKzbOOmFx2GE9dShpYB+ceW5YGUdj2Wok
+         mDRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744970561; x=1745575361;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a4wNsOa0/Hjb7GS8LEX4zQpt7vFLbt9oI4xxdgoFhJ8=;
+        b=jfn5UgcHz0OjdJ44lDZ52SV0F3gho15XByBSmIUmXJPg5dp4VW//BkNYHFRrhddBz6
+         8Kz9tshLS+nJCVw7KfQ2qEfDxEZvdMOJJgry4NSy71jhKnHx+OrxoB/mN5a7EMQQTjLs
+         1ZibsU7uvw8yUvjrgyGWayBI4K79BxK69v4nCkrfIUYilFwBvanMsCctja3En5G6UBVc
+         s+8DfpINEcCcw1uLhZMdL9PFjBZ+Bw8EBUnlsaRqPkdiDwXX77kOW5kFBP7m6Iu+PDXF
+         63e9ylDlF1v7F6C4d3bTxaWD+r9Hn4jB4SZ6VJzzh7ZLpw9c+r6Pu0NVAUgQ0cOIEl/l
+         W1SQ==
+X-Gm-Message-State: AOJu0YwY3AtyKqy51R50cqAk1DjDi39HOUFVAKfQMWuJFWS5aFLaxXIY
+	65Vu7XhZaodTIGTuJq3EoWPtFG9IXkWBnoH9v60Alxv3izi6YnSOx+q0G0Cr
+X-Gm-Gg: ASbGncv3xxhfZjDyDqocUn7y4SYAARVUU8r3xN1aEacAfFfCpkgI510L5strE77sZuB
+	HoXUhTtS9FsMus3zPcEpyffZrfzrUhAso05TRkXKkVDgldcgss15Z0ikRpbIl22UDVGOoriTzCc
+	gw7+mO8F8+RhEOo417tD3sWL+gWlUjgSmJ1bAHEa16AisSy11sLtLooGiZjCL8Db9A7TAIHTLDJ
+	Lwoq5DQUjg03FX9NLKLX7w83V0gy2qxEU/XmUUNpQQExvLTgkKLnkHuooFfVwVz4yl8wwzRgpjD
+	iaaTSEoaLLd16f2KG6PFbypp+8w8jCAPZrqDN9qsPRSqU0+l2pUy+m54UjQRhGr1dkDudABhOg=
+	=
+X-Google-Smtp-Source: AGHT+IHioSohvbh1vocHUH5gZSRlHIAJe5g7QzP90GwRdKaKGmRQ1nPisiHvh2HhavtoS+r7K2s/Cg==
+X-Received: by 2002:a17:907:7247:b0:ac2:b1e2:4b85 with SMTP id a640c23a62f3a-acb74ad95a0mr204519466b.3.1744970560660;
+        Fri, 18 Apr 2025 03:02:40 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6eefcf4fsm101266366b.109.2025.04.18.03.02.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 03:02:39 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 02084BE2DE0; Fri, 18 Apr 2025 12:02:38 +0200 (CEST)
+Date: Fri, 18 Apr 2025 12:02:38 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: stable <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Guillaume Morin <guillaume@morinfr.org>,
+	Yu Kuai <yukuai3@huawei.com>, Christoph Hellwig <hch@lst.de>
+Subject: Please backport 8542870237c3 ("md: fix mddev uaf while iterating
+ all_mddevs list") back down to 6.12.y (and question on older stable series
+ back to 6.1.y)
+Message-ID: <aAIjPqdxqGRuTyrd@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Patch "selftests: mptcp: close fd_in before returning in
- main_loop" has been added to the 5.15-stable tree
-To: gregkh@linuxfoundation.org
-Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org,
- liucong2@kylinos.cn, tanggeliang@kylinos.cn,
- MPTCP Linux <mptcp@lists.linux.dev>
-References: <2025041702-shrouded-subwoofer-25f9@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Content-Language: en-GB, fr-BE
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2025041702-shrouded-subwoofer-25f9@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hi Greg,
+Hi stable mantainers,
 
-On 17/04/2025 15:57, gregkh@linuxfoundation.org wrote:
-> 
-> This is a note to let you know that I've just added the patch titled
-> 
->     selftests: mptcp: close fd_in before returning in main_loop
-> 
-> to the 5.15-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      selftests-mptcp-close-fd_in-before-returning-in-main_loop.patch
-> and it can be found in the queue-5.15 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+[note I'm CC'ing here Guillaume, Yu and Christoph]
 
-Thank you for having backported this patch to stable, but can it be
-dropped from the v5.15 queue please (see below)?
+In Debian we were affected for a while by
+https://bugs.debian.org/1086175 which we found to be reported by
+Guillaume as
+https://lore.kernel.org/all/Z7Y0SURoA8xwg7vn@bender.morinfr.org/ .
 
-> From c183165f87a486d5879f782c05a23c179c3794ab Mon Sep 17 00:00:00 2001
-> From: Geliang Tang <tanggeliang@kylinos.cn>
-> Date: Fri, 28 Mar 2025 15:27:18 +0100
-> Subject: selftests: mptcp: close fd_in before returning in main_loop
-> 
-> From: Geliang Tang <tanggeliang@kylinos.cn>
-> 
-> commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
-> 
-> The file descriptor 'fd_in' is opened when cfg_input is configured, but
-> not closed in main_loop(), this patch fixes it.
-> 
-> Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+The issue went in fact back to 6.0. The fix was applied upstream and
+then backported to 6.14.2 already. Can you backport it please as well
+down to the other stable series, at least back to 6.12.y it goes with
+applying (and unless I miss something fixes the issue, we
+cherry-picked the commit for Debian trixie and our 6.12.y kernel in
+advance already).
 
-This "Fixes" commit has been introduced in v5.17. From what I see, it
-has not been backported to v5.15.
+For going back to 6.1.y it seems it won't apply cleanly, You,
+Christoph might you be available to look into it to make this
+possible?
 
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+Regards,
+Salvatore
 
