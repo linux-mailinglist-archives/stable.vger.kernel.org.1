@@ -1,123 +1,136 @@
-Return-Path: <stable+bounces-134631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AA7A93B89
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:00:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B23A93B92
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D55E2440B9E
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:00:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50BF1B633A6
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BBC218E99;
-	Fri, 18 Apr 2025 17:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F24E2192F5;
+	Fri, 18 Apr 2025 17:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYdjuPUv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HnESSXM+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f51.google.com (mail-io1-f51.google.com [209.85.166.51])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE59215191
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 17:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5B313B590;
+	Fri, 18 Apr 2025 17:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744995621; cv=none; b=uzmGq6ve2/g6Y+WsYAyCtluMU8VTR3g1R/1ESYkWlyb9r1RytsyRLhpNhTgmr0z2OvcB8Kyu+vv9hc9obgNcUEeu/3mVSu4hoVX+yVvK7OKLfFoKEQq1bevbW/lebW1bNDi26fkjoCVSck+7RjKXJgbvhBXMdSXzv1TuLm3NYJ4=
+	t=1744995676; cv=none; b=GKiC5UilisDLOo5rPAVlHJov/tdDqcDEKHryY+llVoAbIjGYyAukTEgGwJIv7B0PFQTJ1Phd59JYyw8Ks45xhADncGQsi7GqH5U+K6qb42eenLd4E7bJZpjKHswLaYNBeKyt7NlrZGmJLDTXtRWZouIH+VsYJdQpggQqK0bVRPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744995621; c=relaxed/simple;
-	bh=Q+BDfiFW+VoaSQMQ8aLv84jJcRC/wcDH4vCfEdzdhsw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dAOtprB+UIH9SyMRi2cG6omB1Gv7VO8bjikcjJIeGyfi3zhUa6bJ6FxlB2zwYdiboXt7JGEy2eIOj4yHdPSi8Uik7/ijuSX+qQyXNJA+97+lk3DX56Jm8ek6v6T+4ubJtdlC2LsGLnK0aIUv7HrVf4ssm4BrYX5KTuHcE0Ywdms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYdjuPUv; arc=none smtp.client-ip=209.85.166.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f51.google.com with SMTP id ca18e2360f4ac-85dac9728cdso52266539f.0
-        for <stable@vger.kernel.org>; Fri, 18 Apr 2025 10:00:19 -0700 (PDT)
+	s=arc-20240116; t=1744995676; c=relaxed/simple;
+	bh=8w1HZbYIpGw2lsE8fxuZH0Z+2IIZJk+H61XsQgcKQao=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=INaPPOw7GP2FMCHTGukqxZp+AQb/Rx1rwVjm92JARbcmyiCBh6j2vLEdZNBFqs1PXornPsz6sBGnMwAr6r7t7SM8uDwhqWaMu/HabWMSrsEpYwPTqGEvrS//DrxOIP3krX5KLuGXVEhPcv9iu4TPk+Nf5SbP8yWrJi9woVFEJDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HnESSXM+; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-47686580529so22448571cf.2;
+        Fri, 18 Apr 2025 10:01:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1744995618; x=1745600418; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=61d/sKYxMGCNUNhoeDAO2XryMeoJdihIOmj+N3+Z7lM=;
-        b=VYdjuPUvOtnvpBflcaFGWJLfR0lQmatYeQ7Sido/SsNIevJXCoIPYErvAAa/EJObbj
-         uUKuQAZdMiy+5lnpUSu8ohaj7cJFNfzaH9inCrsfl7KUvVEHvEFsUzhyPzdLmsxQR+UK
-         ZoU5CT3aCq1dqvZQX28lSiDiLoovDLxZc2/gY=
+        d=gmail.com; s=20230601; t=1744995673; x=1745600473; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=K4jOaTYIRWPNV5975r6TtN5MoRcAB00ZTyeDTKmI1wU=;
+        b=HnESSXM+aCJ0XeEsmXKiZ/SzPoGnuXlp0GpuJNyfv8oNS4HzeT0fN0caBxenhQcRi8
+         KZeXyT6DsfT7CtouMGi9htK5Az059tArWoGmY5LVsOpVUTmPXGYErmK6zYHY0ZWQxrjs
+         T5Fq67hYo6GxIfT/JatOFPFTd7JbJwA33vnglPm0+L1K/2YABNur4dgdGWS7cr35zXDe
+         YwGEcuMzFpI7PjwY7BSWSZUBWyfjz5Or/09FbcRRrf7kUMQmCHUnY087ZAiPWPEjjgYK
+         vED0tC12SYdz6aBw/kWRH7fmm9gGdY8E3654DbbdEtu0RgfJteog3rLAkmUYPVQmZ799
+         +OtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744995618; x=1745600418;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=61d/sKYxMGCNUNhoeDAO2XryMeoJdihIOmj+N3+Z7lM=;
-        b=N+dOauDd8Z9M4Ir8+Z0e1PySQWeu5fzaJ+6mTdvFQClwxVQAQ0sY4ZTyGIOaep5fAa
-         YUtyXnavq6DqVAX2bPI6Ow8aJOZC+SmJmdVx6hqlMyNY6ptpzNK6nH0M772tpEdhYDHh
-         VyEp18Dq8Sef67M35Bns/WRqAn751apTUzTvxYb+mGGbQ9LRRwqTlPF6iY+yc4eE1ivM
-         v89Rr2KR7Df9VxvAxagVjrCGeoVQjg02lzEdYFpEEeUicU7Zv7hpzRSifgs3eB9OVGHX
-         xUyzCgnjEdZ9e0DfJ4y9mRHAbHeo5RuXq1Zb4SJ0Fw0vELV8krn2cmmBus6vMeIlvPqR
-         0QUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRriMEKJAdu5kMIm1AMPw/KnV7ndTJEtbZyEAWkkz1L7UKQaCwRSQmLiliJWgGqsBr4DOLldw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydxuLw313zWltDZu7Wwdx2rvyq5gUnYtCYBQhcp52P/fYVA1lw
-	KBi6m8yw/4hL59WIRuh4ExlpM6qsjfk1y8e/7uxPfxt69Qp88t3EKSxbMADxGJg=
-X-Gm-Gg: ASbGnctdfkrwjuVecZkjoZJu3gRnVZ4ighOqCT4RXVjlzsXMDeCWi9NUroLhFU6VITf
-	hy6f6G+acwS4bzbyrhqEJCpbX9njNaqEQSFUXckUFi5twQy+Ofd2QJGTmxGVJw7NRV85ar2V2CX
-	LxqcFcHp10lqfMl6CF9Loqak7iUlAozJgTzoqXTXG6KpuWHUWkuNwBD2iiHKaMbI8ZhNHGyEhxj
-	sfdFn83J2dJouVJs20ECVIpWrGsGPN9PMuDZ3LhWZkbgCS2LTP+/AAQCTwbSrp/ZuQqURJ1wdiM
-	ZAPlayA+xorAQMUc5VBWuK8YSW2QF9TLe/KBkQA3Rv75T2yhU21yZ/w6bM9zdg==
-X-Google-Smtp-Source: AGHT+IEyIUcHLda0Oi5Dxfiv38uolw830VjeERY0b9n6LCLvY8kI6O/HApmGqXlxMWs/ME3XOMIDvQ==
-X-Received: by 2002:a05:6e02:216d:b0:3d4:3ab3:5574 with SMTP id e9e14a558f8ab-3d88ed654ddmr36402815ab.3.1744995618252;
-        Fri, 18 Apr 2025 10:00:18 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f6a37cb87fsm528003173.14.2025.04.18.10.00.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Apr 2025 10:00:17 -0700 (PDT)
-Message-ID: <d1a6d53a-21c7-4500-a060-26c15c4f32c3@linuxfoundation.org>
-Date: Fri, 18 Apr 2025 11:00:16 -0600
+        d=1e100.net; s=20230601; t=1744995673; x=1745600473;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=K4jOaTYIRWPNV5975r6TtN5MoRcAB00ZTyeDTKmI1wU=;
+        b=NLLvaqUo7ZNrMC8Q9Oh5E1gnEHrm/9UVTE3a98udeXyczNpkkJNc+8QSQFtnYjzn9l
+         Dj841+Cst5N894BubHNQvTD059narfmz1tt49usZeUihGF6Nrho54XdHbHrnWGp9nYtp
+         V1wnHq+VEFAUJPJb0aG7indu32yGIGAh1SUtW05gS2AwMcV2t/5qWtdFZVHNW1O+w+2K
+         jLFvxK8QhV9fvjaZ/gL71w8CfTo6ssanbsrr0VtL+kXOT4gP2ktTDvHTvXSuMzuE3Gq+
+         9MDaE2J1vXFyEDtljLhRSEJ+ZgfZ7yXT91BgX3r3t6fR62X5G/Z5lcvK8XKoQJmiNKp6
+         4K5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVh3RHjttrc/Zn5Oz9RvLHIxpUP3DCl6QwopD9GdtrmolL/UWSzA1SbOiCZn81/CFNMp5NvTC7f@vger.kernel.org, AJvYcCWrDpqmY9gNSMgGEYT81kiq/fk7m0Zfeu6SEY5bF1KuLCGWWyjZXOEKRlQuGTJgzMyDB5DZW1upZMYKRTz/@vger.kernel.org, AJvYcCXrXGWSVX0P4vYjqTAPCLSQDrczOqZZW2A7qVM5/frNkOXI/McbmstpeBpjiqyKt7Rp2aCrzgUsRyw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfIqabFKEgsPyU6BMMbH2FUQvf5PmhKVtMh69sJUP4zFus7Cx3
+	BfLj3fuN3X0FmorPcCPkcOUwzC56gO3eyCKxs+q3aOBbV/mGlpVuOJvlMusNCG16+1uOYbERk+y
+	Uxcozok2W7dAIxTeXhXI8Tf5TjSanNHKwE7w=
+X-Gm-Gg: ASbGncsn6ee9EJjEg8iB2VoEhxAzwPhFPHGKJ8JzROCegnK/9Ohlkp4SW0eadNEGgYm
+	csuC+1TWuSWDM0uL7O5d//jYHNGsSPIFN8qILrJdtBqDZdzyw8zYPvkryHZ3CGjuo6T9HAd0MUK
+	CQerKvm+d45oupABqTZmHE80y1ah1X+5kH4BP2kLlfOQ2U6588Q3U1zYO2V+63e/A=
+X-Google-Smtp-Source: AGHT+IGfRaxUib4vxMeg5ZHVwz3sTnnqydjjr+BZWaabAYNvr6HBK0qxHxLDmk+tzoqUGiqm3k5sVAVmzeMakuDT4ZI=
+X-Received: by 2002:ac8:584f:0:b0:476:af62:8532 with SMTP id
+ d75a77b69052e-47aec4ba327mr49626361cf.45.1744995673373; Fri, 18 Apr 2025
+ 10:01:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.13 000/413] 6.13.12-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250418110411.049004302@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250418110411.049004302@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250417135434.568007-1-gshahrouzi@gmail.com> <20250418164040.0f103380@jic23-huawei>
+In-Reply-To: <20250418164040.0f103380@jic23-huawei>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Fri, 18 Apr 2025 13:01:02 -0400
+X-Gm-Features: ATxdqUHYpoK_uf-3FQX72Xc5r4NMTYfDz6xHt0YdITsiYSrcp9t89ZozAiI7UVo
+Message-ID: <CAKUZ0z+kr1ToeOJaRihbfQyKoJ+vgOF7YjK811TbEcyd-43a-Q@mail.gmail.com>
+Subject: Re: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to disable output
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
+	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/18/25 05:05, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.13.12 release.
-> There are 413 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 20 Apr 2025 11:02:49 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.13.12-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.13.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-
-Compiled and booted on my test system. No dmesg regressions.
-
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+On Fri, Apr 18, 2025 at 11:40=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+> wrote:
+>
+> On Thu, 17 Apr 2025 09:54:34 -0400
+> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+>
+> > According to the AD9832 datasheet (Table 10, D12 description), setting
+> > the RESET bit forces the phase accumulator to zero, which corresponds t=
+o
+> > a full-scale DC output, rather than disabling the output signal.
+> >
+> > The correct way to disable the output and enter a low-power state is to
+> > set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
+> > the internal DAC current sources and disables internal clocks.
+> >
+> > Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> > ---
+> Seems reasonable but I'd like some more review of this before picking it =
+up.
+> So feel free to poke me if nothing happens in say 2 weeks from now.
+Sounds good.
+>
+> >  drivers/staging/iio/frequency/ad9832.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/i=
+io/frequency/ad9832.c
+> > index db42810c7664b..0872ff4ec4896 100644
+> > --- a/drivers/staging/iio/frequency/ad9832.c
+> > +++ b/drivers/staging/iio/frequency/ad9832.c
+> > @@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, str=
+uct device_attribute *attr,
+> >                       st->ctrl_src &=3D ~(AD9832_RESET | AD9832_SLEEP |
+> >                                       AD9832_CLR);
+> >               else
+> > -                     st->ctrl_src |=3D AD9832_RESET;
+> > +                     st->ctrl_src |=3D AD9832_SLEEP;
+> >
+> >               st->data =3D cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_S=
+HIFT) |
+> >                                       st->ctrl_src);
+>
 
