@@ -1,182 +1,287 @@
-Return-Path: <stable+bounces-134534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB70A93442
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACCCA93480
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:16:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71FC1B658A9
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:13:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23DDD188E4E9
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE2826B0BF;
-	Fri, 18 Apr 2025 08:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659AA207A03;
+	Fri, 18 Apr 2025 08:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gK/C2za3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="RT53mXyj";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5FEeD8AG"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2085.outbound.protection.outlook.com [40.107.243.85])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93CA26AAB5;
-	Fri, 18 Apr 2025 08:12:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744963969; cv=fail; b=GXB0j2ut5yawVSBI2UyEi/WKQp6IRg2nNcVrr++9JIzFmiSwipSpmK3vq6XBCiDHowUaNmsaPD6WUykGrsa2RAEsL7TUKQWSP2/KZnaD43gRQBo8yPy15k+S5hjZ4Htl/yjZddwJwaeUMHdnUFmIVk7ie2EHoZzs+zcMpCpatbQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744963969; c=relaxed/simple;
-	bh=ddwu+v9kT+hApwwXJqxOjhnLngWZ1BgpzNSgZjoqoe4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NaFnx9FxRTY+pRaK51gmy1yqcpJUl9LIMFQX7Y8/YlAVUu2NbRBtDG+JD1LmDjOiLYQ/h2wybc9IE5xveyW04ew56/yGHob4jPp90T+/ccRhnMayHdhizNpbsRgIAmjAplVKpFTTvCB/3m6CPnQKc9Y9rTWKDyXg8v+9Y81WyZQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gK/C2za3; arc=fail smtp.client-ip=40.107.243.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z6WuLN+XjnUjB+JKYDpDXxl2/CNvqm/wsQpaIn2Cl9S/bkB6nO1KxU1HDtLORB/vwiRT9w7AIRiA0IJpKCrwR4hsfwUu0rvumey5yASnF7wSu9IEN1ITAJ4kfTJt7RVoJJ5F2jOt4gV9aMhD2SBXBPIMfMuPWwE3C2buoeHL8P1D2iZoNEWjEstyaD3SpL7XqTi0o/AZV8CeYzlFr/wf6Cm0JwuAr3zhIM0hb8Ve8JZwtrQJLX/LWUerz1J/BwMrbz6UhhX6x7A3jV9bTxa3QcyJDGaefnZc0LvIhkzm+uCvOX7HQ6UR3MjufHRf0xJgM+GgS/9vsf9eX8xncSKHGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PkqE60Oa4WBIVu9h/HvFBCrQWMaZ8qG0eoCVKfT75l4=;
- b=aoHEHumU92m71vcadcWPfxbCG2OO2BXprt6Xmd+ahzO5lNObgb/I4bUtiBfwOha2IibuGT75tPc8b4iDrTIwFOXKqD+GfvnrP04OriRWTB23NzLtCsw3+65G5HcYJyakidxLAD5WVxhVRY9OnngMpON3zXuH/yDBOxEcCsZZbXrQoqScH9008KbjgmBJD0kG2UeLs68RBXuS3cKzP/+NhvITWOh/nEOQVec84EHMJBmrq8VMX7I2OzkZjI9bnhsswAjNGRHAPsNK1y3uw00tx9JlfQdIP1VlSxfPAwyaqdtOEGjyodx9ZEhybHLttOGFPIgpRcnFCbUn+OwEDxNPxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PkqE60Oa4WBIVu9h/HvFBCrQWMaZ8qG0eoCVKfT75l4=;
- b=gK/C2za3kyttw9aXJZcx8815yEnnQtnQHcZbP72KD9JQL4HPbZVhE2q1YTqqpnfsOrLrb9AiGgWXMy3t+oclkEV1+DvMFWK3yALiWDKIhLCZfGynqNTjCvF9puie/dnNRbFsYKBPVoi7XJ/Bq+BteSDDrWcxtOBolVVjNRE9ho9gSIAltNThOeBM8rxYd5Okpg5U/aPLGCIHlF4ici7m7zsIF26kvHIZOS/OF7bwt35mN4MKjGswIn25E0niAHr3Ruark4QMGhp/MOBTjC41VdSehOeapXcvsTRYQOw7WJYfM9v1Mh90IM7PLKlaslEWk97CMTHKMuFfOqhGRyue6Q==
-Received: from SA9PR13CA0127.namprd13.prod.outlook.com (2603:10b6:806:27::12)
- by SJ5PPF1394451C7.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98b) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Fri, 18 Apr
- 2025 08:12:44 +0000
-Received: from SA2PEPF00001504.namprd04.prod.outlook.com
- (2603:10b6:806:27:cafe::75) by SA9PR13CA0127.outlook.office365.com
- (2603:10b6:806:27::12) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.8 via Frontend Transport; Fri,
- 18 Apr 2025 08:12:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF00001504.mail.protection.outlook.com (10.167.242.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8655.12 via Frontend Transport; Fri, 18 Apr 2025 08:12:43 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 18 Apr
- 2025 01:12:32 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 18 Apr
- 2025 01:12:31 -0700
-Received: from waynec-Precision-5760.nvidia.com (10.127.8.13) by
- mail.nvidia.com (10.129.68.9) with Microsoft SMTP Server id 15.2.1544.14 via
- Frontend Transport; Fri, 18 Apr 2025 01:12:30 -0700
-From: Wayne Chang <waynec@nvidia.com>
-To: <waynec@nvidia.com>, <gregkh@linuxfoundation.org>,
-	<thierry.reding@gmail.com>, <jonathanh@nvidia.com>
-CC: <linux-usb@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH 1/1] usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
-Date: Fri, 18 Apr 2025 16:12:28 +0800
-Message-ID: <20250418081228.1194779-1-waynec@nvidia.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8038462;
+	Fri, 18 Apr 2025 08:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744964187; cv=none; b=OKnBTsbOrFUofMFsWgN0KfZJKJWBbg1HArgAfIKSWuOahmX0hAuLjmipB8SImgXzLgH+bHwxDo+TmxJ5BoTQj6wY5yqMf6te0qVA8fp0T7wDJPpel8fWQKskjmIfoUPr6O0ANS9HZ7med+Mbl6UM3z9NlPuzQHgTjxsgI08taC8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744964187; c=relaxed/simple;
+	bh=D0h0mUnhXNEPaFia5AGTzABQLfaAoHV0cI3sHPSHmMs=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=Hhu5xYaWii3bEpNDJrZXzMHoMHnBDhv8ovHm4UaJUq5xh00Z1Rdq70Ye4uFN+9O9jL73sSf5tsdKPlx0d9lrSYK3JjyWpppnONCs/qhtiJJqPeuF21F9STVywDPOsXjBR7lEtDy/fyy9RTHrdkmwsa51DxRtg+wAngcEAH/R+SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=RT53mXyj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5FEeD8AG; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Fri, 18 Apr 2025 08:16:16 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1744964183;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rQWv/nAPt4yRrWHW7MzrqnD+OpT5LGX/6JwpF6PC6cM=;
+	b=RT53mXyjZJbf8ckaZx+ou1Irnru6+YudYV8psOx1SuQdI7NS4q75IgMeli82uPFH94mE8O
+	yJcnxmesJQlgPnyy0a1kFcjVs7355AaHTxITwfkAyApJi1MnLTJMH4uM98WakGnPbZOQjq
+	IzpHvD2ugq1bKdMivC5ol850F/ZSOiCmzHPY9SuJLVJugltSCKkRaZ0IvxDwCGbBTE3QYD
+	AwMapt62C/vOWUHPaLDWv1yz8/w8Oq+kELp4r0deb6TbUyI5566Ken46HMD8vODEhUR+XO
+	wUfdQoWSLdgSe4TGOYC70aiUaw7gbdL4vESUVE8vu4exrW0IsbtDtGZBw/VssA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1744964183;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rQWv/nAPt4yRrWHW7MzrqnD+OpT5LGX/6JwpF6PC6cM=;
+	b=5FEeD8AG5wgxuQ32oyDEyx6aRE5Jpe/b4czgt3kly21GSvIgIzvI6r11wss53rLHqE2rX1
+	Uqrl8usbWuYjtbBg==
+From: "tip-bot2 for Ard Biesheuvel" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/boot/sev: Avoid shared GHCB page for early
+ memory acceptance
+Cc: Tom Lendacky <thomas.lendacky@amd.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>,  <stable@vger.kernel.org>,
+ Dionna Amalie Glaze <dionnaglaze@google.com>,
+ Kevin Loughlin <kevinloughlin@google.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Linus Torvalds <torvalds@linux-foundation.org>, linux-efi@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250417202120.1002102-2-ardb+git@google.com # final submission>
+References: <20250417202120.1002102-2-ardb+git@google.com # final submission>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: AnonymousSubmission
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001504:EE_|SJ5PPF1394451C7:EE_
-X-MS-Office365-Filtering-Correlation-Id: e978edf6-256e-49e4-43bd-08dd7e50cbd4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?445AVd9nOqKC8iFsDDkp62MZ+9161lgd17JjSKzAF9JgoKnP/T+/ZZiBA2mp?=
- =?us-ascii?Q?ifE4DCDVLX49kPnvgKPiuZfEmNVPr+s5Oz6k+5jP22ohT+bFO/3eJFSXeRzE?=
- =?us-ascii?Q?qvgAAaIew5Ee6/00ml0MkSYUppI1d6gS0QN4nwhVxhHAm8gz+gVPWjeTQHx4?=
- =?us-ascii?Q?IHq2PTA4wN+ofr9bapmG3mAY6ommsuesQ3Bs8HMLFmxGzl/Dvc7OeIBMrzCs?=
- =?us-ascii?Q?nU2tUCmMwSbSnqk/lkGHv91ssAJndVyUs7GmU2JffFl0GQApsQAm0HImDEAM?=
- =?us-ascii?Q?bziKbfK3IlcQtPc2H5QNFFDNBqm1nqYcTyAtJfN7HU/cpY51/XdEEWMzZt1Y?=
- =?us-ascii?Q?agjlg0SNtNwH10rMz6A4BThdj43pUTztaXCdBsruK8ZmnNBIsuR+tbon9uEu?=
- =?us-ascii?Q?eJb7QQbwzdNjzxTLBvS3p2ah9NEGozW/CEEcXDvNIRyolYZb+Jqh53wiwqU7?=
- =?us-ascii?Q?GNDbE8cg2FSMnQPj3i0DtiZ9e/Tr7cqmvZuxfwQEzTOZ2DqpRRbdlRrKSZqp?=
- =?us-ascii?Q?IQIMBurqLnvGZmO+pkPEgwV+5VdtstXsFjy2ym8WPUgWUzJrSvtTrHKAU9OX?=
- =?us-ascii?Q?Fo6VEEZ98XwkX1/FWI8hig1Vuc+lAmhDdm1ZS1CqDRl1kFO7qU/By7GLXeX0?=
- =?us-ascii?Q?CHGijXFAsk1i2vozm6BmtI+rl4g5rya7W+k/J5GssrVqlQ+Tm5reiXe0bGZy?=
- =?us-ascii?Q?vT0lGP9CsUq8OYvdPOCOzi3n/FbCMsM3tscvR9rvmLVeLd1FHechtmxRF9GU?=
- =?us-ascii?Q?baTHY89EgcBk+pNtm9gv/cCDxyMnOvD63McBuXIFTNXwr424wbK5uSkcbmsD?=
- =?us-ascii?Q?mrsVhLRSuHq7FlE+KTga9cD5ehkSpl1PD7dptv0BphrnBAs/ZPif1LcGGHPy?=
- =?us-ascii?Q?K5Et3zr4BmvCeMi5zPkPH+pngzVW2bGPrdAn0G3I2YLA60ztrJTttzg7M25I?=
- =?us-ascii?Q?ZQPJ4vyjmN6pL8qukmUlmUup4wqsduRHxL+r+RNMytvsNhb4qOE6qFjsNXYT?=
- =?us-ascii?Q?q9qKsu3xl7CTaTG5xiDbKO3i3ncnJ1EmKsQpgdYl9/TNpBQFW/BZrwYhELrT?=
- =?us-ascii?Q?3Ir5K1k1dFSG9DdlStCK+B2r5IB0JnNtC40uPL4UHzh1auRjiG3BP5kGCPTE?=
- =?us-ascii?Q?84XTooEYDS1iFpxJQ3rC0d8NEcFWiEVM5QD1w/5tBX76scE48x7mX0hnANWU?=
- =?us-ascii?Q?XVjAwBv3hXoKu1m3BDD557MOMyI+XSTpL5A1CgaeQSamwTNSIf5je5ZJJebu?=
- =?us-ascii?Q?rIJaWchlFr27PD0DHxZrN2TgArssxmmNOp4kGd1OCMXiqk1gdvzCDRJcjJjD?=
- =?us-ascii?Q?48SfsoHwiI0AKV0KWr4wHVKheUW6ku7p3nB7acUSbQdnGtsdy8sbA6oKB1d5?=
- =?us-ascii?Q?iYVBEvZ4iShGAkbfnz2HmBQPLCuFHs3ZaD6ncbV1TFSQyBycrnVL+DXEe2Z0?=
- =?us-ascii?Q?y8PletZuHVTizlwwx4U1yweNwBtlQC4yRt+vKFfUex2kSiEakTr2hSaa1HX+?=
- =?us-ascii?Q?+QdMF2Ba3efgv5Piqe+O/97cG1R05LYMFiGh?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2025 08:12:43.7085
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e978edf6-256e-49e4-43bd-08dd7e50cbd4
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001504.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF1394451C7
+Message-ID: <174496417635.31282.2634692329527053854.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-We identified a bug where the ST_RC bit in the status register was not
-being acknowledged after clearing the CTRL_RUN bit in the control
-register. This could lead to unexpected behavior in the USB gadget
-drivers.
+The following commit has been merged into the x86/urgent branch of tip:
 
-This patch resolves the issue by adding the necessary code to explicitly
-acknowledge ST_RC after clearing CTRL_RUN based on the programming
-sequence, ensuring proper state transition.
+Commit-ID:     a718833cb4567fffec26bc62633081b27fa5f90a
+Gitweb:        https://git.kernel.org/tip/a718833cb4567fffec26bc62633081b27fa5f90a
+Author:        Ard Biesheuvel <ardb@kernel.org>
+AuthorDate:    Thu, 17 Apr 2025 22:21:21 +02:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 18 Apr 2025 09:53:32 +02:00
 
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
+x86/boot/sev: Avoid shared GHCB page for early memory acceptance
+
+Communicating with the hypervisor using the shared GHCB page requires
+clearing the C bit in the mapping of that page. When executing in the
+context of the EFI boot services, the page tables are owned by the
+firmware, and this manipulation is not possible.
+
+So switch to a different API for accepting memory in SEV-SNP guests, one
+which is actually supported at the point during boot where the EFI stub
+may need to accept memory, but the SEV-SNP init code has not executed
+yet.
+
+For simplicity, also switch the memory acceptance carried out by the
+decompressor when not booting via EFI - this only involves the
+allocation for the decompressed kernel, and is generally only called
+after kexec, as normal boot will jump straight into the kernel from the
+EFI stub.
+
+Fixes: 6c3211796326 ("x86/sev: Add SNP-specific unaccepted memory support")
+Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@vger.kernel.org>
+Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
+Cc: Kevin Loughlin <kevinloughlin@google.com>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: linux-efi@vger.kernel.org
+Link: https://lore.kernel.org/r/20250404082921.2767593-8-ardb+git@google.com # discussion thread #1
+Link: https://lore.kernel.org/r/20250410132850.3708703-2-ardb+git@google.com # discussion thread #2
+Link: https://lore.kernel.org/r/20250417202120.1002102-2-ardb+git@google.com # final submission
 ---
- drivers/usb/gadget/udc/tegra-xudc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/boot/compressed/mem.c |  5 +-
+ arch/x86/boot/compressed/sev.c | 67 +++++++--------------------------
+ arch/x86/boot/compressed/sev.h |  2 +-
+ 3 files changed, 21 insertions(+), 53 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
-index c7fdbc55fb0b..2957316fd3d0 100644
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -1749,6 +1749,10 @@ static int __tegra_xudc_ep_disable(struct tegra_xudc_ep *ep)
- 		val = xudc_readl(xudc, CTRL);
- 		val &= ~CTRL_RUN;
- 		xudc_writel(xudc, val, CTRL);
-+
-+		val = xudc_readl(xudc, ST);
-+		if (val & ST_RC)
-+			xudc_writel(xudc, ST_RC, ST);
- 	}
+diff --git a/arch/x86/boot/compressed/mem.c b/arch/x86/boot/compressed/mem.c
+index dbba332..f676156 100644
+--- a/arch/x86/boot/compressed/mem.c
++++ b/arch/x86/boot/compressed/mem.c
+@@ -34,11 +34,14 @@ static bool early_is_tdx_guest(void)
  
- 	dev_info(xudc->dev, "ep %u disabled\n", ep->index);
--- 
-2.25.1
-
+ void arch_accept_memory(phys_addr_t start, phys_addr_t end)
+ {
++	static bool sevsnp;
++
+ 	/* Platform-specific memory-acceptance call goes here */
+ 	if (early_is_tdx_guest()) {
+ 		if (!tdx_accept_memory(start, end))
+ 			panic("TDX: Failed to accept memory\n");
+-	} else if (sev_snp_enabled()) {
++	} else if (sevsnp || (sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED)) {
++		sevsnp = true;
+ 		snp_accept_memory(start, end);
+ 	} else {
+ 		error("Cannot accept memory: unknown platform\n");
+diff --git a/arch/x86/boot/compressed/sev.c b/arch/x86/boot/compressed/sev.c
+index bb55934..89ba168 100644
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -164,10 +164,7 @@ bool sev_snp_enabled(void)
+ 
+ static void __page_state_change(unsigned long paddr, enum psc_op op)
+ {
+-	u64 val;
+-
+-	if (!sev_snp_enabled())
+-		return;
++	u64 val, msr;
+ 
+ 	/*
+ 	 * If private -> shared then invalidate the page before requesting the
+@@ -176,6 +173,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+ 	if (op == SNP_PAGE_STATE_SHARED)
+ 		pvalidate_4k_page(paddr, paddr, false);
+ 
++	/* Save the current GHCB MSR value */
++	msr = sev_es_rd_ghcb_msr();
++
+ 	/* Issue VMGEXIT to change the page state in RMP table. */
+ 	sev_es_wr_ghcb_msr(GHCB_MSR_PSC_REQ_GFN(paddr >> PAGE_SHIFT, op));
+ 	VMGEXIT();
+@@ -185,6 +185,9 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+ 	if ((GHCB_RESP_CODE(val) != GHCB_MSR_PSC_RESP) || GHCB_MSR_PSC_RESP_VAL(val))
+ 		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+ 
++	/* Restore the GHCB MSR value */
++	sev_es_wr_ghcb_msr(msr);
++
+ 	/*
+ 	 * Now that page state is changed in the RMP table, validate it so that it is
+ 	 * consistent with the RMP entry.
+@@ -195,11 +198,17 @@ static void __page_state_change(unsigned long paddr, enum psc_op op)
+ 
+ void snp_set_page_private(unsigned long paddr)
+ {
++	if (!sev_snp_enabled())
++		return;
++
+ 	__page_state_change(paddr, SNP_PAGE_STATE_PRIVATE);
+ }
+ 
+ void snp_set_page_shared(unsigned long paddr)
+ {
++	if (!sev_snp_enabled())
++		return;
++
+ 	__page_state_change(paddr, SNP_PAGE_STATE_SHARED);
+ }
+ 
+@@ -223,56 +232,10 @@ static bool early_setup_ghcb(void)
+ 	return true;
+ }
+ 
+-static phys_addr_t __snp_accept_memory(struct snp_psc_desc *desc,
+-				       phys_addr_t pa, phys_addr_t pa_end)
+-{
+-	struct psc_hdr *hdr;
+-	struct psc_entry *e;
+-	unsigned int i;
+-
+-	hdr = &desc->hdr;
+-	memset(hdr, 0, sizeof(*hdr));
+-
+-	e = desc->entries;
+-
+-	i = 0;
+-	while (pa < pa_end && i < VMGEXIT_PSC_MAX_ENTRY) {
+-		hdr->end_entry = i;
+-
+-		e->gfn = pa >> PAGE_SHIFT;
+-		e->operation = SNP_PAGE_STATE_PRIVATE;
+-		if (IS_ALIGNED(pa, PMD_SIZE) && (pa_end - pa) >= PMD_SIZE) {
+-			e->pagesize = RMP_PG_SIZE_2M;
+-			pa += PMD_SIZE;
+-		} else {
+-			e->pagesize = RMP_PG_SIZE_4K;
+-			pa += PAGE_SIZE;
+-		}
+-
+-		e++;
+-		i++;
+-	}
+-
+-	if (vmgexit_psc(boot_ghcb, desc))
+-		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+-
+-	pvalidate_pages(desc);
+-
+-	return pa;
+-}
+-
+ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ {
+-	struct snp_psc_desc desc = {};
+-	unsigned int i;
+-	phys_addr_t pa;
+-
+-	if (!boot_ghcb && !early_setup_ghcb())
+-		sev_es_terminate(SEV_TERM_SET_LINUX, GHCB_TERM_PSC);
+-
+-	pa = start;
+-	while (pa < end)
+-		pa = __snp_accept_memory(&desc, pa, end);
++	for (phys_addr_t pa = start; pa < end; pa += PAGE_SIZE)
++		__page_state_change(pa, SNP_PAGE_STATE_PRIVATE);
+ }
+ 
+ void sev_es_shutdown_ghcb(void)
+diff --git a/arch/x86/boot/compressed/sev.h b/arch/x86/boot/compressed/sev.h
+index fc725a9..4e463f3 100644
+--- a/arch/x86/boot/compressed/sev.h
++++ b/arch/x86/boot/compressed/sev.h
+@@ -12,11 +12,13 @@
+ 
+ bool sev_snp_enabled(void);
+ void snp_accept_memory(phys_addr_t start, phys_addr_t end);
++u64 sev_get_status(void);
+ 
+ #else
+ 
+ static inline bool sev_snp_enabled(void) { return false; }
+ static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
++static inline u64 sev_get_status(void) { return 0; }
+ 
+ #endif
+ 
 
