@@ -1,136 +1,167 @@
-Return-Path: <stable+bounces-134632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B23A93B92
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:01:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889B8A93B97
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E50BF1B633A6
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8943A3A7768
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F24E2192F5;
-	Fri, 18 Apr 2025 17:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FB9219A8D;
+	Fri, 18 Apr 2025 17:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HnESSXM+"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZTta/6gI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5B313B590;
-	Fri, 18 Apr 2025 17:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D112144D6;
+	Fri, 18 Apr 2025 17:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744995676; cv=none; b=GKiC5UilisDLOo5rPAVlHJov/tdDqcDEKHryY+llVoAbIjGYyAukTEgGwJIv7B0PFQTJ1Phd59JYyw8Ks45xhADncGQsi7GqH5U+K6qb42eenLd4E7bJZpjKHswLaYNBeKyt7NlrZGmJLDTXtRWZouIH+VsYJdQpggQqK0bVRPc=
+	t=1744995697; cv=none; b=J7FcOQabwu6y/b/WAduNHz8JizEp+3kCLizclOMrV4koZZFJkgFtccBbQs2OFiXyY5pIwf4xAAFL7zq+7YfQenNTqjiB6CDIX6M5Gy44y+NRgFBN1OjcRyD+B1XWDWC9g214Rdidwzv2aRuzMCj469MC13DBI9DuvlKoXXCRGo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744995676; c=relaxed/simple;
-	bh=8w1HZbYIpGw2lsE8fxuZH0Z+2IIZJk+H61XsQgcKQao=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=INaPPOw7GP2FMCHTGukqxZp+AQb/Rx1rwVjm92JARbcmyiCBh6j2vLEdZNBFqs1PXornPsz6sBGnMwAr6r7t7SM8uDwhqWaMu/HabWMSrsEpYwPTqGEvrS//DrxOIP3krX5KLuGXVEhPcv9iu4TPk+Nf5SbP8yWrJi9woVFEJDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HnESSXM+; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-47686580529so22448571cf.2;
-        Fri, 18 Apr 2025 10:01:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744995673; x=1745600473; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K4jOaTYIRWPNV5975r6TtN5MoRcAB00ZTyeDTKmI1wU=;
-        b=HnESSXM+aCJ0XeEsmXKiZ/SzPoGnuXlp0GpuJNyfv8oNS4HzeT0fN0caBxenhQcRi8
-         KZeXyT6DsfT7CtouMGi9htK5Az059tArWoGmY5LVsOpVUTmPXGYErmK6zYHY0ZWQxrjs
-         T5Fq67hYo6GxIfT/JatOFPFTd7JbJwA33vnglPm0+L1K/2YABNur4dgdGWS7cr35zXDe
-         YwGEcuMzFpI7PjwY7BSWSZUBWyfjz5Or/09FbcRRrf7kUMQmCHUnY087ZAiPWPEjjgYK
-         vED0tC12SYdz6aBw/kWRH7fmm9gGdY8E3654DbbdEtu0RgfJteog3rLAkmUYPVQmZ799
-         +OtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744995673; x=1745600473;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=K4jOaTYIRWPNV5975r6TtN5MoRcAB00ZTyeDTKmI1wU=;
-        b=NLLvaqUo7ZNrMC8Q9Oh5E1gnEHrm/9UVTE3a98udeXyczNpkkJNc+8QSQFtnYjzn9l
-         Dj841+Cst5N894BubHNQvTD059narfmz1tt49usZeUihGF6Nrho54XdHbHrnWGp9nYtp
-         V1wnHq+VEFAUJPJb0aG7indu32yGIGAh1SUtW05gS2AwMcV2t/5qWtdFZVHNW1O+w+2K
-         jLFvxK8QhV9fvjaZ/gL71w8CfTo6ssanbsrr0VtL+kXOT4gP2ktTDvHTvXSuMzuE3Gq+
-         9MDaE2J1vXFyEDtljLhRSEJ+ZgfZ7yXT91BgX3r3t6fR62X5G/Z5lcvK8XKoQJmiNKp6
-         4K5A==
-X-Forwarded-Encrypted: i=1; AJvYcCVh3RHjttrc/Zn5Oz9RvLHIxpUP3DCl6QwopD9GdtrmolL/UWSzA1SbOiCZn81/CFNMp5NvTC7f@vger.kernel.org, AJvYcCWrDpqmY9gNSMgGEYT81kiq/fk7m0Zfeu6SEY5bF1KuLCGWWyjZXOEKRlQuGTJgzMyDB5DZW1upZMYKRTz/@vger.kernel.org, AJvYcCXrXGWSVX0P4vYjqTAPCLSQDrczOqZZW2A7qVM5/frNkOXI/McbmstpeBpjiqyKt7Rp2aCrzgUsRyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfIqabFKEgsPyU6BMMbH2FUQvf5PmhKVtMh69sJUP4zFus7Cx3
-	BfLj3fuN3X0FmorPcCPkcOUwzC56gO3eyCKxs+q3aOBbV/mGlpVuOJvlMusNCG16+1uOYbERk+y
-	Uxcozok2W7dAIxTeXhXI8Tf5TjSanNHKwE7w=
-X-Gm-Gg: ASbGncsn6ee9EJjEg8iB2VoEhxAzwPhFPHGKJ8JzROCegnK/9Ohlkp4SW0eadNEGgYm
-	csuC+1TWuSWDM0uL7O5d//jYHNGsSPIFN8qILrJdtBqDZdzyw8zYPvkryHZ3CGjuo6T9HAd0MUK
-	CQerKvm+d45oupABqTZmHE80y1ah1X+5kH4BP2kLlfOQ2U6588Q3U1zYO2V+63e/A=
-X-Google-Smtp-Source: AGHT+IGfRaxUib4vxMeg5ZHVwz3sTnnqydjjr+BZWaabAYNvr6HBK0qxHxLDmk+tzoqUGiqm3k5sVAVmzeMakuDT4ZI=
-X-Received: by 2002:ac8:584f:0:b0:476:af62:8532 with SMTP id
- d75a77b69052e-47aec4ba327mr49626361cf.45.1744995673373; Fri, 18 Apr 2025
- 10:01:13 -0700 (PDT)
+	s=arc-20240116; t=1744995697; c=relaxed/simple;
+	bh=oI+EaJPKASRaj7ZktB84nugSnxLbHdpW/DC7Ynxq2b8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GqwkvH5J95h+nBQFpJL1FSLm+hHrT/tQo/5/O9VcrpSLk0vsYFn4faMjOsALNKGLGAxwAImZfDWGEiEn2LguL/nGUJ6yGq9leYIT67tLBSGmCG+WcrzRa9WJJRqHyoCYVXXUtCQ+K9hSvKCEt0FSZF/klGtqM9/TrZa9O1BKu+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZTta/6gI; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 91FAB101BF2CB;
+	Fri, 18 Apr 2025 19:01:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1744995692; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=tBWiIVtzQkFeHoj4T9tvDBw4U0JfIJ9IFgfClrd78xY=;
+	b=ZTta/6gIatx/2uKRev0Lo3JfA6NTfSrNlGjUkaEApTJ5CPR8pAmVVlJruzwF/8ERax+qyu
+	nwmQ1jXCPb5HUcudTgnZskN5oKszxyfOI0/tT0MA5sjOGV2a0OuI7tD/QXNU/jra9Cuz8F
+	/T6w6oeBtTZFGoOsv9E2QhBTtRA+WmAaYrdvIjw3qokrhv6T0ouxsnbomlHjDkWsZsViqs
+	R1UkQiGoFPI2cZT1QVhWXjCIFy+o6U7p3EK9w6cjghuSQdIlSdejnsSIRQLpjMlHhT5Z60
+	gY1jJGXv9CkRZzZvxdHB0Yx/dCJ7HaqotiKNSkdHaCS10eSDHevHSVFciD/pXQ==
+Date: Fri, 18 Apr 2025 19:01:25 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	syzbot+b0c03d76056ef6cd12a6@syzkaller.appspotmail.com,
+	Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	aleksander.lobakin@intel.com, kory.maincent@bootlin.com,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.10 13/15] net: vlan: don't propagate flags on
+ open
+Message-ID: <aAKFZT6sPCZX63y6@duo.ucw.cz>
+References: <20250403191002.2678588-1-sashal@kernel.org>
+ <20250403191002.2678588-13-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250417135434.568007-1-gshahrouzi@gmail.com> <20250418164040.0f103380@jic23-huawei>
-In-Reply-To: <20250418164040.0f103380@jic23-huawei>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Fri, 18 Apr 2025 13:01:02 -0400
-X-Gm-Features: ATxdqUHYpoK_uf-3FQX72Xc5r4NMTYfDz6xHt0YdITsiYSrcp9t89ZozAiI7UVo
-Message-ID: <CAKUZ0z+kr1ToeOJaRihbfQyKoJ+vgOF7YjK811TbEcyd-43a-Q@mail.gmail.com>
-Subject: Re: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to disable output
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
-	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
-	linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="bC8Y275hHWkIX4eN"
+Content-Disposition: inline
+In-Reply-To: <20250403191002.2678588-13-sashal@kernel.org>
+X-Last-TLS-Session-Version: TLSv1.3
+
+
+--bC8Y275hHWkIX4eN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Apr 18, 2025 at 11:40=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Thu, 17 Apr 2025 09:54:34 -0400
-> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
->
-> > According to the AD9832 datasheet (Table 10, D12 description), setting
-> > the RESET bit forces the phase accumulator to zero, which corresponds t=
-o
-> > a full-scale DC output, rather than disabling the output signal.
-> >
-> > The correct way to disable the output and enter a low-power state is to
-> > set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
-> > the internal DAC current sources and disables internal clocks.
-> >
-> > Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > ---
-> Seems reasonable but I'd like some more review of this before picking it =
-up.
-> So feel free to poke me if nothing happens in say 2 weeks from now.
-Sounds good.
->
-> >  drivers/staging/iio/frequency/ad9832.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/i=
-io/frequency/ad9832.c
-> > index db42810c7664b..0872ff4ec4896 100644
-> > --- a/drivers/staging/iio/frequency/ad9832.c
-> > +++ b/drivers/staging/iio/frequency/ad9832.c
-> > @@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, str=
-uct device_attribute *attr,
-> >                       st->ctrl_src &=3D ~(AD9832_RESET | AD9832_SLEEP |
-> >                                       AD9832_CLR);
-> >               else
-> > -                     st->ctrl_src |=3D AD9832_RESET;
-> > +                     st->ctrl_src |=3D AD9832_SLEEP;
-> >
-> >               st->data =3D cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_S=
-HIFT) |
-> >                                       st->ctrl_src);
->
+On Thu 2025-04-03 15:10:00, Sasha Levin wrote:
+> From: Stanislav Fomichev <sdf@fomichev.me>
+>=20
+> [ Upstream commit 27b918007d96402aba10ed52a6af8015230f1793 ]
+>=20
+> With the device instance lock, there is now a possibility of a deadlock:
+
+"now". Does the same problem exist in 5.10?
+
+Best regards,
+								Pavel
+
+> --- a/net/8021q/vlan_dev.c
+> +++ b/net/8021q/vlan_dev.c
+> @@ -272,17 +272,6 @@ static int vlan_dev_open(struct net_device *dev)
+>  			goto out;
+>  	}
+> =20
+> -	if (dev->flags & IFF_ALLMULTI) {
+> -		err =3D dev_set_allmulti(real_dev, 1);
+> -		if (err < 0)
+> -			goto del_unicast;
+> -	}
+> -	if (dev->flags & IFF_PROMISC) {
+> -		err =3D dev_set_promiscuity(real_dev, 1);
+> -		if (err < 0)
+> -			goto clear_allmulti;
+> -	}
+> -
+>  	ether_addr_copy(vlan->real_dev_addr, real_dev->dev_addr);
+> =20
+>  	if (vlan->flags & VLAN_FLAG_GVRP)
+> @@ -296,12 +285,6 @@ static int vlan_dev_open(struct net_device *dev)
+>  		netif_carrier_on(dev);
+>  	return 0;
+> =20
+> -clear_allmulti:
+> -	if (dev->flags & IFF_ALLMULTI)
+> -		dev_set_allmulti(real_dev, -1);
+> -del_unicast:
+> -	if (!ether_addr_equal(dev->dev_addr, real_dev->dev_addr))
+> -		dev_uc_del(real_dev, dev->dev_addr);
+>  out:
+>  	netif_carrier_off(dev);
+>  	return err;
+> @@ -314,10 +297,6 @@ static int vlan_dev_stop(struct net_device *dev)
+> =20
+>  	dev_mc_unsync(real_dev, dev);
+>  	dev_uc_unsync(real_dev, dev);
+> -	if (dev->flags & IFF_ALLMULTI)
+> -		dev_set_allmulti(real_dev, -1);
+> -	if (dev->flags & IFF_PROMISC)
+> -		dev_set_promiscuity(real_dev, -1);
+> =20
+>  	if (!ether_addr_equal(dev->dev_addr, real_dev->dev_addr))
+>  		dev_uc_del(real_dev, dev->dev_addr);
+> @@ -474,12 +453,10 @@ static void vlan_dev_change_rx_flags(struct net_dev=
+ice *dev, int change)
+>  {
+>  	struct net_device *real_dev =3D vlan_dev_priv(dev)->real_dev;
+> =20
+> -	if (dev->flags & IFF_UP) {
+> -		if (change & IFF_ALLMULTI)
+> -			dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+> -		if (change & IFF_PROMISC)
+> -			dev_set_promiscuity(real_dev, dev->flags & IFF_PROMISC ? 1 : -1);
+> -	}
+> +	if (change & IFF_ALLMULTI)
+> +		dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+> +	if (change & IFF_PROMISC)
+> +		dev_set_promiscuity(real_dev, dev->flags & IFF_PROMISC ? 1 : -1);
+>  }
+> =20
+>  static void vlan_dev_set_rx_mode(struct net_device *vlan_dev)
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--bC8Y275hHWkIX4eN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKFZQAKCRAw5/Bqldv6
+8kP0AKDB9qbJiZzzNyzkREcjPbqHR+RpRgCgmExl2z2MS8hgpfFzPz8xpNPeFPM=
+=S3W+
+-----END PGP SIGNATURE-----
+
+--bC8Y275hHWkIX4eN--
 
