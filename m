@@ -1,223 +1,124 @@
-Return-Path: <stable+bounces-134509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F36A92E76
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 01:52:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C713FA92E90
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 02:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99612441190
-	for <lists+stable@lfdr.de>; Thu, 17 Apr 2025 23:52:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74B5B1B62C80
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 00:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5DE221F37;
-	Thu, 17 Apr 2025 23:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A022C9A;
+	Fri, 18 Apr 2025 00:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="HwFyXSXl";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="NO4G0Bd+"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="UllDNg1T"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D8021506E
-	for <stable@vger.kernel.org>; Thu, 17 Apr 2025 23:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89112173;
+	Fri, 18 Apr 2025 00:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744933935; cv=none; b=GRrgIBCf5cAM+/ARVoCzR2PgjZRDyZUDuAmGF9IcPe+SvrlO9i0JSyzJCI0r4gEuM3Q6mipLHIdG01Td3M9t2vpBXZEjVhKf4w/KhhhUIxJ74AAv6SBWqps2dwl55H9hx+9Uyr9qDv0RLPDBTBlv97TRsayxVV6xUeAH7gwK0z8=
+	t=1744934583; cv=none; b=ahXKH5K7FbA9T5jv8A5sqCNOukLq0oLrqR0bMZzbmFSK+TuY2LKxqmjm7e+KGfSah+PUthnmhipiRcQrwkwi26eF7drI1N28KbL4hAQ8Lnvj4/vIzZLig/iOoeC8VU421SgRCITmY1L8xgpDt3nvsEvQeVhzLWSpc2KfI/U05r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744933935; c=relaxed/simple;
-	bh=7hmJynh7D4nGQe3kZTcSx6WotPtuO2oWAzbHzxFTrqc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R56kjmIiGM01RMBTOMYmHII1TrwXZ4SaPmZgHm8qUG6jmwAbuFi3JK+YnBN/R4j3SpmxV3+bzCEgEg3gDXjno/lTRm6a0yd2KBdWLYyWYlO1NBNmZGMYClnKCA0zG2QzHKIRG+gxqiYcatLo9HPzqZxF6U+0mgi6y5ztUZVQcHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=HwFyXSXl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=NO4G0Bd+; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id 53D1613801FD;
-	Thu, 17 Apr 2025 19:52:11 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Thu, 17 Apr 2025 19:52:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1744933931;
-	 x=1745020331; bh=UiNPMZG20ODU6B5tu/W16i8qAXI/Ul0Rly84Te6ORSE=; b=
-	HwFyXSXlPWc+7LNxD0SnjjTJvpFCXYGmWDLrg7ehFOv5d/bSTcRzyXAKLK1dWYQM
-	Jbhq7huHFBOiggkaIZ8jAEjWFcwy1Y8FPXuvl8FMGPH5+zBhSnMkUVvG2xJ5SSU4
-	KNbSHZe0Cvj0KwAVrRg8J3YpCdRY7kaSj9UWSUYLotHGzGXV9rbAcVwkmbdDbzvG
-	kuMPKgfYfHLBL+QC/BkD3QTRLOxL2nW1/sVVbFfZys6H2oKX7mft3XJL2OlAXxbi
-	4uF2H6jyhbGcuQl1rF2zaRsBqBIwGfC491dFoUucxQRqVyAVucz+g7QDpCJijDKD
-	3XlJgKdaFFY/4XUjqZ1/RQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1744933931; x=1745020331; bh=UiNPMZG20ODU6B5tu/W16i8qAXI/Ul0Rly8
-	4Te6ORSE=; b=NO4G0Bd+BaFjtxgK4AlxQMs8ENOuCh4ZTyHisjvVANS2BrVp3/d
-	fm1eiFIPCordB5JYBGmio/cSWRSbHCUPErw7QtzBEimmaQumpQSvGBDbM5PqqLUo
-	zGLz3ghNlo2C4AeEsLDpl/O0kF0UtdgJ1A5uHryilHpPtCR8xtlmYfRcUsmCfrUP
-	waAbJ2kID/jvAKGNoXdchF72EKj6L9v3gqRWOcJ7VWPKn8pEdIagB51K1gVqnklJ
-	lAw5uO1MwjprBsT5nmBJJEKfENb8vZQMNXNatFv0WbCaOXL7Rvb1BNNoC1MEnB0P
-	eChQ3ioqljr1pXD3tQtQLC6IN7FGaZC/dzw==
-X-ME-Sender: <xms:K5QBaP7Yk1OG2NFGhxSyPSkwvE5kHbDJoVpz770-G8AK19tUatvqow>
-    <xme:K5QBaE60BQFxn4Ijcowa52YWNfj7l5hEDy1W_InKVvscuJ-ZrPpvq-QQNVeXz21C1
-    X5SUbynQhpthA>
-X-ME-Received: <xmr:K5QBaGcxtGK_ptp-qQV5cRPEh4bhAtfTEY9YQsOmw0SpDk50W-J53NicUj971blfYaRvL7xFH5Wli2MwpPhbvasseMF0jYSrRQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedtieefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhf
-    fvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpeforghrvghkucforghrtgii
-    hihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesihhnvhhishhisghlvg
-    hthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpefgheevkeehvdevgeeu
-    iefftdehieefheeuveegiedutdeuheegtdefieffgeekudenucffohhmrghinhepkhgvrh
-    hnvghlrdhorhhgpdhmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecu
-    rfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthh
-    hinhhgshhlrggsrdgtohhmpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
-    dprhgtphhtthhopehrrghfrggvlhdrjhdrfiihshhotghkihesihhnthgvlhdrtghomhdp
-    rhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopehvihhrvghshhdrkhhumhgrrheslhhinhgrrhhordhorhhg
-X-ME-Proxy: <xmx:K5QBaAL_8gzP_YzFbKLkZCX6q4Iw_cxuYF2EtJbNNDO4KSKu0KqbnQ>
-    <xmx:K5QBaDIkruJ5F9P3JLcGyFLB7kacncvObW11XyZuUQV45gu2SC0Wfw>
-    <xmx:K5QBaJzxqDPy5l-lXbulKrXX3bo_sUFvYZ9GofENtBeGPknAFvduBg>
-    <xmx:K5QBaPKYbj543CMXjdY0KuN9cI1-tQO6zSNncJr1wkjqRjN5zzx4BA>
-    <xmx:K5QBaG8fqjfxQCdV_bCIzBAZrASD_C0jQwQwSycyrgSScTxtIttGYrZt>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 17 Apr 2025 19:52:10 -0400 (EDT)
-Date: Fri, 18 Apr 2025 01:52:07 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: gregkh@linuxfoundation.org
-Cc: rafael.j.wysocki@intel.com, stable@vger.kernel.org,
-	viresh.kumar@linaro.org
-Subject: Re: FAILED: patch "[PATCH] cpufreq: Reference count policy in
- cpufreq_update_limits()" failed to apply to 6.14-stable tree
-Message-ID: <aAGUKHsF2epjlNqG@mail-itl>
-References: <2025041714-stoke-unripe-5956@gregkh>
+	s=arc-20240116; t=1744934583; c=relaxed/simple;
+	bh=I3vPHwz7YXNw7jyMDxMuM19c5WPgpDwBVDtkHVjJSdQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q229EGCqpMSwzPK34tbfA2yncmrzMUwo5ePjN/pRXHeQgjfqA86tBfjw+446Wd00tJO1QMbzGQ/nPwK59qK1PkQGUWjfLIS7OyaRMWwbBCaBPu75Om3WJVckXwhq21wtfVluluETSjOTWdvJaYB6KfIBFkoyFrIKXPgiFXhQlR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=UllDNg1T; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43ed8d32a95so10690285e9.3;
+        Thu, 17 Apr 2025 17:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1744934580; x=1745539380; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gNSwumT6dkwZXP93FOE/yTTGvtGUnL3MKS6N1HOJCjw=;
+        b=UllDNg1T942cmNK+59nxiYZ8pTI15oQRLnpakxkswfRgVfZ6IFlbVHmpgCfsTpn//9
+         1Mqnh9KUa43ofAPX0gezjE3ggi2JbL+QZpHOhQos2qJv3/rUmFDHRoF7SYY/6jwCgAJx
+         CPdrOKordBifQmYUb+3/sWii1Rur1PdJcXrsnnytyxbBnz6FDi1FTcFAxK8Zu6Vi/s++
+         +UFPGYD4z+v7grFupS27lDAsohQV4u/7wQkR7/MK/iqHMTbCkO+xSt1pG37Usx+A19uu
+         uiE+HSzeZbD+YnZF5BiUluz6QnrPdIr+lFzkFoNw6V6z2CFYkR2VV4geTh1uld7j3sEk
+         7x2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744934580; x=1745539380;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gNSwumT6dkwZXP93FOE/yTTGvtGUnL3MKS6N1HOJCjw=;
+        b=vhOT5zWyS3chfoMmjSEFnDJ8QpZR71EQxjf9fI4IZ9cSSKmx5844SxKe/bu+YiSUrO
+         nJcIsplS3Rvfoi6wy5CSoqqo+tUW/hUjepkUvJXYKV4kZEfdgJ0obeXSo08zVxclgBch
+         YrjtiE92+clJPslJ4w/wJMiTi3nBXbYm8cB7Rr11dhxR3y6EePyPyvbD0B1aimKzmotW
+         5An5/ogisI32pwenymE+Kl7KKbFa7eEcP/CgRUsUYMXN/9DcflUvnhqkP5iSi69ANsOS
+         KbXbjTEH5u7PskE9dHxuaj8vgRVts9VrDmkwhkrp3cf/A2EbcWV+RsYvw3ovo2bNnLJN
+         w2EA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+Cr2fiHQikOo/A7wEOnC3L4YsZxKCInWVke4f7uNSBVog3ZfJ213r7C6DZXhNqXxbKFLRSxnNwTP6/ck=@vger.kernel.org, AJvYcCUlO9tXfv/+RgyvubAGL4JIsBZ+w2/x33373wRdMfK4khmRznRrLZyDwwvPyPzF/zowAmkXRqGv@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTx/e+zO9X0YkiFPAvSQIi3tuNVzmOzxcArdlr4XFLnNkODl2S
+	ZgCu2mIgiY3BZTkG/rZTGz3mqRdA65Xgq4VN1YvkKkuAaj0ZQdg=
+X-Gm-Gg: ASbGncsqWYcVSbkmRYQHJo5w/572ySpwkuIz8SUgnXJ/jz9X5q9EKwqwsicOHhb076A
+	7uIhQrqyv91kdaeusF0xaL6lgLs926WlUbOSQB1dtpCa43x35Orfz3kU670nq4vHd12Ut9SEbh/
+	pkU+ZkDpNlG4AoQ0BAWVAsYoBnmgxb29Vl9rrVZjC6ul3wzPHSl58uYK2Dojug+aGqC3ruDgyV8
+	JhqQtx36+lR83Ks7Am727Z1O6psuTa1YT4cE+Ve/jxJnXIXYZjQDwkySmPWJb5Q5PvYJRg5F6lJ
+	n2FeEYStgEK6j7qYBWVsbPlg09pT9AtaG7r38B4WC2fzeLBfDLaVRtgPzkGoRc/CgsUHs7tqVMi
+	6E8hh9dsqsCTyhngF7Q==
+X-Google-Smtp-Source: AGHT+IGx1X35CurvpNYAt4nira3OE4YKiydirlWlHKZoymkoqhWg4da61wRCoaw+BGEmyiTvjY7DTw==
+X-Received: by 2002:a05:600c:3c85:b0:43c:f81d:34 with SMTP id 5b1f17b1804b1-4406ab976cdmr6076825e9.9.1744934579739;
+        Thu, 17 Apr 2025 17:02:59 -0700 (PDT)
+Received: from [192.168.1.3] (p5b057cb5.dip0.t-ipconnect.de. [91.5.124.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa43d071sm1096071f8f.60.2025.04.17.17.02.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Apr 2025 17:02:58 -0700 (PDT)
+Message-ID: <d7a9a1c5-30bf-4ae5-9e3a-c36823645e4c@googlemail.com>
+Date: Fri, 18 Apr 2025 02:02:56 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ddj5+/sZG0g/0LHm"
-Content-Disposition: inline
-In-Reply-To: <2025041714-stoke-unripe-5956@gregkh>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.14 000/449] 6.14.3-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250417175117.964400335@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250417175117.964400335@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Am 17.04.2025 um 19:44 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.14.3 release.
+> There are 449 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
---ddj5+/sZG0g/0LHm
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 18 Apr 2025 01:52:07 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: gregkh@linuxfoundation.org
-Cc: rafael.j.wysocki@intel.com, stable@vger.kernel.org,
-	viresh.kumar@linaro.org
-Subject: Re: FAILED: patch "[PATCH] cpufreq: Reference count policy in
- cpufreq_update_limits()" failed to apply to 6.14-stable tree
+Beste Grüße,
+Peter Schneider
 
-On Thu, Apr 17, 2025 at 03:28:14PM +0200, gregkh@linuxfoundation.org wrote:
->=20
-> The patch below does not apply to the 6.14-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->=20
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-What specifically the conflict is? For me it applies cleanly, both on
-top of v6.14.2 and v6.14.3-rc1...
-And same for 6.12 branch, I haven't checked others.
-
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.14.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 9e4e249018d208678888bdf22f6b652728106528
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041714-=
-stoke-unripe-5956@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
->=20
-> Possible dependencies:
->=20
->=20
->=20
-> thanks,
->=20
-> greg k-h
->=20
-> ------------------ original commit in Linus's tree ------------------
->=20
-> From 9e4e249018d208678888bdf22f6b652728106528 Mon Sep 17 00:00:00 2001
-> From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> Date: Fri, 28 Mar 2025 21:39:08 +0100
-> Subject: [PATCH] cpufreq: Reference count policy in cpufreq_update_limits=
-()
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=3DUTF-8
-> Content-Transfer-Encoding: 8bit
->=20
-> Since acpi_processor_notify() can be called before registering a cpufreq
-> driver or even in cases when a cpufreq driver is not registered at all,
-> cpufreq_update_limits() needs to check if a cpufreq driver is present
-> and prevent it from being unregistered.
->=20
-> For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
-> policy pointer for the given CPU and reference count the corresponding
-> policy object, if present.
->=20
-> Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of =
-_PPC updates")
-> Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
-> Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingslab=
-=2Ecom>
-> Cc: All applicable <stable@vger.kernel.org>
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
->=20
-> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-> index 0cf5a320bb5e..3841c9da6cac 100644
-> --- a/drivers/cpufreq/cpufreq.c
-> +++ b/drivers/cpufreq/cpufreq.c
-> @@ -2809,6 +2809,12 @@ EXPORT_SYMBOL(cpufreq_update_policy);
->   */
->  void cpufreq_update_limits(unsigned int cpu)
->  {
-> +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
-> +
-> +	policy =3D cpufreq_cpu_get(cpu);
-> +	if (!policy)
-> +		return;
-> +
->  	if (cpufreq_driver->update_limits)
->  		cpufreq_driver->update_limits(cpu);
->  	else
->=20
-
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-
---ddj5+/sZG0g/0LHm
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmgBlCgACgkQ24/THMrX
-1yz3ngf/ebLS/9Xw3vduU6q4HyQDAvG09eDr2RVscn9WXQAMw7/XNLUaegycMa0b
-NhOdtHR2eLVeJareTPdzzTG0cueZT4GWZ/57IwMHK5xypvW2dfZ62EYbvqqHGat4
-m3B6CUFWX2Imk72lKGltZvirfUrOuPDxQYrZfgRjJvTsep5kh+o4n0zcf9C6Vzot
-yLlSDwNuV3wAmpwpse9wJlTQ6uc6WfLrqBw1YM7cwwp9rZAKiNoG/fph3kJP+vlZ
-StGFyXrXzntumKKBNWohpCk5G2MSv9qp6iAOmrcdb3UetgfknAwR0R+YyoOeeN04
-3BAn6Ohyl/c56CtrsjuZs0UbuhJwTw==
-=ON9n
------END PGP SIGNATURE-----
-
---ddj5+/sZG0g/0LHm--
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
