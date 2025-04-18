@@ -1,177 +1,182 @@
-Return-Path: <stable+bounces-134533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B12A93422
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:04:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB70A93442
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 299231B630B9
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:04:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E71FC1B658A9
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6430B1DFD8F;
-	Fri, 18 Apr 2025 08:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE2826B0BF;
+	Fri, 18 Apr 2025 08:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="abkKpi3i"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gK/C2za3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2085.outbound.protection.outlook.com [40.107.243.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9C5B19EED3
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 08:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744963437; cv=none; b=fb5bYx7whzYiPYmIQR5m9rWz9Z5hK5tvoRyV7dwa55mburzT0s82uamYmA3a3zahtEUuzHk7f0/Y7QHnSguDBGm3H01fwxswhHCPM9AsA7ml6Z8YqWNzAzLt6zIFeLAi0kzmx8yKrx5RVE5X/UK8/UBof+wdcocrpyIN84E47Ys=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744963437; c=relaxed/simple;
-	bh=7VmAgfV4HjD2TvDskbOnN334T+nY1sFF6x0JAcILQcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t92UojzR4bS8ypd7poXpolUuAzMX0KjDixwoFdx76PoPIl7XHLZDBKMgtXKriwYup4itKTrC/RROCM0IDcKto/esJ6v8078ZghZ6sJynRz/qfR3rjO0WlracFaPHvF/EKE+c0S39Ku1jLh/2Oa4C7QGhoGVNdkCruzNXOII6tyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=abkKpi3i; arc=none smtp.client-ip=209.85.221.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso937634f8f.2
-        for <stable@vger.kernel.org>; Fri, 18 Apr 2025 01:03:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1744963433; x=1745568233; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sjwuy0Es9u22wH8/c6wCusVDfBZ6n6xETTX/GvvCt+U=;
-        b=abkKpi3iFCYcDLSjQ8pv15jgdpu2a1eK5S7/JlhaQTyMUvod4eHiUtXn2aCelTjuJH
-         I8PBnk+l7F9HdwpBam9GyktnXzCh6rS2WaLaE89E2Vm9dRaigDyktNcK4U8X6/NQmGrk
-         fW5LHEomaUNl+8qL/tPvcO6Diki28E9MC6mJ+nNnSGizHLwUOSgVhIg7LEq5oTKLKPOz
-         h+kUXa6ky0T6mhB3LMsnDsQyaJRN8j/wun3L7pH5oHoEw50IN/rYCE0yR270QpGnMHSU
-         EK12TMyWoRfAzZNW+X+IxzJFOc8UMC5QI7BtbzoLfNXa1Im114p7uYlxShc1TRWCLiA0
-         kKPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744963433; x=1745568233;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sjwuy0Es9u22wH8/c6wCusVDfBZ6n6xETTX/GvvCt+U=;
-        b=a+934/fqgE/VWwv033Nb5GGCbFcPLqarqCFqGNwf5SDV9ZoH10uwsWLayuY5+/5TjP
-         oDC9BaB/i/J7hh247l97JAk3w+rIDZdnGNNUINW4YbgI0uhrkXpeWOOcjm2frmU1H9T0
-         w3uLDMfWMXGY8pPf5F/rGZl1iEDKi08KbGCUbRpzfLhruECsrjtoJNdSF3A9Ge6tmhQW
-         hO4GktjUMId6466r7thL7xGw8wMeNqMD1SKrjWcYkWDv2d/iFgiu2jsG7RMQpqmOMKGN
-         /EFED+efZFnhLfcU0XCzGsxnWs04e/rgUTobVB7e5HbunjbLTYAxvC9jTuI6zgjJnQIk
-         T8qA==
-X-Gm-Message-State: AOJu0Yzfk4XUAylHb506HrT89afrxcx7yvpG27Klsjvc+hkGYwOnf94Q
-	0NxjQdINGDpv246foNIVFFQ3Vq43TEKMvJsKw7+uS+coX8b7z942rj33TOTN/9wbgtfdM67YLYe
-	2TWP+jA==
-X-Gm-Gg: ASbGncuITD7rJKrcWBqcCka5s3k+88C/EyiDxB1ZwDMy7ajb0BtCLiarcaopIIeXEsy
-	upKBiDbDsiS8NkEbE+Cj6rY943FN2qvy5hzGtisK6EpTnAQ5QRZwYHeQhgHa8WvXa7aBxroQqYd
-	ChCE3Iz1ZiKeHMKm7NUhHRxH53d0ARJcEOdxKV26HEESuiaXjUzfj4pqSOr0MjA3ZcHuHM2Tg2H
-	XzDUPx3xY/q8F+S00FpUa+nMfXNi6yp0P107p6M8oT4T9wOLxKnVEf3nCWo2/WAmHPWGCpzJSYm
-	3IczUD7fEBpZm6XN+OzaGqjWrSsJkewJgNWSI+bMNLVLN3WwKJjMpfwOwgBsuL2Mw6ahAVWT
-X-Google-Smtp-Source: AGHT+IHdv5FlY1WzSUMxKofNr95e4N8ItyKdCsn53tQu1YMsL62Ud83XTRd9/bPT1pt6NdAlXD1J+w==
-X-Received: by 2002:a05:6000:2408:b0:38f:23f4:2d7a with SMTP id ffacd0b85a97d-39efbace5famr1163119f8f.40.1744963432820;
-        Fri, 18 Apr 2025 01:03:52 -0700 (PDT)
-Received: from localhost (27-240-201-113.adsl.fetnet.net. [27.240.201.113])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39efa433141sm2031663f8f.35.2025.04.18.01.03.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 01:03:52 -0700 (PDT)
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 1/1] selftests/bpf: Fix raw_tp null handling test
-Date: Fri, 18 Apr 2025 16:03:45 +0800
-Message-ID: <20250418080346.37112-1-shung-hsi.yu@suse.com>
-X-Mailer: git-send-email 2.49.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93CA26AAB5;
+	Fri, 18 Apr 2025 08:12:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744963969; cv=fail; b=GXB0j2ut5yawVSBI2UyEi/WKQp6IRg2nNcVrr++9JIzFmiSwipSpmK3vq6XBCiDHowUaNmsaPD6WUykGrsa2RAEsL7TUKQWSP2/KZnaD43gRQBo8yPy15k+S5hjZ4Htl/yjZddwJwaeUMHdnUFmIVk7ie2EHoZzs+zcMpCpatbQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744963969; c=relaxed/simple;
+	bh=ddwu+v9kT+hApwwXJqxOjhnLngWZ1BgpzNSgZjoqoe4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NaFnx9FxRTY+pRaK51gmy1yqcpJUl9LIMFQX7Y8/YlAVUu2NbRBtDG+JD1LmDjOiLYQ/h2wybc9IE5xveyW04ew56/yGHob4jPp90T+/ccRhnMayHdhizNpbsRgIAmjAplVKpFTTvCB/3m6CPnQKc9Y9rTWKDyXg8v+9Y81WyZQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=gK/C2za3; arc=fail smtp.client-ip=40.107.243.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z6WuLN+XjnUjB+JKYDpDXxl2/CNvqm/wsQpaIn2Cl9S/bkB6nO1KxU1HDtLORB/vwiRT9w7AIRiA0IJpKCrwR4hsfwUu0rvumey5yASnF7wSu9IEN1ITAJ4kfTJt7RVoJJ5F2jOt4gV9aMhD2SBXBPIMfMuPWwE3C2buoeHL8P1D2iZoNEWjEstyaD3SpL7XqTi0o/AZV8CeYzlFr/wf6Cm0JwuAr3zhIM0hb8Ve8JZwtrQJLX/LWUerz1J/BwMrbz6UhhX6x7A3jV9bTxa3QcyJDGaefnZc0LvIhkzm+uCvOX7HQ6UR3MjufHRf0xJgM+GgS/9vsf9eX8xncSKHGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PkqE60Oa4WBIVu9h/HvFBCrQWMaZ8qG0eoCVKfT75l4=;
+ b=aoHEHumU92m71vcadcWPfxbCG2OO2BXprt6Xmd+ahzO5lNObgb/I4bUtiBfwOha2IibuGT75tPc8b4iDrTIwFOXKqD+GfvnrP04OriRWTB23NzLtCsw3+65G5HcYJyakidxLAD5WVxhVRY9OnngMpON3zXuH/yDBOxEcCsZZbXrQoqScH9008KbjgmBJD0kG2UeLs68RBXuS3cKzP/+NhvITWOh/nEOQVec84EHMJBmrq8VMX7I2OzkZjI9bnhsswAjNGRHAPsNK1y3uw00tx9JlfQdIP1VlSxfPAwyaqdtOEGjyodx9ZEhybHLttOGFPIgpRcnFCbUn+OwEDxNPxw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PkqE60Oa4WBIVu9h/HvFBCrQWMaZ8qG0eoCVKfT75l4=;
+ b=gK/C2za3kyttw9aXJZcx8815yEnnQtnQHcZbP72KD9JQL4HPbZVhE2q1YTqqpnfsOrLrb9AiGgWXMy3t+oclkEV1+DvMFWK3yALiWDKIhLCZfGynqNTjCvF9puie/dnNRbFsYKBPVoi7XJ/Bq+BteSDDrWcxtOBolVVjNRE9ho9gSIAltNThOeBM8rxYd5Okpg5U/aPLGCIHlF4ici7m7zsIF26kvHIZOS/OF7bwt35mN4MKjGswIn25E0niAHr3Ruark4QMGhp/MOBTjC41VdSehOeapXcvsTRYQOw7WJYfM9v1Mh90IM7PLKlaslEWk97CMTHKMuFfOqhGRyue6Q==
+Received: from SA9PR13CA0127.namprd13.prod.outlook.com (2603:10b6:806:27::12)
+ by SJ5PPF1394451C7.namprd12.prod.outlook.com (2603:10b6:a0f:fc02::98b) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.22; Fri, 18 Apr
+ 2025 08:12:44 +0000
+Received: from SA2PEPF00001504.namprd04.prod.outlook.com
+ (2603:10b6:806:27:cafe::75) by SA9PR13CA0127.outlook.office365.com
+ (2603:10b6:806:27::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.8 via Frontend Transport; Fri,
+ 18 Apr 2025 08:12:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SA2PEPF00001504.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8655.12 via Frontend Transport; Fri, 18 Apr 2025 08:12:43 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 18 Apr
+ 2025 01:12:32 -0700
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Fri, 18 Apr
+ 2025 01:12:31 -0700
+Received: from waynec-Precision-5760.nvidia.com (10.127.8.13) by
+ mail.nvidia.com (10.129.68.9) with Microsoft SMTP Server id 15.2.1544.14 via
+ Frontend Transport; Fri, 18 Apr 2025 01:12:30 -0700
+From: Wayne Chang <waynec@nvidia.com>
+To: <waynec@nvidia.com>, <gregkh@linuxfoundation.org>,
+	<thierry.reding@gmail.com>, <jonathanh@nvidia.com>
+CC: <linux-usb@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH 1/1] usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
+Date: Fri, 18 Apr 2025 16:12:28 +0800
+Message-ID: <20250418081228.1194779-1-waynec@nvidia.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: AnonymousSubmission
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001504:EE_|SJ5PPF1394451C7:EE_
+X-MS-Office365-Filtering-Correlation-Id: e978edf6-256e-49e4-43bd-08dd7e50cbd4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?445AVd9nOqKC8iFsDDkp62MZ+9161lgd17JjSKzAF9JgoKnP/T+/ZZiBA2mp?=
+ =?us-ascii?Q?ifE4DCDVLX49kPnvgKPiuZfEmNVPr+s5Oz6k+5jP22ohT+bFO/3eJFSXeRzE?=
+ =?us-ascii?Q?qvgAAaIew5Ee6/00ml0MkSYUppI1d6gS0QN4nwhVxhHAm8gz+gVPWjeTQHx4?=
+ =?us-ascii?Q?IHq2PTA4wN+ofr9bapmG3mAY6ommsuesQ3Bs8HMLFmxGzl/Dvc7OeIBMrzCs?=
+ =?us-ascii?Q?nU2tUCmMwSbSnqk/lkGHv91ssAJndVyUs7GmU2JffFl0GQApsQAm0HImDEAM?=
+ =?us-ascii?Q?bziKbfK3IlcQtPc2H5QNFFDNBqm1nqYcTyAtJfN7HU/cpY51/XdEEWMzZt1Y?=
+ =?us-ascii?Q?agjlg0SNtNwH10rMz6A4BThdj43pUTztaXCdBsruK8ZmnNBIsuR+tbon9uEu?=
+ =?us-ascii?Q?eJb7QQbwzdNjzxTLBvS3p2ah9NEGozW/CEEcXDvNIRyolYZb+Jqh53wiwqU7?=
+ =?us-ascii?Q?GNDbE8cg2FSMnQPj3i0DtiZ9e/Tr7cqmvZuxfwQEzTOZ2DqpRRbdlRrKSZqp?=
+ =?us-ascii?Q?IQIMBurqLnvGZmO+pkPEgwV+5VdtstXsFjy2ym8WPUgWUzJrSvtTrHKAU9OX?=
+ =?us-ascii?Q?Fo6VEEZ98XwkX1/FWI8hig1Vuc+lAmhDdm1ZS1CqDRl1kFO7qU/By7GLXeX0?=
+ =?us-ascii?Q?CHGijXFAsk1i2vozm6BmtI+rl4g5rya7W+k/J5GssrVqlQ+Tm5reiXe0bGZy?=
+ =?us-ascii?Q?vT0lGP9CsUq8OYvdPOCOzi3n/FbCMsM3tscvR9rvmLVeLd1FHechtmxRF9GU?=
+ =?us-ascii?Q?baTHY89EgcBk+pNtm9gv/cCDxyMnOvD63McBuXIFTNXwr424wbK5uSkcbmsD?=
+ =?us-ascii?Q?mrsVhLRSuHq7FlE+KTga9cD5ehkSpl1PD7dptv0BphrnBAs/ZPif1LcGGHPy?=
+ =?us-ascii?Q?K5Et3zr4BmvCeMi5zPkPH+pngzVW2bGPrdAn0G3I2YLA60ztrJTttzg7M25I?=
+ =?us-ascii?Q?ZQPJ4vyjmN6pL8qukmUlmUup4wqsduRHxL+r+RNMytvsNhb4qOE6qFjsNXYT?=
+ =?us-ascii?Q?q9qKsu3xl7CTaTG5xiDbKO3i3ncnJ1EmKsQpgdYl9/TNpBQFW/BZrwYhELrT?=
+ =?us-ascii?Q?3Ir5K1k1dFSG9DdlStCK+B2r5IB0JnNtC40uPL4UHzh1auRjiG3BP5kGCPTE?=
+ =?us-ascii?Q?84XTooEYDS1iFpxJQ3rC0d8NEcFWiEVM5QD1w/5tBX76scE48x7mX0hnANWU?=
+ =?us-ascii?Q?XVjAwBv3hXoKu1m3BDD557MOMyI+XSTpL5A1CgaeQSamwTNSIf5je5ZJJebu?=
+ =?us-ascii?Q?rIJaWchlFr27PD0DHxZrN2TgArssxmmNOp4kGd1OCMXiqk1gdvzCDRJcjJjD?=
+ =?us-ascii?Q?48SfsoHwiI0AKV0KWr4wHVKheUW6ku7p3nB7acUSbQdnGtsdy8sbA6oKB1d5?=
+ =?us-ascii?Q?iYVBEvZ4iShGAkbfnz2HmBQPLCuFHs3ZaD6ncbV1TFSQyBycrnVL+DXEe2Z0?=
+ =?us-ascii?Q?y8PletZuHVTizlwwx4U1yweNwBtlQC4yRt+vKFfUex2kSiEakTr2hSaa1HX+?=
+ =?us-ascii?Q?+QdMF2Ba3efgv5Piqe+O/97cG1R05LYMFiGh?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2025 08:12:43.7085
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e978edf6-256e-49e4-43bd-08dd7e50cbd4
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001504.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF1394451C7
 
-Commit b2fc4b17fc13, backport of upstream commit 838a10bd2ebf ("bpf:
-Augment raw_tp arguments with PTR_MAYBE_NULL"), was missing the changes
-to tools/testing/selftests/bpf/progs/raw_tp_null.c, and cause the test
-to fail with the following error (see link below for the complete log)
+We identified a bug where the ST_RC bit in the status register was not
+being acknowledged after clearing the CTRL_RUN bit in the control
+register. This could lead to unexpected behavior in the USB gadget
+drivers.
 
-  Error: #205 raw_tp_null
-  libbpf: prog 'test_raw_tp_null': BPF program load failed: Permission denied
-  libbpf: prog 'test_raw_tp_null': -- BEGIN PROG LOAD LOG --
-  0: R1=ctx() R10=fp0
-  ; int BPF_PROG(test_raw_tp_null, struct sk_buff *skb) @ raw_tp_null.c:13
-  0: (79) r6 = *(u64 *)(r1 +0)
-  func 'bpf_testmod_test_raw_tp_null' arg0 has btf_id 2081 type STRUCT 'sk_buff'
-  1: R1=ctx() R6_w=trusted_ptr_or_null_sk_buff(id=1)
-  ; struct task_struct *task = bpf_get_current_task_btf(); @ raw_tp_null.c:15
-  1: (85) call bpf_get_current_task_btf#158     ; R0_w=trusted_ptr_task_struct()
-  ; if (task->pid != tid) @ raw_tp_null.c:17
-  2: (61) r1 = *(u32 *)(r0 +1416)       ; R0_w=trusted_ptr_task_struct() R1_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  3: (18) r2 = 0xffffa3bb801c6000       ; R2_w=map_value(map=raw_tp_n.bss,ks=4,vs=8)
-  5: (61) r2 = *(u32 *)(r2 +0)          ; R2_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  6: (5e) if w1 != w2 goto pc+11        ; R1_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff)) R2_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  ; i = i + skb->mark + 1; @ raw_tp_null.c:20
-  7: (61) r2 = *(u32 *)(r6 +164)
-  R6 invalid mem access 'trusted_ptr_or_null_'
-  processed 7 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
-  -- END PROG LOAD LOG --
-  libbpf: prog 'test_raw_tp_null': failed to load: -13
-  libbpf: failed to load object 'raw_tp_null'
-  libbpf: failed to load BPF skeleton 'raw_tp_null': -13
-  test_raw_tp_null:FAIL:raw_tp_null__open_and_load unexpected error: -13
+This patch resolves the issue by adding the necessary code to explicitly
+acknowledge ST_RC after clearing CTRL_RUN based on the programming
+sequence, ensuring proper state transition.
 
-Bring the missing changes in to fix the test failure.
-
-Link: https://github.com/shunghsiyu/libbpf/actions/runs/14522396622/job/40766998873
-Fixes: b2fc4b17fc13 ("bpf: Augment raw_tp arguments with PTR_MAYBE_NULL")
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
 ---
-Note: as of v6.12.23, even with this patch applied the BPF selftests
-fail to pass because "xdp_devmap_attach" is failing, but that is an
-issue to be addressed separately.
----
- .../testing/selftests/bpf/progs/raw_tp_null.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/usb/gadget/udc/tegra-xudc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/raw_tp_null.c b/tools/testing/selftests/bpf/progs/raw_tp_null.c
-index 457f34c151e3..5927054b6dd9 100644
---- a/tools/testing/selftests/bpf/progs/raw_tp_null.c
-+++ b/tools/testing/selftests/bpf/progs/raw_tp_null.c
-@@ -3,6 +3,7 @@
+diff --git a/drivers/usb/gadget/udc/tegra-xudc.c b/drivers/usb/gadget/udc/tegra-xudc.c
+index c7fdbc55fb0b..2957316fd3d0 100644
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -1749,6 +1749,10 @@ static int __tegra_xudc_ep_disable(struct tegra_xudc_ep *ep)
+ 		val = xudc_readl(xudc, CTRL);
+ 		val &= ~CTRL_RUN;
+ 		xudc_writel(xudc, val, CTRL);
++
++		val = xudc_readl(xudc, ST);
++		if (val & ST_RC)
++			xudc_writel(xudc, ST_RC, ST);
+ 	}
  
- #include <vmlinux.h>
- #include <bpf/bpf_tracing.h>
-+#include "bpf_misc.h"
- 
- char _license[] SEC("license") = "GPL";
- 
-@@ -17,16 +18,14 @@ int BPF_PROG(test_raw_tp_null, struct sk_buff *skb)
- 	if (task->pid != tid)
- 		return 0;
- 
--	i = i + skb->mark + 1;
--	/* The compiler may move the NULL check before this deref, which causes
--	 * the load to fail as deref of scalar. Prevent that by using a barrier.
-+	/* If dead code elimination kicks in, the increment +=2 will be
-+	 * removed. For raw_tp programs attaching to tracepoints in kernel
-+	 * modules, we mark input arguments as PTR_MAYBE_NULL, so branch
-+	 * prediction should never kick in.
- 	 */
--	barrier();
--	/* If dead code elimination kicks in, the increment below will
--	 * be removed. For raw_tp programs, we mark input arguments as
--	 * PTR_MAYBE_NULL, so branch prediction should never kick in.
--	 */
--	if (!skb)
--		i += 2;
-+	asm volatile ("%[i] += 1; if %[ctx] != 0 goto +1; %[i] += 2;"
-+			: [i]"+r"(i)
-+			: [ctx]"r"(skb)
-+			: "memory");
- 	return 0;
- }
+ 	dev_info(xudc->dev, "ep %u disabled\n", ep->index);
 -- 
-2.49.0
+2.25.1
 
 
