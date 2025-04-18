@@ -1,455 +1,153 @@
-Return-Path: <stable+bounces-134546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0285A93566
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:35:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5014A93570
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39D531B65F03
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:35:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F06F33B4475
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB27326FDA9;
-	Fri, 18 Apr 2025 09:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04B926A1CF;
+	Fri, 18 Apr 2025 09:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q+Wf3XfT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Re3uXAru"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E222204F78
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 09:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851D71C5D4E;
+	Fri, 18 Apr 2025 09:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744968903; cv=none; b=fXpu4vUlHYD1dKd7wvyevD/tXATGGHe+qOBV7yvRgsCVBHFgm9I3CwBcbWiqfY1b0BvRpgN9ZBbASMU9JfNUaoa5uh3OFFaR1ccJIkJp6o2LmWkeZ8oikXqJ/T3NVOexFLWt0f581oobGt1Ga20JO4vazogbZ2p6s6xticQdkjg=
+	t=1744969459; cv=none; b=o8wDz5C/3ndnakg/bdQ0bnpf0Ch6Bt4x5QZIptMTgJHCdoeBQnyiBV6SWdnViMpLBK2fxAeCuu5460dWdpi6xR3WsvrZe/yGC1c/IyABxG+JDt0w7HTOWycsetGxA9+2ZTXbhfpUOiBr5+sywmv2MHMGZMskF5lk0QWcvlJf/sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744968903; c=relaxed/simple;
-	bh=b44pdG6dFpVeOemUl+zNHzGe7lTNRt/MyWWEo1m0xgc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=onfZJXxDN7IhRupsZ1WCIW5BTUkptf2MdPW9e0L7eCiK/y/Dg8xVVNg4Yhp/IHgYihlnLKa2iRrocZU7eIMcV3Vowvivhvc5Q8bD7CUaqBOwbCgtCiVFmy0fQsdVvSQUhNc49RWi+tfH57ahIhMBg7T8sX5cED6MkbbgG8VMXUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q+Wf3XfT; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-523d8c024dfso655221e0c.3
-        for <stable@vger.kernel.org>; Fri, 18 Apr 2025 02:35:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1744968900; x=1745573700; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=taYnZJAX9AjJqcs2xWnJr71aItbCvopiMuqAV0c83K0=;
-        b=Q+Wf3XfTn7FzdrnTcgz+kEThoMxQdO0t/NRdQvNA3dtd4ipFOTvGOyiPvWWLe/aCUa
-         fW9Y7PtQhDU/K3PYtDKELTX5bmcZNgQCimqeSnGejUkAcbSA7PnBPyyEVLhAiO+NvqVu
-         uARrKd79iyAwZh3uE+8tslAA6KvnygkZeYN+CPqhxG0n+GOHeCbS+AePazwqXENQyJI6
-         f6M4+hRQgi7x35fXoq4gEfIxF7CFwduavY7tcOjlV0XMzJh/6OT/rnGkT+GuMJTWpxbj
-         F0DrQBa/Zapr9PG9pSsyUleSc+cI+YB0L9+LH4/9ecH/pnmVDEb5sdxtnoIkGQxtrzcj
-         TIdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744968900; x=1745573700;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=taYnZJAX9AjJqcs2xWnJr71aItbCvopiMuqAV0c83K0=;
-        b=HDOrmPQLeNCcAFiuN/v1JZFzXUgAzAFu9SKPzMIAsDdn9XzPF/gTnMx+WdtlbCC6g6
-         /xPFSaZg0cMexyZ0w/gTTr7sVWJxXa5hLjz/AA8NYB+/nNoaPBiw4+ht069SoTMTcALB
-         W7klHgGZx7zw2aX/53RtuczshA63Y69l44f7m2SSSzVskVsG4gsXuQLfMoNMoYhJ/i+Y
-         zuFxuoKtXzDGMNkIZJUljs+AFeWVkK5M5ryWZH2amTi4JIMghxXKN7NZqgUkgGO5I3jp
-         mOpTqadiUXK1OfEC0s6g9Nk9r5l5a4wa0cQusf2OsrNPf5dPJ3+KDwYuEAaAc+Pn/KGj
-         Qs0g==
-X-Gm-Message-State: AOJu0Yz576Nv0B8PusOCN44U/m5IdHz4WNNIWcmA5h9ErWmPxcv4B4We
-	lsSadBE7ZflLmthK2GizwkXpAfU4hkQV8VBVAkzQLuSMmyds14/drFlNQrEYF1iQeQ+nB1fO0LH
-	r3PTgAKSL7wBz4alutf6siXY5AIl3oRVehLdZjA==
-X-Gm-Gg: ASbGncuVx0CfCOugZt+xG+V+KrD7xHK8oXeHahquG4rvyJ+ICJjcI4yu9uLXrInoU6/
-	wKMdj2cZveSzcfVtKhaDwh6z0WAS/+0xhD2ojdexyjd3LrMq8YKwkL/xpGAzwMpjaaE1+lmYAlG
-	8ES3SFbhWOiP4aATldgddR1+Q2LR3sf0/XZwqwo/CSi3VZPLoli2TlSg==
-X-Google-Smtp-Source: AGHT+IHfOCaePsw2Sbbpw78y+pQq5k7hKID3jpJta4FUo5a06bGc5ZvelJDseHPqpVe/Tynq2MzmGaog2gfZnR8ubuM=
-X-Received: by 2002:a05:6122:884:b0:51f:405e:866e with SMTP id
- 71dfb90a1353d-529253b90dfmr1198298e0c.1.1744968900238; Fri, 18 Apr 2025
- 02:35:00 -0700 (PDT)
+	s=arc-20240116; t=1744969459; c=relaxed/simple;
+	bh=QaRpGF7ohLAl7aOFpsMY4RKxgB9F65skY8MDlEDPlok=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CHy5ZVAbl94SQlKza3Rj67DALeoJAG/vKYRIAilv600IQJOb9Ip6BBskloL7G0UwHPM8aBzs+uv1rcJtdh598yw79rblPZmppXqshQ5ohHlUZM9HAxF4HzjVtpPTa0fGAIgNWIG2/WicfhAyc8fFKL2+FUGjEg6So3VXxcpFLLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Re3uXAru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873DEC4CEE2;
+	Fri, 18 Apr 2025 09:44:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744969459;
+	bh=QaRpGF7ohLAl7aOFpsMY4RKxgB9F65skY8MDlEDPlok=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Re3uXAru6hq1XgUUwyV2xA/vOOFFJlPtmy+iqH81m73/RxY6lip5tFW1p46hAqIqq
+	 RF2Ot7/J5TMXAIEKPFd5cqlaIlN73N89+eCHPmRBAZ5tUy/x2EJS0lEs8Vpr1p1SEp
+	 csNg7qe4UnH8L+H6H5aV3RwPRuax4l+ckSoWSa1lkT7UAhRIccJU792lWWDPCq+0dG
+	 o6C46/fhIUDyDxjf2/Vzh4bHjM9JLoTTBbxsRD+p8wrY4DmG4cgeMM6kIKH0dWXRux
+	 A9y8qTaeKTsC9S55PUQ/bod2M+yyzAP0yiuDgYJq0U2xVYOFPOQMvuuLeDzn3dmnuE
+	 hZJy0gAq96dbQ==
+Message-ID: <9681ac5a-b37d-421c-873a-44860a7dbbe4@kernel.org>
+Date: Fri, 18 Apr 2025 11:44:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250417175107.546547190@linuxfoundation.org>
-In-Reply-To: <20250417175107.546547190@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 18 Apr 2025 15:04:48 +0530
-X-Gm-Features: ATxdqUH1lSys9th2G6SO6a8njOOZsyTXkvrwZQazamKi0EdyXXgNru7FWs-QWgs
-Message-ID: <CA+G9fYtaRQhArip=UYkLt864AnXBD6Y07-06CjOJZYSDZ858SQ@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/393] 6.12.24-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: Patch "selftests: mptcp: close fd_in before returning in
+ main_loop" has been added to the 5.15-stable tree
+To: gregkh@linuxfoundation.org
+Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org,
+ liucong2@kylinos.cn, tanggeliang@kylinos.cn,
+ MPTCP Linux <mptcp@lists.linux.dev>
+References: <2025041702-shrouded-subwoofer-25f9@gregkh>
+From: Matthieu Baerts <matttbe@kernel.org>
+Content-Language: en-GB, fr-BE
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <2025041702-shrouded-subwoofer-25f9@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 18 Apr 2025 at 00:09, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.24 release.
-> There are 393 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 19 Apr 2025 17:49:48 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.24-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Greg,
 
-The following two regressions found on stable-rc 6.12.24-rc1 review,
+On 17/04/2025 15:57, gregkh@linuxfoundation.org wrote:
+> 
+> This is a note to let you know that I've just added the patch titled
+> 
+>     selftests: mptcp: close fd_in before returning in main_loop
+> 
+> to the 5.15-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      selftests-mptcp-close-fd_in-before-returning-in-main_loop.patch
+> and it can be found in the queue-5.15 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-1)
-Regressions on arm64 allmodconfig and allyesconfig builds failed
-on the stable rc 6.12.24-rc1.
+Thank you for having backported this patch to stable, but can it be
+dropped from the v5.15 queue please (see below)?
 
-2)
-Regressions on arm64 dragonboard 410c boot failed with lkftconfig
-on the stable rc 6.12.24-rc1.
+> From c183165f87a486d5879f782c05a23c179c3794ab Mon Sep 17 00:00:00 2001
+> From: Geliang Tang <tanggeliang@kylinos.cn>
+> Date: Fri, 28 Mar 2025 15:27:18 +0100
+> Subject: selftests: mptcp: close fd_in before returning in main_loop
+> 
+> From: Geliang Tang <tanggeliang@kylinos.cn>
+> 
+> commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
+> 
+> The file descriptor 'fd_in' is opened when cfg_input is configured, but
+> not closed in main_loop(), this patch fixes it.
+> 
+> Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
 
-First seen on the 6.12.24-rc1
-Good: 6.12.23-rc3
-Bad:  6.12.24-rc1
+This "Fixes" commit has been introduced in v5.17. From what I see, it
+has not been backported to v5.15.
 
-Regressions found on arm64:
-- build/gcc-13-allmodconfig
-- build/gcc-13-allyesconfig
-- build/clang-20-allmodconfig
-- build/clang-20-allyesconfig
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
-Regressions found on arm64 dragonboard-410c:
-- boot/clang-20-lkftconfig
-
-Regression Analysis:
-- New regression? Yes
-- Reproducibility? Yes
-
-Build regression: arm64 ufs-qcom.c implicit declaration 'devm_of_qcom_ice_g=
-et'
-
-Boot regression: arm64 dragonboard 410c WARNING regulator core.c regulator_=
-put
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build log arm64
-drivers/ufs/host/ufs-qcom.c: In function 'ufs_qcom_ice_init':
-drivers/ufs/host/ufs-qcom.c:121:15: error: implicit declaration of
-function 'devm_of_qcom_ice_get'; did you mean 'of_qcom_ice_get'?
-[-Werror=3Dimplicit-function-declaration]
-121 |         ice =3D devm_of_qcom_ice_get(dev);
-|               ^~~~~~~~~~~~~~~~~~~~
-|               of_qcom_ice_get
-drivers/ufs/host/ufs-qcom.c:121:13: error: assignment to 'struct
-qcom_ice *' from 'int' makes pointer from integer without a cast
-[-Werror=3Dint-conversion]
-121 |         ice =3D devm_of_qcom_ice_get(dev);
-|             ^
-cc1: all warnings being treated as errors
-
-
-## Boot log arm64 dragonboard 410c:
-[    3.956824] s3: Bringing 0uV into 1250000-1250000uV
-[    3.958010] PM: genpd: Disabling unused power domains
-[    3.961581] s3: failed to enable: (____ptrval____)
-[    3.966149] qcom-rpmpd
-remoteproc:smd-edge:rpm-requests:power-controller: failed to sync cx:
--1431655766
-[    3.971325] ------------[ cut here ]------------
-[    3.976053] qcom-rpmpd
-remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
-cx_ao: -1431655766
-[    3.985511] WARNING: CPU: 3 PID: 61 at
-drivers/regulator/core.c:2395 regulator_put
-(drivers/regulator/core.c:2418 drivers/regulator/core.c:2416)
-[    3.985536] Modules linked in:
-[    3.985549] CPU: 3 UID: 0 PID: 61 Comm: kworker/u16:3 Not tainted
-6.12.24-rc1 #1
-[    3.990154] qcom-rpmpd
-remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
-cx_vfc: -1431655766
-[    3.992895] sdhci_msm 7864900.mmc: Got CD GPIO
-[    3.999579] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
-[    3.999587] Workqueue: async async_run_entry_fn
-[    3.999609] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
-=3D--)
-[    3.999619] pc : regulator_put (drivers/regulator/core.c:2418
-drivers/regulator/core.c:2416)
-[    3.999631] lr : regulator_put (drivers/regulator/core.c:2389
-drivers/regulator/core.c:2416)
-[    3.999640] sp : ffff8000833aba50
-[    3.999645] x29: ffff8000833aba50 x28: 0000000000000000 x27: ffff800081b=
-1e530
-[    3.999661] x26: ffff800081b1e4f0
-[    4.008278] qcom-rpmpd
-remoteproc:smd-edge:rpm-requests:power-controller: failed to sync mx:
--1431655766
-[    4.011121]  x25: 0000000000000001 x24: 00000000aaaaaaaa
-[    4.011132] x23: ffff00000967e080 x22: ffff0000055e2800
-[    4.018702] qcom-rpmpd
-remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
-mx_ao: -1431655766
-[    4.028477]  x21: ffff0000055e2800
-[    4.028485] x20: ffff0000051f1d40 x19: ffff0000051fac00 x18: 00000000000=
-00002
-[    4.032760] ALSA device list:
-[    4.039587]
-[    4.039590] x17: 0000000000000000 x16: 0000000000000001 x15: 00000000000=
-0010b
-[    4.043862]   No soundcards found.
-[    4.050785] x14: 0000000000100000 x13: ffff8000833a8000 x12: ffff8000833=
-ac000
-[    4.127727] x11: 0000000000000000 x10: 0000000000000000 x9 : 00000000000=
-00000
-[    4.127743] x8 : 0000000000000001 x7 : 0000000000000003 x6 : 00000000000=
-00000
-[    4.127758] x5 : 0000000000000000 x4 : 0000000000000002 x3 : ffff8000833=
-ab630
-[    4.127772] x2 : ffff0000045e0000 x1 : ffff8000801cf41c x0 : ffff0000051=
-fac00
-[    4.127787] Call trace:
-[    4.127793] regulator_put (drivers/regulator/core.c:2418
-drivers/regulator/core.c:2416)
-[    4.127805] regulator_register (drivers/regulator/core.c:5858)
-[    4.127817] devm_regulator_register (drivers/regulator/devres.c:477)
-[    4.127827] rpm_reg_probe
-(drivers/regulator/qcom_smd-regulator.c:1425
-drivers/regulator/qcom_smd-regulator.c:1462)
-[    4.127839] platform_probe (drivers/base/platform.c:1405)
-[    4.127851] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:658)
-[    4.185179] __driver_probe_device (drivers/base/dd.c:0)
-[    4.188819] driver_probe_device (drivers/base/dd.c:830)
-[    4.193158] __device_attach_driver (drivers/base/dd.c:959)
-[    4.197152] bus_for_each_drv (drivers/base/bus.c:459)
-[    4.201664] __device_attach_async_helper
-(arch/arm64/include/asm/jump_label.h:32 drivers/base/dd.c:988)
-[    4.205834] async_run_entry_fn
-(arch/arm64/include/asm/jump_label.h:32 kernel/async.c:131)
-[    4.210866] process_scheduled_works (kernel/workqueue.c:3234
-kernel/workqueue.c:3310)
-[    4.214773] worker_thread (include/linux/list.h:373
-kernel/workqueue.c:946 kernel/workqueue.c:3392)
-[    4.219544] kthread (kernel/kthread.c:391)
-[    4.223102] ret_from_fork (arch/arm64/kernel/entry.S:861)
-[    4.226491] ---[ end trace 000000000000=C3=AF=C2=BF=C2=BD[    4.234746] =
-s4: failed
-to enable: (____ptrval____)
-[    4.234881] ------------[ cut here ]------------
-[    4.238442] WARNING: CPU: 3 PID: 61 at
-drivers/regulator/core.c:2395 regulator_put
-(drivers/regulator/core.c:2418 drivers/regulator/core.c:2416)
-[    4.243226] Modules linked in:
-[    4.251634] CPU: 3 UID: 0 PID: 61 Comm: kworker/u16:3 Tainted: G
-    W          6.12.24-rc1 #1
-[    4.254514] Tainted: [W]=3DWARN
-[    4.263433] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
-[    4.266397] Workqueue: async async_run_entry_fn
-[    4.273162] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
-=3D--)
-[    4.277421] pc : regulator_put (drivers/regulator/core.c:2418
-drivers/regulator/core.c:2416)
-[    4.284357] lr : regulator_put (drivers/regulator/core.c:2389
-drivers/regulator/core.c:2416)
-[    4.288522] sp : ffff8000833aba50
-[    4.292427] x29: ffff8000833aba50 x28: 0000000000000000 x27: ffff800081b=
-1e550
-[    4.295651] x26: ffff800081b1e4f0 x25: 0000000000000001 x24: 00000000aaa=
-aaaaa
-[    4.302768] x23: ffff00000967e280 x22: ffff0000055e2800 x21: ffff0000055=
-e2800
-[    4.309885] x20: ffff0000051f1d40 x19: ffff0000051facc0 x18: 00000000112=
-04d65
-[    4.317003] x17: 0000000000000000 x16: 0000000000000001 x15: 00000000000=
-00003
-[    4.324123] x14: ffff8000827de540 x13: 0000000000000003 x12: 00000000000=
-00003
-[    4.331239] x11: 0000000000000000 x10: 0000000000000000 x9 : 00000000000=
-00000
-[    4.338357] x8 : 0000000000000001 x7 : 0720072007200720 x6 : 07200720072=
-00720
-[    4.345477] x5 : ffff000003201f00 x4 : 0000000000000000 x3 : 00000000000=
-00000
-[    4.352594] x2 : 0000000000000000 x1 : ffff8000801cf41c x0 : ffff0000051=
-facc0
-[    4.359713] Call trace:
-[    4.366817] regulator_put (drivers/regulator/core.c:2418
-drivers/regulator/core.c:2416)
-[    4.369077] regulator_register (drivers/regulator/core.c:5858)
-[    4.372899] devm_regulator_register (drivers/regulator/devres.c:477)
-[    4.376806] rpm_reg_probe
-(drivers/regulator/qcom_smd-regulator.c:1425
-drivers/regulator/qcom_smd-regulator.c:1462)
-[    4.381317] platform_probe (drivers/base/platform.c:1405)
-[    4.385050] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:658)
-[    4.388783] __driver_probe_device (drivers/base/dd.c:0)
-[    4.392430] driver_probe_device (drivers/base/dd.c:830)
-[    4.396769] __device_attach_driver (drivers/base/dd.c:959)
-[    4.400764] bus_for_each_drv (drivers/base/bus.c:459)
-[    4.405277] __device_attach_async_helper
-(arch/arm64/include/asm/jump_label.h:32 drivers/base/dd.c:988)
-[    4.409447] async_run_entry_fn
-(arch/arm64/include/asm/jump_label.h:32 kernel/async.c:131)
-[    4.414479] process_scheduled_works (kernel/workqueue.c:3234
-kernel/workqueue.c:3310)
-[    4.418387] worker_thread (include/linux/list.h:373
-kernel/workqueue.c:946 kernel/workqueue.c:3392)
-[    4.423158] kthread (kernel/kthread.c:391)
-[    4.426717] ret_from_fork (arch/arm64/kernel/entry.S:861)
-[    4.430104] ---[ end trace 0000000000000000 ]---
-[    4.435585] l2: Bringing 0uV into 1200000-1200000uV
-[    4.438347] qcom_rpm_smd_regulator
-remoteproc:smd-edge:rpm-requests:regulators: l2:
-devm_regulator_register() failed, ret=3D-517
-[    4.443414] Unable to handle kernel paging request at virtual
-address ffffffffaaaaae6a
-[    4.454358] Mem abort info:
-[    4.462236]   ESR =3D 0x0000000096000005
-[    4.464916]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-[    4.468754]   SET =3D 0, FnV =3D 0
-[    4.474215]   EA =3D 0, S1PTW =3D 0
-[    4.477066]   FSC =3D 0x05: level 1 translation fault
-[    4.480123] Data abort info:
-[    4.484980]   ISV =3D 0, ISS =3D 0x00000005, ISS2 =3D 0x00000000
-[    4.488109]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-[    4.493413]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-[    4.498527] swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D000000008245a0=
-00
-[    4.503913] [ffffffffaaaaae6a] pgd=3D0000000000000000,
-p4d=3D0000000082e0d003, pud=3D0000000000000000
-[    4.510605] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-[    4.519001] Modules linked in:
-[    4.525244] CPU: 3 UID: 0 PID: 61 Comm: kworker/u16:3 Tainted: G
-    W          6.12.24-rc1 #1
-[    4.528383] Tainted: [W]=3DWARN
-[    4.537304] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (DT)
-[    4.540268] Workqueue: async async_run_entry_fn
-[    4.547032] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=
-=3D--)
-[    4.551292] pc : regulator_unregister (drivers/regulator/core.c:5885)
-[    4.558230] lr : devm_rdev_release (drivers/regulator/devres.c:453)
-[    4.563090] sp : ffff8000833abaf0
-[    4.567340] x29: ffff8000833abb10 x28: ffff0000045e0000 x27: 00000000000=
-001c8
-[    4.570563] x26: ffff00000455e040 x25: ffff00000967e200 x24: ffff0000045=
-e0000
-[    4.577682] x23: ffff80008279ecb0 x22: ffff80008236b82e x21: ffff0000051=
-fac00
-[    4.584799] x20: ffff000005601010 x19: ffff8000833abbb8 x18: 00000000000=
-00002
-[    4.591916] x17: 6f74616c75676572 x16: 3a73747365757165 x15: 00000000000=
-03730
-[    4.599036] x14: ffff83ffffffffff x13: ffff8000833a8000 x12: ffff8000833=
-ac000
-[    4.606152] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff800080b=
-14828
-[    4.613272] x8 : d8b163d50d526200 x7 : 3d4e5f454c424954 x6 : 000000004e5=
-14553
-[    4.620390] x5 : 0000000000000008 x4 : ffff8000821e9c67 x3 : ffff8000833=
-aba30
-[    4.627508] x2 : ffff0000045e0000 x1 : ffff0000051fac80 x0 : ffffffffaaa=
-aaaaa
-[    4.634626] Call trace:
-[    4.641732] regulator_unregister (drivers/regulator/core.c:5885)
-[    4.643993] devm_rdev_release (drivers/regulator/devres.c:453)
-[    4.648505] release_nodes (drivers/base/devres.c:506)
-[    4.652410] devres_release_all (drivers/base/devres.c:0)
-[    4.655970] really_probe (drivers/base/dd.c:551 drivers/base/dd.c:724)
-[    4.659963] __driver_probe_device (drivers/base/dd.c:0)
-[    4.663610] driver_probe_device (drivers/base/dd.c:830)
-[    4.667863] __device_attach_driver (drivers/base/dd.c:959)
-[    4.671858] bus_for_each_drv (drivers/base/bus.c:459)
-[    4.676370] __device_attach_async_helper
-(arch/arm64/include/asm/jump_label.h:32 drivers/base/dd.c:988)
-[    4.680541] async_run_entry_fn
-(arch/arm64/include/asm/jump_label.h:32 kernel/async.c:131)
-[    4.685578] process_scheduled_works (kernel/workqueue.c:3234
-kernel/workqueue.c:3310)
-[    4.689481] worker_thread (include/linux/list.h:373
-kernel/workqueue.c:946 kernel/workqueue.c:3392)
-[    4.694251] kthread (kernel/kthread.c:391)
-[    4.697810] ret_from_fork (arch/arm64/kernel/entry.S:861)
-[ 4.701203] Code: d5384108 f9430508 f81f83a8 b4000bc0 (f941e014)
-All code
-=3D=3D=3D=3D=3D=3D=3D=3D
-
-Code starting with the faulting instruction
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-[    4.704767] ---[ end trace 0000000000000000 ]---
-[   14.260348] amba 802000.stm: deferred probe pending: (reason unknown)
-
-
-## Source
-* Kernel version: 6.12.24-rc1
-* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-* Git sha: dacb3f332e4ba2858eafa0751719b49210dd42b0
-* Git describe: v6.12.23-394-gdacb3f332e4b
-* Project details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.23-394-gdacb3f332e4b
-* Architectures: arm64
-* Toolchains: clang-20, gcc-13
-* Kconfigs: allmodconfig, allyesconfig
-
-## Build arm64
-* Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.=
-y/build/v6.12.23-394-gdacb3f332e4b/testrun/28151361/suite/build/test/gcc-13=
--allmodconfig/log
-* Build history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.23-394-gdacb3f332e4b/testrun/28151361/suite/build/test/gcc-13-allmodconfig=
-/history/
-* Build details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.23-394-gdacb3f332e4b/testrun/28151361/suite/build/test/gcc-13-allmodconfig=
-/details/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrxJK=
-d5cYfMrf4mhq0ZAf3TEkr/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrxJKd5cYfMrf4mhq0Z=
-Af3TEkr/config
-
-## Steps to reproduce on arm64
-- tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
---kconfig allmodconfig
-
-## Boot arm64 dragonboard-410c
-* Boot log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y=
-/build/v6.12.23-394-gdacb3f332e4b/testrun/28151352/suite/boot/test/clang-20=
--lkftconfig/log
-* Boot history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.23-394-gdacb3f332e4b/testrun/28151352/suite/boot/test/clang-20-lkftconfig/=
-history/
-* Boot details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.12.y/build/v6.12=
-.23-394-gdacb3f332e4b/testrun/28151352/suite/boot/test/clang-20-lkftconfig/=
-details/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrxIB=
-P42aRa8k5i0MyTK2ZgRA8/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrxIBP42aRa8k5i0MyT=
-K2ZgRA8/config
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
