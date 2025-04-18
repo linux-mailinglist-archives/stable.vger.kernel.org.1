@@ -1,88 +1,98 @@
-Return-Path: <stable+bounces-134609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A01A93A0E
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:44:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF33A93A28
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A97F3A3F68
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:42:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E4671B66D46
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3516E1E884;
-	Fri, 18 Apr 2025 15:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A6D2144C1;
+	Fri, 18 Apr 2025 15:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iz1/0ivN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c2b+Sfbz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E468E2144B6
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 15:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A572AE66;
+	Fri, 18 Apr 2025 15:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744990975; cv=none; b=nroYcow52X4QATGp4q2/JhTKkSUYlr0IVQf8Q1ohBSZDz0E/3kIhvQoZ9NpYJjvg2IBTUhqJ6gegKT9ZhyUhRjkCoacXk96wC9GLAwi3t3dhH3yTChdMtbrGB7ETGY9hE5XPJMK3LX2FEfLvezL3mnc85o4l2L5vHve7QBBcINk=
+	t=1744991735; cv=none; b=EvW2nLCxlAV6NC808pVqlCBItyQXFf0SeDJZNyNW+8aKRAOxklB91wzTZm3UGpUCQPQuWakfJjHqA/6kMnXiT3sKcj4DpKR8kRFS29D5ELHSUBPYxPUEs/OSL+bfQPbKzGIFGJdx3/fpaDDftHgIvXr4yJtuvtNv7UDp43JyWFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744990975; c=relaxed/simple;
-	bh=BsFjDIpaMxEZCd20zJrYN2jn82vL386McjgmnCnKLgI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QZeUs3QA1ke7NKB4+Wx7zM/0WCA7Y2egyyfcWErhxQJGXZCLfhMqVH4zdMLv/uMhO8CiFrF5fhVhIrv93v/sJTi+LB4aktHySKOV9bQC+NqqEIqdFKpJ1apP5b/AZU7pUcvIIq9nr60TBpE3XZK8QZjyWoSsodNRbOrY875UM94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iz1/0ivN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88B3C4CEE2;
-	Fri, 18 Apr 2025 15:42:53 +0000 (UTC)
+	s=arc-20240116; t=1744991735; c=relaxed/simple;
+	bh=KC8U+EgHKuXEEq/nPLm55QGBSam0ptXIegEJfrfd08U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jEmZQFR5wr9ddJ+lMUFXq6fd7drxjVq62Az9zggDOzDu620olEJ1OJwoe6acNjyw6+YLuSB5o95h4N7ap+6wwssmeDfjVFCpt6KbNnADRioVBCMyf5nBKKu2vF2wE/uvL84U90NxsLYiufaHo3NE5W8IpWCioSVXdFAbCDoAZ8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c2b+Sfbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60901C4CEE2;
+	Fri, 18 Apr 2025 15:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744990974;
-	bh=BsFjDIpaMxEZCd20zJrYN2jn82vL386McjgmnCnKLgI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iz1/0ivNEKtDhOxkWisbfadgNKfECDsPJdY13zXse3NnYduguzAdY7VYM5Xg069W/
-	 5Sl/+O5QgvcfOQ3r2cwRrWZ2QpJWoO7mhQlWQpFBzbpoowqfKuq7xXaF0o1wDDhMhP
-	 gdql37BX7nqY2/z63h8ZVBjt0nK3nI5p0cyl7LwW500W/33I8YwKmlA/7AVmbQS8Sm
-	 2H1f53eYA458Z6r26IXFd5VSFifMjzQZPTjyvt0S3kSDEBRgEYWeYmXjOytWk8RZcs
-	 GHM/2t0uuRdnTVdgTi1PBP4pH1/kSb1FSu0RSNG9Na4y5UxknVcneTwrFu73FFHeuo
-	 NbXjgAV99g4uA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y 1/2] mptcp: sockopt: fix getting freebind & transparent
-Date: Fri, 18 Apr 2025 11:42:52 -0400
-Message-Id: <20250418083633-d88530477cfe678e@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250417172749.2446163-5-matttbe@kernel.org>
-References: 
+	s=k20201202; t=1744991734;
+	bh=KC8U+EgHKuXEEq/nPLm55QGBSam0ptXIegEJfrfd08U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c2b+SfbzfUHyxhapE7H0Jp2yvH5s1oL4/7BgHTQ7lJfGhxDejfF4TpQVHYuzY+oIb
+	 L7I42SBcF23upQc9XWXsXaIts+Gqxgj4XZUDj9thAYjTok32ee8UEvXuc8wSX8IiPP
+	 oYFFDiWBVzpARI7oSTLq0tdsK01LhMkiA9YjT0ctObB5feINEKL5yY3KOXheC/dLvK
+	 qiA1CuLX4zbOwjlQbP/NUSM0V56IFX6VTq7EagBGh7d3JTWf6UDtFpWLBO4Q0IGX8E
+	 JyEl6r/MdkmWlKOrudLBITuan9QZ5fXosVG1HuO94c4+gt7zdP86HgvjBEaYhWgPzH
+	 52zrEOmgM3JTg==
+Date: Fri, 18 Apr 2025 16:55:31 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.14 000/447] 6.14.3-rc2 review
+Message-ID: <aAJ188XG4BwiHQcR@finisterre.sirena.org.uk>
+References: <20250418110423.925580973@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="i4Req4ojKD5TEP2K"
+Content-Disposition: inline
+In-Reply-To: <20250418110423.925580973@linuxfoundation.org>
+X-Cookie: Well begun is half done.
 
-[ Sasha's backport helper bot ]
 
-Hi,
+--i4Req4ojKD5TEP2K
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+On Fri, Apr 18, 2025 at 01:05:27PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.3 release.
+> There are 447 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-The upstream commit SHA1 provided is correct: e2f4ac7bab2205d3c4dd9464e6ffd82502177c51
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Status in newer kernel trees:
-6.14.y | Not found
-6.13.y | Not found
-6.12.y | Not found
+--i4Req4ojKD5TEP2K
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Note: The patch differs from the upstream commit:
----
-1:  e2f4ac7bab220 < -:  ------------- mptcp: sockopt: fix getting freebind & transparent
--:  ------------- > 1:  814637ca257f4 Linux 6.6.87
----
+-----BEGIN PGP SIGNATURE-----
 
-Results of testing on various branches:
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgCdfIACgkQJNaLcl1U
+h9Cjwwf/SavWGz1fW5rauh9ndW5ILbK2oBEk5LIAiIPXXRwzCUwBFejV3I6ASpB9
+Oym/oViPck2cZruGWmi+7emwmaU7YYIvlQ0deGjeDzW61oh9uDPck+YdGE3CHX6Z
+wDX/eD0aSx8vVNEgzOpY8+ys6upq2iC68CCyQSnPCOU55N8Otmwy5FAOEe5qDwuG
+iuvO1pXV0D4k7jPLeQqmju3fmjDMTQSJyU5rjiSuepLasijtYTi8/ofi4SbIpNqH
+kWJCz9qtEHVHnZLeJvpcVrdlGfH1BA/I9bf5luGvtwqVrSwiVu6rvJTQla3Afipf
+Oz5gVxFk3Ensu1TAYIin6xwaiWU+qQ==
+=ZLab
+-----END PGP SIGNATURE-----
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+--i4Req4ojKD5TEP2K--
 
