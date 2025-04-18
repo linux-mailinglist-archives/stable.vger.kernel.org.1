@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-134583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80784A93752
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:44:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF67A93755
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA34D7A9C77
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:43:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72C95464A24
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A71F2749FD;
-	Fri, 18 Apr 2025 12:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B61827511D;
+	Fri, 18 Apr 2025 12:44:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F7D78F3B
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 12:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DDC2750F2
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 12:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744980265; cv=none; b=Le7gV6S+ixM5ktp5r0W+Mfsp5j+S5Z3m+T0NBycoFlaI+vqgU+zoPNUS1j/n8ZwQOKmlM7vMWOJ3GLqchx0eCXQwjKoZuPnjZsBaiP0dkTgPxWT8JtR56pO/0zA9arW08v9lessb1JEd86gbnv7plEyKXXRhNGPPYu+J52m0ci8=
+	t=1744980280; cv=none; b=Q2uMlnf0Hpj4BVpaLfmgC6Uf52Oi8fdbFsg6K63pKFy5L8AJBkRXn/XVVE5KbB5JUmOgeDfqbnwlm5Myo+Byo7PAtNL7rG29RzznF0BgljBbJLE7B0QVN33hum+YS4IodZo4ziQGscLHzkD6255MAaji8bR81WllSFUFtrDq6Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744980265; c=relaxed/simple;
-	bh=oz91DBJ4JbMnZ1GTLETAqAe1xYbN0ph5MALXw3iWWFI=;
+	s=arc-20240116; t=1744980280; c=relaxed/simple;
+	bh=4gdsQ5R7fA80H0QBe0xvoqm5QQjVzEcduH4b6cXWMEw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GSpL7L7jKe8FC/Nbjte1O9aNcKgA+R+DnW6rUXzqrIvXXLlO75raU6VblwO0QlygvTeOhBcnvftnDFEDIQDGW49DzKuiOna2vCipc0SRiZex/YVXjfMeANg4sSXwi5bg9rDEVuOEjSRv2A/WhNIJmhPBujVKA/eBM6Sj5sz2vvw=
+	 MIME-Version:Content-Type; b=gSxQMQMX60ay8Xtckq73MsiaZxNkKmOZFSHpOqVJ4jIjXzp2iBDGHer/2qEWkXlnhxS5aCNVAo2YMhB6+41JuCX9WR4CP8A6rMEL005ZZja4p4pZ+6fp230Mqmn1ZWi+yvGZMgm0kOIUeuMfhru9aNYSI6mHHlvvwPrrjYK3U3o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
 Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 18 Apr 2025 21:44:22 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 7C6C0206A2EB;
-	Fri, 18 Apr 2025 21:44:22 +0900 (JST)
-Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 18 Apr 2025 21:44:22 +0900
+  by mx.socionext.com with ESMTP; 18 Apr 2025 21:44:38 +0900
+Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
+	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 255CF206A2EB;
+	Fri, 18 Apr 2025 21:44:38 +0900 (JST)
+Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 18 Apr 2025 21:44:38 +0900
 Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan3.css.socionext.com (Postfix) with ESMTP id AD8C9701;
-	Fri, 18 Apr 2025 21:44:21 +0900 (JST)
+	by kinkan3.css.socionext.com (Postfix) with ESMTP id 86D41701;
+	Fri, 18 Apr 2025 21:44:37 +0900 (JST)
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 To: stable@vger.kernel.org
 Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.12.y] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
-Date: Fri, 18 Apr 2025 21:44:10 +0900
-Message-Id: <20250418124410.2045902-1-hayashi.kunihiko@socionext.com>
+Subject: [PATCH 6.6.y] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
+Date: Fri, 18 Apr 2025 21:44:28 +0900
+Message-Id: <20250418124428.2045991-1-hayashi.kunihiko@socionext.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2025041751-satirical-strut-f02f@gregkh>
-References: <2025041751-satirical-strut-f02f@gregkh>
+In-Reply-To: <2025041752-angelfish-obedient-c321@gregkh>
+References: <2025041752-angelfish-obedient-c321@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -101,10 +101,10 @@ Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 02e788c774b7..b0c1a3ff6c34 100644
+index a5d13da45789..c95a2b0b9012 100644
 --- a/drivers/misc/pci_endpoint_test.c
 +++ b/drivers/misc/pci_endpoint_test.c
-@@ -742,6 +742,7 @@ static bool pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
+@@ -711,6 +711,7 @@ static bool pci_endpoint_test_set_irq(struct pci_endpoint_test *test,
  	if (!pci_endpoint_test_request_irq(test))
  		goto err;
  
