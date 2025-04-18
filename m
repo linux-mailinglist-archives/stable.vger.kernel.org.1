@@ -1,104 +1,113 @@
-Return-Path: <stable+bounces-134553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC494A9362B
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5D2A9362F
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C68FD447730
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:52:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCC0316EE9F
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E973270EAB;
-	Fri, 18 Apr 2025 10:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4294B26FD91;
+	Fri, 18 Apr 2025 10:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfAiuKDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQ2PBD1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D0F2566E3;
-	Fri, 18 Apr 2025 10:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A2820B1FC
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 10:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744973565; cv=none; b=ON/EIeiYUfzI8mrcmIdTZy1e+75zS6CmhSBqSPJ0FvEZxJBb5KFKiA/qvZ9dOV3V5C7l9V1vHyZHh7pEqWka/zQYctXoHJKXXxkcQP1yUcN7r2jrPL9wjFOjXFLfXLMhuxVZozgMepCU2dFa3xKM4DK0sxXsSsnIafA7qGJIppA=
+	t=1744973630; cv=none; b=miujpeh7WcgdQmven5hacUTLzs7RO1+sVweHq0B98436jM2wTvSNlqzQ1vdqM6ruTXUuHu8I1wJPSOfQSeg8P0MrOfJQJ4uyLL8Wf4sara2PgzTmlSpv9PTU5vGW4/0cKP7qLfsXGMB7XAsLKLyh+M3h4fIvW2a9BJC4wjl0SVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744973565; c=relaxed/simple;
-	bh=dG/cOy8J1uvKJSSw4shxPSJ8HCh+NUqjRqOOKf3sbpk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gePtdPAdUug0CaGNQhzZMV3d/uYg7ch3nfkoCuUieB6UMyRZIB3iRwQJ1qarjxk9nMY5chC2dz/oVy0y1tf4Gqjg5U/LT3G1rSW+tQyJZm4hBY9bY8mEsbNp8kRHyVHr5WJF9HVJq08kfqgsULbbnbA71w/NSRec0CdOKeYhA6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MfAiuKDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26DFC4CEE2;
-	Fri, 18 Apr 2025 10:52:43 +0000 (UTC)
+	s=arc-20240116; t=1744973630; c=relaxed/simple;
+	bh=3lJknUMNBvYZmsVMXZOeHgMpz/DYUD2spEJ9PCJp15Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fJK5UCGOpRejLX0iSH8zwws7ldhAD7BGTB+cjTDk5dxybjmXMb3h2kQwlFjbCpLnWe2GESakGKSu0B+AV+tyzd2k24ZIQFMlHYG5k+Qvwipej8TUrh0ERg819z7EmxWvCW3X0u1hssSgHyzeHsMvpYpqQs99RZs45bUPQVRadSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQ2PBD1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AC2C4CEE2;
+	Fri, 18 Apr 2025 10:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1744973564;
-	bh=dG/cOy8J1uvKJSSw4shxPSJ8HCh+NUqjRqOOKf3sbpk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MfAiuKDSGMK8K+GWYUtgYFfppePKVpOlT+l75KAP6vrNJWj0uu8W3P51EybXB8qvm
-	 74W1SJjEn0kxtaHOt1bpN5Wch0LPyabDOuRhC+YYo2EjA+nDjAw4oBeuGPgB9uBEPt
-	 Hlrg21thk6sTbt5awCO7iPiR98L1pEnjUzRW+5nY=
-Date: Fri, 18 Apr 2025 12:52:41 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org, kuba@kernel.org,
-	liucong2@kylinos.cn, tanggeliang@kylinos.cn,
-	MPTCP Linux <mptcp@lists.linux.dev>
-Subject: Re: Patch "selftests: mptcp: close fd_in before returning in
- main_loop" has been added to the 5.15-stable tree
-Message-ID: <2025041827-fling-importer-e363@gregkh>
-References: <2025041702-shrouded-subwoofer-25f9@gregkh>
- <9681ac5a-b37d-421c-873a-44860a7dbbe4@kernel.org>
+	s=korg; t=1744973629;
+	bh=3lJknUMNBvYZmsVMXZOeHgMpz/DYUD2spEJ9PCJp15Y=;
+	h=Subject:To:Cc:From:Date:From;
+	b=fQ2PBD1BwDEz/x7z7ka8o9SVlf7qKKDpL/x6CjfItLl1kAMKYshSeAK+GNC8Ips++
+	 a+39UWnqhdNKq1h+4LP/w7owODUaND9f9Kmwr1zpFwrCQ1Vfh86CRiydqG4sjtByS0
+	 sjqbTkPTuGQyJB5cUYypb7COAW+qzN8UmKyLlnug=
+Subject: FAILED: patch "[PATCH] scsi: ufs: qcom: fix dev reference leaked through" failed to apply to 6.13-stable tree
+To: tudor.ambarus@linaro.org,abel.vesa@linaro.org,andersson@kernel.org,krzysztof.kozlowski@linaro.org,manivannan.sadhasivam@linaro.org,martin.petersen@oracle.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 18 Apr 2025 12:53:38 +0200
+Message-ID: <2025041838-fruit-gaming-0562@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9681ac5a-b37d-421c-873a-44860a7dbbe4@kernel.org>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 18, 2025 at 11:44:15AM +0200, Matthieu Baerts wrote:
-> Hi Greg,
-> 
-> On 17/04/2025 15:57, gregkh@linuxfoundation.org wrote:
-> > 
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     selftests: mptcp: close fd_in before returning in main_loop
-> > 
-> > to the 5.15-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
-> > The filename of the patch is:
-> >      selftests-mptcp-close-fd_in-before-returning-in-main_loop.patch
-> > and it can be found in the queue-5.15 subdirectory.
-> > 
-> > If you, or anyone else, feels it should not be added to the stable tree,
-> > please let <stable@vger.kernel.org> know about it.
-> 
-> Thank you for having backported this patch to stable, but can it be
-> dropped from the v5.15 queue please (see below)?
-> 
-> > From c183165f87a486d5879f782c05a23c179c3794ab Mon Sep 17 00:00:00 2001
-> > From: Geliang Tang <tanggeliang@kylinos.cn>
-> > Date: Fri, 28 Mar 2025 15:27:18 +0100
-> > Subject: selftests: mptcp: close fd_in before returning in main_loop
-> > 
-> > From: Geliang Tang <tanggeliang@kylinos.cn>
-> > 
-> > commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
-> > 
-> > The file descriptor 'fd_in' is opened when cfg_input is configured, but
-> > not closed in main_loop(), this patch fixes it.
-> > 
-> > Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-> 
-> This "Fixes" commit has been introduced in v5.17. From what I see, it
-> has not been backported to v5.15.
 
-Oops, my fault, now dropped, thanks for catching this.
+The patch below does not apply to the 6.13-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.13.y
+git checkout FETCH_HEAD
+git cherry-pick -x ded40f32b55f7f2f4ed9627dd3c37a1fe89ed8c6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025041838-fruit-gaming-0562@gregkh' --subject-prefix 'PATCH 6.13.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ded40f32b55f7f2f4ed9627dd3c37a1fe89ed8c6 Mon Sep 17 00:00:00 2001
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+Date: Fri, 17 Jan 2025 14:18:52 +0000
+Subject: [PATCH] scsi: ufs: qcom: fix dev reference leaked through
+ of_qcom_ice_get
+
+The driver leaks the device reference taken with
+of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
+
+Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-3-1ffa5b6884cb@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index 23b9f6efa047..a455a95f65fc 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -125,7 +125,7 @@ static int ufs_qcom_ice_init(struct ufs_qcom_host *host)
+ 	int err;
+ 	int i;
+ 
+-	ice = of_qcom_ice_get(dev);
++	ice = devm_of_qcom_ice_get(dev);
+ 	if (ice == ERR_PTR(-EOPNOTSUPP)) {
+ 		dev_warn(dev, "Disabling inline encryption support\n");
+ 		ice = NULL;
+
 
