@@ -1,244 +1,164 @@
-Return-Path: <stable+bounces-134549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0849AA93580
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:47:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F32A93500
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 10:59:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E13431B66C32
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:47:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A7C17B3404
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 08:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1071C270EB6;
-	Fri, 18 Apr 2025 09:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41F726FDBA;
+	Fri, 18 Apr 2025 08:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zu54lqbG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="HnD7GPY/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6FD209F42;
-	Fri, 18 Apr 2025 09:46:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE2626FD82;
+	Fri, 18 Apr 2025 08:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744969566; cv=none; b=ugr1w9EVIqEy0bfQqE1cn9TuugiTo3l2aCD1hMnbqt1qOdg+qR0XkbejPIh6kizPbO1GvMbd9RuWe7kUOUeHnewbxfSLikWAnDGplNCYzS18xOt+3QN6Bqkq6Qq9p2BKb1F+gTfyzX7YopJWCoEfo8rklR127rid2ztZ7ZqTgpo=
+	t=1744966764; cv=none; b=RLfR5GgzVpFw9xz9q9rhk6fteV7yje5C4Cd0PXrCCtrZSsPRFNbiwLuW3Ht2lb6ip84bWvA9G5sP23jAY7c+p2T9s27JLkY2bQFe2N1BahQ3es2kyzCHFlh9VYJQwaN1x/7/6AWrPSj2kwNy9VY/i9kouLlS5KdMDZ0GmmrVNwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744969566; c=relaxed/simple;
-	bh=kZYbgKw3ukUo4QCzVMR5VmYsOncMtGLSf1fdEUi9EUE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WwqzH9d/DJNk0IqAhp5qyFHRoe0bOln05AeA5hOgQ+Kwf7QVfIElSXprpdUjRn6tMcL+WcXVpQrqrgXXRGjqssjnsBkqSbI1M/yORxYnaUIL6HlCt7oZZU7Uykxzw3b/1BYkKGQwDnCoarTuo0PUdnCUQ5N0kK3blhw8nOL6Fyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zu54lqbG; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cf034d4abso9422875e9.3;
-        Fri, 18 Apr 2025 02:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744969563; x=1745574363; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=kZYbgKw3ukUo4QCzVMR5VmYsOncMtGLSf1fdEUi9EUE=;
-        b=Zu54lqbG5NS8y4+1mHKVCKBpQXkL6+XjWr2q9VWM2rD6ZAj87I0P1EDfBghz4XehJl
-         WjoPuBmHYqjy5bAwGL5NQKeZmJxDXNDVNlXtQy7+Ll8hL5FS2/MQeUcHvLjUZfjwUwWz
-         DJVayrfhkSRpq3k8h9AI5UThBvNj+n9nI065agZ1lE++T14MetFL1a2bM7GJC7S9dvWf
-         C2IadtmRpcWpCn5fte6H76EZUJqEBBfGeH39rGnhi296h529i9pO08h3EehVL4RSSNYY
-         JDeEGX7KeIiiYW+ErCdAnfObPfErmbI5+ND6T36X8LmY/Xpr0sLSsHbaQFshokY8PlJq
-         Yn+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744969563; x=1745574363;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kZYbgKw3ukUo4QCzVMR5VmYsOncMtGLSf1fdEUi9EUE=;
-        b=FCfxyoAzVblStrlwKuXVn9/S8vqxPmnKm0miHfvWWiu1YiM6yJp6/ACJJsjmIvkani
-         cXqpn0ls54t0LwXsQxJtIE7mWpFagAxaPZ+JDFFtHTfj+Eovho7/3915UPkYzuEITPNl
-         djQ+kV5KppZV9uByqiWGbx+pWLELl94baPK9k82KdYXCFZMyx9FRFoFbRhtGRWK4DtY3
-         I1RGadB6Tj6TLPknivcKDmACU3tHxMNeceoUHF7oFHWKM8lUYvQhVYWQKoOzT0jGUkJa
-         BHIPxdT228VOQ0SrT5431QpBlRdXPvF02q7SldqM7BU4qba/81kHcCpbG6+g4RoYn0v5
-         ea3A==
-X-Forwarded-Encrypted: i=1; AJvYcCV8RLC07j36kX+2xEQNiUerGG0RxvV1/7zWJEstWUOjekSXmtYJJ+Tx0/sBAW+AQSNdXrHWx8x+Oqg=@vger.kernel.org, AJvYcCVQyIlG0MHdVsJimeQ6VXgNfnbPM2+E/fNrpweJIZWhjSqeljUNW7GSi+3w4ZpqGyDG28RVm9ls/Evd9Inp@vger.kernel.org, AJvYcCVrT1en6Joyc0tlLsStp+wEWkx005HgI4xOdG5Ge36v/j+t170baniCvMRzNUOnEsSleGK0YzvV@vger.kernel.org
-X-Gm-Message-State: AOJu0YybayAeCNxPf7CaB6jbtRMannbdkzoghBEs6/YwXJB8rVc3KyZr
-	mUr04fVPq3aw2xgo63BbhjPRZ9T3pEFn0jd/GFFuh2/lcNOvEPPU
-X-Gm-Gg: ASbGncvcIfmBLf7Z+BEUkS9tBAZdExj6l5GIqohSixyRicEWVp6dpNDjngh2fovkLCb
-	fp+HoBe6V6SCD0vF0FOd/fxafIfOupvaMp/Ah8jl2u09clZAqefDjHdE0NaPWnaPlLjMZNC7XU2
-	IL5SOwK3DXvm6wP4yVYJgsqnpyrw+AQfMYIdAvG8FxFLEPZuc/QVjcFiw7Gi2XAY9CpP6j4w2Si
-	xYkqQOSFYi5sb4BDB1nTQirTvvkCiEA4jpSKlEAdqBmrhHigeNYb0dS7XlPEQi6cyqOdhOVaoHv
-	9Ee1m7imGUN7CNJ5N6F21pn8XPzC9yWNfZgcttzOrCk4NLxwWlbH6upkEQub67F4+kC+rIaTEW8
-	rVZL4I6hSI6u2M2IJ4kXy1cb23A==
-X-Google-Smtp-Source: AGHT+IGdwQHN41vKDt7TdqZdCPUhvA/CvukjpsYuLQYJQHGAPy/n5hOLeTb7Ch9Qr25KePDhjhw/MQ==
-X-Received: by 2002:a05:600c:4e4c:b0:43c:f470:7605 with SMTP id 5b1f17b1804b1-4406ab99615mr20004245e9.12.1744969562833;
-        Fri, 18 Apr 2025 02:46:02 -0700 (PDT)
-Received: from ?IPv6:2001:818:ea56:d000:56e0:ceba:7da4:6673? ([2001:818:ea56:d000:56e0:ceba:7da4:6673])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa3a1685sm2285627f8f.0.2025.04.18.02.46.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 02:46:02 -0700 (PDT)
-Message-ID: <a32503d98ffe162f48de019fab1a37f86af1666e.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: Revoke valid channel for error path
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
-	sonic.zhang@analog.com, vapier@gentoo.org, skhan@linuxfoundation.org, 
-	kernelmentees@lists.linuxfoundation.org, stable@vger.kernel.org
-Date: Fri, 18 Apr 2025 09:46:23 +0100
-In-Reply-To: <CAKUZ0z+FKxHcYTYiGvrZ3RLiMKT1P4gtTdq8d7=+ZFC0RMQzqA@mail.gmail.com>
-References: <20250415182038.523186-1-gshahrouzi@gmail.com>
-	 <fb712c034eda0d5d711a90a00b6382315fb5f929.camel@gmail.com>
-	 <CAKUZ0zL88AyuRxzhoAv2iZO7N7qOMy1G3yKscqG3rQiiOS0gog@mail.gmail.com>
-	 <e8b24cf22c87e5b5ce0cc8919eca79f6e60ab6e3.camel@gmail.com>
-	 <CAKUZ0z+FKxHcYTYiGvrZ3RLiMKT1P4gtTdq8d7=+ZFC0RMQzqA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1744966764; c=relaxed/simple;
+	bh=KlZox/FhfiDHrEDYrtGoIjJ878K+yX47TPz+ztcPYt0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XXlbUWiHb48WGZNsIjgSTkDJgWSwenVoMKLEFhlZArB1hVQuf5WUdX1ie3uPNRmH4WXrScXJm84GgQ6a4hXHk3WHKF3dftCXPxU1IECKuZeKo+MoEJKLrh3cUnV25T5JOy70XyaMr7HOrWj5BxhMF6xF9R4/RLmhscustmUlKQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=HnD7GPY/; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=2cOFs7O7/L6f8JwExiEKzmQTdI10W4SPn5o+BQaDJHw=; b=HnD7GPY/+mHCutXBYnAlJE3wac
+	EeJ/7Og8qsfX9ScGMa/uxwMJ6ASHNNp28hbX0SLTMqL/GgTy/65C/M+hl0pteLaqkT7z9DdS/0lbu
+	S2X8UGDbfGd8JZi9+GQEKOCpk0tzcmwmo9RJUOS6lJPaG28cSZTIQioaYrDM3EJG3OTgQWuAqQttU
+	FLlyaHGKG3XBFEeDDtSFzKdWlTR5ATR2Gt/wCdNnZu7gqDSoMD5omRurzXix/Sj8sIkv1PSenuB8k
+	ba8d3denksSZfmcbp1GN+DcPxhV9j3axez0gDGbWPHH+w436h4Z3j3XsUI+slB/18Kse+maq4mnuT
+	482TkmZQ==;
+Received: from 114-44-248-24.dynamic-ip.hinet.net ([114.44.248.24] helo=gavin-HP-Z840-Workstation..)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u5hYp-001AVr-3u; Fri, 18 Apr 2025 10:58:59 +0200
+From: Gavin Guo <gavinguo@igalia.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org
+Cc: david@redhat.com,
+	willy@infradead.org,
+	ziy@nvidia.com,
+	linmiaohe@huawei.com,
+	hughd@google.com,
+	revest@google.com,
+	kernel-dev@igalia.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm/huge_memory: fix dereferencing invalid pmd migration entry
+Date: Fri, 18 Apr 2025 16:58:02 +0800
+Message-ID: <20250418085802.2973519-1-gavinguo@igalia.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2025-04-17 at 13:08 -0400, Gabriel Shahrouzi wrote:
-> On Thu, Apr 17, 2025 at 10:02=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.=
-com> wrote:
-> >=20
-> > On Thu, 2025-04-17 at 08:53 -0400, Gabriel Shahrouzi wrote:
-> > > On Thu, Apr 17, 2025 at 6:06=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gma=
-il.com> wrote:
-> > > >=20
-> > > > On Tue, 2025-04-15 at 14:20 -0400, Gabriel Shahrouzi wrote:
-> > > > > According to the datasheet on page 9 under the channel selection =
-table,
-> > > > > all devices (AD7816/7/8) are able to use the channel marked as 7.=
- This
-> > > > > channel is used for diagnostic purposes by routing the internal 1=
-.23V
-> > > > > bandgap source through the MUX to the input of the ADC.
-> > > > >=20
-> > > > > Replace checking for string equality with checking for the same c=
-hip ID
-> > > > > to reduce time complexity.
-> > > > >=20
-> > > > > Group invalid channels for all devices together because they are
-> > > > > processed the same way.
-> > > > >=20
-> > > > > Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 de=
-vices")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > > > > ---
-> > > > > =C2=A0drivers/staging/iio/adc/ad7816.c | 15 +++++----------
-> > > > > =C2=A01 file changed, 5 insertions(+), 10 deletions(-)
-> > > > >=20
-> > > > > diff --git a/drivers/staging/iio/adc/ad7816.c
-> > > > > b/drivers/staging/iio/adc/ad7816.c
-> > > > > index 6c14d7bcdd675..d880fe0257697 100644
-> > > > > --- a/drivers/staging/iio/adc/ad7816.c
-> > > > > +++ b/drivers/staging/iio/adc/ad7816.c
-> > > > > @@ -186,17 +186,12 @@ static ssize_t ad7816_store_channel(struct =
-device
-> > > > > *dev,
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret)
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return ret;
-> > > > >=20
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0 if (data > AD7816_CS_MAX && data !=3D A=
-D7816_CS_MASK) {
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for
-> > > > > %s.\n",
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 data, indio_dev->=
-name);
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return -EINVAL;
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0 } else if (strcmp(indio_dev->name, "ad7=
-818") =3D=3D 0 && data > 1) {
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 dev_err(&chip->spi_dev->dev,
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid channel =
-id %lu for ad7818.\n", data);
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 return -EINVAL;
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0 } else if (strcmp(indio_dev->name, "ad7=
-816") =3D=3D 0 && data > 0) {
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0 if (data !=3D AD7816_CS_MASK &&
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (data > AD7816_=
-CS_MAX ||
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (chip->id =3D=
-=3D ID_AD7818 && data > 1) ||
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (chip->id =3D=
-=3D ID_AD7816 && data > 0))) {
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 dev_err(&chip->spi_dev->dev,
-> > > > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid channel =
-id %lu for ad7816.\n", data);
-> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Invalid channel =
-id %lu for %s.\n", data, indio_dev-
-> > > > > > name);
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 return -EINVAL;
-> > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > > >=20
-> > > > Hmm, maybe I'm missing something but the code just looks the same a=
-s before
-> > > > (from a functionality point of view)? I'm really not seeing any fix=
-...
-> > > I might have to change it for readability. From my understanding, if
-> > > channel 7 is selected (AD7816_CS_MASK), it never enters the error pat=
-h
-> > > whereas in the old code, if the chip were either ad7816 or ad7818, it=
- would
-> > > end up returning an error because it skips all channels above either =
-0
-> > > or 1.
-> >=20
-> > Ahh, right!
-> >=20
-> > One good refactor is to add a chip_info struct (renaming the existing o=
-ne) with
-> > let's say a name and max_channels. Then, the condition could be reduced=
- to:
-> >=20
-> > if (data > st->chip->max_channel && data !=3D AD7816_CS_MASK {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_err(...);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -EINVAL;
-> > }
-> Makes sense. I sent a V2 with the updates. Also included enum
-> ad7816_type as a member for chip_info but not sure if it is necessary.
-> Renamed the existing one to ad7816_state.
-> >=20
-> > Being this in staging, I guess we don't care much about having the fix =
-as the
-> > first patch to make it easier to backport.
-> In other words, combining the refactoring and fix into one patch is
-> fine but normally they would be split?
+When migrating a THP, concurrent access to the PMD migration entry
+during a deferred split scan can lead to a invalid address access, as
+illustrated below. To prevent this page fault, it is necessary to check
+the PMD migration entry and return early. In this context, there is no
+need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
+equality of the target folio. Since the PMD migration entry is locked,
+it cannot be served as the target.
 
-Yes, in theory we want to have the fixes first before any refactor because =
-we might
-want to backport the fix and we do not want to backport more code than need=
-ed. Not
-totally sure but being this on staging we might not care that much about th=
-is.
+Mailing list discussion and explanation from Hugh Dickins:
+"An anon_vma lookup points to a location which may contain the folio of
+interest, but might instead contain another folio: and weeding out those
+other folios is precisely what the "folio != pmd_folio((*pmd)" check
+(and the "risk of replacing the wrong folio" comment a few lines above
+it) is for."
 
-- Nuno S=C3=A1
->=20
-> >=20
-> > - Nuno S=C3=A1
-> >=20
-> > >=20
-> > > >=20
-> > > > Having said the above, not sure if grouping helps with readability.=
- But I do
-> > > > agree with moving from string comparison to use chip->id. And we al=
-so have
-> > > > redundants 'else'
-> > > >=20
-> > > > - Nuno S=C3=A1
-> > > >=20
+BUG: unable to handle page fault for address: ffffea60001db008
+CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
+Call Trace:
+<TASK>
+try_to_migrate_one+0x28c/0x3730
+rmap_walk_anon+0x4f6/0x770
+unmap_folio+0x196/0x1f0
+split_huge_page_to_list_to_order+0x9f6/0x1560
+deferred_split_scan+0xac5/0x12a0
+shrinker_debugfs_scan_write+0x376/0x470
+full_proxy_write+0x15c/0x220
+vfs_write+0x2fc/0xcb0
+ksys_write+0x146/0x250
+do_syscall_64+0x6a/0x120
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The bug is found by syzkaller on an internal kernel, then confirmed on
+upstream.
+
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Hugh Dickins <hughd@google.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
+---
+V1 -> V2: Add explanation from Hugh and correct the wording from page
+fault to invalid address access.
+
+ mm/huge_memory.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2a47682d1ab7..0cb9547dcff2 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3075,6 +3075,8 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 			   pmd_t *pmd, bool freeze, struct folio *folio)
+ {
++	bool pmd_migration = is_pmd_migration_entry(*pmd);
++
+ 	VM_WARN_ON_ONCE(folio && !folio_test_pmd_mappable(folio));
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+ 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
+@@ -3085,10 +3087,18 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 	 * require a folio to check the PMD against. Otherwise, there
+ 	 * is a risk of replacing the wrong folio.
+ 	 */
+-	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
+-	    is_pmd_migration_entry(*pmd)) {
+-		if (folio && folio != pmd_folio(*pmd))
+-			return;
++	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
++		if (folio) {
++			/*
++			 * Do not apply pmd_folio() to a migration entry; and
++			 * folio lock guarantees that it must be of the wrong
++			 * folio anyway.
++			 */
++			if (pmd_migration)
++				return;
++			if (folio != pmd_folio(*pmd))
++				return;
++		}
+ 		__split_huge_pmd_locked(vma, pmd, address, freeze);
+ 	}
+ }
+
+base-commit: a24588245776dafc227243a01bfbeb8a59bafba9
+-- 
+2.43.0
 
 
