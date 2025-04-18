@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-134521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61617A930A2
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 05:11:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E40EA930A3
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 05:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0621F1B62E97
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 03:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9BB466C2A
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 03:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD38267B99;
-	Fri, 18 Apr 2025 03:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7923C267F5D;
+	Fri, 18 Apr 2025 03:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xx1tkXLW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="A8SPxx6E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CF72517A8;
-	Fri, 18 Apr 2025 03:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D5E2517A8;
+	Fri, 18 Apr 2025 03:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744945877; cv=none; b=ObSh7/p1UurUp65OYi6hs4nfS+crVAUJ+EQOPW+HKrGvCVs4+rWg2Mkvuhq9ai9vgk47iJxPX2aswRw92JyZz2Y4h7Nt+Df3Lu7BtRekI/2AhbUEhUI0Zo2JAF6eYexm7Yy+9yf0hntQqaPllhrllLStcEAm624h45SCnvrsMmI=
+	t=1744945879; cv=none; b=dwpuPHY5yjXaurk3JIct53fhYIZaXg4Hgcd4tg7G2pMt9mHP5qU4jHN12KPDHT0iDHQi4OZTbETOQO85mULg3qgt/O7cmonGndlmVXaLOuq8WdRkt97qh11wFK++DXDifztQxzW32zwMLwS45ciHj15bTOVoNnJyEmEZ/YPcW8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744945877; c=relaxed/simple;
-	bh=9WIXVR9S4B+gf39XWUtGVrQkZPZBFOVQ3Usb/Trw6uU=;
-	h=Date:To:From:Subject:Message-Id; b=LUIIo60nkynDm/Ni0aCyItX5dwYdeQ6dNDWJn7tg/OFXevK8aYRGo8kSXwZ3o0Oc65nBnZMSU2wKqVj+OMS9c5GDEUfGSNjZIcIijFA/PlChoJCnQYh3lHdJdwuQDs9OP4NYz+uoChKg+iJERW1OEnMQuTGTQJjj1pCkNBOrc/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xx1tkXLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB65C4CEE4;
-	Fri, 18 Apr 2025 03:11:14 +0000 (UTC)
+	s=arc-20240116; t=1744945879; c=relaxed/simple;
+	bh=v2loZveF/3MQBud5Rd2Oe7sfvhfioh7CO6IJW5945ZU=;
+	h=Date:To:From:Subject:Message-Id; b=OIT9kSlJkG0DkCKh1PY2rw5R/EcWFegHisSqY+G5PdgdwpEAQ68C/DO4HFq6JmupKWAGTF8CvyG0J6H9tpO04NJUFSWcoigQqzg/8n1rWltHnM7jAe8NTv7uOnQ16ymiPD8CPF4+rmCyzZ78eF3C+In+WyD4fCnmokJqIRi8n0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=A8SPxx6E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7F9C4AF0B;
+	Fri, 18 Apr 2025 03:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1744945875;
-	bh=9WIXVR9S4B+gf39XWUtGVrQkZPZBFOVQ3Usb/Trw6uU=;
+	s=korg; t=1744945877;
+	bh=v2loZveF/3MQBud5Rd2Oe7sfvhfioh7CO6IJW5945ZU=;
 	h=Date:To:From:Subject:From;
-	b=xx1tkXLWYRWTlyAw7Sbi1u3tNIEafe5mdN0wb0MM7VSVhtIvltArNiQoNIPAHD9Wu
-	 eUmdTd5MABqJh+Fs29Bcv8iefUCqa8R4Yp6V6A4LYEtQtgZwpdkwz1972/7IVHuO1S
-	 Y2ClxoTGk3GXBDq3kkJf95Ahw6HJ6aGi15vkEdWI=
-Date: Thu, 17 Apr 2025 20:11:14 -0700
-To: mm-commits@vger.kernel.org,yanjun.zhu@linux.dev,stable@vger.kernel.org,osalvador@suse.de,david@redhat.com,agruenba@redhat.com,bhe@redhat.com,akpm@linux-foundation.org
+	b=A8SPxx6EhQ+NMQDwRHbxOHPc4OtxS/i2AyuKrT3cKHN+FJMbF9kwDp8pcjWVkQLbc
+	 FeXbwbXwG0MbUGnJsakqMWMJmOA0Mkb3YQBYYTcb3OdG/LU+bV/xKpP9FZUx8gJwsH
+	 L02L8Fqso8yKO7D5iNXSHPA41T+Kw2NXoPD3THYc=
+Date: Thu, 17 Apr 2025 20:11:16 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,jack@suse.cz,agruenba@redhat.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-gup-fix-wrongly-calculated-returned-value-in-fault_in_safe_writeable.patch removed from -mm tree
-Message-Id: <20250418031114.DEB65C4CEE4@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] writeback-fix-false-warning-in-inode_to_wb.patch removed from -mm tree
+Message-Id: <20250418031117.7B7F9C4AF0B@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,67 +50,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
+     Subject: writeback: fix false warning in inode_to_wb()
 has been removed from the -mm tree.  Its filename was
-     mm-gup-fix-wrongly-calculated-returned-value-in-fault_in_safe_writeable.patch
+     writeback-fix-false-warning-in-inode_to_wb.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Baoquan He <bhe@redhat.com>
-Subject: mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
-Date: Thu, 10 Apr 2025 11:57:14 +0800
+From: Andreas Gruenbacher <agruenba@redhat.com>
+Subject: writeback: fix false warning in inode_to_wb()
+Date: Sat, 12 Apr 2025 18:39:12 +0200
 
-Not like fault_in_readable() or fault_in_writeable(), in
-fault_in_safe_writeable() local variable 'start' is increased page by page
-to loop till the whole address range is handled.  However, it mistakenly
-calculates the size of the handled range with 'uaddr - start'.
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-Fix it here.
-
-Andreas said:
-
-: In gfs2, fault_in_iov_iter_writeable() is used in
-: gfs2_file_direct_read() and gfs2_file_read_iter(), so this potentially
-: affects buffered as well as direct reads.  This bug could cause those
-: gfs2 functions to spin in a loop.
-
-Link: https://lkml.kernel.org/r/20250410035717.473207-1-bhe@redhat.com
-Link: https://lkml.kernel.org/r/20250410035717.473207-2-bhe@redhat.com
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Fixes: fe673d3f5bf1 ("mm: gup: make fault_in_safe_writeable() use fixup_user_fault()")
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/gup.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/backing-dev.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/gup.c~mm-gup-fix-wrongly-calculated-returned-value-in-fault_in_safe_writeable
-+++ a/mm/gup.c
-@@ -2207,8 +2207,8 @@ size_t fault_in_safe_writeable(const cha
- 	} while (start != end);
- 	mmap_read_unlock(mm);
- 
--	if (size > (unsigned long)uaddr - start)
--		return size - ((unsigned long)uaddr - start);
-+	if (size > start - (unsigned long)uaddr)
-+		return size - (start - (unsigned long)uaddr);
- 	return 0;
- }
- EXPORT_SYMBOL(fault_in_safe_writeable);
+--- a/include/linux/backing-dev.h~writeback-fix-false-warning-in-inode_to_wb
++++ a/include/linux/backing-dev.h
+@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inod
+ {
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 _
 
-Patches currently in -mm which might be from bhe@redhat.com are
+Patches currently in -mm which might be from agruenba@redhat.com are
 
-mm-gup-remove-unneeded-checking-in-follow_page_pte.patch
-mm-gup-remove-gup_fast_pgd_leaf-and-clean-up-the-relevant-codes.patch
-mm-gup-clean-up-codes-in-fault_in_xxx-functions.patch
-mm-gup-clean-up-codes-in-fault_in_xxx-functions-v5.patch
 
 
