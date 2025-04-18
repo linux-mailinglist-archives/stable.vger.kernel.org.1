@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-134572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E557AA936D3
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:06:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030BDA936CD
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 14:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 153741752FD
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:06:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46CF43A9195
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 12:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFB12741B9;
-	Fri, 18 Apr 2025 12:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5BD268FF2;
+	Fri, 18 Apr 2025 12:05:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004CF16D4E6
-	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 12:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 918CE16D4E6
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 12:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.248.49.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744977998; cv=none; b=gNml1bR9igJgwAL2c9VmuTKadRM8iRlA8dbsQMrW9LFLRStKY4RpZYE5xgfPRw246+RuzKZjVtpOPLR7/KVCx94vG77IH45NiTn+f0o3BDpaW4UfJnDpqJCY3phsz2K1kwpSTo5v/GXDAhLBR7NYnFXLOOQmgSKKhGzlaT0EZtU=
+	t=1744977951; cv=none; b=Aj4yCwz7ZR/nfIi+I+cbXR+NHSoIE8fNeatlgPpvb7Aq+ryO8DoCud1ztmTgp7Gx0ACOKyMyjVRNZ1DYprBULgSJlizakQSqqQSSoxDW8b3fUiw9Nco5dvfYIRMvPEk3kfo0CLWHhcQiwyqmeytKmu7QiK29BwoGtEAg/nZ82pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744977998; c=relaxed/simple;
-	bh=ApPb5y2jtnCrIT/xo5FSNZLfnR0i4kvdqTbm4kVeiTY=;
+	s=arc-20240116; t=1744977951; c=relaxed/simple;
+	bh=V+hLKT8Fs/UDWXkQ4vmu4O11yrALb0vZV5lF/sR9d9A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DU9y8fN6lEpV2ymOQ4+pTw9rCZWeaQMsYCPJwt3AA8ZF+wKcoGaHOUUEG944KeL06IcZmJKio8Ags5GcIfOOsRX1P3PMICb5Oz8e7CEursa4C1KalEj+oRLsZeJ4I/WhCPkhoLsSI1rf0LKviiYJIun3MIs9BfcDEQJ3qQmola8=
+	 MIME-Version:Content-Type; b=mgBdPUoB6CpxrUhkTOLO/4oXSWKxsFdAUcHDfxTJOdEahHW5njWyggv/pF/Zr/YpQ8FQaphIjLAzxmg0AiFcH0BqI/UlUkz8KfDx9x/DzsIeJp0dvNu2Juda0mNn76ON4uZjwGGVaR7paYOvKBXhx72kRV2t+zSC8nDQns36NkY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com; spf=pass smtp.mailfrom=socionext.com; arc=none smtp.client-ip=202.248.49.38
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=socionext.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=socionext.com
-Received: from unknown (HELO kinkan3-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 18 Apr 2025 21:05:33 +0900
+Received: from unknown (HELO iyokan3-ex.css.socionext.com) ([172.31.9.54])
+  by mx.socionext.com with ESMTP; 18 Apr 2025 21:05:46 +0900
 Received: from mail.mfilter.local (mail-arc01.css.socionext.com [10.213.46.36])
-	by kinkan3-ex.css.socionext.com (Postfix) with ESMTP id 3457D206A2EB;
-	Fri, 18 Apr 2025 21:05:33 +0900 (JST)
-Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 18 Apr 2025 21:05:32 +0900
+	by iyokan3-ex.css.socionext.com (Postfix) with ESMTP id DFBC72091483;
+	Fri, 18 Apr 2025 21:05:46 +0900 (JST)
+Received: from kinkan3.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 18 Apr 2025 21:05:46 +0900
 Received: from plum.e01.socionext.com (unknown [10.212.245.39])
-	by kinkan3.css.socionext.com (Postfix) with ESMTP id 5DF74701;
-	Fri, 18 Apr 2025 21:05:32 +0900 (JST)
+	by kinkan3.css.socionext.com (Postfix) with ESMTP id 9F045701;
+	Fri, 18 Apr 2025 21:05:46 +0900 (JST)
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 To: stable@vger.kernel.org
 Cc: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.12.y] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
-Date: Fri, 18 Apr 2025 21:05:25 +0900
-Message-Id: <20250418120525.2019434-1-hayashi.kunihiko@socionext.com>
+Subject: [PATCH 6.6.y] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
+Date: Fri, 18 Apr 2025 21:05:40 +0900
+Message-Id: <20250418120540.2019525-1-hayashi.kunihiko@socionext.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2025041734-stuck-passport-b2c5@gregkh>
-References: <2025041734-stuck-passport-b2c5@gregkh>
+In-Reply-To: <2025041736-gory-twistable-216a@gregkh>
+References: <2025041736-gory-twistable-216a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,10 +84,10 @@ Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 3aaaf47fa4ee..02e788c774b7 100644
+index af519088732d..cd5af3e55f28 100644
 --- a/drivers/misc/pci_endpoint_test.c
 +++ b/drivers/misc/pci_endpoint_test.c
-@@ -252,6 +252,9 @@ static bool pci_endpoint_test_request_irq(struct pci_endpoint_test *test)
+@@ -260,6 +260,9 @@ static bool pci_endpoint_test_request_irq(struct pci_endpoint_test *test)
  		break;
  	}
  
