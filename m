@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-134625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2926A93B6D
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 18:54:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDEA1A93B6F
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 18:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9DAC172A27
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 16:54:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C4CB3AF990
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 16:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98B6215F4B;
-	Fri, 18 Apr 2025 16:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1729215792;
+	Fri, 18 Apr 2025 16:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="Kb/7DIgt"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="c3/dltMH"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252AE215792;
-	Fri, 18 Apr 2025 16:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08011DED51;
+	Fri, 18 Apr 2025 16:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744995285; cv=none; b=SrbtII8PX2dm6R8SpSMPQFxWOqRrTDPiYMQdlzanII2MvVgULv9G1UN/EczaI2a6pRN/lULuAkBKA06/jHrqWIM5efyQDvoO5SQLZhjZchTashH8jbuGAmKcL5inkQ/texE5wBLhCHpasdEBcIRZdzqgZd8mfXLgLmy1mcUb7QQ=
+	t=1744995335; cv=none; b=nnguBOw9H/izxSzGUbicS1SIOJeE/eerMEI1S7BA3moq2qevARFwKE//tLkZoMKlYrS5c8f9mFVGk6E6V5s1jRgkFZCsoLiPC8elhFru9UsiWHd3gjdQ1agpO5xO3btMEtmGm4/ad0ZoDsfQ6GltxpY2av7H3qHb3D+MP0xR8tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744995285; c=relaxed/simple;
-	bh=j7fNl3tHVUdXIBqTvyHtLGQvCjLhT0OY1thb0ltxEyo=;
+	s=arc-20240116; t=1744995335; c=relaxed/simple;
+	bh=Bz91niipmiBlTkoafNa7+Vp4SEyf9zzNcrQJW7WWs70=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kLVBPc+MJfhMVnaQgkBZO96Oj27m44NxjOTD1IrMs+SttTYgmRueTTnvpXHwPbhjdOkZolLdOFDLtqpmVF4rcs2bWtbcMmMnozo8uDpv6CAAmC+be6c7Zqw7x0B3gafnLGsPdywSvdszDl3kpXH/VHYDLLcqSPvC+qjQ6uDaL68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=Kb/7DIgt; arc=none smtp.client-ip=89.58.32.78
+	 Content-Type:Content-Disposition:In-Reply-To; b=chYglwZO/WcRk8r1JPIZju6JTuloxPq/g0ayRLvSQEydYZXpX/7krKV5uSBe8hTSmJPAYKGhSFzajZ0WLNywVEW9fWnvsL3ZXBHr+tiXSLhE3M9I5a3ZFXng95Sa17GY9wtQOCvzICbY7JB8KMqjBqop5AFiicguX4wQgdY3Rr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=c3/dltMH; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 71E451026E029;
-	Fri, 18 Apr 2025 18:54:34 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B7952101BF2CB;
+	Fri, 18 Apr 2025 18:55:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744995280; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=TAqX++6Pz/ZYQQAXoqXwuM4rSIQviXyqdaPFZ7+tlKo=;
-	b=Kb/7DIgtRcM41ZsxZkrECY9DLkPpFfYpIUGIo+o031MdcoVIPPj7zWKbmntUdnptQ4u78d
-	ALl5SJSjmXnigieQ6oDUD8hCI13qjnKp83KLwag4xicWOZw11CD5ishAMs2Yc3aTV+zYs+
-	xAWzZe5qJTReQ8rAe5IAZ/iVmoezsHDTlsDS1zy/B0nC2mtqWc9DIGnXHx6E+Z47KEGGzn
-	oE8ZdoH6ro+Vlze+bCPwEysByjyMGXsOjzG72KCRHOSb1yZN0FGObsNPjFqgYVB+NW1CdH
-	ah5EA2UcM463UfMXEay2ZIgBr2pxecWQxTjn9joG6NRi3qDzEl0KZD2mnXqGUQ==
-Date: Fri, 18 Apr 2025 18:54:32 +0200
+	t=1744995331; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=OafISoZhUhaEdsm2ZGrUseT8G1TVaT2AMpMVzxR8MWo=;
+	b=c3/dltMH4hlPIX+EfxsFOfBkPLfU7ngh6Cln6oMIOPzvexs+YdePGXkMNBFe53ZtN4K2Up
+	XoK9kcLw6S0HrCHjwbE1gYP10KoAZGnnrIIi4NeACtYZ9Z3VRxO0IFK6Ra1hRTITPqVsVr
+	whZFwNRzMgk5rI5PlkWU8YxGsWVeMWLPbeQu1fQp8fWulsROIawbUafxSt03KOc0MuA/eD
+	uEhKjT7qt21Z4Ob5oaon6w8uigPJby+gDOejE2nGTv6Ljqtl/cnk867fxx1CtUZZPXLleq
+	VZD44fCa0wkaub5JLrhxLec6WMI23OgAox/tKi2eR9CwxVjMWPZjURGBFhvraQ==
+Date: Fri, 18 Apr 2025 18:55:23 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Max Grobecker <max@grobecker.info>, Ingo Molnar <mingo@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	thomas.lendacky@amd.com, perry.yuan@amd.com,
-	mario.limonciello@amd.com, riel@surriel.com, mjguzik@gmail.com,
-	seanjc@google.com, darwi@linutronix.de
-Subject: Re: [PATCH AUTOSEL 5.10 2/6] x86/cpu: Don't clear
- X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when running in a virtual
- machine
-Message-ID: <aAKDyGpzNOCdGmN2@duo.ucw.cz>
+	Douglas Anderson <dianders@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+	mark.rutland@arm.com, oliver.upton@linux.dev,
+	shameerali.kolothum.thodi@huawei.com, maz@kernel.org,
+	bwicaksono@nvidia.com, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 5.10 4/6] arm64: cputype: Add
+ QCOM_CPU_PART_KRYO_3XX_GOLD
+Message-ID: <aAKD+zsLwx8pBSOE@duo.ucw.cz>
 References: <20250331143710.1686600-1-sashal@kernel.org>
- <20250331143710.1686600-2-sashal@kernel.org>
+ <20250331143710.1686600-4-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,62 +64,68 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+9WIDzG7gKAFMWwy"
+	protocol="application/pgp-signature"; boundary="uRtdoxvThh96Le0+"
 Content-Disposition: inline
-In-Reply-To: <20250331143710.1686600-2-sashal@kernel.org>
+In-Reply-To: <20250331143710.1686600-4-sashal@kernel.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
 
---+9WIDzG7gKAFMWwy
+--uRtdoxvThh96Le0+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Max Grobecker <max@grobecker.info>
+> From: Douglas Anderson <dianders@chromium.org>
 >=20
-> [ Upstream commit a4248ee16f411ac1ea7dfab228a6659b111e3d65 ]
-
-> This can prevent some docker containers from starting or build scripts to=
- create
-> unoptimized binaries.
+> [ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
 >=20
-> Admittably, this is more a small inconvenience than a severe bug in the k=
-ernel
-> and the shoddy scripts that rely on parsing /proc/cpuinfo
-> should be fixed instead.
+> Add a definition for the Qualcomm Kryo 300-series Gold cores.
 
-I'd say this is not good stable candidate.
+Why are we adding unused defines to stable?
 
 Best regards,
-								Pavel
-
-> +++ b/arch/x86/kernel/cpu/amd.c
-> @@ -839,7 +839,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
->  	 * (model =3D 0x14) and later actually support it.
->  	 * (AMD Erratum #110, docId: 25759).
->  	 */
-> -	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
-> +	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(=
-c, X86_FEATURE_HYPERVISOR)) {
->  		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
->  		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
->  			value &=3D ~BIT_64(32);
+							Pavel
+						=09
+> +++ b/arch/arm64/include/asm/cputype.h
+> @@ -110,6 +110,7 @@
+>  #define QCOM_CPU_PART_KRYO		0x200
+>  #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
+>  #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
+> +#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
+>  #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
+>  #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
+>  #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
+> @@ -167,6 +168,7 @@
+>  #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KR=
+YO)
+>  #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CP=
+U_PART_KRYO_2XX_GOLD)
+>  #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_=
+CPU_PART_KRYO_2XX_SILVER)
+> +#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CP=
+U_PART_KRYO_3XX_GOLD)
+>  #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_=
+CPU_PART_KRYO_3XX_SILVER)
+>  #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CP=
+U_PART_KRYO_4XX_GOLD)
+>  #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_=
+CPU_PART_KRYO_4XX_SILVER)
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---+9WIDzG7gKAFMWwy
+--uRtdoxvThh96Le0+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKDyAAKCRAw5/Bqldv6
-8pngAJ903ri4tAqDyAQ87mK58oN4vwjsvACghbk/ai+TZYVEE7l+NIcp0w76jF4=
-=N72X
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKD+wAKCRAw5/Bqldv6
+8vZoAJ48zepYUTrWWvdYAtCXSQLoJtQE6ACfaD0JqwHWYDyjSqLDbgMAk6ef6+w=
+=QQCx
 -----END PGP SIGNATURE-----
 
---+9WIDzG7gKAFMWwy--
+--uRtdoxvThh96Le0+--
 
