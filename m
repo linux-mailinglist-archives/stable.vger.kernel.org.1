@@ -1,301 +1,238 @@
-Return-Path: <stable+bounces-134515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCF6A92F3F
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 03:25:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06EF9A92F8B
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 03:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E59B1B66ADE
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 01:25:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A4EC460874
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 01:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6775464E;
-	Fri, 18 Apr 2025 01:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E60125E806;
+	Fri, 18 Apr 2025 01:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="JhWd1/r5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="k/aRwnBE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F438DDB;
-	Fri, 18 Apr 2025 01:25:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2521522A4C5
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 01:51:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744939516; cv=none; b=HpChLu1wKt6iRw7W13kjlrS9sFv2em5r9FQDU7PsBXpDyI5f8ptdHK91kpzZscUV+sxmkZ2WhA/vu79JMaUCpPK2KHz0Swd4n4IbAAriPGWyh1Mib/0vbIME74l93k+AdY9Bq/2dpLWCBmzfUWiWf/KBAPXsNt255g0jS7YaYlE=
+	t=1744941091; cv=none; b=mEP/rmkx1KpBPSjFRR7D67PwHtdI6vnnf6Dj96c6s7Nsv0z6JfOqDrO6iQ/rSgSlpaTbZNCBjpdBvRHQgwDyi1PxT0kWcxtE6Xa/ntEeRqyKClhIYE5F+as03aIX406A5cs/4w3gjDZ3JJv5MeMth60rkcPwobUiCKKMtL9rQUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744939516; c=relaxed/simple;
-	bh=Pzb2r00wnq8Ee0+602c09KcWkGB3jnFjn2OjMWlrACg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hI9NjmMEid/D7zagiJWL/0xnGkE4kxjWlFFJRwGAPYw37315/J8L+gdOeU04q2M99v4wgfaVaYjcWS4oaJuvrlTms234jnPar822TqvBsHtHUNZ3iZKeB8G5CXIAo/+L3NBgwST3P1QUY3i+XtYZdo9/oz7l3Sb2S9g/GYlkNLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53I0pgLv032617;
-	Fri, 18 Apr 2025 01:24:17 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45ydd1q582-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 18 Apr 2025 01:24:16 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Thu, 17 Apr 2025 18:24:15 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Thu, 17 Apr 2025 18:24:10 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <jianqi.ren.cn@windriver.com>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <sashal@kernel.org>, <pabeni@redhat.com>,
-        <edumazet@google.com>, <cascardo@igalia.com>, <yajun.deng@linux.dev>,
-        <yuehaibing@huawei.com>, <dan.streetman@canonical.com>,
-        <steffen.klassert@secunet.com>, <netdev@vger.kernel.org>,
-        <i.maximets@ovn.org>, <kuniyu@amazon.com>
-Subject: [PATCH 5.15.y] net: defer final 'struct net' free in netns dismantle
-Date: Fri, 18 Apr 2025 09:24:09 +0800
-Message-ID: <20250418012409.2059897-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1744941091; c=relaxed/simple;
+	bh=cVK7BY1FBJJ8wbsn4TKGi1QZ4YcjdoU2Eoq0QQv6XzA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lMKNyotWT7623qPOLBtlBPlGg6jSMUjvPixyZHRsCyCsnjHwXIzfRQQyYymKGRFzpd7zcMH+9QyqrdMpRxVknPGeoNEvMKgktftHCS+gekO9DqG3oXo2didag2OV5od8HQatA39Eta7R3loKI7UywwWm5zLsWhxABqOZTmYjF2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=JhWd1/r5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=k/aRwnBE; arc=none smtp.client-ip=202.12.124.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id EC5E2254017A;
+	Thu, 17 Apr 2025 21:51:26 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 17 Apr 2025 21:51:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1744941086;
+	 x=1745027486; bh=JJ8h3uVYslPtURWXQcJpREr7soM//IWfDMZYYwivCdk=; b=
+	JhWd1/r583lrf8Tkp/sgHy65Jn9DKEhihWBMrnswpkvRkfEktlk4cu8E9F11G7vM
+	9Id6Zkqd2NxHUNGeLVoIAp+2CU2q7Rrz7EcXWSiiYRogTU8h7VdbojI+nxOoGZoT
+	sogNSArCgx0XncDeBjbJV0SrTvmhIdf1ML/wTA5jfclKwVHEzAHkzn1GzF1+IjnP
+	flB6uI9WXrtu7aMv+Z6Eo6eS62iEtNbjwQyqU5XIrIDjf/hrxsXc56HVdMsH9/9A
+	zb2wuxmzR84y3O7NAMYXy4R5R9YZ73V/Li9nBYHQPNKlb7JA26We2nyjK8Mdftkg
+	gJEG9zp52ZYobsYok1sL+Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1744941086; x=1745027486; bh=JJ8h3uVYslPtURWXQcJpREr7soM//IWfDMZ
+	YYwivCdk=; b=k/aRwnBEHBj93hvejiKWgqBMeBpDbA+sgeIgUIpTATf0WKCDR0W
+	yNoUeFS1TkhrBtwKBF2I+Qrhh0lRLAP1KPg+JcL03grQ5uQZkQgMqNv/gmrZd9Q5
+	ARTjEPJFbk9CkJPN6ctpFrCPoKw299CZOFwS8+WrZoS2/vsq9qrZ7fpkr3hY0G3w
+	VHkusQwXb2XTgyvBTMgEzOYYhOC7xkl5hrnHTSZWJhSEEoNhWTjsde3O4iBdmpGj
+	XWc64XMd9E22TAz2EuqWlBKfcXi+JRXz/P76nays4o3r8lo8u20PBeS9F23CRxCg
+	VeNwV9b2aDJHZtRO81sFKXBRvvYF83+t1UQ==
+X-ME-Sender: <xms:HrABaIxkroHT86QBkYQLOBoA-RHr-3-KsbRXvdlsfIr44ndo1uyCNQ>
+    <xme:HrABaMSznEYVeb2Fic-fLZD8gQe96Wzk8ezyJxShudlkliDrQtwDohbCX7FxGJaXD
+    xXxYT4ni6yphQ>
+X-ME-Received: <xmr:HrABaKX6SoK615O3WSeH-VZXKrvxU6j7sTZJl4z-QKj4YcFK_NPnt_KwNCy5En2bV8A1UJFj4Jd7VAJK6zyNE-X-Oxkm81vKjA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedtkeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhf
+    fvvefukfhfgggtuggjsehgtdorredttdejnecuhfhrohhmpeforghrvghkucforghrtgii
+    hihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesihhnvhhishhisghlvg
+    hthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpefffefgieduudeuieel
+    keefgffhhefgfeekieelkeejkeduudehudevheeukeduudenucffohhmrghinhepkhgvrh
+    hnvghlrdhorhhgpdhmshhgihgurdhlihhnkhenucevlhhushhtvghrufhiiigvpedtnecu
+    rfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhesihhnvhhishhisghlvghthh
+    hinhhgshhlrggsrdgtohhmpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrgh
+    dprhgtphhtthhopehrrghfrggvlhdrjhdrfiihshhotghkihesihhnthgvlhdrtghomhdp
+    rhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopehvihhrvghshhdrkhhumhgrrheslhhinhgrrhhordhorhhg
+X-ME-Proxy: <xmx:HrABaGhiHEKK30mEVwbBmbdtQ1DYbedVfUGx2rV7ms6BZB2fB50x7Q>
+    <xmx:HrABaKAao8r9o8WaIX2XFwejRW77QJDCxgjKTaJ3HqTVsw-a3WfKRw>
+    <xmx:HrABaHKyxJ1En78_hD-_OovWfmtwbM5YVikqaptCxUoQrNZoWVKZNA>
+    <xmx:HrABaBD4x7Rf_BnUGcgve-_8CAZ7FoM2ynlJn4-yeqCKyncshW_F3w>
+    <xmx:HrABaI2zbZ3VF6hayo9hu5txcOPmddpHguoXXSsRyd4Turj7CAfRdTcW>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 17 Apr 2025 21:51:25 -0400 (EDT)
+Date: Fri, 18 Apr 2025 03:51:22 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: gregkh@linuxfoundation.org
+Cc: rafael.j.wysocki@intel.com, stable@vger.kernel.org,
+	viresh.kumar@linaro.org
+Subject: Re: FAILED: patch "[PATCH] cpufreq: Reference count policy in
+ cpufreq_update_limits()" failed to apply to 6.14-stable tree
+Message-ID: <aAGwGlLCCwxqjTJo@mail-itl>
+References: <2025041714-stoke-unripe-5956@gregkh>
+ <aAGUKHsF2epjlNqG@mail-itl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: LZQcCXxRCoyVPrJ1MGLCQvgJ72NDD0sG
-X-Proofpoint-GUID: LZQcCXxRCoyVPrJ1MGLCQvgJ72NDD0sG
-X-Authority-Analysis: v=2.4 cv=HecUTjE8 c=1 sm=1 tr=0 ts=6801a9c0 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=bC-a23v3AAAA:8 a=1XWaLZrsAAAA:8 a=P8mRVJMrAAAA:8 a=20KFwNOVAAAA:8
- a=vggBfdFIAAAA:8 a=t7CeM3EgAAAA:8 a=sogmP-z4RixR6Pyh5rEA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=Vc1QvrjMcIoGonisw6Ob:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-17_07,2025-04-17_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 spamscore=0 bulkscore=0
- adultscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0 clxscore=1015
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2504180007
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="LRee4dmOwf6jQHCx"
+Content-Disposition: inline
+In-Reply-To: <aAGUKHsF2epjlNqG@mail-itl>
 
-From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0f6ede9fbc747e2553612271bce108f7517e7a45 ]
+--LRee4dmOwf6jQHCx
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 18 Apr 2025 03:51:22 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: gregkh@linuxfoundation.org
+Cc: rafael.j.wysocki@intel.com, stable@vger.kernel.org,
+	viresh.kumar@linaro.org
+Subject: Re: FAILED: patch "[PATCH] cpufreq: Reference count policy in
+ cpufreq_update_limits()" failed to apply to 6.14-stable tree
 
-Ilya reported a slab-use-after-free in dst_destroy [1]
+On Fri, Apr 18, 2025 at 01:52:07AM +0200, Marek Marczykowski-G=C3=B3recki w=
+rote:
+> On Thu, Apr 17, 2025 at 03:28:14PM +0200, gregkh@linuxfoundation.org wrot=
+e:
+> >=20
+> > The patch below does not apply to the 6.14-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> >=20
+> > To reproduce the conflict and resubmit, you may use the following comma=
+nds:
+>=20
+> What specifically the conflict is? For me it applies cleanly, both on
+> top of v6.14.2 and v6.14.3-rc1...
+> And same for 6.12 branch, I haven't checked others.
 
-Issue is in xfrm6_net_init() and xfrm4_net_init() :
+Ah, I see, it fails to build as it depends on
+97a705dc1a3654d8d2e466433a897be202a7f0ac (the part about DEFINE_FREE).
+A backport without this dependency is easy, I'll post it in a moment.
 
-They copy xfrm[46]_dst_ops_template into net->xfrm.xfrm[46]_dst_ops.
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.=
+git/ linux-6.14.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 9e4e249018d208678888bdf22f6b652728106528
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '202504171=
+4-stoke-unripe-5956@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+> >=20
+> > Possible dependencies:
+> >=20
+> >=20
+> >=20
+> > thanks,
+> >=20
+> > greg k-h
+> >=20
+> > ------------------ original commit in Linus's tree ------------------
+> >=20
+> > From 9e4e249018d208678888bdf22f6b652728106528 Mon Sep 17 00:00:00 2001
+> > From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> > Date: Fri, 28 Mar 2025 21:39:08 +0100
+> > Subject: [PATCH] cpufreq: Reference count policy in cpufreq_update_limi=
+ts()
+> > MIME-Version: 1.0
+> > Content-Type: text/plain; charset=3DUTF-8
+> > Content-Transfer-Encoding: 8bit
+> >=20
+> > Since acpi_processor_notify() can be called before registering a cpufreq
+> > driver or even in cases when a cpufreq driver is not registered at all,
+> > cpufreq_update_limits() needs to check if a cpufreq driver is present
+> > and prevent it from being unregistered.
+> >=20
+> > For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
+> > policy pointer for the given CPU and reference count the corresponding
+> > policy object, if present.
+> >=20
+> > Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling o=
+f _PPC updates")
+> > Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
+> > Reported-by: Marek Marczykowski-G=C3=B3recki <marmarek@invisiblethingsl=
+ab.com>
+> > Cc: All applicable <stable@vger.kernel.org>
+> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> > Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+> > Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
+> >=20
+> > diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> > index 0cf5a320bb5e..3841c9da6cac 100644
+> > --- a/drivers/cpufreq/cpufreq.c
+> > +++ b/drivers/cpufreq/cpufreq.c
+> > @@ -2809,6 +2809,12 @@ EXPORT_SYMBOL(cpufreq_update_policy);
+> >   */
+> >  void cpufreq_update_limits(unsigned int cpu)
+> >  {
+> > +	struct cpufreq_policy *policy __free(put_cpufreq_policy);
+> > +
+> > +	policy =3D cpufreq_cpu_get(cpu);
+> > +	if (!policy)
+> > +		return;
+> > +
+> >  	if (cpufreq_driver->update_limits)
+> >  		cpufreq_driver->update_limits(cpu);
+> >  	else
+> >=20
+>=20
+> --=20
+> Best Regards,
+> Marek Marczykowski-G=C3=B3recki
+> Invisible Things Lab
 
-But net structure might be freed before all the dst callbacks are
-called. So when dst_destroy() calls later :
 
-if (dst->ops->destroy)
-    dst->ops->destroy(dst);
 
-dst->ops points to the old net->xfrm.xfrm[46]_dst_ops, which has been freed.
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
 
-See a relevant issue fixed in :
+--LRee4dmOwf6jQHCx
+Content-Type: application/pgp-signature; name=signature.asc
 
-ac888d58869b ("net: do not delay dst_entries_add() in dst_release()")
+-----BEGIN PGP SIGNATURE-----
 
-A fix is to queue the 'struct net' to be freed after one
-another cleanup_net() round (and existing rcu_barrier())
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmgBsBoACgkQ24/THMrX
+1yxCZgf/Z3eqW1kq8EhqLqRuX7E7bK/L1gQGkB9z8d/Z7MgIEFp4P5AEOiocmCBE
+z6wsoCgHQhGQUP2QY504M9bC+twxQIaRgT9TQbxj8gJh6tan0A/IjfkCc/bAS3qX
+ZNKxArPed/jeMkp2395ocyZ8Xo1RjhvuuLPwNK2qugE50yJpxFMssEuuV2x7FhOd
+wMVMloe+7qct09h0mT8cgCevp5cZqyU/2DtPnt9dZyssvjQUVHFsADmeSbOY7QJx
+Q338pMu2ZFpTYWpwSMHSKPzDZPeDTx2NWSuq0xpZdAcZ+WVDDNFMRjgImV6S5Y8G
+J8bNEStgB7Y/g3obmPCGJsZWPx/Lhw==
+=82Si
+-----END PGP SIGNATURE-----
 
-[1]
-
-BUG: KASAN: slab-use-after-free in dst_destroy (net/core/dst.c:112)
-Read of size 8 at addr ffff8882137ccab0 by task swapper/37/0
-Dec 03 05:46:18 kernel:
-CPU: 37 UID: 0 PID: 0 Comm: swapper/37 Kdump: loaded Not tainted 6.12.0 #67
-Hardware name: Red Hat KVM/RHEL, BIOS 1.16.1-1.el9 04/01/2014
-Call Trace:
- <IRQ>
-dump_stack_lvl (lib/dump_stack.c:124)
-print_address_description.constprop.0 (mm/kasan/report.c:378)
-? dst_destroy (net/core/dst.c:112)
-print_report (mm/kasan/report.c:489)
-? dst_destroy (net/core/dst.c:112)
-? kasan_addr_to_slab (mm/kasan/common.c:37)
-kasan_report (mm/kasan/report.c:603)
-? dst_destroy (net/core/dst.c:112)
-? rcu_do_batch (kernel/rcu/tree.c:2567)
-dst_destroy (net/core/dst.c:112)
-rcu_do_batch (kernel/rcu/tree.c:2567)
-? __pfx_rcu_do_batch (kernel/rcu/tree.c:2491)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4339 kernel/locking/lockdep.c:4406)
-rcu_core (kernel/rcu/tree.c:2825)
-handle_softirqs (kernel/softirq.c:554)
-__irq_exit_rcu (kernel/softirq.c:589 kernel/softirq.c:428 kernel/softirq.c:637)
-irq_exit_rcu (kernel/softirq.c:651)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 arch/x86/kernel/apic/apic.c:1049)
- </IRQ>
- <TASK>
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:702)
-RIP: 0010:default_idle (./arch/x86/include/asm/irqflags.h:37 ./arch/x86/include/asm/irqflags.h:92 arch/x86/kernel/process.c:743)
-Code: 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 6e ff ff ff 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 0f 00 2d c7 c9 27 00 fb f4 <fa> c3 cc cc cc cc 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90
-RSP: 0018:ffff888100d2fe00 EFLAGS: 00000246
-RAX: 00000000001870ed RBX: 1ffff110201a5fc2 RCX: ffffffffb61a3e46
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffb3d4d123
-RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed11c7e1835d
-R10: ffff888e3f0c1aeb R11: 0000000000000000 R12: 0000000000000000
-R13: ffff888100d20000 R14: dffffc0000000000 R15: 0000000000000000
-? ct_kernel_exit.constprop.0 (kernel/context_tracking.c:148)
-? cpuidle_idle_call (kernel/sched/idle.c:186)
-default_idle_call (./include/linux/cpuidle.h:143 kernel/sched/idle.c:118)
-cpuidle_idle_call (kernel/sched/idle.c:186)
-? __pfx_cpuidle_idle_call (kernel/sched/idle.c:168)
-? lock_release (kernel/locking/lockdep.c:467 kernel/locking/lockdep.c:5848)
-? lockdep_hardirqs_on_prepare (kernel/locking/lockdep.c:4347 kernel/locking/lockdep.c:4406)
-? tsc_verify_tsc_adjust (arch/x86/kernel/tsc_sync.c:59)
-do_idle (kernel/sched/idle.c:326)
-cpu_startup_entry (kernel/sched/idle.c:423 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:202 arch/x86/kernel/smpboot.c:282)
-? __pfx_start_secondary (arch/x86/kernel/smpboot.c:232)
-? soft_restart_cpu (arch/x86/kernel/head_64.S:452)
-common_startup_64 (arch/x86/kernel/head_64.S:414)
- </TASK>
-Dec 03 05:46:18 kernel:
-Allocated by task 12184:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-__kasan_slab_alloc (mm/kasan/common.c:319 mm/kasan/common.c:345)
-kmem_cache_alloc_noprof (mm/slub.c:4085 mm/slub.c:4134 mm/slub.c:4141)
-copy_net_ns (net/core/net_namespace.c:421 net/core/net_namespace.c:480)
-create_new_namespaces (kernel/nsproxy.c:110)
-unshare_nsproxy_namespaces (kernel/nsproxy.c:228 (discriminator 4))
-ksys_unshare (kernel/fork.c:3313)
-__x64_sys_unshare (kernel/fork.c:3382)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Freed by task 11:
-kasan_save_stack (mm/kasan/common.c:48)
-kasan_save_track (./arch/x86/include/asm/current.h:49 mm/kasan/common.c:60 mm/kasan/common.c:69)
-kasan_save_free_info (mm/kasan/generic.c:582)
-__kasan_slab_free (mm/kasan/common.c:271)
-kmem_cache_free (mm/slub.c:4579 mm/slub.c:4681)
-cleanup_net (net/core/net_namespace.c:456 net/core/net_namespace.c:446 net/core/net_namespace.c:647)
-process_one_work (kernel/workqueue.c:3229)
-worker_thread (kernel/workqueue.c:3304 kernel/workqueue.c:3391)
-kthread (kernel/kthread.c:389)
-ret_from_fork (arch/x86/kernel/process.c:147)
-ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-Dec 03 05:46:18 kernel:
-Last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-xfrm_policy_insert (net/xfrm/xfrm_policy.c:1610)
-xfrm_add_policy (net/xfrm/xfrm_user.c:2116)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-Dec 03 05:46:18 kernel:
-Second to last potentially related work creation:
-kasan_save_stack (mm/kasan/common.c:48)
-__kasan_record_aux_stack (mm/kasan/generic.c:541)
-insert_work (./include/linux/instrumented.h:68 ./include/asm-generic/bitops/instrumented-non-atomic.h:141 kernel/workqueue.c:788 kernel/workqueue.c:795 kernel/workqueue.c:2186)
-__queue_work (kernel/workqueue.c:2340)
-queue_work_on (kernel/workqueue.c:2391)
-__xfrm_state_insert (./include/linux/workqueue.h:723 net/xfrm/xfrm_state.c:1150 net/xfrm/xfrm_state.c:1145 net/xfrm/xfrm_state.c:1513)
-xfrm_state_update (./include/linux/spinlock.h:396 net/xfrm/xfrm_state.c:1940)
-xfrm_add_sa (net/xfrm/xfrm_user.c:912)
-xfrm_user_rcv_msg (net/xfrm/xfrm_user.c:3321)
-netlink_rcv_skb (net/netlink/af_netlink.c:2536)
-xfrm_netlink_rcv (net/xfrm/xfrm_user.c:3344)
-netlink_unicast (net/netlink/af_netlink.c:1316 net/netlink/af_netlink.c:1342)
-netlink_sendmsg (net/netlink/af_netlink.c:1886)
-sock_write_iter (net/socket.c:729 net/socket.c:744 net/socket.c:1165)
-vfs_write (fs/read_write.c:590 fs/read_write.c:683)
-ksys_write (fs/read_write.c:736)
-do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Fixes: a8a572a6b5f2 ("xfrm: dst_entries_init() per-net dst_ops")
-Reported-by: Ilya Maximets <i.maximets@ovn.org>
-Closes: https://lore.kernel.org/netdev/CANn89iKKYDVpB=MtmfH7nyv2p=rJWSLedO5k7wSZgtY_tO8WQg@mail.gmail.com/T/#m02c98c3009fe66382b73cfb4db9cf1df6fab3fbf
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20241204125455.3871859-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- include/net/net_namespace.h |  1 +
- net/core/net_namespace.c    | 21 ++++++++++++++++++++-
- 2 files changed, 21 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/net_namespace.h b/include/net/net_namespace.h
-index ff9ecc76d622..c3cc3a465955 100644
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -80,6 +80,7 @@ struct net {
- 						 * or to unregister pernet ops
- 						 * (pernet_ops_rwsem write locked).
- 						 */
-+	struct llist_node	defer_free_list;
- 	struct llist_node	cleanup_list;	/* namespaces on death row */
- 
- #ifdef CONFIG_KEYS
-diff --git a/net/core/net_namespace.c b/net/core/net_namespace.c
-index 1e9e76c4ff5b..09ba69532273 100644
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -440,11 +440,28 @@ static struct net *net_alloc(void)
- 	goto out;
- }
- 
-+static LLIST_HEAD(defer_free_list);
-+
-+static void net_complete_free(void)
-+{
-+	struct llist_node *kill_list;
-+	struct net *net, *next;
-+
-+	/* Get the list of namespaces to free from last round. */
-+	kill_list = llist_del_all(&defer_free_list);
-+
-+	llist_for_each_entry_safe(net, next, kill_list, defer_free_list)
-+		kmem_cache_free(net_cachep, net);
-+
-+}
-+
- static void net_free(struct net *net)
- {
- 	if (refcount_dec_and_test(&net->passive)) {
- 		kfree(rcu_access_pointer(net->gen));
--		kmem_cache_free(net_cachep, net);
-+
-+		/* Wait for an extra rcu_barrier() before final free. */
-+		llist_add(&net->defer_free_list, &defer_free_list);
- 	}
- }
- 
-@@ -628,6 +645,8 @@ static void cleanup_net(struct work_struct *work)
- 	 */
- 	rcu_barrier();
- 
-+	net_complete_free();
-+
- 	/* Finally it is safe to free my network namespace structure */
- 	list_for_each_entry_safe(net, tmp, &net_exit_list, exit_list) {
- 		list_del_init(&net->exit_list);
--- 
-2.34.1
-
+--LRee4dmOwf6jQHCx--
 
