@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-134635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28066A93B9F
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:04:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C77A93BAB
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 19:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BC913B910C
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:04:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55C671B63646
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B639A2165EC;
-	Fri, 18 Apr 2025 17:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E890219304;
+	Fri, 18 Apr 2025 17:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="XBuFwKOt"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="D/5dyZLX"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC1E4CB5B;
-	Fri, 18 Apr 2025 17:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E53613C9B3;
+	Fri, 18 Apr 2025 17:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744995857; cv=none; b=pOfUgiIEHs19K8gUZZ7y4VX5k48lgmfTptIkwlut4mNe8J/gWCIQyZsMtrJUOL26Fa4mVY3obiHRbMwFdvt9Os9q7k8b6cx7Ru559Dx706MpJ7MzYg/DYqvKz5n8bPebR4wxn/7+choK+PKWD/EQRxG8f984+NZiXYocwzPpJgU=
+	t=1744996040; cv=none; b=Wixn5F6SMFI8GVAAJQmonMUekZTMAN3xDAqa1ePuYKNdEyaTjBDBuXRfzkwZT0cGoL+f+dmKhKpy/LvJ62f/JbMdoEGhXEnSAKe6BPuDTg22rdVGxVclClwKYhdvxtYT725FTFRlW2YkU2ygxQeTT/Qj0TW1tmG6l9n/wXEON5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744995857; c=relaxed/simple;
-	bh=36FfVh550f4pi9AMieTF+KKoyEqse6YXhakPyRxFQqk=;
+	s=arc-20240116; t=1744996040; c=relaxed/simple;
+	bh=nFFn7I+g/tnnYz6luw61kYvkvMc5y4MmqUN2RfOy298=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mv2FH+eONVvcyzv18f0gVI4oRaXNldy2jqPHoravAoOXG+yiRFMgh9nQedj2r54dYF7roIay3fSgSDrq1y1qBRZP3xC75Cc9MJsFD0KUwOEwKhXieB1VxusQ05NJqyGH/WPeKF9P61nVU7w7LyB/ZwmZG2J3Vo8pxFXmVsN3GKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=XBuFwKOt; arc=none smtp.client-ip=89.58.32.78
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPfpRsdP+vl2W6GH7Pxr4KFVLRPaWAd6OV/igI4MjS4rNz1eOQeocLV1oBbX2WalsbpQTlBMfbnkD3b3p0lI8GxwjUw5zdjOWeX5t2blZy8k1vsHuXCyYByov4GfpWEmjjvzJm4BtAYMPOfvALk2tUleVlUyW0HMON20RI+njgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=D/5dyZLX; arc=none smtp.client-ip=89.58.32.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B4A6410273DBF;
-	Fri, 18 Apr 2025 19:04:11 +0200 (CEST)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 69D3610273DBF;
+	Fri, 18 Apr 2025 19:07:13 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1744995854; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=hYbGBShskCwfKxd6E/88E+mo7hPZ9ODOyFnjuvRof78=;
-	b=XBuFwKOtM5b1KM663P1iJU5BapOjeTUlUxyrdbartIh7ic+iAo8bRugKVl6dceiPGHnTHs
-	TulwaMRfsmo3ryR6m1am+tksFl7+VlYFP85Tu/CyzRF6tpAopX7pkjl5XkF/wPldopSttA
-	J8gItMnICEcMoZUP0jgWTwcpKSv39qXR/VRtOZzEWm9y+InOnvj3U0j6ixIRLt71W+b+hy
-	AiLCdGdcLTAlZf7NsziESN2MFFc4jDQYq5qj9um/XetQMtkc11OLNtLv23CC083Byo4LTC
-	s1QGwZpuHKvEnJSpuD36lUKi9J79hWpvhPJSOJvj4kdSGuabXrFFbxrY3+1QoA==
-Date: Fri, 18 Apr 2025 19:04:09 +0200
+	t=1744996036; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=CY3ybeEvZswn7mTzJEo870uU1YtFroIwRrSUBzp5+v0=;
+	b=D/5dyZLXHPrXzHpWT4ABFOWkh6sluYURfX7f2u8rkqFUrONd5tplGzJ+DMlLx+3LbBctVT
+	BHu5lKRc+CEFJ345J9lnXrregcz5YxGZlqh1p2FyVhyCKSDPV3HsWUlqzn3xNf7YFAhbxo
+	YEhu8w2fVyeazJmWW+F/GK+AKA/BhPGNYj/A9rIE/K8LcCAHS1qxD4zDmdTDs3uzU6iOFW
+	8/YPNQD93G1kSUzwmSkl0UWJX7mnDS5PQDGot/iqnjYO1dDmRC31Rg/Jz2P0YM+XUTySgZ
+	FJyhU0C8ql8OHN4VsI3KE4oT4bZlZySOCUbaom+Ult6gxc4N8z4P90ozoUF2Vg==
+Date: Fri, 18 Apr 2025 19:07:10 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	marcel@holtmann.org, luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.6 26/26] Bluetooth: qca: simplify WCN399x NVM
- loading
-Message-ID: <aAKGCb+rzIWJjMBb@duo.ucw.cz>
-References: <20250403190745.2677620-1-sashal@kernel.org>
- <20250403190745.2677620-26-sashal@kernel.org>
+	Leonid Arapov <arapovl839@gmail.com>, Helge Deller <deller@gmx.de>,
+	krzysztof.kozlowski@linaro.org, u.kleine-koenig@baylibre.com,
+	linux@treblig.org, linux-omap@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 5.10 8/8] fbdev: omapfb: Add 'plane' value check
+Message-ID: <aAKGvh0fdMZPT9Jd@duo.ucw.cz>
+References: <20250403192031.2682315-1-sashal@kernel.org>
+ <20250403192031.2682315-8-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,73 +60,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="8cxg9z79d2x7/RC+"
+	protocol="application/pgp-signature"; boundary="ZBo/N4CwvGP6QfRI"
 Content-Disposition: inline
-In-Reply-To: <20250403190745.2677620-26-sashal@kernel.org>
+In-Reply-To: <20250403192031.2682315-8-sashal@kernel.org>
 X-Last-TLS-Session-Version: TLSv1.3
 
 
---8cxg9z79d2x7/RC+
+--ZBo/N4CwvGP6QfRI
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> The WCN399x code has two separate cases for loading the NVM data. In
-> preparation to adding support for WCN3950, which also requires similar
-> quirk, split the "variant" to be specified explicitly and merge two
-> snprintfs into a single one.
+> Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_=
+WB
+> of the enum parameter plane.
+>=20
+> The value of this parameter is initialized in dss_init_overlays and in the
+> current state of the code it cannot take this value so it's not a real
+> problem.
+>=20
+> For the purposes of defensive coding it wouldn't be superfluous to check
+> the parameter value, because some functions down the call stack process
+> this value correctly and some not.
+>=20
+> For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+> overflow.
+>=20
+> Add check for this value.
+>=20
+> Found by Linux Verification Center (linuxtesting.org) with SVACE static
+> analysis tool.
 
-This is a cleanup, so we should not need it in -stable.
+As changelog explains, this is robustness, not really a bug fix. We
+should not need it in -stable. (Or maybe rules file should be updated,
+because noone seems to be following this rule).
 
-Best reagrds,
+Best regards,
 								Pavel
 							=09
-> +++ b/drivers/bluetooth/btqca.c
-> @@ -807,6 +807,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baud=
-rate,
->  		   const char *firmware_name)
+> +++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+> @@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const s=
+truct omap_overlay_info *oi,
+>  		bool mem_to_mem)
 >  {
->  	struct qca_fw_config config =3D {};
-> +	const char *variant =3D "";
->  	int err;
->  	u8 rom_ver =3D 0;
->  	u32 soc_ver;
-> @@ -901,13 +902,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t ba=
-udrate,
->  		case QCA_WCN3990:
->  		case QCA_WCN3991:
->  		case QCA_WCN3998:
-> -			if (le32_to_cpu(ver.soc_id) =3D=3D QCA_WCN3991_SOC_ID) {
-> -				snprintf(config.fwname, sizeof(config.fwname),
-> -					 "qca/crnv%02xu.bin", rom_ver);
-> -			} else {
-> -				snprintf(config.fwname, sizeof(config.fwname),
-> -					 "qca/crnv%02x.bin", rom_ver);
-> -			}
-> +			if (le32_to_cpu(ver.soc_id) =3D=3D QCA_WCN3991_SOC_ID)
-> +				variant =3D "u";
+>  	int r;
+> -	enum omap_overlay_caps caps =3D dss_feat_get_overlay_caps(plane);
+> +	enum omap_overlay_caps caps;
+>  	enum omap_channel channel;
+> =20
+> +	if (plane =3D=3D OMAP_DSS_WB)
+> +		return -EINVAL;
 > +
-> +			snprintf(config.fwname, sizeof(config.fwname),
-> +				 "qca/crnv%02x%s.bin", rom_ver, variant);
->  			break;
->  		case QCA_WCN3988:
->  			snprintf(config.fwname, sizeof(config.fwname),
+> +	caps =3D dss_feat_get_overlay_caps(plane);
+>  	channel =3D dispc_ovl_get_channel_out(plane);
+> =20
+>  	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---8cxg9z79d2x7/RC+
+--ZBo/N4CwvGP6QfRI
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKGCQAKCRAw5/Bqldv6
-8gOJAJ4ym+QKbXxlQjaBeGlhwjbRIvdZQgCdFSeaCXoXjxRhox9r39yxRQs4b0E=
-=ih9a
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaAKGvgAKCRAw5/Bqldv6
+8k5AAKCQX8B0UtiYfqSSUIgj9Cciyl+X/ACgtg4ARUVHHH5jlNdHfPqoc3tE+/Y=
+=SFK+
 -----END PGP SIGNATURE-----
 
---8cxg9z79d2x7/RC+--
+--ZBo/N4CwvGP6QfRI--
 
