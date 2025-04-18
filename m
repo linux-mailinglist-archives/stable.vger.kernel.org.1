@@ -1,101 +1,110 @@
-Return-Path: <stable+bounces-134599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D63D9A939F8
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:41:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11892A93A02
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 17:42:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D793D1B67091
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7305169A75
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 15:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA30213E74;
-	Fri, 18 Apr 2025 15:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A981D2147F3;
+	Fri, 18 Apr 2025 15:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R66XEF5o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VavM0cRl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB38521325D;
-	Fri, 18 Apr 2025 15:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6821E2144D8
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 15:42:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744990848; cv=none; b=uMEwdxn5rq3reeKMo+rgKZp5/5I2z3yRcRg/nh0wnHWVTMBcFLFQZy8fZd/t+PYW8hvGrg9/pHyn30zVP20XpZHljRFTica9uIOb0vEFatWak4tspfl2KrLbep4gu3eB+ivwzQ6+1rLlqykEGp1dL3nhe/tXa95uvKri0utdsPc=
+	t=1744990954; cv=none; b=A83vnDPB7kKxcrFmXMUTG1RAnDUemGkzLj62+G+rQn0P67KMMkis7SO53b9P7neeuyt6bVZPC+japFVriErbhmnmjacTl5KNZ3VJk9VqNdK4Tp6fEJr4sln2lBPhsNppGqwNgdJ0DAYGADYN4EHJt7SDlx4VxI2gX53foEe/oJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744990848; c=relaxed/simple;
-	bh=rPXKeb649bya67Hj2amG1rEuNmF4UK0HVq6E3shvdXs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m2Ss+0qdxBeqsrOUxYEYtspEd0e5ZpgI6Os4bpHOQwn6rk101KiBSK/GTBTNebhx8kCuNd4tMrFaPpIiIYUKkW8BmV4QQ2Ufj8D9vx5BQeXByHtr3hhgNBJsZoHaYl4T+qlHr4hKx2Ou++aiC50SsOFaAwC1FseDKWIRGPK1PLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R66XEF5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0C0C4CEE2;
-	Fri, 18 Apr 2025 15:40:44 +0000 (UTC)
+	s=arc-20240116; t=1744990954; c=relaxed/simple;
+	bh=rjsETskN0Cmo9gyBHZIHsodtsb+TiJsEOiZL53DSS1Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=h32noSNcecZKPhroSEpniQ+obEc2j+fvWmu2mIO8g2RuHquwVQeeqEyPvsiBNfiJb7usU0b+GJLAvYi/Spfu2nGaqbPE+MJng3FbGwbnChS/2EoNExV+97Fwj1vMqjJB7oo3WVIsiwXbqA1hkqdLf2/92qovvZ3rk+RzjX8r/Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VavM0cRl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85E4C4CEEB;
+	Fri, 18 Apr 2025 15:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744990848;
-	bh=rPXKeb649bya67Hj2amG1rEuNmF4UK0HVq6E3shvdXs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=R66XEF5owpz2ItMA+GVvWVvtlwaHBtrPL9CgOuefaYEsKVD+G9RhMV4lhFQNzzLz7
-	 6qlvMzRZS/JvDjxKUD/BSXbOIjQVjSvnaarD3sJ+LAu8HbIYbp+9sCeke0XNepPll/
-	 aST73jlpbkU+KtK4dFXEvUK52VPE/4w4cz6Zl3+/Uksk0D6A2Hy90+da3R0cPl0Jou
-	 ivb4cE+uyV95rYMf5bXPSwiHFshGG59l3YMF28rdaJrdgaLff8dzJ/w5dGFeBEMsP+
-	 9svFfgAZK2JjH+0roQjh2VqwlNPBKxFsCMm5JEpY2/IGk361x8Pr8+f/afepwca8pn
-	 jtNJ9S8zswQZQ==
-Date: Fri, 18 Apr 2025 16:40:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
- Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
- linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to
- disable output
-Message-ID: <20250418164040.0f103380@jic23-huawei>
-In-Reply-To: <20250417135434.568007-1-gshahrouzi@gmail.com>
-References: <20250417135434.568007-1-gshahrouzi@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=k20201202; t=1744990954;
+	bh=rjsETskN0Cmo9gyBHZIHsodtsb+TiJsEOiZL53DSS1Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VavM0cRlZ1RMyd6EjNphBmVyTBHpAJnp9dyXfzImbAZ7bZFVpyEMkleZ1Lb8pjzRy
+	 zLgGL3hxnZM8UFwbu7nElL0ANrkcQgUNnjCzuzjqhFhP5Zb3DLKHJ3A5qNloe8II0x
+	 8uCBsZvcshj3LZctqBWG1yBV2iLEUUvqN8oOnq+/sYORRkQiBFv067VV9deo/2DpEU
+	 7oVUdJeozEPSb86M1HbEGjucRgHLnWNXeH0i1VP+ZlHrPpumB2LZYVkGKKyye/baZ3
+	 mAL6wkqMNvRQ3uYVrpo3JSJsHxLwus2NeSG2JX2XUckBKb69af26McxJAdnJG34asI
+	 62xqe1AMLFboA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: bin.lan.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y 1/2] blk-cgroup: support to track if policy is online
+Date: Fri, 18 Apr 2025 11:42:32 -0400
+Message-Id: <20250418093539-8b7fc7e00568226c@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250417073041.2670459-1-bin.lan.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 17 Apr 2025 09:54:34 -0400
-Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+[ Sasha's backport helper bot ]
 
-> According to the AD9832 datasheet (Table 10, D12 description), setting
-> the RESET bit forces the phase accumulator to zero, which corresponds to
-> a full-scale DC output, rather than disabling the output signal.
-> 
-> The correct way to disable the output and enter a low-power state is to
-> set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
-> the internal DAC current sources and disables internal clocks.
-> 
-> Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> ---
-Seems reasonable but I'd like some more review of this before picking it up.
-So feel free to poke me if nothing happens in say 2 weeks from now.
+Hi,
 
->  drivers/staging/iio/frequency/ad9832.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-> index db42810c7664b..0872ff4ec4896 100644
-> --- a/drivers/staging/iio/frequency/ad9832.c
-> +++ b/drivers/staging/iio/frequency/ad9832.c
-> @@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
->  			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
->  					AD9832_CLR);
->  		else
-> -			st->ctrl_src |= AD9832_RESET;
-> +			st->ctrl_src |= AD9832_SLEEP;
->  
->  		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
->  					st->ctrl_src);
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
+The upstream commit SHA1 provided is correct: dfd6200a095440b663099d8d42f1efb0175a1ce3
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: bin.lan.cn@windriver.com
+Commit author: Yu Kuai<yukuai3@huawei.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.13.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+
+Note: The patch differs from the upstream commit:
+---
+1:  dfd6200a09544 ! 1:  4169a84a4fdda blk-cgroup: support to track if policy is online
+    @@ Metadata
+      ## Commit message ##
+         blk-cgroup: support to track if policy is online
+     
+    +    [ Upstream commit dfd6200a095440b663099d8d42f1efb0175a1ce3 ]
+    +
+         A new field 'online' is added to blkg_policy_data to fix following
+         2 problem:
+     
+    @@ Commit message
+         Reviewed-by: Christoph Hellwig <hch@lst.de>
+         Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+         Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+      ## block/blk-cgroup.c ##
+     @@ block/blk-cgroup.c: static struct blkcg_gq *blkg_alloc(struct blkcg *blkcg, struct gendisk *disk,
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
