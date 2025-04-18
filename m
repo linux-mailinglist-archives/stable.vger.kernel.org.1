@@ -1,168 +1,405 @@
-Return-Path: <stable+bounces-134542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04EFA9350E
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:03:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AE0DA93542
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 11:29:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 962B33BE1AE
-	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:03:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C231E3B5B99
+	for <lists+stable@lfdr.de>; Fri, 18 Apr 2025 09:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1B26E17A;
-	Fri, 18 Apr 2025 09:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDF826FD95;
+	Fri, 18 Apr 2025 09:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="OaH6t4Em"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="CVRJLHhM"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from smtp-8fab.mail.infomaniak.ch (smtp-8fab.mail.infomaniak.ch [83.166.143.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C2F26FDAD;
-	Fri, 18 Apr 2025 09:03:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0881EE7BE
+	for <stable@vger.kernel.org>; Fri, 18 Apr 2025 09:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744967013; cv=none; b=pwFyS1yj1UuVI+7ZoewvvaMow/rAXjFvWBLpZyd2WxB7oiYw3OFZPFGoXLs2E/X4aljOvP2WvhatJfnrc/JDSfWF36qdDnMKyd9JngBUDOEb7cXSJI8dcbRwJULrzF0ethtgt4Y1WNNs4Ntn5EzAtJ4J72KIt68ilumG7pVszZE=
+	t=1744968566; cv=none; b=aiDb7YO+6FghSQksDR8olVZqV/YVsQ9bD/BUzNPtH3ELmeTXEE4Skr5AagXjv0jxlZqB93caORUdEycll/Q6jhqCP0UK5fSHwQQWUr+GmA5vAHT7xJV6GpLmqv7dxHzMvK9HqODLNsF7+YbP+fwjVETm5WzEYSOXkYjqkcFYxIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744967013; c=relaxed/simple;
-	bh=ux85UaKGHmWgF6HhVM8OOvobqVgJwNDXi1I9R0gjp8o=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=dKLYu3Ngo+bwlWaswMPtY0s82DUuQk4E5UsK1aML/r27rJQ+G8LXdh8y3VFKI2AO0BkKJTLuAVGfx5xSRGwPn8zpvOKqkqiY6tgXk7aOuUystxa2UHYPMhg3Wv1YK2uxaveuKfRIGAtJQjfx77QMHYhMxI0qoxtbTFXC/WaEt/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=OaH6t4Em; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=/TUgmXRIt862ZvkLN+SJfvXp8pRPa3ExVWG6heV/r3c=; b=OaH6t4EmRnkaOCLDxBbVCkP9bZ
-	r0Nae3ODBz1Bym6pu799K8rcBPxqn1Y29idZLKhw5eCeZn+pSTjbdmdr6gZ+QVApzEjGcJWA0jEzl
-	4AE+wkHEn0WcMeN4Kqjlf+wth7LVvp+b+RwIYtilGDIwhk9qfCaKWt+9b7DiKs1YBDHh+wJFPc9VD
-	0TN0yz+TmMdAa02YBXKaVi8t/tZlodlb++fqvdz/q5Isg9pLu8VtoD8SSWEavvWOXF0QhpG3vB2bx
-	sZzabt9Q0i9JO5uQQgWBShk3OAl4nz0a88Nks/wpQaV11tJ+VnBe7WqINPam5jkBbMY7xh7G2BA2F
-	vrobwNEQ==;
-Received: from 39-14-33-89.adsl.fetnet.net ([39.14.33.89] helo=[192.168.220.43])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1u5hd0-001AZP-2j; Fri, 18 Apr 2025 11:03:18 +0200
-Message-ID: <983ba47e-ab95-4a43-bca2-97b75c3c90d0@igalia.com>
-Date: Fri, 18 Apr 2025 17:03:09 +0800
+	s=arc-20240116; t=1744968566; c=relaxed/simple;
+	bh=lfR8KvFkbJiSNZK2n5T6385HW43G61ivrmWvt1qg9BM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EKJh2qkoW3QVCsh9rghKu6FibNBWw9FXhSJZ7PPC+jU8YsaZEzT/ePrW3gIKZKFDgT3oeujVz74X9VNw8TJWjpA9a+AZvsS7GUGe8BPQSsvI2M0EkYmp4yNqAYErNr7uo64Pdn8QTNEFNA05uY4FfTskPfH8xsFKa1KeWg+lbU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=CVRJLHhM; arc=none smtp.client-ip=83.166.143.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Zf8Q64hjgznTk;
+	Fri, 18 Apr 2025 11:21:02 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1744968062;
+	bh=lTnBnikTSWOYvXmr0YggQzPS7GNnhhee9l+4TyErTy0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CVRJLHhMPhCF2l6Imo0q+QggEDJWsctiRtu5lWztStGHvYv/zOUrBQydUS9Qmmsjd
+	 UsH9sxeHySw38bKyBaYdVKwjMsnOKsqK+oSbXarhnGquRGl4PEtCLAHPFP0tBYEiGM
+	 hhSSPRasaGEepjfV344GH0AZJXPvcRRJFo0eUaUg=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Zf8Q60s7JztM;
+	Fri, 18 Apr 2025 11:21:02 +0200 (CEST)
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>
+Subject: [PATCH 5.15.y] landlock: Add the errata interface
+Date: Fri, 18 Apr 2025 11:20:57 +0200
+Message-ID: <20250418092057.1988926-1-mic@digikod.net>
+In-Reply-To: <2025041713-engine-energy-1f26@gregkh>
+References: <2025041713-engine-energy-1f26@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/huge_memory: fix dereferencing invalid pmd
- migration entry
-From: Gavin Guo <gavinguo@igalia.com>
-To: ziy@nvidia.com
-Cc: david@redhat.com, willy@infradead.org, linmiaohe@huawei.com,
- hughd@google.com, revest@google.com, kernel-dev@igalia.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-mm@kvack.org,
- akpm@linux-foundation.org
-References: <20250418085802.2973519-1-gavinguo@igalia.com>
-Content-Language: en-US
-In-Reply-To: <20250418085802.2973519-1-gavinguo@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-On 4/18/25 16:58, Gavin Guo wrote:
-> When migrating a THP, concurrent access to the PMD migration entry
-> during a deferred split scan can lead to a invalid address access, as
-> illustrated below. To prevent this page fault, it is necessary to check
-> the PMD migration entry and return early. In this context, there is no
-> need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-> equality of the target folio. Since the PMD migration entry is locked,
-> it cannot be served as the target.
-> 
-> Mailing list discussion and explanation from Hugh Dickins:
-> "An anon_vma lookup points to a location which may contain the folio of
-> interest, but might instead contain another folio: and weeding out those
-> other folios is precisely what the "folio != pmd_folio((*pmd)" check
-> (and the "risk of replacing the wrong folio" comment a few lines above
-> it) is for."
-> 
-> BUG: unable to handle page fault for address: ffffea60001db008
-> CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-> RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-> Call Trace:
-> <TASK>
-> try_to_migrate_one+0x28c/0x3730
-> rmap_walk_anon+0x4f6/0x770
-> unmap_folio+0x196/0x1f0
-> split_huge_page_to_list_to_order+0x9f6/0x1560
-> deferred_split_scan+0xac5/0x12a0
-> shrinker_debugfs_scan_write+0x376/0x470
-> full_proxy_write+0x15c/0x220
-> vfs_write+0x2fc/0xcb0
-> ksys_write+0x146/0x250
-> do_syscall_64+0x6a/0x120
-> entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> The bug is found by syzkaller on an internal kernel, then confirmed on
-> upstream.
-> 
-> Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Hugh Dickins <hughd@google.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
-> ---
-> V1 -> V2: Add explanation from Hugh and correct the wording from page
-> fault to invalid address access.
-> 
->   mm/huge_memory.c | 18 ++++++++++++++----
->   1 file changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 2a47682d1ab7..0cb9547dcff2 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3075,6 +3075,8 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->   void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
->   			   pmd_t *pmd, bool freeze, struct folio *folio)
->   {
-> +	bool pmd_migration = is_pmd_migration_entry(*pmd);
-> +
->   	VM_WARN_ON_ONCE(folio && !folio_test_pmd_mappable(folio));
->   	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
->   	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
-> @@ -3085,10 +3087,18 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
->   	 * require a folio to check the PMD against. Otherwise, there
->   	 * is a risk of replacing the wrong folio.
->   	 */
-> -	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
-> -	    is_pmd_migration_entry(*pmd)) {
-> -		if (folio && folio != pmd_folio(*pmd))
-> -			return;
-> +	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
-> +		if (folio) {
-> +			/*
-> +			 * Do not apply pmd_folio() to a migration entry; and
-> +			 * folio lock guarantees that it must be of the wrong
-> +			 * folio anyway.
-> +			 */
-> +			if (pmd_migration)
-> +				return;
-> +			if (folio != pmd_folio(*pmd))
-> +				return;
-> +		}
->   		__split_huge_pmd_locked(vma, pmd, address, freeze);
->   	}
->   }
-> 
-> base-commit: a24588245776dafc227243a01bfbeb8a59bafba9
+Some fixes may require user space to check if they are applied on the
+running kernel before using a specific feature.  For instance, this
+applies when a restriction was previously too restrictive and is now
+getting relaxed (e.g. for compatibility reasons).  However, non-visible
+changes for legitimate use (e.g. security fixes) do not require an
+erratum.
 
-Hi Zi, I've carefully reviewed the mailing list and observed that the 
-indentation is not a strong concern from the reviews. And the cleanup 
-suggestion from David will override the modification in this patch. I 
-have decided to keep the original version (the unindented one). Let me 
-know if you have any feedback with the v2 patch. Thank you!
+Because fixes are backported down to a specific Landlock ABI, we need a
+way to avoid cherry-pick conflicts.  The solution is to only update a
+file related to the lower ABI impacted by this issue.  All the ABI files
+are then used to create a bitmask of fixes.
+
+The new errata interface is similar to the one used to get the supported
+Landlock ABI version, but it returns a bitmask instead because the order
+of fixes may not match the order of versions, and not all fixes may
+apply to all versions.
+
+The actual errata will come with dedicated commits.  The description is
+not actually used in the code but serves as documentation.
+
+Create the landlock_abi_version symbol and use its value to check errata
+consistency.
+
+Update test_base's create_ruleset_checks_ordering tests and add errata
+tests.
+
+This commit is backportable down to the first version of Landlock.
+
+Fixes: 3532b0b4352c ("landlock: Enable user space to infer supported features")
+Cc: Günther Noack <gnoack@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250318161443.279194-3-mic@digikod.net
+(cherry picked from commit 15383a0d63dbcd63dc7e8d9ec1bf3a0f7ebf64ac)
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+---
+ include/uapi/linux/landlock.h                |  2 +
+ security/landlock/errata.h                   | 87 ++++++++++++++++++++
+ security/landlock/setup.c                    | 30 +++++++
+ security/landlock/setup.h                    |  3 +
+ security/landlock/syscalls.c                 | 22 ++++-
+ tools/testing/selftests/landlock/base_test.c | 46 ++++++++++-
+ 6 files changed, 185 insertions(+), 5 deletions(-)
+ create mode 100644 security/landlock/errata.h
+
+diff --git a/include/uapi/linux/landlock.h b/include/uapi/linux/landlock.h
+index 21c8d58283c9..d00621d4d52d 100644
+--- a/include/uapi/linux/landlock.h
++++ b/include/uapi/linux/landlock.h
+@@ -32,9 +32,11 @@ struct landlock_ruleset_attr {
+  *
+  * - %LANDLOCK_CREATE_RULESET_VERSION: Get the highest supported Landlock ABI
+  *   version.
++ * - %LANDLOCK_CREATE_RULESET_ERRATA: Get a bitmask of fixed issues.
+  */
+ /* clang-format off */
+ #define LANDLOCK_CREATE_RULESET_VERSION			(1U << 0)
++#define LANDLOCK_CREATE_RULESET_ERRATA			(1U << 1)
+ /* clang-format on */
+ 
+ /**
+diff --git a/security/landlock/errata.h b/security/landlock/errata.h
+new file mode 100644
+index 000000000000..f26b28b9873d
+--- /dev/null
++++ b/security/landlock/errata.h
+@@ -0,0 +1,87 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Landlock - Errata information
++ *
++ * Copyright © 2025 Microsoft Corporation
++ */
++
++#ifndef _SECURITY_LANDLOCK_ERRATA_H
++#define _SECURITY_LANDLOCK_ERRATA_H
++
++#include <linux/init.h>
++
++struct landlock_erratum {
++	const int abi;
++	const u8 number;
++};
++
++/* clang-format off */
++#define LANDLOCK_ERRATUM(NUMBER) \
++	{ \
++		.abi = LANDLOCK_ERRATA_ABI, \
++		.number = NUMBER, \
++	},
++/* clang-format on */
++
++/*
++ * Some fixes may require user space to check if they are applied on the running
++ * kernel before using a specific feature.  For instance, this applies when a
++ * restriction was previously too restrictive and is now getting relaxed (for
++ * compatibility or semantic reasons).  However, non-visible changes for
++ * legitimate use (e.g. security fixes) do not require an erratum.
++ */
++static const struct landlock_erratum landlock_errata_init[] __initconst = {
++
++/*
++ * Only Sparse may not implement __has_include.  If a compiler does not
++ * implement __has_include, a warning will be printed at boot time (see
++ * setup.c).
++ */
++#ifdef __has_include
++
++#define LANDLOCK_ERRATA_ABI 1
++#if __has_include("errata/abi-1.h")
++#include "errata/abi-1.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 2
++#if __has_include("errata/abi-2.h")
++#include "errata/abi-2.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 3
++#if __has_include("errata/abi-3.h")
++#include "errata/abi-3.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 4
++#if __has_include("errata/abi-4.h")
++#include "errata/abi-4.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++/*
++ * For each new erratum, we need to include all the ABI files up to the impacted
++ * ABI to make all potential future intermediate errata easy to backport.
++ *
++ * If such change involves more than one ABI addition, then it must be in a
++ * dedicated commit with the same Fixes tag as used for the actual fix.
++ *
++ * Each commit creating a new security/landlock/errata/abi-*.h file must have a
++ * Depends-on tag to reference the commit that previously added the line to
++ * include this new file, except if the original Fixes tag is enough.
++ *
++ * Each erratum must be documented in its related ABI file, and a dedicated
++ * commit must update Documentation/userspace-api/landlock.rst to include this
++ * erratum.  This commit will not be backported.
++ */
++
++#endif
++
++	{}
++};
++
++#endif /* _SECURITY_LANDLOCK_ERRATA_H */
+diff --git a/security/landlock/setup.c b/security/landlock/setup.c
+index f8e8e980454c..cdee579901da 100644
+--- a/security/landlock/setup.c
++++ b/security/landlock/setup.c
+@@ -6,11 +6,13 @@
+  * Copyright © 2018-2020 ANSSI
+  */
+ 
++#include <linux/bits.h>
+ #include <linux/init.h>
+ #include <linux/lsm_hooks.h>
+ 
+ #include "common.h"
+ #include "cred.h"
++#include "errata.h"
+ #include "fs.h"
+ #include "ptrace.h"
+ #include "setup.h"
+@@ -23,8 +25,36 @@ struct lsm_blob_sizes landlock_blob_sizes __lsm_ro_after_init = {
+ 	.lbs_superblock = sizeof(struct landlock_superblock_security),
+ };
+ 
++int landlock_errata __ro_after_init;
++
++static void __init compute_errata(void)
++{
++	size_t i;
++
++#ifndef __has_include
++	/*
++	 * This is a safeguard to make sure the compiler implements
++	 * __has_include (see errata.h).
++	 */
++	WARN_ON_ONCE(1);
++	return;
++#endif
++
++	for (i = 0; landlock_errata_init[i].number; i++) {
++		const int prev_errata = landlock_errata;
++
++		if (WARN_ON_ONCE(landlock_errata_init[i].abi >
++				 landlock_abi_version))
++			continue;
++
++		landlock_errata |= BIT(landlock_errata_init[i].number - 1);
++		WARN_ON_ONCE(prev_errata == landlock_errata);
++	}
++}
++
+ static int __init landlock_init(void)
+ {
++	compute_errata();
+ 	landlock_add_cred_hooks();
+ 	landlock_add_ptrace_hooks();
+ 	landlock_add_fs_hooks();
+diff --git a/security/landlock/setup.h b/security/landlock/setup.h
+index 1daffab1ab4b..420dceca35d2 100644
+--- a/security/landlock/setup.h
++++ b/security/landlock/setup.h
+@@ -11,7 +11,10 @@
+ 
+ #include <linux/lsm_hooks.h>
+ 
++extern const int landlock_abi_version;
++
+ extern bool landlock_initialized;
++extern int landlock_errata;
+ 
+ extern struct lsm_blob_sizes landlock_blob_sizes;
+ 
+diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+index 229a6918b52f..c0deb7044d16 100644
+--- a/security/landlock/syscalls.c
++++ b/security/landlock/syscalls.c
+@@ -150,7 +150,9 @@ static const struct file_operations ruleset_fops = {
+  *        the new ruleset.
+  * @size: Size of the pointed &struct landlock_ruleset_attr (needed for
+  *        backward and forward compatibility).
+- * @flags: Supported value: %LANDLOCK_CREATE_RULESET_VERSION.
++ * @flags: Supported value:
++ *         - %LANDLOCK_CREATE_RULESET_VERSION
++ *         - %LANDLOCK_CREATE_RULESET_ERRATA
+  *
+  * This system call enables to create a new Landlock ruleset, and returns the
+  * related file descriptor on success.
+@@ -159,6 +161,10 @@ static const struct file_operations ruleset_fops = {
+  * 0, then the returned value is the highest supported Landlock ABI version
+  * (starting at 1).
+  *
++ * If @flags is %LANDLOCK_CREATE_RULESET_ERRATA and @attr is NULL and @size is
++ * 0, then the returned value is a bitmask of fixed issues for the current
++ * Landlock ABI version.
++ *
+  * Possible returned errors are:
+  *
+  * - EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
+@@ -181,9 +187,15 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 		return -EOPNOTSUPP;
+ 
+ 	if (flags) {
+-		if ((flags == LANDLOCK_CREATE_RULESET_VERSION) && !attr &&
+-		    !size)
+-			return LANDLOCK_ABI_VERSION;
++		if (attr || size)
++			return -EINVAL;
++
++		if (flags == LANDLOCK_CREATE_RULESET_VERSION)
++			return landlock_abi_version;
++
++		if (flags == LANDLOCK_CREATE_RULESET_ERRATA)
++			return landlock_errata;
++
+ 		return -EINVAL;
+ 	}
+ 
+@@ -213,6 +225,8 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 	return ruleset_fd;
+ }
+ 
++const int landlock_abi_version = LANDLOCK_ABI_VERSION;
++
+ /*
+  * Returns an owned ruleset from a FD. It is thus needed to call
+  * landlock_put_ruleset() on the return value.
+diff --git a/tools/testing/selftests/landlock/base_test.c b/tools/testing/selftests/landlock/base_test.c
+index 1a8fa6b0c887..c78064cf50b1 100644
+--- a/tools/testing/selftests/landlock/base_test.c
++++ b/tools/testing/selftests/landlock/base_test.c
+@@ -98,10 +98,54 @@ TEST(abi_version)
+ 	ASSERT_EQ(EINVAL, errno);
+ }
+ 
++/*
++ * Old source trees might not have the set of Kselftest fixes related to kernel
++ * UAPI headers.
++ */
++#ifndef LANDLOCK_CREATE_RULESET_ERRATA
++#define LANDLOCK_CREATE_RULESET_ERRATA (1U << 1)
++#endif
++
++TEST(errata)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_FILE,
++	};
++	int errata;
++
++	errata = landlock_create_ruleset(NULL, 0,
++					 LANDLOCK_CREATE_RULESET_ERRATA);
++	/* The errata bitmask will not be backported to tests. */
++	ASSERT_LE(0, errata);
++	TH_LOG("errata: 0x%x", errata);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(&ruleset_attr, 0,
++					      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(NULL, sizeof(ruleset_attr),
++					      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1,
++		  landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr),
++					  LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(
++			      NULL, 0,
++			      LANDLOCK_CREATE_RULESET_VERSION |
++				      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(-1, landlock_create_ruleset(NULL, 0,
++					      LANDLOCK_CREATE_RULESET_ERRATA |
++						      1 << 31));
++	ASSERT_EQ(EINVAL, errno);
++}
++
+ /* Tests ordering of syscall argument checks. */
+ TEST(create_ruleset_checks_ordering)
+ {
+-	const int last_flag = LANDLOCK_CREATE_RULESET_VERSION;
++	const int last_flag = LANDLOCK_CREATE_RULESET_ERRATA;
+ 	const int invalid_flag = last_flag << 1;
+ 	int ruleset_fd;
+ 	const struct landlock_ruleset_attr ruleset_attr = {
+-- 
+2.49.0
+
 
