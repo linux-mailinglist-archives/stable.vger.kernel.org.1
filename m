@@ -1,163 +1,116 @@
-Return-Path: <stable+bounces-134660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FE9A9409F
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 02:43:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFD0A940C8
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 03:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85E151B64988
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 00:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57E821B600C5
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 01:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E95B1EEE9;
-	Sat, 19 Apr 2025 00:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MA+hgkZQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEDC1A270;
+	Sat, 19 Apr 2025 01:18:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E1DBE4E;
-	Sat, 19 Apr 2025 00:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A02EAF1
+	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 01:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745023394; cv=none; b=JcG/V8AY9GA9LW/LZn0Rm4yBQkEpbywT7KniMw9nIc/3cyjcE0E7IU1uVME1f5vEI7H9CK77C256U1bSEGj0APTJtDKlp7mqEQaUPCbpxRSejBPy1bapuTAHK9VyW21UqtrjgPl2k48dYI4vpvfQnlwjgT6SmGf9hh17ImJclA4=
+	t=1745025538; cv=none; b=GOZ9vUpaAIo/7buuT01PxviVwS2IKIGTR0QysBTZGgN9QlnXdMWvDsSyi++a0a3tnHau6IA1qanlXXyKzZQK65v/rO3/Ln16qErP9rsFL+6dR+Q5KQhttmgUFzq9xD8msTOz+9Sdv/YAGLOMVCpwJh1WHtHyfrxZ+llwT6sMwFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745023394; c=relaxed/simple;
-	bh=6lP0By7w/Dlk8nj5HMF+C4qxFyOplJyRe2gXUWgOqR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ebY82AUlL+wh6fRKSS6JBtzOr98QTm3eVMZbgLo1aZ80QQTiPJXun9iZqUod1PTURv5nEvATDjR3+denFRu0hjlF8EpVUPrIMTgStVf/4UCHDoCi8NGNa7i5UhlCmcCxg+EypnFCx5aH9XKXzl79by09we2Rou1Pejm6a2T/15o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MA+hgkZQ; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7c55b53a459so221813685a.3;
-        Fri, 18 Apr 2025 17:43:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745023391; x=1745628191; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=L1r3+y8b+nuSF4vGtYpP5A0uMCQW+2A3VFWO1Lw+t7M=;
-        b=MA+hgkZQLZM5eQlTfPZbkvOpw0HargwnMBK+jtMYrIOvAeeJx5el+pYON/hd3wgytd
-         QYAGzajjm4I9lxtMK9gKkBsllcIMoqK9kDVnr6wuz+prKKsXIL4r3MImOOVpX6wfwPc6
-         gCH3DJlJ1jKQhtzw6OOFg4WHc0PNi0pkF3cKSmYaEu6Rt2PhKc9DKMTeg+xdAWRtclKo
-         PYpLpqi2ttD2MUz3BMHoF97N2M6v6gF+jWObpo5J4fcYj5gWguz1p2tqlHrotd1eJ8UR
-         jXTjHce5AgjSgYUQ+CDhc9q1U4bXdeaXRwsdN4EFEGQz57swsqtG1jeYqZKFaek5dzmN
-         X4ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745023391; x=1745628191;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L1r3+y8b+nuSF4vGtYpP5A0uMCQW+2A3VFWO1Lw+t7M=;
-        b=HUajwadARhYK6mOLvEDgDxHXm27uyMiuxU/bwqCw7QXjBUUWt38aJbmLQhbrqJFGgM
-         GPt692q8ud4KgK8UoqWMdE9J7tWpHrueI9oA9T4igaX7tVZ/0Uty58fTxAgpMDel/2EI
-         KW8/A/+Jz0fNsraQ6ggvLEX1sHCrBaAaWHZxdNDndEPfnEaRJZ7vrrVZt3frdGks7m5f
-         FCScIL0bcJqm0tsIv/60Sgb1DUQg9P3PAbufHrXJjU/ylAKVhVb8crSJ4E6EVJC8dXHk
-         QLltrV+bEbOWasv8bmjF9GDlftobQx3Kdivq125LV7S13meNVRg6aZ1u8R821jx2ot+W
-         he5A==
-X-Forwarded-Encrypted: i=1; AJvYcCWHst5z6D74Ee973xf5hZSOlBsj5oQ9vZbpMiDTMASfbOAN+6ADjsmDuQibDhQndDSaoKNuUEbE@vger.kernel.org, AJvYcCXuXhxTa3d8DJkPZS7xfd7RTVSsgjRHOiunSCi7IlqIS0RSiXg/L4MtpPMEmLoLa2LsPySGTnsNo2dsims=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUawbRLjPbUavlGs2UIAomrXfOWbG5gCx92jVwzai5onfWHZ1E
-	2xwZqHcDW7sfpabdafUaFXvTW22LXikAu3NpvXg6iNgjVUtqu6St
-X-Gm-Gg: ASbGncsXW/0hkcrSSJtgz1I1+GsjE4w3Fo//jXxO2xifkjLoOS9ZgIofW9se4R9Gt3r
-	PxTA+/5xn5aha9m2i8z1mZF5g6igXsADdu0ohD3pBjFFGTE1XKFeBZTNlfo05eptjYIEYq1xXu1
-	a8UJnadFHfjLar1xF2g5wFUGriYh57lmqrq4FogbUEJjohlAonw0MgN4zh6vUb7J0zExafYkBY+
-	I6D3mDCo4V4klEB6MV5eYhcD9DE14rMeSD7Yh0vmYHVnbDzljjLw7IrEA7qYFbIcSotwDq6JO3O
-	S7utsYLvgZLH93o/pxivG0h/5AJsK486agfgpi6okOkaOLFffzrFFIFkdykWxWsHjpyOlbQsiVJ
-	kpLZYu1Gzp2i7vnu8vUc=
-X-Google-Smtp-Source: AGHT+IGlBaemLK0d9uZwZRCVUJpbqZBnnm+N+gmJMRn4W1fr/ExrH60LjkWVgPqgTD+FVqHKyXvqyw==
-X-Received: by 2002:a05:620a:240c:b0:7c5:a513:1fd2 with SMTP id af79cd13be357-7c927f59459mr683764685a.6.1745023391213;
-        Fri, 18 Apr 2025 17:43:11 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b69d0asm160284085a.99.2025.04.18.17.43.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Apr 2025 17:43:10 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	gshahrouzi@gmail.com,
-	jacobsfeder@gmail.com,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	sergio.paracuellos@gmail.com
-Cc: skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] axis-fifo:  Remove hardware resets for user errors
-Date: Fri, 18 Apr 2025 20:43:06 -0400
-Message-ID: <20250419004306.669605-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1745025538; c=relaxed/simple;
+	bh=uXVZV7TNcFw0i4iaEZVR8KorucIFFOH5g3oxcd47yDc=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=kVuzR2LWOuNxxtbGteMjQN3ptfE87z9ji4QsCil/IhcIqbk/Olx7kXt43lv1MuMCagjR0d6ipYvMNMFTFEficyCMuAi7DTqxFUsTmOGi0Td7iaiPtxPJTlC1c8BcBmAo4TYcPP6c3ZwvzhHShFgfCCD/UZMd0UeW+WiUNAkad24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4ZfYfj65zpz4f3kFM
+	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 09:18:21 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id A2BE11A018D
+	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 09:18:45 +0800 (CST)
+Received: from [10.174.179.143] (unknown [10.174.179.143])
+	by APP4 (Coremail) with SMTP id gCh0CgB321_x+QJo6oGZJw--.38771S3;
+	Sat, 19 Apr 2025 09:18:43 +0800 (CST)
+Subject: Re: Please backport 8542870237c3 ("md: fix mddev uaf while iterating
+ all_mddevs list") back down to 6.12.y (and question on older stable series
+ back to 6.1.y)
+To: Salvatore Bonaccorso <carnil@debian.org>, stable <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Sasha Levin <sashal@kernel.org>, Guillaume Morin <guillaume@morinfr.org>,
+ Christoph Hellwig <hch@lst.de>, "yukuai (C)" <yukuai3@huawei.com>
+References: <aAIjPqdxqGRuTyrd@eldamar.lan>
+From: Yu Kuai <yukuai1@huaweicloud.com>
+Message-ID: <b8c35502-4e83-e98f-f0ee-95ebd9452295@huaweicloud.com>
+Date: Sat, 19 Apr 2025 09:18:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <aAIjPqdxqGRuTyrd@eldamar.lan>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgB321_x+QJo6oGZJw--.38771S3
+X-Coremail-Antispam: 1UD129KBjvdXoW7Wr18Zw47ur48Jry3Xw13Jwb_yoWfZrb_Ka
+	yUXF93X34kJa10qFWakas8CrZ8K3y5Aw4kGr1vvFWxWw17JFyxAFZ5Cas7Zw1fGFWrKFnx
+	JrWjyr92939FvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb4AYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AK
+	xVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1l
+	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1veHD
+	UUUUU==
+X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
 
-The axis-fifo driver performs a full hardware reset (via
-reset_ip_core()) in several error paths within the read and write
-functions. This reset flushes both TX and RX FIFOs and resets the
-AXI-Stream links.
+Hi,
 
-Allow the user to handle the error without causing hardware disruption
-or data loss in other FIFO paths.
+ÔÚ 2025/04/18 18:02, Salvatore Bonaccorso Ð´µÀ:
+> Hi stable mantainers,
+> 
+> [note I'm CC'ing here Guillaume, Yu and Christoph]
+> 
+> In Debian we were affected for a while by
+> https://bugs.debian.org/1086175 which we found to be reported by
+> Guillaume as
+> https://lore.kernel.org/all/Z7Y0SURoA8xwg7vn@bender.morinfr.org/ .
+> 
+> The issue went in fact back to 6.0. The fix was applied upstream and
+> then backported to 6.14.2 already. Can you backport it please as well
+> down to the other stable series, at least back to 6.12.y it goes with
+> applying (and unless I miss something fixes the issue, we
+> cherry-picked the commit for Debian trixie and our 6.12.y kernel in
+> advance already).
+> 
+> For going back to 6.1.y it seems it won't apply cleanly, You,
+> Christoph might you be available to look into it to make this
+> possible?
 
-Fixes: 4a965c5f89de ("staging: add driver for Xilinx AXI-Stream FIFO v4.1 IP core")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
- drivers/staging/axis-fifo/axis-fifo.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+No problem, will sen LTS version soon.
 
-diff --git a/drivers/staging/axis-fifo/axis-fifo.c b/drivers/staging/axis-fifo/axis-fifo.c
-index 7540c20090c78..76db29e4d2828 100644
---- a/drivers/staging/axis-fifo/axis-fifo.c
-+++ b/drivers/staging/axis-fifo/axis-fifo.c
-@@ -393,16 +393,14 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
- 
- 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
- 	if (!bytes_available) {
--		dev_err(fifo->dt_device, "received a packet of length 0 - fifo core will be reset\n");
--		reset_ip_core(fifo);
-+		dev_err(fifo->dt_device, "received a packet of length 0\n");
- 		ret = -EIO;
- 		goto end_unlock;
- 	}
- 
- 	if (bytes_available > len) {
--		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu) - fifo core will be reset\n",
-+		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
- 			bytes_available, len);
--		reset_ip_core(fifo);
- 		ret = -EINVAL;
- 		goto end_unlock;
- 	}
-@@ -411,8 +409,7 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
- 		/* this probably can't happen unless IP
- 		 * registers were previously mishandled
- 		 */
--		dev_err(fifo->dt_device, "received a packet that isn't word-aligned - fifo core will be reset\n");
--		reset_ip_core(fifo);
-+		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
- 		ret = -EIO;
- 		goto end_unlock;
- 	}
-@@ -433,7 +430,6 @@ static ssize_t axis_fifo_read(struct file *f, char __user *buf,
- 
- 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
- 				 copy * sizeof(u32))) {
--			reset_ip_core(fifo);
- 			ret = -EFAULT;
- 			goto end_unlock;
- 		}
-@@ -542,7 +538,6 @@ static ssize_t axis_fifo_write(struct file *f, const char __user *buf,
- 
- 		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
- 				   copy * sizeof(u32))) {
--			reset_ip_core(fifo);
- 			ret = -EFAULT;
- 			goto end_unlock;
- 		}
--- 
-2.43.0
+Thanks,
+Kuai
+
+> 
+> Regards,
+> Salvatore
+> .
+> 
 
 
