@@ -1,206 +1,130 @@
-Return-Path: <stable+bounces-134666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68ACCA940E0
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 03:30:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14886A940CE
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 03:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 085EC4639CD
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 01:30:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E0377A80C8
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 01:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE0E156C6F;
-	Sat, 19 Apr 2025 01:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991BD84D02;
+	Sat, 19 Apr 2025 01:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="OpkmPycL"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A5078C9C;
-	Sat, 19 Apr 2025 01:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDB71C6BE
+	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 01:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745026224; cv=none; b=IyjA558vlw9LNZ8bQX7ZE+z7QoEhcV0HVaVDbqNFyCDyxcgRhi8F76VcpolB7kd5tfo6PKIGSFX7sQXhggFCaZyH8mZ2UUQ6ydZigqs6hCheoKyjg+W8iH1kULfGsiNDMgWnqMvAhoLbmMpWgOcd9kphIo340ip15PY6oTZVLAQ=
+	t=1745025850; cv=none; b=HJ2fUOTlvD8KjSsamqTEGDQ05Tv2hZY/GPHnWMfJHbcwnRw/QIatIiWGiwoVR4YCsMa26dcPLT6STR+2UQrhGTiCI2ZOsp/sU42ZVPASvYS7pHgn6njv8c7ldK8V8nLCPEm9S6x1HNkoU2R+CXmIddw3AKaGjVtZneaZj8nwB2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745026224; c=relaxed/simple;
-	bh=JN/ug3dM1UBGfNxAh11HlE1UcacJnvtGdNX59TS7qxk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sLdnHMKTVGaRXUlIztFSep1C2enH78DQdHQqMQNKiI9z/ez6fCIg3qk2nQ1RpX8LQJ1wouP6Wkx4KqoKx9o/eEC6PtNDw96sDtRzfPBxOACqiBLPS6C9weH8BeiqdgSvQoi6xAljwXXnypa7JXJU0d/il+gXnRjVlYPgmVrpQD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4ZfYw317hmz4f3k5c;
-	Sat, 19 Apr 2025 09:29:55 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 970981A0359;
-	Sat, 19 Apr 2025 09:30:13 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-	by APP4 (Coremail) with SMTP id gCh0CgAHa1+i_AJo6lCaJw--.27471S6;
-	Sat, 19 Apr 2025 09:30:13 +0800 (CST)
-From: Yu Kuai <yukuai1@huaweicloud.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: song@kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	yukuai3@huawei.com,
-	yukuai1@huaweicloud.com,
-	yi.zhang@huawei.com,
-	yangerkun@huawei.com,
-	johnny.chenyi@huawei.com,
-	carnil@debian.org
-Subject: [PATCH 6.1 2/2] md: fix mddev uaf while iterating all_mddevs list
-Date: Sat, 19 Apr 2025 09:23:03 +0800
-Message-Id: <20250419012303.85554-3-yukuai1@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20250419012303.85554-1-yukuai1@huaweicloud.com>
-References: <20250419012303.85554-1-yukuai1@huaweicloud.com>
+	s=arc-20240116; t=1745025850; c=relaxed/simple;
+	bh=S2MJmhbus8YIwuJmB754nUipcA15zfIREhQScbrWOys=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lpnqKeakP904P1vii9LqIAH13WvtthgCxmVU1cBJabMGzYIBtd/AvXG1JmFeoQWqyKN4QaTjzKTLY3ZkvJc+2bkyVnGs9+jMyns+ynAXhbhObK//vjrhrPLCFtCEO0B3ahKoWzW0EJB8b3sDVyPY7NhwHSJSCUfL05gqwHrfxc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=OpkmPycL; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+	by cmsmtp with ESMTPS
+	id 5p6ouJDiiMETl5ww3uwrMk; Sat, 19 Apr 2025 01:24:00 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 5ww2uqB7GkmGT5ww3ufxBF; Sat, 19 Apr 2025 01:23:59 +0000
+X-Authority-Analysis: v=2.4 cv=eYM7faEH c=1 sm=1 tr=0 ts=6802fb2f
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=16BE+Vvb3MrJ28vkUhorkPNFAMHTd1dyG57SbBGUkEs=; b=OpkmPycLbcgZch1FlWvlcpNiwN
+	gIdAtFbJVy9serPX3KVxFBry2qKNPsBE0LxWmdXrwW2Sg7SJQJBKlu9PyxaSoOM6/u4OHwnauWZH5
+	2f6L8BQwsV3KY0f1plU8NLjH2CV1xMS56kdS1UZ1AhGIG7lbFySdgYhp5Pi+PzqOiysOFOQQfhw7H
+	6ZbZYH3zZGhK9pytq2tjaRa2cMsEYM0JDKOV/8GS3EgmQlzETUxFtNb13xFUBFNuqeY2K6c+lGGSL
+	1k1haHFYFEH25IPf0ecaEe/y6FQePMQb7L2UFEXT8AKNYpo+0U/fdhMe3HkRBtLuRN7E3r8AzxSo4
+	jcdOw79Q==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:39168 helo=[10.0.1.116])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.98.1)
+	(envelope-from <re@w6rz.net>)
+	id 1u5ww1-000000003XC-083l;
+	Fri, 18 Apr 2025 19:23:57 -0600
+Message-ID: <ca91d833-4557-4bf0-a310-7d41fa64b85e@w6rz.net>
+Date: Fri, 18 Apr 2025 18:23:53 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgAHa1+i_AJo6lCaJw--.27471S6
-X-Coremail-Antispam: 1UD129KBjvJXoWxurykWr1fCw48tF47Zr15XFb_yoWrGrWUpF
-	Waga1fGr48X3s3XF4DGw4DuFy5Ww18Kr4qqryxGa1rCr1Utr98Wr1Sgw15XFyj9ayfXrn0
-	qa18Ja4Yvr1DWwUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQv14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
-	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
-	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
-	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
-	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
-	xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF54CYxVCY1x0262kKe7AK
-	xVWUtVW8ZwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
-	0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAI
-	cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcV
-	CF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-	c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQXo7UUUUU=
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/447] 6.14.3-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250418110423.925580973@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20250418110423.925580973@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1u5ww1-000000003XC-083l
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:39168
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 18
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPHnDx5HsJGIuWEpvPFlXb+HcJ3feL8hHmh5Dj7GefMWKSD0gzHNooIR1nw8QUL1as9qT2QNVTJkwFHI3kmap2zCF1mWWbUJygvF/r43TERJIw92LQRZ
+ AGVPzS6TIZzZRpc+olNlglopYcmuVyXRX4xnWi4WS7mnq9tR5KD9r/1NHGqzyRxkYFh7rOpfONnIyg==
 
-From: Yu Kuai <yukuai3@huawei.com>
+On 4/18/25 04:05, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.3 release.
+> There are 447 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 20 Apr 2025 11:02:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.3-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-commit 8542870237c3a48ff049b6c5df5f50c8728284fa upstream.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-While iterating all_mddevs list from md_notify_reboot() and md_exit(),
-list_for_each_entry_safe is used, and this can race with deletint the
-next mddev, causing UAF:
-
-t1:
-spin_lock
-//list_for_each_entry_safe(mddev, n, ...)
- mddev_get(mddev1)
- // assume mddev2 is the next entry
- spin_unlock
-            t2:
-            //remove mddev2
-            ...
-            mddev_free
-            spin_lock
-            list_del
-            spin_unlock
-            kfree(mddev2)
- mddev_put(mddev1)
- spin_lock
- //continue dereference mddev2->all_mddevs
-
-The old helper for_each_mddev() actually grab the reference of mddev2
-while holding the lock, to prevent from being freed. This problem can be
-fixed the same way, however, the code will be complex.
-
-Hence switch to use list_for_each_entry, in this case mddev_put() can free
-the mddev1 and it's not safe as well. Refer to md_seq_show(), also factor
-out a helper mddev_put_locked() to fix this problem.
-
-Cc: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/linux-raid/20250220124348.845222-1-yukuai1@huaweicloud.com
-Fixes: f26514342255 ("md: stop using for_each_mddev in md_notify_reboot")
-Fixes: 16648bac862f ("md: stop using for_each_mddev in md_exit")
-Reported-and-tested-by: Guillaume Morin <guillaume@morinfr.org>
-Closes: https://lore.kernel.org/all/Z7Y0SURoA8xwg7vn@bender.morinfr.org/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-[skip md_seq_show() that is not exist]
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
----
- drivers/md/md.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 639fe8ebaa68..d5fbccc72810 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -684,6 +684,12 @@ static void __mddev_put(struct mddev *mddev)
- 	queue_work(md_misc_wq, &mddev->del_work);
- }
- 
-+static void mddev_put_locked(struct mddev *mddev)
-+{
-+	if (atomic_dec_and_test(&mddev->active))
-+		__mddev_put(mddev);
-+}
-+
- void mddev_put(struct mddev *mddev)
- {
- 	if (!atomic_dec_and_lock(&mddev->active, &all_mddevs_lock))
-@@ -9704,11 +9710,11 @@ EXPORT_SYMBOL_GPL(rdev_clear_badblocks);
- static int md_notify_reboot(struct notifier_block *this,
- 			    unsigned long code, void *x)
- {
--	struct mddev *mddev, *n;
-+	struct mddev *mddev;
- 	int need_delay = 0;
- 
- 	spin_lock(&all_mddevs_lock);
--	list_for_each_entry_safe(mddev, n, &all_mddevs, all_mddevs) {
-+	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
- 		if (!mddev_get(mddev))
- 			continue;
- 		spin_unlock(&all_mddevs_lock);
-@@ -9720,8 +9726,8 @@ static int md_notify_reboot(struct notifier_block *this,
- 			mddev_unlock(mddev);
- 		}
- 		need_delay = 1;
--		mddev_put(mddev);
- 		spin_lock(&all_mddevs_lock);
-+		mddev_put_locked(mddev);
- 	}
- 	spin_unlock(&all_mddevs_lock);
- 
-@@ -10043,7 +10049,7 @@ void md_autostart_arrays(int part)
- 
- static __exit void md_exit(void)
- {
--	struct mddev *mddev, *n;
-+	struct mddev *mddev;
- 	int delay = 1;
- 
- 	unregister_blkdev(MD_MAJOR,"md");
-@@ -10064,7 +10070,7 @@ static __exit void md_exit(void)
- 	remove_proc_entry("mdstat", NULL);
- 
- 	spin_lock(&all_mddevs_lock);
--	list_for_each_entry_safe(mddev, n, &all_mddevs, all_mddevs) {
-+	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
- 		if (!mddev_get(mddev))
- 			continue;
- 		spin_unlock(&all_mddevs_lock);
-@@ -10076,8 +10082,8 @@ static __exit void md_exit(void)
- 		 * the mddev for destruction by a workqueue, and the
- 		 * destroy_workqueue() below will wait for that to complete.
- 		 */
--		mddev_put(mddev);
- 		spin_lock(&all_mddevs_lock);
-+		mddev_put_locked(mddev);
- 	}
- 	spin_unlock(&all_mddevs_lock);
- 
--- 
-2.39.2
+Tested-by: Ron Economos <re@w6rz.net>
 
 
