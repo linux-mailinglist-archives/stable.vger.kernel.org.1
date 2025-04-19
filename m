@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1653AA9432D
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 13:47:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B59A9432E
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 13:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB5BC1899E23
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 11:47:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832D117C8E5
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 11:47:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183421C84A1;
-	Sat, 19 Apr 2025 11:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8F4A1B4244;
+	Sat, 19 Apr 2025 11:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTmR5psn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfpxZCLW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2B318DB29
-	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 11:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8963318DB29
+	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 11:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745063220; cv=none; b=WYZHrYvdtF8Es+i6s410cJzNwPyimbmziXvdgXr9ZgLSd6S6d5JnjMiUjHYmxvYRub4rC1a485sv8gu8s5uCsn/6TKiUUrGjW2XZ99/AdWqEd1SLB9BmUFEwfzAlOpJzD7gyrzckhVKzCJzy61Xo/ywaBYHJlT8T8nxhI+T5seg=
+	t=1745063222; cv=none; b=glWhQ/QLFBlFIsei00VqakIf9XkxHWk2c8m2KFqpubA2zw6QzcNyfhLKKTEaG0Job/Lho8RtZJt4X2BWK2DVFQbvSCK186A70nxtNjvD4FeIBzO9Z0GPifboGMILVV3fO8xxukqnF6ds/NzEkEW5dObFsH8BHDPF1g4qK3FXjaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745063220; c=relaxed/simple;
-	bh=NO/vgAIzovzti8529vS0xrBf10RT3xqt3n0+fXUUznI=;
+	s=arc-20240116; t=1745063222; c=relaxed/simple;
+	bh=OrjRa3dRn6XZS/ah3vAUHh/RIlF2X1fhW+lgR+pzghg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ajSV9wosQ0NIDtpCRkC3iyoAaQY40zW4H8m4SL2Zm1oXpxzTwy03e1kzML2HCbQXI8h8d6R+eTpOEYhyJH8DPHwM2UQdc3LgYDr8hPSO66PqDDkdSXlD1/sW5YkDRqvjIQHV8nkys3umo7v0l+DPgCt+gL0bkcXmdgLdvUlKWSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTmR5psn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A2AC4CEE7;
-	Sat, 19 Apr 2025 11:46:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tyiXE2P9nYPlw3/1iw50rMIFP5h+iISwseySW9ymM/H+mOw50tc7AlZxEtRkrPaiBaDBErw7zMdyPHVc3hbxWAyD9v8K/XS6/cvy02XtV4BeHrPVnJPJNSdpSqr48NyWV/S5W+bfpoUxIpOiLdSoFap/rQIpcCP4mdLMXrXXrCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfpxZCLW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4340C4CEE7;
+	Sat, 19 Apr 2025 11:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745063220;
-	bh=NO/vgAIzovzti8529vS0xrBf10RT3xqt3n0+fXUUznI=;
+	s=k20201202; t=1745063222;
+	bh=OrjRa3dRn6XZS/ah3vAUHh/RIlF2X1fhW+lgR+pzghg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTmR5psncST7Sqm98bNRPBCakGfSIRamAAPZ7Ds+U0cFO+PTxKfADLqxtCOOhIHkG
-	 7rEoGkhXilGLBj4qcChZf9t6seIm9FsTxgpdmgdCLqLYkx3bZlHrwksTnVJ3LnpXCE
-	 niXDyJaSI10DeFjHhzkgTuuFzx7dgwmX1u9DXCiDc2CTPmMiTP+GxHZzWBtKhTGSnF
-	 AfzcbRat4IruI/HIoSr/6wbdd1maPenReY8aX0btnhHF2qMKSVU7gm2cXRZz59aRN7
-	 ttLdYY2gIoqOTuo7XAMTpa3/ahlaJQO7ret3r6NhQeWkq7tzzgosQSjUznh7Vh4dZ8
-	 lqIWOFa4av0OQ==
+	b=AfpxZCLWBQ4pLYN8nT8hQziiyWvRTjofu6RiftIl0XrTFNr9tWqoEchKXopaH2B4T
+	 XTkZdIdKXJDOzK5nljy8JYZUs6cCOCt65nB6gaTSd023ysB/thyYMmts3mfONrwviP
+	 tMogpW8T90AFU91JSaeuVaYYb2FS3NP8E3K93aC8oMDFO7igoZgGIMfS0pGECx03Yw
+	 hiQDqeSLIQK07LX4Wo0KzERkVcdm1aZV1q1bXUWHY8VhokrxwqYpH1rr1yBcsg9UzJ
+	 VRw0SgRZIbBdmI3ajH6GgLayO+e5FQQRmLqieH1+ZNRWGIKr0r772SSd9UJOcEgeLT
+	 vZrQWzXG0ePKA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y 3/3] mptcp: sockopt: fix getting IPV6_V6ONLY
-Date: Sat, 19 Apr 2025 07:46:58 -0400
-Message-Id: <20250418203720-3d69b1c33b49f395@stable.kernel.org>
+To: stable@vger.kernel.org,
+	bvanassche@acm.org
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 2/3] block: add a rq_list type
+Date: Sat, 19 Apr 2025 07:47:00 -0400
+Message-Id: <20250418190345-000dcd31ed1bd983@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250418164556.3926588-8-matttbe@kernel.org>
+In-Reply-To:  <20250418175401.1936152-3-bvanassche@acm.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,28 +64,32 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 2/3 of a series
+⚠️ Found matching upstream commit but patch is missing proper reference to it
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: 8c39633759885b6ff85f6d96cf445560e74df5e8
+Found matching upstream commit: a3396b99990d8b4e5797e7b16fdeb64c15ae97bb
 
-Status in newer kernel trees:
-6.14.y | Present (different SHA1: 233afced24eb)
-6.13.y | Present (different SHA1: 41e890efe9aa)
-6.12.y | Present (different SHA1: acc1f6a05ab2)
-6.6.y | Present (different SHA1: 51893ff3b0f8)
-6.1.y | Present (different SHA1: 0fb46064c253)
-5.15.y | Not found
+WARNING: Author mismatch between patch and found commit:
+Backport author: Bart Van Assche<bvanassche@acm.org>
+Commit author: Christoph Hellwig<hch@lst.de>
+
+Found fixes commits:
+957860cbc1dc block: make struct rq_list available for !CONFIG_BLOCK
 
 Note: The patch differs from the upstream commit:
 ---
-1:  8c39633759885 < -:  ------------- mptcp: sockopt: fix getting IPV6_V6ONLY
--:  ------------- > 1:  be06d8825e39d mptcp: sockopt: fix getting IPV6_V6ONLY
+1:  a3396b99990d8 < -:  ------------- block: add a rq_list type
+-:  ------------- > 1:  9bc5c94e278f7 Linux 6.14.2
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
