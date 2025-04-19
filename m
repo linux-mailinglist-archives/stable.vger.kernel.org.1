@@ -1,136 +1,133 @@
-Return-Path: <stable+bounces-134722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB62A94501
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 20:13:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A22EA9457A
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 23:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D7777A23F7
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 18:12:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5451B3BAE92
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 21:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670E31E0DCB;
-	Sat, 19 Apr 2025 18:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB3E1E5702;
+	Sat, 19 Apr 2025 21:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rmg/pM0F"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="XR/8a+tt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30C64690;
-	Sat, 19 Apr 2025 18:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B01F14901B;
+	Sat, 19 Apr 2025 21:34:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745086396; cv=none; b=bM+jHyv/I7OwWNNv5ODB444HFOPvNGdie7yXAgwyfMN2OlKLG2NNnV8O6ixxipsx2ctlH7Suwz9sxRXuzHADsZ1YPBGCU5gkvh+WncwzRLAJ8KC3mqkrB6MGXCd3tlKuVe/ZBpQIYVwVAdvsgBAJSubROgPN4jL+iF5K0m+DE9s=
+	t=1745098499; cv=none; b=aGnoa5CYIh7ZT8WCN6KiZJDdNG0lLLCBHkDC/IDAr8/C2NYr/9/XxkImZiLdi/FU22OPMbK1fVozA55BdAxhypWajfq8SC9CDf9H6ct2KLCe06aWUXBZhJicObIgg/WswLT8e4WdOt9uONnyMLJtR96LT9CsRTx+iUohAbgCq8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745086396; c=relaxed/simple;
-	bh=GdnvWDBNR2gOB+LenT8RHWopVk2MCmbNJTEOMWfKmjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IkzdAk7qFcmCKkZPKcC5tDCL4exr8qneOC+ZcDe5OcgeUXcAwxbA8st5i8/S5/cHj6XUWNy8C2O3ndRoYXz6xqd3Ozc5a+YTbadgifhRJjBHT1b5PtJ6qE6bQh0IEviUJtuxMWbjrCa65k8SquUf/H4GFiqAkHE+cTRPNnn9wts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rmg/pM0F; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-af28bc68846so2384719a12.1;
-        Sat, 19 Apr 2025 11:13:14 -0700 (PDT)
+	s=arc-20240116; t=1745098499; c=relaxed/simple;
+	bh=PRfH/elj0OQ52dJFa9t0pmk1G8zdnOeDskIHX4/5Ru4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dnJXT9ON8Jd6NURr3Ft+Ht6hlXPmm92GcO3UvZ2gyPwMahXdNLA6KFNa+pM/8r4RQn7Iy9EWIOxGHdcXBLABvJADZB5VtFAn3ozrWNVExCQQ6gylhmF1Db7MvP0uOO9GPD/GSFLl/GnvUgN1axI7JHlwSuIo1s3fgHL32lNJqG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=XR/8a+tt; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5edc07c777eso3729818a12.3;
+        Sat, 19 Apr 2025 14:34:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745086394; x=1745691194; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TNRnOiyXacyKehrBjfG/SIyIph4B3poZy/96JlS18Fw=;
-        b=Rmg/pM0FVZ6BE0J/kfw//FmCaPIOcrZwlvbtBwyPx0Z8zKdm512jA0R64gtVhlIIV3
-         9VZZP19+Qoaev7EQma/gMnGsXm13nz1gLXgFlkf5N2uO98+jnXbXk1BW1MBEPh/f1dOb
-         I34Mh3N4ya2Qf7hEiuPJbplK4TJC0brTBzTcZD8KMcXXx2TE0x+8PHd7uqXjphpY8Z/F
-         hMedWh1iL/nodVUQmEMcM1zRK5u45QxuVjIAeZlXfi5cnkDzF3gbGVyns0sJtoN+GmOA
-         Hsr622fzEGoijfUU8ReiVKGvPwdpK5GB+v/lIlrXBzudMbk7Nrj1vydaIXsBWot+jgG7
-         zyMw==
+        d=googlemail.com; s=20230601; t=1745098496; x=1745703296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wxYKThiSP5CpC8ECIauIBDHNEvnQh43dWazKFIWJZDU=;
+        b=XR/8a+ttEpwdHvrupJSFCNTTFB6ijN7Aik3uakmvqkzVdxhuvotv7bK8cq2eKS3JW/
+         ybJE3B8S7g3mIu4NC/3lHPnwEjOyEQNKMQr8doebKylqOipmYXQZ0+iYgeZ61EzbSj/G
+         oLcmCXgwSsceP7TipJ7UO47kh/7MSxu9a/SPwIs7jXFkorggx3YVqjTcmLsydvPFclOW
+         NxQSmURIK/FkHkcUG1YzC8JOlHzSsRZY9zwkhrbgYtm8avve+Vk8P1X3dxxgXlDwuHnu
+         iUOeLE8rGcwqr1SPNlYzoxnYnMrfqCAP6+FHOtHE6lXp8IB4Ywf6y53IN4CsSVAtT9QV
+         +mXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745086394; x=1745691194;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TNRnOiyXacyKehrBjfG/SIyIph4B3poZy/96JlS18Fw=;
-        b=M0IKE3BfmAO7za9ctbQqFt8Q/PsQhJpn1bUu+gyuabugzCt+sFl+qvRujgy1i0OaLK
-         8OneJ2Oy3LrAR79Q1AdSdchYlAqZGhhDGNtPe6x+bEGvV0VZXlSyqRmLbEmz5rsPunkE
-         8NH+XnFOjZSVQxiJ/t9I8nPmE45LjPifp/INW7cB7PngXb9LrdsMFf1KFLFLCUapbGf4
-         1xdyf16XyjCHpuDM39aDz0zbMcMHYvTleTtdGfpaq7CywHMJ0/Lt5rvaJ8VcUHN3QsMi
-         VGsytPD/8cMFWR4cbqgB/tf+Ht9Ib3ilcb/0xi/wBSmfoOOqsmjZ1mnOO7tgi/ny3nff
-         jrfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU3Hmaq93DYK5A8rujhm459td5SnpgHExhZYFBaxFD2YMqPpPenW0ju4gdaj97PkIAFJwMmqE/FDAc=@vger.kernel.org, AJvYcCX69sB1QfaJqceKOqyJkeaMmqF2LDKaLI8DkCGM4Ks3Wm6YP3/5SX6OjlLbsrQSKdR1wQ3xXIGcjMpXcp1/@vger.kernel.org, AJvYcCXW6BG/6Pl+6h4xJ0LIrA9sK8Wqd/lsMtVGnSp/bKAX5W8E+XIXXdLVk6drrrwUXCho0py83okG@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIUntERsHEMZfMW0XIgttMmL8clB5NeSDWy4kqTl0R5arGUJlX
-	vb4h4XHguwFvtnhk3k/I7hnyPQIBH2wkS6SMEeus5hMwoE631j6SRAoDY5TUbNU=
-X-Gm-Gg: ASbGnctAz8ZmlZqlvc8jOnGnGKqXAVtmFd4ka+cuuVq5IrCf3TLdw7Y65dQt9sun0jX
-	1rOuRHYT1NzXdNIFJlrS9WgXYXOElghUv/jVClQmnu4nIBV4w5lZ2aC0DHL7/2JFch8nMQ5Y730
-	IRQUoKlikHMESwA72r9X5v/b0FAbV0lx4wEqQKwqyzxvAFvmH3HcuVGxP/8FnxF6Uv/3XfewPW8
-	3/So0gnCgqRinuebMJ8P2ipLcMrZEsG6hhDV4z6jI7sdMoUZcO3Oa1oAd6g7l+CGealKMd4ItM6
-	SmEOZ1kOssL9lUD47e38OWHlBPNhh9Adh4Cvzjh+y4+7Qw4=
-X-Google-Smtp-Source: AGHT+IF0skBMQ1kT+xLk+++XTW5TiYx+jOnZJc1EJcM6tPtPprZSLzpSuU4H8FPoV2YJAsHrhEPaxA==
-X-Received: by 2002:a17:902:d58c:b0:220:c813:dfcc with SMTP id d9443c01a7336-22c536075cdmr122327445ad.40.1745086393993;
-        Sat, 19 Apr 2025 11:13:13 -0700 (PDT)
-Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50ed0ee3sm36362525ad.206.2025.04.19.11.13.12
+        d=1e100.net; s=20230601; t=1745098496; x=1745703296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wxYKThiSP5CpC8ECIauIBDHNEvnQh43dWazKFIWJZDU=;
+        b=UMD8/NuPcX3AKhH+eorZ+6YzL1Eba2PEg7/aNZKbcejiHJW257SQfMzjv0+m1Ng+HG
+         J1PlEJBD5uXhdzcMYkeyGhv9EAPzojUF7CwcNM0J1k7Zy4uXG5flfOcqmHV3lPNsuSlw
+         N8pECGugUEtCa6DrVebEe6UHL9BnI5ZWNzIXRB0FaV3vUXnb/msAJJXCDrAYwxC2MQeG
+         pRDKEkVr8mDRUOUEsV4cFk03U91oq2KRgHVtamuBdleevvIsGa+Xq5XH8xvkZItGPQoi
+         lIkEHlKkt8uoqx9rmEMxyBRJqbUh1nK2V+176B+IwYYNrXPaYKTfQCVpPxW+J9zPZFD3
+         Z3iw==
+X-Forwarded-Encrypted: i=1; AJvYcCVDoA5xbbiUQPurjGhTIuFNzDwsD1+3neBFeLSunm64rHN0JAjQPO1DZ/5kJLqGgYh5ggK/aGwj@vger.kernel.org, AJvYcCXtRezHIkp/s0fZDlBnRQhs9k85R0s/vDmBJGJMnCQ459xEnlMpg0WVVacoS6M7ZJsqLEjo783q5ODv5fM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywz8UexKjrDMfv99A3m5YhcE3LTEmfG+xOJGbE02clWGSlKW2zn
+	om+KR1Zl4V3E92NZqBYhchdMS3WOa0IdIaFib6tTQpwcWraG+2bodGIq6A==
+X-Gm-Gg: ASbGncva7NqxIFyXs+Qrp2NT1gfVLdzdmRq+GM3Ht1WLrucdosRnYaDaU68+dMDwxy3
+	7UujZzXlHbZSaf2GFtZo5xhiny6enDPcOlGJC+PEhDNUAc5FkiC4BlcUXItuwksLseADg35S2Qr
+	xITvnKn/XmtqzVnaqdO5ZXC2p3T5XIrlCkDHVmHdWpGPCq0ql7q/JQzRMzzFU3DjDnGlAxNt/0d
+	3Ztp0oQjgt7Xf780bPJtNMlGMb84Qg0bzRva8VV/FUu4JMoYFBncpSq1svK41cJDPZHgOXtftpN
+	rpWx4MT1u8qPov+1YiUvzmewH+c6thP0fdfc6nxN0F1VB5eLmcTsfvG3frKr6MDD++OFxgv8cnS
+	2280Uh+58Zc2YvGHYbaYcFk0rhWJFjlJkKMUvV0H9Aw1ZifHedRfMZtlRRJBV9H7vFw==
+X-Google-Smtp-Source: AGHT+IFu9MAPI6bhOcadFv7sdrdXp++L30ws8oMOqAOpHPkw1HcqkypIEaEE/ckknmH+OoGsiLtYkw==
+X-Received: by 2002:a05:6402:5204:b0:5e5:edf8:88f2 with SMTP id 4fb4d7f45d1cf-5f628603ad4mr4778873a12.23.1745098495728;
+        Sat, 19 Apr 2025 14:34:55 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-b1ff-f000-0000-0000-0000-0e63.310.pool.telefonica.de. [2a02:3100:b1ff:f000::e63])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5f625852a55sm2660022a12.66.2025.04.19.14.34.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Apr 2025 11:13:13 -0700 (PDT)
-Date: Sat, 19 Apr 2025 15:14:24 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: himanshujha199640@gmail.com, jic23@kernel.org, lars@metafoo.de,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: adis16201: Correct accelerometer scale factor
-Message-ID: <aAPoAESnjjyNsHI2@debian-BULLSEYE-live-builder-AMD64>
-References: <20250419125413.679290-1-gshahrouzi@gmail.com>
+        Sat, 19 Apr 2025 14:34:54 -0700 (PDT)
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To: linux-sound@vger.kernel.org,
+	linux-amlogic@lists.infradead.org
+Cc: jbrunet@baylibre.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
+Date: Sat, 19 Apr 2025 23:34:48 +0200
+Message-ID: <20250419213448.59647-1-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250419125413.679290-1-gshahrouzi@gmail.com>
 
-LGTM. Minor comments inline.
+Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
+non-boolean properties") added a warning when trying to parse a property
+with a value (boolean properties are defined as: absent = false, present
+without any value = true). This causes a warning from meson-card-utils.
 
-On 04/19, Gabriel Shahrouzi wrote:
-> The IIO_CHAN_INFO_SCALE previously reported for accelerometer channels
-> used 0.4624 mg/LSB. This value matches the datasheet specification for
-> the offset calibration registers (X/YACCL_OFFS_REG, pg 18).
-> 
-> However, the scale should reflect the sensor output data registers
-> (X/YACCL_OUT, pg 15, Tables 7 & 8), which use 0.4625 mg/LSB. This is
-> also consistent with the typical sensitivity in Table 1 (1 / 2.162 ≈
-> 0.4625).
-> 
-> Fixes: 57f9386405a2 ("Staging: iio: accel: adis16201: Add comments about units in read_raw()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> ---
+meson-card-utils needs to know about the existence of the
+"audio-routing" and/or "audio-widgets" properties in order to properly
+parse them. Switch to of_property_present() in order to silence the
+following warning messages during boot:
+  OF: /sound: Read of boolean property 'audio-routing' with a value.
+  OF: /sound: Read of boolean property 'audio-widgets' with a value.
 
->  drivers/iio/accel/adis16201.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
-> index 8601b9a8b8e75..982b33f6eccac 100644
-> --- a/drivers/iio/accel/adis16201.c
-> +++ b/drivers/iio/accel/adis16201.c
-> @@ -133,7 +133,7 @@ static int adis16201_read_raw(struct iio_dev *indio_dev,
->  			 * 1 LSB represents 0.244 mg.
-Maybe also update the comment?
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Tested-by: Christian Hewitt <christianshewitt@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ sound/soc/meson/meson-card-utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->  			 */
->  			*val = 0;
-> -			*val2 = IIO_G_TO_M_S_2(462400);
-> +			*val2 = IIO_G_TO_M_S_2(462500);
-If we do the math with more decimal digitis we have 1 / 2.162 == 0.46253469010176
-Would it make sense to do 
-			*val2 = IIO_G_TO_M_S_2(462535);
-?
+diff --git a/sound/soc/meson/meson-card-utils.c b/sound/soc/meson/meson-card-utils.c
+index cfc7f6e41ab5..68531183fb60 100644
+--- a/sound/soc/meson/meson-card-utils.c
++++ b/sound/soc/meson/meson-card-utils.c
+@@ -231,7 +231,7 @@ static int meson_card_parse_of_optional(struct snd_soc_card *card,
+ 						    const char *p))
+ {
+ 	/* If property is not provided, don't fail ... */
+-	if (!of_property_read_bool(card->dev->of_node, propname))
++	if (!of_property_present(card->dev->of_node, propname))
+ 		return 0;
+ 
+ 	/* ... but do fail if it is provided and the parsing fails */
+-- 
+2.49.0
 
->  			return IIO_VAL_INT_PLUS_NANO;
->  		case IIO_INCLI:
->  			*val = 0;
 
