@@ -1,134 +1,136 @@
-Return-Path: <stable+bounces-134721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51856A9443B
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 17:45:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB62A94501
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 20:13:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02574189DD14
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 15:45:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D7777A23F7
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 18:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAB513B58B;
-	Sat, 19 Apr 2025 15:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670E31E0DCB;
+	Sat, 19 Apr 2025 18:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mwBVz1tY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rmg/pM0F"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23333EACE;
-	Sat, 19 Apr 2025 15:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30C64690;
+	Sat, 19 Apr 2025 18:13:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745077541; cv=none; b=cBeWvqXmnpz1xmahZQp46Gb7mF20LaPj7NOgS41RkvhyyUHdWOI8XP0X+aqvomwOQ4ru8iTT+OGm+cPQc7WQ1xLXSUz6NQmUHWJrBeFmyxmOFcFmBHv9J5SwQuT41pibhzIGAEVyhl1vvO0Dn02WhP/0Z9uKlg3jNqXCspLlsrE=
+	t=1745086396; cv=none; b=bM+jHyv/I7OwWNNv5ODB444HFOPvNGdie7yXAgwyfMN2OlKLG2NNnV8O6ixxipsx2ctlH7Suwz9sxRXuzHADsZ1YPBGCU5gkvh+WncwzRLAJ8KC3mqkrB6MGXCd3tlKuVe/ZBpQIYVwVAdvsgBAJSubROgPN4jL+iF5K0m+DE9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745077541; c=relaxed/simple;
-	bh=p4g6OQ7r1ZEv3fDDupqkq/9/Gtf5y2BLkX7cFlXr1rw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=E2ORKpmMziDJYi6rvD37noFRmaMQZH6CSubdXTsrjUu0cTZD7/fb5AoVI0qvlAiT//tE4bu+aS8N6bVbeK1Fwcyf5XnZccITid44EfsycyNN+pTzqDD+FBEGzySgAK/2qVBhFGF1U9ls/tpJkJVSEo/T5rrWBnk5RuM0vC5v8xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mwBVz1tY; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1745086396; c=relaxed/simple;
+	bh=GdnvWDBNR2gOB+LenT8RHWopVk2MCmbNJTEOMWfKmjI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IkzdAk7qFcmCKkZPKcC5tDCL4exr8qneOC+ZcDe5OcgeUXcAwxbA8st5i8/S5/cHj6XUWNy8C2O3ndRoYXz6xqd3Ozc5a+YTbadgifhRJjBHT1b5PtJ6qE6bQh0IEviUJtuxMWbjrCa65k8SquUf/H4GFiqAkHE+cTRPNnn9wts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rmg/pM0F; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b0b2d1f2845so1834849a12.3;
-        Sat, 19 Apr 2025 08:45:39 -0700 (PDT)
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-af28bc68846so2384719a12.1;
+        Sat, 19 Apr 2025 11:13:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745077539; x=1745682339; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=thLDpOKToi4TFh2IfpxB3qZ+YESrtDY0C44gYg2NAPc=;
-        b=mwBVz1tYwxYipV9o80PTYyMZUFTzrf9//GC6u47Tw7ueDc6uVhALxZG0WLHFa5AR1g
-         /7zccZoOlzl+pWNEhFNxDGYTUpNXU3VvCcgP+L6egJYslYnO4WCs+FArnYiKhj7PJydK
-         Aav86tev/ZZlDpvfrM+5I3SdCsByy5Mm42+VwD2aU0Pcq72xOtQgTkRGZ8bpz0Ym5KQ/
-         acE8pOQsXvXtUz8S15JLFh5W0kGEfRY1VXH643uHxg5uqTEAzb6gWNVf4JRjIRQde5Up
-         m+Lamh99dfoHvq14QMqGwCFhneWmkTCNVf6qktuwHL0lg+JvnY6YKK/W7zKGg4N1aPoD
-         FQig==
+        d=gmail.com; s=20230601; t=1745086394; x=1745691194; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TNRnOiyXacyKehrBjfG/SIyIph4B3poZy/96JlS18Fw=;
+        b=Rmg/pM0FVZ6BE0J/kfw//FmCaPIOcrZwlvbtBwyPx0Z8zKdm512jA0R64gtVhlIIV3
+         9VZZP19+Qoaev7EQma/gMnGsXm13nz1gLXgFlkf5N2uO98+jnXbXk1BW1MBEPh/f1dOb
+         I34Mh3N4ya2Qf7hEiuPJbplK4TJC0brTBzTcZD8KMcXXx2TE0x+8PHd7uqXjphpY8Z/F
+         hMedWh1iL/nodVUQmEMcM1zRK5u45QxuVjIAeZlXfi5cnkDzF3gbGVyns0sJtoN+GmOA
+         Hsr622fzEGoijfUU8ReiVKGvPwdpK5GB+v/lIlrXBzudMbk7Nrj1vydaIXsBWot+jgG7
+         zyMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745077539; x=1745682339;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=thLDpOKToi4TFh2IfpxB3qZ+YESrtDY0C44gYg2NAPc=;
-        b=sJxq5gGkMsDEdXxqv9SDbi/iiQ9kcbbsVTC1i7wdGxGuUqnQb5bDwddK0HnVG2J6tw
-         86G3pcPfG/xMl/WjfZSvUZyeLLL8DgzGnnUf4Zpg1m1pAnggIdo0IEFAp8/CLNuV1P6w
-         5qrKs1CAMyLopywB+fgtReaLiqklwOLED9sNoAGDZCnQ7DrUb8e5S5b18o5c2hpJKiSi
-         Som7hnAb2SFz3ZvwZs3tZ/4uFSIi60opwcal9wcQaQVxGrNk/MEWeVVpe7ExqWKxJS/2
-         lRPVAnKtUBUjxugVbBAV5gu1reV/1BpNqacwR4Ei5lCRtJ0a4sqtoSInAlF1HMX+nCe1
-         t6zQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWRdrct45LGU7h/c4JdlPJkdl7HNwxPfAzLjNXcRsmMFV4E4P0sjDubV5j0sAoe3rhG5AdBgg2U/QQP77A=@vger.kernel.org, AJvYcCWWte8J3rEQlJo6xNbD94FeE/RAgtyIyzVgfqxgvvgCwtD7FuxEyi5NxFodWWVALaSe2n//u9+J@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm9aD0OkE4D3HPeeKkfGLxKcqmh2o2i3YybMMrqKItHX/tYo1J
-	krIvy55B0oRvBZ9+ECQtymyC1xHaeMYTV7r69lsg0dFq7uamM+/ldjOcrA==
-X-Gm-Gg: ASbGnctLak7jPkexcN+h+tenb0FTrk2uvYyfmBDALjq9/UL7QEzK314Qwaw/e0vU7sO
-	zMUfWxIZnTQJrLY52F/mnqZR5KYjXsaddgosyqxy2Owjr4FhBOygLS5poffc3pl9ODiPBjDbZHg
-	dpKygr715uNpDd77Hh6zPm8NQIVVrqEZwKm2cFurCUn4CtaxUCSuBplY5UaSR7Q1MdV4cf6QQAd
-	YVRyc9MZ6/MUrttNHJD+s8oEsEer7m4Wd3sdlSHJo0FLjjX/7yx2sw82zAWP9Rx0QR3B/JluCMQ
-	zW5OEE8gbX1LASlCkWR11XX5Gm5AtAobrC8PuwjV
-X-Google-Smtp-Source: AGHT+IGLLhGvL7K1dc2pynaHr7ypdLJ4zwH5sP8adXJEdhhC1bemDxhqTCeZvkSdihWS04yYywjNXA==
-X-Received: by 2002:a17:902:f70b:b0:21f:136a:a374 with SMTP id d9443c01a7336-22c53625f2bmr96668925ad.43.1745077539161;
-        Sat, 19 Apr 2025 08:45:39 -0700 (PDT)
-Received: from [192.168.1.26] ([181.91.133.137])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50bdac20sm35277475ad.2.2025.04.19.08.45.36
+        d=1e100.net; s=20230601; t=1745086394; x=1745691194;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TNRnOiyXacyKehrBjfG/SIyIph4B3poZy/96JlS18Fw=;
+        b=M0IKE3BfmAO7za9ctbQqFt8Q/PsQhJpn1bUu+gyuabugzCt+sFl+qvRujgy1i0OaLK
+         8OneJ2Oy3LrAR79Q1AdSdchYlAqZGhhDGNtPe6x+bEGvV0VZXlSyqRmLbEmz5rsPunkE
+         8NH+XnFOjZSVQxiJ/t9I8nPmE45LjPifp/INW7cB7PngXb9LrdsMFf1KFLFLCUapbGf4
+         1xdyf16XyjCHpuDM39aDz0zbMcMHYvTleTtdGfpaq7CywHMJ0/Lt5rvaJ8VcUHN3QsMi
+         VGsytPD/8cMFWR4cbqgB/tf+Ht9Ib3ilcb/0xi/wBSmfoOOqsmjZ1mnOO7tgi/ny3nff
+         jrfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU3Hmaq93DYK5A8rujhm459td5SnpgHExhZYFBaxFD2YMqPpPenW0ju4gdaj97PkIAFJwMmqE/FDAc=@vger.kernel.org, AJvYcCX69sB1QfaJqceKOqyJkeaMmqF2LDKaLI8DkCGM4Ks3Wm6YP3/5SX6OjlLbsrQSKdR1wQ3xXIGcjMpXcp1/@vger.kernel.org, AJvYcCXW6BG/6Pl+6h4xJ0LIrA9sK8Wqd/lsMtVGnSp/bKAX5W8E+XIXXdLVk6drrrwUXCho0py83okG@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIUntERsHEMZfMW0XIgttMmL8clB5NeSDWy4kqTl0R5arGUJlX
+	vb4h4XHguwFvtnhk3k/I7hnyPQIBH2wkS6SMEeus5hMwoE631j6SRAoDY5TUbNU=
+X-Gm-Gg: ASbGnctAz8ZmlZqlvc8jOnGnGKqXAVtmFd4ka+cuuVq5IrCf3TLdw7Y65dQt9sun0jX
+	1rOuRHYT1NzXdNIFJlrS9WgXYXOElghUv/jVClQmnu4nIBV4w5lZ2aC0DHL7/2JFch8nMQ5Y730
+	IRQUoKlikHMESwA72r9X5v/b0FAbV0lx4wEqQKwqyzxvAFvmH3HcuVGxP/8FnxF6Uv/3XfewPW8
+	3/So0gnCgqRinuebMJ8P2ipLcMrZEsG6hhDV4z6jI7sdMoUZcO3Oa1oAd6g7l+CGealKMd4ItM6
+	SmEOZ1kOssL9lUD47e38OWHlBPNhh9Adh4Cvzjh+y4+7Qw4=
+X-Google-Smtp-Source: AGHT+IF0skBMQ1kT+xLk+++XTW5TiYx+jOnZJc1EJcM6tPtPprZSLzpSuU4H8FPoV2YJAsHrhEPaxA==
+X-Received: by 2002:a17:902:d58c:b0:220:c813:dfcc with SMTP id d9443c01a7336-22c536075cdmr122327445ad.40.1745086393993;
+        Sat, 19 Apr 2025 11:13:13 -0700 (PDT)
+Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50ed0ee3sm36362525ad.206.2025.04.19.11.13.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Apr 2025 08:45:38 -0700 (PDT)
-From: Kurt Borja <kuurtb@gmail.com>
-Date: Sat, 19 Apr 2025 12:45:29 -0300
-Subject: [PATCH] platform/x86: alienware-wmi-wmax: Add support for
- Alienware m15 R7
+        Sat, 19 Apr 2025 11:13:13 -0700 (PDT)
+Date: Sat, 19 Apr 2025 15:14:24 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: himanshujha199640@gmail.com, jic23@kernel.org, lars@metafoo.de,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: adis16201: Correct accelerometer scale factor
+Message-ID: <aAPoAESnjjyNsHI2@debian-BULLSEYE-live-builder-AMD64>
+References: <20250419125413.679290-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250419-m15-r7-v1-1-18c6eaa27e25@gmail.com>
-X-B4-Tracking: v=1; b=H4sIABjFA2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDE0ML3VxDU90ic10zw5Q0g0RjC4vk1FQloOKCotS0zAqwQdGxtbUA3rE
- N+1gAAAA=
-X-Change-ID: 20250418-m15-r7-61df0a388cee
-To: Hans de Goede <hdegoede@redhat.com>, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: platform-driver-x86@vger.kernel.org, Dell.Client.Kernel@dell.com, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Romain THERY <romain.thery@ik.me>, Kurt Borja <kuurtb@gmail.com>
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250419125413.679290-1-gshahrouzi@gmail.com>
 
-Extend thermal control support to Alienware m15 R7.
+LGTM. Minor comments inline.
 
-Cc: stable@vger.kernel.org
-Tested-by: Romain THERY <romain.thery@ik.me>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
----
- drivers/platform/x86/dell/alienware-wmi-wmax.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+On 04/19, Gabriel Shahrouzi wrote:
+> The IIO_CHAN_INFO_SCALE previously reported for accelerometer channels
+> used 0.4624 mg/LSB. This value matches the datasheet specification for
+> the offset calibration registers (X/YACCL_OFFS_REG, pg 18).
+> 
+> However, the scale should reflect the sensor output data registers
+> (X/YACCL_OUT, pg 15, Tables 7 & 8), which use 0.4625 mg/LSB. This is
+> also consistent with the typical sensitivity in Table 1 (1 / 2.162 ≈
+> 0.4625).
+> 
+> Fixes: 57f9386405a2 ("Staging: iio: accel: adis16201: Add comments about units in read_raw()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> ---
 
-diff --git a/drivers/platform/x86/dell/alienware-wmi-wmax.c b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-index 3f9e1e986ecf0a906ca16b85fd60e675f1885171..08b82c151e07103885dbe3354542f18776fe0b2e 100644
---- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
-+++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
-@@ -69,6 +69,14 @@ static const struct dmi_system_id awcc_dmi_table[] __initconst = {
- 		},
- 		.driver_data = &generic_quirks,
- 	},
-+	{
-+		.ident = "Alienware m15 R7",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m15 R7"),
-+		},
-+		.driver_data = &generic_quirks,
-+	},
- 	{
- 		.ident = "Alienware m16 R1",
- 		.matches = {
+>  drivers/iio/accel/adis16201.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
+> index 8601b9a8b8e75..982b33f6eccac 100644
+> --- a/drivers/iio/accel/adis16201.c
+> +++ b/drivers/iio/accel/adis16201.c
+> @@ -133,7 +133,7 @@ static int adis16201_read_raw(struct iio_dev *indio_dev,
+>  			 * 1 LSB represents 0.244 mg.
+Maybe also update the comment?
 
----
-base-commit: 4a8e04e2bdcb98d513e97b039899bda03b07bcf2
-change-id: 20250418-m15-r7-61df0a388cee
+>  			 */
+>  			*val = 0;
+> -			*val2 = IIO_G_TO_M_S_2(462400);
+> +			*val2 = IIO_G_TO_M_S_2(462500);
+If we do the math with more decimal digitis we have 1 / 2.162 == 0.46253469010176
+Would it make sense to do 
+			*val2 = IIO_G_TO_M_S_2(462535);
+?
 
-Best regards,
--- 
- ~ Kurt
-
+>  			return IIO_VAL_INT_PLUS_NANO;
+>  		case IIO_INCLI:
+>  			*val = 0;
 
