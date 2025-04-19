@@ -1,56 +1,90 @@
-Return-Path: <stable+bounces-134713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F428A94361
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 14:19:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F953A9437C
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 14:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61D568A3148
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 12:19:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1FE81897C19
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 12:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515FF1C84C7;
-	Sat, 19 Apr 2025 12:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374DE1DA617;
+	Sat, 19 Apr 2025 12:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAoNiVOC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KP0tfeou"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF98259C
-	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 12:19:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D472AD0C;
+	Sat, 19 Apr 2025 12:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745065175; cv=none; b=f+FI6pucdO//uRqadfWTLYT+vjGIhbk11sVojYKpiaK1B0D5BdlbQP1mN+mthT0DUuc+S5iL/muw2fkK/tLP5Rcs9O/gDiH2/EGaYHyinlhEJMzURTz3596QVCYHnwXHGy1hdU1pOUPDSLc+b2j7vhkDB3xHLPvRVJzCUh0CA30=
+	t=1745067259; cv=none; b=uKSbyunadzb7MmUjyrlwGxeh4M0Zc37VgsOsJ+s33XjRGZ0vEEm9V5XM+dso5g2E3LY68Zf4TZTtZ54TaQua/CeHgMSCWpRGvNDl/OQOuLAgD4HTJmzWl3UfSb2yixfoFWW+eNdEZ1YplT5Cd5NaB5tjMFiZ4ufY6glEVvNFIW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745065175; c=relaxed/simple;
-	bh=/xYFvR23ASTDPjTFL7YVdZqgktDEE4mSLrPpu8j04rM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DkyJ9yqDvV+dGPLee4bjebgPMvP0m7up0BtWIuRGAhaow68TBW10CX83fPlZZTCIwx0ft78imfITyiy4HN1nprCr/T/dBWFcNU+kJ01dfo0OIcG4dTJBN55sJ2ZKSCvP5Fp2HkFIKGn0fFUtAtLJCpGSo1RCF8ppb4ThobhDEYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAoNiVOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFCDC4CEE7;
-	Sat, 19 Apr 2025 12:19:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745065174;
-	bh=/xYFvR23ASTDPjTFL7YVdZqgktDEE4mSLrPpu8j04rM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAoNiVOCvmMdaHYMPHaqXE0YwVYiTkDMTNS+7Z/zBlAV5P09m+sgbh3FvSjOGs6tv
-	 qVf5rY+HtcVoqJPOOBjlu4JcVNJh6zmO664I3Fn0PsR3oVp2JIs6l2ymIaAv8GOMYZ
-	 spMdXWJ5o1teIEh23MVBa2ypS3kPa8SA+vJY8tELefyo3cFtgmi05EdplusGhaz9kd
-	 f4cW8d3rVvLCGOGP1MfwUmosS45mI8Yz2vYUE4SDK0xxa/qG865lU3mM5tU3nDQ0jB
-	 oatHM0Vg3JY6YRCKcosUztf0Htu3GZbgkb1hkxmQmBZA7PY8oJTS6sbIpZssEsrGG2
-	 1ZKy96qWa5JYQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yu Kuai <yukuai1@huaweicloud.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 2/2] md: fix mddev uaf while iterating all_mddevs list
-Date: Sat, 19 Apr 2025 08:19:32 -0400
-Message-Id: <20250419081136-34ad419abdc11548@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250419012303.85554-3-yukuai1@huaweicloud.com>
-References: 
+	s=arc-20240116; t=1745067259; c=relaxed/simple;
+	bh=09owqr+dWFhTVcQC9RS2HCR+GPzSZgd6dQgqjlLBPrc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=egB8nt63F2kQGvQGMT+joH7LBfzCGQ3o9qTwcmZjDgmOTmWtRl8+U2dbHL0PSOVcHWsMeIZLTd0mWc8uGNVSd2yXDUc9DHTtJ6HwlUpad745UPpy4zD/Sg8iUSba+OUNsz9+EbY+dYIVLnGz7fW4NH2twyK0JoJEhDijOdHmpG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KP0tfeou; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6e8f7019422so26098846d6.1;
+        Sat, 19 Apr 2025 05:54:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745067256; x=1745672056; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TZCVXeMvwtO+XgfUIIlEKPWYpKv+YaVwsaTpEWQ9aCQ=;
+        b=KP0tfeou14B3vc5MhUReTH9EyVnt6/l/Kri1QDn85PJSz79iDpvb7sElkZJPlIfmFH
+         Ibqb7BK9OAExyzx7ItPkD9pdeJ2Z4jp+sGGOnG8htYEqpYiMW+ANadxxaYMihqHmRt96
+         h6sFutUQSwzQMaxIph0f+Ywvtn+1YQNLUdkhqiPdCbkEJqxlXLS9bekxUQESfzbDmuJZ
+         KJxZsiCjrOQ8gWi7YE439NdNFwDME1KU+HT8UwMqhGSPEDnfyBdamH8V9xVXb2tIfdhZ
+         160lN+bB1xEhkYNKiRAFgvyY9YeI4ud9r3lt/8GdQODCpJKa0aiw+UWolUhTyjJsxTAz
+         5GuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745067256; x=1745672056;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TZCVXeMvwtO+XgfUIIlEKPWYpKv+YaVwsaTpEWQ9aCQ=;
+        b=Z73pgHef/MFiHglIXjOfJFU3RNgyGL86CSkZYifZQr72MRLV8fKqpRgdRpgT3V1aJe
+         wwCCsT64/7uumxZK45IXCNoMYqcnhX3ZhEViVqZBB0WEfS/1kQd8hlNEGsu62ETq5tYj
+         TRqSVEx8dtBX5b/7TjdbnuA9S7iRKnR4dL8AeFHVAQRToIvcwfft1lq666a/4nHfi4VT
+         S5aweRMb8C+2o2LfMVC5GupdJodqri9sWZQQHBPr7kvWXDp8m0MdR3CypgCQMJXlCjah
+         SV8/TA0JjiSP8UGXgyzWSW+ln3c2Wt0tDAU86KBheqhYztqsvjHhYy61emMPHEB9deim
+         A2ew==
+X-Forwarded-Encrypted: i=1; AJvYcCUVOVhUvFoV12jezHphr0oM2jHB+nyGOYAAlaCAipA1rGoMt/H/m0BbkwpUqpQn59c/vxVacY0EssA=@vger.kernel.org, AJvYcCWRXzS1/we5m51D1G8BaIZ6fjmf26MFzsUgY/k6KpDOwv3I4yjgQ/ZqVNB7ZsUfjTGFAFhLoRG1@vger.kernel.org, AJvYcCXzunlqktiQGkmPQS9zGbVu2n9MbAfRhOhplOFyTUYSA7ko3yOiQdLLReHQ1IaNqNbFzKFcq9dVMTWltYP2@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJ3FbKaKQSeHZPtGjW6u+qTZAt70GCHKv0YVFqAcOmcsBEZ9tO
+	l9pFw9MDmuoz0Sb+5K5UtdBsOzMe5tEHnSS062u3IHnnA7xSwIKRWlqGr+NwtHU=
+X-Gm-Gg: ASbGnctJCpYfvWmb8UCMx6FKHDlkg966pdn71xH/qo8NzzzgggpW6CeZumOmIQHSMYg
+	vYPgFT9ZNMs2OboNHNAz4CqsBvBr9+d3+MK9S3dH3IxDHdIen/DIK/e3qkWWkghfwSRnw+uZPcw
+	9qTqkbphWbKXPUtHA9ujq/G0BXsRZYLfg6BjbrOjVkk+28T+ZO1qs4nkNmEJDbAXnyxFAinqtCl
+	vHVdUnpZe50Rs1VceV5dSFNmzpXpCOpUjFEG43BpbtlWInS4P8j1dQRVRb6pm8hz55/2j6mHtQJ
+	a8yFEkcIyQOUa0DvrEPXtY6CSepfkNAelj8amcCUOp00Z8Pas+m6EbA=
+X-Google-Smtp-Source: AGHT+IGw1aI7q5f08oFeWoBF3nOTUTLN1Pe5Qft5/kDututuRDrqfq1HMpqJ93njQaIEUiILACZDkA==
+X-Received: by 2002:a05:6214:19ec:b0:6f2:aefb:948d with SMTP id 6a1803df08f44-6f2c45394efmr79362116d6.15.1745067256203;
+        Sat, 19 Apr 2025 05:54:16 -0700 (PDT)
+Received: from theriatric.mshome.net ([73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-47ae9c3b485sm21296421cf.27.2025.04.19.05.54.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Apr 2025 05:54:15 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: himanshujha199640@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Michael.Hennerich@analog.com
+Cc: gshahrouzi@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] iio: adis16201: Correct accelerometer scale factor
+Date: Sat, 19 Apr 2025 08:54:13 -0400
+Message-ID: <20250419125413.679290-1-gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,69 +94,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+The IIO_CHAN_INFO_SCALE previously reported for accelerometer channels
+used 0.4624 mg/LSB. This value matches the datasheet specification for
+the offset calibration registers (X/YACCL_OFFS_REG, pg 18).
 
-Hi,
+However, the scale should reflect the sensor output data registers
+(X/YACCL_OUT, pg 15, Tables 7 & 8), which use 0.4625 mg/LSB. This is
+also consistent with the typical sensitivity in Table 1 (1 / 2.162 ≈
+0.4625).
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
-
-The upstream commit SHA1 provided is correct: 8542870237c3a48ff049b6c5df5f50c8728284fa
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Yu Kuai<yukuai1@huaweicloud.com>
-Commit author: Yu Kuai<yukuai3@huawei.com>
-
-Status in newer kernel trees:
-6.14.y | Present (different SHA1: 5462544ccbad)
-6.13.y | Not found
-6.12.y | Not found
-6.6.y | Not found
-
-Note: The patch differs from the upstream commit:
+Fixes: 57f9386405a2 ("Staging: iio: accel: adis16201: Add comments about units in read_raw()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 ---
-1:  8542870237c3a ! 1:  dd49667d64662 md: fix mddev uaf while iterating all_mddevs list
-    @@ Metadata
-      ## Commit message ##
-         md: fix mddev uaf while iterating all_mddevs list
-     
-    +    commit 8542870237c3a48ff049b6c5df5f50c8728284fa upstream.
-    +
-         While iterating all_mddevs list from md_notify_reboot() and md_exit(),
-         list_for_each_entry_safe is used, and this can race with deletint the
-         next mddev, causing UAF:
-    @@ Commit message
-         Closes: https://lore.kernel.org/all/Z7Y0SURoA8xwg7vn@bender.morinfr.org/
-         Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
-    +    [skip md_seq_show() that is not exist]
-    +    Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-     
-      ## drivers/md/md.c ##
-     @@ drivers/md/md.c: static void __mddev_put(struct mddev *mddev)
-    @@ drivers/md/md.c: static void __mddev_put(struct mddev *mddev)
-      void mddev_put(struct mddev *mddev)
-      {
-      	if (!atomic_dec_and_lock(&mddev->active, &all_mddevs_lock))
-    -@@ drivers/md/md.c: static int md_seq_show(struct seq_file *seq, void *v)
-    - 	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
-    - 		status_unused(seq);
-    - 
-    --	if (atomic_dec_and_test(&mddev->active))
-    --		__mddev_put(mddev);
-    --
-    -+	mddev_put_locked(mddev);
-    - 	return 0;
-    - }
-    - 
-     @@ drivers/md/md.c: EXPORT_SYMBOL_GPL(rdev_clear_badblocks);
-      static int md_notify_reboot(struct notifier_block *this,
-      			    unsigned long code, void *x)
----
+ drivers/iio/accel/adis16201.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Results of testing on various branches:
+diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
+index 8601b9a8b8e75..982b33f6eccac 100644
+--- a/drivers/iio/accel/adis16201.c
++++ b/drivers/iio/accel/adis16201.c
+@@ -133,7 +133,7 @@ static int adis16201_read_raw(struct iio_dev *indio_dev,
+ 			 * 1 LSB represents 0.244 mg.
+ 			 */
+ 			*val = 0;
+-			*val2 = IIO_G_TO_M_S_2(462400);
++			*val2 = IIO_G_TO_M_S_2(462500);
+ 			return IIO_VAL_INT_PLUS_NANO;
+ 		case IIO_INCLI:
+ 			*val = 0;
+-- 
+2.43.0
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
 
