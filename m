@@ -1,130 +1,114 @@
-Return-Path: <stable+bounces-134669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C76DA940E9
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 03:40:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D598BA94127
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 04:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05DF51B637A0
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 01:40:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A2C38E0CCE
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 02:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C904642D;
-	Sat, 19 Apr 2025 01:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEDE3A1CD;
+	Sat, 19 Apr 2025 02:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="2j0VD+IN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fhjgxs7X"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23ED3A1CD
-	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 01:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEB8442C;
+	Sat, 19 Apr 2025 02:51:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745026805; cv=none; b=Lz60CKUx9wBPLHeCTRCuuxNCYw7gK3b+mOVtTZGYveMRQzTS/Fa+QYvbH5+uOa54wpRVtt1kYayF3wFhiWy0M2sroSiz3q4mwanY0Z02FIt9A7AaF8+5ua2APixAgJ2qt3XeihgenPZlelb+qB8yYnPLWf4GCvhDxh3lI14dAHM=
+	t=1745031094; cv=none; b=Nhq0OWKlyjMs6mHXFq5jwk1zG5oHsEm5m+6XpWRDeLiy+gDWy7OoRFEnOmpUKu7QyrdvsFm+UZ99HIU0rqPa/LOlMDvMtZNHA0GTng2UFI7ELYH3+Cs4BKHpNpYimF02GlStlUSKhvXI2ASgvG1o8ObvG2GKpoPpVisGNtUGKKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745026805; c=relaxed/simple;
-	bh=pjbMhsnDJiDcVlV597R8ezaeAn0+5HjfbvSJN3qfqHg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p1PY76BD16JYHijiQdQJMyRgjPZkJrz9Ybzwhv2en/fpu0pCM8qvwUOqldsxNWV+RZf963ReGc4ICsHki6zNv2AafQVrKFtwB3/GdtQKnunnX6lW9fhnRzD99z9nFKt5rgQfbvV/sm/vkcUkW6M95Ufyit9OvvVgeg+IZbbd/lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=2j0VD+IN; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
-	by cmsmtp with ESMTPS
-	id 5p6uuCmmWzZPa5xBZuQoBm; Sat, 19 Apr 2025 01:40:02 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id 5xBZu0ud1zC7B5xBZu9SJG; Sat, 19 Apr 2025 01:40:01 +0000
-X-Authority-Analysis: v=2.4 cv=c6KtQw9l c=1 sm=1 tr=0 ts=6802fef1
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ro7idKd4BtU0TkVne+lQsWOXuLWCVS++vWMksVF03wM=; b=2j0VD+INL1NyVHzSis8KGNfWPO
-	2bKAGPku7RTp+imMTcT6ZfB3u5f+OGmDS2OHlRXoG9rzm8KsFykKgRDHuWsgh7DK6AuwG7l6eSq18
-	SpRoR2jyiemh0mWZ0nw/pDHx4P9HrGeGFon9jxwCI12shtPZD4YuLAgqQKGm+rx7zge0SIYdGc/h6
-	+VKx/aoZUOxv3pPyHc4tjHGAxJEYgdeNnYh8yhMzd8WmPO3ULUu6hMrlS/3FmT/C9LfO3iLxlkkRb
-	/tlevdTPkF/F01TT+9ftfGHJ9RUMbLFd8KwWN98TaVUZxPYAcgX5hyx5Pm9YtjLQ/yqIwCmU/N99j
-	JKvw+whA==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:48400 helo=[10.0.1.116])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.1)
-	(envelope-from <re@w6rz.net>)
-	id 1u5xBX-000000009TE-1MI8;
-	Fri, 18 Apr 2025 19:39:59 -0600
-Message-ID: <031e3650-08bf-4c06-b1e6-2551c095c89b@w6rz.net>
-Date: Fri, 18 Apr 2025 18:39:55 -0700
+	s=arc-20240116; t=1745031094; c=relaxed/simple;
+	bh=/X7RU3AFU8hE0bRnO6w/sDEdSaxxRFGjqvlwr/XgzLM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYth9xydAGYB3R+DDTX1Llt4sWlmbL4TkkEGSEFvivD4U+a6Wh0J9Y/gkoVCx0bQjS+cawII+tl5NutYX55cWftMb5RcOEmxwB7YpdbRByJosmm6l/2eTrkAVZArYpw/J2iBE4ZOYTyPi/fWvPO7jizj15mLpKVxQZYz79Xmxb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fhjgxs7X; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-30549dacd53so1900871a91.1;
+        Fri, 18 Apr 2025 19:51:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745031092; x=1745635892; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iagA+PnKQSbT+SyE/6B01NsGBcWUX/ZmWhl91APAaCg=;
+        b=fhjgxs7XX+UuXJnpBAKlJotCTDXUowBTrhSQlmRMkV+/yPUKAwSC7/tyoSH6FMxjm8
+         +uMKYJ+RIyFiGSZEvk3Ye0d1U5hrMwwL0zRw2cYg50jzQbzqbqTFnZNORoTPK51Ou0ry
+         qrZeHghaCVAGAa2b97Q6aFchTm/dLbJ2E3olYcwoIyYOiXhZSHCIdFEDI9z8knBnFb4B
+         xOr63Xvd6vZs+hGiKkSlNdbwcStYteAGNooHgzixuSO59y92kElz3tSL2hM9iQMu7wNf
+         noBcxx+vjQieN8mFL3ZH+/bfr9awptaCISby4HEnzXk49ajQsPyjW5uEtXjlVPGspTdQ
+         qJww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745031092; x=1745635892;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iagA+PnKQSbT+SyE/6B01NsGBcWUX/ZmWhl91APAaCg=;
+        b=mQY/gpa90GucWXKXIMzJ9sOIGnvHBFJef9QlS9rE9tXiH92+d+V83PgZ9/n2FBw9D5
+         3LwF2ZiJ/18P02FsqSa2WQUq4/L5jNf3FWHrJFqBH5CQ9tH1G7n+e+Za0M1QUfjJ/9i7
+         CzM+Zg0Ht8e7zImkgaeHPmhSCMSp177oVCjttP1vsSGUfAnmx+o5U1ZGKG5WYH0uM8CI
+         /xnL6TvtKUIMTC8clHcOreg9sLM3Bh81H+GscnU2VLbvWUiZbqjiqiVErPquJZA+oi8E
+         noXWvRbrYzqm2rCzrnXtWaTbVBvGa6QTMKWVlutbtIARrvYbDoO6Fe5YtFYev3wlF42j
+         35Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCW8ve1FADWKFp9UNEVQKdDZGUPvopq7GHpzFDbjjcDhFQ+ulBuBngFimv6b75OKZV6cJpvsUKDUe/O2sA==@vger.kernel.org, AJvYcCWg9enOuN7YEjrA3Mj/I3zURivlvp8NJkYXwog4wTveNhStpdOvaA+awzKgXXTM/14U2dst6dlvVvon2cyh@vger.kernel.org, AJvYcCXT9cb/foIqJCE6B1mTJON0IMk2gyVFw29/6gQlHTST2JoPROPDtWhu4k4CJu+Z/Gq7wSBd+A59@vger.kernel.org
+X-Gm-Message-State: AOJu0YxyWW4zOXDXTbyqf3bEBS+zTuvdZDsWvl51T+MTEV5DTH+E242s
+	OZ4vi55T3qJ6lB5BOmnCzLeQ6aWsfg3bOs5Q4VtODQySmMQBcYd3
+X-Gm-Gg: ASbGnctQRLnsRaJRbdGMCZB69CS1PXMM+6Vl4g/r8Xi/LIu+x7F4O+wBIcxKzpIXLV8
+	UWTmDzZd14SEy0qEGMDPpjjwcp9P9QNeOSVbGFNklXuxutxPnL5YCAkKMZErkgCQVFl7E78jSC2
+	KOaVWsfWFFxfBx6dxf2A7W7WTDhHZ1q9ehcaMw+i+yr1hWVsXYxik8N5dEsb0Q6UphmZpOcOrgs
+	kLALdxwBWK5XZ0d5KeYXtqRE1Pn+0bw/sIyBwL04fYgK2dphcFzU0uq04eVri8A+14EbthpJ4/E
+	B3b6PxusD5Wn1eOMvjDUgC5kdud8W3a9UK4GwuOywQ==
+X-Google-Smtp-Source: AGHT+IEn7eNcyM6wiIBNgT/VnLfodZTbCikLVEfxcuEFwLHRroZF8Y8DU9r6jATaXU8r2YV8U0Ep8A==
+X-Received: by 2002:a17:90b:5824:b0:2ff:53d6:2b82 with SMTP id 98e67ed59e1d1-30879c02aa9mr8626213a91.11.1745031092244;
+        Fri, 18 Apr 2025 19:51:32 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:eaea:89f0:c84d:941a])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087e115f01sm2009276a91.43.2025.04.18.19.51.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Apr 2025 19:51:31 -0700 (PDT)
+Date: Fri, 18 Apr 2025 19:51:29 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+	=?utf-8?Q?Myl=C3=A8ne?= Josserand <mylene.josserand@bootlin.com>, Maxime Ripard <mripard@kernel.org>, 
+	Alistair Francis <alistair@alistair23.me>, Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
+	stable@vger.kernel.org, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] Input: cyttsp5 - ensure minimum reset pulse width
+Message-ID: <vs3vrrsq26q33qyz5o5moer3eiv5lssnm5cmrx6o7wrdsedjrn@dhymxiigvydf>
+References: <20250410184633.1164837-1-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/392] 6.12.24-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250418110359.237869758@linuxfoundation.org>
-Content-Language: en-US
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20250418110359.237869758@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1u5xBX-000000009TE-1MI8
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.116]) [73.223.253.157]:48400
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 56
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFnxy3o1mZAXJmfaYS4qK+Jek8LqmiPh+kwmSgDpU9Gbj6Ec9shbVBwBNj/rFNRvbMQWd85QTo4vg9k3QgetCmD3bNS1Irh4Uxn2mM0yKHVHKDu52uPc
- vzy/Co7ELgFd4MN6HvFFO5g3r4L/2jtVaaSOv6ZBhQEFed+LA0Uu6hbYAjX499ReWrmQuu5ufhmfJg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410184633.1164837-1-hugo@hugovil.com>
 
-On 4/18/25 04:05, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.24 release.
-> There are 392 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 20 Apr 2025 11:02:42 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.24-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Thu, Apr 10, 2025 at 02:46:32PM -0400, Hugo Villeneuve wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> The current reset pulse width is measured to be 5us on a
+> Renesas RZ/G2L SOM. The manufacturer's minimum reset pulse width is
+> specified as 10us.
+> 
+> Extend reset pulse width to make sure it is long enough on all platforms.
+> 
+> Also reword confusing comments about reset pin assertion.
+> 
+> Fixes: 5b0c03e24a06 ("Input: Add driver for Cypress Generation 5 touchscreen")
+> Cc: <stable@vger.kernel.org>
+> Acked-by: Alistair Francis <alistair@alistair23.me>
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Applied, thank you.
 
-Tested-by: Ron Economos <re@w6rz.net>
-
+-- 
+Dmitry
 
