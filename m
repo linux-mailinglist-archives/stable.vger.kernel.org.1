@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-134707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3719CA9434B
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 13:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDDAA9434C
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 13:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C499189AB79
-	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 11:51:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A3CB3BF6A2
+	for <lists+stable@lfdr.de>; Sat, 19 Apr 2025 11:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432E01D63D8;
-	Sat, 19 Apr 2025 11:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7B41D5CE8;
+	Sat, 19 Apr 2025 11:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A7rpSpnd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2OLU7jb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032A31B4244
-	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 11:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A47B1BD9DD
+	for <stable@vger.kernel.org>; Sat, 19 Apr 2025 11:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745063450; cv=none; b=jLDaZR1zahgg/QBbfo+wj//51NNSjQ0kogFr+iR68SaPSyjUfhaCRC3kJe7VbkWiXA0/4HDrONBsWrr5aaECsTrN50qHOEj8vjuj2XlYkc16ofcNsXXQnC7msw9ducUv4qiMJH7IHwj1/TZjuO4AM8XK1c92eaI3fyH6N+p7zus=
+	t=1745063452; cv=none; b=eeN+3d8ui4Ns/YE/mo67RNOE3updYQ4AgN7MoB8RGf6fYsBRrm9uOa4dFBg1sxqy9a/UvqwD29OVkUuF4xSrW9Xj2nk/ybY29ZUyXNVX7OPecUIfX4DY23ywgNnpxeIpELfJDDkFYa3sAAA9Fk7MhPCuYtTCDYAwKDKWirK4FVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745063450; c=relaxed/simple;
-	bh=HxwLbGHi4S0SkW/o5M7TkyF9aZz8OU2HXOXM4t+ECdU=;
+	s=arc-20240116; t=1745063452; c=relaxed/simple;
+	bh=GpnZxT66/oulFeWNoACebTbkFbkztyPeeHQMlOXj++Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gwcHXtxTYX7pI1NMnGugtCxoFX5jLU+mTzx+lScWea5JxiigE8MaVWVphEzWdj0GJS9NmRx9Fr4dl9VZHdKpucU5g7pLS9nmWxJ4T33q2dGnQ9pAokAnoDYgQw48VotE460b3XVPrpcjlHofln7XkrzqedPFI1Kxw437l2lUIIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A7rpSpnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6848DC4CEE7;
-	Sat, 19 Apr 2025 11:50:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O+hfp8tfblqzuaDPXFzEyixjuzEf+AzW0/ZrALLYtJd81qLmndYQE6VqEJNtL0AsB1ct3k7Y0WXVRy9W5QIhkSji2vX9xMy8WDX8rxGD7s/8jn1ofPf4KF86unYC3nQ8xgp5mLVtU6pd95W2F6Sl6Ggwy7CIjWVdz75uEQiPFhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2OLU7jb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689A1C4CEE7;
+	Sat, 19 Apr 2025 11:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745063449;
-	bh=HxwLbGHi4S0SkW/o5M7TkyF9aZz8OU2HXOXM4t+ECdU=;
+	s=k20201202; t=1745063451;
+	bh=GpnZxT66/oulFeWNoACebTbkFbkztyPeeHQMlOXj++Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7rpSpnd30G7q8Hi/dcrPBtMIi+g5ls8TLMX2i/128uwhRfANcDtN4Xwn3hHehB+i
-	 bbfEJKYs+wgMdZn3JM3jYsk9kQl5eHAhx0uRrqP5TS9TZPo4aM/k5LHpkav8PiUWeX
-	 N5SGmmprwyKNJE2Io1Ewf2w27VnFM9LM1SDPIM+3JL3f7KzWPWOoktucNJzm4sQ7N2
-	 L4UZ6pfPMlkpZWocBKu5atiuUmIvmbgxiwrPCQpTIN1OXVogN/hLE5FDRJ99MrUKj0
-	 jPF0Dk2DSP4WRCB7EK8FYkaOOfU2TDTlgqj+j7bryj04tj0pElUDHkEB72AgLg+1yN
-	 SrRKNnP6Nbgmg==
+	b=b2OLU7jb0Y/oC0Zp3T+9ZdWbMKHSfxe4EKlyDeVZuMl6pNLGSmztSn7bJ7cQwPAZm
+	 puYjrGFyS5NBAbCHyARlO4KOOgEYI3xWaOZ6prWKeINsAal9K9G6tiNAB9mygQSPNG
+	 vEl/+u+XC2XS3+T08NePFHF+x6dukGmE6YZfNk98e/BdncXcByqgNxmnCmYNe4VG4j
+	 +pdRPMBPjGsg7cfEYPf4di5LnmVEYjJdxmWqJ7ms0Hy2XYzWojRmWJJPyT+gkLR069
+	 93LRMw2bjgX4rEprwrQUKseey76TtSEFzbDIOuzOa/o+5jmRdAEKxWtZKwoPce/Md3
+	 pk1JMU0EhEYMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	hayashi.kunihiko@socionext.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] misc: pci_endpoint_test: Fix displaying 'irq_type' after 'request_irq' error
-Date: Sat, 19 Apr 2025 07:50:48 -0400
-Message-Id: <20250418192710-0addc21b8f2233f7@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
+Date: Sat, 19 Apr 2025 07:50:50 -0400
+Message-Id: <20250418170738-c4ca630413c63f8c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250418122524.2031896-1-hayashi.kunihiko@socionext.com>
+In-Reply-To:  <20250418124428.2045991-1-hayashi.kunihiko@socionext.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,25 +67,22 @@ Hi,
 Summary of potential issues:
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: 919d14603dab6a9cf03ebbeb2cfa556df48737c8
+Found matching upstream commit: baaef0a274cfb75f9b50eab3ef93205e604f662c
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: ca4415c3a46f)
-6.13.y | Present (different SHA1: c52bd0b9e72b)
-6.12.y | Present (different SHA1: 4616cf3fc00c)
-6.6.y | Not found
-6.1.y | Not found
-5.15.y | Not found
+6.14.y | Present (different SHA1: 30ade0da493e)
+6.13.y | Not found
+6.12.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  919d14603dab6 < -:  ------------- misc: pci_endpoint_test: Fix displaying 'irq_type' after 'request_irq' error
--:  ------------- > 1:  575919693fc4d misc: pci_endpoint_test: Fix displaying 'irq_type' after 'request_irq' error
+1:  baaef0a274cfb < -:  ------------- misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
+-:  ------------- > 1:  ad173c593bd27 misc: pci_endpoint_test: Fix 'irq_type' to convey the correct type
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
