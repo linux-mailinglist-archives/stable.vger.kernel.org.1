@@ -1,137 +1,174 @@
-Return-Path: <stable+bounces-134726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBF0A9460B
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 02:30:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC55A9460F
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 02:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F0C4176BB4
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 00:30:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD771892582
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 00:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C356FC08;
-	Sun, 20 Apr 2025 00:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6BDFC08;
+	Sun, 20 Apr 2025 00:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIsl5Fax"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gqJbf+De"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E006EEB1;
-	Sun, 20 Apr 2025 00:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C3EB667;
+	Sun, 20 Apr 2025 00:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745109006; cv=none; b=jZmcntlC8ayDBqCck5g9xJk+6WYDrgRmsYX6QEnQFZLAy2kAmqY2/rKONB/3Qo+NbIpzS5VF6kGkz6pcUANNefUQbFWsOZ6MhzZEq9BN8/hQ6WPip5AfTnTp1+YKlQAoaxGHXowTdTAC+DfJp3e0TwqF/Rx8XNLgrVDgypbbRH8=
+	t=1745109013; cv=none; b=YDc0fppuCcET4LKWztCbPOT+E0hbKpfeyYUQ7d1kUvetVVjsLBIp/01VYdAJOgr1MVHg0+zrUspVsZ9WVof1+aFfK95liD3dzHFfYrAOoAR6PEP0tm4ArKDOWp04oq6FP4/eO2Ytp/xq6HVJW8BT2+iAo9/Nxo+ZItoOdOi5T/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745109006; c=relaxed/simple;
-	bh=CCntJaSb9MDvFLR+jrrfjZXjcZnQs2OPtQYxHIZU6Qk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W03tkSqlvr2XdLgqfNzz/5YVvxae4tuDDsYUvsSSjDmWV6SiW1phXYd2Gf7Pi875RhJcjXhixz7yOD7M2pFPbHUkhiW3OBWJG2V9EpOpKJ8zMgPTpqhz/hb95FIRqrRgIcWX5N2L0ovpKy3OtJJBIq2y/9PXgcDneQZXywrJ+R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIsl5Fax; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6e8fce04655so27318746d6.3;
-        Sat, 19 Apr 2025 17:30:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745109003; x=1745713803; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7oq4HIkBj4+ruAu2dWOyVk4qHejVBDW3R7KsUBqTQJg=;
-        b=nIsl5FaxjnUQJ6NCYCImodMX4npRWROS4wV6HaNCRigFpYF5Jy680+AhpfDA9XioWU
-         Z3xtWdxmLxla5WiKEmbQWG/VoKXe1H2Ca32BiKuCkO+vez5hPGJSJT+g8T5UtBmlSNwF
-         oydvERqPxGUDt3iGoJS4sTP2M1/h10Drczg0B+McvE/CrC3Gw/O96ie/QjDZ5AmCLst9
-         2H/P85bfUlIlL/Jmh+Wy7+z6tBhJ5d/vMTbNwp8u9wzOmjFWeX5j9ekuao6UVj3F+RXO
-         DLGpfRuJan/FU3PtWXSVT9KIveAhrgiiPg2a3B5iJkHVlLTcNVw78KrLaz8TKkB3JC9M
-         Omkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745109003; x=1745713803;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7oq4HIkBj4+ruAu2dWOyVk4qHejVBDW3R7KsUBqTQJg=;
-        b=bDMF20dx7yp4v4Dg4zLHhtDIx5bDHlgIO9cVVEAAILInpH6xjeWfKa2xapBHD+i6ta
-         AtweSDaY8n9UHSBDRtVrmV6JM8xSMfae1MXFNqtmMRO/3ozOtYg+i/m5J1rGKqJBkhhW
-         LUOX9s5aEdSvRZRULZVc1GDCxezuwzZLkwwvhufRapjlR1UM/HKP6TUptQSG+8WKnqmC
-         l4anMMv54DrYQ+NSw48zHQfqy94SLup+xSZwTvr4T5wkY89JRZBUcvoiTpvzBRobV5Mu
-         fIDKkWQPkGQQLCQXWvRaVbc8YdQcZHaA/IWIU/fHJVOTTyKd4cZgb6npu28kMFrR2hHw
-         wFog==
-X-Forwarded-Encrypted: i=1; AJvYcCWDIG6yiQkuEbOLjhCFevLD4PLUUI/RpmAs8IzhNF1/y1JQVcoPAIi6xU9KtqTiHoco81W2FRMHaHM=@vger.kernel.org, AJvYcCWX/eEaYDENXTqLHgc/njVWLHFuF9qxj3usgRZjW5MTKVK16Ay+00/7HnPPWUvtI2uJO9xh2lCv82H9fo3C@vger.kernel.org, AJvYcCXVLdUOf5Rg8KvSkNQ/zycVC3ecuqreowExAkJD357fm1fsQ/NFCSt30PBJ9mYBMtW+LzDRuMof@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU6MVyU99Dg9yitXQAtB3wofFFi7rCs0Iu1Pkia7uFUmuLZioX
-	5UJy6VoMB7yEfe5qCpVfi3SaWWrdPRy9CouwRzx+UxbRLSOwNUc6
-X-Gm-Gg: ASbGncuggdm1p7zrwYy3oglu2e6kf4P0Y9v+qrOKLgFs09H14AW4ub/n4Hbh3BgAmjG
-	BResZ8JluQhQ8XLpGOVg4pU9Vplcw4BKGBshlf2F4Zpt+19C/JB2C3GxqsWJa5V8v6WZ8gQlCfM
-	c5K307333Pz+/WOwD2kKIkz5q5fXsoR2+cBpXdF0jBpbfk77ngQhTi4D/jKofWEqOM0Nqkyr3Iv
-	U7bnv+oVcBDThDDF4iyiQAV+Rmt3Qpjc+u0sDmkBwdotzp8Dzvbe4vFr5NjAReiYnBeXSTYDtrH
-	+CqKZJDUERW8Te2a5/SEWveLM+PW7chr+b1eBrJovSg1/qCA7eKAex0ecrDwdfbc+lsDADo7PSI
-	u/g9euN0UNlr/8Lobqic=
-X-Google-Smtp-Source: AGHT+IEWsjtSj7e7lQR+vf9lcpERLYW7vibDfoa1VjlCCiRIm8Imf+936M+AgBjV1zysxDZRst2viQ==
-X-Received: by 2002:a05:6214:c29:b0:6e8:fcde:58d5 with SMTP id 6a1803df08f44-6f2c4687cd2mr126456826d6.42.1745109003355;
-        Sat, 19 Apr 2025 17:30:03 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af48c3sm26480846d6.8.2025.04.19.17.30.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 19 Apr 2025 17:30:03 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v3] staging: iio: ad5933: Correct settling cycles encoding per datasheet
-Date: Sat, 19 Apr 2025 20:30:00 -0400
-Message-ID: <20250420003000.842747-1-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1745109013; c=relaxed/simple;
+	bh=lFsiqVIeYeqhHXcEjTCFxaRVC5Dt8c2tiWMgb1QT3HA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GcAg90Nh6yTMnffi+8ZmFZAZCd9YHFg63voWMoO5G4p4ebynFpWxV/zRriPVMpt81fQLM2IF377yv7vdxw1w0uRdtbmnv+mL4FXCQ4KdeqFp9imO+34ESjzaq/wG7BZIGZ+cXrcTys60S6cJXdOzBS5jeRQkLLvLmz4sPpiPzm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gqJbf+De; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 59682C4CEE7;
+	Sun, 20 Apr 2025 00:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745109012;
+	bh=lFsiqVIeYeqhHXcEjTCFxaRVC5Dt8c2tiWMgb1QT3HA=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=gqJbf+DeUMUSRzjCItVwNpi8nQdXP0CMVX5fSfnEMKSHvv/+a1NB64gMjtkIH3Tq+
+	 WNmUtx8I5WGXswas34sIAmMTitqfGTU8WhKU1zmE3LsmCXQlGRO9Fl0X1pkEcdCB9t
+	 Y80a2XV0jL40C7jLrh+/t+gc4vCbeC+wTW/W2YfDYr5sSa4yM2yPTBcofszzZH6Fjp
+	 DMRHyYgS5CRVzR5x6gM4MgPALwUxwLuueo+D88p8dUxzUZe2EMJzlgKUt0hjxLshgI
+	 dpMlKo6wkX0LApxf/EP292sOBBPMsIlS6P09wA7r+DqlMZGJHb08AjhP729ihRyCH9
+	 R1FHIc2s2o1jw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D51DC369CF;
+	Sun, 20 Apr 2025 00:30:12 +0000 (UTC)
+From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
+Date: Sat, 19 Apr 2025 19:30:02 -0500
+Subject: [PATCH] drm/tegra: Assign plane type before registration
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250419-tegra-drm-primary-v1-1-b91054fb413f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAlABGgC/x3MOwqAMBBF0a3I1A5EUUS3IhbRvOgUfpiIKJK9G
+ yxPce9LASoI1GUvKS4Jsm8JRZ7RtNhtBotLptKUtamKlk/MatnpyofKavXhCVXjMcI76yl1h8L
+ L/T/7IcYPfS/jYGMAAAA=
+X-Change-ID: 20250419-tegra-drm-primary-ce47febefdaf
+To: Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Jonathan Hunter <jonathanh@nvidia.com>
+Cc: dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, 
+ Aaron Kling <webgeek1234@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745109011; l=3395;
+ i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
+ bh=2G8UkSlgwDeChFlfMMABWHEAXMgLzztWjpyaOPbKpVg=;
+ b=5SgytgEJbkPisD/RHBHH6irE+mqOTQ2Ld0kkRR7fsi+WTpG1T6fpPWy5RZKmNCanrOc94c8fx
+ G/84KB4qIX9CHhOZagae0TMnmaUU7Qvy9Eb2UPx5Y/LUL8lFNeRhTUk
+X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
+ pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
+X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
+ auth_id=342
+X-Original-From: Aaron Kling <webgeek1234@gmail.com>
+Reply-To: webgeek1234@gmail.com
 
-Implement the settling cycles encoding as specified in the AD5933
-datasheet, Table 13 ("Number of Settling Times Cycles Register"). The
-previous logic did not correctly translate the user-requested effective
-cycle count into the required 9-bit base + 2-bit multiplier format
-(D10..D0) for values exceeding 511.
+From: Thierry Reding <treding@nvidia.com>
 
-Clamp the user input for out_altvoltage0_settling_cycles to the
-maximum effective value of 2044 cycles (511 * 4x multiplier).
+Changes to a plane's type after it has been registered aren't propagated
+to userspace automatically. This could possibly be achieved by updating
+the property, but since we can already determine which type this should
+be before the registration, passing in the right type from the start is
+a much better solution.
 
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+Suggested-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 ---
-Changes in v3:
-	- Only include fix (remove refactoring which will be its own
-	  separate patch).
-Changes in v2:
-        - Fix spacing in comment around '+'.
-        - Define mask and values for settling cycle multipliers.
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/tegra/dc.c  | 12 ++++++++----
+ drivers/gpu/drm/tegra/hub.c |  4 ++--
+ drivers/gpu/drm/tegra/hub.h |  3 ++-
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-index d5544fc2fe989..f8fcc10ea8150 100644
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)0x7FC);
- 		st->settling_cycles = val;
+diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
+index 798507a8ae56d6789feb95dccdd23b2e63d9c148..56f12dbcee3e93ff5e4804e5fe9b23f160073ebf 100644
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1321,10 +1321,16 @@ static struct drm_plane *tegra_dc_add_shared_planes(struct drm_device *drm,
+ 		if (wgrp->dc == dc->pipe) {
+ 			for (j = 0; j < wgrp->num_windows; j++) {
+ 				unsigned int index = wgrp->windows[j];
++				enum drm_plane_type type;
++
++				if (primary)
++					type = DRM_PLANE_TYPE_OVERLAY;
++				else
++					type = DRM_PLANE_TYPE_PRIMARY;
  
- 		/* 2x, 4x handling, see datasheet */
+ 				plane = tegra_shared_plane_create(drm, dc,
+ 								  wgrp->index,
+-								  index);
++								  index, type);
+ 				if (IS_ERR(plane))
+ 					return plane;
+ 
+@@ -1332,10 +1338,8 @@ static struct drm_plane *tegra_dc_add_shared_planes(struct drm_device *drm,
+ 				 * Choose the first shared plane owned by this
+ 				 * head as the primary plane.
+ 				 */
+-				if (!primary) {
+-					plane->type = DRM_PLANE_TYPE_PRIMARY;
++				if (!primary)
+ 					primary = plane;
+-				}
+ 			}
+ 		}
+ 	}
+diff --git a/drivers/gpu/drm/tegra/hub.c b/drivers/gpu/drm/tegra/hub.c
+index fa6140fc37fb16df4b150e5ae9d8148f8f446cd7..8f779f23dc0904d38b14d3f3a928a07fc9e601ad 100644
+--- a/drivers/gpu/drm/tegra/hub.c
++++ b/drivers/gpu/drm/tegra/hub.c
+@@ -755,9 +755,9 @@ static const struct drm_plane_helper_funcs tegra_shared_plane_helper_funcs = {
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index)
++					    unsigned int index,
++					    enum drm_plane_type type)
+ {
+-	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
+ 	struct tegra_drm *tegra = drm->dev_private;
+ 	struct tegra_display_hub *hub = tegra->hub;
+ 	struct tegra_shared_plane *plane;
+diff --git a/drivers/gpu/drm/tegra/hub.h b/drivers/gpu/drm/tegra/hub.h
+index 23c4b2115ed1e36e8d2d6ed614a6ead97eb4c441..a66f18c4facc9df96ea8b9f54239b52f06536d12 100644
+--- a/drivers/gpu/drm/tegra/hub.h
++++ b/drivers/gpu/drm/tegra/hub.h
+@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct tegra_display_hub *hub);
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index);
++					    unsigned int index,
++					    enum drm_plane_type type);
+ 
+ int tegra_display_hub_atomic_check(struct drm_device *drm,
+ 				   struct drm_atomic_state *state);
+
+---
+base-commit: 119009db267415049182774196e3cce9e13b52ef
+change-id: 20250419-tegra-drm-primary-ce47febefdaf
+
+Best regards,
 -- 
-2.43.0
+Aaron Kling <webgeek1234@gmail.com>
+
 
 
