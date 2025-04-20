@@ -1,125 +1,140 @@
-Return-Path: <stable+bounces-134735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF599A9465F
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 03:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8545AA94664
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 03:49:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA7717644A
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 01:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6DF33B579D
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 01:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DF06EB7C;
-	Sun, 20 Apr 2025 01:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D03912FF6F;
+	Sun, 20 Apr 2025 01:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g0zBWXkZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWnm36w8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB861BDCF;
-	Sun, 20 Apr 2025 01:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC1E34545;
+	Sun, 20 Apr 2025 01:49:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745113325; cv=none; b=ROasA3rfCVi7GmS9Nt1VR6nOLZRr0RSINIQrDdgwUjmER1ShUYvNuXAezigze67vsA/VVYPSwvGMxXNhyIIGpM6VowEHk14x0mepkzvtE+78a/FwhA9SWq7R7RIbh/bbHNDT4LKJQSm6g6aHg8XhlwtMZtMTtDLjRg0flFZQcqE=
+	t=1745113755; cv=none; b=ZGZVzFLC0UVfYt+SYM7KtielMWvudtxPU34i2LcUZLWxBb++MG+X0FPjLC17FcK46knP+1FSc+yZ56+mCY2QKIv2+NfoZt2FfJv0E1meCgiPU0+ZWISQhGAoWoZO0PeplK2AA+PV3azEx5dJfRYcgxdjLjCi4u3ix4tXCK9uqso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745113325; c=relaxed/simple;
-	bh=tsaCaU9Ezr0cIMp5ShIilmqtgbAZpojFeGzVG8Gx8K0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sYhDOf5+UKrWX81vm2Xoxczm4Ens5yubuuVX+Si+YhcHRXXvrQuCSu6Sw45n1DnNH0bW1aqU6Ay8K5BN+u5vBkq2a7tUHNfUVZxcuszEJ9YCkJjLUK8sqi5qAUPtCtC+Zm9x/hSQLYFJmLmHixcQnePbOzIfWg3VhtelZGeNb+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g0zBWXkZ; arc=none smtp.client-ip=209.85.160.171
+	s=arc-20240116; t=1745113755; c=relaxed/simple;
+	bh=nhjNiEws7JDfpSABnQRCrgaV/jVLhmHTd1ukZHOLh3Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Yq1udvBeo4I5UAJ2s0je4kMbWdfejkjs3F7TGNkcAvfu83Ilr/Wo0ducS3zZ60LtPUhuXiBgVl8VPcgnXad4xjUSbjnLchsQGEJ197BHMpgw496JG3l0xWq7B6MBpqEkylAv5UIwshCn0tZ++r4ikUq7njovEZ8AkVOisRDfFDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWnm36w8; arc=none smtp.client-ip=209.85.219.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-476b4c9faa2so37500171cf.3;
-        Sat, 19 Apr 2025 18:42:02 -0700 (PDT)
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6e8f06e13a4so40321216d6.0;
+        Sat, 19 Apr 2025 18:49:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745113321; x=1745718121; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1745113752; x=1745718552; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tsaCaU9Ezr0cIMp5ShIilmqtgbAZpojFeGzVG8Gx8K0=;
-        b=g0zBWXkZe1v/GXvnhn19TaPvBCM9hGJe88RFTaeMt3T1FE66Ee5G9yZp4N6UBTw/1l
-         tvWpeVXlQpnwfB0RIRiKqDqFB92E4OXvUGdUPj1Rli7DcVnmJH9TjwpmZteQHGdhwe43
-         wIhxmCAlc99XZMJV1T/8YX31fS9DJmJ2StwOpzFURTFaloJZLZE52vhExm5SuYZeAhKN
-         2lvwSZxq/yoagG59BVfS4ytwE14sFJDyuexNRfcvf/Ozu0i/jD/hmfqGDbGvyCeu4lgn
-         B7lqhtfU7NAOBObICfb24bmlc16+swV4+EL7KoF9rq0VIcrIWGWDJW0b6IwZ7zKPOPb5
-         cCVQ==
+        bh=Gk0TUJMIcvb2/Yt9CvbEI4RZU5fYHN3893YNwk+aijI=;
+        b=PWnm36w8rHP+TNs7cNhns2hWCwTQS3WU3VzBdzMDXUDvukZn15meavgYduD+gmaMc1
+         cCgXHguZ7Pkn7mB44JGWfpEgvEAIpQx+mSVYTKlLGThq4ShlUb9nJAbwwrEWGCau2Jiw
+         M05/QJRUcbLDFJeHgccit3sZqergZin04ZhCtETnLuz7Cf7QrBtAOguh1576jlMOFBcG
+         WS3mIEzyLe4XhbwZ4dUvdDc52/uQBWVOeuWDfi+mibRAvKQe9LL8od2pfQOejLZIfksq
+         Do6Ym+p3pkjokfbe9CjIjVfrgQRkafUK1dYBb1VoZtXW7/Wn5rSl0wefxJH1Q2gfGbFV
+         LWrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745113321; x=1745718121;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1745113752; x=1745718552;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tsaCaU9Ezr0cIMp5ShIilmqtgbAZpojFeGzVG8Gx8K0=;
-        b=TUGW6IhfZbKSQ2uQbEyOaqw0/BMh76W4NJdj7RxFzwcjLbJPBp5wMokZIJnjJ1q6Tp
-         XVXF/RmGJMG3BRJGJngrn+yHuz14MsrVqB3GU9n37bEUl7RQRq/uyvZe2z6yEIiXYZwJ
-         5wuUHZfrzf1LfS70VWDK7Z7el+qeh3nvrB76lkmMUo6Qk7pZ6YS/i/TowBzezyw4xuyq
-         hThF4ZKng3yYRhhbac6JD/OIPtyF+jYtRPdlcbZS9eVIcnSJ9zsWeM+2jbae3ZWFW+3Q
-         3XZmjcq+2VsowEDAtoK/yc3jtaZ7amr4Bk6nIx0r7V/yy80cS9v9mt7kIhwdsF3yUq7X
-         TBjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXCMLfFP9H0j3FefJ4vcEhEWCshoX4I2Hnzp2h+QOALrZO1KinRjgSpaUkHVcs5J7YyLhbTnPdmp94=@vger.kernel.org, AJvYcCXZ7iggO5cAQH876SR+J8iw1ETTVahfEUKukVrkDSvb5uksOE21AJNj/DIgjJONCXjSmsiKv8b730sseFVO@vger.kernel.org, AJvYcCXhx1NV5bHezo5amSa87kpxgXCMRWOaury+E0XvpaT75EnYS1kGzcugI4COcKfH9iPmUkdqMmpA@vger.kernel.org
-X-Gm-Message-State: AOJu0YznIDtWuFwhfEH2EDG1aW2D3otI7TOIzpcpweljcQEhmzxutWv+
-	cUCLMntDaggyjYJvxNE7dQ/IJ6ok01MzicuRdk6OEygGPuv3c4UYZhbk/Y3MHk/iF/PAdA3Fu2L
-	0D0GK9ZqXNKtmBOiq99eeOi0KXqE=
-X-Gm-Gg: ASbGnctdb29xyvf7HyRq4ZCq9K3DfzN3rCKflmxWKqOU8z3keePrQKrCDDYZ1nRLu2D
-	gGJLEAXI/HafC+F8nWLgNDf46QLQQ/syBj0R4TFffeKKVQew2aWmHRoQZZqdY4s9vNOvBiRCPdx
-	e6PQFYRd+SlrIrUATZ9by2xnktVhKeI01eWiqMt48K/+QXnxm98oHFxO7cREEftMDs
-X-Google-Smtp-Source: AGHT+IGtT7QLX+7ds1/I9qdUhstYhhVMMLe8WqSFbnO8/AS9IoKoujUwgBw1UMPZ2iNyTCzr+bpvr7+jXJuA4u176YE=
-X-Received: by 2002:a05:620a:3953:b0:7c5:468b:5658 with SMTP id
- af79cd13be357-7c927fb904cmr1058657785a.28.1745113321715; Sat, 19 Apr 2025
- 18:42:01 -0700 (PDT)
+        bh=Gk0TUJMIcvb2/Yt9CvbEI4RZU5fYHN3893YNwk+aijI=;
+        b=c6mnxEnG5+OOf1gOKWTRFpjMk5vEgD/WS+LSTrzApT7p+tVu/r2NGGjt4HFzZ7AoZl
+         vBIphYLcbeIt67i8qxtRXTtHjeGbf2oW7Ker1xy9Te1MN98oWicl5LyW71os08FBipKo
+         zGlWV/oO9z4VxB0d0OnrObeLX84NhZXs8W7LdYfISuhIjYm+YgPu9dJF57fz3pmLPIc7
+         bq3Av0pWqzdT+fMyVh/siKJlXy3K8reSHWapveLDFn0rEXn6/T16nE40Z14rc7KgAkm3
+         EQpchhH0dqNRkPWUoirJO3PUGybeaCwtmwxPvpiD+xiwcr6brkdr7BU+HMDWlJH/npl6
+         6/9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV3ComANWUUP6ukGMdibQUq8wwtY7kyU3gSlxaBESp3iYFbiI7/IytonyoIYeMKE5dJekQJB1Qo@vger.kernel.org, AJvYcCWPCZoy0PhO6j8hMDX1Nii5wwypVW/oJHDve5QSg6WgQaT6kM15SRG+H1i5HvL+mIVrtsbfXRepdMMSHRFc@vger.kernel.org, AJvYcCXR1v50/SQm5HXdx02gNlXNSVx0Vfcg+18t8jH1/mCPmgtWbg2VnrBuiyxck0jCbNGnF6Vr85XD+bo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDItOBxUomHGlkadMOtFZPgX5/S1DVJqrJGZ5XDiSqEOlaXE9U
+	rCVBM9NKxNCR6+f6DmpTDH5y1yl+D7j6FDBJgfCCtEHgEmUZO0R7
+X-Gm-Gg: ASbGnctf2zchmHDrbuj0lygnfJ91l2w0czJAipe2OL7A9Bt2U+v1xqBDiZgX+gLBXt2
+	ic2HZWWf9u3wDkygSGrT6to+qQGF9FH68dYo3RSSK2SDA+ayuI/253qU1IBJdORXWol+WXWmyOv
+	kUjmRPWNCP7ULOOt5HJ/ZE0NqG7sUfHmJqtKOMVBqJhP/MU7Y58j6j/hcgmNvzqzmVzYW3NevAZ
+	SijkafLbOo9StjiQktfSQAbxz8W7tzfLxks5fjUpuCMM0ynIVkUZLUBorDxlOfQPDerd+wER5Yn
+	dCuySriqlBW4wc1IZEZ+beQYLwyVRwZZtXDN66fli+MKt3MLUctsDmMSTptaQYgLgHDE51MPMKQ
+	xjKgml1zgMlbvgBsIIwM=
+X-Google-Smtp-Source: AGHT+IFRsCe5B3DOeaXRGR7WUM1HNURo5facIOltw+5BM63Sm6+YsXazg+DParofxt0X8IJh+8vDZg==
+X-Received: by 2002:a05:6214:238e:b0:6e4:5317:64a0 with SMTP id 6a1803df08f44-6f2c2716ceemr122000666d6.13.1745113752465;
+        Sat, 19 Apr 2025 18:49:12 -0700 (PDT)
+Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2af1283sm27583846d6.23.2025.04.19.18.49.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 19 Apr 2025 18:49:12 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Michael.Hennerich@analog.com,
+	sonic.zhang@analog.com,
+	vapier@gentoo.org
+Cc: gshahrouzi@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/5] staging: iio: adc: ad7816: Allow channel 7 for all devices
+Date: Sat, 19 Apr 2025 21:49:06 -0400
+Message-ID: <20250420014910.849934-2-gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250420014910.849934-1-gshahrouzi@gmail.com>
+References: <20250420014910.849934-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250417135434.568007-1-gshahrouzi@gmail.com> <aAQZrhBLQCa0TjOJ@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <aAQZrhBLQCa0TjOJ@debian-BULLSEYE-live-builder-AMD64>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Sat, 19 Apr 2025 21:41:50 -0400
-X-Gm-Features: ATxdqUGWomIPkEKnO1A5RVPhgghPnE3H_nH650MuXGIRClqT04P8Aoc0_et-9W0
-Message-ID: <CAKUZ0zLMAZFHwvuqfoL6JZfphYRhtjkqOyi50_ZffbA7-4MCew@mail.gmail.com>
-Subject: Re: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to disable output
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: gregkh@linuxfoundation.org, jic23@kernel.org, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Apr 19, 2025 at 5:45=E2=80=AFPM Marcelo Schmitt
-<marcelo.schmitt1@gmail.com> wrote:
->
-> On 04/17, Gabriel Shahrouzi wrote:
-> > According to the AD9832 datasheet (Table 10, D12 description), setting
-> > the RESET bit forces the phase accumulator to zero, which corresponds t=
-o
-> > a full-scale DC output, rather than disabling the output signal.
-> >
-> > The correct way to disable the output and enter a low-power state is to
-> > set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
-> > the internal DAC current sources and disables internal clocks.
-> >
-> > Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > ---
-> Looks okay.
->
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
->
-> Unrelated to this patch but, if anybody be looking to work on getting thi=
-s out
-> of staging, I think maybe this driver could use out_altvoltage_powerdown =
-ABI
-> instead of this custom out_altvoltageX_out_enable.
-> Crazy thing this driver doesn't declare a single IIO channel.
-> Seems to be somewhat ancient IIO driver.
-I can start tackling this.
->
-> Regards,
-> Marcelo
+According to the datasheet on page 9 under the channel selection table,
+all devices (AD7816/7/8) are able to use the channel marked as 7. This
+channel is used for diagnostic purposes by routing the internal 1.23V
+bandgap source through the MUX to the input of the ADC.
+
+Modify the channel validation logic to permit channel 7 for all
+supported device types.
+
+Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+---
+ drivers/staging/iio/adc/ad7816.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/staging/iio/adc/ad7816.c b/drivers/staging/iio/adc/ad7816.c
+index 6c14d7bcdd675..a44b0c8c82b12 100644
+--- a/drivers/staging/iio/adc/ad7816.c
++++ b/drivers/staging/iio/adc/ad7816.c
+@@ -190,11 +190,11 @@ static ssize_t ad7816_store_channel(struct device *dev,
+ 		dev_err(&chip->spi_dev->dev, "Invalid channel id %lu for %s.\n",
+ 			data, indio_dev->name);
+ 		return -EINVAL;
+-	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1) {
++	} else if (strcmp(indio_dev->name, "ad7818") == 0 && data > 1 && data != AD7816_CS_MASK) {
+ 		dev_err(&chip->spi_dev->dev,
+ 			"Invalid channel id %lu for ad7818.\n", data);
+ 		return -EINVAL;
+-	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0) {
++	} else if (strcmp(indio_dev->name, "ad7816") == 0 && data > 0 && data != AD7816_CS_MASK) {
+ 		dev_err(&chip->spi_dev->dev,
+ 			"Invalid channel id %lu for ad7816.\n", data);
+ 		return -EINVAL;
+-- 
+2.43.0
+
 
