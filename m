@@ -1,126 +1,132 @@
-Return-Path: <stable+bounces-134748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB66A94780
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 12:54:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 065C0A94899
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 19:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88CB3161D27
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 10:54:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A704170122
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 17:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251C31E22FA;
-	Sun, 20 Apr 2025 10:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBF720D500;
+	Sun, 20 Apr 2025 17:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b5b04CS3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aqt8yxOX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59B11BF37;
-	Sun, 20 Apr 2025 10:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137A1DF98E;
+	Sun, 20 Apr 2025 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745146475; cv=none; b=dI4uoI3G+kl2KudokmZ1sYnym7NVMw1YW4LjZkN4Xcb0QrMHwnvqq0BL4crqeZp8QFgkvA2CCtOzq99EMKb6BiEtYp9uXVHD4TxH/yA05xIB1z6E78CVq8eys8KhwRfYPawx9cdVX2MOonPldf8OQlEkNdhFq9AkvnV6caSR1WQ=
+	t=1745171252; cv=none; b=TDzkqk8S1+iQwLpoTNAatv6rab2BFci6tqM97CKKlQmN2ZqWAH9yeQbhRzQxP511xaC8gH3UVXluUsfP6EEFVeBXLBlgCO34ZRXJURKVL4a2huwD5CgSw2in2FEQ0Tl34GPDkzBc3gePGcNZrE6zVyJl/1NdnJo8DYT40qtQcAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745146475; c=relaxed/simple;
-	bh=GfoUC43NxD1UrkTX6844T1vxoeCI3mhF5KNPYYZXzVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qj8CjdBtn68AFq2VFavne552F1fMivRXFa1E1ZIYlOqdtYYQ/eyuxkdAdZ/SiKWRx/aok1KG0ks1QT6xzsRloQHsa8oMsLgW2p6z1KrhdXjl7b6Krh7Q8LSkvE4AqjvFz6kw1sgtjnKBKnDW2u5jPD/d303VYtESJXWWMNGgDus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b5b04CS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0312C4CEE2;
-	Sun, 20 Apr 2025 10:54:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745146475;
-	bh=GfoUC43NxD1UrkTX6844T1vxoeCI3mhF5KNPYYZXzVI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b5b04CS3TMJBuUpm7jbi4ZiXZPpuJvkvo6mlTgXL6D1YkwcUvz00SKAVjYV27139J
-	 09JGjAxtNw2mSGzLRwrSwqBR/BncVo6RrTM8U5Kq2ymNxE+xY1ISt3zrWV+QCcc1Vg
-	 Py0jznYAGVldaydeJfG22ycrLpsU6AZRGA008IzD4mDqpk1CdqBvvfwhOhOg7mQ+JZ
-	 NPYpdBnGP1UareWUASe72he8SdDWYW5T12Yc/QZ3JhDb/I6ka2X24F5uA4scQWwE+U
-	 vs8oKOq0iIu1h/8dCDX0ZQ1vB6s9BnOxBY/ZD+pSa3BXLa8gc1Dc9VU8dfeBoka2lW
-	 s1dvq5hnCpOuQ==
-Date: Sun, 20 Apr 2025 12:54:29 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Xilin Wu <sophon@radxa.com>
-Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@infradead.org>, 
-	Mateusz Guzik <mjguzik@gmail.com>, Penglei Jiang <superman.xpt@gmail.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com, 
+	s=arc-20240116; t=1745171252; c=relaxed/simple;
+	bh=G7cQA1vbU7ME82rND+ta8qnI8kBAvliO793si5bKvhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=o1P4z9loPDJ0XPjCvo4qVbAZ5vwWkG/Hoi0wSAwq+gZLeCIhwVnwsqXvaSdJMayWaQTB9OYSxtwbE0mAHDAXt7mzbZhJSju6nK043vZ9TYGoNe07ArCymCqIu9kOtsXAzzLgAf68weTOBKTepPpyT80Bbc6lHuKw4uKCLWRTZ8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aqt8yxOX; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-47662449055so16501301cf.1;
+        Sun, 20 Apr 2025 10:47:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745171248; x=1745776048; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YwMHB2nUwzNcRVsw3OgexWqiEt8JRdlA5caQ8STPGxo=;
+        b=aqt8yxOXxjqsJsCIPZ7YZLHUz3jnpsLsolFxywuvgVMk+RadPyiEUvU1TlEr2WRyV8
+         EVa96jKYVWaUgAxgxQrSSOjKsFWWfYWFg1hL6VzZX6Su6kHQlo84t03dwci/CfohOlLR
+         wNzKipLgCCni7EUSZmSfD93L4YWzXdWt3ARVTCvFdKdXC5uJLaGXSWhg5wF2vTCzt+/s
+         Shsa4oJFo/dqnnHjKk56FC59vjF0S9UrT1C6nasBsq2Akgjm1PFOi3w6yZWE/r0dzPTd
+         7MMV6B0MJVjm6LpBOknerG4m4YCdu+LKvhefxPFAZDTeZ5pClDEz30a7Wscy5ATM9/jA
+         JiaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745171248; x=1745776048;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YwMHB2nUwzNcRVsw3OgexWqiEt8JRdlA5caQ8STPGxo=;
+        b=Cv7/peuZ4Ex9uZLCHRn/qKl0eXi77blDTZkqBobe/U+vjLfLDdv5bVf/352tdJSCh3
+         2D1aMRaoGDye1X8oIUm/o+tHJdqdMp1tFl8Csn+5hiL4CB98vf0U7vFec4oXCqUV33e3
+         d89UNHMHAs6kwo05R1RmwNJLbfXTcj44htdf3iQwosaYxg6dlHupT5lgFMhBT4RTjOXn
+         ty2ZsaHGWp+fyT7Fyg8nzzAiGuqTmz4VkGLUwGEy9qvNVD7oIDgrfI7JuneYB4Ars7PM
+         6jSObmEKD2Ox/tc4NqdtlY0hIHFxgQ382vx+J8m2Jc5Y7WuPD18uPmd1qRHodOphLRUj
+         op3g==
+X-Forwarded-Encrypted: i=1; AJvYcCU0jAQQ3Hn/csBO3E2Z8ZvXoA2SimS5xbOFkxP7Sn9aRu1oyevW3jyPzyMsQ7S3uhZss5uevyuhOvqC/va7@vger.kernel.org, AJvYcCWMLaMHQTEa/4871tFwXhTY6udewoowAUlK2fMbFRhOBQ+IRfr3MR2c+ynquUc/nKWpQ1pYWDwk@vger.kernel.org, AJvYcCWyU9LzQXZa95AOsZKyFnl5Tx/u7qs4HtvuzskvFQuFgEUOJ8Akl3riaCIDhTmxv0ZQR5SK45VlmgU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyuniohBhL3oOyf/COdl46qfAoATdXfBIZdr1K24c6XM1qfel+Q
+	Zmdy9bTrkl/Uv2Uvfqc9IWzGbGUCPDP50nPwpk+7xzCQ9qY2Bh2QruMhJsHc9ew=
+X-Gm-Gg: ASbGncsdagSaW61zK8e9Xg6eUP30UvIGT0guiaIVwkH0RCO6UOH6HIg7YRUtNP3TqCy
+	Ji/JwRif9R7gvVzZUX45Rsk5mA9dB7irXWhL3dPGsWRu4DRirmQp8HCKqEQoXbSuA6SRNHWLvPS
+	+2VmqbKc0KXfmd3t0AsnDBW1CM4yPR11gAK+B2VslPhKZNuO8cgWTvMfl4BDMAAoZMERx4wQYv3
+	ePMwiP2kRDSZ1lYbGlqbNq1kz/zs2c6zjnhDInr6ZZAB/4wSYgaTj/RmtciYhwW5mJXGJwimcFb
+	OaO6kzt84j2e7z+kwzlEpn0LeXotWtHpRrOUTEtrWISd7PNuxYgCE3k=
+X-Google-Smtp-Source: AGHT+IG0psL0GsQcZjIWDxL3CpYMMouucx4/293lu1Def4c/30lkEViKoNJRISzRxA+fpp0gxTi8KA==
+X-Received: by 2002:a05:6214:1c49:b0:6e8:f568:22e8 with SMTP id 6a1803df08f44-6f2c4556801mr156707866d6.15.1745171248371;
+        Sun, 20 Apr 2025 10:47:28 -0700 (PDT)
+Received: from theriatric.mshome.net ([73.123.232.110])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f2c2bfd3e4sm34110156d6.85.2025.04.20.10.47.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 20 Apr 2025 10:47:28 -0700 (PDT)
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+To: gregkh@linuxfoundation.org,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	Michael.Hennerich@analog.com
+Cc: gshahrouzi@gmail.com,
+	skhan@linuxfoundation.org,
+	linux-kernel-mentees@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/9] anon_inode: use a proper mode internally
-Message-ID: <20250420-monument-zeitschrift-6e8126bf53c9@brauner>
-References: <20250407-work-anon_inode-v1-0-53a44c20d44e@kernel.org>
- <20250407-work-anon_inode-v1-1-53a44c20d44e@kernel.org>
- <3A9139D5CD543962+89831381-31b9-4392-87ec-a84a5b3507d8@radxa.com>
+Subject: [PATCH v2 1/3] iio: frequency: Use SLEEP bit instead of RESET to disable output
+Date: Sun, 20 Apr 2025 13:47:23 -0400
+Message-ID: <20250420174725.887242-2-gshahrouzi@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250420174725.887242-1-gshahrouzi@gmail.com>
+References: <20250420174725.887242-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3A9139D5CD543962+89831381-31b9-4392-87ec-a84a5b3507d8@radxa.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 18, 2025 at 10:15:01AM +0800, Xilin Wu wrote:
-> On 2025/4/7 17:54:15, Christian Brauner wrote:
-> > This allows the VFS to not trip over anonymous inodes and we can add
-> > asserts based on the mode into the vfs. When we report it to userspace
-> > we can simply hide the mode to avoid regressions. I've audited all
-> > direct callers of alloc_anon_inode() and only secretmen overrides i_mode
-> > and i_op inode operations but it already uses a regular file.
-> > 
-> > Fixes: af153bb63a336 ("vfs: catch invalid modes in may_open()")
-> > Cc: <stable@vger.kernel.org> # all LTS kernels
-> > Reported-by: syzbot+5d8e79d323a13aa0b248@syzkaller.appspotmail.com
-> > Closes: https://lore.kernel.org/all/67ed3fb3.050a0220.14623d.0009.GAE@google.com
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> 
-> Hi Christian and FSdevel list,
-> 
-> I'm reporting a regression introduced in the linux-next tree, which I've
-> tracked down using `git bisect` to this commit.
-> 
-> Starting with `linux-next` tag `next-20250408` (up to the latest
-> `next-20250417` I tested), attempting to start an SDDM Wayland session
-> (using KDE Plasma's KWin) results in a black screen. The `kwin_wayland` and
-> `sddm-helper-start-wayland` processes both enter a state consuming 100% CPU
-> on a single core indefinitely, preventing the login screen from appearing.
-> The last known good kernel is `next-20250407`.
-> 
-> Using `strace` on the `kwin_wayland` process revealed it's stuck in a tight
-> loop involving `ppoll` and `ioctl`:
-> 
-> ```
-> ioctl(29, FIONREAD, [0])                = 0
-> ppoll([{fd=10, events=POLLIN}, {fd=37, events=POLLIN}, {fd=9,
-> events=POLLIN}, {fd=5, events=POLLIN}, {fd=29, events=POLLIN}, {fd=17,
-> events=POLLIN}, {fd=3, events=POLLIN}], 7, NULL, NULL, 8) = 1 ([{fd=29,
-> revents=POLLIN}])
-> ioctl(29, FIONREAD, [0])                = 0
-> ppoll([{fd=10, events=POLLIN}, {fd=37, events=POLLIN}, {fd=9,
-> events=POLLIN}, {fd=5, events=POLLIN}, {fd=29, events=POLLIN}, {fd=17,
-> events=POLLIN}, {fd=3, events=POLLIN}], 7, NULL, NULL, 8) = 1 ([{fd=29,
-> revents=POLLIN}])
-> # ... this repeats indefinitely at high frequency
-> ```
-> 
-> Initially, I suspected a DRM issue, but checking the file descriptor
-> confirmed it's an `inotify` instance:
-> 
-> ```
-> $ sudo ls -l /proc/<kwin_pid>/fd/29
-> lr-x------ 1 sddm sddm 64 Apr 17 14:03 /proc/<kwin_pid>/fd/29 ->
-> anon_inode:inotify
-> ```
-> 
-> Reverting this commit resolves the issue, allowing SDDM and KWin Wayland to
-> start normally.
-> 
-> Could you please take a look at this? Let me know if you need any further
-> information or testing from my side.
+According to the AD9832 datasheet (Table 10, D12 description), setting
+the RESET bit forces the phase accumulator to zero, which corresponds to
+a full-scale DC output, rather than disabling the output signal.
 
-I'll take a look latest Tuesday.
+The correct way to disable the output and enter a low-power state is to
+set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
+the internal DAC current sources and disables internal clocks.
+
+Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+---
+ drivers/staging/iio/frequency/ad9832.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
+index db42810c7664b..0872ff4ec4896 100644
+--- a/drivers/staging/iio/frequency/ad9832.c
++++ b/drivers/staging/iio/frequency/ad9832.c
+@@ -232,7 +232,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
+ 			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP |
+ 					AD9832_CLR);
+ 		else
+-			st->ctrl_src |= AD9832_RESET;
++			st->ctrl_src |= AD9832_SLEEP;
+ 
+ 		st->data = cpu_to_be16((AD9832_CMD_SLEEPRESCLR << CMD_SHIFT) |
+ 					st->ctrl_src);
+-- 
+2.43.0
+
 
