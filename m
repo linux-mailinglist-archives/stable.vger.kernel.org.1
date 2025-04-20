@@ -1,100 +1,134 @@
-Return-Path: <stable+bounces-134755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1283A9497C
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 22:05:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A280A949B3
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 23:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4F8616F9F9
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 20:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DD343ADE82
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 21:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F18DF19F116;
-	Sun, 20 Apr 2025 20:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC4C1DC9B0;
+	Sun, 20 Apr 2025 21:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="FDPSiAXC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0IqJsdjF"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0CDB13C3CD;
-	Sun, 20 Apr 2025 20:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D1191F7F;
+	Sun, 20 Apr 2025 21:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745179514; cv=none; b=jRhr3962O+o+L+wYQczrTvOrA/ZzUlX+s4KDrUfFRhbRU+7IHkICIQdwnPj/+t+VaS8HkNpOfr9YttrdyWXKEccRVvLNE+IIYM17vaLgupxqycEsuntFYiQyEBq1RA33nSjYs2Q/K1heP1q4ETPnh2MhMi2hvaRhqIl767FTBPA=
+	t=1745184547; cv=none; b=UlDMXANBknx29JkQ82YkADdJCGW/EXpIS1IASMBJYeHsHf4CQnBk4K9TnJRc2FdA9GphpuosFVoIKh3GEWbb9inaDuu3krrDjBsfOLaK8X8gNgu1z8faK3DcJPux45g3x0yxfUOWrxvWY3yNassrX8Lg1+/WOFSeu2bum/0c2T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745179514; c=relaxed/simple;
-	bh=C0wHC3EhX4JvIIGou4EHZrhXRR4ydQXe7xB3MTKMaQA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hs1tbsobl8nlxB3uF+Je7qYKs82IZ9nHr74asp7GMPjI/1Nm+JAIggveUrGuo5qJSIDtNi+/DqGXIbR/g/DHUVJtioSZ6id6ixe9q83tQAq9IZh+Dyd8IbAMw4l+IzCSfF9a/c89BRdkrY3bL755zXaayQ+DpRHIkZjBwlOc4M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=FDPSiAXC; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=vwQi6RSR2dzipHxzDAJCgvAk8VXSUrxo3Y6Y36Y9CBE=;
-	t=1745179513; x=1746389113; b=FDPSiAXCMYUUaF+BaQRx7kg/chvSnqUzRjl8vWrktmbgmqc
-	IDXnjntZNwqnuBD6nu2RQyVHap8Ov7ZMXFtJzb1GlOSlXavmvpiDwk02gepsQ8YjRtjk2h92LtisC
-	Kyp58c2Gt4GZDAz4iuQcFYn9rLTePf54QHhYx2kG0Bw7JVay3+yB0Ufw4xHZ6/Fr9OC+jjbiOhzyZ
-	usnlE7yMOPi0unCSGhyfwwzhhceHPU1aDiacUGnEcgbDFwl7xLVlfB9P8t9xRsw+QBuai0fM4p9Am
-	ZAokPSwbx1edYg2+R6QwuLuisauG4wqyW6iJS7X2uoMUKJGOnkjo/MRkOagelLTA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1u6aTP-00000007oWT-0spT;
-	Sun, 20 Apr 2025 21:37:03 +0200
-Message-ID: <4ade9e6f4f5238ae7ac5eed483cf0f2cee1a81a1.camel@sipsolutions.net>
-Subject: Re: Patch "wifi: mac80211: Update skb's control block key in
- ieee80211_tx_dequeue()" has been added to the 6.14-stable tree
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Remi Pommarel <repk@triplefau.lt>, stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org
-Date: Sun, 20 Apr 2025 21:37:02 +0200
-In-Reply-To: <aAVJuPUEZrTDy7L1@pilgrim>
-References: <20250420150053.1781606-1-sashal@kernel.org>
-	 <aAVJuPUEZrTDy7L1@pilgrim>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1745184547; c=relaxed/simple;
+	bh=W7hS8ySUToJelvB0dLWOnbM9DLHFfinziAC4BT4yDSQ=;
+	h=Date:To:From:Subject:Message-Id; b=N/Rg3dkongakN1ehNvCGertFILpKfJpTzOetsQO5rhPAIwYcTg2eFDwvzmu6Y56YEzqg2RKKzcYYuAcLkRRHqjUS2QQeXKugBShJFpntrUz4TXtCsknhOn6sWOPi9cCy9YIu30b+9ylmfodYNzCumu1kk54fylqdIpn/WHPjmCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0IqJsdjF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32123C4CEE2;
+	Sun, 20 Apr 2025 21:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745184547;
+	bh=W7hS8ySUToJelvB0dLWOnbM9DLHFfinziAC4BT4yDSQ=;
+	h=Date:To:From:Subject:From;
+	b=0IqJsdjFgoHEKpRpwwa6HGncw4Glsfv3deZcihyZsrs+liYpXY7CfIz7CguL+zKcQ
+	 ysEHj+ec71I1Ykd2fVAH8QPWYt7IRHTuSvv2520R3iW5mfOD0TIvEYU6yP0IH50pDX
+	 nJEGTWiJvxRnuBUzHFWeHWspQMwtj0aEJyl60sIs=
+Date: Sun, 20 Apr 2025 14:29:06 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,wangkefeng.wang@huawei.com,sunnanyong@huawei.com,stable@vger.kernel.org,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch removed from -mm tree
+Message-Id: <20250420212907.32123C4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 
-On Sun, 2025-04-20 at 21:23 +0200, Remi Pommarel wrote:
-> Hello,
->=20
-> On Sun, Apr 20, 2025 at 11:00:53AM -0400, Sasha Levin wrote:
-> > This is a note to let you know that I've just added the patch titled
-> >=20
-> >     wifi: mac80211: Update skb's control block key in ieee80211_tx_dequ=
-eue()
-> >=20
-> > to the 6.14-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue=
-.git;a=3Dsummary
-> >=20
-> > The filename of the patch is:
-> >      wifi-mac80211-update-skb-s-control-block-key-in-ieee.patch
-> > and it can be found in the queue-6.14 subdirectory.
-> >=20
-> > If you, or anyone else, feels it should not be added to the stable tree=
-,
-> > please let <stable@vger.kernel.org> know about it.
-> >=20
->=20
-> Not sure this patch should go to stable. @Johannes haven't you revert
-> it in your tree ?
 
-Indeed, I did, since there was a regression and we hadn't figured out in
-time why. I'm just back from travel so I have no idea what happened in
-the meantime :)
+The quilt patch titled
+     Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
+has been removed from the -mm tree.  Its filename was
+     mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
 
-johannes
+This patch was dropped because an updated version will be issued
+
+------------------------------------------------------
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
+Date: Wed, 12 Mar 2025 16:47:05 +0800
+
+When calling alloc_contig_range() with __GFP_COMP and the order of
+requested pfn range is pageblock_order, less than MAX_ORDER, I triggered
+WARNING as follows:
+
+ PFN range: requested [2150105088, 2150105600), allocated [2150105088, 2150106112)
+ WARNING: CPU: 3 PID: 580 at mm/page_alloc.c:6877 alloc_contig_range+0x280/0x340
+
+alloc_contig_range() marks pageblocks of the requested pfn range to be
+isolated, migrate these pages if they are in use and will be freed to
+MIGRATE_ISOLATED freelist.
+
+Suppose two alloc_contig_range() calls at the same time and the requested
+pfn range are [0x80280000, 0x80280200) and [0x80280200, 0x80280400)
+respectively.  Suppose the two memory range are in use, then
+alloc_contig_range() will migrate and free these pages to MIGRATE_ISOLATED
+freelist.  __free_one_page() will merge MIGRATE_ISOLATE buddy to larger
+buddy, resulting in a MAX_ORDER buddy.  Finally, find_large_buddy() in
+alloc_contig_range() returns a MAX_ORDER buddy and results in WARNING.
+
+To fix it, call free_contig_range() to free the excess pfn range.
+
+Link: https://lkml.kernel.org/r/20250312084705.2938220-1-tujinjiang@huawei.com
+Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Nanyong Sun <sunnanyong@huawei.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_alloc.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+--- a/mm/page_alloc.c~mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order
++++ a/mm/page_alloc.c
+@@ -6786,7 +6786,8 @@ int alloc_contig_range_noprof(unsigned l
+ 		goto done;
+ 	}
+ 
+-	if (!(gfp_mask & __GFP_COMP)) {
++	if (!(gfp_mask & __GFP_COMP) ||
++		(is_power_of_2(end - start) && ilog2(end - start) < MAX_PAGE_ORDER)) {
+ 		split_free_pages(cc.freepages, gfp_mask);
+ 
+ 		/* Free head and tail (if any) */
+@@ -6794,7 +6795,15 @@ int alloc_contig_range_noprof(unsigned l
+ 			free_contig_range(outer_start, start - outer_start);
+ 		if (end != outer_end)
+ 			free_contig_range(end, outer_end - end);
+-	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
++
++		outer_start = start;
++		outer_end = end;
++
++		if (!(gfp_mask & __GFP_COMP))
++			goto done;
++	}
++
++	if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
+ 		struct page *head = pfn_to_page(start);
+ 		int order = ilog2(end - start);
+ 
+_
+
+Patches currently in -mm which might be from tujinjiang@huawei.com are
+
+
 
