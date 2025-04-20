@@ -1,134 +1,142 @@
-Return-Path: <stable+bounces-134756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A280A949B3
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 23:29:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A0BA949D8
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 00:01:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DD343ADE82
-	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 21:28:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DD537A6B0E
+	for <lists+stable@lfdr.de>; Sun, 20 Apr 2025 22:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC4C1DC9B0;
-	Sun, 20 Apr 2025 21:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B987E26AD9;
+	Sun, 20 Apr 2025 22:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0IqJsdjF"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b="l61pO+j/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from puleglot.ru (puleglot.ru [195.201.32.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D1191F7F;
-	Sun, 20 Apr 2025 21:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A178258A;
+	Sun, 20 Apr 2025 22:01:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.201.32.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745184547; cv=none; b=UlDMXANBknx29JkQ82YkADdJCGW/EXpIS1IASMBJYeHsHf4CQnBk4K9TnJRc2FdA9GphpuosFVoIKh3GEWbb9inaDuu3krrDjBsfOLaK8X8gNgu1z8faK3DcJPux45g3x0yxfUOWrxvWY3yNassrX8Lg1+/WOFSeu2bum/0c2T4=
+	t=1745186483; cv=none; b=P/AnRc2G/O2hdcXMqs18iZp4uuCWgD6jMyfTKG42qwmHYZaumhj7Q1MxS9As5bmj/LnV1QjocImiP6kvOvLFQNB+qR1m7/TGMD+Pl8NqiTE8mYAgFcc6Rf/Ithme4T3owhdg4wGt/jzwD60X1l9x7cGePqs2n18qhz310Tn+2SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745184547; c=relaxed/simple;
-	bh=W7hS8ySUToJelvB0dLWOnbM9DLHFfinziAC4BT4yDSQ=;
-	h=Date:To:From:Subject:Message-Id; b=N/Rg3dkongakN1ehNvCGertFILpKfJpTzOetsQO5rhPAIwYcTg2eFDwvzmu6Y56YEzqg2RKKzcYYuAcLkRRHqjUS2QQeXKugBShJFpntrUz4TXtCsknhOn6sWOPi9cCy9YIu30b+9ylmfodYNzCumu1kk54fylqdIpn/WHPjmCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0IqJsdjF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32123C4CEE2;
-	Sun, 20 Apr 2025 21:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745184547;
-	bh=W7hS8ySUToJelvB0dLWOnbM9DLHFfinziAC4BT4yDSQ=;
-	h=Date:To:From:Subject:From;
-	b=0IqJsdjFgoHEKpRpwwa6HGncw4Glsfv3deZcihyZsrs+liYpXY7CfIz7CguL+zKcQ
-	 ysEHj+ec71I1Ykd2fVAH8QPWYt7IRHTuSvv2520R3iW5mfOD0TIvEYU6yP0IH50pDX
-	 nJEGTWiJvxRnuBUzHFWeHWspQMwtj0aEJyl60sIs=
-Date: Sun, 20 Apr 2025 14:29:06 -0700
-To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,wangkefeng.wang@huawei.com,sunnanyong@huawei.com,stable@vger.kernel.org,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch removed from -mm tree
-Message-Id: <20250420212907.32123C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1745186483; c=relaxed/simple;
+	bh=y27lBexMpMdDQ9ATHisSn7RO/3qNZVbSmnn5C/oXcgs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Sgu6OA8xd9W6Kgu14FzItDoGV9+nShkyjEg9CQi8L/2q3MsWz8jKgV7/k1egcwGgxyFdyaLVHjHs4kUqLh4Ef2cEbWOd33AsllADGXy4jobsdQln4uiwrk7C8GF/aAmbS1JNCy7qHj7XVqvdZ+m5hepJMC16vLaNJCNMXyvokjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me; spf=pass smtp.mailfrom=puleglot.ru; dkim=pass (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b=l61pO+j/; arc=none smtp.client-ip=195.201.32.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puleglot.ru
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tsoy.me;
+	s=mymail; h=Sender:MIME-Version:Content-Transfer-Encoding:Content-Type:
+	References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+	:List-Post:List-Owner:List-Archive;
+	bh=KOOL8xqxHP+zdUYmVlvMw2ZcsNJ35ikxvej/FMZw7zM=; b=l61pO+j/bCeNXKMiZtRynW6w/v
+	IYoBCZvGE7TyPj2bou7BrwwxWBckFIxh03YcSnuHRZF7f5zUIpzxgQycs3xD2gEcvaogEgRtbDUCe
+	VpDvt629b6DZxZIEc0kg1BWTooIXH/NvrLFcsfpz6RmIzmYiGgvasZMfXHn07+IDeccI=;
+Received: from [62.217.191.235] (helo=[192.168.1.144])
+	by puleglot.ru with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <puleglot@puleglot.ru>)
+	id 1u6cQU-00000001Tmx-0W7v;
+	Mon, 21 Apr 2025 00:42:10 +0300
+Message-ID: <4fed086db630ff37ceb9caf9094b74467ef5d0bd.camel@tsoy.me>
+Subject: Re: [PATCH 6.12 085/393] wifi: ath12k: Fix invalid entry fetch in
+ ath12k_dp_mon_srng_process
+From: Alexander Tsoy <alexander@tsoy.me>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, P Praneesh <quic_ppranees@quicinc.com>, Jeff
+ Johnson <jeff.johnson@oss.qualcomm.com>, Sasha Levin <sashal@kernel.org>
+Date: Mon, 21 Apr 2025 00:42:08 +0300
+In-Reply-To: <20250417175111.019326590@linuxfoundation.org>
+References: <20250417175107.546547190@linuxfoundation.org>
+	 <20250417175111.019326590@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Sender: puleglot@puleglot.ru
 
+=D0=92 =D0=A7=D1=82, 17/04/2025 =D0=B2 19:48 +0200, Greg Kroah-Hartman =D0=
+=BF=D0=B8=D1=88=D0=B5=D1=82:
+> 6.12-stable review patch.=C2=A0 If anyone has any objections, please let
+> me know.
+>=20
+> ------------------
+>=20
+> From: P Praneesh <quic_ppranees@quicinc.com>
+>=20
+> [ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
+>=20
+> Currently, ath12k_dp_mon_srng_process uses
+> ath12k_hal_srng_src_get_next_entry
+> to fetch the next entry from the destination ring. This is incorrect
+> because
+> ath12k_hal_srng_src_get_next_entry is intended for source rings, not
+> destination
+> rings. This leads to invalid entry fetches, causing potential data
+> corruption or
+> crashes due to accessing incorrect memory locations. This happens
+> because the
+> source ring and destination ring have different handling mechanisms
+> and using
+> the wrong function results in incorrect pointer arithmetic and ring
+> management.
+>=20
+> To fix this issue, replace the call to
+> ath12k_hal_srng_src_get_next_entry with
+> ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process.
+> This ensures
+> that the correct function is used for fetching entries from the
+> destination
+> ring, preventing invalid memory accesses.
+>=20
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-
+> 1
+> Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-
+> QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>=20
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Link:
+> https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.c=
+om
+> Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> =C2=A0drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> index 5c6749bc4039d..1706ec27eb9c0 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> @@ -2533,7 +2533,7 @@ int ath12k_dp_mon_rx_process_stats(struct
 
-The quilt patch titled
-     Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
-has been removed from the -mm tree.  Its filename was
-     mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
+Hello!
 
-This patch was dropped because an updated version will be issued
+I think this is incorrect backport. ath12k_dp_mon_srng_process() should
+be patched.
 
-------------------------------------------------------
-From: Jinjiang Tu <tujinjiang@huawei.com>
-Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
-Date: Wed, 12 Mar 2025 16:47:05 +0800
-
-When calling alloc_contig_range() with __GFP_COMP and the order of
-requested pfn range is pageblock_order, less than MAX_ORDER, I triggered
-WARNING as follows:
-
- PFN range: requested [2150105088, 2150105600), allocated [2150105088, 2150106112)
- WARNING: CPU: 3 PID: 580 at mm/page_alloc.c:6877 alloc_contig_range+0x280/0x340
-
-alloc_contig_range() marks pageblocks of the requested pfn range to be
-isolated, migrate these pages if they are in use and will be freed to
-MIGRATE_ISOLATED freelist.
-
-Suppose two alloc_contig_range() calls at the same time and the requested
-pfn range are [0x80280000, 0x80280200) and [0x80280200, 0x80280400)
-respectively.  Suppose the two memory range are in use, then
-alloc_contig_range() will migrate and free these pages to MIGRATE_ISOLATED
-freelist.  __free_one_page() will merge MIGRATE_ISOLATE buddy to larger
-buddy, resulting in a MAX_ORDER buddy.  Finally, find_large_buddy() in
-alloc_contig_range() returns a MAX_ORDER buddy and results in WARNING.
-
-To fix it, call free_contig_range() to free the excess pfn range.
-
-Link: https://lkml.kernel.org/r/20250312084705.2938220-1-tujinjiang@huawei.com
-Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Nanyong Sun <sunnanyong@huawei.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/page_alloc.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
---- a/mm/page_alloc.c~mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order
-+++ a/mm/page_alloc.c
-@@ -6786,7 +6786,8 @@ int alloc_contig_range_noprof(unsigned l
- 		goto done;
- 	}
- 
--	if (!(gfp_mask & __GFP_COMP)) {
-+	if (!(gfp_mask & __GFP_COMP) ||
-+		(is_power_of_2(end - start) && ilog2(end - start) < MAX_PAGE_ORDER)) {
- 		split_free_pages(cc.freepages, gfp_mask);
- 
- 		/* Free head and tail (if any) */
-@@ -6794,7 +6795,15 @@ int alloc_contig_range_noprof(unsigned l
- 			free_contig_range(outer_start, start - outer_start);
- 		if (end != outer_end)
- 			free_contig_range(end, outer_end - end);
--	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
-+
-+		outer_start = start;
-+		outer_end = end;
-+
-+		if (!(gfp_mask & __GFP_COMP))
-+			goto done;
-+	}
-+
-+	if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
- 		struct page *head = pfn_to_page(start);
- 		int order = ilog2(end - start);
- 
-_
-
-Patches currently in -mm which might be from tujinjiang@huawei.com are
-
+> ath12k *ar, int mac_id,
+> =C2=A0		dest_idx =3D 0;
+> =C2=A0move_next:
+> =C2=A0		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
+> -		ath12k_hal_srng_src_get_next_entry(ab, srng);
+> +		ath12k_hal_srng_dst_get_next_entry(ab, srng);
+> =C2=A0		num_buffs_reaped++;
+> =C2=A0	}
+> =C2=A0
 
 
