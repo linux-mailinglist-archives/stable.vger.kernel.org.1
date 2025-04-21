@@ -1,114 +1,149 @@
-Return-Path: <stable+bounces-134884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321AEA95700
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 22:09:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B914A95711
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 22:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5B0169DB4
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 20:09:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 772C118939D1
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 20:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6831EF39E;
-	Mon, 21 Apr 2025 20:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E991F09A3;
+	Mon, 21 Apr 2025 20:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b="MkXqf1vL"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Yf0jxJ4l"
 X-Original-To: stable@vger.kernel.org
-Received: from wylie.me.uk (wylie.me.uk [82.68.155.94])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF752F37;
-	Mon, 21 Apr 2025 20:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.68.155.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC0A1EFFBB;
+	Mon, 21 Apr 2025 20:13:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745266180; cv=none; b=hpjVlXjhhyuV6UIQUSrXWQfUHWNpisxv3FF/zA5JLpJ1bQVYzz8Ij1mWzn2yTuVUHJlBhMTcAVhbpw3Fsv5Y+Tm+4TPa3vhkFQhvOa+ysJlCgmKkkUIj3p9uo9PK5xEQZu3HoinIS51K8Zi0F5KUGkR7qYd1Egl8k9wU7Xtp0xY=
+	t=1745266400; cv=none; b=AmvaQgattx5gBomMcGVc+Vt/qXllUlQP1suE+lBYYWRMUszAWdIrl+vfdjLPih+ZW5mD+M2G+nZtmitxmwWjCFs49pj23a/d6NOcw96X8Qbl+adPtMgbZlHY2ICpIHeJAcTixUfer5a251QwPw5fPZspuUj2fBwPok3hwvESpPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745266180; c=relaxed/simple;
-	bh=b+VWpq3NDHwNAt8S/b7pLV0b9kapdPe8ei7JxdNhfaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OQ45fr76WcrRvS/MBgV1ig6k6ZUhAZhKM2d4kVk+ZTTN7K7Jg3OEb+Ip4IsbqjvhOKgoLJIp5Cm5k38Tl/2lHMiCAEsyxELMEyHBIGmYic20cyCPt/nOSdTeq/8+zvzUFzaHMWZ/H5/uesQF/FW3QK3gsId+a306I/m4JZiwYww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk; spf=pass smtp.mailfrom=wylie.me.uk; dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b=MkXqf1vL; arc=none smtp.client-ip=82.68.155.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wylie.me.uk
-Received: from frodo.int.wylie.me.uk (frodo.int.wylie.me.uk [192.168.21.2])
-	by wylie.me.uk (Postfix) with ESMTP id 109A8120872;
-	Mon, 21 Apr 2025 21:09:28 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wylie.me.uk;
-	s=mydkim006; t=1745266168;
-	bh=b+VWpq3NDHwNAt8S/b7pLV0b9kapdPe8ei7JxdNhfaI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=MkXqf1vLHKpcBOMj6MpdubBkR6uWNHWZ/SHP8expyNaK801KfQLFnnm+Bv/flwK6U
-	 fNomrj2N516Zd+m623mgNyxfc+w6J6GOUIJ+1HZ29PB0R4PVqm4SLXv7Tju+XyITHk
-	 I2qorgiZA6tj/QWjd41uI+PgBlvpFgCwjIz2cuDvhZQXHSa0JZls7R0v7dNWTNdUIb
-	 dnBy1a4GryRVyIhxecoHR1vIO872VTYajmE0iSmj11dhKBJfK3qRoWB0OPL9ProUm3
-	 XC3xZLIX1jWY+8DC1DXczJkWWY+np94fPJTEcuB/QmcRM+KR2g73U/8rv70L/d9fsu
-	 Iq4adLM4UAfDQ==
-Date: Mon, 21 Apr 2025 21:09:27 +0100
-From: "Alan J. Wylie" <alan@wylie.me.uk>
-To: Holger =?UTF-8?B?SG9mZnN0w6R0dGU=?= <holger@applied-asynchrony.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev, Cong
- Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Octavian Purdila
- <tavip@google.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@redhat.com>, stable@vger.kernel.org
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <20250421210927.50d6a355@frodo.int.wylie.me.uk>
-In-Reply-To: <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
-References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
-	<6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
-	<20250421131000.6299a8e0@frodo.int.wylie.me.uk>
-	<20250421200601.5b2e28de@frodo.int.wylie.me.uk>
-	<89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
-X-Clacks-Overhead: GNU Terry Pratchett
+	s=arc-20240116; t=1745266400; c=relaxed/simple;
+	bh=pPSvjKFuytS3W/8vuBEQCuBseFQbm2us8uSCuS1HVI0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ME4GKFKvCsyaN4h3Q/DFhPLUU79iGdqd6D46aexJis/xPmPa/srqZR7ltQRfQa4icKxXsOyoe5WfyLumL64gsMV5Gc3jCxsAapLLnXblOA3n3JkRkBBfCTqptEtALId3U+d7QBTk8WwwFpKqDVWh7DUyMDzGxOK6foP4t45UHdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Yf0jxJ4l; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e5dce099f4so5322987a12.1;
+        Mon, 21 Apr 2025 13:13:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1745266397; x=1745871197; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HQ3M+bxooYYic4r0LufR96nrU2z3BmGWMkGOU6zDDn4=;
+        b=Yf0jxJ4l+kyCceqmWsxcnI3Cu6UjI2svpC6s7aDfgyTG+uUSGA5TbrSxQKVIGdoLjc
+         B0fTiQh/3gMUVfNW8QMf/BeTrheWlBmtBo0eQxj0940Y3R5cpi73v8fRJhKj2go9UJ8q
+         RHBDW3EQlZK7v4ecqQs1LHQIk2pe22CSX+6/Y416XPD5tshJArLWu7QquaFeXIMsaQX6
+         4y8X+QXqkRCTUrsTuKNamLt3kOU6SmxzY4lGLJu+8kryAZ748l7VLjNgY+LpXGFCuTJk
+         EGsZ1yDmvf2WiXpcli5Vudd/bN6OHDcpfVuy4mkrBXTZ4cpIz1AiJLjHm4aFGmKwyZMX
+         6QjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745266397; x=1745871197;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HQ3M+bxooYYic4r0LufR96nrU2z3BmGWMkGOU6zDDn4=;
+        b=A+AAfliZWTNDga5oMEM1sMdnHUMUzXhSV0Du762G0FybeUzrCJ+8Y7GA/1iBjiQrs2
+         lmHKTFfkmmRvImS1DttMCN6O1rbePLSNKVlkbwQ4mbnM4SMs4Z+8QwEHhiolqoYROCTP
+         SB/mn2GwWMyXczzBgDcf43qaeYneVzPlKa85KVAxPQKoSjtgfoadZYdkyBwHDzru5T0w
+         DHid3K4UBJZBLmc7badnK32F/eXZeWZb+v+HAzIeCdPxzttoY6MgQJL5Cf2kCip9BT94
+         eVQDLK+VulgDqA9sYOiekSED4ZLnrErMLc2sINtaWOSqF+wnxLSq2yIzB6sR/hKM4X24
+         nlCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDHy3HNmqgu2sSg8W9hwfHe9oHTbawtnOCy/CEycJlvtVu5vuAd9IqW3/g1mlpECCUG05fLvDu@vger.kernel.org, AJvYcCX8vFhgDJ2Cx6jQEQdRb0bnDt6vB0p8IBls9jzTQAAk+D/piQNVlUz+2y0uGjPq2nfR6z9xT7R+e9ajU9o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSum0HD4tiSlKn8XAIGSDVFKEmB3eMTuBjkkoBnKlIkT2nAncg
+	axvFIBcuUXf3K+BXmeJcHnSdGIUuft04GVmWDhkFGLScyhb4zNuz
+X-Gm-Gg: ASbGnctLSZ92gY9Cy5jBr8E3uokkMiI3Yr/jLROs9h5Si9TdC0n/IjoElnyP/OUOPEQ
+	dHEhF3OXmWqL0vtIWQgKxJ++x/roN+++IYoDIzeXM8QBuypQaU7M27a+2G21Ah2hipRexrOWLdx
+	YCiwrMSKPft4F/Dc5Bq1QhnIeGJpLBQUyTnwWgDEqiqSGSkT5NmjIMWqN8GNfIzhm/d1lM5UIMj
+	DO1+/eOxGxWBpv9H4IgieD32wgG6MNIzY0XAa7/0k4Zmg85ydUNugzTXEl/G1FRIi48yPygcjPL
+	6ZhwykTZMbMEi3yIW0JnZNkhqP+sSL36lLjGH65qeMoaDS3XdU4amZav1b4ZEKf83+B9vTjcoYJ
+	BZD0QBUDVACdEpn5xUYpief+Di3o7payoPaD+hkAJFWEjSeNhfVHxc9cGK/ltp3TSbPl6yi3ssk
+	JT
+X-Google-Smtp-Source: AGHT+IEaYd+jxjizAP2cVKjHkYaRIFui46Kp2EDtjubhkBoNX1u0J2KrystqnAigLWaQ0WwVYnx50w==
+X-Received: by 2002:a50:ab11:0:b0:5f6:44de:d977 with SMTP id 4fb4d7f45d1cf-5f644dee040mr5106066a12.1.1745266397171;
+        Mon, 21 Apr 2025 13:13:17 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a503-5900-0000-0000-0000-0e63.310.pool.telefonica.de. [2a02:3100:a503:5900::e63])
+        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5f62557a547sm4955447a12.22.2025.04.21.13.13.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 13:13:15 -0700 (PDT)
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To: dri-devel@lists.freedesktop.org,
+	linux-amlogic@lists.infradead.org
+Cc: neil.armstrong@linaro.org,
+	christianshewitt@gmail.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: [PATCH RFC v2 1/2] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
+Date: Mon, 21 Apr 2025 22:12:59 +0200
+Message-ID: <20250421201300.778955-2-martin.blumenstingl@googlemail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250421201300.778955-1-martin.blumenstingl@googlemail.com>
+References: <20250421201300.778955-1-martin.blumenstingl@googlemail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Apr 2025 21:47:44 +0200
-Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com> wrote:
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-> > I'm afraid that didn't help. Same panic. =20
->=20
-> Bummer :-(
->=20
-> Might be something else missing then - so for now the only other thing
-> I'd suggest is to revert the removal of the qlen check in fq_codel.
+This reverts commit bfbc68e.
 
-Like this?
+The patch does permit the offending YUV420 @ 59.94 phy_freq and
+vclk_freq mode to match in calculations. It also results in all
+fractional rates being unavailable for use. This was unintended
+and requires the patch to be reverted.
 
-$ git diff  sch_fq_codel.c
-diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-index 6c9029f71e88..4fdf317b82ec 100644
---- a/net/sched/sch_fq_codel.c
-+++ b/net/sched/sch_fq_codel.c
-@@ -316,7 +316,7 @@ static struct sk_buff *fq_codel_dequeue(struct Qdisc *s=
-ch)
-        qdisc_bstats_update(sch, skb);
-        flow->deficit -=3D qdisc_pkt_len(skb);
-=20
--       if (q->cstats.drop_count) {
-+       if (q->cstats.drop_count && sch->q.qlen) {
-                qdisc_tree_reduce_backlog(sch, q->cstats.drop_count,
-                                          q->cstats.drop_len);
-                q->cstats.drop_count =3D 0;
-$=20
+Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+---
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I'll be off to bed soon, but I'll leave it running overnight.
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a942dc6a6dc..2a82119eb58e 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
++				 FREQ_1000_1001(params[i].phy_freq/10)*10);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
+ 
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
+-- 
+2.49.0
 
-I might be able to do a quick report in the morning, but I'll
-have to set off early to go digging down a cave all day tomorrow.
-
---=20
-Alan J. Wylie     https://www.wylie.me.uk/     mailto:<alan@wylie.me.uk>
-
-Dance like no-one's watching. / Encrypt like everyone is.
-Security is inversely proportional to convenience
 
