@@ -1,125 +1,157 @@
-Return-Path: <stable+bounces-134848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9496AA95274
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:07:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41057A95279
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB04E1733D3
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:07:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370CD1894AB5
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C2378F24;
-	Mon, 21 Apr 2025 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C4755897;
+	Mon, 21 Apr 2025 14:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KJIuE7Ut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADi/BdHz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3DC1372;
-	Mon, 21 Apr 2025 14:06:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476242A1BF
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 14:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745244415; cv=none; b=ZodTm5cqv7fI2sUlFF7tZlddP29w/XYq2Wm6c5Tk5uGv+/2ZUKnkUsx9NRUxeDjjpamw1Y06ZRBGtnM76DkUwGDb3+OTHhoQ1YM/TqZorLCQp4Uu29ten0ohikI2KGMDDaFLpokJGH3wd28iK7lk6d7FVBJcbg5/R2zbs22xdPk=
+	t=1745244492; cv=none; b=rajc6gema0kzGoQ0gLFzqvWY1ZqQS/i7fBOMounRZ1y6roauNKG0D4Tl0puPun0DbXbv1vCI2a/QDhoUmiQxbMezS47GP2R84OOyUuAy7cokpxMUXyq5XlJQHXO+kz7kZv/zRSzCwXHOsQLAWXL6gJr0j9Svk18m2U2njZXuaxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745244415; c=relaxed/simple;
-	bh=eJSvP6WoW1OnCWuj048isT9pN6rXqEQM0rSV660pM4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uDYRo/WUVboykM4Q2EuTnECH25WrA8gPbWFz0A+DYZvQFlQu84BZliEMAzsIa0O0VKvYB4Rr9VCXZVkdfW0CPRlmvu7PGI5JQCXFh2lCEmLEW2FZ3qBdi+Xq1sV5nlbgJPeULWp+x+pl6nTGq6VTjoZSVX4ewe+Lk3FTO/F1DOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KJIuE7Ut; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-306b78ae2d1so3048992a91.3;
-        Mon, 21 Apr 2025 07:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745244413; x=1745849213; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eJSvP6WoW1OnCWuj048isT9pN6rXqEQM0rSV660pM4c=;
-        b=KJIuE7UtsEFsgUYluW4iWmABKcKlasWEMH0GBWqw3NpRayWkdfrK5ScxjIRltkzNsI
-         Nlnhgt/ACd0JmJzp5TyVHzCgcS5OkA3ylkoVvlcFHRlZ9ZExBmQ1sNuN3nnJ8Xh+9lbd
-         BnLTG83uwK2ykpl5Qb0q4LsgUJjeWIsg7BoJ59U7V9QRdFlXrd9NhW2ebPjcMjt29p9G
-         HjjK6w0pAKJGkZ3fKOOEdBFJFg9lcbwKt8MdNYdMdlkRbHfj3gk5aNYpTNl6wuiSb4i5
-         UFgaE48MqULx7kQXTT4ct2njgO/CdWvEroTbLBxyHF8VZcVk+sjTzbBrHa+9swMeRSpt
-         XQtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745244413; x=1745849213;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eJSvP6WoW1OnCWuj048isT9pN6rXqEQM0rSV660pM4c=;
-        b=ny34JTij4A1xIEzRxHLL8GwY09RMOgaVqtUkt4lw3+Lx3jQvdK4PgS99GR1nuUrhUP
-         3ZbA12f/0t6iQPeiGzAZTtGFYkLYPKv4l4sxD4sU1sxRZl+Sy1PjP//Z0/HjOmbEC2s/
-         07YZXM0CItodiwP4lyDORR65lcx0lTWe9x5lZKrpvoSppFPGeDuBUXyuaO8F111+5/Sc
-         gWQ2aCZPDiaPHWfLTvKjbe9g2ui42gIqm6FCfM3O/OW61GRYfS7DFSUtVkBCFHDwNIU1
-         mKJ/uy5J3k+DcOK0mcqgGXdkCpLA+vdqna5jMa5pvXuZsIkvtoyCvU9aqZWI5It+iZpA
-         kJKg==
-X-Forwarded-Encrypted: i=1; AJvYcCW6VB9w4Z7go9AvZDbHsparF352h2upi4GUEwQnt9vX+NQzlkbngkl5Z+miMOxb3TSQfbX3Mb3B@vger.kernel.org, AJvYcCX1MyaqpTm9+cFOypV/vC8sv0OhJb3HHatbOwHO8OS1dtX5D4sUxRC5CRaqZD8aEXbDMNJtZDMiwCc=@vger.kernel.org, AJvYcCXVgBhCkkqoar3nHZxq5PlE3wyBYd5aXTMS3E8ZINQfksXsAmkco4kQn9Y91AdlZkd6eUPTUIVf/2eGJCkp@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdvEvJaWyGlrFRuxqgxtEc5SuDb+uTZT80p8wHr5gf5O10QrE8
-	UYr+cNXYiGpdeKfHHUG6XZaQVVXCjICg3xLqH6w5idG/zyhkmWy1u8hMgCWyW3o=
-X-Gm-Gg: ASbGncu/bUmbZeFqCsf8o7mKzBkvhD4F9+ak/ERWbUF2WjWqcvU/JIkgQjN8F52gqvq
-	Y/Fq31Q1eh2FxI1Mb/5mAa727cJaOlZbCmdOLMNcfCtWGrXyL0uY6vunqShotTP+zaMDIl4FfMH
-	v3FloMMJPvj0nF9906JZf/QnjfYe9S13F5+qfiWGHji1as1wA+84kxylML2HhX2xg6oB5VvxTny
-	tQh5IeCRw5tSq+U9Jl7dpn4NNDpq3kAQ9TTSG8UtMCyXClFkyNmWBF/HenKiArxinqIAHTR7mdQ
-	LfBYhC4J/qg/akYXvgHRj74V3ALtLjcENQF1fgwPPuxMcjZGBzWnR3phEA==
-X-Google-Smtp-Source: AGHT+IEMWH811QnX8SwzsqnyFjLTQnfz+ENu2Dko3yepmQHf59RoumB8vWB9UmZwjeYORmMPBWW/mg==
-X-Received: by 2002:a17:90a:c887:b0:2fa:15ab:4df5 with SMTP id 98e67ed59e1d1-3087bccb042mr14746550a91.34.1745244412669;
-        Mon, 21 Apr 2025 07:06:52 -0700 (PDT)
-Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22c50fdf1e6sm65418065ad.224.2025.04.21.07.06.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Apr 2025 07:06:52 -0700 (PDT)
-Date: Mon, 21 Apr 2025 11:08:05 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
-Message-ID: <aAZRRfO1AmiHs4Bf@debian-BULLSEYE-live-builder-AMD64>
-References: <20250421124915.32a18d36@jic23-huawei>
- <20250421131539.912966-1-gshahrouzi@gmail.com>
- <aAZNCEUejrTgy_yZ@debian-BULLSEYE-live-builder-AMD64>
- <CAKUZ0zLEacGg5cD4wGmFz80e4FQ9A=JsVyrzGAHkKEeOT=CU2A@mail.gmail.com>
+	s=arc-20240116; t=1745244492; c=relaxed/simple;
+	bh=X4gKG8c6B+fOrgBUBOMW6bFs90/xehBQhlU53S67GaI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ciDWvuZAPzcFhiFFByPYKGMFKhDNF9afIFIJC1a8f01HFIrN65zES9auTDBHir8tiAZogGWJe2gIJ6tafjwH6IjyQjBjUww4ZbLJB1qGN74Nb4ZS2N8F4hbOlXD8TjoCd7vcd3/0jOJkmq/apMKEnawfJVdlsQgIJpYXHYJt9EU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADi/BdHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675F7C4CEE4;
+	Mon, 21 Apr 2025 14:08:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745244491;
+	bh=X4gKG8c6B+fOrgBUBOMW6bFs90/xehBQhlU53S67GaI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=ADi/BdHzfrekq1f7W8tp89ZFvMp5Bq2IZKjRv4G1wkO1VEHABvjzXm/hQX4hp2q0K
+	 Z0oxG/1zBP3kTP85yYIS6fpUe4Yr2S2yyPfO9XoJsh2H+xD5tI6IZ1M2vpHeSbnk81
+	 cwrpjtGcGz/G3CufPyS+cmHpM0nw8BVCXAV8Hpqs=
+Subject: FAILED: patch "[PATCH] net/niu: Niu requires MSIX ENTRY_DATA fields touch before" failed to apply to 6.6-stable tree
+To: dullfire@yahoo.com,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Apr 2025 16:08:05 +0200
+Message-ID: <2025042105-mankind-rogue-89f3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKUZ0zLEacGg5cD4wGmFz80e4FQ9A=JsVyrzGAHkKEeOT=CU2A@mail.gmail.com>
 
-On 04/21, Gabriel Shahrouzi wrote:
-> On Mon, Apr 21, 2025 at 9:48 AM Marcelo Schmitt
-> <marcelo.schmitt1@gmail.com> wrote:
-> >
-> > On 04/21, Gabriel Shahrouzi wrote:
-> > > The inclinometer channels were previously defined with 14 realbits.
-> > > However, the ADIS16201 datasheet states the resolution for these output
-> > > channels is 12 bits (Page 14, text description; Page 15, table 7).
-> > >
-> > > Correct the realbits value to 12 to accurately reflect the hardware.
-> > >
-> > > Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> >
-> > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> Should I have included the reviewed-by tag on the latest patch sent in
-> this thread since there were no changes to the code?
 
-Not sure I had given a review tag for this.
-Hard to find the previous versrion because it doesn't seem to contain adis16201
-in the subject name :/
-Anyway, good thing the fix should be added to IIO now.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Regards,
-Marcelo
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x fbb429ddff5c8e479edcc7dde5a542c9295944e6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042105-mankind-rogue-89f3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fbb429ddff5c8e479edcc7dde5a542c9295944e6 Mon Sep 17 00:00:00 2001
+From: Jonathan Currier <dullfire@yahoo.com>
+Date: Sun, 17 Nov 2024 17:48:43 -0600
+Subject: [PATCH] net/niu: Niu requires MSIX ENTRY_DATA fields touch before
+ entry reads
+
+Fix niu_try_msix() to not cause a fatal trap on sparc systems.
+
+Set PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST on the struct pci_dev to
+work around a bug in the hardware or firmware.
+
+For each vector entry in the msix table, niu chips will cause a fatal
+trap if any registers in that entry are read before that entries'
+ENTRY_DATA register is written to. Testing indicates writes to other
+registers are not sufficient to prevent the fatal trap, however the value
+does not appear to matter. This only needs to happen once after power up,
+so simply rebooting into a kernel lacking this fix will NOT cause the
+trap.
+
+NON-RESUMABLE ERROR: Reporting on cpu 64
+NON-RESUMABLE ERROR: TPC [0x00000000005f6900] <msix_prepare_msi_desc+0x90/0xa0>
+NON-RESUMABLE ERROR: RAW [4010000000000016:00000e37f93e32ff:0000000202000080:ffffffffffffffff
+NON-RESUMABLE ERROR:      0000000800000000:0000000000000000:0000000000000000:0000000000000000]
+NON-RESUMABLE ERROR: handle [0x4010000000000016] stick [0x00000e37f93e32ff]
+NON-RESUMABLE ERROR: type [precise nonresumable]
+NON-RESUMABLE ERROR: attrs [0x02000080] < ASI sp-faulted priv >
+NON-RESUMABLE ERROR: raddr [0xffffffffffffffff]
+NON-RESUMABLE ERROR: insn effective address [0x000000c50020000c]
+NON-RESUMABLE ERROR: size [0x8]
+NON-RESUMABLE ERROR: asi [0x00]
+CPU: 64 UID: 0 PID: 745 Comm: kworker/64:1 Not tainted 6.11.5 #63
+Workqueue: events work_for_cpu_fn
+TSTATE: 0000000011001602 TPC: 00000000005f6900 TNPC: 00000000005f6904 Y: 00000000    Not tainted
+TPC: <msix_prepare_msi_desc+0x90/0xa0>
+g0: 00000000000002e9 g1: 000000000000000c g2: 000000c50020000c g3: 0000000000000100
+g4: ffff8000470307c0 g5: ffff800fec5be000 g6: ffff800047a08000 g7: 0000000000000000
+o0: ffff800014feb000 o1: ffff800047a0b620 o2: 0000000000000011 o3: ffff800047a0b620
+o4: 0000000000000080 o5: 0000000000000011 sp: ffff800047a0ad51 ret_pc: 00000000005f7128
+RPC: <__pci_enable_msix_range+0x3cc/0x460>
+l0: 000000000000000d l1: 000000000000c01f l2: ffff800014feb0a8 l3: 0000000000000020
+l4: 000000000000c000 l5: 0000000000000001 l6: 0000000020000000 l7: ffff800047a0b734
+i0: ffff800014feb000 i1: ffff800047a0b730 i2: 0000000000000001 i3: 000000000000000d
+i4: 0000000000000000 i5: 0000000000000000 i6: ffff800047a0ae81 i7: 00000000101888b0
+I7: <niu_try_msix.constprop.0+0xc0/0x130 [niu]>
+Call Trace:
+[<00000000101888b0>] niu_try_msix.constprop.0+0xc0/0x130 [niu]
+[<000000001018f840>] niu_get_invariants+0x183c/0x207c [niu]
+[<00000000101902fc>] niu_pci_init_one+0x27c/0x2fc [niu]
+[<00000000005ef3e4>] local_pci_probe+0x28/0x74
+[<0000000000469240>] work_for_cpu_fn+0x8/0x1c
+[<000000000046b008>] process_scheduled_works+0x144/0x210
+[<000000000046b518>] worker_thread+0x13c/0x1c0
+[<00000000004710e0>] kthread+0xb8/0xc8
+[<00000000004060c8>] ret_from_fork+0x1c/0x2c
+[<0000000000000000>] 0x0
+Kernel panic - not syncing: Non-resumable error.
+
+Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241117234843.19236-3-dullfire@yahoo.com
+
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index 73c07f10f053..379b6e90121d 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -9064,6 +9064,8 @@ static void niu_try_msix(struct niu *np, u8 *ldg_num_map)
+ 		msi_vec[i].entry = i;
+ 	}
+ 
++	pdev->dev_flags |= PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST;
++
+ 	num_irqs = pci_enable_msix_range(pdev, msi_vec, 1, num_irqs);
+ 	if (num_irqs < 0) {
+ 		np->flags &= ~NIU_FLAGS_MSIX;
+
 
