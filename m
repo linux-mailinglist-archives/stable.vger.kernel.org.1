@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-134820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A9BA95232
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:58:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62974A95230
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7845A7A583E
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988D0173232
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E440F266588;
-	Mon, 21 Apr 2025 13:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800BF265633;
+	Mon, 21 Apr 2025 13:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZ1qblIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQQuFxvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B4226560B
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA28266B4A
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243866; cv=none; b=AZLmETrM9EGPK2wFYIQJ7IzyA3QRIb796mZHaTXvF9fkbC4vzKimFhbLNFdebhasbD4GJ/QALR3/W5VkKjyIF499gSnYXYUU31fjbyJClhECcdAy9dl0uM8UWo9QTYLN6yDJig/D4s4j7bFIl0KCaYEvIVsmkh1VYdbHY54UdZw=
+	t=1745243892; cv=none; b=TJchYxBvvsHsgCjQKzq8aIFLEpJykgkmYJgpao9Tr9TZAUjxf48JqWb/Hym9wb0lmtdMOtPKRbhUOiWrkA1wyg0pa7j9uzfgfE7gCgQFZYnsTJYK7uzZvpT6n7Ol/ErlawERK8xufaY+k7+0CN/plh9kCgHjQBdJMGlfSrNYIEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243866; c=relaxed/simple;
-	bh=T0Zl2axCSxy6w/iEDUolZns6Szc5X0bUN8+3Uzcv79A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R9Rgonh4Hb0YIGKxhdL7w5YyJzVUKgEbyI05Nw5fjxgKrzRmUTh2uobqND1VKlcNYV7ByZJcuXpQSWUE9Ipfq/TQ+qOaajruz+RG06BYkAZvYtiwFmYWCSgMXFiJ2D4JWTse4KPGiuWp1FmE3Tow2I/3bBR5hso4YRKA+VjFvko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZ1qblIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFBFC4CEE4;
-	Mon, 21 Apr 2025 13:57:46 +0000 (UTC)
+	s=arc-20240116; t=1745243892; c=relaxed/simple;
+	bh=SaaKR6qrs0cAY9pabo9p3y0artvIk2vANpBPRh00n08=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eBmCwgVX/o+R7ZABhLcndO5fEr5g86E80LoRXBZF/zeMaiHaWJZarNa5vCya0whLOIHbzfhxPbLv+BReXDhK8jACImX1koi2LA9/aY7ouaO+LKU5Dsoip1Vc5C9jrM5AUnZtD5kJs91xLXbaUw1zsbiKeGyaEH4GoY3zSOes64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQQuFxvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98659C4CEEA;
+	Mon, 21 Apr 2025 13:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745243866;
-	bh=T0Zl2axCSxy6w/iEDUolZns6Szc5X0bUN8+3Uzcv79A=;
+	s=korg; t=1745243892;
+	bh=SaaKR6qrs0cAY9pabo9p3y0artvIk2vANpBPRh00n08=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IZ1qblIoFWPXsonBDKGUjcFliFSt53UZVuJsokBUYOLG64kIa8P4AtMCjA+mMyBgo
-	 aqfw+NSsxJv+U6cRk221vQVPltqKu6G4MU+AO0md1rn9kU99Jvo2xLzKmU1n/Pt9R+
-	 +zB/xmTacM4GQJCvquebZubv0OX0f6JSX/Ai5E/c=
-Subject: FAILED: patch "[PATCH] irqchip/renesas-rzv2h: Prevent TINT spurious interrupt" failed to apply to 6.14-stable tree
-To: biju.das.jz@bp.renesas.com,tglx@linutronix.de
+	b=yQQuFxvXAbLvE7datHyXCD89gq58i+6GKuH6nX7XoJkVavJFfBTUyqmSaLN1qnAk2
+	 rQXgUXDUhQfBlRkuemr9L7peB1YWTY2yh/AiLqenxVNgF0u72k+XTIXLF9RF7LoOs/
+	 1CfzzZG2tJMUafGWyhIjevSYqze6zkNx1ISYxY+E=
+Subject: FAILED: patch "[PATCH] ksmbd: fix use-after-free in __smb2_lease_break_noti()" failed to apply to 6.12-stable tree
+To: linkinjeon@kernel.org,norbert@doyensec.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Apr 2025 15:57:43 +0200
-Message-ID: <2025042143-clash-grumbly-11dd@gregkh>
+Date: Mon, 21 Apr 2025 15:58:09 +0200
+Message-ID: <2025042109-uncurled-pebble-1681@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.14-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 28e89cdac6482f3c980df3e2e245db7366269124
+git cherry-pick -x 21a4e47578d44c6b37c4fc4aba8ed7cc8dbb13de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042143-clash-grumbly-11dd@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042109-uncurled-pebble-1681@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,41 +77,80 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 28e89cdac6482f3c980df3e2e245db7366269124 Mon Sep 17 00:00:00 2001
-From: Biju Das <biju.das.jz@bp.renesas.com>
-Date: Tue, 15 Apr 2025 11:33:41 +0100
-Subject: [PATCH] irqchip/renesas-rzv2h: Prevent TINT spurious interrupt
+From 21a4e47578d44c6b37c4fc4aba8ed7cc8dbb13de Mon Sep 17 00:00:00 2001
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Fri, 11 Apr 2025 15:19:46 +0900
+Subject: [PATCH] ksmbd: fix use-after-free in __smb2_lease_break_noti()
 
-A spurious TINT interrupt is seen during boot on RZ/G3E SMARC EVK.
+Move tcp_transport free to ksmbd_conn_free. If ksmbd connection is
+referenced when ksmbd server thread terminates, It will not be freed,
+but conn->tcp_transport is freed. __smb2_lease_break_noti can be performed
+asynchronously when the connection is disconnected. __smb2_lease_break_noti
+calls ksmbd_conn_write, which can cause use-after-free
+when conn->ksmbd_transport is already freed.
 
-A glitch in the edge detection circuit can cause a spurious interrupt.
-
-Clear the status flag after setting the ICU_TSSRk registers, which is
-recommended in the hardware manual as a countermeasure.
-
-Fixes: 0d7605e75ac2 ("irqchip: Add RZ/V2H(P) Interrupt Control Unit (ICU) driver")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/drivers/irqchip/irq-renesas-rzv2h.c b/drivers/irqchip/irq-renesas-rzv2h.c
-index 3d5b5fdf9bde..0f0fd7d4dfdf 100644
---- a/drivers/irqchip/irq-renesas-rzv2h.c
-+++ b/drivers/irqchip/irq-renesas-rzv2h.c
-@@ -170,6 +170,14 @@ static void rzv2h_tint_irq_endisable(struct irq_data *d, bool enable)
- 	else
- 		tssr &= ~ICU_TSSR_TIEN(tssel_n, priv->info->field_width);
- 	writel_relaxed(tssr, priv->base + priv->info->t_offs + ICU_TSSR(k));
-+
-+	/*
-+	 * A glitch in the edge detection circuit can cause a spurious
-+	 * interrupt. Clear the status flag after setting the ICU_TSSRk
-+	 * registers, which is recommended by the hardware manual as a
-+	 * countermeasure.
-+	 */
-+	writel_relaxed(BIT(tint_nr), priv->base + priv->info->t_offs + ICU_TSCLR);
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index c1f22c129111..83764c230e9d 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -39,8 +39,10 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
+ 	xa_destroy(&conn->sessions);
+ 	kvfree(conn->request_buf);
+ 	kfree(conn->preauth_info);
+-	if (atomic_dec_and_test(&conn->refcnt))
++	if (atomic_dec_and_test(&conn->refcnt)) {
++		ksmbd_free_transport(conn->transport);
+ 		kfree(conn);
++	}
  }
  
- static void rzv2h_icu_irq_disable(struct irq_data *d)
+ /**
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index 7f38a3c3f5bd..abedf510899a 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -93,15 +93,19 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
+ 	return t;
+ }
+ 
++void ksmbd_free_transport(struct ksmbd_transport *kt)
++{
++	struct tcp_transport *t = TCP_TRANS(kt);
++
++	sock_release(t->sock);
++	kfree(t->iov);
++	kfree(t);
++}
++
+ static void free_transport(struct tcp_transport *t)
+ {
+ 	kernel_sock_shutdown(t->sock, SHUT_RDWR);
+-	sock_release(t->sock);
+-	t->sock = NULL;
+-
+ 	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
+-	kfree(t->iov);
+-	kfree(t);
+ }
+ 
+ /**
+diff --git a/fs/smb/server/transport_tcp.h b/fs/smb/server/transport_tcp.h
+index 8c9aa624cfe3..1e51675ee1b2 100644
+--- a/fs/smb/server/transport_tcp.h
++++ b/fs/smb/server/transport_tcp.h
+@@ -8,6 +8,7 @@
+ 
+ int ksmbd_tcp_set_interfaces(char *ifc_list, int ifc_list_sz);
+ struct interface *ksmbd_find_netdev_name_iface_list(char *netdev_name);
++void ksmbd_free_transport(struct ksmbd_transport *kt);
+ int ksmbd_tcp_init(void);
+ void ksmbd_tcp_destroy(void);
+ 
 
 
