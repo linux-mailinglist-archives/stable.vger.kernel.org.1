@@ -1,179 +1,122 @@
-Return-Path: <stable+bounces-134870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB97A953E0
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 18:13:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20652A954EC
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 18:50:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFB6167E62
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:13:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 091CB18840ED
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FF61E260C;
-	Mon, 21 Apr 2025 16:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707031DF987;
+	Mon, 21 Apr 2025 16:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfrbXB4s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SGFb1f0Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8561E25ED;
-	Mon, 21 Apr 2025 16:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E159013D53B
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 16:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745252002; cv=none; b=rhTWCNzXMdummXETUlCryQ9027/WKk2CMnMNPSXR66xJXIgp0JAcm6V0rTMZXDd76DD0YYvKuMfgFo+6m/HSxZ4xqRm+2x01/DFizOZVpgQxE6WvcSDYwpQYfZA+q6AkJrwkLF7cYR70im751Ee/7m50CTu/RjNzJN2K/4cKppI=
+	t=1745254219; cv=none; b=RZ2CvsSiqFJxSo8ji3IHKksMBMh8W6W8ecdUO60sT1cGnwz/+pZzRC0M3nio+n0/lrBiZYCWhwUP0SKkLJyzaYPawixxcULmu6g3u3ZI8Ou99cXF7P3bXoTjRh+Vt6fuBdZMztzpvgLG6jWLE8Dp8MaKkn04SlMGHfUA8LJu1yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745252002; c=relaxed/simple;
-	bh=un/wwArIfP7JErr0j3e550m4ix8Qb+8QW7iRtzJgnNc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gJJakMgyCySY3w4rIhVpMTRNzSLjZ/qEufIu+z3Ii+lUgG3WWtVQqGtBmEoqyVhQPGlCzU7BDDoVxQ8kd/TF2r+ppa5SXwJn9B1PrIQJsp7/bGG3T+KzQ4VHq7JwS6rNpHiLFN/ECjZxxVc5fYAi7gSvearh+s9CT9K5PIFmcIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfrbXB4s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A556C4CEE4;
-	Mon, 21 Apr 2025 16:13:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745252002;
-	bh=un/wwArIfP7JErr0j3e550m4ix8Qb+8QW7iRtzJgnNc=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=cfrbXB4szIbk0vfuTA61GSiEXZ4bAIC4grzDgqrGhA9nSzZXEhYX+oy5dmZc1V3ec
-	 gxC936tXnENeCIe1MSHRsUIl7MZ7rIzNC1Lol/Z8WHt5vlsGTQea7YLkMfqq7YCLvp
-	 DsRAYs0SMGolELCf6MxEmZJhgkxcokrQ27B6UWH9IksJLclNAn6y36cFI6wxXaQbuv
-	 sm4lm+BKBP5MFn5TKpQ7/l33RAMbwnjxsAgrq0N896r9p1EF5Kp4rQq9u1CbQtGE9+
-	 s+5y/3GgUjuiUtwJOKnPWGAL6NZfd4gT4VS0MXWdyO6XJ3dAPRR5UWJ/byRW7eK0mF
-	 RQWALiY6T7xLQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 039E3C369D5;
-	Mon, 21 Apr 2025 16:13:21 +0000 (UTC)
-From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
-Date: Mon, 21 Apr 2025 11:13:05 -0500
-Subject: [PATCH v2] drm/tegra: Assign plane type before registration
+	s=arc-20240116; t=1745254219; c=relaxed/simple;
+	bh=uIQnDo8OhHMomo/3wbZsV9Zo03sE3k05zOEqO4y0BQ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l1WjM3ZvvyxkcrOoev9WdnLfrqu7Ee46OypPlEq1N36x4HGGcHcec+JYIgGIwSX9oSIysA0rIG33d8GCa55dYbYVo1HCMR6/PM2LC95Jk0iSzofx2m4/VPCZTJQFsmFs5tDZXkyqm2F0UqB8qke3SJc4jlSSYaHWdUFQ8TPRWow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SGFb1f0Q; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-22c33e5013aso47131005ad.0
+        for <stable@vger.kernel.org>; Mon, 21 Apr 2025 09:50:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745254217; x=1745859017; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=13svCrKPbDl9rHnNdnmiLKT3ce2oiVKAbFQB+3TJ3n8=;
+        b=SGFb1f0Qgj5l23xmR2G5uKNDdlFIlevN7tVlZrlWEZzK9wDUvMULG6yO8IuX+LMGcS
+         V/dnIltKjP0Ff5BeQ5CuziUiqO5GmZMdap6CO0oAQ4y/xQryiCwk137q1dBor7ub+BHG
+         vHonT/Cz5o+Qt1GjvyUSO/lvxSvBnasZDtYkoPzoiG+fXfd7XmntY/qp/qlf/wn47O6W
+         FNb1cQCENruWTDEiKaa5nKD6Ah5RmkPPPP4UTiQdVmqEMuMgn8P1Fh4NBSzaN48uSAz5
+         cTTTm/Q7FoD0z1OLcshfN+ThQR1hpD4EtmCFPoEZwVYTRzUFlhofjSPajCbGcLnmdusX
+         D8CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745254217; x=1745859017;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=13svCrKPbDl9rHnNdnmiLKT3ce2oiVKAbFQB+3TJ3n8=;
+        b=kTR5PMbPL+rMSeS1DWZEo7C827BzG70zzCoyBx2zG8QXZCVy0qeRHjbCLtrHgtmzjC
+         9hfj/rLUzexZNAuiLQ2oHSNfQ9SFeccb3daAtZkfRn7PRr/XLzueFOpLsJvpMkLKG1tf
+         lNFVZ5DIotk8wXT678I1lRwD9P8oRwvGg2RLQZ3V3NC8F03p/wgf9ZYygsVKyi45zpd8
+         gV4HJeaU8/y3Rs7NteGoEZW8kl9SF6Um4zjXJmXehTvDfn9qHzN1STYajtKn1j7nAA8D
+         DbbS9/AankepMIapHPh4x37+HGYu9UOPkGV6I9d4aQZN4NnnAL76CyGuF4Ek9KzHBU/t
+         BnYw==
+X-Gm-Message-State: AOJu0YzpqoNwVLG1Elxd53PwWCBF3ri+zTRKKECZ2/lSWuyaCO3cBVWV
+	18H7JF1XuK2Bqw2vXh3LX9M+EE03BTLVAQXQhIt4+rE2I6HBXGtZ0xy4ZA==
+X-Gm-Gg: ASbGncvPhAfytEkL/ocum+MpuJ4GiDmm7PSJ84PD9zhJ77tZW8tk6JyKcsnEW2zwuAS
+	ZBZqlwdAyrO2MjYFEZwiyTVpuF0IXq3PWby+LBzQpZIWb3LOOlffCEEhICl/x1YU3Ji6zVcZ65R
+	5/TgMUyJBAzr6nfZzf+SD0yrhQyyw7Wl9o34NGtn24fG1iEFuy97VcQ4hFM7utEjxgTWhC4F9gT
+	ttInTjzihGc4RNh+NAnpZIndx0sVrZIJJZ2ndD7dIHUhH/Xjt4EMqdactJPlkK/ttddT8MOJ5nR
+	yYCig7skVDu3s44b8qwubI7ILapbYm0i0stjfZjzCXAfLY85Vw==
+X-Google-Smtp-Source: AGHT+IHB1C/ct5M79Rx/DalKtPK0pC/0464y7Ji5cYQMhBW37q1S4uVcgC2Lr1CFaHbff3meXkt1Ag==
+X-Received: by 2002:a17:902:cf0e:b0:223:5241:f5ca with SMTP id d9443c01a7336-22c5359b672mr154794315ad.20.1745254216843;
+        Mon, 21 Apr 2025 09:50:16 -0700 (PDT)
+Received: from localhost.localdomain ([181.91.133.137])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b0db1461b3csm5786878a12.47.2025.04.21.09.50.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 09:50:16 -0700 (PDT)
+From: Kurt Borja <kuurtb@gmail.com>
+To: stable@vger.kernel.org
+Cc: Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.14.y] platform/x86: alienware-wmi-wmax: Add G-Mode support to Alienware m16 R1
+Date: Mon, 21 Apr 2025 13:49:53 -0300
+Message-ID: <20250421164953.9329-1-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2025042129-reliance-rewrap-6d6b@gregkh>
+References: <2025042129-reliance-rewrap-6d6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAJBuBmgC/32NQQqDMBBFryKz7pQkjRS76j2KiyROdKBRmYhUx
- Ls39QBdvgf//R0yCVOGR7WD0MqZp7GAuVQQBjf2hNwVBqNMraxucKFeHHaScBZOTjYMZO+RPMX
- ORSi7WSjy52y+2sID52WS7bxY9c/+q60aNfpGq9pGb/UtPvvk+H0NU4L2OI4vqbPm+LIAAAA=
-X-Change-ID: 20250419-tegra-drm-primary-ce47febefdaf
-To: Thierry Reding <thierry.reding@gmail.com>, 
- Mikko Perttunen <mperttunen@nvidia.com>, David Airlie <airlied@gmail.com>, 
- Simona Vetter <simona@ffwll.ch>, Jonathan Hunter <jonathanh@nvidia.com>
-Cc: dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, 
- Aaron Kling <webgeek1234@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1745252001; l=3636;
- i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
- bh=Or7tDNWWlFSumB821skJoVUGwAK2I8ncBHMuDgkapE4=;
- b=2+gdz7hbqQdI1D615jKbm4aD/BhNq7CCHx//+FFw7ZttsjjqB7caby08sSZCdDJFDdEL1yeDq
- sX2OjpvnkKLDHCnfDKChpd8mL0k1bq9ld/T5saRYh89s0ouSp6jFrXh
-X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
- pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
-X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
- auth_id=342
-X-Original-From: Aaron Kling <webgeek1234@gmail.com>
-Reply-To: webgeek1234@gmail.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Thierry Reding <treding@nvidia.com>
+Some users report the Alienware m16 R1 models, support G-Mode. This was
+manually verified by inspecting their ACPI tables.
 
-Changes to a plane's type after it has been registered aren't propagated
-to userspace automatically. This could possibly be achieved by updating
-the property, but since we can already determine which type this should
-be before the registration, passing in the right type from the start is
-a much better solution.
-
-Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
 Cc: stable@vger.kernel.org
-Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250411-awcc-support-v1-1-09a130ec4560@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+(cherry picked from commit 5ff79cabb23a2f14d2ed29e9596aec908905a0e6)
 ---
-Changes in v2:
-- Fixed signoff in commit message
-- Added fixes to commit message
-- Link to v1: https://lore.kernel.org/r/20250419-tegra-drm-primary-v1-1-b91054fb413f@gmail.com
----
- drivers/gpu/drm/tegra/dc.c  | 12 ++++++++----
- drivers/gpu/drm/tegra/hub.c |  4 ++--
- drivers/gpu/drm/tegra/hub.h |  3 ++-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/platform/x86/dell/alienware-wmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
-index 798507a8ae56d6789feb95dccdd23b2e63d9c148..56f12dbcee3e93ff5e4804e5fe9b23f160073ebf 100644
---- a/drivers/gpu/drm/tegra/dc.c
-+++ b/drivers/gpu/drm/tegra/dc.c
-@@ -1321,10 +1321,16 @@ static struct drm_plane *tegra_dc_add_shared_planes(struct drm_device *drm,
- 		if (wgrp->dc == dc->pipe) {
- 			for (j = 0; j < wgrp->num_windows; j++) {
- 				unsigned int index = wgrp->windows[j];
-+				enum drm_plane_type type;
-+
-+				if (primary)
-+					type = DRM_PLANE_TYPE_OVERLAY;
-+				else
-+					type = DRM_PLANE_TYPE_PRIMARY;
- 
- 				plane = tegra_shared_plane_create(drm, dc,
- 								  wgrp->index,
--								  index);
-+								  index, type);
- 				if (IS_ERR(plane))
- 					return plane;
- 
-@@ -1332,10 +1338,8 @@ static struct drm_plane *tegra_dc_add_shared_planes(struct drm_device *drm,
- 				 * Choose the first shared plane owned by this
- 				 * head as the primary plane.
- 				 */
--				if (!primary) {
--					plane->type = DRM_PLANE_TYPE_PRIMARY;
-+				if (!primary)
- 					primary = plane;
--				}
- 			}
- 		}
- 	}
-diff --git a/drivers/gpu/drm/tegra/hub.c b/drivers/gpu/drm/tegra/hub.c
-index fa6140fc37fb16df4b150e5ae9d8148f8f446cd7..8f779f23dc0904d38b14d3f3a928a07fc9e601ad 100644
---- a/drivers/gpu/drm/tegra/hub.c
-+++ b/drivers/gpu/drm/tegra/hub.c
-@@ -755,9 +755,9 @@ static const struct drm_plane_helper_funcs tegra_shared_plane_helper_funcs = {
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index)
-+					    unsigned int index,
-+					    enum drm_plane_type type)
- {
--	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
- 	struct tegra_drm *tegra = drm->dev_private;
- 	struct tegra_display_hub *hub = tegra->hub;
- 	struct tegra_shared_plane *plane;
-diff --git a/drivers/gpu/drm/tegra/hub.h b/drivers/gpu/drm/tegra/hub.h
-index 23c4b2115ed1e36e8d2d6ed614a6ead97eb4c441..a66f18c4facc9df96ea8b9f54239b52f06536d12 100644
---- a/drivers/gpu/drm/tegra/hub.h
-+++ b/drivers/gpu/drm/tegra/hub.h
-@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct tegra_display_hub *hub);
- struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
- 					    struct tegra_dc *dc,
- 					    unsigned int wgrp,
--					    unsigned int index);
-+					    unsigned int index,
-+					    enum drm_plane_type type);
- 
- int tegra_display_hub_atomic_check(struct drm_device *drm,
- 				   struct drm_atomic_state *state);
-
----
-base-commit: 119009db267415049182774196e3cce9e13b52ef
-change-id: 20250419-tegra-drm-primary-ce47febefdaf
-
-Best regards,
+diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
+index e252e0cf47ef..6067a8b630f1 100644
+--- a/drivers/platform/x86/dell/alienware-wmi.c
++++ b/drivers/platform/x86/dell/alienware-wmi.c
+@@ -248,7 +248,7 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
+ 		},
+-		.driver_data = &quirk_x_series,
++		.driver_data = &quirk_g_series,
+ 	},
+ 	{
+ 		.callback = dmi_matched,
 -- 
-Aaron Kling <webgeek1234@gmail.com>
-
+2.49.0
 
 
