@@ -1,158 +1,179 @@
-Return-Path: <stable+bounces-134869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98E39A953CE
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 18:02:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB97A953E0
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 18:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5517A189464C
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:02:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AFB6167E62
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D37B14883F;
-	Mon, 21 Apr 2025 16:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03FF61E260C;
+	Mon, 21 Apr 2025 16:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UgTlLR89"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfrbXB4s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33F433086
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 16:02:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8561E25ED;
+	Mon, 21 Apr 2025 16:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745251341; cv=none; b=dQcaZvc6aoZxrh+F4Qti9AnE2dfUsO/l3HEg8A8vWfVUOPPUs5V1Gw3zJU4X2HGd1Ul0RvjaO5Xz4Vop1GNlrV5T3/4D4/ZjV+Uwf8kZz4U2W+BP74nsY756uHkART+0KJ3n3t74xcEye/LguXeILtDFajyDmFnCRQdesivRJaA=
+	t=1745252002; cv=none; b=rhTWCNzXMdummXETUlCryQ9027/WKk2CMnMNPSXR66xJXIgp0JAcm6V0rTMZXDd76DD0YYvKuMfgFo+6m/HSxZ4xqRm+2x01/DFizOZVpgQxE6WvcSDYwpQYfZA+q6AkJrwkLF7cYR70im751Ee/7m50CTu/RjNzJN2K/4cKppI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745251341; c=relaxed/simple;
-	bh=QVRgx1cG71n1EbvoR1X7V3DYQHHXyK5yZ/v4qTIRSfA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KUuWp3l1F4jf15a6dcvCl1TSGlgBaGzyLIH4ZEtdPTyo4fm7Tr4szL+nunGBtCumFlftH1KSbWojLcf2ExtdhaZdwJ7AbxXi8JU9uYnLdDalayHPr/wQFIzxae+5g+Fc/dvyGNtzJn54Cd/C0FZPkAOCHMq3Bq2pS8zM2YoCgbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UgTlLR89; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-4769e30af66so1262821cf.1
-        for <stable@vger.kernel.org>; Mon, 21 Apr 2025 09:02:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745251337; x=1745856137; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZwPtecf76ZYadR3YRRgC+46gtO+vSJrvyRaWH/6/w64=;
-        b=UgTlLR89COHTrMSW21bjsVchNL+fd4PJNvFVl69mT7OwXFlBtKA4CbKrdqpbaYwAao
-         JudDYxWxObIb1cxrfkbaJ9elm5icHsgKbjJxY7MD54qDr+xgvdIOcm9jE8dmWqq3llvM
-         kB5WSqyCtp3uyUJpZO+6IgsjbXD5kcN9X58FnUBN7Tl1ViTHk7LUS2Tm0aGWC01EclWJ
-         oky6aHhIFBJXLxGUGWrdEZGFQ8br/zjPzeGEsgC9+Y6e88ZrKt2/RHObMXXCHUaXn9N4
-         caidEhfg+pREVVGtOyNdYgXqo99j+BlQwzGLm3jqkHSAW2nkbz526VGPWwgqF+s2IYWG
-         DlyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745251337; x=1745856137;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZwPtecf76ZYadR3YRRgC+46gtO+vSJrvyRaWH/6/w64=;
-        b=I0OMscwmnVsLJTVx/ZYU8i0wco7UngFQVcDic1P6C4214XZjPrbhIRcw5jKgyGF4Zv
-         hHBx5yKaqMsG3QALEdIDKFmTHlWgZzaxUuTV+2caTwqKV24JWBaxh7oIyZ1vdG7JbesE
-         dRkSufad/kfkHuGaX/2cGoSwdE+Tf6wzjb9ILd322+eTketMe5n6pKMYRs5i7inFcnNj
-         njeiH7UXqtAHlXzhveU7pu18xeqnw075FKmc41baOq8Xwo88LKC2raf0E4TawsO0uiIH
-         clPMawzW+iJz7I0lMFpMhfyWjtILEjMAQ5NqXIOL39doQlS7S/fP8S0ko1ih+nVFT7M7
-         j7FA==
-X-Forwarded-Encrypted: i=1; AJvYcCUm8y1Meu71LwTx3o48lSr57yQ4xnxulacxZsKPlss+rLNOXW0I16AjBnu5A6vNHkzdzmNrdzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlRg6p4Polj1yHBoHlrJ9UZyZFiR7rATHuBGPCUR3TzpoApQPp
-	QJbBxYLQOQjuyEeBp8RNDbgx/DEdILIV51m+gNiwJEjx59JLrp0+WAzxbZEnKYI2eEuCzjqA8j/
-	+rfwzJ497Y1dHiToREj6KBZpum6JoiiqF7oEj
-X-Gm-Gg: ASbGncvvpvN6ijglbW9qtq05sTMBRdsyW95wLZIm2ESUg9n6IUcXVKIQc+rlqQ7OyHm
-	nTiU3PzOc36L8wLyBvZLBETQeNggE0oFSusbTrAdOAATLFG232qespwQuNVVGu1cwdScT2zizIw
-	TrtbIrQ/s0TOdutgW61NyB
-X-Google-Smtp-Source: AGHT+IFcrJIudMQwJuhhosU6XokIESjG4OJj8NhYiN8xk3grHh804D2H04q6KbIx6961hwYUS1e4YdDhHpSrKM4x5U0=
-X-Received: by 2002:a05:622a:1184:b0:474:bd1b:417b with SMTP id
- d75a77b69052e-47aeb25035bmr12192481cf.26.1745251337383; Mon, 21 Apr 2025
- 09:02:17 -0700 (PDT)
+	s=arc-20240116; t=1745252002; c=relaxed/simple;
+	bh=un/wwArIfP7JErr0j3e550m4ix8Qb+8QW7iRtzJgnNc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gJJakMgyCySY3w4rIhVpMTRNzSLjZ/qEufIu+z3Ii+lUgG3WWtVQqGtBmEoqyVhQPGlCzU7BDDoVxQ8kd/TF2r+ppa5SXwJn9B1PrIQJsp7/bGG3T+KzQ4VHq7JwS6rNpHiLFN/ECjZxxVc5fYAi7gSvearh+s9CT9K5PIFmcIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfrbXB4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A556C4CEE4;
+	Mon, 21 Apr 2025 16:13:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745252002;
+	bh=un/wwArIfP7JErr0j3e550m4ix8Qb+8QW7iRtzJgnNc=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=cfrbXB4szIbk0vfuTA61GSiEXZ4bAIC4grzDgqrGhA9nSzZXEhYX+oy5dmZc1V3ec
+	 gxC936tXnENeCIe1MSHRsUIl7MZ7rIzNC1Lol/Z8WHt5vlsGTQea7YLkMfqq7YCLvp
+	 DsRAYs0SMGolELCf6MxEmZJhgkxcokrQ27B6UWH9IksJLclNAn6y36cFI6wxXaQbuv
+	 sm4lm+BKBP5MFn5TKpQ7/l33RAMbwnjxsAgrq0N896r9p1EF5Kp4rQq9u1CbQtGE9+
+	 s+5y/3GgUjuiUtwJOKnPWGAL6NZfd4gT4VS0MXWdyO6XJ3dAPRR5UWJ/byRW7eK0mF
+	 RQWALiY6T7xLQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 039E3C369D5;
+	Mon, 21 Apr 2025 16:13:21 +0000 (UTC)
+From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
+Date: Mon, 21 Apr 2025 11:13:05 -0500
+Subject: [PATCH v2] drm/tegra: Assign plane type before registration
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250421075232.2165527-1-quic_zhenhuah@quicinc.com>
-In-Reply-To: <20250421075232.2165527-1-quic_zhenhuah@quicinc.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 21 Apr 2025 09:02:06 -0700
-X-Gm-Features: ATxdqUEERxAN1-oqZuuaQ_rO7ijRW7H4bum1OhOTCPYXUXueTMh6_U49FMFe7hQ
-Message-ID: <CAJuCfpGwspnceQ5oq_ovViHnawcVCkM1pKawJGckfKsvK1s_Aw@mail.gmail.com>
-Subject: Re: [PATCH v2] mm, slab: clean up slab->obj_exts always
-To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Cc: cl@linux.com, rientjes@google.com, vbabka@suse.cz, 
-	roman.gushchin@linux.dev, harry.yoo@oracle.com, pasha.tatashin@soleen.com, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	quic_tingweiz@quicinc.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAJBuBmgC/32NQQqDMBBFryKz7pQkjRS76j2KiyROdKBRmYhUx
+ Ls39QBdvgf//R0yCVOGR7WD0MqZp7GAuVQQBjf2hNwVBqNMraxucKFeHHaScBZOTjYMZO+RPMX
+ ORSi7WSjy52y+2sID52WS7bxY9c/+q60aNfpGq9pGb/UtPvvk+H0NU4L2OI4vqbPm+LIAAAA=
+X-Change-ID: 20250419-tegra-drm-primary-ce47febefdaf
+To: Thierry Reding <thierry.reding@gmail.com>, 
+ Mikko Perttunen <mperttunen@nvidia.com>, David Airlie <airlied@gmail.com>, 
+ Simona Vetter <simona@ffwll.ch>, Jonathan Hunter <jonathanh@nvidia.com>
+Cc: dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, 
+ Aaron Kling <webgeek1234@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745252001; l=3636;
+ i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
+ bh=Or7tDNWWlFSumB821skJoVUGwAK2I8ncBHMuDgkapE4=;
+ b=2+gdz7hbqQdI1D615jKbm4aD/BhNq7CCHx//+FFw7ZttsjjqB7caby08sSZCdDJFDdEL1yeDq
+ sX2OjpvnkKLDHCnfDKChpd8mL0k1bq9ld/T5saRYh89s0ouSp6jFrXh
+X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
+ pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
+X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
+ auth_id=342
+X-Original-From: Aaron Kling <webgeek1234@gmail.com>
+Reply-To: webgeek1234@gmail.com
 
-On Mon, Apr 21, 2025 at 12:52=E2=80=AFAM Zhenhua Huang
-<quic_zhenhuah@quicinc.com> wrote:
->
-> When memory allocation profiling is disabled at runtime or due to an
-> error, shutdown_mem_profiling() is called: slab->obj_exts which
-> previously allocated remains.
-> It won't be cleared by unaccount_slab() because of
-> mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
-> should always be cleaned up in unaccount_slab() to avoid following error:
->
-> [...]BUG: Bad page state in process...
-> ..
-> [...]page dumped because: page still charged to cgroup
->
-> Cc: stable@vger.kernel.org
-> Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object ex=
-tensions")
-> Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> Acked-by: David Rientjes <rientjes@google.com>
-> Acked-by: Harry Yoo <harry.yoo@oracle.com>
-> Tested-by: Harry Yoo <harry.yoo@oracle.com>
+From: Thierry Reding <treding@nvidia.com>
 
-Acked-by: Suren Baghdasaryan <surenb@google.com>
+Changes to a plane's type after it has been registered aren't propagated
+to userspace automatically. This could possibly be achieved by updating
+the property, but since we can already determine which type this should
+be before the registration, passing in the right type from the start is
+a much better solution.
 
-> ---
->  mm/slub.c | 12 ++++++++----
->  1 file changed, 8 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 566eb8b8282d..a98ce1426076 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2028,8 +2028,8 @@ int alloc_slab_obj_exts(struct slab *slab, struct k=
-mem_cache *s,
->         return 0;
->  }
->
-> -/* Should be called only if mem_alloc_profiling_enabled() */
-> -static noinline void free_slab_obj_exts(struct slab *slab)
-> +/* Free only if slab_obj_exts(slab) */
+Suggested-by: Aaron Kling <webgeek1234@gmail.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Cc: stable@vger.kernel.org
+Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+---
+Changes in v2:
+- Fixed signoff in commit message
+- Added fixes to commit message
+- Link to v1: https://lore.kernel.org/r/20250419-tegra-drm-primary-v1-1-b91054fb413f@gmail.com
+---
+ drivers/gpu/drm/tegra/dc.c  | 12 ++++++++----
+ drivers/gpu/drm/tegra/hub.c |  4 ++--
+ drivers/gpu/drm/tegra/hub.h |  3 ++-
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-nit: the above comment is unnecessary. It's quite obvious from the code.
+diff --git a/drivers/gpu/drm/tegra/dc.c b/drivers/gpu/drm/tegra/dc.c
+index 798507a8ae56d6789feb95dccdd23b2e63d9c148..56f12dbcee3e93ff5e4804e5fe9b23f160073ebf 100644
+--- a/drivers/gpu/drm/tegra/dc.c
++++ b/drivers/gpu/drm/tegra/dc.c
+@@ -1321,10 +1321,16 @@ static struct drm_plane *tegra_dc_add_shared_planes(struct drm_device *drm,
+ 		if (wgrp->dc == dc->pipe) {
+ 			for (j = 0; j < wgrp->num_windows; j++) {
+ 				unsigned int index = wgrp->windows[j];
++				enum drm_plane_type type;
++
++				if (primary)
++					type = DRM_PLANE_TYPE_OVERLAY;
++				else
++					type = DRM_PLANE_TYPE_PRIMARY;
+ 
+ 				plane = tegra_shared_plane_create(drm, dc,
+ 								  wgrp->index,
+-								  index);
++								  index, type);
+ 				if (IS_ERR(plane))
+ 					return plane;
+ 
+@@ -1332,10 +1338,8 @@ static struct drm_plane *tegra_dc_add_shared_planes(struct drm_device *drm,
+ 				 * Choose the first shared plane owned by this
+ 				 * head as the primary plane.
+ 				 */
+-				if (!primary) {
+-					plane->type = DRM_PLANE_TYPE_PRIMARY;
++				if (!primary)
+ 					primary = plane;
+-				}
+ 			}
+ 		}
+ 	}
+diff --git a/drivers/gpu/drm/tegra/hub.c b/drivers/gpu/drm/tegra/hub.c
+index fa6140fc37fb16df4b150e5ae9d8148f8f446cd7..8f779f23dc0904d38b14d3f3a928a07fc9e601ad 100644
+--- a/drivers/gpu/drm/tegra/hub.c
++++ b/drivers/gpu/drm/tegra/hub.c
+@@ -755,9 +755,9 @@ static const struct drm_plane_helper_funcs tegra_shared_plane_helper_funcs = {
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index)
++					    unsigned int index,
++					    enum drm_plane_type type)
+ {
+-	enum drm_plane_type type = DRM_PLANE_TYPE_OVERLAY;
+ 	struct tegra_drm *tegra = drm->dev_private;
+ 	struct tegra_display_hub *hub = tegra->hub;
+ 	struct tegra_shared_plane *plane;
+diff --git a/drivers/gpu/drm/tegra/hub.h b/drivers/gpu/drm/tegra/hub.h
+index 23c4b2115ed1e36e8d2d6ed614a6ead97eb4c441..a66f18c4facc9df96ea8b9f54239b52f06536d12 100644
+--- a/drivers/gpu/drm/tegra/hub.h
++++ b/drivers/gpu/drm/tegra/hub.h
+@@ -80,7 +80,8 @@ void tegra_display_hub_cleanup(struct tegra_display_hub *hub);
+ struct drm_plane *tegra_shared_plane_create(struct drm_device *drm,
+ 					    struct tegra_dc *dc,
+ 					    unsigned int wgrp,
+-					    unsigned int index);
++					    unsigned int index,
++					    enum drm_plane_type type);
+ 
+ int tegra_display_hub_atomic_check(struct drm_device *drm,
+ 				   struct drm_atomic_state *state);
 
-> +static inline void free_slab_obj_exts(struct slab *slab)
->  {
->         struct slabobj_ext *obj_exts;
->
-> @@ -2601,8 +2601,12 @@ static __always_inline void account_slab(struct sl=
-ab *slab, int order,
->  static __always_inline void unaccount_slab(struct slab *slab, int order,
->                                            struct kmem_cache *s)
->  {
-> -       if (memcg_kmem_online() || need_slab_obj_ext())
-> -               free_slab_obj_exts(slab);
-> +       /*
-> +        * The slab object extensions should now be freed regardless of
-> +        * whether mem_alloc_profiling_enabled() or not because profiling
-> +        * might have been disabled after slab->obj_exts got allocated.
-> +        */
-> +       free_slab_obj_exts(slab);
->
->         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
->                             -(PAGE_SIZE << order));
-> --
-> 2.34.1
->
+---
+base-commit: 119009db267415049182774196e3cce9e13b52ef
+change-id: 20250419-tegra-drm-primary-ce47febefdaf
+
+Best regards,
+-- 
+Aaron Kling <webgeek1234@gmail.com>
+
+
 
