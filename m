@@ -1,112 +1,121 @@
-Return-Path: <stable+bounces-134781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64DFA9505B
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9768AA95069
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0805816FF7A
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 11:44:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD3DF17225B
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 11:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF61264616;
-	Mon, 21 Apr 2025 11:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3A721420A;
+	Mon, 21 Apr 2025 11:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bsc3jUwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWfstBcm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEAFE262D29;
-	Mon, 21 Apr 2025 11:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF5E20C485
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 11:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745235850; cv=none; b=V/JlvTB5DXEe3RWY16/M9f98fEut9+fIq09CM5xezh0PVbaYi+txdrhiSDv2gfJ3vyu+pyxI4GwdbcQdLlzn6AAkxfj6jHsWYNOi/85ILInkzyj+3uWcF2GiotqDXXG1vpESLX5oDSdKaiecAty1nxfQZpQ5TfpYGP7LDNcdxKE=
+	t=1745236182; cv=none; b=TLMkn+ISPaHo+1/SjqU6dkJkK1CvayVc6KEe5yWCu41SHtY/ckeEH5yAsRKUxfTianEuX2rmDBhzefY4DYcJb3QSTEvbdOvv/cSU/356Hwhnr6cIln/jnycRQi8kPW0ihUBUJj+9FxwiqXfbDDwLxewpBPVOgCRHkkB2whsnQh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745235850; c=relaxed/simple;
-	bh=KFt7KVz7z+ivKXjqeTBsn4Dyd+33+BcExIfbhTDS1iM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fX8/5QLaroeS5oMLsMekoDI6uxuio3O84aWMvYIXhK+qkvhY3jWp8g5bmTEAe/1eS5JFvY6r4nPFp5qU9N8YJG5/Fu/SAlVbefKrvuKlMA6vmm1CapH3AOBUWlwaYRb3qF0tdo8+vVkoe+3X/dIXEOY4+r8ZMfrppkY2VJKs8go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bsc3jUwP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358B9C4CEE4;
-	Mon, 21 Apr 2025 11:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745235849;
-	bh=KFt7KVz7z+ivKXjqeTBsn4Dyd+33+BcExIfbhTDS1iM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Bsc3jUwPwu0cl688/IsxDAm3p5IvXzLuH34bn5XkG3BqIVWMHJ8Orv0GhYh7UYRRp
-	 Fm1tuVJKv71Q2cOCrqERDUptmbc6eSTLlrbBrf8H4Br7ldYCivPhj3v2Ivyr3xpbRJ
-	 9uAVJkgUQPp29ftVxqVbgKwhrOHAyCn0RQU3yph8/qZNs0gvP9UX40Qek11VuWp3lt
-	 utoIZykp8yz36KaTmXPm9HJsIM4WsIE/qlqmpKtD9lEoY0AFp+hNZPEhbXhH2eytct
-	 yi8DP6MBGl83NWLD0IREMdVRoKfypDu56MdJT3pu/JA9Y//zsBqU6D/FSXk8euc82P
-	 IkP08kQExrTCA==
-Date: Mon, 21 Apr 2025 12:44:01 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev,
- Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
- linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH v4] staging: iio: ad5933: Correct settling cycles
- encoding per datasheet
-Message-ID: <20250421124401.0daa6a2e@jic23-huawei>
-In-Reply-To: <20250420013009.847851-1-gshahrouzi@gmail.com>
-References: <20250420013009.847851-1-gshahrouzi@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745236182; c=relaxed/simple;
+	bh=awd9YLv/rksZ5v+lh/4Ev5oobSvNtx8Fc1u6YWjBicU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MmbKEIHteOgAzX2rGYuiIJydFc+eXAi4g5BC6qZ+LDvIV61HPcI6Js9AVQMJ0R/ia2DPxnhpgxMSoU5XZoT7du/b8QclGcxkJuM/wK983g+39VlzjS5H31f+8z+c1+R+hx9LFitTX+ywyglMatKs++Aepb0BcWZLpEYn9rrbv5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWfstBcm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07862C4CEE4;
+	Mon, 21 Apr 2025 11:49:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745236181;
+	bh=awd9YLv/rksZ5v+lh/4Ev5oobSvNtx8Fc1u6YWjBicU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=LWfstBcmduVdlAI3zXdJ0OtBB85wok7+k31gIhbN4DGLx/yxoCi+O4765Gl2xZ/bq
+	 I07WOD2lqVDwdXtNUzBRHne3c6qr/kfAVoY2SKVnxKzalcOQvTr/hX9qg9wq5xmu69
+	 NOFfjEXqMOc8ZqDoB2sn2cCiGAfVXv+HI6NAFgdM=
+Subject: FAILED: patch "[PATCH] ASoC: qcom: Fix sc7280 lpass potential buffer overflow" failed to apply to 6.1-stable tree
+To: pimenoveu12@gmail.com,broonie@kernel.org,khoroshilov@ispras.ru,m.kobuk@ispras.ru
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Apr 2025 13:49:38 +0200
+Message-ID: <2025042138-spherical-reabsorb-d6da@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sat, 19 Apr 2025 21:30:09 -0400
-Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-> The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
-> (2044).
-> 
-> Clamp the user input to the maximum effective value of 0x7FC cycles.
-> 
-> Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-I'm taking this the slow path as it has been wrong a very long time
-and there is a lot of churn on IIO staging drivers right now so we may
-have other stuff that I don't want to delay building on top of this.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Applied to the togreg branch of iio.git and pushed out as testing.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Jonathan
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x a31a4934b31faea76e735bab17e63d02fcd8e029
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042138-spherical-reabsorb-d6da@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> ---
-> Changes in v4:
-> 	- Provide clear git body description.
-> Changes in v3:
-> 	- Only include fix (remove refactoring which will be its own
-> 	  separate patch).
-> Changes in v2:
->         - Fix spacing in comment around '+'.
->         - Define mask and values for settling cycle multipliers.
-> ---
->  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> index d5544fc2fe989..f8fcc10ea8150 100644
-> --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-> +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-> @@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
->  		ret = ad5933_cmd(st, 0);
->  		break;
->  	case AD5933_OUT_SETTLING_CYCLES:
-> -		val = clamp(val, (u16)0, (u16)0x7FF);
-> +		val = clamp(val, (u16)0, (u16)0x7FC);
->  		st->settling_cycles = val;
->  
->  		/* 2x, 4x handling, see datasheet */
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a31a4934b31faea76e735bab17e63d02fcd8e029 Mon Sep 17 00:00:00 2001
+From: Evgeny Pimenov <pimenoveu12@gmail.com>
+Date: Tue, 1 Apr 2025 23:40:58 +0300
+Subject: [PATCH] ASoC: qcom: Fix sc7280 lpass potential buffer overflow
+
+Case values introduced in commit
+5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution")
+cause out of bounds access in arrays of sc7280 driver data (e.g. in case
+of RX_CODEC_DMA_RX_0 in sc7280_snd_hw_params()).
+
+Redefine LPASS_MAX_PORTS to consider the maximum possible port id for
+q6dsp as sc7280 driver utilizes some of those values.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 77d0ffef793d ("ASoC: qcom: Add macro for lpass DAI id's max limit")
+Cc: stable@vger.kernel.org # v6.0+
+Suggested-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Suggested-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Evgeny Pimenov <pimenoveu12@gmail.com>
+Link: https://patch.msgid.link/20250401204058.32261-1-pimenoveu12@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+
+diff --git a/sound/soc/qcom/lpass.h b/sound/soc/qcom/lpass.h
+index 27a2bf9a6613..de3ec6f594c1 100644
+--- a/sound/soc/qcom/lpass.h
++++ b/sound/soc/qcom/lpass.h
+@@ -13,10 +13,11 @@
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <dt-bindings/sound/qcom,lpass.h>
++#include <dt-bindings/sound/qcom,q6afe.h>
+ #include "lpass-hdmi.h"
+ 
+ #define LPASS_AHBIX_CLOCK_FREQUENCY		131072000
+-#define LPASS_MAX_PORTS			(LPASS_CDC_DMA_VA_TX8 + 1)
++#define LPASS_MAX_PORTS			(DISPLAY_PORT_RX_7 + 1)
+ #define LPASS_MAX_MI2S_PORTS			(8)
+ #define LPASS_MAX_DMA_CHANNELS			(8)
+ #define LPASS_MAX_HDMI_DMA_CHANNELS		(4)
 
 
