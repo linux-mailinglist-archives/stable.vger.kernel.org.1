@@ -1,98 +1,164 @@
-Return-Path: <stable+bounces-134882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A11A956E0
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 21:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A78EFA956E2
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 21:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FF541894AC8
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 19:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 960061894AF0
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 19:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B38D1EB1AC;
-	Mon, 21 Apr 2025 19:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6CA1EA7C2;
+	Mon, 21 Apr 2025 19:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m1E68Gh7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1098D2E401;
-	Mon, 21 Apr 2025 19:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F4D8BEA;
+	Mon, 21 Apr 2025 19:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745264871; cv=none; b=rxHLr/WQF0n+U7rff7lj8WkSc95HSGShAybavJOyizi8QNVhZFfcyWcMHbzcbR2Ro4pe4lBgosNQJ2AypHfe/Qt/0ryzLcnCs9LHnj/zzFjZAWfoTj5tDtl4ewvo+3ZJlw3Oknhdmp5Fa3snmQ8yLUmerzcxZsD/LLNYcHw2Kp0=
+	t=1745264951; cv=none; b=ciRnQJJO91k6jBcpczkzU2ZyfHIO9p+6vfR9FtGT55JBaojMdJEl+yrmAYD8MdQgZkKj73y0lR/UJwQZROTF0tCKJGh6BtioTHe+qYmuqNqwceLhy6Hrxb9iARETwpLcktOAs92ImwyHQ0OBpotfMmKolggaiOre9XoWVOA/B/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745264871; c=relaxed/simple;
-	bh=10zB3zWNYiSJJwL/V/fxIicMAY2mD0WAywQ+9NZAld8=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=LabJ+bgSnYei+uxdEiJiiZQKGSRd7qsXt8Bc++XPxCTN4+cpnlmxiNQaaLv1Wg9GgecRJxWK7r50CT544aaX3eAS9Twif5fd4SwtA9j4zKSCDwYprTBzFvUEs1OZ/OEgnS+JwPmRQcQ8CukGJZXdNNnWIPXdbuvT4tXqEmsU0+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
-Received: from tux.applied-asynchrony.com (p5b07e9b7.dip0.t-ipconnect.de [91.7.233.183])
-	by mail.itouring.de (Postfix) with ESMTPSA id A88E31255FA;
-	Mon, 21 Apr 2025 21:47:44 +0200 (CEST)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-	by tux.applied-asynchrony.com (Postfix) with ESMTP id 41D7E601893B6;
-	Mon, 21 Apr 2025 21:47:44 +0200 (CEST)
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-To: "Alan J. Wylie" <alan@wylie.me.uk>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
- Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Octavian Purdila <tavip@google.com>, =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vu?=
- =?UTF-8?Q?sen?= <toke@redhat.com>, stable@vger.kernel.org
-References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
- <6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
- <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
- <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
-From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
-Date: Mon, 21 Apr 2025 21:47:44 +0200
+	s=arc-20240116; t=1745264951; c=relaxed/simple;
+	bh=ZKwgzBMd2ynxOHDU8094XcyKSAz/RG1KL1e2R/kBuqk=;
+	h=Date:To:From:Subject:Message-Id; b=NC5ZQ1uiCnzD3d1VsGFBTg1oaMbmWv7prcUUZL+q6owSME0Ti0rapn340X5hBePzx0ZQzkMD+oAiqVUU3MFLtfgFZOLkoZbKjcLlkbrZ5TPinX43BtJsSqTN/y5i26LaXecvgO1aHvj78klM6R09g+P4g7GBoPsKa3XI+8nZO1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m1E68Gh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD74C4CEE4;
+	Mon, 21 Apr 2025 19:49:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745264951;
+	bh=ZKwgzBMd2ynxOHDU8094XcyKSAz/RG1KL1e2R/kBuqk=;
+	h=Date:To:From:Subject:From;
+	b=m1E68Gh7HotD1gV7wsFVRCbaETYjMEZFdgc2Pf95rFqqXNtQXVUi5u0GCxzkZUaEg
+	 SPQiLu2r3VbnP9eEBtgaH4i6byyL4ljMR+mhjkHhQw+vkAedNH3+nzWDdDkhgZ9wTn
+	 0mwKf5dS+trORHKkyw7CthJ9/pmUZ4iH1WwfeXP0=
+Date: Mon, 21 Apr 2025 12:49:10 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,yuzhao@google.com,wangkefeng.wang@huawei.com,stable@vger.kernel.org,david@redhat.com,tujinjiang@huawei.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250421194910.DFD74C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
 
-On 2025-04-21 21:06, Alan J. Wylie wrote:
-> On Mon, 21 Apr 2025 13:10:00 +0100
-> "Alan J. Wylie" <alan@wylie.me.uk> wrote:
-> 
->> On Mon, 21 Apr 2025 13:50:52 +0200
->> Holger Hoffstätte <holger@applied-asynchrony.com> wrote:
-> 
->>> If so, try either reverting the above or adding:
->>> "sch_htb: make htb_qlen_notify() idempotent" aka
->>> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5ba8b837b522d7051ef81bacf3d95383ff8edce5
->>>
->>> which was successfully not added to 6.14.3, along with the rest of
->>> the series:
->>> https://lore.kernel.org/all/20250403211033.166059-2-xiyou.wangcong@gmail.com/
->>
->> "successfully not added"?
->>
->> $ git cherry-pick  5ba8b837b522d7051ef81bacf3d95383ff8edce5
->> [linux-6.14.y 2285c724bf7d] sch_htb: make htb_qlen_notify() idempotent
->>   Author: Cong Wang <xiyou.wangcong@gmail.com>
->>   Date: Thu Apr 3 14:10:23 2025 -0700
->>   1 file changed, 2 insertions(+)
->>
->> It will take a while (perhaps days?) before I can confirm success.
-> 
-> I'm afraid that didn't help. Same panic.
 
-Bummer :-(
+The patch titled
+     Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
 
-Might be something else missing then - so for now the only other thing
-I'd suggest is to revert the removal of the qlen check in fq_codel.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
 
-Holger
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jinjiang Tu <tujinjiang@huawei.com>
+Subject: mm/contig_alloc: fix alloc_contig_range when __GFP_COMP and order < MAX_ORDER
+Date: Mon, 21 Apr 2025 09:36:20 +0800
+
+When calling alloc_contig_range() with __GFP_COMP and the order of
+requested pfn range is pageblock_order, less than MAX_ORDER, I triggered
+WARNING as follows:
+
+ PFN range: requested [2150105088, 2150105600), allocated [2150105088, 2150106112)
+ WARNING: CPU: 3 PID: 580 at mm/page_alloc.c:6877 alloc_contig_range+0x280/0x340
+
+alloc_contig_range() marks pageblocks of the requested pfn range to be
+isolated, migrate these pages if they are in use and will be freed to
+MIGRATE_ISOLATED freelist.
+
+Suppose two alloc_contig_range() calls at the same time and the requested
+pfn range are [0x80280000, 0x80280200) and [0x80280200, 0x80280400)
+respectively.  Suppose the two memory range are in use, then
+alloc_contig_range() will migrate and free these pages to MIGRATE_ISOLATED
+freelist.  __free_one_page() will merge MIGRATE_ISOLATE buddy to larger
+buddy, resulting in a MAX_ORDER buddy.  Finally, find_large_buddy() in
+alloc_contig_range() returns a MAX_ORDER buddy and results in WARNING.
+
+To fix it, call free_contig_range() to free the excess pfn range.
+
+Link: https://lkml.kernel.org/r/20250421013620.459740-1-tujinjiang@huawei.com
+Fixes: e98337d11bbd ("mm/contig_alloc: support __GFP_COMP")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/page_alloc.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+--- a/mm/page_alloc.c~mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order
++++ a/mm/page_alloc.c
+@@ -6706,6 +6706,7 @@ int alloc_contig_range_noprof(unsigned l
+ 		.alloc_contig = true,
+ 	};
+ 	INIT_LIST_HEAD(&cc.migratepages);
++	bool is_range_aligned;
+ 
+ 	gfp_mask = current_gfp_context(gfp_mask);
+ 	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
+@@ -6794,7 +6795,14 @@ int alloc_contig_range_noprof(unsigned l
+ 		goto done;
+ 	}
+ 
+-	if (!(gfp_mask & __GFP_COMP)) {
++	/*
++	 * With __GFP_COMP and the requested order < MAX_PAGE_ORDER,
++	 * isolated free pages can have higher order than the requested
++	 * one. Use split_free_pages() to free out of range pages.
++	 */
++	is_range_aligned = is_power_of_2(end - start);
++	if (!(gfp_mask & __GFP_COMP) ||
++		(is_range_aligned && ilog2(end - start) < MAX_PAGE_ORDER)) {
+ 		split_free_pages(cc.freepages, gfp_mask);
+ 
+ 		/* Free head and tail (if any) */
+@@ -6802,7 +6810,15 @@ int alloc_contig_range_noprof(unsigned l
+ 			free_contig_range(outer_start, start - outer_start);
+ 		if (end != outer_end)
+ 			free_contig_range(end, outer_end - end);
+-	} else if (start == outer_start && end == outer_end && is_power_of_2(end - start)) {
++
++		outer_start = start;
++		outer_end = end;
++
++		if (!(gfp_mask & __GFP_COMP))
++			goto done;
++	}
++
++	if (start == outer_start && end == outer_end && is_range_aligned) {
+ 		struct page *head = pfn_to_page(start);
+ 		int order = ilog2(end - start);
+ 
+_
+
+Patches currently in -mm which might be from tujinjiang@huawei.com are
+
+mm-contig_alloc-fix-alloc_contig_range-when-__gfp_comp-and-order-max_order.patch
+
 
