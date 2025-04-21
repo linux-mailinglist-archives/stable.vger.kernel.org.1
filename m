@@ -1,118 +1,157 @@
-Return-Path: <stable+bounces-134847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F9BBA95271
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:06:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAFAA95277
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F9C73A7FFE
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:05:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC7073A8C44
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469535BAF0;
-	Mon, 21 Apr 2025 14:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622CD55897;
+	Mon, 21 Apr 2025 14:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSRS0ar7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="us+B771p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9121770FE;
-	Mon, 21 Apr 2025 14:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A1F2A1BF
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 14:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745244337; cv=none; b=EHG+Bb4HkLmusoeIPBjUeDHIanM+3AW9JO4ofckzHGHioYslm4xwCCRpQ9gLgE3W+/8ny/UpzIMUmgeJbyzj8Yo/l9jhm/IOmuP4kuKcWkiRGIvzp0D4f8nl/+Sqa4tE5P/QnpCBNeFnl2bb0uKCj/6GwBq8CC7r/WotE9vAjps=
+	t=1745244486; cv=none; b=jZUl41WbYuSZdkNkmPEUWhbIcPFgIt/TdRD+CT2+LpHPxIrHmG/IhitsIuuRBNLHitxpHveiu9aLg4cbHpxdjwE8NDwkXPWA9Szfh0rkI58OmDkGQN3BJvURB37Qq2k0bQUlsFOPBDjrrAnWftWw9a8wzuV55irVu9AD6ubMKns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745244337; c=relaxed/simple;
-	bh=rnmnAG8BImf0XNJhy1LVT5Y3AaNUQMi5NOwLSRLyoeI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QDR9cQ6nmlMYYAirxVE9IzRhncHIY0M86NZKfd6KsSjoV8FbTnycIS2O3V0lR/gS5deHpQZDVFYU8ExUM431R8ZfBxrDbLIErBIHrgyN3af6omUe59Hx2wnUGu7y77Lp/wHJ95HvVX2lEYC/yuv9nEZYhxW7JUwyOOnqph/W328=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSRS0ar7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9528AC4CEE4;
-	Mon, 21 Apr 2025 14:05:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745244336;
-	bh=rnmnAG8BImf0XNJhy1LVT5Y3AaNUQMi5NOwLSRLyoeI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bSRS0ar74bDsV1wm2D0qCSKOLKlNuFTS0+Nh50rqDZOfwJKTY7ocVXxjuv6j0fzYB
-	 EKY62rcug4s6j2gtMka8sEcOIhxIvEWNcUGR9nJxNqA7R392+yYIQ40r7bKTSw0wSX
-	 j49sUIk8WSMDs135sJRNvsH6WGU5Um7MTZuchxA74Pzejuwr8lPGKGlICSuGkO+xEC
-	 FF9VZm9JNDm299tcKkrW8QnfQTC3h+vL7m61uA23EuyIeMvgsnXUxmBbepJ4I5MvoF
-	 r3e4wEU/X+MnFIr8nT6cmNTxwtCwVvW0MnXXnTsEiVk0ux8JZODzsgbKxvQw07zFDU
-	 LwQzrF9vvCBLA==
-Date: Mon, 21 Apr 2025 15:05:29 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: gregkh@suse.de, lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
- skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
- stable@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: adis16201: Use IIO_VAL_INT for temperature
- scale
-Message-ID: <20250421150451.118e9c95@jic23-huawei>
-In-Reply-To: <20250421122819.907735-1-gshahrouzi@gmail.com>
-References: <20250421122819.907735-1-gshahrouzi@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745244486; c=relaxed/simple;
+	bh=wmrLgoG/hiN/1+/T4uc8WZOQfevTPPMfHL0cnO/XB1E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Oj6RvtSxPok7Hh8L09gUit2iR5aYa23mTZpZ4QQfxUraWqGaNO4KoAcxhZYSQnBEA/+KSww93JujiqOGwGWA+p8ht+zuPpyz8rmpAAzYPQ6l/iTaRBf7wTnqxDYcOwluGaIxQzCwsnWPdw9qMKKNfEERefnG94MwWlN1C7LOsuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=us+B771p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2BDC4CEE4;
+	Mon, 21 Apr 2025 14:08:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745244485;
+	bh=wmrLgoG/hiN/1+/T4uc8WZOQfevTPPMfHL0cnO/XB1E=;
+	h=Subject:To:Cc:From:Date:From;
+	b=us+B771pYtTbSUgXhI4uh7tvW4CXZ90AEPDvhsrYuJhuoQqKUkw7e1ua02CSjoU9y
+	 5MV5Ap6UeOms2YGR86YJ0abfWPLbZsebMdMaidTUk6RxZw/iSbuZO5KuGuMZAHeX8B
+	 UCVY8xxSTEBUokWsJVgoSNTVMwFUfetSNFcjfnOI=
+Subject: FAILED: patch "[PATCH] net/niu: Niu requires MSIX ENTRY_DATA fields touch before" failed to apply to 6.14-stable tree
+To: dullfire@yahoo.com,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Apr 2025 16:08:03 +0200
+Message-ID: <2025042103-exuberant-glancing-1710@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Apr 2025 08:28:19 -0400
-Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-> This is a leftover from the patch: commit cf96ffd8c2ed
-> ("staging:iio:accel:adis16201 move to chan_spec based setup.").
-> Initially *val = 0 and *val2 = -470000.  However, they were later
-> changed to -470 and 0 respectively but their return type was not
-> updated.
-> 
-> Use correct type as -470 is an integer in the base units.
+The patch below does not apply to the 6.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-It's not a fix as such. 
+To reproduce the conflict and resubmit, you may use the following commands:
 
-We'll get a string that is -470.000000
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x fbb429ddff5c8e479edcc7dde5a542c9295944e6
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042103-exuberant-glancing-1710@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From fbb429ddff5c8e479edcc7dde5a542c9295944e6 Mon Sep 17 00:00:00 2001
+From: Jonathan Currier <dullfire@yahoo.com>
+Date: Sun, 17 Nov 2024 17:48:43 -0600
+Subject: [PATCH] net/niu: Niu requires MSIX ENTRY_DATA fields touch before
+ entry reads
+
+Fix niu_try_msix() to not cause a fatal trap on sparc systems.
+
+Set PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST on the struct pci_dev to
+work around a bug in the hardware or firmware.
+
+For each vector entry in the msix table, niu chips will cause a fatal
+trap if any registers in that entry are read before that entries'
+ENTRY_DATA register is written to. Testing indicates writes to other
+registers are not sufficient to prevent the fatal trap, however the value
+does not appear to matter. This only needs to happen once after power up,
+so simply rebooting into a kernel lacking this fix will NOT cause the
+trap.
+
+NON-RESUMABLE ERROR: Reporting on cpu 64
+NON-RESUMABLE ERROR: TPC [0x00000000005f6900] <msix_prepare_msi_desc+0x90/0xa0>
+NON-RESUMABLE ERROR: RAW [4010000000000016:00000e37f93e32ff:0000000202000080:ffffffffffffffff
+NON-RESUMABLE ERROR:      0000000800000000:0000000000000000:0000000000000000:0000000000000000]
+NON-RESUMABLE ERROR: handle [0x4010000000000016] stick [0x00000e37f93e32ff]
+NON-RESUMABLE ERROR: type [precise nonresumable]
+NON-RESUMABLE ERROR: attrs [0x02000080] < ASI sp-faulted priv >
+NON-RESUMABLE ERROR: raddr [0xffffffffffffffff]
+NON-RESUMABLE ERROR: insn effective address [0x000000c50020000c]
+NON-RESUMABLE ERROR: size [0x8]
+NON-RESUMABLE ERROR: asi [0x00]
+CPU: 64 UID: 0 PID: 745 Comm: kworker/64:1 Not tainted 6.11.5 #63
+Workqueue: events work_for_cpu_fn
+TSTATE: 0000000011001602 TPC: 00000000005f6900 TNPC: 00000000005f6904 Y: 00000000    Not tainted
+TPC: <msix_prepare_msi_desc+0x90/0xa0>
+g0: 00000000000002e9 g1: 000000000000000c g2: 000000c50020000c g3: 0000000000000100
+g4: ffff8000470307c0 g5: ffff800fec5be000 g6: ffff800047a08000 g7: 0000000000000000
+o0: ffff800014feb000 o1: ffff800047a0b620 o2: 0000000000000011 o3: ffff800047a0b620
+o4: 0000000000000080 o5: 0000000000000011 sp: ffff800047a0ad51 ret_pc: 00000000005f7128
+RPC: <__pci_enable_msix_range+0x3cc/0x460>
+l0: 000000000000000d l1: 000000000000c01f l2: ffff800014feb0a8 l3: 0000000000000020
+l4: 000000000000c000 l5: 0000000000000001 l6: 0000000020000000 l7: ffff800047a0b734
+i0: ffff800014feb000 i1: ffff800047a0b730 i2: 0000000000000001 i3: 000000000000000d
+i4: 0000000000000000 i5: 0000000000000000 i6: ffff800047a0ae81 i7: 00000000101888b0
+I7: <niu_try_msix.constprop.0+0xc0/0x130 [niu]>
+Call Trace:
+[<00000000101888b0>] niu_try_msix.constprop.0+0xc0/0x130 [niu]
+[<000000001018f840>] niu_get_invariants+0x183c/0x207c [niu]
+[<00000000101902fc>] niu_pci_init_one+0x27c/0x2fc [niu]
+[<00000000005ef3e4>] local_pci_probe+0x28/0x74
+[<0000000000469240>] work_for_cpu_fn+0x8/0x1c
+[<000000000046b008>] process_scheduled_works+0x144/0x210
+[<000000000046b518>] worker_thread+0x13c/0x1c0
+[<00000000004710e0>] kthread+0xb8/0xc8
+[<00000000004060c8>] ret_from_fork+0x1c/0x2c
+[<0000000000000000>] 0x0
+Kernel panic - not syncing: Non-resumable error.
+
+Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
+Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20241117234843.19236-3-dullfire@yahoo.com
+
+diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
+index 73c07f10f053..379b6e90121d 100644
+--- a/drivers/net/ethernet/sun/niu.c
++++ b/drivers/net/ethernet/sun/niu.c
+@@ -9064,6 +9064,8 @@ static void niu_try_msix(struct niu *np, u8 *ldg_num_map)
+ 		msi_vec[i].entry = i;
+ 	}
  
-There was no need to print the .000000 but it also does no harm and
-generic userspace will always treat this as a float anyway as most
-scale values are.
-
-I don't mind this as a minor improvement patch however.
-One comment inline.
-
-Jonathan
-
-
-
-> 
-> Fixes: cf96ffd8c2ed ("staging:iio:accel:adis16201 move to chan_spec based setup.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> ---
->  drivers/iio/accel/adis16201.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
-> index dcc8d9f2ee0f1..1f27386edcc4e 100644
-> --- a/drivers/iio/accel/adis16201.c
-> +++ b/drivers/iio/accel/adis16201.c
-> @@ -125,7 +125,7 @@ static int adis16201_read_raw(struct iio_dev *indio_dev,
->  		case IIO_TEMP:
->  			*val = -470;
->  			*val2 = 0;
-If we are returning IIO_VAL_INT there is no need to set *val2 as it
-is never used.
-
-
-> -			return IIO_VAL_INT_PLUS_MICRO;
-> +			return IIO_VAL_INT;
->  		case IIO_ACCEL:
->  			/*
->  			 * IIO base unit for sensitivity of accelerometer
++	pdev->dev_flags |= PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST;
++
+ 	num_irqs = pci_enable_msix_range(pdev, msi_vec, 1, num_irqs);
+ 	if (num_irqs < 0) {
+ 		np->flags &= ~NIU_FLAGS_MSIX;
 
 
