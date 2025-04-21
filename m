@@ -1,204 +1,156 @@
-Return-Path: <stable+bounces-134877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7D8A9567E
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 21:06:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FBAA956B8
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 21:22:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37A7188C116
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 19:06:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17626174265
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 19:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A111EB1AA;
-	Mon, 21 Apr 2025 19:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012F11EF091;
+	Mon, 21 Apr 2025 19:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b="kER7spcG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="N4Jh238l"
 X-Original-To: stable@vger.kernel.org
-Received: from wylie.me.uk (wylie.me.uk [82.68.155.94])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88BB91E8320;
-	Mon, 21 Apr 2025 19:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.68.155.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308AB1E9B1A;
+	Mon, 21 Apr 2025 19:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745262382; cv=none; b=An/cm4Jruo0kE/UuQlKjhQC64BTR3GXOG1SaVoQCg/BcgYT3ltwzxXb48193qXNpJZsEFrRiISC+3B09I5M23LtU8DQOi0ZPfYFkmlgwksJLRaC7qXDX5VqhlM3O0V5Lvyzbg0eIFq4IIErkwcVXO3FGvGni3AC7hO4hyZht7Q8=
+	t=1745263327; cv=none; b=pw6x9aa7qpHaR/7JOdcxZ7QhjUpABqoZkoXnjufl+tkjfxLvrAQwjKTAxMFNhMKillPW2zslWz+9M0hEpkc1W6olfZXOZ+vRf8hfmd5sMgYuq5asp4Qg9RxBzXtkCicAOV3ai7+3w3BGnHgs+42EwrCZsPR93qQS7kLdvh2z10U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745262382; c=relaxed/simple;
-	bh=vTKRaKFRv9kn3SC+rgDREeTrII8g8FovnKvl8R6ktrI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vDFPbiD7ldwmekLHyGzQEL2ciglvquoExfbQjcqYGlEZST+yfoz590TJBui5YqwsTzz549CHW+188oF0PJhDKgKKKbjFX+j8Skr6hTi+lGPWuMfOpIbXt1lMY8x1SoIFO2Ws7kdh9uVlLObavW9EkOEqRP6OhuPePSBudcsaKMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk; spf=pass smtp.mailfrom=wylie.me.uk; dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b=kER7spcG; arc=none smtp.client-ip=82.68.155.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wylie.me.uk
-Received: from frodo.int.wylie.me.uk (frodo.int.wylie.me.uk [192.168.21.2])
-	by wylie.me.uk (Postfix) with ESMTP id AEEC8120872;
-	Mon, 21 Apr 2025 20:06:01 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wylie.me.uk;
-	s=mydkim006; t=1745262361;
-	bh=vTKRaKFRv9kn3SC+rgDREeTrII8g8FovnKvl8R6ktrI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kER7spcG8m1/KVwt7QtEORa89/IQs8He89mAmuggsVNgfbYTiGrGrFUm5Kf+aXDD1
-	 yIDlyMWEcjSn1P2Z2/l0Qo3J2yfpWx2An9gyplWX1UBpt9dZYt9MXmquNYHYagdz2T
-	 9ECiMMLPXw970VTiITkgmltKHjlshoM39nKBw0vZxM62cHh4OT4FTxQo1krPZds+BY
-	 g0lCe2WOttRKl3+F10oLJdCRlmFNVr3p9/kNCjohIoum2WwGsyXZSeDiDNE+eb7xYV
-	 aAunimqsXz2zlGLobDK0ZMO3ZH69wfUVed6/CQu0LEA4Cm6K91aTr6r44of3kHxAzN
-	 N/tiLL0XO6Qlg==
-Date: Mon, 21 Apr 2025 20:06:01 +0100
-From: "Alan J. Wylie" <alan@wylie.me.uk>
-To: Holger =?UTF-8?B?SG9mZnN0w6R0dGU=?= <holger@applied-asynchrony.com>
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev, Cong
- Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Octavian Purdila
- <tavip@google.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@redhat.com>, stable@vger.kernel.org
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
-In-Reply-To: <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
-References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
-	<6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
-	<20250421131000.6299a8e0@frodo.int.wylie.me.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
-X-Clacks-Overhead: GNU Terry Pratchett
+	s=arc-20240116; t=1745263327; c=relaxed/simple;
+	bh=NGCt/qFOAddy/Rt8qNrQ8XyhdO6JLq5G3d3sBCsFn30=;
+	h=Subject:To:Cc:From:Date:Message-Id; b=SQ+ke5QmMVQjldCsRTQEnV7ljGlm1OGUZqkOYXVg46WB4xbT1r6DmTA0woAyzu58f5gjrUWYxx9bUTiEs0xqEm27H4tyPLOlcUaxrv0kVWausJVNzrOuroVGAfS8+g5FdT7IgM+tYDIeqWdWWs3JcKiDHCBo9xcZqBvudZgBxFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=N4Jh238l; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745263326; x=1776799326;
+  h=subject:to:cc:from:date:message-id;
+  bh=NGCt/qFOAddy/Rt8qNrQ8XyhdO6JLq5G3d3sBCsFn30=;
+  b=N4Jh238ldtm9Ep2EUm+O0FuDw465xinUagHi63Cg51eFSwWlxjGuwgCA
+   ShikNljj7hqJfs/lCVG12dw8bMuWtkJlvPnefTuTQ1ZwcleFilJOGyrkK
+   TeCpAvUep56xHIWaRVcmi/tIfoQsnulS4FimPINmZLbgYFXQm4acJW6op
+   T1afljhWhXTI3FqR+vnBFxIUysSweVVCIfn+r+D+VBStKTDgivmJQP6ZD
+   m8mQypUDsiRtyakrbliywvGMw3nXOZ7iiwpsLkefi+rHS9bBAOX5mnsKR
+   q/GSQzRueHCw4vgRnu+Ev7Xird7nQg2bNaJkmDZ5mnxkpD8HkmW++24iL
+   Q==;
+X-CSE-ConnectionGUID: xqu9rPUcQ5OG4H7EhVh91Q==
+X-CSE-MsgGUID: kkgnDOUWQwKXABnyJqW7/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="49468973"
+X-IronPort-AV: E=Sophos;i="6.15,229,1739865600"; 
+   d="scan'208";a="49468973"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2025 12:22:05 -0700
+X-CSE-ConnectionGUID: /je7+TMVQXK1po4JC+2KNQ==
+X-CSE-MsgGUID: WdZ6EfUeSZi2Vd1V5XfB1g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,229,1739865600"; 
+   d="scan'208";a="136951549"
+Received: from davehans-spike.ostc.intel.com (HELO localhost.localdomain) ([10.165.164.11])
+  by orviesa005.jf.intel.com with ESMTP; 21 Apr 2025 12:22:05 -0700
+Subject: [PATCH] Handle Ice Lake MONITOR erratum
+To: linux-kernel@vger.kernel.org
+Cc: x86@kernel.org, andrew.cooper3@citrix.com, Dave Hansen <dave.hansen@linux.intel.com>, Len Brown <len.brown@intel.com>, Peter Zijlstra <peterz@infradead.org>, Rafael J. Wysocki <rafael.j.wysocki@intel.com>, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, stable@vger.kernel.org
+From: Dave Hansen <dave.hansen@linux.intel.com>
+Date: Mon, 21 Apr 2025 12:22:05 -0700
+Message-Id: <20250421192205.7CC1A7D9@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 21 Apr 2025 13:10:00 +0100
-"Alan J. Wylie" <alan@wylie.me.uk> wrote:
-
-> On Mon, 21 Apr 2025 13:50:52 +0200
-> Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com> wrote:
-
-> > If so, try either reverting the above or adding:
-> > "sch_htb: make htb_qlen_notify() idempotent" aka
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/=
-commit/?id=3D5ba8b837b522d7051ef81bacf3d95383ff8edce5
-> >=20
-> > which was successfully not added to 6.14.3, along with the rest of
-> > the series:
-> > https://lore.kernel.org/all/20250403211033.166059-2-xiyou.wangcong@gmai=
-l.com/ =20
->=20
-> "successfully not added"?
->=20
-> $ git cherry-pick  5ba8b837b522d7051ef81bacf3d95383ff8edce5
-> [linux-6.14.y 2285c724bf7d] sch_htb: make htb_qlen_notify() idempotent
->  Author: Cong Wang <xiyou.wangcong@gmail.com>
->  Date: Thu Apr 3 14:10:23 2025 -0700
->  1 file changed, 2 insertions(+)
->=20
-> It will take a while (perhaps days?) before I can confirm success.
-
-I'm afraid that didn't help. Same panic.
 
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 139bfa067 P4D 139bfa067 PUD 133bf1067 PMD 0=20
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G           O       6.14.3-00=
-001-g2285c724bf7d #21
-Tainted: [O]=3DOOT_MODULE
-Hardware name: Gigabyte Technology Co., Ltd. To be filled by O.E.M./970A-DS=
-3P, BIOS FD 02/26/2016
-RIP: 0010:rb_next+0x0/0x50
-Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41 5e e9 85 73 01 00 5b 5d =
-41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00 00 00 00 <48> 3b 3f 48 89 f=
-8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0 48 8b
-RSP: 0018:ffffc90000003e50 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff8881052e9000 RCX: ffff8881052e9180
-RDX: ffff8881e5e4f400 RSI: ffff888190075ee8 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff8881052e92b0 R09: 00000000e49ea9dc
-R10: 000000000000278a R11: 001dcd6500000000 R12: ffff8881e5e4f400
-R13: ffff8881052e92b8 R14: 00000b92b6422fbf R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88842ec00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000139952000 CR4: 00000000000406f0
-Call Trace:
- <IRQ>
- htb_dequeue+0x42f/0x610 [sch_htb]
- __qdisc_run+0x253/0x480
- ? timerqueue_del+0x2c/0x40
- qdisc_run+0x15/0x30
- net_tx_action+0x182/0x1b0
- handle_softirqs+0x102/0x240
- __irq_exit_rcu+0x3e/0xb0
- sysvec_apic_timer_interrupt+0x5b/0x70
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x16/0x20
-RIP: 0010:cpuidle_enter_state+0x126/0x220
-Code: 18 4c 6f 00 85 c0 7e 0b 8b 73 04 83 cf ff e8 a1 22 e5 ff 31 ff e8 9a =
-2e 98 ff 45 84 ff 74 07 31 ff e8 0e 58 9d ff fb 45 85 ed <0f> 88 cc 00 00 0=
-0 49 63 c5 48 8b 3c 24 48 6b c8 68 48 6b d0 30 49
-RSP: 0018:ffffffff81e03e40 EFLAGS: 00000202
-RAX: ffff88842ec00000 RBX: ffff8881008e7400 RCX: 0000000000000000
-RDX: 00000b927d3d4a20 RSI: fffffffc3199eb61 RDI: 0000000000000000
-RBP: 0000000000000002 R08: 0000000000000002 R09: 00000b927aa897c0
-R10: 0000000000000006 R11: 0000000000000020 R12: ffffffff81f98280
-R13: 0000000000000002 R14: 00000b927d3d4a20 R15: 0000000000000000
- cpuidle_enter+0x2a/0x40
- do_idle+0x12d/0x1a0
- cpu_startup_entry+0x29/0x30
- rest_init+0xbc/0xc0
- start_kernel+0x630/0x630
- x86_64_start_reservations+0x25/0x30
- x86_64_start_kernel+0x73/0x80
- common_startup_64+0x12c/0x138
- </TASK>
-Modules linked in: sch_htb cls_u32 sch_ingress sch_cake ifb act_mirred netc=
-onsole xt_hl xt_nat ts_bm xt_string xt_TARPIT(O) xt_CT xt_tcpudp xt_helper =
-nf_nat_ftp nf_conntrack_ftp ip6t_rt ip6table_nat xt_MASQUERADE iptable_nat =
-nf_nat xt_TCPMSS xt_LOG nf_log_syslog ip6t_REJECT nf_reject_ipv6 ipt_REJECT=
- nf_reject_ipv4 ip6table_raw iptable_raw ip6table_mangle iptable_mangle xt_=
-multiport xt_state xt_limit xt_conntrack nf_conntrack nf_defrag_ipv6 nf_def=
-rag_ipv4 ip6table_filter ip6_tables iptable_filter ip_tables x_tables pppoe=
- tun pppox binfmt_misc ppp_generic slhc af_packet bridge stp llc ctr ccm dm=
-_crypt radeon drm_client_lib ath9k video wmi drm_exec ath9k_common drm_suba=
-lloc_helper ath9k_hw drm_ttm_helper syscopyarea ttm ath sysfillrect sysimgb=
-lt fb_sys_fops mac80211 pl2303 drm_display_helper snd_hda_codec_realtek usb=
-serial drm_kms_helper snd_hda_codec_generic snd_hda_codec_hdmi snd_hda_scod=
-ec_component snd_hda_intel agpgart snd_intel_dspcfg snd_hda_codec cfbfillre=
-ct cfbimgblt cfg80211 snd_hda_core fb_io_fops
- cfbcopyarea i2c_algo_bit fb e1000 snd_pcm font cdc_acm snd_timer aesni_int=
-el libarc4 snd at24 acpi_cpufreq k10temp crypto_simd soundcore fam15h_power=
- cryptd regmap_i2c evdev nfsd sch_fq_codel auth_rpcgss lockd grace sunrpc d=
-rm configfs drm_panel_orientation_quirks fuse backlight loop nfnetlink usbh=
-id xhci_pci ohci_pci xhci_hcd ohci_hcd ehci_pci ehci_hcd sha512_ssse3 sha25=
-6_ssse3 sha1_ssse3 usbcore sha1_generic gf128mul usb_common dm_mirror dm_re=
-gion_hash dm_log cpuid i2c_piix4 i2c_smbus i2c_dev i2c_core it87 hwmon_vid =
-msr dmi_sysfs autofs4
-CR2: 0000000000000000
----[ end trace 0000000000000000 ]---
-RIP: 0010:rb_next+0x0/0x50
-Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41 5e e9 85 73 01 00 5b 5d =
-41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00 00 00 00 <48> 3b 3f 48 89 f=
-8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0 48 8b
-RSP: 0018:ffffc90000003e50 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff8881052e9000 RCX: ffff8881052e9180
-RDX: ffff8881e5e4f400 RSI: ffff888190075ee8 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff8881052e92b0 R09: 00000000e49ea9dc
-R10: 000000000000278a R11: 001dcd6500000000 R12: ffff8881e5e4f400
-R13: ffff8881052e92b8 R14: 00000b92b6422fbf R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88842ec00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 0000000139952000 CR4: 00000000000406f0
-Kernel panic - not syncing: Fatal exception in interrupt
-Kernel Offset: disabled
-Rebooting in 3 seconds..
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
+Andrew Cooper reported some boot issues on Ice Lake servers when
+running Xen that he tracked down to MWAIT not waking up. Do the safe
+thing and consider them buggy since there's a published erratum.
+Note: I've seen no reports of this occurring on Linux.
 
---=20
-Alan J. Wylie     https://www.wylie.me.uk/     mailto:<alan@wylie.me.uk>
+Add Ice Lake servers to the list of shaky MONITOR implementations with
+no workaround available. Also, before the if() gets too unwieldy, move
+it over to a x86_cpu_id array. Additionally, add a comment to the
+X86_BUG_MONITOR consumption site to make it clear how and why affected
+CPUs get IPIs to wake them up.
 
-Dance like no-one's watching. / Encrypt like everyone is.
-Security is inversely proportional to convenience
+There is no equivalent erratum for the "Xeon D" Ice Lakes so
+INTEL_ICELAKE_D is not affected.
+
+The erratum is called ICX143 in the "3rd Gen Intel Xeon Scalable
+Processors, Codename Ice Lake Specification Update". It is Intel
+document 637780, currently available here:
+
+	https://cdrdv2.intel.com/v1/dl/getContent/637780
+
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Len Brown <len.brown@intel.com>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+
+---
+
+ b/arch/x86/include/asm/mwait.h |    3 +++
+ b/arch/x86/kernel/cpu/intel.c  |   17 ++++++++++++++---
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff -puN arch/x86/kernel/cpu/intel.c~ICX-MONITOR-bug arch/x86/kernel/cpu/intel.c
+--- a/arch/x86/kernel/cpu/intel.c~ICX-MONITOR-bug	2025-04-18 13:54:46.022590596 -0700
++++ b/arch/x86/kernel/cpu/intel.c	2025-04-18 15:15:19.374365069 -0700
+@@ -513,6 +513,19 @@ static void init_intel_misc_features(str
+ }
+ 
+ /*
++ * These CPUs have buggy MWAIT/MONITOR implementations that
++ * usually manifest as hangs or stalls at boot.
++ */
++#define MWAIT_VFM(_vfm)	\
++	X86_MATCH_VFM_FEATURE(_vfm, X86_FEATURE_MWAIT, 0)
++static const struct x86_cpu_id monitor_bug_list[] = {
++	MWAIT_VFM(INTEL_ATOM_GOLDMONT),
++	MWAIT_VFM(INTEL_LUNARLAKE_M),
++	MWAIT_VFM(INTEL_ICELAKE_X),	/* Erratum ICX143 */
++	{},
++};
++
++/*
+  * This is a list of Intel CPUs that are known to suffer from downclocking when
+  * ZMM registers (512-bit vectors) are used.  On these CPUs, when the kernel
+  * executes SIMD-optimized code such as cryptography functions or CRCs, it
+@@ -565,9 +578,7 @@ static void init_intel(struct cpuinfo_x8
+ 	     c->x86_vfm == INTEL_WESTMERE_EX))
+ 		set_cpu_bug(c, X86_BUG_CLFLUSH_MONITOR);
+ 
+-	if (boot_cpu_has(X86_FEATURE_MWAIT) &&
+-	    (c->x86_vfm == INTEL_ATOM_GOLDMONT ||
+-	     c->x86_vfm == INTEL_LUNARLAKE_M))
++	if (x86_match_cpu(monitor_bug_list))
+ 		set_cpu_bug(c, X86_BUG_MONITOR);
+ 
+ #ifdef CONFIG_X86_64
+diff -puN arch/x86/include/asm/mwait.h~ICX-MONITOR-bug arch/x86/include/asm/mwait.h
+--- a/arch/x86/include/asm/mwait.h~ICX-MONITOR-bug	2025-04-18 15:17:18.353749634 -0700
++++ b/arch/x86/include/asm/mwait.h	2025-04-18 15:20:06.037927656 -0700
+@@ -110,6 +110,9 @@ static __always_inline void __sti_mwait(
+  * through MWAIT. Whenever someone changes need_resched, we would be woken
+  * up from MWAIT (without an IPI).
+  *
++ * Buggy (X86_BUG_MONITOR) CPUs will never set the polling bit and will
++ * always be sent IPIs.
++ *
+  * New with Core Duo processors, MWAIT can take some hints based on CPU
+  * capability.
+  */
+_
 
