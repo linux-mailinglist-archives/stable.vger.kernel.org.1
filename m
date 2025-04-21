@@ -1,118 +1,145 @@
-Return-Path: <stable+bounces-134789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8772DA95119
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:38:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E788A95123
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0F41891E46
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 12:38:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17E131892F5F
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 12:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB6E2641CC;
-	Mon, 21 Apr 2025 12:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E27264FA9;
+	Mon, 21 Apr 2025 12:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYWR0HOg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hIw4797F"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511D63FC7
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 12:38:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292522641CC;
+	Mon, 21 Apr 2025 12:42:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745239115; cv=none; b=r+BhIJzn2cAT1RFXG8sOuXLWDgIvfK3xA1u54T4gb8uAWgyy4Wdp9mNZ7AxAkjAq2Tfa7SbUfKYFZkg7NcO1jhctWpgIhTVAce5LMaxXqmvVSsL+uiyyPkH7Jb6AtEdTBMgPXRXgNlK7Oj/iSl+hKyXAUlqFe8kOlVro10WN/ec=
+	t=1745239345; cv=none; b=m4KVXsCklYmCnRbWZe7gixB5qjdJl2X4nsybctZTSYcZjyvt8IiYO5RAx2dmbtmxtKWxn04HHbsJoq4E7hxKOzRMa7jhGIKIguwfXOvFrUMR07zvnbIaTLjp02bPU3ncR5U2Z3RaXVoF0mpCmVWxy0p0hVa1tiZKJi6x1OKd3ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745239115; c=relaxed/simple;
-	bh=OgYFZIl67iUDWlA93Ufw3NTQz4OGPSfdOavv1CWXvmE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=quKXJ8PlFL7J12xiznqfPcgJ1+6WD9nSeOYJ//pvkiYq8qEj3+Ft/e1LGKVNZVNhRaoyRwdf7LjlkmRt+ltcTQdeLroHiAebvTb8abbS4L7KotAdLPb4SECZvWN2oHDTaVZfwMks4/MzJdTx5woAlqFpF+qqhaX+MXWtNVpyxvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYWR0HOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97BC8C4CEE4;
-	Mon, 21 Apr 2025 12:38:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745239113;
-	bh=OgYFZIl67iUDWlA93Ufw3NTQz4OGPSfdOavv1CWXvmE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYWR0HOgMOa8AZvBnBv3DN4DuuOBMazyGVh33SWFCTwbB0I6knSkBASkndd7TV5PV
-	 zPQASDtIWpc05t/IecYPBLb02y+7bsMiEkuhIaPX4Dm5KfSSjJhc8bOtTBrd2H3som
-	 TljUFa9v4tPUyY66GRt8brYgGE58BlJjUfCjOlqLBUU6gf+gPWr01En/vkGlXEafal
-	 xXz8qDugqBf8Vri3J16geWOVknxp7cvtu1ORBuiPq316qWdkf+FbSxaTizKWNV03Fa
-	 W2SNtyAg7uHwYKF5Y16zC8YWhgkKGFlWVz6PdOfrUHe/we7vocXyTsuuZzW+RFKdu6
-	 1yyN04ES6B9Fw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: stable@vger.kernel.org
-Cc: Lukas Fischer <kernel@o1oo11oo.de>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.14.y] scripts: generate_rust_analyzer: Add ffi crate
-Date: Mon, 21 Apr 2025 14:38:27 +0200
-Message-ID: <20250421123827.3147434-1-ojeda@kernel.org>
-In-Reply-To: <2025042132-everglade-smasher-1ef2@gregkh>
-References: <2025042132-everglade-smasher-1ef2@gregkh>
+	s=arc-20240116; t=1745239345; c=relaxed/simple;
+	bh=ySaU0zfcByRkaTwII81wn1XRoHdzTb73+Y3DGUNQiWA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PG+jI8f6yTS2sQEecB2+nNAK3x5Rpdc6O+9qbhRb6JKhhG0Aj9Mn5lWYn/CWpD1z5n3+dQRXUGKtG92/6jwSGIKpmVlyBcuwTJq49AhhsLwbOLt7/yQEFlKcrqtvbucojI8rrGfc7gYxesrML2n6pKsNlG2VT559i/1XB+Aphdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hIw4797F; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-476ae781d21so41628431cf.3;
+        Mon, 21 Apr 2025 05:42:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745239343; x=1745844143; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7PTLCflwUHpQ/HL4KjpSfyOHQhDYwwUWvDGsEADJNO8=;
+        b=hIw4797FRdCjcHq3SDDQJ57VgiSXzhTZC5dGXYxVHS6P7LZDImMqn8/50dNTY1iBRz
+         Hm2wCTXhWpF7UlPFeeDI20ym/2+RD4X67LC00G2jTa+aftwr/edX+yy9XPMw57LPoY3J
+         29Xfo4m1JFwNCJMF7Ajv54kPSh5AvG3F2BjeSSAIm7dXRV4lBHs4yxWv9rdv4awz02NK
+         DGNumUL9zpGKtOTsiaTB73+lCS7RliM9uRKN/twXxDMZa7hyCMt7xDRgZfK5phoLQMnr
+         eI1258TK6xV/zDyuo95/SeGReQ0ZbiBQxKIGUNlcWYsDhYOHtdNzD7zOaHZSHG1l3AJD
+         wKCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745239343; x=1745844143;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7PTLCflwUHpQ/HL4KjpSfyOHQhDYwwUWvDGsEADJNO8=;
+        b=Llw0Hj1x8TIlakArAM5kizdUpWYyQbdvCArRezg/HGKKuNM9Vz0qHaze0keHtC1sdx
+         kQFaEaZHBq27Wp/UNKCQm1K/Dqivl9ZBAEhTHBFNUBtimv+ZXasHxi2S2eJHF43RR1U2
+         K5qikc3KNK4lddl8iE7yAGILCO3xPy1z/Xd+/WEKZj3CXp80u5rEmsOj/Er0IBe9Wwwr
+         Bfz8g/H+TTCEtLtse6u0+Sdel29WcNXTi1NkfYeoJrq+TyRzlnItNodvpbTt5GBUZGny
+         F1+VBCTyprYVO3XNEa8evOkzWzUdzUC/0UMDwBgUTRmfb83mQhHsA4FOPXFNSKCeNgOy
+         C3lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVMiqA+aBrdVrRalF4zdFSB7QUC1U9Oy5NnT9R+GbQjZDGPmRM10ijpVKSFJQHDSVdlnB6CF9Nw+jmBNOy@vger.kernel.org, AJvYcCWrrJkZZO/GlwR9IF3GbmAOFIacusUWwntaTwyQyQHYkLo8O2zkwjFkoTaLCjWgOt8tz4CuXVfG@vger.kernel.org, AJvYcCX9U+cd1MKbzggPhuHruHcxBXJnrEUmYs+kIYF4SVXJy2+UHIpLFoYfjgpjpj7BLnnu+8cq1jE4/C4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywtqb8lnBEWAnIFZ02B/FbpRjKb+BrE0cM6F27diV7S9s5h46Fn
+	mzR0irZo8qKn3F5k5IgX1YslslE7sBAwBAkcLF9E2f66u7F1S6A34K6bxFMhPdarVgo45SAxm9m
+	i7KipsGjfTE/BjTdmXxp7ckzGipc=
+X-Gm-Gg: ASbGnctujlnu5pdAEaaET4qBXsM+VEqXFRLZ4yRGQlm241NrziyEPYUf6Y84L1XPbsV
+	egznxIjj59Kj6WkFjB7ArJH/WDpyk4emWr0xReRnX4ZBhE3EXb/b1CdZWe3PZ6lBuonZpSkNDIa
+	KtfAUBmLnQhFTraJNfkoa1mZawB4vj8LC+dDOGiAH0p2GcTVQu7R0UOw==
+X-Google-Smtp-Source: AGHT+IFGRI6w4PZTzPqR/wy6WxWpUIfMgCPO/lf/RGWDPHDkzKldCNpcwF092qguuCIgto3Q9ayDtKHGpNvNYtXoYHE=
+X-Received: by 2002:ac8:5796:0:b0:476:875e:516d with SMTP id
+ d75a77b69052e-47aec4c44e9mr191962431cf.36.1745239342859; Mon, 21 Apr 2025
+ 05:42:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250420013009.847851-1-gshahrouzi@gmail.com> <20250421124401.0daa6a2e@jic23-huawei>
+In-Reply-To: <20250421124401.0daa6a2e@jic23-huawei>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Date: Mon, 21 Apr 2025 08:42:11 -0400
+X-Gm-Features: ATxdqUG2HbCo2jVQA1NMcR6DOLpddrMYAY_8SU4fLCk3lus5iMrFHCUuPeKi4mQ
+Message-ID: <CAKUZ0zLTjXPm7qGLsV==fJZZEFMEiEM78-qgZ__DYhqL7Te5BQ@mail.gmail.com>
+Subject: Re: [PATCH v4] staging: iio: ad5933: Correct settling cycles encoding
+ per datasheet
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: gregkh@linuxfoundation.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-staging@lists.linux.dev, 
+	Michael.Hennerich@analog.com, skhan@linuxfoundation.org, 
+	linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Lukas Fischer <kernel@o1oo11oo.de>
-
-commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
-
-Commit d072acda4862 ("rust: use custom FFI integer types") did not
-update rust-analyzer to include the new crate.
-
-To enable rust-analyzer support for these custom ffi types, add the
-`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
-crates, which all directly depend on it.
-
-Fixes: d072acda4862 ("rust: use custom FFI integer types")
-Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-[ Fixed conflicts. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- scripts/generate_rust_analyzer.py | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
-
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index adae71544cbd..f2ff0f954236 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -97,6 +97,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-         ["core", "compiler_builtins"],
-     )
- 
-+    append_crate(
-+        "ffi",
-+        srctree / "rust" / "ffi.rs",
-+        ["core", "compiler_builtins"],
-+    )
-+
-     def append_crate_with_generated(
-         display_name,
-         deps,
-@@ -116,9 +122,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-             "exclude_dirs": [],
-         }
- 
--    append_crate_with_generated("bindings", ["core"])
--    append_crate_with_generated("uapi", ["core"])
--    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
-+    append_crate_with_generated("bindings", ["core", "ffi"])
-+    append_crate_with_generated("uapi", ["core", "ffi"])
-+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
- 
-     def is_root_crate(build_file, target):
-         try:
--- 
-2.49.0
-
+On Mon, Apr 21, 2025 at 7:44=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sat, 19 Apr 2025 21:30:09 -0400
+> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
+>
+> > The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
+> > (2044).
+> >
+> > Clamp the user input to the maximum effective value of 0x7FC cycles.
+> >
+> > Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 =
+Impedance Converter, Network Analyzer")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+> I'm taking this the slow path as it has been wrong a very long time
+> and there is a lot of churn on IIO staging drivers right now so we may
+> have other stuff that I don't want to delay building on top of this.
+Got it, thanks.
+>
+> Applied to the togreg branch of iio.git and pushed out as testing.
+>
+> Jonathan
+>
+> > ---
+> > Changes in v4:
+> >       - Provide clear git body description.
+> > Changes in v3:
+> >       - Only include fix (remove refactoring which will be its own
+> >         separate patch).
+> > Changes in v2:
+> >         - Fix spacing in comment around '+'.
+> >         - Define mask and values for settling cycle multipliers.
+> > ---
+> >  drivers/staging/iio/impedance-analyzer/ad5933.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/staging/iio/impedance-analyzer/ad5933.c b/drivers/=
+staging/iio/impedance-analyzer/ad5933.c
+> > index d5544fc2fe989..f8fcc10ea8150 100644
+> > --- a/drivers/staging/iio/impedance-analyzer/ad5933.c
+> > +++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+> > @@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct device *dev,
+> >               ret =3D ad5933_cmd(st, 0);
+> >               break;
+> >       case AD5933_OUT_SETTLING_CYCLES:
+> > -             val =3D clamp(val, (u16)0, (u16)0x7FF);
+> > +             val =3D clamp(val, (u16)0, (u16)0x7FC);
+> >               st->settling_cycles =3D val;
+> >
+> >               /* 2x, 4x handling, see datasheet */
+>
 
