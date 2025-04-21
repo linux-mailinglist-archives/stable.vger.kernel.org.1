@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-134855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DCFFA9527D
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:08:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DA4A95285
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 607903AD5DE
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:08:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96F551894D64
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D946EB7C;
-	Mon, 21 Apr 2025 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75F478F39;
+	Mon, 21 Apr 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmYW4VOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDhWE0CK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B6F34545
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 14:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7638C18B03
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 14:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745244508; cv=none; b=QSUlOvmUCpoUsS4Kyj3lUahQo3rDhEX+xan67qFAx4PZZf2As3cTd66Cva5OIW1Jj7pe5GZWXiddEaDi1y7oZFJbw2e1xfmZMDknaTiXPy+Z6yX+d0CJnD/pimc3e7Ou2pGkYQ4osxft39IzTaoGTHwOEGY1HI4hNoms+bODWdQ=
+	t=1745244628; cv=none; b=Zf5i1007133sP0RSj5TGZY8FHy/qxINdaPiaEWEu7UvF/aKhOklMkQVmC0BLtlBIFREsI3eio7LcXGxpaRkiGEugyg0CDWS8kLWdkHMlgkmLDu6Rj4x6/89MFl5RsG8s97+vGpSEbePgbxHb6Q/FiXtsFKhTU112nwj4wkLrjOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745244508; c=relaxed/simple;
-	bh=Lwb7h1StY7rxIcBlRwMx3iq7Oc2wS03F+q95LAeN+1w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YtsqLlfttDBm3/VrHHn2UicI1Dj93GL4AX87kXr9XaGdwmMSAyRyCSSZKAwkBi6qBBPdXSj1Y2SRw87/mTE7wm06p5t/BxAZByNZ2wet8uQGTu42GMKXC2ZAVr/reyBpJvi2kwV4L1+VbGFU8ONxQ8QqlCyfGF23UNB8TalWveM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmYW4VOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA69C4CEE4;
-	Mon, 21 Apr 2025 14:08:28 +0000 (UTC)
+	s=arc-20240116; t=1745244628; c=relaxed/simple;
+	bh=RBoseAcq8y9WM9UNZTjgxbRF73p//yts5mLbXEdLFho=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R1IIatPzFCJXr0lbVOEPlKBFho/z9RvvlhNaEYm4GMF+cIuj8ky6B/ldtPm9T9O/cX6nAhdPQj58MGtnF5Mxd/shun7kooSBT9DRhzjJAhUPVMatQAH461lGMq1W7+1AtqT0qbXq2j4hCS11q0+oMBawTCbbxVpABY0Uh+l78Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDhWE0CK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F363C4CEE4;
+	Mon, 21 Apr 2025 14:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745244508;
-	bh=Lwb7h1StY7rxIcBlRwMx3iq7Oc2wS03F+q95LAeN+1w=;
+	s=korg; t=1745244628;
+	bh=RBoseAcq8y9WM9UNZTjgxbRF73p//yts5mLbXEdLFho=;
 	h=Subject:To:Cc:From:Date:From;
-	b=pmYW4VOb9UFi/uOfqMkcyzvt0+19Tdy3S7WyTsVhP/cA0prezkFUTOopcWI9DlhHj
-	 qn6PUKoRdnH5no3EYuYwv/EVIYJOB61gOnJBckdUUUJA2laANGprJQxLSYXSbnOA+M
-	 qY3c1lthyGva6XShWhY/LSoFmPBAjQ047dtIqMPM=
-Subject: FAILED: patch "[PATCH] net/niu: Niu requires MSIX ENTRY_DATA fields touch before" failed to apply to 5.4-stable tree
-To: dullfire@yahoo.com,tglx@linutronix.de
+	b=SDhWE0CK9IWFHgUjWRoEkreNCNDe+IIg7O9DuS7d+KobyaUmN+bqWf/oKYVkMgCE8
+	 3RoUyrnbCQtuZwvXwxtCjjAjhUFituo5JhkD00C40rvk5OdSGvEUOAKdHzZFdMOK9d
+	 bVOHFITG8AjKmxtOlYYmg35FjDLA15NiZu51R08c=
+Subject: FAILED: patch "[PATCH] perf/x86/intel: Don't clear perf metrics overflow bit" failed to apply to 6.14-stable tree
+To: dapeng1.mi@linux.intel.com,kan.liang@linux.intel.com,mingo@kernel.org,peterz@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Apr 2025 16:08:10 +0200
-Message-ID: <2025042110-manly-extrovert-a902@gregkh>
+Date: Mon, 21 Apr 2025 16:10:25 +0200
+Message-ID: <2025042125-nutlike-cornfield-f823@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x fbb429ddff5c8e479edcc7dde5a542c9295944e6
+git cherry-pick -x a5f5e1238f4ff919816f69e77d2537a48911767b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042110-manly-extrovert-a902@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042125-nutlike-cornfield-f823@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,81 +77,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From fbb429ddff5c8e479edcc7dde5a542c9295944e6 Mon Sep 17 00:00:00 2001
-From: Jonathan Currier <dullfire@yahoo.com>
-Date: Sun, 17 Nov 2024 17:48:43 -0600
-Subject: [PATCH] net/niu: Niu requires MSIX ENTRY_DATA fields touch before
- entry reads
+From a5f5e1238f4ff919816f69e77d2537a48911767b Mon Sep 17 00:00:00 2001
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Date: Tue, 15 Apr 2025 10:41:34 +0000
+Subject: [PATCH] perf/x86/intel: Don't clear perf metrics overflow bit
+ unconditionally
 
-Fix niu_try_msix() to not cause a fatal trap on sparc systems.
+The below code would always unconditionally clear other status bits like
+perf metrics overflow bit once PEBS buffer overflows:
 
-Set PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST on the struct pci_dev to
-work around a bug in the hardware or firmware.
+        status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
 
-For each vector entry in the msix table, niu chips will cause a fatal
-trap if any registers in that entry are read before that entries'
-ENTRY_DATA register is written to. Testing indicates writes to other
-registers are not sufficient to prevent the fatal trap, however the value
-does not appear to matter. This only needs to happen once after power up,
-so simply rebooting into a kernel lacking this fix will NOT cause the
-trap.
+This is incorrect. Perf metrics overflow bit should be cleared only when
+fixed counter 3 in PEBS counter group. Otherwise perf metrics overflow
+could be missed to handle.
 
-NON-RESUMABLE ERROR: Reporting on cpu 64
-NON-RESUMABLE ERROR: TPC [0x00000000005f6900] <msix_prepare_msi_desc+0x90/0xa0>
-NON-RESUMABLE ERROR: RAW [4010000000000016:00000e37f93e32ff:0000000202000080:ffffffffffffffff
-NON-RESUMABLE ERROR:      0000000800000000:0000000000000000:0000000000000000:0000000000000000]
-NON-RESUMABLE ERROR: handle [0x4010000000000016] stick [0x00000e37f93e32ff]
-NON-RESUMABLE ERROR: type [precise nonresumable]
-NON-RESUMABLE ERROR: attrs [0x02000080] < ASI sp-faulted priv >
-NON-RESUMABLE ERROR: raddr [0xffffffffffffffff]
-NON-RESUMABLE ERROR: insn effective address [0x000000c50020000c]
-NON-RESUMABLE ERROR: size [0x8]
-NON-RESUMABLE ERROR: asi [0x00]
-CPU: 64 UID: 0 PID: 745 Comm: kworker/64:1 Not tainted 6.11.5 #63
-Workqueue: events work_for_cpu_fn
-TSTATE: 0000000011001602 TPC: 00000000005f6900 TNPC: 00000000005f6904 Y: 00000000    Not tainted
-TPC: <msix_prepare_msi_desc+0x90/0xa0>
-g0: 00000000000002e9 g1: 000000000000000c g2: 000000c50020000c g3: 0000000000000100
-g4: ffff8000470307c0 g5: ffff800fec5be000 g6: ffff800047a08000 g7: 0000000000000000
-o0: ffff800014feb000 o1: ffff800047a0b620 o2: 0000000000000011 o3: ffff800047a0b620
-o4: 0000000000000080 o5: 0000000000000011 sp: ffff800047a0ad51 ret_pc: 00000000005f7128
-RPC: <__pci_enable_msix_range+0x3cc/0x460>
-l0: 000000000000000d l1: 000000000000c01f l2: ffff800014feb0a8 l3: 0000000000000020
-l4: 000000000000c000 l5: 0000000000000001 l6: 0000000020000000 l7: ffff800047a0b734
-i0: ffff800014feb000 i1: ffff800047a0b730 i2: 0000000000000001 i3: 000000000000000d
-i4: 0000000000000000 i5: 0000000000000000 i6: ffff800047a0ae81 i7: 00000000101888b0
-I7: <niu_try_msix.constprop.0+0xc0/0x130 [niu]>
-Call Trace:
-[<00000000101888b0>] niu_try_msix.constprop.0+0xc0/0x130 [niu]
-[<000000001018f840>] niu_get_invariants+0x183c/0x207c [niu]
-[<00000000101902fc>] niu_pci_init_one+0x27c/0x2fc [niu]
-[<00000000005ef3e4>] local_pci_probe+0x28/0x74
-[<0000000000469240>] work_for_cpu_fn+0x8/0x1c
-[<000000000046b008>] process_scheduled_works+0x144/0x210
-[<000000000046b518>] worker_thread+0x13c/0x1c0
-[<00000000004710e0>] kthread+0xb8/0xc8
-[<00000000004060c8>] ret_from_fork+0x1c/0x2c
-[<0000000000000000>] 0x0
-Kernel panic - not syncing: Non-resumable error.
-
-Fixes: 7d5ec3d36123 ("PCI/MSI: Mask all unused MSI-X entries")
-Signed-off-by: Jonathan Currier <dullfire@yahoo.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Closes: https://lore.kernel.org/all/20250225110012.GK31462@noisy.programming.kicks-ass.net/
+Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20241117234843.19236-3-dullfire@yahoo.com
+Link: https://lore.kernel.org/r/20250415104135.318169-1-dapeng1.mi@linux.intel.com
 
-diff --git a/drivers/net/ethernet/sun/niu.c b/drivers/net/ethernet/sun/niu.c
-index 73c07f10f053..379b6e90121d 100644
---- a/drivers/net/ethernet/sun/niu.c
-+++ b/drivers/net/ethernet/sun/niu.c
-@@ -9064,6 +9064,8 @@ static void niu_try_msix(struct niu *np, u8 *ldg_num_map)
- 		msi_vec[i].entry = i;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 09d2d66c9f21..2b70a3adde2f 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3049,7 +3049,6 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
+ 	int bit;
+ 	int handled = 0;
+-	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
+ 
+ 	inc_irq_stat(apic_perf_irqs);
+ 
+@@ -3093,7 +3092,6 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 		handled++;
+ 		x86_pmu_handle_guest_pebs(regs, &data);
+ 		static_call(x86_pmu_drain_pebs)(regs, &data);
+-		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
+ 
+ 		/*
+ 		 * PMI throttle may be triggered, which stops the PEBS event.
+@@ -3104,6 +3102,15 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 		 */
+ 		if (pebs_enabled != cpuc->pebs_enabled)
+ 			wrmsrl(MSR_IA32_PEBS_ENABLE, cpuc->pebs_enabled);
++
++		/*
++		 * Above PEBS handler (PEBS counters snapshotting) has updated fixed
++		 * counter 3 and perf metrics counts if they are in counter group,
++		 * unnecessary to update again.
++		 */
++		if (cpuc->events[INTEL_PMC_IDX_FIXED_SLOTS] &&
++		    is_pebs_counter_event_group(cpuc->events[INTEL_PMC_IDX_FIXED_SLOTS]))
++			status &= ~GLOBAL_STATUS_PERF_METRICS_OVF_BIT;
  	}
  
-+	pdev->dev_flags |= PCI_DEV_FLAGS_MSIX_TOUCH_ENTRY_DATA_FIRST;
+ 	/*
+@@ -3123,6 +3130,8 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
+ 		static_call(intel_pmu_update_topdown_event)(NULL, NULL);
+ 	}
+ 
++	status &= hybrid(cpuc->pmu, intel_ctrl);
 +
- 	num_irqs = pci_enable_msix_range(pdev, msi_vec, 1, num_irqs);
- 	if (num_irqs < 0) {
- 		np->flags &= ~NIU_FLAGS_MSIX;
+ 	/*
+ 	 * Checkpointed counters can lead to 'spurious' PMIs because the
+ 	 * rollback caused by the PMI will have cleared the overflow status
 
 
