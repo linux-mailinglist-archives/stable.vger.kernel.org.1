@@ -1,107 +1,169 @@
-Return-Path: <stable+bounces-134800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45B6FA951E9
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:48:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66327A95202
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F2916A8EE
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:48:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528623B0CDF
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E70726657B;
-	Mon, 21 Apr 2025 13:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24BA5265633;
+	Mon, 21 Apr 2025 13:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acCxHGF5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NN0XJsG+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072E4320F;
-	Mon, 21 Apr 2025 13:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA070264A74
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243331; cv=none; b=faMkz+Pl/wG7eBEI9Yo96vjkf6FYMXVJqoVnxr5eBVypDSpzB1a3YuTNhc2MyLS3nfd1kpqLJZx4r8m2sNKr0txKSQBGH4LsxYznsVsRjMBoq3EtQWsW5rOcW6gmiPdhYyPCQmGKZdVSZNhL3IsJvgmA0dKt7brSAc8WrlKQ01Y=
+	t=1745243638; cv=none; b=lwVL4lBJYmYKmLrWUVuXlmDTyPcyjoJI07j86pLE5tqxQQ+R5i0JPvXzd4ld/nnrgEjw99siKvjwEnwoYcYyncl5jxWftAN12OnX/WeemqJLV+MhwyLs9H4//SeyVjzlZro324U9e94uPaaWxsNJ1k47JnsskNLhJHTx8ITErhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243331; c=relaxed/simple;
-	bh=7WfjRqak32dmDEcbYuCM3PkVd+8nEMKIrPGztxIZIfQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Giw5urlTY1jDLun46LFyvSJCMsD5+FBe7UNad661A6NVUbrC/2KwD/oNR0eO7mXWTr674eegqI1F16RyH3OBm6fEdwE/ikDx2D+nX/bpwyH4BkRqU0/4YuyU7gcP9PRN6g0AB57lrmQ92DhvOs27Nr2mdJtPWNOAIaPXpxgogu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acCxHGF5; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22c33ac23edso38386515ad.0;
-        Mon, 21 Apr 2025 06:48:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745243329; x=1745848129; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VILm46anXu51tGkwwdzpRRF6UX5t99Pkc+Jaul39Ijc=;
-        b=acCxHGF59aJfe8/xmpAj8zM/E1CzmJSKiVrCLLxTYseRan+T6GKhVzqGrED25eUkPI
-         SZOQqZucwSpLWI98miZ1PFq3KHeqO2VLYg8L8i++Pq3iRumDrVuZPmwqKuE9mgcalFjA
-         qoqpt+aezRrRG3Irig6jlg8DwIdHp599goRiWE0hhM53kWtIXnNMcHvveIIrZCi8Snee
-         dfResiKkTsWoNPjx5uO6zMP8XAVPLxWCoJmTxqmd07EqDeb9u0yTFvDwJkQAdUHHCt07
-         cuXlyIQ0f2eMFBIwSA7SEeppYBAd9vSjzPNq6BGSwj7hRdGWNdVEwGb7ww9xLSero7UB
-         m+fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745243329; x=1745848129;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VILm46anXu51tGkwwdzpRRF6UX5t99Pkc+Jaul39Ijc=;
-        b=AyguLCPQJeQjbKZKiC0nIAgNbA7bU+GZsw9eDl//P80dFoC07zYDbANxCSla5GE82Q
-         GwRn148Lq0Zf0k6FS7ALE8wqZAd8TB+CsTrZ6Jf65NShUCDs3jDbrYL5QCZxWWttkxvr
-         pXM5f/ehkV4hKpUMQn7+9juHqTwoq63glkMw+Md1VRDk84lnDEbodJMKirYY2jzFQG88
-         JrR6p2+unVQ+e+7g4OLR7q5Uuv+sz8QrSqSk+fLNrUO69E/8ldIUsigxTlT+xhm6Wfhx
-         jNeaZcjPIiVADLkL4rXAT7LSuU2FN9e58Qo2IX3aMsrxLEHMPJ5jrkFYHQh1gw/mVmjV
-         SLPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWW8b8ubrbghJ8TIee/TKWbYRDBIKpNtnpTIUhk0HtyL8xBu6ycRIRl/HrfSVRK2SxG5GNkjjOdSI=@vger.kernel.org, AJvYcCVO1e3el+YAaz3DlOlu3Y54CHCBprHGBWetMpoN4FXk4bsnR3OvyYrrOj+PCxuNifIzwZBMMXtL@vger.kernel.org, AJvYcCVcpOe2lDeFSF+5RAb8MeQrlZ2PReZBys2yIiEsKAZH/dPllRPv7zoa0j8wRrs99N0JvJZUO/94axIrlYiG@vger.kernel.org
-X-Gm-Message-State: AOJu0YydmeRzafwfCxucNxMy9hCSo1WtX18PLLWum91gZ7gLZaDu3Tli
-	TFp9f+SrTo5mEOIw7xg2i11/4u3C3QZInw9Sc5ndpBe6qrYgx4dB
-X-Gm-Gg: ASbGnct54lYLFn8HhRG4s6++psM7ZOKHbMFNhJTTKWOUyIwQVFTFZd5xg6rtoUb0GN5
-	6gIWYo738Te50msZvKE8hBRg0Fv6GpXqSgOiuhlQSKlWCYqEIu2JaIxqyqKl6mLHZH89/TE4g+8
-	GGSdfnZ7SlH1rJOFLa2uL51s65IFJ20bh4n1bIJ4d6Fpw3nJBVlgXjoA/dbtkjOalb95tmWoDyM
-	EClOAazJeFEizNfJko90pb6k9sC1wpKtBS/YP39+thiwgjVWzG4N7X9wxau0XuLrlIfAZiilxQE
-	mcSm0w5RUHtRLvixX1OfqYO+tnkkoJDyM1QkMh5AMbDJT3M=
-X-Google-Smtp-Source: AGHT+IHWwCFSBtPYz/rqMUA+PmYcUjxPaIqEwBB5byOOqR1qNz8CJ2ovyvr/GGFQLmKtlFDzEUz79A==
-X-Received: by 2002:a17:903:1d0:b0:220:d257:cdbd with SMTP id d9443c01a7336-22c5363005emr177837095ad.48.1745243329119;
-        Mon, 21 Apr 2025 06:48:49 -0700 (PDT)
-Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbfaab922sm6746978b3a.133.2025.04.21.06.48.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Apr 2025 06:48:48 -0700 (PDT)
-Date: Mon, 21 Apr 2025 10:50:00 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
-Message-ID: <aAZNCEUejrTgy_yZ@debian-BULLSEYE-live-builder-AMD64>
-References: <20250421124915.32a18d36@jic23-huawei>
- <20250421131539.912966-1-gshahrouzi@gmail.com>
+	s=arc-20240116; t=1745243638; c=relaxed/simple;
+	bh=QKqtHJKIK1CyjnPmsHkZtwb2nQLj7nvbFiUq3w5vkNI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bY53ALBypN73EskDRBaqYnepMk6whyieStANBv7FD0bT2TBJ9uZAGOt7NJJrfPJwKnHd7ekK3yeBUU1Faazu5lvXRiXmYoOQz1ADVNLlQVwj5wjnZJ0SNZvfsdpE+MVwLE/rpjk8cRpEa4+edGgtcuEg2ky+wWkAVl5PHIBk2zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NN0XJsG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DFDBC4CEE4;
+	Mon, 21 Apr 2025 13:53:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745243638;
+	bh=QKqtHJKIK1CyjnPmsHkZtwb2nQLj7nvbFiUq3w5vkNI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=NN0XJsG+4qJQ5wuAeEyhynscH4K6ya7VnJIPrn65o4TP0/AB7L+kko0My84rPYvwH
+	 qB6Hm3RRlDhOkw4JjQdSGiCvTgy2t1PQGNG1nH4B4U6q5oB6+WaiufxhD7qJGo7xHr
+	 HqzrOQEc9NdyraPVwW1YVlu9GlhS6CqzO+FWvBFs=
+Subject: FAILED: patch "[PATCH] cpufreq/sched: Explicitly synchronize limits_changed flag" failed to apply to 6.6-stable tree
+To: rafael.j.wysocki@intel.com,christian.loehle@arm.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Apr 2025 15:53:55 +0200
+Message-ID: <2025042155-lumping-illicitly-3b3b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250421131539.912966-1-gshahrouzi@gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 04/21, Gabriel Shahrouzi wrote:
-> The inclinometer channels were previously defined with 14 realbits.
-> However, the ADIS16201 datasheet states the resolution for these output
-> channels is 12 bits (Page 14, text description; Page 15, table 7).
-> 
-> Correct the realbits value to 12 to accurately reflect the hardware.
-> 
-> Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 79443a7e9da3c9f68290a8653837e23aba0fa89f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042155-lumping-illicitly-3b3b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 79443a7e9da3c9f68290a8653837e23aba0fa89f Mon Sep 17 00:00:00 2001
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Date: Tue, 15 Apr 2025 11:59:15 +0200
+Subject: [PATCH] cpufreq/sched: Explicitly synchronize limits_changed flag
+ handling
+
+The handling of the limits_changed flag in struct sugov_policy needs to
+be explicitly synchronized to ensure that cpufreq policy limits updates
+will not be missed in some cases.
+
+Without that synchronization it is theoretically possible that
+the limits_changed update in sugov_should_update_freq() will be
+reordered with respect to the reads of the policy limits in
+cpufreq_driver_resolve_freq() and in that case, if the limits_changed
+update in sugov_limits() clobbers the one in sugov_should_update_freq(),
+the new policy limits may not take effect for a long time.
+
+Likewise, the limits_changed update in sugov_limits() may theoretically
+get reordered with respect to the updates of the policy limits in
+cpufreq_set_policy() and if sugov_should_update_freq() runs between
+them, the policy limits change may be missed.
+
+To ensure that the above situations will not take place, add memory
+barriers preventing the reordering in question from taking place and
+add READ_ONCE() and WRITE_ONCE() annotations around all of the
+limits_changed flag updates to prevent the compiler from messing up
+with that code.
+
+Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
+Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
+
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index b713ce0a5702..bcab867575bb 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -81,9 +81,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
+ 		return false;
+ 
+-	if (unlikely(sg_policy->limits_changed)) {
+-		sg_policy->limits_changed = false;
++	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
++		WRITE_ONCE(sg_policy->limits_changed, false);
+ 		sg_policy->need_freq_update = true;
++
++		/*
++		 * The above limits_changed update must occur before the reads
++		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
++		 * limits update might be missed, so use a memory barrier to
++		 * ensure it.
++		 *
++		 * This pairs with the write memory barrier in sugov_limits().
++		 */
++		smp_mb();
++
+ 		return true;
+ 	}
+ 
+@@ -377,7 +388,7 @@ static inline bool sugov_hold_freq(struct sugov_cpu *sg_cpu) { return false; }
+ static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
+ {
+ 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
+-		sg_cpu->sg_policy->limits_changed = true;
++		WRITE_ONCE(sg_cpu->sg_policy->limits_changed, true);
+ }
+ 
+ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
+@@ -883,7 +894,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
+ 		mutex_unlock(&sg_policy->work_lock);
+ 	}
+ 
+-	sg_policy->limits_changed = true;
++	/*
++	 * The limits_changed update below must take place before the updates
++	 * of policy limits in cpufreq_set_policy() or a policy limits update
++	 * might be missed, so use a memory barrier to ensure it.
++	 *
++	 * This pairs with the memory barrier in sugov_should_update_freq().
++	 */
++	smp_wmb();
++
++	WRITE_ONCE(sg_policy->limits_changed, true);
+ }
+ 
+ struct cpufreq_governor schedutil_gov = {
+
 
