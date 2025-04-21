@@ -1,109 +1,149 @@
-Return-Path: <stable+bounces-134826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F0CA9523C
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:59:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF48A95241
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6B516EE8E
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:59:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 096937A910B
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8D0266B44;
-	Mon, 21 Apr 2025 13:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEAE2641D1;
+	Mon, 21 Apr 2025 13:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EJy+Kodz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TBxIlP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0211A264FA6;
-	Mon, 21 Apr 2025 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DB7266B71
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243983; cv=none; b=PW7WCLvPo8oDxoT7eIgdLOgDwXngKj7OUH4444bgupSIMqToGvKy5a7q3lKEySv+HoxEVksZFmS54LmhVsRhn3G77NrFNEvJpeBCHoCCx3ZyFERWh0EFYhbr9peQnA+5VZZfVrOrAQdK6bGrVEBDx8UMl0FSiMOmbi4cRBN8gW4=
+	t=1745243986; cv=none; b=GHr7BwZTCF5c/sgtPyU/0sQ/d3V/N5yQllNDSN0Ma1FYJqlArMqYwJdUCZByLAHB93WbTDkqVSz+IepIf/ASkTCiz9TeW9nxNQxHnLpz3WucL2mJBuAaJ4GrHEjOvgyRc6mDEbAtycrhTqWzav3gdVnJkOm4P0SSCgM0gotKxJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243983; c=relaxed/simple;
-	bh=J7iTshs6CmOUgtoiSBVw1f3K2zMl0Vgv+zGSAmPjgtA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SQhbYCOlMlGU4iQZMakRoaFqfxI41DnvOlxHYDsIvYZT6Rma3EyN76mVy30Vc8nfjU1EksR3Eq9p13J7MAAyllTfwFZLybJcLpOmHBa8jgSVlLMSukEaxqy5//4/0743fF9hmI8skuTwJ/ImNBa27LTxdhQs1s2V9NdYP4fDmGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EJy+Kodz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73FCC4CEE4;
-	Mon, 21 Apr 2025 13:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745243982;
-	bh=J7iTshs6CmOUgtoiSBVw1f3K2zMl0Vgv+zGSAmPjgtA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EJy+Kodz0gmjCgZ7HwUyChvh/DejzC0+EK7D/vx0CSS+wrZAwH8pf56ELPsC9e1xh
-	 BMHeEHYUYv2DXUSBxd6ykFGDjveHORcfn1z5jJh0mGveXGTYkIMY6LX2AB2Tn53FY1
-	 5NAzhKDW7zl+jf6od/eHRmxXdz/BVsuORt+MlfIiHzeJA3CJFpK3NMiJmFiojOl3Hd
-	 VCFRo27RlpXRVHguyOPA9encVuM8XGb9CdfoXDqqRhVNFQl9uQI+hjvLPymfMDQ2gw
-	 ckn8Yh5/nQFkZbqjGFSyUjUnT8CTHZVThfINCgm3IJO26r8J0pREDGjaH415s+VCE9
-	 x6cdUMKRBcaig==
-Date: Mon, 21 Apr 2025 14:59:31 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
- skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
- marcelo.schmitt1@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
-Message-ID: <20250421145931.605df588@jic23-huawei>
-In-Reply-To: <20250421131539.912966-1-gshahrouzi@gmail.com>
-References: <20250421124915.32a18d36@jic23-huawei>
-	<20250421131539.912966-1-gshahrouzi@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1745243986; c=relaxed/simple;
+	bh=uQX53bkstEwayj+9GllkyLUemBi9KpYxIZ8AJs/9UrI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sn4W/TcOmT/Kz71uCeolUgAsPP4yu1htLwR+azW4C5LmwkGui8ll30bBSmTrSPUZC+5IjkKAK/tywubsWJg+AiG2oHM6ykL6LToTA0mctHRlzhIZVwd4QW9OAFikvKlRtAHuVji37j1n48EDiFe7A0XSQ9RWvtbtFtyBHYc4tok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TBxIlP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A47C4CEE4;
+	Mon, 21 Apr 2025 13:59:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745243986;
+	bh=uQX53bkstEwayj+9GllkyLUemBi9KpYxIZ8AJs/9UrI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0TBxIlP5iogcPEXBBmuuWqsD/fUHD1/edmc6i8OJbzTuc6IasEta+hRQ5kftToSFf
+	 c7t+m8IwnEJXL+aJpmXVEr5GQySqdeBzG7lhcUXFmZI75SkW94pfh21C1cPa7lWGgj
+	 HF5YGxzAZ4yffdBFKEwY6+cuKcDV6gWsf9SpXxDY=
+Subject: FAILED: patch "[PATCH] selftests/mm: generate a temporary mountpoint for cgroup" failed to apply to 6.1-stable tree
+To: broonie@kernel.org,aishwarya.tcv@arm.com,akpm@linux-foundation.org,almasrymina@google.com,longman@redhat.com,shuah@kernel.org,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Apr 2025 15:59:43 +0200
+Message-ID: <2025042143-blinked-unstable-8404@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, 21 Apr 2025 09:15:39 -0400
-Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-> The inclinometer channels were previously defined with 14 realbits.
-> However, the ADIS16201 datasheet states the resolution for these output
-> channels is 12 bits (Page 14, text description; Page 15, table 7).
-> 
-> Correct the realbits value to 12 to accurately reflect the hardware.
-> 
-> Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-If you post a new version, always add the version number.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Anyhow, I was just asking for the fixes tag, but this is fine.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Applied to the fixes-togreg branch of iio.git
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9c02223e2d9df5cb37c51aedb78f3960294e09b5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042143-blinked-unstable-8404@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Thanks,
+Possible dependencies:
 
-Jonathan
 
-> ---
->  drivers/iio/accel/adis16201.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.c
-> index 982b33f6eccac..dcc8d9f2ee0f1 100644
-> --- a/drivers/iio/accel/adis16201.c
-> +++ b/drivers/iio/accel/adis16201.c
-> @@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16201_channels[] = {
->  			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
->  	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
->  	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
-> -			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-> +			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
->  	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
-> -			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-> +			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
->  	IIO_CHAN_SOFT_TIMESTAMP(7)
->  };
->  
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9c02223e2d9df5cb37c51aedb78f3960294e09b5 Mon Sep 17 00:00:00 2001
+From: Mark Brown <broonie@kernel.org>
+Date: Fri, 4 Apr 2025 17:42:32 +0100
+Subject: [PATCH] selftests/mm: generate a temporary mountpoint for cgroup
+ filesystem
+
+Currently if the filesystem for the cgroups version it wants to use is not
+mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
+will attempt to mount it on the hard coded path /dev/cgroup/memory,
+deleting that directory when the test finishes.  This will fail if there
+is not a preexisting directory at that path, and since the directory is
+deleted subsequent runs of the test will fail.  Instead of relying on this
+hard coded directory name use mktemp to generate a temporary directory to
+use as a mountpoint, fixing both the assumption and the disruption caused
+by deleting a preexisting directory.
+
+This means that if the relevant cgroup filesystem is not already mounted
+then we rely on having coreutils (which provides mktemp) installed.  I
+suspect that many current users are relying on having things automounted
+by default, and given that the script relies on bash it's probably not an
+unreasonable requirement.
+
+Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
+Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+index 67df7b47087f..e1fe16bcbbe8 100755
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -29,7 +29,7 @@ fi
+ if [[ $cgroup2 ]]; then
+   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+-    cgroup_path=/dev/cgroup/memory
++    cgroup_path=$(mktemp -d)
+     mount -t cgroup2 none $cgroup_path
+     do_umount=1
+   fi
+@@ -37,7 +37,7 @@ if [[ $cgroup2 ]]; then
+ else
+   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+-    cgroup_path=/dev/cgroup/memory
++    cgroup_path=$(mktemp -d)
+     mount -t cgroup memory,hugetlb $cgroup_path
+     do_umount=1
+   fi
+diff --git a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+index 11f9bbe7dc22..0b0d4ba1af27 100755
+--- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
++++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+@@ -23,7 +23,7 @@ fi
+ if [[ $cgroup2 ]]; then
+   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+-    CGROUP_ROOT=/dev/cgroup/memory
++    CGROUP_ROOT=$(mktemp -d)
+     mount -t cgroup2 none $CGROUP_ROOT
+     do_umount=1
+   fi
 
 
