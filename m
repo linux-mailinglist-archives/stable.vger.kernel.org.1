@@ -1,157 +1,107 @@
-Return-Path: <stable+bounces-134799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974FCA951C4
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:39:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B6FA951E9
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 645517A435D
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:38:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38F2916A8EE
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37839266560;
-	Mon, 21 Apr 2025 13:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E70726657B;
+	Mon, 21 Apr 2025 13:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YSiRlQM5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="acCxHGF5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BF5264A74;
-	Mon, 21 Apr 2025 13:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072E4320F;
+	Mon, 21 Apr 2025 13:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745242741; cv=none; b=jlBDa+C/T+r9Bc/XCJbab9QKS3wNLYh4thY8bwXtTrHW+HLxOwSJsiVkKUuYf8seTtCZkXLthW+SJ4UZ56oxzki+Th1O7CRufZMdhOE7kasAX+1OFZhL0GpsSA/Q/4wRdZgPRk+sZmO3TNoYUlXNTCzP6s+xTcolXFfVd79p98M=
+	t=1745243331; cv=none; b=faMkz+Pl/wG7eBEI9Yo96vjkf6FYMXVJqoVnxr5eBVypDSpzB1a3YuTNhc2MyLS3nfd1kpqLJZx4r8m2sNKr0txKSQBGH4LsxYznsVsRjMBoq3EtQWsW5rOcW6gmiPdhYyPCQmGKZdVSZNhL3IsJvgmA0dKt7brSAc8WrlKQ01Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745242741; c=relaxed/simple;
-	bh=8lR4YawUzxF9gm3YTPikm58kY0KHQCev0m6IyQOjNmY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kt7fqhrSjASoCz5MI0Qqnec50p34yIdiQpuu2OYhJqgKwt70calMqawycaBhYJTXValrfMBZ1rSx5SdH0wDaa8R7EgSknZNcwmEoipBUKlgMUgCS1nPEBhvOWzqwhoVkGQoR/6C+v9WASJvPwYP/gKAPMuJ5g0KohMM8evnZDMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YSiRlQM5; arc=none smtp.client-ip=209.85.160.175
+	s=arc-20240116; t=1745243331; c=relaxed/simple;
+	bh=7WfjRqak32dmDEcbYuCM3PkVd+8nEMKIrPGztxIZIfQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Giw5urlTY1jDLun46LFyvSJCMsD5+FBe7UNad661A6NVUbrC/2KwD/oNR0eO7mXWTr674eegqI1F16RyH3OBm6fEdwE/ikDx2D+nX/bpwyH4BkRqU0/4YuyU7gcP9PRN6g0AB57lrmQ92DhvOs27Nr2mdJtPWNOAIaPXpxgogu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=acCxHGF5; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-47662449055so19683211cf.1;
-        Mon, 21 Apr 2025 06:38:59 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22c33ac23edso38386515ad.0;
+        Mon, 21 Apr 2025 06:48:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745242738; x=1745847538; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8lR4YawUzxF9gm3YTPikm58kY0KHQCev0m6IyQOjNmY=;
-        b=YSiRlQM5jfYzOphlUfM/3Sy2v/Kv0+bqgt5Id32OGl3n127P1oAy0IYwOlnqGWWyqE
-         Dbtu/cWZ9Zv0AWBnKL63NaPNHYLr83jB5MlM90wOOmA4uiHenO9VrJFGeMUj8gq3+5lo
-         mLEqK/y4veIMmLO63+SoA+MVYOJaWQa5KqiBchkPgX02Wgk7LIrMI5DxjFe/DTPewgPM
-         Tpv2VThj/Jm4uGNIPdMvgZ7g2MHFwAE3j7frPtOoIrYcG87U/m4+IcUn5ITqbrRh2aVw
-         +OjJwgcaiQq0G3VwRfa+h54RpDEYcG4AQUvrP1FN9katec5NW6c07Hmqe4Tu3LuR8gTZ
-         ojWg==
+        d=gmail.com; s=20230601; t=1745243329; x=1745848129; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VILm46anXu51tGkwwdzpRRF6UX5t99Pkc+Jaul39Ijc=;
+        b=acCxHGF59aJfe8/xmpAj8zM/E1CzmJSKiVrCLLxTYseRan+T6GKhVzqGrED25eUkPI
+         SZOQqZucwSpLWI98miZ1PFq3KHeqO2VLYg8L8i++Pq3iRumDrVuZPmwqKuE9mgcalFjA
+         qoqpt+aezRrRG3Irig6jlg8DwIdHp599goRiWE0hhM53kWtIXnNMcHvveIIrZCi8Snee
+         dfResiKkTsWoNPjx5uO6zMP8XAVPLxWCoJmTxqmd07EqDeb9u0yTFvDwJkQAdUHHCt07
+         cuXlyIQ0f2eMFBIwSA7SEeppYBAd9vSjzPNq6BGSwj7hRdGWNdVEwGb7ww9xLSero7UB
+         m+fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745242738; x=1745847538;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8lR4YawUzxF9gm3YTPikm58kY0KHQCev0m6IyQOjNmY=;
-        b=KXY6+RAyKWHCgehfEMGXu/3WMY/ablLyyS/oo0ckj4p18CniimOpMoS51eEm5ZHn1K
-         WtyD3GB4GJjofDkemGplM1UQKkLHlDKr9JbI+D+8IjImXNwcEWULZzPolI3bH6HWQHiY
-         k3+iJlN7oGQ2o/wCN1Rdl35jJSriBEVCt7vnGZaoqYlQQRZKZ0j+xJDH/t4mRSS5P8bj
-         10OFcse2jMG7fSGJIiVH1V+SKZ81gf9SBAFyApv/2kD6ZCmN5lmDrLmdmeOOGy0BrovJ
-         oINRlrOZqNBALwKSFLJ102ZiH2owzOoks6QKEsjAS1B3WSuFOPW7AtSFE4uGMk2zO9xp
-         n/cw==
-X-Forwarded-Encrypted: i=1; AJvYcCU99Of+L4HKqIiM5mRcKgm+gxpkUbLcJlUybBrQo8F8uKDrttcOOyLGUQYgCuIU2B0hw/bUopNNeYE=@vger.kernel.org, AJvYcCUbSel72h4yczgAaqCCjtbIVi1IR738qfttwr5yQEcP78hlKb0u1Jqq8+rkuqq9A23rKGGPmuOIO/INdmVy@vger.kernel.org, AJvYcCW1ErFa+6rSYgzQ8zrP8iAXHZdC5hZaSmV6NCM8hGP34e3yW9LFpFA7JqF87EvbM9DROGzJfg/y@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKitcE/Q8W5r6/gACQH0ep39ZlbDFGxdGDzCQq+rz/dJB7zrlW
-	brYhfWU44BRn2Lrdl7P4ivy0k1rW2tH+CwSj+zpUZzXorwBro//FibxPw5m62Yw62rOiZW02VrK
-	IfuUONso2Sbqq8065TnERLppSing=
-X-Gm-Gg: ASbGnctPORP+afnkOYinI2HwCAEtOwJl4WrA27EGPfb+bT9TO6wBEujycV7PXrvPiQ+
-	p8LQGsghVgwa9nKuNax0AmPT0gjk1nB30yitQpBjr8og6wgccxyPLDT+JHDIo2Ton8KvZkXhtQl
-	eFUKqbizvkqhQX2v0Vs3NbULQOsvMDA43rEpZ6L21alYjHAYY4kGS/fQ==
-X-Google-Smtp-Source: AGHT+IFDANpJcqnxiNwpvLo83FTQELypzcIlu5k2ebGCf1WLDh5Z68JcqVHI4AdI9K1kJkqM+xd7gDHdkC7A/R1Jb/Y=
-X-Received: by 2002:a05:622a:1998:b0:477:5d12:aa4d with SMTP id
- d75a77b69052e-47aec4c3d22mr204747991cf.39.1745242738187; Mon, 21 Apr 2025
- 06:38:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745243329; x=1745848129;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VILm46anXu51tGkwwdzpRRF6UX5t99Pkc+Jaul39Ijc=;
+        b=AyguLCPQJeQjbKZKiC0nIAgNbA7bU+GZsw9eDl//P80dFoC07zYDbANxCSla5GE82Q
+         GwRn148Lq0Zf0k6FS7ALE8wqZAd8TB+CsTrZ6Jf65NShUCDs3jDbrYL5QCZxWWttkxvr
+         pXM5f/ehkV4hKpUMQn7+9juHqTwoq63glkMw+Md1VRDk84lnDEbodJMKirYY2jzFQG88
+         JrR6p2+unVQ+e+7g4OLR7q5Uuv+sz8QrSqSk+fLNrUO69E/8ldIUsigxTlT+xhm6Wfhx
+         jNeaZcjPIiVADLkL4rXAT7LSuU2FN9e58Qo2IX3aMsrxLEHMPJ5jrkFYHQh1gw/mVmjV
+         SLPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUWW8b8ubrbghJ8TIee/TKWbYRDBIKpNtnpTIUhk0HtyL8xBu6ycRIRl/HrfSVRK2SxG5GNkjjOdSI=@vger.kernel.org, AJvYcCVO1e3el+YAaz3DlOlu3Y54CHCBprHGBWetMpoN4FXk4bsnR3OvyYrrOj+PCxuNifIzwZBMMXtL@vger.kernel.org, AJvYcCVcpOe2lDeFSF+5RAb8MeQrlZ2PReZBys2yIiEsKAZH/dPllRPv7zoa0j8wRrs99N0JvJZUO/94axIrlYiG@vger.kernel.org
+X-Gm-Message-State: AOJu0YydmeRzafwfCxucNxMy9hCSo1WtX18PLLWum91gZ7gLZaDu3Tli
+	TFp9f+SrTo5mEOIw7xg2i11/4u3C3QZInw9Sc5ndpBe6qrYgx4dB
+X-Gm-Gg: ASbGnct54lYLFn8HhRG4s6++psM7ZOKHbMFNhJTTKWOUyIwQVFTFZd5xg6rtoUb0GN5
+	6gIWYo738Te50msZvKE8hBRg0Fv6GpXqSgOiuhlQSKlWCYqEIu2JaIxqyqKl6mLHZH89/TE4g+8
+	GGSdfnZ7SlH1rJOFLa2uL51s65IFJ20bh4n1bIJ4d6Fpw3nJBVlgXjoA/dbtkjOalb95tmWoDyM
+	EClOAazJeFEizNfJko90pb6k9sC1wpKtBS/YP39+thiwgjVWzG4N7X9wxau0XuLrlIfAZiilxQE
+	mcSm0w5RUHtRLvixX1OfqYO+tnkkoJDyM1QkMh5AMbDJT3M=
+X-Google-Smtp-Source: AGHT+IHWwCFSBtPYz/rqMUA+PmYcUjxPaIqEwBB5byOOqR1qNz8CJ2ovyvr/GGFQLmKtlFDzEUz79A==
+X-Received: by 2002:a17:903:1d0:b0:220:d257:cdbd with SMTP id d9443c01a7336-22c5363005emr177837095ad.48.1745243329119;
+        Mon, 21 Apr 2025 06:48:49 -0700 (PDT)
+Received: from localhost ([2804:30c:90e:1e00:5265:5254:2e32:7e5])
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73dbfaab922sm6746978b3a.133.2025.04.21.06.48.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 21 Apr 2025 06:48:48 -0700 (PDT)
+Date: Mon, 21 Apr 2025 10:50:00 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
+	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
+Message-ID: <aAZNCEUejrTgy_yZ@debian-BULLSEYE-live-builder-AMD64>
+References: <20250421124915.32a18d36@jic23-huawei>
+ <20250421131539.912966-1-gshahrouzi@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250417135434.568007-1-gshahrouzi@gmail.com> <aAQZrhBLQCa0TjOJ@debian-BULLSEYE-live-builder-AMD64>
- <CAKUZ0zLMAZFHwvuqfoL6JZfphYRhtjkqOyi50_ZffbA7-4MCew@mail.gmail.com> <20250421120749.66b04533@jic23-huawei>
-In-Reply-To: <20250421120749.66b04533@jic23-huawei>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Mon, 21 Apr 2025 09:38:47 -0400
-X-Gm-Features: ATxdqUE_17qAcsPlqPvvpcyUwPKjF9_hB_0h8fmZDEfhDjZVt-Rp-IXf8BtVm1U
-Message-ID: <CAKUZ0z+AvV6XMk3Fe+qKs+DnUHESKjj6pwSNmgSc-PaPKCCWGQ@mail.gmail.com>
-Subject: Re: [PATCH] iio: frequency: Use SLEEP bit instead of RESET to disable output
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, gregkh@linuxfoundation.org, lars@metafoo.de, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-staging@lists.linux.dev, Michael.Hennerich@analog.com, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250421131539.912966-1-gshahrouzi@gmail.com>
 
-On Mon, Apr 21, 2025 at 7:07=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Sat, 19 Apr 2025 21:41:50 -0400
-> Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
->
-> > On Sat, Apr 19, 2025 at 5:45=E2=80=AFPM Marcelo Schmitt
-> > <marcelo.schmitt1@gmail.com> wrote:
-> > >
-> > > On 04/17, Gabriel Shahrouzi wrote:
-> > > > According to the AD9832 datasheet (Table 10, D12 description), sett=
-ing
-> > > > the RESET bit forces the phase accumulator to zero, which correspon=
-ds to
-> > > > a full-scale DC output, rather than disabling the output signal.
-> > > >
-> > > > The correct way to disable the output and enter a low-power state i=
-s to
-> > > > set the AD9832_SLEEP bit (Table 10, D13 description), which powers =
-down
-> > > > the internal DAC current sources and disables internal clocks.
-> > > >
-> > > > Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> > > > ---
-> > > Looks okay.
-> > >
-> > > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-> > >
-> > > Unrelated to this patch but, if anybody be looking to work on getting=
- this out
-> > > of staging, I think maybe this driver could use out_altvoltage_powerd=
-own ABI
-> > > instead of this custom out_altvoltageX_out_enable.
-> > > Crazy thing this driver doesn't declare a single IIO channel.
-> > > Seems to be somewhat ancient IIO driver.
-> > I can start tackling this.
-> This has crossed with a series from Siddarth.
->
-> Take a look at what is in:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/=
-?h=3Dtesting&id=3Daa703203cbbca22ac46d42d4cd41232491827152
->
-> Please rebase this one on top of that as I think the bug is still there?
-Got it. Yes, I believe it is still there.
->
-> Given there is work going on for this driver and the bugs are ancient, I'=
-ll
-> not take any patches through the fixes tree for now. Instead I'll just qu=
-eue
-> them up for the next merge window.
-Got it.
->
-> Thanks,
->
-> Jonathan
->
-> > >
-> > > Regards,
-> > > Marcelo
-> >
->
+On 04/21, Gabriel Shahrouzi wrote:
+> The inclinometer channels were previously defined with 14 realbits.
+> However, the ADIS16201 datasheet states the resolution for these output
+> channels is 12 bits (Page 14, text description; Page 15, table 7).
+> 
+> Correct the realbits value to 12 to accurately reflect the hardware.
+> 
+> Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
