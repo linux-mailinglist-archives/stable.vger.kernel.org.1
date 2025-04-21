@@ -1,133 +1,118 @@
-Return-Path: <stable+bounces-134787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46EC2A950F6
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:33:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3461BA95115
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3961892630
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 12:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162A53A4F1E
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 12:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F9D264F87;
-	Mon, 21 Apr 2025 12:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABB6264F8F;
+	Mon, 21 Apr 2025 12:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YSA4Mdqc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kERGqX/g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2847C1885B8;
-	Mon, 21 Apr 2025 12:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7F1CA5E
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 12:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745238794; cv=none; b=Cdw6GizSmCQ3zPM8pc3iCa507crYeqtuvYUe8G3e84hz31UONqKRIWJZHwhtn/nTuYCDDIJgDFFAVr8mBhBE+89u1+J7cXyw4iRoWxuwZ3ltCL2PHbLxGwYxeWz3j2bTaqvsQ1v0p6luD632/dOxbWAEAI/UlfRMjpXCFRX+3xQ=
+	t=1745239079; cv=none; b=eK9fZQbJ6WCkrQSw1n40K0ovyDhztGDOWQOg7XVNTzBMcTUzO57hyPDLarDUAHfGmSglZ91VFzpkLA6ZlagvJ6qbu9LtgevXMF3+frOf5gaDbhv0IY9Lm5GqLM96yYh/BBPPuaQUBwJWwtJJhTdbFX5XZ6YMtVawWUFNhsE/zlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745238794; c=relaxed/simple;
-	bh=wqrJORC7kXaeaHHCXjKjEWLJCiYSLyOiCXagiUJd88k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VCnR59qgG6qNL2BE7yxSzd9ZQIa38M+kBctTzPiaruS30uw5Qe4ZdHdUw78zP9tzvqnGS5Y9kUMiMxkUZ7JAU6R6DQsu6Rqvw0+Fk0/CEiRJaXS5FAZ3l76YaOmYY6cs5FyES2O39e8iHyWIy9cDm+xXChT9dyjSVmspoTYmiIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YSA4Mdqc; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-476a304a8edso41494561cf.3;
-        Mon, 21 Apr 2025 05:33:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745238792; x=1745843592; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eChZmy5qVC82sBxIFmHOSjXPUbGZooL1QoxWZm005kw=;
-        b=YSA4Mdqc4LFlsk6PBmD1YXxZEefBVjVVNrY0AWfC/aeqCuRZRhJLxDcrzZAhlm6J56
-         rt+ki851Puc+ubeYIu67Y0uVNUUDoKYwPqhnOMYE7VQRpJdVDCkV+hyLqyzkp2a864d0
-         gFlZAslDn3pq2T5Aw5BaWqjWssEZjTAqyLs2eA/QnMqz+La8ofcIrcuFNdjMHaHzgNjU
-         YVa5yocSpEekK6FzNzWRAHSX8GBCNs9tcpUgfSy9p1afL5LrODh23PjWu9FNnQ5YIRFo
-         0W+lJuMMbz9deN738LTSaT7F9LZRHmYFj1TJEu98KSk0n/RGWDAZWVbYbJHiNBBxunDZ
-         4xDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745238792; x=1745843592;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eChZmy5qVC82sBxIFmHOSjXPUbGZooL1QoxWZm005kw=;
-        b=KhcQacJ8OuQEV9yT+LTGNLs+J5XJbdiT72LQYgFRsJE+jmUEXF+OwKOZtBWjC/f/Y2
-         XnJ05hibXWecA2WusaOphJmqlzuB6v1fHMk5R4HKskSkIS2kISlGA+m+QhRg+2JUDyyl
-         764lFtC36wgd1mIx7hj5n8FHrbUZP04CVQyvHMxgcyPPTRMUCZeGBV921HBhrZCcerxO
-         a/vK+i1dbpdX/vpqfw88OH3P9t8Uu7F3CS8l5Egw/x51Tl2Xx+8NiwkBmz7Sxjl6tWOz
-         ua+YIpT5Q4ildihVZqenjKOaMHx0VPEWkzfRrJ2Fl0SaX5S50uNuTBHIHdQHJ0DB3Q54
-         d/CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVElrEGKBPMPCkpBLswO3QfIhD/7i2t4pSEpUsjGTzfhoYsyNNvFDwIK7mDjiA5gclPBJBMTldVTISBWScA@vger.kernel.org, AJvYcCVhkZ5pZt6QZvq3fFbtNL8LVtsk3K//vxJwI5VOUpWWi89gfyZYpAGR+XlkLf6rRgArxNiwsggH@vger.kernel.org, AJvYcCXBfta/xjOQi5qfAyy1f5hpaq0PmHCX6mQYlv41mPhImnNk5NKiz/tTLditg4P3JjbwKhiLzks7iPQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyInogeNnfo61I9PEnU70g5vxbIHCcyv3gxbeIvveUCQjsuYhfL
-	n6f0r/J94ufT6mAVv+vZsxFwNTEBi8gOKlJBks0Rr8w03Mzu8uAtsz3BVyVSOQhgMLpWZO3XxwL
-	MVeTDxYuTcyuoGIPCROfIGrOAS0c=
-X-Gm-Gg: ASbGncvEVCBu0BMv8LL3n8YIqWYVmZyGhbE53qh3O9iLB0tlyfLdudlT1y2bmVFulrE
-	IMAUj0GJYL6lS9G39nAbh7/5Oeq3AiSl3lZP2Tm4Psa+6LRrbpbdIVu8T1oPK2CmmeUOf3OZYCb
-	/gS0i08DcPmfuQmuBSrd666E9NoLFLHi+nrjpjFECqGXkU7T1VpHLyhg==
-X-Google-Smtp-Source: AGHT+IFaaX6+2xHkLcgslU01jFDOcbqs7hltQ40RQ8wzUyG0YQTGtEbDeKrMYngslEzC06BAytv+1r5cQAbAPsNsUq4=
-X-Received: by 2002:ac8:5795:0:b0:472:1d98:c6df with SMTP id
- d75a77b69052e-47aec4d23aamr183858731cf.52.1745238791594; Mon, 21 Apr 2025
- 05:33:11 -0700 (PDT)
+	s=arc-20240116; t=1745239079; c=relaxed/simple;
+	bh=eCQVdC9txgrsGrTUrqNRuVqtwoVGBG8Uup5jVepAmX4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZX2eHPpBLJF5iJQV5q4SYKrWZwkjAulnJUWx0gqGSHB7YAkdLJanvThyKgOdRpbQB2ucNSYF1hm3dDBo2aJDZAo/38dX7XaY6AngWZmcARlZhDt/r9kKggtZD/prqxi9KEppOWMkeNcugwAWPlFUAU+Rrvu5kjhHvNKpIok7YxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kERGqX/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC05C4CEEA;
+	Mon, 21 Apr 2025 12:37:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745239079;
+	bh=eCQVdC9txgrsGrTUrqNRuVqtwoVGBG8Uup5jVepAmX4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kERGqX/gj6rKhDA1PjsdEK3MjlKKVVy5/WKYZ9krgxC3Jwmy9ZjAlGRJPZ6YY38Y4
+	 s30Vr3XPsoXSfML33YkKhogtf1aEHPpgFX4KvRnOsNqqqVHzNgT5GMYLKhn3AdNoJJ
+	 X7F99htC5aEyagwnukdx2w1H/vILIFLIgPD38pDs7PQv8HPagb1XVb88hyMz24gDgh
+	 aYim3LS0dgkEWKmBYHOPycDfn08vmAZej+GxMz1agGVg+IihPSV3NCe3akSsY4z1/y
+	 HyFLyjh27CskWOmxiP3nLv82TcGPxc8jI3OfXdrHMKdD5o9ap25Qo7gbCEIBJ7phAG
+	 x/re9b1c/oTHQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: stable@vger.kernel.org
+Cc: Lukas Fischer <kernel@o1oo11oo.de>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12.y] scripts: generate_rust_analyzer: Add ffi crate
+Date: Mon, 21 Apr 2025 14:37:43 +0200
+Message-ID: <20250421123743.3147213-1-ojeda@kernel.org>
+In-Reply-To: <2025042132-trial-subtext-ae03@gregkh>
+References: <2025042132-trial-subtext-ae03@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250421122819.907735-1-gshahrouzi@gmail.com>
-In-Reply-To: <20250421122819.907735-1-gshahrouzi@gmail.com>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Mon, 21 Apr 2025 08:33:00 -0400
-X-Gm-Features: ATxdqUEyX9qpK523GiiHqFgOS3IQGtJNf5CuM7NiXhHEXKOmyJfQdgOJZiEIlUA
-Message-ID: <CAKUZ0zKgvwhzgq8+_HG845QDze2SGN2fPwdXuN=UkATea6Nuag@mail.gmail.com>
-Subject: Re: [PATCH] iio: accel: adis16201: Use IIO_VAL_INT for temperature scale
-To: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com, 
-	Greg KH <gregkh@linuxfoundation.org>
-Cc: skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Not sure this is worth mentioning but one of the emails from using
-get_maintainer.pl on the patch listed a deprecated email:
-gregkh@suse.de.
+From: Lukas Fischer <kernel@o1oo11oo.de>
 
-On Mon, Apr 21, 2025 at 8:28=E2=80=AFAM Gabriel Shahrouzi <gshahrouzi@gmail=
-.com> wrote:
->
-> This is a leftover from the patch: commit cf96ffd8c2ed
-> ("staging:iio:accel:adis16201 move to chan_spec based setup.").
-> Initially *val =3D 0 and *val2 =3D -470000.  However, they were later
-> changed to -470 and 0 respectively but their return type was not
-> updated.
->
-> Use correct type as -470 is an integer in the base units.
->
-> Fixes: cf96ffd8c2ed ("staging:iio:accel:adis16201 move to chan_spec based=
- setup.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-> ---
->  drivers/iio/accel/adis16201.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/iio/accel/adis16201.c b/drivers/iio/accel/adis16201.=
-c
-> index dcc8d9f2ee0f1..1f27386edcc4e 100644
-> --- a/drivers/iio/accel/adis16201.c
-> +++ b/drivers/iio/accel/adis16201.c
-> @@ -125,7 +125,7 @@ static int adis16201_read_raw(struct iio_dev *indio_d=
-ev,
->                 case IIO_TEMP:
->                         *val =3D -470;
->                         *val2 =3D 0;
-> -                       return IIO_VAL_INT_PLUS_MICRO;
-> +                       return IIO_VAL_INT;
->                 case IIO_ACCEL:
->                         /*
->                          * IIO base unit for sensitivity of accelerometer
-> --
-> 2.43.0
->
+commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
+
+Commit d072acda4862 ("rust: use custom FFI integer types") did not
+update rust-analyzer to include the new crate.
+
+To enable rust-analyzer support for these custom ffi types, add the
+`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
+crates, which all directly depend on it.
+
+Fixes: d072acda4862 ("rust: use custom FFI integer types")
+Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+[ Fixed conflicts. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ scripts/generate_rust_analyzer.py | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index d1f5adbf33f9..690f9830f064 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -90,6 +90,12 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+         ["core", "compiler_builtins"],
+     )
+ 
++    append_crate(
++        "ffi",
++        srctree / "rust" / "ffi.rs",
++        ["core", "compiler_builtins"],
++    )
++
+     def append_crate_with_generated(
+         display_name,
+         deps,
+@@ -109,9 +115,9 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+             "exclude_dirs": [],
+         }
+ 
+-    append_crate_with_generated("bindings", ["core"])
+-    append_crate_with_generated("uapi", ["core"])
+-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
++    append_crate_with_generated("bindings", ["core", "ffi"])
++    append_crate_with_generated("uapi", ["core", "ffi"])
++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
+ 
+     def is_root_crate(build_file, target):
+         try:
+-- 
+2.49.0
+
 
