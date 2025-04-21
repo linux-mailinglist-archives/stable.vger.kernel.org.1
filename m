@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-134824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9009FA95236
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:59:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A313A95235
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F003AD78A
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:58:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73B0F1894600
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2967C266B6F;
-	Mon, 21 Apr 2025 13:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3A1F510;
+	Mon, 21 Apr 2025 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPSG9Lkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvMJCvFD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F70266B65
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BB3266588
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243908; cv=none; b=VH+XFmurfMMegeQ4li8HEvNi0BnbvEV5A+KB93zI2VwTqoWiI/arConV/GMrHN2kR2VfNwAdS1o+pcCmqQ/Op8cUuRSVeoOsc9mqoFNENdSYDP7yE12st+M36a391VOnultc39J+7jjASWjx/eSxAzAXgL7Z/HD0GmkiMgTQcb8=
+	t=1745243917; cv=none; b=uKNZoArJ3quV0X5rDLPDi89/ADR6Px5eu5JGRnHRNxkDJ62ch5Fvqfsr+eLD5xzheniHFY5y38n2qkzrn6AXOL57eiNVs2TYq68Q/5paEUoKHfykGBoRAXlKKnZA/8BssSHoIZQ+wWvLzpZTGnUWzWzbIta9TqYmGTEYBQr82bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243908; c=relaxed/simple;
-	bh=dejhssgF2GDMH9d+3miZLNl+3qFG/NUaF5b02rzYGFk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=h25lhJ6whZzeLrbDa0nW29WHtWP9C9PpUjP8GAZ63hM/2MqPmjjaqm2Cb89hGh1iox1c5kISeryihb4JK0thOwt3lvGLUrdR/ZhQtHK3hpmhPzD/Zre8FFhn74JQ5LmwxqWqM/Hk2jGZzKSW/9RSdNa2JdXlbv/NIjyCfnSHOL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPSG9Lkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D526C4CEE4;
-	Mon, 21 Apr 2025 13:58:28 +0000 (UTC)
+	s=arc-20240116; t=1745243917; c=relaxed/simple;
+	bh=GRwJcijUf5SEUMs+G9JjsBaTFYWO1ZBh/2zTbUo9KDE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vB3cUEku8wSIx77yvAUq4PMDQdoBQLPg3sJPVjQpr4BMCz4BTl45BosAbIL65XXxSlZBWmNt7cLg9107swL7NnzLDRQ5XNMJtR/talxVnPghoPfcrPyaU5vZwFdi+3X8h6CGOKOp4wjpju0J1TNvST2KxWrzY4Zbej2fo50DZDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvMJCvFD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8231C4CEE4;
+	Mon, 21 Apr 2025 13:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745243908;
-	bh=dejhssgF2GDMH9d+3miZLNl+3qFG/NUaF5b02rzYGFk=;
+	s=korg; t=1745243917;
+	bh=GRwJcijUf5SEUMs+G9JjsBaTFYWO1ZBh/2zTbUo9KDE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wPSG9LkhmT6/y9W90p913I7SPSqFjy0aATEeSEo46cWSrqW3QDlRcY2+bIz8vO9Pd
-	 NbShuD//taTlWXnC03SAdI0mS9XW4rKjcxduCvARKBiloghplda/Q3Uzy7SB6CUw7x
-	 qQwnGFbXWvB+GFjq4TpRWE4aNxNF24tTH5PQ/9vc=
-Subject: FAILED: patch "[PATCH] ksmbd: fix use-after-free in smb_break_all_levII_oplock()" failed to apply to 6.1-stable tree
-To: linkinjeon@kernel.org,norbert@doyensec.com,stfrench@microsoft.com
+	b=BvMJCvFDOutHjaDFHGAp1vyKUdfhrrwA65Vokp4c9nmsQUMpqusq7appQ7Lvvkdl2
+	 T0MiySSEE+7D0NfbZSvJvNH4zICm07RnKyLsI0AEPuMyVJXdKH6oV2M2qNzL30COMx
+	 Sjx4WA3i3stCJTw2chRy89LdXuvuNeqXf9U/DVZk=
+Subject: FAILED: patch "[PATCH] ksmbd: Prevent integer overflow in calculation of deadtime" failed to apply to 5.15-stable tree
+To: arefev@swemel.ru,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Apr 2025 15:58:22 +0200
-Message-ID: <2025042122-stallion-relapse-1076@gregkh>
+Date: Mon, 21 Apr 2025 15:58:34 +0200
+Message-ID: <2025042134-thriving-decimeter-0201@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 18b4fac5ef17f77fed9417d22210ceafd6525fc7
+git cherry-pick -x a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042122-stallion-relapse-1076@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042134-thriving-decimeter-0201@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,129 +77,47 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 18b4fac5ef17f77fed9417d22210ceafd6525fc7 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Tue, 15 Apr 2025 09:30:21 +0900
-Subject: [PATCH] ksmbd: fix use-after-free in smb_break_all_levII_oplock()
+From a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 Mon Sep 17 00:00:00 2001
+From: Denis Arefev <arefev@swemel.ru>
+Date: Wed, 9 Apr 2025 12:04:49 +0300
+Subject: [PATCH] ksmbd: Prevent integer overflow in calculation of deadtime
 
-There is a room in smb_break_all_levII_oplock that can cause racy issues
-when unlocking in the middle of the loop. This patch use read lock
-to protect whole loop.
+The user can set any value for 'deadtime'. This affects the arithmetic
+expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+overflow. The added check makes the server behavior more predictable.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index f103b1bd0400..81a29857b1e3 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -129,14 +129,6 @@ static void free_opinfo(struct oplock_info *opinfo)
- 	kfree(opinfo);
- }
+diff --git a/fs/smb/server/transport_ipc.c b/fs/smb/server/transport_ipc.c
+index 3f185ae60dc5..2a3e2b0ce557 100644
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -310,7 +310,11 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
+ 	server_conf.signing = req->signing;
+ 	server_conf.tcp_port = req->tcp_port;
+ 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
+-	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
++	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
++					&server_conf.deadtime)) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
+ 	ksmbd_init_domain(req->sub_auth);
  
--static inline void opinfo_free_rcu(struct rcu_head *rcu_head)
--{
--	struct oplock_info *opinfo;
--
--	opinfo = container_of(rcu_head, struct oplock_info, rcu_head);
--	free_opinfo(opinfo);
--}
--
- struct oplock_info *opinfo_get(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
-@@ -157,8 +149,8 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
- 	if (list_empty(&ci->m_op_list))
- 		return NULL;
- 
--	rcu_read_lock();
--	opinfo = list_first_or_null_rcu(&ci->m_op_list, struct oplock_info,
-+	down_read(&ci->m_lock);
-+	opinfo = list_first_entry(&ci->m_op_list, struct oplock_info,
- 					op_entry);
- 	if (opinfo) {
- 		if (opinfo->conn == NULL ||
-@@ -171,8 +163,7 @@ static struct oplock_info *opinfo_get_list(struct ksmbd_inode *ci)
- 			}
- 		}
- 	}
--
--	rcu_read_unlock();
-+	up_read(&ci->m_lock);
- 
- 	return opinfo;
- }
-@@ -185,7 +176,7 @@ void opinfo_put(struct oplock_info *opinfo)
- 	if (!atomic_dec_and_test(&opinfo->refcount))
- 		return;
- 
--	call_rcu(&opinfo->rcu_head, opinfo_free_rcu);
-+	free_opinfo(opinfo);
- }
- 
- static void opinfo_add(struct oplock_info *opinfo)
-@@ -193,7 +184,7 @@ static void opinfo_add(struct oplock_info *opinfo)
- 	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
- 
- 	down_write(&ci->m_lock);
--	list_add_rcu(&opinfo->op_entry, &ci->m_op_list);
-+	list_add(&opinfo->op_entry, &ci->m_op_list);
- 	up_write(&ci->m_lock);
- }
- 
-@@ -207,7 +198,7 @@ static void opinfo_del(struct oplock_info *opinfo)
- 		write_unlock(&lease_list_lock);
- 	}
- 	down_write(&ci->m_lock);
--	list_del_rcu(&opinfo->op_entry);
-+	list_del(&opinfo->op_entry);
- 	up_write(&ci->m_lock);
- }
- 
-@@ -1347,8 +1338,8 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
- 	ci = fp->f_ci;
- 	op = opinfo_get(fp);
- 
--	rcu_read_lock();
--	list_for_each_entry_rcu(brk_op, &ci->m_op_list, op_entry) {
-+	down_read(&ci->m_lock);
-+	list_for_each_entry(brk_op, &ci->m_op_list, op_entry) {
- 		if (brk_op->conn == NULL)
- 			continue;
- 
-@@ -1358,7 +1349,6 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		if (ksmbd_conn_releasing(brk_op->conn))
- 			continue;
- 
--		rcu_read_unlock();
- 		if (brk_op->is_lease && (brk_op->o_lease->state &
- 		    (~(SMB2_LEASE_READ_CACHING_LE |
- 				SMB2_LEASE_HANDLE_CACHING_LE)))) {
-@@ -1388,9 +1378,8 @@ void smb_break_all_levII_oplock(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		oplock_break(brk_op, SMB2_OPLOCK_LEVEL_NONE, NULL);
- next:
- 		opinfo_put(brk_op);
--		rcu_read_lock();
- 	}
--	rcu_read_unlock();
-+	up_read(&ci->m_lock);
- 
- 	if (op)
- 		opinfo_put(op);
-diff --git a/fs/smb/server/oplock.h b/fs/smb/server/oplock.h
-index 3f64f0787263..9a56eaadd0dd 100644
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -71,7 +71,6 @@ struct oplock_info {
- 	struct list_head        lease_entry;
- 	wait_queue_head_t oplock_q; /* Other server threads */
- 	wait_queue_head_t oplock_brk; /* oplock breaking wait */
--	struct rcu_head		rcu_head;
- };
- 
- struct lease_break_info {
+@@ -337,6 +341,7 @@ static int ipc_server_config_on_startup(struct ksmbd_startup_request *req)
+ 	server_conf.bind_interfaces_only = req->bind_interfaces_only;
+ 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
+ 					req->ifc_list_sz);
++out:
+ 	if (ret) {
+ 		pr_err("Server configuration error: %s %s %s\n",
+ 		       req->netbios_name, req->server_string,
 
 
