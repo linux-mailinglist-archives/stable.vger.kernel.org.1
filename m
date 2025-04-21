@@ -1,214 +1,104 @@
-Return-Path: <stable+bounces-134872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2810AA95500
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 19:05:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A40A95507
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 19:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D9183A93E3
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 17:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D636C3AB185
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 17:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6D51AF0AF;
-	Mon, 21 Apr 2025 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A280B1E47B7;
+	Mon, 21 Apr 2025 17:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GnZrPBKr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJumR7wQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A059319CD1D
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 17:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDE219CD1D;
+	Mon, 21 Apr 2025 17:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745255099; cv=none; b=lEtgFjGSJQMUEvir9N60B96hBNxbNdn21iMzaBwWSQeXyOR+8a33bBflVdUdJ10miVbxZgBgcdSsyvbBxI0OTfiHvzmO5RbdbhuTixahYPsyFhx8piwqEqtYLenQxE4g2Ktu3rQ7of+lCAkWjeWKe38udBhkvC6X+2bhsalh9gg=
+	t=1745255290; cv=none; b=e5kiIQq71bxTZ1YKO6e6WY3w7vKomaYD6+R7rfb3b2skjAzImIwczqhYDKYhnGZVkDRAzw6iIZENqUEv8oRW0zt1Z757rYPLB3d7XVJ0XHcLpDxOFwZWzkVNyCktX3zo1+dbXYynTWkH4jaCmMxDoVPDFExQBRbvKZejU99zN1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745255099; c=relaxed/simple;
-	bh=+ULltj2zf0P14hT/oatVOGKfCLYG2jp5HY3f+tGsMaI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PDoY31wfhIVK64QXME8sbGrwLs+oMiLUehxbbRDCdnPIUw0MerhaVznb+CqLVcdsr9CGj04RbqSIlIgjGGlb4v+1bW6vDK8uzDZl1+tk39bbb/CgJdsSKtXw5jyYw8JJ6jQU25p1mw2SK3PqfoU2Jiv2OE15nJHhaxb8Q3FCD8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GnZrPBKr; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b061a06f127so2823149a12.2
-        for <stable@vger.kernel.org>; Mon, 21 Apr 2025 10:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745255097; x=1745859897; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fU6FOk+4KCo68XSwRf4cPky0rDznBpm70sRimt703Q0=;
-        b=GnZrPBKrzZLYASQCnaNc4h6tRFuOf2qmVakNuITEwLwqbUwN2tjVj5nTWL3lRNxSoF
-         k0oczmDY+9Ti65j3m0TFA3JKUfblyWmOeG5LYuTkmNYiUzVahfWmh8m+fMR1L54RiHzq
-         X2Qprc5c2DqmOsE6MW4eI6+sZllouoeJ3150k0S/VGhkLYLa3DKs9bLCzxpvCEx16rSU
-         dna22FIqvocQL73uGzwvzv5pjwz7HKihBrMtHrRAPh3tOoHAKXqB4vBq9qsph6UlJ7z3
-         OzFw/0xtHzdl6VCQhgHTUz4cz95iuTtsLafTyrbnMMxRK7/fHbbP6X5Bua0geP7WF7lj
-         iR2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745255097; x=1745859897;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fU6FOk+4KCo68XSwRf4cPky0rDznBpm70sRimt703Q0=;
-        b=qHlEWDv/PVaa6AjkrnWnJKb41Jd6+SKOGWlFcvrMEc0Rpgzg7nVEe5Co8Y1RR0kjQm
-         mjRTa+U5uiWOP6EhsABq20D/9T+Oqy7hQaJfFSVi3WtUaBg7E+BR7Tbg+fzLpdLBiZrn
-         mlldt9AahvudcPzfSWHDvwQZYSiStAnqU0g9zd7zKWJKzzuLN1El6NakIA0hB3cczZxK
-         aUkZbMlDONq+5b7zhYe3sZE0ZLHNJ4XOVXhyNPdTo1Z+MF2W609Fg8uZ0zpcjsl9zdQd
-         3aP3gXB6v9RzDBhXOR2BB/F8tknfOCiMFlXZurIB54fjqq4kzIlx9p59WjyMP/oxmiff
-         +x8w==
-X-Gm-Message-State: AOJu0Yz4RwUp7x/A/QQoUbLfoQGDiqJ8L/XBF4fCQNTW6vO8AOvpRBL9
-	Q+MSRC8noKwgY9sNV5RQI1CyvFR5nRcQz7HNfmKfjKCyt/x1cB8N0TcZWA==
-X-Gm-Gg: ASbGncv69yGiv1zICDt1YPswqMUg0uf4z1wqZQCjLLBz/Q31AqESlHvdPYNSMcRf+CY
-	6V0dVlWATc71z0843PgNDRjtPblzxDmPNR4pqsA7zIhhZ+IQ9dT+FpK5fsVyklrfNY02kXcdcFJ
-	0Q+z16wwDlheSIYrWe9oR+D78PkOURKAEHUoZqK1go+/S5UiCyE5A+e1mi6WDG8M/xI6zaI5fDe
-	VeywMU9N2vQsTG2s0KQBMk+pVvr1NeAvng1xO0FxqVcmLuIFA5RteDTnZi+Q/xOUm+Bok/RQrzt
-	rzQRydBGD1jC6mo9R9cz2KR4TVtHOcBs/DLDPPzP9GbTzXBlDA==
-X-Google-Smtp-Source: AGHT+IHr4LSyx9PEITIE3gH1F4CcgAwBk9KO2XN6g3G8qV0xVso2GeuBwgZiUY/Mh6xKZ1aPNu0aNA==
-X-Received: by 2002:a17:90b:2704:b0:2fc:ec7c:d371 with SMTP id 98e67ed59e1d1-3087bb2f4damr16665781a91.3.1745255096689;
-        Mon, 21 Apr 2025 10:04:56 -0700 (PDT)
-Received: from localhost.localdomain ([181.91.133.137])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3087df4e12asm6858479a91.37.2025.04.21.10.04.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Apr 2025 10:04:56 -0700 (PDT)
-From: Kurt Borja <kuurtb@gmail.com>
-To: stable@vger.kernel.org
-Cc: Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.14.y] platform/x86: alienware-wmi-wmax: Extend support to more laptops
-Date: Mon, 21 Apr 2025 14:04:51 -0300
-Message-ID: <20250421170451.11279-1-kuurtb@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <2025042124-pumice-kebab-9d24@gregkh>
-References: <2025042124-pumice-kebab-9d24@gregkh>
+	s=arc-20240116; t=1745255290; c=relaxed/simple;
+	bh=J14MkTd+JCXpakqM03SaDXb7lljFMGaebEw96oEYtv0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CdWhYV6OXLt/s6iLUasAcWpv8Br4Si3GgwBgDb3T2fn0MqGWOLCJIpJ/M51cfpst1Hzb+E7PQLMYpn4YM7PgeMq7LUnqwX/yQTPMNE75+T+Srgq7kkmTaqQhA5q0LReUrVwx/Gup3JjtpAU6CVElr0Nw7HOqHQgILle45v8IshE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJumR7wQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC17C4CEE4;
+	Mon, 21 Apr 2025 17:08:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745255289;
+	bh=J14MkTd+JCXpakqM03SaDXb7lljFMGaebEw96oEYtv0=;
+	h=From:Subject:Date:To:Cc:From;
+	b=SJumR7wQOpw+4UwBkNc60AHPKTl6mqeKvuvHCGaFwKry8ltbVCxkB+VRA96KsEH9t
+	 q9wyCaV8JFf/Wtt3LDSWiuHsxFOpBj01PdyBU2smzYATo4QZYfXECPSM29wQxSzOSo
+	 iLawDFDHoYMyokqFMfCZEj5zeSSICQIHrc0K50wyYlmhatwWU8ofUdDjDmlFcVSOCd
+	 0+lylRs65uu9IIs6yVMw/iGxlDZOJp99KlNRdksSTzLO57vA0vVirwwT+HgOP0KawP
+	 fgk2Pw8KJ4wtBYZrQH3gdMzV5uRsOrfJfTdJ2iye992gu07cyvKLD5rluVi3cspi20
+	 2myPAdbhnyW9Q==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/2] mptcp: pm: Defer freeing userspace pm entries
+Date: Mon, 21 Apr 2025 19:07:12 +0200
+Message-Id: <20250421-net-mptcp-pm-defer-freeing-v1-0-e731dc6e86b9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEB7BmgC/x3MQQqDMBBG4avIrDswiZZir1K60OSPnYUxTKQUx
+ LsbuvwW7x1UYYpKz+4gw1erbrnB3ToKnykvYI3N5MXfZfCOM3Zeyx4Kl5UjEoyTAZoXTmOI4ua
+ HyNBTGxRD0t9//qLW0fs8L6QXdENxAAAA
+X-Change-ID: 20250421-net-mptcp-pm-defer-freeing-f9cd01b70043
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, Gang Yan <yangang@kylinos.cn>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=789; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=J14MkTd+JCXpakqM03SaDXb7lljFMGaebEw96oEYtv0=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLYqkukJQt+aaxsard9y772Z2bNV2GzteaOkxavPDPD9
+ GFfcuKtjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIkcO8vwT9Vzx6OQpTzdl3Kf
+ aadUThYKzhaLPfxReqGAimzv34zjvQz/1LyOzvOeHbf7fWb0WYsrfinxV/Zpc4dLeHp5Pt4wJeQ
+ 4GwA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-Extend thermal control support to:
+Here are two unrelated fixes for MPTCP:
 
- - Alienware Area-51m R2
- - Alienware m16 R1
- - Alienware m16 R2
- - Dell G16 7630
- - Dell G5 5505 SE
+- Patch 1: free userspace PM entry with RCU helpers. A fix for v6.14.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250411-awcc-support-v1-2-09a130ec4560@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-(cherry picked from commit 202a861205905629c5f10ce0a8358623485e1ae9)
+- Patch 2: avoid a warning when running diag.sh selftest. A fix for
+  v6.15-rc1.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/platform/x86/dell/alienware-wmi.c | 54 +++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+Geliang Tang (1):
+      selftests: mptcp: diag: use mptcp_lib_get_info_value
 
-diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
-index e252e0cf47ef..0c876f23053a 100644
---- a/drivers/platform/x86/dell/alienware-wmi.c
-+++ b/drivers/platform/x86/dell/alienware-wmi.c
-@@ -214,6 +214,15 @@ static int __init dmi_matched(const struct dmi_system_id *dmi)
- }
- 
- static const struct dmi_system_id alienware_quirks[] __initconst = {
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Alienware Area-51m R2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware Area-51m R2"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Alienware ASM100",
-@@ -241,6 +250,15 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_asm201,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Alienware m16 R1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1"),
-+		},
-+		.driver_data = &quirk_g_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Alienware m16 R1 AMD",
-@@ -250,6 +268,15 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_x_series,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Alienware m16 R2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R2"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Alienware m17 R5",
-@@ -277,6 +304,15 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_x_series,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Alienware x15 R2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15 R2"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Alienware x17 R2",
-@@ -340,6 +376,15 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_g_series,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Dell Inc. G16 7630",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G16 7630"),
-+		},
-+		.driver_data = &quirk_g_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Dell Inc. G3 3500",
-@@ -367,6 +412,15 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
- 		},
- 		.driver_data = &quirk_g_series,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Dell Inc. G5 5505",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G5 5505"),
-+		},
-+		.driver_data = &quirk_g_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Dell Inc. Inspiron 5675",
+Mat Martineau (1):
+      mptcp: pm: Defer freeing of MPTCP userspace path manager entries
+
+ net/mptcp/pm_userspace.c                  | 6 +++++-
+ tools/testing/selftests/net/mptcp/diag.sh | 5 ++---
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+---
+base-commit: 750d0ac001e85b754404178ee8ce01cbc76a03be
+change-id: 20250421-net-mptcp-pm-defer-freeing-f9cd01b70043
+
+Best regards,
 -- 
-2.49.0
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
