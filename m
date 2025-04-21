@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-134816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982A4A95223
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:57:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43EA1A95228
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 360C13B3F0C
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A99D188FD5F
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6451426659A;
-	Mon, 21 Apr 2025 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0729266B4A;
+	Mon, 21 Apr 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpslgrVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsAmX21x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FB4266592
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7203A266591
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243827; cv=none; b=EJlqzS4akYA2/x1X5MD07U9LlzTXjWJwaDtLBL+uMYYsHUFtSASPBKCUDlJtwkk9K8pGiS37tk59ThHV7yE7ny2OclFfXjJDRi6ONddvob0thLtZVhxQUW/a/n5kukSoHRBUT7HYmYgjS+jwJQifRCVUZhB88l59jhdINqKXBx0=
+	t=1745243837; cv=none; b=V+T5E4h2KpcCHuUtJsYqsCuqHC6hvzX0IxIKwrz3xPN796kBFWEmLsNBuYZmyCxv6DNt5tak1pXlTCSrzcSoonatmbDObCVctWwpE0qpByMqAgv9DPffnTNtC/ARxat/j+CMivxE7wy2UHJRiGy2/Ew/IFuDXqQBFbnwHYRvX1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243827; c=relaxed/simple;
-	bh=FGZoBOrVWw36fAcShnfeMLUcoms76GwLkBEzqtJbVfQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dpqrYf1/ZFgnplHVJruwVahzJsN8tkuGGYmJ7v3fWlr325MvQYoPPLOppueamlUuJuix1RINYSXozRDrrNH30/L/PU0VaVPSFq+s90b0c/pqtn7Op3NmLfNm3Y/Y6jdb7xtRLSbzud5Y1i9ZqDvtXF3BvOr8JDmPu2rC4Xl5edA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpslgrVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99428C4CEEC;
-	Mon, 21 Apr 2025 13:57:06 +0000 (UTC)
+	s=arc-20240116; t=1745243837; c=relaxed/simple;
+	bh=XznL+BV7O+Pp1Lbd+gPy/QaiuENKAR7klXnYziYCPBg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qzLWkrZzMunDN8wX2SVmNglhB8aAZQZpaVBCxcEbOhUFk6M+S1WmCvPaajRFYHhSwjOZYUIv9Mr0zouTcBD0AeLXsDa70q3Q9O01VQ3h4bat/Ja1Ww5e2odocKefwU02/xUo1FyiVNftdawguBuPdoBKt72QtKC2aqyKE4sa60c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsAmX21x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BA97C4CEE4;
+	Mon, 21 Apr 2025 13:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745243827;
-	bh=FGZoBOrVWw36fAcShnfeMLUcoms76GwLkBEzqtJbVfQ=;
+	s=korg; t=1745243837;
+	bh=XznL+BV7O+Pp1Lbd+gPy/QaiuENKAR7klXnYziYCPBg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FpslgrVyedqPbGdphbxCMRyPo3/8e8lDtXrFm9ay5gQW3DdedZ4Wp77Ymu0ptVPGM
-	 KbbDDTSfaKfK0yI1o0qtbMXCm//FNca4rty65ES4VwhTBh33kp9pcDX6KCKO5cZBCP
-	 f8V5uychHt2Jtw4g06GAVJirFQbVFW4t3kBICfz0=
-Subject: FAILED: patch "[PATCH] mm/vma: add give_up_on_oom option on modify/merge, use in" failed to apply to 6.12-stable tree
-To: lorenzo.stoakes@oracle.com,akpm@linux-foundation.org,jannh@google.com,pfalcato@suse.de,stable@vger.kernel.org
+	b=HsAmX21xcnrABp2QoftMer7CSqEMLJAlt6WE6XZcMLiN+F+B9Getwa6FOfKmyq4TF
+	 YKF8/o6qx51xUSrHQQnXz12KTS2gjpSZLOKjIYe7HjW4uL1knOjRNUPxFyrXNfgS51
+	 PcY88g2WSDRPiL6nRXIspuzWdaVnjnLIDCWnfLzc=
+Subject: FAILED: patch "[PATCH] mm: fix apply_to_existing_page_range()" failed to apply to 6.1-stable tree
+To: kirill.shutemov@linux.intel.com,akpm@linux-foundation.org,david@redhat.com,dja@axtens.net,stable@vger.kernel.org,vbabka@suse.cz
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Apr 2025 15:57:01 +0200
-Message-ID: <2025042101-tigress-ream-51ab@gregkh>
+Date: Mon, 21 Apr 2025 15:57:14 +0200
+Message-ID: <2025042114-author-badness-6b2c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 41e6ddcaa0f18dda4c3fadf22533775a30d6f72f
+git cherry-pick -x a995199384347261bb3f21b2e171fa7f988bd2f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042101-tigress-ream-51ab@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042114-author-badness-6b2c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,235 +77,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 41e6ddcaa0f18dda4c3fadf22533775a30d6f72f Mon Sep 17 00:00:00 2001
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Date: Fri, 21 Mar 2025 10:09:37 +0000
-Subject: [PATCH] mm/vma: add give_up_on_oom option on modify/merge, use in
- uffd release
+From a995199384347261bb3f21b2e171fa7f988bd2f8 Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Wed, 9 Apr 2025 12:40:43 +0300
+Subject: [PATCH] mm: fix apply_to_existing_page_range()
 
-Currently, if a VMA merge fails due to an OOM condition arising on commit
-merge or a failure to duplicate anon_vma's, we report this so the caller
-can handle it.
+In the case of apply_to_existing_page_range(), apply_to_pte_range() is
+reached with 'create' set to false.  When !create, the loop over the PTE
+page table is broken.
 
-However there are cases where the caller is only ostensibly trying a
-merge, and doesn't mind if it fails due to this condition.
+apply_to_pte_range() will only move to the next PTE entry if 'create' is
+true or if the current entry is not pte_none().
 
-Since we do not want to introduce an implicit assumption that we only
-actually modify VMAs after OOM conditions might arise, add a 'give up on
-oom' option and make an explicit contract that, should this flag be set, we
-absolutely will not modify any VMAs should OOM arise and just bail out.
+This means that the user of apply_to_existing_page_range() will not have
+'fn' called for any entries after the first pte_none() in the PTE page
+table.
 
-Since it'd be very unusual for a user to try to vma_modify() with this flag
-set but be specifying a range within a VMA which ends up being split (which
-can fail due to rlimit issues, not only OOM), we add a debug warning for
-this condition.
+Fix the loop logic in apply_to_pte_range().
 
-The motivating reason for this is uffd release - syzkaller (and Pedro
-Falcato's VERY astute analysis) found a way in which an injected fault on
-allocation, triggering an OOM condition on commit merge, would result in
-uffd code becoming confused and treating an error value as if it were a VMA
-pointer.
+There are no known runtime issues from this, but the fix is trivial enough
+for stable@ even without a known buggy user.
 
-To avoid this, we make use of this new VMG flag to ensure that this never
-occurs, utilising the fact that, should we be clearing entire VMAs, we do
-not wish an OOM event to be reported to us.
-
-Many thanks to Pedro Falcato for his excellent analysis and Jann Horn for
-his insightful and intelligent analysis of the situation, both of whom were
-instrumental in this fix.
-
-Link: https://lkml.kernel.org/r/20250321100937.46634-1-lorenzo.stoakes@oracle.com
-Reported-by: syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001e.GAE@google.com/
-Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Suggested-by: Pedro Falcato <pfalcato@suse.de>
-Suggested-by: Jann Horn <jannh@google.com>
+Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index fbf2cf62ab9f..7d5d709cc838 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1902,6 +1902,14 @@ struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
- 					     unsigned long end)
- {
- 	struct vm_area_struct *ret;
-+	bool give_up_on_oom = false;
-+
-+	/*
-+	 * If we are modifying only and not splitting, just give up on the merge
-+	 * if OOM prevents us from merging successfully.
-+	 */
-+	if (start == vma->vm_start && end == vma->vm_end)
-+		give_up_on_oom = true;
- 
- 	/* Reset ptes for the whole vma range if wr-protected */
- 	if (userfaultfd_wp(vma))
-@@ -1909,7 +1917,7 @@ struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
- 
- 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
- 				    vma->vm_flags & ~__VM_UFFD_FLAGS,
--				    NULL_VM_UFFD_CTX);
-+				    NULL_VM_UFFD_CTX, give_up_on_oom);
- 
- 	/*
- 	 * In the vma_merge() successful mprotect-like case 8:
-@@ -1960,7 +1968,8 @@ int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
- 		new_flags = (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags;
- 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
- 					    new_flags,
--					    (struct vm_userfaultfd_ctx){ctx});
-+					    (struct vm_userfaultfd_ctx){ctx},
-+					    /* give_up_on_oom = */false);
- 		if (IS_ERR(vma))
- 			return PTR_ERR(vma);
- 
-diff --git a/mm/vma.c b/mm/vma.c
-index 5cdc5612bfc1..839d12f02c88 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -666,6 +666,9 @@ static void vmg_adjust_set_range(struct vma_merge_struct *vmg)
- /*
-  * Actually perform the VMA merge operation.
-  *
-+ * IMPORTANT: We guarantee that, should vmg->give_up_on_oom is set, to not
-+ * modify any VMAs or cause inconsistent state should an OOM condition arise.
-+ *
-  * Returns 0 on success, or an error value on failure.
-  */
- static int commit_merge(struct vma_merge_struct *vmg)
-@@ -685,6 +688,12 @@ static int commit_merge(struct vma_merge_struct *vmg)
- 
- 	init_multi_vma_prep(&vp, vma, vmg);
- 
-+	/*
-+	 * If vmg->give_up_on_oom is set, we're safe, because we don't actually
-+	 * manipulate any VMAs until we succeed at preallocation.
-+	 *
-+	 * Past this point, we will not return an error.
-+	 */
- 	if (vma_iter_prealloc(vmg->vmi, vma))
- 		return -ENOMEM;
- 
-@@ -915,7 +924,13 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 		if (anon_dup)
- 			unlink_anon_vmas(anon_dup);
- 
--		vmg->state = VMA_MERGE_ERROR_NOMEM;
-+		/*
-+		 * We've cleaned up any cloned anon_vma's, no VMAs have been
-+		 * modified, no harm no foul if the user requests that we not
-+		 * report this and just give up, leaving the VMAs unmerged.
-+		 */
-+		if (!vmg->give_up_on_oom)
-+			vmg->state = VMA_MERGE_ERROR_NOMEM;
- 		return NULL;
+diff --git a/mm/memory.c b/mm/memory.c
+index 1a35165622e1..44481fe7c629 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2938,11 +2938,11 @@ static int apply_to_pte_range(struct mm_struct *mm, pmd_t *pmd,
+ 	if (fn) {
+ 		do {
+ 			if (create || !pte_none(ptep_get(pte))) {
+-				err = fn(pte++, addr, data);
++				err = fn(pte, addr, data);
+ 				if (err)
+ 					break;
+ 			}
+-		} while (addr += PAGE_SIZE, addr != end);
++		} while (pte++, addr += PAGE_SIZE, addr != end);
  	}
+ 	*mask |= PGTBL_PTE_MODIFIED;
  
-@@ -926,7 +941,15 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- abort:
- 	vma_iter_set(vmg->vmi, start);
- 	vma_iter_load(vmg->vmi);
--	vmg->state = VMA_MERGE_ERROR_NOMEM;
-+
-+	/*
-+	 * This means we have failed to clone anon_vma's correctly, but no
-+	 * actual changes to VMAs have occurred, so no harm no foul - if the
-+	 * user doesn't want this reported and instead just wants to give up on
-+	 * the merge, allow it.
-+	 */
-+	if (!vmg->give_up_on_oom)
-+		vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	return NULL;
- }
- 
-@@ -1068,6 +1091,10 @@ int vma_expand(struct vma_merge_struct *vmg)
- 		/* This should already have been checked by this point. */
- 		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
- 		vma_start_write(next);
-+		/*
-+		 * In this case we don't report OOM, so vmg->give_up_on_mm is
-+		 * safe.
-+		 */
- 		ret = dup_anon_vma(middle, next, &anon_dup);
- 		if (ret)
- 			return ret;
-@@ -1090,9 +1117,15 @@ int vma_expand(struct vma_merge_struct *vmg)
- 	return 0;
- 
- nomem:
--	vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	if (anon_dup)
- 		unlink_anon_vmas(anon_dup);
-+	/*
-+	 * If the user requests that we just give upon OOM, we are safe to do so
-+	 * here, as commit merge provides this contract to us. Nothing has been
-+	 * changed - no harm no foul, just don't report it.
-+	 */
-+	if (!vmg->give_up_on_oom)
-+		vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	return -ENOMEM;
- }
- 
-@@ -1534,6 +1567,13 @@ static struct vm_area_struct *vma_modify(struct vma_merge_struct *vmg)
- 	if (vmg_nomem(vmg))
- 		return ERR_PTR(-ENOMEM);
- 
-+	/*
-+	 * Split can fail for reasons other than OOM, so if the user requests
-+	 * this it's probably a mistake.
-+	 */
-+	VM_WARN_ON(vmg->give_up_on_oom &&
-+		   (vma->vm_start != start || vma->vm_end != end));
-+
- 	/* Split any preceding portion of the VMA. */
- 	if (vma->vm_start < start) {
- 		int err = split_vma(vmg->vmi, vma, start, 1);
-@@ -1602,12 +1642,15 @@ struct vm_area_struct
- 		       struct vm_area_struct *vma,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long new_flags,
--		       struct vm_userfaultfd_ctx new_ctx)
-+		       struct vm_userfaultfd_ctx new_ctx,
-+		       bool give_up_on_oom)
- {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
- 
- 	vmg.flags = new_flags;
- 	vmg.uffd_ctx = new_ctx;
-+	if (give_up_on_oom)
-+		vmg.give_up_on_oom = true;
- 
- 	return vma_modify(&vmg);
- }
-diff --git a/mm/vma.h b/mm/vma.h
-index 7356ca5a22d3..149926e8a6d1 100644
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -114,6 +114,12 @@ struct vma_merge_struct {
- 	 */
- 	bool just_expand :1;
- 
-+	/*
-+	 * If a merge is possible, but an OOM error occurs, give up and don't
-+	 * execute the merge, returning NULL.
-+	 */
-+	bool give_up_on_oom :1;
-+
- 	/* Internal flags set during merge process: */
- 
- 	/*
-@@ -255,7 +261,8 @@ __must_check struct vm_area_struct
- 		       struct vm_area_struct *vma,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long new_flags,
--		       struct vm_userfaultfd_ctx new_ctx);
-+		       struct vm_userfaultfd_ctx new_ctx,
-+		       bool give_up_on_oom);
- 
- __must_check struct vm_area_struct
- *vma_merge_new_range(struct vma_merge_struct *vmg);
 
 
