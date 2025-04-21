@@ -1,85 +1,192 @@
-Return-Path: <stable+bounces-134793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7F4A95173
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:16:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE309A9517B
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73A5A1720D8
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:16:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 833FD7A6401
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1E726563B;
-	Mon, 21 Apr 2025 13:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F39A26561E;
+	Mon, 21 Apr 2025 13:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L7V0nO0o"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="MrbIe4s3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e9j+OPzz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60CA1E487;
-	Mon, 21 Apr 2025 13:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20A821019C;
+	Mon, 21 Apr 2025 13:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745241392; cv=none; b=MhQegdPBuL+4pl9cdIfYOfop/4ugSSjFkrE1S1sJCZImKBvPQzW1dhIxvH0KZarw9VEd0nvKt9M8AK7FGmij1fIsLWlT9oY84VoenN+CbXa/32RdCUiNEtt8g1ZbD2SPyzyMBBwXMrWkZEUCcbS8YSNe6b4IVLap0I9r1zDeOos=
+	t=1745241560; cv=none; b=hgbaqFoRxfBE5kAnoj21X+yzZ8HbaYNs1xDTAHfFGtHLqNeblUyoZNtIrwL8qjibzGYNBUMrAhpAPsMK9jtIC8lNW13FGdWBZjmipMeCuM7Y6qxBws6atm/mskcfXS0XhA8oJpjGt3N8nQWYhOYgkX6oPPgKEBxqg6aOpTTa/QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745241392; c=relaxed/simple;
-	bh=IOiOls9jiIIyxhsCE518O1bqOU77w9+3+gZDs+HvBOM=;
+	s=arc-20240116; t=1745241560; c=relaxed/simple;
+	bh=w5apYLFjiNPWWx/A7WRYrRcClGI+TQfzcfX8S3waGQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=un1kiLjrDBzddxKGhgp7wSU/cF1ccRuR2NTMScfpuRA06VKm2flxfO8AXw4VRqbtlONi4ASpdP+P3o65grfUA8t1Vzs4HwW5QLHaFk9RFYIPQogtpK9RdS6by2mvb71Zp66hI5dT62KkxCBwTaX8iKJ25kfb4dvPuYPWVOENyfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L7V0nO0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99D2CC4CEE4;
-	Mon, 21 Apr 2025 13:16:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745241391;
-	bh=IOiOls9jiIIyxhsCE518O1bqOU77w9+3+gZDs+HvBOM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L7V0nO0oruxco9cAOKFvWfMHl+zhbrNBSqkpmqbkBICou6ROQPQTDekp+dofinIQu
-	 HxLoToHRqXSnlVn0FQknsw0XdJl7b/cXOqsMipr28W5xADo6kTH80h8nOaY+Pe2TZ3
-	 G1aiWmvo0ZB2H6nD52P41zheiZASy7/yD65fH9sg=
-Date: Mon, 21 Apr 2025 15:16:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com,
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: adis16201: Use IIO_VAL_INT for temperature
- scale
-Message-ID: <2025042153-rearrange-shakable-e404@gregkh>
-References: <20250421122819.907735-1-gshahrouzi@gmail.com>
- <CAKUZ0zKgvwhzgq8+_HG845QDze2SGN2fPwdXuN=UkATea6Nuag@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AOvEdX5VNH/nKQZl+r+BXGpzTDN83AnSdslkSgYoCudQO0j+IwQS1VRarGiu8PoYJtfyI8wRPukihLwOzevL0gGkEj2p1/YENHpeFf2cVuDeGkaMG2jfyuADL0bVJxQR7SKQpzICdjf3EpH2hiA0e6SBi+GR9q2LGUWqNyo1FbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=MrbIe4s3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=e9j+OPzz; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 9CA681140247;
+	Mon, 21 Apr 2025 09:19:16 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 21 Apr 2025 09:19:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1745241556;
+	 x=1745327956; bh=zVbdfyjXXUzkgsvwIg3jwWbyVaRbh5FQH6V+d4QgSvc=; b=
+	MrbIe4s3pdaO7DysJAHQIpmTwPlQv69KKw52uSk0OzmgnV8RuwrGEXUEc7HyhNlV
+	8ccAU/EWcSAf1tgIjuGNlqNGUCQSdirl2FJlK3utznREFFZ8xwepZDgePKjaKdPK
+	DEG3I+akFUaMepkP2xssYZh6gU+TDZhiMgMd4z18j+No4bK7qC5EGOtSR/PZcNlM
+	bxXfKLZeO36BjJ6XGVpAJ4lz6uAGDP1Vvb4Fv81/FiUgrdwiEOE2KDUS2O+TJgIz
+	4ZuEd/ESo4JpDKZjfEp5splwh/dSkpP+zEMgFd+chqUbiMsvFx3a9golsyNCmpEx
+	zIC0PDUrhP/vIN1/I8O20w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1745241556; x=1745327956; bh=zVbdfyjXXUzkgsvwIg3jwWbyVaRbh5FQH6V
+	+d4QgSvc=; b=e9j+OPzzFw0c/WfO5vtzydbJNlOm1jp+0KzcfRpTpbM0EFzEy+0
+	nbucO3P6Lx4CCupQvtsat7JapPgtzP7cLlB3g7osJwx+GZHNGrJz+K9A46DKYvCl
+	DAbOxNVcK8WI7urCxh/tM9SLml9a5XS6TJ0oDN3fJnmHiPv8e8gi+f0eHtkbuP/z
+	NjQHQJplVrzdi7I7csrhQ8/L4zWGchXlqG4MRVSyaAum4EwiVZK3Ki/bR1EQAVre
+	u0jmPJgo0avxPanY+XBtayNiMU/SsrahDtFXqc59pnTReU95WRlCheHuoMtrvHkh
+	SnUDwo1yu1ZOAoqlDJQRMPkc0uhx1yqz8ow==
+X-ME-Sender: <xms:1EUGaAOBAhZkwXwzh3HU6Yb_nouafcl3par1ACCb-ylstV0RkebMqA>
+    <xme:1EUGaG-8s286vBiyLKywdyhTFoD9BxQ50tw0FjplTw2-0ja9PquDDJM_dA0XrPUW8
+    VkQFe2JUEalyg>
+X-ME-Received: <xmr:1EUGaHRNh_rI7INPcpx0an_JhVLQFa_I-NdJffOynRT9mEAbtF8FxPD5z6SklnV1EMr9p2ppL6iYwP7s2JZ9sg1teJxDHTWU9w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvgedtleeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
+    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
+    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
+    ggftrfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettd
+    dvgeeuteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
+    rhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+    dpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepvhhi
+    thgrlhihrdhlihhfshhhihhtshesihhnthgvlhdrtghomhdprhgtphhtthhopehjvghssh
+    gvrdgsrhgrnhguvggsuhhrghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhthhho
+    nhihrdhlrdhnghhuhigvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehnvghtuggvvh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehinhhtvghlqdifihhrvggu
+    qdhlrghnsehlihhsthhsrdhoshhuohhslhdrohhrghdprhgtphhtthhopehrvghgrhgvsh
+    hsihhonhhssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepshhtrggslhgv
+    sehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrshhhrghlsehkvghrnh
+    gvlhdrohhrgh
+X-ME-Proxy: <xmx:1EUGaIueBX-ENHBjt7DTNYlMFF21tNKIdqI7ymi-0PO62W_vIt5P_Q>
+    <xmx:1EUGaIcnPRA2UWqw-XFvbNQ-TgSEH4rgzF54qPvD21XpHmxL_rlMow>
+    <xmx:1EUGaM26595kmVrL__Q2j41Nsl81BIIucpNDrV44cHhAhAdxlO0ybg>
+    <xmx:1EUGaM9IGIgVs5uo11bWgEEsScsDu3HKqbUE3HuLf8quWFa4RxY1mw>
+    <xmx:1EUGaORDDeFLL8wGE2OIlC6I4sQImaigSz6YR9KgFP2mgoFhIbLE106L>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Apr 2025 09:19:14 -0400 (EDT)
+Date: Mon, 21 Apr 2025 15:19:12 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
+ Meteor Lake - 6.14.2
+Message-ID: <aAZF0JUKCF0UvfF6@mail-itl>
+References: <Z_z9EjcKtwHCQcZR@mail-itl>
+ <b1f5e997-033c-33ed-5e3b-6fe2632bf718@intel.com>
+ <Z_0GYR8jR-5NWZ9K@mail-itl>
+ <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+ <b5d72f51-3cd0-aeca-60af-41a20ad59cd5@intel.com>
+ <Z_-l2q9ZhszFxiqA@mail-itl>
+ <d37a7c9e-7b3f-afc2-b010-e9785f39a785@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FtZpEP7ZV9KwPWkb"
 Content-Disposition: inline
-In-Reply-To: <CAKUZ0zKgvwhzgq8+_HG845QDze2SGN2fPwdXuN=UkATea6Nuag@mail.gmail.com>
+In-Reply-To: <d37a7c9e-7b3f-afc2-b010-e9785f39a785@intel.com>
 
-On Mon, Apr 21, 2025 at 08:33:00AM -0400, Gabriel Shahrouzi wrote:
-> Not sure this is worth mentioning but one of the emails from using
-> get_maintainer.pl on the patch listed a deprecated email:
-> gregkh@suse.de.
 
-How?  Doesn't do that for me:
+--FtZpEP7ZV9KwPWkb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 21 Apr 2025 15:19:12 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: "Lifshits, Vitaly" <vitaly.lifshits@intel.com>
+Cc: Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, regressions@lists.linux.dev,
+	stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
+ Meteor Lake - 6.14.2
 
-> >  drivers/iio/accel/adis16201.c | 2 +-
+On Mon, Apr 21, 2025 at 03:44:02PM +0300, Lifshits, Vitaly wrote:
+>=20
+>=20
+> On 4/16/2025 3:43 PM, Marek Marczykowski-G=C3=B3recki wrote:
+> > On Wed, Apr 16, 2025 at 03:09:39PM +0300, Lifshits, Vitaly wrote:
+> > > Can you please also share the output of ethtool -i? I would like to k=
+now the
+> > > NVM version that you have on your device.
+> >=20
+> > driver: e1000e
+> > version: 6.14.1+
+> > firmware-version: 1.1-4
+> > expansion-rom-version:
+> > bus-info: 0000:00:1f.6
+> > supports-statistics: yes
+> > supports-test: yes
+> > supports-eeprom-access: yes
+> > supports-register-dump: yes
+> > supports-priv-flags: yes
+> >=20
+>=20
+> Your firmware version is not the latest, can you check with the board
+> manufacturer if there is a BIOS update to your system?
 
-$ ./scripts/get_maintainer.pl drivers/iio/accel/adis16201.c
-Lars-Peter Clausen <lars@metafoo.de> (maintainer:ANALOG DEVICES INC IIO DRIVERS)
-Michael Hennerich <Michael.Hennerich@analog.com> (maintainer:ANALOG DEVICES INC IIO DRIVERS)
-Jonathan Cameron <jic23@kernel.org> (maintainer:IIO SUBSYSTEM AND DRIVERS)
-linux-iio@vger.kernel.org (open list:IIO SUBSYSTEM AND DRIVERS)
-linux-kernel@vger.kernel.org (open list)
-ANALOG DEVICES INC IIO DRIVERS status: Supported
+I can check, but still, it's a regression in the Linux driver - old
+kernel did work perfectly well on this hw. Maybe new driver tries to use
+some feature that is missing (or broken) in the old firmware?
 
-How did you run this?
+> Also, you mentioned that on another system this issue doesn't reproduce, =
+do
+> they have the same firmware version?
 
-thanks,
+The other one has also 1.1-4 firmware. And I re-checked, e1000e from
+6.14.2 works fine there.
 
-greg k-h
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--FtZpEP7ZV9KwPWkb
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmgGRdAACgkQ24/THMrX
+1yxLeAf8DvKL+foWSoIwDphGGhQZ3unGbl5ca72JDBQ6KcM6JxaNauYhY9mpzz+C
+ZESupbqixbb+HLmbIbEQLVlDyfxAW6x6y4sBV+8c3fy8678Z+c2PcHIgiX8YV0a1
+Ntrjn9GRZBWi2e6RmJSCHijHtRlfQsjDxSWiwT1WxjuNVROgsLOW9LXPZmXvasnp
+UDTqgIhH6jcNFhaQ/pQcoGyZ31vG6pVLeloePXDOlJ35Gb+4Cts6jTeqBxxyF0R8
+O1TMVSAYc3G6wlH7o1eSQ4pLeORMY0H8m/kf1dMOLj7osPorfDauk5KLXVm2WWJh
+VEKHuDwHUdeCHvG8BvsOAKR9tsuung==
+=gE/2
+-----END PGP SIGNATURE-----
+
+--FtZpEP7ZV9KwPWkb--
 
