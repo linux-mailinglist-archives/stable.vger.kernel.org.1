@@ -1,671 +1,542 @@
-Return-Path: <stable+bounces-134765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712CBA94ED1
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 11:40:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6D1A94FD5
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42F337A4AE2
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 09:39:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67E297A30AA
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 11:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82832586C2;
-	Mon, 21 Apr 2025 09:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349052627E2;
+	Mon, 21 Apr 2025 11:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b="SoSA1nZA"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LJhCLOOM"
 X-Original-To: stable@vger.kernel.org
-Received: from wylie.me.uk (wylie.me.uk [82.68.155.94])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DBAC1C2437;
-	Mon, 21 Apr 2025 09:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.68.155.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9914926156E;
+	Mon, 21 Apr 2025 11:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745228439; cv=none; b=HQMpISxBuZt3RHvC24qh5geALYbWkzn4BTMQJBIc0/plzDCDyhUJlMEpj+NIctdFsPZREjVnazehD50hlHZGrpacOj+w3wRAJVyxG5aHVk1165INwvLp8aTNnnbNiivqr6kuLWbV8sliVtbsDIsv6ftBPP+RnWPlS98UGHXtAz8=
+	t=1745233553; cv=none; b=Qa1rTf8CDRKRkMaELoWDwZb0X3Z3jLwhxgyh8ZejIn9In45fStGZZfY8MlqGWX8Mzgmxvo1yy5tPwrm73XCk6/zcKNk4Dp4UPoJJfloi8x5mbviuS1nZS8oo3DadprKwtIH4Bp8eRmaI9IuMmxz+Wqilkknvu8MDczh4ACE0OG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745228439; c=relaxed/simple;
-	bh=/aGJWK22tQe/Ha4UsmQkXaFakHVo7zvmcLaGu2MOQvk=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=BLIk5CLSuUOKWQE8YAuAFP0TjlOfrXDQdefrG7DPdrr2AaQaxVmuEU/k0LnTZuKLJIRJSqrF1D/J1WTF8T1OnbF9nEFVaGewXbSMFkP94xLRExyu3dV3yRttW5lNikO/vrcN5mJUxCngBhLofxUIA/BCZtDF9t7mcf9PIP1haTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk; spf=pass smtp.mailfrom=wylie.me.uk; dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b=SoSA1nZA; arc=none smtp.client-ip=82.68.155.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wylie.me.uk
-Received: from frodo.int.wylie.me.uk (frodo.int.wylie.me.uk [192.168.21.2])
-	by wylie.me.uk (Postfix) with ESMTP id 77ECE120872;
-	Mon, 21 Apr 2025 10:40:20 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wylie.me.uk;
-	s=mydkim006; t=1745228420;
-	bh=/aGJWK22tQe/Ha4UsmQkXaFakHVo7zvmcLaGu2MOQvk=;
-	h=Date:From:To:Subject;
-	b=SoSA1nZAr3fhMORJk/x8gXQOWQf2UMF+rbIWxnZRFNAIYLIibsfqNgFvDiP3//J7s
-	 Fm4P53y3HyVJfrGgS828VPMidUKxOZ2eTWMKLCYGLGO7tsVHl3F17hzqWknNxlC5BC
-	 s8RDawYWuvd2OH18eTeX1dSS2j8wWwHm+7ix5R8omY+5/8bAbo5/cRzCkAUeFtuOIg
-	 tgbsA7zBFA48ZU5cXpcs9lDlqqebSnWchEKZj5rbUPwEwkv2qaW9SBVPeB3E5NTX6A
-	 eixmApAYLr+N1ZVjsybrnT06jGTH9xMXBAJCtWYDFpbnjIv3bo7OFhDIrUqUmqp+Rv
-	 1atQMwD9V8y5A==
-Date: Mon, 21 Apr 2025 10:40:19 +0100
-From: "Alan J. Wylie" <alan@wylie.me.uk>
-To: Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev, Cong
- Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Octavian Purdila
- <tavip@google.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@redhat.com>, stable@vger.kernel.org
-Subject: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <20250421104019.7880108d@frodo.int.wylie.me.uk>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
-X-Clacks-Overhead: GNU Terry Pratchett
+	s=arc-20240116; t=1745233553; c=relaxed/simple;
+	bh=RbservHcGk2EKwF/AMkeHfmBaDZn1bslhhvoHXuJYKo=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=UfPFb5KyctodH3oKuP5P9Ag+VZ5QvbrO6tr8rSR7SyO9ijRkqHkR7sewzur/DTw97z5JyCZruEt8ASfUz9edbit9OI1AuIdwO7g4OKd8BOhcavKxzQTOxVKmofuZX9T5TFuUG4YrAph6l9g8YlAyxF/ccUvslUlgJuI2civDbmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LJhCLOOM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53LA8lNA006915;
+	Mon, 21 Apr 2025 11:05:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4tawL9xPcbCqOFuuclDsqO2efguvIRgD7kW4jLpmQU4=; b=LJhCLOOMwNwgktn/
+	jPEWVJjn/1cVEuf7yL+ynAsSQty6z6O5vQ9JQ9b3+/YJJwVz3HcSYEmC2E2p67NU
+	dvyr8cqUGgaUT4yN4y9bXqVkHZeQZuF9rYGCSYx3BtvQYMvKwsJJzHueI2NaiAtO
+	IIaCiESx1yC34MGmmf1hjuMxSKU9TeH643agmSLkXt6FC7qK+6pXPEw0GdhiJWyX
+	bRggG/e6jliSbaBbXWPS5zgTbg4weB43i55Apdkt3CZ+gHrNyRPYcFT7BJtgLugf
+	6D70h265jlQ/MdHi4Zxo8idqLEu0pfJVNHBd6w5EFQZMcaWfg++SHKACkvRCT4JX
+	TX9Ybw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4643e1by40-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Apr 2025 11:05:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53LB5gYg011032
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Apr 2025 11:05:42 GMT
+Received: from [10.204.101.50] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 21 Apr
+ 2025 04:05:36 -0700
+Message-ID: <2a5fa0c6-37cc-96c7-57f9-f3939dc669c6@quicinc.com>
+Date: Mon, 21 Apr 2025 16:35:34 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Subject: Re: [PATCH 00/20] Add support for HEVC and VP9 codecs in decoder
+To: Nicolas Dufresne <nicolas@ndufresne.ca>,
+        Vikash Garodia
+	<quic_vgarodia@quicinc.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+        Stefan Schmidt
+	<stefan.schmidt@linaro.org>,
+        Hans Verkuil <hverkuil@xs4all.nl>,
+        "Bjorn
+ Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        "Rob Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor Dooley" <conor+dt@kernel.org>
+CC: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <stable@vger.kernel.org>, Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250408-iris-dec-hevc-vp9-v1-0-acd258778bd6@quicinc.com>
+ <b8d0deac8f6ae883f3a2374ecf56756c83a57ef1.camel@ndufresne.ca>
+Content-Language: en-US
+In-Reply-To: <b8d0deac8f6ae883f3a2374ecf56756c83a57ef1.camel@ndufresne.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Authority-Analysis: v=2.4 cv=ZOrXmW7b c=1 sm=1 tr=0 ts=68062688 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=e5mUnYsNAAAA:8
+ a=YbpzZouEt4zClhb8bCMA:9 a=PRpDppDLrCsA:10 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=TjNXssC_j7lpFel5tvFf:22 a=Vxmtnl_E_bksehYqCbjh:22
+X-Proofpoint-GUID: 8AVvMU2jTeGw86oorCjgoP2bY8BI1LFo
+X-Proofpoint-ORIG-GUID: 8AVvMU2jTeGw86oorCjgoP2bY8BI1LFo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-21_05,2025-04-21_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ mlxlogscore=999 bulkscore=0 adultscore=0 lowpriorityscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 suspectscore=0 phishscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504210085
 
-#regzbot introduced: 6.14.2..6.14.3
+Hi Nicolas,
 
+On 4/9/2025 12:07 AM, Nicolas Dufresne wrote:
+> Hi,
+> 
+> This is for Bryan and Vikash to review first, but here's some initial feedback on that report.
+> 
+> Le mardi 08 avril 2025 à 21:24 +0530, Dikshita Agarwal a écrit :
+>> Hi All,
+>>
+>> This patch series adds initial support for the HEVC(H.265) and VP9
+>> codecs in iris decoder. The objective of this work is to extend the 
+>> decoder's capabilities to handle HEVC and VP9 codec streams,
+>> including necessary format handling and buffer management.
+>> In addition, the series also includes a set of fixes to address issues
+>> identified during testing of these additional codecs.
+>>
+>> These patches also address the comments and feedback received from the 
+>> RFC patches previously sent. I have made the necessary improvements 
+>> based on the community's suggestions.
+>>
+>> Changes sinces RFC:
+>> - Added additional fixes to address issues identified during further 
+>> testing.
+>> - Moved typo fix to a seperate patch [Neil]
+>> - Reordered the patches for better logical flow and clarity [Neil, 
+>> Dmitry]
+>> - Added fixes tag wherever applicable [Neil, Dmitry]
+>> - Removed the default case in the switch statement for codecs [Bryan]
+>> - Replaced if-else statements with switch-case [Bryan]
+>> - Added comments for mbpf [Bryan]
+>> - RFC: https://lore.kernel.org/linux-media/20250305104335.3629945-1-quic_dikshita@quicinc.com/
+>>
+>> These patches are tested on SM8250 and SM8550 with v4l2-ctl and 
+>> Gstreamer for HEVC and VP9 decoders, at the same time ensured that 
+>> the existing H264 decoder functionality remains uneffected.
+>>
+>> Note: 1 of the fluster compliance test is fixed with firmware [1]
+>> [1]: https://lore.kernel.org/linux-firmware/1a511921-446d-cdc4-0203-084c88a5dc1e@quicinc.com/T/#u 
+>>
+>> The result of fluster test on SM8550:
+>>  131/147 testcases passed while testing JCT-VC-HEVC_V1 with 
+>>  GStreamer-H.265-V4L2-Gst1.0.
+>>  The failing test case:
+>>  - 10 testcases failed due to unsupported 10 bit format.
+>>    - DBLK_A_MAIN10_VIXS_4
+>>    - INITQP_B_Main10_Sony_1
+>>    - TSUNEQBD_A_MAIN10_Technicolor_2
+>>    - WP_A_MAIN10_Toshiba_3
+>>    - WP_MAIN10_B_Toshiba_3
+>>    - WPP_A_ericsson_MAIN10_2
+>>    - WPP_B_ericsson_MAIN10_2
+>>    - WPP_C_ericsson_MAIN10_2
+>>    - WPP_E_ericsson_MAIN10_2
+>>    - WPP_F_ericsson_MAIN10_2
+>>  - 4 testcase failed due to unsupported resolution
+>>    - PICSIZE_A_Bossen_1
+>>    - PICSIZE_B_Bossen_1
+>>    - WPP_D_ericsson_MAIN10_2
+>>    - WPP_D_ericsson_MAIN_2 
+>>  - 1 testcase failed as bitstream is invalid (this fails with reference 
+>>    as well)
+>>    - RAP_B_Bossen_2
+> 
+> I was surprised of this comment, so I ran it myself through the
+> official JCT reference decoder.
+> 
+>    [JCT-VC-HEVC_V1] (JCT-VT-H.265) RAP_B_Bossen_2                  ... Success
+> 
+> I'm pretty sure this stream is valid. I personally care about these
+> reports since otherwise we cannot differentiate HW limitation, FW bugs
+> or V4L2 API limitation. The later is really something we want to know
+> about, since we can fix it. We cannot fix HW, and its up to the vendor
+> to fix their firmware.
+> 
+> This specific test is very nice test. It changes the coding
+> width/height but keeps the conf window the same (416x240).
+> 
+> Here's the coded size changes I could see:
+> 
+> Frame  0: 448 x 256
+> Frame 25: 416 x 240
+> Frame 70: 448 x 256
+> 
+> Each time, the driver must sent SRC_CHANGE, and if all went well, the
+> decoder should reallocate. Note that all this code in GStreamer is
+> recent, so it also a possibility, but something we can fix. I haven't
+> tried ffmpeg much, but same.
+> 
+I checked again, we are able to decode this clip.
+But this fails with CRC mismatch, and If frames with 0 length and error
+flag are dropped, CRC also matches and testcase is passing
+>>  - 1 testcase failed due to CRC mismatch
+>>    - RAP_A_docomo_6
+>>      Analysis - First few frames in this discarded by firmware and are 
+>>      sent to driver with 0 filled length. Driver send such buffers to
+>>      client with timestamp 0 and payload set to 0 and 
+>>      make buf state to VB2_BUF_STATE_ERROR. Such buffers should be 
+>>      dropped by GST. But instead, the first frame displayed as green 
+>>      frame and when a valid buffer is sent to client later with same 0 
+>>      timestamp, its dropped, leading to CRC mismatch for first frame.
+> 
+> This looks like a firmware bug, even if GStreamer had drop them all,
+> the CRC would still miss-match.
+> 
+I tried to drop the frames with 0 length and ERROR flag and I could confirm
+that CRC does match and testcase pass.
 
-Since 6.14.3 I have been seeing random panics, all in htb_dequeue.
-6.14.2 was fine.
+> Important question is if this worked on Venus firmware ? If so, it
+> sounds like it should be addressed.
+> 
+Venus firmware has different design than iris, venus fimware doesn't send
+these zero length buffer to driver for the discarded frame while iris
+firmware does send such frames to driver.
+>>
+>>  235/305 testcases passed while testing VP9-TEST-VECTORS with 
+>>  GStreamer-VP9-V4L2-Gst1.0.
+>>  The failing test case:
+>>  - 64 testcases failed due to unsupported resolution
+>>    - vp90-2-02-size-08x08.webm
+>>    - vp90-2-02-size-08x10.webm
+>>    - vp90-2-02-size-08x16.webm
+>>    - vp90-2-02-size-08x18.webm
+>>    - vp90-2-02-size-08x32.webm
+>>    - vp90-2-02-size-08x34.webm
+>>    - vp90-2-02-size-08x64.webm
+>>    - vp90-2-02-size-08x66.webm
+>>    - vp90-2-02-size-10x08.webm
+>>    - vp90-2-02-size-10x10.webm
+>>    - vp90-2-02-size-10x16.webm
+>>    - vp90-2-02-size-10x18.webm
+>>    - vp90-2-02-size-10x32.webm
+>>    - vp90-2-02-size-10x34.webm
+>>    - vp90-2-02-size-10x64.webm
+>>    - vp90-2-02-size-10x66.webm
+>>    - vp90-2-02-size-16x08.webm
+>>    - vp90-2-02-size-16x10.webm
+>>    - vp90-2-02-size-16x16.webm
+>>    - vp90-2-02-size-16x18.webm
+>>    - vp90-2-02-size-16x32.webm
+>>    - vp90-2-02-size-16x34.webm
+>>    - vp90-2-02-size-16x64.webm
+>>    - vp90-2-02-size-16x66.webm
+>>    - vp90-2-02-size-18x08.webm
+>>    - vp90-2-02-size-18x10.webm
+>>    - vp90-2-02-size-18x16.webm
+>>    - vp90-2-02-size-18x18.webm
+>>    - vp90-2-02-size-18x32.webm
+>>    - vp90-2-02-size-18x34.webm
+>>    - vp90-2-02-size-18x64.webm
+>>    - vp90-2-02-size-18x66.webm
+>>    - vp90-2-02-size-32x08.webm
+>>    - vp90-2-02-size-32x10.webm
+>>    - vp90-2-02-size-32x16.webm
+>>    - vp90-2-02-size-32x18.webm
+>>    - vp90-2-02-size-32x32.webm
+>>    - vp90-2-02-size-32x34.webm
+>>    - vp90-2-02-size-32x64.webm
+>>    - vp90-2-02-size-32x66.webm
+>>    - vp90-2-02-size-34x08.webm
+>>    - vp90-2-02-size-34x10.webm
+>>    - vp90-2-02-size-34x16.webm
+>>    - vp90-2-02-size-34x18.webm
+>>    - vp90-2-02-size-34x32.webm
+>>    - vp90-2-02-size-34x34.webm
+>>    - vp90-2-02-size-34x64.webm
+>>    - vp90-2-02-size-34x66.webm
+>>    - vp90-2-02-size-64x08.webm
+>>    - vp90-2-02-size-64x10.webm
+>>    - vp90-2-02-size-64x16.webm
+>>    - vp90-2-02-size-64x18.webm
+>>    - vp90-2-02-size-64x32.webm
+>>    - vp90-2-02-size-64x34.webm
+>>    - vp90-2-02-size-64x64.webm
+>>    - vp90-2-02-size-64x66.webm
+>>    - vp90-2-02-size-66x08.webm
+>>    - vp90-2-02-size-66x10.webm
+>>    - vp90-2-02-size-66x16.webm
+>>    - vp90-2-02-size-66x18.webm
+>>    - vp90-2-02-size-66x32.webm
+>>    - vp90-2-02-size-66x34.webm
+>>    - vp90-2-02-size-66x64.webm
+>>    - vp90-2-02-size-66x66.webm
+>>  - 2 testcases failed due to unsupported format
+>>    - vp91-2-04-yuv422.webm
+>>    - vp91-2-04-yuv444.webm
+>>  - 1 testcase failed with CRC mismatch (fails with ref decoder as well)
+>>    - vp90-2-22-svc_1280x720_3.ivf
+> 
+> Not completely true:
+> 
+> 	[VP9-TEST-VECTORS] (libvpx-VP9) vp90-2-22-svc_1280x720_3.ivf ... Success
+> 
+> But fails with the GStreamer libvpx integration. Would you mind filling
+> an issue please ? There is clearly a GStreamer bug (not a reference
+> one), please document it as-such in the next report.
+> 
+Sure, raised the bug for this
+https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4371
 
-One only happened 8 hours after the reboot, so bisecting would be
-prolonged, since I have no idea what is triggering the crash.
+>>  - 2 testcase failed due to unsupported resolution after sequence change
+>>    - vp90-2-21-resize_inter_320x180_5_1-2.webm
+>>    - vp90-2-21-resize_inter_320x180_7_1-2.webm
+> 
+> Just be more precise, inter-frame resolution changes are not currently
+> supported in V4L2 stateful decoders. The concept and internals are
+> ready though. Basically, userpace would have to progressively re-
+> allocate the frames as they get dequeued, before being re-queued. That
+> is significant userspace modification, fine to not support it atm.
+> 
 
-I've captured three panics with netconsole. All are very similar.
+Sorry for confusion.
+What I meant was, there is a source change in the clip from 320,180 to
+160,90 -> this is lower than what hardware supports, min supported wxh is 96x96
 
-I've also included the script I use to initialise tc. As well as when
-the ppp over ethernet interface comes up, I also run this every 5
-minutes as a cron job since my ADSL line can fluctuate between 22 and
-30 Mb/s. However, from the timings of the last few lines in
-/var/log/messages before the crash, it doesn't seem that this is
-directly related.
+Which is why client is not able to setup the capture queue and testcase
+fails. This is expected behavior for such clips.
 
-Finally, I've decoded the first panic.
+>>  - 1 testcase failed due to unsupported stream
+>>    - vp90-2-16-intra-only.webm
+>>  Note: There is a timing issue with the clips having multiple resolution 
+>>  change. Where firmware returned all the buffers with previous sequence 
+>>  and has no buffer left to attach the LAST flag to. At the same time,
+>>  client is not queueing any further buffers, so there is deadlock where 
+>>  client is waiting for LAST flag, while firmware doesn't have any 
+>>  capture buffer to attach LAST flag to.
+>>  Ideally client should keep queueing the buffers on capture queue untill
+>>  the LAST flag is received.
+> 
+> At least GStreamer do, so I slightly doubt your analyzes (happy to see
+> a bug report with relevant demonstration showing that !). I'll read it
+> as there is still bug with the resolution change draining process in
+> this driver.
+> 
+Sure, raised the bug with all the details
+https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4370
+>>
+>> The result of fluster test on SM8250:
+>>  132/147 testcases passed while testing JCT-VC-HEVC_V1 with
+>>  GStreamer-H.265-V4L2-Gst1.0.
+>>  The failing test case:
+>>  - 10 testcases failed due to unsupported 10 bit format.
+>>    - DBLK_A_MAIN10_VIXS_4
+>>    - INITQP_B_Main10_Sony_1
+>>    - TSUNEQBD_A_MAIN10_Technicolor_2
+>>    - WP_A_MAIN10_Toshiba_3
+>>    - WP_MAIN10_B_Toshiba_3
+>>    - WPP_A_ericsson_MAIN10_2
+>>    - WPP_B_ericsson_MAIN10_2
+>>    - WPP_C_ericsson_MAIN10_2
+>>    - WPP_E_ericsson_MAIN10_2
+>>    - WPP_F_ericsson_MAIN10_2
+>>  - 4 testcase failed due to unsupported resolution
+>>    - PICSIZE_A_Bossen_1
+>>    - PICSIZE_B_Bossen_1
+>>    - WPP_D_ericsson_MAIN10_2
+>>    - WPP_D_ericsson_MAIN_2
+>>  - 1 testcase failed as bitstream is invalid (this fails with reference
+>>    as well)
+>>    - RAP_B_Bossen_2
+>>
+>>  232/305 testcases passed while testing VP9-TEST-VECTORS with
+>>  GStreamer-VP9-V4L2-Gst1.0.
+>>  The failing test case:
+>>  - 64 testcases failed due to unsupported resolution
+>>    - vp90-2-02-size-08x08.webm
+>>    - vp90-2-02-size-08x10.webm
+>>    - vp90-2-02-size-08x16.webm
+>>    - vp90-2-02-size-08x18.webm
+>>    - vp90-2-02-size-08x32.webm
+>>    - vp90-2-02-size-08x34.webm
+>>    - vp90-2-02-size-08x64.webm
+>>    - vp90-2-02-size-08x66.webm
+>>    - vp90-2-02-size-10x08.webm
+>>    - vp90-2-02-size-10x10.webm
+>>    - vp90-2-02-size-10x16.webm
+>>    - vp90-2-02-size-10x18.webm
+>>    - vp90-2-02-size-10x32.webm
+>>    - vp90-2-02-size-10x34.webm
+>>    - vp90-2-02-size-10x64.webm
+>>    - vp90-2-02-size-10x66.webm
+>>    - vp90-2-02-size-16x08.webm
+>>    - vp90-2-02-size-16x10.webm
+>>    - vp90-2-02-size-16x16.webm
+>>    - vp90-2-02-size-16x18.webm
+>>    - vp90-2-02-size-16x32.webm
+>>    - vp90-2-02-size-16x34.webm
+>>    - vp90-2-02-size-16x64.webm
+>>    - vp90-2-02-size-16x66.webm
+>>    - vp90-2-02-size-18x08.webm
+>>    - vp90-2-02-size-18x10.webm
+>>    - vp90-2-02-size-18x16.webm
+>>    - vp90-2-02-size-18x18.webm
+>>    - vp90-2-02-size-18x32.webm
+>>    - vp90-2-02-size-18x34.webm
+>>    - vp90-2-02-size-18x64.webm
+>>    - vp90-2-02-size-18x66.webm
+>>    - vp90-2-02-size-32x08.webm
+>>    - vp90-2-02-size-32x10.webm
+>>    - vp90-2-02-size-32x16.webm
+>>    - vp90-2-02-size-32x18.webm
+>>    - vp90-2-02-size-32x32.webm
+>>    - vp90-2-02-size-32x34.webm
+>>    - vp90-2-02-size-32x64.webm
+>>    - vp90-2-02-size-32x66.webm
+>>    - vp90-2-02-size-34x08.webm
+>>    - vp90-2-02-size-34x10.webm
+>>    - vp90-2-02-size-34x16.webm
+>>    - vp90-2-02-size-34x18.webm
+>>    - vp90-2-02-size-34x32.webm
+>>    - vp90-2-02-size-34x34.webm
+>>    - vp90-2-02-size-34x64.webm
+>>    - vp90-2-02-size-34x66.webm
+>>    - vp90-2-02-size-64x08.webm
+>>    - vp90-2-02-size-64x10.webm
+>>    - vp90-2-02-size-64x16.webm
+>>    - vp90-2-02-size-64x18.webm
+>>    - vp90-2-02-size-64x32.webm
+>>    - vp90-2-02-size-64x34.webm
+>>    - vp90-2-02-size-64x64.webm
+>>    - vp90-2-02-size-64x66.webm
+>>    - vp90-2-02-size-66x08.webm
+>>    - vp90-2-02-size-66x10.webm
+>>    - vp90-2-02-size-66x16.webm
+>>    - vp90-2-02-size-66x18.webm
+>>    - vp90-2-02-size-66x32.webm
+>>    - vp90-2-02-size-66x34.webm
+>>    - vp90-2-02-size-66x64.webm
+>>    - vp90-2-02-size-66x66.webm
+>>  - 2 testcases failed due to unsupported format
+>>    - vp91-2-04-yuv422.webm
+>>    - vp91-2-04-yuv444.webm
+>>  - 1 testcase failed with CRC mismatch (fails with ref decoder as well)
+>>    - vp90-2-22-svc_1280x720_3.ivf
+>>  - 5 testcase failed due to unsupported resolution after sequence change
+>>    - vp90-2-21-resize_inter_320x180_5_1-2.webm
+>>    - vp90-2-21-resize_inter_320x180_7_1-2.webm
+>>    - vp90-2-21-resize_inter_320x240_5_1-2.webm
+>>    - vp90-2-21-resize_inter_320x240_7_1-2.webm
+>>    - vp90-2-18-resize.ivf
+>>  - 1 testcase failed with CRC mismatch
+>>    - vp90-2-16-intra-only.webm
+>>    Analysis: First few frames are marked by firmware as NO_SHOW frame.
+>>    Driver make buf state to VB2_BUF_STATE_ERROR for such frames.
+>>    Such buffers should be dropped by GST. But instead, the first frame 
+>>    is being displayed and when a valid buffer is sent to client later
+>>    with same timestamp, its dropped, leading to CRC mismatch for first 
+>>    frame.
+> 
+> I checked this one, 3 first frame are "decode only" indeed. Though, by
+> returning these buffer with STATE_ERROR, you loose the ability to show
+> these frame later. GStreamer should be fixed to do internal ref frame
+> management, not silently drop these though.
+> 
+> What you can do instead, is leave these frames queued, and only mark
+> them done once you hit a matching show_existing_frame. It will fix this
+> specific stream (and most usage of show existing frame in the wild),
+> but show-existing frame will remain broken. The other solution is to
+> keep the reference frame internal, and output copies, but that imply
+> some HW design, and also cost quite a lot in bandwidth.
+> 
+> This test hits the known V4L2 queue limitation that it can only output
+> a frame once, and can only input a frame once (you cannot encode twice
+> the same frame notably). I open to suggestion how to fix those, but I
+> don't have any solutions for now.
+> 
+I am also checking with firmware team internally on any approach to handle
+such use-cases.
 
-I'm more than happy to help with debugging, if necessary.
-
-The system is running up-to-date Gentoo.
-
-Linux version 6.14.3 (alan@bilbo) (gcc (Gentoo Hardened
-14.2.1_p20241221 p7) 14.2.1 20241221, GNU ld (Gentoo 2.44 p1) 2.44.0)
-#20 SMP PREEMPT_DYNAMIC Sun Apr 20 21:18:54 BST 2025
-
-Linux bilbo 6.14.3 #20 SMP PREEMPT_DYNAMIC Sun Apr 20 21:18:54 BST 2025
-x86_64 AMD FX(tm)-4300 Quad-Core Processor AuthenticAMD GNU/Linux
-
-# equery -q list  iproute2
-sys-apps/iproute2-6.13.0
-
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0 
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G           O
-6.14.3 #20 Tainted: [O]=OOT_MODULE
-Hardware name: Gigabyte Technology Co., Ltd. To be filled by
-O.E.M./970A-DS3P, BIOS FD 02/26/2016 RIP: 0010:rb_next+0x0/0x50
-Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41 5e e9 85 73 01 00 5b
-5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00 00 00 00 <48> 3b 3f
-48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0 48 8b RSP:
-0018:ffffc90000003e50 EFLAGS: 00010246 RAX: 0000000000000000 RBX:
-ffff88811a764000 RCX: ffff88811a764180 RDX: ffff88835e4c6c00 RSI:
-ffff888162c998e8 RDI: 0000000000000000 RBP: 0000000000000000 R08:
-ffff88811a7642b0 R09: 00000000a535eebc R10: 0000000000000d09 R11:
-ffffc90000003ff8 R12: ffff88835e4c6c00 R13: ffff88811a7642b8 R14:
-00001a951355b383 R15: 0000000000000000 FS:  0000000000000000(0000)
-GS:ffff88842ec00000(0000) knlGS:0000000000000000 CS:  0010 DS: 0000 ES:
-0000 CR0: 0000000080050033 CR2: 0000000000000000 CR3: 00000001084b4000
-CR4: 00000000000406f0 Call Trace: <IRQ>
- htb_dequeue+0x42f/0x610 [sch_htb]
- __qdisc_run+0x253/0x480
- ? timerqueue_del+0x2c/0x40
- qdisc_run+0x15/0x30
- net_tx_action+0x182/0x1b0
- handle_softirqs+0x102/0x240
- __irq_exit_rcu+0x3e/0xb0
- sysvec_apic_timer_interrupt+0x5b/0x70
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x16/0x20
-RIP: 0010:cpuidle_enter_state+0x126/0x220
-Code: 18 4c 6f 00 85 c0 7e 0b 8b 73 04 83 cf ff e8 a1 22 e5 ff 31 ff e8
-9a 2e 98 ff 45 84 ff 74 07 31 ff e8 0e 58 9d ff fb 45 85 ed <0f> 88 cc
-00 00 00 49 63 c5 48 8b 3c 24 48 6b c8 68 48 6b d0 30 49 RSP:
-0018:ffffffff81e03e40 EFLAGS: 00000202 RAX: ffff88842ec00000 RBX:
-ffff8881008d9400 RCX: 0000000000000000 RDX: 00001a94d9502071 RSI:
-fffffffbb3498394 RDI: 0000000000000000 RBP: 0000000000000002 R08:
-0000000000000002 R09: 00001a94d7bd7640 R10: 0000000000000006 R11:
-0000000000000020 R12: ffffffff81f98280 R13: 0000000000000002 R14:
-00001a94d9502071 R15: 0000000000000000 cpuidle_enter+0x2a/0x40
-do_idle+0x12d/0x1a0 cpu_startup_entry+0x29/0x30
- rest_init+0xbc/0xc0
- start_kernel+0x630/0x630
- x86_64_start_reservations+0x25/0x30
- x86_64_start_kernel+0x73/0x80
- common_startup_64+0x12c/0x138
- </TASK>
-Modules linked in: udp_diag netconsole sch_htb cls_u32 sch_ingress
-sch_cake ifb act_mirred xt_hl xt_nat ts_bm xt_string xt_TARPIT(O) xt_CT
-xt_tcpudp xt_helper nf_nat_ftp nf_conntrack_ftp ip6t_rt ip6table_nat
-xt_MASQUERADE iptable_nat nf_nat xt_TCPMSS xt_LOG nf_log_syslog
-ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 ip6table_raw
-iptable_raw ip6table_mangle iptable_mangle xt_multiport xt_state
-xt_limit xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-ip6table_filter ip6_tables iptable_filter ip_tables x_tables tun pppoe
-binfmt_misc pppox ppp_generic slhc af_packet bridge stp llc ctr ccm
-dm_crypt radeon drm_client_lib video wmi drm_exec drm_suballoc_helper
-ath9k drm_ttm_helper syscopyarea ttm sysfillrect ath9k_common sysimgblt
-ath9k_hw fb_sys_fops drm_display_helper drm_kms_helper ath mac80211
-agpgart pl2303 snd_hda_codec_realtek cfbfillrect snd_hda_codec_generic
-usbserial snd_hda_codec_hdmi snd_hda_scodec_component cfbimgblt
-snd_hda_intel fb_io_fops snd_intel_dspcfg cfbcopyarea snd_hda_codec
-i2c_algo_bit fb snd_hda_core aesni_intel cfg80211 cdc_acm snd_pcm
-crypto_simd font snd_timer cryptd snd at24 e1000 regmap_i2c
-acpi_cpufreq libarc4 soundcore k10temp fam15h_power evdev nfsd
-sch_fq_codel auth_rpcgss lockd grace drm sunrpc
-drm_panel_orientation_quirks fuse backlight configfs loop nfnetlink
-usbhid ohci_pci xhci_pci xhci_hcd ohci_hcd ehci_pci ehci_hcd
-sha512_ssse3 usbcore sha256_ssse3 sha1_ssse3 sha1_generic gf128mul
-usb_common dm_mirror dm_region_hash dm_log cpuid i2c_piix4 i2c_smbus
-i2c_dev i2c_core it87 hwmon_vid msr dmi_sysfs autofs4 CR2:
-0000000000000000 ---[ end trace 0000000000000000 ]--- RIP:
-0010:rb_next+0x0/0x50 Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d
-41 5e e9 85 73 01 00 5b 5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00
-00 00 00 00 <48> 3b 3f 48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89
-d0 48 8b RSP: 0018:ffffc90000003e50 EFLAGS: 00010246 RAX:
-0000000000000000 RBX: ffff88811a764000 RCX: ffff88811a764180 RDX:
-ffff88835e4c6c00 RSI: ffff888162c998e8 RDI: 0000000000000000 RBP:
-0000000000000000 R08: ffff88811a7642b0 R09: 00000000a535eebc R10:
-0000000000000d09 R11: ffffc90000003ff8 R12: ffff88835e4c6c00 R13:
-ffff88811a7642b8 R14: 00001a951355b383 R15: 0000000000000000 FS:
-0000000000000000(0000) GS:ffff88842ec00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033 CR2: 0000000000000000
-CR3: 00000001084b4000 CR4: 00000000000406f0 Kernel panic - not syncing:
-Fatal exception in interrupt Kernel Offset: disabled ---[ end Kernel
-panic - not syncing: Fatal exception in interrupt ]---
-
-
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 1062b1067 P4D 1062b1067 PUD 1062ae067 PMD 0 
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G           O
-6.14.3 #20 Tainted: [O]=OOT_MODULE
-Hardware name: Gigabyte Technology Co., Ltd. To be filled by
-O.E.M./970A-DS3P, BIOS FD 02/26/2016 RIP: 0010:rb_next+0x0/0x50
-Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41 5e e9 85 73 01 00 5b
-5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00 00 00 00 <48> 3b 3f
-48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0 48 8b RSP:
-0018:ffffc9000010ce50 EFLAGS: 00010246 RAX: 0000000000000000 RBX:
-ffff88812106e000 RCX: ffff88812106e180 RDX: ffff888129726c00 RSI:
-ffff888106a052e8 RDI: 0000000000000000 RBP: 0000000000000000 R08:
-ffff88812106e2b0 R09: 0000000036705a4e R10: 0000000000000d03 R11:
-ffffc9000010cff8 R12: ffff888129726c00 R13: ffff88812106e2b8 R14:
-000000d9fd03fce6 R15: 0000000000000000 FS:  0000000000000000(0000)
-GS:ffff88842ec80000(0000) knlGS:0000000000000000 CS:  0010 DS: 0000 ES:
-0000 CR0: 0000000080050033 CR2: 0000000000000000 CR3: 0000000112716000
-CR4: 00000000000406f0 Call Trace: <IRQ>
- htb_dequeue+0x42f/0x610 [sch_htb]
- __qdisc_run+0x253/0x480
- ? timerqueue_del+0x2c/0x40
- qdisc_run+0x15/0x30
- net_tx_action+0x182/0x1b0
- handle_softirqs+0x102/0x240
- __irq_exit_rcu+0x3e/0xb0
- sysvec_apic_timer_interrupt+0x5b/0x70
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x16/0x20
-RIP: 0010:acpi_safe_halt+0x22/0x30
-Code: 0f 1f 84 00 00 00 00 00 65 48 8b 05 b8 38 71 7e 48 8b 00 a8 08 75
-14 8b 05 a3 92 bb 00 85 c0 7e 07 0f 00 2d 20 4f 15 00 fb f4 <fa> e9 18
-77 00 00 0f 1f 84 00 00 00 00 00 8a 47 08 3c 01 75 05 e9 RSP:
-0018:ffffc900000c7e80 EFLAGS: 00000246 RAX: 0000000000000000 RBX:
-0000000000000001 RCX: ffff88842ec80000 RDX: ffff888100ddd464 RSI:
-ffff888100ddd400 RDI: ffff888100ddd464 RBP: 0000000000000001 R08:
-0000000000000001 R09: 071c71c71c71c71c R10: 0000000000000006 R11:
-0000000000000020 R12: ffffffff81f98280 R13: ffffffff81f982e8 R14:
-ffffffff81f98300 R15: 0000000000000000 acpi_idle_enter+0x8f/0xa0
-cpuidle_enter_state+0xb3/0x220 cpuidle_enter+0x2a/0x40
- do_idle+0x12d/0x1a0
- cpu_startup_entry+0x29/0x30
- start_secondary+0xed/0xf0
- common_startup_64+0x12c/0x138
- </TASK>
-Modules linked in: netconsole sch_htb cls_u32 sch_ingress sch_cake ifb
-act_mirred xt_hl xt_nat ts_bm xt_string xt_TARPIT(O) xt_CT xt_tcpudp
-xt_helper nf_nat_ftp nf_conntrack_ftp ip6t_rt ip6table_nat
-xt_MASQUERADE iptable_nat nf_nat xt_TCPMSS xt_LOG nf_log_syslog
-ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 ip6table_raw
-iptable_raw ip6table_mangle iptable_mangle xt_multiport xt_state
-xt_limit xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-ip6table_filter ip6_tables iptable_filter ip_tables x_tables tun pppoe
-pppox binfmt_misc ppp_generic slhc af_packet bridge stp llc ctr ccm
-dm_crypt radeon drm_client_lib ath9k video wmi drm_exec ath9k_common
-drm_suballoc_helper ath9k_hw drm_ttm_helper syscopyarea ttm sysfillrect
-sysimgblt ath pl2303 snd_hda_codec_realtek fb_sys_fops
-snd_hda_codec_generic usbserial mac80211 drm_display_helper
-snd_hda_codec_hdmi snd_hda_scodec_component drm_kms_helper
-snd_hda_intel snd_intel_dspcfg snd_hda_codec agpgart cfbfillrect
-snd_hda_core cfbimgblt fb_io_fops aesni_intel snd_pcm cfg80211 e1000
-cfbcopyarea i2c_algo_bit cdc_acm fb crypto_simd snd_timer snd cryptd
-acpi_cpufreq at24 font fam15h_power libarc4 soundcore k10temp
-regmap_i2c evdev nfsd sch_fq_codel auth_rpcgss lockd drm grace sunrpc
-drm_panel_orientation_quirks fuse backlight configfs loop nfnetlink
-usbhid xhci_pci ohci_pci xhci_hcd ohci_hcd ehci_pci ehci_hcd usbcore
-sha512_ssse3 sha256_ssse3 sha1_ssse3 sha1_generic gf128mul usb_common
-dm_mirror dm_region_hash dm_log cpuid i2c_piix4 i2c_smbus i2c_dev
-i2c_core it87 hwmon_vid msr dmi_sysfs autofs4 CR2: 0000000000000000
----[ end trace 0000000000000000 ]--- RIP: 0010:rb_next+0x0/0x50 Code:
-e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41 5e e9 85 73 01 00 5b 5d 41
-5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00 00 00 00 <48> 3b 3f 48 89
-f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0 48 8b RSP:
-0018:ffffc9000010ce50 EFLAGS: 00010246 RAX: 0000000000000000 RBX:
-ffff88812106e000 RCX: ffff88812106e180 RDX: ffff888129726c00 RSI:
-ffff888106a052e8 RDI: 0000000000000000 RBP: 0000000000000000 R08:
-ffff88812106e2b0 R09: 0000000036705a4e R10: 0000000000000d03 R11:
-ffffc9000010cff8 R12: ffff888129726c00 R13: ffff88812106e2b8 R14:
-000000d9fd03fce6 R15: 0000000000000000 FS:  0000000000000000(0000)
-GS:ffff88842ec80000(0000) knlGS:0000000000000000 CS:  0010 DS: 0000 ES:
-0000 CR0: 0000000080050033 CR2: 0000000000000000 CR3: 0000000112716000
-CR4: 00000000000406f0 Kernel panic - not syncing: Fatal exception in
-interrupt Kernel Offset: disabled ---[ end Kernel panic - not syncing:
-Fatal exception in interrupt ]---
-
-
-
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0 
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G           O
-6.14.3 #20 Tainted: [O]=OOT_MODULE
-Hardware name: Gigabyte Technology Co., Ltd. To be filled by
-O.E.M./970A-DS3P, BIOS FD 02/26/2016 RIP: 0010:rb_next+0x0/0x50
-Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41 5e e9 85 73 01 00 5b
-5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00 00 00 00 <48> 3b 3f
-48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0 48 8b RSP:
-0018:ffffc9000010ce50 EFLAGS: 00010246 RAX: 0000000000000000 RBX:
-ffff88811899d000 RCX: ffff88811899d180 RDX: ffff8881845f2800 RSI:
-ffff8881069b7ae8 RDI: 0000000000000000 RBP: 0000000000000000 R08:
-ffff88811899d2b0 R09: 000000002997d2aa R10: 0000000000003fbf R11:
-ffffc9000010cff8 R12: ffff8881845f2800 R13: ffff88811899d2b8 R14:
-000000a69ae56401 R15: 0000000000000000 FS:  0000000000000000(0000)
-GS:ffff88842ec80000(0000) knlGS:0000000000000000 CS:  0010 DS: 0000 ES:
-0000 CR0: 0000000080050033 CR2: 0000000000000000 CR3: 0000000103c80000
-CR4: 00000000000406f0 Call Trace: <IRQ>
- htb_dequeue+0x42f/0x610 [sch_htb]
- __qdisc_run+0x253/0x480
- ? timerqueue_del+0x2c/0x40
- qdisc_run+0x15/0x30
- net_tx_action+0x182/0x1b0
- handle_softirqs+0x102/0x240
- __irq_exit_rcu+0x3e/0xb0
- sysvec_apic_timer_interrupt+0x5b/0x70
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x16/0x20
-RIP: 0010:cpuidle_enter_state+0x126/0x220
-Code: 18 4c 6f 00 85 c0 7e 0b 8b 73 04 83 cf ff e8 a1 22 e5 ff 31 ff e8
-9a 2e 98 ff 45 84 ff 74 07 31 ff e8 0e 58 9d ff fb 45 85 ed <0f> 88 cc
-00 00 00 49 63 c5 48 8b 3c 24 48 6b c8 68 48 6b d0 30 49 RSP:
-0018:ffffc900000c7e98 EFLAGS: 00000202 RAX: ffff88842ec80000 RBX:
-ffff888101d7f800 RCX: 0000000000000000 RDX: 000000a6607c6802 RSI:
-fffffffc350c4254 RDI: 0000000000000000 RBP: 0000000000000002 R08:
-0000000000000002 R09: 000000e8ec11c440 R10: 0000000000000006 R11:
-0000000000000020 R12: ffffffff81f98280 R13: 0000000000000002 R14:
-000000a6607c6802 R15: 0000000000000000 ?
-cpuidle_enter_state+0x116/0x220 cpuidle_enter+0x2a/0x40
-do_idle+0x12d/0x1a0 cpu_startup_entry+0x29/0x30
- start_secondary+0xed/0xf0
- common_startup_64+0x12c/0x138
- </TASK>
-Modules linked in: sch_htb cls_u32 sch_ingress sch_cake ifb act_mirred
-xt_hl xt_nat ts_bm xt_string xt_TARPIT(O) xt_CT xt_tcpudp xt_helper
-nf_nat_ftp nf_conntrack_ftp ip6t_rt ip6table_nat xt_MASQUERADE
-iptable_nat nf_nat xt_TCPMSS xt_LOG nf_log_syslog ip6t_REJECT
-nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 ip6table_raw iptable_raw
-ip6table_mangle iptable_mangle xt_multiport xt_state xt_limit
-xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip6table_filter
-ip6_tables iptable_filter ip_tables x_tables pppoe tun pppox
-binfmt_misc ppp_generic slhc netconsole af_packet bridge stp llc ctr
-ccm dm_crypt radeon drm_client_lib video wmi drm_exec ath9k
-drm_suballoc_helper drm_ttm_helper syscopyarea ttm ath9k_common
-ath9k_hw sysfillrect sysimgblt fb_sys_fops drm_display_helper ath
-pl2303 drm_kms_helper usbserial mac80211 snd_hda_codec_realtek
-snd_hda_codec_generic snd_hda_codec_hdmi agpgart
-snd_hda_scodec_component cfbfillrect snd_hda_intel cfbimgblt
-snd_intel_dspcfg snd_hda_codec fb_io_fops snd_hda_core cfbcopyarea
-aesni_intel i2c_algo_bit cfg80211 snd_pcm fb snd_timer e1000 snd
-crypto_simd cdc_acm cryptd at24 font acpi_cpufreq libarc4 soundcore
-fam15h_power regmap_i2c k10temp evdev nfsd sch_fq_codel auth_rpcgss
-lockd grace sunrpc drm fuse configfs drm_panel_orientation_quirks
-backlight loop nfnetlink usbhid xhci_pci ohci_pci xhci_hcd ohci_hcd
-ehci_pci ehci_hcd sha512_ssse3 sha256_ssse3 usbcore sha1_ssse3
-sha1_generic gf128mul usb_common dm_mirror dm_region_hash dm_log cpuid
-i2c_piix4 i2c_smbus i2c_dev i2c_core it87 hwmon_vid msr dmi_sysfs
-autofs4 CR2: 0000000000000000 ---[ end trace 0000000000000000 ]--- RIP:
-0010:rb_next+0x0/0x50 Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d
-41 5e e9 85 73 01 00 5b 5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00
-00 00 00 00 <48> 3b 3f 48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89
-d0 48 8b RSP: 0018:ffffc9000010ce50 EFLAGS: 00010246 RAX:
-0000000000000000 RBX: ffff88811899d000 RCX: ffff88811899d180 RDX:
-ffff8881845f2800 RSI: ffff8881069b7ae8 RDI: 0000000000000000 RBP:
-0000000000000000 R08: ffff88811899d2b0 R09: 000000002997d2aa R10:
-0000000000003fbf R11: ffffc9000010cff8 R12: ffff8881845f2800 R13:
-ffff88811899d2b8 R14: 000000a69ae56401 R15: 0000000000000000 FS:
-0000000000000000(0000) GS:ffff88842ec80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033 CR2: 0000000000000000
-CR3: 0000000103c80000 CR4: 00000000000406f0 Kernel panic - not syncing:
-Fatal exception in interrupt Kernel Offset: disabled ---[ end Kernel
-panic - not syncing: Fatal exception in interrupt ]---
-
-
-#!/bin/bash
-
-# https://www.bufferbloat.net/projects/codel/wiki/Cake/#installing-cake-out-of-tree-on-linux
-# https://trofi.github.io/posts/217-mitigating%20bufferbloat.html
-
-#set -x
-
-set -o nounset
-set -o errexit
-
-export PATH=/sbin:/bin:/usr/sbin:/usr/bin
-
-ext=ppp0
-ext_ingress=ppp0ifb0
-
-# [query ADSL modem for up and down rates]
-
-echo -e "pppd pppoe UP $UP DN $DN" | systemd-cat -t traffic-control
-
-ext_up=$((UP * 95 / 100))kbit
-ext_down=$((DN * 95 / 100))kbit
-
-# below taken from https://wiki.gentoo.org/wiki/Traffic_shaping
-
-q=1486                  # HTB Quantum = 1500bytes IP + 14 bytes ethernet.
-			# Higher bandwidths may require a higher htb quantum. MEASURE.
-			# Some ADSL devices might require a stab setting.
-
-quantum=300		# fq_codel quantum 300 gives a boost to interactive flows
-			# At higher bandwidths (50Mbit+) don't bother
-
-modprobe act_mirred
-modprobe ifb
-modprobe sch_cake
-modprobe sch_fq_codel
-
-ethtool -K "$ext" tso off gso off gro off # Also turn of gro on ALL interfaces
-                                        # e.g ethtool -K eth1 gro off if you have eth1
-					# some devices you may need to run these
-					# commands independently
-
-# Clear old queuing disciplines (qdisc) on the interfaces
-tc qdisc del dev "$ext" root		>& /dev/null || true
-tc qdisc del dev "$ext" ingress		>& /dev/null || true
-tc qdisc del dev "$ext_ingress" root	>& /dev/null || true
-tc qdisc del dev "$ext_ingress" ingress	>& /dev/null || true
-ip link del "$ext_ingress"  		>& /dev/null || true
-
-#########
-# INGRESS
-#########
-
-# Create ingress on external interface
-tc qdisc add dev "$ext" handle ffff: ingress
-
-ip link add name "$ext_ingress"  type ifb
-ip link set dev "$ext_ingress" up || true # if the interace is not up bad things happen
-
-# Forward all ingress traffic to the IFB device
-tc filter add dev "$ext" parent ffff: protocol all u32 match u32 0 0 action mirred egress redirect dev "$ext_ingress"
-
-# Create an EGRESS filter on the IFB device
-
-# Warning: sch_htb: quantum of class 10001 is big. Consider r2q change
-# https://web.archive.org/web/20030514055053/http://www.docum.org/stef.coene/qos/faq/cache/31.html
-# default r2q is 10
-# since up ADSL rate went from 24.4 Mb/s to 26.8 Mb/s, "r2q 15" started giving a "too big" error
-# up it to 20, now OK again
-tc qdisc add dev "$ext_ingress" root handle 1: htb default 11 r2q 20
-
-# Add root class HTB with rate limiting
-
-tc class add dev "$ext_ingress" parent 1: classid 1:1 htb rate $ext_down #|& grep -v "Consider r2q change" || true
-tc class add dev "$ext_ingress" parent 1:1 classid 1:11 htb rate $ext_down prio 0 quantum $q
-
-# Add FQ_CODEL qdisc with ECN support (if you want ecn)
-tc qdisc add dev "$ext_ingress" parent 1:11 fq_codel quantum $quantum ecn
-
-#########
-# EGRESS
-#########
-# Add FQ_CODEL to EGRESS on external interface
-tc qdisc add dev "$ext" root handle 1: htb default 11
-
-# Add root class HTB with rate limiting
-tc class add dev "$ext" parent 1: classid 1:1 htb rate $ext_up
-tc class add dev "$ext" parent 1:1 classid 1:11 htb rate $ext_up prio 0 quantum $q
-
-# Note: You can apply a packet limit here and on ingress if you are memory constrained - e.g
-# for low bandwidths and machines with < 64MB of ram, limit 1000 is good, otherwise no point
-
-# Add FQ_CODEL qdisc without ECN support - on egress it's generally better to just drop the packet
-# but feel free to enable it if you want.
-
-tc qdisc add dev "$ext" parent 1:11 fq_codel quantum $quantum noecn
-
-
-
-$ cat ~/1.panic | scripts/decode_stacktrace.sh vmlinux
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G           O
-6.14.3 #20 Tainted: [O]=OOT_MODULE
-Hardware name: Gigabyte Technology Co., Ltd. To be filled by
-O.E.M./970A-DS3P, BIOS FD 02/26/2016 RIP: 0010:rb_next
-(lib/rbtree.c:496) Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41
-5e e9 85 73 01 00 5b 5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00
-00 00 00 <48> 3b 3f 48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0
-48 8b All code ======== 0:	e8 d5 fa ff ff       	call
-0xfffffffffffffada 5:	5b                   	pop    %rbx
-   6:	4c 89 e0             	mov    %r12,%rax
-   9:	5d                   	pop    %rbp
-   a:	41 5c                	pop    %r12
-   c:	41 5d                	pop    %r13
-   e:	41 5e                	pop    %r14
-  10:	e9 85 73 01 00       	jmp    0x1739a
-  15:	5b                   	pop    %rbx
-  16:	5d                   	pop    %rbp
-  17:	41 5c                	pop    %r12
-  19:	41 5d                	pop    %r13
-  1b:	41 5e                	pop    %r14
-  1d:	e9 38 76 01 00       	jmp    0x1765a
-  22:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-  29:	00 
-  2a:*	48 3b 3f             	cmp    (%rdi),%rdi
-	<-- trapping instruction 2d:	48 89 f8
-	mov    %rdi,%rax 30:	74 38                	je
-0x6a 32:	48 8b 57 08          	mov    0x8(%rdi),%rdx
-  36:	48 85 d2             	test   %rdx,%rdx
-  39:	74 11                	je     0x4c
-  3b:	48 89 d0             	mov    %rdx,%rax
-  3e:	48                   	rex.W
-  3f:	8b                   	.byte 0x8b
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 3b 3f             	cmp    (%rdi),%rdi
-   3:	48 89 f8             	mov    %rdi,%rax
-   6:	74 38                	je     0x40
-   8:	48 8b 57 08          	mov    0x8(%rdi),%rdx
-   c:	48 85 d2             	test   %rdx,%rdx
-   f:	74 11                	je     0x22
-  11:	48 89 d0             	mov    %rdx,%rax
-  14:	48                   	rex.W
-  15:	8b                   	.byte 0x8b
-RSP: 0018:ffffc90000003e50 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88811a764000 RCX: ffff88811a764180
-RDX: ffff88835e4c6c00 RSI: ffff888162c998e8 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff88811a7642b0 R09: 00000000a535eebc
-R10: 0000000000000d09 R11: ffffc90000003ff8 R12: ffff88835e4c6c00
-R13: ffff88811a7642b8 R14: 00001a951355b383 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88842ec00000(0000)
-knlGS:0000000000000000 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000001084b4000 CR4: 00000000000406f0
-Call Trace:
-<IRQ>
-htb_dequeue (net/sched/sch_htb.c:351 (discriminator 1)
-net/sched/sch_htb.c:924 (discriminator 1) net/sched/sch_htb.c:982
-(discriminator 1)) sch_htb __qdisc_run (net/sched/sch_generic.c:294
-net/sched/sch_generic.c:398 net/sched/sch_generic.c:416) ?
-timerqueue_del (lib/timerqueue.c:58) qdisc_run
-(./include/net/pkt_sched.h:128 ./include/net/pkt_sched.h:124)
-net_tx_action (net/core/dev.c:5553) handle_softirqs
-(./arch/x86/include/asm/atomic.h:23
-./include/linux/atomic/atomic-arch-fallback.h:457
-./include/linux/jump_label.h:262 ./include/trace/events/irq.h:142
-kernel/softirq.c:562) __irq_exit_rcu (kernel/softirq.c:435
-kernel/softirq.c:662) sysvec_apic_timer_interrupt
-(arch/x86/kernel/apic/apic.c:1049 (discriminator 35)
-arch/x86/kernel/apic/apic.c:1049 (discriminator 35)) </IRQ> <TASK>
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:574)
-RIP: 0010:cpuidle_enter_state (drivers/cpuidle/cpuidle.c:292) Code: 18
-4c 6f 00 85 c0 7e 0b 8b 73 04 83 cf ff e8 a1 22 e5 ff 31 ff e8 9a 2e 98
-ff 45 84 ff 74 07 31 ff e8 0e 58 9d ff fb 45 85 ed <0f> 88 cc 00 00 00
-49 63 c5 48 8b 3c 24 48 6b c8 68 48 6b d0 30 49 All code ========
-0:	18 4c 6f 00          	sbb    %cl,0x0(%rdi,%rbp,2)
-4:	85 c0                	test   %eax,%eax 6:	7e 0b
-               	jle    0x13 8:	8b 73 04
-	mov    0x4(%rbx),%esi b:	83 cf ff             	or
-    $0xffffffff,%edi e:	e8 a1 22 e5 ff       	call
-0xffffffffffe522b4 13:	31 ff                	xor
-%edi,%edi 15:	e8 9a 2e 98 ff       	call
-0xffffffffff982eb4 1a:	45 84 ff             	test
-%r15b,%r15b 1d:	74 07                	je     0x26
-1f:	31 ff                	xor    %edi,%edi 21:	e8
-0e 58 9d ff       	call   0xffffffffff9d5834 26:	fb
-            	sti 27:	45 85 ed             	test
-%r13d,%r13d 2a:*	0f 88 cc 00 00 00    	js     0xfc
-	<-- trapping instruction 30:	49 63 c5
-	movslq %r13d,%rax 33:	48 8b 3c 24          	mov
- (%rsp),%rdi 37:	48 6b c8 68          	imul
-$0x68,%rax,%rcx 3b:	48 6b d0 30          	imul
-$0x30,%rax,%rdx 3f:	49                   	rex.WB
-
-Code starting with the faulting instruction
-===========================================
-   0:	0f 88 cc 00 00 00    	js     0xd2
-   6:	49 63 c5             	movslq %r13d,%rax
-   9:	48 8b 3c 24          	mov    (%rsp),%rdi
-   d:	48 6b c8 68          	imul   $0x68,%rax,%rcx
-  11:	48 6b d0 30          	imul   $0x30,%rax,%rdx
-  15:	49                   	rex.WB
-RSP: 0018:ffffffff81e03e40 EFLAGS: 00000202
-RAX: ffff88842ec00000 RBX: ffff8881008d9400 RCX: 0000000000000000
-RDX: 00001a94d9502071 RSI: fffffffbb3498394 RDI: 0000000000000000
-RBP: 0000000000000002 R08: 0000000000000002 R09: 00001a94d7bd7640
-R10: 0000000000000006 R11: 0000000000000020 R12: ffffffff81f98280
-R13: 0000000000000002 R14: 00001a94d9502071 R15: 0000000000000000
-cpuidle_enter (drivers/cpuidle/cpuidle.c:391 (discriminator 2)) 
-do_idle (kernel/sched/idle.c:234 kernel/sched/idle.c:325) 
-cpu_startup_entry (kernel/sched/idle.c:422) 
-rest_init (init/main.c:743) 
-start_kernel (init/main.c:1525) 
-x86_64_start_reservations (arch/x86/kernel/head64.c:513) 
-x86_64_start_kernel (??:?) 
-common_startup_64 (arch/x86/kernel/head_64.S:421) 
-</TASK>
-Modules linked in: udp_diag netconsole sch_htb cls_u32 sch_ingress
-sch_cake ifb act_mirred xt_hl xt_nat ts_bm xt_string xt_TARPIT(O) xt_CT
-xt_tcpudp xt_helper nf_nat_ftp nf_conntrack_ftp ip6t_rt ip6table_nat
-xt_MASQUERADE iptable_nat nf_nat xt_TCPMSS xt_LOG nf_log_syslog
-ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 ip6table_raw
-iptable_raw ip6table_mangle iptable_mangle xt_multiport xt_state
-xt_limit xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4
-ip6table_filter ip6_tables iptable_filter ip_tables x_tables tun pppoe
-binfmt_misc pppox ppp_generic slhc af_packet bridge stp llc ctr ccm
-dm_crypt radeon drm_client_lib video wmi drm_exec drm_suballoc_helper
-ath9k drm_ttm_helper syscopyarea ttm sysfillrect ath9k_common sysimgblt
-ath9k_hw fb_sys_fops drm_display_helper drm_kms_helper ath mac80211
-agpgart pl2303 snd_hda_codec_realtek cfbfillrect snd_hda_codec_generic
-usbserial snd_hda_codec_hdmi snd_hda_scodec_component cfbimgblt
-snd_hda_intel fb_io_fops snd_intel_dspcfg cfbcopyarea snd_hda_codec
-i2c_algo_bit fb snd_hda_core aesni_intel cfg80211 cdc_acm snd_pcm
-crypto_simd font snd_timer cryptd snd at24 e1000 regmap_i2c
-acpi_cpufreq libarc4 soundcore k10temp fam15h_power evdev nfsd
-sch_fq_codel auth_rpcgss lockd grace drm sunrpc
-drm_panel_orientation_quirks fuse backlight configfs loop nfnetlink
-usbhid ohci_pci xhci_pci xhci_hcd ohci_hcd ehci_pci ehci_hcd
-sha512_ssse3 usbcore sha256_ssse3 sha1_ssse3 sha1_generic gf128mul
-usb_common dm_mirror dm_region_hash dm_log cpuid i2c_piix4 i2c_smbus
-i2c_dev i2c_core it87 hwmon_vid msr dmi_sysfs autofs4 CR2:
-0000000000000000 ---[ end trace 0000000000000000 ]--- RIP: 0010:rb_next
-(lib/rbtree.c:496) Code: e8 d5 fa ff ff 5b 4c 89 e0 5d 41 5c 41 5d 41
-5e e9 85 73 01 00 5b 5d 41 5c 41 5d 41 5e e9 38 76 01 00 0f 1f 84 00 00
-00 00 00 <48> 3b 3f 48 89 f8 74 38 48 8b 57 08 48 85 d2 74 11 48 89 d0
-48 8b All code ======== 0:	e8 d5 fa ff ff       	call
-0xfffffffffffffada 5:	5b                   	pop    %rbx
-6:	4c 89 e0             	mov    %r12,%rax 9:	5d
-               	pop    %rbp a:	41 5c
-	pop    %r12 c:	41 5d                	pop    %r13
-e:	41 5e                	pop    %r14 10:	e9 85 73
-01 00       	jmp    0x1739a 15:	5b
-	pop    %rbx 16:	5d                   	pop    %rbp
-17:	41 5c                	pop    %r12 19:	41 5d
-            	pop    %r13 1b:	41 5e
-pop    %r14 1d:	e9 38 76 01 00       	jmp    0x1765a
-22:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
-29:	00 2a:*	48 3b 3f             	cmp
-(%rdi),%rdi		<-- trapping instruction 2d:	48 89 f8
-            	mov    %rdi,%rax 30:	74 38
-	je     0x6a 32:	48 8b 57 08          	mov
-0x8(%rdi),%rdx 36:	48 85 d2             	test   %rdx,%rdx
-39:	74 11                	je     0x4c 3b:	48 89 d0
-            	mov    %rdx,%rax 3e:	48
-	rex.W 3f:	8b                   	.byte 0x8b
-
-Code starting with the faulting instruction
-===========================================
-   0:	48 3b 3f             	cmp    (%rdi),%rdi
-   3:	48 89 f8             	mov    %rdi,%rax
-   6:	74 38                	je     0x40
-   8:	48 8b 57 08          	mov    0x8(%rdi),%rdx
-   c:	48 85 d2             	test   %rdx,%rdx
-   f:	74 11                	je     0x22
-  11:	48 89 d0             	mov    %rdx,%rax
-  14:	48                   	rex.W
-  15:	8b                   	.byte 0x8b
-RSP: 0018:ffffc90000003e50 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff88811a764000 RCX: ffff88811a764180
-RDX: ffff88835e4c6c00 RSI: ffff888162c998e8 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff88811a7642b0 R09: 00000000a535eebc
-R10: 0000000000000d09 R11: ffffc90000003ff8 R12: ffff88835e4c6c00
-R13: ffff88811a7642b8 R14: 00001a951355b383 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff88842ec00000(0000)
-knlGS:0000000000000000 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000001084b4000 CR4: 00000000000406f0
-Kernel panic - not syncing: Fatal exception in interrupt
-Kernel Offset: disabled
----[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
-$ 
-
-
--- 
-Alan J. Wylie     https://www.wylie.me.uk/     mailto:<alan@wylie.me.uk>
-
-Dance like no-one's watching. / Encrypt like everyone is.
-Security is inversely proportional to convenience
+Thanks,
+Dikshita
+> p.s. a third solution is make the firmware stateless :-D
+> 
+>>  Note: Same timing issue as observed on SM8550 is seen on SM8250 as 
+>>  well.
+>>
+>> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+>> ---
+>> Dikshita Agarwal (20):
+>>       media: iris: Skip destroying internal buffer if not dequeued
+>>       media: iris: Update CAPTURE format info based on OUTPUT format
+>>       media: iris: Add handling for corrupt and drop frames
+>>       media: iris: Avoid updating frame size to firmware during reconfig
+>>       media: iris: Send V4L2_BUF_FLAG_ERROR for buffers with 0 filled length
+>>       media: iris: Add handling for no show frames
+>>       media: iris: Improve last flag handling
+>>       media: iris: Skip flush on first sequence change
+>>       media: iris: Prevent HFI queue writes when core is in deinit state
+>>       media: iris: Remove redundant buffer count check in stream off
+>>       media: iris: Remove deprecated property setting to firmware
+>>       media: iris: Fix missing function pointer initialization
+>>       media: iris: Fix NULL pointer dereference
+>>       media: iris: Fix typo in depth variable
+>>       media: iris: Add a comment to explain usage of MBPS
+>>       media: iris: Add HEVC and VP9 formats for decoder
+>>       media: iris: Add platform capabilities for HEVC and VP9 decoders
+>>       media: iris: Set mandatory properties for HEVC and VP9 decoders.
+>>       media: iris: Add internal buffer calculation for HEVC and VP9 decoders
+>>       media: iris: Add codec specific check for VP9 decoder drain handling
+>>
+>>  drivers/media/platform/qcom/iris/iris_buffer.c     |  22 +-
+>>  drivers/media/platform/qcom/iris/iris_ctrls.c      |  35 +-
+>>  drivers/media/platform/qcom/iris/iris_hfi_common.h |   1 +
+>>  .../platform/qcom/iris/iris_hfi_gen1_command.c     |  44 ++-
+>>  .../platform/qcom/iris/iris_hfi_gen1_defines.h     |   5 +-
+>>  .../platform/qcom/iris/iris_hfi_gen1_response.c    |  22 +-
+>>  .../platform/qcom/iris/iris_hfi_gen2_command.c     | 143 +++++++-
+>>  .../platform/qcom/iris/iris_hfi_gen2_defines.h     |   5 +
+>>  .../platform/qcom/iris/iris_hfi_gen2_response.c    |  57 ++-
+>>  drivers/media/platform/qcom/iris/iris_hfi_queue.c  |   2 +-
+>>  drivers/media/platform/qcom/iris/iris_instance.h   |   6 +
+>>  .../platform/qcom/iris/iris_platform_common.h      |  28 +-
+>>  .../platform/qcom/iris/iris_platform_sm8250.c      |  15 +-
+>>  .../platform/qcom/iris/iris_platform_sm8550.c      | 143 +++++++-
+>>  drivers/media/platform/qcom/iris/iris_vb2.c        |   3 +-
+>>  drivers/media/platform/qcom/iris/iris_vdec.c       | 113 +++---
+>>  drivers/media/platform/qcom/iris/iris_vdec.h       |  11 +
+>>  drivers/media/platform/qcom/iris/iris_vidc.c       |   3 -
+>>  drivers/media/platform/qcom/iris/iris_vpu_buffer.c | 397 ++++++++++++++++++++-
+>>  drivers/media/platform/qcom/iris/iris_vpu_buffer.h |  46 ++-
+>>  20 files changed, 948 insertions(+), 153 deletions(-)
+>> ---
+>> base-commit: 7824b91d23e9f255f0e9d2acaa74265c9cac2e9c
+>> change-id: 20250402-iris-dec-hevc-vp9-2654a1fc4d0d
+>>
+>> Best regards,
 
