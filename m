@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-134805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBED2A95207
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:54:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3528FA95208
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C56577A47C6
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE59E18842E9
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708CF266593;
-	Mon, 21 Apr 2025 13:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B1C265CB6;
+	Mon, 21 Apr 2025 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="To2oqsOX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBvsTeNr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3018226658B
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643DE26560B
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243650; cv=none; b=uc8m7WV/uv+W4oHibZxCtaiCabz+TPPjYfXBmI4W09Xm2wKg8M0yupWLe4lwm2/EgYbkQdpXF3HF+ORCOL6ffrw5m4ijKpB8NZyaS5PUMwqVqkm+MDkK97nA6nrA7mDthGca3AANgXPjiDyOu/Ixn6JP97DjkBQSC9o+wveIHs8=
+	t=1745243657; cv=none; b=LS59MlfwYItTzmN68PINvu5YKFaLu0tRHFBAOAyFPHfIisDp+g+Abmud/eDadyy5AQWewCLh2Q8fiIDbh75eihc5ftNtwAUttTedZaecb9tnWkNgDsvwZPTDMXYFpPWv2muN5iQm9e99r0lepPfDqR0iEv7qJbfjG/goynHG14Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243650; c=relaxed/simple;
-	bh=fc0WSqoVPtZjafCa7gPdjB+c3mtvlyYqfs0FMLlFZts=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pb92q9vcFWDKCzxZP1MrGogenDjWfxKOgePB5E+d3VBa2v9gadybIwEFdWzT/lRYvg88HM3yScklys4mITHOxx4jUZR053L81saZC2gDru2aq36lICTDNi4OL+TSS5rOkRlI1IkXkqCRIBsDmczrEHfiSwdxv1JDo/ui7I2Y3ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=To2oqsOX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F5B9C4CEE4;
-	Mon, 21 Apr 2025 13:54:09 +0000 (UTC)
+	s=arc-20240116; t=1745243657; c=relaxed/simple;
+	bh=WRORKf8PLMSrGsLctZC5J1IiaI+vUF0ru8bZxnwL0v4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FvZOQT0sUsnq74rBEVOFlWVdUfiuxqQt2wULURBfq9K1wza8Akl18qWwuc6sYdD62zJwLq9iCFnCPcVmcfLxBSCVswGqgfwgycwAKnqN4ODcldaa+wfGh43/Sewgqmc3GeMtXwsmsTKjTvPTldEzvGlGz4kvducQOvFOc0HK7/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBvsTeNr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751C1C4CEE4;
+	Mon, 21 Apr 2025 13:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745243649;
-	bh=fc0WSqoVPtZjafCa7gPdjB+c3mtvlyYqfs0FMLlFZts=;
+	s=korg; t=1745243656;
+	bh=WRORKf8PLMSrGsLctZC5J1IiaI+vUF0ru8bZxnwL0v4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=To2oqsOXQqlx2rpbAthUOp1ANcmjhMeguNc3JlqrK1KGjuez3LCbJOt1T1pGJJdc6
-	 T7dKZZbBHAnI2larZtyKIhftvlSKWae0mM78Sv9jEkMXM8YPwa1f/FfHJ1B8R6WOj6
-	 2rQghOh4oiIUblUZOSeWZRdz7rKbVyXyPnvGBggY=
-Subject: FAILED: patch "[PATCH] cpufreq/sched: Explicitly synchronize limits_changed flag" failed to apply to 5.10-stable tree
-To: rafael.j.wysocki@intel.com,christian.loehle@arm.com,stable@vger.kernel.org
+	b=wBvsTeNr4wQeDhkRbO8lJvcceNol5Wa/K0VvWeAMTYh/KQutlxPPblgYB7R2eLOW8
+	 IR8s7i+8AGVlT1ycFje1zJJPdazNrJ8SaewXuKnwZANluZ8o97Osw5hMXshsgowlFP
+	 Tz9PFpwanbPsitlD+YnUfDkjZdfn/C+mMTyUU+50=
+Subject: FAILED: patch "[PATCH] cpufreq: Avoid using inconsistent policy->min and policy->max" failed to apply to 5.15-stable tree
+To: rafael.j.wysocki@intel.com,christian.loehle@arm.com,stable@vger.kernel.org,viresh.kumar@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Apr 2025 15:53:58 +0200
-Message-ID: <2025042158-trimness-alike-3083@gregkh>
+Date: Mon, 21 Apr 2025 15:54:14 +0200
+Message-ID: <2025042114-outmost-landlord-98cc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 79443a7e9da3c9f68290a8653837e23aba0fa89f
+git cherry-pick -x 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042158-trimness-alike-3083@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042114-outmost-landlord-98cc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,93 +77,105 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 79443a7e9da3c9f68290a8653837e23aba0fa89f Mon Sep 17 00:00:00 2001
+From 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 Mon Sep 17 00:00:00 2001
 From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Tue, 15 Apr 2025 11:59:15 +0200
-Subject: [PATCH] cpufreq/sched: Explicitly synchronize limits_changed flag
- handling
+Date: Wed, 16 Apr 2025 16:12:37 +0200
+Subject: [PATCH] cpufreq: Avoid using inconsistent policy->min and policy->max
 
-The handling of the limits_changed flag in struct sugov_policy needs to
-be explicitly synchronized to ensure that cpufreq policy limits updates
-will not be missed in some cases.
+Since cpufreq_driver_resolve_freq() can run in parallel with
+cpufreq_set_policy() and there is no synchronization between them,
+the former may access policy->min and policy->max while the latter
+is updating them and it may see intermediate values of them due
+to the way the update is carried out.  Also the compiler is free
+to apply any optimizations it wants both to the stores in
+cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
+which may result in additional inconsistencies.
 
-Without that synchronization it is theoretically possible that
-the limits_changed update in sugov_should_update_freq() will be
-reordered with respect to the reads of the policy limits in
-cpufreq_driver_resolve_freq() and in that case, if the limits_changed
-update in sugov_limits() clobbers the one in sugov_should_update_freq(),
-the new policy limits may not take effect for a long time.
+To address this, use WRITE_ONCE() when updating policy->min and
+policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
+them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
+in cpufreq_set_policy() to avoid storing intermediate values in
+policy->min and policy->max with the help of the observation that
+their new values are expected to be properly ordered upfront.
 
-Likewise, the limits_changed update in sugov_limits() may theoretically
-get reordered with respect to the updates of the policy limits in
-cpufreq_set_policy() and if sugov_should_update_freq() runs between
-them, the policy limits change may be missed.
+Also modify cpufreq_driver_resolve_freq() to take the possible reverse
+ordering of policy->min and policy->max, which may happen depending on
+the ordering of operations when this function and cpufreq_set_policy()
+run concurrently, into account by always honoring the max when it
+turns out to be less than the min (in case it comes from thermal
+throttling or similar).
 
-To ensure that the above situations will not take place, add memory
-barriers preventing the reordering in question from taking place and
-add READ_ONCE() and WRITE_ONCE() annotations around all of the
-limits_changed flag updates to prevent the compiler from messing up
-with that code.
-
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
+Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index b713ce0a5702..bcab867575bb 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -81,9 +81,20 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
- 		return false;
- 
--	if (unlikely(sg_policy->limits_changed)) {
--		sg_policy->limits_changed = false;
-+	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
-+		WRITE_ONCE(sg_policy->limits_changed, false);
- 		sg_policy->need_freq_update = true;
-+
-+		/*
-+		 * The above limits_changed update must occur before the reads
-+		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
-+		 * limits update might be missed, so use a memory barrier to
-+		 * ensure it.
-+		 *
-+		 * This pairs with the write memory barrier in sugov_limits().
-+		 */
-+		smp_mb();
-+
- 		return true;
- 	}
- 
-@@ -377,7 +388,7 @@ static inline bool sugov_hold_freq(struct sugov_cpu *sg_cpu) { return false; }
- static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 3841c9da6cac..acf19b0042bb 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -540,8 +540,6 @@ static unsigned int __resolve_freq(struct cpufreq_policy *policy,
  {
- 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
--		sg_cpu->sg_policy->limits_changed = true;
-+		WRITE_ONCE(sg_cpu->sg_policy->limits_changed, true);
- }
+ 	unsigned int idx;
  
- static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
-@@ -883,7 +894,16 @@ static void sugov_limits(struct cpufreq_policy *policy)
- 		mutex_unlock(&sg_policy->work_lock);
- 	}
+-	target_freq = clamp_val(target_freq, policy->min, policy->max);
+-
+ 	if (!policy->freq_table)
+ 		return target_freq;
  
--	sg_policy->limits_changed = true;
-+	/*
-+	 * The limits_changed update below must take place before the updates
-+	 * of policy limits in cpufreq_set_policy() or a policy limits update
-+	 * might be missed, so use a memory barrier to ensure it.
-+	 *
-+	 * This pairs with the memory barrier in sugov_should_update_freq().
-+	 */
-+	smp_wmb();
+@@ -565,7 +563,22 @@ static unsigned int __resolve_freq(struct cpufreq_policy *policy,
+ unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
+ 					 unsigned int target_freq)
+ {
+-	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
++	unsigned int min = READ_ONCE(policy->min);
++	unsigned int max = READ_ONCE(policy->max);
 +
-+	WRITE_ONCE(sg_policy->limits_changed, true);
++	/*
++	 * If this function runs in parallel with cpufreq_set_policy(), it may
++	 * read policy->min before the update and policy->max after the update
++	 * or the other way around, so there is no ordering guarantee.
++	 *
++	 * Resolve this by always honoring the max (in case it comes from
++	 * thermal throttling or similar).
++	 */
++	if (unlikely(min > max))
++		min = max;
++
++	return __resolve_freq(policy, clamp_val(target_freq, min, max),
++			      CPUFREQ_RELATION_LE);
  }
+ EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
  
- struct cpufreq_governor schedutil_gov = {
+@@ -2384,6 +2397,7 @@ int __cpufreq_driver_target(struct cpufreq_policy *policy,
+ 	if (cpufreq_disabled())
+ 		return -ENODEV;
+ 
++	target_freq = clamp_val(target_freq, policy->min, policy->max);
+ 	target_freq = __resolve_freq(policy, target_freq, relation);
+ 
+ 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
+@@ -2708,11 +2722,15 @@ static int cpufreq_set_policy(struct cpufreq_policy *policy,
+ 	 * Resolve policy min/max to available frequencies. It ensures
+ 	 * no frequency resolution will neither overshoot the requested maximum
+ 	 * nor undershoot the requested minimum.
++	 *
++	 * Avoid storing intermediate values in policy->max or policy->min and
++	 * compiler optimizations around them because they may be accessed
++	 * concurrently by cpufreq_driver_resolve_freq() during the update.
+ 	 */
+-	policy->min = new_data.min;
+-	policy->max = new_data.max;
+-	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
+-	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
++	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
++	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
++	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
++
+ 	trace_cpu_frequency_limits(policy);
+ 
+ 	cpufreq_update_pressure(policy);
 
 
