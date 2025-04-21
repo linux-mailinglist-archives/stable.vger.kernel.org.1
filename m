@@ -1,150 +1,95 @@
-Return-Path: <stable+bounces-134861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D266A9528A
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:10:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9005A9528B
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 16:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 679BD170C5E
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:10:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8E163B411D
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 14:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F2078F45;
-	Mon, 21 Apr 2025 14:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B69183A14;
+	Mon, 21 Apr 2025 14:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWM4mMl0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p5agm/Pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962D918B03
-	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 14:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11DF18B03;
+	Mon, 21 Apr 2025 14:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745244647; cv=none; b=uMkiDcAYIOU4XmXgI6dRipOw5wRCGdEJGbrBn9ICdUwmrcP7Hy40MvXGsDvyvvWkfp54ELSOBGyYvTq1Cn3UnWfTR0NqVVkAVwrfXHuXJxfBkL5Y87y+e5q62l3A0m+lYgTyueUo4zxVX9andCjB9j64UhclSYO4pO527DA3h4k=
+	t=1745244657; cv=none; b=L5cWeCKBpFxzMXkfOS2iLFB86ArpJA9dBbaTeXkgf2TvMcKNTkG7nzOxyqrQoIN4WGR01NOsA3oVXVeKlPGgUh6UnbLejI+B9/yONiqo7sbZwhRrTiBjmaubw8enl9ekraOnYxtKf3GmurTRdqL1VOF8txBWnCr/zvDSNRH6Y/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745244647; c=relaxed/simple;
-	bh=CezhSsG3gvWYh9lfL4/2Rb2vQza6LThf9ao+MA/h8i8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RZMBH0JVRcWKy/WfvBNhg0+FXi+PD0I1CItlL6VtDdsaozcoK3QxunZbIXFhUasDG9U032GxHL33qJNzdZIwXoohsO8Zs5EoYtLQjQ4G7yb3j3cVfrVzNT/h9knj2SgO6h08r46j1fdtRalEvUq5fk1aFMrafIF/LEt9W+tH3f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWM4mMl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E78FC4CEE4;
-	Mon, 21 Apr 2025 14:10:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745244647;
-	bh=CezhSsG3gvWYh9lfL4/2Rb2vQza6LThf9ao+MA/h8i8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=XWM4mMl0R4Y7V2Ukg4nQ9F0ZBPgFkwCamCEsPejS7okK5bAzWAf5jGB6hYjOoaqXm
-	 GBr10hCWZeV+1OWoaG9+N5eAaPsGSvLcSyaZgP9ni3CLfode/nuPIR/jVIs6aL7mXj
-	 ZXPRsdfcZZKyqcaLgb9ZkzDhYzT3jRJQEgpcdbxk=
-Subject: FAILED: patch "[PATCH] perf/x86/intel: Don't clear perf metrics overflow bit" failed to apply to 5.10-stable tree
-To: dapeng1.mi@linux.intel.com,kan.liang@linux.intel.com,mingo@kernel.org,peterz@infradead.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 21 Apr 2025 16:10:28 +0200
-Message-ID: <2025042128-politely-progress-0891@gregkh>
+	s=arc-20240116; t=1745244657; c=relaxed/simple;
+	bh=j5xTBEBcb/E8ufFtOXDdYcV01li92cSUZ1cpwTuXgYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rNHL8OwkfuSL1X1JjmC/iSZuuLiylKLoA/DLOSyK8hwLgfzIkEdMmDPLgdkhmMAhpp4beRRvaMBmo9LhMWU36Sgk9OMeBle7gZg6TvMsRDoC9e88dBCjkn1gKtIdm7gESaRohoRJZP+hdem3EAx+JMN6LhS2C1vW7v3G7pRmzvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p5agm/Pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A5FC4CEE4;
+	Mon, 21 Apr 2025 14:10:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745244656;
+	bh=j5xTBEBcb/E8ufFtOXDdYcV01li92cSUZ1cpwTuXgYs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=p5agm/PmrKq6HIWUY3qILlEMK/I9M7ttFom7jkxzLhYPR6fVGZFhxIDaCr7Ntz7n0
+	 YHfbTs8zImbi+YaiJXYEjchnWZrTfXgjYg64JyMB3K7KM/ugEhNcMfpzol2NcXS7Tl
+	 +SQwICvtoaRgOKVuG8w08s2bmv7CtjzNr9h718fnXdOjsuf104o7XpZr1VUQfS1AIk
+	 QmHTrhd4KNlIBvms5xiiTVKww0IbfksUGv6qJKVyoCSoItqKKI+DskwtaxrXfICB3e
+	 wiRsUluMNW5SPZwQEHrIcw70LR2PX8P/X8bm3i5HhPv76vpYzWyAb0Y3Kn4GmeXjgt
+	 /sJ5ibZYNKqUg==
+Date: Mon, 21 Apr 2025 15:10:52 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, lars@metafoo.de,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Michael.Hennerich@analog.com, skhan@linuxfoundation.org,
+ linux-kernel-mentees@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
+Message-ID: <20250421151052.0144516a@jic23-huawei>
+In-Reply-To: <CAKUZ0zLEacGg5cD4wGmFz80e4FQ9A=JsVyrzGAHkKEeOT=CU2A@mail.gmail.com>
+References: <20250421124915.32a18d36@jic23-huawei>
+	<20250421131539.912966-1-gshahrouzi@gmail.com>
+	<aAZNCEUejrTgy_yZ@debian-BULLSEYE-live-builder-AMD64>
+	<CAKUZ0zLEacGg5cD4wGmFz80e4FQ9A=JsVyrzGAHkKEeOT=CU2A@mail.gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Mon, 21 Apr 2025 09:55:24 -0400
+Gabriel Shahrouzi <gshahrouzi@gmail.com> wrote:
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> On Mon, Apr 21, 2025 at 9:48=E2=80=AFAM Marcelo Schmitt
+> <marcelo.schmitt1@gmail.com> wrote:
+> >
+> > On 04/21, Gabriel Shahrouzi wrote: =20
+> > > The inclinometer channels were previously defined with 14 realbits.
+> > > However, the ADIS16201 datasheet states the resolution for these outp=
+ut
+> > > channels is 12 bits (Page 14, text description; Page 15, table 7).
+> > >
+> > > Correct the realbits value to 12 to accurately reflect the hardware.
+> > >
+> > > Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com> =20
+> >
+> > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com> =20
+> Should I have included the reviewed-by tag on the latest patch sent in
+> this thread since there were no changes to the code?
+>=20
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Yes, but that was all a mix up anyway so don't worry about it.
+I have the tag anyway.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x a5f5e1238f4ff919816f69e77d2537a48911767b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042128-politely-progress-0891@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a5f5e1238f4ff919816f69e77d2537a48911767b Mon Sep 17 00:00:00 2001
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Date: Tue, 15 Apr 2025 10:41:34 +0000
-Subject: [PATCH] perf/x86/intel: Don't clear perf metrics overflow bit
- unconditionally
-
-The below code would always unconditionally clear other status bits like
-perf metrics overflow bit once PEBS buffer overflows:
-
-        status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
-
-This is incorrect. Perf metrics overflow bit should be cleared only when
-fixed counter 3 in PEBS counter group. Otherwise perf metrics overflow
-could be missed to handle.
-
-Closes: https://lore.kernel.org/all/20250225110012.GK31462@noisy.programming.kicks-ass.net/
-Fixes: 7b2c05a15d29 ("perf/x86/intel: Generic support for hardware TopDown metrics")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250415104135.318169-1-dapeng1.mi@linux.intel.com
-
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 09d2d66c9f21..2b70a3adde2f 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3049,7 +3049,6 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 	struct cpu_hw_events *cpuc = this_cpu_ptr(&cpu_hw_events);
- 	int bit;
- 	int handled = 0;
--	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
- 
- 	inc_irq_stat(apic_perf_irqs);
- 
-@@ -3093,7 +3092,6 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 		handled++;
- 		x86_pmu_handle_guest_pebs(regs, &data);
- 		static_call(x86_pmu_drain_pebs)(regs, &data);
--		status &= intel_ctrl | GLOBAL_STATUS_TRACE_TOPAPMI;
- 
- 		/*
- 		 * PMI throttle may be triggered, which stops the PEBS event.
-@@ -3104,6 +3102,15 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 		 */
- 		if (pebs_enabled != cpuc->pebs_enabled)
- 			wrmsrl(MSR_IA32_PEBS_ENABLE, cpuc->pebs_enabled);
-+
-+		/*
-+		 * Above PEBS handler (PEBS counters snapshotting) has updated fixed
-+		 * counter 3 and perf metrics counts if they are in counter group,
-+		 * unnecessary to update again.
-+		 */
-+		if (cpuc->events[INTEL_PMC_IDX_FIXED_SLOTS] &&
-+		    is_pebs_counter_event_group(cpuc->events[INTEL_PMC_IDX_FIXED_SLOTS]))
-+			status &= ~GLOBAL_STATUS_PERF_METRICS_OVF_BIT;
- 	}
- 
- 	/*
-@@ -3123,6 +3130,8 @@ static int handle_pmi_common(struct pt_regs *regs, u64 status)
- 		static_call(intel_pmu_update_topdown_event)(NULL, NULL);
- 	}
- 
-+	status &= hybrid(cpuc->pmu, intel_ctrl);
-+
- 	/*
- 	 * Checkpointed counters can lead to 'spurious' PMIs because the
- 	 * rollback caused by the PMI will have cleared the overflow status
-
+Jonathan
 
