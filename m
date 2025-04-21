@@ -1,110 +1,141 @@
-Return-Path: <stable+bounces-134809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22A1A95213
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:55:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3D3BA95215
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 15:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F2DA7A64B0
-	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:54:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD61318854D9
+	for <lists+stable@lfdr.de>; Mon, 21 Apr 2025 13:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E471266B55;
-	Mon, 21 Apr 2025 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F149A266581;
+	Mon, 21 Apr 2025 13:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HV5uW8zU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCq2YveV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EE5261372;
-	Mon, 21 Apr 2025 13:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB4E27463
+	for <stable@vger.kernel.org>; Mon, 21 Apr 2025 13:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745243738; cv=none; b=WkmHQwiVqW5zYNoqc7SKbqi7cCjyMc97K9dbPX6WwY7hJhCY9YGsKn+cRuhEYq2T53Dbjb0e01eJLmdyQGAnyPfRNYEY5o9EnKdSEexZ7JA8B1NXaXCh7aCQiOCkD1xRGzMQgTsW+bdvQdZh7hw2tsln9VDzMcnvuIhraAfsy6k=
+	t=1745243762; cv=none; b=iEsaXTLWEOW7G8CKyZ/oKZH10a//zftemCylfHY8kBZUe/E6iObcpPG9pc1ltAz5D12aNYC/CV7ketH8vNOE8sCplJuY+ohSwq988e6VbeiVs5AlrtSDqibcqjLhz0aJfSTxgijtXYEQJoLSg91FoALCWNoHqzpni1uJI/PjHTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745243738; c=relaxed/simple;
-	bh=ZKEn9aBGgxZBwMzz1mJ0Df0kwnfP6ieCJou/s/mq3KQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uSBRKx5AyQuaV4gmf3SOJLvvvewWOsi+emwwwQAh4WTEDIg6PQDTfxHyCoDMJkK+Csbj7HNtKnMKoK34L/NHFMolZWPkF9ZVgpuFf4ibPDby3tkQFIhlhKlEFOQQQvTBw8+DIDhFGuJH2MHR/l4qxLtsztXhLdi/AAqYCQjLQMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HV5uW8zU; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-47690a4ec97so42863411cf.2;
-        Mon, 21 Apr 2025 06:55:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745243735; x=1745848535; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZKEn9aBGgxZBwMzz1mJ0Df0kwnfP6ieCJou/s/mq3KQ=;
-        b=HV5uW8zUEZvnD1s/yc9Fvn+B5wpGPyAgq3OL7lqa2xXB/bcHscqVkHSr00oM05Q4cP
-         Ua3wli0U68lDja2bFze2MlumHwTSWGYjZORNKUehhzagFirkIGNvJTPEXqz0WH7xSAIJ
-         wI2XIClXbsCu3KqBr38Fnv+ibSkDtZCnLIhGismUAzbRNrlowLpxsqs/cSddT+AFux+M
-         0+j7UGpVfybV1+abUE5VC5q/G1X6ccDVK9oo/RXfJnlBfyH9lOH6szGT0W9RQa0kr5yv
-         cBfHCJ6OrWwGdivflxIk4++zcWF/vO+im3DGTIrpE3EeeiWwoXw9rUJe1nVD69XM9waS
-         IkVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745243735; x=1745848535;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZKEn9aBGgxZBwMzz1mJ0Df0kwnfP6ieCJou/s/mq3KQ=;
-        b=cbl08B9R/pp1z5zZcqJWJFXsbOorE5gApkfUf/VoDu9+RLL/+n4rpE8QlvufX3q0qG
-         DaQLzSkJ8R9OkHa3M3ougmcsvA5r0Yw5UURGDeSbOk4MPRTLD56CKHTnjML0LSb6yCHv
-         UScmk0nSzSJnrzJHST2sbGRENy12g+/0GNN6VJw65XdVdy2AASr2UHXRx7qmgrOg9P5e
-         DGLqPq5ETJ4LtFJ/FOHBV1UgovFkJOY1+uhPPn1YAj4GnBG9yEkZgNZ8/Zi6Osu5uY1a
-         8eYk/hTGCvUWAvpmF4KDwlsCzgCLx9Kfluue9CHlKck5IyXw0kcvl5hJvaRQH+P3s11u
-         JSDg==
-X-Forwarded-Encrypted: i=1; AJvYcCU5ywEvKCkbdhN0XdiZp7zoG25r3gZ5MK5wYcFWcBHrymx20YyF65zgqMLvw2Qvmi4h+D9RwVjZCy8=@vger.kernel.org, AJvYcCVjAmwtL+xuTCSybmSTt9OFPRbsapQJPsA60VvMmpdINg0iDiJeoeluJlSzA20z3d5jfK6V9ohi@vger.kernel.org, AJvYcCW/gc4EjAifUk+YDwqtlZhRYZ7tL3Pct5eGHkT9Uh4l3G8Sjryd610peFpLlENkLKPZwNZV6EcdXANmvrZ2@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9zaiINkpx+OtG6I3aIWn7fk5P+L3dP4A/9fEePuOVe6sAU5nI
-	v2wxIX1A2OiDZfPjtzbm+Z1ErZZx1ZfjnQHH/t3BfFrcCnCkbdAEe8hBmbfjATrsFGRNLtWrXKD
-	dGAXr6v0ftwwjsqUZjeQ8lQfEo4BY94jarzg=
-X-Gm-Gg: ASbGncuzFmIcIsUEAHidbOXnTSvaWaWfv3NZwOcgs7GBdpgjoKomqjdntiRpXe++GM4
-	s35WIwMKoKy8R1OgU05mK2hPTU8c2J0sz23Ha+Xo9l/v4CEw/fcLAdSflZ3e1nJw4UxOElNcWvC
-	XDa1ZqRo00xPGXUd3hA448xva7L9Eqp4Xwz301pqSYNGjsnpOv2WTgiA==
-X-Google-Smtp-Source: AGHT+IGe3nS55q4799S3M9i8763/VBcBZkGtpasPvAPLMKmDSQ8P4wPK3n7/shzb2OhfTHLX3O3iRpkuRFOnTaqRN3k=
-X-Received: by 2002:ac8:7f13:0:b0:476:8825:99bf with SMTP id
- d75a77b69052e-47aec3cba27mr234780651cf.27.1745243735417; Mon, 21 Apr 2025
- 06:55:35 -0700 (PDT)
+	s=arc-20240116; t=1745243762; c=relaxed/simple;
+	bh=rRmDq/oeAiu6ak/SMFBpEHohuPiiNwKGsgsIGge6J5c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HJX49tIH5kE/Y9qEO2FB7nhdchyGAw7hEYxkbKPwX9VHkI8ZDbrqqeL9hb8scp4c1tT6eJ9s7zlyEa6Cr/HHGKl4ZpQuu7IXlRt9bcHIocTYQP9/DhZwRbOYrEU/VPtK6oiac/rZJSPY3hjVrUde9nPAmpNJwK4b8100eKINLWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCq2YveV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC665C4CEE4;
+	Mon, 21 Apr 2025 13:56:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745243762;
+	bh=rRmDq/oeAiu6ak/SMFBpEHohuPiiNwKGsgsIGge6J5c=;
+	h=Subject:To:Cc:From:Date:From;
+	b=mCq2YveVQ8CGjlRjU3MNYP3ogLe7VdIQnHnS06OjXITkUIwsg9b7XyZ7q3leiMzHh
+	 foD0MhdPBnR8+M4Pzn/mMJP1+0ngprnXmti8cfxklJZxpVeLoTnoNNEWsAFXNNGNmN
+	 W48bl2TJ88PWCuj1B9VdCqMBeK938yijEbMT91bQ=
+Subject: FAILED: patch "[PATCH] mm/compaction: fix bug in hugetlb handling pathway" failed to apply to 6.6-stable tree
+To: vishal.moola@gmail.com,akpm@linux-foundation.org,linmiaohe@huawei.com,osalvador@suse.de,stable@vger.kernel.org,ziy@nvidia.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 21 Apr 2025 15:55:59 +0200
+Message-ID: <2025042159-bobcat-kennel-5f94@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250421124915.32a18d36@jic23-huawei> <20250421131539.912966-1-gshahrouzi@gmail.com>
- <aAZNCEUejrTgy_yZ@debian-BULLSEYE-live-builder-AMD64>
-In-Reply-To: <aAZNCEUejrTgy_yZ@debian-BULLSEYE-live-builder-AMD64>
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Date: Mon, 21 Apr 2025 09:55:24 -0400
-X-Gm-Features: ATxdqUEyCdkkjmlQnLpYD0QbwbveqWM8VEc031aMZldztG8lgKbjxR4Xs8GWJg4
-Message-ID: <CAKUZ0zLEacGg5cD4wGmFz80e4FQ9A=JsVyrzGAHkKEeOT=CU2A@mail.gmail.com>
-Subject: Re: [PATCH] iio: adis16201: Correct inclinometer channel resolution
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Michael.Hennerich@analog.com, 
-	skhan@linuxfoundation.org, linux-kernel-mentees@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 21, 2025 at 9:48=E2=80=AFAM Marcelo Schmitt
-<marcelo.schmitt1@gmail.com> wrote:
->
-> On 04/21, Gabriel Shahrouzi wrote:
-> > The inclinometer channels were previously defined with 14 realbits.
-> > However, the ADIS16201 datasheet states the resolution for these output
-> > channels is 12 bits (Page 14, text description; Page 15, table 7).
-> >
-> > Correct the realbits value to 12 to accurately reflect the hardware.
-> >
-> > Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
->
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Should I have included the reviewed-by tag on the latest patch sent in
-this thread since there were no changes to the code?
+
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x a84edd52f0a0fa193f0f685769939cf84510755b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042159-bobcat-kennel-5f94@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a84edd52f0a0fa193f0f685769939cf84510755b Mon Sep 17 00:00:00 2001
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Date: Mon, 31 Mar 2025 19:10:24 -0700
+Subject: [PATCH] mm/compaction: fix bug in hugetlb handling pathway
+
+The compaction code doesn't take references on pages until we're certain
+we should attempt to handle it.
+
+In the hugetlb case, isolate_or_dissolve_huge_page() may return -EBUSY
+without taking a reference to the folio associated with our pfn.  If our
+folio's refcount drops to 0, compound_nr() becomes unpredictable, making
+low_pfn and nr_scanned unreliable.  The user-visible effect is minimal -
+this should rarely happen (if ever).
+
+Fix this by storing the folio statistics earlier on the stack (just like
+the THP and Buddy cases).
+
+Also revert commit 66fe1cf7f581 ("mm: compaction: use helper compound_nr
+in isolate_migratepages_block") to make backporting easier.
+
+Link: https://lkml.kernel.org/r/20250401021025.637333-1-vishal.moola@gmail.com
+Fixes: 369fa227c219 ("mm: make alloc_contig_range handle free hugetlb pages")
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/compaction.c b/mm/compaction.c
+index 139f00c0308a..ca71fd3c3181 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -981,13 +981,13 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 		}
+ 
+ 		if (PageHuge(page)) {
++			const unsigned int order = compound_order(page);
+ 			/*
+ 			 * skip hugetlbfs if we are not compacting for pages
+ 			 * bigger than its order. THPs and other compound pages
+ 			 * are handled below.
+ 			 */
+ 			if (!cc->alloc_contig) {
+-				const unsigned int order = compound_order(page);
+ 
+ 				if (order <= MAX_PAGE_ORDER) {
+ 					low_pfn += (1UL << order) - 1;
+@@ -1011,8 +1011,8 @@ isolate_migratepages_block(struct compact_control *cc, unsigned long low_pfn,
+ 				 /* Do not report -EBUSY down the chain */
+ 				if (ret == -EBUSY)
+ 					ret = 0;
+-				low_pfn += compound_nr(page) - 1;
+-				nr_scanned += compound_nr(page) - 1;
++				low_pfn += (1UL << order) - 1;
++				nr_scanned += (1UL << order) - 1;
+ 				goto isolate_fail;
+ 			}
+ 
+
 
