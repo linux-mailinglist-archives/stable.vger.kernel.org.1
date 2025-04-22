@@ -1,205 +1,143 @@
-Return-Path: <stable+bounces-135016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65F4A95DCE
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:11:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83672A95DD6
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 930083B7F6D
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:11:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793761898F93
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25FD1EC014;
-	Tue, 22 Apr 2025 06:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175E61E9B3B;
+	Tue, 22 Apr 2025 06:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO4H0X1N"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="VNYBFmOg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627E8148850
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 06:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A801E5707;
+	Tue, 22 Apr 2025 06:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.66.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745302277; cv=none; b=eT71T7qQ9s/3IhakiINR/egInc2dO4Z7MBCQnuUHmocrcCDG2CxJeVgs5bKFeI4vWl/4fKJ32z10KlCAYgXQBoqjKaEUvq73c12pzTxDbN+26CwTYEKENMjkxK5NIU4dLTEHMdVemPKW0yAEEw0lYEq7AMzSUJ+iF7vS45PJPdM=
+	t=1745302438; cv=none; b=PHi8CpkUgTLMRO2Bj68QwHcaceOGA3+AtEImUaO4JC7PtxRFIwk8owtUQecKCR8o4yZT459rXNYixZPiXb13XlCFZmpuYlxdmTUZRKbChlCyy7k/WahTZ4l4EuH6jTX9CUsEDKYVHsjzkNHTuoOdhdwFpH6aXs/YVib/oIckAwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745302277; c=relaxed/simple;
-	bh=deITwkZzOCs/4mKc0Uu4TlFFM9sTvv6mx1ifoq/CZ9A=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=thOBBPG/HQLiwnbM+24OBIvSJxHN/WKAcW3t2eR8zSxnYxdjCs8h9N70yITvDO6a2mvOsDRc/+wMVB8AlOzpN3eHg2wtSdyND3DjsEqEmAUyPbzZLiSp4zXLAb8UfN8vp5K8rcm0xKgeQEhfAtisfLdrqmU0ERCV0BadKDDB4/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO4H0X1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41FDC4CEE9;
-	Tue, 22 Apr 2025 06:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745302277;
-	bh=deITwkZzOCs/4mKc0Uu4TlFFM9sTvv6mx1ifoq/CZ9A=;
-	h=Subject:To:Cc:From:Date:From;
-	b=OO4H0X1NwRtGBKWUMjweTmmgbb3Jfuo176W2mqe453A4UjVGsHFwKNSRJhjqcoHaB
-	 kirOgDXOPYOpwvOtymxMWpIkoyCkYAXE3kT27k9Uksy0TCFsQumJfvj+SF1T0ChYnW
-	 /FcQExygpnf4U89EBRh9HxCHHGOasrFjL2I9UogY=
-Subject: FAILED: patch "[PATCH] drm/msm/a6xx: Fix stale rpmh votes from GPU" failed to apply to 5.4-stable tree
-To: quic_akhilpo@quicinc.com,robdclark@chromium.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 22 Apr 2025 08:11:04 +0200
-Message-ID: <2025042204-earwig-encore-040e@gregkh>
+	s=arc-20240116; t=1745302438; c=relaxed/simple;
+	bh=haRoeOk6LzW0VxiMtuKkFaS3hRndffn4xbn/cmXz4vQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oyI1CJsjCC+59miedN1A3armZTugY8tCGTm8lVGBGLyVjyLEqGqLUPktccfjLv8GzpK/g/l0p/Qcyluab/v62PQPjL0IlM5sS15QYJB+WTrjXq1RrCy1ay3ShRkiAbFdsi8xx6fbHbsT/CIywJMmToB2OAGFKLqcXe3S3WMDj24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=VNYBFmOg; arc=none smtp.client-ip=217.182.66.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id E2FE13E8FC;
+	Tue, 22 Apr 2025 06:13:48 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 8195F40074;
+	Tue, 22 Apr 2025 06:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1745302426; bh=haRoeOk6LzW0VxiMtuKkFaS3hRndffn4xbn/cmXz4vQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=VNYBFmOgDIW3+FDDYkghTG/pZf8vnfCeqMx8EVPxSNpSiq78Zhq2ObIVHchp6GOVZ
+	 2w7oejMR3aMiHJBK8Fu69YnmewYfwsF3eUv0ldDezLFOmKKB02tsSzVoDx96O+W2DM
+	 oHaHReJ+oG3PbJVbYvFJZybuBO0gcuS9uKpHecgw=
+Received: from [198.18.0.1] (unknown [203.175.14.48])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 0E12B42AD7;
+	Tue, 22 Apr 2025 06:13:42 +0000 (UTC)
+Message-ID: <fb0b667a-ebea-4705-9f69-b3bb98399494@aosc.io>
+Date: Tue, 22 Apr 2025 14:13:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rtw-next] wifi: rtlwifi: disable ASPM for RTL8723BE with
+ subsystem ID 11ad:1723
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Liangliang Zou <rawdiamondmc@outlook.com>,
+ "John W. Linville" <linville@tuxdriver.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ "open list:REALTEK WIRELESS DRIVER (rtlwifi family)"
+ <linux-wireless@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+References: <20250422032132.348598-1-jeffbai@aosc.io>
+ <1ab6f74b5b9d4f0d8023eb43d41906be@realtek.com>
+Content-Language: en-US
+From: Mingcong Bai <jeffbai@aosc.io>
+In-Reply-To: <1ab6f74b5b9d4f0d8023eb43d41906be@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8195F40074
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Spamd-Result: default: False [0.00 / 10.00];
+	SUBJECT_RANDOM_CHARS_1(0.10)[];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[outlook.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,stable.vger.kernel.org:server fail];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[aosc.io,vger.kernel.org,outlook.com,tuxdriver.com,lwfinger.net];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Action: no action
 
+Hi Ping-ke,
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+在 2025/4/22 14:08, Ping-Ke Shih 写道:
+> Mingcong Bai <jeffbai@aosc.io> wrote:
+>>
+>> RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
+>> subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
+>> errors during and after boot up, causing heavy lags and at times lock-ups:
+>>
+>>    pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
+>>    pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+>>    pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
+>>    pcieport 0000:00:1c.5:    [ 0] RxErr
+>>
+>> Disable ASPM on this combo as a quirk.
+>>
+>> This patch is a revision of a previous patch (linked below) which
+>> attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
+>> PCIe bridges. I take a more conservative approach as all known reports
+>> point to ASUSTek laptops of these two generations with this particular
+>> wireless card.
+>>
+>> Please note, however, before the rtl8723be finishes probing, the AER
+>> errors remained. After the module finishes probing, all AER errors would
+>> indeed be eliminated, along with heavy lags, poor network throughput,
+>> and/or occasional lock-ups.
+>>
+>> Cc: <stable@vger.kernel.org>
+>> Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+> 
+> This Fixes is weird to me. The subject is RTL8192CE, but you are adding this
+> for RTL8723BE. More, at that time, HARDWARE_TYPE_RTL8723BE isn't defined yet.
+> 
+> This might be more suitable?
+> 
+> Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
 
-To reproduce the conflict and resubmit, you may use the following commands:
+True. Sending v2.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x f561db72a663f8a73c2250bf3244ce1ce221bed7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042204-earwig-encore-040e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f561db72a663f8a73c2250bf3244ce1ce221bed7 Mon Sep 17 00:00:00 2001
-From: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Date: Wed, 26 Feb 2025 01:22:14 +0530
-Subject: [PATCH] drm/msm/a6xx: Fix stale rpmh votes from GPU
-
-It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
-BCM nodes were not removed after GPU suspend. This was because we
-skipped sending 'prepare-slumber' request to gmu during suspend sequence
-in some cases. So, make sure we always call prepare-slumber hfi during
-suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
-messes up gmu firmware's internal state. So, do that when required.
-
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/639569/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index 699b0dd34b18..38c94915d4c9 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1169,50 +1169,51 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
- 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	u32 val;
-+	int ret;
- 
- 	/*
--	 * The GMU may still be in slumber unless the GPU started so check and
--	 * skip putting it back into slumber if so
-+	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
-+	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
-+	 * required
- 	 */
--	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
-+	if (adreno_gpu->base.needs_hw_init) {
-+		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
-+			goto force_off;
- 
--	if (val != 0xf) {
--		int ret = a6xx_gmu_wait_for_idle(gmu);
--
--		/* If the GMU isn't responding assume it is hung */
--		if (ret) {
--			a6xx_gmu_force_off(gmu);
--			return;
--		}
--
--		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
--
--		/* tell the GMU we want to slumber */
--		ret = a6xx_gmu_notify_slumber(gmu);
--		if (ret) {
--			a6xx_gmu_force_off(gmu);
--			return;
--		}
--
--		ret = gmu_poll_timeout(gmu,
--			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
--			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
--			100, 10000);
--
--		/*
--		 * Let the user know we failed to slumber but don't worry too
--		 * much because we are powering down anyway
--		 */
--
--		if (ret)
--			DRM_DEV_ERROR(gmu->dev,
--				"Unable to slumber GMU: status = 0%x/0%x\n",
--				gmu_read(gmu,
--					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
--				gmu_read(gmu,
--					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
-+		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
- 	}
- 
-+	ret = a6xx_gmu_wait_for_idle(gmu);
-+
-+	/* If the GMU isn't responding assume it is hung */
-+	if (ret)
-+		goto force_off;
-+
-+	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
-+
-+	/* tell the GMU we want to slumber */
-+	ret = a6xx_gmu_notify_slumber(gmu);
-+	if (ret)
-+		goto force_off;
-+
-+	ret = gmu_poll_timeout(gmu,
-+		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
-+		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
-+		100, 10000);
-+
-+	/*
-+	 * Let the user know we failed to slumber but don't worry too
-+	 * much because we are powering down anyway
-+	 */
-+
-+	if (ret)
-+		DRM_DEV_ERROR(gmu->dev,
-+			"Unable to slumber GMU: status = 0%x/0%x\n",
-+			gmu_read(gmu,
-+				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
-+			gmu_read(gmu,
-+				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
-+
- 	/* Turn off HFI */
- 	a6xx_hfi_stop(gmu);
- 
-@@ -1221,6 +1222,11 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
- 
- 	/* Tell RPMh to power off the GPU */
- 	a6xx_rpmh_stop(gmu);
-+
-+	return;
-+
-+force_off:
-+	a6xx_gmu_force_off(gmu);
- }
- 
- 
-
+Best Regards,
+Mingcong Bai
 
