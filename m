@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17723A97543
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DA5A97545
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FD43B596D
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E2743B5DE5
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D601DDA1E;
-	Tue, 22 Apr 2025 19:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A51298985;
+	Tue, 22 Apr 2025 19:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TnzqkBD8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rgaHs6YR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A2929898C
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20A302989B1
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745349454; cv=none; b=IDIBQbq9AR0ziyOoiaeJ/tVCF5MM74EOUbYst7vuiDVNnQ9YmOb3EklMFkW9FXdtbnpohSci2Nk9/FLsNsPhvQnkg1pZLhfF43cNbIgbluXmWRY5HGwVpqK6PGWL5maDgREAG9ldVBoqSmVBnwqp41ycwIbNXS4T9r28MvhndkM=
+	t=1745349458; cv=none; b=EkY59b/mU/f6dZRmp91gOoVb3LNkUB4tVPOcF+8IAYHGLQFC9JRw8keHxPb73RD7NoECgXoW2afLWK4to/jesVGwUJvSz25VSZn/wO/JkK81FhyjdrRK/PcOYlANfY9NqprI0owQMwcL5s+DOejWUszj/9Qrif7ynoLR+psY9N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745349454; c=relaxed/simple;
-	bh=am4hFzyXtUuxWOaD9wnRP8RSxcQI8B74wzzljq4OwAw=;
+	s=arc-20240116; t=1745349458; c=relaxed/simple;
+	bh=XWzaH3fMZPGAmLmMX2N+/Fz637fl1hR8IRX4MwyluEg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s7E6nGNe8iZrpe4w2fkHOx7siGstIYkBaQn5h600hRH6GSpxVJMTf9u0Rm1WYufttR0LHIBwpAiD27E6Obb7mA1PQ1BM//lcIjSt5/f4vHGNj8+OtPv4DjKqbSYD+3Skd6wuGpdzfYOURHGEUY+3iAviVjb6J2UFlG1Qla1uuoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TnzqkBD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DCBC4CEE9;
-	Tue, 22 Apr 2025 19:17:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oWHJMKz2ttrDiK6uzulLnwPwm9wFQ5J33USv00UTKblArNGSqQahWa1Tp6KNAvYmN17dctB/Lf5st1+5Ka8Q6VKC1jzoraRoAXC/PcpUiqqmlDl2Q1ejQYwY2ePl0EP22V6lph48Ad376lVOyInfRKrxedXAecdWQZ8X68mLuFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rgaHs6YR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA7BC4CEED;
+	Tue, 22 Apr 2025 19:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745349453;
-	bh=am4hFzyXtUuxWOaD9wnRP8RSxcQI8B74wzzljq4OwAw=;
+	s=k20201202; t=1745349457;
+	bh=XWzaH3fMZPGAmLmMX2N+/Fz637fl1hR8IRX4MwyluEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TnzqkBD8pvMPCAbWwZy74u5Z48Y+H4cLIK6pWX++pHKdZU42Ogyj85JO0muMSV268
-	 iYTlJlaIiKyqNCW7J/2pyejfM9LoXavAflWc4KfqfGjnaAlPDBh1rYsI0xemCrn2jA
-	 NM2l24xYduRpIgrI2ArTvHh9is/i2dDC6Q423+efi2YA+twMTL2Qb8cTaRcTcn5+o+
-	 icV2s+ivFFKnswmtWyttEyz+lJNgBk8AUS3tzDr2TZWmZjFHMLg8iUojs1fkSQC1h4
-	 RHmTz1kSTyWEd2fhcPGPGQspSmpbBrntjCD6DIljsCR3e+LwRccUMz3gwGp6T/Ai2Y
-	 sxsNHO4It3Lhw==
+	b=rgaHs6YR50CGrphG1pq4B1LB+HCBVVDr7qqliCa+xcjvyGRfoJd/w37wKPCi/s2DV
+	 mhlrTmgFuez8aRWW0hZAF1ZfFc6jt7IyZzx34oMDIYyUF67sGoUhU60noBzFUZGMDf
+	 iutQo9l8RWSSwQNdxZtJGGOvpb6u0va+KIlwEECt+wgSX5xaLdlPIiu2BDITao8M5g
+	 FegAu0DhIJGTmVQWLDrdiT0XHMKA9X7WsiZKR40Pbt4eC0DlB5WNdk+fg05CykQPo7
+	 UcQArzF36XcBywPG/gYznRTLHDElLKWtnpJ//yW5YBDiVSfL8aRKYGh0ai1rxRtvL5
+	 864JCGoovbfxg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
+Cc: Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] drm/amdgpu: fix usage slab after free
-Date: Tue, 22 Apr 2025 15:17:30 -0400
-Message-Id: <20250422115255-23690b0c03c5ef8e@stable.kernel.org>
+Subject: Re: [PATCH 6.1&6.6 V4 2/3] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+Date: Tue, 22 Apr 2025 15:17:34 -0400
+Message-Id: <20250422132948-bc1fa15ea9ad334f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250422063333.3901834-1-bin.lan.cn@windriver.com>
+In-Reply-To:  <20250422123135.1784083-3-chenhuacai@loongson.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,71 +67,42 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: b61badd20b443eabe132314669bb51a263982e5c
+The upstream commit SHA1 provided is correct: 467d60eddf55588add232feda325da7215ddaf30
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Vitaly Prosyak<vitaly.prosyak@amd.com>
+Backport author: Huacai Chen<chenhuacai@loongson.cn>
+Commit author: Jan Stancek<jstancek@redhat.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: 6383199ada42)
-6.6.y | Present (different SHA1: 3990ef742c06)
-6.1.y | Present (different SHA1: 05b1b33936b7)
+6.12.y | Present (exact SHA1)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  b61badd20b443 ! 1:  a9cf4e376c397 drm/amdgpu: fix usage slab after free
+1:  467d60eddf555 ! 1:  35ac08f1b8907 sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
     @@ Metadata
       ## Commit message ##
-         drm/amdgpu: fix usage slab after free
+         sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
      
-    +    [ Upstream commit b61badd20b443eabe132314669bb51a263982e5c ]
+    +    commit 467d60eddf55588add232feda325da7215ddaf30 upstream.
     +
-         [  +0.000021] BUG: KASAN: slab-use-after-free in drm_sched_entity_flush+0x6cb/0x7a0 [gpu_sched]
-         [  +0.000027] Read of size 8 at addr ffff8881b8605f88 by task amd_pci_unplug/2147
+         ERR_get_error_line() is deprecated since OpenSSL 3.0.
      
+         Use ERR_peek_error_line() instead, and combine display_openssl_errors()
     @@ Commit message
-         Reviewed-by: Christian König <christian.koenig@amd.com>
-         Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-         Cc: stable@vger.kernel.org
-    +    [Minor context change fixed.]
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+         Reviewed-by: Neal Gompa <neal@gompa.dev>
+         Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+    +    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
      
-      ## drivers/gpu/drm/amd/amdgpu/amdgpu_device.c ##
-    -@@ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c: void amdgpu_device_fini_sw(struct amdgpu_device *adev)
-    - 	int idx;
-    - 	bool px;
-    +@@ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c: void amdgpu_device_fini_hw(struct amdgpu_device *adev)
-      
-    + void amdgpu_device_fini_sw(struct amdgpu_device *adev)
-    + {
-     -	amdgpu_fence_driver_sw_fini(adev);
-      	amdgpu_device_ip_fini(adev);
-     +	amdgpu_fence_driver_sw_fini(adev);
-    - 	amdgpu_ucode_release(&adev->firmware.gpu_info_fw);
-    + 	release_firmware(adev->firmware.gpu_info_fw);
-    + 	adev->firmware.gpu_info_fw = NULL;
-      	adev->accel_working = false;
-    - 	dma_fence_put(rcu_dereference_protected(adev->gang_submit, true));
-     
-      ## drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c ##
-     @@ drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c: int amdgpu_vce_sw_fini(struct amdgpu_device *adev)
-    @@ drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c: int amdgpu_vce_sw_fini(struct amdgpu_de
-      	for (i = 0; i < adev->vce.num_rings; i++)
-      		amdgpu_ring_fini(&adev->vce.ring[i]);
-      
-    - 	amdgpu_ucode_release(&adev->vce.fw);
-    + 	release_firmware(adev->vce.fw);
-      	mutex_destroy(&adev->vce.idle_mutex);
-      
-     +	amdgpu_bo_free_kernel(&adev->vce.vcpu_bo, &adev->vce.gpu_addr,
+      ## certs/extract-cert.c ##
+     @@ certs/extract-cert.c: int main(int argc, char **argv)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
