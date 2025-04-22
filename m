@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-135087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC22A96684
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC5CA966E9
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 13:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E80B83A7359
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 10:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EE323AF1DE
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 11:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49CC20CCD8;
-	Tue, 22 Apr 2025 10:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216A4277028;
+	Tue, 22 Apr 2025 11:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjV3s0mQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0hh6OpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACEE5FB95;
-	Tue, 22 Apr 2025 10:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41C8277016
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 11:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745319055; cv=none; b=IXldekTHh9B7eOJesM/n7qlDd63L9oseHkvCQd/C3aCGIQN961hy53D2H9UhqndOzId2rYj5+htWgevPOtsN/aQKdIgjoqykNMzu1wCyEdubwD2i7SfyQGCVm9ln3sXJ4lUARv7lYd6tV59cdvp4evamOyXrkoOZ2mWMMaaQ6KM=
+	t=1745319872; cv=none; b=LQTXSIPqfG+ILXgFQI6pFpBN9GUKN+9uKIYk3pJGZ/qX4cUhpU+rLQm7UIWhU/VP+tTGPsGNy9Gnxy9nIdelHtMTRTfYbbsbOWGXyAClgCAMluEBCbNaU7BK91DpZ3OmDjw7TibOFJOXmyZt4smyfpcmyIlP8Q3QyPpOki0/ORQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745319055; c=relaxed/simple;
-	bh=MrCnwF7GdHkVudInO56SmjoTmH9xscxr0moc8/xmCsA=;
+	s=arc-20240116; t=1745319872; c=relaxed/simple;
+	bh=H17sabuSu2ALywrqm5Be2Uu/rBONOqaOU+uo9WIORNg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJU0QSWr2WV+wdoOyGS8U4MNpjq6h1HEsHuQbx4jAkkmMLUtyoCRs/YsnCOtuh5hYHF/ALWOTHK/JGaBbIZNXxfuccgCzkHnqvmoNF+M1xv7+8PsZ96qIqd4NtnelpkU/bZhcdhtBpJOBn3ofNG8K6d0O4uI6yjIMusdWxAMPU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjV3s0mQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883E8C4CEE9;
-	Tue, 22 Apr 2025 10:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745319055;
-	bh=MrCnwF7GdHkVudInO56SmjoTmH9xscxr0moc8/xmCsA=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=Og2m1NAR3xRyt9s+V5YaJTcF9pQtpRbEZyZM32+eF3Pdd1xOCOStTqGsbvLOEVHFnUdUqgHD7gn/KlRFVbt0OGKKew7zxIW0Pn4GtqN59lja8q8q4ao6Wjuom4VIn3NV5/2m+gz3kUk82U0lAHj7GbsA3x0YHgipG1Pmv6UL8ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0hh6OpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77436C4CEEA;
+	Tue, 22 Apr 2025 11:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745319872;
+	bh=H17sabuSu2ALywrqm5Be2Uu/rBONOqaOU+uo9WIORNg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zjV3s0mQzAED2/N1v4BwcnaDaVYf7m9YLTrcC+oo27o1aTa76+Db7y1pihHuRAjRZ
-	 Fsa72hBqbtIH5G9TsKZkib6jncINU0cOVLSETRLjcJ2Eim/MkYUpigLT/L3130TG2h
-	 iKG9saWN93SIy2/VBCiWw7oo6GC1d9hQ3qmOEhWY=
-Date: Tue, 22 Apr 2025 12:50:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Ryo Takakura <ryotkkr98@gmail.com>, alex@ghiti.fr,
-	aou@eecs.berkeley.edu, bigeasy@linutronix.de,
-	conor.dooley@microchip.com, jirislaby@kernel.org,
-	john.ogness@linutronix.de, palmer@dabbelt.com,
-	paul.walmsley@sifive.com, pmladek@suse.com,
-	samuel.holland@sifive.com, u.kleine-koenig@baylibre.com,
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-serial@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] serial: sifive: lock port in startup()/shutdown()
- callbacks
-Message-ID: <2025042202-compare-entrap-0089@gregkh>
-References: <20250405043833.397020-1-ryotkkr98@gmail.com>
- <20250405044338.397237-1-ryotkkr98@gmail.com>
- <2025040553-video-declared-7d54@gregkh>
- <397723b7-9f04-4cb1-b718-2396ea9d1b91@suse.cz>
+	b=Z0hh6OpJb1cuukLu8Eh2LxitNSh2P48z2mWAh3jnWqplZxSZnuIuua8Otijqc8u0w
+	 0WLSgFlH3Agb9Ofya4ytY0m8BlWyjQSH5TDoE/yTSLEny2sugpEtUlnaLKrGqEGAaa
+	 wt4tTRsfwDZU+gsLhoLfHylxbPA3RuI7SgpakLSs/3SvdbIaFaZn44K1sQoVepLIJ7
+	 2zReYHht/lEZCVs63W9c4FgZuz4av1Z1MXXSMUMd41IZ1vCV20OaCQBzJ/YC97u/9p
+	 Cl37T2it7eCdx/3W/brFTj1Wii1F60Qph5nsQ6IR9Zm2iULhzobHMagpCt2xx+djSX
+	 TG1Fh1kWGXERw==
+Date: Tue, 22 Apr 2025 16:25:34 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: stable@vger.kernel.org, 
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, Vasant Hegde <vasant.hegde@amd.com>, 
+	Santosh Shukla <santosh.shukla@amd.com>, Nikunj A Dadhania <nikunj@amd.com>
+Subject: Re: Please apply commit d81cadbe1642 to 6.12 stable tree
+Message-ID: <ht7jaoxtqi2njlb3blzgztmqukjbadkpt4cy2qxzgnqc26nbj2@2ja6ubtzaiip>
+References: <j7wxayzatx6fwwavjhhvymg3wj5xpfy7xe7ewz3c2ij664w475@53i6qdqqgypy>
+ <2025042207-bladder-preset-f0e8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,57 +60,25 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <397723b7-9f04-4cb1-b718-2396ea9d1b91@suse.cz>
+In-Reply-To: <2025042207-bladder-preset-f0e8@gregkh>
 
-On Tue, Apr 22, 2025 at 12:20:42PM +0200, Vlastimil Babka wrote:
-> On 4/5/25 09:35, Greg KH wrote:
-> > On Sat, Apr 05, 2025 at 01:43:38PM +0900, Ryo Takakura wrote:
-> >> startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-> >> The register is also accessed from write() callback.
-> >> 
-> >> If console were printing and startup()/shutdown() callback
-> >> gets called, its access to the register could be overwritten.
-> >> 
-> >> Add port->lock to startup()/shutdown() callbacks to make sure
-> >> their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-> >> write() callback.
-> >> 
-> >> Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-> >> Cc: stable@vger.kernel.org
-> > 
-> > What commit id does this fix?
+On Tue, Apr 22, 2025 at 09:40:22AM +0200, Greg KH wrote:
+> On Mon, Apr 21, 2025 at 11:00:39PM +0530, Naveen N Rao wrote:
+> > Please apply commit d81cadbe1642 ("KVM: SVM: Disable AVIC on SNP-enabled 
+> > system without HvInUseWrAllowed feature") to the stable v6.12 tree. This 
+> > patch prevents a kernel BUG by disabling AVIC on systems without 
+> > suitable support for AVIC to work when SEV-SNP support is enabled in the 
+> > host.
 > 
-> > Why does patch 1/2 need to go to stable, but patch 2/2 does not?  Please
-> > do not mix changes like this in the same series, otherwise we have to
-> > split them up manually when we apply them to the different branches,
-> > right?
-> 
-> I admit it's surprising to see such a request as AFAIK it's normally done to
-> mix stable fixes and new features in the same series (especially when the
-> patches depend on each other), and ordering the fixes first and marking only
-> them as stable should be sufficient. We do that all the time in -mm. I
-> thought that stable works with stable marked commits primarily, not series?
+> We need an ack from the KVM maintainers before we can take this.
 
-Yes, but when picking which "branch" to apply a series to, what would
-you do if you have some "fix some bugs, then add some new features" in a
-single patch series?  The one to go to -final or the one for the next
--rc1?
+Sure. Adding Sean and Paolo.
 
-I see a lot of bugfixes delayed until -rc1 because of this issue, and
-it's really not a good idea at all.
+Sean, Paolo,
+Please let me know if you have concerns applying this change to v6.12 
+stable series.
 
-> Also since the patches are AFAIU dependent on each other, sending them
-> separately makes the mainline development process more difficult, as
-> evidenced by the later revisions having to add notes in the diffstat area
-> etc. This would go against the goal that stable process does not add extra
-> burden to the mainline process, no?
+Thanks,
+Naveen
 
-If they are dependent on each other, that's the creator's issue, not the
-maintainer's issue, no?  :)
-
-Submit the bug fixes, get them merged, and then submit the new features.
-
-thanks,
-
-greg k-h
 
