@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-134945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C55CA95B81
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:26:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B76D5A95B83
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0FF91897747
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514C9176AD9
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475EB25DD08;
-	Tue, 22 Apr 2025 02:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A44025E812;
+	Tue, 22 Apr 2025 02:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cR0MHCt+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvrFtDBd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE99725E453;
-	Tue, 22 Apr 2025 02:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468FD25E47D;
+	Tue, 22 Apr 2025 02:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288252; cv=none; b=nUCeuXoe900/6mydm61hBt8GsLA/Gx+E4hC59XXPCCiHXylunDO0VQ7iIYJ6ZjowICRbBhrxU5hcpDpbJjUkAgUGis5iN673vuG7w+3+5tTeSomxdwlOha+RG7eefWMVqSTdzZrcfrCrYCPYD9vwYvPeZBuD7Eo4mn1RRuG2eZs=
+	t=1745288254; cv=none; b=I3494+ys/hCeb7g4d7eaLlzITzny9q4yQjEaXE/KNsQh9rT0sJUt3icVj735IlXRXMoGmBCcosN77XfliWXeCIdFC+jEIu60j8O5CZz+sCAj54fhbSDcVAIvr+JxZ066SNKUaOKie6/61bwFt5cNQRd1YxIf+umMQ2wTSICkSVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288252; c=relaxed/simple;
-	bh=Bajci9RVViShoHebpmmjyMnZxE/rkvpjN1R1FfxX0Sw=;
+	s=arc-20240116; t=1745288254; c=relaxed/simple;
+	bh=aa1A2mSz9WINcgudlJitBlD+EzdY8YT96sD7O0GzGi0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DlK7QMO7Pk+rOYrUTfVvCVF5/opWnaqz6/CNRjI85dciJ5x1LKgYarUSXA+jG2IN1of+hoT2gY2v+yNUGwusuLR6xujCxF4Se8zMVLlvblX5QMye6x1HAPMTJohHvNN921ZSMUcRBTCqQyyNy+k5r4kyayZC3RKAFBNUl6F1RX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cR0MHCt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06827C4CEEC;
-	Tue, 22 Apr 2025 02:17:30 +0000 (UTC)
+	 MIME-Version; b=hxjROf0azPhoaA/WkxaZYv9EXlr4hS9mPPbetluI64cpNk7MGumMJqj+dqLds8C/xg29QTzKMav3Ngerg/kYCaxbdgy5KSKf2bwS4TEuxRalAnojf5ouJtfclbhlgZ/i/QPRAZim3NF2inN6TLz7vs1c6HbD5eust+HvlvLJbNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvrFtDBd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC71C4CEEE;
+	Tue, 22 Apr 2025 02:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288251;
-	bh=Bajci9RVViShoHebpmmjyMnZxE/rkvpjN1R1FfxX0Sw=;
+	s=k20201202; t=1745288254;
+	bh=aa1A2mSz9WINcgudlJitBlD+EzdY8YT96sD7O0GzGi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cR0MHCt+WAdM/DaZ2CNOPP1RRkmly/rzqS7dVj2sFQWCfMstdTB60onjxqbWXkbzk
-	 uDL06GBz+t+o00ma5eWoz0ZBxuju25ux2krvYtUreVwo4YCZr3CafV1XGLW3Y/lcpy
-	 AbXu+X2m8cUyqGZSx58kxZmlQ8m/IA4M1AOuvxKOidyPcK5+ZcXm1NZHSHaK6lPwQt
-	 u6ziUIDLgDeDGHIebxHTGCxs5zvpe9bhzdUL4+lL9jc9iD8uFl4GqUstEdbbcxovgH
-	 Yac/X0mjYpccVXgAVNTkcr2qMzQoKFEawa1ugBIvPRYE2C47fqtg3DW5Uy1BlsOBj+
-	 w5ddUO1LGGldA==
+	b=AvrFtDBdZDGPr6qsdY08i3D3gRlMRXoee1vSc1EhgNmvxkTuGlTNcr+lZZPiHySa1
+	 pDWn0urckhSRZC/J0E7YWNtIGqa6YAoHsTH/7+QXBlIrbWVUQ8sUwqzsbq1VK8GY88
+	 UdIr6R4n4ldjPgJwqf6/DhOl5c+C1t9iifE50nJrxEXfPdg5/dqAQX3TU8dl/mVV+U
+	 VeCs5v4flQ6cLlCYiNWHJdy3rLpCaFZViMjnFryikz70wokXmhCgPKokd/pHLehiMR
+	 c1fgGNz/lU5zOfxNabgrIPLHSv46KUmJwQT0dnWdRihOOm1uRnNX0t6Y+EN8A0SIHG
+	 sjv3OJ60pTEig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mostafa Saleh <smostafa@google.com>,
-	Kees Cook <kees@kernel.org>,
+Cc: Pi Xiange <xiange.pi@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christian Ludloff <ludloff@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	x86-cpuid@lists.linux.dev,
 	Sasha Levin <sashal@kernel.org>,
-	kasan-dev@googlegroups.com,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 17/23] ubsan: Fix panic from test_ubsan_out_of_bounds
-Date: Mon, 21 Apr 2025 22:16:57 -0400
-Message-Id: <20250422021703.1941244-17-sashal@kernel.org>
+	x86@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com
+Subject: [PATCH AUTOSEL 6.12 18/23] x86/cpu: Add CPU model number for Bartlett Lake CPUs with Raptor Cove cores
+Date: Mon, 21 Apr 2025 22:16:58 -0400
+Message-Id: <20250422021703.1941244-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021703.1941244-1-sashal@kernel.org>
 References: <20250422021703.1941244-1-sashal@kernel.org>
@@ -66,88 +77,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.24
 Content-Transfer-Encoding: 8bit
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Pi Xiange <xiange.pi@intel.com>
 
-[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
+[ Upstream commit d466304c4322ad391797437cd84cca7ce1660de0 ]
 
-Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
-kernel:
+Bartlett Lake has a P-core only product with Raptor Cove.
 
-[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
-[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
-[   31.648153] Hardware name: linux,dummy-virt (DT)
-[   31.648970] Call trace:
-[   31.649345]  show_stack+0x18/0x24 (C)
-[   31.650960]  dump_stack_lvl+0x40/0x84
-[   31.651559]  dump_stack+0x18/0x24
-[   31.652264]  panic+0x138/0x3b4
-[   31.652812]  __ktime_get_real_seconds+0x0/0x10
-[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
-[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
-[   31.655077]  do_one_initcall+0xd4/0x280
-[   31.655680]  do_init_module+0x58/0x2b4
+[ mingo: Switch around the define as pointed out by Christian Ludloff:
+         Ratpr Cove is the core, Bartlett Lake is the product.
 
-That happens because the test corrupts other data in the stack:
-400:   d5384108        mrs     x8, sp_el0
-404:   f9426d08        ldr     x8, [x8, #1240]
-408:   f85f83a9        ldur    x9, [x29, #-8]
-40c:   eb09011f        cmp     x8, x9
-410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
-
-As there is no guarantee the compiler will order the local variables
-as declared in the module:
-        volatile char above[4] = { }; /* Protect surrounding memory. */
-        volatile int arr[4];
-        volatile char below[4] = { }; /* Protect surrounding memory. */
-
-There is another problem where the out-of-bound index is 5 which is larger
-than the extra surrounding memory for protection.
-
-So, use a struct to enforce the ordering, and fix the index to be 4.
-Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Pi Xiange <xiange.pi@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Christian Ludloff <ludloff@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: "Ahmed S. Darwish" <darwi@linutronix.de>
+Cc: x86-cpuid@lists.linux.dev
+Link: https://lore.kernel.org/r/20250414032839.5368-1-xiange.pi@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_ubsan.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ arch/x86/include/asm/intel-family.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
-index 5d7b10e986107..63b7566e78639 100644
---- a/lib/test_ubsan.c
-+++ b/lib/test_ubsan.c
-@@ -68,18 +68,22 @@ static void test_ubsan_shift_out_of_bounds(void)
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 1a42f829667a3..62d8b9448dc5c 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -115,6 +115,8 @@
+ #define INTEL_GRANITERAPIDS_X		IFM(6, 0xAD)
+ #define INTEL_GRANITERAPIDS_D		IFM(6, 0xAE)
  
- static void test_ubsan_out_of_bounds(void)
- {
--	volatile int i = 4, j = 5, k = -1;
--	volatile char above[4] = { }; /* Protect surrounding memory. */
--	volatile int arr[4];
--	volatile char below[4] = { }; /* Protect surrounding memory. */
-+	int i = 4, j = 4, k = -1;
-+	volatile struct {
-+		char above[4]; /* Protect surrounding memory. */
-+		int arr[4];
-+		char below[4]; /* Protect surrounding memory. */
-+	} data;
++#define INTEL_BARTLETTLAKE		IFM(6, 0xD7) /* Raptor Cove */
++
+ /* "Hybrid" Processors (P-Core/E-Core) */
  
--	above[0] = below[0];
-+	OPTIMIZER_HIDE_VAR(i);
-+	OPTIMIZER_HIDE_VAR(j);
-+	OPTIMIZER_HIDE_VAR(k);
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
--	arr[j] = i;
-+	data.arr[j] = i;
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
--	arr[k] = i;
-+	data.arr[k] = i;
- }
- 
- enum ubsan_test_enum {
+ #define INTEL_LAKEFIELD			IFM(6, 0x8A) /* Sunny Cove / Tremont */
 -- 
 2.39.5
 
