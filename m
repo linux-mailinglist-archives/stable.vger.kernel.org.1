@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-134895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BE89A95AD9
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:15:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F7BA95B3A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:21:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 660D9175527
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:15:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC0783B4757
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A8D13AD1C;
-	Tue, 22 Apr 2025 02:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5C2254AF3;
+	Tue, 22 Apr 2025 02:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikAqcpml"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3iJo5uw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7751E33C9
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 02:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B495254AED;
+	Tue, 22 Apr 2025 02:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288147; cv=none; b=rBS6NA4A82FtVQ7817bGZ76j8p5e7gF3ZCeSsJst2DxU/dHgS5X0VpPNnOg21AeWYZ3Qis537Wf94cNpf6ajTvt4WybELtY+qLJ9ohxjs9v7JbcECyN/cIEs0DexdJd9Bi7wugxlYs2ZSYEVTpzTMnK5gLCZVHAUlisuVucjzKM=
+	t=1745288197; cv=none; b=ZrtzKyQbr8KuafXza59zk9tfk0d54UkEkQcbJsMI5Wp0dYmxYinf103zStA6ipIyoQOvQnnPgbk5XMxnim15/IF4T0oi5xOQGWUr4xgcUglChpU95xUmi/kdeyUuWEl+lQ+iwi9yHThcgpmy3SxAzNs8n7yfRg6JTbVQ2+PNOH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288147; c=relaxed/simple;
-	bh=EkCWwcIixhMyKWzh37ypNK/AuqagVJ3S0rA7KzWdW7k=;
+	s=arc-20240116; t=1745288197; c=relaxed/simple;
+	bh=167VzBc/6G/IIdA/VUKDCBRnVuwCe9wGIn4ON4F9ugs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HfEDhM+QFAbVzm7IhdKo7bDzcdvydTigYa/gIwhnlYX89Y4tPzswWDSqcEWmyMb39rQzbN8hj22JD3fvfmf/bc2NL3zeaSVnBTOEau3q0GvPtQki3H12F9uYd1ZAQyGYxH0vIw55Z3g8OBPeHadMxoeTX3Uy05A/aDePKGrLNsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikAqcpml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADD0C4CEE4;
-	Tue, 22 Apr 2025 02:15:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sVcE7NZv1UUIbfXVe/qLYwNV4hOACpnyxtksVi8wAAA3BRk38h9mGhtXcjJx8g6UlB04zMFlQt9Kykhfv0VDHcKyYiCzKH1LSFJZ9m7VFI/u1R415lGemoSZFqDnrHtjRxjIX/+PKhKqzMgwbFiwJIR57M/SlA/vwAE2J4udosU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3iJo5uw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7408AC4CEE4;
+	Tue, 22 Apr 2025 02:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288147;
-	bh=EkCWwcIixhMyKWzh37ypNK/AuqagVJ3S0rA7KzWdW7k=;
+	s=k20201202; t=1745288197;
+	bh=167VzBc/6G/IIdA/VUKDCBRnVuwCe9wGIn4ON4F9ugs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikAqcpmlVBL4zMjQTyk8865vOBbnar/ayxpiU/GRmStYfWTvPRi0lPrStbs9wqA5/
-	 1PUTx2y3JYBWZ7VrsoTOrl5mNMTGXe+ac89YQTH1jqkuEaO78n3fSrxXaxdB14b9u7
-	 5uHjAZGcf3chuFEYP7Gs6kvCoHr+fk8Fi0NAIAY5HeUXhnxebCUHOZG27cUXz0ecxC
-	 UrHpR+hel8VLo1xhzLIHKSYxUkIEyYwluo3AjCQZSLHH6+JB72dpVNyCNNYlNVdKa3
-	 PSCS1ppJgKkNFVHRdDvTxAk2cVdM18FavkS6Dx6u876SsrsnVfbwPaTCQk+VBzuyYe
-	 4nfz9m7ettmfg==
+	b=k3iJo5uwwzRX07gtly7MleKIElv2iN0h21x/vD+Sz20PvsODw/61qmAXJjAHgLL+T
+	 fUH2wqMfmXFQB1lP139u6Cfb4MGk464Jvae5sqzfB5/SuXqIlxeh292OXXyhJzOzE5
+	 PyMwnyLD7mkIDqrrbB/XtJsFvAX4BiRVOSQUgxFVV9QDtK5kO9CIdp7Tjwdb3i8AuP
+	 4yJcEKtv9XQPbXLTzyBWbmx+LMEDNjrKSiTyQRjwUobAK/AZRPnwphJNopUx0KWfV4
+	 JHtQk3szPKzsAq/oXLJ5MnNEBMEbetRY4p+JZvUNdvlGxKQ6Krqiqi5rOPURn73U1Y
+	 zTFBytpYONnzA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] scripts: generate_rust_analyzer: Add ffi crate
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Hawking.Zhang@amd.com,
+	lijo.lazar@amd.com,
+	Jack.Xiao@amd.com,
+	Jesse.zhang@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 25/30] drm/amdgpu: use a dummy owner for sysfs triggered cleaner shaders v4
 Date: Mon, 21 Apr 2025 22:15:45 -0400
-Message-Id: <20250421193449-7c398e90b1b874f5@stable.kernel.org>
+Message-Id: <20250422021550.1940809-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250421123743.3147213-1-ojeda@kernel.org>
-References: 
+In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
+References: <20250422021550.1940809-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,68 +69,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.3
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Christian König <christian.koenig@amd.com>
 
-Hi,
+[ Upstream commit 447fab30955cf7dba7dd563f42b67c02284860c8 ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Otherwise triggering sysfs multiple times without other submissions in
+between only runs the shader once.
 
-The upstream commit SHA1 provided is correct: 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6
+v2: add some comment
+v3: re-add missing cast
+v4: squash in semicolon fix
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Miguel Ojeda<ojeda@kernel.org>
-Commit author: Lukas Fischer<kernel@o1oo11oo.de>
-
-Status in newer kernel trees:
-6.14.y | Not found
-
-Note: The patch differs from the upstream commit:
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8b2ae7d492675e8af8902f103364bef59382b935)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  05a2b0011c4b6 ! 1:  dfc4475fa6764 scripts: generate_rust_analyzer: Add ffi crate
-    @@ Metadata
-      ## Commit message ##
-         scripts: generate_rust_analyzer: Add ffi crate
-     
-    +    commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
-    +
-         Commit d072acda4862 ("rust: use custom FFI integer types") did not
-         update rust-analyzer to include the new crate.
-     
-    @@ Commit message
-         Cc: stable@vger.kernel.org
-         Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
-         Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-    +    [ Fixed conflicts. - Miguel ]
-    +    Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-     
-      ## scripts/generate_rust_analyzer.py ##
-     @@ scripts/generate_rust_analyzer.py: def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-    -         cfg=["kernel"],
-    +         ["core", "compiler_builtins"],
-          )
-      
-     +    append_crate(
-    @@ scripts/generate_rust_analyzer.py: def generate_crates(srctree, objtree, sysroot
-      
-     -    append_crate_with_generated("bindings", ["core"])
-     -    append_crate_with_generated("uapi", ["core"])
-    --    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "bindings", "uapi"])
-    +-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
-     +    append_crate_with_generated("bindings", ["core", "ffi"])
-     +    append_crate_with_generated("uapi", ["core", "ffi"])
-    -+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
-    ++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
-      
-          def is_root_crate(build_file, target):
-              try:
----
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index c1f35ded684e8..506786784e32d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -1411,9 +1411,11 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
+ 	struct amdgpu_device *adev = ring->adev;
+ 	struct drm_gpu_scheduler *sched = &ring->sched;
+ 	struct drm_sched_entity entity;
++	static atomic_t counter;
+ 	struct dma_fence *f;
+ 	struct amdgpu_job *job;
+ 	struct amdgpu_ib *ib;
++	void *owner;
+ 	int i, r;
+ 
+ 	/* Initialize the scheduler entity */
+@@ -1424,9 +1426,15 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
+ 		goto err;
+ 	}
+ 
+-	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, NULL,
+-				     64, 0,
+-				     &job);
++	/*
++	 * Use some unique dummy value as the owner to make sure we execute
++	 * the cleaner shader on each submission. The value just need to change
++	 * for each submission and is otherwise meaningless.
++	 */
++	owner = (void *)(unsigned long)atomic_inc_return(&counter);
++
++	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, owner,
++				     64, 0, &job);
+ 	if (r)
+ 		goto err;
+ 
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
 
