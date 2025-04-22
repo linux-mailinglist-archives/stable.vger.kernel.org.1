@@ -1,87 +1,154 @@
-Return-Path: <stable+bounces-134892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB119A95AD6
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:15:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1044BA95B2F
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11C1F16F7BA
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:15:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F414218977D4
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B8F13AD1C;
-	Tue, 22 Apr 2025 02:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE05623F40C;
+	Tue, 22 Apr 2025 02:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VA96+UtM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ST5r1nIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA13E33C9
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 02:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785FA23E344;
+	Tue, 22 Apr 2025 02:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288141; cv=none; b=puSv0sezMukeMioNepZxMxEAerZrCs1HpCFy/8lNljIJAOPmodbrkt2J5d9mU7pJfAgge1k6Ypr52Avgb9EiC5Ax5l50p88+IuQRDjqMgi/mS86ym3UVUD4oeFo9wQ/b/2bKzPoJlQI1i6RBDXju2Q5eUmxl0xAwKLGaCZOsINw=
+	t=1745288187; cv=none; b=PBo2dcOoPCoZHhc9+KpJtklXrm1coLsL0PuPR7HvTDIer8mFied4l4vb72po+JSkzB0LX6spzoWabDotneCpybyA6txesmeT07QrZRoxGEIeIAZXQ9uE3l7gGmy6X6/lLBofojoLqvyxhp46MceDBIVVHy3/HldSuetJ7xJEu1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288141; c=relaxed/simple;
-	bh=HbN4lK4j3nsZTypVjkdXZw/2totbYIymfWP5H7tX8do=;
+	s=arc-20240116; t=1745288187; c=relaxed/simple;
+	bh=Bajci9RVViShoHebpmmjyMnZxE/rkvpjN1R1FfxX0Sw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s/8eoDmsxqyEHS2MKv437Y60385pUk9zVFSQXop6y9ijSvUrL//QlMlwa0gFsoATGuW0OzvOce3UX+rW13+ErkpB7ImOwjT69pzWvLN4rPA/bUzD+6HvBZ6zZclN3pVwFJA7guQaAmG7j1erHvQ/fn4KJETh7DFqRxKmWVsSA7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VA96+UtM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5DFC4CEE4;
-	Tue, 22 Apr 2025 02:15:40 +0000 (UTC)
+	 MIME-Version; b=ss15rv25Y6g8jwxV4xgg5m+bgCJRit0b9jGQ1dcPPx2bq2MBGq+xe6fWcMoe8jJ/Zhe0ilfnRU4Z1RAwyfeR6C9XLBFQsS6rpZw5aYhsWzyK9U6M+6s4f8G44UbHM1fMQU2oXn0buvZtywF0vkOk0aACyEyOPpLux+ghQ6j/G34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ST5r1nIy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2379DC4CEE4;
+	Tue, 22 Apr 2025 02:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288141;
-	bh=HbN4lK4j3nsZTypVjkdXZw/2totbYIymfWP5H7tX8do=;
+	s=k20201202; t=1745288186;
+	bh=Bajci9RVViShoHebpmmjyMnZxE/rkvpjN1R1FfxX0Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VA96+UtMXgsUHXyJfGtSaA873XkfEF/B9VV+XsiMNTtY9+z78rMIf7xM/4cAYTLC3
-	 cgr1z+dIxeUHSf93ybLktHI56UdgfaPBUQaryhH/lnE1IFv6Sejx9q2njM3iIyqmed
-	 24SH9gbcgaFPC1uTcLhRMZkAbKbruVmscFNJ2mJwjKUWdVCM6GG75PV51IDG8J8O49
-	 XAO7od5WeMZu5VyTPH/b1iAbiQatmU5LdEJcabvXkS61PnaHOKKVDMrkNNSGrNBgvF
-	 cSYGDmQFLUjtjuf1ErrknrrI3XQP/kSsGIw1oK4ZHVbZiGoT9kDXGSy2EohBk5E3iu
-	 nEyxgjUP4Abaw==
+	b=ST5r1nIyoA9oY/HJl0h/ujkUdTAqJQ5dxCmwQNcxmrbVNZseN0ifZKdoiVcM+neZe
+	 Ruq/P1vKenubpv4PNJnmVcqmwWjGj+LRqTwCj7huqBZS4mV45KhILo/WgHCuqPLA8A
+	 8/reejL/ccY6mkKvUyvjgusJBydne7YcoMvju2rz0g9PYEsJBBjDRn4wia3H8PajQP
+	 BlVoIoAmpFxyOBAm07Oqcre5HfEDyj1ay3XfMCu0ZsvkcwvCN8GV0ZIOGE1YbeEbY+
+	 AlnZzqbQ8GHuFHipU0HyzgBrtG4rVyLzJFmFj/kATM+CADpSlhuKy3aDuh+YFj7Nxo
+	 BwxRBARzxOIvw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14] lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
-Date: Mon, 21 Apr 2025 22:15:39 -0400
-Message-Id: <20250421195021-ca023ebdc519650c@stable.kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Mostafa Saleh <smostafa@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	kasan-dev@googlegroups.com,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 20/30] ubsan: Fix panic from test_ubsan_out_of_bounds
+Date: Mon, 21 Apr 2025 22:15:40 -0400
+Message-Id: <20250422021550.1940809-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250421154059.3248712-1-nathan@kernel.org>
-References: 
+In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
+References: <20250422021550.1940809-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.3
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Mostafa Saleh <smostafa@google.com>
 
-Hi,
+[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
+kernel:
 
-The upstream commit SHA1 provided is correct: ed2b548f1017586c44f50654ef9febb42d491f31
+[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
+[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
+[   31.648153] Hardware name: linux,dummy-virt (DT)
+[   31.648970] Call trace:
+[   31.649345]  show_stack+0x18/0x24 (C)
+[   31.650960]  dump_stack_lvl+0x40/0x84
+[   31.651559]  dump_stack+0x18/0x24
+[   31.652264]  panic+0x138/0x3b4
+[   31.652812]  __ktime_get_real_seconds+0x0/0x10
+[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
+[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
+[   31.655077]  do_one_initcall+0xd4/0x280
+[   31.655680]  do_init_module+0x58/0x2b4
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Nathan Chancellor<nathan@kernel.org>
-Commit author: Kees Cook<kees@kernel.org>
+That happens because the test corrupts other data in the stack:
+400:   d5384108        mrs     x8, sp_el0
+404:   f9426d08        ldr     x8, [x8, #1240]
+408:   f85f83a9        ldur    x9, [x29, #-8]
+40c:   eb09011f        cmp     x8, x9
+410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
 
-Note: The patch differs from the upstream commit:
+As there is no guarantee the compiler will order the local variables
+as declared in the module:
+        volatile char above[4] = { }; /* Protect surrounding memory. */
+        volatile int arr[4];
+        volatile char below[4] = { }; /* Protect surrounding memory. */
+
+There is another problem where the out-of-bound index is 5 which is larger
+than the extra surrounding memory for protection.
+
+So, use a struct to enforce the ordering, and fix the index to be 4.
+Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
+
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  ed2b548f10175 < -:  ------------- ubsan/overflow: Rework integer overflow sanitizer option to turn on everything
--:  ------------- > 1:  a1c5f5e8b07ed lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
----
+ lib/test_ubsan.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-Results of testing on various branches:
+diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
+index 5d7b10e986107..63b7566e78639 100644
+--- a/lib/test_ubsan.c
++++ b/lib/test_ubsan.c
+@@ -68,18 +68,22 @@ static void test_ubsan_shift_out_of_bounds(void)
+ 
+ static void test_ubsan_out_of_bounds(void)
+ {
+-	volatile int i = 4, j = 5, k = -1;
+-	volatile char above[4] = { }; /* Protect surrounding memory. */
+-	volatile int arr[4];
+-	volatile char below[4] = { }; /* Protect surrounding memory. */
++	int i = 4, j = 4, k = -1;
++	volatile struct {
++		char above[4]; /* Protect surrounding memory. */
++		int arr[4];
++		char below[4]; /* Protect surrounding memory. */
++	} data;
+ 
+-	above[0] = below[0];
++	OPTIMIZER_HIDE_VAR(i);
++	OPTIMIZER_HIDE_VAR(j);
++	OPTIMIZER_HIDE_VAR(k);
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
+-	arr[j] = i;
++	data.arr[j] = i;
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
+-	arr[k] = i;
++	data.arr[k] = i;
+ }
+ 
+ enum ubsan_test_enum {
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.14.y       |  Success    |  Success   |
 
