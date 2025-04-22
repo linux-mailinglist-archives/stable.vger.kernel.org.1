@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-134910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853D8A95B13
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:18:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2633BA95B1C
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F30EF189747A
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:18:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADDFA173CCC
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06D020D503;
-	Tue, 22 Apr 2025 02:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A537D22ACCA;
+	Tue, 22 Apr 2025 02:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENj6VofG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Euri6nnR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B9D1F2BA1;
-	Tue, 22 Apr 2025 02:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618A21A071C;
+	Tue, 22 Apr 2025 02:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288176; cv=none; b=QooQ6Jzt8IBu/hRHwySwSatbhFco3+JBH5V+wnSszafUlbQLkZPFrGGVMNKLFNXcKJvcd/NRnuR/6EjztgIvtksali8ZHk/A3/3VQQfd5YO7YLrs8viUBiqPczGy51kYMsfTwzllQWyaUcf+qGbuwAz47C16VpdTlWV6sd7P2dU=
+	t=1745288178; cv=none; b=EK1vNwuOCxESYxKS9VjKwibEot1s0StGH7nY5X1t0JVAGUDe41dMcha2uMi25tFe8zSXd7mqdG6/lb12ebDB8JAeAz6XpFXSEwcpY6NfDiGndmGwMMRtWX1l/7EotBlJ4oKOp6YS9lMdDDqxxAhwtc4FZ1DqcewUxmKgtSoWMUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288176; c=relaxed/simple;
-	bh=c9j7EFIcKM4M56ND5mZ6VcjyKAs7PlbJZ73+LDc0lNE=;
+	s=arc-20240116; t=1745288178; c=relaxed/simple;
+	bh=k0CvyBXD/JneYEp1nm10fppRGqN6XZUKVHkWxBtVi+4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ciPEEjWde2LYLawGpnAGdPf43aGgd22nl/XoAU3ZErTeh21yUxUmYkV+QneS3D/0SmUKKmwvdr12ndqUpi9p7ncr0onpKjFDMuGBuob6QmwMSlnwXSOMGsHihkCEJpVurrojwN3wSt/CG0cwZPGnUKbxQfJse7w1tcXnRf2/TVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENj6VofG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC07C4CEE4;
-	Tue, 22 Apr 2025 02:16:14 +0000 (UTC)
+	 MIME-Version; b=q+0TDVxwOPn89zu78w3RzBh6584jXjtkbnrJmHUvOsNY1CdZRJz9RcqnRVssvfA0gKqfMvpWmrtRBSyu2m+RNzs2v7Ukp9OHJHNCFgQsqsbMGgT9YC6TOikpij2l19jZZKI0+oB6NRDrDG9HvRm5gnQRjXbodOPBl1/qiAIw3PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Euri6nnR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298E7C4CEE4;
+	Tue, 22 Apr 2025 02:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288176;
-	bh=c9j7EFIcKM4M56ND5mZ6VcjyKAs7PlbJZ73+LDc0lNE=;
+	s=k20201202; t=1745288178;
+	bh=k0CvyBXD/JneYEp1nm10fppRGqN6XZUKVHkWxBtVi+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENj6VofGgCmGTUcIOyGpOqwXzHFeUMQrjCxdwrnKhwG//Ds59hQC48F5/CQC353f0
-	 3qmQohX7huRBJoQ0HmWLNSPzxRBvRxI3YqrQiFWvIGcn0ttfKV6qDkVgk30Leoxbjp
-	 NYa6aPGyJpKuOmbKlTtu43UsmnTRXZNBfCLkEM4w92OF3D/vY2k07nFsFuQ0tOM3X0
-	 WDTXQUyneWdrCshoBTvYWZKevbaMM4D0UK87x9GDsxstAHHPlGiwgslnFxcvzOQcFd
-	 +z8PxE++/zQLhDwzrPSXiG9kxVNtT5ds/rBsk3PagRym6psa3zIz7BPaiJNukfw3s2
-	 2fHPpvs+cG3Nw==
+	b=Euri6nnRWUntrxw18EYulB8bHD2cg/uaDk71PztKxr2K7eiP1o5iOhuS5Jm+ICupM
+	 t4HRf6bvbenRge0mRh4CYDR0KyPnBwJjEBfmbKgIC6lQCkBfkHzEnfi2ERfTZ+ny2g
+	 Mu9CJutbX41L5VtJv5S/x6BMbRv3wdKKrsHcc1lvraJh3vRPDJ/9z2PLK+B5EwUKQ9
+	 YZ4VxQzpwkd8PCjs+5VAZC5rnra+cIPpSiGZDSuQKraLAlAs6AoZRNSw2AiwzIA2j4
+	 E9V+1MILNQzx+exSRBJJcjcIaZKlFPeqr43wh1YZhGJ8P4JK2vT51PJfXFY3J9yrM+
+	 fNZDQXHGcWk+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gou Hao <gouhao@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	kernel test robot <lkp@intel.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 13/30] iomap: skip unnecessary ifs_block_is_uptodate check
-Date: Mon, 21 Apr 2025 22:15:33 -0400
-Message-Id: <20250422021550.1940809-13-sashal@kernel.org>
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 14/30] riscv: Provide all alternative macros all the time
+Date: Mon, 21 Apr 2025 22:15:34 -0400
+Message-Id: <20250422021550.1940809-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
 References: <20250422021550.1940809-1-sashal@kernel.org>
@@ -69,41 +69,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.3
 Content-Transfer-Encoding: 8bit
 
-From: Gou Hao <gouhao@uniontech.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit 8e3c15ee0d292c413c66fe10201d1b035a0bea72 ]
+[ Upstream commit fb53a9aa5f5b8bf302f3260a7f1f5a24345ce62a ]
 
-In iomap_adjust_read_range, i is either the first !uptodate block, or it
-is past last for the second loop looking for trailing uptodate blocks.
-Assuming there's no overflow (there's no combination of huge folios and
-tiny blksize) then yeah, there is no point in retesting that the same
-block pointed to by i is uptodate since we hold the folio lock so nobody
-else could have set it uptodate.
+We need to provide all six forms of the alternative macros
+(ALTERNATIVE, ALTERNATIVE_2, _ALTERNATIVE_CFG, _ALTERNATIVE_CFG_2,
+__ALTERNATIVE_CFG, __ALTERNATIVE_CFG_2) for all four cases derived
+from the two ifdefs (RISCV_ALTERNATIVE, __ASSEMBLY__) in order to
+ensure all configs can compile. Define this missing ones and ensure
+all are defined to consume all parameters passed.
 
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Link: https://lore.kernel.org/20250410071236.16017-1-gouhao@uniontech.com
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202504130710.3IKz6Ibs-lkp@intel.com/
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250414120947.135173-2-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/include/asm/alternative-macros.h | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index d303e6c8900cd..a47e3afd724ca 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -263,7 +263,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 		}
+diff --git a/arch/riscv/include/asm/alternative-macros.h b/arch/riscv/include/asm/alternative-macros.h
+index 721ec275ce57e..231d777d936c2 100644
+--- a/arch/riscv/include/asm/alternative-macros.h
++++ b/arch/riscv/include/asm/alternative-macros.h
+@@ -115,24 +115,19 @@
+ 	\old_c
+ .endm
  
- 		/* truncate len if we find any trailing uptodate block(s) */
--		for ( ; i <= last; i++) {
-+		while (++i <= last) {
- 			if (ifs_block_is_uptodate(ifs, i)) {
- 				plen -= (last - i + 1) * block_size;
- 				last = i - 1;
+-#define _ALTERNATIVE_CFG(old_c, ...)	\
+-	ALTERNATIVE_CFG old_c
+-
+-#define _ALTERNATIVE_CFG_2(old_c, ...)	\
+-	ALTERNATIVE_CFG old_c
++#define __ALTERNATIVE_CFG(old_c, ...)		ALTERNATIVE_CFG old_c
++#define __ALTERNATIVE_CFG_2(old_c, ...)		ALTERNATIVE_CFG old_c
+ 
+ #else /* !__ASSEMBLY__ */
+ 
+-#define __ALTERNATIVE_CFG(old_c)	\
+-	old_c "\n"
++#define __ALTERNATIVE_CFG(old_c, ...)		old_c "\n"
++#define __ALTERNATIVE_CFG_2(old_c, ...)		old_c "\n"
+ 
+-#define _ALTERNATIVE_CFG(old_c, ...)	\
+-	__ALTERNATIVE_CFG(old_c)
++#endif /* __ASSEMBLY__ */
+ 
+-#define _ALTERNATIVE_CFG_2(old_c, ...)	\
+-	__ALTERNATIVE_CFG(old_c)
++#define _ALTERNATIVE_CFG(old_c, ...)		__ALTERNATIVE_CFG(old_c)
++#define _ALTERNATIVE_CFG_2(old_c, ...)		__ALTERNATIVE_CFG_2(old_c)
+ 
+-#endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_RISCV_ALTERNATIVE */
+ 
+ /*
 -- 
 2.39.5
 
