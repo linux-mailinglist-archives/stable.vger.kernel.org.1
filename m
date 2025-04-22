@@ -1,125 +1,220 @@
-Return-Path: <stable+bounces-135051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF987A95FC5
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 09:45:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCDCA96010
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 09:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53ABE7A2A1C
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 07:43:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C304A188D850
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 07:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C7C1EB9F7;
-	Tue, 22 Apr 2025 07:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1C8A226D0C;
+	Tue, 22 Apr 2025 07:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VY9c+Gan"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="zScW9N7J";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bXGDSq+z";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="QjJ1V68G";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="q3eNK295"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DF91EB5FE
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 07:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFA1126C13
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 07:54:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745307893; cv=none; b=gT+mI7kzEEMzxtqIzjj/0yTAKyefhubSAayHI3BIEZEfiA2s9Xz9dAPBr3gHrFjjZmH5jCdIwYFC5Zhsbl2EzwBVPICmqfeVtSS9Zvj+LoJDtYfQe7dfq9Djz3eO4SADRx1mCcAAYakG/NDVTxX0ccEw+2K8lZkXJ8J6TNnG8NA=
+	t=1745308453; cv=none; b=UhEr/7m5dO5KdXxJGd/Ni3VET7v8tX0mFzE5o+m3IoVsibaoajIuHG0CvMg6FDYsMfXROjeKBLjr7xi4WFl4K/GXUy2cv0ty8ijVUg8rHCEwezB3/QCwYE38PuW1uEGmK0WPHhXsKkNpLwjTkV+b8ahkAiCslXAX8kt0BZGnkmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745307893; c=relaxed/simple;
-	bh=5yz43yL7k3tfBxAmtI0zYzcrPR23DOuFrXMUCxKyO3s=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=D+e1rUhiipKu5zF/i+KcK+5YsmGt2C1yAZRdZvn/kluClcvJmrqYPQbG6Yt7ku4cbQLQqOyWElqAmV35XB8EL6PBxqKtOSme8tWwOwuQ9nKgY/lVbIGKf78mLeEiy+DKsAvL4lzqJXtNsIU4euSh2cQ6PdK5zTvQG2W69KErphI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VY9c+Gan; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cfba466b2so48342965e9.3
-        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 00:44:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745307890; x=1745912690; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WgK3a7wLnoljW2o1N7kchVd14A0Rfs+vpaS3Ag30LgM=;
-        b=VY9c+GanrN7+b5Z/ZQxof5vvHUydLVkNJ4LQcbJOjkABiRyBENElwLHHEcc31LLmOW
-         24TTtl/mLXZ4FwqxKm0eAegOPQPQHl7fuSjOgq1OmLZFoiy5gMMg8Tte8FeCLofdzfJu
-         byJ7iIfhvQEbsVYsrO0jnIvgDryWOD3uoqes2YtLiLqwXWMvvpW3ra8gtzvoyjrZNFvW
-         +XQzLXeTPytjNH0Ulcr/buCvXasG3e4R31aEMvJJ03L+M+szbh9jNPxQZGFo8BrWbaQE
-         +6K+7kooNJndU4vF13rRGzuDCx5RRuRmbfAQlx/+y/FZyb9gYk0UQHrPgjumuMDtaca8
-         esxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745307890; x=1745912690;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WgK3a7wLnoljW2o1N7kchVd14A0Rfs+vpaS3Ag30LgM=;
-        b=vXv9p4FFBwg4oXVzpK8NFNNy67jf5o3rgz4dSnVtE1TcFzaERjXbTzvk028O7EXyE0
-         ElKBsflBIBIoABOhdheA3KcDszCUBcdxT8iwGu/4+jCgoWb93LIsW4wGu7wXFbe92vlo
-         meoa7wCAL9zbYa1uh3vvmRYdptPj8T76J8EgtZ5hK3eBSxo27Bt+GwolUFlXIku2SvDF
-         3TyeuI4IFdDGTlIb456VdZuhJF01OqNgGjFSt++vkAL53Yid0AaqIXXaIg4/EgRTbrIq
-         T8zOVLvkNBh47ZKd1uG2eLSi4jihl2rJNufAM2QVb8ffxT791k0Pcoklq8DgdYb45XBj
-         i6aw==
-X-Gm-Message-State: AOJu0Yy8bdqNGmp2Vww3TcCBPGotbPBRT6hb6viPxi8k/2o4UhNpXZ5y
-	K/sy9pqz34IH2iuVHCG/MKClt9r/wZtWu/S92vBdNaWj3lRTg99g4f8XHP2h7LqkHQFx2r2TWWS
-	N
-X-Gm-Gg: ASbGncvPI8pJBLWPFc19QPU9wexjT2w8SIuvdBspd4WTvVbeHdR0TOcjPim4s8CpL7Z
-	XRTnrizNWbi+leMJ1IMh/V6yPmy51CxdyyJmGUsgAtnqdiIE2b52riILFm49mppxRtWGEWoc6jR
-	D/zaujXZ9tEp0S7fKv7FFb2iyS8RS81sR2QLbUazFIaZklvraPZ/pWxRo+vpdgzQv4lXOxusaL6
-	JF4+lfRMSGVUEyAWfJ27+amqqGIArkM2EpHv5O6YgjgCSO4ZIZQywhBLffd0defReWoRXG/d/eu
-	Kuz0qwWtMXvcIQxmC5kkvKlGmLAoJEqxDIFWNG+KMjYvYhNuZPvJ8J4AdAWcIg==
-X-Google-Smtp-Source: AGHT+IGLlnDAxBOPlwHZaIDg6mBq4R6Kpd8YZK+9dm41VFGVOnrsjJ4xvgJsjjZwn8EYlnSwLGHSqg==
-X-Received: by 2002:a05:600c:4708:b0:43d:300f:fa4a with SMTP id 5b1f17b1804b1-4406ab97c6cmr118259525e9.12.1745307890356;
-        Tue, 22 Apr 2025 00:44:50 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:8261:5fff:fe11:bdda])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4406d5a9e38sm166628775e9.2.2025.04.22.00.44.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 00:44:50 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: Jagan Teki <jagan@edgeble.ai>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Linus Walleij <linus.walleij@linaro.org>, 
- Zhaoxiong Lv <lvzhaoxiong@huaqin.corp-partner.google.com>, 
- Hugo Villeneuve <hvilleneuve@dimonoff.com>, 
- Hugo Villeneuve <hugo@hugovil.com>
-Cc: stable@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <20250417195507.778731-1-hugo@hugovil.com>
-References: <20250417195507.778731-1-hugo@hugovil.com>
-Subject: Re: [PATCH] drm: panel: jd9365da: fix reset signal polarity in
- unprepare
-Message-Id: <174530788965.2868524.14547275141165599808.b4-ty@linaro.org>
-Date: Tue, 22 Apr 2025 09:44:49 +0200
+	s=arc-20240116; t=1745308453; c=relaxed/simple;
+	bh=XbTnWxqJpjeU4cXZvYrWQ2xtURwjHRsAIXF5mG/O/5o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mPqE136E3flJ5PKZvmPK04GeU9AeDYN0POyo20K6LJtd7smUnjCA3UQfEUkm6LDGuUcKVl1sSp9S6SS7q2BCJpGXfLhrK9gzq5r3CT2/THzDR8f3+4f3x0y6K0IurtcAnlHWa36Umtt2E45Qq8MB/aN7K+pMoDyI6rNZjNjCWQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=zScW9N7J; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bXGDSq+z; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=QjJ1V68G; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=q3eNK295; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EBA6821187;
+	Tue, 22 Apr 2025 07:54:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1745308450; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=QfkteNnsOmORwj1o6bHeet/zm4MW5xqJNxTV+2ZWcgE=;
+	b=zScW9N7JM7NJDRmTrZZFSVgtnfXL16bVZFrYqYtyZPjhD1SdXX9lLNk9wKtiR1VA4kKa4e
+	+/PggA81G5tnELJOpcovM1e7q4e7Opk8bn7pe/wuYPs7IY3FaP8PPOvGbfWRwIabg88S48
+	/Fv3mdl4kdqFAqK1xr8m0eKg1lJ/tzc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1745308450;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=QfkteNnsOmORwj1o6bHeet/zm4MW5xqJNxTV+2ZWcgE=;
+	b=bXGDSq+z9dKZd8az37TUlqKUO5TlvKNWwwXhfyH2iatYn8n+XqM89fKeyzdk8VzDSTEGqf
+	3svLJ4XciZFYhMDQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1745308448; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=QfkteNnsOmORwj1o6bHeet/zm4MW5xqJNxTV+2ZWcgE=;
+	b=QjJ1V68Grec2JGzk4a/qjVqIzKvHJ8++eEH7LsbX7kejoijp4KxIOUAWcbvkp1UFDYw1Ct
+	yZf+NtxPnsIo7JurV/Gq/qU0u+9AziStUmmMfEwxqMWVmeg74nNV9xCBCNr5jS5jKwdBK1
+	GEIsn1oU4Yff6Bw4gioiJaBNyZw2Y0o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1745308448;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=QfkteNnsOmORwj1o6bHeet/zm4MW5xqJNxTV+2ZWcgE=;
+	b=q3eNK295uXP5T8Es6q1D94zCSEPe2VtTs/SulQdbfaC/CdkVxj5leLMI14pIR8rUStJVOZ
+	xjL7Vg8SKBQAgtBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABBD4139D5;
+	Tue, 22 Apr 2025 07:54:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Rh4gKCBLB2jRQwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 22 Apr 2025 07:54:08 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	iivanov@suse.de,
+	tiwai@suse.de
+Cc: bhelgaas@google.com,
+	dri-devel@lists.freedesktop.org,
+	linux-pci@vger.kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] video: screen_info: Relocate framebuffers behind PCI bridges
+Date: Tue, 22 Apr 2025 09:49:57 +0200
+Message-ID: <20250422075056.12989-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-Hi,
+Apply bridge window offsets to screen_info framebuffers during
+relocation. Fixes invalid access to I/O memory.
 
-On Thu, 17 Apr 2025 15:55:06 -0400, Hugo Villeneuve wrote:
-> commit a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
-> fixed reset signal polarity in jadard_dsi_probe() and jadard_prepare().
-> 
-> It was not done in jadard_unprepare() because of an incorrect assumption
-> about reset line handling in power off mode. After looking into the
-> datasheet, it now appears that before disabling regulators, the reset line
-> is deasserted first, and if reset_before_power_off_vcioo is true, then the
-> reset line is asserted.
-> 
-> [...]
+Resources behind a PCI bridge can be located at a certain offset
+in the kernel's I/O range. The framebuffer memory range stored in
+screen_info refers to the offset as seen during boot (essentialy 0).
+During boot up, the kernel may assign a different memory offset to
+the bridge device and thereby relocating the framebuffer address of
+the PCI graphics device as seen by the kernel. The information in
+screen_info must be updated as well.
 
-Thanks, Applied to https://gitlab.freedesktop.org/drm/misc/kernel.git (drm-misc-fixes)
+The helper pcibios_bus_to_resource() performs the relocation of
+the screen_info resource. The result now matches the I/O-memory
+resource of the PCI graphics device. As before, we store away the
+information necessary to update the information in screen_info.
 
-[1/1] drm: panel: jd9365da: fix reset signal polarity in unprepare
-      https://gitlab.freedesktop.org/drm/misc/kernel/-/commit/095c8e61f4c71cd4630ee11a82e82cc341b38464
+Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
+EFI framebuffers") added the code for updating screen_info. It is
+based on similar functionality that pre-existed in efifb. Efifb uses
+a pointer to the PCI resource, while the newer code does a memcpy of
+the region. Hence efifb sees any updates to the PCI resource and avoids
+the issue.
 
+v2:
+- Fixed tags (Takashi, Ivan)
+- Updated information on efifb
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reported-by: "Ivan T. Ivanov" <iivanov@suse.de>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
+Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
+Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.9+
+---
+ drivers/video/screen_info_pci.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/video/screen_info_pci.c b/drivers/video/screen_info_pci.c
+index 6c5833517141..c46c75dc3fae 100644
+--- a/drivers/video/screen_info_pci.c
++++ b/drivers/video/screen_info_pci.c
+@@ -8,7 +8,7 @@
+ static struct pci_dev *screen_info_lfb_pdev;
+ static size_t screen_info_lfb_bar;
+ static resource_size_t screen_info_lfb_offset;
+-static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
++static struct pci_bus_region screen_info_lfb_region;
+ 
+ static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
+ {
+@@ -31,7 +31,7 @@ void screen_info_apply_fixups(void)
+ 	if (screen_info_lfb_pdev) {
+ 		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
+ 
+-		if (pr->start != screen_info_lfb_res.start) {
++		if (pr->start != screen_info_lfb_region.start) {
+ 			if (__screen_info_relocation_is_valid(si, pr)) {
+ 				/*
+ 				 * Only update base if we have an actual
+@@ -69,10 +69,21 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
+ 
+ 	for (i = 0; i < numres; ++i) {
+ 		struct resource *r = &res[i];
++		struct pci_bus_region bus_region = {
++			.start = r->start,
++			.end = r->end,
++		};
+ 		const struct resource *pr;
+ 
+ 		if (!(r->flags & IORESOURCE_MEM))
+ 			continue;
++
++		/*
++		 * Translate the address to resource if the framebuffer
++		 * is behind a PCI bridge.
++		 */
++		pcibios_bus_to_resource(pdev->bus, r, &bus_region);
++
+ 		pr = pci_find_resource(pdev, r);
+ 		if (!pr)
+ 			continue;
+@@ -85,7 +96,7 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
+ 		screen_info_lfb_pdev = pdev;
+ 		screen_info_lfb_bar = pr - pdev->resource;
+ 		screen_info_lfb_offset = r->start - pr->start;
+-		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
++		memcpy(&screen_info_lfb_region, &bus_region, sizeof(screen_info_lfb_region));
+ 	}
+ }
+ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
 -- 
-Neil
+2.49.0
 
 
