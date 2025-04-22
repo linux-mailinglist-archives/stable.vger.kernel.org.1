@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-135156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B438A972CD
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 18:31:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C03CA972E1
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 18:37:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324731886A53
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 16:31:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14873189FC23
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 16:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20087291153;
-	Tue, 22 Apr 2025 16:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B31293B6B;
+	Tue, 22 Apr 2025 16:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="VkiUewsG"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="EFBde9s9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC0229114D
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 16:31:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD0228F939
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 16:37:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745339492; cv=none; b=o3D1H7sjSDQNS4fGvwY/QIjGXRC7YaIDl5no7R6AUYme4SOFUB7fHUsIguW/E2aDm/QjXQ5fbOptibs7b8k1DLnoPHIJEIUCj1h89glGzcE+QubXTxNngXj7JMM21uNBjkhHBNL/j74HQpJTiONnCwODtOZTOocuxwCQqBoqEeM=
+	t=1745339842; cv=none; b=CdweekFbSWTnTiGW4u+/zLYK8PyS6NLdKICR24+UMwV43CvlJNNrbWvU9fWtLjHx0JYi4aDmSJUpgj2F7tLAbc0ouWT0uphO8KfeR6aOQ1OkWF+0HDmdeMm4cCxHsREGsrFQTO0zwjzgTGcGUR8GRcp861PThaXW4IAhwtDXgdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745339492; c=relaxed/simple;
-	bh=01RwRaQh2BLtw+ejRZ9H4E9ZW1v7UdSVhsHybBtMfto=;
+	s=arc-20240116; t=1745339842; c=relaxed/simple;
+	bh=VoeDodQoqrdD05E0gVc9ZrhWPxMU9fIoQD7UZWs5Ork=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HvazrCcurBftUGE1jouHgq6JJa9sVfBlnyfI+zTq5EihSjWVjRYlxOhzTN/X+PkwTZBgPE0A7l74BCTycD7uLJ8dbs05lqlwUM5ynFzD09i+A/804GC9J4T+vz5Sg5RKzqACKvlNlaZHne8HrejUXBCwUU0v0Ve+fWTtt67lok8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=VkiUewsG; arc=none smtp.client-ip=209.85.216.53
+	 To:Cc:Content-Type; b=m1eX3gyxIkqxrpjmwHu2VSgwL/gpPRq41Xps/TfP3vj045GA3rDW/t7WfX/mmOMdRNksVqKmpVPqNLj/ZBqYXu12fnBfIBmpqRredeXAg87C/jkddAMaRu6v/Ri2tlNqJYTwgJ7Hxyb/gj9hBBsvCA7KJGxKFe7T/6Eu+U3Rwxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=EFBde9s9; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-308702998fbso4828985a91.1
-        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 09:31:31 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-736b0c68092so4597571b3a.0
+        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 09:37:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1745339490; x=1745944290; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1745339839; x=1745944639; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=01RwRaQh2BLtw+ejRZ9H4E9ZW1v7UdSVhsHybBtMfto=;
-        b=VkiUewsGm4LUDD09ydTx8WlXN9HWM6SRddBkGaMv7NSRaHTi3Dl6AfyTDabkEZsDwH
-         L9oS7VMUGSZof+ZXj8JgzZKvNDmzV1GG/nXySwUE/GKbWx+mr2l6TzNdGh/6pYXnvGFA
-         DpGPVvSVeMchijconv0mLdRc9P+3Tsy5qXdxI=
+        bh=VoeDodQoqrdD05E0gVc9ZrhWPxMU9fIoQD7UZWs5Ork=;
+        b=EFBde9s9dT4LMkdzK8VfIwrYzIIr9LX4QnR4GsCvf3tiTSwO6FUdmPxTA9pFGmkiWM
+         94SinV8sFNoAAUQG9LoNf7TY6lgkPmmrD5e6oxVLuK0HPFPcgowbp0Rqia6rVZPkag76
+         BgUs8w993WqYRkPRCyIr3zxjuS7gfIDOcXXYE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745339490; x=1745944290;
+        d=1e100.net; s=20230601; t=1745339839; x=1745944639;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=01RwRaQh2BLtw+ejRZ9H4E9ZW1v7UdSVhsHybBtMfto=;
-        b=U9m9v5l9N+ACqeyNjUgD/8H3Eu+0cNZytmhNSrLtXwOFkvFlG/M3nQ/oqBJl+STD+F
-         jrbro8YoH9Xp6HMsnM1nXLJjUg3FcRXfpDSGHFNjyM0kgZ7cyWqq5dR8wC7EdeU01/xo
-         XY/8ZhfRykusCoTJ/olEL1FN31IoXBgxEncsxf7SM+cHnfRbpYVUKMptS9luHbStrq2d
-         0qECVCauHZ97G1cLFDoz6LE/UyWlhX5OnnPpwDxoEITW9022hpQ8zyIwrSfXrgmO61mV
-         ufw/qo3aoWohIjVLSwvp2ZgLk5WwBf+Sg7Otj8FVdyo2dnQhpei3xK1E1iRQfScickIa
-         djhA==
-X-Gm-Message-State: AOJu0YyjpI+5QoHeuFk8VdcNLqwgdle4PZ8OlfQBlpM1wl/mUisI+cB/
-	5kf36/sigUwmFrQjA3XGOj+b+oDVKS60rRXBBMW29BvUEJz6J9B8TDYhwgBsxfEEzsDxWdX7hUl
-	PtZ/VQsv3x7BeTmdceXhAAwxqZjf9m10XHLS5PWeDlrTDYECToHcs
-X-Gm-Gg: ASbGncsy/VwIU4bnuicggRnjlocyVmmWA9/SRbQmgdSqSGQk0W6W59Wp5hLPFo7EYHC
-	SMBXPhzumlmOewt/IKPC4ernq2gY64NsH9CwtgSPEYT7dqSpNxfLwuSjWhv/ok69mvSjvH/O2/S
-	4G90wZxcdzm4gqtmBf7xYzn9k=
-X-Google-Smtp-Source: AGHT+IGhb8C9uuhq/8l0Pb8BCtcBYdEL9EpUMxS29gTVZExb+7E8G2P/gHN9remhZZmdRWut2JdZ1l/C60NHJCkGalU=
-X-Received: by 2002:a17:90b:1c0a:b0:301:98fc:9b51 with SMTP id
- 98e67ed59e1d1-3087bb3e858mr21822081a91.5.1745339490670; Tue, 22 Apr 2025
- 09:31:30 -0700 (PDT)
+        bh=VoeDodQoqrdD05E0gVc9ZrhWPxMU9fIoQD7UZWs5Ork=;
+        b=YCPa8eWusqZItbX55XETtJtdepwqsACCw/gq+MyUlHR6awYHWUOJ+zPGMRD06GQTF8
+         0X/1G3MiB4xobucb3sIMgKV+dG1CFh8dBVcocTop3FYyuPLev90O4W/56JGJ1cG7Qmx+
+         6ltcR2hF1UwGorwN/oFRzeCgiINdXweXM0ma3zUAEYCf6hPazunrrmjwKai9h7J+dPgs
+         xEyjpieAJ05g+HqKzS47k0RO2jEQomNENP07fNo2as8jtPD2VnqD5DGIl9vCPMZuaqdk
+         Zgvq2507bdq4SKJi9DvEndUlQaboD/FSfoEf5cM16QUhtSVRQcY3UWG9/w4mBrOq/ilr
+         ETpw==
+X-Gm-Message-State: AOJu0YwXbVMFBnA3j3ze6E2c3nK2/vJWelH5re/pQyWQouHJuSIu1CC0
+	bkxSCkaBhcfRAFaCO1uA+Kc43/sOfLQyxpnYs+BlCJMIctVepwiW7ElpdddN0WLiePXMTFRAmof
+	N5LDXppQwIlkRbX+lh9Fb5b/KWpYeGeWDq+sWduRjS77ZIsi9Vg==
+X-Gm-Gg: ASbGncv90mFlLat7CT7fup/XUoWXhLySObFJpM1LjciDI1DbOcqlIosI/+wYf4X7zMm
+	M7MJCkUV4NofZf6wU67n+aZQvLjp00ROAJ9cGf7tUQrBmzdAHjrjKUsK8tXaILO1HSdS9LvgyOP
+	nkJjCHT5b3eAuGmqoWlMUs6+E=
+X-Google-Smtp-Source: AGHT+IHJqcg3Y81UgamEVev6/mvztmmdM2swuYvPWopz7os3r5sNU/sTd5vdZzsFuz+A0YMw6oGtSsufO+ULbxeELmo=
+X-Received: by 2002:a17:90b:1d4e:b0:2fa:228d:5af2 with SMTP id
+ 98e67ed59e1d1-3087bb623b5mr21777339a91.15.1745339839267; Tue, 22 Apr 2025
+ 09:37:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,58 +71,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <2025032413-email-washer-d578@gregkh> <20250324221236.35820-1-kamal.dasu@broadcom.com>
  <20250324221236.35820-4-kamal.dasu@broadcom.com> <2025042202-profile-worshiper-c2b0@gregkh>
-In-Reply-To: <2025042202-profile-worshiper-c2b0@gregkh>
+ <CAKekbevHy0v78=3QmDeOWTXCX+oj5zxixw19Wz8VKLByA+MygA@mail.gmail.com>
+In-Reply-To: <CAKekbevHy0v78=3QmDeOWTXCX+oj5zxixw19Wz8VKLByA+MygA@mail.gmail.com>
 From: Kamal Dasu <kamal.dasu@broadcom.com>
-Date: Tue, 22 Apr 2025 12:30:54 -0400
-X-Gm-Features: ATxdqUE1kO0xtm_Jta1U-Km-YwMfc0QJHBb9eW8s0ogdQxIeZNy1hXeL6ZCK99E
-Message-ID: <CAKekbevHy0v78=3QmDeOWTXCX+oj5zxixw19Wz8VKLByA+MygA@mail.gmail.com>
+Date: Tue, 22 Apr 2025 12:36:42 -0400
+X-Gm-Features: ATxdqUHav3Hw3xpbkeQ7UHRvFp4T6l7tpw4hwF7LM0i9u8Tiug49dyw1eSUvxGI
+Message-ID: <CAKekbetDRWC5FfO1KvcMrwbUwr2V3MWX6_YQHifOd+J0KWSEaA@mail.gmail.com>
 Subject: Re: [PATCH 5.15.y 4/4] mmc: sdhci-brcmstb: add cqhci suspend/resume
  to PM ops
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000005f46bb0633608436"
+	boundary="00000000000025f2690633609972"
 
---0000000000005f46bb0633608436
-Content-Type: multipart/alternative; boundary="0000000000005ad74f06336084e0"
+--00000000000025f2690633609972
+Content-Type: multipart/alternative; boundary="0000000000002202a706336099e6"
 
---0000000000005ad74f06336084e0
+--0000000000002202a706336099e6
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Should be
+Greg,
 
-commit 723ef0e20dbb2aa1b5406d2bb75374fc48187daa upstream
+Do you want me to resend v2 for the series or just the Patch 4/4 ?
 
-On Tue, Apr 22, 2025 at 8:14=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+
+
+On Tue, Apr 22, 2025 at 12:30=E2=80=AFPM Kamal Dasu <kamal.dasu@broadcom.co=
+m> wrote:
+
+> Should be
+>
+> commit 723ef0e20dbb2aa1b5406d2bb75374fc48187daa upstream
+>
+> On Tue, Apr 22, 2025 at 8:14=E2=80=AFAM Greg KH <gregkh@linuxfoundation.o=
+rg>
 > wrote:
-
-> On Mon, Mar 24, 2025 at 06:12:36PM -0400, Kamal Dasu wrote:
-> > commit 7116ceb621274510ccbc7e9511f44ba6c3456ff8 upstream
 >
-> Not a valid git commit id :(
+>> On Mon, Mar 24, 2025 at 06:12:36PM -0400, Kamal Dasu wrote:
+>> > commit 7116ceb621274510ccbc7e9511f44ba6c3456ff8 upstream
+>>
+>> Not a valid git commit id :(
+>>
 >
 
---0000000000005ad74f06336084e0
+--0000000000002202a706336099e6
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Should be=C2=A0</div><div><br></div>commit 723ef0e20d=
-bb2aa1b5406d2bb75374fc48187daa=C2=A0upstream</div><br><div class=3D"gmail_q=
-uote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, A=
-pr 22, 2025 at 8:14=E2=80=AFAM Greg KH &lt;<a href=3D"mailto:gregkh@linuxfo=
-undation.org">gregkh@linuxfoundation.org</a>&gt; wrote:<br></div><blockquot=
-e class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px s=
-olid rgb(204,204,204);padding-left:1ex">On Mon, Mar 24, 2025 at 06:12:36PM =
--0400, Kamal Dasu wrote:<br>
+<div dir=3D"ltr"><div>Greg,</div><div><br></div>Do you want me to resend v2=
+ for the series or just the Patch 4/4 ?<div><br></div><div><br></div></div>=
+<br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=
+=3D"gmail_attr">On Tue, Apr 22, 2025 at 12:30=E2=80=AFPM Kamal Dasu &lt;<a =
+href=3D"mailto:kamal.dasu@broadcom.com">kamal.dasu@broadcom.com</a>&gt; wro=
+te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
+0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"=
+ltr"><div>Should be=C2=A0</div><div><br></div>commit 723ef0e20dbb2aa1b5406d=
+2bb75374fc48187daa=C2=A0upstream</div><br><div class=3D"gmail_quote"><div d=
+ir=3D"ltr" class=3D"gmail_attr">On Tue, Apr 22, 2025 at 8:14=E2=80=AFAM Gre=
+g KH &lt;<a href=3D"mailto:gregkh@linuxfoundation.org" target=3D"_blank">gr=
+egkh@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">On Mon, Mar 24, 2025 at 06:12:36PM -0400, Kamal Das=
+u wrote:<br>
 &gt; commit 7116ceb621274510ccbc7e9511f44ba6c3456ff8 upstream<br>
 <br>
 Not a valid git commit id :(<br>
 </blockquote></div>
+</blockquote></div>
 
---0000000000005ad74f06336084e0--
+--0000000000002202a706336099e6--
 
---0000000000005f46bb0633608436
+--00000000000025f2690633609972
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -193,14 +213,14 @@ NxffjNkeAdgfN/SS9S9Rj4WXD7pF1M0Xq8gPLCLyXrx1i2KkYOYJsj0PWlC6VRg6E1xXkYDte0VL
 fAAG4QsETU27E1HBNQyp5zF1PoPCPvq3EnWQnbLgYk+Jz2iwIUwiqwr/bDgxggJgMIICXAIBATBr
 MFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMTEwLwYDVQQDEyhHbG9i
 YWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAyMDIwAgw89WX2Pp7ue922QVkwDQYJYIZI
-AWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEICU6HQrchJx+01T1oUCNL72sOrVDUmqmb1CpnAkW
-NxC4MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDQyMjE2MzEz
-MFowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
+AWUDBAIBBQCggccwLwYJKoZIhvcNAQkEMSIEIDEaKT8/k31Cn/7Xb2d1hwqyTOjuI2B1QhSqrqN5
+mNnqMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDQyMjE2Mzcx
+OVowXAYJKoZIhvcNAQkPMU8wTTALBglghkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQB
 AjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIB
-ACVH3EfIcBdt41e/cu2P5+JSEDDn+voCDDrf2Mp9j+hphTJQ5sZssKHNLBHltjU/NedPrWe1hSVQ
-wmx5GKNY4uaLHVsThgWodLUNvuewaTytIJI63YrGpTRrXXzVwtyOLeCcR8YWOW20gXPx3D0Dna/a
-K0u8wrIDuoBpV1LieVhymUGNndnj+3vm6Jo/mDYMBzABop9KsVnzd60mHkxyOy/CFSQWffI8edVp
-1qvEJmK7MazlBURRnJdw/2dJ472kliJsRKsqINHtDiFb7bypM4/RjlEmAGM8lBX4MudIeYNuu/cO
-6B+J+ZcFjsTPCxXUwRYDdNyBUy+3umwDaeBSAlI=
---0000000000005f46bb0633608436--
+AJTXIwGjCNNZ7zvrMUK5BBvJOJNTIhWwF2xCcjEiyH7nGqkjCzTqzHPphaAaF0zBPTgxZmTBSu7G
+0f64acUgANMCI7ZB8bxZmuOToxcBJldQI2w90gVEoOBf1dyHMPACCI/VxDbkgendOyjpY/eb6/gE
+qZ+5jWpy2WC6rsEP9+lpnQec/QgwlvsfgSJL4ChrAEIk21Oo9AXUlKQwvuxJBJYBRJ3YGiy72hKi
+3E7emrTkfJfvbc3xVHvJkZJFOO1a9fbvlg8nRd17P7Q9VLYkCVsZ7Ztw4Oc8JZCLsD0oVR1HnjJS
+KPALmVE4uW7SyFcYBedD9lY3pAqLf3f2qBOA0ZY=
+--00000000000025f2690633609972--
 
