@@ -1,95 +1,88 @@
-Return-Path: <stable+bounces-135039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9734A95EA6
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:49:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CACA7A95ED9
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 09:05:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 402B97A5767
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:48:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0E6D3AA16E
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 07:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9095D1E5207;
-	Tue, 22 Apr 2025 06:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A8522F392;
+	Tue, 22 Apr 2025 07:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fsc5uC73";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1tAwA+rC";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fsc5uC73";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1tAwA+rC"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WEc3JZdz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9071F1A38E4
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 06:49:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063F51F3FD0
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 07:04:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745304587; cv=none; b=DOKJuEyTIQiCA2iptGqkSY/nl7Rf5V0Pfu6V4dwAP0Ll0QB9dbHOK7BDzRI+e6t9MteaBYDhX4E4Wgf0WeUbi+pepXbjnGwKGfmFBN4pZibHXVeg8TnJaqT9kedc55TB4Yuz2JuI2WtOIryqeUmg+QOJZAT9lwmUzIkX7yQ0EVA=
+	t=1745305486; cv=none; b=XfIWMCE4xCe+0Aq/YlCS6GZwgZHA4plLsG4hVwgbxFNwNojlyDLK2sM6Mj1V7OoLU+2ZFE+pZT4LPHOu6qeO0vrk0Ydpyw9zkOqc1O8e0PmVg3n/ee4bLQ8ioHvjDc/WvXiSB24wGigLZHi+HtgK0oSc7nSasgrqQxrS9YGbKvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745304587; c=relaxed/simple;
-	bh=7q9AbXbiaREeAYOLzFdhlgFdzc2+sC+SVAsDiqFhZ0w=;
+	s=arc-20240116; t=1745305486; c=relaxed/simple;
+	bh=1ntyTJA8TtikV97geuTawe+/2Tm8Y71h8JoCDCP0GtU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XvRtnu3PgfNRJsC1Ir55VU73kacydAJ3bQJ+mGbMdyFH8Q+CCMTCY5uL/EEMiCq+qI5PHsHNsQDa16eGFPU4zmPmBeSJaNrUdSOqlQQ7h9hYcdxYn9K+/O+kHGwDtisl6AFHjvAF1kxALpSDhoFQF8GjB1MVUeJmnDSoKvgCEXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fsc5uC73; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1tAwA+rC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fsc5uC73; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1tAwA+rC; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B57B71F7C1;
-	Tue, 22 Apr 2025 06:49:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1745304583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 In-Reply-To:Content-Type; b=uBufYMt2aQm4re7M0BpWgoSh9/8o1qtwd6EXcI/D/mpZOzN4R/Z02dsoz6S9RYIG5vWYFUmFXx+R8D+0BocJd78pwHdUp/lmmAtsqqf0KyU8Njxtyv9Z61pGvSNMTba8wxg3gUXz2u1ttkFND4Y8DfZIE95nwcEqfpnQF5NZ1pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WEc3JZdz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745305483;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
-	b=fsc5uC73HrShRe/2T/3i/fyV9A4X53/snHFO9bTbThyelVa2DU1aAGA4/Qk/z32eQ3eLCc
-	95fsNZK42DcMN3iyDG0N4kIUVYEoaQS+jCouOCkI9x40QWfVPgs1m8lU7bqnY1x6IsKwvt
-	AXz3CwGmlMro3pKaKS1o5rLZKOfS1BQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1745304583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
-	b=1tAwA+rC9i+AbIj/c0S25wxVO941Y/h7PBPddWiy+kmev7r0mIe4ONxnborLQK98CfoPzE
-	ZsEX9ufd+/53otAg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1745304583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
-	b=fsc5uC73HrShRe/2T/3i/fyV9A4X53/snHFO9bTbThyelVa2DU1aAGA4/Qk/z32eQ3eLCc
-	95fsNZK42DcMN3iyDG0N4kIUVYEoaQS+jCouOCkI9x40QWfVPgs1m8lU7bqnY1x6IsKwvt
-	AXz3CwGmlMro3pKaKS1o5rLZKOfS1BQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1745304583;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
-	b=1tAwA+rC9i+AbIj/c0S25wxVO941Y/h7PBPddWiy+kmev7r0mIe4ONxnborLQK98CfoPzE
-	ZsEX9ufd+/53otAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8CA46137CF;
-	Tue, 22 Apr 2025 06:49:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id X1b/IAc8B2htLgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Tue, 22 Apr 2025 06:49:43 +0000
-Message-ID: <527b7ebd-0a34-4fe0-82fb-9cdd6126e38e@suse.de>
-Date: Tue, 22 Apr 2025 08:49:43 +0200
+	bh=RidtXoQ8utHmq+/JiDpAnUhpjg1f8nks6IGSAa7gnq4=;
+	b=WEc3JZdzKGmf2QaVQCZPoCGX/MdcS5eyhOOVpSNIBw7RVb7NQUv3MYhlLJFJ7mbbSI0PFd
+	aLcMNaff1vtzOl865Y/WuPStD+uzFqj2IVLnXk7I+t6H9riCc9h+S82h0ve2v2HjI/9Q8G
+	64Zi+gQUfYjmGbPzXLmP46qEt65TSl0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-643-qBCRbI5HOzGLoajDnc-Uug-1; Tue, 22 Apr 2025 03:04:42 -0400
+X-MC-Unique: qBCRbI5HOzGLoajDnc-Uug-1
+X-Mimecast-MFC-AGG-ID: qBCRbI5HOzGLoajDnc-Uug_1745305481
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43efa869b19so28808875e9.2
+        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 00:04:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745305481; x=1745910281;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RidtXoQ8utHmq+/JiDpAnUhpjg1f8nks6IGSAa7gnq4=;
+        b=WKFjKu0U+8cUD53oI8EnGfMG0Tnj+DaoULrJixho7H8NOg2gKizOUog1IMxK7mGmle
+         6yn6QQtOPAZiGgr4Rh2FVJCjP9dogmaGb0yYegK9JxAqD3FoCZy/xjS8Q5t5wB2ZrFIC
+         6EG7QKllOZ7QaQrsTURKE00VaDjV5Fgik2iJ43E43xtWcPh3YPIUx7nVqZJqrhpstmVn
+         6GWlsIfZ2oVfHND7UApuGBQJ1G7BTDqUminRKz3k7CH3wP5iCzwuqRZDQWUnuKHZAMcG
+         EoOgxiYQykWiowjfTiwYf2A9cC7DYxmVPVKpsHsfsiQl1h7UueF0H//tpKaF5Yjs61VS
+         jl+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVxtr9exFl+o7K4b9Pihut04PjLBT0YaXdhCiG+g/e2pP5u3bndBh1UTMPI4OMfubL9qy86Cj8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YweOqT8aiLkHGR8RH5EvtaCXve0YagqjEJbaXP4g2zdRYijSzZp
+	efg91YcAUngphG2KsyUxp5XSggbMq7ZGhP+1wnBuXBPpWgINzxnVzqQbeXQ1wpoTW0P9oIVkgY8
+	mHf8J2A8v6RtWldhtYwDGtRSeI+bPl0PEICCsg0n9K+5NWWSuH2b7Dw==
+X-Gm-Gg: ASbGncsBGZ26zgmUkXJZuEGtXl+X/StN8MIsP2QrzVzfb1X2Eax7uZZs+rJIAwJyyMx
+	4yv7w30EuWXMVDsMpq1idd/ys1eRpms6XAxuojoXtbd267ZS0pJ9FBsYVo9mUs/4wibVPbjiRIb
+	eZrgv5F6+rb5fe7rRmBlHYlOcRr6cU4ZVNUxdF6GkanaAnSOj5BgthKch92rpVbweJPIXgLcl/K
+	1iqe0WnmND/YYsNtFmKEBDAjKoQmDHwEjwP4KDbdmgeeXrodswEAHPwNlkO8nx1smOflBqOPfsU
+	brGza0JKJ+X/vMaaehyx+ayDq/onY90bht1lMVSCkvWslJPInDi4wIS3MUu/CjwtQLgMc+e1vKl
+	ybfs3G8OmdZTThGO+dQ3pv31gKUNoD2xZ8qVn
+X-Received: by 2002:a05:600c:54c2:b0:43c:fc0c:7f33 with SMTP id 5b1f17b1804b1-4406b92b57emr98154345e9.2.1745305481132;
+        Tue, 22 Apr 2025 00:04:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHgWBX/11P+U8H33SSNxBptWM+XbQuz66XnLNKZuRxp5LsWM8rUt1vY1NxeviT6YKW0WfkWQg==
+X-Received: by 2002:a05:600c:54c2:b0:43c:fc0c:7f33 with SMTP id 5b1f17b1804b1-4406b92b57emr98154055e9.2.1745305480787;
+        Tue, 22 Apr 2025 00:04:40 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c731:8700:3969:7786:322:9641? (p200300cbc73187003969778603229641.dip0.t-ipconnect.de. [2003:cb:c731:8700:3969:7786:322:9641])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4408c8b0ea0sm5846715e9.2.2025.04.22.00.04.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 00:04:40 -0700 (PDT)
+Message-ID: <7bf68ddd-7204-4a8c-b7df-03ecb6aa2ad2@redhat.com>
+Date: Tue, 22 Apr 2025 09:04:38 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,161 +90,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] video: screen_info: Update framebuffers behind PCI
- bridges
-To: javierm@redhat.com, iivanov@suse.de
-Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
- "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>
-References: <20250417072751.10125-1-tzimmermann@suse.de>
+Subject: Re: Please apply d2155fe54ddb to 5.10 and 5.4
+To: Qingfang Deng <dqfext@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+ linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Brendan Jackman <jackmanb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>,
+ Liu Xiang <liu.xiang@zlingsmart.com>
+References: <CALW65jbBY3EyRD-5vXz6w87Q+trxaod-QVy2NhVxLNcQHVw0hg@mail.gmail.com>
+ <2025042251-energize-preorder-31cd@gregkh>
+ <CALW65jbNq76JJsa9sH2GhRzn=Fe=+bBicW8XWmcj-rzjJSjCQg@mail.gmail.com>
+ <2025042237-express-coconut-592c@gregkh>
+ <CALW65jbEq250E1T=DpGWnP+_1QnPmfQ=q92NK8vo8n+jdqbDLg@mail.gmail.com>
+From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <20250417072751.10125-1-tzimmermann@suse.de>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <CALW65jbEq250E1T=DpGWnP+_1QnPmfQ=q92NK8vo8n+jdqbDLg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:url,suse.de:mid,suse.de:email]
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
 
-cc'ing PCI devs
+On 22.04.25 08:34, Qingfang Deng wrote:
+> On Tue, Apr 22, 2025 at 2:27 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>> On Tue, Apr 22, 2025 at 02:10:53PM +0800, Qingfang Deng wrote:
+>>> On Tue, Apr 22, 2025 at 2:06 PM Greg Kroah-Hartman
+>>> <gregkh@linuxfoundation.org> wrote:
+>>>> All mm patches MUST get approval from the mm maintainers/developers
+>>>> before we can apply them to stable kernels.
+>>>>
+>>>> Can you please do that here?
+>>>
+>>> Sure. Added to Cc list.
+>>
+>> They have no context here at all :(
+> 
+> Let me post it again:
+> 
+> Please consider applying d2155fe54ddb ("mm: compaction: remove
+> duplicate !list_empty(&sublist) check") to 5.10 and 5.4, as it
+> resolves a -Wdangling-pointer warning in recent GCC versions:
+> 
+> In function '__list_cut_position',
+>      inlined from 'list_cut_position' at ./include/linux/list.h:400:3,
+>      inlined from 'move_freelist_tail' at mm/compaction.c:1241:3:
+> ./include/linux/list.h:370:21: warning: storing the address of local
+> variable 'sublist' in '*&freepage_6(D)->D.15621.D.15566.lru.next'
+> [-Wdangling-pointer=]
 
-Am 17.04.25 um 09:27 schrieb Thomas Zimmermann:
-> Apply bridge window offsets to screen_info framebuffers during
-> relocation. Fixes invalid access to I/O memory.
->
-> Resources behind a PCI bridge can be located at a certain offset
-> in the kernel's I/O range. The framebuffer memory range stored in
-> screen_info refers to the offset as seen during boot (essentialy 0).
-> During boot up, the kernel may assign a different memory offset to
-> the bridge device and thereby relocating the framebuffer address of
-> the PCI graphics device as seen by the kernel. The information in
-> screen_info must be updated as well.
->
-> The helper pcibios_bus_to_resource() performs the relocation of
-> the screen_info resource. The result now matches the I/O-memory
-> resource of the PCI graphics device. As before, we store away the
-> information necessary to update the information in screen_info.
->
-> Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
-> EFI framebuffers") added the code for updating screen_info. It is
-> based on similar functionality that pre-existed in efifb. But efifb
-> did not handle bridges correctly, so the problem presumably exists
-> only on newer systems.
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reported-by: Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
-> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
-> Tested-by: Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
-> Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.9+
-> ---
->   drivers/video/screen_info_pci.c | 17 ++++++++++++++---
->   1 file changed, 14 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/video/screen_info_pci.c b/drivers/video/screen_info_pci.c
-> index 6c5833517141..c46c75dc3fae 100644
-> --- a/drivers/video/screen_info_pci.c
-> +++ b/drivers/video/screen_info_pci.c
-> @@ -8,7 +8,7 @@
->   static struct pci_dev *screen_info_lfb_pdev;
->   static size_t screen_info_lfb_bar;
->   static resource_size_t screen_info_lfb_offset;
-> -static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
-> +static struct pci_bus_region screen_info_lfb_region;
->   
->   static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
->   {
-> @@ -31,7 +31,7 @@ void screen_info_apply_fixups(void)
->   	if (screen_info_lfb_pdev) {
->   		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
->   
-> -		if (pr->start != screen_info_lfb_res.start) {
-> +		if (pr->start != screen_info_lfb_region.start) {
->   			if (__screen_info_relocation_is_valid(si, pr)) {
->   				/*
->   				 * Only update base if we have an actual
-> @@ -69,10 +69,21 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
->   
->   	for (i = 0; i < numres; ++i) {
->   		struct resource *r = &res[i];
-> +		struct pci_bus_region bus_region = {
-> +			.start = r->start,
-> +			.end = r->end,
-> +		};
->   		const struct resource *pr;
->   
->   		if (!(r->flags & IORESOURCE_MEM))
->   			continue;
-> +
-> +		/*
-> +		 * Translate the address to resource if the framebuffer
-> +		 * is behind a PCI bridge.
-> +		 */
-> +		pcibios_bus_to_resource(pdev->bus, r, &bus_region);
-> +
->   		pr = pci_find_resource(pdev, r);
->   		if (!pr)
->   			continue;
-> @@ -85,7 +96,7 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
->   		screen_info_lfb_pdev = pdev;
->   		screen_info_lfb_bar = pr - pdev->resource;
->   		screen_info_lfb_offset = r->start - pr->start;
-> -		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
-> +		memcpy(&screen_info_lfb_region, &bus_region, sizeof(screen_info_lfb_region));
->   	}
->   }
->   DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
+The commit looks harmless. But I don't see how it could fix any warning?
+
+I mean, we replace two !list_empty() checks by a single one ... and the 
+warning is about list_cut_position() ?
 
 -- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Cheers,
+
+David / dhildenb
 
 
