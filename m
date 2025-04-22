@@ -1,154 +1,208 @@
-Return-Path: <stable+bounces-135019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA165A95DFF
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:18:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10656A95E03
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81FFA7A1DF5
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:17:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BFDA7A83E0
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1453B1EF376;
-	Tue, 22 Apr 2025 06:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2D91F2B8B;
+	Tue, 22 Apr 2025 06:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="vjtgOsEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmUZA7D+"
 X-Original-To: stable@vger.kernel.org
-Received: from relay2.mymailcheap.com (relay2.mymailcheap.com [217.182.66.162])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D599EE56F;
-	Tue, 22 Apr 2025 06:18:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.66.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6371EF090
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 06:20:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745302702; cv=none; b=TDTfUd9Nq+p+YCSWMmJnA7WEFrS7i/sZmSrGAf8koJWJCq2TOXPa7EhLURMcQlr2Z5l7tt5OUB5RFCB6W3ZNqLFY9d3eBEJphlo9Q1tIeIy19j3utMBcKi7BEZ5URM7MP9O/54mDkciqfQ8neA57VUfxgt4y8kqaI63aSxeOqjs=
+	t=1745302811; cv=none; b=tKMaJt5bDp0FojmDGeZWUb9pbslbjgEe+kJ2MmgiB6uM2i8MYiMU7IeOpGXAq0qjgXUdL6kY+JUuFIZuFk00NvXm+7CVnIYaHciOqbG5Rw+b0oE93VBsyox2XYqh9AEC2YwBSGLAQQ65pxSpt9EeV+a/Is1xRSntOrZ8QkXCSg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745302702; c=relaxed/simple;
-	bh=r6vl2FpaPYnpaqdusFI5msn9JVcDcophXwwsZfaOChQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DYwtIPbgUq0LzlUm1fhsKrNyd8qm+NxLorRJqga2usFg+LOX2rYwKO2FG7192tn/LkAXZEUcdGCxCoPv8DlJCUFgfbH/Jeh/ocm6NNjhYJfyj0GZA3o27ate0cPEg9449byNE7JnXEwhJQ/bIRMdwRLGYYUTjB3YAWLfx4Hv6TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=vjtgOsEa; arc=none smtp.client-ip=217.182.66.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay2.mymailcheap.com (Postfix) with ESMTPS id E200B3E885;
-	Tue, 22 Apr 2025 06:18:18 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 8868E40047;
-	Tue, 22 Apr 2025 06:18:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1745302698; bh=r6vl2FpaPYnpaqdusFI5msn9JVcDcophXwwsZfaOChQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=vjtgOsEaupt/Djm7Yo24ehIcw7gIHpuh6J6DjzJLrp5M5SpIezJiUKEe7mI/y1dkD
-	 YN9YN4j0QiJUiTx5LfHMLdX9FhnYmgeo3HjHLdeX3GeuwUtvIXkW39u2SAjSXXzBWp
-	 z6kySvKlSC7bRVTqiAacRvvL85szxaYBm2acoY4M=
-Received: from JellyZhongke.localdomain (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 8FC1141F59;
-	Tue, 22 Apr 2025 06:18:14 +0000 (UTC)
-From: Mingcong Bai <jeffbai@aosc.io>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	stable@vger.kernel.org,
-	Liangliang Zou <rawdiamondmc@outlook.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	linux-wireless@vger.kernel.org (open list:REALTEK WIRELESS DRIVER (rtlwifi family)),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH rtw-next v2] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
-Date: Tue, 22 Apr 2025 14:17:54 +0800
-Message-ID: <20250422061755.356535-1-jeffbai@aosc.io>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1745302811; c=relaxed/simple;
+	bh=WnJ03ztcgAyuL21s72NPkDGMJsBIcaaeghTIO1dZ1fU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sOI3cW0Sr6t8mfU+seEbazQ8peMAAMvmV/gGDSyW5//n0y8+TcSMKZQJP26zpjqGJHqXwUEPetg432wkm1P9lzjGXcr+zgEWYukGWZuSbszlx9Dy3hsrUf2v8FvZB3Kmy1SSWIQCXzfM2jaiIlGYRbUARkCMHCtKTkZTb5/fyro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmUZA7D+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C1EC4CEE9;
+	Tue, 22 Apr 2025 06:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745302811;
+	bh=WnJ03ztcgAyuL21s72NPkDGMJsBIcaaeghTIO1dZ1fU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=jmUZA7D+0RkXhNg/yww8tnAnvNIP5JvAQZ/PanUELkxt8oUhb3i0rpL2JaPfx48Nx
+	 7nmi+waflSVFMB5oIY81L34YeJ4jAWPql+D8yFRYqBL5HHwZxDB6qanPvu44lFGzH8
+	 SWoFGQjmlnxQiWwZRRN54jO+fM/7erExKXbSU0ZY=
+Subject: FAILED: patch "[PATCH] drm/amd/pm: Add zero RPM enabled OD setting support for" failed to apply to 6.12-stable tree
+To: tomasz.pakula.oficjalny@gmail.com,alexander.deucher@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 22 Apr 2025 08:20:08 +0200
+Message-ID: <2025042208-negotiate-doily-2307@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.50 / 10.00];
-	FORGED_RECIPIENTS(2.00)[m:kexybiscuit@aosc.io,m:jeffbai@aosc.io,s:linux-kernel@vger.kernel.org];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	SUBJECT_RANDOM_CHARS_1(0.10)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[rawdiamondmc.outlook.com:server fail,jeffbai.aosc.io:server fail,stable.vger.kernel.org:server fail];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com];
-	FREEMAIL_CC(0.00)[aosc.io,vger.kernel.org,outlook.com,lwfinger.net,tuxdriver.com];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 8868E40047
 
-RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
-subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
-errors during and after boot up, causing heavy lags and at times lock-ups:
 
-  pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
-  pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
-  pcieport 0000:00:1c.5:    [ 0] RxErr
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Disable ASPM on this combo as a quirk.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-This patch is a revision of a previous patch (linked below) which
-attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
-PCIe bridges. I take a more conservative approach as all known reports
-point to ASUSTek laptops of these two generations with this particular
-wireless card.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x b03f1810db7bf609a64b90704f11da46e3baa050
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042208-negotiate-doily-2307@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Please note, however, before the rtl8723be finishes probing, the AER
-errors remained. After the module finishes probing, all AER errors would
-indeed be eliminated, along with heavy lags, poor network throughput,
-and/or occasional lock-ups.
+Possible dependencies:
 
-Cc: <stable@vger.kernel.org>
-Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
-Reported-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218127
-Link: https://lore.kernel.org/lkml/05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net/T/
-Tested-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
----
- drivers/net/wireless/realtek/rtlwifi/pci.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 0eafc4d125f9..898f597f70a9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -155,6 +155,16 @@ static void _rtl_pci_update_default_setting(struct ieee80211_hw *hw)
- 	    ((u8)init_aspm) == (PCI_EXP_LNKCTL_ASPM_L0S |
- 				PCI_EXP_LNKCTL_ASPM_L1 | PCI_EXP_LNKCTL_CCC))
- 		ppsc->support_aspm = false;
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b03f1810db7bf609a64b90704f11da46e3baa050 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>
+Date: Tue, 25 Mar 2025 11:26:52 +0100
+Subject: [PATCH] drm/amd/pm: Add zero RPM enabled OD setting support for
+ SMU14.0.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Hook up zero RPM enable for 9070 and 9070 XT based on RDNA3
+(smu 13.0.0 and 13.0.7) code.
+
+Tested on 9070 XT Hellhound
+
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.12.x
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+index f7cfe1f35cae..82c2db972491 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -79,6 +79,7 @@
+ #define PP_OD_FEATURE_FAN_ACOUSTIC_TARGET		8
+ #define PP_OD_FEATURE_FAN_TARGET_TEMPERATURE		9
+ #define PP_OD_FEATURE_FAN_MINIMUM_PWM			10
++#define PP_OD_FEATURE_FAN_ZERO_RPM_ENABLE		11
+ 
+ static struct cmn2asic_msg_mapping smu_v14_0_2_message_map[SMU_MSG_MAX_COUNT] = {
+ 	MSG_MAP(TestMessage,			PPSMC_MSG_TestMessage,                 1),
+@@ -1052,6 +1053,10 @@ static void smu_v14_0_2_get_od_setting_limits(struct smu_context *smu,
+ 		od_min_setting = overdrive_lowerlimits->FanMinimumPwm;
+ 		od_max_setting = overdrive_upperlimits->FanMinimumPwm;
+ 		break;
++	case PP_OD_FEATURE_FAN_ZERO_RPM_ENABLE:
++		od_min_setting = overdrive_lowerlimits->FanZeroRpmEnable;
++		od_max_setting = overdrive_upperlimits->FanZeroRpmEnable;
++		break;
+ 	default:
+ 		od_min_setting = od_max_setting = INT_MAX;
+ 		break;
+@@ -1330,6 +1335,24 @@ static int smu_v14_0_2_print_clk_levels(struct smu_context *smu,
+ 				      min_value, max_value);
+ 		break;
+ 
++	case SMU_OD_FAN_ZERO_RPM_ENABLE:
++		if (!smu_v14_0_2_is_od_feature_supported(smu,
++							 PP_OD_FEATURE_ZERO_FAN_BIT))
++			break;
 +
-+	/* RTL8723BE found on some ASUSTek laptops, such as F441U and
-+	 * X555UQ with subsystem ID 11ad:1723 are known to output large
-+	 * amounts of PCIe AER errors during and after boot up, causing
-+	 * heavy lags, poor network throughput, and occasional lock-ups.
-+	 */
-+	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8723BE &&
-+	    (rtlpci->pdev->subsystem_vendor == 0x11ad &&
-+	     rtlpci->pdev->subsystem_device == 0x1723))
-+		ppsc->support_aspm = false;
++		size += sysfs_emit_at(buf, size, "FAN_ZERO_RPM_ENABLE:\n");
++		size += sysfs_emit_at(buf, size, "%d\n",
++				(int)od_table->OverDriveTable.FanZeroRpmEnable);
++
++		size += sysfs_emit_at(buf, size, "%s:\n", "OD_RANGE");
++		smu_v14_0_2_get_od_setting_limits(smu,
++						  PP_OD_FEATURE_FAN_ZERO_RPM_ENABLE,
++						  &min_value,
++						  &max_value);
++		size += sysfs_emit_at(buf, size, "ZERO_RPM_ENABLE: %u %u\n",
++				      min_value, max_value);
++		break;
++
+ 	case SMU_OD_RANGE:
+ 		if (!smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_GFXCLK_BIT) &&
+ 		    !smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_UCLK_BIT) &&
+@@ -2270,7 +2293,9 @@ static void smu_v14_0_2_set_supported_od_feature_mask(struct smu_context *smu)
+ 					    OD_OPS_SUPPORT_FAN_TARGET_TEMPERATURE_RETRIEVE |
+ 					    OD_OPS_SUPPORT_FAN_TARGET_TEMPERATURE_SET |
+ 					    OD_OPS_SUPPORT_FAN_MINIMUM_PWM_RETRIEVE |
+-					    OD_OPS_SUPPORT_FAN_MINIMUM_PWM_SET;
++					    OD_OPS_SUPPORT_FAN_MINIMUM_PWM_SET |
++					    OD_OPS_SUPPORT_FAN_ZERO_RPM_ENABLE_RETRIEVE |
++					    OD_OPS_SUPPORT_FAN_ZERO_RPM_ENABLE_SET;
  }
  
- static bool _rtl_pci_platform_switch_device_pci_aspm(
--- 
-2.49.0
+ static int smu_v14_0_2_get_overdrive_table(struct smu_context *smu,
+@@ -2349,6 +2374,8 @@ static int smu_v14_0_2_set_default_od_settings(struct smu_context *smu)
+ 			user_od_table_bak.OverDriveTable.FanTargetTemperature;
+ 		user_od_table->OverDriveTable.FanMinimumPwm =
+ 			user_od_table_bak.OverDriveTable.FanMinimumPwm;
++		user_od_table->OverDriveTable.FanZeroRpmEnable =
++			user_od_table_bak.OverDriveTable.FanZeroRpmEnable;
+ 	}
+ 
+ 	smu_v14_0_2_set_supported_od_feature_mask(smu);
+@@ -2396,6 +2423,11 @@ static int smu_v14_0_2_od_restore_table_single(struct smu_context *smu, long inp
+ 		od_table->OverDriveTable.FanMode = FAN_MODE_AUTO;
+ 		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
+ 		break;
++	case PP_OD_EDIT_FAN_ZERO_RPM_ENABLE:
++		od_table->OverDriveTable.FanZeroRpmEnable =
++					boot_overdrive_table->OverDriveTable.FanZeroRpmEnable;
++		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_ZERO_FAN_BIT);
++		break;
+ 	case PP_OD_EDIT_ACOUSTIC_LIMIT:
+ 		od_table->OverDriveTable.AcousticLimitRpmThreshold =
+ 					boot_overdrive_table->OverDriveTable.AcousticLimitRpmThreshold;
+@@ -2678,6 +2710,27 @@ static int smu_v14_0_2_od_edit_dpm_table(struct smu_context *smu,
+ 		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_FAN_CURVE_BIT);
+ 		break;
+ 
++	case PP_OD_EDIT_FAN_ZERO_RPM_ENABLE:
++		if (!smu_v14_0_2_is_od_feature_supported(smu, PP_OD_FEATURE_ZERO_FAN_BIT)) {
++			dev_warn(adev->dev, "Zero RPM setting not supported!\n");
++			return -ENOTSUPP;
++		}
++
++		smu_v14_0_2_get_od_setting_limits(smu,
++						  PP_OD_FEATURE_FAN_ZERO_RPM_ENABLE,
++						  &minimum,
++						  &maximum);
++		if (input[0] < minimum ||
++		    input[0] > maximum) {
++			dev_info(adev->dev, "zero RPM enable setting(%ld) must be within [%d, %d]!\n",
++				 input[0], minimum, maximum);
++			return -EINVAL;
++		}
++
++		od_table->OverDriveTable.FanZeroRpmEnable = input[0];
++		od_table->OverDriveTable.FeatureCtrlMask |= BIT(PP_OD_FEATURE_ZERO_FAN_BIT);
++		break;
++
+ 	case PP_OD_RESTORE_DEFAULT_TABLE:
+ 		if (size == 1) {
+ 			ret = smu_v14_0_2_od_restore_table_single(smu, input[0]);
 
 
