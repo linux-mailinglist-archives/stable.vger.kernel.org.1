@@ -1,82 +1,66 @@
-Return-Path: <stable+bounces-135104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FFCEA96894
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:09:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8478A968AA
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB45A3AD25D
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:08:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4385189C57C
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E238C1A317D;
-	Tue, 22 Apr 2025 12:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA7127CB10;
+	Tue, 22 Apr 2025 12:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSM/8uWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mApABv+k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAF4221289
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 12:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7F127C174
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 12:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745323738; cv=none; b=fQYqw9QLJ9ZGcyETkww4RC01pu5hgh/56tLu5euO6+axXtdj2wbwdeNlxd6CClOyWbN88rpKW5mCKfzCo1ITpoIalFdVtIRthqjjhH3Gt6DquOkptQ9yVJvh7OyLcFPp8A1QlTuN0BJkiSQOhgMfoBRJQzB9tMNihJf59sVJYYg=
+	t=1745324038; cv=none; b=BRq1S3m8Wu9e5J5vI5a8VIi3JKzv11VIkEE24EjhjnmywYd+h+Qglh4XeXjLi1Mc5baYuUNMGrIx8IVPRn1XwztV9JZC5pTBoBpcdBXJp7tcW1pcqwQpqgzeYHs+GcS+otGSAH4X3koqG9oZ6gQ96AfcI49y2LQ79MMGPQUyNgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745323738; c=relaxed/simple;
-	bh=Vf/lohAgte8oxHKlaOfU/EMD4a+LZdhrI7bfciw9jLk=;
+	s=arc-20240116; t=1745324038; c=relaxed/simple;
+	bh=SCV89DY2Ip8hqt0F0oJVxUrIOh5KMe6SOABPbTRjECI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZvPhRWKooAmiKIpFoaE52gFgLG5+AxtVAfFQiIBWdVG1T9+rcQpe5OLy/Mwjpph2sRXfoMU3vVbrDuxJd9ud7sLaMTqE2Wr4doMCkqKsbcq1IFhoaHpC4+KCIWK7OPFCawgaQ7jrGbMLVQA7JKH5XjotG7P7SQcy6lbfH7vh6Ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSM/8uWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D9DC4CEE9;
-	Tue, 22 Apr 2025 12:08:57 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=OF56MLqHHXkGQvrFsVdmTDBBtkasJbzfNkPJJ7wa5+IG/FDc7ps9tLu4ITiGglPeFfTFx9OAzvjg7WwtgLJs4AbpaeOPFXgaBrE51DS44sWY5L8X65AFcg+J4BHpGIBBGOWw7AkeJ3cQFMJfveyPSJgRa/Xqp3y008Yh735ep5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mApABv+k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADBBC4CEE9;
+	Tue, 22 Apr 2025 12:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745323738;
-	bh=Vf/lohAgte8oxHKlaOfU/EMD4a+LZdhrI7bfciw9jLk=;
+	s=korg; t=1745324038;
+	bh=SCV89DY2Ip8hqt0F0oJVxUrIOh5KMe6SOABPbTRjECI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PSM/8uWD+vzHhdCvne6bGJy8pJms1c/sJ6/42/L2eUd+NCVW8/ECi0B/QhZro8Yho
-	 zEvbUh9rMHs7KEHxmR7soHHefm50BIS2RzjeBKVpVs7N0/Rcs5Y7DMcd5Ddz2da5wg
-	 mWECGJTZHD9jQ+nf53E9nI61sQ3OtZ7EGpNwA/w8=
-Date: Tue, 22 Apr 2025 14:08:55 +0200
+	b=mApABv+kr+uEtyAnyIV4hjxadnNfw7mIwSw6p+rBdXxPjLDGMG65mcRgVNvlUU+xc
+	 vKfKiyk2ysuh3hM3kWxe9zjFM1zNwyLGoG4cjxRYwxwsVY3eKgADRgQm1OXFvy8EcZ
+	 3yI0yqa4tSn4eR/tXlC4iBwsmAelEoNMZf2LnZXo=
+Date: Tue, 22 Apr 2025 14:13:55 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Miguel =?iso-8859-1?Q?Garc=EDa?= <miguelgarciaroman8@gmail.com>
-Cc: stable@vger.kernel.org, skhan@linuxfoundation.org,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+9177d065333561cd6fd0@syzkaller.appspotmail.com,
-	Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH 6.1.y] ext4: filesystems without casefold feature cannot
- be mounted with siphash
-Message-ID: <2025042225-goldmine-cheer-3018@gregkh>
-References: <20250419084059.53070-1-miguelgarciaroman8@gmail.com>
+To: Kamal Dasu <kamal.dasu@broadcom.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.10.y 4/4] mmc: sdhci-brcmstb: add cqhci suspend/resume
+ to PM ops
+Message-ID: <2025042242-wildfowl-late-9470@gregkh>
+References: <2025032414-unsheathe-greedily-1d17@gregkh>
+ <20250324204639.17505-1-kamal.dasu@broadcom.com>
+ <20250324204639.17505-4-kamal.dasu@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250419084059.53070-1-miguelgarciaroman8@gmail.com>
+In-Reply-To: <20250324204639.17505-4-kamal.dasu@broadcom.com>
 
-On Sat, Apr 19, 2025 at 10:40:59AM +0200, Miguel García wrote:
-> From: Lizhi Xu <lizhi.xu@windriver.com>
-> 
-> commit 985b67cd86392310d9e9326de941c22fc9340eec upstream.
-> 
-> This patch is a backport.
+On Mon, Mar 24, 2025 at 04:46:39PM -0400, Kamal Dasu wrote:
+> commit 7116ceb621274510ccbc7e9511f44ba6c3456ff8 upstream
 
-Why?
+Not a valid commit id :(
 
-What about 6.6.y?
-
-And what has been fixed since the last times this has been submitted for
-inclusion and rejected?
-
-Please don't ignore past efforts :(
-
-thanks,
-
-greg k-h
 
