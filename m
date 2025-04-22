@@ -1,60 +1,68 @@
-Return-Path: <stable+bounces-134919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6E9FA95B31
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:20:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A33A95B33
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7CB169562
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:20:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEDE53AC36E
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A0224418F;
-	Tue, 22 Apr 2025 02:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934D824EF6F;
+	Tue, 22 Apr 2025 02:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Je8tMoBI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0jZ0Upx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A132417F2;
-	Tue, 22 Apr 2025 02:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDFF24C664;
+	Tue, 22 Apr 2025 02:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288189; cv=none; b=Vrqyb0FoEhQRsg33cXOTauZbsB4JbJSRYyR/8LSLATtM7yxw57rYDdfsH2ldhYlFQrgXaVtsG62uxiHuL8ZbzIu/9SJUuYLfXWTzdwQie98hsONCIStRXj8H8whS+exk4zjW1bFu8EBmOkgt3bDT9qt4scBycvO4h1IbCuLqjbg=
+	t=1745288191; cv=none; b=kUGl78ln+vGgnctPVZOlfLkkmUZteRY2+GY6EgEAutMksE3+UuWZnYUpJE2SIddse/qr8VJyvasyvYWrY8L4WTr67MAqYmIH8F8lpztBIjoraNCJvvGtx1yZK2YwqPJY66diZGfCmTSUAeKHZj9YSPlyl2asxggzLYE5BYNkIcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288189; c=relaxed/simple;
-	bh=QrzVhPOEckdeVgfj7BTtvLJJYq7mpUIxJUdJU3sToRM=;
+	s=arc-20240116; t=1745288191; c=relaxed/simple;
+	bh=BHpfc/S9C0le1JKbMWpHG10wMqwtDyGvp4bw7ETO/Uk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HssHf+t16patYianl/vub9A1JADPdxJ0J4VlpeVHatI2nCqDKbatmQ4fb5JoJMCTKg1U32gRBNefUo7KrttzuzU6oGB9lxvcOQe9jNB/yioJPf71lB9BDO32QF9rmSXutljJ9zGCP/xW+nsS9/aEP1E1/QqNOct4d9SFebjZptU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Je8tMoBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5775AC4CEEC;
-	Tue, 22 Apr 2025 02:16:27 +0000 (UTC)
+	 MIME-Version; b=QrlxUyKgh8bxg1ibubONY32Vpfu3z6mmeqbxOrOomwXz7PGNTplSrSSiR3LEmqIE8yhFgEd3VQOVA8jXvqTHauWdQ3ZV3ibD2TW3JXhvBmVJFIhmJcvBd7ElKB9Q0xf9OXiRK3IMhjJCuaY2qRE5OyZpDwpSV4hK/pU/+BCH/gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0jZ0Upx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D142FC4CEED;
+	Tue, 22 Apr 2025 02:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288188;
-	bh=QrzVhPOEckdeVgfj7BTtvLJJYq7mpUIxJUdJU3sToRM=;
+	s=k20201202; t=1745288190;
+	bh=BHpfc/S9C0le1JKbMWpHG10wMqwtDyGvp4bw7ETO/Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Je8tMoBIRld8+lQq3a0fPculqIjuVEAi4l0l0OSaDEcxAWA7oLvQk76RDoO475SGW
-	 h9GorU6lbiTeH32lULxhnLr88x4YwCbuQLtrWFIjbqMh5rCkDvA5nYPb5QQasCZI68
-	 zWawcqfVcBC5axU0OfWOh+0ZQQJRyhlfUsQNyhrUXyd9/iPWglbg67fgpvHxDmyz/y
-	 TYKscvfl+bQYyaPt7pCDpRde46IGlcyzEmPvTWKqqV5M5SU6mgqbi10E4sz2nk6eZD
-	 zrM87+gyHHxJMgFoL+TgBgyiCMZJsfeo5upVKIb6wJmk+NO0QSoyTlO57CkRh9CApk
-	 44e5xWjKBtBQQ==
+	b=X0jZ0UpxuAg213BfUZ0ceUV690dEiEOVdzHrSTuBYNKB/gFYRsm298oXZi00Sf+dG
+	 q9GRkpG7LoWDkZJtDMFvpVlZ3Yk0ptNST/IEqLqdVtzdpeJZmC6+VUcPoYEI/S6jii
+	 jTo7CZSY8utXg0Nf901PGSIiDhTfj2/5Qqpb4PvqOvF2zXEgUPeRFxSAe4rXllQkLI
+	 a6SQ9/obnoaQw2Mm/uVpoSg37tlKg0Q2PUovTzvimV9ijul3uPmD686SoyETZeHy9h
+	 JPg0WUskgPMAFL+mIdOKRxjkhVIh3pjpfYX9eR9gvDcfWG9qxIhwBgOxKugatVfBFq
+	 ddT4woWdOr8Qw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Pi Xiange <xiange.pi@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christian Ludloff <ludloff@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	x86-cpuid@lists.linux.dev,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	kch@nvidia.com,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 21/30] nvmet: pci-epf: cleanup link state management
-Date: Mon, 21 Apr 2025 22:15:41 -0400
-Message-Id: <20250422021550.1940809-21-sashal@kernel.org>
+	x86@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com
+Subject: [PATCH AUTOSEL 6.14 22/30] x86/cpu: Add CPU model number for Bartlett Lake CPUs with Raptor Cove cores
+Date: Mon, 21 Apr 2025 22:15:42 -0400
+Message-Id: <20250422021550.1940809-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
 References: <20250422021550.1940809-1-sashal@kernel.org>
@@ -69,88 +77,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.3
 Content-Transfer-Encoding: 8bit
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Pi Xiange <xiange.pi@intel.com>
 
-[ Upstream commit ad91308d3bdeb9d90ef4a400f379ce461f0fb6a7 ]
+[ Upstream commit d466304c4322ad391797437cd84cca7ce1660de0 ]
 
-Since the link_up boolean field of struct nvmet_pci_epf_ctrl is always
-set to true when nvmet_pci_epf_start_ctrl() is called, assign true to
-this field in nvmet_pci_epf_start_ctrl(). Conversely, since this field
-is set to false when nvmet_pci_epf_stop_ctrl() is called, set this field
-to false directly inside that function.
+Bartlett Lake has a P-core only product with Raptor Cove.
 
-While at it, also add information messages to notify the user of the PCI
-link state changes to help troubleshoot any link stability issues
-without needing to enable debug messages.
+[ mingo: Switch around the define as pointed out by Christian Ludloff:
+         Ratpr Cove is the core, Bartlett Lake is the product.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Pi Xiange <xiange.pi@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Christian Ludloff <ludloff@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: "Ahmed S. Darwish" <darwi@linutronix.de>
+Cc: x86-cpuid@lists.linux.dev
+Link: https://lore.kernel.org/r/20250414032839.5368-1-xiange.pi@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/pci-epf.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/intel-family.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
-index 99563648c318f..094826f81b283 100644
---- a/drivers/nvme/target/pci-epf.c
-+++ b/drivers/nvme/target/pci-epf.c
-@@ -2084,11 +2084,18 @@ static int nvmet_pci_epf_create_ctrl(struct nvmet_pci_epf *nvme_epf,
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 6d7b04ffc5fd0..ef5a06ddf0287 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -115,6 +115,8 @@
+ #define INTEL_GRANITERAPIDS_X		IFM(6, 0xAD)
+ #define INTEL_GRANITERAPIDS_D		IFM(6, 0xAE)
  
- static void nvmet_pci_epf_start_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- {
++#define INTEL_BARTLETTLAKE		IFM(6, 0xD7) /* Raptor Cove */
 +
-+	dev_info(ctrl->dev, "PCI link up\n");
-+	ctrl->link_up = true;
-+
- 	schedule_delayed_work(&ctrl->poll_cc, NVMET_PCI_EPF_CC_POLL_INTERVAL);
- }
+ /* "Hybrid" Processors (P-Core/E-Core) */
  
- static void nvmet_pci_epf_stop_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- {
-+	dev_info(ctrl->dev, "PCI link down\n");
-+	ctrl->link_up = false;
-+
- 	cancel_delayed_work_sync(&ctrl->poll_cc);
- 
- 	nvmet_pci_epf_disable_ctrl(ctrl);
-@@ -2314,10 +2321,8 @@ static int nvmet_pci_epf_epc_init(struct pci_epf *epf)
- 	if (ret)
- 		goto out_clear_bar;
- 
--	if (!epc_features->linkup_notifier) {
--		ctrl->link_up = true;
-+	if (!epc_features->linkup_notifier)
- 		nvmet_pci_epf_start_ctrl(&nvme_epf->ctrl);
--	}
- 
- 	return 0;
- 
-@@ -2333,7 +2338,6 @@ static void nvmet_pci_epf_epc_deinit(struct pci_epf *epf)
- 	struct nvmet_pci_epf *nvme_epf = epf_get_drvdata(epf);
- 	struct nvmet_pci_epf_ctrl *ctrl = &nvme_epf->ctrl;
- 
--	ctrl->link_up = false;
- 	nvmet_pci_epf_destroy_ctrl(ctrl);
- 
- 	nvmet_pci_epf_deinit_dma(nvme_epf);
-@@ -2345,7 +2349,6 @@ static int nvmet_pci_epf_link_up(struct pci_epf *epf)
- 	struct nvmet_pci_epf *nvme_epf = epf_get_drvdata(epf);
- 	struct nvmet_pci_epf_ctrl *ctrl = &nvme_epf->ctrl;
- 
--	ctrl->link_up = true;
- 	nvmet_pci_epf_start_ctrl(ctrl);
- 
- 	return 0;
-@@ -2356,7 +2359,6 @@ static int nvmet_pci_epf_link_down(struct pci_epf *epf)
- 	struct nvmet_pci_epf *nvme_epf = epf_get_drvdata(epf);
- 	struct nvmet_pci_epf_ctrl *ctrl = &nvme_epf->ctrl;
- 
--	ctrl->link_up = false;
- 	nvmet_pci_epf_stop_ctrl(ctrl);
- 
- 	return 0;
+ #define INTEL_LAKEFIELD			IFM(6, 0x8A) /* Sunny Cove / Tremont */
 -- 
 2.39.5
 
