@@ -1,180 +1,144 @@
-Return-Path: <stable+bounces-135194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2D0A977FB
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 22:47:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3587A97888
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA58718916C3
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 20:47:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7021189F6B0
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61892D8DAE;
-	Tue, 22 Apr 2025 20:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311F22D29C4;
+	Tue, 22 Apr 2025 21:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b="ULO8Hh2a"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b="Zj90dd+H"
 X-Original-To: stable@vger.kernel.org
-Received: from wylie.me.uk (wylie.me.uk [82.68.155.94])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC27F223DF1;
-	Tue, 22 Apr 2025 20:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.68.155.94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896EB29CB50
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 21:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745354852; cv=none; b=pVse8+vrwT2RJaKtISvrEUNKsP9FfD0FxuyjXaoPTj/xyXeVxpbl7MROU61hVpMDvvd01yLy6iSOvB0Bq+qG6ZEYFvyf41xVAsZSJzE1mau3oD/v256Gkt4bLZ3kYhPa+fbn75uxJ8jD4jAbh3c5B/mApDJcf8C97uD9iB0elfM=
+	t=1745357388; cv=none; b=tXB0oVrJM52qoq9oZkHW4sYmFb30Y5OwpZtOSznVA59cMA9Z+a0+AFZQGSvLe443l8NELIj7vEPfRO9SHNfrCSqfyuqKg7V5QUKKtyhWz/xZ9zyDEtsD1sAY58L84lamgwGfIGKYGf5M3AjD0yX8SZTW2IbwUTGaaUItRXM6Z9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745354852; c=relaxed/simple;
-	bh=jI6WvZRTjseleXVwj2r4KXdhlz//nry7SMVNn90CJK0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lg+UVDDoVpZx9W3dY2Hlg6ef9tkA9AZcjUCZQ0OdetDTCXDiP7GqR7q9N/ogUFyjwIjhWympL/WVw9RQ1FUTtN8B//oMhVqVNdL1yIg90KWdf41HCxA5nkhKApijmm5Js93LxPNmloFUI4C02RCQjDTWb28GTffIpnj3tyI9C/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk; spf=pass smtp.mailfrom=wylie.me.uk; dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b=ULO8Hh2a; arc=none smtp.client-ip=82.68.155.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wylie.me.uk
-Received: from frodo.int.wylie.me.uk (frodo.int.wylie.me.uk [192.168.21.2])
-	by wylie.me.uk (Postfix) with ESMTP id 78EA0120801;
-	Tue, 22 Apr 2025 21:47:17 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wylie.me.uk;
-	s=mydkim006; t=1745354837;
-	bh=jI6WvZRTjseleXVwj2r4KXdhlz//nry7SMVNn90CJK0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ULO8Hh2aQDgzFQqB3l5JjlzWKsXf9iEEpPxZF+9BrhHF3VZMQYmQvi1M/QFP59P1r
-	 WlPgp9XcNhxA5ko/bwOTIIVEyTcqnYonfBWxHFzhDh850931xi3LFslUI7ifcEgjmV
-	 NMZ0xROAlD89vjgG0b/83F5zNWVhSTv4C2q5CjWhQp+rbtpsocWF2KGgnUcZWLihIb
-	 rYjPNns24elRXWhe5NYGx51uC+rKR4R+hmmB0WBlovtMjXf1GqNK4Lf9H66aacgTAB
-	 kJzelemb24BywXoZava1XEdVYhTfOS7Ja36O/wDDPNb7DdV+7lBHWRDV2FUJY8WdI/
-	 LWt7W6xi/gO7g==
-Date: Tue, 22 Apr 2025 21:47:16 +0100
-From: "Alan J. Wylie" <alan@wylie.me.uk>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Holger =?UTF-8?B?SG9mZnN0w6R0dGU=?= <holger@applied-asynchrony.com>,
- Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev, Jiri
- Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>, Toke
- =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>,
- stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <20250422214716.5e181523@frodo.int.wylie.me.uk>
-In-Reply-To: <aAf/K7F9TmCJIT+N@pop-os.localdomain>
-References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
-	<6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
-	<20250421131000.6299a8e0@frodo.int.wylie.me.uk>
-	<20250421200601.5b2e28de@frodo.int.wylie.me.uk>
-	<89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
-	<20250421210927.50d6a355@frodo.int.wylie.me.uk>
-	<20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
-	<4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
-	<aAf/K7F9TmCJIT+N@pop-os.localdomain>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
-X-Clacks-Overhead: GNU Terry Pratchett
+	s=arc-20240116; t=1745357388; c=relaxed/simple;
+	bh=EKtCtAuhLcs4sGX+RF26ap3SrjbSFFY5SSfTUUZu/ek=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nbarmG45qCuh9DHZlV8/5e3JxrMBywSf3e3E+f4fAdxqf3NzCYAPXYJ5J0W9ohfrX0eXadCRgSg1DB3Bk+NxzN/NZbsx/+uSDknjCk7ziuEmEG3XDoiaiMCfmNaJd7PJkjN8WMC2SRUyWP5yakxkHZvxYUvBxXrxNtUlT1AFDXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca; spf=none smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20230601.gappssmtp.com header.i=@ndufresne-ca.20230601.gappssmtp.com header.b=Zj90dd+H; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ndufresne.ca
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c08fc20194so326187685a.2
+        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 14:29:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20230601.gappssmtp.com; s=20230601; t=1745357384; x=1745962184; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bQ7hnAfM9mT8cvOTYYkSndmUDqaTFrAy5uSIolG4TJ8=;
+        b=Zj90dd+H+e+sogdtpZsAG7IVmpbyXFndkwAiq/Y0J5yq4w20J2oYrAcCZq6JxbCmRv
+         AfAQdevlDrhX1vXEXPaC2mGmgzsgT3ZXh9/HwCxSsFLTR+/NA1brpRI5m7S/kS06xjG+
+         ZuuBd6Lnv/N6BGSB6NSPXRLaM0Rl3KdJMEB5KiAykt2XSozRtkpwGr4v5B+CDbgNpiM+
+         bbXR8nloCl0Ad4hO0JMgUaGENI1pOOD2Vc6bZGz1r8CB8tYyDR4Qt1P1SquuWFKg+seg
+         mbVcC9z8DfIEVtnS53GKABOViDNFR/pgpkwMCF0N9bHilfmskOzT2yVMgY3cpi3B9daS
+         8dXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745357384; x=1745962184;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bQ7hnAfM9mT8cvOTYYkSndmUDqaTFrAy5uSIolG4TJ8=;
+        b=ofoQkFzQwHaAVa8ouWbpu9UTUTksjCeyGcnNRyMiiGdEIFjFwNFFQaV1wJRvomyWbp
+         XI4X6UUvyneoiqc2lsbdrMD0ekXJoj1UDWitJP4MIFWsGtcCB7OFo5inuw/NtO4aEV+h
+         UBUzEFOUh+S1HuAgt5ue244WVVHumm6W1IrVPtfeTBxDxvSWXcTGbzTjXkkqm/wOd6Bn
+         u2m6BDG8eBX9ssOzdqmkDgp33FiKi3gsVv4w/vm39xjzai9mF3c6tHPjuO2xI2E7K5+7
+         qOqNeaJquGNE/9YdBRVt9ZqVI8ymIGt8W2jCK8KayJpJi3ZWvX0jt5gu8cGPhdWt4DPA
+         Us+w==
+X-Forwarded-Encrypted: i=1; AJvYcCXPhjF+zUweJjpG/P8lkaBqsWaV7WYklDtOmefaoPczbfAihe63GJshpRWXdKFxFxFJXYG1MR4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVDspculGLm37/Cox2gHRwYp+LTYzLZAlshQhUA3ob3hrJj6Kw
+	NL0SKdInG2r0KneXHsbur8EGAxQwxmspWdgIlEHi5HoJETsDqMZ7G24dmDY446g=
+X-Gm-Gg: ASbGncspbAD/R7PVWg/yH6l4GC6g/c8SCdsCEhI26nQE/bu4zwNKCTgaE9Y7S/MjzFS
+	lfEaWFwZILb6pwlB4u1UZW9R2MjPlxiIgUSlZPVi5dW8c9/+gXf2jl1BUxoXcz1g/Swxq5MCi0V
+	7YVDswzPp5b7RycoLzMVzPaQfk/6veJUN39Z6NOPcyRArvMNI1wxjAOKW5UueDqaeBGy2SLT8LC
+	GvbvJVeypVsjqDmMy8r5AYRagPw3JXFJxcpFo/RJS4KafO/XOlbKbN2lXUBlqRHN6w+sV2IX9WO
+	9EXbv6siAIREAPSlvVlm9srEZES5DAa3wFW/wMkpqHyghw==
+X-Google-Smtp-Source: AGHT+IG+GFwZZxv704jjuJ+UMxKBzXxKfdBa96OxMVcUIavMW/wfmnEA6eFn6KpitkGT6G9+BB2t0g==
+X-Received: by 2002:a05:620a:f15:b0:7c5:97ca:3ea0 with SMTP id af79cd13be357-7c927e365bamr2195214385a.0.1745357384440;
+        Tue, 22 Apr 2025 14:29:44 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:15:9913::5ac? ([2606:6d00:15:9913::5ac])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c925b778c0sm601921985a.112.2025.04.22.14.29.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 14:29:44 -0700 (PDT)
+Message-ID: <ac48df7034ce695363daae2e5d87e00d6d41b038.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: imagination: fix a potential memory leak in
+ e5010_probe()
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Haoxiang Li <haoxiang_li2024@163.com>, devarsht@ti.com,
+ mchehab@kernel.org, 	hverkuil@xs4all.nl, d-huang@ti.com,
+ benjamin.gaignard@collabora.com, 	sebastian.fricke@collabora.com
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Tue, 22 Apr 2025 17:29:42 -0400
+In-Reply-To: <20250226124922.3601755-1-haoxiang_li2024@163.com>
+References: <20250226124922.3601755-1-haoxiang_li2024@163.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0 (3.56.0-1.fc42) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, 22 Apr 2025 13:42:19 -0700
-Cong Wang <xiyou.wangcong@gmail.com> wrote:
+Hi,
 
-> On Tue, Apr 22, 2025 at 07:20:24PM +0200, Holger Hoffst=C3=A4tte wrote:
-> > (cc: Greg KH)
-> >=20
-> > On 2025-04-22 18:51, Alan J. Wylie wrote: =20
-> > > On Mon, 21 Apr 2025 21:09:27 +0100
-> > > "Alan J. Wylie" <alan@wylie.me.uk> wrote:
-> > >  =20
-> > > > On Mon, 21 Apr 2025 21:47:44 +0200
-> > > > Holger Hoffst=C3=A4tte <holger@applied-asynchrony.com> wrote:
-> > > >  =20
-> > > > > > I'm afraid that didn't help. Same panic. =20
-> > > > >=20
-> > > > > Bummer :-(
-> > > > >=20
-> > > > > Might be something else missing then - so for now the only
-> > > > > other thing I'd suggest is to revert the removal of the qlen
-> > > > > check in fq_codel. =20
-> > > >=20
-> > > > Like this?
-> > > >=20
-> > > > $ git diff  sch_fq_codel.c
-> > > > diff --git a/net/sched/sch_fq_codel.c b/net/sched/sch_fq_codel.c
-> > > > index 6c9029f71e88..4fdf317b82ec 100644
-> > > > --- a/net/sched/sch_fq_codel.c
-> > > > +++ b/net/sched/sch_fq_codel.c
-> > > > @@ -316,7 +316,7 @@ static struct sk_buff
-> > > > *fq_codel_dequeue(struct Qdisc *sch) qdisc_bstats_update(sch,
-> > > > skb); flow->deficit -=3D qdisc_pkt_len(skb);
-> > > > -       if (q->cstats.drop_count) {
-> > > > +       if (q->cstats.drop_count && sch->q.qlen) {
-> > > >                  qdisc_tree_reduce_backlog(sch,
-> > > > q->cstats.drop_count, q->cstats.drop_len);
-> > > >                  q->cstats.drop_count =3D 0;
-> > > > $
-> > > >  =20
-> > >=20
-> > > It's been about 21 hours and no crash yet. I had an excellent day
-> > > down a cave, so there's not been as much Internet traffic as
-> > > usual, but there's a good chance the above patch as at least
-> > > worked around, if not fixed the issue. =20
-> >=20
-> > Thought so .. \o/
-> >=20
-> > I guess now the question is what to do about it. IIUC the fix
-> > series [1] addressed some kind of UAF problem, but obviously was
-> > not applied correctly or is missing follow-ups. It's also a bit
-> > mysterious why adding the HTB patch didn't work.
-> >=20
-> > Maybe Cong Wang can advise what to do here? =20
+Le mercredi 26 f=C3=A9vrier 2025 =C3=A0 20:49 +0800, Haoxiang Li a =C3=A9cr=
+it=C2=A0:
+> Add video_device_release() to release the memory allocated by
+> video_device_alloc() if something goes wrong.
 >=20
-> I guess my patch caused some regression, I am still decoding the
-> crashes reported here.
+> Fixes: a1e294045885 ("media: imagination: Add E5010 JPEG Encoder driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+
+> ---
+> =C2=A0drivers/media/platform/imagination/e5010-jpeg-enc.c | 9 +++++++--
+> =C2=A01 file changed, 7 insertions(+), 2 deletions(-)
 >=20
-> Meanwhile, if you could provide a reliable (and ideally minimum)
-> reproducer, it would help me a lot to debug.
->=20
-> Thanks!
-
-Sorry. No reproducer. The crashes seemed to be totally random.
-
-I posted the script I use to set up tc in my initial report.
-
-FYI, here's the resulting config.
-
-# tc qdisc show
-qdisc noqueue 0: dev lo root refcnt 2=20
-qdisc fq_codel 0: dev enp3s0 root refcnt 2 limit 10240p flows 1024 quantum =
-6014 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64=20
-qdisc fq_codel 0: dev enp4s0 root refcnt 2 limit 10240p flows 1024 quantum =
-1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64=20
-qdisc fq_codel 0: dev enp5s6f0 root refcnt 2 limit 10240p flows 1024 quantu=
-m 1514 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64=20
-qdisc noqueue 0: dev wlp5s7 root refcnt 2=20
-qdisc noqueue 0: dev brdmz root refcnt 2=20
-qdisc noqueue 0: dev heipv6 root refcnt 2=20
-qdisc fq_codel 0: dev tun0 root refcnt 2 limit 10240p flows 1024 quantum 14=
-64 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64=20
-qdisc htb 1: dev ppp0 root refcnt 2 r2q 10 default 0x11 direct_packets_stat=
- 0 direct_qlen 3
-qdisc fq_codel 824c: dev ppp0 parent 1:11 limit 10240p flows 1024 quantum 3=
-00 target 5ms interval 100ms memory_limit 32Mb drop_batch 64=20
-qdisc ingress ffff: dev ppp0 parent ffff:fff1 ----------------=20
-qdisc fq_codel 0: dev tun1 root refcnt 2 limit 10240p flows 1024 quantum 15=
-00 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64=20
-qdisc htb 1: dev ppp0ifb0 root refcnt 2 r2q 20 default 0x11 direct_packets_=
-stat 0 direct_qlen 32
-qdisc fq_codel 824b: dev ppp0ifb0 parent 1:11 limit 10240p flows 1024 quant=
-um 300 target 5ms interval 100ms memory_limit 32Mb ecn drop_batch 64=20
-#=20
-
-
-
---=20
-Alan J. Wylie     https://www.wylie.me.uk/     mailto:<alan@wylie.me.uk>
-
-Dance like no-one's watching. / Encrypt like everyone is.
-Security is inversely proportional to convenience
+> diff --git a/drivers/media/platform/imagination/e5010-jpeg-enc.c b/driver=
+s/media/platform/imagination/e5010-jpeg-enc.c
+> index c194f830577f..53e501b5ac0a 100644
+> --- a/drivers/media/platform/imagination/e5010-jpeg-enc.c
+> +++ b/drivers/media/platform/imagination/e5010-jpeg-enc.c
+> @@ -1057,8 +1057,11 @@ static int e5010_probe(struct platform_device *pde=
+v)
+> =C2=A0	e5010->vdev->lock =3D &e5010->mutex;
+> =C2=A0
+> =C2=A0	ret =3D v4l2_device_register(dev, &e5010->v4l2_dev);
+> -	if (ret)
+> -		return dev_err_probe(dev, ret, "failed to register v4l2 device\n");
+> +	if (ret) {
+> +		dev_err_probe(dev, ret, "failed to register v4l2 device\n");
+> +		goto fail_after_video_device_alloc;
+> +	}
+> +
+> =C2=A0
+> =C2=A0	e5010->m2m_dev =3D v4l2_m2m_init(&e5010_m2m_ops);
+> =C2=A0	if (IS_ERR(e5010->m2m_dev)) {
+> @@ -1118,6 +1121,8 @@ static int e5010_probe(struct platform_device *pdev=
+)
+> =C2=A0	v4l2_m2m_release(e5010->m2m_dev);
+> =C2=A0fail_after_v4l2_register:
+> =C2=A0	v4l2_device_unregister(&e5010->v4l2_dev);
+> +fail_after_video_device_alloc:
+> +	video_device_release(e5010->vdev);
+> =C2=A0	return ret;
+> =C2=A0}
+> =C2=A0
 
