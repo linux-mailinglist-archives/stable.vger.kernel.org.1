@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4615A97549
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8002A9754A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81BDA3B5ABB
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B630F17F634
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F79B29899A;
-	Tue, 22 Apr 2025 19:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BFA297A64;
+	Tue, 22 Apr 2025 19:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQEoaUl+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gejZ6tfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43192980B0
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9D5B666
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745349471; cv=none; b=pgCM8UhcA6OUeSrV539/XE8V7J0lxrX5HGfgTLEUWSOQROaer0dawA88293d+GMngPkb6GAJ81V0CkDhYVaukB8qbsB/T+qIGWuWu2ctiG49vxteQCX9F3XjaoV3wm3J+LWCbGTJXX8JnKg4tl4vUMmMD6Am+N3xsFVBjQp5X3s=
+	t=1745349476; cv=none; b=J9B6WNDW37vCReJzmfxGrsStMn+pGe8ZWGInOc+ZaQbjplFO/y6lrrWOYYIkEUeFlDH5HhVFIplLmFoz08BmU35AzTOlPeF+qVZRailcAYq+NHUHmt93upKJfJlKffg7Bn1IRJxV6uLpVH3SrEKDyDqhaVIgAN21pUjdGO9Y7v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745349471; c=relaxed/simple;
-	bh=O0ana3I5eenUmVcs8z6/ufJpxotZnbbpbvDZMNr5t+k=;
+	s=arc-20240116; t=1745349476; c=relaxed/simple;
+	bh=PnwgcYUFQzJ5WXbdXf0WdTzVE8CyvPZofTV+0642Axw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SWyqMEy5O3GiSi9Ekwe1N4JP0QsKprGfSSdGjSzOGtN/wNMwdxAdP5JJxYXvhTGoABOt9Q32UR0lCAUeqQiXwpmiRntpD+MITX+lvOcmKpJq2pwpiNxnUCggVp+OtItnGKZK5RssmyPHryLgdYzaWaSBm75nl4ZxahC7/C1CXOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQEoaUl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8183C4CEEB;
-	Tue, 22 Apr 2025 19:17:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YZdz7Mjh2O3+tRoZwUUre4K/nQ9P2AKlk8tQ88R0Beizu5BGsiiIxOV01n0y3OvuDXrU8FT3RgYxQic1JzCe0NDPQCwMuMDSal8c+1B/RgGQ+YCVsI7y/5yJd8b5ogG1IySOPneo7D6T8qCY2UdxS5bIomH5MK0Q2iYmsrQdij0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gejZ6tfX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FA7C4CEE9;
+	Tue, 22 Apr 2025 19:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745349470;
-	bh=O0ana3I5eenUmVcs8z6/ufJpxotZnbbpbvDZMNr5t+k=;
+	s=k20201202; t=1745349475;
+	bh=PnwgcYUFQzJ5WXbdXf0WdTzVE8CyvPZofTV+0642Axw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQEoaUl+w80H+KFoxH/X+q6/x4cp7k8qsYKjABBLZmWkKPwAGGidW7IdwAynVlyoA
-	 oi4TwP3qATLGdlwawUPEC4Vg7ITeDtmymmlCu2LevYp1ao0nbk1/kYdMFD3xjNYw4J
-	 4hxo0XnskB6d7omSqTgyLHvAg08YKo4sfU0fejX6M7sp58PX8kaoYL/tIw+CHcveqX
-	 +TqruCa95cNFWmNqn+d+NnuvcBLp54igZwZbaO0OeZ9Ao/NKrpt+zT+8MGFAwIG97y
-	 fOxa2JNoWkWczRlxvyAiGWuv6DE01rrlgLDIWIBfOebBQc5AxiXZ2OnWc3OrOjeO0D
-	 KDhJQDzvMHiZg==
+	b=gejZ6tfXLmIylfcb6iwkBN0gqxsicP9ciKmkjrxFysw2obxdA3W0b1VDA3K9npw+d
+	 +q7Pufb3rioRS4hzm5BKdxte4+E7n/kEkPPoei3uVKIVckzafbe/fCYal85d/tJmt7
+	 xqpUWgRK7RfDJ9e9dNfvNG5N0lO6bfFkiAep2tiLIiGRe/5rLyCnht0us6V+reoHW2
+	 FGF2cgjoS57pp85cYw0Dp+NAkOwqZhmLB0i7hySKwp4I5Um9qZSlYqU6TY/W4XlbJ/
+	 u7n1tyu5jxvhUGE+zm79X5E83fVNXGNtRk3Qul0CZPENoARwwx64oh2Ag2TnXX53wb
+	 oBCWqj33+n4qw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: WangYuli <wangyuli@uniontech.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12/6.14] nvmet-fc: Remove unused functions
-Date: Tue, 22 Apr 2025 15:17:45 -0400
-Message-Id: <20250422122445-17c378ce0639b111@stable.kernel.org>
+Subject: Re: [PATCH 5.4+] MIPS: cevt-ds1287: Add missing ds1287.h include
+Date: Tue, 22 Apr 2025 15:17:51 -0400
+Message-Id: <20250422115637-928ade71320dac29@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <56AA32057D5B8285+20250422083431.96652-1-wangyuli@uniontech.com>
+In-Reply-To:  <CB3E3A9CEA5227BE+20250422091648.116984-1-wangyuli@uniontech.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,22 +67,27 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c
+The upstream commit SHA1 provided is correct: f3be225f338a578851a7b607a409f476354a8deb
 
 Status in newer kernel trees:
 6.14.y | Not found
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  1b304c006b0fb ! 1:  22cedca066da0 nvmet-fc: Remove unused functions
+1:  f3be225f338a5 ! 1:  76449fe1f2e7d MIPS: cevt-ds1287: Add missing ds1287.h include
     @@ Metadata
       ## Commit message ##
-         nvmet-fc: Remove unused functions
+         MIPS: cevt-ds1287: Add missing ds1287.h include
      
-    +    [ Upstream commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c ]
+    +    [ Upstream commit f3be225f338a578851a7b607a409f476354a8deb ]
     +
-         The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
-         unutilized.
+         Address the issue of cevt-ds1287.c not including the ds1287.h header
+         file.
      
 ---
 
@@ -90,6 +95,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.14.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
