@@ -1,170 +1,107 @@
-Return-Path: <stable+bounces-135166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABDFA97439
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 20:06:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A53A9749A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 20:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCB013A9640
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 18:06:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFC8017DBDA
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 18:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9324D293B7D;
-	Tue, 22 Apr 2025 18:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DF72820C6;
+	Tue, 22 Apr 2025 18:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="QG37vFLt"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="xKFJqQ2K"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8005C202F8F;
-	Tue, 22 Apr 2025 18:06:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4041E3793;
+	Tue, 22 Apr 2025 18:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745345197; cv=none; b=nyaIER0mGKzEKBdh5N2Y8a1vPV0W8lU3X0BxsGM4+3/sUA0gKkoJocHPxtYdS1xahuearyOUUHNs8eS4Z6JgOciDC42zT9RvSNAhnBcYDseDUxutwUWR6ASHKPsAWj39h8h2wSPFBI3XGUJGtELjxtzhEAWBLC3HUWbs8KdJ+sc=
+	t=1745347422; cv=none; b=I7+bdOUXd066BBg4SQsSyyGYy1N+RJaAplG+uYZRrmTiqC11Yo/Fq5xfsbBjGr64EOTFkEO4+XUoV8HvCtRHDOMQjWagu/rNPEk2swepGBj1hMqS3hgXFqFM7Ygn3THclkSF6eO82kRA0hiAhsy8ajuE+NtQjKYidhL4Ot6cw64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745345197; c=relaxed/simple;
-	bh=JAD4LDHfjpVBO1LLTNYRcEr1yhhTOIdrI6hph/3+aM8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QpJKLQDv66BJrbbW3DmdCqXJt/wxM2JMqAEt4ZjqD8woDOuLe3mhrxWdDO1LTxXzfDPBhx5GQoFrPXR7aDBinNPy+NPvCvXBllyQFr8s8aWIOiIBB4UCqS6lYWBRA8rOaMDgkUpdlet8XAFaz13I1w5+rDfSovT5i1DuESf56+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=QG37vFLt; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A300C10D;
-	Tue, 22 Apr 2025 20:06:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1745345192;
-	bh=JAD4LDHfjpVBO1LLTNYRcEr1yhhTOIdrI6hph/3+aM8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QG37vFLtVv33vcsE1x4u+puep9kgAI5eKo6/D0q4tFZzOo4tykbxQHwCk6zu4hMVY
-	 TFFz06uFxPEmmr+gWJ+3qviiI2TzHnvhzVPcg9Xe2e5UQtUh4FxvJutyyX2kHDX4We
-	 73tIePF7ObPMb4tuntW5isAx+5JAPlaRObi9uBHo=
-Date: Tue, 22 Apr 2025 21:06:30 +0300
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Ricardo Ribalda <ribalda@chromium.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Douglas Anderson <dianders@chromium.org>
-Subject: Re: [PATCH v3 1/2] media: uvcvideo: Fix deferred probing error
-Message-ID: <20250422180630.GJ17813@pendragon.ideasonboard.com>
-References: <20250313-uvc-eprobedefer-v3-0-a1d312708eef@chromium.org>
- <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
+	s=arc-20240116; t=1745347422; c=relaxed/simple;
+	bh=Jr7Q2cyZOe/JomFSDXsqaXxHxSTcdk3JVAvECSbQZOs=;
+	h=From:To:Cc:Date:Message-Id:MIME-Version:Subject; b=FgJeBQsE6uKgeDbVFAH1PzGMxAG36Jh+Z6iPw3Wyf/FqMuzjVjvkTvjSRWTh9TQozVnr6t8D/npi8w3N/ZBa7jbIHCSw243MqX9G1lubLYH9G2VhnYmc0ndYDGVfwmkwD/GiqJOuBQqjsryZ6dfSmORRphpO0nbEh1UATuJ5ruU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=xKFJqQ2K; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=MCD4Bjw6ygld9iM8pOQAa6sfQIFiXZamnUclPKNh28Y=; b=xKFJqQ2KBTSMX42HViVQQotMhq
+	6Qt0jIxBwKy8bw1dK32q6fsXiCjwY74D+7t0Q0tlrcG9R1Bk1guUKFbwnDwOSZ056uA0nBAUt2hQ0
+	8FS3BqjnWpvrSb7/v/RvckSZsoJiBK7PL+fNpT5x6jQ24KETnNrGA00U/LjUk6Znvv+4=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:44486 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1u7Iad-00031m-D9; Tue, 22 Apr 2025 14:43:27 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Maximilian Weigand <mweigand@mweigand.net>,
+	Alistair Francis <alistair@alistair23.me>
+Cc: hugo@hugovil.com,
+	Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>,
+	stable@vger.kernel.org,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Date: Tue, 22 Apr 2025 14:43:24 -0400
+Message-Id: <20250422184324.3181215-1-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+Subject: [PATCH] Input: cyttsp5 - fix power control issue on wakeup
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-Hi Ricardo,
+From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 
-Thank you for the patch.
+The power control function ignores the "on" argument when setting the
+report ID, and thus is always sending HID_POWER_SLEEP. This causes a
+problem when trying to wakeup.
 
-On Thu, Mar 13, 2025 at 12:20:39PM +0000, Ricardo Ribalda wrote:
-> uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-> have not yet been probed. This return code should be propagated to the
-> caller of uvc_probe() to ensure that probing is retried when the required
-> GPIOs become available.
-> 
-> Currently, this error code is incorrectly converted to -ENODEV,
-> causing some internal cameras to be ignored.
-> 
-> This commit fixes this issue by propagating the -EPROBE_DEFER error.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> ---
->  drivers/media/usb/uvc/uvc_driver.c | 27 +++++++++++++++++++--------
->  1 file changed, 19 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> index deadbcea5e227c832976fd176c7cdbfd7809c608..e966bdb9239f345fd157588ebdad2b3ebe45168d 100644
-> --- a/drivers/media/usb/uvc/uvc_driver.c
-> +++ b/drivers/media/usb/uvc/uvc_driver.c
-> @@ -2231,13 +2231,16 @@ static int uvc_probe(struct usb_interface *intf,
->  #endif
->  
->  	/* Parse the Video Class control descriptor. */
-> -	if (uvc_parse_control(dev) < 0) {
-> +	ret = uvc_parse_control(dev);
-> +	if (ret < 0) {
-> +		ret = -ENODEV;
+Fix by sending the state variable, which contains the proper HID_POWER_ON or
+HID_POWER_SLEEP based on the "on" argument.
 
-Why do you set ret to -ENODEV here...
+Fixes: 3c98b8dbdced ("Input: cyttsp5 - implement proper sleep and wakeup procedures")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+---
+ drivers/input/touchscreen/cyttsp5.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->  		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
->  		goto error;
->  	}
->  
->  	/* Parse the associated GPIOs. */
-> -	if (uvc_gpio_parse(dev) < 0) {
-> +	ret = uvc_gpio_parse(dev);
-> +	if (ret < 0) {
->  		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
->  		goto error;
->  	}
-> @@ -2263,24 +2266,32 @@ static int uvc_probe(struct usb_interface *intf,
->  	}
->  
->  	/* Register the V4L2 device. */
-> -	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-> +	ret = v4l2_device_register(&intf->dev, &dev->vdev);
-> +	if (ret < 0)
+diff --git a/drivers/input/touchscreen/cyttsp5.c b/drivers/input/touchscreen/cyttsp5.c
+index eafe5a9b89648..86edcacb4ab3e 100644
+--- a/drivers/input/touchscreen/cyttsp5.c
++++ b/drivers/input/touchscreen/cyttsp5.c
+@@ -580,7 +580,7 @@ static int cyttsp5_power_control(struct cyttsp5 *ts, bool on)
+ 	int rc;
+ 
+ 	SET_CMD_REPORT_TYPE(cmd[0], 0);
+-	SET_CMD_REPORT_ID(cmd[0], HID_POWER_SLEEP);
++	SET_CMD_REPORT_ID(cmd[0], state);
+ 	SET_CMD_OPCODE(cmd[1], HID_CMD_SET_POWER);
+ 
+ 	rc = cyttsp5_write(ts, HID_COMMAND_REG, cmd, sizeof(cmd));
 
-... but not here ? The code below is also not very consistant.
-
->  		goto error;
->  
->  	/* Scan the device for video chains. */
-> -	if (uvc_scan_device(dev) < 0)
-> +	if (uvc_scan_device(dev) < 0) {
-> +		ret = -ENODEV;
->  		goto error;
-> +	}
->  
->  	/* Initialize controls. */
-> -	if (uvc_ctrl_init_device(dev) < 0)
-> +	if (uvc_ctrl_init_device(dev) < 0) {
-> +		ret = -ENODEV;
->  		goto error;
-> +	}
->  
->  	/* Register video device nodes. */
-> -	if (uvc_register_chains(dev) < 0)
-> +	if (uvc_register_chains(dev) < 0) {
-> +		ret = -ENODEV;
->  		goto error;
-> +	}
->  
->  #ifdef CONFIG_MEDIA_CONTROLLER
->  	/* Register the media device node */
-> -	if (media_device_register(&dev->mdev) < 0)
-> +	ret = media_device_register(&dev->mdev);
-> +	if (ret < 0)
->  		goto error;
->  #endif
->  	/* Save our data pointer in the interface data. */
-> @@ -2314,7 +2325,7 @@ static int uvc_probe(struct usb_interface *intf,
->  error:
->  	uvc_unregister_video(dev);
->  	kref_put(&dev->ref, uvc_delete);
-> -	return -ENODEV;
-> +	return ret;
->  }
->  
->  static void uvc_disconnect(struct usb_interface *intf)
-
+base-commit: 7adf8b1afc14832de099f9e178f08f91dc0dd6d0
 -- 
-Regards,
+2.39.5
 
-Laurent Pinchart
 
