@@ -1,115 +1,165 @@
-Return-Path: <stable+bounces-135091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC523A966F2
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 13:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED42A96704
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 13:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E95A3BB540
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 11:08:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A6EC189B954
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 11:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F0B276054;
-	Tue, 22 Apr 2025 11:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDE1277805;
+	Tue, 22 Apr 2025 11:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b="m5gsLjWt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZlC2RnTS"
 X-Original-To: stable@vger.kernel.org
-Received: from puleglot.ru (puleglot.ru [195.201.32.202])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709412749E6;
-	Tue, 22 Apr 2025 11:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.201.32.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2722777F5;
+	Tue, 22 Apr 2025 11:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745320121; cv=none; b=r1+sd8eTy48XzhxzifdyxCJhkjANI++qFqMkI3USyf+V4ceJcIFjKIrVyK/xDpHk1zim1PZl/UTbzwqwnpH6PiajL6sspp7GWYuoG3ca2o8gbLnm+ozlYu+j4BSP48DBEuJ6WxuJZKjseaExC9dxRBEHp3/Bpw8iwsxyWkTL2A0=
+	t=1745320284; cv=none; b=CBBv77vFvQqFPqA8wHGZPQ+XcUY506VK88OOWn/kEKbkwA0UlAZxrNpRchO2WaD9VwpTeIDpfcGSRv5oNgTRCIzDFP1C43HRJhbA7AR5ylvlM7/OTz6tVTdsJf7HAKWAYUT12WjtXUix6xXJzfze3DqWpn6rptFgAJAKYGO1T8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745320121; c=relaxed/simple;
-	bh=Goxvk2nZBBnNqpJrUVgMtNX4+wcPMMkMqbLM5GioZfc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LCWDIhyHSbPLC6J9ur3J1Gie46b8tGS7fWA/uPa3HJtLThd0g55siM8mtn1yzLgEC1viubkeBBy1sPO6+lpi0RT+RajsK7JS+z9nS4ONrULSM/4b6LHu45fb0Dse57gY8Ycw9NDX9q8Sd2Q/aDs8fw50Glre+CXoS5ZV3V4BkQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me; spf=pass smtp.mailfrom=puleglot.ru; dkim=pass (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b=m5gsLjWt; arc=none smtp.client-ip=195.201.32.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puleglot.ru
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tsoy.me;
-	s=mymail; h=Sender:Content-Transfer-Encoding:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=avd87UaFcn3ETwk6SNEagorvgBdsjVCSTbbht7iYtv8=; b=m5gsLjWtxuf01pO8/WQIadHaTI
-	k1XfxnbZWJp4kMankA5Ey40K16m/Xwax2JiaA8jXWmNtWFe7sJWJaRye/hzP2t7p+cHQ/IUDsrgss
-	s9Fdh6eoIYwjhP9Xg8aREk722oBS70W3uxZxW3JAJbPXSFZgdGWGKHzocZ0abbyenXrI=;
-Received: from [62.217.191.235] (helo=home.puleglot.ru)
-	by puleglot.ru with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <puleglot@puleglot.ru>)
-	id 1u7BUL-00000000CHf-19OQ;
-	Tue, 22 Apr 2025 14:08:29 +0300
-From: Alexander Tsoy <alexander@tsoy.me>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	s=arc-20240116; t=1745320284; c=relaxed/simple;
+	bh=GgJCNAGMvR0NtaDv652psAyvJcAiYqq6JDbJevX2YzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LbbyuXYnUE1GapMZ0Mye30a5mVQg3C5k8Fhkuhr5FWRnY9Of33if9zUDB71o9JGCSy7DOX0bXo4tTRpaT0D2+lIF0i5VKWoKfEL0BoBx7rqLCWngaeXIrTJpshUPnncuI/4SOVVfF0UfCYNtrdODf9MAVNWvdgJGAdiZt1TSjSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZlC2RnTS; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745320283; x=1776856283;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GgJCNAGMvR0NtaDv652psAyvJcAiYqq6JDbJevX2YzQ=;
+  b=ZlC2RnTSXAENMuzxGYVsUwPsaBAkFed/mPDu87oYPhaOx4egpTic0bPO
+   WUSmjfhjp/wPuV/ztwXbpfqXCVXOtNZBYHDH2NZO8CrTVC/OHTX3Axtzc
+   4PNHyreP+f6e0ML4gqe4Ohjbsh139dqW8I3hBaQRrA05seR4W17eztiom
+   b/xvevI2mWrUbTRS4GXlJQ7nLSA3bz5PuT+UIx+b5NbjsXEsKbQl2XceV
+   mT1A13BKb8n/kO31WANS5cn3GBWgZaCiBJ9eGqghEDfjRlM7m4VFThYon
+   JdSqZIyVfvgcP11ou3vkXO15rc75v7rZ7IMiGeAfkY7btKaAb++x+oIF8
+   Q==;
+X-CSE-ConnectionGUID: X/2L9IOMSjSUf6d9t2MFGA==
+X-CSE-MsgGUID: sqYPRoWbTDOysSSp+TNMsw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="57537199"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="57537199"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 04:11:22 -0700
+X-CSE-ConnectionGUID: YdRcZeB1TpiEuEaveCHjDg==
+X-CSE-MsgGUID: 7y+61/VvTvaQNkl5z4jmSg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="169189240"
+Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 22 Apr 2025 04:11:18 -0700
+Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u7BX1-0000tP-2l;
+	Tue, 22 Apr 2025 11:11:15 +0000
+Date: Tue, 22 Apr 2025 19:10:24 +0800
+From: kernel test robot <lkp@intel.com>
+To: Wentao Liang <vulab@iscas.ac.cn>, alexander.deucher@amd.com,
+	christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+	simona@ffwll.ch, YiPeng.Chai@amd.com, tao.zhou1@amd.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12/6.13/6.14 2/2] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
-Date: Tue, 22 Apr 2025 14:08:19 +0300
-Message-ID: <20250422110819.223583-2-alexander@tsoy.me>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250422110819.223583-1-alexander@tsoy.me>
-References: <20250422110819.223583-1-alexander@tsoy.me>
+Subject: Re: [PATCH RESEND] drm/amdgpu: Remove redundant return value checks
+ for amdgpu_ras_error_data_init
+Message-ID: <202504221807.hOSkO5OB-lkp@intel.com>
+References: <20250422073505.2378-1-vulab@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: puleglot@puleglot.ru
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250422073505.2378-1-vulab@iscas.ac.cn>
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+Hi Wentao,
 
-[ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
+kernel test robot noticed the following build errors:
 
-Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
-to fetch the next entry from the destination ring. This is incorrect because
-ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
-rings. This leads to invalid entry fetches, causing potential data corruption or
-crashes due to accessing incorrect memory locations. This happens because the
-source ring and destination ring have different handling mechanisms and using
-the wrong function results in incorrect pointer arithmetic and ring management.
+[auto build test ERROR on drm-exynos/exynos-drm-next]
+[also build test ERROR on linus/master v6.15-rc3 next-20250417]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
-ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
-that the correct function is used for fetching entries from the destination
-ring, preventing invalid memory accesses.
+url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/drm-amdgpu-Remove-redundant-return-value-checks-for-amdgpu_ras_error_data_init/20250422-153759
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/daeinki/drm-exynos.git exynos-drm-next
+patch link:    https://lore.kernel.org/r/20250422073505.2378-1-vulab%40iscas.ac.cn
+patch subject: [PATCH RESEND] drm/amdgpu: Remove redundant return value checks for amdgpu_ras_error_data_init
+config: i386-buildonly-randconfig-005-20250422 (https://download.01.org/0day-ci/archive/20250422/202504221807.hOSkO5OB-lkp@intel.com/config)
+compiler: clang version 20.1.2 (https://github.com/llvm/llvm-project 58df0ef89dd64126512e4ee27b4ac3fd8ddf6247)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250422/202504221807.hOSkO5OB-lkp@intel.com/reproduce)
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504221807.hOSkO5OB-lkp@intel.com/
 
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+All error/warnings (new ones prefixed by >>):
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 8005d30a4dbe..b952e79179d0 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2054,7 +2054,7 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, int mac_id, int *budget,
- 		dest_idx = 0;
- move_next:
- 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
--		ath12k_hal_srng_src_get_next_entry(ab, srng);
-+		ath12k_hal_srng_dst_get_next_entry(ab, srng);
- 		num_buffs_reaped++;
- 	}
- 
+>> drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:170:6: warning: unused variable 'ret' [-Wunused-variable]
+     170 |         int ret;
+         |             ^~~
+>> drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:690:44: error: expected ';' after expression
+     690 |         amdgpu_ras_error_data_init(&obj->err_data)
+         |                                                   ^
+         |                                                   ;
+   1 warning and 1 error generated.
+
+
+vim +690 drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+
+   664	
+   665	/* make one obj and return it. */
+   666	static struct ras_manager *amdgpu_ras_create_obj(struct amdgpu_device *adev,
+   667			struct ras_common_if *head)
+   668	{
+   669		struct amdgpu_ras *con = amdgpu_ras_get_context(adev);
+   670		struct ras_manager *obj;
+   671	
+   672		if (!adev->ras_enabled || !con)
+   673			return NULL;
+   674	
+   675		if (head->block >= AMDGPU_RAS_BLOCK_COUNT)
+   676			return NULL;
+   677	
+   678		if (head->block == AMDGPU_RAS_BLOCK__MCA) {
+   679			if (head->sub_block_index >= AMDGPU_RAS_MCA_BLOCK__LAST)
+   680				return NULL;
+   681	
+   682			obj = &con->objs[AMDGPU_RAS_BLOCK__LAST + head->sub_block_index];
+   683		} else
+   684			obj = &con->objs[head->block];
+   685	
+   686		/* already exist. return obj? */
+   687		if (alive_obj(obj))
+   688			return NULL;
+   689	
+ > 690		amdgpu_ras_error_data_init(&obj->err_data)
+   691	
+   692		obj->head = *head;
+   693		obj->adev = adev;
+   694		list_add(&obj->node, &con->head);
+   695		get_obj(obj);
+   696	
+   697		return obj;
+   698	}
+   699	
+
 -- 
-2.49.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
