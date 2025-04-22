@@ -1,68 +1,57 @@
-Return-Path: <stable+bounces-134946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B76D5A95B83
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:27:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6608A95B85
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514C9176AD9
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBDC43AE187
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A44025E812;
-	Tue, 22 Apr 2025 02:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3793E25EF83;
+	Tue, 22 Apr 2025 02:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AvrFtDBd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Clgw4Avi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468FD25E47D;
-	Tue, 22 Apr 2025 02:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BFE25E835;
+	Tue, 22 Apr 2025 02:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288254; cv=none; b=I3494+ys/hCeb7g4d7eaLlzITzny9q4yQjEaXE/KNsQh9rT0sJUt3icVj735IlXRXMoGmBCcosN77XfliWXeCIdFC+jEIu60j8O5CZz+sCAj54fhbSDcVAIvr+JxZ066SNKUaOKie6/61bwFt5cNQRd1YxIf+umMQ2wTSICkSVc=
+	t=1745288256; cv=none; b=H2ss/+9P1REWWUiw/Yjbsc5mN6O5KK+rfcG6Wd6zoBOI6R2ffX41EER0gFg2854UYSwIIWyPuZqinYnlcEMtjHCc4XSI0djOUNW/7PJhBDC2gNEu5WXYyZrlF0HnpoapC49a70JhCbgbT3gi1MTBqvVbJ+opfLSyapl5phznwk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288254; c=relaxed/simple;
-	bh=aa1A2mSz9WINcgudlJitBlD+EzdY8YT96sD7O0GzGi0=;
+	s=arc-20240116; t=1745288256; c=relaxed/simple;
+	bh=6Mv3OiLkxsIp1YkuuADzsY7fnK3Kf5tAbvBtKM+k194=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hxjROf0azPhoaA/WkxaZYv9EXlr4hS9mPPbetluI64cpNk7MGumMJqj+dqLds8C/xg29QTzKMav3Ngerg/kYCaxbdgy5KSKf2bwS4TEuxRalAnojf5ouJtfclbhlgZ/i/QPRAZim3NF2inN6TLz7vs1c6HbD5eust+HvlvLJbNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AvrFtDBd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC71C4CEEE;
-	Tue, 22 Apr 2025 02:17:32 +0000 (UTC)
+	 MIME-Version; b=ZB2nFx/l/qMJuqczD53aZjLsGaMY2eMBv/GDkvNQ8HgKmr7oR7a7blHKIiXWgeIRfJzxrySZYLgKvvZnG/LvNajG5L9ZtJFKU4hMsXwDlMHz8JHhbb+tD5f3EX2oOAVuTRplF7pV6BOCnYMgaS+rva8T2axFI+lBUVOwosiRiCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Clgw4Avi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88355C4CEEF;
+	Tue, 22 Apr 2025 02:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288254;
-	bh=aa1A2mSz9WINcgudlJitBlD+EzdY8YT96sD7O0GzGi0=;
+	s=k20201202; t=1745288255;
+	bh=6Mv3OiLkxsIp1YkuuADzsY7fnK3Kf5tAbvBtKM+k194=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvrFtDBdZDGPr6qsdY08i3D3gRlMRXoee1vSc1EhgNmvxkTuGlTNcr+lZZPiHySa1
-	 pDWn0urckhSRZC/J0E7YWNtIGqa6YAoHsTH/7+QXBlIrbWVUQ8sUwqzsbq1VK8GY88
-	 UdIr6R4n4ldjPgJwqf6/DhOl5c+C1t9iifE50nJrxEXfPdg5/dqAQX3TU8dl/mVV+U
-	 VeCs5v4flQ6cLlCYiNWHJdy3rLpCaFZViMjnFryikz70wokXmhCgPKokd/pHLehiMR
-	 c1fgGNz/lU5zOfxNabgrIPLHSv46KUmJwQT0dnWdRihOOm1uRnNX0t6Y+EN8A0SIHG
-	 sjv3OJ60pTEig==
+	b=Clgw4Aviw2S5jb/uZu/CfyZ56xmfjs/ypEzEg7QIFBOsFRdFEOxokaJ5wbACB9YuW
+	 /cDQ4lDL1of8Py9uy7E2PtmDe/xyu6YqzpiCUpfe2xSv+FaJz/6jEb4DzM/QjsU0da
+	 kMzGzW2Jnd+NQ+PC1ZvsVG113r/xR6cVv4v77SkH4BYDuSA8lhR0d0mNucw3qIFT9v
+	 OGz9I4LLG4kitYqr5ulmvjIlsxyufJzmh8omUX4yXB27LYOQ9kvBJTcAhiVoQTkJdC
+	 E6RCFBRwHc47YBpaJXAC4jNWMypjVPp/ZybcaGQiIBN4H6GuOVSykvX1VHRhtBbP1W
+	 xxDojZcG9oZqg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pi Xiange <xiange.pi@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Christian Ludloff <ludloff@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	x86-cpuid@lists.linux.dev,
+Cc: Meir Elisha <meir.elisha@volumez.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	x86@kernel.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com
-Subject: [PATCH AUTOSEL 6.12 18/23] x86/cpu: Add CPU model number for Bartlett Lake CPUs with Raptor Cove cores
-Date: Mon, 21 Apr 2025 22:16:58 -0400
-Message-Id: <20250422021703.1941244-18-sashal@kernel.org>
+	song@kernel.org,
+	linux-raid@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 19/23] md/raid1: Add check for missing source disk in process_checks()
+Date: Mon, 21 Apr 2025 22:16:59 -0400
+Message-Id: <20250422021703.1941244-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021703.1941244-1-sashal@kernel.org>
 References: <20250422021703.1941244-1-sashal@kernel.org>
@@ -77,44 +66,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.24
 Content-Transfer-Encoding: 8bit
 
-From: Pi Xiange <xiange.pi@intel.com>
+From: Meir Elisha <meir.elisha@volumez.com>
 
-[ Upstream commit d466304c4322ad391797437cd84cca7ce1660de0 ]
+[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
 
-Bartlett Lake has a P-core only product with Raptor Cove.
+During recovery/check operations, the process_checks function loops
+through available disks to find a 'primary' source with successfully
+read data.
 
-[ mingo: Switch around the define as pointed out by Christian Ludloff:
-         Ratpr Cove is the core, Bartlett Lake is the product.
+If no suitable source disk is found after checking all possibilities,
+the 'primary' index will reach conf->raid_disks * 2. Add an explicit
+check for this condition after the loop. If no source disk was found,
+print an error message and return early to prevent further processing
+without a valid primary source.
 
-Signed-off-by: Pi Xiange <xiange.pi@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Christian Ludloff <ludloff@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: "Ahmed S. Darwish" <darwi@linutronix.de>
-Cc: x86-cpuid@lists.linux.dev
-Link: https://lore.kernel.org/r/20250414032839.5368-1-xiange.pi@intel.com
+Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
+Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
+Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/intel-family.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/raid1.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 1a42f829667a3..62d8b9448dc5c 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -115,6 +115,8 @@
- #define INTEL_GRANITERAPIDS_X		IFM(6, 0xAD)
- #define INTEL_GRANITERAPIDS_D		IFM(6, 0xAE)
- 
-+#define INTEL_BARTLETTLAKE		IFM(6, 0xD7) /* Raptor Cove */
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 8a994a1975ca7..6b6cd753d61a9 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -2156,14 +2156,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
+ 				if (!rdev_set_badblocks(rdev, sect, s, 0))
+ 					abort = 1;
+ 			}
+-			if (abort) {
+-				conf->recovery_disabled =
+-					mddev->recovery_disabled;
+-				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
+-				md_done_sync(mddev, r1_bio->sectors, 0);
+-				put_buf(r1_bio);
++			if (abort)
+ 				return 0;
+-			}
 +
- /* "Hybrid" Processors (P-Core/E-Core) */
+ 			/* Try next page */
+ 			sectors -= s;
+ 			sect += s;
+@@ -2302,10 +2297,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
+ 	int disks = conf->raid_disks * 2;
+ 	struct bio *wbio;
  
- #define INTEL_LAKEFIELD			IFM(6, 0x8A) /* Sunny Cove / Tremont */
+-	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
+-		/* ouch - failed to read all of that. */
+-		if (!fix_sync_read_error(r1_bio))
++	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
++		/*
++		 * ouch - failed to read all of that.
++		 * No need to fix read error for check/repair
++		 * because all member disks are read.
++		 */
++		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
++		    !fix_sync_read_error(r1_bio)) {
++			conf->recovery_disabled = mddev->recovery_disabled;
++			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
++			md_done_sync(mddev, r1_bio->sectors, 0);
++			put_buf(r1_bio);
+ 			return;
++		}
++	}
+ 
+ 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
+ 		process_checks(r1_bio);
 -- 
 2.39.5
 
