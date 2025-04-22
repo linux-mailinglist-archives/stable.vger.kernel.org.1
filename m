@@ -1,372 +1,119 @@
-Return-Path: <stable+bounces-135115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F7FA96A14
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:37:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2033A96A2F
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:38:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07483189DDFB
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:37:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55FB617F2F9
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800DA2857D7;
-	Tue, 22 Apr 2025 12:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015FB280A38;
+	Tue, 22 Apr 2025 12:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiyXbNrG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C6C2857CE;
-	Tue, 22 Apr 2025 12:32:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B242427F738;
+	Tue, 22 Apr 2025 12:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745325172; cv=none; b=H5a5H+L46u2MGuHqpssAbPqmu87AmmB6gBR2+2DTjFV7fNyamML6BuTkyg08PtUkfWLBxIyjWyrFUncV/FoHcejYVPO2MW7Mpf/SOclxiMzbLwo4D2yCK0BH1KIjYXKPFsoPut6NawUlWGbujsZaE199Cxb36tKigW2Cz5z+k4Y=
+	t=1745325324; cv=none; b=Ol3VuuDTpYMJPM5FQzrxU71QIDr00qRQZI42mI6AWuLqyp8JpGPAN36e2ptBLvli5MPuGFMxRdgj/UTGaax3iTbWZILQNU2n5IEi8CdNl5ut7AY6zW8m3TEviG/kXjURLas0Bd2PIpFpTmk2SyHs5D9Sfls9Y+lmr2teBrrc7t0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745325172; c=relaxed/simple;
-	bh=sWUv3NDY/bj/kUvKrpfVyVGlyH5eNUPtkpmqJtcVEoQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6VEkl4R3qnNe2iN5HSyGCkmq3yUW0gMShkR9TK2pvydhgpy5doHuI1wOonwHqR912ZlcNaFQ/F/Ur0VrZGP5Zi9hZAYSXnLxgy2+vOMYKzK62h7s26hDU6augtu+bcZG9wTZDIqqUMmbVTV/AnOW2zKMsJ8umNDCrHp1f24wFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.238])
-	by gateway (Coremail) with SMTP id _____8AxmnFvjAdo+wbEAA--.62042S3;
-	Tue, 22 Apr 2025 20:32:47 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.238])
-	by front1 (Coremail) with SMTP id qMiowMAxTRszjAdoEPePAA--.4685S5;
-	Tue, 22 Apr 2025 20:32:46 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Jan Stancek <jstancek@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	R Nageswara Sastry <rnsastry@linux.ibm.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1&6.6 V4 3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
-Date: Tue, 22 Apr 2025 20:31:35 +0800
-Message-ID: <20250422123135.1784083-4-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20250422123135.1784083-1-chenhuacai@loongson.cn>
-References: <20250422123135.1784083-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1745325324; c=relaxed/simple;
+	bh=gZqKppOHtV7ov8iWqtSFUMe6Ys3fjEn+8Qllfx6sA8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ciJUSdaqT0l8aUH+K5hhcrydo7d7Ti1Zq1K/efhIb4qR1z+vjjuxM492gwWPNjI6A4VgBpPyoNhH31dugmpbUgUXI9qJ29BIwi/6GWf02/XYRF4KpNKkCCxWS27nZs9IA9l1JfJu6mgS9HAyUvcHWLBV1SYHW/aDGBssl5gmXV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiyXbNrG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38E9C4CEEA;
+	Tue, 22 Apr 2025 12:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745325324;
+	bh=gZqKppOHtV7ov8iWqtSFUMe6Ys3fjEn+8Qllfx6sA8k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PiyXbNrGpOkhaeB4wzJs5YFHh4npZ3x+8rNG7vkhSvso/TED2d+vrWCIvoR31otVg
+	 /JigCaRCRQDTtvN014Oj4kOnzSVmNW5AAPjzNEFA51Jz2jdajQET4gU/fREpv1rIgD
+	 5caBkihWmtIZNr5lDWe8JrCLU90wNK30ATjjS5r0=
+Date: Tue, 22 Apr 2025 14:35:21 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: tomasz.pakula.oficjalny@gmail.com
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, sashal@kernel.org,
+	oleg@makarenk.ooo
+Subject: Re: Request for backporting hid-pidff driver patches
+Message-ID: <2025042201-cinema-overpay-c3a3@gregkh>
+References: <a0f1dae5eee091781711d3b4ebe812b9a1f8c944.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMAxTRszjAdoEPePAA--.4685S5
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxtw15Kr17GF4UuF43Kr4rZwc_yoW3tF13pF
-	9xCFyjqry0qrnrGr13Ar1FgasrWr48Xw13ZanxC393Gr4kZa4UWF40gFWS93WxZrZ8J3Wa
-	v3yUXFW8Kr4kZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUBFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWrXVW3
-	AwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26ryj6F1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26c
-	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
-	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07jfHUhUUUUU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0f1dae5eee091781711d3b4ebe812b9a1f8c944.camel@gmail.com>
 
-From: Jan Stancek <jstancek@redhat.com>
+On Wed, Apr 02, 2025 at 09:21:31PM +0200, tomasz.pakula.oficjalny@gmail.com wrote:
+> Hello
+> 
+> Recently AUTOSEL selected some of out patches to hid-pidff and
+> hid-universal-pidff. Though I looked over what was selected and
+> everything will be working, I'd like to keep the drivers up-to-date at
+> least going back to 6.12 as these kernels are widely used and leaving
+> said driers in an incomplete state, not up to upstream might lead to
+> some false positive bug reports to me and Oleg.
+> 
+> Here's the full list of the hid-pidff related patches from upstream. It
+> might look like a lot but some granular changes were recorded as the
+> driver was in need of an overhaul for at least 10 years. This mainly
+> touches just two files.
+> 
+> I tested it personally and all the patches apply cleanly on top of
+> current 6.12.y, 6.13.y and 6.14.y branches.
+> 
+> Thanks in advance!
+> 
+> e2fa0bdf08a7 HID: pidff: Fix set_device_control()
+> f98ecedbeca3 HID: pidff: Fix 90 degrees direction name North -> East
+> 1a575044d516 HID: pidff: Compute INFINITE value instead of using hardcoded 0xffff
+> 0c6673e3d17b HID: pidff: Clamp effect playback LOOP_COUNT value
+> bbeface10511 HID: pidff: Rename two functions to align them with naming convention
+> 1bd55e79cbc0 HID: pidff: Remove redundant call to pidff_find_special_keys
+> 9d4174dc4a23 HID: pidff: Support device error response from PID_BLOCK_LOAD
+> e19675c24774 HID: pidff: Comment and code style update
+> c385f61108d4 HID: hid-universal-pidff: Add Asetek wheelbases support
+> 1f650dcec32d HID: pidff: Make sure to fetch pool before checking SIMULTANEOUS_MAX
+> 2c2afb50b50f MAINTAINERS: Update hid-universal-pidff entry
+> 5d98079b2d01 HID: pidff: Factor out pool report fetch and remove excess declaration
+> 217551624569 HID: pidff: Use macros instead of hardcoded min/max values for shorts
+> 4eb9c2ee538b HID: pidff: Simplify pidff_rescale_signed
+> 0d24d4b1da96 HID: pidff: Move all hid-pidff definitions to a dedicated header
+> 22a05462c3d0 HID: pidff: Fix null pointer dereference in pidff_find_fields
+> f7ebf0b11b9e HID: pidff: Factor out code for setting gain
+> 8713107221a8 HID: pidff: Rescale time values to match field units
+> 1c12f136891c HID: pidff: Define values used in pidff_find_special_fields
+> e4bdc80ef142 HID: pidff: Simplify pidff_upload_effect function
+> cb3fd788e3fa HID: pidff: Completely rework and fix pidff_reset function
+> abdbf8764f49 HID: pidff: Add PERIODIC_SINE_ONLY quirk
+> 7d3adb9695ec MAINTAINERS: Add entry for hid-universal-pidff driver
+> f06bf8d94fff HID: Add hid-universal-pidff driver and supported device ids
+> ce52c0c939fc HID: pidff: Stop all effects before enabling actuators
+> 3051bf5ec773 HID: pidff: Add FIX_WHEEL_DIRECTION quirk
+> 36de0164bbaf HID: pidff: Add hid_pidff_init_with_quirks and export as GPL symbol
+> a4119108d253 HID: pidff: Add PERMISSIVE_CONTROL quirk
+> fc7c154e9bb3 HID: pidff: Add MISSING_PBO quirk and its detection
+> 2d5c7ce5bf4c HID: pidff: Add MISSING_DELAY quirk and its detection
+> f538183e997a HID: pidff: Clamp PERIODIC effect period to device's logical range
+> 8876fc1884f5 HID: pidff: Do not send effect envelope if it's empty
+> 37e0591fe44d HID: pidff: Convert infinite length from Linux API to PID standard
 
-commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
+I think Sasha already got all of these, right?  If not, what ones do you
+want applied specifically?
 
-ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-Distros have started dropping support from headers and in future
-it will likely disappear also from library.
+thanks,
 
-It has been superseded by the PROVIDER API, so use it instead
-for OPENSSL MAJOR >= 3.
-
-[1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
-
-[jarkko: fixed up alignment issues reported by checkpatch.pl --strict]
-
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
- scripts/sign-file.c  |  95 +++++++++++++++++++++++++++------------
- 2 files changed, 139 insertions(+), 59 deletions(-)
-
-diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-index 61bbe0085671..7d6d468ed612 100644
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -21,17 +21,18 @@
- #include <openssl/bio.h>
- #include <openssl/pem.h>
- #include <openssl/err.h>
--#include <openssl/engine.h>
--
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
- #include "ssl-common.h"
- 
--/*
-- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
-- *
-- * Remove this if/when that API is no longer used
-- */
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
--
- #define PKEY_ID_PKCS7 2
- 
- static __attribute__((noreturn))
-@@ -61,6 +62,66 @@ static void write_cert(X509 *x509)
- 		fprintf(stderr, "Extracted cert: %s\n", buf);
- }
- 
-+static X509 *load_cert_pkcs11(const char *cert_src)
-+{
-+	X509 *cert = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
-+
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
-+
-+	store = OSSL_STORE_open(cert_src, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
-+
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
-+
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_CERT) {
-+			cert = OSSL_STORE_INFO_get1_CERT(info);
-+			ERR(!cert, "OSSL_STORE_INFO_get1_CERT");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (cert)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+		ENGINE *e;
-+		struct {
-+			const char *cert_id;
-+			X509 *cert;
-+		} parms;
-+
-+		parms.cert_id = cert_src;
-+		parms.cert = NULL;
-+
-+		ENGINE_load_builtin_engines();
-+		drain_openssl_errors(__LINE__, 1);
-+		e = ENGINE_by_id("pkcs11");
-+		ERR(!e, "Load PKCS#11 ENGINE");
-+		if (ENGINE_init(e))
-+			drain_openssl_errors(__LINE__, 1);
-+		else
-+			ERR(1, "ENGINE_init");
-+		if (key_pass)
-+			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-+		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
-+		ERR(!parms.cert, "Get X.509 from PKCS#11");
-+		cert = parms.cert;
-+#else
-+		fprintf(stderr, "no pkcs11 engine/provider available\n");
-+		exit(1);
-+#endif
-+	return cert;
-+}
-+
- int main(int argc, char **argv)
- {
- 	char *cert_src;
-@@ -89,28 +150,10 @@ int main(int argc, char **argv)
- 		fclose(f);
- 		exit(0);
- 	} else if (!strncmp(cert_src, "pkcs11:", 7)) {
--		ENGINE *e;
--		struct {
--			const char *cert_id;
--			X509 *cert;
--		} parms;
-+		X509 *cert = load_cert_pkcs11(cert_src);
- 
--		parms.cert_id = cert_src;
--		parms.cert = NULL;
--
--		ENGINE_load_builtin_engines();
--		drain_openssl_errors(__LINE__, 1);
--		e = ENGINE_by_id("pkcs11");
--		ERR(!e, "Load PKCS#11 ENGINE");
--		if (ENGINE_init(e))
--			drain_openssl_errors(__LINE__, 1);
--		else
--			ERR(1, "ENGINE_init");
--		if (key_pass)
--			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
--		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
--		ERR(!parms.cert, "Get X.509 from PKCS#11");
--		write_cert(parms.cert);
-+		ERR(!cert, "load_cert_pkcs11 failed");
-+		write_cert(cert);
- 	} else {
- 		BIO *b;
- 		X509 *x509;
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index bb3fdf1a617c..7070245edfc1 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -27,17 +27,18 @@
- #include <openssl/evp.h>
- #include <openssl/pem.h>
- #include <openssl/err.h>
--#include <openssl/engine.h>
--
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
- #include "ssl-common.h"
- 
--/*
-- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
-- *
-- * Remove this if/when that API is no longer used
-- */
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
--
- /*
-  * Use CMS if we have openssl-1.0.0 or newer available - otherwise we have to
-  * assume that it's not available and its header file is missing and that we
-@@ -106,28 +107,64 @@ static int pem_pw_cb(char *buf, int len, int w, void *v)
- 	return pwlen;
- }
- 
-+static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
-+{
-+	EVP_PKEY *private_key = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
-+
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
-+
-+	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
-+
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
-+
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_PKEY) {
-+			private_key = OSSL_STORE_INFO_get1_PKEY(info);
-+			ERR(!private_key, "OSSL_STORE_INFO_get1_PKEY");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (private_key)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+	ENGINE *e;
-+
-+	ENGINE_load_builtin_engines();
-+	drain_openssl_errors(__LINE__, 1);
-+	e = ENGINE_by_id("pkcs11");
-+	ERR(!e, "Load PKCS#11 ENGINE");
-+	if (ENGINE_init(e))
-+		drain_openssl_errors(__LINE__, 1);
-+	else
-+		ERR(1, "ENGINE_init");
-+	if (key_pass)
-+		ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-+	private_key = ENGINE_load_private_key(e, private_key_name, NULL, NULL);
-+	ERR(!private_key, "%s", private_key_name);
-+#else
-+	fprintf(stderr, "no pkcs11 engine/provider available\n");
-+	exit(1);
-+#endif
-+	return private_key;
-+}
-+
- static EVP_PKEY *read_private_key(const char *private_key_name)
- {
--	EVP_PKEY *private_key;
--
- 	if (!strncmp(private_key_name, "pkcs11:", 7)) {
--		ENGINE *e;
--
--		ENGINE_load_builtin_engines();
--		drain_openssl_errors(__LINE__, 1);
--		e = ENGINE_by_id("pkcs11");
--		ERR(!e, "Load PKCS#11 ENGINE");
--		if (ENGINE_init(e))
--			drain_openssl_errors(__LINE__, 1);
--		else
--			ERR(1, "ENGINE_init");
--		if (key_pass)
--			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
--			    "Set PKCS#11 PIN");
--		private_key = ENGINE_load_private_key(e, private_key_name,
--						      NULL, NULL);
--		ERR(!private_key, "%s", private_key_name);
-+		return read_private_key_pkcs11(private_key_name);
- 	} else {
-+		EVP_PKEY *private_key;
- 		BIO *b;
- 
- 		b = BIO_new_file(private_key_name, "rb");
-@@ -136,9 +173,9 @@ static EVP_PKEY *read_private_key(const char *private_key_name)
- 						      NULL);
- 		ERR(!private_key, "%s", private_key_name);
- 		BIO_free(b);
--	}
- 
--	return private_key;
-+		return private_key;
-+	}
- }
- 
- static X509 *read_x509(const char *x509_name)
--- 
-2.47.1
-
+greg k-h
 
