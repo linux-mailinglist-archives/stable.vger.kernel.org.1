@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-134969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17B3FA95BC6
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:32:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D46A95BCB
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F27816D3F2
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:31:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D616E3ADF6F
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48D72686BE;
-	Tue, 22 Apr 2025 02:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7914A26980D;
+	Tue, 22 Apr 2025 02:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OmINarEv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGn62wjl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5021F4173;
-	Tue, 22 Apr 2025 02:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378D92690ED;
+	Tue, 22 Apr 2025 02:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288312; cv=none; b=OzO+Ugl35MTo+mijkn4CcvT0IiQd9rKVnO2GVo5Q1L56dE7+7OzxFFfDvDf5IHX1G2tBfN9K/ySJJoCUYK5jgXh9naQpkLKe2+685uyjIBkZFrEJqqEk4CLQqnkRFhVTVe/RlU/5CMHiOeqr5EJQPLRozsv1R6uceTDAV9QhxRQ=
+	t=1745288314; cv=none; b=f7J4B8//OGdmBx0PMbJ9tras0Q+aOs8onrBAjTJ3eAiwgTpJlYCcRU19+LjOhN27TOYIUdVdItNzq0KUm3tFDPxx2kh9agaKb+HP+dzWYELZncRDLR0bofgGLTJy5C2fQn+3faDWKF8syZzal4HaPqX7DiS6J566I3fdY40u4Eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288312; c=relaxed/simple;
-	bh=KFUKcgaV97DtoJQUvFPRaNuDDH4o7/czpS6aKLyK5qk=;
+	s=arc-20240116; t=1745288314; c=relaxed/simple;
+	bh=R/zYyScGBky2sOpDAf0q2XG2hiACRKTyjcFhCE+ct5M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Mw/oII9yMRgc79hk6J1pYJowitCWuomRO8RPWh6pQ5R9pELnKJIuLfdeNXxkw8rpgb8+ILxnbe2KoSTej90LZJi2bmfXO0pIE5CQKj6PYLjlGhZYH1xXiFt+RmsFgiJZGtU2JDCv6UUOsi0QEJB7lkNhHatoeVt8w6U0ow5KSSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OmINarEv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD97C4CEEE;
-	Tue, 22 Apr 2025 02:18:30 +0000 (UTC)
+	 MIME-Version; b=beA8yH9o7uQTmar7S36CtLpWJ70RVifRbFn1wwwBYGp5isOFV+5OirbjMf4XTywIiMt4tCNBoPtHHZ5zm/njrLJ9eVxSO298KXRbwcF6Z3Vb14p79RoS7Yxp0zXFt7M9XQwmoHi+PZf4vEtFu0OKagJdEyXYxRHdt4b8+MAlulw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGn62wjl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9988C4CEEE;
+	Tue, 22 Apr 2025 02:18:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288311;
-	bh=KFUKcgaV97DtoJQUvFPRaNuDDH4o7/czpS6aKLyK5qk=;
+	s=k20201202; t=1745288314;
+	bh=R/zYyScGBky2sOpDAf0q2XG2hiACRKTyjcFhCE+ct5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmINarEvpLU4+q78E7OuJWF+N8z0KhXtbAPBmyiuCknWW9+rgVQuidSJbrpFj4mTG
-	 arYEdLwX12WMvj+mkJ3zSqE21qANkvE1FbIdCQZxmf7DXsXl/hci9GQUOnJv5opg6j
-	 fzA0EkEpHmhZqRJSc/D5dNgW7kEnVaOX63X4BHX2ZVFolnQUdzEc/H+FMyCC1dQiDj
-	 bf3jI585caRy90+ru8xDRkjpxeviGaVwEzD0xA2qSRAjYtjWnyeZJEkPz0OZ95EZzq
-	 XaOTJ67SIb6t4o/Qt5fhNVXZvIefOq6IXyGjFI57pYrtbmiTSJ8Us//qsbwUcuPB+m
-	 e5kgeO/BIH9xQ==
+	b=iGn62wjl2wGGW7KKqvVZ/fxfaWAmeUTqeGMZuTuTUjcxRYlywFJF536gJpGyt+1Qp
+	 JMX7xVITlCX+uo4J4gc1hMnLFpSB3YdBxx0A2nfGWUQvuOmrrTIAWhWig/O/pPkUkS
+	 JS9UREiKUK56W/RyGCwsZCZps5Mzp3elfOW8QcU8L0Wcd54rJ5pf12obCkvqMzLghw
+	 a8rwWnJlBR/ppN2kDVtJMyFgZMXOJ0QziAhixhVXbyIVBdLEZ7y6n3dfUwNWFt2u1V
+	 gm+ptvkTJLbI7C8kd0Ym5pnBAswQasR7frCRhfPmW817NbA+E43ikBVGQxerXAu2SU
+	 CrrIJhkZ+xxMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Igor Pylypiv <ipylypiv@google.com>,
-	Salomon Dushimirimana <salomondush@google.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jinpu.wang@cloud.ionos.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 03/12] scsi: pm80xx: Set phy_attached to zero when device is gone
-Date: Mon, 21 Apr 2025 22:18:17 -0400
-Message-Id: <20250422021826.1941778-3-sashal@kernel.org>
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	dwmw@amazon.co.uk
+Subject: [PATCH AUTOSEL 6.1 04/12] x86/i8253: Call clockevent_i8253_disable() with interrupts disabled
+Date: Mon, 21 Apr 2025 22:18:18 -0400
+Message-Id: <20250422021826.1941778-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021826.1941778-1-sashal@kernel.org>
 References: <20250422021826.1941778-1-sashal@kernel.org>
@@ -68,34 +70,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.134
 Content-Transfer-Encoding: 8bit
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
+[ Upstream commit 3940f5349b476197fb079c5aa19c9a988de64efb ]
 
-When a fatal error occurs, a phy down event may not be received to set
-phy->phy_attached to zero.
+There's a lockdep false positive warning related to i8253_lock:
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+  ...
+  systemd-sleep/3324 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+  ffffffffb2c23398 (i8253_lock){+.+.}-{2:2}, at: pcspkr_event+0x3f/0xe0 [pcspkr]
+
+  ...
+  ... which became HARDIRQ-irq-unsafe at:
+  ...
+    lock_acquire+0xd0/0x2f0
+    _raw_spin_lock+0x30/0x40
+    clockevent_i8253_disable+0x1c/0x60
+    pit_timer_init+0x25/0x50
+    hpet_time_init+0x46/0x50
+    x86_late_time_init+0x1b/0x40
+    start_kernel+0x962/0xa00
+    x86_64_start_reservations+0x24/0x30
+    x86_64_start_kernel+0xed/0xf0
+    common_startup_64+0x13e/0x141
+  ...
+
+Lockdep complains due pit_timer_init() using the lock in an IRQ-unsafe
+fashion, but it's a false positive, because there is no deadlock
+possible at that point due to init ordering: at the point where
+pit_timer_init() is called there is no other possible usage of
+i8253_lock because the system is still in the very early boot stage
+with no interrupts.
+
+But in any case, pit_timer_init() should disable interrupts before
+calling clockevent_i8253_disable() out of general principle, and to
+keep lockdep working even in this scenario.
+
+Use scoped_guard() for that, as suggested by Thomas Gleixner.
+
+[ mingo: Cleaned up the changelog. ]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/Z-uwd4Bnn7FcCShX@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/i8253.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index 8e3f2f9ddaacd..a87c3d7e3e5ca 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -720,6 +720,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
-+		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
+diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
+index 80e262bb627fe..cb9852ad60989 100644
+--- a/arch/x86/kernel/i8253.c
++++ b/arch/x86/kernel/i8253.c
+@@ -46,7 +46,8 @@ bool __init pit_timer_init(void)
+ 		 * VMMs otherwise steal CPU time just to pointlessly waggle
+ 		 * the (masked) IRQ.
+ 		 */
+-		clockevent_i8253_disable();
++		scoped_guard(irq)
++			clockevent_i8253_disable();
+ 		return false;
+ 	}
+ 	clockevent_i8253_init(true);
 -- 
 2.39.5
 
