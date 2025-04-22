@@ -1,155 +1,105 @@
-Return-Path: <stable+bounces-135063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B59E6A962C8
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 10:50:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 872CDA96305
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 10:54:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B78677A5CA3
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:48:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C0B3189BB2F
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D0C25E837;
-	Tue, 22 Apr 2025 08:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35774256C89;
+	Tue, 22 Apr 2025 08:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="VKc3UsUF"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="penu3/YZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE02238C15;
-	Tue, 22 Apr 2025 08:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7DD25743F;
+	Tue, 22 Apr 2025 08:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745311443; cv=none; b=ipxqiadY1fTQ8vOQtfPt7TTQ8YkFFF8nPK9E+FdeSYlN60mKFrUCEbkk5HAZaQplrPMh3wuoCWOZnKpFWi1kadAAXHh5GuXwnfrK15ZWEt2p6cZPww+oDH80VisrKesXSJ5M5Oq4QpafgkeLAXTKq2qkVkFvhZwINMJI3tArrnc=
+	t=1745311288; cv=none; b=cI1o5uiJzjk3WVYsWSL9r7uk+TJDVv1YG1D2LSiJPS4vDjPdBPhfIay3dBllrqPPWGHPYLUmbOp/p4aQY16afSmEuWNkaOLZQMEMMAarnjRA+Edp1CfMlFgED9TPCd4dqQv24FFrTETt+jgndUT2Jtvhkxi8acMGgkX9aE9TmAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745311443; c=relaxed/simple;
-	bh=fE6e3T0ztqihdFOemjtdTl+BdpIf6JYZqyHpceFLW1Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O68+0jhUC6WT62B0ZwDvA4Zj6l2NpJwORSmUPpDobvRMfNPO4bQvs56r9JYsOh3ULuX87r3jVLwNQopyfMr3pm1Zayzxek5kGgQnXrbbD2tj7j+JcyfmKn5ZqE3yfaAopkdTpCJj3vGBBWGY5wvB8QRzxzg+unkHdbvpIORjIuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=VKc3UsUF; arc=none smtp.client-ip=18.194.254.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1745311358;
-	bh=ta9c7PBfYNJdA/EddRHHdw/PT5n6zrxUu0kZcu8S4yI=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=VKc3UsUFJ4dkJhG5s3Qpr5aVx5K5scUwzl5lNPG23iu42gG9VfaHXWOpX5+GX9cas
-	 Yg/4K/SLT/NB9O6Bnc3N3Gm4BfKA4L428Sg5Rw0phcmPZ6EV5F5b5o21N5F5moOKb4
-	 lAtASLe8xwwSOivSi0Y2NKzdz0Xj++Jy3+5q4LBQ=
-X-QQ-mid: zesmtpip4t1745311352tbc6f2798
-X-QQ-Originating-IP: D8iucQ4g6QfgRn6AdF4rdReU2rpnTyIVkPf9B1N4tYU=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 22 Apr 2025 16:42:30 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6722607593758922458
-EX-QQ-RecipientCnt: 11
-From: WangYuli <wangyuli@uniontech.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: james.smart@broadcom.com,
-	hch@lst.de,
-	sagi@grimberg.me,
-	kch@nvidia.com,
-	linux-nvme@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	WangYuli <wangyuli@uniontech.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.15/6.1/6.6] nvmet-fc: Remove unused functions
-Date: Tue, 22 Apr 2025 16:40:47 +0800
-Message-ID: <85E64841B89AA153+20250422084047.100708-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1745311288; c=relaxed/simple;
+	bh=1Vpx6IWGw8fnpaFdAhzIBN6OlsDoegH8mN06+Y65eVQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j+zOzyqkh2fML7tAuV6YvhKg+VhU5eHzh2soCqwFfmPzlCbUMVpRoQo0h8ZNYPpqy8mgTHdJdi6fgYc/d3JyBjqCE7ztgCqU3BavfWsA0JnTKpgPGhQGdB33E6IsuGw82Pmd4AqzYSlMTcvyfwW6HmSsunKzknAA6jY41QKej4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=penu3/YZ; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id E3BA01F929;
+	Tue, 22 Apr 2025 10:41:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1745311277;
+	bh=j42C1neK3aBXGc+3YIjfO2v8Xt2aMCt3/0zWgtV9maI=;
+	h=Received:From:To:Subject;
+	b=penu3/YZVEI07stg2iQTLUOpNVxP1HOxBAdODDevRCDZPAJCgLpfGVefwkW/zq4yK
+	 Rak6XOa9G2kod7SBw6TJPCJ8uFa/q4TQywOm1J8XqIZRCAQC7Cztqt3vlepvWqF3XT
+	 N/iwt/q2/75cJAr1Z5Tu3KOekjVlUNaxDglJORQrY+OnSA9KpRbBSkA4AqHJ3ztnhq
+	 jjOzB8olRLLfUBsiTQ32s30FTValKeVCLAYqQIprBaFJ9B/QTcV1BcD0vyFNI6aqkK
+	 0n3YhqZKABBuSIbdQL2m2/WzkSM55NQYD5xfqDTdh2wrHev+pNuTxS8L5C0xnmF5YA
+	 CCcGAsK+D5jmg==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id 952EE7F820; Tue, 22 Apr 2025 10:41:16 +0200 (CEST)
+Date: Tue, 22 Apr 2025 10:41:16 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Philippe Schenker <philippe.schenker@impulsing.ch>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] arm64: dts: imx8mm-verdin: Link reg_nvcc_sd to usdhc2
+Message-ID: <aAdWLFS2UYciaJc8@gaggiata.pivistrello.it>
+References: <20250417112012.785420-1-Wojciech.Dubowik@mt.com>
+ <20250417130342.GA18817@francesco-nb>
+ <95107ed358b735cbe9e5a1af20a2d6db74c5ed64.camel@impulsing.ch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: Macl0gWiWu4eRuOOyk37VxCKREBShQeCnU1W3GYww67YWdfrfBicqJUW
-	CXKHT17TFozzMO9ShqUyqkhflZP4klbot6zzUoXae2EVnzorSMbBIsLqob2Bofyrev+aVMQ
-	lUeJiVEq5eBtlxEKRLyNbZ2r9zAWeWG4jRBN1fEpRr/rm3hUNr9bN9b92Z0G3r8hAAQ2ulR
-	wFCEgIKq1PN1hPd1MOHhTJ0tIML5AW0puC80eD8xoFNSujMB04gFzw8uxDxwrfahd0P4Hl6
-	5YzMxN6CN/Hg7ulJQYP5ajYrViJ7zyM/12NZny9AJK9Zh7PRn5Rp4OigGiLu64C+2dSFaUE
-	J/olxGNow8bJ6sSxJ8w89wNJ/Wnk2PJdzP2FKSCcd4IqK9jeLGAmQwvXBuUfFfnr4KgVlXv
-	XIWE1J0L3z9N46MDjwLtlwSeKJQw7GOmrMtH437rYoZ0jzIcnp2Pxn5Pvdp+gIWA2I6bli+
-	9J8Lt27zrIlh6eNlKxp0GY3F3Q9DxvVo1/Ov0AF4IF22ZYCWi2IzE1JNKWxsChBrs6I8kBv
-	TkC0BbPny4GMxHs1QmCoXKuaLU6r57MAyjjg5PFhD3lqbAha/859YpRni+1dAo5qFSL3z7U
-	W0YbPIw4tACgwu86KAb7gygENy0/JJc/Eb+Vk6I/IDVb9E5WBfin8stPYq6utagHhMYiRN9
-	Ae8j74AeHx+JGCjqQPNLUZttZCZPFQH0Ak6dQgQLul4sOsQ9tvdwhytM0whbFjI1axC+A4M
-	AXS+nKs+vV4CZjHeCs7fNVdMToE4zBrBfejTIHuRxvhMftTqYSEovSaIlmZI/Jfmx8WXJGI
-	hKOeb8LzCNmVHBOZZJiEIrX/aOEKG+3ymjbZ/lK/igAU3UY+YCj1IUD/lQonDSDTVEIF9aD
-	mvuuuTsnPW8i87SONr4KIPHqEWzUCUQUgjXU1xPfGnUzvuLD1VM2kwzOPSbkU6nHNDmKwQU
-	LqZKJtkx2++LU1HnyTzdjwDwl5Mygk5xFgzwbpaGJpHRuObV3PixqEMxMaVculKxZEbYjf0
-	tMdkbnZM1YdfZSk6SgWhJgbC+0bt1GR/kgoIQzv5KnTUiAr9ZvGNjKlTAJddsOGinX4NSTB
-	ktwoRIVmwcQ
-X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <95107ed358b735cbe9e5a1af20a2d6db74c5ed64.camel@impulsing.ch>
 
-[ Upstream commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c ]
+On Tue, Apr 22, 2025 at 07:57:32AM +0000, Philippe Schenker wrote:
+> Hi Francesco,
+Hey Philippe!
 
-The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
-unutilized.
+> Not sure this causes any side-effects maybe you guys want to
+> investigate further about this.
 
-Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
-transport"), which introduced these two functions, they have not been
-used at all in practice.
+Yes, we did, the correct implementation would be the one I linked
+in the previous email.
 
-Remove them to resolve the compiler warnings.
+> I needed it due to the strange requirements I had (described in commit
+> message).  From my point of view it is correct to link the vqmmc-supply so
+> the voltage can be set also to something different than the default fusing
+> values.
 
-Fix follow errors with clang-19 when W=1e:
-  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
-    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
-        | ^~~~~~~~~~~~~~~
-  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
-    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
-        | ^~~~~~~~~~~~~~~
-  2 errors generated.
-  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
-  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
-  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
-  make[6]: *** Waiting for unfinished jobs....
+It does not really work fine, because you have this IO driven by the SDHCI
+core that is going to affect the PMIC behavior at the same time as the I2C
+communication. And even if you remove it from the pinctrl, it's the default
+out-of-reset function, so you would have to override it and set this pin as
+GPIO even when not used (this would work, of course).
 
-Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
----
- drivers/nvme/target/fc.c | 14 --------------
- 1 file changed, 14 deletions(-)
+My request is to fix it in a slighlty different way that matches with the way
+the HW was designed.
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index d3ca59ae4c7a..88893e78661c 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -173,20 +173,6 @@ struct nvmet_fc_tgt_assoc {
- 	struct rcu_head			rcu;
- };
- 
--
--static inline int
--nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
--{
--	return (iodptr - iodptr->tgtport->iod);
--}
--
--static inline int
--nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
--{
--	return (fodptr - fodptr->queue->fod);
--}
--
--
- /*
-  * Association and Connection IDs:
-  *
--- 
-2.49.0
 
 
