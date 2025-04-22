@@ -1,125 +1,136 @@
-Return-Path: <stable+bounces-135191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A5FA9765E
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:59:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544EDA977AB
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 22:32:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EFDB3BE559
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:59:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47B8A1B62420
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 20:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF45298CA7;
-	Tue, 22 Apr 2025 19:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4964A2C2AA1;
+	Tue, 22 Apr 2025 20:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LfqOTqA1"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Qy8JDyu8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FF510A1F
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DA62DA911
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 20:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745351977; cv=none; b=pnUqiejYONnGK8OG7TvJB1HhaN4B+ZLaQqTEH94c5xN8bBq7xM2HqNAgTIfD4sewx3rchQXHpuDRaaphsZO2X6gb2IE6yGjBFIR+uOgbemVtqHPtWtA8tamjCAW+TV/ZTRJNdDgVAq8YkqJf3ow8oaVNvHWBnnoCCoZ4Pic2c9g=
+	t=1745353942; cv=none; b=dVmTOml6QCeBxMBSwccNNhgDslI76Y27u4BDXBDlEYqOV6Zf57og5V9vgAMCBO8FUpNOMUAoPhyStZEmkTQT46Ul5ijsqE7reVE0D5hg3Qsiq6iTtKZ8LXF3nVi3Ji8acta0t3TD+MRv1IgkWYlYT8bIjpGtcdPFzQ9cyxGY7sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745351977; c=relaxed/simple;
-	bh=UbGIG7i0NzKo1+u8xQW3mbtmAxhdO+m2bsQrUBizX3E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hniEneiUaiXYjehDmyRJ6RW0z81V6qIbiKdKZ4h3sLPFRZpTJy5sx5FY8fg8NcoB9VRZcMtyxoBEoSkg7DgJ4lgB+oT2m04QKy8+S4C0D4fKs34D+nZSNtpwAMgsw1TvvbneHfICa5gq5NOO7SVt+Y3TkujPFKWRaNqcg55ThlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LfqOTqA1; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-54d42884842so7232629e87.2
-        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 12:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745351973; x=1745956773; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ty76n1wOFkwp5qHN3wcH9JcxPufPeZW2s+1Yy23nN/Q=;
-        b=LfqOTqA1SBrypKzqdU16M5RiAXYvbN/krCyvEQviA5cW3O/GxvmL95YN4jzf4cmphR
-         FGPOuSexNG4P+nSNWNT9ZUJO/u/Nk2JLXrxeANCjo55vH5A4IlQV+Il853vy9TkDOzGS
-         u6NgPFElt9L1LiBb8IjH53uc4zAL6BhaouYdZXPxcdK9c0F0SuNn4WZGBqBQL2vrGfDx
-         SZC8Y+leHQIJiAMCry+h+Dc+Lo2ZmTwSa/zkjOFgmD/oDY+Gd/otcs+1+VkWmwOlYD6+
-         lpAa0ZIzN3ffBA6YmnvI5RQHpXtMkO/oDaKLHaPalLcP/Be6QDJLBCK9Gi5WSICcUwzU
-         nh7w==
+	s=arc-20240116; t=1745353942; c=relaxed/simple;
+	bh=e947s7vj9DgAZEwGThYJOnOY/ENq4ZjIinQ423qwLiQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YISZV48vpnzvMfjYgW6MfH/9Ih/QXRx5TX55JpF2MKmK9EId6llzbguVMVurt3GSatrCpILAdWOxZKnMXu1ABGxIIubtg0LcwOAlTIHBEs1ynit0evAUdRoLqvygLLAYyt9CPL80jExsYlF5kHtR7Dld7PPficu7G/UR12nqUY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Qy8JDyu8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53MI6tjg022109
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 20:32:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	p7fC+usINhtdyGIUDTo2++4styKlE/llRnmMJX05WkI=; b=Qy8JDyu80CYbPvtw
+	GTGMzbXhTYQ+iSI4pRiVEcKB5djT6MIQWevPIX3khy68lBuQdpkq20po16TYgh8g
+	wt/8+kR/B42urhicgpy9Ae9GTIcQjYZAHp0YitZLbdurIYslgpky++CRAVLjoGDF
+	3Rb4fJrQ0DhzPHB+EBUKHpuIsVqp5kvm8HpSiUeof0De4KF3mxTg28WhfHvja7PR
+	1TchLNtVxskBaQXCbwcrSuFBheeOtTvwNlKfeBZXDnOcyV32nuebMQwnkvCsuGbs
+	apgyMQ/YVoeoq3komUzxBik2karBl6D30K+jwxPAilXHCD/CP/6U8ccryr0ru8u1
+	v5cqPQ==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4641hhs56k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 20:32:13 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c547ab8273so45834985a.3
+        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 13:32:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745351973; x=1745956773;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ty76n1wOFkwp5qHN3wcH9JcxPufPeZW2s+1Yy23nN/Q=;
-        b=KWAPh+aljHCvbBuUZpR6wduyiX4XlAcvOSnCOAjJL/Qf4tg5WWViEq5WSMm/39/zGE
-         AFiytYgiPVmfEiirj9f8ivboILnXAt7QTxNptK0BkYc8d0Qr2r45e3aaiPWRic2z4taQ
-         tbcJZvK4bvpnI+meqOBBwpk2eDQAkukE4Z0Oo6bA21npzY52cv9XO1U/FpUubvApg8HV
-         cVwJSWlIjfCIUpshfOZ8ZUF3ku86TN2t9tieFl1TTXfL00mamWynL/QINZk308Iq0Zu6
-         jDHfK5SHQHLoOQVg1nwZh1VDuFfqskX95XCoyPShSkokykBGCejXEXsrOZJ1qzSAx/rO
-         mkZg==
-X-Gm-Message-State: AOJu0YzBcRT/SbfCyt8X4tv/xLOdAw5w0wv64QOwQUZF68VMEFqEKhwu
-	VM2UvjzDu4tZzXExbmVGNtDCa3vnmXf/yyaHdUlPr/rxB4kG8ctT
-X-Gm-Gg: ASbGnct0CDP+/uaxPeLekruxg9nC+xefztD/QUl+bSYXEmZt+PWVlYW/KtXVndRkP0Y
-	RwPexR/QXaFPMIR0N9u2WI0jjR1zKFcLn16HWhB+j3+ditsS4XF5Or/e8eulxp2/wt3QHabKZ+0
-	clj4nf8CYIPaGT67jFfSR0B8LO3oADZ5UnHkeHYdcoJSXtIAN7Sl6UKJtQWT71Bp5eP/NTGj9mb
-	SL/pEA7iyM8pFAwrfggZzq6S+3Pu708qyVDY6198HTnXZc4c5yKOIcAaSBxzU3D3AwUxoVY24TW
-	SRTQh9GKCgRshuQfYTWaHmAVRqZFjNMCOeg=
-X-Google-Smtp-Source: AGHT+IGs9D3pg86XqGlmPHmhgKXqjxtAm261sE5bAk9tWy9T3vo+d0kKd/A+DcFpp+fdXrK4Q2sNdw==
-X-Received: by 2002:a05:6512:138b:b0:549:5769:6adb with SMTP id 2adb3069b0e04-54d6e619433mr4240819e87.5.1745351972867;
-        Tue, 22 Apr 2025 12:59:32 -0700 (PDT)
-Received: from parrot ([87.249.25.136])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3109075e3d8sm15166881fa.15.2025.04.22.12.59.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 12:59:32 -0700 (PDT)
-Date: Tue, 22 Apr 2025 22:59:31 +0300
-From: Evgeny Pimenov <pimenoveu12@gmail.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] ASoC: qcom: Fix sc7280 lpass potential buffer
- overflow
-Message-ID: <20250422225931.7c3101ff@parrot>
-In-Reply-To: <20250421193020-123e6255cd3f396a@stable.kernel.org>
-References: <20250421193733.46275-1-pimenoveu12@gmail.com>
-	<20250421193020-123e6255cd3f396a@stable.kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
+        d=1e100.net; s=20230601; t=1745353932; x=1745958732;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p7fC+usINhtdyGIUDTo2++4styKlE/llRnmMJX05WkI=;
+        b=Jqm55DQPRogFTP0I/J4osCNTtPCXi3ks1/k/QgEMcVXJMQDbu80QgBFqYOpSqqvXPG
+         PHeoUH+Q7IY75zIiHTOYHifvBlFuCr36tWX0elm1lPl1ICQwBVLN44t8JwpabFb1lCQD
+         hMJD9zRIggFwXe07fh9LJhvHnlprIZu2TxcPs3u9TuRCGf2+JJt9JH0zE1T4joI30LFe
+         x0rewDtrWGJZflbm6g2e+6rCRaAdurW3oxyh/aNWSUTncdMYnofxnNvmkzKguXBgBe2U
+         9b786HS8t9kASVeO6Un0moRXxBoJfqFeA30kb3qBOg0AlXIJDd7H48k/KTaaaCZ4v59U
+         nHSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWPgWRJpN8C0GHRHxA+6VSlaDtcYYf7grTIh8jLXKeDYFSNtOMO9r24UtV2vPW45rBmk7TwGJo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHRLt6a92zHKjybnUpHjn3K49buBCT56FF0qhs08MDO+rUDz5Z
+	DsKg9WFfHd5Wh80vWF9AbC9UTi909IL5jMmmdWkEi+607p6uSkoaPlVugiVCvl5xgvYmSSfGAi2
+	n+jBkt8UKsRjVqPjUlTb4AILmmRZfhVaxBbxgW9LX8sW14wRGHJL+Voc=
+X-Gm-Gg: ASbGncvPPnjyVRpdKI1K2cttqPuEQL3juegCClbdBLfaE4rNzNxtLlx3vcl7KMcPO89
+	N7ObCWBcrXDGyRUSZn1pzDgOLTMaUdQ5KqurHMBsw1oHp6uyPnRdhz/7yLQq7MjMy7Zd0mlPtqw
+	V3p8Uld2ztYlS9Dx4lhsr92Dt4lLrW9kpzaUcarukDrd/2pbW8/VYtUzd/Z6LCcCVFDyluC5iAW
+	FonQ5DT0h5WgFI5PXaTPLzVRw8JNH1lYSc/CAVIs4IACue99H36m4/JUjLr3laHIPPz3Rc/Gda0
+	6aWZtt5TOEBaobLdWo7hyG53Y59hRfhlXap36mLwJ7mFzL3txdRm1BpEOz2/vtoyChw=
+X-Received: by 2002:a05:620a:19a0:b0:7c0:add8:1736 with SMTP id af79cd13be357-7c94d33c7d9mr38789785a.13.1745353932579;
+        Tue, 22 Apr 2025 13:32:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IECPN+gnhFLHpQ4DwkU2Hs6fRx+RAoCulz+9BV0umNnTLhXBZYmVSHmE2UV/CVMqwsUJthtKw==
+X-Received: by 2002:a05:620a:19a0:b0:7c0:add8:1736 with SMTP id af79cd13be357-7c94d33c7d9mr38788685a.13.1745353932207;
+        Tue, 22 Apr 2025 13:32:12 -0700 (PDT)
+Received: from [192.168.65.141] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5f625834185sm6311589a12.61.2025.04.22.13.32.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Apr 2025 13:32:11 -0700 (PDT)
+Message-ID: <e9f3ebdc-78e1-4e95-92a8-5ab97d6ede0c@oss.qualcomm.com>
+Date: Tue, 22 Apr 2025 22:32:09 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: x1e80100: Fix PCIe 3rd controller DBI
+ size
+To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Qiang Yu <quic_qianyu@quicinc.com>,
+        Dmitry Baryshkov <lumag@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250422-x1e80100-dts-fix-pcie3-dbi-size-v1-1-c197701fd7e4@linaro.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250422-x1e80100-dts-fix-pcie3-dbi-size-v1-1-c197701fd7e4@linaro.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=Fe43xI+6 c=1 sm=1 tr=0 ts=6807fccd cx=c_pps a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=EUspDBNiAAAA:8 a=63VBIPp7KmuLgbtEyNwA:9
+ a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: 4inP4e0FAGbApuyQXnwH08XKaWiUhUqS
+X-Proofpoint-ORIG-GUID: 4inP4e0FAGbApuyQXnwH08XKaWiUhUqS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-22_10,2025-04-22_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ bulkscore=0 malwarescore=0 mlxlogscore=705 mlxscore=0 adultscore=0
+ priorityscore=1501 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504220153
 
-On Mon, 21 Apr 2025 22:15:41 -0400
-Sasha Levin <sashal@kernel.org> wrote:
-> [ Sasha's backport helper bot ]
+On 4/22/25 1:03 PM, Abel Vesa wrote:
+> According to documentation, the DBI range size is 0xf20. So fix it.
 > 
-> Hi,
-> 
-> Summary of potential issues:
-> ⚠️ Found matching upstream commit but patch is missing proper reference to it
-> 
-> Found matching upstream commit: a31a4934b31faea76e735bab17e63d02fcd8e029
-
-This founded upstream commit is correct.
-
-> 
-> Status in newer kernel trees:
-> 6.14.y | Not found
-> 6.12.y | Not found
-> 6.6.y | Not found
-> 
-> Note: The patch differs from the upstream commit:
+> Cc: stable@vger.kernel.org # 6.14
+> Fixes: f8af195beeb0 ("arm64: dts: qcom: x1e80100: Add support for PCIe3 on x1e80100")
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 > ---
-> 1:  a31a4934b31fa < -:  ------------- ASoC: qcom: Fix sc7280 lpass potential buffer overflow
-> -:  ------------- > 1:  420102835862f Linux 6.1.134
-> ---
-> 
-> Results of testing on various branches:
-> 
-> | Branch                    | Patch Apply | Build Test |
-> |---------------------------|-------------|------------|
-> | stable/linux-6.1.y        |  Success    |  Success   |
 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+
+Konrad
 
