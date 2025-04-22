@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-135108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A730DA968B6
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:17:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656DDA968F6
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 775CD3BA9B0
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:17:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A150417B088
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B444C1AB531;
-	Tue, 22 Apr 2025 12:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C781B221289;
+	Tue, 22 Apr 2025 12:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/RSBhj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZFjCbHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560BB4A3C;
-	Tue, 22 Apr 2025 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F6E1EBA0C
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 12:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745324271; cv=none; b=C+8FeTyDu49wJn501mpfzDUtr+EOsxlffZqqjozmv3UqMtlP0ZDUrhsC079PMT7Xuscox7rttk4TP2///9QyFG/8i7tb+4RrbpM4h0vHxlInxFTPLwEQQ2iGJfPH6gB7fwvF6uEL/DkHdnY5/SNW7Xt63LPURDQHK2/6WkFW/Vw=
+	t=1745324422; cv=none; b=jeGPaFId9tfBAjitThzz+W89zafeMCpz9mMzxoSUSMv8RF5K5fqAyNXrbQjhU9czvEeKItCHb9fv+zuscQQE7RwBg1teS2m7xX6bGJTa7FPV71yERB+8xwg6yOKeqBoCXVo9Dsszws43RjTZvdvIKjL2solPzTOcd9Y5Vl402Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745324271; c=relaxed/simple;
-	bh=BUfBS1olvnBAC5Sam459VRxNa4KZVnHDVMi1DErPxP8=;
+	s=arc-20240116; t=1745324422; c=relaxed/simple;
+	bh=mp04PA8rCGYHfHuAQSj289Pe6LjtHq0UynSyGLCYNfg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qTC2VE/Reoyw5UDo469dLjZvg7c4fhd18cj48Wf/6Q7cfjPwfiKkIc2AmjjsFFrZsZKpsy8X74qhk9k01NLdjggzZBl5XLzpTipo7Xcn6/Dc9ElKWLDTVCoglfnwB444nLabtI6wrArovoQ1sXnQ/sks/sYoaBmh9/B9Dj2IU8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/RSBhj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85109C4CEE9;
-	Tue, 22 Apr 2025 12:17:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=hRJQe32VKy/4v9s03kAFD28dGsOh7EiALC1wNzXB6Ju7U4orb6/Xpym/vCuKg6/K7EETDY5oYDHaREIhboVxomGoikNHW+PBYKsuJo3s/oYMkh/XZFK3TjJByjzF89Eg30Wj9kWgZ9b7CVQSNuE9GrmrxZjroNTd1pRyHzEAo28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZFjCbHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA0EAC4CEE9;
+	Tue, 22 Apr 2025 12:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745324270;
-	bh=BUfBS1olvnBAC5Sam459VRxNa4KZVnHDVMi1DErPxP8=;
+	s=korg; t=1745324421;
+	bh=mp04PA8rCGYHfHuAQSj289Pe6LjtHq0UynSyGLCYNfg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J/RSBhj/BUwxZsexAGiw70yijBy0GBgg+1XHXcbljmGFMO7g6kI4OSakpstczr2ID
-	 GRVqm6LvoKP96QL7jIz8bpnLt7DmLKahe2+aE488zOxyrXghU3G4QJP4/1Tn+uqCgV
-	 OabJukt2y3ONWQpTLfv1etzRVrN+HnOsT83DCDIU=
-Date: Tue, 22 Apr 2025 14:17:48 +0200
+	b=WZFjCbHJngwG6n0CkxdZgLe6MjOv5RgbogQZDnslOMRXL8g8c6TEX34No7V315FVS
+	 LAj2oelH9rf+7ipt6zZkmJ9n6+DnB4sgUCy+5AkaLS2ztPFvfymNCaueqGEuFQjQmz
+	 F+rdn2X9FCx1NSG+hDZlRmplQFMh6JAjqvUyQTt8=
+Date: Tue, 22 Apr 2025 14:20:18 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Karol Wachowski <karol.wachowski@intel.com>
-Subject: Re: [PATCH] accel/ivpu: Add handling of
- VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
-Message-ID: <2025042227-crumb-rubble-7854@gregkh>
-References: <20250408095711.635185-1-jacek.lawrynowicz@linux.intel.com>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: stable@vger.kernel.org, muchun.song@linux.dev,
+	Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>
+Subject: Re: [PATCH 5.15.y] block: fix missing dispatching request when queue
+ is started or unquiesced
+Message-ID: <2025042244-knoll-defensive-0f43@gregkh>
+References: <2024120323-snowiness-subway-3844@gregkh>
+ <20250317071821.22449-1-songmuchun@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,30 +56,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250408095711.635185-1-jacek.lawrynowicz@linux.intel.com>
+In-Reply-To: <20250317071821.22449-1-songmuchun@bytedance.com>
 
-On Tue, Apr 08, 2025 at 11:57:11AM +0200, Jacek Lawrynowicz wrote:
-> From: Karol Wachowski <karol.wachowski@intel.com>
+On Mon, Mar 17, 2025 at 03:18:21PM +0800, Muchun Song wrote:
+> Supposing the following scenario with a virtio_blk driver.
 > 
-> commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
+> CPU0                    CPU1                    CPU2
 > 
-> Trigger recovery of the NPU upon receiving HW context violation from
-> the firmware. The context violation error is a fatal error that prevents
-> any subsequent jobs from being executed. Without this fix it is
-> necessary to reload the driver to restore the NPU operational state.
+> blk_mq_try_issue_directly()
+>   __blk_mq_issue_directly()
+>     q->mq_ops->queue_rq()
+>       virtio_queue_rq()
+>         blk_mq_stop_hw_queue()
+>                                                 virtblk_done()
+>                         blk_mq_try_issue_directly()
+>                           if (blk_mq_hctx_stopped())
+>   blk_mq_request_bypass_insert()                  blk_mq_run_hw_queue()
+>   blk_mq_run_hw_queue()     blk_mq_run_hw_queue()
+>                             blk_mq_insert_request()
+>                             return
 > 
-> This is simplified version of upstream commit as the full implementation
-> would require all engine reset/resume logic to be backported.
+> After CPU0 has marked the queue as stopped, CPU1 will see the queue is
+> stopped. But before CPU1 puts the request on the dispatch list, CPU2
+> receives the interrupt of completion of request, so it will run the
+> hardware queue and marks the queue as non-stopped. Meanwhile, CPU1 also
+> runs the same hardware queue. After both CPU1 and CPU2 complete
+> blk_mq_run_hw_queue(), CPU1 just puts the request to the same hardware
+> queue and returns. It misses dispatching a request. Fix it by running
+> the hardware queue explicitly. And blk_mq_request_issue_directly()
+> should handle a similar situation. Fix it as well.
+> 
+> Fixes: d964f04a8fde ("blk-mq: fix direct issue")
+> Cc: stable@vger.kernel.org
+> Cc: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Ming Lei <ming.lei@redhat.com>
+> Link: https://lore.kernel.org/r/20241014092934.53630-2-songmuchun@bytedance.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> (cherry picked from commit 2003ee8a9aa14d766b06088156978d53c2e9be3d)
 
-We REALLY do not like taking patches that are not upstream.  Why not
-backport all of the needed patches instead, how many would that be?
-Taking one-off patches like this just makes it harder/impossible to
-maintain the code over time as further fixes in this same area will NOT
-apply properly at all.
+This was NOT a clean cherry-pick, always document what you had to do
+differently from the original change please.
 
-Think about what you want to be touching 5 years from now, a one-off
-change that doesn't match the rest of the kernel tree, or something that
-is the same?
+Please fix this up and resend a new version.
 
 thanks,
 
