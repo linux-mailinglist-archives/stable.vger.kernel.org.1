@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-134948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B16A95B89
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:27:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2099CA95B8A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43525188262D
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6C8167712
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4670325F780;
-	Tue, 22 Apr 2025 02:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CC725F7A1;
+	Tue, 22 Apr 2025 02:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DEGIViSF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWtgd1eg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F404725E47D;
-	Tue, 22 Apr 2025 02:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BECA25F799;
+	Tue, 22 Apr 2025 02:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288258; cv=none; b=pN3Ru/ck2uiuSggQ7PvmY0SK07fxquseXi4vvqnXet9/D64kHblS8rguaXOkBGgqkq6JszeA4mphsMDTywk8FmwmDp+rYBprX0/kLhAba5Ft/NRhNrSzsKudC0bPYRLkx7iBPQ3OUmdQD60hojfnpe57RuY8SWS9vIynfd0Eu1o=
+	t=1745288260; cv=none; b=J45iC292x68pFW5MMxob0czKrz1CbmfJdyjzw1S0FUsxnyM3ZOwDz8UmtWHm4FSdsIKrSwU74OYpR+xRsYapICca+UaRYf8J+haqJPRCd4Feyrp4SiZJl0yO5ymXhrkMVpSGnzgrfWHx1ZHQ7cVCl7uq6WZeS8lsAguP6flG8aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288258; c=relaxed/simple;
-	bh=q/f9f0tVSdoiT/mcDWBVx7/ZzrlTcfC7wdM9rl9lXuA=;
+	s=arc-20240116; t=1745288260; c=relaxed/simple;
+	bh=Iqc5H+me3bMBKriWpZEstR3sZpUWhp5y+/MdyUL4fJY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OUROXDM0eoqBN4GHgIlhHq9xOp4l00N/j548+MG4OEjTuSPlvlRGbLQ32Ah5xkSyVcMmUSUi1zLwFmV8hUDNqup6Ju7PiojFyJ7wt/NIj2geHin7Mf4qddAyGfTR5JV/7pfpQn2XMy/Nlqe9MPwzPLa2/ejnh+AnaIgNkcz604c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DEGIViSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595FDC4CEE4;
-	Tue, 22 Apr 2025 02:17:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ctdnRC4o8WyPUUQXG10wVEHIH8tyFu16LjeXXOgFoObp0r4txSvws/zY4eFyPJNCYkbvoelvuPkBpbcSYnqmDOdWjh/q0cfrrkmpxdnDr5HxPIksbdlF9O+EI4MbycW1gm/mUmSPxxe6RXS1K4Hm72EaIWdZ6klM2wRKSslzHPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWtgd1eg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF64C4CEE4;
+	Tue, 22 Apr 2025 02:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288257;
-	bh=q/f9f0tVSdoiT/mcDWBVx7/ZzrlTcfC7wdM9rl9lXuA=;
+	s=k20201202; t=1745288260;
+	bh=Iqc5H+me3bMBKriWpZEstR3sZpUWhp5y+/MdyUL4fJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEGIViSFlV6KeLoyNBBxl4Cc+WAGclVHKi9Wdr/2dynITgMvGgtHCWmpow8sq9gGs
-	 932rBk2Z4k3RImZhXxxZYLI9RkW/WPy2vEHnPHc4Ylod3rL/rAUaY7dTOc5Mjt5S9y
-	 YJ+PVNrhUBkicaPEGZQWtv8dCSbsZ9f+U8YjAq6kO4rnDt591mxnqalJc65OJFVg0d
-	 4TAWvYDZUHvXpxT6ZRGWrS23wtIOPTrbAalPdZgBpNvnJKnSMzfrV0BZHQoHNPZLy3
-	 RJsgxy5nZSDl2wc+yshosbCPAA0jJMSSr/U7ChUY1ivPjnOMoyVwJlKPcRoZmzQxej
-	 TZxyntWZOMn9g==
+	b=AWtgd1eguofUYE5LEIHILAkp70aHee5OuWYy+x5kUKhpO3t5K8Ef7Yz/SXgn1UIBF
+	 WhH4zbDxxyGV9ENkW79+ii+M9xD6ahMYf2sfDew3l0k+t1BJHpLvHmMaqAPmtLXDit
+	 MWntUx7t4ybPUFfisciN7ha6PjJjw/SGtHPaKPFGvTDgCA0Ex+zw9K7s+5Edk0/74F
+	 mWGySRa3wiy4QR+ejCgBxWla2OI9Bl1HZbJAkVodc63gpUkilyzgjG82KzXnYbsu/8
+	 Nt0QTu406JjCyVc7Dsuo3cGK2UgTdpTT2mqvO7yhZ7qIkQUrssIvucow0pycJV8UOT
+	 isYh53m8QvhhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	"Dmitry V . Levin" <ldv@strace.io>,
+Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 20/23] riscv: Avoid fortify warning in syscall_get_arguments()
-Date: Mon, 21 Apr 2025 22:17:00 -0400
-Message-Id: <20250422021703.1941244-20-sashal@kernel.org>
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	Hawking.Zhang@amd.com,
+	lijo.lazar@amd.com,
+	Jack.Xiao@amd.com,
+	Jesse.zhang@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 21/23] drm/amdgpu: use a dummy owner for sysfs triggered cleaner shaders v4
+Date: Mon, 21 Apr 2025 22:17:01 -0400
+Message-Id: <20250422021703.1941244-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021703.1941244-1-sashal@kernel.org>
 References: <20250422021703.1941244-1-sashal@kernel.org>
@@ -64,74 +68,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.24
 Content-Transfer-Encoding: 8bit
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 1413708f990cb7d025affd706ba9c23e2bfc1a27 ]
+[ Upstream commit 447fab30955cf7dba7dd563f42b67c02284860c8 ]
 
-When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
-because of the memcpy() in syscall_get_arguments():
+Otherwise triggering sysfs multiple times without other submissions in
+between only runs the shader once.
 
-  In file included from include/linux/string.h:392,
-                   from include/linux/bitmap.h:13,
-                   from include/linux/cpumask.h:12,
-                   from arch/riscv/include/asm/processor.h:55,
-                   from include/linux/sched.h:13,
-                   from kernel/ptrace.c:13:
-  In function 'fortify_memcpy_chk',
-      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
-  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-    580 |                         __read_overflow2_field(q_size_field, size);
-        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+v2: add some comment
+v3: re-add missing cast
+v4: squash in semicolon fix
 
-The fortified memcpy() routine enforces that the source is not overread
-and the destination is not overwritten if the size of either field and
-the size of the copy are known at compile time. The memcpy() in
-syscall_get_arguments() intentionally overreads from a1 to a5 in
-'struct pt_regs' but this is bigger than the size of a1.
-
-Normally, this could be solved by wrapping a1 through a5 with
-struct_group() but there was already a struct_group() applied to these
-members in commit bba547810c66 ("riscv: tracing: Fix
-__write_overflow_field in ftrace_partial_regs()").
-
-Just avoid memcpy() altogether and write the copying of args from regs
-manually, which clears up the warning at the expense of three extra
-lines of code.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Dmitry V. Levin <ldv@strace.io>
-Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8b2ae7d492675e8af8902f103364bef59382b935)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/syscall.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
-index 121fff429dce6..eceabf59ae482 100644
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -62,8 +62,11 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 					 unsigned long *args)
- {
- 	args[0] = regs->orig_a0;
--	args++;
--	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
-+	args[1] = regs->a1;
-+	args[2] = regs->a2;
-+	args[3] = regs->a3;
-+	args[4] = regs->a4;
-+	args[5] = regs->a5;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 05ebb8216a55a..3c2ac5f4e814b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -1426,9 +1426,11 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
+ 	struct amdgpu_device *adev = ring->adev;
+ 	struct drm_gpu_scheduler *sched = &ring->sched;
+ 	struct drm_sched_entity entity;
++	static atomic_t counter;
+ 	struct dma_fence *f;
+ 	struct amdgpu_job *job;
+ 	struct amdgpu_ib *ib;
++	void *owner;
+ 	int i, r;
  
- static inline int syscall_get_arch(struct task_struct *task)
+ 	/* Initialize the scheduler entity */
+@@ -1439,9 +1441,15 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
+ 		goto err;
+ 	}
+ 
+-	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, NULL,
+-				     64, 0,
+-				     &job);
++	/*
++	 * Use some unique dummy value as the owner to make sure we execute
++	 * the cleaner shader on each submission. The value just need to change
++	 * for each submission and is otherwise meaningless.
++	 */
++	owner = (void *)(unsigned long)atomic_inc_return(&counter);
++
++	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, owner,
++				     64, 0, &job);
+ 	if (r)
+ 		goto err;
+ 
 -- 
 2.39.5
 
