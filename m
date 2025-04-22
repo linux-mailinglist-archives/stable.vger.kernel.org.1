@@ -1,112 +1,126 @@
-Return-Path: <stable+bounces-135142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6A2A96EE5
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 16:33:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFEBA96F3A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 16:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3307443093
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:31:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A833188C8D3
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 14:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B970285411;
-	Tue, 22 Apr 2025 14:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D567DA66;
+	Tue, 22 Apr 2025 14:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b="UOU9EKyY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K82VEGXY"
 X-Original-To: stable@vger.kernel.org
-Received: from puleglot.ru (puleglot.ru [195.201.32.202])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F84E2836A6;
-	Tue, 22 Apr 2025 14:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.201.32.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CEA14EC46;
+	Tue, 22 Apr 2025 14:46:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745332082; cv=none; b=H8QjASIy07gmh0tRNo/Z31R+WIQL/ajbiZyRdZ0uWNmKXQAagAB6astgE6kV3Qe3/HeS8wkmTaqW2CUIb/X2m7mMYAxm4+EmhnNQJoe+ckEvnxPVt3CR+vnONivqrMtA7KJv7w3y0+PbJdke3qmy49kRQD7JqNWzOT0MMkBQFzI=
+	t=1745333191; cv=none; b=q/pUFAAET1SqCK1Sm3+n2h24Fp8kCTrDPeTIawUGOyZHuc7LU0n30rQchaGS00kfkaFWUOe21oQM6yN2HdjMIWUXqLMY9bzJrCTQvxvx2rZ/6HyTztl5COs/LDLfIfhsfs8tJbrblo7B3eHJ/0uGK3Yc6XA3KLthOOcMQ9pe7F0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745332082; c=relaxed/simple;
-	bh=QlCvwhfAxCV81RCA3QoB8O8/qszFroqaM45KwAtLcfk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lHiGJgwH+1P4cmejPNp8UHaOm5kcjE/DPO02v47/vKyeeguZ4KU9svh9SHQ9CXL4Ko8iO+sWv71QrvEFO8hrBdVStQQAAvPZc/RNWxBQ52LkWtz5AdSzIa/D2wROhMsA3asUeI35yOwTAWbhzTg2eBVv6cw/t5fJ3Gq1CnncK6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me; spf=pass smtp.mailfrom=puleglot.ru; dkim=pass (1024-bit key) header.d=tsoy.me header.i=@tsoy.me header.b=UOU9EKyY; arc=none smtp.client-ip=195.201.32.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tsoy.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=puleglot.ru
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tsoy.me;
-	s=mymail; h=Sender:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:
-	Subject:Cc:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=viz/eCeDqZKTmSUXCMFvlVkCURRz3hDkwAabFhAHI14=; b=UOU9EKyYguGxSOxho5NHDVMbGo
-	fTQG/s06JIDSHbj6ImB5zdwIxfhfCpzoTN5VtuXEfeq+Us9QLgaQ1A3hRQTcZRxqj9xUGiDGgGUcu
-	vUr+SzQy+na7KIZpBs0vOrg6jHrAGal7AXyZ3rrGZf2DeRE3eKLNNnV9w+L0D5yRPMLw=;
-Received: from [62.217.191.235] (helo=home.puleglot.ru)
-	by puleglot.ru with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.97.1)
-	(envelope-from <puleglot@puleglot.ru>)
-	id 1u7EbO-00000000GKZ-1dFt;
-	Tue, 22 Apr 2025 17:27:58 +0300
-From: Alexander Tsoy <alexander@tsoy.me>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y v3] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
-Date: Tue, 22 Apr 2025 17:27:49 +0300
-Message-ID: <20250422142749.301806-1-alexander@tsoy.me>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1745333191; c=relaxed/simple;
+	bh=4ZOxOHGaYZ7XnNdBiJCPQxJUvP74KyPgI+gTEuJB1zQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oRYmGagqL3EWWDGGpktph8D+dVXzT05UC91meFgu/uscS4w2ZlKtoqibMp8SQYPdUQ9x3tL2/u2kaMjENYqDIKzyrCEVWawyCh02geEhq9oWVCCt229Vl9KlW+kLinCXLvhU8BVuUEYYip9O3s8bPG9mzZhnS9ELLyfPi+ekBh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K82VEGXY; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745333190; x=1776869190;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4ZOxOHGaYZ7XnNdBiJCPQxJUvP74KyPgI+gTEuJB1zQ=;
+  b=K82VEGXYLxU3g8Q/vA9sqXdLhqOoivm7AnMnA3UPC6C1ARSEtNp3jMlB
+   VBJ40u4O1DBP9Q0Dn97kV1XbHWxgeTAbHGfTgkElUQRuNmHSWY/In4feh
+   5X3zLl9SSlbU84DW6+GyFslp0rzKSI21EmOIRht/TkyWZjZRwh7Z0b4c7
+   d+dj9rxz5yuXH0vuEuwm/fMC1s9hqLdVnyWCxSVm8a6mWsk4+cqJ7UOxO
+   8B1gcG/5nPlyPRwUE1LlpppIXBe24piNlmOvpHx8rETCJ6FupeIg3XU/s
+   5WvBMsnEtmZg2m1KIhESUwbvHVRUcUwnWFpUvZ/3JW0LGbeJZNmi3SPIZ
+   g==;
+X-CSE-ConnectionGUID: aCg9K9JsQXKgdiaYiwfqkA==
+X-CSE-MsgGUID: 8+52QV0wSAK03JCNNwxnoA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="57086522"
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
+   d="scan'208";a="57086522"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 07:46:30 -0700
+X-CSE-ConnectionGUID: ZZQ3jrKsQ5akuS+ddnGxrA==
+X-CSE-MsgGUID: PtZkqb46R2eCWWoIkHHL0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,231,1739865600"; 
+   d="scan'208";a="163085646"
+Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.111.159]) ([10.125.111.159])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 07:46:28 -0700
+Message-ID: <9dda1860-2919-434b-9d85-71b79296f1f2@intel.com>
+Date: Tue, 22 Apr 2025 07:46:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: puleglot@puleglot.ru
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iommu/vt-d: Assign owner to the static identity
+ domain
+To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+ Kevin Tian <kevin.tian@intel.com>, shangsong2@lenovo.com
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250422075422.2084548-1-baolu.lu@linux.intel.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20250422075422.2084548-1-baolu.lu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
 
-Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
-to fetch the next entry from the destination ring. This is incorrect because
-ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
-rings. This leads to invalid entry fetches, causing potential data corruption or
-crashes due to accessing incorrect memory locations. This happens because the
-source ring and destination ring have different handling mechanisms and using
-the wrong function results in incorrect pointer arithmetic and ring management.
+On 4/22/25 12:54 AM, Lu Baolu wrote:
+> The idxd driver attaches the default domain to a PASID of the device to
+> perform kernel DMA using that PASID. The domain is attached to the
+> device's PASID through iommu_attach_device_pasid(), which checks if the
+> domain->owner matches the iommu_ops retrieved from the device. If they
+> do not match, it returns a failure.
+> 
+>         if (ops != domain->owner || pasid == IOMMU_NO_PASID)
+>                 return -EINVAL;
+> 
+> The static identity domain implemented by the intel iommu driver doesn't
+> specify the domain owner. Therefore, kernel DMA with PASID doesn't work
+> for the idxd driver if the device translation mode is set to passthrough.
+> 
+> Fix this by specifying the domain owner for the static identity domain.
+> 
+> Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220031
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 
-To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
-ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
-that the correct function is used for fetching entries from the destination
-ring, preventing invalid memory accesses.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
----
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 5c6749bc4039..4c98b9de1e58 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2118,7 +2118,7 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, int mac_id, int *budget,
- 		dest_idx = 0;
- move_next:
- 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
--		ath12k_hal_srng_src_get_next_entry(ab, srng);
-+		ath12k_hal_srng_dst_get_next_entry(ab, srng);
- 		num_buffs_reaped++;
- 	}
- 
--- 
-2.49.0
+> ---
+>  drivers/iommu/intel/iommu.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index cb0b993bebb4..63c9c97ccf69 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -4385,6 +4385,7 @@ static struct iommu_domain identity_domain = {
+>  		.attach_dev	= identity_domain_attach_dev,
+>  		.set_dev_pasid	= identity_domain_set_dev_pasid,
+>  	},
+> +	.owner = &intel_iommu_ops,
+>  };
+>  
+>  const struct iommu_ops intel_iommu_ops = {
 
 
