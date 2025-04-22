@@ -1,236 +1,165 @@
-Return-Path: <stable+bounces-135210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2512EA97AF7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 01:18:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06586A97B06
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 01:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53B7617EF24
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:18:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAAD21B6069A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B3520127B;
-	Tue, 22 Apr 2025 23:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E8C1C84D9;
+	Tue, 22 Apr 2025 23:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PFWpnae/"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="CPRQCk8/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4251EF39A
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 23:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26A72701BD
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 23:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745363918; cv=none; b=ZGMoBDziBtV7N/py+DV9fMGzHrwZ6kGllwxTI0r9fO90ZSI+8lN0qdqnztTbqZi09EYEVoaP0ymQCmZgGA+cEFVosYEAbLIBn1Ess4NEmbQKezSwQc/ZBvVj6O0G0fW/YN1dvKUCi31HCUZ3Apn9Q8P56l3XdbA+8obbZxUh6VE=
+	t=1745364661; cv=none; b=X4QB404diI6WD6V5T9gTbVc8NEI8wRyIuwsv1yZwTjoDRx0jiEI0Vu2W5hEJ8GBifdSNk4yPHrQcjIJKJzWF2G2dbzKvchEDouS5w+/PO+2WxDZb60JxdYc/9Hc+MjHVcsNoUf8w4Inw+SCjBJAP32JvevUYhGQyDCvJyXa042k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745363918; c=relaxed/simple;
-	bh=QuB8Gjw+RfSX/s5bV7YLthr8S4ItqWWROGytUMe/6qY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wvc9FcGLSw0Y/0Y95yDK2g7HlDDPdIVXwbE/ovF8AuzoDuiy4RL8+QBUAhhoiEzgj+2ENZAbn5SZAMF+3AEG99/p7nFdxAveBPUJINnAoN/iUO+UfO2rqLmeSxwPlQJptStI9sa+Hzy+GxCV2Om3HcbrOtycCQMHdVLqBbD2Mg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PFWpnae/; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5499c5d9691so6496408e87.2
-        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 16:18:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1745363914; x=1745968714; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TzfZueCNs06IErw8Nx2tIZlpeBLYieWxJQnlfkBvHwg=;
-        b=PFWpnae/6kq795PZmcyXPBMNzesNHrW3oYqA5V+fgjMCxEJoZtePnZeTFJKnefHQ4H
-         Jj34KQnpupKjLEQhO9KsF/QrvZtejCVFeup6MkqyzLrOIzpeZfDvaxmLAlmBaGpvb5nw
-         lcLobWNEGXl7pnKH10V3EayF7w788bbTAmBMA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745363914; x=1745968714;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TzfZueCNs06IErw8Nx2tIZlpeBLYieWxJQnlfkBvHwg=;
-        b=ESroChFqScM2gp3R+D15WiiRpeB3cp1zZ7Xrc03ieAYEyNfIl2S3/UqpbwDYCOcWME
-         zki5hL/+yHAiW8eT0kaLMo08n17oKM1knQ0ARNk0Gz1lUZCsxl2TY+bVuNNOwsznIbKo
-         2bsZ+HqunlD6mDtvDapzniyNpVJS4GCu0IwW1aclUIHzXZVcGjD26Y91Jqaybnw+BqkI
-         OhR8o0JuouL3JFzugDfUnr7LD2AfSka5wpmXHEbbtxAFcHuT//BRBnWQJ3R8earG1Xlk
-         Lnh/0wtE4rGPUYlZM05/Ksu6piYZ+kM75pSYvVJUCasl8n7AxuYFhlGG64hNIALA0KdZ
-         o7og==
-X-Forwarded-Encrypted: i=1; AJvYcCULJ53/bYs+w//wL/wKckZ9c2OjZE9y8cMIkQ/f9/3q7Ztdt0sVXJyI8ltAHChL2OhxFD0TrlI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7L9ERHM0tiB+7JDwV2drKgAUqlCmib/gyTSgPAPgtvIkLxj/H
-	KbmS75nHgtJ64oZ+Yo5hdQNXPLhhnWLhOvo4n9hLR+kIMwI4K8sued2EfouVA0aYlYlkEuLczxP
-	bFw==
-X-Gm-Gg: ASbGncuCfxsTJV4nKWVEF/GjKnWJBiqTsWqsbqu6rxFs7EI/iIJJLoIbdzEHzo46Cuv
-	bJAW/0zwu9/agmkgYr4Mw0KrgBqmBama8z3NjiEXBmqzVo+3tK50LUJxXyyej8TGd6xXjH9KOpz
-	n94z8u7fbW2fo4yK30yWubfzvoApXdQLEyicHZjTvOp1SwTlbSKZAbZHJUDuMo2MxbPTZ/+AHWp
-	tXN2lom9oPK94UhXzXhpyFUWqghOne1WvRxBMWq3AJZlepI18cxuft08FZwO4T8RzlX47f5CGSL
-	1C1iord4od3iKg1Ku0xWPiy5uYhJs0MbL6/Pzfif2rjqryrWkyVrv/DBmQuiEm1k3zEvOJanaCd
-	ZEaHSAUM=
-X-Google-Smtp-Source: AGHT+IEkf7MPMS7Ttgx9xV9c8Oe62/oYONEug6fWBG9m8En9ZdJ1DNsFvQmXxUgVyBTofmYLEuXL4Q==
-X-Received: by 2002:a05:6512:3f24:b0:54a:f757:f8b3 with SMTP id 2adb3069b0e04-54d6e5566abmr4173328e87.0.1745363914176;
-        Tue, 22 Apr 2025 16:18:34 -0700 (PDT)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com. [209.85.208.179])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e540dc4sm1353540e87.70.2025.04.22.16.18.32
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Apr 2025 16:18:32 -0700 (PDT)
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-30effbfaf4aso56489611fa.3
-        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 16:18:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUzKxcKx8l9k5PTdc5C91YSp5xksYsmaKyQFVaJBLYxukmsyj5LffUl1+3duaiX9rm7LNJmfkU=@vger.kernel.org
-X-Received: by 2002:a2e:bc82:0:b0:30b:b908:ce1e with SMTP id
- 38308e7fff4ca-31090553f0dmr68294081fa.29.1745363911890; Tue, 22 Apr 2025
- 16:18:31 -0700 (PDT)
+	s=arc-20240116; t=1745364661; c=relaxed/simple;
+	bh=8BuCbiBTLUrGrb/pye6jju6aE1yPIdSfssJIu67Kh5A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DCK77WL9l4Elw5kdq3juWwAypXK37bR/BWv26rmnuoqp8NOZajgAkfkKf9je0ziD9EU3zEA/XyFaOzML6y78xUAoN3A9ctbPxMppmyBuUe1rkxizeU5Fn4DDhalAwSJOVTw6bCa9YhrxoK4muMIIxiAySp2Z57/MFJFw9bMCpNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=CPRQCk8/; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1745364656; x=1745969456; i=w_armin@gmx.de;
+	bh=8BuCbiBTLUrGrb/pye6jju6aE1yPIdSfssJIu67Kh5A=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=CPRQCk8/PPXS+gMXYlYbQWuKz3RmhkQ5AJyUCQ3uHz8Ig9+mf/3lD69tqxQuhKjN
+	 NWHKR4e+gKZbZHT8hkDqqEzF1Ut2bHPvJRLLHCwy+NrqP6mnAvYQRiPhLSweaflIz
+	 kmyZ75PDrZzhvU72AL2vWcUmwJP5HDjqXkpg6PAv8xQHXIW4Ny9bTV4Y/wKuJow4t
+	 y6c9JrKwGGe3uS7bpu6BY/mfQyxmAXIEKoc5mijRlBl5hnMsfqVVFnYMpOX0D3+In
+	 vQ9GYfQcOm2e+6s15uJAI6ZUcn+SKO9mg4jN+egANwGSLZB/OMNWGy0c9H54t6KrG
+	 402Fwz37rpL9YysjDA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MpDJX-1utcFk3aLn-00kv3q; Wed, 23
+ Apr 2025 01:30:56 +0200
+Message-ID: <4d382bfd-45f9-4989-bf1d-1e6a1ed30295@gmx.de>
+Date: Wed, 23 Apr 2025 01:30:53 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250313-uvc-eprobedefer-v3-0-a1d312708eef@chromium.org>
- <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org> <20250422180630.GJ17813@pendragon.ideasonboard.com>
- <CANiDSCuO+dHOBtW4yvy1n25QWEs-WdQ9H8Lh2rUtcPbUq3hBkQ@mail.gmail.com> <20250422230513.GX17813@pendragon.ideasonboard.com>
-In-Reply-To: <20250422230513.GX17813@pendragon.ideasonboard.com>
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Wed, 23 Apr 2025 07:18:18 +0800
-X-Gmail-Original-Message-ID: <CANiDSCssyAVoyvsiO8thGwUFc_boA_jhBxYDif32Hxh40fhf-Q@mail.gmail.com>
-X-Gm-Features: ATxdqUEDSEbHKCZeCwxeZY8tESjmDWJXIzIiNSsM2g3Q15qo52D4m0v7Y_22dXw
-Message-ID: <CANiDSCssyAVoyvsiO8thGwUFc_boA_jhBxYDif32Hxh40fhf-Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] media: uvcvideo: Fix deferred probing error
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Hans de Goede <hdegoede@redhat.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Douglas Anderson <dianders@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] platform/x86: msi-wmi-platform: Workaround
+ a ACPI firmware" failed to apply to 6.12-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: ilpo.jarvinen@linux.intel.com, lkml@antheas.dev, stable@vger.kernel.org
+References: <2025042139-decimeter-dislike-3ca4@gregkh>
+ <c479afca-a994-4a65-a7c5-7fb53b2d38e9@gmx.de>
+ <2025042201-botanist-hassle-a21b@gregkh>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <2025042201-botanist-hassle-a21b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:jiaohfxWrZtpVWG5hwLYbE/YM3bFh7C2QC/tGl8kaoZIAKOPZie
+ uTzPSlZv8FiJSztie1LW3PFRMA455eJKv7DwIH5VLz2+sUi0V7SLserbN07gkwcRS3hWmDW
+ Nvv+YjjNaUO0rwTX727wTOpsRnJFQjUCwVRgUBCDZNH4ZU27XrVjibwU84ZN6cR/SyXLK0L
+ NJS5VZZVQcYNGGAhPKyJA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:mDs9K+MMT+k=;ZvaaZGYPxHgRnsN5Z3mjCJTKZCY
+ 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
+ s5UnpPALfif5NMbQdzs/g1GorX0mn4ehzc
 
-On Wed, 23 Apr 2025 at 07:05, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
+Am 22.04.25 um 09:39 schrieb Greg KH:
+
+> On Tue, Apr 22, 2025 at 12:07:23AM +0200, Armin Wolf wrote:
+>> Am 21.04.25 um 16:03 schrieb gregkh@linuxfoundation.org:
+>>
+>>> The patch below does not apply to the 6.12-stable tree.
+>>> If someone wants it applied there, or to any other stable or longterm
+>>> tree, then please email the backport, including the original git commit
+>>> id to <stable@vger.kernel.org>.
+>>>
+>>> To reproduce the conflict and resubmit, you may use the following commands:
+>>>
+>>> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+>>> git checkout FETCH_HEAD
+>>> git cherry-pick -x baf2f2c2b4c8e1d398173acd4d2fa9131a86b84e
+>>> # <resolve conflicts, build, test, etc.>
+>>> git commit -s
+>>> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042139-decimeter-dislike-3ca4@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+>>>
+>>> Possible dependencies:
+>> Hi,
+>>
+>> this patch depends on 912d614ac99e ("platform/x86: msi-wmi-platform: Rename "data" variable"). I thought that i signaled that
+>> by using the "Cc: stable@vger.kernel.org # 6.x.x:" tag.
+>>
+>> Where did i mess up?
+> You didn't, I missed that, sorry.
 >
-> On Wed, Apr 23, 2025 at 06:50:10AM +0800, Ricardo Ribalda wrote:
-> > On Wed, 23 Apr 2025 at 02:06, Laurent Pinchart wrote:
-> > > On Thu, Mar 13, 2025 at 12:20:39PM +0000, Ricardo Ribalda wrote:
-> > > > uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-> > > > have not yet been probed. This return code should be propagated to the
-> > > > caller of uvc_probe() to ensure that probing is retried when the required
-> > > > GPIOs become available.
-> > > >
-> > > > Currently, this error code is incorrectly converted to -ENODEV,
-> > > > causing some internal cameras to be ignored.
-> > > >
-> > > > This commit fixes this issue by propagating the -EPROBE_DEFER error.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-> > > > Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > > ---
-> > > >  drivers/media/usb/uvc/uvc_driver.c | 27 +++++++++++++++++++--------
-> > > >  1 file changed, 19 insertions(+), 8 deletions(-)
-> > > >
-> > > > diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-> > > > index deadbcea5e227c832976fd176c7cdbfd7809c608..e966bdb9239f345fd157588ebdad2b3ebe45168d 100644
-> > > > --- a/drivers/media/usb/uvc/uvc_driver.c
-> > > > +++ b/drivers/media/usb/uvc/uvc_driver.c
-> > > > @@ -2231,13 +2231,16 @@ static int uvc_probe(struct usb_interface *intf,
-> > > >  #endif
-> > > >
-> > > >       /* Parse the Video Class control descriptor. */
-> > > > -     if (uvc_parse_control(dev) < 0) {
-> > > > +     ret = uvc_parse_control(dev);
-> > > > +     if (ret < 0) {
-> > > > +             ret = -ENODEV;
-> > >
-> > > Why do you set ret to -ENODEV here...
-> > >
-> > > >               uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
-> > > >               goto error;
-> > > >       }
-> > > >
-> > > >       /* Parse the associated GPIOs. */
-> > > > -     if (uvc_gpio_parse(dev) < 0) {
-> > > > +     ret = uvc_gpio_parse(dev);
-> > > > +     if (ret < 0) {
-> > > >               uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
-> > > >               goto error;
-> > > >       }
-> > > > @@ -2263,24 +2266,32 @@ static int uvc_probe(struct usb_interface *intf,
-> > > >       }
-> > > >
-> > > >       /* Register the V4L2 device. */
-> > > > -     if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-> > > > +     ret = v4l2_device_register(&intf->dev, &dev->vdev);
-> > > > +     if (ret < 0)
-> > >
-> > > ... but not here ? The code below is also not very consistant.
-> >
-> > For all the "external" functions I was looking into populating their
-> > error code to probe(). Other drivers (check vivid for example) do
-> > exactly this.
-> >
-> > There is more value in returning the real cause of the error (ENOMEM,
-> > EINVAL) that the plain ENODEV.
+> I've fixed this up for 6.12.y and 6.14.y, but both of these commits do
+> not apply to 6.6.y at all (filenames are wrong.)
 >
-> Yes, I got that, my question was why you override the return value of
-> e.g. uvc_parse_control() or uvc_scan_device() with -ENODEV, but not for
-> e.g. uvc_gpio_parse() or v4l2_device_register(). There's no explanation
-> in the commit message regarding why they're treated differently.
+> Please send backports for 6.6.y if you want to see the commit there.
 
-Because it is less risky that way. There are plenty of examples where
-the framework functions return code is passed to probe().
+The affected driver was introduced with kernel 6.10, so both patches are unnecessary for kernel 6.6.y.
 
-The uvc_* functions might or might not work this way. When I do that
-assessment for every function I can post a different patch. I thought
-that this approach was safer, especially if we are cc-ing stable.
+Thanks,
+Armin Wolf
 
-A note in the commit message would have been a nice thing to have I agree :).
-
-
+> thanks,
 >
-> > > >               goto error;
-> > > >
-> > > >       /* Scan the device for video chains. */
-> > > > -     if (uvc_scan_device(dev) < 0)
-> > > > +     if (uvc_scan_device(dev) < 0) {
-> > > > +             ret = -ENODEV;
-> > > >               goto error;
-> > > > +     }
-> > > >
-> > > >       /* Initialize controls. */
-> > > > -     if (uvc_ctrl_init_device(dev) < 0)
-> > > > +     if (uvc_ctrl_init_device(dev) < 0) {
-> > > > +             ret = -ENODEV;
-> > > >               goto error;
-> > > > +     }
-> > > >
-> > > >       /* Register video device nodes. */
-> > > > -     if (uvc_register_chains(dev) < 0)
-> > > > +     if (uvc_register_chains(dev) < 0) {
-> > > > +             ret = -ENODEV;
-> > > >               goto error;
-> > > > +     }
-> > > >
-> > > >  #ifdef CONFIG_MEDIA_CONTROLLER
-> > > >       /* Register the media device node */
-> > > > -     if (media_device_register(&dev->mdev) < 0)
-> > > > +     ret = media_device_register(&dev->mdev);
-> > > > +     if (ret < 0)
-> > > >               goto error;
-> > > >  #endif
-> > > >       /* Save our data pointer in the interface data. */
-> > > > @@ -2314,7 +2325,7 @@ static int uvc_probe(struct usb_interface *intf,
-> > > >  error:
-> > > >       uvc_unregister_video(dev);
-> > > >       kref_put(&dev->ref, uvc_delete);
-> > > > -     return -ENODEV;
-> > > > +     return ret;
-> > > >  }
-> > > >
-> > > >  static void uvc_disconnect(struct usb_interface *intf)
->
-> --
-> Regards,
->
-> Laurent Pinchart
-
-
-
--- 
-Ricardo Ribalda
+> greg k-h
 
