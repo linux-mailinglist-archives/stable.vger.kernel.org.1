@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-134978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A48EA95BE4
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DCFA95BE6
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35FA63AAB15
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5239D3A5510
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7428826B96C;
-	Tue, 22 Apr 2025 02:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4FE1F417A;
+	Tue, 22 Apr 2025 02:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pAIXyfHE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ukwxnxS4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AD126B95A;
-	Tue, 22 Apr 2025 02:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177D926E168;
+	Tue, 22 Apr 2025 02:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288325; cv=none; b=Q0Tg+uOUgUkj9RGrB75bZ15aUis5NPu+A0t+5bm8m+pDUQVHpPwB+WMppgQC3i5e6OMmdFRU4W1SW4JubXLIRDWe8IKBgNkN5s1JuFDvgKxiCkBXqWx0kLVIQQyueFZ7tWepW+1ELF8DLix1dtcuUuhGvgvFoAgQ1Y8o0O+qlr4=
+	t=1745288327; cv=none; b=Y5WiTqT437ZneoKD/3yZNHm6yas/NaGzKuibU35ZuFSMseKkeVw3VaAZf1o7rwGYt76B2zD6Cevj5bztE1CDp3wjsBPbl6Qfx4az6iPXc84nil2GBF4c6futUj9n0EmsSG2YSlV/L2G0Lf/HDTUCvPRqcPMBeyW1fGykWRgtNYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288325; c=relaxed/simple;
-	bh=zUWHg3M5/7e6/OE5DILVPOKMNGSQopFKWdCPK6kJ/KY=;
+	s=arc-20240116; t=1745288327; c=relaxed/simple;
+	bh=KvDZ7mCzuTOxw/CCqAMaB+URIEE6MZ+aoISGUCA8yYc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UwwO04SlHdOtMvotpa+P5X724S5HNEUlHoGDOiqrCwrDvO5siFS9JHsWUe0DpoEv25fuBNpYDWJsPKQdFNiYbYKiRAOUpoIRBzyLxhvRsCYOVdHjSMklsDD6jxeNcsWH5zwCf21s7GRukmHOmv7HqSFByiFw4p6QynpFWsjY3R4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pAIXyfHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0040C4CEE4;
-	Tue, 22 Apr 2025 02:18:43 +0000 (UTC)
+	 MIME-Version; b=SWqjePiBXqcqlUpL+rI6517ItCmXGlb/zwRpBFyLN24ZInecdot3FGiBEkKuU0QsD8a11r/GA5Fm9Rry4IxjK9LtBe9pUQuOfRoJGF4RAvUzSnihcQXgyQOGntzHsRvlfbBlqHjEaG2cZgxN0hEprmNM3liLxNRI0tmerO+mQ38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ukwxnxS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EB1C4CEEC;
+	Tue, 22 Apr 2025 02:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288325;
-	bh=zUWHg3M5/7e6/OE5DILVPOKMNGSQopFKWdCPK6kJ/KY=;
+	s=k20201202; t=1745288326;
+	bh=KvDZ7mCzuTOxw/CCqAMaB+URIEE6MZ+aoISGUCA8yYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pAIXyfHENv7TwoC16YbjkPMa3byko9nGINIVU9CaqcU1zH3+X97N+rs5CKny1E4W1
-	 lb/0fPmqobTgwgM2CI3gm7jxtTC+fQuOcffxYaVV+PltMRT2yordUVfCuU2rYWacd/
-	 xljs5c4wA+JODjatoWUlnkMibVY0tN3S8dGxxF//YuXSaYHQqdvE74X59puKJ/s3B0
-	 VoloaKn+BppzPLL2J0tftgD6QrXp5ybe9L/1AbISjInqJ/q99S0Kw15wK9QjJivFgO
-	 d3uy3rKNSXo9Muoz08iMiRGmElfnxZprfiR/OzNfVp7/YyE7B3DFYAYzcsxKqjXp2q
-	 ob11qhKfvGrww==
+	b=ukwxnxS4E9aiPd+zo7kBtgcmVjYH54GcFyibucy9+xyfMed6VSMpPwqSaTXvw9ZFB
+	 Do8EJrOEsiKhnKwQFUmdIELZLa6BRlBQU53oFIzNBeUZIOMGstXgrMEOddQPEnHn1g
+	 ptFAxbcQEU4DnwXmkmseg2mSMh0fokw1Cur1SfHzig3hUz9ki3JyyvjiSUQUKv+fg/
+	 S79PpsLMoT8tz9IaFgIxOo/J3FoSj0anW0vWeY7PttIJ51Ug1qIqVKSs2IOeKXTNwH
+	 M9Fgb7v8n+vjiRz23VVjAFr/8umjB4RBxNnq7iYlmLXuWll6XFlCzMVcB4u8NkGV2H
+	 U+aYMo96LLgcA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	"Dmitry V . Levin" <ldv@strace.io>,
+Cc: Tamura Dai <kirinode0@gmail.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 11/12] riscv: Avoid fortify warning in syscall_get_arguments()
-Date: Mon, 21 Apr 2025 22:18:25 -0400
-Message-Id: <20250422021826.1941778-11-sashal@kernel.org>
+	shawnguo@kernel.org,
+	linux-spi@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 12/12] spi: spi-imx: Add check for spi_imx_setupxfer()
+Date: Mon, 21 Apr 2025 22:18:26 -0400
+Message-Id: <20250422021826.1941778-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021826.1941778-1-sashal@kernel.org>
 References: <20250422021826.1941778-1-sashal@kernel.org>
@@ -69,69 +69,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.134
 Content-Transfer-Encoding: 8bit
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Tamura Dai <kirinode0@gmail.com>
 
-[ Upstream commit 1413708f990cb7d025affd706ba9c23e2bfc1a27 ]
+[ Upstream commit 951a04ab3a2db4029debfa48d380ef834b93207e ]
 
-When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
-because of the memcpy() in syscall_get_arguments():
+Add check for the return value of spi_imx_setupxfer().
+spi_imx->rx and spi_imx->tx function pointer can be NULL when
+spi_imx_setupxfer() return error, and make NULL pointer dereference.
 
-  In file included from include/linux/string.h:392,
-                   from include/linux/bitmap.h:13,
-                   from include/linux/cpumask.h:12,
-                   from arch/riscv/include/asm/processor.h:55,
-                   from include/linux/sched.h:13,
-                   from kernel/ptrace.c:13:
-  In function 'fortify_memcpy_chk',
-      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
-  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-    580 |                         __read_overflow2_field(q_size_field, size);
-        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+ Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+ Call trace:
+  0x0
+  spi_imx_pio_transfer+0x50/0xd8
+  spi_imx_transfer_one+0x18c/0x858
+  spi_transfer_one_message+0x43c/0x790
+  __spi_pump_transfer_message+0x238/0x5d4
+  __spi_sync+0x2b0/0x454
+  spi_write_then_read+0x11c/0x200
 
-The fortified memcpy() routine enforces that the source is not overread
-and the destination is not overwritten if the size of either field and
-the size of the copy are known at compile time. The memcpy() in
-syscall_get_arguments() intentionally overreads from a1 to a5 in
-'struct pt_regs' but this is bigger than the size of a1.
-
-Normally, this could be solved by wrapping a1 through a5 with
-struct_group() but there was already a struct_group() applied to these
-members in commit bba547810c66 ("riscv: tracing: Fix
-__write_overflow_field in ftrace_partial_regs()").
-
-Just avoid memcpy() altogether and write the copying of args from regs
-manually, which clears up the warning at the expense of three extra
-lines of code.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Dmitry V. Levin <ldv@strace.io>
-Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Tamura Dai <kirinode0@gmail.com>
+Reviewed-by: Carlos Song <carlos.song@nxp.com>
+Link: https://patch.msgid.link/20250417011700.14436-1-kirinode0@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/syscall.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-imx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
-index 384a63b86420b..8426c4510d31e 100644
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -61,8 +61,11 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 					 unsigned long *args)
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index df73a2c7120c9..13a6ebef01894 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -1605,10 +1605,13 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
+ 				struct spi_device *spi,
+ 				struct spi_transfer *transfer)
  {
- 	args[0] = regs->orig_a0;
--	args++;
--	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
-+	args[1] = regs->a1;
-+	args[2] = regs->a2;
-+	args[3] = regs->a3;
-+	args[4] = regs->a4;
-+	args[5] = regs->a5;
- }
++	int ret;
+ 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
+ 	unsigned long hz_per_byte, byte_limit;
  
- static inline int syscall_get_arch(struct task_struct *task)
+-	spi_imx_setupxfer(spi, transfer);
++	ret = spi_imx_setupxfer(spi, transfer);
++	if (ret < 0)
++		return ret;
+ 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
+ 
+ 	/* flush rxfifo before transfer */
 -- 
 2.39.5
 
