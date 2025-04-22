@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-134974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05169A95BD3
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 407C4A95BD9
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 386A1177250
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41BEB171ACF
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA5826A0E2;
-	Tue, 22 Apr 2025 02:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AAD26A1DD;
+	Tue, 22 Apr 2025 02:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYjeP7gU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WIUlAawY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D0E26A0B1;
-	Tue, 22 Apr 2025 02:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B82D26A1B1;
+	Tue, 22 Apr 2025 02:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288319; cv=none; b=OcNnhPz1sjtP2mvddIAen3tMxS36Nt8azMSrSL/ml8L4uMiqtRSG1d4WAhito+D96wYPmjKNYSyZYTrt9dqhLwVq+xfWVY1GIbyZ5nfxJ0B0/hE2EWV9Zy2HYjl67YeezReysbgfoh6SEEVw8ylXVkBYu/3bHSFnIqbmXcWW4ak=
+	t=1745288320; cv=none; b=dZAbv2bf34AX1TD4me01hFwd4aP+nHRCWpfrd1KpKdfNEj5ZosT9TgXQ6Ww0UqOMM44Af6JLzXm8mOtnkqCkjayZgtZOAL21D//46xLXupnl1VQhJl3siChnC5nA8mvbx0zkQ75dthtSLmxWWq5TJx2WlNYTF5Z5rXt33Ls53ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288319; c=relaxed/simple;
-	bh=3SuNu8D0mD+U18QgEcJYNwSGbP2bAYLuvqR4EsC3Z3I=;
+	s=arc-20240116; t=1745288320; c=relaxed/simple;
+	bh=EiBywMglqTtZn0m2XECVj77kVL4VtMf5fxBX/VdScno=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uH6sk4HR9VMWp5u9lQ76I/tYR9D7dJRlZCMGtb4fw/qVou9jidyGMRNVSow4hOjeMXWp8pVpcZXoNVYImDYoxhHGm4Pg8O8twHIRoVjJrzlnWjWNlD6eKwDc9Z0fVeSitnRx/fw1/ZGitcGKUdlUFCWkHeBMhJYrALoCFa0zj5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYjeP7gU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AD4C4CEEE;
-	Tue, 22 Apr 2025 02:18:37 +0000 (UTC)
+	 MIME-Version; b=TNPVKcMRC5CYs2zOuzKjpDK6U80HgdKAoQGu8u9PUnUVo2ITbazS4jJfH1LA1R7dkNKT1llT62HCuQtvnp/VmZXCCqbJKcevM/EqZDe9oC+7mtSOTp/riekLnRlzqwuJPAepzSZg5krhPWyuxlty8KmdagRsgLpHvaTSA9tJJkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WIUlAawY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC14C4CEEF;
+	Tue, 22 Apr 2025 02:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288318;
-	bh=3SuNu8D0mD+U18QgEcJYNwSGbP2bAYLuvqR4EsC3Z3I=;
+	s=k20201202; t=1745288320;
+	bh=EiBywMglqTtZn0m2XECVj77kVL4VtMf5fxBX/VdScno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYjeP7gUUUNYbtPHi8wH0PAD+jRc2fWsWykY57b1pPXrmrauyzYkKlB6x9ohobL3F
-	 2phWUtlrKFlRAcLTSSORuoDIj3XUzG14nQP9o1dWDjMH3IAOm2dhQHZxiWzc6YdnPd
-	 SHUgXvYHTv99b72JC3A/rk8A8PsmyddGOoZJ7YypC5KKkcHcMNCGFGXDftnL1IQDKa
-	 FCKc0Jc+Jh0QtzXyubBPH27YQshNq0j0X/LWnV2wH4SkSaeHXS3Y5a30iFUmUf6MZS
-	 F56/usTfrKiUFKn8+SMhqVBwid4lbAurFLEzHb/8TksI2T1jChb6iZf58scEXtKeiX
-	 90PS3k1sshkVw==
+	b=WIUlAawYaOcDR3z8p8NVLjKENJcRcJND2RgYVr5tTS8nuP8nMEpMWKvgZblVGrAAt
+	 PWnRrVMDzSDU6KzJvMfV//0KSW9esb8sI20DcALVO0uiYC6Le5p7CsgvOm0Wx84hdH
+	 EBpYD4vFlHCtLG2QZGubbs2Jlxq5LWLw3n1vfkRDR08A7ciRysYwi/Wof397rhbfep
+	 PI30TKOa7x2F3GCxeUN08ga4dRZd4Nix5jcEVjwoEVrMa25BBRkmo9MzoWz9qulC3M
+	 pFpVltWzUMv1y+CXGESo2OKIPVm3UKUNL7TLSsuYRy+7wEldJ8oMlrnXqezih+KyBv
+	 v8VAezwt1yHyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
+Cc: Kees Cook <kees@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>,
-	ldewangan@nvidia.com,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	skomatineni@nvidia.com,
-	linux-tegra@vger.kernel.org,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 07/12] spi: tegra210-quad: add rate limiting and simplify timeout error message
-Date: Mon, 21 Apr 2025 22:18:21 -0400
-Message-Id: <20250422021826.1941778-7-sashal@kernel.org>
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	mic@digikod.net,
+	linux-hardening@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 08/12] hardening: Disable GCC randstruct for COMPILE_TEST
+Date: Mon, 21 Apr 2025 22:18:22 -0400
+Message-Id: <20250422021826.1941778-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021826.1941778-1-sashal@kernel.org>
 References: <20250422021826.1941778-1-sashal@kernel.org>
@@ -70,45 +71,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.134
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 21f4314e66ed8d40b2ee24185d1a06a07a512eb1 ]
+[ Upstream commit f5c68a4e84f9feca3be578199ec648b676db2030 ]
 
-On malfunctioning hardware, timeout error messages can appear thousands
-of times, creating unnecessary system pressure and log bloat. This patch
-makes two improvements:
+There is a GCC crash bug in the randstruct for latest GCC versions that
+is being tickled by landlock[1]. Temporarily disable GCC randstruct for
+COMPILE_TEST builds to unbreak CI systems for the coming -rc2. This can
+be restored once the bug is fixed.
 
-1. Replace dev_err() with dev_err_ratelimited() to prevent log flooding
-   when hardware errors persist
-2. Remove the redundant timeout value parameter from the error message,
-   as 'ret' is always zero in this error path
-
-These changes reduce logging overhead while maintaining necessary error
-reporting for debugging purposes.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20250401-tegra-v2-2-126c293ec047@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/all/20250407-kbuild-disable-gcc-plugins-v1-1-5d46ae583f5e@kernel.org/ [1]
+Acked-by: Mark Brown <broonie@kernel.org>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250409151154.work.872-kees@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/Kconfig.hardening | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 97f3a4d3c31a9..442d42130ec87 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1111,8 +1111,8 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 					QSPI_DMA_TIMEOUT);
+diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
+index 0f295961e7736..12e7e836a3f12 100644
+--- a/security/Kconfig.hardening
++++ b/security/Kconfig.hardening
+@@ -287,7 +287,7 @@ config CC_HAS_RANDSTRUCT
  
- 			if (WARN_ON_ONCE(ret == 0)) {
--				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
--					ret);
-+				dev_err_ratelimited(tqspi->dev,
-+						    "QSPI Transfer failed with timeout\n");
- 				if (tqspi->is_curr_dma_xfer &&
- 				    (tqspi->cur_direction & DATA_DIR_TX))
- 					dmaengine_terminate_all
+ choice
+ 	prompt "Randomize layout of sensitive kernel structures"
+-	default RANDSTRUCT_FULL if COMPILE_TEST && (GCC_PLUGINS || CC_HAS_RANDSTRUCT)
++	default RANDSTRUCT_FULL if COMPILE_TEST && CC_HAS_RANDSTRUCT
+ 	default RANDSTRUCT_NONE
+ 	help
+ 	  If you enable this, the layouts of structures that are entirely
 -- 
 2.39.5
 
