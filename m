@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-134976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C23D1A95BDF
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:33:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A98A95BE0
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9457C3AC129
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:33:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72BB01897B50
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F02826B097;
-	Tue, 22 Apr 2025 02:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0262135C3;
+	Tue, 22 Apr 2025 02:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N8p82v3o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKFG3PpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F9B26AAB5;
-	Tue, 22 Apr 2025 02:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E72826B2AC;
+	Tue, 22 Apr 2025 02:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288321; cv=none; b=N6gWq+hwtBDGwh67VQ4h+b+DReOEo9+5ucgdwFKLoqMZEFIuag/HaqWHfsnN0GsqDeHlqHsfd+1ZSVtUmfIySKTUWH7QHTMfCFb9o4bJ2mSMAfiRyXwSpPla2250Vx1rqePT6xbmHvbY2URsCoq7n5Y9Ubib3cu39ywln05j5Ks=
+	t=1745288323; cv=none; b=LE44uGaKvFpbnzK/wvw6695Wb4MUUWkpkWtR3LPnwutgnVHNkZz8Bk5cU0nTjNBwthCw1FX4TOg/2e1g4ky7Gv8WMEChDIoxIhM4eNd5rfggeJE1hclXbedLAYqwWbzwkSthml9Ga91KcrgC2O68kdassf2GEHp6xymgR7t4Igg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288321; c=relaxed/simple;
-	bh=M8lStOqI4Gjp03xyOAbijLlG+Tsrjyhn2vf4gqu6O7E=;
+	s=arc-20240116; t=1745288323; c=relaxed/simple;
+	bh=0cRwv05oQMlAOa5j7nqgo0opysRLENIWkjgjFBXs3b0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aoOgiaMsKDVFjhEpK8PaeKfREHw/iKoqO11aPzJ1urnR0v5dKa9/a4vrf6UiPrtSiug5Tn2AV9RswTeMjM2SCyUh9g8kjomHf3s4+SrVX/YmgE96wJJcD3vnD9l6TaPOvIGCuyTqBN9ure+Fdd0y/9dFeaTL5TwO1lCbX2t6K7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N8p82v3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17A2C4CEEC;
-	Tue, 22 Apr 2025 02:18:40 +0000 (UTC)
+	 MIME-Version; b=YIk2h8ChK0RWdf0tTpqoNi5rhnxkA03gHLyjz6V5a8KGNAfJdXQUGVZaYnm3vEo1VBszwtuHt93vstiRFOkZ40YU/Ouh5oQ//0HP6BFYf5P1xHBoRptV30HR39gK3o5hgQSGhNULB7iy47Bda3IQUxMJmYIoMD7NBHiCohfQvNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKFG3PpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1538FC4CEEC;
+	Tue, 22 Apr 2025 02:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288321;
-	bh=M8lStOqI4Gjp03xyOAbijLlG+Tsrjyhn2vf4gqu6O7E=;
+	s=k20201202; t=1745288322;
+	bh=0cRwv05oQMlAOa5j7nqgo0opysRLENIWkjgjFBXs3b0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8p82v3oWB0ur0jCVLGPyae8T61fKetLbftH8cQEOJbBmS/zVKC9fnAzuZXvXpK+O
-	 GMOgH1Z1I4GUHzhu4ypu9pDFreSRwXTQ9+MZUTfcVEs8kRr4O5a2YC31jpbXlrcrJT
-	 Lbzpg5yU3zlORFb1AC9fn4RvRN/vucCXQqz1PKK7VGfRX/c3LGeMXWByx0kziZj2LK
-	 VtmBXkbOaWUXnEdKYCO8dFqQYZwR1pUXpb50jSe0d5008764hBXEkW8uavay38909U
-	 97Cc1iEnP7ByZ9yJfM6MyhcJyr2r4ja4EZ70dNDL/VgkYInrcswpmPiJjjTElpeg0/
-	 U/SKuIaUWCNXw==
+	b=EKFG3PpVZw32KjXXB+vbjKmisEFJ4C9KnfYtnjgmjc11MZa9OIA6Bd8JEG0alg8Vw
+	 dxYhTFYP4tYtT/SPJl1sHI8f2eGvnABCK8dkV6s6dKxYb3bSLBw3m3GAa1ZEQBkPOu
+	 jE4UEqqChRiWbUTPKFoCE5Un8fXOQOxyCM5MMvbljNYjZ2VFvdrulj+Gr5h8dPTjcJ
+	 yBTegtkSv7pNkfMl/uCTRfZqngDDhc4IN/2UrFX7n5lBPrZDPb78j7MXGH87t5odMg
+	 ajqctf6tSIM+xv50KD0cDqBBMQE3tarCk9rNy3eO/SdC+g4SrdfWC970/MzP2T6eM4
+	 HlHmduOxb8eyQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mostafa Saleh <smostafa@google.com>,
-	Kees Cook <kees@kernel.org>,
+Cc: Meir Elisha <meir.elisha@volumez.com>,
+	Yu Kuai <yukuai3@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kasan-dev@googlegroups.com,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 09/12] ubsan: Fix panic from test_ubsan_out_of_bounds
-Date: Mon, 21 Apr 2025 22:18:23 -0400
-Message-Id: <20250422021826.1941778-9-sashal@kernel.org>
+	song@kernel.org,
+	linux-raid@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 10/12] md/raid1: Add check for missing source disk in process_checks()
+Date: Mon, 21 Apr 2025 22:18:24 -0400
+Message-Id: <20250422021826.1941778-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021826.1941778-1-sashal@kernel.org>
 References: <20250422021826.1941778-1-sashal@kernel.org>
@@ -66,88 +66,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.134
 Content-Transfer-Encoding: 8bit
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Meir Elisha <meir.elisha@volumez.com>
 
-[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
+[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
 
-Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
-kernel:
+During recovery/check operations, the process_checks function loops
+through available disks to find a 'primary' source with successfully
+read data.
 
-[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
-[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
-[   31.648153] Hardware name: linux,dummy-virt (DT)
-[   31.648970] Call trace:
-[   31.649345]  show_stack+0x18/0x24 (C)
-[   31.650960]  dump_stack_lvl+0x40/0x84
-[   31.651559]  dump_stack+0x18/0x24
-[   31.652264]  panic+0x138/0x3b4
-[   31.652812]  __ktime_get_real_seconds+0x0/0x10
-[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
-[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
-[   31.655077]  do_one_initcall+0xd4/0x280
-[   31.655680]  do_init_module+0x58/0x2b4
+If no suitable source disk is found after checking all possibilities,
+the 'primary' index will reach conf->raid_disks * 2. Add an explicit
+check for this condition after the loop. If no source disk was found,
+print an error message and return early to prevent further processing
+without a valid primary source.
 
-That happens because the test corrupts other data in the stack:
-400:   d5384108        mrs     x8, sp_el0
-404:   f9426d08        ldr     x8, [x8, #1240]
-408:   f85f83a9        ldur    x9, [x29, #-8]
-40c:   eb09011f        cmp     x8, x9
-410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
-
-As there is no guarantee the compiler will order the local variables
-as declared in the module:
-        volatile char above[4] = { }; /* Protect surrounding memory. */
-        volatile int arr[4];
-        volatile char below[4] = { }; /* Protect surrounding memory. */
-
-There is another problem where the out-of-bound index is 5 which is larger
-than the extra surrounding memory for protection.
-
-So, use a struct to enforce the ordering, and fix the index to be 4.
-Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
+Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
+Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_ubsan.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/md/raid1.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
-index 2062be1f2e80f..f90f2b9842ec4 100644
---- a/lib/test_ubsan.c
-+++ b/lib/test_ubsan.c
-@@ -35,18 +35,22 @@ static void test_ubsan_shift_out_of_bounds(void)
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 76f7ca53d8123..38e77a4b6b338 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -2068,14 +2068,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
+ 				if (!rdev_set_badblocks(rdev, sect, s, 0))
+ 					abort = 1;
+ 			}
+-			if (abort) {
+-				conf->recovery_disabled =
+-					mddev->recovery_disabled;
+-				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
+-				md_done_sync(mddev, r1_bio->sectors, 0);
+-				put_buf(r1_bio);
++			if (abort)
+ 				return 0;
+-			}
++
+ 			/* Try next page */
+ 			sectors -= s;
+ 			sect += s;
+@@ -2214,10 +2209,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
+ 	int disks = conf->raid_disks * 2;
+ 	struct bio *wbio;
  
- static void test_ubsan_out_of_bounds(void)
- {
--	volatile int i = 4, j = 5, k = -1;
--	volatile char above[4] = { }; /* Protect surrounding memory. */
--	volatile int arr[4];
--	volatile char below[4] = { }; /* Protect surrounding memory. */
-+	int i = 4, j = 4, k = -1;
-+	volatile struct {
-+		char above[4]; /* Protect surrounding memory. */
-+		int arr[4];
-+		char below[4]; /* Protect surrounding memory. */
-+	} data;
+-	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
+-		/* ouch - failed to read all of that. */
+-		if (!fix_sync_read_error(r1_bio))
++	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
++		/*
++		 * ouch - failed to read all of that.
++		 * No need to fix read error for check/repair
++		 * because all member disks are read.
++		 */
++		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
++		    !fix_sync_read_error(r1_bio)) {
++			conf->recovery_disabled = mddev->recovery_disabled;
++			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
++			md_done_sync(mddev, r1_bio->sectors, 0);
++			put_buf(r1_bio);
+ 			return;
++		}
++	}
  
--	above[0] = below[0];
-+	OPTIMIZER_HIDE_VAR(i);
-+	OPTIMIZER_HIDE_VAR(j);
-+	OPTIMIZER_HIDE_VAR(k);
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
--	arr[j] = i;
-+	data.arr[j] = i;
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
--	arr[k] = i;
-+	data.arr[k] = i;
- }
- 
- enum ubsan_test_enum {
+ 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
+ 		process_checks(r1_bio);
 -- 
 2.39.5
 
