@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-134999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE366A95CC2
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:09:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB03A95CC8
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 345C816A1D8
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:09:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9DD9171356
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A6719FA93;
-	Tue, 22 Apr 2025 04:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F49519D89B;
+	Tue, 22 Apr 2025 04:09:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B281F2365;
-	Tue, 22 Apr 2025 04:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6386D18D63E;
+	Tue, 22 Apr 2025 04:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745294850; cv=none; b=EQVJDffn0Vbnm70bzIxLTDjb+OyqwaST+169d15Tq691JsOOOOy0nzz/UoF9YfaXuilxo+RWhfGU/S1o4RAE2D48EFU3MaHydyTscF8HowR6RWFxHbWTr+qxCY68Pn9WEmp2ZFEFkHs90HLEw6Xep2YWYliGesQDSbohcBzqXX8=
+	t=1745294974; cv=none; b=Y7mELPwqlJfe4qgiRD2+tbhnkDLoHfmh5FO4tkFFw2CC99i8WPalrlrZzeR2PWLHFO/rMSeOSF4GM5khMyZWZ7XvzHa6AyREBX8dIa+3kzPZm9oM53z5QIyC3mXQ8JB539EjwDL6yaoCqIk+DjH3BvL4QQxmUzRvsYZkHOiyZWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745294850; c=relaxed/simple;
-	bh=WcRU9ZEBKolFnretzZffT86Ip6dYByleNHe+D7oPXYU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=vCTNgwScTDIeo595sgY2T+KAPVhvqgRZ343sTJd9yHr71u4oI57LN5PTuY1zeQLB+6DYGzf/4mdS5qBxjr4M28ZEq6ZYQvQo5x9j49UzbmGFVQsg1+b8ZqDEfsc3uBHkTK1R/sFBlc8F9PcWzn8ZS+4j++gAyJVMeOH3VP+N2uU=
+	s=arc-20240116; t=1745294974; c=relaxed/simple;
+	bh=Af1+AkpqfX2f2V8L9uHzFX6RQOHRce6SCz0W2kXUOSQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DMj9801eFWJq+ipZIFrbtgbohSbirMfqGvXmDJYyCknh0BfGC4LzOowi4eiiFk3n/qGLxXyHVzZSjyCj3e34hG5eVFspFu7CY8Xcq3rGXd2I5fUlsgd2ab1Hjj4AcaOSj6bMTCFhjbrHg42Zp3Fg1RprEm2Xyy/tsAmOkbvhKVU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-05 (Coremail) with SMTP id zQCowAA3dAz5FQdoRN8kCw--.63174S2;
-	Tue, 22 Apr 2025 12:07:23 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowABXjwd0FgdoOfIkCw--.63587S2;
+	Tue, 22 Apr 2025 12:09:25 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: mchehab@kernel.org
-Cc: yujiaoliang@vivo.com,
-	hverkuil@xs4all.nl,
-	linux-media@vger.kernel.org,
+To: obitton@habana.ai,
+	ogabbay@kernel.org
+Cc: dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] media: dvb: Add error handling for bcm3510_writeB()
-Date: Tue, 22 Apr 2025 12:06:56 +0800
-Message-ID: <20250422040656.2131-1-vulab@iscas.ac.cn>
+Subject: [PATCH RESEND] habanalabs: Add error handling for hl_mmu_get_hop_pte_phys_addr()
+Date: Tue, 22 Apr 2025 12:09:02 +0800
+Message-ID: <20250422040903.2153-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -50,88 +49,54 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAA3dAz5FQdoRN8kCw--.63174S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJryfCw45Xw1kXFyUGw1UAwb_yoW5Jry3pr
-	4jyFs5ZayUtw4rGFnxtw18KFyFkw1ft3y8GasakF1xAr15Way3Jrn0qa1aqF98AFW3Ja1r
-	Jw43JF1xCFyDtF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:zQCowABXjwd0FgdoOfIkCw--.63587S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zr4Uuw18JF4Duw15Kr47CFg_yoW8GryfpF
+	n3Kr4rXFy5Jr1UZayUtr1IvF1Yv39xWFy3K3ZFka9093s8X3s7u343W3WSvw4UArWkGan7
+	Zw1kAFs8CF18ZrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvm14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
 	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
 	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
 	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUejjgDU
-	UUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiDAYAA2gG6Ey+5wAAsa
+	JF0_Jw1lc2xSY4AK67AK6r45MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
+	4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
+	67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7VUUpuWJUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAAA2gG55bEmwAAsa
 
-In bcm3510_bert_reset(), the function performed multiple writes
-without checking the return value of bcm3510_writeB(). Since almost
-all the bcm3510_writeB() in this driver have check their return
-value, it is necessary to add an error check for the bcm3510_writeB()
-in bcm3510_bert_reset().
+In _hl_mmu_v2_hr_map(), If hl_mmu_get_hop_pte_phys_addr() fail to
+get physical address, the return address will be set as U64_MAX.
+Hence, the return value of hl_mmu_get_hop_pte_phys_addr() must
+be checked to prevent invalid address access. Add error handling
+and propagate return code to caller function to fix this issue.
 
-And the returned error code of bcm3510_bert_reset() is ignored in
-bcm3510_set_frontend().
-
-Add error checking for each bcm3510_writeB() and propagate any
-errors immediately in bcm3510_bert_reset().
-
-Add error handling for bcm3510_bert_reset() in bcm3510_set_frontend().
-
-Fixes: 55f51efdb696 ("[PATCH] dvb: flexcop: add BCM3510 ATSC frontend support for Air2PC card")
-Cc: stable@vger.kernel.org
+Fixes: 8aa1e1e60553 ("habanalabs: add gaudi2 MMU support")
+Cc: stable@vger.kernel.org # v6.0+
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- drivers/media/dvb-frontends/bcm3510.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/dvb-frontends/bcm3510.c b/drivers/media/dvb-frontends/bcm3510.c
-index d935fb10e620..fe89d46cca1d 100644
---- a/drivers/media/dvb-frontends/bcm3510.c
-+++ b/drivers/media/dvb-frontends/bcm3510.c
-@@ -270,10 +270,22 @@ static int bcm3510_bert_reset(struct bcm3510_state *st)
- 	if ((ret = bcm3510_readB(st,0xfa,&b)) < 0)
- 		return ret;
- 
--	b.BERCTL_fa.RESYNC = 0; bcm3510_writeB(st,0xfa,b);
--	b.BERCTL_fa.RESYNC = 1; bcm3510_writeB(st,0xfa,b);
--	b.BERCTL_fa.RESYNC = 0; bcm3510_writeB(st,0xfa,b);
--	b.BERCTL_fa.CNTCTL = 1; b.BERCTL_fa.BITCNT = 1; bcm3510_writeB(st,0xfa,b);
-+	b.BERCTL_fa.RESYNC = 0;
-+	ret = bcm3510_writeB(st, 0xfa, b);
-+	if (ret < 0)
-+		return ret;
-+	b.BERCTL_fa.RESYNC = 1;
-+	ret = bcm3510_writeB(st, 0xfa, b);
-+	if (ret < 0)
-+		return ret;
-+	b.BERCTL_fa.RESYNC = 0;
-+	ret = bcm3510_writeB(st, 0xfa, b);
-+	if (ret < 0)
-+		return ret;
-+	b.BERCTL_fa.CNTCTL = 1; b.BERCTL_fa.BITCNT = 1;
-+	ret = bcm3510_writeB(st, 0xfa, b);
-+	if (ret < 0)
-+		return ret;
- 
- 	/* clear residual bit counter TODO  */
- 	return 0;
-@@ -566,7 +578,9 @@ static int bcm3510_set_frontend(struct dvb_frontend *fe)
- 	bcm3510_do_hab_cmd(st, CMD_STATE_CONTROL, MSGID_BERT_CONTROL, (u8 *) &bert, sizeof(bert), NULL, 0);
- 	bcm3510_do_hab_cmd(st, CMD_STATE_CONTROL, MSGID_BERT_SET, (u8 *) &bert, sizeof(bert), NULL, 0);
- 
--	bcm3510_bert_reset(st);
-+	ret = bcm3510_bert_reset(st);
-+	if (ret < 0)
-+		return ret;
- 
- 	ret = bcm3510_set_freq(st, c->frequency);
- 	if (ret < 0)
+diff --git a/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c b/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c
+index 31507b2a431b..cdade07e22c5 100644
+--- a/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c
++++ b/drivers/accel/habanalabs/common/mmu/mmu_v2_hr.c
+@@ -253,6 +253,11 @@ static int _hl_mmu_v2_hr_map(struct hl_ctx *ctx,
+ 		hop_pte_phys_addr[i] = hl_mmu_get_hop_pte_phys_addr(ctx, mmu_prop, i,
+ 									hops_pgt_info[i]->phys_addr,
+ 									scrambled_virt_addr);
++		if (hop_pte_phys_addr[i] == U64_MAX) {
++			rc = -EINVAL;
++			goto err;
++		}
++
+ 		curr_pte = *(u64 *) (uintptr_t) hl_mmu_hr_pte_phys_to_virt(ctx, hops_pgt_info[i],
+ 							hop_pte_phys_addr[i],
+ 							ctx->hdev->asic_prop.pmmu.hop_table_size);
 -- 
 2.42.0.windows.2
 
