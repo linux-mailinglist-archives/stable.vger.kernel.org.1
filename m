@@ -1,55 +1,98 @@
-Return-Path: <stable+bounces-135196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62245A979AE
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:47:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DBDA979B7
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 384A61B633E3
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:47:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44D54462416
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD7924468E;
-	Tue, 22 Apr 2025 21:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE7277002;
+	Tue, 22 Apr 2025 21:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcrQXoBn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bDDlYEfK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3F01F8908;
-	Tue, 22 Apr 2025 21:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3A321FF2B;
+	Tue, 22 Apr 2025 21:49:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745358434; cv=none; b=UX53SmWUMl0Ht+E9StI71qvq/rar3tylJ2W5x5DVarydYgbieZpnk3/vRiGpxXoS6uYZTs3pDtIRIUPOdUF85tZz71TvfrngaHfYtX8rDfJ6NDhl8CU2TJzJKdg5fUB+1i67ouikK5fryBXjXqST27fE/OhrhKpVUEAhwz95FUM=
+	t=1745358571; cv=none; b=m08hCOZxre6kx4ad7O1MfVAJceM8Ni2Fu/1typfzKP1ajGDj1hxDtY/qor9NNvxxgjwT7DFbcOfjwVfud5Uthu8j0L0ucDs0eGMSs8qLNCtUz6ilWCwgu+AQzaEEL1tbNzrGICjGjMo0SNi1irGfCHycYaamzGArRVFKi4HMWQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745358434; c=relaxed/simple;
-	bh=RPojC3b1nEKZhf0p4kkS9DaOsT5aYr010F373zcdvwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jYB52oiP5zoNo3Xjbi1J6jFf4qniKuJfypBXuuautoZ8rpSmanRlEHorAop1b1EQEgu645I+eAhPXkIlGqzK9cgAJviUaJJ3/aRXPCL72IxBdoU3CEXi+imGfQtarDXstmM3DF0PKARc5uF4XE2RMDIjfdCDjzqmkZWrmJW9mWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcrQXoBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451DBC4CEE9;
-	Tue, 22 Apr 2025 21:47:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745358433;
-	bh=RPojC3b1nEKZhf0p4kkS9DaOsT5aYr010F373zcdvwA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=FcrQXoBnsiYdtAHICcGnYrZR32ZHOHqmCEv0xTKizpCD7unfxt4Yn4CuFV3u9Iq62
-	 tAtIwwDtA9R6tpADG7ZzPMkKldbT/diHNIRNSmt05n9KmvpNWVzv0w1XhnCKaauuwg
-	 xQ7xxNW7lq4wZWKqx1/+Y5aiFzGNtq8ggf5nWB2pdlcjKGnKnVtBjDSpJ7r7E8ZsYA
-	 0qckIK47D4DzXJbt3PEl3X5SmlRLNT/+9szkUQWyW16L5n1yVnCO1cKDsGswSS9VJl
-	 jctj/u1y4JOueiyZD8sW65AAxdr9u65SlsUVOJek+LlkKSWIWPx4fJC/Zi1jYgLSVh
-	 wl8p0NFG2e47g==
-Date: Tue, 22 Apr 2025 16:47:11 -0500
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: javierm@redhat.com, iivanov@suse.de, tiwai@suse.de, bhelgaas@google.com,
-	dri-devel@lists.freedesktop.org, linux-pci@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] video: screen_info: Relocate framebuffers behind PCI
- bridges
-Message-ID: <20250422214711.GA385826@bhelgaas>
+	s=arc-20240116; t=1745358571; c=relaxed/simple;
+	bh=sG7YJMva/w4l3cfCNfOiczfRXXTwbAHBKnI5Bzj7KRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=otJKMPVsGpXy6h2v9IRLfgWgeJC5TYqgWsMdbU1j1Ud+8xE/IoaLJXbaPqMrJg4VrxEmSPYdcm1zyNd1J6GO6OetYR822Gm900FRGk6SsOYIGGkfd1o7G/kKkkrL3e5u6FunzFiKlssuee+fa63CfufJSsQ4q3JmU4NCYSukRqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bDDlYEfK; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b0db0b6a677so4856302a12.2;
+        Tue, 22 Apr 2025 14:49:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745358569; x=1745963369; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9dYvt2Xcrh+kbYqRYnlS/5tyT+BexXkaGSTJNxwW1ck=;
+        b=bDDlYEfKHrybz4D5fziRdAbnlktSssaGIjF7SJWhWbTXclq8u9Dv/LWcCgdrUicvi6
+         S4eTJ4+2RdT+6odU6o/DTc6229rvFfd85dqZecwoYftyGT1iemnGFFqD/5qYKODAP3u5
+         2VtYxvWCXyuZ38xmYhl8CRnGSSKiDRUHBtJLuDQR5URSrPnvTexjFquqpeG6/CwWeRf1
+         +MU7DrkbWQ3rTZ1nhI4hHBqjIIbosADE6JAHsb0lszCPlJrRTFf+2846DDHfdsjl0EkQ
+         vW8exvRcFWNEnn2RphjGK5JHHSYBhxHgud0utI3TYtsXgGbALQ8QAH7jlkFSwZLNs1hN
+         Bxtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745358569; x=1745963369;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9dYvt2Xcrh+kbYqRYnlS/5tyT+BexXkaGSTJNxwW1ck=;
+        b=dErwHoEzJVCMceAQDKc5+Rvomgd9AIWBTezjn458R9DJAZ4ngqEYkHxZcNSO1yBu2d
+         0uiM1iSrzBTSmPZwyOheAb2+e5hcf0tmqecGWpA7X1gnVZrf5Q176eD6+DpDysSo3asx
+         5yaBuYVpoIO7hG/eOVCrDxDFOkUUJbRzzJBC9TKoIhUW3HTFrBlqPV3BU1SL2j/0Qnbl
+         YEsBUhjFLSFIXbAnE8R2Agjl6gmPd5WpwS40F80QM96YnUevGzVGgmbUlUQBrYlUnUXG
+         m4HMFTnd0QKxFzQi+j+BZIxRdk6mfxKNKYtCIX1SyacLgm/OO05iBzmdDck8KmB2g+RY
+         STFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuh3tlBLlv23s09zdZPOIshP4sf2+0jMYlZDsWiibYl2zDb8jNn4zIUiNluSAWAnoYOxD31Ahf@vger.kernel.org, AJvYcCVLOqICqgf6j6ZampLk5Jl+JXKDq0rq2CmrQlReU4nwylS530rnADKrsEWBnvX0XE0QkMSYwRZf@vger.kernel.org, AJvYcCWn86Mq6k4v80TXf+XDO7Y6EKBqR/KNQClwWoLDJY3OTPM5az2V7BZrXzKh3sgLMUqmF7RKedrbYw/k6RQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdAojUkFQE/BguChfpn9hzNQ+gFGIVWhM6r8W2X9tM/1QfVPyE
+	puZ3I34QjCbTxmXfkUU9HSicTi2Iq+mcjyc8dfSIMEDCpl58sDCO
+X-Gm-Gg: ASbGnctTqT4mPh+i5LqqL7wjLW7AEwEhcVBFpg1kFqyndf8YXpYoe0TptYzkpeTm9S2
+	jWPq+eYsfI+vBLDD3NdNkASMtgs2r/SaHVAe4tTuPYlUg/aoCxHbPi1KGsTqzmMxAQc0pKteTIy
+	0pkeu6Ja6tGGIl6dM7ubL+pbKtl3cYtAR9fxjfTptqZRMWPG4zjqoJWHkCsfDTk6dplrKWvgY43
+	W1rTocmL4hJJufgPd0li/Wunv8ShRY41wK9RlN06u9OmCuhzlEVUoYlPAzlqI1RGiqgeQIzwh4f
+	OET32/vjgMt4TxOx7zr3NdKUKPIMDFRg+odFbOV27qmAtsrncafUBsk=
+X-Google-Smtp-Source: AGHT+IEa5UJBk8pFAAEn17DT7zrqf9LgrhW1yVg3/4Nr/d7c82A8poo6UJuKjfvQ33n45llJ3lLYzw==
+X-Received: by 2002:a17:90a:f945:b0:2ea:bf1c:1e3a with SMTP id 98e67ed59e1d1-3087bb57aa9mr27886530a91.12.1745358569302;
+        Tue, 22 Apr 2025 14:49:29 -0700 (PDT)
+Received: from localhost ([129.210.115.104])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb4a46sm90649335ad.147.2025.04.22.14.49.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Apr 2025 14:49:28 -0700 (PDT)
+Date: Tue, 22 Apr 2025 14:49:27 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: "Alan J. Wylie" <alan@wylie.me.uk>
+Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
+	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
+ htb_dequeue
+Message-ID: <aAgO59L0ccXl6kUs@pop-os.localdomain>
+References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
+ <6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
+ <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
+ <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
+ <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
+ <20250421210927.50d6a355@frodo.int.wylie.me.uk>
+ <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
+ <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
+ <aAf/K7F9TmCJIT+N@pop-os.localdomain>
+ <20250422214716.5e181523@frodo.int.wylie.me.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,151 +101,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250422075056.12989-1-tzimmermann@suse.de>
+In-Reply-To: <20250422214716.5e181523@frodo.int.wylie.me.uk>
 
-On Tue, Apr 22, 2025 at 09:49:57AM +0200, Thomas Zimmermann wrote:
-> Apply bridge window offsets to screen_info framebuffers during
-> relocation. Fixes invalid access to I/O memory.
-> 
-> Resources behind a PCI bridge can be located at a certain offset
-> in the kernel's I/O range. The framebuffer memory range stored in
-> screen_info refers to the offset as seen during boot (essentialy 0).
-> During boot up, the kernel may assign a different memory offset to
-> the bridge device and thereby relocating the framebuffer address of
-> the PCI graphics device as seen by the kernel. The information in
-> screen_info must be updated as well.
+Hi, Alan
 
-I can't see the bug report below, so I'm not sure what's happening
-here.  Apparently the platform is one where PCI bus addresses are not
-identical to CPU physical addresses.  On such platforms, the PCI host
-bridge applies an offset between CPU and PCI addresses.  There are
-several systems like that, but I'm not aware of any that change that
-CPU->PCI bus address offset at runtime.
+Although I am still trying to understand the NULL pointer, which seems
+likely from:
 
-So I suspect the problem is not that the kernel has assigned a
-different offset.  I think it's more likely that the hardware or
-firmware has determined the offset before the kernel starts, and this
-code just doesn't account for that.
+ 478                         if (p->inner.clprio[prio].ptr == cl->node + prio) {
+ 479                                 /* we are removing child which is pointed to from
+ 480                                  * parent feed - forget the pointer but remember
+ 481                                  * classid
+ 482                                  */
+ 483                                 p->inner.clprio[prio].last_ptr_id = cl->common.classid;
+ 484                                 p->inner.clprio[prio].ptr = NULL;
+ 485                         }
 
-I don't know what "stored in screen_info" means.  Most of the
-addresses filled in by screen_info_resources() are hard-coded bus
-addresses specified by PCI and VGA specs.  These are not just offsets
-"seen during boot"; these are legacy addresses that are not
-programmable via usual PCI BARs.  They're hard-wired into VGA devices,
-so if we use the VGA frame buffer at 0xA0000, the 0xA0000 address must
-appear on the PCI bus.
+Does the following patch work? I mean not just fixing the crash, but
+also not causing any other problem.
 
-VIDEO_TYPE_VLFB and VIDEO_TYPE_EFI are exceptions; I don't know how
-they work, but if they return addresses from firmware, I would expect 
-them to be PCI bus addresses as well.
+Please give it a try.
 
-> The helper pcibios_bus_to_resource() performs the relocation of
-> the screen_info resource. The result now matches the I/O-memory
-> resource of the PCI graphics device. As before, we store away the
-> information necessary to update the information in screen_info.
-> 
-> Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
-> EFI framebuffers") added the code for updating screen_info. It is
-> based on similar functionality that pre-existed in efifb. Efifb uses
-> a pointer to the PCI resource, while the newer code does a memcpy of
-> the region. Hence efifb sees any updates to the PCI resource and avoids
-> the issue.
-> 
-> v2:
-> - Fixed tags (Takashi, Ivan)
-> - Updated information on efifb
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reported-by: "Ivan T. Ivanov" <iivanov@suse.de>
-> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
+Thanks!
 
-This bug isn't public.  Can it be made public?  Or even better, a
-report at https://bugzilla.kernel.org?
+---
 
-s/essentialy/essentially/
-
-> Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
-> Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.9+
-> ---
->  drivers/video/screen_info_pci.c | 17 ++++++++++++++---
->  1 file changed, 14 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/screen_info_pci.c b/drivers/video/screen_info_pci.c
-> index 6c5833517141..c46c75dc3fae 100644
-> --- a/drivers/video/screen_info_pci.c
-> +++ b/drivers/video/screen_info_pci.c
-> @@ -8,7 +8,7 @@
->  static struct pci_dev *screen_info_lfb_pdev;
->  static size_t screen_info_lfb_bar;
->  static resource_size_t screen_info_lfb_offset;
-> -static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
-> +static struct pci_bus_region screen_info_lfb_region;
->  
->  static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
->  {
-> @@ -31,7 +31,7 @@ void screen_info_apply_fixups(void)
->  	if (screen_info_lfb_pdev) {
->  		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
->  
-> -		if (pr->start != screen_info_lfb_res.start) {
-> +		if (pr->start != screen_info_lfb_region.start) {
->  			if (__screen_info_relocation_is_valid(si, pr)) {
->  				/*
->  				 * Only update base if we have an actual
-> @@ -69,10 +69,21 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
->  
->  	for (i = 0; i < numres; ++i) {
->  		struct resource *r = &res[i];
-> +		struct pci_bus_region bus_region = {
-> +			.start = r->start,
-> +			.end = r->end,
-> +		};
-
-screen_info_resources() above fills in "struct resource res[]", but
-that's not quite right.  A struct resource contains CPU addresses, and
-screen_info_resources() fills in PCI bus addresses (0xa0000, etc).
-
-struct pci_bus_region is meant to hold PCI bus addresses, so this
-assignment gets them back where they should be.
-
->  		const struct resource *pr;
->  
->  		if (!(r->flags & IORESOURCE_MEM))
->  			continue;
-> +
-> +		/*
-> +		 * Translate the address to resource if the framebuffer
-> +		 * is behind a PCI bridge.
-> +		 */
-> +		pcibios_bus_to_resource(pdev->bus, r, &bus_region);
-
-And this converts the PCI bus addresses to CPU addresses, so this
-makes sense.
-
-The comment might be a little misleading, though.  When PCI bus
-addresses are different from CPU addresses, it's because the PCI host
-bridge has applied an offset.  This only happens at the host bridge,
-never at a PCI-PCI bridge (which is what "PCI bridge" usually means).
-
-The commit log and comments could maybe be clarified, but this all
-looks to me like it's doing the right thing in spite of abusing the
-use of struct resource.
-
->  		pr = pci_find_resource(pdev, r);
->  		if (!pr)
->  			continue;
-> @@ -85,7 +96,7 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
->  		screen_info_lfb_pdev = pdev;
->  		screen_info_lfb_bar = pr - pdev->resource;
->  		screen_info_lfb_offset = r->start - pr->start;
-> -		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
-> +		memcpy(&screen_info_lfb_region, &bus_region, sizeof(screen_info_lfb_region));
->  	}
->  }
->  DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
-> -- 
-> 2.49.0
-> 
+diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
+index 4b9a639b642e..0cdc778fddef 100644
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -348,7 +348,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
+  */
+ static inline void htb_next_rb_node(struct rb_node **n)
+ {
+-	*n = rb_next(*n);
++	if (*n)
++		*n = rb_next(*n);
+ }
+ 
+ /**
 
