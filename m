@@ -1,120 +1,122 @@
-Return-Path: <stable+bounces-134928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D85FA95B49
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:22:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4096A95ADE
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EBD03B78B9
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:22:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1FCF17594F
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24FA256C90;
-	Tue, 22 Apr 2025 02:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA450194AD5;
+	Tue, 22 Apr 2025 02:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2kEEuqw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jmn36GZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F97256C6F;
-	Tue, 22 Apr 2025 02:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D8117B50A
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 02:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288223; cv=none; b=LkJANN7Ke91/OyZemvVK6AlfYyg2L25tyyQFhu+30brY4tilIJsHG5lyCe7pCcTzUQGUbv5XMXVWM09Y/MlWXrXR0Ebt4BRmZWjsIyVLesXUgqB1BUaKxpwhYK4rNZCB7fSRJb/vEwFTCfoUGtCukrptpJmq9AJMN0i4eS9AYNU=
+	t=1745288153; cv=none; b=hQc5wwO7ONXcucWb9fDrUEDhkYlspVhTfGCbGuOT3Y4at1IAk9Ju7n6BW1oTLuWSduU7Z8Tus5gJiLGsOP2EfzQ1AmqVygQWCGXQu/eKqnPTCuMO0OOwmoyEHJfdFYx1G3ZcfSekt71R/9o45vYyNdvDjR5yeGlNSwFDEWuMUiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288223; c=relaxed/simple;
-	bh=W3fZc4RzShLZ39KaAzu286VLtoVz1a2Yr3M6iIQtwzM=;
+	s=arc-20240116; t=1745288153; c=relaxed/simple;
+	bh=LA8FVqDCX3aJjmh3dEWDDanAT8HO5fH9ufYyYYKIs8o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KItfCJ3N4MQ58tcEyXp5Fqh0hA/LE4oli/A6MhbgdDWbloB9reimzQjjSxh/9WQF4Pi3KywRb56rzgYwYzfWfK6mC25WPeYKvlFdCRZ3+hRzjSGPseTgMjOjKCMp0Z5AZLMBHB4dYIZoHYNZQTbr8KhamrvY+A+/+trshn6YqG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2kEEuqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C88C4CEF5;
-	Tue, 22 Apr 2025 02:17:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mw1C6t4ED8KxUj+ey3VduBE8kNX7oG+7wAGTDKbgVuqpCguIZq+pDiNzoHDgz7MrajBcp3k7TJYuBG1gNubMLLMr25P3N06Vzca0vXN+K9NC1XTt3or6pRUAoDmQHivEOJDC1G+oAPAcjf4Iluo36spwmeOnlq4/cSn+M77uyZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jmn36GZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF79C4CEE4;
+	Tue, 22 Apr 2025 02:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288223;
-	bh=W3fZc4RzShLZ39KaAzu286VLtoVz1a2Yr3M6iIQtwzM=;
+	s=k20201202; t=1745288153;
+	bh=LA8FVqDCX3aJjmh3dEWDDanAT8HO5fH9ufYyYYKIs8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2kEEuqw0EYCb71IziG55jcTwbR2NH6j5jCUzucOjKLrpavoRrI+jWBIKzSLMWKap
-	 sIj7mAT8pLhj4TE9lIoFPuZ4+ue8kERvsULisBp8v+FxRteJBTpTaWRABMRaE3+WJ9
-	 Ja7nORCSjo5F6dgKKSSa5NpGpttfWHqCqbzHPy0fEBVsNLBUXQFpUXTO+DrJWxCCW9
-	 9fFuncwNrjSZL5DPg2DpXrbILxpSc1WRpX3LKI/1AEjNoFr2+dtitN9JKsiAtQh3kg
-	 hYErq4V43UoF78oFdpUuBA9sW3uRNGy0lqJHruK//Jq5cqoWGhxfqKdCmGyUBUQ7Nz
-	 ajVQT9/eicbmg==
+	b=Jmn36GZG/bTPgYNMiNQsCj3tf/0/7ntgbksWXzwDp9y2UE1lQ7ftKgMh9TbnFEMYq
+	 QmThVxTOAZUjkKctxWINXDH/JqggSqrYKOQPWqthFwWfsljrQd6xLM95VKIhFu3XWs
+	 8wQXLFOKy4rmkFzHr7rx9eUlVVNZ0xHMxL47ri5M/9RmJbjQgVpBq0mCN/zKKjtZ0p
+	 ylhvwSNtlQNAeZY9oejvgz8cCVyoQIeIbqGOQuq4gSmcUE8yIqp4JBemFPnJ6D0mYg
+	 CM+w4JYnCIyBnLbhUVELLXgLXVgQ7NWu9emQJDq/uM+loWwO3PPIMnIbVrP4VGa7U3
+	 SEZ599QCQNefw==
 From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Tamura Dai <kirinode0@gmail.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 30/30] spi: spi-imx: Add check for spi_imx_setupxfer()
-Date: Mon, 21 Apr 2025 22:15:50 -0400
-Message-Id: <20250422021550.1940809-30-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14.y] scripts: generate_rust_analyzer: Add ffi crate
+Date: Mon, 21 Apr 2025 22:15:51 -0400
+Message-Id: <20250421194247-50eb35a87a22ee4f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
-References: <20250422021550.1940809-1-sashal@kernel.org>
+In-Reply-To:  <20250421123827.3147434-1-ojeda@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.3
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Tamura Dai <kirinode0@gmail.com>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 951a04ab3a2db4029debfa48d380ef834b93207e ]
+Hi,
 
-Add check for the return value of spi_imx_setupxfer().
-spi_imx->rx and spi_imx->tx function pointer can be NULL when
-spi_imx_setupxfer() return error, and make NULL pointer dereference.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
- Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
- Call trace:
-  0x0
-  spi_imx_pio_transfer+0x50/0xd8
-  spi_imx_transfer_one+0x18c/0x858
-  spi_transfer_one_message+0x43c/0x790
-  __spi_pump_transfer_message+0x238/0x5d4
-  __spi_sync+0x2b0/0x454
-  spi_write_then_read+0x11c/0x200
+The upstream commit SHA1 provided is correct: 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6
 
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Reviewed-by: Carlos Song <carlos.song@nxp.com>
-Link: https://patch.msgid.link/20250417011700.14436-1-kirinode0@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Miguel Ojeda<ojeda@kernel.org>
+Commit author: Lukas Fischer<kernel@o1oo11oo.de>
+
+Note: The patch differs from the upstream commit:
 ---
- drivers/spi/spi-imx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+1:  05a2b0011c4b6 ! 1:  5869631cf792b scripts: generate_rust_analyzer: Add ffi crate
+    @@ Metadata
+      ## Commit message ##
+         scripts: generate_rust_analyzer: Add ffi crate
+     
+    +    commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
+    +
+         Commit d072acda4862 ("rust: use custom FFI integer types") did not
+         update rust-analyzer to include the new crate.
+     
+    @@ Commit message
+         Cc: stable@vger.kernel.org
+         Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
+         Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+    +    [ Fixed conflicts. - Miguel ]
+    +    Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+     
+      ## scripts/generate_rust_analyzer.py ##
+     @@ scripts/generate_rust_analyzer.py: def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
+    -         cfg=["kernel"],
+    +         ["core", "compiler_builtins"],
+          )
+      
+     +    append_crate(
+    @@ scripts/generate_rust_analyzer.py: def generate_crates(srctree, objtree, sysroot
+      
+     -    append_crate_with_generated("bindings", ["core"])
+     -    append_crate_with_generated("uapi", ["core"])
+    --    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "bindings", "uapi"])
+    +-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
+     +    append_crate_with_generated("bindings", ["core", "ffi"])
+     +    append_crate_with_generated("uapi", ["core", "ffi"])
+    -+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+    ++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
+      
+          def is_root_crate(build_file, target):
+              try:
+---
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index eeb7d082c2472..c43fb496da956 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1695,9 +1695,12 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
- 				struct spi_device *spi,
- 				struct spi_transfer *transfer)
- {
-+	int ret;
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
- 
--	spi_imx_setupxfer(spi, transfer);
-+	ret = spi_imx_setupxfer(spi, transfer);
-+	if (ret < 0)
-+		return ret;
- 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
- 
- 	/* flush rxfifo before transfer */
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.14.y       |  Success    |  Success   |
 
