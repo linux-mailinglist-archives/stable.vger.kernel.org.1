@@ -1,64 +1,69 @@
-Return-Path: <stable+bounces-134923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9F7BA95B3A
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:21:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B70CA95B3D
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC0783B4757
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:21:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B8BF1897778
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5C2254AF3;
-	Tue, 22 Apr 2025 02:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9E52550D1;
+	Tue, 22 Apr 2025 02:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3iJo5uw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="owfgF3vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B495254AED;
-	Tue, 22 Apr 2025 02:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545A81AAA29;
+	Tue, 22 Apr 2025 02:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288197; cv=none; b=ZrtzKyQbr8KuafXza59zk9tfk0d54UkEkQcbJsMI5Wp0dYmxYinf103zStA6ipIyoQOvQnnPgbk5XMxnim15/IF4T0oi5xOQGWUr4xgcUglChpU95xUmi/kdeyUuWEl+lQ+iwi9yHThcgpmy3SxAzNs8n7yfRg6JTbVQ2+PNOH4=
+	t=1745288201; cv=none; b=rQI/qL1UKak/VJUT2X2enwRaMoHmmAPpohv65KgU9BS1cOm6gHmRM23MTVuILg4v1iDsAjV6ipZ2Zc6bHInlCnDQJerS9CnKrUf94jK0A+DGpGvhGBun78LJ5KyZOrY/BqFQOdeYuLgjm+5cVT7Ab9VdAVLqDTiInLFq0kSZ9tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288197; c=relaxed/simple;
-	bh=167VzBc/6G/IIdA/VUKDCBRnVuwCe9wGIn4ON4F9ugs=;
+	s=arc-20240116; t=1745288201; c=relaxed/simple;
+	bh=XjK+fqyfu3sbCTr2fhtQxmZHWNvGXOO/Irtpev2JQZE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sVcE7NZv1UUIbfXVe/qLYwNV4hOACpnyxtksVi8wAAA3BRk38h9mGhtXcjJx8g6UlB04zMFlQt9Kykhfv0VDHcKyYiCzKH1LSFJZ9m7VFI/u1R415lGemoSZFqDnrHtjRxjIX/+PKhKqzMgwbFiwJIR57M/SlA/vwAE2J4udosU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3iJo5uw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7408AC4CEE4;
-	Tue, 22 Apr 2025 02:16:35 +0000 (UTC)
+	 MIME-Version; b=aTOnTQzZkOIYPXPk0ReamXpfDVvxV6jH0ipbsRmqQMNgW4jveNXCBfNk3Zg9u9jAkSUGBhm3tejVY3aCVmnAkt0hSV1jKthQvREBu3diH8GXAGj82xlHZSByy+MFfBSEOpatZPHPCgAsM2aDp1tq8W2Dl21YcfeSEmgS6Lrzn2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=owfgF3vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F71C4CEE4;
+	Tue, 22 Apr 2025 02:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288197;
-	bh=167VzBc/6G/IIdA/VUKDCBRnVuwCe9wGIn4ON4F9ugs=;
+	s=k20201202; t=1745288201;
+	bh=XjK+fqyfu3sbCTr2fhtQxmZHWNvGXOO/Irtpev2JQZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3iJo5uwwzRX07gtly7MleKIElv2iN0h21x/vD+Sz20PvsODw/61qmAXJjAHgLL+T
-	 fUH2wqMfmXFQB1lP139u6Cfb4MGk464Jvae5sqzfB5/SuXqIlxeh292OXXyhJzOzE5
-	 PyMwnyLD7mkIDqrrbB/XtJsFvAX4BiRVOSQUgxFVV9QDtK5kO9CIdp7Tjwdb3i8AuP
-	 4yJcEKtv9XQPbXLTzyBWbmx+LMEDNjrKSiTyQRjwUobAK/AZRPnwphJNopUx0KWfV4
-	 JHtQk3szPKzsAq/oXLJ5MnNEBMEbetRY4p+JZvUNdvlGxKQ6Krqiqi5rOPURn73U1Y
-	 zTFBytpYONnzA==
+	b=owfgF3vpkmwnUk5tA+niskvwR8z2ZJXM0ORWKnNqiMYzheY3D59LyKXFS+oS86Mz/
+	 ndMOOGBKB4HIfI+6Ymvi8EHnzA4zvy5F4EsyxKR+RKj2CuXBbL0YUM22UJ483SHERU
+	 mczH5rFWY3HoDyHYm7BeNZwxnIzxY6jg052zKs8uS01aD9lYuJUzN+TAKQ3/pt4t7z
+	 Ame3mp+QF/XLO0GNr631aq5SHW6sn7l06Ir0ZlKbuA+SJvhFOUZLPGL4+f4cSqxnAb
+	 DIj++MFHd/V1L9m6Z4DNWnGJsYBCypBNp/i3nDDBNsPdji5ZZ7T1soang9Gk6HyMyg
+	 rJpA76fb/b5Xg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	Hawking.Zhang@amd.com,
 	lijo.lazar@amd.com,
-	Jack.Xiao@amd.com,
+	Hawking.Zhang@amd.com,
+	sunil.khatri@amd.com,
 	Jesse.zhang@amd.com,
+	linux@treblig.org,
+	zhangzekun11@huawei.com,
+	victor.skvortsov@amd.com,
+	tzimmermann@suse.de,
+	Ramesh.Errabolu@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 25/30] drm/amdgpu: use a dummy owner for sysfs triggered cleaner shaders v4
-Date: Mon, 21 Apr 2025 22:15:45 -0400
-Message-Id: <20250422021550.1940809-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 26/30] drm/amd: Forbid suspending into non-default suspend states
+Date: Mon, 21 Apr 2025 22:15:46 -0400
+Message-Id: <20250422021550.1940809-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
 References: <20250422021550.1940809-1-sashal@kernel.org>
@@ -68,66 +73,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.3
 Content-Transfer-Encoding: 8bit
 
-From: Christian König <christian.koenig@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 447fab30955cf7dba7dd563f42b67c02284860c8 ]
+[ Upstream commit 1657793def101dac7c9d3b2250391f6a3dd934ba ]
 
-Otherwise triggering sysfs multiple times without other submissions in
-between only runs the shader once.
+On systems that default to 'deep' some userspace software likes
+to try to suspend in 'deep' first.  If there is a failure for any
+reason (such as -ENOMEM) the failure is ignored and then it will
+try to use 's2idle' as a fallback. This fails, but more importantly
+it leads to graphical problems.
 
-v2: add some comment
-v3: re-add missing cast
-v4: squash in semicolon fix
+Forbid this behavior and only allow suspending in the last state
+supported by the system.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4093
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250408180957.4027643-1-superm1@kernel.org
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8b2ae7d492675e8af8902f103364bef59382b935)
+(cherry picked from commit 2aabd44aa8a3c08da3d43264c168370f6da5e81d)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h     |  1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-index c1f35ded684e8..506786784e32d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
-@@ -1411,9 +1411,11 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
- 	struct amdgpu_device *adev = ring->adev;
- 	struct drm_gpu_scheduler *sched = &ring->sched;
- 	struct drm_sched_entity entity;
-+	static atomic_t counter;
- 	struct dma_fence *f;
- 	struct amdgpu_job *job;
- 	struct amdgpu_ib *ib;
-+	void *owner;
- 	int i, r;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 69895fccb474a..bbfeba7816075 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1119,6 +1119,7 @@ struct amdgpu_device {
+ 	bool				in_s3;
+ 	bool				in_s4;
+ 	bool				in_s0ix;
++	suspend_state_t			last_suspend_state;
  
- 	/* Initialize the scheduler entity */
-@@ -1424,9 +1426,15 @@ static int amdgpu_gfx_run_cleaner_shader_job(struct amdgpu_ring *ring)
- 		goto err;
- 	}
- 
--	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, NULL,
--				     64, 0,
--				     &job);
-+	/*
-+	 * Use some unique dummy value as the owner to make sure we execute
-+	 * the cleaner shader on each submission. The value just need to change
-+	 * for each submission and is otherwise meaningless.
-+	 */
-+	owner = (void *)(unsigned long)atomic_inc_return(&counter);
+ 	enum pp_mp1_state               mp1_state;
+ 	struct amdgpu_doorbell_index doorbell_index;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index c0ddbe7d6f0bc..284cf70562907 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2511,8 +2511,20 @@ static int amdgpu_pmops_suspend(struct device *dev)
+ 		adev->in_s0ix = true;
+ 	else if (amdgpu_acpi_is_s3_active(adev))
+ 		adev->in_s3 = true;
+-	if (!adev->in_s0ix && !adev->in_s3)
++	if (!adev->in_s0ix && !adev->in_s3) {
++		/* don't allow going deep first time followed by s2idle the next time */
++		if (adev->last_suspend_state != PM_SUSPEND_ON &&
++		    adev->last_suspend_state != pm_suspend_target_state) {
++			drm_err_once(drm_dev, "Unsupported suspend state %d\n",
++				     pm_suspend_target_state);
++			return -EINVAL;
++		}
+ 		return 0;
++	}
 +
-+	r = amdgpu_job_alloc_with_ib(ring->adev, &entity, owner,
-+				     64, 0, &job);
- 	if (r)
- 		goto err;
++	/* cache the state last used for suspend */
++	adev->last_suspend_state = pm_suspend_target_state;
++
+ 	return amdgpu_device_suspend(drm_dev, true);
+ }
  
 -- 
 2.39.5
