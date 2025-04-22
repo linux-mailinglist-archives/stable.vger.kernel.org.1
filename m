@@ -1,154 +1,88 @@
-Return-Path: <stable+bounces-134918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1044BA95B2F
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:20:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB121A95AD7
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F414218977D4
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06D46175414
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE05623F40C;
-	Tue, 22 Apr 2025 02:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EA11624DF;
+	Tue, 22 Apr 2025 02:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ST5r1nIy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X71I1xhZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785FA23E344;
-	Tue, 22 Apr 2025 02:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46B933C9
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 02:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288187; cv=none; b=PBo2dcOoPCoZHhc9+KpJtklXrm1coLsL0PuPR7HvTDIer8mFied4l4vb72po+JSkzB0LX6spzoWabDotneCpybyA6txesmeT07QrZRoxGEIeIAZXQ9uE3l7gGmy6X6/lLBofojoLqvyxhp46MceDBIVVHy3/HldSuetJ7xJEu1I=
+	t=1745288144; cv=none; b=EbOKTW1UwqIFTwy2hdr28uxjTGR3AUAOWJG6hUFoptNVMs8UbnNW4y5UeJDHAXEDLHQONCWm72/Xa3m41qS6M/XKxmnrCr0LFhjA+lj1Aezh1ymUSCM364RfIH600wR+G9ZOh0N6VFZQXKnnYe+yjqB34pTGW6ZPNt3e7Ztb+s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288187; c=relaxed/simple;
-	bh=Bajci9RVViShoHebpmmjyMnZxE/rkvpjN1R1FfxX0Sw=;
+	s=arc-20240116; t=1745288144; c=relaxed/simple;
+	bh=9YP0e4WA6dGN53tvZhg4jwIrrAnKxcHCv0MgVrMwYY0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ss15rv25Y6g8jwxV4xgg5m+bgCJRit0b9jGQ1dcPPx2bq2MBGq+xe6fWcMoe8jJ/Zhe0ilfnRU4Z1RAwyfeR6C9XLBFQsS6rpZw5aYhsWzyK9U6M+6s4f8G44UbHM1fMQU2oXn0buvZtywF0vkOk0aACyEyOPpLux+ghQ6j/G34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ST5r1nIy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2379DC4CEE4;
-	Tue, 22 Apr 2025 02:16:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YaaKN5+MuTPSUQkUXWubDFVOhnXFivgBdOxv/AS7v662WiAlU2JvWrigjN+mQRJKW4Tag2VE2sHlTb57wkDwzB3cUwSROypoMhzvXAI17jqODUOaI9lu6JLPPIGR1lWFsJo/+xTmCGP+Kj9RUw3Re13Xu0hhdZWGEC5XbwY2yec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X71I1xhZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8202C4CEE4;
+	Tue, 22 Apr 2025 02:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288186;
-	bh=Bajci9RVViShoHebpmmjyMnZxE/rkvpjN1R1FfxX0Sw=;
+	s=k20201202; t=1745288143;
+	bh=9YP0e4WA6dGN53tvZhg4jwIrrAnKxcHCv0MgVrMwYY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ST5r1nIyoA9oY/HJl0h/ujkUdTAqJQ5dxCmwQNcxmrbVNZseN0ifZKdoiVcM+neZe
-	 Ruq/P1vKenubpv4PNJnmVcqmwWjGj+LRqTwCj7huqBZS4mV45KhILo/WgHCuqPLA8A
-	 8/reejL/ccY6mkKvUyvjgusJBydne7YcoMvju2rz0g9PYEsJBBjDRn4wia3H8PajQP
-	 BlVoIoAmpFxyOBAm07Oqcre5HfEDyj1ay3XfMCu0ZsvkcwvCN8GV0ZIOGE1YbeEbY+
-	 AlnZzqbQ8GHuFHipU0HyzgBrtG4rVyLzJFmFj/kATM+CADpSlhuKy3aDuh+YFj7Nxo
-	 BwxRBARzxOIvw==
+	b=X71I1xhZiHrohTqBPPN/tVmIBhqGIOcLqTvUwM8NRvlspfFUHun5oVjSfX9XjM57O
+	 5+xWHbJ04C208wAngeYPo5oWBljtAHxtzsbUMap1/Jmqgf+b3tQ7KsqW/+Wv/SbQCC
+	 JJ8jg+rGymudNUqY2g0CtahqZEZ/VOAqlQ870YHOB7AQaeiKMyL9YJvydBqayMmTrs
+	 4hpVrrDA8F2IzSmQhLMxuOww+5sS7mtwp28ZaZ4pUe1Mea/R+dSh53QeD47X6e+Nyb
+	 7nP3kyIYQ6nTeVzq+FVVsGA1O6dAUVF8nlZK9fp9J9Wa1aAuUqLJSvcYQjx9Srrejb
+	 cYomzJIUIx0cQ==
 From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Mostafa Saleh <smostafa@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	kasan-dev@googlegroups.com,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 20/30] ubsan: Fix panic from test_ubsan_out_of_bounds
-Date: Mon, 21 Apr 2025 22:15:40 -0400
-Message-Id: <20250422021550.1940809-20-sashal@kernel.org>
+To: stable@vger.kernel.org,
+	pimenoveu12@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] ASoC: qcom: Fix sc7280 lpass potential buffer overflow
+Date: Mon, 21 Apr 2025 22:15:41 -0400
+Message-Id: <20250421193020-123e6255cd3f396a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
-References: <20250422021550.1940809-1-sashal@kernel.org>
+In-Reply-To:  <20250421193733.46275-1-pimenoveu12@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.3
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Mostafa Saleh <smostafa@google.com>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
+Hi,
 
-Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
-kernel:
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
-[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
-[   31.648153] Hardware name: linux,dummy-virt (DT)
-[   31.648970] Call trace:
-[   31.649345]  show_stack+0x18/0x24 (C)
-[   31.650960]  dump_stack_lvl+0x40/0x84
-[   31.651559]  dump_stack+0x18/0x24
-[   31.652264]  panic+0x138/0x3b4
-[   31.652812]  __ktime_get_real_seconds+0x0/0x10
-[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
-[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
-[   31.655077]  do_one_initcall+0xd4/0x280
-[   31.655680]  do_init_module+0x58/0x2b4
+Found matching upstream commit: a31a4934b31faea76e735bab17e63d02fcd8e029
 
-That happens because the test corrupts other data in the stack:
-400:   d5384108        mrs     x8, sp_el0
-404:   f9426d08        ldr     x8, [x8, #1240]
-408:   f85f83a9        ldur    x9, [x29, #-8]
-40c:   eb09011f        cmp     x8, x9
-410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
+Status in newer kernel trees:
+6.14.y | Not found
+6.12.y | Not found
+6.6.y | Not found
 
-As there is no guarantee the compiler will order the local variables
-as declared in the module:
-        volatile char above[4] = { }; /* Protect surrounding memory. */
-        volatile int arr[4];
-        volatile char below[4] = { }; /* Protect surrounding memory. */
-
-There is another problem where the out-of-bound index is 5 which is larger
-than the extra surrounding memory for protection.
-
-So, use a struct to enforce the ordering, and fix the index to be 4.
-Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note: The patch differs from the upstream commit:
 ---
- lib/test_ubsan.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+1:  a31a4934b31fa < -:  ------------- ASoC: qcom: Fix sc7280 lpass potential buffer overflow
+-:  ------------- > 1:  420102835862f Linux 6.1.134
+---
 
-diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
-index 5d7b10e986107..63b7566e78639 100644
---- a/lib/test_ubsan.c
-+++ b/lib/test_ubsan.c
-@@ -68,18 +68,22 @@ static void test_ubsan_shift_out_of_bounds(void)
- 
- static void test_ubsan_out_of_bounds(void)
- {
--	volatile int i = 4, j = 5, k = -1;
--	volatile char above[4] = { }; /* Protect surrounding memory. */
--	volatile int arr[4];
--	volatile char below[4] = { }; /* Protect surrounding memory. */
-+	int i = 4, j = 4, k = -1;
-+	volatile struct {
-+		char above[4]; /* Protect surrounding memory. */
-+		int arr[4];
-+		char below[4]; /* Protect surrounding memory. */
-+	} data;
- 
--	above[0] = below[0];
-+	OPTIMIZER_HIDE_VAR(i);
-+	OPTIMIZER_HIDE_VAR(j);
-+	OPTIMIZER_HIDE_VAR(k);
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
--	arr[j] = i;
-+	data.arr[j] = i;
- 
- 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
--	arr[k] = i;
-+	data.arr[k] = i;
- }
- 
- enum ubsan_test_enum {
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
