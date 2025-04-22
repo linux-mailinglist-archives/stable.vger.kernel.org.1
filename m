@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C456A97546
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2E0A97548
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80BAE17F1F0
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4A91B624F8
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AA129898B;
-	Tue, 22 Apr 2025 19:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC4628C5A8;
+	Tue, 22 Apr 2025 19:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZJOHOBxv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGFXwmcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86A1B666
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A791DDA1E
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745349460; cv=none; b=WfXMDmotT2+OH2cfYb/L6ybAYlPQEslhL/tVpthAzFFbgQ34R+EoAK8O7JJgNWzvpzM30z/lkIqff9CMRKfMj85Tj+4mVNLUCIHBOOszTDRmizBSHtU4xtXCBdbVRzZNKoQiuIFZESSswYi8RPRY9dg0YNoA2N9Bl24oWy1aNE0=
+	t=1745349463; cv=none; b=igr6sNS1WJsCj4bnQemtfz/7vXCYZFhFV3K9GU6TWf4u3mUIkH+KUAGxAMB5ghFnIR5W/gwph95IV9OusLMUEckiEhFex7wHo/oBbf4eexK249lLQm9RL0vtP5+uMotOwipgZckxbW9l2RzWMXJRdi1slTTSJxWiTmpKKS+kE+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745349460; c=relaxed/simple;
-	bh=oUP9snwvQemaGu7FJ6/xgHEloy+YtNJ1VZ6zLSoVyls=;
+	s=arc-20240116; t=1745349463; c=relaxed/simple;
+	bh=+eo2zU/tTjusmyNioS2y3g9LaDyw4Y5kcTNEIwu5VsI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u4ozbAi8z+G9ho3uiEBXcGuVo+G4q14XCG3CtjcWHXpl2LbGwWZWk6rUQxKAMjid+oQ/IXsOMmirbJ4xPwOZ1YHOD3njNZmFW4P7UUEIBasq4H28k8SvrAV8NZwozbZYwnd0dc9ce4uQ46z6xk2GDWxF9n4D+r/TIZQq0Jt2hCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZJOHOBxv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD4BC4CEE9;
-	Tue, 22 Apr 2025 19:17:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=st6klCBD/70JE4j/HSdleBk3OYzOPv38xjZqwtDYT6/gT6hsg8UNHGMo/1iWR8LfLN3o7VOTEyVmMl2XJfB7K6lPzGDOu5QEx0iBUyZd3q2+tzWRZkrxWQNdQzRr4Eqr11BGyBieG0/4dw5+aEg579TfaoBGBd0R1HwdyndL2cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGFXwmcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA47C4CEE9;
+	Tue, 22 Apr 2025 19:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745349460;
-	bh=oUP9snwvQemaGu7FJ6/xgHEloy+YtNJ1VZ6zLSoVyls=;
+	s=k20201202; t=1745349463;
+	bh=+eo2zU/tTjusmyNioS2y3g9LaDyw4Y5kcTNEIwu5VsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZJOHOBxv57reIE+xBHHSgoLH7JSD8ySWXlp+tHKRIfIdn/uOPAOWE4vP/TJZNny3G
-	 fQJbrk/T/Pwc7l9S6U6c+S/BMwsdnMG+1HkwTmF7nAfZ24uwXCfiDwzn1TCgcPgDrV
-	 c9J/rRx5prGQgoAkEu3OjlZNliW0YHLI5WiBfGoKQOh5wd6SAk4/1NuLx6SjykLIVT
-	 I9NjTFYmrRDxkXJlk12knyHRhvH0FsyvBHPTxmMlPNAiNG38pnRV3OOp6C1PIoprEI
-	 Y8qWEtoIRwzXEa2GynYIryfBbkthOOkUWapgfxwc2gxxkAGVdwKwlCuJuDOf9iNrO3
-	 5NDZX36WLVFrw==
+	b=HGFXwmcu3f6RixjBBcd4HSMnxYgX8gbdyG56UPdUkYk/G1sw4YJV6I2IukfxF7Bdl
+	 Fy4RWk75DSg8dtwDnhQoVCEOXGyRBwKhYhVBzQ0iIYv7wyPO7P3PksmLhbb0cq+qV3
+	 GvA3eZkUY/PrhJitEl6vVx5BgYFXz3YlkcSO0/BMuUJy/3vXBVFe990id0heDYmK0Z
+	 dW0/WThfUHJlpEohJTHeIWO6C5vTiw169kv+1rWgxrKGUCoFEXdgB3FdV9mg1vT/GN
+	 nCBa4Cu1FDAs2mVCB2n5rrcFf55ePlqe5Ao5ls7Mltf7Ic6BysVFBOW1w7aOj5C7PR
+	 RCLNkWd2wNSkg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	kirill.shutemov@linux.intel.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] mm: fix apply_to_existing_page_range()
-Date: Tue, 22 Apr 2025 15:17:37 -0400
-Message-Id: <20250422125653-4ac90e6cf3112bb5@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] mm: fix apply_to_existing_page_range()
+Date: Tue, 22 Apr 2025 15:17:40 -0400
+Message-Id: <20250422121731-080fdfef25c966cb@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250422053722.881707-1-kirill.shutemov@linux.intel.com>
+In-Reply-To:  <20250422053359.830275-1-kirill.shutemov@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -73,11 +73,10 @@ Status in newer kernel trees:
 6.14.y | Not found
 6.12.y | Not found
 6.6.y | Not found
-6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a995199384347 ! 1:  35ec614cdbbfe mm: fix apply_to_existing_page_range()
+1:  a995199384347 ! 1:  003668f907d5a mm: fix apply_to_existing_page_range()
     @@ Commit message
          Cc: Vlastimil Babka <vbabka@suse.cz>
          Cc: <stable@vger.kernel.org>
@@ -100,5 +99,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
