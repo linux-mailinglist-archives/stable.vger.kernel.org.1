@@ -1,166 +1,149 @@
-Return-Path: <stable+bounces-135083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE434A9661B
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:39:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00AB0A96676
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 12:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5353A920F
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 10:39:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A575F7A6566
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 10:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D6C1F1313;
-	Tue, 22 Apr 2025 10:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E2220C49E;
+	Tue, 22 Apr 2025 10:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="CDIW9KDD"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="jB9AYxem"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mout.web.de (mout.web.de [212.227.17.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE961F0E25;
-	Tue, 22 Apr 2025 10:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1051EEA5E;
+	Tue, 22 Apr 2025 10:49:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745318360; cv=none; b=kHPWBXw8z0FEGRHJ7OewZMB7/gl/EhMgSM+x5eUPsiIil1mq+T2WI8nCMnaAnFHSQRe/Iuey+jPkweLvoaq14HZy+p88EplQUPAqeqm36pI7jjA17egHSvVbLISmSgR7/V+BEBBCODhsUNW7zGCZZTwwG4mHsoX+qWEUHBY8BH8=
+	t=1745318981; cv=none; b=aK5YF7vT8Y7LjdGK+KU8dpN1983Q+FCslGH//thHEa3yPlyTZoiTX6lqVWq3POUfU8KF1Hd4dPcmbWTgqmiYZ2GpgpchJdeUhFvDzI5RGlMfCdIIE/evXfsZyUyDNATat3wKUYGBkrHLmLd5CgN//1b9ynHfawh9RlwXnJ3N+0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745318360; c=relaxed/simple;
-	bh=1UhuVXbaFKWeb0fLck1sKPYvB8kOMrkWfLcpd3zvslg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MNzZ4KHinE3mHFW90o/SpUjVt5tjqu8oEjuinnCOZdjBm/viEEcuCgMJ9TmqIwB5vbi7cPYweicpicIt0Y9PuPnduqacA7gW95HEyrn9/AzE0KpLFowiQUkf8WfDAslQe74SNayzl6VXmVwonpxeC+jKJq5mmJeewvRPOPrD0b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=CDIW9KDD; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53MA48Qa026975;
-	Tue, 22 Apr 2025 10:39:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gyq1bl
-	E4aR+H2rjw+Fhd/npSY+K486Hoqx5ngCD0bJg=; b=CDIW9KDD6/7poyhicvVNlb
-	GHh5Xf79ZHX+Vxa46Hnjimg19hyG8eOGwysQm7r5lJKaYjsWuci4RqYA09nbIfWu
-	qk27I6T+cadNWvbQplF7PEcoyUJCsDAE5YIUSVOISPHkYm1iHTjIBRWhgNxOqwtT
-	ttYUOBQ0/PazRKYVnAY8tt7pRPbApHYxjheXP7E0skKPDHEAGffBuI4iW5/P8+Kx
-	wZKaRx91aHutUN9ZRiteUTsqUfqNo22oRo0SBK+ibaGiRzBF4itsM+/oWjyAGuol
-	bNQdz91nWvnhcYK+5gS+vP+rSMoqJk00griNuVDu7vHKPf7q/zWin0AC3EbeHxew
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46691hg5e6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 10:39:08 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53M70aSp002971;
-	Tue, 22 Apr 2025 10:39:07 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 464q5njems-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Apr 2025 10:39:07 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53MAd33N56689012
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Apr 2025 10:39:03 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7958620043;
-	Tue, 22 Apr 2025 10:39:03 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D729720040;
-	Tue, 22 Apr 2025 10:39:02 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.111.13.221])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 22 Apr 2025 10:39:02 +0000 (GMT)
-Date: Tue, 22 Apr 2025 12:39:01 +0200
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Amit Shah <amit@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,
-        virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, "Michael S. Tsirkin"
- <mst@redhat.com>,
-        stable@vger.kernel.org,
-        Maximilian Immanuel Brandtner
- <maxbr@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH 1/1] virtio_console: fix missing byte order handling for
- cols and rows
-Message-ID: <20250422123901.6beac282.pasic@linux.ibm.com>
-In-Reply-To: <4913ceb31b31feeec906636a1a64d46ea6c6e94e.camel@kernel.org>
-References: <20250322002954.3129282-1-pasic@linux.ibm.com>
-	<4913ceb31b31feeec906636a1a64d46ea6c6e94e.camel@kernel.org>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1745318981; c=relaxed/simple;
+	bh=n9YStttPzf+7dwNCPnt66gph95yNu+I9t34XZeiQbyE=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=mJQ6y7123ZBqC7cAv8o0ZytxvKVgz/XZHRBefitbg71O5QO7dV/AS0DfjQMw60wf/vMZOutR75SsG9kGKrfp+nUI0Sfa/0wuIOwcLMWShpFPEOPEONaHu1mUK9ZOteAS8KoIN330gAPV1AIKxFmkWH20A9EfTOY5s0O1tZBok6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=jB9AYxem; arc=none smtp.client-ip=212.227.17.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1745318971; x=1745923771; i=markus.elfring@web.de;
+	bh=n9YStttPzf+7dwNCPnt66gph95yNu+I9t34XZeiQbyE=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=jB9AYxemw+eyeB6vsi27Y00BaQv/kHJd3++w85L7PkqmVXEHPWe8msEmrEpn/RKj
+	 59AqXgxwpU9XOguwtChjJZgt5mYAFnQa16QPPsYe0PSSPFDB7lcFvS2CDpsQ9CAyc
+	 pZnpjwvScr2CpxvOAdSgMLmraOeksJ1ga7IpdP7UnAPWWNOMlyQoN3sfjafcg13R1
+	 97/SOL7/HpQSn9tdbzJJPWigr1kv0ajhBzGoWthdy4tx/UGQWnoBUiHHDvWfFemUx
+	 8sTiYKxDEwb1v8+6rU7B9dfoqFV75bWB4Vrtya/GDK1iJvWYKbyNBM21qHxmSXrWD
+	 yyFsUwaXBedc7C68Qw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.70.44]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MSqXM-1uY29u2h3O-00WJdM; Tue, 22
+ Apr 2025 12:43:28 +0200
+Message-ID: <d4de3f9d-5748-4969-98c6-7d17395eef4b@web.de>
+Date: Tue, 22 Apr 2025 12:43:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=V7h90fni c=1 sm=1 tr=0 ts=680771cd cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=dmy1mdVUWN8X3jJ85t8A:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: sBQu-cGwpG_srjCr-t1H4EvT8qdOYFVh
-X-Proofpoint-GUID: sBQu-cGwpG_srjCr-t1H4EvT8qdOYFVh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-22_05,2025-04-21_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 clxscore=1015 mlxlogscore=999 bulkscore=0 phishscore=0
- lowpriorityscore=0 impostorscore=0 mlxscore=0 malwarescore=0 adultscore=0
- spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504220079
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, brcm80211-dev-list.pdl@broadcom.com,
+ brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
+ Erick Archer <erick.archer@outlook.com>, Jacobe Zang
+ <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>,
+ Sebastian Reichel <sebastian.reichel@collabora.com>
+References: <20250422042203.2259-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH v2 RESEND] brcm80211: fmac: Add error handling for
+ brcmf_usb_dl_writeimage()
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250422042203.2259-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0yUhLNxFOPtA0NXGmqmCyA7AYhTmkLF5aBbUbpQecai2dHLd1N2
+ OKH0vrcRLRiqQ6Nf5ZulLI7rdXhIct4L137OFFsnAbKg/f/h3F3YZVOBE4Z75ijlJ0a5bLj
+ /5V2BxLUvLpKw2UBVZSQvEZC4/CGSczkqnTZ5lnvNPYpcn91W3qviBhjlTQjKiNu1CpNtin
+ Pkyt1WyKGqpvnolvEAHdQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:eHVpLVmPWac=;z6S7tJp14yB01OBgOZF5M47wyCU
+ 74SMSYZjEBfjkcxfIMvh96GoQLhcrTr0iRFSfBUbygyzzj07obb4E4wUSNLSdU45hl8Ri0PX5
+ YA/inU9akKB2gL2mkaLLjr24u2VYp6YXlSjGrJ+9Ad6sbBAbEXOJQG/Tz4YsL//2WMgZKbUUn
+ imjgAkPkxkG06fD+XiEfoVOoy5tzoO7rtyfJrxEyy5AQUB7Km48cuQWqNRICFUvoSJUv/7dla
+ wwlgwUxCRH69m8wLbTg8Rw5P7TNADWD8HrcJibkIDJWEXU/ZvfoguGqw368rAnc1j/bjdjoNk
+ twdY2qyXFO81p5fukCpLL4d6Fc997t03+16K1lR460YVUevz3ssw6UKFc4vj+7kySo7EdnnjC
+ tAIbc76Zh8ZydC375rqp/IPBSU6bN8s+BE4dPD3iIcgZvpoAIDdlmFa1dRl2i2g5Hz0UwpkDu
+ 0RhLLBs9/TEWIbCIOHuC2mVWGaM+KaGEyGaNbevNljTRwgP4xKMs4x+R7fnDVH3klZYzE7Wq/
+ SMMJUdp+sWTImuKGbFjDm4xGVEY98F+VhXVGxvAzaSUsMh4zOSIjKShpDioEwYoKyPT13gF/n
+ GSWhMriAo2HVG2L+Gfr9UnU1JVGVwl8qE3ohUPkvaJCkBIERB5Cor9UxgS64eaXpWFobeBhLZ
+ 4BhZ7j9OYz06O9AlHy03ot5+4PcPGIfvdntvwZH6poMJmJt4J9Icjo0kwufPXlHMjtmHdHq/U
+ NXJFJpEjYAqBzlsBVNRXZ5PPAGd7WI2AYkZ2KUYDOlpZDy/D7ny2ifNQbDveS6Mcp2wLl9HmL
+ WJaGfFI+vg3Lmad7/SWP0VJVU28upqH7Silf7N7M8HDAyh1M9CmfA1h2GcGQfYf0fUCBUTzNL
+ 81oiUB9z06lOgzwwNKLPwdPAjmvwjFdXgQAA2hEbTHDOVCcJBKLqqLuDrwG5jVI1a5WR2zghH
+ B/czYYOIC9kD2QfTQyKKO6cWXLuY81S1h39+T/fR4tjcfOc9XwE3NqABv1wASDI+Da0S+XgE9
+ LZqlOzKAg8j4zyvfcxRc2SldBYZizJC0R1SE/2p2Cl1Jf4lbU7lLgAANXdrvWMji63IXRJIqk
+ 7MazsqQJYzF+qelZcE+k0YvIEelN9c8VVW8zZYwhgqiCTkosHUfAm0qElJtHKeI/1k89imvrL
+ Erl9eKrKdaDg83mmJ7u6GGs0ux+O9hzbJyKcauiox1aoShqgmoNBeOZLA9B0KUSoN3rC8KfDP
+ O/DJVrRlfVmPD67Zg77yZ4RH8g9tadThDJ2paxiVzRredDAPucEYaDYRIdHjHPylLiPEX7qqS
+ C/sbPC9VDp/0WjZ+vNRERq2pZfnRIiFmYSF5yOEAIL3GTHySdKoaa+jgRrt4qV/Sk7GbsGscs
+ ztzGkJoRh+uhhQsggyOPj7LJPNvTIPYeKCDqh1SYi8bqO05KLKTYqbfjHVgglq2lLuD8Lqmir
+ fHtX6MQzA1nzn+08civGxzlBqO5yjZkFv5Ibox+gBveG6kDp2tk2vR4nokEblX9JtMx6dTCKY
+ iDMh3V6yenwsShguqOOBYNFTd+xmnBnykgs2ioJ5g1lN9lclIAcTQgMYGeAJau2BXW9SyIbfQ
+ 07MiUXSxZyY6xRBcSObYDSShDwasZ17+oezBvpHL7qY4O8W/3Y6KF9KWD/JdGT6aZGw1W1oD5
+ 48TqnfXdoJTlJUyV6Md3e14H4mIDHgbLGTedpedTwhCy58HWeN+8xxrta4zf47W3FVFSbZrNw
+ t/WrjPz7ov15y1AAQla05rhX1+3G1yfvQXwDywfIzTYq/49tz8V3mYBcnLP+CymibYvXx8vhm
+ lV2BBSZnNjDPdqwWR9a6VmnnarJ/L2n7gRDqP4VPFMSa3ppdZ2SVXK55am3etmu1YzXbelvpr
+ UK7A71GjvISb2s7Py58teojmSGm/JIk05E0AynPWnfzqt9YfncejaYTWiq1u+4TNViiJ402m4
+ 6CrTnI9gH3yOiE4iF5iLXejAZzmYYTXFpmn5veGjKvu0oMDB/fGddaYvUpJn8AW6w7Hg4a9eY
+ 1bLTZnon7sRGUUALyjAQSk+bzbFppwyr6EgowJ2NNmJfQs1w5GnteomllcPNC+qQu5gWZJPgX
+ /sV8r029rPjLMa0iEUMxn+MgT0pLUEISlG42paW+GLvwKYiofzB2alR5VT4w+HEuAeMXMtw+Q
+ mimnaZzrQEuZ9QbSrZvrGBVShXjMR6Wy7LLxVM73lEdtyMZDF5QAyCW8Nmd+Ouj0W/aJiXWVt
+ v1yWO+lu7DmhT/f1NJtGY6nagHIU1MwRknw6fVZ3r9fM0pAlqR1dNVcyypXeOAuOI1eOrAlcn
+ PXe59DBrGuTXUZ032gJYCsbCTqsABGnQOHdTBAVCuodBTaQAXXRP9pN5K1VIaPl3C0Y/+VjoR
+ H7CpqGpeSv0Wc/yPUNaWwwhGHe00K+iwX4jJQm7yBDgy8XOcXocVulPWxJcWgvvJnCVzKP009
+ /5ubTp4BZYJj81S/zi0L19foRiRTKVpdMO/37J8NknKs7xnyLj92JhzsFLB/0EjbiSIu+5fi/
+ n0Enbg8co1LmkSihF62cpYGqsP/JFfaxZCcFFjjuOxvxPMgjRbrU1Dchm3LNxefus7STtO0SX
+ OxkdUjsTVuGy53Kfbs732Fp7SHJbNZbBH4ms5VEl804mQoMClvwMBUmK7Y2/CiqII8QIp79dU
+ w25p1/F4vrZcXqqLNl1ubDGgenTr6Mjb+vyaNwYfCOcpfzQP6AojbA5XIblWfQz5gT8WMxzdH
+ bjlu01acewndtk1YhDtvi+okvfEZZ5o9HflvxQevYuLGFvsmgHvalcLMe8HuCSIc+3vH68h0C
+ gQN3FuHImn0Z5g2gFAa4qHIhuXia8WgJCN7TZKC5d0sMzYtWf6hmQP7dTUAzU7+9gIuc+X5s7
+ 7EPAGXt3+kJ5GA9tAJo+wWJBYNnYEc/9SZROJX94R2Ij/dIepC+rpR9l9o1g8sqNrm+369cTt
+ 9L+hBmzuuuDlgmijz7TGODDIEuyXfj+8Ss/um+RBhPtV9vXYfug/B0YnSCWHCAwr/Gpp5RjPV
+ pNxtDWx7MrSSxjiy11x2mc=
 
-On Wed, 16 Apr 2025 15:49:40 +0200
-Amit Shah <amit@kernel.org> wrote:
+=E2=80=A6
+> brcmf_usb_dl_cmd() but dose not check its return value. The
+=E2=80=A6
 
-> On Sat, 2025-03-22 at 01:29 +0100, Halil Pasic wrote:
-> > As per virtio spec the fields cols and rows are specified as little
-> > endian. Although there is no legacy interface requirement that would
-> > state that cols and rows need to be handled as native endian when
-> > legacy
-> > interface is used, unlike for the fields of the adjacent struct
-> > virtio_console_control, I decided to err on the side of caution based
-> > on some non-conclusive virtio spec repo archaeology and opt for using
-> > virtio16_to_cpu() much like for virtio_console_control.event.
-> > Strictly
-> > by the letter of the spec virtio_le_to_cpu() would have been
-> > sufficient.
-> > But when the legacy interface is not used, it boils down to the same.
-> > 
-> > And when using the legacy interface, the device formatting these as
-> > little endian when the guest is big endian would surprise me more
-> > than
-> > it using guest native byte order (which would make it compatible with
-> > the current implementation). Nevertheless somebody trying to
-> > implement
-> > the spec following it to the letter could end up forcing little
-> > endian
-> > byte order when the legacy interface is in use. So IMHO this
-> > ultimately
-> > needs a judgement call by the maintainers.  
-> 
-> The patch looks fine to me, but can you reword this message to say what
-> you chose and why (and not have the bit about judgment call by
-> maintainers in there)?  If it sounds right, it'll be acked and merged.
-> If not, we'll work to ensure it's all good -- so the judgment calls
-> happen on the list, rather than mentioning this way in the commit.
-> 
+Please avoid typos in such a change description.
 
-Sorry for the late response! I was vacationing last week.
 
-Would you be so kind to propose a more fortunate wording? My intention
-was actually to say what did I choose (I choose virtio16_to_cpu() over
-virtio_le_to_cpu()) and why (if we go strictly by the words of the spec
-virtio_le_to_cpu() would be right and  virtio16_to_cpu() would be wrong,
-but  assumed that we forgot to put the right words into the spec it is
-the other way around; and MST confirmed that indeed those words need
-to be added to the spec).
+> Add error handling for brcmf_usb_dl_cmd() to jump to error
+> handling path if the brcmf_usb_dl_cmd() fails and the
+> 'state.state' and the 'state.bytes' are uninitialized.
 
-The part on the judgment call is because, for me there is no way to
-tell if those words are missing from the spec because of intention or
-because of omission.
+This wording is improvable.
+
+
+> Improve the error message to report more detailed error
+> information.
+
+Please offer such an adjustment by a separate update step.
+https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tre=
+e/Documentation/process/submitting-patches.rst?h=3Dv6.15-rc3#n81
 
 Regards,
-Halil
+Markus
 
