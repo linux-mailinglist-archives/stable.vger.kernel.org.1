@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76093A975D5
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:46:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD7DA975DE
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAAF4178C8F
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:46:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD5C51881D0A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7F62989BE;
-	Tue, 22 Apr 2025 19:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C9A29AAE6;
+	Tue, 22 Apr 2025 19:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gv71tA8U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XVTQXv9A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883F12989BC
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B179D298CBB
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745351160; cv=none; b=G94GQgajRCjeA8rfslyuxMF+aT1/yU8V33JilYxFy/Dye5zR+OPEnvpng3IrMu3MUslzaojFw6psXDKwrzWk+qvVAGWHVOn2wspvNrhssfRbHeO6O0u8nEZOXTdeQ0Ez2hFKMaygCB20VadZrcvKKwHdRTX1BZKFAfbfyV3GGfo=
+	t=1745351162; cv=none; b=IEdWnDyZKXeghHCfGKXiCpSL90q7GmzHAnzU3cQ4ARqYKhWRttUC2YdFGrSlOR7vCsatXjfJqyW6CR/BPCDVTqyZecxiTFBUv2Ta8bjOas5HxpDhlyxq7DCU2nLveMhF+EIkI0jThtJlM9wMoaba0GL9RGoez5sZhJyk0wm37EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745351160; c=relaxed/simple;
-	bh=12F7nIuE68HIxZhLHjUgP4/tuAAO/JJfpFMt3mJSDvo=;
+	s=arc-20240116; t=1745351162; c=relaxed/simple;
+	bh=mioiwomoUhCsY2EXAT9ApWzlzy0wpBehYUlIRn1FZxw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WSU5+dE0j/fYI2wsGRQQ/tan4ikDQme1codGe75gR4oqETtaflhRR0OVMCjO7h+VgQJfiL72kH7nhrqYE2CNvb4QPb00LNh/0mN0p2TG1z91rBHPBs7yJVUVJfDOWvbghcilEnuLz9KhZYQOiqDXKc2vG70ddDJTCTYiWJdn0HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gv71tA8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 622DBC4CEE9;
-	Tue, 22 Apr 2025 19:45:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mtcOnZKN4MryncWqFHCtRcyFavYEPEm3tq5kymnxhzN6tfK2uOYXVjSBtAZbBOqU8nEmo/XaXqH+XVGT42xWi601/g6jcbSsci7XBWU9w8ytoyZepHOPutp6gsxVjLqvuDwe4xZ+As72XRYvCAvIiCisU4siV/U3DKVyhyLD3AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XVTQXv9A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16199C4CEED;
+	Tue, 22 Apr 2025 19:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745351160;
-	bh=12F7nIuE68HIxZhLHjUgP4/tuAAO/JJfpFMt3mJSDvo=;
+	s=k20201202; t=1745351162;
+	bh=mioiwomoUhCsY2EXAT9ApWzlzy0wpBehYUlIRn1FZxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gv71tA8U81O2DbzcrM7wTZW29/8biyZNYYIC5IjzFRIftOZKZdwY1WHZD/eaiYCBw
-	 I0KaTunUOWkoq5wviLWf3z7FXwgI/ORs5XpoGFMibSe2+2bSI/ecEW6lIJschVK7pg
-	 lRpKB3bbrCwAa2uijTiHbM0ifMg4kET2xG4O0Vs+JsPbKCxIJ6nIbIuG9KUA//v81V
-	 9MfEsZJH5aEDxojGQGAWtYv35/QDW4rpic4r7du5hMiXURXnrepocpS57jLqcOe3pJ
-	 DTxrW9RfI22qSiVoOUt0LqHst3C8pyDKttokZMyEfjYf69f6N16iiwErtqKSerC5m0
-	 Ixv8FsyaefQWQ==
+	b=XVTQXv9AEIocctTj7YLdypnk9FgomnVg2jDCc794Czf2lsA0MgPCIxcnI1a+WaWWd
+	 oNvBfL3m6bKRwVMuTev7BO/bEXt7cpfQxSJOYVW+/je2bOo7uAmFj287pXs8br3BXN
+	 mXPiDfehN7VJsr/fY09FVSmipjDz+2LYY1m04G3yuASabMjgv4NbtdqnUdeOxVngz8
+	 zFqMLcoc7EwJ1Ji25TNrX8pxxj3AF8iXvbwrf2++9d5Nq4WkucUUEjQ8OSX1g3+0A1
+	 cej/7LGErDIU68Wzg+CAkqEQIIef3qRRd+Sju4yqO+1BiockJuCl/8EsTyLSKQmW5j
+	 6jHfOZZXvuS9A==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Feng Liu <Feng.Liu3@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] s390/dasd: fix double module refcount decrement
-Date: Tue, 22 Apr 2025 15:45:57 -0400
-Message-Id: <20250422120957-37a1627939e13591@stable.kernel.org>
+To: stable@vger.kernel.org,
+	hgohil@mvista.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 2/3 v5.4.y] dmaengine: ti: edma: add missed operations
+Date: Tue, 22 Apr 2025 15:46:00 -0400
+Message-Id: <20250422134039-b16a8f0b417a5acf@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250422025832.3525312-1-Feng.Liu3@windriver.com>
+In-Reply-To:  <20250422151709.26646-1-hgohil@mvista.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,60 +64,36 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: c3116e62ddeff79cae342147753ce596f01fcf06
+Found matching upstream commit: 2a03c1314506557277829562dd2ec5c11a6ea914
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Feng Liu<Feng.Liu3@windriver.com>
-Commit author: Miroslav Franc<mfranc@suse.cz>
+WARNING: Author mismatch between patch and found commit:
+Backport author: Hardik Gohil<hgohil@mvista.com>
+Commit author: Chuhong Yuan<hslester96@gmail.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: ec09bcab32fc)
-6.1.y | Present (different SHA1: ad999aa18103)
-5.15.y | Present (different SHA1: edbdb0d94143)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (exact SHA1)
+5.10.y | Present (exact SHA1)
+
+Found fixes commits:
+d1fd03a35efc dmaengine: ti: edma: Fix error return code in edma_probe()
 
 Note: The patch differs from the upstream commit:
 ---
-1:  c3116e62ddeff ! 1:  aa5101aca4e99 s390/dasd: fix double module refcount decrement
-    @@ Metadata
-      ## Commit message ##
-         s390/dasd: fix double module refcount decrement
-     
-    +    [ Upstream commit c3116e62ddeff79cae342147753ce596f01fcf06 ]
-    +
-         Once the discipline is associated with the device, deleting the device
-         takes care of decrementing the module's refcount.  Doing it manually on
-         this error path causes refcount to artificially decrease on each error
-    @@ Commit message
-         Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-         Link: https://lore.kernel.org/r/20240209124522.3697827-3-sth@linux.ibm.com
-         Signed-off-by: Jens Axboe <axboe@kernel.dk>
-    +    [Minor context change fixed]
-    +    Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
-     
-      ## drivers/s390/block/dasd.c ##
-     @@ drivers/s390/block/dasd.c: int dasd_generic_set_online(struct ccw_device *cdev,
-    @@ drivers/s390/block/dasd.c: int dasd_generic_set_online(struct ccw_device *cdev,
-      	/* check_device will allocate block device if necessary */
-     @@ drivers/s390/block/dasd.c: int dasd_generic_set_online(struct ccw_device *cdev,
-      	if (rc) {
-    - 		dev_warn(dev, "Setting the DASD online with discipline %s failed with rc=%i\n",
-    - 			 discipline->name, rc);
-    + 		pr_warn("%s Setting the DASD online with discipline %s failed with rc=%i\n",
-    + 			dev_name(&cdev->dev), discipline->name, rc);
-     -		module_put(discipline->owner);
-     -		module_put(base_discipline->owner);
-      		dasd_delete_device(device);
+1:  2a03c13145065 < -:  ------------- dmaengine: ti: edma: add missed operations
+-:  ------------- > 1:  1b01d9c341770 Linux 5.4.292
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
