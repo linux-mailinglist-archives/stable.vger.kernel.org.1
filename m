@@ -1,73 +1,77 @@
-Return-Path: <stable+bounces-135097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3514CA9681F
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 13:48:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E40A96832
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 13:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CE0A1890AF5
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 11:49:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AE583A544A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 11:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E5627C166;
-	Tue, 22 Apr 2025 11:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9219027BF7B;
+	Tue, 22 Apr 2025 11:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOYVD8zR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPZa1rf6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48652741C5;
-	Tue, 22 Apr 2025 11:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF16920127A
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 11:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745322533; cv=none; b=nLGGANyPgUPm0shWU57KYUAZW4pmObKb28BTF3hJClCBlj8nw3SVg3HHnxmXMiD+5DaIsWRCg3o/TcRCoi6Uvp+BtBwiuTDJZ4oLvRrm61idnl7fwLgrk2OL7DPt283MgzbQ5aJ6jEc9d6F8WxJFdrhKsCtAkOCQmleap4IQRoU=
+	t=1745322708; cv=none; b=qX6NdGa2NDcro4UsaVbvrB4GTeurgbXJjZueouZeh/suA0pXRRxD2m4PEfgOJqAIK4AE5Ww/hTShzN+QgEqsrAj29+3wb1LJxciWaH/gwbeOOYZR/EHHivP7hvP8NZCoHS26rfEduRW7wHsPrPx5NEFfgTRqejZ2/EcoMln51xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745322533; c=relaxed/simple;
-	bh=gjfmO1uo0PXs35YOtpblppBPiZobWynhU1RHLlgVsik=;
+	s=arc-20240116; t=1745322708; c=relaxed/simple;
+	bh=8/DHp2YkJdqoctJLBpzq3p8MQOrSyaT2oZsTc1JTuh0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOR0OzyE1/rOz6s9J3xq7sWSOYRkSzVN9NWaMj5yo+L0EiA6jTVfnfOA9M2RuUneTmSMhxmRkYco1Xn/2Ixp7PCHFVG5QjhArnZp/6DZKsBD99sh6OI8ABCvws6gFN8WqCKEGNt6y/6+pSfKWIkrzx8cq59qVeAJfgrmTWgf1uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOYVD8zR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4DAC4CEE9;
-	Tue, 22 Apr 2025 11:48:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=LF+Huuz/FVZOSm44pS23IUCbzg0a3fwSjn+P5u7ihKcsDMYl+5c94lEkKjrtgY7nDbD2vV6UyZdAEgHAG0pbAya2tnx6fPfrjwZVxVzEB/kEg0jmfF9ZPSb8haIJ6wMvVwjLnyduAtEpV9oStRT+wwQ4sSVppAC+S8xYn0T9T2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPZa1rf6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6F0C4CEE9;
+	Tue, 22 Apr 2025 11:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745322532;
-	bh=gjfmO1uo0PXs35YOtpblppBPiZobWynhU1RHLlgVsik=;
+	s=korg; t=1745322707;
+	bh=8/DHp2YkJdqoctJLBpzq3p8MQOrSyaT2oZsTc1JTuh0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zOYVD8zRbRemLcpKjwfdyZrk/kAYpOrytkrRBwasUd4eWd2/FifmzIm9JnZrMgm8N
-	 5VMc4NaQQEAnF2zT44C3zJCYcx9aSCJxd826OlLJtkenNPl18Ao6+ESSBuzC7Tp5sQ
-	 44wckJGEnqv0U7yMaV1Gv0vF3iRcwtMJn6N4V6ak=
-Date: Tue, 22 Apr 2025 13:48:49 +0200
+	b=sPZa1rf6KRFpoTAlkop2RJMUiLbScRwXjlmoPlV0xYx7RY0ALYH0GRtMP1ZBqKA/j
+	 QtHUs0aFSZBxjoFDofWW7iYuKRd5+YHSlmck2Y56oB55eO00/9Opzp3oNBV887Y3c9
+	 w6eXQbHs3sV5LrbhrtcxALUeCtCDgSdqCxbY0NY0=
+Date: Tue, 22 Apr 2025 13:51:44 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alexander Tsoy <alexander@tsoy.me>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12/6.13/6.14 1/2] Revert "wifi: ath12k: Fix invalid
- entry fetch in ath12k_dp_mon_srng_process"
-Message-ID: <2025042242-catching-donated-6e0d@gregkh>
-References: <20250422110819.223583-1-alexander@tsoy.me>
- <6cb0c280c9f3344b6c87dbb0aff344f3b70abea6.camel@tsoy.me>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: Re: [PATCH 0/3] Preserve the request order in the block layer
+Message-ID: <2025042223-subsiding-parka-b064@gregkh>
+References: <20250418175401.1936152-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6cb0c280c9f3344b6c87dbb0aff344f3b70abea6.camel@tsoy.me>
+In-Reply-To: <20250418175401.1936152-1-bvanassche@acm.org>
 
-On Tue, Apr 22, 2025 at 02:23:31PM +0300, Alexander Tsoy wrote:
-> В Вт, 22/04/2025 в 14:08 +0300, Alexander Tsoy пишет:
-> > This reverts commit 535b666118f6ddeae90a480a146c061796d37022 as it
+On Fri, Apr 18, 2025 at 10:53:58AM -0700, Bart Van Assche wrote:
+> Hi Greg,
 > 
-> Commit hash is actually different in different branches. Should I
-> resubmit these patches separately for every affected kernel?
+> In kernel v6.10 the zoned storage approach was changed from zoned write
+> locking to zone write plugging. Because of this change the block layer
+> must preserve the request order. Hence this backport of Christoph's
+> "don't reorder requests passed to ->queue_rqs" patch series. Please
+> consider this patch series for inclusion in the 6.12 stable kernel.
+> 
+> See also https://lore.kernel.org/linux-block/20241113152050.157179-1-hch@lst.de/.
 
-Yes please.
+You sent this twice, right?  I'll grab this "second" version as I'm
+guessing they were the same?
 
+thanks,
+
+greg k-h
 
