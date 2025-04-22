@@ -1,105 +1,99 @@
-Return-Path: <stable+bounces-135182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53DB0A97588
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:35:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620F6A975D3
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90F79179275
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:35:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D67161B61C72
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:46:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EA72980C1;
-	Tue, 22 Apr 2025 19:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D3B1F09A1;
+	Tue, 22 Apr 2025 19:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4w3DPKE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLfBYPRe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FC82857C4;
-	Tue, 22 Apr 2025 19:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4891096F
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745350542; cv=none; b=FU68EiVgdCWNCGZVxqlhThyWBh+iEU3wuEhNTsA6XAvw0IHJl97vwPmcK3ankqndR367HnQwBBcTmgSd062e+Pg6/3aUdWCurhTMPb8QuY3x1KW450qHYCVpyVDhIcINCFvByp4BFMYtm4J63ahzd8OSdjHtDObtC/lpatO9emM=
+	t=1745351152; cv=none; b=UXdfSFdzkAtjnG2idxaAt6K+dIZ3h9Kp6rKQHz5o50rEuxHslB8YEt+l3J6MRMhvsOlBRF036xRc98U++Ctn+KGNtWzu4l90DIhgWqZ1kEdPZ7u7rxHSGOY0AgC1Qjx8UvOLLYss6QrYKnZ5f5OjFRVLa9uMvxj5IF7xicRUSJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745350542; c=relaxed/simple;
-	bh=5uIMwI+fP0wgHXqFGRjDYffIXoIXt32yHEx2uTfvUsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h91RtKUBmDPm1vR8SsAl2NhbYNpJ26SV/KUqJEKiCdVJv5FO67JaUbhdwZE5eeN30DL/SNG2EFC8TpCMMZhSSKyi1AtbzbLeJmDFEMfVMfwrv9ryL8wDI+UM1/PQbyngWP7XW2VKFFGtWocDeHo1ihWBcP6wBpe2o+UVC0YgvZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4w3DPKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C65CC4CEF1;
-	Tue, 22 Apr 2025 19:35:38 +0000 (UTC)
+	s=arc-20240116; t=1745351152; c=relaxed/simple;
+	bh=BRjled3ThqxAM58xajy5M0hZdX17oE8xplxmuS3uEYE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XmOEzULnrOjHW6C18iPC840GsNPKWaWmcKEwilvLT87+XPxHky/pgKnI9uLFDTilxp5G5mmwA5bwaraPxvQtTnVH3MpOeVQ8Vdgq/oRHo9reV/FGfr7+F+ZKDIKpI2CjJnv8zgiLr8PiysWS0s1cKUKIfiWadgydtIFCrxdHPoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLfBYPRe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED53AC4CEE9;
+	Tue, 22 Apr 2025 19:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745350540;
-	bh=5uIMwI+fP0wgHXqFGRjDYffIXoIXt32yHEx2uTfvUsY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c4w3DPKEoWXBnrG87IR4lytsdIdU7qGGetLH0ovcoMTky7pSwZlhEzbj5nf5av0GH
-	 Y5IMLxaLw2Nkdfqsn3LYAr0tQWA0F8n193z6CRzT/j0ia+HbebzwLoMhOIFwoLl6l3
-	 80i9JWaYZXYjeNOIVUd4HuyRWeYRajyqJhrI7CFnec+0sZt5gwBHa7yv5OSnZYCp3e
-	 rJN7dqSIeqBSv0fR3+wA1lu8YInQe4or2/mbaoHl7Sz9PnK1aLm0Oa0Ur8quSblGKh
-	 hLoOSJyMSPbruAqVj07SpPgOlPZAyOWh9bm01LZ13uuI41rhpG8fYRyrSIbmahOxMf
-	 7h2BP6meX5j9w==
-Date: Tue, 22 Apr 2025 21:35:06 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org,
-	x86@kernel.org, andrew.cooper3@citrix.com,
-	Len Brown <len.brown@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] Handle Ice Lake MONITOR erratum
-Message-ID: <aAfvalru47h7Qffk@gmail.com>
-References: <20250421192205.7CC1A7D9@davehans-spike.ostc.intel.com>
- <aAc7Y5x_frQUB2Gc@gmail.com>
- <4ea35cc4-1720-494c-9d90-e4669c8cde08@intel.com>
+	s=k20201202; t=1745351151;
+	bh=BRjled3ThqxAM58xajy5M0hZdX17oE8xplxmuS3uEYE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YLfBYPRe25KW2X1PIDTPSbooCh2nY0lhBRDNdFKxi6tWZswrJZuWMAdAaFXDV0Zcf
+	 Oly61xxNj9N8Ath7tNzJVedYpmSiUgYEfiZiy4ESMlJQsT5Fqet99Eu+ngUG6tUcZr
+	 6R1eV5yig9KmthuqyKW5L419ue55RiaM9UstumvfQMN+P+a5XC8E+bBj2nMW2NUP0f
+	 KnGgh2y6Rti4WXAkepnHvCfzWZRMEp1DRUtRF4IjvIuqAbtCb/bdiea615Du/z4jR9
+	 8wNoIMnMs8eUZ1cqn0TtAXGSOA9yxDmQ79SK1W9dTG9hfsZ+imcQ1ADYpoThKR9nhe
+	 DbYAHeK7LWE9Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: WangYuli <wangyuli@uniontech.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4+] MIPS: dec: Declare which_prom() as static
+Date: Tue, 22 Apr 2025 15:45:49 -0400
+Message-Id: <20250422124015-3050770b6d66fd73@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <D1625EB772D42BA4+20250422090937.113109-1-wangyuli@uniontech.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ea35cc4-1720-494c-9d90-e4669c8cde08@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+[ Sasha's backport helper bot ]
 
-* Dave Hansen <dave.hansen@intel.com> wrote:
+Hi,
 
-> On 4/21/25 23:46, Ingo Molnar wrote:
-> >>  /*
-> >> + * These CPUs have buggy MWAIT/MONITOR implementations that
-> >> + * usually manifest as hangs or stalls at boot.
-> >> + */
-> >> +#define MWAIT_VFM(_vfm)	\
-> >> +	X86_MATCH_VFM_FEATURE(_vfm, X86_FEATURE_MWAIT, 0)
-> >> +static const struct x86_cpu_id monitor_bug_list[] = {
-> >> +	MWAIT_VFM(INTEL_ATOM_GOLDMONT),
-> >> +	MWAIT_VFM(INTEL_LUNARLAKE_M),
-> >> +	MWAIT_VFM(INTEL_ICELAKE_X),	/* Erratum ICX143 */
-> >> +	{},
-> >> +};
-> > While it's just an internal helper, macro names should still be 
-> > intuitive:
-> > 
-> >   s/MWAIT_VFM
-> >    /VFM_MWAIT_BUG
-> 
-> The current convention is to end with the thing that's being matched,
-> like "_FEATURE" or "_VFM" in the X86_MATCH*() macros. That's why I
-> ordered it the way I did.
-> 
-> As for including "BUG", the _macro_ doesn't match CPUs with the bug.
-> It's just matching CPUs with the specified VFM that have MWAIT. It could
-> (theoretically) get used for non-bug things so I don't think it's
-> intuitive to put "BUG" in the name.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Oh, that makes sense - objection withdrawn.
+The upstream commit SHA1 provided is correct: 55fa5868519bc48a7344a4c070efa2f4468f2167
 
-Thanks,
+Status in newer kernel trees:
+6.14.y | Not found
+6.12.y | Not found
+6.6.y | Not found
+6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
-	Ingo
+Note: The patch differs from the upstream commit:
+---
+1:  55fa5868519bc ! 1:  73f9cf323b552 MIPS: dec: Declare which_prom() as static
+    @@ Metadata
+      ## Commit message ##
+         MIPS: dec: Declare which_prom() as static
+     
+    +    [ Upstream commit 55fa5868519bc48a7344a4c070efa2f4468f2167 ]
+    +
+         Declare which_prom() as static to suppress gcc compiler warning that
+         'missing-prototypes'. This function is not intended to be called
+         from other parts.
+---
+
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.4.y        |  Success    |  Success   |
 
