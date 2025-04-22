@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-134958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB872A95BA4
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:29:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988ABA95BA8
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44A971760BB
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:29:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A97F33B5620
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BDA264A86;
-	Tue, 22 Apr 2025 02:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2386B265624;
+	Tue, 22 Apr 2025 02:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2R2uDGR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGmG2dPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C02264A89;
-	Tue, 22 Apr 2025 02:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2E819F127;
+	Tue, 22 Apr 2025 02:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288292; cv=none; b=oRFoWRaxxwt+FCxZ3MWx+4X1bPX0QJ5mKDbiAS4bCvUZwPDGLmhg4aSj029v/HDDN9LagaOAmbHwq+RSoUvf8fyKk7xYpbvDpPA902qwujinoyj+QnBqx1TJv2KZ4+rk/Hg5iGvbKQaxsBqRO5Y5YVQI02HEb3tbwvsOSsArVtk=
+	t=1745288296; cv=none; b=T87AK2uCMhB9QeDtOiMTf0UNw8mFkL1SXLFs3HRXkLPnzDp2+kyphh30Y6L1EJciZ6w3mt2CSmdSKf+E1ERQzrqZ5JEA9gpCdGypmzJQ2CCv7OL6AItpqAowxQdUSNQao60cuej/WF/2+itJc+KrLWjzEyRS91Y06jv0Ops6RLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288292; c=relaxed/simple;
-	bh=dIs/3MMGkwcUSQYWarLU7DGTiAON1Tzxo8yHY4tgY68=;
+	s=arc-20240116; t=1745288296; c=relaxed/simple;
+	bh=5K95LW8mhqTp8nfAUwGhOA144++w+oMsLcVdAirNAac=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sYhiAKWRomGiSd/JAGUMPBes2qmu26bfx7+aBMft0LWsJL4bxJTAxiOeEk8115d80fdbh6WGm7EzBMakcNst/rvqvhANCKDfvER8SgDIHRayF//ZwiDIqDL+aDn97pPxmjcD7+/zC+b1xoAlwOZIGyHBjchs9uAPUXO1DLPD7qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2R2uDGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A223C4CEEE;
-	Tue, 22 Apr 2025 02:18:11 +0000 (UTC)
+	 MIME-Version; b=I4Iq//4QhpCLiQ+oOqD/9G97TByAkDKkvxoOyDEd21DOtX7odC6QMwxaAfAa8TU777+Q4WueH2LE9BdjbrLZZXO35hu3TDBsFhYEMX1sND63w3JJBUmIn9tElDO7cRxeRu+zLw1pGsiLB1zLhnJSa2EvvUzfegxqf3qh9G6Yzws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGmG2dPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF72C4CEEC;
+	Tue, 22 Apr 2025 02:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288292;
-	bh=dIs/3MMGkwcUSQYWarLU7DGTiAON1Tzxo8yHY4tgY68=;
+	s=k20201202; t=1745288294;
+	bh=5K95LW8mhqTp8nfAUwGhOA144++w+oMsLcVdAirNAac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2R2uDGRnvmzG7/99CBc5OZPkRpoh/GSnvXOuPcoHSLdLCsK5OLlFS1xuq99s78QH
-	 QihowSLm3CoK9+kVQ/6pL+FwFYp9vTFhX4H1AbGYTNEI8d5z6rwpYySmr7LXqnZTiL
-	 EIiwJu9aNGvKqvqcDYqjACRCPh9h96eBXnTiPFgLX6K6lp53d9EFnyp5SqeiQSaHRG
-	 kBWMsL+JznRDTTEc4ANndbjua5xuLkf/b2370fyNBOZIjVukfGvWVVXorXA8iuRKr2
-	 iC2+R0wYQ4RbOlMGRlytJPnPoL+LWyp85FFQJQcVs26ut0FPs6TlDfHhMX/bDIRGKo
-	 FSFiZdnqO8r+Q==
+	b=dGmG2dPsfaz1S0iVhxrQHqOGoRlPAC1mIhsDG1XsEj47w7bjTx3wFhfSOXdz3DWU2
+	 TwsBLmCXbezLMzebjy9vh0Lk3ZMHV+EpmKY+TzJfg1NPsOCDjyle7uAyIAnBnY80ge
+	 vBZRebDfww6SeZ9bKHCUb/hia516eGXhXkPUX89wVLVqYQbMsYDL5QwGI9ZUL5ws31
+	 h7uDBDm3uD/ynXwbIjRJJuaCfCboBg9f8spaIb0pFnEiAq8MMmausVfxEv2zMZUL6s
+	 JAs2ScaebEisjRx/MITKZ5FCXmv5F1h5nLpIbewS5lbX/Tz75QJVBtUle7E7hWA7Ol
+	 UCzRdWB5lFgAw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yunlong Xing <yunlong.xing@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Breno Leitao <leitao@debian.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 07/15] loop: aio inherit the ioprio of original request
-Date: Mon, 21 Apr 2025 22:17:51 -0400
-Message-Id: <20250422021759.1941570-7-sashal@kernel.org>
+	ldewangan@nvidia.com,
+	thierry.reding@gmail.com,
+	jonathanh@nvidia.com,
+	skomatineni@nvidia.com,
+	linux-tegra@vger.kernel.org,
+	linux-spi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 08/15] spi: tegra210-quad: use WARN_ON_ONCE instead of WARN_ON for timeouts
+Date: Mon, 21 Apr 2025 22:17:52 -0400
+Message-Id: <20250422021759.1941570-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021759.1941570-1-sashal@kernel.org>
 References: <20250422021759.1941570-1-sashal@kernel.org>
@@ -67,37 +70,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.87
 Content-Transfer-Encoding: 8bit
 
-From: Yunlong Xing <yunlong.xing@unisoc.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 1fdb8188c3d505452b40cdb365b1bb32be533a8e ]
+[ Upstream commit 41c721fc093938745d116c3a21326a0ee03bb491 ]
 
-Set cmd->iocb.ki_ioprio to the ioprio of loop device's request.
-The purpose is to inherit the original request ioprio in the aio
-flow.
+Some machines with tegra_qspi_combined_seq_xfer hardware issues generate
+excessive kernel warnings, severely polluting the logs:
 
-Signed-off-by: Yunlong Xing <yunlong.xing@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250414030159.501180-1-yunlong.xing@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+    dmesg | grep -i "WARNING:.*tegra_qspi_transfer_one_message" | wc -l
+    94451
+
+This patch replaces WARN_ON with WARN_ON_ONCE for timeout conditions to
+reduce log spam. The subsequent error message still prints on each
+occurrence, providing sufficient information about the failure, while
+the stack trace is only needed once for debugging purposes.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/20250401-tegra-v2-1-126c293ec047@debian.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 2 +-
+ drivers/spi/spi-tegra210-quad.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 886c635990377..b9f192c66755c 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -441,7 +441,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
- 	cmd->iocb.ki_filp = file;
- 	cmd->iocb.ki_complete = lo_rw_aio_complete;
- 	cmd->iocb.ki_flags = IOCB_DIRECT;
--	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
-+	cmd->iocb.ki_ioprio = req_get_ioprio(rq);
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index d1afa4140e8a2..2abb54f9a9ba4 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1117,7 +1117,7 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
+ 					(&tqspi->xfer_completion,
+ 					QSPI_DMA_TIMEOUT);
  
- 	if (rw == ITER_SOURCE)
- 		ret = call_write_iter(file, &cmd->iocb, &iter);
+-			if (WARN_ON(ret == 0)) {
++			if (WARN_ON_ONCE(ret == 0)) {
+ 				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
+ 					ret);
+ 				if (tqspi->is_curr_dma_xfer &&
 -- 
 2.39.5
 
