@@ -1,143 +1,145 @@
-Return-Path: <stable+bounces-135197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07DBDA979B7
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:49:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D37FA979BC
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44D54462416
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:49:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9381B63DF1
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DE7277002;
-	Tue, 22 Apr 2025 21:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CEA22F758;
+	Tue, 22 Apr 2025 21:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bDDlYEfK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M0eyanCQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3A321FF2B;
-	Tue, 22 Apr 2025 21:49:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6172225402
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 21:51:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745358571; cv=none; b=m08hCOZxre6kx4ad7O1MfVAJceM8Ni2Fu/1typfzKP1ajGDj1hxDtY/qor9NNvxxgjwT7DFbcOfjwVfud5Uthu8j0L0ucDs0eGMSs8qLNCtUz6ilWCwgu+AQzaEEL1tbNzrGICjGjMo0SNi1irGfCHycYaamzGArRVFKi4HMWQg=
+	t=1745358674; cv=none; b=LzqKSg9uZooZM3FMYjKyknluG1xJkl2MNV9KiD8wSwZ2EcqdhK3ydRsyRQdWCya3+AEBXVrg2kjRiyJi+tHcATEKh4QiF6//OapxgEErvhBRsHVkglit26dlw+kLaxEl9eqpa/S1cXyb2y4OmiZkmp+YWocIDsnP5pZkrQZlgw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745358571; c=relaxed/simple;
-	bh=sG7YJMva/w4l3cfCNfOiczfRXXTwbAHBKnI5Bzj7KRE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=otJKMPVsGpXy6h2v9IRLfgWgeJC5TYqgWsMdbU1j1Ud+8xE/IoaLJXbaPqMrJg4VrxEmSPYdcm1zyNd1J6GO6OetYR822Gm900FRGk6SsOYIGGkfd1o7G/kKkkrL3e5u6FunzFiKlssuee+fa63CfufJSsQ4q3JmU4NCYSukRqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bDDlYEfK; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b0db0b6a677so4856302a12.2;
-        Tue, 22 Apr 2025 14:49:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745358569; x=1745963369; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9dYvt2Xcrh+kbYqRYnlS/5tyT+BexXkaGSTJNxwW1ck=;
-        b=bDDlYEfKHrybz4D5fziRdAbnlktSssaGIjF7SJWhWbTXclq8u9Dv/LWcCgdrUicvi6
-         S4eTJ4+2RdT+6odU6o/DTc6229rvFfd85dqZecwoYftyGT1iemnGFFqD/5qYKODAP3u5
-         2VtYxvWCXyuZ38xmYhl8CRnGSSKiDRUHBtJLuDQR5URSrPnvTexjFquqpeG6/CwWeRf1
-         +MU7DrkbWQ3rTZ1nhI4hHBqjIIbosADE6JAHsb0lszCPlJrRTFf+2846DDHfdsjl0EkQ
-         vW8exvRcFWNEnn2RphjGK5JHHSYBhxHgud0utI3TYtsXgGbALQ8QAH7jlkFSwZLNs1hN
-         Bxtw==
+	s=arc-20240116; t=1745358674; c=relaxed/simple;
+	bh=G1t682/Z5YQhVNZg2BBqTHLGZ0BD0DRxXvelvkk8FdI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=g4licy/6B31G0y7SwnSQl2+Bb0B8n2qG+R4kRpGqMNhBHXdmCKIFwUU8oYrfHBwm3tzLczt7dAcrlL8MXB24Edphxd+od2brclLTJQBtnG//pdgYvEQZGKqqoM3V934SRYOjlw2i7aQsLw/Ir/GOm0834GgL0r3QM7ozg158dsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M0eyanCQ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745358671;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s1/IDzJNwKu9ird3fpx4gSzjCeLeBaq8w8B6OkdB/Zw=;
+	b=M0eyanCQ44iTpWcijd7mZhx9YVSyLFr5hwqi0Wn9XTFUZFQKP5Zx0d94IfS6SciNS9X1Xm
+	P8scUzAiLK0QJd4J06rdljMc+nb89C+8sTk12kBD58JHwDRkxJPQ7VFq3k7oGoOLtGRzIi
+	wHf13MSofj0wnMDCW+ondO0T/Pu65wU=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-L7daNg8rMEG4wKZVMwf_MA-1; Tue, 22 Apr 2025 17:51:01 -0400
+X-MC-Unique: L7daNg8rMEG4wKZVMwf_MA-1
+X-Mimecast-MFC-AGG-ID: L7daNg8rMEG4wKZVMwf_MA_1745358660
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3913b2d355fso1669646f8f.1
+        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 14:51:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745358569; x=1745963369;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9dYvt2Xcrh+kbYqRYnlS/5tyT+BexXkaGSTJNxwW1ck=;
-        b=dErwHoEzJVCMceAQDKc5+Rvomgd9AIWBTezjn458R9DJAZ4ngqEYkHxZcNSO1yBu2d
-         0uiM1iSrzBTSmPZwyOheAb2+e5hcf0tmqecGWpA7X1gnVZrf5Q176eD6+DpDysSo3asx
-         5yaBuYVpoIO7hG/eOVCrDxDFOkUUJbRzzJBC9TKoIhUW3HTFrBlqPV3BU1SL2j/0Qnbl
-         YEsBUhjFLSFIXbAnE8R2Agjl6gmPd5WpwS40F80QM96YnUevGzVGgmbUlUQBrYlUnUXG
-         m4HMFTnd0QKxFzQi+j+BZIxRdk6mfxKNKYtCIX1SyacLgm/OO05iBzmdDck8KmB2g+RY
-         STFw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuh3tlBLlv23s09zdZPOIshP4sf2+0jMYlZDsWiibYl2zDb8jNn4zIUiNluSAWAnoYOxD31Ahf@vger.kernel.org, AJvYcCVLOqICqgf6j6ZampLk5Jl+JXKDq0rq2CmrQlReU4nwylS530rnADKrsEWBnvX0XE0QkMSYwRZf@vger.kernel.org, AJvYcCWn86Mq6k4v80TXf+XDO7Y6EKBqR/KNQClwWoLDJY3OTPM5az2V7BZrXzKh3sgLMUqmF7RKedrbYw/k6RQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdAojUkFQE/BguChfpn9hzNQ+gFGIVWhM6r8W2X9tM/1QfVPyE
-	puZ3I34QjCbTxmXfkUU9HSicTi2Iq+mcjyc8dfSIMEDCpl58sDCO
-X-Gm-Gg: ASbGnctTqT4mPh+i5LqqL7wjLW7AEwEhcVBFpg1kFqyndf8YXpYoe0TptYzkpeTm9S2
-	jWPq+eYsfI+vBLDD3NdNkASMtgs2r/SaHVAe4tTuPYlUg/aoCxHbPi1KGsTqzmMxAQc0pKteTIy
-	0pkeu6Ja6tGGIl6dM7ubL+pbKtl3cYtAR9fxjfTptqZRMWPG4zjqoJWHkCsfDTk6dplrKWvgY43
-	W1rTocmL4hJJufgPd0li/Wunv8ShRY41wK9RlN06u9OmCuhzlEVUoYlPAzlqI1RGiqgeQIzwh4f
-	OET32/vjgMt4TxOx7zr3NdKUKPIMDFRg+odFbOV27qmAtsrncafUBsk=
-X-Google-Smtp-Source: AGHT+IEa5UJBk8pFAAEn17DT7zrqf9LgrhW1yVg3/4Nr/d7c82A8poo6UJuKjfvQ33n45llJ3lLYzw==
-X-Received: by 2002:a17:90a:f945:b0:2ea:bf1c:1e3a with SMTP id 98e67ed59e1d1-3087bb57aa9mr27886530a91.12.1745358569302;
-        Tue, 22 Apr 2025 14:49:29 -0700 (PDT)
-Received: from localhost ([129.210.115.104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb4a46sm90649335ad.147.2025.04.22.14.49.28
+        d=1e100.net; s=20230601; t=1745358659; x=1745963459;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s1/IDzJNwKu9ird3fpx4gSzjCeLeBaq8w8B6OkdB/Zw=;
+        b=Ja3c5ZWx+Fl8MsKIL+G4vLDEwFlY3O0LHkUz7vnguPfaNDcL1vc0spiK/m79RtN3PJ
+         8+t+hG/5kwlBx5ShCSYjd077n6XfJ67F22Ypn92DkJ1C7Y+1kh8d5ZJJCshDPc3puSo1
+         e6TabCkEYjYw5Utzpkor/nUBAwvfMpBMVp7fYRBQqBmvjYHj8VsFOxr3xTp9gwnIrzcu
+         o5fhezCDeOHMmRaMXvcjmPniVrYawSdSftrMBzUCAwK/vA8iNk0OTxK50bJ0plXs/6wx
+         Gws/m9YaH+ahoMuWC8COGNmvVW1bGLcePQRsOBCGPwCF8g1GUWlSze3eQyCPHiXKXFqk
+         fcCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWS+r7rK7DhLAtNKdya+MQjgLH3UsZO1FNP7aDL7IusvfkxyRDFSdIrEbc9b82n8AxkA9Bmvgg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyo2Q5wSHlNzs5SmfVIz63NNk+qgCX0UdOmC4M44cWOAhrJO5oT
+	93jJEIqckB0Q9DuUtlm6rve43dBx8+hIioo9UQZqU6j6P0buDmVARo7Z5VjEMpk7HJS0ZZPfj2Q
+	oNCpg/qfwYM5agmDz2jvftQT5T80VDDptmcCgS7LPmagF/t2oFBPzqUHQaTqOzQ==
+X-Gm-Gg: ASbGncuMbvzmLb3x0hRwno9XKdCm2uQPkOoW5Y26E9ZwibjkdaJ9U4ViKbzZB6uoadk
+	sUXUSN0LBa6HuGnXsKD2tb79jYP3dDi0JqpyeYWuFbw5p9HIFiThaansfhjBfbPPzcSpsjbVGGi
+	7LPA9/M9zqisqmLlyUqXQpFos8rVP9XENeMekj7jlyYJZp0vVyPEofuax95xLzbUb5Lw+nlX/rf
+	XyurqfvrB/erEc/qwyLgZI5b7yq3+SUGS4EiuKWSdAdZM3uSH6nOC7WTkGeCH6lmABL+04SUbBo
+	FqHiftXKPYoDo3v30DpNexIWqsQmOdZkkvqt6B9js2HYrSVBE9v5ZS+OJLVLWaFMQeJ/Ag==
+X-Received: by 2002:a05:6000:4310:b0:391:4189:d28d with SMTP id ffacd0b85a97d-39efba6c0d3mr11525094f8f.34.1745358659706;
+        Tue, 22 Apr 2025 14:50:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFvQa7VnBYSPz5ieTPf8xaFFrtEIeqU3LTi5lgcJyNHMvngJBWDCobliaFl6EizYRrF/Sw9Ww==
+X-Received: by 2002:a05:6000:4310:b0:391:4189:d28d with SMTP id ffacd0b85a97d-39efba6c0d3mr11525085f8f.34.1745358659393;
+        Tue, 22 Apr 2025 14:50:59 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4a4d67sm16699401f8f.94.2025.04.22.14.50.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 14:49:28 -0700 (PDT)
-Date: Tue, 22 Apr 2025 14:49:27 -0700
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: "Alan J. Wylie" <alan@wylie.me.uk>
-Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <aAgO59L0ccXl6kUs@pop-os.localdomain>
-References: <20250421104019.7880108d@frodo.int.wylie.me.uk>
- <6fa68b02-cf82-aeca-56e6-e3b8565b22f4@applied-asynchrony.com>
- <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
- <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
- <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
- <20250421210927.50d6a355@frodo.int.wylie.me.uk>
- <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
- <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
- <aAf/K7F9TmCJIT+N@pop-os.localdomain>
- <20250422214716.5e181523@frodo.int.wylie.me.uk>
+        Tue, 22 Apr 2025 14:50:58 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, iivanov@suse.de
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org, "open list:PCI
+ SUBSYSTEM" <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH] video: screen_info: Update framebuffers behind PCI bridges
+In-Reply-To: <527b7ebd-0a34-4fe0-82fb-9cdd6126e38e@suse.de>
+References: <20250417072751.10125-1-tzimmermann@suse.de>
+ <527b7ebd-0a34-4fe0-82fb-9cdd6126e38e@suse.de>
+Date: Tue, 22 Apr 2025 23:50:57 +0200
+Message-ID: <87ikmvc1by.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250422214716.5e181523@frodo.int.wylie.me.uk>
+Content-Type: text/plain
 
-Hi, Alan
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-Although I am still trying to understand the NULL pointer, which seems
-likely from:
+Hello Thomas,
 
- 478                         if (p->inner.clprio[prio].ptr == cl->node + prio) {
- 479                                 /* we are removing child which is pointed to from
- 480                                  * parent feed - forget the pointer but remember
- 481                                  * classid
- 482                                  */
- 483                                 p->inner.clprio[prio].last_ptr_id = cl->common.classid;
- 484                                 p->inner.clprio[prio].ptr = NULL;
- 485                         }
+> cc'ing PCI devs
+>
+> Am 17.04.25 um 09:27 schrieb Thomas Zimmermann:
+>> Apply bridge window offsets to screen_info framebuffers during
+>> relocation. Fixes invalid access to I/O memory.
+>>
+>> Resources behind a PCI bridge can be located at a certain offset
+>> in the kernel's I/O range. The framebuffer memory range stored in
+>> screen_info refers to the offset as seen during boot (essentialy 0).
+>> During boot up, the kernel may assign a different memory offset to
+>> the bridge device and thereby relocating the framebuffer address of
+>> the PCI graphics device as seen by the kernel. The information in
+>> screen_info must be updated as well.
+>>
+>> The helper pcibios_bus_to_resource() performs the relocation of
+>> the screen_info resource. The result now matches the I/O-memory
+>> resource of the PCI graphics device. As before, we store away the
+>> information necessary to update the information in screen_info.
+>>
+>> Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
+>> EFI framebuffers") added the code for updating screen_info. It is
+>> based on similar functionality that pre-existed in efifb. But efifb
+>> did not handle bridges correctly, so the problem presumably exists
+>> only on newer systems.
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Reported-by: Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
+>> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
+>> Tested-by: Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
+>> Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: <stable@vger.kernel.org> # v6.9+
+>> ---
 
-Does the following patch work? I mean not just fixing the crash, but
-also not causing any other problem.
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-Please give it a try.
+-- 
+Best regards,
 
-Thanks!
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
----
-
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index 4b9a639b642e..0cdc778fddef 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -348,7 +348,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
-  */
- static inline void htb_next_rb_node(struct rb_node **n)
- {
--	*n = rb_next(*n);
-+	if (*n)
-+		*n = rb_next(*n);
- }
- 
- /**
 
