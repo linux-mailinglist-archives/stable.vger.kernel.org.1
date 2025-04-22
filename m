@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-134912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2633BA95B1C
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:19:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB2FA95B1E
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADDFA173CCC
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:19:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6D73AE2F4
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A537D22ACCA;
-	Tue, 22 Apr 2025 02:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FD822D793;
+	Tue, 22 Apr 2025 02:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Euri6nnR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SJ1aHFCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 618A21A071C;
-	Tue, 22 Apr 2025 02:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A044922B8AC;
+	Tue, 22 Apr 2025 02:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288178; cv=none; b=EK1vNwuOCxESYxKS9VjKwibEot1s0StGH7nY5X1t0JVAGUDe41dMcha2uMi25tFe8zSXd7mqdG6/lb12ebDB8JAeAz6XpFXSEwcpY6NfDiGndmGwMMRtWX1l/7EotBlJ4oKOp6YS9lMdDDqxxAhwtc4FZ1DqcewUxmKgtSoWMUg=
+	t=1745288179; cv=none; b=kEgEsw7+vxZVpZ3D1njpMc2cXxM6CHX/Kk+CB2ioOCJJrh67oEhJdnjI5k8MD9fWswoHBGuJBFd44RKrcgy6fr8D2cogxpSriswt2WfcXIs7gnQVPXnZZkS4/DExSckCpfLzRG4eEGfqRvjZlPaQyQ+ROCJ8yTppnJHxHZu4StI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288178; c=relaxed/simple;
-	bh=k0CvyBXD/JneYEp1nm10fppRGqN6XZUKVHkWxBtVi+4=;
+	s=arc-20240116; t=1745288179; c=relaxed/simple;
+	bh=FJMgANxdsDgKGAn/rJiLB9bthwkY2F8ru5xRoHJDE7A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=q+0TDVxwOPn89zu78w3RzBh6584jXjtkbnrJmHUvOsNY1CdZRJz9RcqnRVssvfA0gKqfMvpWmrtRBSyu2m+RNzs2v7Ukp9OHJHNCFgQsqsbMGgT9YC6TOikpij2l19jZZKI0+oB6NRDrDG9HvRm5gnQRjXbodOPBl1/qiAIw3PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Euri6nnR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298E7C4CEE4;
-	Tue, 22 Apr 2025 02:16:17 +0000 (UTC)
+	 MIME-Version; b=eXtRFIoqSyvCsJ1L/UO2dy/EyHUb4rfQ5LI9rUuFdSKdQOxAfO27wDxGurMDTQkijPHHAEcIrN8HP/Fa9EA1KJwHKSwJsp8wNBpwe++RDzDpjqU6Se1/3e5FcDzGT+lplyPImW5+lmato1zCDLlhXcoR8yPEMzkybOb8bT6OZbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SJ1aHFCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BCCC4CEEC;
+	Tue, 22 Apr 2025 02:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288178;
-	bh=k0CvyBXD/JneYEp1nm10fppRGqN6XZUKVHkWxBtVi+4=;
+	s=k20201202; t=1745288179;
+	bh=FJMgANxdsDgKGAn/rJiLB9bthwkY2F8ru5xRoHJDE7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Euri6nnRWUntrxw18EYulB8bHD2cg/uaDk71PztKxr2K7eiP1o5iOhuS5Jm+ICupM
-	 t4HRf6bvbenRge0mRh4CYDR0KyPnBwJjEBfmbKgIC6lQCkBfkHzEnfi2ERfTZ+ny2g
-	 Mu9CJutbX41L5VtJv5S/x6BMbRv3wdKKrsHcc1lvraJh3vRPDJ/9z2PLK+B5EwUKQ9
-	 YZ4VxQzpwkd8PCjs+5VAZC5rnra+cIPpSiGZDSuQKraLAlAs6AoZRNSw2AiwzIA2j4
-	 E9V+1MILNQzx+exSRBJJcjcIaZKlFPeqr43wh1YZhGJ8P4JK2vT51PJfXFY3J9yrM+
-	 fNZDQXHGcWk+w==
+	b=SJ1aHFCKW7q06BfOoI9IEC+UdXX+VfRJxbRmAxRQ+3xE903vs99ccIc0BOvDi9Bnp
+	 UMn3RrBtymV12EN9egnz610Ty6s81yaYTe0h8i/JVttCX+YujnhPa49MbyimR13akn
+	 pI/shCD1ECToOBTTTeXAKfYIsoUrXvHSatmcgd4jXhtOkomZNjBZUy9X1kuNsjnS82
+	 t7RMHNs5q/MDHp4B+Q1QU9/GIkTDddKWYr6nbreyQOBLL0vkzw+yzi956IM7opeTKm
+	 t0mXMva836rTfiro0YMCiE49imtPiuX/b6VPbXAHEhkIVm6sFsOgdB1RItB1YkuzPx
+	 h65PXDKhyYWjQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrew Jones <ajones@ventanamicro.com>,
-	kernel test robot <lkp@intel.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 14/30] riscv: Provide all alternative macros all the time
-Date: Mon, 21 Apr 2025 22:15:34 -0400
-Message-Id: <20250422021550.1940809-14-sashal@kernel.org>
+	smfrench@gmail.com,
+	linux-cifs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 15/30] ksmbd: fix WARNING "do not call blocking ops when !TASK_RUNNING"
+Date: Mon, 21 Apr 2025 22:15:35 -0400
+Message-Id: <20250422021550.1940809-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250422021550.1940809-1-sashal@kernel.org>
 References: <20250422021550.1940809-1-sashal@kernel.org>
@@ -69,65 +66,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.3
 Content-Transfer-Encoding: 8bit
 
-From: Andrew Jones <ajones@ventanamicro.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit fb53a9aa5f5b8bf302f3260a7f1f5a24345ce62a ]
+[ Upstream commit 1df0d4c616138784e033ad337961b6e1a6bcd999 ]
 
-We need to provide all six forms of the alternative macros
-(ALTERNATIVE, ALTERNATIVE_2, _ALTERNATIVE_CFG, _ALTERNATIVE_CFG_2,
-__ALTERNATIVE_CFG, __ALTERNATIVE_CFG_2) for all four cases derived
-from the two ifdefs (RISCV_ALTERNATIVE, __ASSEMBLY__) in order to
-ensure all configs can compile. Define this missing ones and ensure
-all are defined to consume all parameters passed.
+wait_event_timeout() will set the state of the current
+task to TASK_UNINTERRUPTIBLE, before doing the condition check. This
+means that ksmbd_durable_scavenger_alive() will try to acquire the mutex
+while already in a sleeping state. The scheduler warns us by giving
+the following warning:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202504130710.3IKz6Ibs-lkp@intel.com/
-Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250414120947.135173-2-ajones@ventanamicro.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+do not call blocking ops when !TASK_RUNNING; state=2 set at
+ [<0000000061515a6f>] prepare_to_wait_event+0x9f/0x6c0
+WARNING: CPU: 2 PID: 4147 at kernel/sched/core.c:10099 __might_sleep+0x12f/0x160
+
+mutex lock is not needed in ksmbd_durable_scavenger_alive().
+
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/alternative-macros.h | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ fs/smb/server/vfs_cache.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/arch/riscv/include/asm/alternative-macros.h b/arch/riscv/include/asm/alternative-macros.h
-index 721ec275ce57e..231d777d936c2 100644
---- a/arch/riscv/include/asm/alternative-macros.h
-+++ b/arch/riscv/include/asm/alternative-macros.h
-@@ -115,24 +115,19 @@
- 	\old_c
- .endm
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 8d1f30dcba7e8..1f8fa3468173a 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -713,12 +713,8 @@ static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
  
--#define _ALTERNATIVE_CFG(old_c, ...)	\
--	ALTERNATIVE_CFG old_c
--
--#define _ALTERNATIVE_CFG_2(old_c, ...)	\
--	ALTERNATIVE_CFG old_c
-+#define __ALTERNATIVE_CFG(old_c, ...)		ALTERNATIVE_CFG old_c
-+#define __ALTERNATIVE_CFG_2(old_c, ...)		ALTERNATIVE_CFG old_c
+ static bool ksmbd_durable_scavenger_alive(void)
+ {
+-	mutex_lock(&durable_scavenger_lock);
+-	if (!durable_scavenger_running) {
+-		mutex_unlock(&durable_scavenger_lock);
++	if (!durable_scavenger_running)
+ 		return false;
+-	}
+-	mutex_unlock(&durable_scavenger_lock);
  
- #else /* !__ASSEMBLY__ */
+ 	if (kthread_should_stop())
+ 		return false;
+@@ -799,9 +795,7 @@ static int ksmbd_durable_scavenger(void *dummy)
+ 			break;
+ 	}
  
--#define __ALTERNATIVE_CFG(old_c)	\
--	old_c "\n"
-+#define __ALTERNATIVE_CFG(old_c, ...)		old_c "\n"
-+#define __ALTERNATIVE_CFG_2(old_c, ...)		old_c "\n"
+-	mutex_lock(&durable_scavenger_lock);
+ 	durable_scavenger_running = false;
+-	mutex_unlock(&durable_scavenger_lock);
  
--#define _ALTERNATIVE_CFG(old_c, ...)	\
--	__ALTERNATIVE_CFG(old_c)
-+#endif /* __ASSEMBLY__ */
+ 	module_put(THIS_MODULE);
  
--#define _ALTERNATIVE_CFG_2(old_c, ...)	\
--	__ALTERNATIVE_CFG(old_c)
-+#define _ALTERNATIVE_CFG(old_c, ...)		__ALTERNATIVE_CFG(old_c)
-+#define _ALTERNATIVE_CFG_2(old_c, ...)		__ALTERNATIVE_CFG_2(old_c)
- 
--#endif /* __ASSEMBLY__ */
- #endif /* CONFIG_RISCV_ALTERNATIVE */
- 
- /*
 -- 
 2.39.5
 
