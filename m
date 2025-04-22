@@ -1,139 +1,135 @@
-Return-Path: <stable+bounces-135199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C854BA979C0
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 23:53:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BA2A97A01
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 00:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19FDA179B8F
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:53:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEDA217CBDF
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 22:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF55327055F;
-	Tue, 22 Apr 2025 21:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DD52D028B;
+	Tue, 22 Apr 2025 22:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JfMYrW3t"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wnL83BuH"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6417F29C330
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 21:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF7C262FD9;
+	Tue, 22 Apr 2025 22:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745358807; cv=none; b=bkr+FlHPcYf8bMqHpK42VHykx0sOFtYDm52g8zdhNu+d8BxUpAfTOrlc7R/lt7xQRqrbjiW9pf1YEh6BPL3ESe6TyQPU9gc7UQ08KPjcoHb7OnTLTYnRwhdcM97rOWSrkF9TyGUvZJTC424ZnYTTpxlf73mXx+oBXEQAEScgWd4=
+	t=1745359535; cv=none; b=INI1pXagoBHXlL8EPrewh2AvvVxmg8e98vuMnJ/0gMQ/N/Jhm+zbhJwk5164HRa9W30aEtGMOJquy+JNPv4b/oLZ0jbgLHi55tMuOd4Q+l9Z04DC0+KXu9xwBJ50EiqbpZSbLvC7CA7XEq0NgIF647PRbgJ3vTAVjUpz2RoQixU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745358807; c=relaxed/simple;
-	bh=S59TmCgOdMo/lpLbM0L1SiyeKE3vGFulCSYC4PmPHFM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DoFsS4WFT3eP9JLRDttqHKQqQ2d5N0/vbxbLNc1SPNfFs7732By7n/JzDYmWeCvbW/IAEwcDcyswZzaia/5k/sQ/KIUerX8R8v9YOyofm+h+EH/rF5JFfeAzkmRK4e2NW/806FnwpMB+evsX348B8OXtY2tHSb1YhmDZ6u49CbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JfMYrW3t; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1745358804;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HKxVbFAIC1yknAhgK3/yzjYTFKqGKsqga8pDfwFWc/Y=;
-	b=JfMYrW3tbMTc5XeNkBN11Kh3GBS9udp824JZos5EFcFTHJje3FYGWvXScQj3WnkVArONop
-	Eck63vPOOozUotmKgT2ZQyEAlB12NCCCt9Rg+M/MQDLYsILs6TTGVTlyyGm7/oqa/nVWoK
-	TxRfsQ9oTtjsuRReJrkHW32QuiQjDOs=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-486-Y9VJ0IsrOKKug2eGmWTcSg-1; Tue, 22 Apr 2025 17:53:22 -0400
-X-MC-Unique: Y9VJ0IsrOKKug2eGmWTcSg-1
-X-Mimecast-MFC-AGG-ID: Y9VJ0IsrOKKug2eGmWTcSg_1745358802
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-43cf44b66f7so34094105e9.1
-        for <stable@vger.kernel.org>; Tue, 22 Apr 2025 14:53:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745358801; x=1745963601;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKxVbFAIC1yknAhgK3/yzjYTFKqGKsqga8pDfwFWc/Y=;
-        b=FNGWjgnuE27k2wvbiwBFhZjYh2tuRcSctEmbbUXG0BIHNN5GqSSR5ysFD4IBaY+j6C
-         oQCfLHxvnyS0hOboDotVJQJZqAyGK+Y0tcDBXa8L4qr5LeYml+Ll8p5sOcX4a3eB/TpP
-         gvJ+RFlkfGYIe2cn2otUoKq1UjIp42mnjD0i8jnG6OvvPGcW+fea6KaVzagDNBbIsBnT
-         Lxuxq3PYXYH2ptvp/gitVVbgVXDagS4D2Uta0SnkynL1QgtCupigllX+0BIVOZ3FyqRw
-         TTjpTbmzALEl8lXK6mg1J8QmIx1yiA+AtlqhvBd25slN/lrx9R2Uh6AKTsc6fNgmUU3S
-         IGCg==
-X-Forwarded-Encrypted: i=1; AJvYcCV8RbYfDfdSEFgiN4ggXJ8FCa4mkV5x5FRrV54zcEeERZyN3h/J04yfyZl4BuvGR0hav5KMkF0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRJOl44mEz64xRyoJ7NCGg0dAOYsUb+Zh6NY8pV2rxJwy7lqvE
-	h4T41cbEo2/WZDlHJhhz4Rx0JbuqfKLo9BjqdUPbRQINzdPUaTosdBMJphSHPVuUSfBWIuZCubG
-	6zGetO+Riu6crEgoYARJ/9MunzmKSrZDhEPcMLmn14/6xnNYpLM8xmA==
-X-Gm-Gg: ASbGncuCvJQp2iFCQNvoOGzizkehhj64jebpsb7UE0Rj8qq22kb5nLC4CJ6riO+1OSr
-	LRoeibqBrl3lJMU1kyBgODT/6EbhGuTvekybpysY1nKbS37OLF8k+YbgNMPQYKWHUIoMlRoIyRZ
-	8igpdu1ZP9Oj3v3IgwaK4prhcrRWQIF5o0TBnskPOR5x0g27y+5t5kVK3DMR9IChAuA54CcXkMB
-	I1zyGWpfRE42gE2Q62DF1D5gQ9LUvIvjEoJ1D9ct5Zhg3zPqVhuZ4faoCHrowDho3HzQZR5NNPU
-	FAIGjLS2dV/q1HPGmjpYI8P9UcUUYCuForsC0v7LKaXJGxCqhiPl9uI5FiJ8w/CyeE9rVQ==
-X-Received: by 2002:a05:600c:1990:b0:43c:f8fc:f686 with SMTP id 5b1f17b1804b1-4406ab6ce61mr150642975e9.3.1745358801537;
-        Tue, 22 Apr 2025 14:53:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH6/idgdqte5+5OvTZ+lLVQQaqX56tOylPaDJQn0XXifg71bVlGLn6SvNsLKI5H+jbjTtpPIA==
-X-Received: by 2002:a05:600c:1990:b0:43c:f8fc:f686 with SMTP id 5b1f17b1804b1-4406ab6ce61mr150642815e9.3.1745358801185;
-        Tue, 22 Apr 2025 14:53:21 -0700 (PDT)
-Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44092d23099sm2637005e9.13.2025.04.22.14.53.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Apr 2025 14:53:20 -0700 (PDT)
-From: Javier Martinez Canillas <javierm@redhat.com>
-To: Fabio Estevam <festevam@gmail.com>, simona@ffwll.ch
-Cc: airlied@gmail.com, maarten.lankhorst@linux.intel.com,
- mripard@kernel.org, noralf@tronnes.org, tzimmermann@suse.de,
- dri-devel@lists.freedesktop.org, Fabio Estevam <festevam@denx.de>,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/tiny: panel-mipi-dbi: Use
- drm_client_setup_with_fourcc()
-In-Reply-To: <20250417103458.2496790-1-festevam@gmail.com>
-References: <20250417103458.2496790-1-festevam@gmail.com>
-Date: Tue, 22 Apr 2025 23:53:19 +0200
-Message-ID: <87cyd3c180.fsf@minerva.mail-host-address-is-not-set>
+	s=arc-20240116; t=1745359535; c=relaxed/simple;
+	bh=mTWP0qmzfPQqu0NBVqtmffkFWXxD2gO2ig+9q3Jafa8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GgZZT9tpPPx3T2bZlstr8Ujjcz3+QLmGqA+gE+tYYrU+wuE2AscU8tHI2bmG/Nah6FYIBxb54oO4g9wUHsWzzsFxcmQ8Y6JtvxebO3DVKnp3flzE6+WIOYdU/PT18PNew5YtUnYw1XxzhtYy7pqHhHdahx8SRFB15Lb/6A7+2xA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wnL83BuH; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53MM5C3q2117300
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 22 Apr 2025 17:05:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1745359513;
+	bh=Sj4pRdp+l765MK714CGTnwQXZFSOrjKSMrjTy5zwMY0=;
+	h=From:To:CC:Subject:Date;
+	b=wnL83BuH1fhwFoEpJ8Waoxg/SGGYKTFulWHqeZloPhVX5imghxXGolSAk+bkCjdir
+	 OE6dgZpmzh6QfGlARknjOv4pKZ8/tMH5UoOfbmKykkSzw1OhGt4UWlV8X5OUBEXYhK
+	 9mAeItU5DL/uCRjJ5SYtA2+h/ITooa+Y5zgiBa7M=
+Received: from DLEE108.ent.ti.com (dlee108.ent.ti.com [157.170.170.38])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53MM5CHP117244
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 22 Apr 2025 17:05:12 -0500
+Received: from DLEE113.ent.ti.com (157.170.170.24) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 22
+ Apr 2025 17:05:12 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 22 Apr 2025 17:05:12 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53MM5Crc012605;
+	Tue, 22 Apr 2025 17:05:12 -0500
+From: Judith Mendez <jm@ti.com>
+To: Judith Mendez <jm@ti.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Nishanth
+ Menon <nm@ti.com>, Adrian Hunter <adrian.hunter@intel.com>
+CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>,
+        Josua Mayer <josua@solid-run.com>, <linux-mmc@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Francesco Dolcini <francesco@dolcini.it>,
+        Hiago De Franco
+	<hiagofranco@gmail.com>, Moteen Shah <m-shah@ti.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH RESEND v3 0/3] Add ti,suppress-v1p8-ena
+Date: Tue, 22 Apr 2025 17:05:09 -0500
+Message-ID: <20250422220512.297396-1-jm@ti.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Fabio Estevam <festevam@gmail.com> writes:
+Resend patch series to fix cc list
 
-Hello Fabio,
+There are MMC boot failures seen with V1P8_SIGNAL_ENA on Kingston eMMC
+and Microcenter/Patriot SD cards on Sitara K3 boards due to the HS200
+initialization sequence involving V1P8_SIGNAL_ENA. Since V1P8_SIGNAL_ENA
+is optional for eMMC, do not set V1P8_SIGNAL_ENA by default for eMMC.
+For SD cards we shall parse DT for ti,suppress-v1p8-ena property to
+determine whether to suppress V1P8_SIGNAL_ENA. Add new ti,suppress-v1p8-ena
+to am62x, am62ax, and am62px SoC dtsi files since there is no internal LDO
+tied to sdhci1 interface so V1P8_SIGNAL_ENA only affects timing.
 
-> From: Fabio Estevam <festevam@denx.de>
->
-> Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
-> for the BPP default"), RGB565 displays such as the CFAF240320X no longer
-> render correctly: colors are distorted and the content is shown twice
-> horizontally.
->
-> This regression is due to the fbdev emulation layer defaulting to 32 bits
-> per pixel, whereas the display expects 16 bpp (RGB565). As a result, the
-> framebuffer data is incorrectly interpreted by the panel.
->
-> Fix the issue by calling drm_client_setup_with_fourcc() with a format
-> explicitly selected based on the display's bits-per-pixel value. For 16
-> bpp, use DRM_FORMAT_RGB565; for other values, fall back to the previous
-> behavior. This ensures that the allocated framebuffer format matches the
-> hardware expectations, avoiding color and layout corruption.
->
-> Tested on a CFAF240320X display with an RGB565 configuration, confirming
-> correct colors and layout after applying this patch.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
-> Signed-off-by: Fabio Estevam <festevam@denx.de>
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
+This fix was previously merged in the kernel, but was reverted due
+to the "heuristics for enabling the quirk"[0]. This issue is adressed
+in this patch series by adding optional ti,suppress-v1p8-ena DT property
+which determines whether to apply the quirk for SD.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Changes since v2:
+- Include patch 3/3
+- Reword cover letter
+- Reword binding patch description
+- Add fixes/cc tags to driver patch
+- Reorder patches according to binding patch first
+- Resend to fix cc list in original v3 series
 
+Link to v2:
+https://lore.kernel.org/linux-mmc/20250417182652.3521104-1-jm@ti.com/
+Link to v1:
+https://lore.kernel.org/linux-mmc/20250407222702.2199047-1-jm@ti.com/
+
+[0] https://lore.kernel.org/linux-mmc/20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com/
+
+Judith Mendez (3):
+  dt-bindings: mmc: sdhci-am654: Add ti,suppress-v1p8-ena
+  mmc: sdhci_am654: Add sdhci_am654_start_signal_voltage_switch
+  arm64: dts: ti: k3-am62*: add ti,suppress-v1p8-ena
+
+ .../devicetree/bindings/mmc/sdhci-am654.yaml  |  5 +++
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi      |  1 +
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi     |  1 +
+ .../dts/ti/k3-am62p-j722s-common-main.dtsi    |  1 +
+ drivers/mmc/host/sdhci_am654.c                | 32 +++++++++++++++++++
+ 5 files changed, 40 insertions(+)
+
+
+base-commit: 1be38f81251f6d276713c259ecf4414f82f22c29
 -- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+2.49.0
 
 
