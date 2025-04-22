@@ -1,143 +1,109 @@
-Return-Path: <stable+bounces-135017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83672A95DD6
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:14:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBD4A95DE8
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793761898F93
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B18A176A53
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175E61E9B3B;
-	Tue, 22 Apr 2025 06:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9404217F5C;
+	Tue, 22 Apr 2025 06:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="VNYBFmOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+3skhaE"
 X-Original-To: stable@vger.kernel.org
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A801E5707;
-	Tue, 22 Apr 2025 06:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.182.66.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6686421148F
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 06:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745302438; cv=none; b=PHi8CpkUgTLMRO2Bj68QwHcaceOGA3+AtEImUaO4JC7PtxRFIwk8owtUQecKCR8o4yZT459rXNYixZPiXb13XlCFZmpuYlxdmTUZRKbChlCyy7k/WahTZ4l4EuH6jTX9CUsEDKYVHsjzkNHTuoOdhdwFpH6aXs/YVib/oIckAwY=
+	t=1745302492; cv=none; b=kjSswGlFHQfEsZCPyR0Eu9GeAen2d6GOLDH/oCNbjDpAMYKyydnNuuR6U8K/QlPf9tUp5n0A7HWcgUL0drkWBPvJghcWYt07I3E6+9+nXVaKKWJo0zPPTCod1MAuH4O6zzBV+lCb3C9MuX+wQrjh42hoBgvnU02/7nzfM+LgaKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745302438; c=relaxed/simple;
-	bh=haRoeOk6LzW0VxiMtuKkFaS3hRndffn4xbn/cmXz4vQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oyI1CJsjCC+59miedN1A3armZTugY8tCGTm8lVGBGLyVjyLEqGqLUPktccfjLv8GzpK/g/l0p/Qcyluab/v62PQPjL0IlM5sS15QYJB+WTrjXq1RrCy1ay3ShRkiAbFdsi8xx6fbHbsT/CIywJMmToB2OAGFKLqcXe3S3WMDj24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=VNYBFmOg; arc=none smtp.client-ip=217.182.66.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id E2FE13E8FC;
-	Tue, 22 Apr 2025 06:13:48 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 8195F40074;
-	Tue, 22 Apr 2025 06:13:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1745302426; bh=haRoeOk6LzW0VxiMtuKkFaS3hRndffn4xbn/cmXz4vQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VNYBFmOgDIW3+FDDYkghTG/pZf8vnfCeqMx8EVPxSNpSiq78Zhq2ObIVHchp6GOVZ
-	 2w7oejMR3aMiHJBK8Fu69YnmewYfwsF3eUv0ldDezLFOmKKB02tsSzVoDx96O+W2DM
-	 oHaHReJ+oG3PbJVbYvFJZybuBO0gcuS9uKpHecgw=
-Received: from [198.18.0.1] (unknown [203.175.14.48])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 0E12B42AD7;
-	Tue, 22 Apr 2025 06:13:42 +0000 (UTC)
-Message-ID: <fb0b667a-ebea-4705-9f69-b3bb98399494@aosc.io>
-Date: Tue, 22 Apr 2025 14:13:38 +0800
+	s=arc-20240116; t=1745302492; c=relaxed/simple;
+	bh=EnBrPBx0QyL+VyQPtYu5AlFIDMO02CZhH+8OiP2qnjw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N9dNigmWBIR54urtv7EujFV2WL8Fb59Bw1J4Ad3cc9fHqVUfk2dyzfVf7cuJAcwynlgbPi747Sh45C5IXETvSr18sLXcyJHDqc4gepqjjFwGFG6MiDUtYWPMtnimuApgLn1Q7vH5nnWGE53FDf8uwHLymRSpdJrscyKOWVHMHHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+3skhaE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 806EAC4CEED;
+	Tue, 22 Apr 2025 06:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745302491;
+	bh=EnBrPBx0QyL+VyQPtYu5AlFIDMO02CZhH+8OiP2qnjw=;
+	h=Subject:To:Cc:From:Date:From;
+	b=g+3skhaEk6JAt0UzniyPLejR/qfJBUxyiQ1xMvxvCeLSm6uoCJAK6RIrzXhbh0waJ
+	 J9D5Tg1i3/+bpDOpITJmg5+qOVNdsuWHegHyRBOKDXrPsoKttdeNOZdi2Sps1droCP
+	 u3zOxSPxpmlL6z7sl8i3lQDLkXAaos1ZAW8bXSRg=
+Subject: FAILED: patch "[PATCH] drm/amd/pm: Prevent division by zero" failed to apply to 5.4-stable tree
+To: arefev@swemel.ru,alexander.deucher@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 22 Apr 2025 08:14:49 +0200
+Message-ID: <2025042249-versus-think-8c6c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rtw-next] wifi: rtlwifi: disable ASPM for RTL8723BE with
- subsystem ID 11ad:1723
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Kexy Biscuit <kexybiscuit@aosc.io>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Liangliang Zou <rawdiamondmc@outlook.com>,
- "John W. Linville" <linville@tuxdriver.com>,
- Larry Finger <Larry.Finger@lwfinger.net>,
- "open list:REALTEK WIRELESS DRIVER (rtlwifi family)"
- <linux-wireless@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-References: <20250422032132.348598-1-jeffbai@aosc.io>
- <1ab6f74b5b9d4f0d8023eb43d41906be@realtek.com>
-Content-Language: en-US
-From: Mingcong Bai <jeffbai@aosc.io>
-In-Reply-To: <1ab6f74b5b9d4f0d8023eb43d41906be@realtek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8195F40074
-X-Rspamd-Server: nf2.mymailcheap.com
-X-Spamd-Result: default: False [0.00 / 10.00];
-	SUBJECT_RANDOM_CHARS_1(0.10)[];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[outlook.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPFBL_URIBL_EMAIL_FAIL(0.00)[jeffbai.aosc.io:server fail,stable.vger.kernel.org:server fail];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[aosc.io,vger.kernel.org,outlook.com,tuxdriver.com,lwfinger.net];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Action: no action
 
-Hi Ping-ke,
 
-在 2025/4/22 14:08, Ping-Ke Shih 写道:
-> Mingcong Bai <jeffbai@aosc.io> wrote:
->>
->> RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
->> subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
->> errors during and after boot up, causing heavy lags and at times lock-ups:
->>
->>    pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
->>    pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
->>    pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
->>    pcieport 0000:00:1c.5:    [ 0] RxErr
->>
->> Disable ASPM on this combo as a quirk.
->>
->> This patch is a revision of a previous patch (linked below) which
->> attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
->> PCIe bridges. I take a more conservative approach as all known reports
->> point to ASUSTek laptops of these two generations with this particular
->> wireless card.
->>
->> Please note, however, before the rtl8723be finishes probing, the AER
->> errors remained. After the module finishes probing, all AER errors would
->> indeed be eliminated, along with heavy lags, poor network throughput,
->> and/or occasional lock-ups.
->>
->> Cc: <stable@vger.kernel.org>
->> Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-> 
-> This Fixes is weird to me. The subject is RTL8192CE, but you are adding this
-> for RTL8723BE. More, at that time, HARDWARE_TYPE_RTL8723BE isn't defined yet.
-> 
-> This might be more suitable?
-> 
-> Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-True. Sending v2.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Best Regards,
-Mingcong Bai
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042249-versus-think-8c6c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c Mon Sep 17 00:00:00 2001
+From: Denis Arefev <arefev@swemel.ru>
+Date: Fri, 21 Mar 2025 13:52:33 +0300
+Subject: [PATCH] drm/amd/pm: Prevent division by zero
+
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
+index a3331ffb2daf..1b1c88590156 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
+@@ -191,7 +191,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t speed)
+ 	uint32_t tach_period, crystal_clock_freq;
+ 	int result = 0;
+ 
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
+ 
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
+
 
