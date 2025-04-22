@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8002A9754A
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:17:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 105B0A9754C
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 21:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B630F17F634
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604B73A896A
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 19:17:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BFA297A64;
-	Tue, 22 Apr 2025 19:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DFF297A64;
+	Tue, 22 Apr 2025 19:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gejZ6tfX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UTjFgICN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9D5B666
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681532900BE
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 19:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745349476; cv=none; b=J9B6WNDW37vCReJzmfxGrsStMn+pGe8ZWGInOc+ZaQbjplFO/y6lrrWOYYIkEUeFlDH5HhVFIplLmFoz08BmU35AzTOlPeF+qVZRailcAYq+NHUHmt93upKJfJlKffg7Bn1IRJxV6uLpVH3SrEKDyDqhaVIgAN21pUjdGO9Y7v0=
+	t=1745349479; cv=none; b=jFz0ggj/ezJD4vjejeLuQFE16jpTsfDrkiRfHcf97RjOFNJM+eJN2kAble/MedX8i6bSUzA4E+LvQRf56jOFlxVJn0OQmNtY1XNS4TzqoNjuvAq6l8VnP+ViApZ3XuxpQGClBb7MIwN+HKUyrghmt3ySv3C9IUcQMa1nc9Jr+jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745349476; c=relaxed/simple;
-	bh=PnwgcYUFQzJ5WXbdXf0WdTzVE8CyvPZofTV+0642Axw=;
+	s=arc-20240116; t=1745349479; c=relaxed/simple;
+	bh=ARlH4/D0/wFdMAuGA5p0ziwhJld/gjefff8IhPXKYDM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YZdz7Mjh2O3+tRoZwUUre4K/nQ9P2AKlk8tQ88R0Beizu5BGsiiIxOV01n0y3OvuDXrU8FT3RgYxQic1JzCe0NDPQCwMuMDSal8c+1B/RgGQ+YCVsI7y/5yJd8b5ogG1IySOPneo7D6T8qCY2UdxS5bIomH5MK0Q2iYmsrQdij0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gejZ6tfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FA7C4CEE9;
-	Tue, 22 Apr 2025 19:17:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EQ+hxpNfckL308YSn6bJXqZoRKoqmZHHv2Si79qkIjdU0snG0UX3OiehK/sjuM2u79yYUz/XubS2Bs/p3XfOqXO+/TLFAnwD5J413h8/3NHBOzlxNkWHleIjfYjniSyvuf4efGhO0RAro/IvD4sjp6J+BOAoaT3LyBBac859VdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UTjFgICN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B355AC4CEE9;
+	Tue, 22 Apr 2025 19:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745349475;
-	bh=PnwgcYUFQzJ5WXbdXf0WdTzVE8CyvPZofTV+0642Axw=;
+	s=k20201202; t=1745349478;
+	bh=ARlH4/D0/wFdMAuGA5p0ziwhJld/gjefff8IhPXKYDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gejZ6tfXLmIylfcb6iwkBN0gqxsicP9ciKmkjrxFysw2obxdA3W0b1VDA3K9npw+d
-	 +q7Pufb3rioRS4hzm5BKdxte4+E7n/kEkPPoei3uVKIVckzafbe/fCYal85d/tJmt7
-	 xqpUWgRK7RfDJ9e9dNfvNG5N0lO6bfFkiAep2tiLIiGRe/5rLyCnht0us6V+reoHW2
-	 FGF2cgjoS57pp85cYw0Dp+NAkOwqZhmLB0i7hySKwp4I5Um9qZSlYqU6TY/W4XlbJ/
-	 u7n1tyu5jxvhUGE+zm79X5E83fVNXGNtRk3Qul0CZPENoARwwx64oh2Ag2TnXX53wb
-	 oBCWqj33+n4qw==
+	b=UTjFgICNg1OMMAlJVf2xy0PD4sCBcXbr1G0zuMKZIBHLg0A0GnoUaO+7iJtTECYRG
+	 dT4h2WinzFiS8tcV25TsWoT4lwIbT4BoYMqDEsD1X5gChFb/w35Wm3gjlzNGI3OWOE
+	 wJ/rsEiQeGlthDZWqlU+79QmJ1RMgyYMGsHvdAegk9dj4DTvYA48yKD4B2WjZB9R4a
+	 AOt3CR/AQewQdQIlpjDw8SgTMx5R36jRrzVKJDF1Xn6BAMiXBjxUjhfC1mXIFa3Aqo
+	 Yz8zUEkjtHtymWyUksf+oYwmcYBmfkjTPJ1K0xhHBgpT5ZDxmKROwO8k7t8TVpy8Rf
+	 h6Wf0GJxF2oQg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: WangYuli <wangyuli@uniontech.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4+] MIPS: cevt-ds1287: Add missing ds1287.h include
-Date: Tue, 22 Apr 2025 15:17:51 -0400
-Message-Id: <20250422115637-928ade71320dac29@stable.kernel.org>
+To: stable@vger.kernel.org,
+	lorenzo.stoakes@oracle.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12.y] mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
+Date: Tue, 22 Apr 2025 15:17:56 -0400
+Message-Id: <20250422123659-a06f5f388320cbae@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <CB3E3A9CEA5227BE+20250422091648.116984-1-wangyuli@uniontech.com>
+In-Reply-To:  <20250422113216.110404-1-lorenzo.stoakes@oracle.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,36 +64,124 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: f3be225f338a578851a7b607a409f476354a8deb
+Found matching upstream commit: 41e6ddcaa0f18dda4c3fadf22533775a30d6f72f
 
 Status in newer kernel trees:
 6.14.y | Not found
-6.12.y | Not found
-6.6.y | Not found
-6.1.y | Not found
-5.15.y | Not found
-5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f3be225f338a5 ! 1:  76449fe1f2e7d MIPS: cevt-ds1287: Add missing ds1287.h include
-    @@ Metadata
-      ## Commit message ##
-         MIPS: cevt-ds1287: Add missing ds1287.h include
+1:  41e6ddcaa0f18 ! 1:  80c1bca5589f9 mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
+    @@ Commit message
+         Suggested-by: Jann Horn <jannh@google.com>
+         Cc: <stable@vger.kernel.org>
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    +    (cherry picked from commit 41e6ddcaa0f18dda4c3fadf22533775a30d6f72f)
      
-    +    [ Upstream commit f3be225f338a578851a7b607a409f476354a8deb ]
-    +
-         Address the issue of cevt-ds1287.c not including the ds1287.h header
-         file.
+      ## mm/userfaultfd.c ##
+     @@ mm/userfaultfd.c: struct vm_area_struct *userfaultfd_clear_vma(struct vma_iterator *vmi,
+    @@ mm/userfaultfd.c: int userfaultfd_register_range(struct userfaultfd_ctx *ctx,
+      
      
+      ## mm/vma.c ##
+    -@@ mm/vma.c: static void vmg_adjust_set_range(struct vma_merge_struct *vmg)
+    - /*
+    -  * Actually perform the VMA merge operation.
+    -  *
+    -+ * IMPORTANT: We guarantee that, should vmg->give_up_on_oom is set, to not
+    -+ * modify any VMAs or cause inconsistent state should an OOM condition arise.
+    -+ *
+    -  * Returns 0 on success, or an error value on failure.
+    -  */
+    - static int commit_merge(struct vma_merge_struct *vmg)
+    -@@ mm/vma.c: static int commit_merge(struct vma_merge_struct *vmg)
+    - 
+    - 	init_multi_vma_prep(&vp, vma, vmg);
+    - 
+    -+	/*
+    -+	 * If vmg->give_up_on_oom is set, we're safe, because we don't actually
+    -+	 * manipulate any VMAs until we succeed at preallocation.
+    -+	 *
+    -+	 * Past this point, we will not return an error.
+    -+	 */
+    - 	if (vma_iter_prealloc(vmg->vmi, vma))
+    - 		return -ENOMEM;
+    - 
+    -@@ mm/vma.c: static __must_check struct vm_area_struct *vma_merge_existing_range(
+    +@@ mm/vma.c: static struct vm_area_struct *vma_merge_existing_range(struct vma_merge_struct *
+      		if (anon_dup)
+      			unlink_anon_vmas(anon_dup);
+      
+    @@ mm/vma.c: static __must_check struct vm_area_struct *vma_merge_existing_range(
+      		return NULL;
+      	}
+      
+    -@@ mm/vma.c: static __must_check struct vm_area_struct *vma_merge_existing_range(
+    +@@ mm/vma.c: static struct vm_area_struct *vma_merge_existing_range(struct vma_merge_struct *
+      abort:
+      	vma_iter_set(vmg->vmi, start);
+      	vma_iter_load(vmg->vmi);
+    @@ mm/vma.c: static __must_check struct vm_area_struct *vma_merge_existing_range(
+      	return NULL;
+      }
+      
+    -@@ mm/vma.c: int vma_expand(struct vma_merge_struct *vmg)
+    - 		/* This should already have been checked by this point. */
+    - 		VM_WARN_ON_VMG(!can_merge_remove_vma(next), vmg);
+    - 		vma_start_write(next);
+    -+		/*
+    -+		 * In this case we don't report OOM, so vmg->give_up_on_mm is
+    -+		 * safe.
+    -+		 */
+    - 		ret = dup_anon_vma(middle, next, &anon_dup);
+    - 		if (ret)
+    - 			return ret;
+     @@ mm/vma.c: int vma_expand(struct vma_merge_struct *vmg)
+      	return 0;
+      
+    @@ mm/vma.c: struct vm_area_struct
+     
+      ## mm/vma.h ##
+     @@ mm/vma.h: struct vma_merge_struct {
+    - 	 */
+    - 	bool just_expand :1;
+    - 
+    + 	struct anon_vma_name *anon_name;
+    + 	enum vma_merge_flags merge_flags;
+    + 	enum vma_merge_state state;
+    ++
+     +	/*
+     +	 * If a merge is possible, but an OOM error occurs, give up and don't
+     +	 * execute the merge, returning NULL.
+     +	 */
+     +	bool give_up_on_oom :1;
+    -+
+    - 	/* Internal flags set during merge process: */
+    + };
+      
+    - 	/*
+    -@@ mm/vma.h: __must_check struct vm_area_struct
+    + static inline bool vmg_nomem(struct vma_merge_struct *vmg)
+    +@@ mm/vma.h: struct vm_area_struct
+      		       struct vm_area_struct *vma,
+      		       unsigned long start, unsigned long end,
+      		       unsigned long new_flags,
+    @@ mm/vma.h: __must_check struct vm_area_struct
+     +		       struct vm_userfaultfd_ctx new_ctx,
+     +		       bool give_up_on_oom);
+      
+    - __must_check struct vm_area_struct
+    - *vma_merge_new_range(struct vma_merge_struct *vmg);
+    + struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
+    + 
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
