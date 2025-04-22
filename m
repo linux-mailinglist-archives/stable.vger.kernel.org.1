@@ -1,72 +1,128 @@
-Return-Path: <stable+bounces-135049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99B0A95FA8
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 09:40:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC53A95FA9
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 09:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC3A83A6F99
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 07:40:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1981F188C253
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 07:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846E11EA7CE;
-	Tue, 22 Apr 2025 07:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C53D1EB1A9;
+	Tue, 22 Apr 2025 07:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1iL7KWZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nxd4oxlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22ADE524C
-	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 07:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B63524C;
+	Tue, 22 Apr 2025 07:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745307625; cv=none; b=IgXHlZKuNOVMRNreyHvrt5EVnH7rqlUr9YLuEPYjP5bAz4OuWN6Kvq4/l+BJfy8EL6454Y0revedWCZXujPC8iqBuSYZX0G3KfLTz9016wsmfoekO/eAIIDNDoMa42PasUBgzOttTDHZX+SHdAgWxiALq1a1XlxVvsM8h7+HGFE=
+	t=1745307663; cv=none; b=dWxjkhg0/afB3Ct4tYHhZUAXzr3Zag1PL4FmtrTny3Aydlq6Jxf9IHwD0UKM6UqlZdlGgEydrnodSfO/aPbrHdey5uqBfkY+5JLmUEGxLK/+7ADOLRVmaD2Efsgj3ZZgGAGEgnsq9YLB0Nv5/IN1vk3JVM5PmgXkOVuOUxukOFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745307625; c=relaxed/simple;
-	bh=d8zJCp74lA9uP8AXIaSlEWut+LN6uXIJ55QqHCxLVbM=;
+	s=arc-20240116; t=1745307663; c=relaxed/simple;
+	bh=F3TRD5v50yXWVoNys5H0+QhAINkINJl/uKCxw2/XgYM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JRB4/0plJ16A+SgTW/XhEQjHGBloEF/Ok/nrrI3Hkxm+sDvOAukxDgh4jA1HPWl7X1LIGwhn13PqLPovtQUHS14Dl9+fvEgkj7cZGTC4j0x9B3T8vXqtiqXeS3JfBIFrzLuTrv0scpZz3GszN0Q7TbYSlKVQ6Ji1NXYu5W2i0iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1iL7KWZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45290C4CEEC;
-	Tue, 22 Apr 2025 07:40:24 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=mm8Ngr3Lmem44HlJJIq2cDmgTaZ3BmgCyPZFnMxwvjiA5TuwzrRCPTT0h6KsfVNxRtdx1N7+5MK09PTy5lKAJtl/dAi7hATLe8okexWdpKdv7VbY9v44hy2MgC/j0EBp18gAwziT866sDuI7ZRcyoZEvCAOYEdFOxeHp3BsfGC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nxd4oxlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8C0C4CEF0;
+	Tue, 22 Apr 2025 07:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745307624;
-	bh=d8zJCp74lA9uP8AXIaSlEWut+LN6uXIJ55QqHCxLVbM=;
+	s=korg; t=1745307662;
+	bh=F3TRD5v50yXWVoNys5H0+QhAINkINJl/uKCxw2/XgYM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u1iL7KWZj8xXSHit+OTm5H1yNa/OWm6pryuum0XrZ+4GmLKGcOb68XT+tK75zIOFW
-	 07+TFWCOMBdUI7CcfUI8uA0LupUVRKk2PsPOktTV40Srjo8Ut6VSQdUTqZ/SENxwiT
-	 MwiUpTTSMIAlwj6gwwo78BBfP3wxrrsmQDHObNb8=
-Date: Tue, 22 Apr 2025 09:40:22 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Naveen N Rao <naveen@kernel.org>
-Cc: stable@vger.kernel.org,
-	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Santosh Shukla <santosh.shukla@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>
-Subject: Re: Please apply commit d81cadbe1642 to 6.12 stable tree
-Message-ID: <2025042207-bladder-preset-f0e8@gregkh>
-References: <j7wxayzatx6fwwavjhhvymg3wj5xpfy7xe7ewz3c2ij664w475@53i6qdqqgypy>
+	b=Nxd4oxlxVouJq7hi9VvjDdvSQbiIX/XGw/uwIkuoN6olV6Ah0fhHqBx7sQLWWEnDW
+	 OqD0ECy2eHgBYk0zvG3kLDq6vMDmIfh5HtlKMyVB7NzTMdPwsFH9H6Wg5eH25eJAJx
+	 1z22ar0gwQks/FJKaA+ir3VY0fgh+26AQkCKZg/w=
+Date: Tue, 22 Apr 2025 09:40:55 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alexander Tsoy <alexander@tsoy.me>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.12 085/393] wifi: ath12k: Fix invalid entry fetch in
+ ath12k_dp_mon_srng_process
+Message-ID: <2025042239-pancreas-swiftness-c137@gregkh>
+References: <20250417175107.546547190@linuxfoundation.org>
+ <20250417175111.019326590@linuxfoundation.org>
+ <4fed086db630ff37ceb9caf9094b74467ef5d0bd.camel@tsoy.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <j7wxayzatx6fwwavjhhvymg3wj5xpfy7xe7ewz3c2ij664w475@53i6qdqqgypy>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <4fed086db630ff37ceb9caf9094b74467ef5d0bd.camel@tsoy.me>
 
-On Mon, Apr 21, 2025 at 11:00:39PM +0530, Naveen N Rao wrote:
-> Please apply commit d81cadbe1642 ("KVM: SVM: Disable AVIC on SNP-enabled 
-> system without HvInUseWrAllowed feature") to the stable v6.12 tree. This 
-> patch prevents a kernel BUG by disabling AVIC on systems without 
-> suitable support for AVIC to work when SEV-SNP support is enabled in the 
-> host.
+On Mon, Apr 21, 2025 at 12:42:08AM +0300, Alexander Tsoy wrote:
+> В Чт, 17/04/2025 в 19:48 +0200, Greg Kroah-Hartman пишет:
+> > 6.12-stable review patch.  If anyone has any objections, please let
+> > me know.
+> > 
+> > ------------------
+> > 
+> > From: P Praneesh <quic_ppranees@quicinc.com>
+> > 
+> > [ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
+> > 
+> > Currently, ath12k_dp_mon_srng_process uses
+> > ath12k_hal_srng_src_get_next_entry
+> > to fetch the next entry from the destination ring. This is incorrect
+> > because
+> > ath12k_hal_srng_src_get_next_entry is intended for source rings, not
+> > destination
+> > rings. This leads to invalid entry fetches, causing potential data
+> > corruption or
+> > crashes due to accessing incorrect memory locations. This happens
+> > because the
+> > source ring and destination ring have different handling mechanisms
+> > and using
+> > the wrong function results in incorrect pointer arithmetic and ring
+> > management.
+> > 
+> > To fix this issue, replace the call to
+> > ath12k_hal_srng_src_get_next_entry with
+> > ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process.
+> > This ensures
+> > that the correct function is used for fetching entries from the
+> > destination
+> > ring, preventing invalid memory accesses.
+> > 
+> > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-
+> > 1
+> > Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-
+> > QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> > 
+> > Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> > Link:
+> > https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
+> > Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> > b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> > index 5c6749bc4039d..1706ec27eb9c0 100644
+> > --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
+> > +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+> > @@ -2533,7 +2533,7 @@ int ath12k_dp_mon_rx_process_stats(struct
+> 
+> Hello!
+> 
+> I think this is incorrect backport. ath12k_dp_mon_srng_process() should
+> be patched.
 
-We need an ack from the KVM maintainers before we can take this.
+Can you send a fix-up path for this?
 
 thanks,
 
