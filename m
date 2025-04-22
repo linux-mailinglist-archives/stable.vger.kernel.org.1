@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-134951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-134952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D865A95B8F
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:28:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC12A95B92
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 04:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D79C188A2E7
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2EE23B5832
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 02:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E061EA7F8;
-	Tue, 22 Apr 2025 02:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C6A25F97B;
+	Tue, 22 Apr 2025 02:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aACARbYm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwzJ282/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FCD1DB125;
-	Tue, 22 Apr 2025 02:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C934B25F970;
+	Tue, 22 Apr 2025 02:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745288279; cv=none; b=G10x6VjvXgGft7ulCXhICipfkqvwR7BdhiRo7ra2dEozjLZ49GgIF/UM7QCE+Lm7uNj6kgxzoPX1wWe8QGISgdmIp9Ayr/UYx1zlkuonufg4l8my/8swYsqZsuyNVgxpEsq375FvrWwGyRGJlolACNnXOki+T3qE6Bw8b1jEsgY=
+	t=1745288282; cv=none; b=LR3tl3FwoPzwp0fa+JMwTG5KmmEG/SDhzm5rmhAiHls5R9U2fOFTLR3PB3Wqo92Y1H9ZNacNHEzP2chbEW3QfuIzOoUG8QQ6c4qS+rZNnQfl2mDKITxgATxHPhUWN82rOoKSnrIQJ/sp/2r3CqOR+3qLfGYaMPA9XCkAvQBfDC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745288279; c=relaxed/simple;
-	bh=IhFB+xbbde3u59vOfCyH+wwyKbhpdWvK4JV39dU+oWA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ne6BI3jpJSDinL7Spy0AM+PcmuwJbQvQfIJ5MtOi+JmaVaWo9GdFUGSTzpOfAkBi2TJ+IxjDdJHO0XRQq1tQcwBjVnzitbVRlSg6j4DYNJ1Y4Mw4lIaIzF4z+8mrJu/SXaXHHp0pJN30U97+Cnf5lJjJZy1qoUqSkT0Wd9dtrNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aACARbYm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A47C4CEEC;
-	Tue, 22 Apr 2025 02:17:58 +0000 (UTC)
+	s=arc-20240116; t=1745288282; c=relaxed/simple;
+	bh=ZCCyIm/fUNr9c1x5le0DTvZgHotQPLwHXcmL7UKeOZ4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tcCquhVIMMapdCpBUq1/2D/3FwrStuzPSvMjxAniQY93zMA+MlTZ5Sn0GmNO96ar82znsDrjyAiNAXplXDYWu369bVaFpz3PTJxaaP/XOBbgmJSIUUHWSZCZfrWoJDdKQN3TKKl52aWKkZX4fb6UdAyhnBzAFIY7VVMTV4Oqrd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwzJ282/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51040C4CEE4;
+	Tue, 22 Apr 2025 02:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745288279;
-	bh=IhFB+xbbde3u59vOfCyH+wwyKbhpdWvK4JV39dU+oWA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aACARbYmSVtYFVH3w98jkfjKZjTNVxWnMdfWnzAowwkbaTF/R37eLab4n03WMKLSI
-	 SaKwgZgH3T4Kj4BtAHn2wq/1mz7IzBgd+NHdSjF9MP3Jiyz45dFjw4GtwupWxz6Z/K
-	 bXM0JqofbkviSFQTysS90P5OmPA84zXml7Ofh64rghlp8yPrUzXpNSXnEOYiDFahWs
-	 c4tkzkS+jZeTo5OJ4scKdlgBDIsxrOfvsVLboru0arNJdcMJzalTyCzRtbSzcWv5VI
-	 5kTz8bH0mnVDH0Jfbz23xSoDfuC54SoCwRfXy/GhstXte8eONDG57xr1qcOgFyW4n8
-	 0cfibUzO/8hzA==
+	s=k20201202; t=1745288282;
+	bh=ZCCyIm/fUNr9c1x5le0DTvZgHotQPLwHXcmL7UKeOZ4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CwzJ282/bJpRb/lLegJ6ZHa3cVaCihyQ4LL92mELMK/toZFjx6d7OqTEUrtfLnE0B
+	 PIQ82/JZo8HKKdaq2lkwEpX0VIy7cVH6tUOT0XPMS/itGoF8HEj6hbGuK9vU4Zy+o1
+	 xctpuwVj5M54dKDDSXdBXvRHk9Fi9CN8XFlWx+soF43eJqN566AwDPRvohOBV2sHde
+	 1Bna0bCMBJMorF5RnLtocSxuN+iZOsDxNe06fl61WjReMVZe1gj3ne2zq2+m2IvlSI
+	 P9+25djI3ey4pd2eCC6X0SnZ45bTTCHXWLWuNvBXKc9SU6uSaN3iKvUJCSHu/pY6Hf
+	 8zlUtQdHOEn4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tamura Dai <kirinode0@gmail.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Xingui Yang <yangxingui@huawei.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	linux-spi@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 23/23] spi: spi-imx: Add check for spi_imx_setupxfer()
-Date: Mon, 21 Apr 2025 22:17:03 -0400
-Message-Id: <20250422021703.1941244-23-sashal@kernel.org>
+	liyihang9@huawei.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/15] scsi: hisi_sas: Fix I/O errors caused by hardware port ID changes
+Date: Mon, 21 Apr 2025 22:17:45 -0400
+Message-Id: <20250422021759.1941570-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250422021703.1941244-1-sashal@kernel.org>
-References: <20250422021703.1941244-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,55 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.24
+X-stable-base: Linux 6.6.87
 Content-Transfer-Encoding: 8bit
 
-From: Tamura Dai <kirinode0@gmail.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 951a04ab3a2db4029debfa48d380ef834b93207e ]
+[ Upstream commit daff37f00c7506ca322ccfce95d342022f06ec58 ]
 
-Add check for the return value of spi_imx_setupxfer().
-spi_imx->rx and spi_imx->tx function pointer can be NULL when
-spi_imx_setupxfer() return error, and make NULL pointer dereference.
+The hw port ID of phy may change when inserting disks in batches, causing
+the port ID in hisi_sas_port and itct to be inconsistent with the hardware,
+resulting in I/O errors. The solution is to set the device state to gone to
+intercept I/O sent to the device, and then execute linkreset to discard and
+find the disk to re-update its information.
 
- Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
- Call trace:
-  0x0
-  spi_imx_pio_transfer+0x50/0xd8
-  spi_imx_transfer_one+0x18c/0x858
-  spi_transfer_one_message+0x43c/0x790
-  __spi_pump_transfer_message+0x238/0x5d4
-  __spi_sync+0x2b0/0x454
-  spi_write_then_read+0x11c/0x200
-
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Reviewed-by: Carlos Song <carlos.song@nxp.com>
-Link: https://patch.msgid.link/20250417011700.14436-1-kirinode0@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20250312095135.3048379-3-yangxingui@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index 4c31d36f3130a..810541eed213e 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1614,10 +1614,13 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
- 				struct spi_device *spi,
- 				struct spi_transfer *transfer)
- {
-+	int ret;
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
- 	unsigned long hz_per_byte, byte_limit;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index f78c5f8a49ffa..7e64661d215bd 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -911,8 +911,28 @@ static void hisi_sas_phyup_work_common(struct work_struct *work,
+ 		container_of(work, typeof(*phy), works[event]);
+ 	struct hisi_hba *hisi_hba = phy->hisi_hba;
+ 	struct asd_sas_phy *sas_phy = &phy->sas_phy;
++	struct asd_sas_port *sas_port = sas_phy->port;
++	struct hisi_sas_port *port = phy->port;
++	struct device *dev = hisi_hba->dev;
++	struct domain_device *port_dev;
+ 	int phy_no = sas_phy->id;
  
--	spi_imx_setupxfer(spi, transfer);
-+	ret = spi_imx_setupxfer(spi, transfer);
-+	if (ret < 0)
-+		return ret;
- 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
- 
- 	/* flush rxfifo before transfer */
++	if (!test_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags) &&
++	    sas_port && port && (port->id != phy->port_id)) {
++		dev_info(dev, "phy%d's hw port id changed from %d to %llu\n",
++				phy_no, port->id, phy->port_id);
++		port_dev = sas_port->port_dev;
++		if (port_dev && !dev_is_expander(port_dev->dev_type)) {
++			/*
++			 * Set the device state to gone to block
++			 * sending IO to the device.
++			 */
++			set_bit(SAS_DEV_GONE, &port_dev->state);
++			hisi_sas_notify_phy_event(phy, HISI_PHYE_LINK_RESET);
++			return;
++		}
++	}
++
+ 	phy->wait_phyup_cnt = 0;
+ 	if (phy->identify.target_port_protocols == SAS_PROTOCOL_SSP)
+ 		hisi_hba->hw->sl_notify_ssp(hisi_hba, phy_no);
 -- 
 2.39.5
 
