@@ -1,136 +1,257 @@
-Return-Path: <stable+bounces-135038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E60BAA95E9B
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:47:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9734A95EA6
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 08:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE1E91893176
-	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:47:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 402B97A5767
+	for <lists+stable@lfdr.de>; Tue, 22 Apr 2025 06:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4147D1E5207;
-	Tue, 22 Apr 2025 06:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9095D1E5207;
+	Tue, 22 Apr 2025 06:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7lqufgC"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fsc5uC73";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1tAwA+rC";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fsc5uC73";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1tAwA+rC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F103B19AD70;
-	Tue, 22 Apr 2025 06:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9071F1A38E4
+	for <stable@vger.kernel.org>; Tue, 22 Apr 2025 06:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745304424; cv=none; b=gg1r6pRFgMGtPYYvzJMSHSjIIiXsYzeR/7JONHsccJWFv50pKSliJSwneaOB7K1UR25PGDYb95quYUnyH1on9ZxnuQnzHQWw87jZD4vSfkablY6v3iNqdfCuqTq5NtGbOvC+z0BoqnA0cE2zJRS6lYPZ2JL3lGHIJQW1xXSBGFs=
+	t=1745304587; cv=none; b=DOKJuEyTIQiCA2iptGqkSY/nl7Rf5V0Pfu6V4dwAP0Ll0QB9dbHOK7BDzRI+e6t9MteaBYDhX4E4Wgf0WeUbi+pepXbjnGwKGfmFBN4pZibHXVeg8TnJaqT9kedc55TB4Yuz2JuI2WtOIryqeUmg+QOJZAT9lwmUzIkX7yQ0EVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745304424; c=relaxed/simple;
-	bh=248s4YbqUI0bkXldB1s2DNY9icarQmLxLtUIqWeTp48=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=orNi5eT0PAnVyOhuiFcgQCNFnwYGry0dtxTp0LOfmuXW/APmvU8PiEYeziuX4nikI7mjpaT/vR3Lf9aCv3bwwCmr7L4kwYVT+tU1Hyga3gLSDlzklOF6YcJ4j6QCe/PA3K91hqV76lPAwgXzA2fSH8q5k6tvUTc9Nm6ohSyel5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7lqufgC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BC9C4CEE9;
-	Tue, 22 Apr 2025 06:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745304423;
-	bh=248s4YbqUI0bkXldB1s2DNY9icarQmLxLtUIqWeTp48=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P7lqufgC1r1MRyreG2VdkJT8kZZOh/jxKD4YvTBbtx4CISvgjmXjhpqq/9EmYMIhm
-	 jbHU8lSyFbgntE2aIf0qTKkEOjS3pihkKpIlyqnSRHrwxQrLhJkOccoFUW3vHTKM3e
-	 ACSYYEGZHwsAKnkji+/29pGUrDCpnpI/pvji6JaoF6wHWgxqwlcUHwIA3Ni2pB1ejM
-	 hlEWblTydv21Zmy5NsWr2l2KlbGqUTZTqGX5KGIisxiJ99xC1qk1nxFdShm6ih9Yi+
-	 tccEW6nfFNzHcyCrrxMfJMQj/DXeQ38tYTtHOWEm0LbhQfle6j8NQOTaREOubPj/G/
-	 dxaeooQ8vSteg==
-Date: Tue, 22 Apr 2025 08:46:59 +0200
-From: Ingo Molnar <mingo@kernel.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, andrew.cooper3@citrix.com,
-	Len Brown <len.brown@intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] Handle Ice Lake MONITOR erratum
-Message-ID: <aAc7Y5x_frQUB2Gc@gmail.com>
-References: <20250421192205.7CC1A7D9@davehans-spike.ostc.intel.com>
+	s=arc-20240116; t=1745304587; c=relaxed/simple;
+	bh=7q9AbXbiaREeAYOLzFdhlgFdzc2+sC+SVAsDiqFhZ0w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XvRtnu3PgfNRJsC1Ir55VU73kacydAJ3bQJ+mGbMdyFH8Q+CCMTCY5uL/EEMiCq+qI5PHsHNsQDa16eGFPU4zmPmBeSJaNrUdSOqlQQ7h9hYcdxYn9K+/O+kHGwDtisl6AFHjvAF1kxALpSDhoFQF8GjB1MVUeJmnDSoKvgCEXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fsc5uC73; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1tAwA+rC; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fsc5uC73; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1tAwA+rC; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B57B71F7C1;
+	Tue, 22 Apr 2025 06:49:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1745304583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
+	b=fsc5uC73HrShRe/2T/3i/fyV9A4X53/snHFO9bTbThyelVa2DU1aAGA4/Qk/z32eQ3eLCc
+	95fsNZK42DcMN3iyDG0N4kIUVYEoaQS+jCouOCkI9x40QWfVPgs1m8lU7bqnY1x6IsKwvt
+	AXz3CwGmlMro3pKaKS1o5rLZKOfS1BQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1745304583;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
+	b=1tAwA+rC9i+AbIj/c0S25wxVO941Y/h7PBPddWiy+kmev7r0mIe4ONxnborLQK98CfoPzE
+	ZsEX9ufd+/53otAg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1745304583; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
+	b=fsc5uC73HrShRe/2T/3i/fyV9A4X53/snHFO9bTbThyelVa2DU1aAGA4/Qk/z32eQ3eLCc
+	95fsNZK42DcMN3iyDG0N4kIUVYEoaQS+jCouOCkI9x40QWfVPgs1m8lU7bqnY1x6IsKwvt
+	AXz3CwGmlMro3pKaKS1o5rLZKOfS1BQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1745304583;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=63O4idyDvcGMeeE4NHoqdqjJj06hbMU7oCyIkqOgfGA=;
+	b=1tAwA+rC9i+AbIj/c0S25wxVO941Y/h7PBPddWiy+kmev7r0mIe4ONxnborLQK98CfoPzE
+	ZsEX9ufd+/53otAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8CA46137CF;
+	Tue, 22 Apr 2025 06:49:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id X1b/IAc8B2htLgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Tue, 22 Apr 2025 06:49:43 +0000
+Message-ID: <527b7ebd-0a34-4fe0-82fb-9cdd6126e38e@suse.de>
+Date: Tue, 22 Apr 2025 08:49:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250421192205.7CC1A7D9@davehans-spike.ostc.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] video: screen_info: Update framebuffers behind PCI
+ bridges
+To: javierm@redhat.com, iivanov@suse.de
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ "open list:PCI SUBSYSTEM" <linux-pci@vger.kernel.org>
+References: <20250417072751.10125-1-tzimmermann@suse.de>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20250417072751.10125-1-tzimmermann@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:url,suse.de:mid,suse.de:email]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
+cc'ing PCI devs
 
-* Dave Hansen <dave.hansen@linux.intel.com> wrote:
-
-> 
-> From: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> Andrew Cooper reported some boot issues on Ice Lake servers when
-> running Xen that he tracked down to MWAIT not waking up. Do the safe
-> thing and consider them buggy since there's a published erratum.
-> Note: I've seen no reports of this occurring on Linux.
-> 
-> Add Ice Lake servers to the list of shaky MONITOR implementations with
-> no workaround available. Also, before the if() gets too unwieldy, move
-> it over to a x86_cpu_id array. Additionally, add a comment to the
-> X86_BUG_MONITOR consumption site to make it clear how and why affected
-> CPUs get IPIs to wake them up.
-> 
-> There is no equivalent erratum for the "Xeon D" Ice Lakes so
-> INTEL_ICELAKE_D is not affected.
-> 
-> The erratum is called ICX143 in the "3rd Gen Intel Xeon Scalable
-> Processors, Codename Ice Lake Specification Update". It is Intel
-> document 637780, currently available here:
-> 
-> 	https://cdrdv2.intel.com/v1/dl/getContent/637780
-> 
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-> Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Cc: Len Brown <len.brown@intel.com>
-> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: stable@vger.kernel.org
-> 
+Am 17.04.25 um 09:27 schrieb Thomas Zimmermann:
+> Apply bridge window offsets to screen_info framebuffers during
+> relocation. Fixes invalid access to I/O memory.
+>
+> Resources behind a PCI bridge can be located at a certain offset
+> in the kernel's I/O range. The framebuffer memory range stored in
+> screen_info refers to the offset as seen during boot (essentialy 0).
+> During boot up, the kernel may assign a different memory offset to
+> the bridge device and thereby relocating the framebuffer address of
+> the PCI graphics device as seen by the kernel. The information in
+> screen_info must be updated as well.
+>
+> The helper pcibios_bus_to_resource() performs the relocation of
+> the screen_info resource. The result now matches the I/O-memory
+> resource of the PCI graphics device. As before, we store away the
+> information necessary to update the information in screen_info.
+>
+> Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
+> EFI framebuffers") added the code for updating screen_info. It is
+> based on similar functionality that pre-existed in efifb. But efifb
+> did not handle bridges correctly, so the problem presumably exists
+> only on newer systems.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Reported-by: Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
+> Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
+> Tested-by: Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
+> Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.9+
 > ---
-> 
->  b/arch/x86/include/asm/mwait.h |    3 +++
->  b/arch/x86/kernel/cpu/intel.c  |   17 ++++++++++++++---
->  2 files changed, 17 insertions(+), 3 deletions(-)
-> 
-> diff -puN arch/x86/kernel/cpu/intel.c~ICX-MONITOR-bug arch/x86/kernel/cpu/intel.c
-> --- a/arch/x86/kernel/cpu/intel.c~ICX-MONITOR-bug	2025-04-18 13:54:46.022590596 -0700
-> +++ b/arch/x86/kernel/cpu/intel.c	2025-04-18 15:15:19.374365069 -0700
-> @@ -513,6 +513,19 @@ static void init_intel_misc_features(str
->  }
->  
->  /*
-> + * These CPUs have buggy MWAIT/MONITOR implementations that
-> + * usually manifest as hangs or stalls at boot.
-> + */
-> +#define MWAIT_VFM(_vfm)	\
-> +	X86_MATCH_VFM_FEATURE(_vfm, X86_FEATURE_MWAIT, 0)
-> +static const struct x86_cpu_id monitor_bug_list[] = {
-> +	MWAIT_VFM(INTEL_ATOM_GOLDMONT),
-> +	MWAIT_VFM(INTEL_LUNARLAKE_M),
-> +	MWAIT_VFM(INTEL_ICELAKE_X),	/* Erratum ICX143 */
-> +	{},
-> +};
+>   drivers/video/screen_info_pci.c | 17 ++++++++++++++---
+>   1 file changed, 14 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/video/screen_info_pci.c b/drivers/video/screen_info_pci.c
+> index 6c5833517141..c46c75dc3fae 100644
+> --- a/drivers/video/screen_info_pci.c
+> +++ b/drivers/video/screen_info_pci.c
+> @@ -8,7 +8,7 @@
+>   static struct pci_dev *screen_info_lfb_pdev;
+>   static size_t screen_info_lfb_bar;
+>   static resource_size_t screen_info_lfb_offset;
+> -static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
+> +static struct pci_bus_region screen_info_lfb_region;
+>   
+>   static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
+>   {
+> @@ -31,7 +31,7 @@ void screen_info_apply_fixups(void)
+>   	if (screen_info_lfb_pdev) {
+>   		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
+>   
+> -		if (pr->start != screen_info_lfb_res.start) {
+> +		if (pr->start != screen_info_lfb_region.start) {
+>   			if (__screen_info_relocation_is_valid(si, pr)) {
+>   				/*
+>   				 * Only update base if we have an actual
+> @@ -69,10 +69,21 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
+>   
+>   	for (i = 0; i < numres; ++i) {
+>   		struct resource *r = &res[i];
+> +		struct pci_bus_region bus_region = {
+> +			.start = r->start,
+> +			.end = r->end,
+> +		};
+>   		const struct resource *pr;
+>   
+>   		if (!(r->flags & IORESOURCE_MEM))
+>   			continue;
+> +
+> +		/*
+> +		 * Translate the address to resource if the framebuffer
+> +		 * is behind a PCI bridge.
+> +		 */
+> +		pcibios_bus_to_resource(pdev->bus, r, &bus_region);
+> +
+>   		pr = pci_find_resource(pdev, r);
+>   		if (!pr)
+>   			continue;
+> @@ -85,7 +96,7 @@ static void screen_info_fixup_lfb(struct pci_dev *pdev)
+>   		screen_info_lfb_pdev = pdev;
+>   		screen_info_lfb_bar = pr - pdev->resource;
+>   		screen_info_lfb_offset = r->start - pr->start;
+> -		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
+> +		memcpy(&screen_info_lfb_region, &bus_region, sizeof(screen_info_lfb_region));
+>   	}
+>   }
+>   DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
 
-While it's just an internal helper, macro names should still be 
-intuitive:
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-  s/MWAIT_VFM
-   /VFM_MWAIT_BUG
-
-or so?
-
-Thanks,
-
-	Ingo
 
