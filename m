@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E9DA98DD4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F24DA99174
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6361B81B73
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF54920166
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8D0280A52;
-	Wed, 23 Apr 2025 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7712D288CAB;
+	Wed, 23 Apr 2025 15:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeakNRbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fcdy3kke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C14827FD7A;
-	Wed, 23 Apr 2025 14:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338D33A1B6;
+	Wed, 23 Apr 2025 15:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419684; cv=none; b=ncOHdibtP7c3g3HWW/Tmxk16RyfTQKH7tT8kFVddk4JGeBsuyXmIzIQa4zcDCLAeSr+iRJMtbsXrY3SdKmoKG2UwljS+GlOFpq35GxyH1fcf4pxzmmoybBzMTRnZ1cTIYGTGqjul77rQQGYFHzPp1M23fSCFY04vV97aHE+dj4k=
+	t=1745421304; cv=none; b=RmbvQfrKekJ9Grzq0OvkoerA81mn1Cfn5b8Y2KtXsc5Muk0AR69VBy3Qyf+ZNSD7mZvBHTE6Vclq8rUaPHZWSuqBtMMYrY1XfovXc0Exq+BKrodOkuU44jjLVDG+IvO1ExM01S8qgpaSlU/eJneRmhTn0e7f/GGczaIYuTI7fqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419684; c=relaxed/simple;
-	bh=4fRTpV2Sl2XsDPQTuqdC0ecrqCQFRlFDXTiTHDtl9+I=;
+	s=arc-20240116; t=1745421304; c=relaxed/simple;
+	bh=F6tfxhEiBC7R8h5doMYo7Z3UQ+/QE2ZJra1ojHZwwa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNS7pxb4GLUwMvNrTdkNiVSX2bTnVxpEnMUbotjT0kiiwyH0ekIQiTZKKBkxm4G6LWjTTm3zF8ygsH1QejJ1zKg+Qili9BTASyGYxU6tgTyHcsaPivOq8WsaW3hxQzXivku89tIBxTwjCiepNY+CoKhAQR5rcQcJ7yqvd8Tq2qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeakNRbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F06C4CEE2;
-	Wed, 23 Apr 2025 14:48:03 +0000 (UTC)
+	 MIME-Version; b=ORIvhRm7G6habayjrA9UcMRHr38bOrte6YKy0kI2cxub7m7EPsXiC+jS/BICl1hCJ/rqoUJ5RUrCKjLuCmh2nRG7H1Erqjd0zItiIuFQYm/UFeFaz31UZvsqolhyUcWosEyOP2RUJ94oiTMhpA1FaSBoBEq1NCgdveW6Xkpamak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fcdy3kke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B934FC4CEE2;
+	Wed, 23 Apr 2025 15:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419684;
-	bh=4fRTpV2Sl2XsDPQTuqdC0ecrqCQFRlFDXTiTHDtl9+I=;
+	s=korg; t=1745421304;
+	bh=F6tfxhEiBC7R8h5doMYo7Z3UQ+/QE2ZJra1ojHZwwa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eeakNRbmb69/gFH7dIS+dazWMtiSzSdXzE/hDev75TCOgSMv0hMbgrYqPA4QhN/rk
-	 XOmLTagHBZUG0tSzvdh9PpH3EAp9+74oaa8utdW9f0lx+VXqUqEy9EEa5Bxry6EWUp
-	 CIIjQrgGdLfsEl9gPElVGmK7bfQWH26WpqyeeoGE=
+	b=Fcdy3kkez0UYWyGhl5XY58Q3jNqsT5KZiO72PXBW4oe2d/QUYRUgCkCLiG/d+bEf4
+	 MzT3SrOD4Pyhyr0l4LUkx8NmcjNB3wv+jNzMh5NHgZqVlTojQdQ09+dsJJGr2YjIt8
+	 w1inwwZbnUvlnMwU/ba4zVZHppfcF4bJ9Eu9riXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/223] pds_core: fix memory leak in pdsc_debugfs_add_qcq()
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 125/291] mtd: inftlcore: Add error check for inftl_read_oob()
 Date: Wed, 23 Apr 2025 16:41:54 +0200
-Message-ID: <20250423142618.841147872@linuxfoundation.org>
+Message-ID: <20250423142629.509230094@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 8b82f656826c741d032490b089a5638c33f2c91d ]
+commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
 
-The memory allocated for intr_ctrl_regset, which is passed to
-debugfs_create_regset32() may not be cleaned up when the driver is
-removed. Fix that by using device managed allocation for it.
+In INFTL_findwriteunit(), the return value of inftl_read_oob()
+need to be checked. A proper implementation can be
+found in INFTL_deleteblock(). The status will be set as
+SECTOR_IGNORE to break from the while-loop correctly
+if the inftl_read_oob() fails.
 
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://patch.msgid.link/20250409054450.48606-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/debugfs.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mtd/inftlcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
-index ac37a4e738ae7..04c5e3abd8d70 100644
---- a/drivers/net/ethernet/amd/pds_core/debugfs.c
-+++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
-@@ -154,8 +154,9 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
- 		debugfs_create_u32("index", 0400, intr_dentry, &intr->index);
- 		debugfs_create_u32("vector", 0400, intr_dentry, &intr->vector);
+--- a/drivers/mtd/inftlcore.c
++++ b/drivers/mtd/inftlcore.c
+@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
+ 		silly = MAX_LOOPS;
  
--		intr_ctrl_regset = kzalloc(sizeof(*intr_ctrl_regset),
--					   GFP_KERNEL);
-+		intr_ctrl_regset = devm_kzalloc(pdsc->dev,
-+						sizeof(*intr_ctrl_regset),
-+						GFP_KERNEL);
- 		if (!intr_ctrl_regset)
- 			return;
- 		intr_ctrl_regset->regs = intr_ctrl_regs;
--- 
-2.39.5
-
+ 		while (thisEUN <= inftl->lastEUN) {
+-			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
+-				       blockofs, 8, &retlen, (char *)&bci);
+-
+-			status = bci.Status | bci.Status1;
++			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
++				       blockofs, 8, &retlen, (char *)&bci) < 0)
++				status = SECTOR_IGNORE;
++			else
++				status = bci.Status | bci.Status1;
+ 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
+ 					block , writeEUN, status);
+ 
 
 
 
