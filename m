@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953C3A98E95
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76251A98F8E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F035A7039
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6992C1699CA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E109927CB12;
-	Wed, 23 Apr 2025 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92A7263F2D;
+	Wed, 23 Apr 2025 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqyM94l9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p42kVhjE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D085202978;
-	Wed, 23 Apr 2025 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F7B279345;
+	Wed, 23 Apr 2025 15:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420081; cv=none; b=e/toSsk6TSQG61sN1B2AqWsEpAGjwI1S24Wk+nleDL+mHK47uC+jnx/qOqOX5dL8F3w7WFQeWVuW6MF7GGnFsIUk5MstS8daMuEG/dOiybkc0qtPKVLAiOXo+Ge5oIsrLtpv9aeLDCalhQhbEOoD4vBaUhl51HWca034YwGskS0=
+	t=1745420598; cv=none; b=GTxQnfZcKDSi551XKyTe2/7ZTCHP5iC7e24qDH4lK2AVbv0uWWKE3uraRJbGykYyS7XFGgzhiFxzvS9hA0U+ss6BsFEPfTBzP9e49y/YlUaQ5FU93H2cJTacF2lsOe1tiDtzWXihZdm8stjcjNzY/A+rpcKDgpyP+GsUTtkBizk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420081; c=relaxed/simple;
-	bh=GmYXDeDtUD6Z6y6WtbUGap337zsZ6twOYS1OpoqCaP0=;
+	s=arc-20240116; t=1745420598; c=relaxed/simple;
+	bh=k0D0ps6qVfUEtLu++wEmkG+cAV5PqsuhoEWBBFDLFQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfugHuV+2r1sesw4OtqIgVjs/Ul5puT652dd6lTX4428wvU9jSKogpGYRvpuqBld6tiZzv/hr8rT/aR1qcPYOjQwapiXvpE0aNBTUpHHfqipNnBR29az0tRGB8WXUaVQNNIDp4dzQWmnQJokMlnjoj2xc0blS0qQE71SE1rOlm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqyM94l9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D18EC4CEE2;
-	Wed, 23 Apr 2025 14:54:41 +0000 (UTC)
+	 MIME-Version; b=JEFBVvjjAqtPoR/bIKz7XndIfADP/eHBbmzM8B4R/SK2H+2BlJp7s6d/7+pIeNLLn0YAUKLahPIJxEgXsQ4vvGGNsaGHHF9je0WUMRKaD+hGz2FTzMSjmY6nLKLwPHNMYwrdzJacoY6tUi+DyJ0zNjfPxrYFgw+6q48SMZrwCm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p42kVhjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08704C4CEE3;
+	Wed, 23 Apr 2025 15:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420081;
-	bh=GmYXDeDtUD6Z6y6WtbUGap337zsZ6twOYS1OpoqCaP0=;
+	s=korg; t=1745420598;
+	bh=k0D0ps6qVfUEtLu++wEmkG+cAV5PqsuhoEWBBFDLFQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kqyM94l9j/XGACzq3lbL92S3+p2sDTPsy9zrIL3E/ufHFilNbRgqNS//J+nxpLvFh
-	 CMa+/GQBRXW1BQjmndxgbgq5Iz7CWJsVQcsljTHK86jik+t2Bfee0yUS9/ZcX1TGrm
-	 jzrzYu313p8Lncc+Bhc5kA+WJBezJamaZ+y/8Iy8=
+	b=p42kVhjEziYzdkgtWvnUI3aWbj8aF7l7+9VOb1FVNYhp44yQYnN20mv46kHynXf6s
+	 P560mxlZPTqmwoks7axi2GbcUP3PRT1Ubef/mjBQ1NtcIuCC5//wD7m/Pqu9yHncvY
+	 F3kBSbeuwAbM3HsEqAS8bRTjApWQ+ji3Sw1WdnKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 098/223] nfs: add missing selections of CONFIG_CRC32
+	Manikantan R <quic_manrav@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.14 106/241] ASoC: codecs:lpass-wsa-macro: Fix logic of enabling vi channels
 Date: Wed, 23 Apr 2025 16:42:50 +0200
-Message-ID: <20250423142621.108209476@linuxfoundation.org>
+Message-ID: <20250423142624.907501170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +63,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit cd35b6cb46649750b7dbd0df0e2d767415d8917b ]
+commit 7648beb65600220996ebb2da207610b1ff9b735e upstream.
 
-nfs.ko, nfsd.ko, and lockd.ko all use crc32_le(), which is available
-only when CONFIG_CRC32 is enabled.  But the only NFS kconfig option that
-selected CONFIG_CRC32 was CONFIG_NFS_DEBUG, which is client-specific and
-did not actually guard the use of crc32_le() even on the client.
+Existing code only configures one of WSA_MACRO_TX0 or WSA_MACRO_TX1
+paths eventhough we enable both of them. Fix this bug by adding proper
+checks and rearranging some of the common code to able to allow setting
+both TX0 and TX1 paths
 
-The code worked around this bug by only actually calling crc32_le() when
-CONFIG_CRC32 is built-in, instead hard-coding '0' in other cases.  This
-avoided randconfig build errors, and in real kernels the fallback code
-was unlikely to be reached since CONFIG_CRC32 is 'default y'.  But, this
-really needs to just be done properly, especially now that I'm planning
-to update CONFIG_CRC32 to not be 'default y'.
+Without this patch only one channel gets enabled in VI path instead of 2
+channels. End result would be 1 channel recording instead of 2.
 
-Therefore, make CONFIG_NFS_FS, CONFIG_NFSD, and CONFIG_LOCKD select
-CONFIG_CRC32.  Then remove the fallback code that becomes unnecessary,
-as well as the selection of CONFIG_CRC32 from CONFIG_NFS_DEBUG.
-
-Fixes: 1264a2f053a3 ("NFS: refactor code for calculating the crc32 hash of a filehandle")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Co-developed-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/Kconfig           | 1 +
- fs/nfs/Kconfig       | 2 +-
- fs/nfs/internal.h    | 7 -------
- fs/nfs/nfs4session.h | 4 ----
- fs/nfsd/Kconfig      | 1 +
- fs/nfsd/nfsfh.h      | 7 -------
- include/linux/nfs.h  | 7 -------
- 7 files changed, 3 insertions(+), 26 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |  108 +++++++++++++++++++++----------------
+ 1 file changed, 63 insertions(+), 45 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index aae170fc27952..3117304676331 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -369,6 +369,7 @@ config GRACE_PERIOD
- config LOCKD
- 	tristate
- 	depends on FILE_LOCKING
-+	select CRC32
- 	select GRACE_PERIOD
- 
- config LOCKD_V4
-diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
-index d3f76101ad4b9..07932ce9246c1 100644
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -2,6 +2,7 @@
- config NFS_FS
- 	tristate "NFS client support"
- 	depends on INET && FILE_LOCKING && MULTIUSER
-+	select CRC32
- 	select LOCKD
- 	select SUNRPC
- 	select NFS_COMMON
-@@ -196,7 +197,6 @@ config NFS_USE_KERNEL_DNS
- config NFS_DEBUG
- 	bool
- 	depends on NFS_FS && SUNRPC_DEBUG
--	select CRC32
- 	default y
- 
- config NFS_DISABLE_UDP_SUPPORT
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 6bcc4b0e00ab7..8b568a514fd1c 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -895,18 +895,11 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
- 	return ((u64)ts->tv_sec << 30) + ts->tv_nsec;
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1459,6 +1459,67 @@ static void wsa_macro_mclk_enable(struct
+ 	}
  }
  
--#ifdef CONFIG_CRC32
- static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
++static void wsa_macro_enable_disable_vi_sense(struct snd_soc_component *component, bool enable,
++						u32 tx_reg0, u32 tx_reg1, u32 val)
++{
++	if (enable) {
++		/* Enable V&I sensing */
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++	} else {
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++	}
++}
++
++static void wsa_macro_enable_disable_vi_feedback(struct snd_soc_component *component,
++						 bool enable, u32 rate)
++{
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
++
++	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX0_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX1_SPKR_PROT_PATH_CTL, rate);
++
++	if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX2_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX3_SPKR_PROT_PATH_CTL, rate);
++}
++
+ static int wsa_macro_mclk_event(struct snd_soc_dapm_widget *w,
+ 				struct snd_kcontrol *kcontrol, int event)
  {
- 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
- 				NFS4_STATEID_OTHER_SIZE);
- }
--#else
--static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
--{
--	return 0;
--}
--#endif
- 
- static inline bool nfs_error_is_fatal(int err)
+@@ -1475,7 +1536,6 @@ static int wsa_macro_enable_vi_feedback(
  {
-diff --git a/fs/nfs/nfs4session.h b/fs/nfs/nfs4session.h
-index 351616c61df54..f9c291e2165cd 100644
---- a/fs/nfs/nfs4session.h
-+++ b/fs/nfs/nfs4session.h
-@@ -148,16 +148,12 @@ static inline void nfs4_copy_sessionid(struct nfs4_sessionid *dst,
- 	memcpy(dst->data, src->data, NFS4_MAX_SESSIONID_LEN);
- }
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+-	u32 tx_reg0, tx_reg1;
+ 	u32 rate_val;
  
--#ifdef CONFIG_CRC32
- /*
-  * nfs_session_id_hash - calculate the crc32 hash for the session id
-  * @session - pointer to session
-  */
- #define nfs_session_id_hash(sess_id) \
- 	(~crc32_le(0xFFFFFFFF, &(sess_id)->data[0], sizeof((sess_id)->data)))
--#else
--#define nfs_session_id_hash(session) (0)
--#endif
- #else /* defined(CONFIG_NFS_V4_1) */
+ 	switch (wsa->pcm_rate_vi) {
+@@ -1499,56 +1559,14 @@ static int wsa_macro_enable_vi_feedback(
+ 		break;
+ 	}
  
- static inline int nfs4_init_session(struct nfs_client *clp)
-diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
-index c0bd1509ccd48..9eb2e795c43c4 100644
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -4,6 +4,7 @@ config NFSD
- 	depends on INET
- 	depends on FILE_LOCKING
- 	depends on FSNOTIFY
-+	select CRC32
- 	select LOCKD
- 	select SUNRPC
- 	select EXPORTFS
-diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
-index 876152a91f122..5103c2f4d2253 100644
---- a/fs/nfsd/nfsfh.h
-+++ b/fs/nfsd/nfsfh.h
-@@ -267,7 +267,6 @@ static inline bool fh_fsid_match(const struct knfsd_fh *fh1,
- 	return true;
- }
+-	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
+-	} else if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
+-	}
+-
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+ 		/* Enable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		wsa_macro_enable_disable_vi_feedback(component, true, rate_val);
+ 		break;
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		/* Disable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		wsa_macro_enable_disable_vi_feedback(component, false, rate_val);
+ 		break;
+ 	}
  
--#ifdef CONFIG_CRC32
- /**
-  * knfsd_fh_hash - calculate the crc32 hash for the filehandle
-  * @fh - pointer to filehandle
-@@ -279,12 +278,6 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
- {
- 	return ~crc32_le(0xFFFFFFFF, fh->fh_raw, fh->fh_size);
- }
--#else
--static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
--{
--	return 0;
--}
--#endif
- 
- /**
-  * fh_clear_pre_post_attrs - Reset pre/post attributes
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index 9ad727ddfedb3..0906a0b40c6aa 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -55,7 +55,6 @@ enum nfs3_stable_how {
- 	NFS_INVALID_STABLE_HOW = -1
- };
- 
--#ifdef CONFIG_CRC32
- /**
-  * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-  * @fh - pointer to filehandle
-@@ -67,10 +66,4 @@ static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
- {
- 	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
- }
--#else /* CONFIG_CRC32 */
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return 0;
--}
--#endif /* CONFIG_CRC32 */
- #endif /* _LINUX_NFS_H */
--- 
-2.39.5
-
 
 
 
