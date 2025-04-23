@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03480A99048
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7ABA9929B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570DC1B61AC6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CBE9922CD6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF1028C5AD;
-	Wed, 23 Apr 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DE5298998;
+	Wed, 23 Apr 2025 15:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kd4u6y5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXUIXtae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82028B518;
-	Wed, 23 Apr 2025 15:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1496B189F39;
+	Wed, 23 Apr 2025 15:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420693; cv=none; b=Z8uKltUqVKBBFjbw3F82qqiTR/bnTBocsGt/OlgBJdlGPdP6pRqPNyGZK4v+fG2zEk4xWKN175nnjxU32uyGAMbwMz4UliVO+iCrbAI8+LNWIoNcyi+40/BNy3i38e84Uwg7gJCrXHHXOElOht37BYaXgWRgtU3+b2b+dcvxIhk=
+	t=1745421750; cv=none; b=tqSqCdXaqhiq5yU9dXKkYZA6UDzSwtbibWAjFvBZrNVmme1mlmpU4ds9c1zSFxiONV1nzi2Y4co15c5vzqPBukdOZFbMvRjQJN1Z2TWHShocDf3GYSZR2X6wcyI6uCLvr8T2+FOF6QoGN4V90AsF6KxKn4t8RZ5dr8jG1pFCrro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420693; c=relaxed/simple;
-	bh=PC25LzY+o8yviPD7OW2JMthnHMltgKS6+FBrnIOgTVE=;
+	s=arc-20240116; t=1745421750; c=relaxed/simple;
+	bh=vYMBSWXINaYq945sryZJqNb5vdrtYb3awEbysn+c3eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aMiOdArt+C6dfYyKDUe5xDwlVWp5a1MIRQyTjSYAuWveCxY0lW5/1Fl3BhllCUGx7/xgjHooX/nkLhHlZtMCQJWenpjEhkit2US0ZS6wT/sJwvs73gqc4/jiSVBDqHwqCS8kBt1YMTLUnO6GSy5iRxFU6r1j3iTIJm/HtxOk1ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kd4u6y5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5F0C4CEE2;
-	Wed, 23 Apr 2025 15:04:52 +0000 (UTC)
+	 MIME-Version; b=YZjgD1UUC8tQdV3rq8T2f+eZsP+A9wUP1+nLrI+Ka7M8Sg+I2UoOHJsXud/K3MVM/garsbaahvmNlN3JKE0Qo4nPfc9L8ry9zcRUXNvZ3HcRvEU+WAB/LW8iQ0JRXaPtew1f6Sv2r5PGUsPV00UjlRVbj6kYuljdx/wvfya2C8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXUIXtae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAD3C4CEE8;
+	Wed, 23 Apr 2025 15:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420692;
-	bh=PC25LzY+o8yviPD7OW2JMthnHMltgKS6+FBrnIOgTVE=;
+	s=korg; t=1745421750;
+	bh=vYMBSWXINaYq945sryZJqNb5vdrtYb3awEbysn+c3eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kd4u6y5kAYYS25W6LDR3n4/xyZZjimhX0vYUDuzPmn4L1lvP2LkSu7FWBnK11ha4D
-	 zEX41Q/MeME4Y8hN6pLqLR1+wMqbIB6hFbzcHki8jUv0XEJTWYw/Z9jBJ6LtSsF3S/
-	 dvSjybLq46bOXnoP+sk9Zm9G8OsvNnQG4quNS0W4=
+	b=oXUIXtaedntf4/3xDNpGYv5dMLo/aOs1VlSFcJLv7ZB/1hyKRApvi+FVrKIaLH9aw
+	 Lm4/81g2PREELI1EvK1gv+qrAYdJ5ARhUUWqKUbxPte8Qx+Zq3B9SpYgNa8Zi4vPnM
+	 b4whLgNJ06N6JNmaL4YBNG0fZB/HFZroCeU75NiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.14 099/241] rust: disable `clippy::needless_continue`
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 174/291] RDMA/hns: Fix wrong maximum DMA segment size
 Date: Wed, 23 Apr 2025 16:42:43 +0200
-Message-ID: <20250423142624.622323835@linuxfoundation.org>
+Message-ID: <20250423142631.494334950@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 0866ee8e50f017731b80891294c0edd0f5fcd0a9 upstream.
+[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
 
-Starting with Rust 1.86.0, Clippy's `needless_continue` lint complains
-about the last statement of a loop [1], including cases like:
+Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
 
-    while ... {
-        match ... {
-            ... if ... => {
-                ...
-                return ...;
-            }
-            _ => continue,
-        }
-    }
-
-as well as nested `match`es in a loop.
-
-One solution is changing `continue` for `()` [2], but arguably using
-`continue` shows the intent better when it is alone in an arm like that.
-
-Moreover, I am not sure we want to force people to try to find other
-ways to write the code either, in cases when that applies.
-
-In addition, the help text does not really apply in the new cases the
-lint has introduced, e.g. here one cannot simply "drop" the expression:
-
-    warning: this `continue` expression is redundant
-      --> rust/macros/helpers.rs:85:18
-       |
-    85 |             _ => continue,
-       |                  ^^^^^^^^
-       |
-       = help: consider dropping the `continue` expression
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_continue
-       = note: requested on the command line with `-W clippy::needless-continue`
-
-The examples in the documentation do not show a case like this, either,
-so the second "help" line does not help.
-
-In addition, locally disabling the lint is not possible with `expect`,
-since the behavior differs across versions. Using `allow` would be
-possible, but, even then, an extra line just for this is a bit too much,
-especially if there are other ways to satisfy the lint.
-
-Finally, the lint is still in the "pedantic" category and disabled by
-default by Clippy.
-
-Thus disable the lint, at least for the time being.
-
-Feedback was submitted to upstream Clippy, in case this can be improved
-or perhaps the lint split into several [3].
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust-clippy/pull/13891 [1]
-Link: https://lore.kernel.org/rust-for-linux/20250401221205.52381-1-ojeda@kernel.org/ [2]
-Link: https://github.com/rust-lang/rust-clippy/issues/14536 [3]
-Link: https://lore.kernel.org/r/20250403163805.67770-1-ojeda@kernel.org
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
+Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -480,7 +480,6 @@ export rust_common_flags := --edition=20
- 			    -Wclippy::ignored_unit_patterns \
- 			    -Wclippy::mut_mut \
- 			    -Wclippy::needless_bitwise_bool \
--			    -Wclippy::needless_continue \
- 			    -Aclippy::needless_lifetimes \
- 			    -Wclippy::no_mangle_with_rust_abi \
- 			    -Wclippy::undocumented_unsafe_blocks \
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 5106b3ce89f08..eae22ac42e05d 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -642,7 +642,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
+ 		if (ret)
+ 			return ret;
+ 	}
+-	dma_set_max_seg_size(dev, UINT_MAX);
++	dma_set_max_seg_size(dev, SZ_2G);
+ 	ret = ib_register_device(ib_dev, "hns_%d", dev);
+ 	if (ret) {
+ 		dev_err(dev, "ib_register_device failed!\n");
+-- 
+2.39.5
+
 
 
 
