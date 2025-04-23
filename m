@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-135509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F127DA98EA9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9CACA98EAF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 698465A8113
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 835EC3BA463
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D624927FD5B;
-	Wed, 23 Apr 2025 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2596B27D76E;
+	Wed, 23 Apr 2025 14:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKz5aSGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRBXwfKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9205718DB17;
-	Wed, 23 Apr 2025 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F3E18DB17;
+	Wed, 23 Apr 2025 14:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420110; cv=none; b=UMFMLlnAI+BtnFZik90fBNqZx6TMi0cP0Q/7Se0RDwEFbd00nzaFBiQB8E/ZlyVvSln0Zg5fbcasykyv5IyCqhDeCia03yAKAg6mOaNphoHamNxngr8g2LgfvRqzY6peYJtof68qHNB9QvIE3XTioT+NgPMVSWRwkCnyzKzaqIE=
+	t=1745420123; cv=none; b=JE0diAD3Zm05EsBtZigWnzrVOhLmTXpfe8AUmToJBcEBJg1XEyLRnWtc3UtDezcOw9aC5P/yMdFxyBkTPe3dkr6sLyL2HLBssTJJhwlPvIegmlkSum9o5BbplIKoBG4b+xsVRFa3nL1GEgeLqNgO+YeAS1u432HCpBQhCAlIIhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420110; c=relaxed/simple;
-	bh=sNaoZ+t3TBlAyfYoxd1tJKvGraclh2Thctv30fubKUQ=;
+	s=arc-20240116; t=1745420123; c=relaxed/simple;
+	bh=mPe1EJBcWzcp15OSicOrLMvdgJVQhsBf7QcLik08mzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9pvnRJaYpgB54v2cq2CXvP9qPfuf4a9KyhSmC0ZTliy17VJiYX65Iq1e6Vwelsfh90DHiHEEqM0wtc+ZXzFL6gqL3BozhWkh5LQC3Ki+KWZXZVnW0FSs0yVgSNK7oUG5Fr7T6Jm80sZEVKQEepc0E/AW0HvT9n6a9YCZXuGVo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LKz5aSGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C36C4CEE2;
-	Wed, 23 Apr 2025 14:55:09 +0000 (UTC)
+	 MIME-Version; b=LKffdsvtd9wOLaGb1J0GppRXWk9VwJGyzWJenLjUhJs2k5qshUaERDbqP4kOXQrKK9VcbZFrYyxmnMgt1eJHvaD640PRumvsT2p52GJtHkhyzMpKcCKC2lBThkjp8MrBbwIoTP3Jzho7C+Hn8Pn5R4qwYX+mT+uVJw6N/R0SzHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRBXwfKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A951C4CEE2;
+	Wed, 23 Apr 2025 14:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420110;
-	bh=sNaoZ+t3TBlAyfYoxd1tJKvGraclh2Thctv30fubKUQ=;
+	s=korg; t=1745420123;
+	bh=mPe1EJBcWzcp15OSicOrLMvdgJVQhsBf7QcLik08mzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKz5aSGANGsG3y6dTgsz9usCaYQA30ixYFp2Ar1u7KZi/vk7W8PSfT9SDPWYEBpFG
-	 XcvTt1w6nnmtRLp2BM1T5VQ+K/uq6jsYdYBtj+8zSVyUyL32j8N8QEux1H0i/LOv/0
-	 HJaHPUex3kR8Evr9kTP7bIuZHOJRbNxoWL5Fkrxw=
+	b=xRBXwfKQhnq/xUvwa9uOMnKIUkDHfuoeSr+29j53uqYEk9l72Qa5BhrcHfwrW4UlA
+	 Q1dg/0Tfcu15cyx+XMTVP2CHcOkf87qIxGjjpsT8oenoXydfLWcsU7o77trbZ1OuTE
+	 NeuT2VUpYsRaPohAbqTxo0PqncmIN5geeNX3eDKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	kernel test robot <oliver.sang@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/393] pm: cpupower: bench: Prevent NULL dereference on malloc failure
-Date: Wed, 23 Apr 2025 16:38:55 +0200
-Message-ID: <20250423142644.908303201@linuxfoundation.org>
+Subject: [PATCH 6.6 040/393] x86/mm: Clear _PAGE_DIRTY for kernel mappings when we clear _PAGE_RW
+Date: Wed, 23 Apr 2025 16:38:56 +0200
+Message-ID: <20250423142644.949341713@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,35 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
+[ Upstream commit c1fcf41cf37f7a3fd3bbf6f0c04aba3ea4258888 ]
 
-If malloc returns NULL due to low memory, 'config' pointer can be NULL.
-Add a check to prevent NULL dereference.
+The bit pattern of _PAGE_DIRTY set and _PAGE_RW clear is used to mark
+shadow stacks.  This is currently checked for in mk_pte() but not
+pfn_pte().  If we add the check to pfn_pte(), it catches vfree()
+calling set_direct_map_invalid_noflush() which calls
+__change_page_attr() which loads the old protection bits from the
+PTE, clears the specified bits and uses pfn_pte() to construct the
+new PTE.
 
-Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+We should, therefore, for kernel mappings, clear the _PAGE_DIRTY bit
+consistently whenever we clear _PAGE_RW.  I opted to do it in the
+callers in case we want to use __change_page_attr() to create shadow
+stacks inside the kernel at some point in the future.  Arguably, we
+might also want to clear _PAGE_ACCESSED here.
+
+Note that the 3 functions involved:
+
+  __set_pages_np()
+  kernel_map_pages_in_pgd()
+  kernel_unmap_pages_in_pgd()
+
+Only ever manipulate non-swappable kernel mappings, so maintaining
+the DIRTY:1|RW:0 special pattern for shadow stacks and DIRTY:0
+pattern for non-shadow-stack entries can be maintained consistently
+and doesn't result in the unintended clearing of a live dirty bit
+that could corrupt (destroy) dirty bit information for user mappings.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/174051422675.10177.13226545170101706336.tip-bot2@tip-bot2
+Closes: https://lore.kernel.org/oe-lkp/202502241646.719f4651-lkp@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/bench/parse.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/mm/pat/set_memory.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
-index e63dc11fa3a53..48e25be6e1635 100644
---- a/tools/power/cpupower/bench/parse.c
-+++ b/tools/power/cpupower/bench/parse.c
-@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
- struct config *prepare_default_config()
- {
- 	struct config *config = malloc(sizeof(struct config));
-+	if (!config) {
-+		perror("malloc");
-+		return NULL;
-+	}
+diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+index 2d850f6bae701..525794f1eefb3 100644
+--- a/arch/x86/mm/pat/set_memory.c
++++ b/arch/x86/mm/pat/set_memory.c
+@@ -2374,7 +2374,7 @@ static int __set_pages_np(struct page *page, int numpages)
+ 				.pgd = NULL,
+ 				.numpages = numpages,
+ 				.mask_set = __pgprot(0),
+-				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW),
++				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
+ 				.flags = CPA_NO_CHECK_ALIAS };
  
- 	dprintf("loading defaults\n");
+ 	/*
+@@ -2453,7 +2453,7 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
+ 		.pgd = pgd,
+ 		.numpages = numpages,
+ 		.mask_set = __pgprot(0),
+-		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
++		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW|_PAGE_DIRTY)),
+ 		.flags = CPA_NO_CHECK_ALIAS,
+ 	};
+ 
+@@ -2496,7 +2496,7 @@ int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
+ 		.pgd		= pgd,
+ 		.numpages	= numpages,
+ 		.mask_set	= __pgprot(0),
+-		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW),
++		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
+ 		.flags		= CPA_NO_CHECK_ALIAS,
+ 	};
  
 -- 
 2.39.5
