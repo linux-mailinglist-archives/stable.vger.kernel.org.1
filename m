@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-135904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F200A9913B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CF8DA98DA2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B1E924C4A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD34B44546D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DEB2820C2;
-	Wed, 23 Apr 2025 15:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF6E27FD65;
+	Wed, 23 Apr 2025 14:47:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSVIJ/bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSeKAgHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A4E292924;
-	Wed, 23 Apr 2025 15:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37053281363;
+	Wed, 23 Apr 2025 14:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421147; cv=none; b=C96yYZ0yLanNe2w1aqx0KDcAZnUXKRVNbaUrDdKCrfCQysE546EUxQIjGvVV4aj/WNY0g3L8ud8/ScOSZk+RYk9+x9M1V1N0lXazSEP5HAO1WTgLv4oAMdOcRwvfI3qbUWzUP8rtczaUjFmddtw/BoGbP+qRc4EyeMEuKeReq+I=
+	t=1745419638; cv=none; b=gPG8Xb2EqAHdh7lQfwWH04J0JzVw+tpKZezzL21TUqPU38xHypXtWbjpf7YbhZG8INV6ce+OVq4+UdBWOSihYIioeOmc2tbs2ypw1R/+YXQ5DKPcudYzvlBTQHV3o9blKb/P3uy5XHJvks2P5/FJOW9XtK7EY/user/mQAfEJEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421147; c=relaxed/simple;
-	bh=12c78STudlL1M+UovmdfpkqIW1DHg5kEpDUABzLXDrg=;
+	s=arc-20240116; t=1745419638; c=relaxed/simple;
+	bh=al22d6oOkiYcTYrMRQTqtT5UV/KyCb7y5/wJLQROtVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NhYLH2DpGeTR9gvpSec900biYzVzPR7mXI40xZeExEeKh4r+4gOG6bnJZ1xDRjiTZWpWCTJ7TOV4rViGt4vbGwuCBnLZCrdleTLmNZcGG65MtpOshKkjUIK+wmss5i+tNA+TkuI+FH8SodphFx/HLIZo7wEuhqiDeKUIIoV8TtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSVIJ/bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB2F3C4CEE2;
-	Wed, 23 Apr 2025 15:12:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MoKJPnH5D+HVSqMTsflj3ryqaB7k46n9TjYGwKvuqcPBjn6Dqm4ZRBfhdJGT1m7skp4aX6qZ2/hTB7YTGuq5KWbNdCr6kkITfcSGOV8bd/SsnqQDWp3i8hG3QS/FXYhVDi3InLqOVs3fZ3t7HsaN/J8KXAXSf6Li4N8Ceqc0LvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSeKAgHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AE2C4CEE2;
+	Wed, 23 Apr 2025 14:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421147;
-	bh=12c78STudlL1M+UovmdfpkqIW1DHg5kEpDUABzLXDrg=;
+	s=korg; t=1745419636;
+	bh=al22d6oOkiYcTYrMRQTqtT5UV/KyCb7y5/wJLQROtVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSVIJ/bvaAjb6Qnl1R8qsisHhDexOY2W1wF8U8B6JRq9z/vPE536V8oY4JtluefJs
-	 MzBtFfi+zZ90KlI0CtzXKOaLyNUZCdYf0UfGj6NVh8gPR7HRkJaj8UluVdpFHbxu9X
-	 LixGF3fOovNetlHN0CzhrOGLizrkj9w7Dl5E2lic=
+	b=cSeKAgHqJRQaTKn9cu5N3dWI0Xfo8HeWjBj7ohcHqnSbpU1/sZbWf3C70WA2Px3IT
+	 jUCYVgQT4IqJipBKOIDDZoDUF0wDt3izwwvVyc0XQwNpviNPgRi0F7z/zh6/pYsjjC
+	 kgGPbTDaf2co6Bf7gCqyYjdLh2+FBZqh2+kg5R+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	Youssef Samir <quic_yabdulra@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Troy Hanson <quic_thanson@quicinc.com>
-Subject: [PATCH 6.1 112/291] bus: mhi: host: Fix race between unprepare and queue_buf
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 029/223] Bluetooth: l2cap: Check encryption key size on incoming connection
 Date: Wed, 23 Apr 2025 16:41:41 +0200
-Message-ID: <20250423142628.949897435@linuxfoundation.org>
+Message-ID: <20250423142618.300605782@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Hugo <quic_jhugo@quicinc.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-commit 0686a818d77a431fc3ba2fab4b46bbb04e8c9380 upstream.
+[ Upstream commit 522e9ed157e3c21b4dd623c79967f72c21e45b78 ]
 
-A client driver may use mhi_unprepare_from_transfer() to quiesce
-incoming data during the client driver's tear down. The client driver
-might also be processing data at the same time, resulting in a call to
-mhi_queue_buf() which will invoke mhi_gen_tre(). If mhi_gen_tre() runs
-after mhi_unprepare_from_transfer() has torn down the channel, a panic
-will occur due to an invalid dereference leading to a page fault.
+This is required for passing GAP/SEC/SEM/BI-04-C PTS test case:
+  Security Mode 4 Level 4, Responder - Invalid Encryption Key Size
+  - 128 bit
 
-This occurs because mhi_gen_tre() does not verify the channel state
-after locking it. Fix this by having mhi_gen_tre() confirm the channel
-state is valid, or return error to avoid accessing deinitialized data.
+This tests the security key with size from 1 to 15 bytes while the
+Security Mode 4 Level 4 requests 16 bytes key size.
 
-Cc: stable@vger.kernel.org # 6.8
-Fixes: b89b6a863dd5 ("bus: mhi: host: Add spinlock to protect WP access when queueing TREs")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-Link: https://lore.kernel.org/r/20250306172913.856982-1-jeff.hugo@oss.qualcomm.com
-[mani: added stable tag]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently PTS fails with the following logs:
+- expected:Connection Response:
+    Code: [3 (0x03)] Code
+    Identifier: (lt)WildCard: Exists(gt)
+    Length: [8 (0x0008)]
+    Destination CID: (lt)WildCard: Exists(gt)
+    Source CID: [64 (0x0040)]
+    Result: [3 (0x0003)] Connection refused - Security block
+    Status: (lt)WildCard: Exists(gt),
+but received:Connection Response:
+    Code: [3 (0x03)] Code
+    Identifier: [1 (0x01)]
+    Length: [8 (0x0008)]
+    Destination CID: [64 (0x0040)]
+    Source CID: [64 (0x0040)]
+    Result: [0 (0x0000)] Connection Successful
+    Status: [0 (0x0000)] No further information available
+
+And HCI logs:
+< HCI Command: Read Encrypti.. (0x05|0x0008) plen 2
+        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
+> HCI Event: Command Complete (0x0e) plen 7
+      Read Encryption Key Size (0x05|0x0008) ncmd 1
+        Status: Success (0x00)
+        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
+        Key size: 7
+> ACL Data RX: Handle 14 flags 0x02 dlen 12
+      L2CAP: Connection Request (0x02) ident 1 len 4
+        PSM: 4097 (0x1001)
+        Source CID: 64
+< ACL Data TX: Handle 14 flags 0x00 dlen 16
+      L2CAP: Connection Response (0x03) ident 1 len 8
+        Destination CID: 64
+        Source CID: 64
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+
+Fixes: 288c06973daa ("Bluetooth: Enforce key size of 16 bytes on FIPS level")
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/main.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ net/bluetooth/l2cap_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -1201,11 +1201,16 @@ int mhi_gen_tre(struct mhi_controller *m
- 	struct mhi_ring_element *mhi_tre;
- 	struct mhi_buf_info *buf_info;
- 	int eot, eob, chain, bei;
--	int ret;
-+	int ret = 0;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index c27ea70f71e1e..499e38ed639e6 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -3956,7 +3956,8 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
  
- 	/* Protect accesses for reading and incrementing WP */
- 	write_lock_bh(&mhi_chan->lock);
- 
-+	if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED) {
-+		ret = -ENODEV;
-+		goto out;
-+	}
-+
- 	buf_ring = &mhi_chan->buf_ring;
- 	tre_ring = &mhi_chan->tre_ring;
- 
-@@ -1223,10 +1228,8 @@ int mhi_gen_tre(struct mhi_controller *m
- 
- 	if (!info->pre_mapped) {
- 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
--		if (ret) {
--			write_unlock_bh(&mhi_chan->lock);
--			return ret;
--		}
-+		if (ret)
-+			goto out;
- 	}
- 
- 	eob = !!(flags & MHI_EOB);
-@@ -1243,9 +1246,10 @@ int mhi_gen_tre(struct mhi_controller *m
- 	mhi_add_ring_element(mhi_cntrl, tre_ring);
- 	mhi_add_ring_element(mhi_cntrl, buf_ring);
- 
-+out:
- 	write_unlock_bh(&mhi_chan->lock);
- 
--	return 0;
-+	return ret;
- }
- 
- int mhi_queue_buf(struct mhi_device *mhi_dev, enum dma_data_direction dir,
+ 	/* Check if the ACL is secure enough (if not SDP) */
+ 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
+-	    !hci_conn_check_link_mode(conn->hcon)) {
++	    (!hci_conn_check_link_mode(conn->hcon) ||
++	    !l2cap_check_enc_key_size(conn->hcon))) {
+ 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
+ 		result = L2CAP_CR_SEC_BLOCK;
+ 		goto response;
+-- 
+2.39.5
+
 
 
 
