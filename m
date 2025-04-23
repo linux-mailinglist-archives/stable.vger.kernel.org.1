@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2388BA9924F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E84A98F24
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A98BE7A53A2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B398920D30
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E3129344B;
-	Wed, 23 Apr 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C72827F4CA;
+	Wed, 23 Apr 2025 14:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y41cBTs7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTIPkRQV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6198228EA51;
-	Wed, 23 Apr 2025 15:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F6619DF4C;
+	Wed, 23 Apr 2025 14:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422196; cv=none; b=QxBaaI6nxV/lEecFyY5SIj4I5/sXJKfrtQ4Jxm8Z+K6seBS1NRKLNODzei8ommqemBjVlR0M1IW/4FzSu3VfXlNpx8G1fD8/Wuaelm7MwbghtWpgl7Uaw17LRLLJln/Buj95TzBuW4D5AJmgFagYP4f113VMYCFxiczKL4RvyWY=
+	t=1745420324; cv=none; b=oFNxI55bbO5wn1UONtyYV6Sg4/H58WMFEFt1HVrH+Xu7R6auIzgUb45pTEboXF0zMV63fyT7m36DaoKrg3MupwBwTwkrMlVSUjJFAkbDt64BlnVrDknosuIaZlEuv878UAE9KW/qp3mL02xWl2dUSdc9DP8X+47xKru7m6qe5BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422196; c=relaxed/simple;
-	bh=OTCHMgBbofhV3s52JT3vdNjZcDKXKr0gKS3G94YVBeA=;
+	s=arc-20240116; t=1745420324; c=relaxed/simple;
+	bh=AtdxKvor7etCHBlZNmXD3SvJVW8sItYCazOms7k/BhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S4gUCeU92N8iU0bG8X40tN6yR54YC/lNCZxBGVYCPglV0sDqfgDDlgn+eemaa0LObT9tSQVISfXUCr9TmZEVrbm9gyMZNS4Fal+TOu3Yn+VcsP/wo9277I51GVxgXJnaRy4bp76jbQghFclnokc/cuUPIV+eyrCdlEoZjrPwNXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y41cBTs7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA157C4CEE2;
-	Wed, 23 Apr 2025 15:29:55 +0000 (UTC)
+	 MIME-Version; b=b463Mc+mjj4h4Yq2XpcJgF1Rw7qGffHSXVyeVFT5Dx8aCtLlcMGuMGxL68zOYZTAGX7/GbnbuRc37w440+ib7/XwGrcGd3aM36w2Fcn1FWKYR7US7T4XzG10qHPPhzEfqZGvqyCoDKog1/VXKo0/5yjhS2QNYq08Mtmu5j6nuxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTIPkRQV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0390C4CEE8;
+	Wed, 23 Apr 2025 14:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422196;
-	bh=OTCHMgBbofhV3s52JT3vdNjZcDKXKr0gKS3G94YVBeA=;
+	s=korg; t=1745420324;
+	bh=AtdxKvor7etCHBlZNmXD3SvJVW8sItYCazOms7k/BhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y41cBTs74Yazu/ggPDvwnkar6+U9cT1qxU9OKjcc/0qZD+zHSEyNAqTkLXh5EBlXn
-	 KEuoxN9niN6DUZnVRK1mCO3mkl2++felAZfjxmyfS+FE2uRP62Bft9JEmPd5TZk8t1
-	 z0wfSEY2yPbl5XuJc28eOebeGay165DWe7S0k3kg=
+	b=vTIPkRQV40YjsGqSzDFUpTajdI34oNFgMDmnzrMLHBCFVng96iQZkACI6PpTrqfMi
+	 kLTvYKHRZ//QS54qid0EJLGzZCHNTgijlpRxIzEsvybusu5IA6kFzfX6FbtnqD4n2N
+	 xd1I/0yStaJP0KqdkzWVAyHk0OPE+IEVY/4FNPBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 295/393] riscv: Properly export reserved regions in /proc/iomem
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Qu Wenruo <quwenruo.btrfs@gmx.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 119/223] mm: fix filemap_get_folios_contig returning batches of identical folios
 Date: Wed, 23 Apr 2025 16:43:11 +0200
-Message-ID: <20250423142655.524389041@linuxfoundation.org>
+Message-ID: <20250423142621.956713542@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,125 +62,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-[ Upstream commit e94eb7ea6f206e229791761a5fdf9389f8dbd183 ]
+commit 8ab1b16023961dc640023b10436d282f905835ad upstream.
 
-The /proc/iomem represents the kernel's memory map. Regions marked
-with "Reserved" tells the user that the range should not be tampered
-with. Kexec-tools, when using the older kexec_load syscall relies on
-the "Reserved" regions to build the memory segments, that will be the
-target of the new kexec'd kernel.
+filemap_get_folios_contig() is supposed to return distinct folios found
+within [start, end].  Large folios in the Xarray become multi-index
+entries.  xas_next() can iterate through the sub-indexes before finding a
+sibling entry and breaking out of the loop.
 
-The RISC-V port tries to expose all reserved regions to userland, but
-some regions were not properly exposed: Regions that resided in both
-the "regular" and reserved memory block, e.g. the EFI Memory Map. A
-missing entry could result in reserved memory being overwritten.
+This can result in a returned folio_batch containing an indeterminate
+number of duplicate folios, which forces the callers to skeptically handle
+the returned batch.  This is inefficient and incurs a large maintenance
+overhead.
 
-It turns out, that arm64, and loongarch had a similar issue a while
-back:
+We can fix this by calling xas_advance() after we have successfully adding
+a folio to the batch to ensure our Xarray is positioned such that it will
+correctly find the next folio - similar to filemap_get_read_batch().
 
-  commit d91680e687f4 ("arm64: Fix /proc/iomem for reserved but not memory regions")
-  commit 50d7ba36b916 ("arm64: export memblock_reserve()d regions via /proc/iomem")
-
-Similar to the other ports, resolve the issue by splitting the regions
-in an arch initcall, since we need a working allocator.
-
-Fixes: ffe0e5261268 ("RISC-V: Improve init_resources()")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250409182129.634415-1-bjorn@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/Z-8s1-kiIDkzgRbc@fedora
+Fixes: 35b471467f88 ("filemap: add filemap_get_folios_contig()")
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Reported-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Closes: https://lkml.kernel.org/r/b714e4de-2583-4035-b829-72cfb5eb6fc6@gmx.com
+Tested-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/setup.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ mm/filemap.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 175184b059264..f598e0eb3b0a0 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -73,6 +73,9 @@ static struct resource bss_res = { .name = "Kernel bss", };
- static struct resource elfcorehdr_res = { .name = "ELF Core hdr", };
- #endif
- 
-+static int num_standard_resources;
-+static struct resource *standard_resources;
-+
- static int __init add_resource(struct resource *parent,
- 				struct resource *res)
- {
-@@ -146,7 +149,7 @@ static void __init init_resources(void)
- 	struct resource *res = NULL;
- 	struct resource *mem_res = NULL;
- 	size_t mem_res_sz = 0;
--	int num_resources = 0, res_idx = 0;
-+	int num_resources = 0, res_idx = 0, non_resv_res = 0;
- 	int ret = 0;
- 
- 	/* + 1 as memblock_alloc() might increase memblock.reserved.cnt */
-@@ -215,6 +218,7 @@ static void __init init_resources(void)
- 	/* Add /memory regions to the resource tree */
- 	for_each_mem_region(region) {
- 		res = &mem_res[res_idx--];
-+		non_resv_res++;
- 
- 		if (unlikely(memblock_is_nomap(region))) {
- 			res->name = "Reserved";
-@@ -232,6 +236,9 @@ static void __init init_resources(void)
- 			goto error;
- 	}
- 
-+	num_standard_resources = non_resv_res;
-+	standard_resources = &mem_res[res_idx + 1];
-+
- 	/* Clean-up any unused pre-allocated resources */
- 	if (res_idx >= 0)
- 		memblock_free(mem_res, (res_idx + 1) * sizeof(*mem_res));
-@@ -243,6 +250,33 @@ static void __init init_resources(void)
- 	memblock_free(mem_res, mem_res_sz);
- }
- 
-+static int __init reserve_memblock_reserved_regions(void)
-+{
-+	u64 i, j;
-+
-+	for (i = 0; i < num_standard_resources; i++) {
-+		struct resource *mem = &standard_resources[i];
-+		phys_addr_t r_start, r_end, mem_size = resource_size(mem);
-+
-+		if (!memblock_is_region_reserved(mem->start, mem_size))
-+			continue;
-+
-+		for_each_reserved_mem_range(j, &r_start, &r_end) {
-+			resource_size_t start, end;
-+
-+			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
-+			end = min(PFN_PHYS(PFN_UP(r_end)) - 1, mem->end);
-+
-+			if (start > mem->end || end < mem->start)
-+				continue;
-+
-+			reserve_region_with_split(mem, start, end, "Reserved");
-+		}
-+	}
-+
-+	return 0;
-+}
-+arch_initcall(reserve_memblock_reserved_regions);
- 
- static void __init parse_dtb(void)
- {
--- 
-2.39.5
-
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2222,6 +2222,7 @@ unsigned filemap_get_folios_contig(struc
+ 			*start = folio->index + nr;
+ 			goto out;
+ 		}
++		xas_advance(&xas, folio_next_index(folio) - 1);
+ 		continue;
+ put_folio:
+ 		folio_put(folio);
 
 
 
