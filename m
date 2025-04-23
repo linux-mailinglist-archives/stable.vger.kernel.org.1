@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-136260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A59A992B7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A87FA9926B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E72D4A35E3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9ADA017408B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D04529E044;
-	Wed, 23 Apr 2025 15:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5932BF3CB;
+	Wed, 23 Apr 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2/2BdGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaYzQ+I6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291CD29DB9D;
-	Wed, 23 Apr 2025 15:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C5929B22B;
+	Wed, 23 Apr 2025 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422079; cv=none; b=i89s1e8cYZ15X4Ju6nBUZFSTp4DKpxieW9FXCmhTqx6nYMkpqvdbmi5czUOTjyP1mCyDB25Af8qxrp7ElZFNVMeFfGoKONtFRzsHTtVws6VzA0gOZSFDtbvW9RwmbKUAVbZ4KJo/DCtohhqRLnxMeGYy7QIgK/KewjpZmafSOGU=
+	t=1745421819; cv=none; b=t3sXclYosB7D8dm3JnTmbYGS9IjQowLLAhtbbxfQycoFmlvLBM3LO1oAzvt7FzhM2InfD+F0CtY0/MCstqK7rRfOmlURe93bfH5iFFZguSOvmKCAurQLJSQ78k/aXS2wT5TF/du7gmGxRke+GYwlDOVd1TtA+cZfIVgH2nLeCZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422079; c=relaxed/simple;
-	bh=X+xTr1K14pnexeOaRPs7gESKXMKjERmbV2ZWYAPezIc=;
+	s=arc-20240116; t=1745421819; c=relaxed/simple;
+	bh=BfVk0tA2+mu9MCjxK+Q1k7N2YXbHwITWAUEjV9x/SF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5JhbpZohKo+qFWOkotKPuPVeR7olQVv7pN+6+ht7F7KKiekWMzfvanoLnmN1Wrcq//H3RiQrYSHpqB8TG3oSfKfY+Uwbw5xLSmKerLOLBMjkoY+34eUiItN0J6H/wZ6WVvP9+MCoiQCcp+BGHnuauTV+kXpU9VwNqphQngYCeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2/2BdGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B00C4CEE2;
-	Wed, 23 Apr 2025 15:27:57 +0000 (UTC)
+	 MIME-Version; b=ILJvH+lSqRXbQWQyr67rB8H9hbVyDhYP19uGBlNDh4jNibfD3rc+i2vbJRN05AFHbGevlwwXfO3hU3f1cbtOpov0hySmRA+1E3DCZlCQ+gxReUXygae5SfNjRMY630zZpu/6GB0FNu+boDsoQoJAKe7j5jgCGFZKMRjYplTF3tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaYzQ+I6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747C2C4CEE3;
+	Wed, 23 Apr 2025 15:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422078;
-	bh=X+xTr1K14pnexeOaRPs7gESKXMKjERmbV2ZWYAPezIc=;
+	s=korg; t=1745421819;
+	bh=BfVk0tA2+mu9MCjxK+Q1k7N2YXbHwITWAUEjV9x/SF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2/2BdGyTkC3Qerfl4jrdUq4j7CLDfqim4km0PfWXizIRW3Op9woqZdJJQUNw+Nmy
-	 U/LjaajugeNNlM+E6oQVeKAirDV2qE/Dr4i23drTlnWIVOq8CJsfgZ00rQwOAVzS1Z
-	 AtCHzuYYJmG4iCs1AuFZLweX90xt4GhzIqY8zaKw=
+	b=gaYzQ+I685OZUnDfZrnRwYVwcsFCaz9Uf7Yrti4XVsxtCvh88F/UrFa3o2lZAYULT
+	 XYzQc/pfsAH65rdVp8DKcEDaHABvj5h1VarY31HpE8ePlr4edtF44A2Y69LAL+G94c
+	 7NZv+X5OoB5FyX4Ju2qZY6aBXaeKyq8MZ5/iOoV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/393] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
-Date: Wed, 23 Apr 2025 16:42:50 +0200
-Message-ID: <20250423142654.672125801@linuxfoundation.org>
+Subject: [PATCH 6.1 182/291] igc: handle the IGC_PTP_ENABLED flag correctly
+Date: Wed, 23 Apr 2025 16:42:51 +0200
+Message-ID: <20250423142631.816493055@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
+[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
 
-In the for loop used to allocate the loc_array and bmap for each port, a
-memory leak is possible when the allocation for loc_array succeeds,
-but the allocation for bmap fails. This is because when the control flow
-goes to the label free_eth_finfo, only the allocations starting from
-(i-1)th iteration are freed.
+All functions in igc_ptp.c called from igc_main.c should check the
+IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
+functions.
 
-Fix that by freeing the loc_array in the bmap allocation error path.
-
-Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 8477a93cee6bd..b77897aa06c4f 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -2273,6 +2273,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
- 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
- 		if (!eth_filter->port[i].bmap) {
- 			ret = -ENOMEM;
-+			kvfree(eth_filter->port[i].loc_array);
- 			goto free_eth_finfo;
- 		}
- 	}
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 5616b7f4e504f..8731e8f234946 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1070,8 +1070,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
+  **/
+ void igc_ptp_stop(struct igc_adapter *adapter)
+ {
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	igc_ptp_suspend(adapter);
+ 
++	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
+ 	if (adapter->ptp_clock) {
+ 		ptp_clock_unregister(adapter->ptp_clock);
+ 		netdev_info(adapter->netdev, "PHC removed\n");
+@@ -1092,6 +1096,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	unsigned long flags;
+ 	u32 timadj;
+ 
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+ 
 -- 
 2.39.5
 
