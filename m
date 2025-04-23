@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52ACA9920E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EFFA990E5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5B5173F3F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8778D17B688
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1C028A1D2;
-	Wed, 23 Apr 2025 15:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED08B293472;
+	Wed, 23 Apr 2025 15:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlXkvxos"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k35goK+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39464289351;
-	Wed, 23 Apr 2025 15:21:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB0E2641EA;
+	Wed, 23 Apr 2025 15:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421708; cv=none; b=GO4LLhwFc1YvgVHFT1NV95nsTHyRdDzlekZKZ2KyCIHO2hDf8r25Ebh2YmTnwVtWYEFU0fJ2SNssyOUGubgZdw0+l0sCBBGT5Eh+JboYJKmjVdtlEvataAeZQd7wG2H1ABC0Tuj+rVZZo18DVIKeif52E2XW5ljSiCJ+Xrc+iWc=
+	t=1745421178; cv=none; b=CpGt8YlQViMMIKD3gJr6qH5klwXZT4V49y/E5alUrn1R0/ZL86QoNqRpqe+57S1jOhDIQhHESmGXRDgkRnRC3BFg9sXeEgIxSuqKYZVnSXTq14D9b0EF/vISp1bPnKkxHbazDtMNV3v/201+N0ia67DKwf+akGnnTbCRxxbLTLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421708; c=relaxed/simple;
-	bh=WSp06tm0ahuBHnK0Fk+dVRCM0p17YkEJE+aNR+fosZc=;
+	s=arc-20240116; t=1745421178; c=relaxed/simple;
+	bh=yyR0TdPcFyKmAZqNNwhUr8b/B6V4WAz5pMjQbfC1cbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXAqJLZ1hi2dzAMWK3HEuFNEh9+SyoWD8hyB8WTFN4ddG6EoBpQE/bO/R1JlxcSvO7OyeYgZWvt4dTa5gssRGmTFKm9rUnS3M+sFojj5QXNBsBOpgIM0fT4iBJQJlpqOXQGCl75L9f6daMHDbdEQCgj5rJ5xpV+YTjUK4+Huuno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlXkvxos; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9FEC4CEE2;
-	Wed, 23 Apr 2025 15:21:47 +0000 (UTC)
+	 MIME-Version; b=YKjtfY5D2XdBoJVVcGGnrKEHo7MUwBAQec0afphNIOVvxX7y/Z5wxKgTZa/sOf40baxmklifG7zfhdYtOthqaLuhFo+BCgnuSZLVl1DgEy8y3gGCdzR4DNGHwkacQSb8h7PxCdm3HhVkAMToxy6medyx6ZhytxGuAYM8dAd7gHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k35goK+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEE0C4CEE2;
+	Wed, 23 Apr 2025 15:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421708;
-	bh=WSp06tm0ahuBHnK0Fk+dVRCM0p17YkEJE+aNR+fosZc=;
+	s=korg; t=1745421178;
+	bh=yyR0TdPcFyKmAZqNNwhUr8b/B6V4WAz5pMjQbfC1cbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hlXkvxosvPVEvCpfFKY1VEtLmtCKMbX4hxMFN2LdnqThxfHOFFqbnxOxZpaqi1HKH
-	 yCuO833pMcWzgbDqqwRXTmU71a1jSG/gBFQ/UA9o9Sz5dD1mLa7SopZFFeTXGa7ngj
-	 a6S+2DrRtoyEnROX6hvGMzHU7gzYNLTKHmA2fqLA=
+	b=k35goK+AeaWSo6FEAc7h1WK4TDN1yl5CMRGcTP9/5KvrE57oeO8VeyXyks5hK2acS
+	 ZcaGcpPm64dNoYBgB0QxEE9hXCNZ93xFiWbIkA92SoYdjC1iMgfewsgx27lTeIX01w
+	 f0V7bYRzO23YYSdEfVFfzfBSHnMa/7liaZLKdMCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.14 205/241] drm/i915/gvt: fix unterminated-string-initialization warning
-Date: Wed, 23 Apr 2025 16:44:29 +0200
-Message-ID: <20250423142628.917877180@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Guillaume Morin <guillaume@morinfr.org>
+Subject: [PATCH 6.12 198/223] md: fix mddev uaf while iterating all_mddevs list
+Date: Wed, 23 Apr 2025 16:44:30 +0200
+Message-ID: <20250423142625.237110883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+commit 8542870237c3a48ff049b6c5df5f50c8728284fa upstream.
 
-Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-(which is "IntelGraphicsMem") drops the NUL termination of the
-string. This is intentional, but the compiler doesn't know this.
+While iterating all_mddevs list from md_notify_reboot() and md_exit(),
+list_for_each_entry_safe is used, and this can race with deletint the
+next mddev, causing UAF:
 
-Switch to initializing header->signature directly from the string
-litaral, with sizeof destination rather than source. We don't treat the
-signature as a string other than for initialization; it's really just a
-blob of binary data.
+t1:
+spin_lock
+//list_for_each_entry_safe(mddev, n, ...)
+ mddev_get(mddev1)
+ // assume mddev2 is the next entry
+ spin_unlock
+            t2:
+            //remove mddev2
+            ...
+            mddev_free
+            spin_lock
+            list_del
+            spin_unlock
+            kfree(mddev2)
+ mddev_put(mddev1)
+ spin_lock
+ //continue dereference mddev2->all_mddevs
 
-Add a static assert for good measure to cross-check the sizes.
+The old helper for_each_mddev() actually grab the reference of mddev2
+while holding the lock, to prevent from being freed. This problem can be
+fixed the same way, however, the code will be complex.
 
-Reported-by: Kees Cook <kees@kernel.org>
-Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-Tested-by: Damian Tometzki <damian@riscv-rocks.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
-Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Hence switch to use list_for_each_entry, in this case mddev_put() can free
+the mddev1 and it's not safe as well. Refer to md_seq_show(), also factor
+out a helper mddev_put_locked() to fix this problem.
+
+Cc: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/linux-raid/20250220124348.845222-1-yukuai1@huaweicloud.com
+Fixes: f26514342255 ("md: stop using for_each_mddev in md_notify_reboot")
+Fixes: 16648bac862f ("md: stop using for_each_mddev in md_exit")
+Reported-and-tested-by: Guillaume Morin <guillaume@morinfr.org>
+Closes: https://lore.kernel.org/all/Z7Y0SURoA8xwg7vn@bender.morinfr.org/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Salvatore Bonaccorso <carnil@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gvt/opregion.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/md/md.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/i915/gvt/opregion.c
-+++ b/drivers/gpu/drm/i915/gvt/opregion.c
-@@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct inte
- 	u8 *buf;
- 	struct opregion_header *header;
- 	struct vbt v;
--	const char opregion_signature[16] = OPREGION_SIGNATURE;
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -629,6 +629,12 @@ static void __mddev_put(struct mddev *md
+ 	queue_work(md_misc_wq, &mddev->del_work);
+ }
  
- 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
- 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-@@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct inte
- 	/* emulated opregion with VBT mailbox only */
- 	buf = (u8 *)vgpu_opregion(vgpu)->va;
- 	header = (struct opregion_header *)buf;
--	memcpy(header->signature, opregion_signature,
--	       sizeof(opregion_signature));
++static void mddev_put_locked(struct mddev *mddev)
++{
++	if (atomic_dec_and_test(&mddev->active))
++		__mddev_put(mddev);
++}
 +
-+	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
-+	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
-+
- 	header->size = 0x8;
- 	header->opregion_ver = 0x02000000;
- 	header->mboxes = MBOX_VBT;
+ void mddev_put(struct mddev *mddev)
+ {
+ 	if (!atomic_dec_and_lock(&mddev->active, &all_mddevs_lock))
+@@ -8461,9 +8467,7 @@ static int md_seq_show(struct seq_file *
+ 	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
+ 		status_unused(seq);
+ 
+-	if (atomic_dec_and_test(&mddev->active))
+-		__mddev_put(mddev);
+-
++	mddev_put_locked(mddev);
+ 	return 0;
+ }
+ 
+@@ -9886,11 +9890,11 @@ EXPORT_SYMBOL_GPL(rdev_clear_badblocks);
+ static int md_notify_reboot(struct notifier_block *this,
+ 			    unsigned long code, void *x)
+ {
+-	struct mddev *mddev, *n;
++	struct mddev *mddev;
+ 	int need_delay = 0;
+ 
+ 	spin_lock(&all_mddevs_lock);
+-	list_for_each_entry_safe(mddev, n, &all_mddevs, all_mddevs) {
++	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
+ 		if (!mddev_get(mddev))
+ 			continue;
+ 		spin_unlock(&all_mddevs_lock);
+@@ -9902,8 +9906,8 @@ static int md_notify_reboot(struct notif
+ 			mddev_unlock(mddev);
+ 		}
+ 		need_delay = 1;
+-		mddev_put(mddev);
+ 		spin_lock(&all_mddevs_lock);
++		mddev_put_locked(mddev);
+ 	}
+ 	spin_unlock(&all_mddevs_lock);
+ 
+@@ -10236,7 +10240,7 @@ void md_autostart_arrays(int part)
+ 
+ static __exit void md_exit(void)
+ {
+-	struct mddev *mddev, *n;
++	struct mddev *mddev;
+ 	int delay = 1;
+ 
+ 	unregister_blkdev(MD_MAJOR,"md");
+@@ -10257,7 +10261,7 @@ static __exit void md_exit(void)
+ 	remove_proc_entry("mdstat", NULL);
+ 
+ 	spin_lock(&all_mddevs_lock);
+-	list_for_each_entry_safe(mddev, n, &all_mddevs, all_mddevs) {
++	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
+ 		if (!mddev_get(mddev))
+ 			continue;
+ 		spin_unlock(&all_mddevs_lock);
+@@ -10269,8 +10273,8 @@ static __exit void md_exit(void)
+ 		 * the mddev for destruction by a workqueue, and the
+ 		 * destroy_workqueue() below will wait for that to complete.
+ 		 */
+-		mddev_put(mddev);
+ 		spin_lock(&all_mddevs_lock);
++		mddev_put_locked(mddev);
+ 	}
+ 	spin_unlock(&all_mddevs_lock);
+ 
 
 
 
