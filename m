@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20900A9907A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AA7A99186
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 791307A83AE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70AC17A14A5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C7B28368C;
-	Wed, 23 Apr 2025 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E202BE11B;
+	Wed, 23 Apr 2025 15:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM+Zg2bO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQzY4DAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A76293B4D;
-	Wed, 23 Apr 2025 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63992BE114;
+	Wed, 23 Apr 2025 15:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421181; cv=none; b=NxRyyhmioQP/1YDlkqGXxbYae0N6gU4zO/FgAPDPa885VqCBJmifKtw3/+ylg2sHorYv2dm0Kt7HHwrvW9/6dNwrKtieqkSumcx3LFpqIrjvxNucOsS1ACeuBki7shAR+0VcmnXSN/T+Hg74hPCCXSOiFYplvuUdnlL/66WEzmo=
+	t=1745421687; cv=none; b=ef3k9IIwn1v11eF29AKSnoLtQYBGXMHikN1MxgDDOq9p/8ulKfitYiSEa/e+mw0uMdFcQb8O4ifLXi0x/7jRaUNMYBI3GZpM8epmUdDrPknTxWDnOy7/TF6dqtGEhkLNpkJ7CVmUSTpRepp9k4oZMIvroNyYFzrEKbe65OzOOfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421181; c=relaxed/simple;
-	bh=cvOBVADpuRffSN+7Gk7WNkGAOxzwpUsExqDQV7D/cck=;
+	s=arc-20240116; t=1745421687; c=relaxed/simple;
+	bh=R0oxMAPEdE9jsg7+4/IuhpO63mfluFNC5ubu12KGHCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uR2+4AvQ99IoK6aXE6etg1ik0GpXm2D6JFt4jhGy3fYcqRHh6WzqVbLAm7JWmhCMP0SxKyRehw8KZSlXAWqiCo9lXj7IPxgf7qz5fni6SaQ41zyR2Ny0imxN7S+adQ472ZbUTdKZ00ElUowBnsTh9aXzwv71C58Ow+PvY1u0Y0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM+Zg2bO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A27C4CEE2;
-	Wed, 23 Apr 2025 15:13:00 +0000 (UTC)
+	 MIME-Version; b=LlbURY7w7kV5lm2i2TeOR4Opyr/gX58l4oCCJSvUxnlJfjgvslOnkor+2dVQ36xUWB4q5tLrGs8OGO+CvsVkcw2epVthPBkJiwAgat1LITENErCTvMQ/Mg7JbWoPQ3fCMBwv7xgAq6ALDaHk9r+bOA+469Gy0SgZgPhJ3drq4Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQzY4DAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CDBC4CEE8;
+	Wed, 23 Apr 2025 15:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421181;
-	bh=cvOBVADpuRffSN+7Gk7WNkGAOxzwpUsExqDQV7D/cck=;
+	s=korg; t=1745421687;
+	bh=R0oxMAPEdE9jsg7+4/IuhpO63mfluFNC5ubu12KGHCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xM+Zg2bO4K+2+2RTGg/g50CSKx76VOn0zJUvGssX4+XMlsPfBfg+7I30yog4m/eSi
-	 NwHX6SqxH4Ebb5Tk0RLfhq7ciiDMNexH6lUexe0Vxk8f6lWABt+CeNuh5bDH+kBake
-	 d+JK2bxZfmiaqfnfJu7D/uDZiyWu2WHuxcwlRKQ8=
+	b=VQzY4DAwejGcxonf8gpyBYfbJBOi6IE3cTrlLj8AwIAwe0DAaQ/xI5ABBjuufK1Yx
+	 CEf4ZP/1sIBpzlhnWg+M1Kr2fXOhuWqiCwMM4htWzEjW30vbK1u3LrY6zO2cCkH3SC
+	 EwDYIws4/GEIJpzPhN3TQJu4PdZkWZAzpUv/4vTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.1 115/291] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 208/393] crypto: ccp - Fix check for the primary ASP device
 Date: Wed, 23 Apr 2025 16:41:44 +0200
-Message-ID: <20250423142629.073946404@linuxfoundation.org>
+Message-ID: <20250423142651.977297413@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-commit c8222ef6cf29dd7cad21643228f96535cc02b327 upstream.
+commit 07bb097b92b987db518e72525b515d77904e966e upstream.
 
-soc_dev_attr->revision could be NULL, thus,
-a pointer check is added to prevent potential NULL pointer dereference.
-This is similar to the fix in commit 3027e7b15b02
-("ice: Fix some null pointer dereference issues in ice_ptp.c").
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
-This issue is found by our static analysis tool.
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
-Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/samsung/exynos-chipid.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -131,6 +131,8 @@ static int exynos_chipid_probe(struct pl
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -243,14 +243,17 @@ static bool sp_pci_is_master(struct sp_d
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
  
- 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
- 						"%x", soc_info.revision);
-+	if (!soc_dev_attr->revision)
-+		return -ENOMEM;
- 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
- 	if (!soc_dev_attr->soc_id) {
- 		pr_err("Unknown SoC\n");
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
+ 
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
+ 
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
++
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
+ 
+ 	return false;
+ }
 
 
 
