@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8BFA99037
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB52A993D5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E711BA147A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55F4F1BA4B4A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9991A317A;
-	Wed, 23 Apr 2025 15:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20BC28150B;
+	Wed, 23 Apr 2025 15:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZgVsuWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzWfoFzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6A728D858;
-	Wed, 23 Apr 2025 15:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09F426A082;
+	Wed, 23 Apr 2025 15:29:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420772; cv=none; b=nznSNASTiLNWmuIyDnC8D/I9h5UXGVWtPahuzxumsw3OP5x7+3OGxYKvsDtFkKoiVpVfh9m2Kj4IT8UEpjjMafpzvLaJmF3Xm3ZLuOXI6zeIlM8ioauDgeUiTAEDMA9LL8rTHxJsNHuwTiohvdLxxZ1YY3nu0WjHuZMTGzMH5CY=
+	t=1745422146; cv=none; b=N8mut7wQTpQHd4gpH9EEpKwFAZQC+KiVZVUFsTxVEltWQfBNDMww2v8FsDyWmQdanD4uWgw+ePc05pxYb/43ZCMcglF9VRFL6UyMGeuiGJwr2H/CnlaRd6/mSJteAVs0KGA8eRH2ZHhAxIb344tWPG5DR47oKhei4keq1LSH8oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420772; c=relaxed/simple;
-	bh=vYTh7ccb9P5jX+LqRC2OsxJ36p2ik6lSp4l0zh221xU=;
+	s=arc-20240116; t=1745422146; c=relaxed/simple;
+	bh=eXqDLkyYUWuYB6dcdtugQiaYRnx1njDY8ni+XmCew9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHqO6S/26wflWBcdxlzacl7WlZOCoLtXNw/BP4ECQOh5QzkWtYMLPs96n6hSJajq4VzorsJJMvcDrFxksDgOOVhPsczxU/51JTiyMjhvxqq+Y2K35kHP7wz7m8E6v/BqAh8VdijmDdJxKOCk5kYLNlVKL+RQOW/W0zfVYwWnRUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZgVsuWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8899C4CEE2;
-	Wed, 23 Apr 2025 15:06:11 +0000 (UTC)
+	 MIME-Version; b=aV/dVERsGh6LeU/pqvbzkoDaRuDx8ixK3eBdSqUcOljwIr5RxT83M9Sh93otcyF2PgdOeNJXcEYnWNexyafL5J6JQ3hiAn3vCPOF8Fxynhq2va8cey3Hhlv3dUkOJbx4tKXD4G/5i4Zy1QJ4uZnx6x/kUA8wQvAt7O6CfB6AUlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzWfoFzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34891C4CEE2;
+	Wed, 23 Apr 2025 15:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420772;
-	bh=vYTh7ccb9P5jX+LqRC2OsxJ36p2ik6lSp4l0zh221xU=;
+	s=korg; t=1745422146;
+	bh=eXqDLkyYUWuYB6dcdtugQiaYRnx1njDY8ni+XmCew9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZgVsuWQPaLPT1GWWP4T/yGsQmpcoj5PVIZwmUMzgA+n1JiEZAxYhLi3YimFsDoTO
-	 6Limj/0W89edgmuZqSshBXILm1vy1a9D/qkjUIyZNdCyQAkvMHQJ2594Ovij8Okuzb
-	 21G3RYxIcUW95n6SliwlKQbtHHIcQrzURLz2eKBE=
+	b=fzWfoFzQjo0U1vZRvWjpO1yW+a8pAWBpcFH2ZQnrxbug6g2Lsd/WujudKC4BHrvOr
+	 tPgnY7ZsiF3a2GusATKwHWaGVyn0b59OupsYphslJvc+V3wcQuJ/YNcyIftTSjOhn2
+	 FnrJfbmtcWjKGv77Bv1WY0LiAfUJ2GTySsjCSTfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 161/223] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
-Date: Wed, 23 Apr 2025 16:43:53 +0200
-Message-ID: <20250423142623.727742543@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 6.1 245/291] KVM: arm64: Discard any SVE state when entering KVM guests
+Date: Wed, 23 Apr 2025 16:43:54 +0200
+Message-ID: <20250423142634.428314787@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Mark Brown <broonie@kernel.org>
 
-commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
+[ Upstream commit 93ae6b01bafee8fa385aa25ee7ebdb40057f6abe ]
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+Since 8383741ab2e773a99 (KVM: arm64: Get rid of host SVE tracking/saving)
+KVM has not tracked the host SVE state, relying on the fact that we
+currently disable SVE whenever we perform a syscall. This may not be true
+in future since performance optimisation may result in us keeping SVE
+enabled in order to avoid needing to take access traps to reenable it.
+Handle this by clearing TIF_SVE and converting the stored task state to
+FPSIMD format when preparing to run the guest.  This is done with a new
+call fpsimd_kvm_prepare() to keep the direct state manipulation
+functions internal to fpsimd.c.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221115094640.112848-2-broonie@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: trivial backport to v6.1 ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/fpsimd.h |    1 +
+ arch/arm64/kernel/fpsimd.c      |   23 +++++++++++++++++++++++
+ arch/arm64/kvm/fpsimd.c         |    3 ++-
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -1228,7 +1228,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
- 	uint32_t tach_period;
- 	int ret;
+--- a/arch/arm64/include/asm/fpsimd.h
++++ b/arch/arm64/include/asm/fpsimd.h
+@@ -56,6 +56,7 @@ extern void fpsimd_signal_preserve_curre
+ extern void fpsimd_preserve_current_state(void);
+ extern void fpsimd_restore_current_state(void);
+ extern void fpsimd_update_current_state(struct user_fpsimd_state const *state);
++extern void fpsimd_kvm_prepare(void);
  
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
+ extern void fpsimd_bind_state_to_cpu(struct user_fpsimd_state *state,
+ 				     void *sve_state, unsigned int sve_vl,
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1644,6 +1644,29 @@ void fpsimd_signal_preserve_current_stat
+ }
  
- 	ret = smu_v13_0_auto_fan_control(smu, 0);
+ /*
++ * Called by KVM when entering the guest.
++ */
++void fpsimd_kvm_prepare(void)
++{
++	if (!system_supports_sve())
++		return;
++
++	/*
++	 * KVM does not save host SVE state since we can only enter
++	 * the guest from a syscall so the ABI means that only the
++	 * non-saved SVE state needs to be saved.  If we have left
++	 * SVE enabled for performance reasons then update the task
++	 * state to be FPSIMD only.
++	 */
++	get_cpu_fpsimd_context();
++
++	if (test_and_clear_thread_flag(TIF_SVE))
++		sve_to_fpsimd(current);
++
++	put_cpu_fpsimd_context();
++}
++
++/*
+  * Associate current's FPSIMD context with this cpu
+  * The caller must have ownership of the cpu FPSIMD context before calling
+  * this function.
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -75,11 +75,12 @@ int kvm_arch_vcpu_run_map_fp(struct kvm_
+ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+ {
+ 	BUG_ON(!current->mm);
+-	BUG_ON(test_thread_flag(TIF_SVE));
+ 
+ 	if (!system_supports_fpsimd())
+ 		return;
+ 
++	fpsimd_kvm_prepare();
++
+ 	vcpu->arch.fp_state = FP_STATE_HOST_OWNED;
+ 
+ 	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
 
 
 
