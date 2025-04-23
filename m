@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-136046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1555A99139
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F68DA98E07
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27F407A4FB1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:27:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C3DB1B67A88
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B506228E5F8;
-	Wed, 23 Apr 2025 15:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4952827CB33;
+	Wed, 23 Apr 2025 14:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oy3GPJUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJp+2jEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7268228E5F1;
-	Wed, 23 Apr 2025 15:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072FF19DF4C;
+	Wed, 23 Apr 2025 14:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421513; cv=none; b=LjLwxI5uX2+EkFi6Jx4Xl7+Pua9T/pI7B/N66y6dlLnpxFyt4n173rGPVDNFdEN3zeBy8bCcIC9XKBbcNhWInJnOf8aXOtC35CXy/XAIPrieTnUHVFqunPxqX8ee1qRmelHu8TMgkz0sPvgZkaUERBCrTtFfAx+dXr4K6ls6Xpw=
+	t=1745419790; cv=none; b=jILfKP5OQnpbkDtoRUiTSwsJAKYiOKgM4UIGzqkQYwpJTBZu+l7kV0bDEc0v1dbB1MCpRAVuzASIiukL613RECeYLFqyyTNamJEpimaudmTwyttIO9BGBXRLRkIDgrlf9RRGvgywSNGDHCsJrRut2VOVvBlX4O61gQ0HmbaxAsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421513; c=relaxed/simple;
-	bh=0z6VeDvhveUIcWGiFlA5L1cVwiBtGs7MMOW+t+eNe0o=;
+	s=arc-20240116; t=1745419790; c=relaxed/simple;
+	bh=jU0yfYPthysSIKBXSBN+W+7SztuLXx0weZtcqj9QMmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxwZq+cTLzUUuJZofKs6Y7dcG8HIefZ3D2CKt4SvMsq7+LC6IW5Hx+DMgkEuPAQ53QmIFby4yUGmHl2/xQBnF5cR0R9SOy7jkxNd3+iirjJKX9TTHNynuH+N17Kun8DTNJV/VPe/bWmAAvuLFFPiLH4gu+4hGV+VZxjaRB5wRqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oy3GPJUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034C4C4CEE2;
-	Wed, 23 Apr 2025 15:18:32 +0000 (UTC)
+	 MIME-Version; b=syQZ+PqZD9nWqIx1KpCy5T27c1jjraX/EMeYwH3esIXmHV7SFBT/Kg3BdmC55RJSNEAyVVstJEITZX76o+DETH8qB215BC91dNx3d0uAkh+BTCwkLlIHpQHL20PByP8Wp+ZlBvaE5g50NYDhbIosFYC33VzoascprqyMCVCb5IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJp+2jEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898AFC4CEE3;
+	Wed, 23 Apr 2025 14:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421513;
-	bh=0z6VeDvhveUIcWGiFlA5L1cVwiBtGs7MMOW+t+eNe0o=;
+	s=korg; t=1745419789;
+	bh=jU0yfYPthysSIKBXSBN+W+7SztuLXx0weZtcqj9QMmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oy3GPJUhrGa/JYViUymyvshf1UqkoA4pXpflTgQffy0A2IqvzoDsXSTuHgNgfpG0c
-	 a3Q63pJm3T2fHS/Dnanw3R2XKxvvMAScnxZZm6eUJCdwL0zc078A9FjPZsoWe/l3lr
-	 RYyJw5bvg8xGEzYKF4n/n/81VtpJAV2ci/2CZgmU=
+	b=gJp+2jEaOAyEAxNLtdwjeDO2+gw0oL6iACESBzLDTajAfKRu7dCGJwvajoGzKHidy
+	 w+mbYC/sc++aVn/PWFwDqCzDVrUIztdrmKX/uTY4IoBx8i16L731h8zBzm3v485qo+
+	 EEXlbjVU/pXVomH1iA42uFf0+BHNjHFyhaIlrF5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhoumin <teczm@foxmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 145/291] ftrace: Add cond_resched() to ftrace_graph_set_hash()
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 062/223] net: txgbe: fix memory leak in txgbe_probe() error path
 Date: Wed, 23 Apr 2025 16:42:14 +0200
-Message-ID: <20250423142630.331183366@linuxfoundation.org>
+Message-ID: <20250423142619.662435088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhoumin <teczm@foxmail.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
+[ Upstream commit b2727326d0a53709380aa147018085d71a6d4843 ]
 
-When the kernel contains a large number of functions that can be traced,
-the loop in ftrace_graph_set_hash() may take a lot of time to execute.
-This may trigger the softlockup watchdog.
+When txgbe_sw_init() is called, memory is allocated for wx->rss_key
+in wx_init_rss_key(). However, in txgbe_probe() function, the subsequent
+error paths after txgbe_sw_init() don't free the rss_key. Fix that by
+freeing it in error path along with wx->mac_table.
 
-Add cond_resched() within the loop to allow the kernel to remain
-responsive even when processing a large number of functions.
+Also change the label to which execution jumps when txgbe_sw_init()
+fails, because otherwise, it could lead to a double free for rss_key,
+when the mac_table allocation fails in wx_sw_init().
 
-This matches the cond_resched() that is used in other locations of the
-code that iterates over all functions that can be traced.
-
-Cc: stable@vger.kernel.org
-Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
-Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
-Signed-off-by: zhoumin <teczm@foxmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
+Reported-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250415032910.13139-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6522,6 +6522,7 @@ ftrace_graph_set_hash(struct ftrace_hash
- 				}
- 			}
- 		}
-+		cond_resched();
- 	} while_for_each_ftrace_rec();
- out:
- 	mutex_unlock(&ftrace_lock);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index f774502680364..7e352837184fa 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -559,7 +559,7 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	/* setup the private structure */
+ 	err = txgbe_sw_init(wx);
+ 	if (err)
+-		goto err_free_mac_table;
++		goto err_pci_release_regions;
+ 
+ 	/* check if flash load is done after hw power up */
+ 	err = wx_check_flash_load(wx, TXGBE_SPI_ILDR_STATUS_PERST);
+@@ -717,6 +717,7 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	wx_clear_interrupt_scheme(wx);
+ 	wx_control_hw(wx, false);
+ err_free_mac_table:
++	kfree(wx->rss_key);
+ 	kfree(wx->mac_table);
+ err_pci_release_regions:
+ 	pci_release_selected_regions(pdev,
+-- 
+2.39.5
+
 
 
 
