@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90858A9925B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AE8A98E4A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D0B9A0C94
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54B867AD643
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4108828A406;
-	Wed, 23 Apr 2025 15:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3B127FD56;
+	Wed, 23 Apr 2025 14:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4A+zxoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXiPmJck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E1225EF8E;
-	Wed, 23 Apr 2025 15:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76DC481CD;
+	Wed, 23 Apr 2025 14:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421792; cv=none; b=mEW/dTZRJUN8fGa8xg4CxZkYJI0AYHfgwDx9DmK8mdOuGyYC5qlV5Oq15fSEVGU7W3hfuGBsiLHSBFYERNmFysVccIy/fDjcnVG/29dK7j8IRSShPNsObJSVkemqnrl4AUR57Z7SSB2U9RZmAVxl85k6FMyT5faPcl1y+UdAeSs=
+	t=1745420060; cv=none; b=t8aBfIfB6IMhooTV/QSw3Vh3CnlPuoSqTyX6v/hUAuvmIwYvtdi9d62VBhL+ct/0KUKMb3t845t5i6uRKIxkDTZx4+w61uskeQlZWSfcpURptEHKuhlICDG3Ppc5bnaaZKEabo4UTZchzxL1H4MUxqtf1RBeZ2nY6MnHPfOGIAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421792; c=relaxed/simple;
-	bh=b9XPAjsijW72XKXTWqSMAbz0xSgcMZEt0DdhqB/MrxU=;
+	s=arc-20240116; t=1745420060; c=relaxed/simple;
+	bh=2nfp0xTt3kMgyRHQxEOYV5jkOU7nPdZ2xnsC4zGBJmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvCN+laBpGemqOgmI1Pdnfjox/Z07ygyb7FwhWtlE9CDGCxpfh+5SrgbjvunbVPpB1vzgROftnGBhhpovBV7SQH9N05BDZiH5yjzicMkd/EQKrApv//3VkyDnWXmH87LnrDpaSfTpWMsFgcamAXGvXtEeZDdV3fG/SMbwGo7It0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4A+zxoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C98C4CEE2;
-	Wed, 23 Apr 2025 15:23:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qw5mjYLCku8RAk7ufcVorxZy5SO0ASqrdEn4KyNFIKQv8XzhcSTciQVnWoDwpuBWaxpxpSaQNo2+gnQaS237gXeIi3N33pD0zocJipgSuiPDyvuhsZ9tBSfKe0xIsJAkJVH6Q+Onj2qFq1H4tuHDQYYUOecNFJXGblwndVW0s7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXiPmJck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A60EC4CEE2;
+	Wed, 23 Apr 2025 14:54:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421791;
-	bh=b9XPAjsijW72XKXTWqSMAbz0xSgcMZEt0DdhqB/MrxU=;
+	s=korg; t=1745420060;
+	bh=2nfp0xTt3kMgyRHQxEOYV5jkOU7nPdZ2xnsC4zGBJmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4A+zxoQZupjRwC/oO6YZDLx0j+P71pImEKgfCYVnUaG2s+PExiuhIUP8ubn85yss
-	 tNrUwK41lB0UqgYEfTgfWzS/WKsFtGjCzy3k0To5C7820jmSP7fFLNcI+VVdDaibek
-	 9EWqLilq1ZvJVitMprpv2Aw2Rr2pKD9cqXXHOIKY=
+	b=PXiPmJckU9ezc+GeaIBUZEeclgv/e1Vr16nedTAhGeAlIAhdU2Hz2XZkT63HqoUu+
+	 vZTw99BlzTH69siresQQBJsINUK3Po5HVuRDt6XURJIVWC0cNmr85q0xDiLlLaYS0N
+	 7YNpNKf5BUrQ5ImcWlIHd+ZExMYDBjEMtfiIm6zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/291] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 6.12 096/223] drm/v3d: Fix Indirect Dispatch configuration for V3D 7.1.6 and later
 Date: Wed, 23 Apr 2025 16:42:48 +0200
-Message-ID: <20250423142631.696346090@linuxfoundation.org>
+Message-ID: <20250423142621.028354317@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
+[ Upstream commit dcdae6e92d4e062da29235fe88980604595e3f0f ]
 
-This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
+This commit is a resubmission of commit 1fe1c66274fb ("drm/v3d: Fix
+Indirect Dispatch configuration for V3D 7.1.6 and later"), which was
+accidentally reverted by commit 91dae758bdb8 ("Merge tag
+'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel
+into drm-next"), likely due to an unfortunate conflict resolution.
 
-Since the original bug seems to have been around for years,
-but a new issue was report with the fix, revert the fix for
-now. We have a couple of weeks to figure it out for this
-release, if needed.
+>From the original commit message:
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+```
+`args->cfg[4]` is configured in Indirect Dispatch using the number of
+batches. Currently, for all V3D tech versions, `args->cfg[4]` equals the
+number of batches subtracted by 1. But, for V3D 7.1.6 and later, we must not
+subtract 1 from the number of batches.
+
+Implement the fix by checking the V3D tech version and revision.
+
+Fixes several `dEQP-VK.synchronization*` CTS tests related to Indirect Dispatch.
+```
+
+Fixes: 91dae758bdb8 ("Merge tag 'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-next")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://lore.kernel.org/r/20250409205051.9639-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_sched.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 7c1e81e15865c..62b2817df2ba9 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3800,7 +3800,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
--	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 3066cfdb054cc..4a6aa36619fe3 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -410,7 +410,8 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 	struct v3d_bo *bo = to_v3d_bo(job->base.bo[0]);
+ 	struct v3d_bo *indirect = to_v3d_bo(indirect_csd->indirect);
+ 	struct drm_v3d_submit_csd *args = &indirect_csd->job->args;
+-	u32 *wg_counts;
++	struct v3d_dev *v3d = job->base.v3d;
++	u32 num_batches, *wg_counts;
+ 
+ 	v3d_get_bo_vaddr(bo);
+ 	v3d_get_bo_vaddr(indirect);
+@@ -423,8 +424,17 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+-	args->cfg[4] = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
+-		       (wg_counts[0] * wg_counts[1] * wg_counts[2]) - 1;
++
++	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
++		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
++
++	/* V3D 7.1.6 and later don't subtract 1 from the number of batches */
++	if (v3d->ver < 71 || (v3d->ver == 71 && v3d->rev < 6))
++		args->cfg[4] = num_batches - 1;
++	else
++		args->cfg[4] = num_batches;
++
++	WARN_ON(args->cfg[4] == ~0);
+ 
+ 	for (int i = 0; i < 3; i++) {
+ 		/* 0xffffffff indicates that the uniform rewrite is not needed */
 -- 
 2.39.5
 
