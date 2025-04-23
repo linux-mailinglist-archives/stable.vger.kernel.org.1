@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A200BA9928F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB95A98E47
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE1E84457F8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE0D1B65B1E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0A828D85F;
-	Wed, 23 Apr 2025 15:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B81A5674E;
+	Wed, 23 Apr 2025 14:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHm88eVb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWm7jQ4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05972269B07;
-	Wed, 23 Apr 2025 15:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC382263F54;
+	Wed, 23 Apr 2025 14:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421953; cv=none; b=hEw6UHH5RycV9lby5r1UR+WMkAEqlCS4GGBfBwdPtAREF69kAj52F2dZsM3l8VHLvHnqEegG+T6qhWCMb4I85CGafAW05xqc5GpiOstSXsdvNk1hp20KEk1DERzx/WmAN6I9kQndEoGUerS5O6eNcLbjXa3uG8VfheaimP1FQ+M=
+	t=1745419881; cv=none; b=TGUtBX0gfDpHl6y+65mH6jDHte8k2NPjcWggMHOGpBMxmZPNEUlaPHRwPrEjf5/BW52vcgP65mWgnwLYfqobD7RDzoAUcmQsrpPYdng3bu2XKkielz/qWoaNQR61ZXjGI5BmC/ZKuu2jxwUUzM3toZeMaZLYEKFZQbOUm2CiDho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421953; c=relaxed/simple;
-	bh=iF+Mw9HipAPdDJ8NHh3n/qPgNzBChFh5900zu4sUUO8=;
+	s=arc-20240116; t=1745419881; c=relaxed/simple;
+	bh=C72fxhGyFQ0qcDqt9FiVUKq/CCXhPf0cH5oadzxNZ+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/F4KtccSQVQ5wm0ah1CFj4K+lCcPZhZkBm2kq9rdzIX78G7fL4+AVAR5dQIM01+Lw3+UggrYwueJ+qc9/BizntjXe5lLN3ENFt7qXlPfFhkaWMg0cDu27Gh4W7fq5Kjmdulo1uhcvOjSkjQSkTDIgA9FnQCSS4XYPCduXNLsSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHm88eVb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32823C4CEE3;
-	Wed, 23 Apr 2025 15:25:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s5zlG+/FoyuuKLj5Pjy7cKBvVYZqGiCNhW5RD4flQDBkpYr8t3ZeW/44Fl8JgFOSV+MAJ5WnP4q69mn+lKXM3YM4LiDcPZWwv4NOCMZSwmTa3GoEecFOgMsQi3/QjvgYXTJUD05W3tTsKRNGVS6TJnrGxc/Sh31Ch5HQE7uRzjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWm7jQ4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61961C4CEE2;
+	Wed, 23 Apr 2025 14:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421952;
-	bh=iF+Mw9HipAPdDJ8NHh3n/qPgNzBChFh5900zu4sUUO8=;
+	s=korg; t=1745419881;
+	bh=C72fxhGyFQ0qcDqt9FiVUKq/CCXhPf0cH5oadzxNZ+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHm88eVbEnGAuC4XciLGUhmGtG3eqtJcOtUw80qZ4QCQgCk4jm/NXGHPNTQ3MainK
-	 2pr9XYmh4fB8w7qWXaQwbEyRS+EbN4yyDkgeS0lbW3Jpc/hcmds0ZTodk1j3PCAxdD
-	 HO0MNO3jtWdNfpYHDnea6mWBPxJWRAGIsz3Zoeck=
+	b=vWm7jQ4fSP7qL/J96Pavh/zUJr1PQ7Jxc+6fXd5R3XRzirQdY5Ky68gus/yYVqkS1
+	 qrh3Rws9f8ceDNChjh9nxXMbVKRIWHX0ds8btqDBpIsUSEUYmPKZk24HiiThbYWVkO
+	 c6h5Pex7mCcHb6BvhKdStcEp2mEsLXhu9WMmMXNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Will Pierce <wgpierce17@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/393] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
+Subject: [PATCH 6.12 075/223] riscv: Use kvmalloc_array on relocation_hashtable
 Date: Wed, 23 Apr 2025 16:42:27 +0200
-Message-ID: <20250423142653.742023089@linuxfoundation.org>
+Message-ID: <20250423142620.181031724@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Will Pierce <wgpierce17@gmail.com>
 
-[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
+[ Upstream commit 8578b2f7e1fb79d4b92b62fbbe913548bb363654 ]
 
-drivers/infiniband/hw/usnic/usnic_ib_main.c:590
- usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
+The number of relocations may be a huge value that is unallocatable
+by kmalloc. Use kvmalloc instead so that it does not fail.
 
-Make usnic_ib_device_add() return NULL on fail path, also remove
-useless NULL check for usnic_ib_discover_pf()
-
-Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
-Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 8fd6c5142395 ("riscv: Add remaining module relocations")
+Suggested-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Will Pierce <wgpierce17@gmail.com>
+Link: https://lore.kernel.org/r/20250402081426.5197-1-wgpierce17@gmail.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ arch/riscv/kernel/module.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-index 13b654ddd3cc8..bcf7d8607d56e 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
- 	if (!us_ibdev) {
- 		usnic_err("Device %s context alloc failed\n",
- 				netdev_name(pci_get_drvdata(dev)));
--		return ERR_PTR(-EFAULT);
-+		return NULL;
+diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+index 47d0ebeec93c2..0ae34d79b87bd 100644
+--- a/arch/riscv/kernel/module.c
++++ b/arch/riscv/kernel/module.c
+@@ -648,7 +648,7 @@ process_accumulated_relocations(struct module *me,
+ 		kfree(bucket_iter);
  	}
  
- 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
-@@ -500,8 +500,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
- 	}
+-	kfree(*relocation_hashtable);
++	kvfree(*relocation_hashtable);
+ }
  
- 	us_ibdev = usnic_ib_device_add(parent_pci);
--	if (IS_ERR_OR_NULL(us_ibdev)) {
--		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
-+	if (!us_ibdev) {
-+		us_ibdev = ERR_PTR(-EFAULT);
- 		goto out;
- 	}
+ static int add_relocation_to_accumulate(struct module *me, int type,
+@@ -752,9 +752,10 @@ initialize_relocation_hashtable(unsigned int num_relocations,
  
-@@ -569,10 +569,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
- 	}
+ 	hashtable_size <<= should_double_size;
  
- 	pf = usnic_ib_discover_pf(vf->vnic);
--	if (IS_ERR_OR_NULL(pf)) {
--		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
--				pci_name(pdev), PTR_ERR(pf));
--		err = pf ? PTR_ERR(pf) : -EFAULT;
-+	if (IS_ERR(pf)) {
-+		err = PTR_ERR(pf);
-+		usnic_err("Failed to discover pf of vnic %s with err%d\n",
-+				pci_name(pdev), err);
- 		goto out_clean_vnic;
- 	}
+-	*relocation_hashtable = kmalloc_array(hashtable_size,
+-					      sizeof(**relocation_hashtable),
+-					      GFP_KERNEL);
++	/* Number of relocations may be large, so kvmalloc it */
++	*relocation_hashtable = kvmalloc_array(hashtable_size,
++					       sizeof(**relocation_hashtable),
++					       GFP_KERNEL);
+ 	if (!*relocation_hashtable)
+ 		return 0;
  
 -- 
 2.39.5
