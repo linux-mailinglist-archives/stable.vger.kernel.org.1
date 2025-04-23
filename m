@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76115A98ED0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE01A99205
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAAA8447E76
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15869209C0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BD8281365;
-	Wed, 23 Apr 2025 14:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E70F2973A0;
+	Wed, 23 Apr 2025 15:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMIJ0n39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAr4SGhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F62280A55;
-	Wed, 23 Apr 2025 14:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0861E281357;
+	Wed, 23 Apr 2025 15:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420282; cv=none; b=GeFRnE4XlLRkTc4RcJTU+n2K4c7IbKAOcbk83zQxxb3Y/mYTtCjGSm0ga5VtFvF3elNqfBGAkMrvXuOdQvmPXuDoNHrI//SOLsOttDVdlBeVmMFy/Sdc0PTreRfkmtQqdpxRu5c9GVwNbWU5uiChuPfcc3UfEdqt0cMo0xCaNTM=
+	t=1745421579; cv=none; b=BHC5Fd02YacTrLHuNfqb+dkF7oW9QgiBpcZi/Y4/aBjGmw2CqaTt7CDzOeRSHWF2d/0OsvVsCVFCD5wcXrblz8mOhxsm+yFo9MJmvOms8/j0KgC1epwufQKWCeLI4j+PTGeYgJI6mtM2Jg2tT1Rkq9WE5Ztpq23VowVuJOu5j0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420282; c=relaxed/simple;
-	bh=pluNPGyr1CaWOLT9KeeTl7/+j8mKG2ROsS7T0CQYDBE=;
+	s=arc-20240116; t=1745421579; c=relaxed/simple;
+	bh=nfxRI2bqKIPMREsQPc7k/vwihcvHWE7BkssUeFfLwo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sgt2usvJ9NFaxv6tf2+Q12Wna0iSjDQcRSW/MdTTu9IV6GxgeIOqmCDwci3giupGw3/Sniy9IMvN3DeS5maZtD+/J/J5Q4lE6VU+BXCT/UTKmH49ZjxfSUh5GkT/w5/EqFPjxLdM3eAncQaF4hfO4REd0BsfJ8iDKegZL26EoE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMIJ0n39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD72C4CEE2;
-	Wed, 23 Apr 2025 14:58:01 +0000 (UTC)
+	 MIME-Version; b=BgfusrG/ZkndKyf0KcoDY+1/V1wAuJWN5daGqdY1V189g7vcjEYReJIGPM1G9K/N/Cq03d7LIsxyQA0VC7l+S7THPZd4mE7YbW7z4S7hWJAWg/lSvSU//oUbJQLhJV4YAapJ1289raNY8XYPWOUJ7m4aApMgbxzD/wfQajYLLPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAr4SGhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE12C4CEE2;
+	Wed, 23 Apr 2025 15:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420281;
-	bh=pluNPGyr1CaWOLT9KeeTl7/+j8mKG2ROsS7T0CQYDBE=;
+	s=korg; t=1745421578;
+	bh=nfxRI2bqKIPMREsQPc7k/vwihcvHWE7BkssUeFfLwo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMIJ0n39K1PSt02EUy71YE0w4/IKqwemIHKNgtINLdSSnArvGxBv/zp4Pq/3Iiw+c
-	 pK4U9Znird8e8DW62pLClL8GDqT3YnIRx+SCXt+WndT2LmsfNu9QerLHNlvHlwhXh/
-	 KPP5C2xPHdv7sPLGvBpaFAG6+shd4LvLx5fpkAW0=
+	b=bAr4SGhyn8J+Z8K+rItKftP8pUayZb3jb5/EQTAlohQTFsAwZiV/NUy87LaRLQQxQ
+	 kArqBdppGtu/zxe5fs9TNe38aHJC+dLYELOq8AtXPQsPCQ0HPjyT5PuBfrJHdsaFDb
+	 VxrQn1Owd4P+ppY3k7sxqTv+MTLJ1SfWZ4MnopJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 078/241] net: dsa: avoid refcount warnings when ds->ops->tag_8021q_vlan_del() fails
-Date: Wed, 23 Apr 2025 16:42:22 +0200
-Message-ID: <20250423142623.777083206@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.1 154/291] of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
+Date: Wed, 23 Apr 2025 16:42:23 +0200
+Message-ID: <20250423142630.684887330@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 514eff7b0aa1c5eb645ddbb8676ef3e2d88a8b99 ]
+commit 962a2805e47b933876ba0e4c488d9e89ced2dd29 upstream.
 
-This is very similar to the problem and solution from commit
-232deb3f9567 ("net: dsa: avoid refcount warnings when
-->port_{fdb,mdb}_del returns error"), except for the
-dsa_port_do_tag_8021q_vlan_del() operation.
+In irq_of_parse_and_map(), refcount of device node @oirq.np was got
+by successful of_irq_parse_one() invocation, but it does not put the
+refcount before return, so causes @oirq.np refcount leakage.
 
-Fixes: c64b9c05045a ("net: dsa: tag_8021q: add proper cross-chip notifier support")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414213020.2959021-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by putting @oirq.np refcount before return.
+
+Fixes: e3873444990d ("of/irq: Move irq_of_parse_and_map() to common code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-6-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_8021q.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/irq.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/dsa/tag_8021q.c b/net/dsa/tag_8021q.c
-index 3ee53e28ec2e9..53e03fd8071b4 100644
---- a/net/dsa/tag_8021q.c
-+++ b/net/dsa/tag_8021q.c
-@@ -197,7 +197,7 @@ static int dsa_port_do_tag_8021q_vlan_del(struct dsa_port *dp, u16 vid)
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -39,11 +39,15 @@
+ unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
+ {
+ 	struct of_phandle_args oirq;
++	unsigned int ret;
  
- 	err = ds->ops->tag_8021q_vlan_del(ds, port, vid);
- 	if (err) {
--		refcount_inc(&v->refcount);
-+		refcount_set(&v->refcount, 1);
- 		return err;
- 	}
+ 	if (of_irq_parse_one(dev, index, &oirq))
+ 		return 0;
  
--- 
-2.39.5
-
+-	return irq_create_of_mapping(&oirq);
++	ret = irq_create_of_mapping(&oirq);
++	of_node_put(oirq.np);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(irq_of_parse_and_map);
+ 
 
 
 
