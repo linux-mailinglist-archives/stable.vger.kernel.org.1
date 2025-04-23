@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74199A9923A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A469A98DD7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FAAA4A251F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C441616BF80
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DA329AB1D;
-	Wed, 23 Apr 2025 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E722820C3;
+	Wed, 23 Apr 2025 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFfqXD5x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LA6SfLvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845AB29AB18;
-	Wed, 23 Apr 2025 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124C42820BC;
+	Wed, 23 Apr 2025 14:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421807; cv=none; b=q0OQN35a5+MGXFhnJKmB3bEabpz/zjzjRjigxw2XiH0cOM1FkcG2D2KnrU6nHjp8Wn2hto46wQKwam73ztN3tGPfubv7NsccINHkIgjQ/UxSOjFBVmtaWMQjo4xSP4Gg9JxwBxVf2OSL0uU7iWrhOB8M9h9jA9J017jQs+213+o=
+	t=1745419721; cv=none; b=Qrl3KRFP9xsOff99ch72Fx1Jc89YWyQX0BJKHpk43e6w3BF5QXBZmZjw3AQI+wM9AG/DtojrH/zj+2UO94D7H17fEQx8HU3DgDOHTOc7E0s7PW7U0a86AUIE+0owZENIhDnKT2A51CBeerl+cpfWYML3g94NbZ0rQQuDPSVAAb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421807; c=relaxed/simple;
-	bh=tzHoeuz81eI1MsvulYa3NUphf8CdfCTu7NT/dP9DgEo=;
+	s=arc-20240116; t=1745419721; c=relaxed/simple;
+	bh=f9gfa4fQfoLYeEUcqzLAMBS2TEE48HXwYxv0EEqZdmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bkqWM/TBfGloxjjFurv1nVmJg7h6/1bybakwFfcAfrA7GW8hieDY6ibmKa9SIdp2Q2A1A1bFx3zYYijLBhvjX0dQ4S+ZF9TltxZ7+nApQHaQG4YSAIrnazDSMJiHQcdhivJsHyLTzt6rvZRjAnnpmD+ABgpT1UOlpzkqZuEcBTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFfqXD5x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F0EC4CEE3;
-	Wed, 23 Apr 2025 15:23:26 +0000 (UTC)
+	 MIME-Version; b=s1pU4VkO6WxBOwpk4J8O6ApVx7WpFCDz/gZGkkIi182JnBO2ZvXproXKixyYfH9r83+BaDye++FTOkatZM4lOv4Exo2mb3tKsnlV+FahBQShnZLHmYK1fP+EjgXhznc9wygPfHBj4LLm5KfTYw3ZXeq2XKiucf7OyjhDYzlTp6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LA6SfLvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930AAC4CEE2;
+	Wed, 23 Apr 2025 14:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421807;
-	bh=tzHoeuz81eI1MsvulYa3NUphf8CdfCTu7NT/dP9DgEo=;
+	s=korg; t=1745419720;
+	bh=f9gfa4fQfoLYeEUcqzLAMBS2TEE48HXwYxv0EEqZdmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFfqXD5xeqFSHk1kB93ttR4ewcErrB/uDnwafFpXV5DrYrpihT1wPzcTHPFKRh+O9
-	 dn6V4+HGwGrzxUApoRU6qn5ARn4kIFlzSqczKf7rXgOEWWcFvBJSMQT7yk3zAE28T8
-	 4rSkFO4Ejk/NmEfEx4ArmxerfksnkDaHk69Nfy6k=
+	b=LA6SfLvAkHDrjpPo75xz7sgHUB7vqANZ1Yf+JKLM06Ui1rbb3zcr7Z9Xhh4cH0EsW
+	 q+f/tMaq3D+uLio4aZsKDx8jENTS5XBd83VL26z0haceIKs1SsvI06uRB+D/4njaI3
+	 G8KlqhIhNWs5HV5/DqJOaSloCZi/i5Ye3VZ9ebpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <svarbanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.6 226/393] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
+	Michael Walle <mwalle@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 050/223] net: ethernet: ti: am65-cpsw: fix port_np reference counting
 Date: Wed, 23 Apr 2025 16:42:02 +0200
-Message-ID: <20250423142652.725884922@linuxfoundation.org>
+Message-ID: <20250423142619.172532772@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <svarbanov@suse.de>
+From: Michael Walle <mwalle@kernel.org>
 
-commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
+[ Upstream commit 903d2b9f9efc5b3339d74015fcfc0d9fff276c4c ]
 
-A call to of_parse_phandle() is incrementing the refcount, and as such,
-the of_node_put() must be called when the reference is no longer needed.
+A reference to the device tree node is stored in a private struct, thus
+the reference count has to be incremented. Also, decrement the count on
+device removal and in the error path.
 
-Thus, refactor the existing code and add a missing of_node_put() call
-following the check to ensure that "msi_np" matches "pcie->np" and after
-MSI initialization, but only if the MSI support is enabled system-wide.
-
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
-Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250414083942.4015060-1-mwalle@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1501,7 +1501,7 @@ static struct pci_ops brcm7425_pcie_ops
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 308a2b72a65de..a21e7c0afbfdc 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2680,7 +2680,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 				of_property_read_bool(port_np, "ti,mac-only");
  
- static int brcm_pcie_probe(struct platform_device *pdev)
- {
--	struct device_node *np = pdev->dev.of_node, *msi_np;
-+	struct device_node *np = pdev->dev.of_node;
- 	struct pci_host_bridge *bridge;
- 	const struct pcie_cfg_data *data;
- 	struct brcm_pcie *pcie;
-@@ -1576,9 +1576,14 @@ static int brcm_pcie_probe(struct platfo
- 		goto fail;
- 	}
- 
--	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
--	if (pci_msi_enabled() && msi_np == pcie->np) {
--		ret = brcm_pcie_enable_msi(pcie);
-+	if (pci_msi_enabled()) {
-+		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
-+
-+		if (msi_np == pcie->np)
-+			ret = brcm_pcie_enable_msi(pcie);
-+
-+		of_node_put(msi_np);
-+
+ 		/* get phy/link info */
+-		port->slave.port_np = port_np;
++		port->slave.port_np = of_node_get(port_np);
+ 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
  		if (ret) {
- 			dev_err(pcie->dev, "probe of internal MSI failed");
- 			goto fail;
+ 			dev_err(dev, "%pOF read phy-mode err %d\n",
+@@ -2741,6 +2741,17 @@ static void am65_cpsw_nuss_phylink_cleanup(struct am65_cpsw_common *common)
+ 	}
+ }
+ 
++static void am65_cpsw_remove_dt(struct am65_cpsw_common *common)
++{
++	struct am65_cpsw_port *port;
++	int i;
++
++	for (i = 0; i < common->port_num; i++) {
++		port = &common->ports[i];
++		of_node_put(port->slave.port_np);
++	}
++}
++
+ static int
+ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
+ {
+@@ -3647,6 +3658,7 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
+ 	am65_cpsw_nuss_cleanup_ndev(common);
+ 	am65_cpsw_nuss_phylink_cleanup(common);
+ 	am65_cpts_release(common->cpts);
++	am65_cpsw_remove_dt(common);
+ err_of_clear:
+ 	if (common->mdio_dev)
+ 		of_platform_device_destroy(common->mdio_dev, NULL);
+@@ -3686,6 +3698,7 @@ static void am65_cpsw_nuss_remove(struct platform_device *pdev)
+ 	am65_cpsw_nuss_phylink_cleanup(common);
+ 	am65_cpts_release(common->cpts);
+ 	am65_cpsw_disable_serdes_phy(common);
++	am65_cpsw_remove_dt(common);
+ 
+ 	if (common->mdio_dev)
+ 		of_platform_device_destroy(common->mdio_dev, NULL);
+-- 
+2.39.5
+
 
 
 
