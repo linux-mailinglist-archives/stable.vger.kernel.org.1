@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A241A99073
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B811A9919E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C24C1B8393C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50820923AE3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3CE266B4B;
-	Wed, 23 Apr 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041CF28CF7E;
+	Wed, 23 Apr 2025 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7iBL/aS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7eDttMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8D628CF61;
-	Wed, 23 Apr 2025 15:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60F727CCD7;
+	Wed, 23 Apr 2025 15:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420737; cv=none; b=L6HhVAFYqQf9Ow44fWJnCGEzr2+jv4rz0LhLNXQI1WLHbNYp/qGJ2zCwOttnk3ujgHMZLtbd9r4rqD2/0KJaXUBuNDls2agbn/meary5I+n85slsR087e3khYrcOEEl9dqImNq6ms4LfPjpnEzQ1f4siq1sFkKKof/m3F+3ekCU=
+	t=1745421397; cv=none; b=rEp4oz+Z4mTXf9uGVLA8bEamOs81rI0Lm6JIr2C9C+RDqKWaT7YBiSjgy133MbgMyzlwBEXsPHpfFc+vszRGcn8/C11LoxYFclc0SLyv3+LxxhkMXVttP2z/WYvazgjzF7+dQ3o2H4Y5UCyl0ReFF3z9/RP11hcQic9ssCexs8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420737; c=relaxed/simple;
-	bh=bkv/24m11SQBpYpjlkdd14z9jrR8vqq5zrCVOqMQupo=;
+	s=arc-20240116; t=1745421397; c=relaxed/simple;
+	bh=URHFYbZAYtBX43KYmLCYSLaR8yWjyDDSPmSdATV3A/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4kFEABjmdtdhI6rcYlLuLJBJPHmtTtdkb/Tg3ArGguy9awuzvT1S1J2Fz9/XlfpIyV4F4TUeaJDTr9DYFXInw9GeB1z5WdNcTREn9HY9zMbsv1PUKXwYEuFnElNvs65w2dcCz4eEp5Sh4twP/schhVChIk6vn9tfrrhc8bf4/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7iBL/aS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2B5C4CEE2;
-	Wed, 23 Apr 2025 15:05:37 +0000 (UTC)
+	 MIME-Version; b=Ni5BtBydFSXyYe+qUgGre2x8O/7Q3sByP0H7isBIrXUB6yCSbH2w6LmHj1CZwcEIrSE34doQh2TZ2+DXYKrL8UsXddQTG1YZMNRed8PurCnOQDNSE+C5RkCoKoOpA+E/IeOAlZS/9DMhyHjIpSbTE6NW3ovJHqbJaKObdCaAyrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7eDttMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D583FC4CEE2;
+	Wed, 23 Apr 2025 15:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420737;
-	bh=bkv/24m11SQBpYpjlkdd14z9jrR8vqq5zrCVOqMQupo=;
+	s=korg; t=1745421397;
+	bh=URHFYbZAYtBX43KYmLCYSLaR8yWjyDDSPmSdATV3A/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c7iBL/aS9bqtCiAB1QWgtnBJ5YAdcwSKslQXUnisRoDtIrIqbx3E44T5ePA6yBHvL
-	 PwnB/dktStY9/6b01+kG7mmoK84qnfWBQvOiJ12W063L02r7FPclo/QxdP54+K3UbC
-	 3Pba3vGfG8JiGlPhXWIYOhQJ18ZZZItOwVpD533Q=
+	b=D7eDttMo6e2xDJw2lST9aiFV+cxqG8hrUsnhd8bQkEIXcLyASfKDBraKgiM/WmmcZ
+	 Hp+OHmkScF2f3/KXztqUs/ugaCASg62HJi0Li+x9XttcnNJQNH1/gcPUKICefLrmgb
+	 pY3+SEQ7US+4aSUbNVSyPNVmoAf4b4R5BHXU+kEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 158/223] drm/amd/pm/powerplay: Prevent division by zero
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.14 166/241] RAS/AMD/FMPM: Get masked address
 Date: Wed, 23 Apr 2025 16:43:50 +0200
-Message-ID: <20250423142623.607770276@linuxfoundation.org>
+Message-ID: <20250423142627.314153574@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
+commit 58029c39cdc54ac4f4dc40b4a9c05eed9f9b808a upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+Some operations require checking, or ignoring, specific bits in an address
+value. For example, this can be comparing address values to identify unique
+structures.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Currently, the full address value is compared when filtering for duplicates.
+This results in over counting and creation of extra records.  This gives the
+impression that more unique events occurred than did in reality.
 
-Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Mask the address for physical rows on MI300.
+
+  [ bp: Simplify. ]
+
+Fixes: 6f15e617cc99 ("RAS: Introduce a FRU memory poison manager")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ras/amd/atl/internal.h |    3 +++
+ drivers/ras/amd/atl/umc.c      |    2 --
+ drivers/ras/amd/fmpm.c         |    9 ++++++++-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-@@ -307,10 +307,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
- 	int result = 0;
+--- a/drivers/ras/amd/atl/internal.h
++++ b/drivers/ras/amd/atl/internal.h
+@@ -362,4 +362,7 @@ static inline void atl_debug_on_bad_intl
+ 	atl_debug(ctx, "Unrecognized interleave mode: %u", ctx->map.intlv_mode);
+ }
  
- 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
--	    speed == 0 ||
-+	    (!speed || speed > UINT_MAX/8) ||
- 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
- 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
--		return -1;
-+		return -EINVAL;
++#define MI300_UMC_MCA_COL	GENMASK(5, 1)
++#define MI300_UMC_MCA_ROW13	BIT(23)
++
+ #endif /* __AMD_ATL_INTERNAL_H__ */
+--- a/drivers/ras/amd/atl/umc.c
++++ b/drivers/ras/amd/atl/umc.c
+@@ -229,7 +229,6 @@ int get_umc_info_mi300(void)
+  * Additionally, the PC and Bank bits may be hashed. This must be accounted for before
+  * reconstructing the normalized address.
+  */
+-#define MI300_UMC_MCA_COL	GENMASK(5, 1)
+ #define MI300_UMC_MCA_BANK	GENMASK(9, 6)
+ #define MI300_UMC_MCA_ROW	GENMASK(24, 10)
+ #define MI300_UMC_MCA_PC	BIT(25)
+@@ -360,7 +359,6 @@ static void _retire_row_mi300(struct atl
+  *
+  * See MI300_UMC_MCA_ROW for the row bits in MCA_ADDR_UMC value.
+  */
+-#define MI300_UMC_MCA_ROW13	BIT(23)
+ static void retire_row_mi300(struct atl_err *a_err)
+ {
+ 	_retire_row_mi300(a_err);
+--- a/drivers/ras/amd/fmpm.c
++++ b/drivers/ras/amd/fmpm.c
+@@ -250,6 +250,13 @@ static bool rec_has_valid_entries(struct
+ 	return true;
+ }
  
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
- 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
++/*
++ * Row retirement is done on MI300 systems, and some bits are 'don't
++ * care' for comparing addresses with unique physical rows.  This
++ * includes all column bits and the row[13] bit.
++ */
++#define MASK_ADDR(addr)	((addr) & ~(MI300_UMC_MCA_ROW13 | MI300_UMC_MCA_COL))
++
+ static bool fpds_equal(struct cper_fru_poison_desc *old, struct cper_fru_poison_desc *new)
+ {
+ 	/*
+@@ -258,7 +265,7 @@ static bool fpds_equal(struct cper_fru_p
+ 	 *
+ 	 * Also, order the checks from most->least likely to fail to shortcut the code.
+ 	 */
+-	if (old->addr != new->addr)
++	if (MASK_ADDR(old->addr) != MASK_ADDR(new->addr))
+ 		return false;
+ 
+ 	if (old->hw_id != new->hw_id)
 
 
 
