@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F18CA990F8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40023A990E6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 049F61BA103C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF0D01BA232B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E4628BAB2;
-	Wed, 23 Apr 2025 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB0928FFD1;
+	Wed, 23 Apr 2025 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkQvmUei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIP6ptPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE5C28B4EA;
-	Wed, 23 Apr 2025 15:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5925128C5AD;
+	Wed, 23 Apr 2025 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420989; cv=none; b=juvg9l5ow2aC7Cagz3LoRW7ozN85/YDY0QmI2YWyULxwQuRdb9JU3S1+v6T67sDDwi10BBhzm1Ihg1z4yzr1PIQKUHlv7gMKjfKMxWDGOCgWhH69zR1xooPN6t/9gSEqSixtPH4yPBPYQUrfbdKcN/zysrACpV43xv4avQaC0xM=
+	t=1745421002; cv=none; b=mfxJ6TfTC9OAYBiLd4MTlRSjqobEXInOMqpqXMw76WTgPRUrtqjFKKXRXOnNHmGxEBPfakOyk82zyY4+2K7bhLke47Zh4IttIJqxgCiNZyA9ZRylhcfS3zHAuR0w4VZD0ND16LSHwW3oDEPsXdpr3D8OhpgEXgE6XsZi0Evj1rE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420989; c=relaxed/simple;
-	bh=/02+Pcx7QULbou4fzP2IoBFDpbb5B+KUY0Uk8il9WJA=;
+	s=arc-20240116; t=1745421002; c=relaxed/simple;
+	bh=C/lw9BVtB5AN/DC/UbWm9g0u+obHbCK+IQuDanwVebo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFD3nEXOBhhBflj3lxNniPA4ioXUmtYhuiZl8Vx5rMn1Hue1Pft/V+b+0UNGfNFOGjnIXQuaoyHAsrfJI8v1zganhksy/SKDjyBt5cVA+X0QjDSIPb32V+sns2e3cei3+bPMpZQpGEwF847x9dHOr07bZR1duuXXLTDo84C3bXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkQvmUei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D99E7C4CEE2;
-	Wed, 23 Apr 2025 15:09:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e/NADmLxRR6xTMfq48pXmq8FnTHmop6DForJeIOKPICdqMuC1dFJK9QhhsqC87JtXtZHGQpsXaiBmT327A+1FVzmogIwc7/+qVvPE9WyAE82mBJxxgZxkxQ6iFVXAX4Cyl4Ny1HrWTbrX16A4nX/qRNFuYyh/INLowzh+8WRbUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIP6ptPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78CDC4CEE2;
+	Wed, 23 Apr 2025 15:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420989;
-	bh=/02+Pcx7QULbou4fzP2IoBFDpbb5B+KUY0Uk8il9WJA=;
+	s=korg; t=1745421002;
+	bh=C/lw9BVtB5AN/DC/UbWm9g0u+obHbCK+IQuDanwVebo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkQvmUeiKOhgkXaouybkQtZX8jwOyJrKJ8LHWQWX6SDKDYxxJze8VQRevUJsnZJTS
-	 hdG/frGhtlC1ePfHUQoKqonJrtK/BPWmLowsfPEgY9maF7/O/lq811JWl/0l+oJC7Q
-	 kV5Q+bG2wsTSKLWWIiWGPZ84SUFYgpeBe/wx+qRQ=
+	b=pIP6ptPT6LqAg8LAWJ8CpnCwSoaRXlEm9LK/7jXuJJJkPcN9zPcAL5eqoS4L4Dt9V
+	 QI7VQ2SBV4oKeIsclxe2XqZnI9BZiq/sy/2pfTYzDUy8AgpihhD1Y/qmAWHIDEfX5x
+	 63vvH8ljQ51e0Cbfi+1e5lRq5maijaCV42tlEFKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Anson Tsao <anson.tsao@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 180/223] drm/amd/display: Add HP Probook 445 and 465 to the quirk list for eDP on DP1
-Date: Wed, 23 Apr 2025 16:44:12 +0200
-Message-ID: <20250423142624.501080826@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.12 181/223] drm/xe/dma_buf: stop relying on placement in unmap
+Date: Wed, 23 Apr 2025 16:44:13 +0200
+Message-ID: <20250423142624.542625735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
 References: <20250423142617.120834124@linuxfoundation.org>
@@ -63,58 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 139e99d58e373bd11f085766e681d21d34d0b097 upstream.
+commit 25583ad42d091819157832e894179200ba8b54ee upstream.
 
-[Why]
-HP Probook 445 and 465 has DP0 and DP1 swapped.
+The is_vram() is checking the current placement, however if we consider
+exported VRAM with dynamic dma-buf, it looks possible for the xe driver
+to async evict the memory, notifying the importer, however importer does
+not have to call unmap_attachment() immediately, but rather just as
+"soon as possible", like when the dma-resv idles. Following from this we
+would then pipeline the move, attaching the fence to the manager, and
+then update the current placement. But when the unmap_attachment() runs
+at some later point we might see that is_vram() is now false, and take
+the complete wrong path when dma-unmapping the sg, leading to
+explosions.
 
-[How]
-Add HP Probook 445 and 465 to DP0/DP1 swap quirk list.
+To fix this check if the sgl was mapping a struct page.
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3995
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Anson Tsao <anson.tsao@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+v2:
+  - The attachment can be mapped multiple times it seems, so we can't
+    really rely on encoding something in the attachment->priv. Instead
+    see if the page_link has an encoded struct page. For vram we expect
+    this to be NULL.
+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4563
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Acked-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250410162716.159403-2-matthew.auld@intel.com
+(cherry picked from commit d755887f8e5a2a18e15e6632a5193e5feea18499)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpu/drm/xe/xe_dma_buf.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1704,6 +1704,20 @@ static const struct dmi_system_id dmi_qu
- 			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
- 		},
- 	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP ProBook 445 14 inch G11 Notebook PC"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP ProBook 465 16 inch G11 Notebook PC"),
-+		},
-+	},
- 	{}
- 	/* TODO: refactor this from a fixed table to a dynamic option */
- };
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -145,10 +145,7 @@ static void xe_dma_buf_unmap(struct dma_
+ 			     struct sg_table *sgt,
+ 			     enum dma_data_direction dir)
+ {
+-	struct dma_buf *dma_buf = attach->dmabuf;
+-	struct xe_bo *bo = gem_to_xe_bo(dma_buf->priv);
+-
+-	if (!xe_bo_is_vram(bo)) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
 
 
 
