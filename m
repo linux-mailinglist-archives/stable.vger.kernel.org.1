@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD9E7A99196
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5843A98D74
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FFA092692C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B742D189B6FF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8563B27F4D9;
-	Wed, 23 Apr 2025 15:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F821A0711;
+	Wed, 23 Apr 2025 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KmH9Myyx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeD6lEbY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434AF28CF52;
-	Wed, 23 Apr 2025 15:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B553C8EB;
+	Wed, 23 Apr 2025 14:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421408; cv=none; b=jCgFSmPlzgz1YuleB0SbTZkURCxzlSBTO5Hj/LOLuBwy5AdJaRcGRm09h7ClDS0U2a8nob9ic+JzU2m4UtmN5utk9YU7KUsUenv2oZVVHbGeouzb3SEvTljq0gGcmkTjruDUP4ZRaGwH7Kgcv5WlNOB1ClV/4D4Kek2fCA57crI=
+	t=1745419531; cv=none; b=bzu+WJXwW8nE+tmTRULLn3mviZCOosb4nbzpwsgPQ/pjZnQnqVrML3n+jvHBWVvpL/HW0iib+hcGQNmALOuayrgCfCBxQY2YlV5V5eKIxJEbX/OpnMwjBSYFLTndaIM9fZ9ft2waeK0+oiJ0ldAZcid45wEIq6zmVWW3X8Ru5o0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421408; c=relaxed/simple;
-	bh=l/6HZ+jZ3lPEzzozvvias+Qj88JYcMXUvMfyrJgUPpI=;
+	s=arc-20240116; t=1745419531; c=relaxed/simple;
+	bh=ikYO6zViixwqyymGoEl3MfoX19yJjoY1TCh2T6ZZgnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WY7kqm+CpK+q5w3YjbUep9j254cVNgDNlPR4s+JRoCXN7+ls8eOo331+CpMEzD6ARaSK65LogSW1a+AVr3sAUHs4mtDUd1VgNqB33FF/b8Iu/eJX0km3T8Fqi6Xc/bDUhVo/c5+sckbpWKcWcAvRImxoUzhXK6YPlG+xDi2ItHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KmH9Myyx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7D2C4CEE2;
-	Wed, 23 Apr 2025 15:16:47 +0000 (UTC)
+	 MIME-Version; b=E6rhJBNOVn47am45kPAW1O07wLej/wIpljdjV9vq6f4bsPqjZTlXYIpMTLz3RfgS69HV99aSgYLhFy5E4lYzX/vvlMbKzWXkkrGaEP7FXc+wvmALJA4iEljwJmH+8Ka0aHxN471D5yfm6JFjVuW+gUVMPAm40iDc+B02PPk/u9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeD6lEbY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FDFC4CEE2;
+	Wed, 23 Apr 2025 14:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421407;
-	bh=l/6HZ+jZ3lPEzzozvvias+Qj88JYcMXUvMfyrJgUPpI=;
+	s=korg; t=1745419531;
+	bh=ikYO6zViixwqyymGoEl3MfoX19yJjoY1TCh2T6ZZgnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KmH9MyyxFS2ofEkEgjJXVBKYzt3oNdArllvZ+8pu48KQfKAzo3Q73gEZHzq/oVslw
-	 AYeNvZw1DRaMLi8U5HaHTK17FtFgZxSmWlgFSM51yFAcVNvqkDadkmehuMEEaX/YZH
-	 8/Ob8Uj1kymR10djkAeIY0GYbyJf8ENJvVvmxaJM=
+	b=UeD6lEbYn8A853sQZ97rZ85usAjYkftjIjw52sZNtDYY6a+0P/3DbB+F4nxWoBAqO
+	 cPyzSWnKr/A4MIZb6XXNL024Hn/xLNEPXXyxPyxXTW0IoyiH6TKz+J55CUyiY59BUn
+	 pkgUeP9LJx2oWeGhPJIQcgyM1rUIaV6rkw9388C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 176/393] mptcp: fix NULL pointer in can_accept_new_subflow
-Date: Wed, 23 Apr 2025 16:41:12 +0200
-Message-ID: <20250423142650.646815045@linuxfoundation.org>
+	Xingui Yang <yangxingui@huawei.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 001/223] scsi: hisi_sas: Enable force phy when SATA disk directly connected
+Date: Wed, 23 Apr 2025 16:41:13 +0200
+Message-ID: <20250423142617.184125840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Xingui Yang <yangxingui@huawei.com>
 
-commit 443041deb5ef6a1289a99ed95015ec7442f141dc upstream.
+[ Upstream commit 8aa580cd92843b60d4d6331f3b0a9e8409bb70eb ]
 
-When testing valkey benchmark tool with MPTCP, the kernel panics in
-'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
+when a SATA disk is directly connected the SAS controller determines the
+disk to which I/Os are delivered based on the port ID in the DQ entry.
 
-Call trace:
+When many phys are disconnected and reconnect, the port ID of phys were
+changed and used by other link, resulting in I/O being sent to incorrect
+disk. Data inconsistency on the SATA disk may occur during I/O retries
+using the old port ID. So enable force phy, then force the command to be
+executed in a certain phy, and if the actual phy ID of the port does not
+match the phy configured in the command, the chip will stop delivering the
+I/O to disk.
 
-  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
-  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
-  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
-  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
-  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
-  ip_local_deliver (./net/ipv4/ip_input.c:254)
-  ip_rcv_finish (./net/ipv4/ip_input.c:449)
-  ...
-
-According to the debug log, the same req received two SYN-ACK in a very
-short time, very likely because the client retransmits the syn ack due
-to multiple reasons.
-
-Even if the packets are transmitted with a relevant time interval, they
-can be processed by the server on different CPUs concurrently). The
-'subflow_req->msk' ownership is transferred to the subflow the first,
-and there will be a risk of a null pointer dereference here.
-
-This patch fixes this issue by moving the 'subflow_req->msk' under the
-`own_req == true` conditional.
-
-Note that the !msk check in subflow_hmac_valid() can be dropped, because
-the same check already exists under the own_req mpj branch where the
-code has been moved to.
-
-Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ce60689e12dd ("scsi: hisi_sas: add v3 code to send ATA frame")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20250312095135.3048379-2-yangxingui@huawei.com
+Reviewed-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  9 +++++++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 14 ++++++++++++--
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -731,8 +731,6 @@ static bool subflow_hmac_valid(const str
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+index 342d75f12051d..89ff33daba404 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+@@ -2501,6 +2501,7 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
+ 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
+ 	struct sas_ata_task *ata_task = &task->ata_task;
+ 	struct sas_tmf_task *tmf = slot->tmf;
++	int phy_id;
+ 	u8 *buf_cmd;
+ 	int has_data = 0, hdr_tag = 0;
+ 	u32 dw0, dw1 = 0, dw2 = 0;
+@@ -2508,10 +2509,14 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
+ 	/* create header */
+ 	/* dw0 */
+ 	dw0 = port->id << CMD_HDR_PORT_OFF;
+-	if (parent_dev && dev_is_expander(parent_dev->dev_type))
++	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
+ 		dw0 |= 3 << CMD_HDR_CMD_OFF;
+-	else
++	} else {
++		phy_id = device->phy->identify.phy_identifier;
++		dw0 |= (1U << phy_id) << CMD_HDR_PHY_ID_OFF;
++		dw0 |= CMD_HDR_FORCE_PHY_MSK;
+ 		dw0 |= 4 << CMD_HDR_CMD_OFF;
++	}
  
- 	subflow_req = mptcp_subflow_rsk(req);
- 	msk = subflow_req->msk;
--	if (!msk)
--		return false;
+ 	if (tmf && ata_task->force_phy) {
+ 		dw0 |= CMD_HDR_FORCE_PHY_MSK;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index cd394d8c9f07f..6b4cb560ff304 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -358,6 +358,10 @@
+ #define CMD_HDR_RESP_REPORT_MSK		(0x1 << CMD_HDR_RESP_REPORT_OFF)
+ #define CMD_HDR_TLR_CTRL_OFF		6
+ #define CMD_HDR_TLR_CTRL_MSK		(0x3 << CMD_HDR_TLR_CTRL_OFF)
++#define CMD_HDR_PHY_ID_OFF		8
++#define CMD_HDR_PHY_ID_MSK		(0x1ff << CMD_HDR_PHY_ID_OFF)
++#define CMD_HDR_FORCE_PHY_OFF		17
++#define CMD_HDR_FORCE_PHY_MSK		(0x1U << CMD_HDR_FORCE_PHY_OFF)
+ #define CMD_HDR_PORT_OFF		18
+ #define CMD_HDR_PORT_MSK		(0xf << CMD_HDR_PORT_OFF)
+ #define CMD_HDR_PRIORITY_OFF		27
+@@ -1425,15 +1429,21 @@ static void prep_ata_v3_hw(struct hisi_hba *hisi_hba,
+ 	struct hisi_sas_cmd_hdr *hdr = slot->cmd_hdr;
+ 	struct asd_sas_port *sas_port = device->port;
+ 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
++	int phy_id;
+ 	u8 *buf_cmd;
+ 	int has_data = 0, hdr_tag = 0;
+ 	u32 dw1 = 0, dw2 = 0;
  
- 	subflow_generate_hmac(msk->remote_key, msk->local_key,
- 			      subflow_req->remote_nonce,
-@@ -828,12 +826,8 @@ static struct sock *subflow_syn_recv_soc
+ 	hdr->dw0 = cpu_to_le32(port->id << CMD_HDR_PORT_OFF);
+-	if (parent_dev && dev_is_expander(parent_dev->dev_type))
++	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
+ 		hdr->dw0 |= cpu_to_le32(3 << CMD_HDR_CMD_OFF);
+-	else
++	} else {
++		phy_id = device->phy->identify.phy_identifier;
++		hdr->dw0 |= cpu_to_le32((1U << phy_id)
++				<< CMD_HDR_PHY_ID_OFF);
++		hdr->dw0 |= CMD_HDR_FORCE_PHY_MSK;
+ 		hdr->dw0 |= cpu_to_le32(4U << CMD_HDR_CMD_OFF);
++	}
  
- 	} else if (subflow_req->mp_join) {
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
--		    !subflow_hmac_valid(req, &mp_opt) ||
--		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
--			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK))
- 			fallback = true;
--		}
- 	}
- 
- create_child:
-@@ -882,6 +876,13 @@ create_child:
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
-+
-+			if (!subflow_hmac_valid(req, &mp_opt) ||
-+			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
- 
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+ 	switch (task->data_dir) {
+ 	case DMA_TO_DEVICE:
+-- 
+2.39.5
+
 
 
 
