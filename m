@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB643A990F3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A891A99023
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70B8117D813
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E37051B87EE3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CC228EA5D;
-	Wed, 23 Apr 2025 15:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4440128D856;
+	Wed, 23 Apr 2025 15:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrGbAZIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akIFFITw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5F528EA5B;
-	Wed, 23 Apr 2025 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03073269B07;
+	Wed, 23 Apr 2025 15:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421207; cv=none; b=M2LkOW+mBaxGMzjiklElwve1EhvECcVWLaOLBgkKTTpKBCQAehLkzsIMUOo/nOq0fY7GQwQYLWzLfpQKyU3Y6NywI7bhynZ7IPeW0xLumxlPEnpLHWLKcyIqKnxWjCS8btr0xsF4VksH1g3TVxA+xHFM8HBzmppLc0fqw5iIPW0=
+	t=1745420762; cv=none; b=oPnrN7ODEj74NmI6xyQYEU+ccfwPR21G+yFOUyUEAkZWsTieFYTk901Vn8U8WUli2qZmQssgAQv1RXDlJvIZlNHFvgD6rTdKZBkfL2ubwxb9+Cl6SN1G3kccw/8lacPviWdTsTr3uVz4+9nt+o1fo1Y+KgXud7v3W7uNhEbeMTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421207; c=relaxed/simple;
-	bh=zPFDKDMdYt2gUQgo0ju4gMV4+QL5g+UESwSmVsIJjtw=;
+	s=arc-20240116; t=1745420762; c=relaxed/simple;
+	bh=pNSsrPr+JOgwsb1c6OA/XhgINNBavOo0g/42pNpDOHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4oK5TzpEMcpFahWWvjh7NWWcwv3AoYvDPysR4cJBOfms/cJxQMlI+bxDooW5yuuYr4GCLsjY5+2rErFmVKa4s6t9F09QdndnJzN+xF9luTMJvIzjYivikPgc/Q2Eu2lpOh/FzdengiE4/6N2uI10XVR3khqqI5kPcnw7ir7eKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrGbAZIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DB4C4CEE2;
-	Wed, 23 Apr 2025 15:13:26 +0000 (UTC)
+	 MIME-Version; b=GmrR38nTvbx7NMPQZlk7VL99pSgyPkiJ7hybUKjOI3LqASHbCYFPJ4LHduoYGqk+fnIkCHQfdM+/7NgKF0yrYXTkFOaYpgiQnk/0ciEzOGpcT/a6IXctllDZzUiN4xcA01DJCaFQTJKshuIKKljhFMBgW0BnWcUwr8VmOVCfEFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akIFFITw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868C0C4CEE2;
+	Wed, 23 Apr 2025 15:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421207;
-	bh=zPFDKDMdYt2gUQgo0ju4gMV4+QL5g+UESwSmVsIJjtw=;
+	s=korg; t=1745420761;
+	bh=pNSsrPr+JOgwsb1c6OA/XhgINNBavOo0g/42pNpDOHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrGbAZITS2qvtuizOBlJNwXnwDOEryNA9HWfOqVwLPBdzSN5Mdn5fSG3dqy/6umJ5
-	 sYEyCgh3/uuS9lqHNLbv2yS0X6PyAHiSYEjI8R357rX3AEZEjrbrOWrKZ/iqCxZx6o
-	 RFQ1RFBra0hRo8NevtlMnvi9LpeYUPyQVjg/vCK8=
+	b=akIFFITwo6/sySPShOjDBl1nWxD43i8zf7RM76kI0L5gXKZ2yNGIimnp8wa/54Ki7
+	 aOQq1TWhcqpCs4HfICKPNetXWI+MhWZYpV2InTPI39dH27f+kzm/N4TxlbCLrlpuJv
+	 DgTQWZBdlQYvvJmQIPe9YB/QTS2g1KQoY5KkRNuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.14 161/241] scsi: ufs: exynos: Move UFS shareability value to drvdata
+	Dillon Varone <dillon.varone@amd.com>,
+	Brendan Tam <Brendan.Tam@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 153/223] drm/amd/display: prevent hang on link training fail
 Date: Wed, 23 Apr 2025 16:43:45 +0200
-Message-ID: <20250423142627.114522837@linuxfoundation.org>
+Message-ID: <20250423142623.409283431@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Brendan Tam <Brendan.Tam@amd.com>
 
-commit 68f5ef7eebf0f41df4d38ea55a54c2462af1e3d6 upstream.
+commit 8058061ed9d6bc259d1e678607b07d259342c08f upstream.
 
-gs101 I/O coherency shareability bits differ from exynosauto SoC. To
-support both SoCs move this info the SoC drvdata.
+[Why]
+When link training fails, the phy clock will be disabled. However, in
+enable_streams, it is assumed that link training succeeded and the
+mux selects the phy clock, causing a hang when a register write is made.
 
-Currently both the value and mask are the same for both gs101 and
-exynosauto, thus we use the same value.
+[How]
+When enable_stream is hit, check if link training failed. If it did, fall
+back to the ref clock to avoid a hang and keep the system in a recoverable
+state.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-2-96722cc2ba1b@linaro.org
-Fixes: d11e0a318df8 ("scsi: ufs: exynos: Add support for Tensor gs101 SoC")
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Brendan Tam <Brendan.Tam@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c |   20 ++++++++++++++------
- drivers/ufs/host/ufs-exynos.h |    2 ++
- 2 files changed, 16 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c   |    6 +++++-
+ drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    7 +++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -92,11 +92,16 @@
- 				 UIC_TRANSPORT_NO_CONNECTION_RX |\
- 				 UIC_TRANSPORT_BAD_TC)
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -3003,7 +3003,11 @@ void dcn20_enable_stream(struct pipe_ctx
+ 		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
  
--/* FSYS UFS Shareability */
--#define UFS_WR_SHARABLE		BIT(2)
--#define UFS_RD_SHARABLE		BIT(1)
--#define UFS_SHARABLE		(UFS_WR_SHARABLE | UFS_RD_SHARABLE)
--#define UFS_SHAREABILITY_OFFSET	0x710
-+/* UFS Shareability */
-+#define UFS_EXYNOSAUTO_WR_SHARABLE	BIT(2)
-+#define UFS_EXYNOSAUTO_RD_SHARABLE	BIT(1)
-+#define UFS_EXYNOSAUTO_SHARABLE		(UFS_EXYNOSAUTO_WR_SHARABLE | \
-+					 UFS_EXYNOSAUTO_RD_SHARABLE)
-+#define UFS_GS101_WR_SHARABLE		BIT(1)
-+#define UFS_GS101_RD_SHARABLE		BIT(0)
-+#define UFS_GS101_SHARABLE		(UFS_GS101_WR_SHARABLE | \
-+					 UFS_GS101_RD_SHARABLE)
-+#define UFS_SHAREABILITY_OFFSET		0x710
- 
- /* Multi-host registers */
- #define MHCTRL			0xC4
-@@ -210,7 +215,7 @@ static int exynos_ufs_shareability(struc
- 	if (ufs->sysreg) {
- 		return regmap_update_bits(ufs->sysreg,
- 					  ufs->shareability_reg_offset,
--					  UFS_SHARABLE, UFS_SHARABLE);
-+					  ufs->iocc_mask, ufs->iocc_mask);
- 	}
- 
- 	return 0;
-@@ -1174,6 +1179,7 @@ static int exynos_ufs_parse_dt(struct de
- 		}
- 	}
- 
-+	ufs->iocc_mask = ufs->drv_data->iocc_mask;
- 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
- 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
- 
-@@ -2034,6 +2040,7 @@ static const struct exynos_ufs_drv_data
- 	.opts			= EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL |
- 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
- 				  EXYNOS_UFS_OPT_BROKEN_RX_SEL_IDX,
-+	.iocc_mask		= UFS_EXYNOSAUTO_SHARABLE,
- 	.drv_init		= exynosauto_ufs_drv_init,
- 	.post_hce_enable	= exynosauto_ufs_post_hce_enable,
- 	.pre_link		= exynosauto_ufs_pre_link,
-@@ -2135,6 +2142,7 @@ static const struct exynos_ufs_drv_data
- 	.opts			= EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
- 				  EXYNOS_UFS_OPT_UFSPR_SECURE |
- 				  EXYNOS_UFS_OPT_TIMER_TICK_SELECT,
-+	.iocc_mask		= UFS_GS101_SHARABLE,
- 	.drv_init		= gs101_ufs_drv_init,
- 	.pre_link		= gs101_ufs_pre_link,
- 	.post_link		= gs101_ufs_post_link,
---- a/drivers/ufs/host/ufs-exynos.h
-+++ b/drivers/ufs/host/ufs-exynos.h
-@@ -181,6 +181,7 @@ struct exynos_ufs_drv_data {
- 	struct exynos_ufs_uic_attr *uic_attr;
- 	unsigned int quirks;
- 	unsigned int opts;
-+	u32 iocc_mask;
- 	/* SoC's specific operations */
- 	int (*drv_init)(struct exynos_ufs *ufs);
- 	int (*pre_link)(struct exynos_ufs *ufs);
-@@ -231,6 +232,7 @@ struct exynos_ufs {
- 	const struct exynos_ufs_drv_data *drv_data;
- 	struct regmap *sysreg;
- 	u32 shareability_reg_offset;
-+	u32 iocc_mask;
- 
- 	u32 opts;
- #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
+ 		phyd32clk = get_phyd32clk_src(link);
+-		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++		if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
++			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
++		} else {
++			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++		}
+ 	} else {
+ 		if (dccg->funcs->enable_symclk_se)
+ 			dccg->funcs->enable_symclk_se(dccg, stream_enc->stream_enc_inst,
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+@@ -1001,8 +1001,11 @@ void dcn401_enable_stream(struct pipe_ct
+ 	if (dc_is_dp_signal(pipe_ctx->stream->signal) || dc_is_virtual_signal(pipe_ctx->stream->signal)) {
+ 		if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
+ 			dccg->funcs->set_dpstreamclk(dccg, DPREFCLK, tg->inst, dp_hpo_inst);
+-
+-			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++			if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
++				dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
++			} else {
++				dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++			}
+ 		} else {
+ 			/* need to set DTBCLK_P source to DPREFCLK for DP8B10B */
+ 			dccg->funcs->set_dtbclk_p_src(dccg, DPREFCLK, tg->inst);
 
 
 
