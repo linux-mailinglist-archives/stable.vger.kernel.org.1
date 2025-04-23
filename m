@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 128DDA99163
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF872A98E91
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 214D15A7841
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7EE6189739F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F307928C5A4;
-	Wed, 23 Apr 2025 15:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F1127CCFA;
+	Wed, 23 Apr 2025 14:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2HZO5YM2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ra0yqlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19952367A0;
-	Wed, 23 Apr 2025 15:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E490F18DB17;
+	Wed, 23 Apr 2025 14:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421352; cv=none; b=f98BQpM+BVgWDBBTptFrNlf6uP2UZxh2oKApUouuqphFA5bQqhYzFawC6kiRpiOrxVAswi2ujMyMEzZcLZIw/zLwHxtwnafIJ+O2xdbhEqrefFwsLCkOY+kayui1LGw6jMdYPc7DjmPRjbbKxXBjjt/bUZdCE429my0cLfetImY=
+	t=1745420040; cv=none; b=C00kxcOae5RRiMR+9nAyAlA/WcmxN0cIsIdVXR7eSVJnQVVcRv3w3YRpg+UVDTq0CdTUgEEqSe/t69IN9WV3+Jte3AbXlgqb0qqCJJh32lRnlT3JArOlR6+i+6CwhWOmJUgVr4ocGuOku/ee2QWDY5jVjaQI/LvdILQz+bh3I7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421352; c=relaxed/simple;
-	bh=2QYZt8aGc3fG/28hGRGIjfU/xnYWb21hpfKD5u6d0MU=;
+	s=arc-20240116; t=1745420040; c=relaxed/simple;
+	bh=gcxMeKa4i0X1Debv9JhfMPihW4TV7S2dBArdPX36wYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2ujKVuwsAon03Dq1Thfm4wtLHddjVShIIYjcTXrXYcuQvAUd5mGYOGm+0ZvRnHiL6KQL9mJR7lgK2ftCHfi9ED318hi4Dk3sFGgSClawL4PHpdU8jwnxReZqY9xKUq9kebww+injAf4IHE6mF+LBFTWyLnuWnArt9AMcGs2QFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2HZO5YM2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D40C4CEE2;
-	Wed, 23 Apr 2025 15:15:50 +0000 (UTC)
+	 MIME-Version; b=dt2OK25aUW85Tm3peqXCHC6fpJPjiYnnOLg/tjBYeqmEpTBSa7Ajv6HrPOYouRP7uNcSwf1VZmz/M5yZKMY+ox+sB9X82D+ip1TpkJ1cTy57JeHkhRZKXZ7+hiqpP+BdMZ9Hge6vRyP1LMacb0ToHXp4ZIyOFOEp8mlvPYKiE38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ra0yqlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A79C4CEE2;
+	Wed, 23 Apr 2025 14:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421352;
-	bh=2QYZt8aGc3fG/28hGRGIjfU/xnYWb21hpfKD5u6d0MU=;
+	s=korg; t=1745420039;
+	bh=gcxMeKa4i0X1Debv9JhfMPihW4TV7S2dBArdPX36wYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2HZO5YM27bjfftPS67u77lilTne86r/6jidqbg7KJ1JA4EzLkK/ZQKdTekIlrzoRt
-	 YMSH1MSl5D5sVYmFCVUbZC8uLZaxtkJPl2hI69PCwy8iPylFtM4CosTY+ztfhsmz7J
-	 5dJDyeFWD6uFVwbMEXixe+dRX1wwLnAE1T+JgVuY=
+	b=1Ra0yqlwW9v8+vPhFYmAZzfP3oVHUHy3oSuX61EXlpn3NjoBVok9usmjo/KW+e09N
+	 x+KVtseCjGUx+v8Wv9AcSmMs8DJFywKgWKk+pdJtcjkUlLltEFflGuTJBtLLw23rbQ
+	 +U/W6jpo6jjN/H5G+82u+xm0VCjAsjhfVGM+aK7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 129/291] btrfs: fix non-empty delayed iputs list on unmount due to compressed write workers
+	Weizhao Ouyang <o451686892@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 054/241] can: rockchip_canfd: fix broken quirks checks
 Date: Wed, 23 Apr 2025 16:41:58 +0200
-Message-ID: <20250423142629.672294467@linuxfoundation.org>
+Message-ID: <20250423142622.714545855@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Weizhao Ouyang <o451686892@gmail.com>
 
-commit 4c782247b89376a83fa132f7d45d6977edae0629 upstream.
+[ Upstream commit 6315d93541f8a5f77c5ef5c4f25233e66d189603 ]
 
-At close_ctree() after we have ran delayed iputs either through explicitly
-calling btrfs_run_delayed_iputs() or later during the call to
-btrfs_commit_super() or btrfs_error_commit_super(), we assert that the
-delayed iputs list is empty.
+First get the devtype_data then check quirks.
 
-When we have compressed writes this assertion may fail because delayed
-iputs may have been added to the list after we last ran delayed iputs.
-This happens like this:
-
-1) We have a compressed write bio executing;
-
-2) We enter close_ctree() and flush the fs_info->endio_write_workers
-   queue which is the queue used for running ordered extent completion;
-
-3) The compressed write bio finishes and enters
-   btrfs_finish_compressed_write_work(), where it calls
-   btrfs_finish_ordered_extent() which in turn calls
-   btrfs_queue_ordered_fn(), which queues a work item in the
-   fs_info->endio_write_workers queue that we have flushed before;
-
-4) At close_ctree() we proceed, run all existing delayed iputs and
-   call btrfs_commit_super() (which also runs delayed iputs), but before
-   we run the following assertion below:
-
-      ASSERT(list_empty(&fs_info->delayed_iputs))
-
-   A delayed iput is added by the step below...
-
-5) The ordered extent completion job queued in step 3 runs and results in
-   creating a delayed iput when dropping the last reference of the ordered
-   extent (a call to btrfs_put_ordered_extent() made from
-   btrfs_finish_one_ordered());
-
-6) At this point the delayed iputs list is not empty, so the assertion at
-   close_ctree() fails.
-
-Fix this by flushing the fs_info->compressed_write_workers queue at
-close_ctree() before flushing the fs_info->endio_write_workers queue,
-respecting the queue dependency as the later is responsible for the
-execution of ordered extent completion.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bbdffb341498 ("can: rockchip_canfd: add quirk for broken CAN-FD support")
+Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250324114416.10160-1-o451686892@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -4662,6 +4662,18 @@ void __cold close_ctree(struct btrfs_fs_
- 	btrfs_flush_workqueue(fs_info->delalloc_workers);
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
+index 46201c126703c..7107a37da36c7 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-core.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+@@ -902,15 +902,16 @@ static int rkcanfd_probe(struct platform_device *pdev)
+ 	priv->can.data_bittiming_const = &rkcanfd_data_bittiming_const;
+ 	priv->can.ctrlmode_supported = CAN_CTRLMODE_LOOPBACK |
+ 		CAN_CTRLMODE_BERR_REPORTING;
+-	if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
+-		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
+ 	priv->can.do_set_mode = rkcanfd_set_mode;
+ 	priv->can.do_get_berr_counter = rkcanfd_get_berr_counter;
+ 	priv->ndev = ndev;
  
- 	/*
-+	 * When finishing a compressed write bio we schedule a work queue item
-+	 * to finish an ordered extent - btrfs_finish_compressed_write_work()
-+	 * calls btrfs_finish_ordered_extent() which in turns does a call to
-+	 * btrfs_queue_ordered_fn(), and that queues the ordered extent
-+	 * completion either in the endio_write_workers work queue or in the
-+	 * fs_info->endio_freespace_worker work queue. We flush those queues
-+	 * below, so before we flush them we must flush this queue for the
-+	 * workers of compressed writes.
-+	 */
-+	flush_workqueue(fs_info->compressed_write_workers);
-+
-+	/*
- 	 * After we parked the cleaner kthread, ordered extents may have
- 	 * completed and created new delayed iputs. If one of the async reclaim
- 	 * tasks is running and in the RUN_DELAYED_IPUTS flush state, then we
+ 	match = device_get_match_data(&pdev->dev);
+-	if (match)
++	if (match) {
+ 		priv->devtype_data = *(struct rkcanfd_devtype_data *)match;
++		if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
++			priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
++	}
+ 
+ 	err = can_rx_offload_add_manual(ndev, &priv->offload,
+ 					RKCANFD_NAPI_WEIGHT);
+-- 
+2.39.5
+
 
 
 
