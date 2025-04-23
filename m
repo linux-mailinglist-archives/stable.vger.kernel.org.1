@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863C4A98E5F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2D37A990A8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FBA21B81C6D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B525465D68
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59152280A5B;
-	Wed, 23 Apr 2025 14:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3D729614D;
+	Wed, 23 Apr 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF9YO4TI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzjDyvVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14342280A50;
-	Wed, 23 Apr 2025 14:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8CB296163;
+	Wed, 23 Apr 2025 15:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419953; cv=none; b=AOThzTwGyANNCXLf4n4GZfzCQQuAKCviLggwreMcWdA0K0SQ9xFtKq810/bvWYa8kgrTkU4c51m6UvyGueikNlIhJ0Q3KYkYm1wbfQCxUSlpXWMZcoSVCPSGH/cDgtDZ/hmJn6upsm4Sqr5kKiRIl7eqPy4JesrzduYGfwQit2s=
+	t=1745421089; cv=none; b=MN2k1M3UsVgoxSZYDVLLzb2pG2weXOvKVj6+OtZgsC3SKRmoZswCKfK1iAXDb6pSCxUsyVne9aFvLfLmMDom4pYYfRyPq2+WhGNOlSxspA3AvptoRmmhS21GqeWMw/CinaLh3kXeVSnX8mOLHgp7eQ8vaPpeupaqfsLCyVv0YME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419953; c=relaxed/simple;
-	bh=AJMsAC3Fi1is7CAeLsD9pCKPi30HTV6uOQu0bTNkAGU=;
+	s=arc-20240116; t=1745421089; c=relaxed/simple;
+	bh=WGgF7U+MoNCdiDbz2mFRXoGg3a6aPY/7mtBwPLELo6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5FoDoimnULpvoc4PTm2aF/uy8oT/qMXxeHCDK1GZYkWtwZ1ymnolOdrzZHkR2x9XpkNFeLRuTl7DhAO+qyN2K5DoU6DwnzGiBUu4kzvkjJrNGxhWItJlu0dZLLjIxCRtJIG4kO05z4wMNAzbbLelQUWRRuCHgENZyAOwR8NUWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF9YO4TI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999C5C4CEEB;
-	Wed, 23 Apr 2025 14:52:32 +0000 (UTC)
+	 MIME-Version; b=bXT+RuTKUOnpBba1wpYUZxJXrOIt6Zg81xKqBI9XoFNHu9/mMxL0j55AYmt+F46RmiXlIkbJivApjJw1gSUsQoiQCJ6EphFd11Swfr6PvrRXjAvWIG0Syxo/EHXwMZduTxvNTZ8bxwvjmXIVmFHQ8JiUm04OVeKxzfFZqJYyxgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzjDyvVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F84C4CEE3;
+	Wed, 23 Apr 2025 15:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419952;
-	bh=AJMsAC3Fi1is7CAeLsD9pCKPi30HTV6uOQu0bTNkAGU=;
+	s=korg; t=1745421089;
+	bh=WGgF7U+MoNCdiDbz2mFRXoGg3a6aPY/7mtBwPLELo6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NF9YO4TIYVb6Capw79zE8cu0CEFffSUNWgHhi92KD8aK0TyGCYAHeOMuhIvkVCuNC
-	 +Q8TLvlOxfxtTk4mC2mCWJTWjlUW5cBQFn7RMGglf9boJp6I/Hul+tK44gFbgIW7gq
-	 /NU/maWoE8xmQH3D0qTy2K2mmAIssDSfJT0cM8EQ=
+	b=tzjDyvVgL3xuHK9SfhGtnUH7MSkwI3LNmdH+XOp63so/nBUsxMTejNtq00rrcwhT+
+	 R1bW0eMVs467PFJEZgWmU8iw1gRZj2XWNNlsTUiVsADMs16iKKMPgoptphkwIMXLkO
+	 25CxFdVU2WDJfPxL4Nd94zXBl+tBZ+DuVQKIJvEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 032/241] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 107/291] wifi: mac80211: fix integer overflow in hwmp_route_info_get()
 Date: Wed, 23 Apr 2025 16:41:36 +0200
-Message-ID: <20250423142621.830594268@linuxfoundation.org>
+Message-ID: <20250423142628.742537833@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
+commit d00c0c4105e5ab8a6a13ed23d701cceb285761fa upstream.
 
-This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
+Since the new_metric and last_hop_metric variables can reach
+the MAX_METRIC(0xffffffff) value, an integer overflow may occur
+when multiplying them by 10/9. It can lead to incorrect behavior.
 
-Since the original bug seems to have been around for years,
-but a new issue was report with the fix, revert the fix for
-now. We have a couple of weeks to figure it out for this
-release, if needed.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
+Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is at least 10% better")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Link: https://patch.msgid.link/20250212082124.4078236-1-Ilia.Gavrilov@infotecs.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/mac80211/mesh_hwmp.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 0c6214f12ea39..a24636bda6793 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3893,7 +3893,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
--	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
--- 
-2.39.5
-
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -365,6 +365,12 @@ u32 airtime_link_metric_get(struct ieee8
+ 	return (u32)result;
+ }
+ 
++/* Check that the first metric is at least 10% better than the second one */
++static bool is_metric_better(u32 x, u32 y)
++{
++	return (x < y) && (x < (y - x / 10));
++}
++
+ /**
+  * hwmp_route_info_get - Update routing info to originator and transmitter
+  *
+@@ -455,8 +461,8 @@ static u32 hwmp_route_info_get(struct ie
+ 				    (mpath->sn == orig_sn &&
+ 				     (rcu_access_pointer(mpath->next_hop) !=
+ 						      sta ?
+-					      mult_frac(new_metric, 10, 9) :
+-					      new_metric) >= mpath->metric)) {
++					      !is_metric_better(new_metric, mpath->metric) :
++					      new_metric >= mpath->metric))) {
+ 					process = false;
+ 					fresh_info = false;
+ 				}
+@@ -526,8 +532,8 @@ static u32 hwmp_route_info_get(struct ie
+ 			if ((mpath->flags & MESH_PATH_FIXED) ||
+ 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
+ 			     ((rcu_access_pointer(mpath->next_hop) != sta ?
+-				       mult_frac(last_hop_metric, 10, 9) :
+-				       last_hop_metric) > mpath->metric)))
++				      !is_metric_better(last_hop_metric, mpath->metric) :
++				       last_hop_metric > mpath->metric))))
+ 				fresh_info = false;
+ 		} else {
+ 			mpath = mesh_path_add(sdata, ta);
 
 
 
