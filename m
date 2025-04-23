@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-135754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BAFA9905F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06297A98F97
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:11:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C371B83AC0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B51F7AECCF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19129291159;
-	Wed, 23 Apr 2025 15:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151942857E6;
+	Wed, 23 Apr 2025 15:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1021qgck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIIRNLTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB58E269B07;
-	Wed, 23 Apr 2025 15:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F9C27B4EE;
+	Wed, 23 Apr 2025 15:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420756; cv=none; b=hURvx4vcL/GUhcc75TLdQS7F9cwytFKaP+dB9Y4jA2pxb1SSFdGUuO2ZCJelnJyWi6qDbVV3VJ0LW662o4aIaoEpTW4RAVC9tSt4MjUMwY987Knv4NThkT6Rlub8TpOaaonsKKFaGFhP8ybLWBsO2Gr8xCBFU+0TAI/QcU5SdZU=
+	t=1745420769; cv=none; b=LY0belmAN3BekVEBTEtEDL+cI4tXITOmkEPwUKkBuPB8fcc/ixWTxhC++d6XaM/iTlQSylwXjbbh39+LnlIb9g371JuHN+4xNf2AfH4IDNrpBmyBl2cMqNv6qVZ7OM6hQpaMbaR57BRGYqWn77Gk9gdP9vQ0UM4gaMOM6aiLScE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420756; c=relaxed/simple;
-	bh=tEzl66fiS2bFum9+7+E1V2gtBsPISk988CsvpQWo44A=;
+	s=arc-20240116; t=1745420769; c=relaxed/simple;
+	bh=K9JFnc4zt0DVBofyexl4HhyxbRpx9nQd091hssKJl6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=An4fk9CM9Al5AU34ogBaF0eFKK9B9a3ajGxlL35iSRfMDt91RcWNrykIiClhO9V2EsL3zsmRquZpibZmeHKI/GmLzDTFcHUOMFhY1IXpTT1Nf4bK45sLIWLpxMTm5fpZ5N7JtpvmWQq5zicagq/eVyhXL743YdAZfc91JCbzYp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1021qgck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E042C4CEE2;
-	Wed, 23 Apr 2025 15:05:56 +0000 (UTC)
+	 MIME-Version; b=ZvXvWMjBjSSUct2BbdbHsdJLxh+K55S4rGCfekNmIHPOX+RiEDB+QldXDSgiwOKx7a3WknNkSwWcInsa56lEIuCUQLCxdIspYyBlJoXHx18YF7d7eTjskBJsYSHp5mAnXsarizwLUpc9deibeUCn3Id3lfait0FfVn3Lm1FaSi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIIRNLTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C334C4CEE2;
+	Wed, 23 Apr 2025 15:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420756;
-	bh=tEzl66fiS2bFum9+7+E1V2gtBsPISk988CsvpQWo44A=;
+	s=korg; t=1745420769;
+	bh=K9JFnc4zt0DVBofyexl4HhyxbRpx9nQd091hssKJl6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1021qgckIX73Ge2jFKwoDlYdKJCHFnWDiLiqHRvOpahqH/HZE0paJryxnpuzOHUwe
-	 1co50hw6uRmNynpoea5QU1H6AYVDayL95sztfzlwRX+wbWOBLCGUfqcWXZBMyjEZ9e
-	 f6e7Q9Xa07faD7ZRJOogrwnMXEYbInf6eivOrszE=
+	b=jIIRNLTGw+iyu3q1knAfY4KfyE2M/0u318ONeCTW6R1R37aE9+W3xrsoqMDD6D5vk
+	 BqkeWqzOGazM6ppr1viqSeDtWLcjuWPW1kRj73koxBzwk4n+L4qp1oOWEVqm3T6Q5N
+	 b40pKpSVuH2iNkdPk5b/WmxDPymMa2opGUwnnCDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 078/291] media: i2c: adv748x: Fix test pattern selection mask
-Date: Wed, 23 Apr 2025 16:41:07 +0200
-Message-ID: <20250423142627.556504180@linuxfoundation.org>
+Subject: [PATCH 6.1 079/291] media: venus: hfi: add a check to handle OOB in sfr region
+Date: Wed, 23 Apr 2025 16:41:08 +0200
+Message-ID: <20250423142627.598351046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -60,48 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
+commit f4b211714bcc70effa60c34d9fa613d182e3ef1e upstream.
 
-The mask to select the test-pattern in register ADV748X_SDP_FRP is
-incorrect, it's the lower 3 bits which controls the pattern. The
-GENMASK() macro is used incorrectly and the generated mask is 0x0e
-instead of 0x07.
+sfr->buf_size is in shared memory and can be modified by malicious user.
+OOB write is possible when the size is made higher than actual sfr data
+buffer. Cap the size to allocated size for such cases.
 
-The result is that not all test patterns are selectable, and that in
-some cases the wrong test pattern is activated. Fix this by correcting
-the GENMASK().
-
-Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: fixed tiny typo in commit log: my -> by]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv748x/adv748x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/adv748x/adv748x.h
-+++ b/drivers/media/i2c/adv748x/adv748x.h
-@@ -322,7 +322,7 @@ struct adv748x_state {
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -1053,18 +1053,26 @@ static void venus_sfr_print(struct venus
+ {
+ 	struct device *dev = hdev->core->dev;
+ 	struct hfi_sfr *sfr = hdev->sfr.kva;
++	u32 size;
+ 	void *p;
  
- /* Free run pattern select */
- #define ADV748X_SDP_FRP			0x14
--#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
-+#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
+ 	if (!sfr)
+ 		return;
  
- /* Saturation */
- #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
+-	p = memchr(sfr->data, '\0', sfr->buf_size);
++	size = sfr->buf_size;
++	if (!size)
++		return;
++
++	if (size > ALIGNED_SFR_SIZE)
++		size = ALIGNED_SFR_SIZE;
++
++	p = memchr(sfr->data, '\0', size);
+ 	/*
+ 	 * SFR isn't guaranteed to be NULL terminated since SYS_ERROR indicates
+ 	 * that Venus is in the process of crashing.
+ 	 */
+ 	if (!p)
+-		sfr->data[sfr->buf_size - 1] = '\0';
++		sfr->data[size - 1] = '\0';
+ 
+ 	dev_err_ratelimited(dev, "SFR message from FW: %s\n", sfr->data);
+ }
 
 
 
