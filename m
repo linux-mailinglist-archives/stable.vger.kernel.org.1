@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66666A98E40
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0A5A99342
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AE0E3ABF00
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861E05A808D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE7B281344;
-	Wed, 23 Apr 2025 14:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D27429114E;
+	Wed, 23 Apr 2025 15:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJNuTqNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grgjwzu1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A71627FD56;
-	Wed, 23 Apr 2025 14:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2E6269B07;
+	Wed, 23 Apr 2025 15:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419900; cv=none; b=jZiPOMmzwtLCLlU1umAY55l6+n+LtLmAs/OGnBuSzjbW2hKUaTT1rk9zKfys0kzASNqBuYo0L/0HhxvpZ3iYPBtRYB2PpY0Gp5looRj/wyAXu4NQsa6h5R6nrHrlBeJmGsuLQF4MaAGEZlVKJu06xYKASSlPNP1lBxncrn6hqfo=
+	t=1745421966; cv=none; b=FZdqtXMU85JwREuidyIrOqGGbsCqrX4ha2jOrkaBy29lWJmilYN1FoyskL2aZjuGl8FEUNFuQxwlLCKHnMD78+JwaKbZN+EG/044r+YDfcuvJuukr2Sb05Hk1TJrB19cQGM08pwvA2GpcMwfWXmgAxDC/LwCjFNvwvCLMDJ/8TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419900; c=relaxed/simple;
-	bh=qdvthW/2mOKj3h3FmOGaCWuBF7hz5QscbgHyaMSgb+k=;
+	s=arc-20240116; t=1745421966; c=relaxed/simple;
+	bh=bpoNs3S5+H40kM6qWOgBY0AINKKEiGFrT7fBKjWPYPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GI/gd7szXIPEiTt/Ua4j97XclKLuCd4FgJ0Fy1nyAYNibEv+Mc4eCOMlDNRjegh8anfc0YO637BmzCv2Xw+AmNmwMSVSMm06CrUjaumHZXJOlS4qt/Z3Cf15Nc8IrTI/C4FwxBFaawVPrUXck4bo+aO8a5zdOlnVDMurpxSTaoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJNuTqNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E257DC4CEE2;
-	Wed, 23 Apr 2025 14:51:39 +0000 (UTC)
+	 MIME-Version; b=OEo0VuXe/oA2VtIxI1czmSG1IiE40ANDC1z3rb6nryWsCuPAJ1VKYoEso11BhCQP2KKXTeWkRHmZ/44La0yaukByQYxg2OE2c5fIBKknDz+igCbuh3+s0yIn/UJ/Q76Nm9dbREs5VI6MQ6zAmGnF2mDdMkIHzzw6r2cpDq3LYMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grgjwzu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC0DC4CEE2;
+	Wed, 23 Apr 2025 15:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419900;
-	bh=qdvthW/2mOKj3h3FmOGaCWuBF7hz5QscbgHyaMSgb+k=;
+	s=korg; t=1745421966;
+	bh=bpoNs3S5+H40kM6qWOgBY0AINKKEiGFrT7fBKjWPYPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iJNuTqNpRbepADCJf0dDihp2vrqOyF4OhWrAzOCiVijcDinvrCx35NWHQuFEluUxi
-	 pNqmaUzu+g379YaATbGoLeG/OApwZzsmIt6aLx0TDgpByDIatZBBkLiGKLv+viI3W4
-	 G4gpPhKmVpVjMpMCpbtl/0k1E6biP6DCExN86hXo=
+	b=grgjwzu1wO78aPNB8hYR99OGNslboxEzZBAt6WQI6daZC60mixm+S4j27tCKIVD88
+	 hlhjHIgDMRHf480qlc9aYivLwS3AL4rPpS9HUC4YmMYBk0oqC6tZqPKpTQY6DewGd+
+	 uT0EIRgPzRpl/PkVNuWLsSastzyntDI0y2Dzr2uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Maxim Kochetkov <fido_max@inbox.ru>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/223] riscv: module: Fix out-of-bounds relocation access
+Subject: [PATCH 6.6 253/393] ASoC: cs42l43: Reset clamp override on jack removal
 Date: Wed, 23 Apr 2025 16:42:29 +0200
-Message-ID: <20250423142620.261006522@linuxfoundation.org>
+Message-ID: <20250423142653.821116753@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 0b4cce68efb93e31a8e51795d696df6e379cb41c ]
+[ Upstream commit 5fc7d2b5cab47f2ac712f689140b1fed978fb91c ]
 
-The current code allows rel[j] to access one element past the end of the
-relocation section. Simplify to num_relocations which is equivalent to
-the existing size expression.
+Some of the manually selected jack configurations will disable the
+headphone clamp override. Restore this on jack removal, such that
+the state is consistent for a new insert.
 
-Fixes: 080c4324fa5e ("riscv: optimize ELF relocation function in riscv")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Maxim Kochetkov <fido_max@inbox.ru>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250409171526.862481-1-samuel.holland@sifive.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250409120717.1294528-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/module.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs42l43-jack.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index 0ae34d79b87bd..7f6147c18033b 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -860,7 +860,7 @@ int apply_relocate_add(Elf_Shdr *sechdrs, const char *strtab,
- 				}
- 
- 				j++;
--				if (j > sechdrs[relsec].sh_size / sizeof(*rel))
-+				if (j == num_relocations)
- 					j = 0;
- 
- 			} while (j_idx != j);
+diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
+index 9f5f1a92561d1..0b8e88b19888e 100644
+--- a/sound/soc/codecs/cs42l43-jack.c
++++ b/sound/soc/codecs/cs42l43-jack.c
+@@ -690,6 +690,9 @@ static void cs42l43_clear_jack(struct cs42l43_codec *priv)
+ 			   CS42L43_PGA_WIDESWING_MODE_EN_MASK, 0);
+ 	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CTRL,
+ 			   CS42L43_JACK_STEREO_CONFIG_MASK, 0);
++	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CLAMP_CTRL,
++			   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
++			   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK);
+ 	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
+ 			   CS42L43_HSDET_MODE_MASK | CS42L43_HSDET_MANUAL_MODE_MASK,
+ 			   0x2 << CS42L43_HSDET_MODE_SHIFT);
 -- 
 2.39.5
 
