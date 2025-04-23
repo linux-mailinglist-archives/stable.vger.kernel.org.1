@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BFC1A99060
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CEB9A992C6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CDC08E4D02
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDDA44A03E3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2479E28CF6E;
-	Wed, 23 Apr 2025 15:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A568D281507;
+	Wed, 23 Apr 2025 15:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsa0jtKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4I/+w9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D624A28CF6D;
-	Wed, 23 Apr 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E3226A082;
+	Wed, 23 Apr 2025 15:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420742; cv=none; b=OCwSqRymNRWW4JUbb+muZrITo8zDu6SPTwRCavjL7/GLHT2wMhXQWSdEeVrl6FA2UzWEGtY1qwM8hovOY5mIEKZMc7ETkm9Xo+nIKEviMna3n8/BjHNDidbJWv9ZPf/spkRT0KLKxuCcuQQ3c30sTVCgf6xuwLBQ65FRFlEW+JQ=
+	t=1745422144; cv=none; b=IbB919iOTqNlaKSW/B7WmkL+ob3sdMVqOkPDcsH6zyqHDDbWRmYL7EsF1Y1AwAeNngKPzFh0VDC3emcxI5f2wvE3H3z9Kr92VFpB6K1Is/YjuyWkKbIAUatkDR1Rvn6Xj2XOuzchvdkcbdGrfTewD/hpTst8o+ezwU9AIi7iLvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420742; c=relaxed/simple;
-	bh=i0LyLaJC9N025siif2MOL3fWEnvEqIM3DsaI+DJ6hsk=;
+	s=arc-20240116; t=1745422144; c=relaxed/simple;
+	bh=N/1RudE0Gfna3LlpXm00dTWMlh8OmN3Mu390VLsSbbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQZenrOsBX07N7D+lhjocZUpaH131DT2Q3rc2voMPKGn7ua1WHoHHhgCeY+1PGhlEffPPPIqZ3RcXHeKeCnhCJb64763hLmdooAd3KYiDdvBFYLNjU4fIRAz6UJTtQ/63dMFvYU4GiBGQVNexeL6NCm58QtOSRPWfYWIH53/6jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsa0jtKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B75DC4CEE2;
-	Wed, 23 Apr 2025 15:05:42 +0000 (UTC)
+	 MIME-Version; b=TTfa20kKMoXD7HIhCi4IhhQknk1lIinXutijS+tSq7fIf/qkLk5FsbnwA/M2YtoO2xo3miZu1kFk3DMwFXWZ9/HUOUy7EqrQIjL+q6YGyorvscLYRV3VOx3qs+SNmySsUQlpl1XiooupQeFEGLmbhg+k9JV/PNhf6fg3blNLaoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4I/+w9b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90527C4CEE2;
+	Wed, 23 Apr 2025 15:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420742;
-	bh=i0LyLaJC9N025siif2MOL3fWEnvEqIM3DsaI+DJ6hsk=;
+	s=korg; t=1745422143;
+	bh=N/1RudE0Gfna3LlpXm00dTWMlh8OmN3Mu390VLsSbbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsa0jtKvCh+wamCcsYnO2fUO7+pRZQjbA7KT4Vjy1uryNtheHLBnOUzUnzpDrLEce
-	 mBICF1d7ky3khD4qkacUUFF/OpRkkn+i7eDxXccWDRqDlDz9cMX68XeqPpE5PPuDYb
-	 3fGZ3ZGJWa4+hMaLbE/2bh0YKmG5073kAcdyXe4I=
+	b=D4I/+w9bkRSGsOPbj0tSKpj4bSnvhchdo0e413urIv1FQ+SicDggZhKeK+rWviAgE
+	 O+hU5WNTMJxJjqmz7VV+rvcvK62XqtO5Nc44LNPOx5eVaLooKDzOB2bUJa4BSfJ3uZ
+	 h/9bSd+fydzkKJ3L6HBe6MY6OzLys/FmbO8M7454=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 118/241] nfsd: decrease sc_count directly if fail to queue dl_recall
+Subject: [PATCH 6.6 286/393] net: dsa: clean up FDB, MDB, VLAN entries on unbind
 Date: Wed, 23 Apr 2025 16:43:02 +0200
-Message-ID: <20250423142625.403326285@linuxfoundation.org>
+Message-ID: <20250423142655.159577195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
+[ Upstream commit 7afb5fb42d4950f33af2732b8147c552659f79b7 ]
 
-A deadlock warning occurred when invoking nfs4_put_stid following a failed
-dl_recall queue operation:
-            T1                            T2
-                                nfs4_laundromat
-                                 nfs4_get_client_reaplist
-                                  nfs4_anylock_blockers
-__break_lease
- spin_lock // ctx->flc_lock
-                                   spin_lock // clp->cl_lock
-                                   nfs4_lockowner_has_blockers
-                                    locks_owner_has_blockers
-                                     spin_lock // flctx->flc_lock
- nfsd_break_deleg_cb
-  nfsd_break_one_deleg
-   nfs4_put_stid
-    refcount_dec_and_lock
-     spin_lock // clp->cl_lock
+As explained in many places such as commit b117e1e8a86d ("net: dsa:
+delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
+the assumption that higher layers have balanced additions/deletions.
+As such, it only makes sense to be extremely vocal when those
+assumptions are violated and the driver unbinds with entries still
+present.
 
-When a file is opened, an nfs4_delegation is allocated with sc_count
-initialized to 1, and the file_lease holds a reference to the delegation.
-The file_lease is then associated with the file through kernel_setlease.
+But Ido Schimmel points out a very simple situation where that is wrong:
+https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
+(also briefly discussed by me in the aforementioned commit).
 
-The disassociation is performed in nfsd4_delegreturn via the following
-call chain:
-nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
-nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
-The corresponding sc_count reference will be released after this
-disassociation.
+Basically, while the bridge bypass operations are not something that DSA
+explicitly documents, and for the majority of DSA drivers this API
+simply causes them to go to promiscuous mode, that isn't the case for
+all drivers. Some have the necessary requirements for bridge bypass
+operations to do something useful - see dsa_switch_supports_uc_filtering().
 
-Since nfsd_break_one_deleg executes while holding the flc_lock, the
-disassociation process becomes blocked when attempting to acquire flc_lock
-in generic_delete_lease. This means:
-1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
-2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
-acquire cl_lock;
-3) Consequently, no deadlock condition is created.
+Although in tools/testing/selftests/net/forwarding/local_termination.sh,
+we made an effort to popularize better mechanisms to manage address
+filters on DSA interfaces from user space - namely macvlan for unicast,
+and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
+fact is that 'bridge fdb add ... self static local' also exists as
+kernel UAPI, and might be useful to someone, even if only for a quick
+hack.
 
-Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
-safely perform refcount_dec on sc_count directly. This approach
-effectively avoids triggering deadlock warnings.
+It seems counter-productive to block that path by implementing shim
+.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
+in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
+running, although we could do that.
 
-Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Accepting that cleanup is necessary seems to be the only option.
+Especially since we appear to be coming back at this from a different
+angle as well. Russell King is noticing that the WARN_ON() triggers even
+for VLANs:
+https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
+
+What happens in the bug report above is that dsa_port_do_vlan_del() fails,
+then the VLAN entry lingers on, and then we warn on unbind and leak it.
+
+This is not a straight revert of the blamed commit, but we now add an
+informational print to the kernel log (to still have a way to see
+that bugs exist), and some extra comments gathered from past years'
+experience, to justify the logic.
+
+Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414212930.2956310-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dsa/dsa.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 2de49e2d6ac48..613bee7edb81e 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5432,7 +5432,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- 	queued = nfsd4_run_cb(&dp->dl_recall);
- 	WARN_ON_ONCE(!queued);
- 	if (!queued)
--		nfs4_put_stid(&dp->dl_stid);
-+		refcount_dec(&dp->dl_stid.sc_count);
- }
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index ccbdb98109f80..399675c5fcc7f 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1483,12 +1483,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
  
- /* Called from break_lease() with flc_lock held. */
+ static void dsa_switch_release_ports(struct dsa_switch *ds)
+ {
++	struct dsa_mac_addr *a, *tmp;
+ 	struct dsa_port *dp, *next;
++	struct dsa_vlan *v, *n;
+ 
+ 	dsa_switch_for_each_port_safe(dp, next, ds) {
+-		WARN_ON(!list_empty(&dp->fdbs));
+-		WARN_ON(!list_empty(&dp->mdbs));
+-		WARN_ON(!list_empty(&dp->vlans));
++		/* These are either entries that upper layers lost track of
++		 * (probably due to bugs), or installed through interfaces
++		 * where one does not necessarily have to remove them, like
++		 * ndo_dflt_fdb_add().
++		 */
++		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up unicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
++
++		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up multicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
++
++		/* These are entries that upper layers have lost track of,
++		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
++		 * having failed and the VLAN entry still lingering on.
++		 */
++		list_for_each_entry_safe(v, n, &dp->vlans, list) {
++			dev_info(ds->dev,
++				 "Cleaning up vid %u from port %d\n",
++				 v->vid, dp->index);
++			list_del(&v->list);
++			kfree(v);
++		}
++
+ 		list_del(&dp->list);
+ 		kfree(dp);
+ 	}
 -- 
 2.39.5
 
