@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C978A99295
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 393CAA98E28
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857E544226D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C5C1B8094F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD8928D84D;
-	Wed, 23 Apr 2025 15:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE79280A3A;
+	Wed, 23 Apr 2025 14:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLA9/Mnf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pfd9VVe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C81528A1DB;
-	Wed, 23 Apr 2025 15:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC885C8EB;
+	Wed, 23 Apr 2025 14:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421944; cv=none; b=gXgpyIUHe4yG6O3QOwbazbk1xGBNI1HGMGDUY9ruYs6EgCTpKACpTeVACQRda4Tx9fhxTqq05ehySvJ7bDlj2RQitl4It0UbaBe24TfmiMICTBsNmW0AejhbeTUXLMDBFOF/6x/YkR0VAmgYTXvecMrUBDHB9HLvLmaVR5smpko=
+	t=1745419863; cv=none; b=u1MgUxEODdCHZublQasB/qriJvCMnaX1PgWuK7SxKSTvATC0eWngX8c1vMHFlWVDoux+6gKX2BasppjUIOA1vYZHBi9Y56g4GkXctgD5bWz1rydNtYb24Oy+E/hsnw5LH2JBbHrapepFNWGhcpuY/QFT5Iyilek+gAJWfXSooVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421944; c=relaxed/simple;
-	bh=Ouxh4cMHs0C1tW4b6Aes6ISNRfpqKSkYIUNlo4Q3R3k=;
+	s=arc-20240116; t=1745419863; c=relaxed/simple;
+	bh=3godAIAT3FOagBmVy56lmOITPl2nLyOXa8Jod4IIqtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ub4xY0aAv+4HYmN2OiLkbDSBPl5keUiiZofM3swBmCfI86Q4Ff8K25oQhZuz/BJK7AaEGiUd9tUUVtndPAtjZA3S/xFdaheptP1esxWIvn6rkIJX37O8SCVo18lQ/SbwGgOuUao7vNFh1Y8MeUvsPuK1TQPvRfFrE7JZvo1mlOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLA9/Mnf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 951E6C4CEE2;
-	Wed, 23 Apr 2025 15:25:41 +0000 (UTC)
+	 MIME-Version; b=ULsOBbGvffIUqTMg63PnjVpq9aIvITla79XHlUAlp96ZLzaOoJrfvIzx401t/HgU6A3nTViK8LdeJOE1ZGi/3OYn4t+ePLvoa4Es3eo5qb6/oBQkyBspIETvHiL8DeAmP1IwKC6HxOg8hgn4NYjoEjzDVunnSJQArIxM0/cWuwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pfd9VVe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C1AC4CEE2;
+	Wed, 23 Apr 2025 14:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421941;
-	bh=Ouxh4cMHs0C1tW4b6Aes6ISNRfpqKSkYIUNlo4Q3R3k=;
+	s=korg; t=1745419863;
+	bh=3godAIAT3FOagBmVy56lmOITPl2nLyOXa8Jod4IIqtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLA9/Mnfh0CLWV5rUHAjovUoj8CQ+z1h5gILXkMQ3H1nsvvt3u4oEswMpLrUbQSBX
-	 u94E6MmkxzlERJwHRe1yf85M990eMBhdzzZ7aKtS9sspKKaSIcADwwIE+MWHQT/ERn
-	 p5OGYSA6vXA18iex0PH+sjd1Otwyg/NATg+FB5uE=
+	b=Pfd9VVe/tPup8lspSNjd1Qx+c8vVX7cKxE/TcSMALLt/mwUbwHqovGVosvUw16MZ1
+	 Xmm0xFw6MeHrZOxL+N99DqRXEqrexVRFbJS6Q+Me4rR9BD+qhp+MMex8zZV/noHuce
+	 McoVcdu0hAiQRsELaUJhOI4naPR1YTOc2LJ63dPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Ethan Carter Edwards <ethan@ethancedwards.com>,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/393] ASoC: Intel: avs: Fix null-ptr-deref in avs_component_probe()
+Subject: [PATCH 6.12 073/223] net: ethernet: mtk_eth_soc: correct the max weight of the queue limit for 100Mbps
 Date: Wed, 23 Apr 2025 16:42:25 +0200
-Message-ID: <20250423142653.660335593@linuxfoundation.org>
+Message-ID: <20250423142620.101014276@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit 95f723cf141b95e3b3a5b92cf2ea98a863fe7275 ]
+[ Upstream commit 6b02eb372c6776c9abb8bc81cf63f96039c24664 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-avs_component_probe() does not check for this case, which results in a
-NULL pointer dereference.
+Without this patch, the maximum weight of the queue limit will be
+incorrect when linked at 100Mbps due to an apparent typo.
 
-Fixes: 739c031110da ("ASoC: Intel: avs: Provide support for fallback topology")
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Ethan Carter Edwards <ethan@ethancedwards.com>
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250402141411.44972-1-bsdhenrymartin@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f63959c7eec31 ("net: ethernet: mtk_eth_soc: implement multi-queue support for per-port queues")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/74111ba0bdb13743313999ed467ce564e8189006.1744764277.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/avs/pcm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
-index bb1e77ac78e04..781019685b941 100644
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -808,7 +808,8 @@ static int avs_component_probe(struct snd_soc_component *component)
- 		else
- 			mach->tplg_filename = devm_kasprintf(adev->dev, GFP_KERNEL,
- 							     "hda-generic-tplg.bin");
--
-+		if (!mach->tplg_filename)
-+			return -ENOMEM;
- 		filename = kasprintf(GFP_KERNEL, "%s/%s", component->driver->topology_name_prefix,
- 				     mach->tplg_filename);
- 		if (!filename)
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 82af9bddc12fb..941c7c380870b 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -734,7 +734,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 		case SPEED_100:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 103) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3);
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
+ 			break;
+ 		case SPEED_1000:
+@@ -757,7 +757,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 		case SPEED_100:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5);
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
+ 			break;
+ 		case SPEED_1000:
 -- 
 2.39.5
 
