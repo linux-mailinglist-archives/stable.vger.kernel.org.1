@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-136155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99128A992F3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953C3A98E95
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEDE55A3274
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99F035A7039
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3429AAF2;
-	Wed, 23 Apr 2025 15:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E109927CB12;
+	Wed, 23 Apr 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnwqcWXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqyM94l9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DD7298CB0;
-	Wed, 23 Apr 2025 15:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D085202978;
+	Wed, 23 Apr 2025 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421801; cv=none; b=lS77d4FdBHvSj80IXZXKrAJfzgF62GoprBX7i2QgcwqOm9rT9ny7J0e4DxStfXpI2Hk8O+ziCEeuu9kuVqpSzes2lFq6v0kgoPZlvu0ZSQH+W35DWFdJbFuyOAVX5ltL9I8ub4AWRq+m0tRkVf9wHmHrzLxFtQKxnzMgUDIduBk=
+	t=1745420081; cv=none; b=e/toSsk6TSQG61sN1B2AqWsEpAGjwI1S24Wk+nleDL+mHK47uC+jnx/qOqOX5dL8F3w7WFQeWVuW6MF7GGnFsIUk5MstS8daMuEG/dOiybkc0qtPKVLAiOXo+Ge5oIsrLtpv9aeLDCalhQhbEOoD4vBaUhl51HWca034YwGskS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421801; c=relaxed/simple;
-	bh=YF9hJuCkZRtdpax4VgOAoN479O3l001IO7mKNj1nQ1Y=;
+	s=arc-20240116; t=1745420081; c=relaxed/simple;
+	bh=GmYXDeDtUD6Z6y6WtbUGap337zsZ6twOYS1OpoqCaP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/w+RA+I+A0rqtwwjrI2eIkbsHJ4nLqstNNG8TPGarlRdrF1RrrNsH5qXEVPXyBZCkyOTT0JuUx2lXMHA3QXUltZnCiB/MkwgWJsKjyIsSi/uKo8rmOJO8Bfbzl7WXMbrTMEy/GmdMcYLcravKAwTMbNZLOW9ZXkx6LcasrBztg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnwqcWXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C21AC4CEE2;
-	Wed, 23 Apr 2025 15:23:19 +0000 (UTC)
+	 MIME-Version; b=pfugHuV+2r1sesw4OtqIgVjs/Ul5puT652dd6lTX4428wvU9jSKogpGYRvpuqBld6tiZzv/hr8rT/aR1qcPYOjQwapiXvpE0aNBTUpHHfqipNnBR29az0tRGB8WXUaVQNNIDp4dzQWmnQJokMlnjoj2xc0blS0qQE71SE1rOlm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqyM94l9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D18EC4CEE2;
+	Wed, 23 Apr 2025 14:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421799;
-	bh=YF9hJuCkZRtdpax4VgOAoN479O3l001IO7mKNj1nQ1Y=;
+	s=korg; t=1745420081;
+	bh=GmYXDeDtUD6Z6y6WtbUGap337zsZ6twOYS1OpoqCaP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnwqcWXBSo+8qel4AJHCoiGyGeQJcmQJg04oeSiGiGR2Dxzae0GUPjAjYT1y5EIyy
-	 E8gbnaQTGbmS98VDRuy2KssgFVeGZke+JtFGBhKe7NpXctmUeBmJIZBuMHjqxUJ2pU
-	 BxT9ioJBPhl1baS8UIryHpY/xcqbTgzTqNUFkG3w=
+	b=kqyM94l9j/XGACzq3lbL92S3+p2sDTPsy9zrIL3E/ufHFilNbRgqNS//J+nxpLvFh
+	 CMa+/GQBRXW1BQjmndxgbgq5Iz7CWJsVQcsljTHK86jik+t2Bfee0yUS9/ZcX1TGrm
+	 jzrzYu313p8Lncc+Bhc5kA+WJBezJamaZ+y/8Iy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/291] igc: fix PTM cycle trigger logic
-Date: Wed, 23 Apr 2025 16:42:49 +0200
-Message-ID: <20250423142631.736431278@linuxfoundation.org>
+Subject: [PATCH 6.12 098/223] nfs: add missing selections of CONFIG_CRC32
+Date: Wed, 23 Apr 2025 16:42:50 +0200
+Message-ID: <20250423142621.108209476@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,200 +63,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 8e404ad95d2c10c261e2ef6992c7c12dde03df0e ]
+[ Upstream commit cd35b6cb46649750b7dbd0df0e2d767415d8917b ]
 
-Writing to clear the PTM status 'valid' bit while the PTM cycle is
-triggered results in unreliable PTM operation. To fix this, clear the
-PTM 'trigger' and status after each PTM transaction.
+nfs.ko, nfsd.ko, and lockd.ko all use crc32_le(), which is available
+only when CONFIG_CRC32 is enabled.  But the only NFS kconfig option that
+selected CONFIG_CRC32 was CONFIG_NFS_DEBUG, which is client-specific and
+did not actually guard the use of crc32_le() even on the client.
 
-The issue can be reproduced with the following:
+The code worked around this bug by only actually calling crc32_le() when
+CONFIG_CRC32 is built-in, instead hard-coding '0' in other cases.  This
+avoided randconfig build errors, and in real kernels the fallback code
+was unlikely to be reached since CONFIG_CRC32 is 'default y'.  But, this
+really needs to just be done properly, especially now that I'm planning
+to update CONFIG_CRC32 to not be 'default y'.
 
-$ sudo phc2sys -R 1000 -O 0 -i tsn0 -m
+Therefore, make CONFIG_NFS_FS, CONFIG_NFSD, and CONFIG_LOCKD select
+CONFIG_CRC32.  Then remove the fallback code that becomes unnecessary,
+as well as the selection of CONFIG_CRC32 from CONFIG_NFS_DEBUG.
 
-Note: 1000 Hz (-R 1000) is unrealistically large, but provides a way to
-quickly reproduce the issue.
-
-PHC2SYS exits with:
-
-"ioctl PTP_OFFSET_PRECISE: Connection timed out" when the PTM transaction
-  fails
-
-This patch also fixes a hang in igc_probe() when loading the igc
-driver in the kdump kernel on systems supporting PTM.
-
-The igc driver running in the base kernel enables PTM trigger in
-igc_probe().  Therefore the driver is always in PTM trigger mode,
-except in brief periods when manually triggering a PTM cycle.
-
-When a crash occurs, the NIC is reset while PTM trigger is enabled.
-Due to a hardware problem, the NIC is subsequently in a bad busmaster
-state and doesn't handle register reads/writes.  When running
-igc_probe() in the kdump kernel, the first register access to a NIC
-register hangs driver probing and ultimately breaks kdump.
-
-With this patch, igc has PTM trigger disabled most of the time,
-and the trigger is only enabled for very brief (10 - 100 us) periods
-when manually triggering a PTM cycle.  Chances that a crash occurs
-during a PTM trigger are not 0, but extremely reduced.
-
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Corinna Vinschen <vinschen@redhat.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 1264a2f053a3 ("NFS: refactor code for calculating the crc32 hash of a filehandle")
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_defines.h |  1 +
- drivers/net/ethernet/intel/igc/igc_ptp.c     | 70 ++++++++++++--------
- 2 files changed, 42 insertions(+), 29 deletions(-)
+ fs/Kconfig           | 1 +
+ fs/nfs/Kconfig       | 2 +-
+ fs/nfs/internal.h    | 7 -------
+ fs/nfs/nfs4session.h | 4 ----
+ fs/nfsd/Kconfig      | 1 +
+ fs/nfsd/nfsfh.h      | 7 -------
+ include/linux/nfs.h  | 7 -------
+ 7 files changed, 3 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-index 8187a658dcbd5..17a7e3c875ccb 100644
---- a/drivers/net/ethernet/intel/igc/igc_defines.h
-+++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-@@ -574,6 +574,7 @@
- #define IGC_PTM_STAT_T4M1_OVFL		BIT(3) /* T4 minus T1 overflow */
- #define IGC_PTM_STAT_ADJUST_1ST		BIT(4) /* 1588 timer adjusted during 1st PTM cycle */
- #define IGC_PTM_STAT_ADJUST_CYC		BIT(5) /* 1588 timer adjusted during non-1st PTM cycle */
-+#define IGC_PTM_STAT_ALL		GENMASK(5, 0) /* Used to clear all status */
+diff --git a/fs/Kconfig b/fs/Kconfig
+index aae170fc27952..3117304676331 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -369,6 +369,7 @@ config GRACE_PERIOD
+ config LOCKD
+ 	tristate
+ 	depends on FILE_LOCKING
++	select CRC32
+ 	select GRACE_PERIOD
  
- /* PCIe PTM Cycle Control */
- #define IGC_PTM_CYCLE_CTRL_CYC_TIME(msec)	((msec) & 0x3ff) /* PTM Cycle Time (msec) */
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 14cd7f995280d..b4720545191ff 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -844,13 +844,40 @@ static void igc_ptm_log_error(struct igc_adapter *adapter, u32 ptm_stat)
- 	}
+ config LOCKD_V4
+diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
+index d3f76101ad4b9..07932ce9246c1 100644
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -2,6 +2,7 @@
+ config NFS_FS
+ 	tristate "NFS client support"
+ 	depends on INET && FILE_LOCKING && MULTIUSER
++	select CRC32
+ 	select LOCKD
+ 	select SUNRPC
+ 	select NFS_COMMON
+@@ -196,7 +197,6 @@ config NFS_USE_KERNEL_DNS
+ config NFS_DEBUG
+ 	bool
+ 	depends on NFS_FS && SUNRPC_DEBUG
+-	select CRC32
+ 	default y
+ 
+ config NFS_DISABLE_UDP_SUPPORT
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 6bcc4b0e00ab7..8b568a514fd1c 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -895,18 +895,11 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
+ 	return ((u64)ts->tv_sec << 30) + ts->tv_nsec;
  }
  
-+static void igc_ptm_trigger(struct igc_hw *hw)
-+{
-+	u32 ctrl;
-+
-+	/* To "manually" start the PTM cycle we need to set the
-+	 * trigger (TRIG) bit
-+	 */
-+	ctrl = rd32(IGC_PTM_CTRL);
-+	ctrl |= IGC_PTM_CTRL_TRIG;
-+	wr32(IGC_PTM_CTRL, ctrl);
-+	/* Perform flush after write to CTRL register otherwise
-+	 * transaction may not start
-+	 */
-+	wrfl();
-+}
-+
-+static void igc_ptm_reset(struct igc_hw *hw)
-+{
-+	u32 ctrl;
-+
-+	ctrl = rd32(IGC_PTM_CTRL);
-+	ctrl &= ~IGC_PTM_CTRL_TRIG;
-+	wr32(IGC_PTM_CTRL, ctrl);
-+	/* Write to clear all status */
-+	wr32(IGC_PTM_STAT, IGC_PTM_STAT_ALL);
-+}
-+
- static int igc_phc_get_syncdevicetime(ktime_t *device,
- 				      struct system_counterval_t *system,
- 				      void *ctx)
+-#ifdef CONFIG_CRC32
+ static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
  {
--	u32 stat, t2_curr_h, t2_curr_l, ctrl;
- 	struct igc_adapter *adapter = ctx;
- 	struct igc_hw *hw = &adapter->hw;
-+	u32 stat, t2_curr_h, t2_curr_l;
- 	int err, count = 100;
- 	ktime_t t1, t2_curr;
+ 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
+ 				NFS4_STATEID_OTHER_SIZE);
+ }
+-#else
+-static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
+-{
+-	return 0;
+-}
+-#endif
  
-@@ -864,25 +891,13 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
- 		 * are transitory. Repeating the process returns valid
- 		 * data eventually.
- 		 */
--
--		/* To "manually" start the PTM cycle we need to clear and
--		 * then set again the TRIG bit.
--		 */
--		ctrl = rd32(IGC_PTM_CTRL);
--		ctrl &= ~IGC_PTM_CTRL_TRIG;
--		wr32(IGC_PTM_CTRL, ctrl);
--		ctrl |= IGC_PTM_CTRL_TRIG;
--		wr32(IGC_PTM_CTRL, ctrl);
--
--		/* The cycle only starts "for real" when software notifies
--		 * that it has read the registers, this is done by setting
--		 * VALID bit.
--		 */
--		wr32(IGC_PTM_STAT, IGC_PTM_STAT_VALID);
-+		igc_ptm_trigger(hw);
- 
- 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
- 					 stat, IGC_PTM_STAT_SLEEP,
- 					 IGC_PTM_STAT_TIMEOUT);
-+		igc_ptm_reset(hw);
-+
- 		if (err < 0) {
- 			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
- 			return err;
-@@ -891,15 +906,7 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
- 		if ((stat & IGC_PTM_STAT_VALID) == IGC_PTM_STAT_VALID)
- 			break;
- 
--		if (stat & ~IGC_PTM_STAT_VALID) {
--			/* An error occurred, log it. */
--			igc_ptm_log_error(adapter, stat);
--			/* The STAT register is write-1-to-clear (W1C),
--			 * so write the previous error status to clear it.
--			 */
--			wr32(IGC_PTM_STAT, stat);
--			continue;
--		}
-+		igc_ptm_log_error(adapter, stat);
- 	} while (--count);
- 
- 	if (!count) {
-@@ -1081,7 +1088,7 @@ void igc_ptp_stop(struct igc_adapter *adapter)
- void igc_ptp_reset(struct igc_adapter *adapter)
+ static inline bool nfs_error_is_fatal(int err)
  {
- 	struct igc_hw *hw = &adapter->hw;
--	u32 cycle_ctrl, ctrl;
-+	u32 cycle_ctrl, ctrl, stat;
- 	unsigned long flags;
- 	u32 timadj;
+diff --git a/fs/nfs/nfs4session.h b/fs/nfs/nfs4session.h
+index 351616c61df54..f9c291e2165cd 100644
+--- a/fs/nfs/nfs4session.h
++++ b/fs/nfs/nfs4session.h
+@@ -148,16 +148,12 @@ static inline void nfs4_copy_sessionid(struct nfs4_sessionid *dst,
+ 	memcpy(dst->data, src->data, NFS4_MAX_SESSIONID_LEN);
+ }
  
-@@ -1116,14 +1123,19 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 		ctrl = IGC_PTM_CTRL_EN |
- 			IGC_PTM_CTRL_START_NOW |
- 			IGC_PTM_CTRL_SHRT_CYC(IGC_PTM_SHORT_CYC_DEFAULT) |
--			IGC_PTM_CTRL_PTM_TO(IGC_PTM_TIMEOUT_DEFAULT) |
--			IGC_PTM_CTRL_TRIG;
-+			IGC_PTM_CTRL_PTM_TO(IGC_PTM_TIMEOUT_DEFAULT);
+-#ifdef CONFIG_CRC32
+ /*
+  * nfs_session_id_hash - calculate the crc32 hash for the session id
+  * @session - pointer to session
+  */
+ #define nfs_session_id_hash(sess_id) \
+ 	(~crc32_le(0xFFFFFFFF, &(sess_id)->data[0], sizeof((sess_id)->data)))
+-#else
+-#define nfs_session_id_hash(session) (0)
+-#endif
+ #else /* defined(CONFIG_NFS_V4_1) */
  
- 		wr32(IGC_PTM_CTRL, ctrl);
+ static inline int nfs4_init_session(struct nfs_client *clp)
+diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
+index c0bd1509ccd48..9eb2e795c43c4 100644
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -4,6 +4,7 @@ config NFSD
+ 	depends on INET
+ 	depends on FILE_LOCKING
+ 	depends on FSNOTIFY
++	select CRC32
+ 	select LOCKD
+ 	select SUNRPC
+ 	select EXPORTFS
+diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
+index 876152a91f122..5103c2f4d2253 100644
+--- a/fs/nfsd/nfsfh.h
++++ b/fs/nfsd/nfsfh.h
+@@ -267,7 +267,6 @@ static inline bool fh_fsid_match(const struct knfsd_fh *fh1,
+ 	return true;
+ }
  
- 		/* Force the first cycle to run. */
--		wr32(IGC_PTM_STAT, IGC_PTM_STAT_VALID);
-+		igc_ptm_trigger(hw);
-+
-+		if (readx_poll_timeout_atomic(rd32, IGC_PTM_STAT, stat,
-+					      stat, IGC_PTM_STAT_SLEEP,
-+					      IGC_PTM_STAT_TIMEOUT))
-+			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
+-#ifdef CONFIG_CRC32
+ /**
+  * knfsd_fh_hash - calculate the crc32 hash for the filehandle
+  * @fh - pointer to filehandle
+@@ -279,12 +278,6 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+ {
+ 	return ~crc32_le(0xFFFFFFFF, fh->fh_raw, fh->fh_size);
+ }
+-#else
+-static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
+-{
+-	return 0;
+-}
+-#endif
  
-+		igc_ptm_reset(hw);
- 		break;
- 	default:
- 		/* No work to do. */
+ /**
+  * fh_clear_pre_post_attrs - Reset pre/post attributes
+diff --git a/include/linux/nfs.h b/include/linux/nfs.h
+index 9ad727ddfedb3..0906a0b40c6aa 100644
+--- a/include/linux/nfs.h
++++ b/include/linux/nfs.h
+@@ -55,7 +55,6 @@ enum nfs3_stable_how {
+ 	NFS_INVALID_STABLE_HOW = -1
+ };
+ 
+-#ifdef CONFIG_CRC32
+ /**
+  * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
+  * @fh - pointer to filehandle
+@@ -67,10 +66,4 @@ static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+ {
+ 	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
+ }
+-#else /* CONFIG_CRC32 */
+-static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
+-{
+-	return 0;
+-}
+-#endif /* CONFIG_CRC32 */
+ #endif /* _LINUX_NFS_H */
 -- 
 2.39.5
 
