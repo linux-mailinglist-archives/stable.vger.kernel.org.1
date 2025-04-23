@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14FEA99183
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:31:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4794A993D8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFFFA1B87541
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66CB89A3A77
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E514F28D82D;
-	Wed, 23 Apr 2025 15:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D614283C98;
+	Wed, 23 Apr 2025 15:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+la/RTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNIiAw0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A8428CF78;
-	Wed, 23 Apr 2025 15:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D526F442;
+	Wed, 23 Apr 2025 15:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421406; cv=none; b=sQ04TJIS2MW98SxkTOKoIa0/o5Fn54ta7gsONPQ5SgCMNj5WlP5xMHHABz/uSWx0WS45sIPidC19k26ML8HZBgJxwQT71X00DOtxz6Y0OQObsb2TiZVwbyoq3LDtzHnn6/o+k6ij8mkRSqqXhYBBLb2M79OKBtXMWUuyOmIGXaU=
+	t=1745422221; cv=none; b=Gpi8D11V8w4/KY7bGt8nmlrfJQbfs1FbyXrOfel2Nss7drR4+drllbE1wvcSps148L8hH9BMplMSbT50N5v9A1cVmhMCOWlySkz1EddtTydb542g92O8MM7AHwZmyXgKwL07BQ/6tlySr+Vffuwd8FpTe+3lkbbXbkYrKWPw1og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421406; c=relaxed/simple;
-	bh=oiih+jNRUkMwEMID8lxECPTE395amBKMzN0mCIXj0NY=;
+	s=arc-20240116; t=1745422221; c=relaxed/simple;
+	bh=gxNeq3ko1lVLV1JgwCKnDSA23hgIjT7mAS+qlr7n/Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MxNviJt0KqeVtxKK3EtsyYF1I2wCLy7XjFfFPS+/3nLf0qWUmReftee1U2G3HsKooo/iYmLgGFlgsunl51uJRwECvmDJm6mAA+X8szrPDzsqdGiGZIXYD5CaiVeMFENiiiOlIKdonT/3jH3lxfIlum5hLjtvqBPLmvc39i/XV4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+la/RTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF444C4CEE2;
-	Wed, 23 Apr 2025 15:16:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gWak+uUXT33K62+06lKynVESIm9jBFz3h1wTE7a+kgmgcrErozCaoBwPmgS6UWbL8X+dEEi5qYrjcHl7tRvFbPUh+9qluEQS9Sa3TkMZ2K7wiM+sUvPOUyvOVIXXG+kTVwjPgnFU8RSOJRXjzx+M6R4UnpQ1781MQV8/vlUWEPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNIiAw0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F64C4CEE2;
+	Wed, 23 Apr 2025 15:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421405;
-	bh=oiih+jNRUkMwEMID8lxECPTE395amBKMzN0mCIXj0NY=;
+	s=korg; t=1745422217;
+	bh=gxNeq3ko1lVLV1JgwCKnDSA23hgIjT7mAS+qlr7n/Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+la/RTtRUFIVnQNHfpCGtF7llyl66AZUXYIyprnZegyUGbRbz464fgGlfS2W/SS+
-	 w4mZ/5ylNxCw2up58xsGGlXar7xmoJpMsz1lh4skC/ZaX5wH5H7B0W34m4rph/M8hj
-	 PoC4Cb7IeqkNvMWhAEaN4uwHeVnfCNWTsNtMAGVI=
+	b=eNIiAw0r6Q7rdYzDTvpnjRQ4S1E8/UTwbFhOoKyZZkP1tNCEWSQGKatT6pYLunPad
+	 6oI/kUmRTWgRGxvg8YnDqkI89gKPhGEwv5YB5fC5fTpVuWmiMoMpgQ3CpTZsUcJXj3
+	 1uAdMZ/YwCGdpdmKuyj40VlI0LeTMB68/qXDid6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 182/241] drm/amd/pm/powerplay: Prevent division by zero
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.1 257/291] cpufreq: Reference count policy in cpufreq_update_limits()
 Date: Wed, 23 Apr 2025 16:44:06 +0200
-Message-ID: <20250423142627.954628301@linuxfoundation.org>
+Message-ID: <20250423142634.931857527@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
+commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+Since acpi_processor_notify() can be called before registering a cpufreq
+driver or even in cases when a cpufreq driver is not registered at all,
+cpufreq_update_limits() needs to check if a cpufreq driver is present
+and prevent it from being unregistered.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
+policy pointer for the given CPU and reference count the corresponding
+policy object, if present.
 
-Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
+Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
+[do not use __free(cpufreq_cpu_put) in a backport]
+Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-@@ -307,10 +307,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
- 	int result = 0;
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2691,10 +2691,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
+  */
+ void cpufreq_update_limits(unsigned int cpu)
+ {
++	struct cpufreq_policy *policy;
++
++	policy = cpufreq_cpu_get(cpu);
++	if (!policy)
++		return;
++
+ 	if (cpufreq_driver->update_limits)
+ 		cpufreq_driver->update_limits(cpu);
+ 	else
+ 		cpufreq_update_policy(cpu);
++
++	cpufreq_cpu_put(policy);
+ }
+ EXPORT_SYMBOL_GPL(cpufreq_update_limits);
  
- 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
--	    speed == 0 ||
-+	    (!speed || speed > UINT_MAX/8) ||
- 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
- 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
--		return -1;
-+		return -EINVAL;
- 
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
- 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
