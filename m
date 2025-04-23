@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA65EA98E6B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4A8A98EA0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61284451B3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4D211B66963
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C3E481CD;
-	Wed, 23 Apr 2025 14:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AE627CCC7;
+	Wed, 23 Apr 2025 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="om1/JVE/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEDKF18T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C0418DB17;
-	Wed, 23 Apr 2025 14:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA2E175BF;
+	Wed, 23 Apr 2025 14:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420065; cv=none; b=u+IIKcrXYqCydjymk9BM8oEfDdNmEY8iGtFVLunnQB4JYHgBa0ktnda9jW7KQpCoHet0xaSXS6NPo8lhw/URfvu6+m0DswLwrZs5lZ7P5egj5DaG6oVE3DIhrI5vm93ZB0RPuIZrXDYVFbIOtJlNuJTYjFTF8WjIXqyQEp5fmdY=
+	t=1745420076; cv=none; b=UnX7d+Cio12iFRl84xw65gZJYvWLjZmmlOXNf2lXBOF7pLXPL2KPMB3JRSMfdcYXKoLAmundxAQwqcfwfhW4IDvVkPscoNuHEuBeKo3QL/Hs6iGlMUN0gOtllgza2QnlUXsWYyFpIUqwWkg+SXi12h1X9A99HjX5WyVEJCar66M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420065; c=relaxed/simple;
-	bh=Sff0duBx82M+qCZHPvFycu5ZmEdO85uOL6C3h2iUzR8=;
+	s=arc-20240116; t=1745420076; c=relaxed/simple;
+	bh=HkK9F02ZSU2e2MfaqlbpJJ3BGpv92mF0EvJeMXjuAXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTvrKYLM/4S5HLjMtMcOYqokaDpK8NDE+5GMDfIvKj8G6zugpstZXaGnrrRTldB1rRZDgDBjU5aWfDcMtZJA9RkMhsw+WcO2O3zW7lMTZUx3GW2ahifl4hJeCNRE2NHN0xg3viaxQsdBTIZLVKR60zvuTDhDxT+LQYqClfa+r4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=om1/JVE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AA7EC4CEE2;
-	Wed, 23 Apr 2025 14:54:25 +0000 (UTC)
+	 MIME-Version; b=QrPp4jdqaF1NUY7mgYkHsHv2z4NPa1pP3TsBcT+9OzHgjJpCtvxAk+k8i/ZllbqK6OmKVdAcEno6biLGvFfFIBF+I4WupecVJam6B0G6Kb51q4BeHFAmlWgCBgI9CNKaNquTrAYjcpD5MnGuColK+ID+52b+jHjEeq0G+PxKNsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEDKF18T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E390AC4CEE2;
+	Wed, 23 Apr 2025 14:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420065;
-	bh=Sff0duBx82M+qCZHPvFycu5ZmEdO85uOL6C3h2iUzR8=;
+	s=korg; t=1745420076;
+	bh=HkK9F02ZSU2e2MfaqlbpJJ3BGpv92mF0EvJeMXjuAXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=om1/JVE/JPeKevztIAAVBgBS9o9hiRZk+5L2Us4MGxMY47eMtME87Kv4N1Wxd9m5W
-	 vx2ehxJzxJ5NvwYsCC219XNmZMp/CXALF8RfSBKiHFXIECiCbonaKafx99On9Lfl1i
-	 ppiNpbxgo6VoHDEI6Y3Qr5TAUYSqEvgAspfkOAwQ=
+	b=YEDKF18TuMWYa/XYenqBOlUkotBmvuCK4UksPRtUb23wXKMVninv5PmdLAty9Yfh2
+	 tixw07KIVXWsGmqmC/wwSmT/Kz3wqTV0hQENrZhcoEXixhv382d9HzXlI0ovT+3qux
+	 jn8ovDAFpv/zEb9pDcSjG0nhDIDedAvI0i+X4468=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sontu mazumdar <sontu21@gmail.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/393] nft_set_pipapo: fix incorrect avx2 match of 5th field octet
-Date: Wed, 23 Apr 2025 16:38:51 +0200
-Message-ID: <20250423142644.738076598@linuxfoundation.org>
+	Yong Wu <yong.wu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>
+Subject: [PATCH 6.6 036/393] iommu/mediatek: Fix NULL pointer deference in mtk_iommu_device_group
+Date: Wed, 23 Apr 2025 16:38:52 +0200
+Message-ID: <20250423142644.781164196@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -68,51 +69,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit e042ed950d4e176379ba4c0722146cd96fb38aa2 ]
+[ Upstream commit 38e8844005e6068f336a3ad45451a562a0040ca1 ]
 
-Given a set element like:
+Currently, mtk_iommu calls during probe iommu_device_register before
+the hw_list from driver data is initialized. Since iommu probing issue
+fix, it leads to NULL pointer dereference in mtk_iommu_device_group when
+hw_list is accessed with list_first_entry (not null safe).
 
-	icmpv6 . dead:beef:00ff::1
+So, change the call order to ensure iommu_device_register is called
+after the driver data are initialized.
 
-The value of 'ff' is irrelevant, any address will be matched
-as long as the other octets are the same.
-
-This is because of too-early register clobbering:
-ymm7 is reloaded with new packet data (pkt[9])  but it still holds data
-of an earlier load that wasn't processed yet.
-
-The existing tests in nft_concat_range.sh selftests do exercise this code
-path, but do not trigger incorrect matching due to the network prefix
-limitation.
-
-Fixes: 7400b063969b ("nft_set_pipapo: Introduce AVX2-based lookup implementation")
-Reported-by: sontu mazumdar <sontu21@gmail.com>
-Closes: https://lore.kernel.org/netfilter/CANgxkqwnMH7fXra+VUfODT-8+qFLgskq3set1cAzqqJaV4iEZg@mail.gmail.com/T/#t
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 9e3a2a643653 ("iommu/mediatek: Adapt sharing and non-sharing pgtable case")
+Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org> # MT8183 Juniper, MT8186 Tentacruel
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Link: https://lore.kernel.org/r/20250403-fix-mtk-iommu-error-v2-1-fe8b18f8b0a8@collabora.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iommu/mtk_iommu.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index b8d3c3213efee..c15db28c5ebc4 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -994,8 +994,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(5, lt,  8,  pkt[8], bsize);
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index de698463e94ad..06c0770ff894e 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1354,15 +1354,6 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, data);
+ 	mutex_init(&data->mutex);
  
- 		NFT_PIPAPO_AVX2_AND(6, 2, 3);
-+		NFT_PIPAPO_AVX2_AND(3, 4, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(7, lt,  9,  pkt[9], bsize);
--		NFT_PIPAPO_AVX2_AND(0, 4, 5);
-+		NFT_PIPAPO_AVX2_AND(0, 3, 5);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(1, lt, 10, pkt[10], bsize);
- 		NFT_PIPAPO_AVX2_AND(2, 6, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(3, lt, 11, pkt[11], bsize);
+-	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
+-				     "mtk-iommu.%pa", &ioaddr);
+-	if (ret)
+-		goto out_link_remove;
+-
+-	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
+-	if (ret)
+-		goto out_sysfs_remove;
+-
+ 	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE)) {
+ 		list_add_tail(&data->list, data->plat_data->hw_list);
+ 		data->hw_list = data->plat_data->hw_list;
+@@ -1372,19 +1363,28 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 		data->hw_list = &data->hw_list_head;
+ 	}
+ 
++	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
++				     "mtk-iommu.%pa", &ioaddr);
++	if (ret)
++		goto out_list_del;
++
++	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
++	if (ret)
++		goto out_sysfs_remove;
++
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
+ 		ret = component_master_add_with_match(dev, &mtk_iommu_com_ops, match);
+ 		if (ret)
+-			goto out_list_del;
++			goto out_device_unregister;
+ 	}
+ 	return ret;
+ 
+-out_list_del:
+-	list_del(&data->list);
++out_device_unregister:
+ 	iommu_device_unregister(&data->iommu);
+ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+-out_link_remove:
++out_list_del:
++	list_del(&data->list);
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
+ 		device_link_remove(data->smicomm_dev, dev);
+ out_runtime_disable:
 -- 
 2.39.5
 
