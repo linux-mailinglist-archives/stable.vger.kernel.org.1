@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-136004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C80BA99155
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C26ACA99010
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5479817E418
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12102441D5D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB27029009C;
-	Wed, 23 Apr 2025 15:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6092B2949F0;
+	Wed, 23 Apr 2025 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfXzAnwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yjk5stg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A7F27F4D9;
-	Wed, 23 Apr 2025 15:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C72628F502;
+	Wed, 23 Apr 2025 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421402; cv=none; b=lgjIS2vo3i07FDIcvXruRCVhdfZImJm7vCTSOMFAcHXDcvfho9Dc1NghFz4jIs9FHoF4c0Uq80Hr1Yavdfg/P6MhaYz324ezyBSwYMnEBSCYGo3kM+DuZVG8mqGP/5Vp+6AXB3OwLNdJjWCYZN+n9P7wrmdNb1oMbVO1IiWu1m8=
+	t=1745420848; cv=none; b=eWVt+xR7rSgBqsETGK6RSD/gsjtxpKt8e3OcW0C6J6n2FTEto7AoIjUcRodjCSIc/svBpUpDNPjgTfZAsJ+rTFSQ91Ii9p4fvTm9OmH1RPeM+Br+OuOagBO1WNRNjJ2dPsmRFinQn0WTf7bc9+Q1iG8QJRbQsKU6yIYt0b4v+ZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421402; c=relaxed/simple;
-	bh=tCJf6gMl/6vR1YTVgzhX0JzoQorK55+6q5NgNXnr+Q8=;
+	s=arc-20240116; t=1745420848; c=relaxed/simple;
+	bh=AS6E8fIVTrQZKMYOqKArIaoXp4JuIH6govfel82AnHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELD6ZvBovkLrgeDG/sqMYO5Llk6sO/tp1zQtn2Y9vE1+eJJTPnXr90DufMG915GxxGg10MWCZ+U3+jHsmF+ydLXgVKlTt7xHKRvUmKmK6naS+o8o7h3keG88+6t9nnHpQms1cDMyNwxOUfp0ul3u/UIZIP8h52F1cutXDcHrRBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfXzAnwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB68C4CEE2;
-	Wed, 23 Apr 2025 15:16:42 +0000 (UTC)
+	 MIME-Version; b=NK8HYpYsrZJF42kWYVe5Xo4Eb1mFQ1YzUmhynYP8at4TLJGFOMin4JrdhbS8XRKCHa6f2X/4fStnPsStOmvlfU3qhuHZ8MKijq4qv7j6Dqb6Pg7riXdz5S4cspBo8mCbTx0aJBKI3VUa9DFXuAT3nld/XXNdv5yoFsv6n1ZOrqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yjk5stg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AA9C4CEE2;
+	Wed, 23 Apr 2025 15:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421402;
-	bh=tCJf6gMl/6vR1YTVgzhX0JzoQorK55+6q5NgNXnr+Q8=;
+	s=korg; t=1745420848;
+	bh=AS6E8fIVTrQZKMYOqKArIaoXp4JuIH6govfel82AnHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfXzAnwqsrv8714p+smEW0xmiy3biog6pvf04flKH7yXlJatg1VNrIAgEXVKxszAN
-	 Adi5qH8Ua9gdBan3hW9cQKUZr9Irl5Vuf7Cs0NsdF+Zy3BfRieSs8zRIWx3EEI7i89
-	 NB5nf+UH+HBLH79LNh8QGolxICW5KvksYNZkISLI=
+	b=Yjk5stg8paq1AOiK+OSH+aod+1THKohbRL+XxseUPw9tLjeZfoHAfatZhVA6MFdwR
+	 dVGAWsQqx5HOSbo5Z+kn+s2E8PiRbzHYemWIo1esz9VUe8Gci7AW2KxYGrrntOoit0
+	 be+xO9c+aBHNqJ1YQUsBMXBhxY0l9AjO9y4Il5qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Chanho Park <chanho61.park@samsung.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.14 162/241] scsi: ufs: exynos: Disable iocc if dma-coherent property isnt set
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 154/223] drm/amd: Handle being compiled without SI or CIK support better
 Date: Wed, 23 Apr 2025 16:43:46 +0200
-Message-ID: <20250423142627.154733524@linuxfoundation.org>
+Message-ID: <20250423142623.448811943@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f92bb7436802f8eb7ee72dc911a33c8897fde366 upstream.
+commit 5f054ddead33c1622ea9c0c0aaf07c6843fc7ab0 upstream.
 
-If dma-coherent property isn't set then descriptors are non-cacheable
-and the iocc shareability bits should be disabled. Without this UFS can
-end up in an incompatible configuration and suffer from random cache
-related stability issues.
+If compiled without SI or CIK support but amdgpu tries to load it
+will run into failures with uninitialized callbacks.
 
-Suggested-by: Bart Van Assche <bvanassche@acm.org>
-Fixes: cc52e15397cc ("scsi: ufs: ufs-exynos: Support ExynosAuto v9 UFS")
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-3-96722cc2ba1b@linaro.org
-Cc: Chanho Park <chanho61.park@samsung.com>
+Show a nicer message in this case and fail probe instead.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4050
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c |   17 +++++++++++++----
- drivers/ufs/host/ufs-exynos.h |    3 ++-
- 2 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |   44 +++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -214,8 +214,8 @@ static int exynos_ufs_shareability(struc
- 	/* IO Coherency setting */
- 	if (ufs->sysreg) {
- 		return regmap_update_bits(ufs->sysreg,
--					  ufs->shareability_reg_offset,
--					  ufs->iocc_mask, ufs->iocc_mask);
-+					  ufs->iocc_offset,
-+					  ufs->iocc_mask, ufs->iocc_val);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -1795,7 +1795,6 @@ static const u16 amdgpu_unsupported_pcii
+ };
+ 
+ static const struct pci_device_id pciidlist[] = {
+-#ifdef CONFIG_DRM_AMDGPU_SI
+ 	{0x1002, 0x6780, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+ 	{0x1002, 0x6784, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+ 	{0x1002, 0x6788, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+@@ -1868,8 +1867,6 @@ static const struct pci_device_id pciidl
+ 	{0x1002, 0x6665, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
+ 	{0x1002, 0x6667, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
+ 	{0x1002, 0x666F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
+-#endif
+-#ifdef CONFIG_DRM_AMDGPU_CIK
+ 	/* Kaveri */
+ 	{0x1002, 0x1304, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+ 	{0x1002, 0x1305, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+@@ -1952,7 +1949,6 @@ static const struct pci_device_id pciidl
+ 	{0x1002, 0x985D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
+ 	{0x1002, 0x985E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
+ 	{0x1002, 0x985F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
+-#endif
+ 	/* topaz */
+ 	{0x1002, 0x6900, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
+ 	{0x1002, 0x6901, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
+@@ -2284,14 +2280,14 @@ static int amdgpu_pci_probe(struct pci_d
+ 		return -ENOTSUPP;
  	}
  
- 	return 0;
-@@ -1173,13 +1173,22 @@ static int exynos_ufs_parse_dt(struct de
- 		ufs->sysreg = NULL;
- 	else {
- 		if (of_property_read_u32_index(np, "samsung,sysreg", 1,
--					       &ufs->shareability_reg_offset)) {
-+					       &ufs->iocc_offset)) {
- 			dev_warn(dev, "can't get an offset from sysreg. Set to default value\n");
--			ufs->shareability_reg_offset = UFS_SHAREABILITY_OFFSET;
-+			ufs->iocc_offset = UFS_SHAREABILITY_OFFSET;
++	switch (flags & AMD_ASIC_MASK) {
++	case CHIP_TAHITI:
++	case CHIP_PITCAIRN:
++	case CHIP_VERDE:
++	case CHIP_OLAND:
++	case CHIP_HAINAN:
+ #ifdef CONFIG_DRM_AMDGPU_SI
+-	if (!amdgpu_si_support) {
+-		switch (flags & AMD_ASIC_MASK) {
+-		case CHIP_TAHITI:
+-		case CHIP_PITCAIRN:
+-		case CHIP_VERDE:
+-		case CHIP_OLAND:
+-		case CHIP_HAINAN:
++		if (!amdgpu_si_support) {
+ 			dev_info(&pdev->dev,
+ 				 "SI support provided by radeon.\n");
+ 			dev_info(&pdev->dev,
+@@ -2299,16 +2295,18 @@ static int amdgpu_pci_probe(struct pci_d
+ 				);
+ 			return -ENODEV;
  		}
- 	}
+-	}
++		break;
++#else
++		dev_info(&pdev->dev, "amdgpu is built without SI support.\n");
++		return -ENODEV;
+ #endif
++	case CHIP_KAVERI:
++	case CHIP_BONAIRE:
++	case CHIP_HAWAII:
++	case CHIP_KABINI:
++	case CHIP_MULLINS:
+ #ifdef CONFIG_DRM_AMDGPU_CIK
+-	if (!amdgpu_cik_support) {
+-		switch (flags & AMD_ASIC_MASK) {
+-		case CHIP_KAVERI:
+-		case CHIP_BONAIRE:
+-		case CHIP_HAWAII:
+-		case CHIP_KABINI:
+-		case CHIP_MULLINS:
++		if (!amdgpu_cik_support) {
+ 			dev_info(&pdev->dev,
+ 				 "CIK support provided by radeon.\n");
+ 			dev_info(&pdev->dev,
+@@ -2316,8 +2314,14 @@ static int amdgpu_pci_probe(struct pci_d
+ 				);
+ 			return -ENODEV;
+ 		}
+-	}
++		break;
++#else
++		dev_info(&pdev->dev, "amdgpu is built without CIK support.\n");
++		return -ENODEV;
+ #endif
++	default:
++		break;
++	}
  
- 	ufs->iocc_mask = ufs->drv_data->iocc_mask;
-+	/*
-+	 * no 'dma-coherent' property means the descriptors are
-+	 * non-cacheable so iocc shareability should be disabled.
-+	 */
-+	if (of_dma_is_coherent(dev->of_node))
-+		ufs->iocc_val = ufs->iocc_mask;
-+	else
-+		ufs->iocc_val = 0;
-+
- 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
- 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
- 
---- a/drivers/ufs/host/ufs-exynos.h
-+++ b/drivers/ufs/host/ufs-exynos.h
-@@ -231,8 +231,9 @@ struct exynos_ufs {
- 	ktime_t entry_hibern8_t;
- 	const struct exynos_ufs_drv_data *drv_data;
- 	struct regmap *sysreg;
--	u32 shareability_reg_offset;
-+	u32 iocc_offset;
- 	u32 iocc_mask;
-+	u32 iocc_val;
- 
- 	u32 opts;
- #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
+ 	adev = devm_drm_dev_alloc(&pdev->dev, &amdgpu_kms_driver, typeof(*adev), ddev);
+ 	if (IS_ERR(adev))
 
 
 
