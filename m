@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-135930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470C6A990F6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E925DA98DB5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EBFA17DCBA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 225AE3BAE04
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59052280CE0;
-	Wed, 23 Apr 2025 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3E6269B07;
+	Wed, 23 Apr 2025 14:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lx2AkaQV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czFSMbYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1701D1F5435;
-	Wed, 23 Apr 2025 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0593F1A23B0;
+	Wed, 23 Apr 2025 14:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421215; cv=none; b=RppB12tEA4S4DZLMWHakHHcjVvO/dsJBFD6r84iiqzyiFjSLMmYhCAmvpl6VCt3FvvwavahcRU2uyBl/4455PN/I8voJ6cKe62NZqtza4TfoZp0ow/LtIKi0Uklcj9Y8u3/gILGhB4/cuTfkFICVDKBPMxBk9GLOzyL86ASMuX4=
+	t=1745419658; cv=none; b=N99bQXh7csQvkYQW786aVWmryUCf5Tveu2BxUkIfzeE4CZITnG3uwLH0RfxDKad5/puRrpbK6Emun9qtrkhxO3K3OFb1Ofd2R4iIriskB/I5+zkfF5vUeoiAwnmDZNc+D8PM+53DDP9JboDX86VI1NWlWf3Bb3REezmBIMMnPGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421215; c=relaxed/simple;
-	bh=zpYechgVrEnx2n3bjE8XSoRxoJnbaHBUeHbhGtBrIVs=;
+	s=arc-20240116; t=1745419658; c=relaxed/simple;
+	bh=fb/SOm19jT0PVxHw086IJUPkXykJaIqsktCSorBFOTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VFTwTREUL9186oxQr14sBN0SYO4N2nQ8j/CESsMEy7Yn4fDFGP41eBq6T2bkEmiEhAlj7/aDXj144DKFZX6iiHtVRtSSRy98L7Bt/nddDiTivwB1AVRHD01pvMgtDqv2zbu73GItbkmIcrn2NGTn+G5VVgYjk1PuL4WNQeRsf/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lx2AkaQV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9C5C4CEE2;
-	Wed, 23 Apr 2025 15:13:34 +0000 (UTC)
+	 MIME-Version; b=N9429clmihwuPDlFX/732enV1/dCrx8sUcU7j7cwn0xLpGj07wFDve5EnJt2LsDt/T+OUVo/Yfh114RCaSQpFJp4gxO6G5F3gZJb5epoT2+QSp6xQ8cXl2kasqXlF3OdBLE6CDUfn1+8Xcl8E3rkUCx446+YzO7mMJRLlRQ+qHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czFSMbYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D484C4CEE2;
+	Wed, 23 Apr 2025 14:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421215;
-	bh=zpYechgVrEnx2n3bjE8XSoRxoJnbaHBUeHbhGtBrIVs=;
+	s=korg; t=1745419657;
+	bh=fb/SOm19jT0PVxHw086IJUPkXykJaIqsktCSorBFOTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lx2AkaQVRUD4tWibllk+JCyuzE0f97/ot9gs+4SaRcg5lHjXouvdR4QkHRvThkqaa
-	 VAT+16uchCTI/IzcxXwfX+FejESTNr7wC/GoRS3sVIvuHVS3ZNSMkzdc5XIvSUpz4T
-	 GYnMm9BpomFhMLDmnTAFvTCTuWF4seRrnKL8SoJQ=
+	b=czFSMbYFsGM7jCSWN0/sFoTttt1Z9s5J3FmYO/9l5zl5LhwgMbbhHD9uPPKazpXGl
+	 cqlgB8jlFuYcd1lBX/4QomdU4cPxiohV9jgRW3m45LyfuDhYWRgcPIi9Xb17MTpfLw
+	 KSfvBuXKdnu/UvXPE0wtX9zD06ifJ8LueTz+h8Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 118/291] i3c: Add NULL pointer check in i3c_master_queue_ibi()
-Date: Wed, 23 Apr 2025 16:41:47 +0200
-Message-ID: <20250423142629.209518481@linuxfoundation.org>
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 036/223] igc: handle the IGC_PTP_ENABLED flag correctly
+Date: Wed, 23 Apr 2025 16:41:48 +0200
+Message-ID: <20250423142618.600534223@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +64,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-commit bd496a44f041da9ef3afe14d1d6193d460424e91 upstream.
+[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
 
-The I3C master driver may receive an IBI from a target device that has not
-been probed yet. In such cases, the master calls `i3c_master_queue_ibi()`
-to queue an IBI work task, leading to "Unable to handle kernel read from
-unreadable memory" and resulting in a kernel panic.
+All functions in igc_ptp.c called from igc_main.c should check the
+IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
+functions.
 
-Typical IBI handling flow:
-1. The I3C master scans target devices and probes their respective drivers.
-2. The target device driver calls `i3c_device_request_ibi()` to enable IBI
-   and assigns `dev->ibi = ibi`.
-3. The I3C master receives an IBI from the target device and calls
-   `i3c_master_queue_ibi()` to queue the target device driver’s IBI
-   handler task.
-
-However, since target device events are asynchronous to the I3C probe
-sequence, step 3 may occur before step 2, causing `dev->ibi` to be `NULL`,
-leading to a kernel panic.
-
-Add a NULL pointer check in `i3c_master_queue_ibi()` to prevent accessing
-an uninitialized `dev->ibi`, ensuring stability.
-
-Fixes: 3a379bbcea0af ("i3c: Add core I3C infrastructure")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/Z9gjGYudiYyl3bSe@lizhi-Precision-Tower-5810/
-Signed-off-by: Manjunatha Venkatesh <manjunatha.venkatesh@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250326123047.2797946-1-manjunatha.venkatesh@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2495,6 +2495,9 @@ static void i3c_master_unregister_i3c_de
-  */
- void i3c_master_queue_ibi(struct i3c_dev_desc *dev, struct i3c_ibi_slot *slot)
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 516abe7405dee..343205bffc355 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1244,8 +1244,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
+  **/
+ void igc_ptp_stop(struct igc_adapter *adapter)
  {
-+	if (!dev->ibi || !slot)
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
 +		return;
 +
- 	atomic_inc(&dev->ibi->pending_ibis);
- 	queue_work(dev->common.master->wq, &slot->work);
- }
+ 	igc_ptp_suspend(adapter);
+ 
++	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
+ 	if (adapter->ptp_clock) {
+ 		ptp_clock_unregister(adapter->ptp_clock);
+ 		netdev_info(adapter->netdev, "PHC removed\n");
+@@ -1266,6 +1270,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	unsigned long flags;
+ 	u32 timadj;
+ 
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+ 
+-- 
+2.39.5
+
 
 
 
