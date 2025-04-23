@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-135397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740F9A98E09
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D54A98E0E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B9D3A8D00
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FC383A9532
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92ADE2820B4;
-	Wed, 23 Apr 2025 14:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACCA280CC8;
+	Wed, 23 Apr 2025 14:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXU84/qD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jimc4qaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC471A9B39;
-	Wed, 23 Apr 2025 14:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3836427FD7A;
+	Wed, 23 Apr 2025 14:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419816; cv=none; b=kV3w1FYEtqgj+bMfbvRsT6SaeU84dXyfaKl5Nitctyf2ZW6iKwmXRnOp469bI6mi1qPtwTTkp8ueFuqUKrRUTdD0sozL/aZp3RW7aRlpJYhlS45oMdl8yB4Vf0hktWbDymT8198V3E/7NMBxBmGJAqTk6wAmP7r9634V9S3Mrf8=
+	t=1745419837; cv=none; b=VskMtNmfEX/KRtsMiOrsPb7G2YTXZluyUQvbfy1Mg1HEP3l59N53GmM/GJPY9rMHD9+CEnLd5ZLjB6yQwFXw0M58xJL0qQJvCjRRh5oH/hXT6gRBnz0pqi/HfR4VJlA/IA6p+Aapx2FX1MpfcsGKP3bwoEy6jgqnuLAL+eQG5TM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419816; c=relaxed/simple;
-	bh=iMl4503qVCpwG9jqOncmXz5L4exucOkX/S/+aPBNWt4=;
+	s=arc-20240116; t=1745419837; c=relaxed/simple;
+	bh=uv17mEvyN9z5nFR2xOXZbzLDCMp8XsoTEZWyMCAFGS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EJ1EJ63HFE7ChpPh+jAYosAKkq19/hykJ6vjtfcZJhwW6aC6+WEmrppoHerkJPRC/FDPXTz031sPyL03qkRlp0pXlM1ASIDEj3h0Mfp6/d7EiwxLN7V4Toh0bdzPAQ3o62wBvD1p9de0DhOP9of0deHcAdxqGmyrX5DNlvlQ9Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXU84/qD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4755C4CEE3;
-	Wed, 23 Apr 2025 14:50:15 +0000 (UTC)
+	 MIME-Version; b=N8nV9B/qgwcyER+Hw00SZlrMsqno6/J3s7IVJbywrS4h/9eKQlx7w/fKXUfIE+MxeWWyx2u3nrSM0b7TZ+tTbi+3UiyjHbC5COecqmWhlRihAaK5pOSJR6MqS46Wdo642zoyjeRhNlTXNSLV3h4ly8a9vwLEp9RvAfNsUyhtQPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jimc4qaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF897C4CEE8;
+	Wed, 23 Apr 2025 14:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419816;
-	bh=iMl4503qVCpwG9jqOncmXz5L4exucOkX/S/+aPBNWt4=;
+	s=korg; t=1745419837;
+	bh=uv17mEvyN9z5nFR2xOXZbzLDCMp8XsoTEZWyMCAFGS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXU84/qDe7FAVUIy+chlwRuVHq26/PiiRYxdEPrpb4m/3OHucwGbttizx464DdcNm
-	 cVDwhzvfUR7rWnTf7q87Bw+WwQ422yFa8cJ2UUvFnVXbGMXb/9FJJ2U4pGE488SxJd
-	 4D6LxcCoROkljTVgTjSmxBdMwgSGC9nVtPCZx44A=
+	b=jimc4qazM8ltmtE1Y7BIObFN5exGyH7yENkO5U4cdN6pHTv9XdLGtbcJMG5uIw5Ok
+	 dd2QzzQViwtydKRlFyJZ8xXALir5o3+Wh2LoTFqbFGSk96uAm6q+5a86FxJtW/dyEN
+	 A3anMCS0aW7x2g0e9ZkS5ZGVhw5+cWpamY9DZ8Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/393] ata: pata_pxa: Fix potential NULL pointer dereference in pxa_ata_probe()
-Date: Wed, 23 Apr 2025 16:38:22 +0200
-Message-ID: <20250423142643.519086917@linuxfoundation.org>
+Subject: [PATCH 6.6 007/393] objtool: Fix INSN_CONTEXT_SWITCH handling in validate_unret()
+Date: Wed, 23 Apr 2025 16:38:23 +0200
+Message-ID: <20250423142643.567570355@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,44 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit ad320e408a8c95a282ab9c05cdf0c9b95e317985 ]
+[ Upstream commit a8df7d0ef92eca28c610206c6748daf537ac0586 ]
 
-devm_ioremap() returns NULL on error. Currently, pxa_ata_probe() does
-not check for this case, which can result in a NULL pointer dereference.
+The !CONFIG_IA32_EMULATION version of xen_entry_SYSCALL_compat() ends
+with a SYSCALL instruction which is classified by objtool as
+INSN_CONTEXT_SWITCH.
 
-Add NULL check after devm_ioremap() to prevent this issue.
+Unlike validate_branch(), validate_unret() doesn't consider
+INSN_CONTEXT_SWITCH in a non-function to be a dead end, so it keeps
+going past the end of xen_entry_SYSCALL_compat(), resulting in the
+following warning:
 
-Fixes: 2dc6c6f15da9 ("[ARM] pata_pxa: DMA-capable PATA driver")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+  vmlinux.o: warning: objtool: xen_reschedule_interrupt+0x2a: RET before UNTRAIN
+
+Fix that by adding INSN_CONTEXT_SWITCH handling to validate_unret() to
+match what validate_branch() is already doing.
+
+Fixes: a09a6e2399ba ("objtool: Add entry UNRET validation")
+Reported-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/f5eda46fd09f15b1f5cde3d9ae3b92b958342add.1744095216.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_pxa.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/objtool/check.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/ata/pata_pxa.c b/drivers/ata/pata_pxa.c
-index 5275c6464f57f..821bcf20741ea 100644
---- a/drivers/ata/pata_pxa.c
-+++ b/drivers/ata/pata_pxa.c
-@@ -223,10 +223,16 @@ static int pxa_ata_probe(struct platform_device *pdev)
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index 9102ad5985cc0..8ba5bcfd5cd57 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3926,6 +3926,11 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
+ 			WARN_INSN(insn, "RET before UNTRAIN");
+ 			return 1;
  
- 	ap->ioaddr.cmd_addr	= devm_ioremap(&pdev->dev, cmd_res->start,
- 						resource_size(cmd_res));
-+	if (!ap->ioaddr.cmd_addr)
-+		return -ENOMEM;
- 	ap->ioaddr.ctl_addr	= devm_ioremap(&pdev->dev, ctl_res->start,
- 						resource_size(ctl_res));
-+	if (!ap->ioaddr.ctl_addr)
-+		return -ENOMEM;
- 	ap->ioaddr.bmdma_addr	= devm_ioremap(&pdev->dev, dma_res->start,
- 						resource_size(dma_res));
-+	if (!ap->ioaddr.bmdma_addr)
-+		return -ENOMEM;
- 
- 	/*
- 	 * Adjust register offsets
++		case INSN_CONTEXT_SWITCH:
++			if (insn_func(insn))
++				break;
++			return 0;
++
+ 		case INSN_NOP:
+ 			if (insn->retpoline_safe)
+ 				return 0;
 -- 
 2.39.5
 
