@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8A2A98DE2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F45A98DCB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EEA97ADB40
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FD033BFC31
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFB927F4D9;
-	Wed, 23 Apr 2025 14:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB30281505;
+	Wed, 23 Apr 2025 14:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oj7OwLNe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6u/vmu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561B127CB33;
-	Wed, 23 Apr 2025 14:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC0A28134C;
+	Wed, 23 Apr 2025 14:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419787; cv=none; b=SwZ4HRfx7a54MD8zv2GDFtJICt619sHhj5Py3z1NSgkIlc9RLUN8/IUU5nfYX6YRlVo6C8U1mLD6OHJP+fEuuRkaLnphOzRlNeW5gcLog3xdDa53Sgl9sjIe2qsaQDn8qqeljTTCgREkMa7KgRfi/ZqDUawB8/Oqdu7g5sExRAM=
+	t=1745419701; cv=none; b=RFqwuG4b2LF1yNUxInHkO5j4JyK35TR41Q6UjxfZCvqsGZpECsC5eTU+PJyKV+IBeedDgIwOOlGvCPHLrqNi8AJ/rqFKZG5UA7N2k0IYs7uC0X2V+v2euzW2R5Upp/2fUEfmO1Rjf2d5xuoCVvh6lMoA99NISi0Iqjc8mhpE4iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419787; c=relaxed/simple;
-	bh=IoqrGK5owEgWKsoU9Nv3qSdTsijndyZHDv6avjJyGA4=;
+	s=arc-20240116; t=1745419701; c=relaxed/simple;
+	bh=i0qBAteUto6QpFzZvDK6pCEZKWst6tw2OLOhCEHaW4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+I9koa6iZ6QxTaI2xqgIJ3rhOLyTcY0w2T1yTuJ03EwKnNu+Hoi0QLUipTzYV91+uu5tlAceZS1DiOCn4Q0dOCAwo42Q2ApXf7URQO/tfAA3Lfp7HMNUvZ7n/gkfkfz3xJjvHyRc8flmwuSdaGHV7CPPHyvlu+bgFB2ddTvmFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oj7OwLNe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB88BC4CEE2;
-	Wed, 23 Apr 2025 14:49:46 +0000 (UTC)
+	 MIME-Version; b=JaYKF2IUdR/hYc6Y8TpvZhB9AvRA6JObnHQ51fYRt/kyPa5mB/sdiO6tf3uwoiIo58shb5fJMlNtK3cJ3Sj6s77fDOXl+CFE+cOTo0dDw/XRHVCEAcbj6K7HWVwVM0TUDZgVK5yh8d0rOLtmpR+Q/d9kBXuDRvj5Kd8Fzqs5rS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6u/vmu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF178C4CEE2;
+	Wed, 23 Apr 2025 14:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419787;
-	bh=IoqrGK5owEgWKsoU9Nv3qSdTsijndyZHDv6avjJyGA4=;
+	s=korg; t=1745419700;
+	bh=i0qBAteUto6QpFzZvDK6pCEZKWst6tw2OLOhCEHaW4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oj7OwLNef1opVE+VRSrpM3uEVpOjy3NOlZdfPP+wJlarvmG+5al2mk1WbAU5LKqJz
-	 GGFPTSNTAoTplO9ZAeRNFgS6XOAou6Y2Yu9ppWs8mTlPqxzw2ShxP8GIWNFnM3qlzw
-	 Nykz1/BHhQecWWGCjA7tevp0QK3TkTeoILACZqsU=
+	b=A6u/vmu7lgIfnUK1X6+rAZ6YlMhiycKvgjfrW9FghQtElX36YI7fF3RNWJlGn0+Ey
+	 THSxFWugC0PgkkUSXYgc+o0cdtpSULSRwk6VaCiG2hcSQGg3pnFV3jww3GhP5Flt1V
+	 JXLmHtYr4VaeyZhIoNogMBQm1e8/b33wdFRdjF40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
+	Yue Haibing <yuehaibing@huawei.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 027/241] RDMA/bnxt_re: Remove unusable nq variable
+Subject: [PATCH 6.12 019/223] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
 Date: Wed, 23 Apr 2025 16:41:31 +0200
-Message-ID: <20250423142621.626894010@linuxfoundation.org>
+Message-ID: <20250423142617.901405427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-[ Upstream commit ffc59e32c67e599cc473d6427a4aa584399d5b3c ]
+[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
 
-Remove nq variable from bnxt_re_create_srq() and bnxt_re_destroy_srq()
-as it generates the following compilation warnings:
+drivers/infiniband/hw/usnic/usnic_ib_main.c:590
+ usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
 
->> drivers/infiniband/hw/bnxt_re/ib_verbs.c:1777:24: warning: variable
-'nq' set but not used [-Wunused-but-set-variable]
-    1777 |         struct bnxt_qplib_nq *nq = NULL;
-         |                               ^
-   drivers/infiniband/hw/bnxt_re/ib_verbs.c:1828:24: warning: variable
-'nq' set but not used [-Wunused-but-set-variable]
-    1828 |         struct bnxt_qplib_nq *nq = NULL;
-         |                               ^
-   2 warnings generated.
+Make usnic_ib_device_add() return NULL on fail path, also remove
+useless NULL check for usnic_ib_discover_pf()
 
-Fixes: 6b395d31146a ("RDMA/bnxt_re: Fix budget handling of notification queue")
-Link: https://patch.msgid.link/r/8a4343e217d7d1c0a5a786b785c4ac57cb72a2a0.1744288299.git.leonro@nvidia.com
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202504091055.CzgXnk4C-lkp@intel.com/
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
+Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index cb9b820c613d6..02b21d484677e 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1773,10 +1773,7 @@ int bnxt_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata)
- 					       ib_srq);
- 	struct bnxt_re_dev *rdev = srq->rdev;
- 	struct bnxt_qplib_srq *qplib_srq = &srq->qplib_srq;
--	struct bnxt_qplib_nq *nq = NULL;
+diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
+index 13b654ddd3cc8..bcf7d8607d56e 100644
+--- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
++++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
+@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
+ 	if (!us_ibdev) {
+ 		usnic_err("Device %s context alloc failed\n",
+ 				netdev_name(pci_get_drvdata(dev)));
+-		return ERR_PTR(-EFAULT);
++		return NULL;
+ 	}
  
--	if (qplib_srq->cq)
--		nq = qplib_srq->cq->nq;
- 	if (rdev->chip_ctx->modes.toggle_bits & BNXT_QPLIB_SRQ_TOGGLE_BIT) {
- 		free_page((unsigned long)srq->uctx_srq_page);
- 		hash_del(&srq->hash_entry);
-@@ -1824,7 +1821,6 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
- 		       struct ib_udata *udata)
- {
- 	struct bnxt_qplib_dev_attr *dev_attr;
--	struct bnxt_qplib_nq *nq = NULL;
- 	struct bnxt_re_ucontext *uctx;
- 	struct bnxt_re_dev *rdev;
- 	struct bnxt_re_srq *srq;
-@@ -1870,7 +1866,6 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
- 	srq->qplib_srq.eventq_hw_ring_id = rdev->nqr->nq[0].ring_id;
- 	srq->qplib_srq.sg_info.pgsize = PAGE_SIZE;
- 	srq->qplib_srq.sg_info.pgshft = PAGE_SHIFT;
--	nq = &rdev->nqr->nq[0];
+ 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
+@@ -500,8 +500,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
+ 	}
  
- 	if (udata) {
- 		rc = bnxt_re_init_user_srq(rdev, pd, srq, udata);
+ 	us_ibdev = usnic_ib_device_add(parent_pci);
+-	if (IS_ERR_OR_NULL(us_ibdev)) {
+-		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
++	if (!us_ibdev) {
++		us_ibdev = ERR_PTR(-EFAULT);
+ 		goto out;
+ 	}
+ 
+@@ -569,10 +569,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
+ 	}
+ 
+ 	pf = usnic_ib_discover_pf(vf->vnic);
+-	if (IS_ERR_OR_NULL(pf)) {
+-		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
+-				pci_name(pdev), PTR_ERR(pf));
+-		err = pf ? PTR_ERR(pf) : -EFAULT;
++	if (IS_ERR(pf)) {
++		err = PTR_ERR(pf);
++		usnic_err("Failed to discover pf of vnic %s with err%d\n",
++				pci_name(pdev), err);
+ 		goto out_clean_vnic;
+ 	}
+ 
 -- 
 2.39.5
 
