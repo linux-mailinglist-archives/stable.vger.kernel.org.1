@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-135722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BC7A98FEA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0F0A990CC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3A38E485E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D8A616C134
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244FB28B50E;
-	Wed, 23 Apr 2025 15:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43FC2820A8;
+	Wed, 23 Apr 2025 15:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwYAziGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UClKI9kw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D489C28B511;
-	Wed, 23 Apr 2025 15:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E068281357;
+	Wed, 23 Apr 2025 15:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420671; cv=none; b=oI+d6pCjxlS8tclpSh2OBRLxKWDIvdsG1aQijpEsJCvf130wLdQw2jL63xoOi6J9mvUA29oCOJkwABg6k0EK+fxY3A+PgYwRkgyLi4K9fNpdU/utsLvyQdYfOIupo3Drv6sCOEVu17Cs+YRZHJvvG63Q8UttQBb2c+c9V7zGQms=
+	t=1745421139; cv=none; b=eZNTz9y6z4yG6mzuHTtNEBuw7ddZ46jaCgbKzMaIEKnJ81NSZ3bwZNPBzTEDqfOmabJn0QdpwzOKV/yjGi+9odxLhrWgZi9ZPnSfgRGSdX+mgiLgLgKI68pMu35a2eJhJKYaHAGbR+hkSdUzBJ9rDm5xr08eJIG5Z3KAhqrpLoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420671; c=relaxed/simple;
-	bh=y9xOxbOvr5scDOv4oWgLO8YXxi6AVUvoDXS7AYWUl2o=;
+	s=arc-20240116; t=1745421139; c=relaxed/simple;
+	bh=+Lbi3ONyU943Llc/nr4G64NzaVeULR9q2yKvpcYqn6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b2xfJt89o4r/5F2/BdObMuNsyf85IoktxjzmALR9GPHcJlkfUQApPmTZ66SqPh/mWiLWzJpSKtNVnhPhBsZDUqfseVqFF/dqfBxbRgoh7iT4YEQS6W66spyqLj8wxrT+6xzQK6D/mUU2Tlst5138KFAB68Wi0z6/fx+cMFwLD3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwYAziGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FF9C4CEE2;
-	Wed, 23 Apr 2025 15:04:31 +0000 (UTC)
+	 MIME-Version; b=VJhDG3YBMnRWpGJssc4Nxcm1ivuBwPnW+wBTc2TdrHrTJU+2+x57c2P2Wh9TV9dAAhTrC3DdwrM4cZKKHJlTJbFLzHbn16Bcms2rIA9sj8Dgon3nH7SdZEigSs1z8B3q5Aob+7G0HgaDz7q/jGx9KLkbzV9T0RwlmjYxaEMH9ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UClKI9kw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2C8C4CEE2;
+	Wed, 23 Apr 2025 15:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420671;
-	bh=y9xOxbOvr5scDOv4oWgLO8YXxi6AVUvoDXS7AYWUl2o=;
+	s=korg; t=1745421139;
+	bh=+Lbi3ONyU943Llc/nr4G64NzaVeULR9q2yKvpcYqn6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwYAziGtnB3AfGJPonF5uZjPyAjjJgsNzWg9to8+fqY4PpmJY/+FQo+mFunBLt0IE
-	 p44mXNSYa0cQNawer2PAkpqAdaZkYeYqB8lL6Re9ts+Dw3DhqG43uVZM5nVTPZtr6r
-	 UdG4ZlrbK+vkvQznanu1mKsNibgErO6hG9vujxdY=
+	b=UClKI9kwHJ1HQ3MTi5by+E/nPm5W/AhzaatnHo2MCf3Yo46VyZYN5Ho4KrOFlQWh9
+	 fQQ+Kee5GuK4UQHnwD7Tfoyy51Y3Tc6l2b0mwBENyNj2/fIVYTacJfsOqONtRoYWBm
+	 utkEK7xtYZoiETsuw+cKkKYLKaf6DAcx1Dcx+usM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Paco Avelar <pacoavelar@hotmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/291] drm: panel-orientation-quirks: Add quirks for AYA NEO Flip DS and KB
-Date: Wed, 23 Apr 2025 16:40:45 +0200
-Message-ID: <20250423142626.670098000@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 150/393] mtd: Replace kcalloc() with devm_kcalloc()
+Date: Wed, 23 Apr 2025 16:40:46 +0200
+Message-ID: <20250423142649.575902723@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 529741c331da1fbf54f86c6ec3a4558b9b0b16dc ]
+commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
 
-The AYA NEO Flip DS and KB both use a 1080x1920 portrait LCD panel.  The
-Flip DS additionally uses a 640x960 portrait LCD panel as a second display.
+Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
+errors.
 
-Add DMI matches to correctly rotate these panels.
-
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Co-developed-by: John Edwards <uejji@uejji.net>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: Paco Avelar <pacoavelar@hotmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-3-uejji@uejji.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/mtd/mtdpstore.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 7bf096ddeb06d..d9ed6214cf28b 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -93,6 +93,12 @@ static const struct drm_dmi_panel_orientation_data onegx1_pro = {
- 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
- };
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
+ 	}
  
-+static const struct drm_dmi_panel_orientation_data lcd640x960_leftside_up = {
-+	.width = 640,
-+	.height = 960,
-+	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
-+};
-+
- static const struct drm_dmi_panel_orientation_data lcd720x1280_rightside_up = {
- 	.width = 720,
- 	.height = 1280,
-@@ -202,6 +208,18 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
- 		},
- 		.driver_data = (void *)&lcd1080x1920_leftside_up,
-+	}, {    /* AYA NEO Flip DS Bottom Screen */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "FLIP DS"),
-+		},
-+		.driver_data = (void *)&lcd640x960_leftside_up,
-+	}, {    /* AYA NEO Flip KB/DS Top Screen */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "FLIP"),
-+		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {	/* AYA NEO Founder */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
--- 
-2.39.5
-
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+-	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+-	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
++	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+-	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
+ 		return;
+@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
+ 	mtdpstore_flush_removed(cxt);
+ 
+ 	unregister_pstore_device(&cxt->dev);
+-	kfree(cxt->badmap);
+-	kfree(cxt->usedmap);
+-	kfree(cxt->rmmap);
+ 	cxt->mtd = NULL;
+ 	cxt->index = -1;
+ }
 
 
 
