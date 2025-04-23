@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911A8A9925E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B9DA9933C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5806C926C2E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19D561BA2723
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1657628A40D;
-	Wed, 23 Apr 2025 15:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D57296150;
+	Wed, 23 Apr 2025 15:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qESxRiB/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhByT8cJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C877D28F92C;
-	Wed, 23 Apr 2025 15:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04196296155;
+	Wed, 23 Apr 2025 15:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421731; cv=none; b=RHfLpkkqk4VUcm/aZtwZToNZopSej/MWsdtSdmoN7c8P9YNaWmoxh8k4LaMYsGcrFryftGzscOHMS1G6MSlG3loZNJTwN09o4UL7OBxm/GGjVO1/eqwxhKkFbT6qHRmatUHV7SbUFYz9hGnH60Ww5uPAd/Ajz40rZa658mbetN0=
+	t=1745422029; cv=none; b=LwZY5YjiyxU3kOZjl2LkQpC7s4EdwCtofGC8VtaT9jfNwYMoyL96jYANKDcpmXZrQjyko/0AtLKN8e8JlAPv1Va4tYnjWYXo5YlFIfq8YQB41d9ZZ67WRdtlWul+lLp7TOsbOifzm/QznI+jvo7vo7603hAsUeJzpJBleyMJYBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421731; c=relaxed/simple;
-	bh=SskkhmQfkBzM6DAHQlgOoN1BS6LVn/1MByuTBdxe3dU=;
+	s=arc-20240116; t=1745422029; c=relaxed/simple;
+	bh=EQDQkLfb855H94vNq0lgengECwAPWx/jo72x7wTcCFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bG+fri9yaWFBDpG+VPKJA1XL5TprR5xj73pHKKphbygOw3flbuSkzApkdV7BPkmlu8TtKXQmdAYKd9C7xDu/l2dNxiiuKR9st1K33Y9QW0RoXzzYePnnjSLwO64uy2qq1Q7FBZ//C8lDIVBaTjpOffxu5gxpOGXH92DSToiRzU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qESxRiB/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1AAC4CEE2;
-	Wed, 23 Apr 2025 15:22:11 +0000 (UTC)
+	 MIME-Version; b=iKQHLG2VchAexGcK9idwpCOtx9sGAP/LSj0vq4P9aIhOwBT8/Wvm0UWAnLi8SH1+ul0jJD/YoRu4N0SJ3TPhxeVs9JYsu+4bhdddFunVpoZZgGuu1/w0bHDaXLzydCIl/MzGMIlXocdOrJRMiPnd7raZhyX7HBUdN4ek5DJKjzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhByT8cJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7DFC4CEE2;
+	Wed, 23 Apr 2025 15:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421731;
-	bh=SskkhmQfkBzM6DAHQlgOoN1BS6LVn/1MByuTBdxe3dU=;
+	s=korg; t=1745422028;
+	bh=EQDQkLfb855H94vNq0lgengECwAPWx/jo72x7wTcCFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qESxRiB/lnQyvDzyn2EwsaJEaZsqjTASOQxa056JTzT4WmVyESO44ciWZIQ4JTCUO
-	 t8R28TYNJbHMI5yVEE2qEoNz8h0nu0Hk1hhguIt/kC3AVyAWA2MM3Sh5sRQLNEQgSq
-	 dv8oy7nAF+8hhSKRzFPIqfz2BfGV/7httsi6ZUOA=
+	b=QhByT8cJ8DiiXa/Co4233sagW1c2HB91aZUh5D2fNPLyOf7q31roUrrAWf5E/+o8+
+	 h3LZZBFs2YKEhTBBkdEb2sBjPXCjQMhOTea5ZvsaZnVwEEa2lyBhL1bkhrRUlE84J9
+	 NvqmcY9dFG9PZ3vBgqh/CKWuEmFOmp4xaG67T+hI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/291] md/md-bitmap: fix stats collection for external bitmaps
+Subject: [PATCH 6.6 265/393] test suite: use %zu to print size_t
 Date: Wed, 23 Apr 2025 16:42:41 +0200
-Message-ID: <20250423142631.412746584@linuxfoundation.org>
+Message-ID: <20250423142654.312627848@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 6ec1f0239485028445d213d91cfee5242f3211ba ]
+[ Upstream commit a30951d09c33c899f0e4aca80eb87fad5f10ecfa ]
 
-The bitmap_get_stats() function incorrectly returns -ENOENT for external
-bitmaps.
+On 32-bit, we can't use %lu to print a size_t variable and gcc warns us
+about it.  Shame it doesn't warn about it on 64-bit.
 
-Remove the external bitmap check as the statistics should be available
-regardless of bitmap storage location.
-
-Return -EINVAL only for invalid bitmap with no storage (neither in
-superblock nor in external file).
-
-Note: "bitmap_info.external" here refers to a bitmap stored in a separate
-file (bitmap_file), not to external metadata.
-
-Fixes: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250403015322.2873369-1-zhengqixing@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lkml.kernel.org/r/20250403003311.359917-1-Liam.Howlett@oracle.com
+Fixes: cc86e0c2f306 ("radix tree test suite: add support for slab bulk APIs")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/radix-tree/linux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2029,9 +2029,8 @@ int md_bitmap_get_stats(struct bitmap *b
+diff --git a/tools/testing/radix-tree/linux.c b/tools/testing/radix-tree/linux.c
+index d587a558997f8..11149bd12a1f7 100644
+--- a/tools/testing/radix-tree/linux.c
++++ b/tools/testing/radix-tree/linux.c
+@@ -121,7 +121,7 @@ void kmem_cache_free(struct kmem_cache *cachep, void *objp)
+ void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list)
+ {
+ 	if (kmalloc_verbose)
+-		pr_debug("Bulk free %p[0-%lu]\n", list, size - 1);
++		pr_debug("Bulk free %p[0-%zu]\n", list, size - 1);
  
- 	if (!bitmap)
- 		return -ENOENT;
--	if (bitmap->mddev->bitmap_info.external)
--		return -ENOENT;
--	if (!bitmap->storage.sb_page) /* no superblock */
-+	if (!bitmap->mddev->bitmap_info.external &&
-+	    !bitmap->storage.sb_page)
- 		return -EINVAL;
- 	sb = kmap_local_page(bitmap->storage.sb_page);
- 	stats->sync_size = le64_to_cpu(sb->sync_size);
+ 	pthread_mutex_lock(&cachep->lock);
+ 	for (int i = 0; i < size; i++)
+@@ -139,7 +139,7 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
+ 	size_t i;
+ 
+ 	if (kmalloc_verbose)
+-		pr_debug("Bulk alloc %lu\n", size);
++		pr_debug("Bulk alloc %zu\n", size);
+ 
+ 	if (!(gfp & __GFP_DIRECT_RECLAIM)) {
+ 		if (cachep->non_kernel < size)
+-- 
+2.39.5
+
 
 
 
