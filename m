@@ -1,130 +1,145 @@
-Return-Path: <stable+bounces-136465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126C6A9978F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 20:14:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25450A9979F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 20:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A2D5A21E2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:14:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 675404A247C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1DB28D850;
-	Wed, 23 Apr 2025 18:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E567628D843;
+	Wed, 23 Apr 2025 18:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxtwqa1R"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bo6+o6B7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA12728CF7A;
-	Wed, 23 Apr 2025 18:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132C022F747;
+	Wed, 23 Apr 2025 18:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745432054; cv=none; b=qAOyp/xSN8SiW6e4LTIDnS4Sk3UNNZ8BJgTfwjsTUYpZMgKdLFpOqimAN7Lv8po3RQ81N8xRTktR0LxLC/9CaO9kTFQcB8kdQ3Fsip5htZ4lNx4+MXqrPHrrDsze+rDHaxqSbRlvpAc9Cipgur6b4l7D4w8oEZEZWUf1ADIWkxw=
+	t=1745432185; cv=none; b=I+4FwiqAhBZMPSQn5F0/MS8WUoHUbmBCa8nNzeNP/xabxQkIKL0s2ZEBeS1wEQMqYM69wMwcwVN639cDmQk8QkTTxAWymbDwleMP+YeRuNRMGG1wLA0RnXfJ4qxrPeK2smzmjAkh+LwBk9/JI5ZxURr1rHU71m1Uf6fwm8F3lWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745432054; c=relaxed/simple;
-	bh=4JC22pUjr3FEUyvUE39zXrZ8IUXJDGvcrodpViq8wnQ=;
+	s=arc-20240116; t=1745432185; c=relaxed/simple;
+	bh=zT6WmWKq89q1ikbAI7gacqu8XDLXrdwAY8cZBziJHYE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pcAriwotYTP2bNQcmNo4DNdgVwscU5jhrdYUNBBbmmGKaHq594jSlIxLU65WG9hokme561/Ari/Fuiy3sqNxs6G20i7MCmKbyZ5HSZPjcg3PdCdM7U7rC75nxsxRNQ3ELL6/E8cyGP346dn0SPhphQ0yBbrAOG9CtVzeSFgQW88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxtwqa1R; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-acbb85ce788so33186866b.3;
-        Wed, 23 Apr 2025 11:14:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745432051; x=1746036851; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=N38OFQgH4rJbYV1raBQPBjITY/pMbj/1Np3A8vNBTro=;
-        b=hxtwqa1R2EJA3yuhYrf+vd11XCoIL8WSY/U/B8fKxF3d+oTZS3n6isq4OBXwLx1OlS
-         ittAqujEWyHrp9NF4N6vikrbTJJJgIumjjPdXG3NQnPluQDjyqdZkzbfUO23H16SIxXF
-         JOEkD/isYj93+GuSqwD8Pip+6cRgicbm6Kuu5RHmkTqI8zBHZqoWWryUe5Nm45h299IM
-         NuTnwGme1yaraIg9EpCRKhF62JYJZM+H6DSF7vIIQL1OFAkMhoueFdY82/fJtcyuMILr
-         TQTx55sSbzhL7KFr4bPLxq6ringoescaNrNo0VncJ54hy4U4Bd5KcGo3oA6YOOtkxSDs
-         ILgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745432051; x=1746036851;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=N38OFQgH4rJbYV1raBQPBjITY/pMbj/1Np3A8vNBTro=;
-        b=BndY7zJJYgTl/Ifc6YutsNxuEmJEOpOus3ua9Xlp4OnBVpYpyvs0UlsLOLLkKXn3Lq
-         AZ7tlAwiMt2THb0VDJcPVpXAGUZ9jxeQEJSsqwcm/p+CZNTTh7a2CNcpSLNUdKai5byE
-         E0QGIrbj4xCMQvXTNe1HqEpkmO/FEZP9X8rt5+3dRrGhDxpvyzc5NlqIanYPR4ZgHdca
-         bgyQ98n93J0Mp1VlCLPn+oyXUFCFbBaRAi5cww9PquEAy6BRnI5PUMl4lQYCy65JMDwV
-         +f76q9x5qnKm23vwA8JClmHhTRY3qKkAG/5ljXW1CyHHtQdo/0bo83tXlQDPCEoItFIC
-         LFGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVnWzDXCAbGoEvo+Ugmt3fOyD6GdgWAvpidQmMoDV9JpobxBmnwvdVEhuLbY8pI7SsuHtewjfEhtsYQTQ==@vger.kernel.org, AJvYcCXA5QfSBwL5452xpgH362V3dcs07GdHuEGHvu66NLV/t8tb8KdZ0BO7Zktlo2g/JrPTsq+QdgTuY23/dXo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZyUfcBPpvJAaAKYd/IXOoFcAQOK6/J+GZJR4NQAVX84Qj9JBg
-	RI2z0UXsmQa/kNGoholDRA5C4KlgY9SdQRJRuoPyQsYBKW7rKavS322yqFaG
-X-Gm-Gg: ASbGncu2ljgIG9+1DXUJrosNLndquMevSz3LstFhGOvDleuwsBp+SwYdWzC8OV70k5j
-	DTlGBpT4OhWqkMaH1HJUquJBWsbT+EIaIeHBz+2C2Ag5gakajO33g5GsmmXyPUAL3GUalDPeFuA
-	H+CVH0ixR2SR/o07vzW+7l/eMYYBKCdzasVZ4gtOKC1eKy0vS2637I3KSTXfYbtOrALL5Sk1vfC
-	EV6y45xQEA4ARJ+XjZaXgMQvo9PmAeVLg5YVWMMcp1rknvWgsN7rWIljeEfjNsF+LiZSr/z6gNV
-	TRa0xJP3gwAZyAtlU0hXaC9uju8yLZkNdYEEIYgRFbfJPttRmw21Vdef5I1RwDG+quK1ITZUGA=
-	=
-X-Google-Smtp-Source: AGHT+IFMlXIPTFT4ln1LIoHIiN0yBilnqV1l8jFJ/7besP0nipzmBe1LCsN2p4R1gCZruu5fx0syoA==
-X-Received: by 2002:a17:907:3f19:b0:ac8:14ad:f3cf with SMTP id a640c23a62f3a-ace54eec178mr8227966b.23.1745432050712;
-        Wed, 23 Apr 2025 11:14:10 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ef475a0sm840074766b.147.2025.04.23.11.14.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 11:14:10 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 6B9C8BE2DE0; Wed, 23 Apr 2025 20:14:09 +0200 (CEST)
-Date: Wed, 23 Apr 2025 20:14:09 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Yu Kuai <yukuai1@huaweicloud.com>, gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: stable@vger.kernel.org, song@kernel.org, linux-raid@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yukuai3@huawei.com,
-	yi.zhang@huawei.com, yangerkun@huawei.com, johnny.chenyi@huawei.com
-Subject: Re: [PATCH 6.1 0/2] md: fix mddev uaf while iterating all_mddevs list
-Message-ID: <aAkt8WLN1Gb9snv-@eldamar.lan>
-References: <20250419012303.85554-1-yukuai1@huaweicloud.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=q9fuUajc0Yfwqx3y5+f3P0OYQ8Ityuta8c5qn0Jyw4DkLG9Fmqk/UUi1DWQ646ni/Khx11NtpQ7QABUsbiYU8mVXHKkTGPlGzPyDA+bGgECwbUoR9PZmcMIBVFa8xR6HBHR6jJxdtUBW6ZYyhuI/xRtupslip3T7+LFkneG0EDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bo6+o6B7; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 0A3B41AE2;
+	Wed, 23 Apr 2025 20:16:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1745432181;
+	bh=zT6WmWKq89q1ikbAI7gacqu8XDLXrdwAY8cZBziJHYE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bo6+o6B7qpomUzgb6VyAyvahU/9AFhwyFixGWgT1xW/ydmBFGmedoD6yjc6K2QPDU
+	 wWuSusjt7vFT24Hrx7BOZGlXgsd3yc8QNCU52gf4+o6tfKLFhf7omsKlkf1WcHmlZK
+	 m4QE4XDAh6R9tYNSYMk7WNMwuCEPFtYuaqZkZNdo=
+Date: Wed, 23 Apr 2025 21:16:20 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Mathis Foerst <mathis.foerst@mt.com>
+Cc: linux-kernel@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	linux-media@vger.kernel.org, devicetree@vger.kernel.org,
+	manuel.traut@mt.com, mathis.foerst@zuehlke.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 5/6] media: mt9m114: Fix deadlock in
+ get_frame_interval/set_frame_interval
+Message-ID: <20250423181620.GD2675@pendragon.ideasonboard.com>
+References: <20250307093140.370061-1-mathis.foerst@mt.com>
+ <20250307093140.370061-6-mathis.foerst@mt.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250419012303.85554-1-yukuai1@huaweicloud.com>
+In-Reply-To: <20250307093140.370061-6-mathis.foerst@mt.com>
 
-Hi Greg, Sasha, Yu,
+Hi Mathis,
 
-On Sat, Apr 19, 2025 at 09:23:01AM +0800, Yu Kuai wrote:
-> From: Yu Kuai <yukuai3@huawei.com>
+Thank you for the patch.
+
+On Fri, Mar 07, 2025 at 10:31:39AM +0100, Mathis Foerst wrote:
+> Getting / Setting the frame interval using the V4L2 subdev pad ops
+> get_frame_interval/set_frame_interval causes a deadlock, as the
+> subdev state is locked in the [1] but also in the driver itself.
 > 
-> Hi, Greg
+> In [2] it's described that the caller is responsible to acquire and
+> release the lock in this case. Therefore, acquiring the lock in the
+> driver is wrong.
 > 
-> This is the manual adaptation version for 6.1, for 6.6/6.12 commit
-> 8542870237c3 ("md: fix mddev uaf while iterating all_mddevs list") can
-> be applied cleanly, can you queue them as well?
+> Remove the lock acquisitions/releases from mt9m114_ifp_get_frame_interval()
+> and mt9m114_ifp_set_frame_interval().
 > 
-> Thanks!
+> [1] drivers/media/v4l2-core/v4l2-subdev.c - line 1129
+> [2] Documentation/driver-api/media/v4l2-subdev.rst
 > 
-> Yu Kuai (2):
->   md: factor out a helper from mddev_put()
->   md: fix mddev uaf while iterating all_mddevs list
+> Fixes: 24d756e914fc ("media: i2c: Add driver for onsemi MT9M114 camera sensor")
+> Cc: stable@vger.kernel.org
 > 
->  drivers/md/md.c | 50 +++++++++++++++++++++++++++++--------------------
->  1 file changed, 30 insertions(+), 20 deletions(-)
 
-I noticed that the change 8542870237c3 was queued for 6.6.y and 6.12.y
-and is in the review now, but wonder should we do something more with
-6.1.y as this requires this series/manual adaption?
+You can delete this blank line.
 
-Or will it make for the next round of stable updates in 6.1.y? 
+> Signed-off-by: Mathis Foerst <mathis.foerst@mt.com>
 
-(or did it just felt through the cracks and it is actually fine that I
-ping the thread on this question).
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
+> ---
+>  drivers/media/i2c/mt9m114.c | 8 --------
+>  1 file changed, 8 deletions(-)
+> 
+> diff --git a/drivers/media/i2c/mt9m114.c b/drivers/media/i2c/mt9m114.c
+> index 65b9124e464f..79c97ab19be9 100644
+> --- a/drivers/media/i2c/mt9m114.c
+> +++ b/drivers/media/i2c/mt9m114.c
+> @@ -1644,13 +1644,9 @@ static int mt9m114_ifp_get_frame_interval(struct v4l2_subdev *sd,
+>  	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
+>  		return -EINVAL;
+>  
+> -	mutex_lock(sensor->ifp.hdl.lock);
+> -
+>  	ival->numerator = 1;
+>  	ival->denominator = sensor->ifp.frame_rate;
+>  
+> -	mutex_unlock(sensor->ifp.hdl.lock);
+> -
+>  	return 0;
+>  }
+>  
+> @@ -1669,8 +1665,6 @@ static int mt9m114_ifp_set_frame_interval(struct v4l2_subdev *sd,
+>  	if (interval->which != V4L2_SUBDEV_FORMAT_ACTIVE)
+>  		return -EINVAL;
+>  
+> -	mutex_lock(sensor->ifp.hdl.lock);
+> -
+>  	if (ival->numerator != 0 && ival->denominator != 0)
+>  		sensor->ifp.frame_rate = min_t(unsigned int,
+>  					       ival->denominator / ival->numerator,
+> @@ -1684,8 +1678,6 @@ static int mt9m114_ifp_set_frame_interval(struct v4l2_subdev *sd,
+>  	if (sensor->streaming)
+>  		ret = mt9m114_set_frame_rate(sensor);
+>  
+> -	mutex_unlock(sensor->ifp.hdl.lock);
+> -
+>  	return ret;
+>  }
+>  
+
+-- 
 Regards,
-Salvatore
+
+Laurent Pinchart
 
