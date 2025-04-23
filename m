@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-136029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90405A99208
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC2FA9930C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B3A1BA2360
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 665A19A13C8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485A62957D5;
-	Wed, 23 Apr 2025 15:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 387602980CC;
+	Wed, 23 Apr 2025 15:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6YGZcsb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uY2PAl9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FDD29B79B;
-	Wed, 23 Apr 2025 15:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE006242D64;
+	Wed, 23 Apr 2025 15:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421469; cv=none; b=kxdl9RSCYnSy3+tP1UOILfGpW1ZzQSv0amQLMnkDc0yVzuT0zLUvcUaGxfzT4XO4ywKNCqYgF4rfY0nvHImLHmQRevYQ/3qC0knms6xVidhSRFUXjIczRk6NtG2F3UpA/AHLErOc/gdOtQbM5EqeMblXsm6oogKmZ6OWTs62vGI=
+	t=1745422268; cv=none; b=cVg8qvblTn7Q2YtYZWLWn59JOhfJpl7RmEIPx6jlvlUcAxNPgeprlwPz+X/9nXnxUeL6EFmT/0pRgQIOYppV0s+lYrlSLvS7Gfbfug05ECaFcE/Zrh1R0d9g40FYpnls7Sl7pJUzdXxqXGCsBfBiXP3iKpRnBvz98btE9+pr4RY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421469; c=relaxed/simple;
-	bh=Y7G7pjhdlvTQ1eUrKKkUeWnePrBtp5J5MGMO4p+8xr0=;
+	s=arc-20240116; t=1745422268; c=relaxed/simple;
+	bh=CUhL5/O+f79TXrduLbU25qiOQxYtnKun1jL9FBBpjv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYepupgd1KBvnNNeA+ahl9caLgfMOjC6PXF3+ehLK+n77SuCFRf/YxjHHPeTeCxKzWRFUlgd2vVfPen6sLPGJwHHW+iJEIvdKU3mdrygu/SfGckVMrLpADS438SZEVvZLObxo8AA0iijLI4qN31KGO92QXDSStduogF8Wxbehl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6YGZcsb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D78C4CEE2;
-	Wed, 23 Apr 2025 15:17:48 +0000 (UTC)
+	 MIME-Version; b=qaRAc/vE3CYdTNFdnAcoTnPavRu+EljfurS+psfORKs2oN3PyQPgfxPmBYx+GH3cNwM0WL+2cTPcezGBXX1atvBIT9335P4dTPGFd0x5HQaN01B4iyLobCAFnbSjC2CMQh+li5cArtOfDh5lXhqeF7WycgL4GkXLrbEVSsZ47CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uY2PAl9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE35C4CEE2;
+	Wed, 23 Apr 2025 15:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421468;
-	bh=Y7G7pjhdlvTQ1eUrKKkUeWnePrBtp5J5MGMO4p+8xr0=;
+	s=korg; t=1745422267;
+	bh=CUhL5/O+f79TXrduLbU25qiOQxYtnKun1jL9FBBpjv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u6YGZcsbLv1rwYI4Ppl3LeTUnBfzIDdjTxWAPks/xVkbShogTXI8cCVCUC8ireRnS
-	 CLSyMtYcFaOBJ7lRjezk0sGy2ZzK34woLsGINEgsrpCNUj9JfCl5gZ5hulfKitPROS
-	 vcfTJb4yVDNHpGM5Hhx2sHrpfjpTFqauhd5SNHi0=
+	b=uY2PAl9hYUva1VoAtXhQOxAfEiochn0NCc7DEC5qUknj45H7I0ypDXaj+kTCkNmg2
+	 G4wT6f3kpHwhFfC+Abbuf4kuJu8zizCX2v26h0MnLPKQlxmZwX4+8aaUAjFdkYkG3G
+	 y7IFLmGFUJTTbf1r4Db+G6s7EXYx9Yr17oYTYc8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 192/241] drm/amd/display: Add HP Elitebook 645 to the quirk list for eDP on DP1
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 6.1 267/291] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
 Date: Wed, 23 Apr 2025 16:44:16 +0200
-Message-ID: <20250423142628.361739470@linuxfoundation.org>
+Message-ID: <20250423142635.333823482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-commit 1c5fdef30ed120613e769a3bd2a144cfd4c688d6 upstream.
+commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
 
-[Why]
-HP Elitebook 645 has DP0 and DP1 swapped.
+Smatch warns:
 
-[How]
-Add HP Elitebook 645 to DP0/DP1 swap quirk list.
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3701
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
+
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+[Minor context change fixed]
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/rtas.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1719,6 +1719,13 @@ static const struct dmi_system_id dmi_qu
- 		.callback = edp0_on_dp1_callback,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 645 14 inch G11 Notebook PC"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
- 		},
- 	},
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -25,6 +25,7 @@
+ #include <linux/reboot.h>
+ #include <linux/security.h>
+ #include <linux/syscalls.h>
++#include <linux/nospec.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ 
+@@ -1178,6 +1179,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
+ 		return -EINVAL;
+ 
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
 
 
 
