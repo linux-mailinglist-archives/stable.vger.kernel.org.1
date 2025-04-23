@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39222A99319
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0F08A992D8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61B211B86748
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 205F37A9F9A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFD2289358;
-	Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09A329B218;
+	Wed, 23 Apr 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JsZUav2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gb6umj4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD38A279792;
-	Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A10328B517;
+	Wed, 23 Apr 2025 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422354; cv=none; b=AYOZ5X8TNFoyDdrU7C23r5r5E0N3Me88kJsEAZ3yhwMYCyVL1/nT/MfgFmv4ykFYF6NqGwCXzakgjRvcQOZMgdUT37jMQgokHw5U3e56I783kkvrEjks3esWhYuIb4ngoZ+/n5bh6bUQn4jgCoOOoJrKVI+o/yLrQYATXomtQkE=
+	t=1745422493; cv=none; b=T/ohgl5mu4E94B8PjTd2kuYsJcjIijbYrw4QtZzacS6/+j18AXn5qjr0N4l2xSmjKtg2QPKAAGO59JaXki+E9Bvee5NEeHBMN3gz2iiphj6mukETymAu0w6tBX8HCtCU6nyi/Aqv7R4J3USPTHEvKJ0hI2kxZpbM7obbeeBRyZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422354; c=relaxed/simple;
-	bh=ZyKAmf1xJ5xWKOn5gVTEJQioUh7g5svyZq+Q3eQf2nc=;
+	s=arc-20240116; t=1745422493; c=relaxed/simple;
+	bh=3e1jiKpVraQV4JDmaqWNOF612ERj89S0yzEGeQQFLdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bIwkIiOGjzTnASUYd86iqXwXBwJ9XaagiTLgLaw+BPTFkkM0Kmi0sLxZT0Eam3l++Kxjjsa7/YL8MLXxnjJS+T59lUa2708dgtnBXubVcHPuL1m2oRswOLpvDEYwnLrn7FL9NUCKNao/okYFqWJnkuytHB8x9EFd/WfxCugeAWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JsZUav2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAD4C4CEE2;
-	Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
+	 MIME-Version; b=uwd4sCpD33r3KQi6ClMVttzdRoY2tNkMzXgW9+CBgjmJfHFIlOSbBKUPAWIrjxHdi6THkT4qttyZNE1l5In1x83gFgJE/KMuW9ofG/fTxWEy7JT7EfQ7LSOIsKuZKp9SnjMRQ3eEBTVubQ0tsTWjsVBIECHFR+Am5nP7Sq399Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gb6umj4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC22C4CEEC;
+	Wed, 23 Apr 2025 15:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422354;
-	bh=ZyKAmf1xJ5xWKOn5gVTEJQioUh7g5svyZq+Q3eQf2nc=;
+	s=korg; t=1745422493;
+	bh=3e1jiKpVraQV4JDmaqWNOF612ERj89S0yzEGeQQFLdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1JsZUav2hMavcfKw703DaQeVR4smhnPdx+4WcTChSdHDczYQ+QTw34qPAnY3iiv1r
-	 pPhh1d6/ts6IegsDMFs03tS3U6tjU3LMVndm2qJGapnei3w1+69lTnSIqXRsxvHhpZ
-	 nbPIDIsUI/0YLGnvSRArlWGcnVn1dZW3VQY3WgaA=
+	b=gb6umj4k+3woR0Exmqn9QJx4YKNS8lCPhcWWlh4mCDEk627/i02C6fhqCl7hAcFOc
+	 u/Se8RZI1jPwyOV+VC4cg0qkJ3NxurPJSWvSnVBEfNWNELOTnSzvRI61bQHmzxlUL/
+	 ECIrGzjOFss/JT5AGEnknldDYZ/FJ9brTRXkhMC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.1 261/291] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 354/393] drm/amd/pm/powerplay/hwmgr/vega20_thermal: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:44:10 +0200
-Message-ID: <20250423142635.092725996@linuxfoundation.org>
+Message-ID: <20250423142657.960716166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
+commit 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c upstream.
 
-After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
-the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
-have been released.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-However, some requested IRQs remain unreleased, so there are still
-/proc/irq/* entries remaining, and this results in WARN() with the
-following message:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
-  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
-
-To solve this issue, set the number of remaining IRQs to test->num_irqs,
-and release IRQs in advance by calling pci_endpoint_test_release_irq().
-
+Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -262,6 +262,9 @@ fail:
- 		break;
- 	}
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
+@@ -191,7 +191,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(st
+ 	uint32_t tach_period, crystal_clock_freq;
+ 	int result = 0;
  
-+	test->num_irqs = i;
-+	pci_endpoint_test_release_irq(test);
-+
- 	return false;
- }
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
  
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
 
 
 
