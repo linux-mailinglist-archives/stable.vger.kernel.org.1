@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-135933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F4EA990F7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D44A991AA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07B117F41E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791771692CF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E07028EA5C;
-	Wed, 23 Apr 2025 15:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370E529617E;
+	Wed, 23 Apr 2025 15:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sa/jGZpl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ/4XXJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413C7284677;
-	Wed, 23 Apr 2025 15:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E798728D858;
+	Wed, 23 Apr 2025 15:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421220; cv=none; b=JwHkEOWpzTAUz8C1ZCTG7ajt/pqrFE6Rdm1OM8/08xqYMO2hOC8QmPkE2hRMYX8op/vcwByh0C+o+npkXun4ymSbWDXtE3pJVelXMZvRjiJQeU5Ix/OyIJdx+C0/m/8K3a3Mjrj4Iv5BZg15mmkKq8mfkcrrYm15nmBzZ77GJ4s=
+	t=1745421495; cv=none; b=B3MagmYLbaNMR6RxYVgnl77o2rTFbm6o0TbLdgNSvzrNiYT5nB6qh8mcjsvhWLFaFrNN5krSRgk8cz8j+UER7XTheVOJFjk8lD1BxPwCUErZi45+OsK9UAFbl49p4zWKWrVjECWfP1bnzeWJtf9NoZrkrzP478USLMyhYoGUziI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421220; c=relaxed/simple;
-	bh=1kVLPMsTctaZzOtMMw/jtV8DS5No7DD7tBhDSvrT+rU=;
+	s=arc-20240116; t=1745421495; c=relaxed/simple;
+	bh=2wp1+RuCb3jAvwXvckrNpyvgRwaPN3JytLX7Shlw28U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awpqqn/2riLMYFpvZtK878o602fyod7P5Ke7cw/XONskWFljBALVUA6iW6cHbRmgXVJJU6ZJFppOiJ75JfUBZZWxJXaf3DmIpx9IawPLQYhwRSbcMAih++BncEpCFeZvaU4VZWJ9IyZ12JLoDGbTTxP8u9e8morhw77Njq/8to8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sa/jGZpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C25C4CEE2;
-	Wed, 23 Apr 2025 15:13:39 +0000 (UTC)
+	 MIME-Version; b=aZpGw6ZqdzMRJVxUMcWIzdd3ZEcaxvxxhgbmcqC0rZQ54FkSCESRsDXKRmebxFqE/+h3t8mNkvHM7LYTAqUe9gHEwiOGndvSwIfOsQBSfiRGSHEI7HvyHqCi12WVthYQMBMZFqP+aNl7OcF5p+G42SxguRR0y12iX5K28yxnqNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ/4XXJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788A7C4CEE3;
+	Wed, 23 Apr 2025 15:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421220;
-	bh=1kVLPMsTctaZzOtMMw/jtV8DS5No7DD7tBhDSvrT+rU=;
+	s=korg; t=1745421494;
+	bh=2wp1+RuCb3jAvwXvckrNpyvgRwaPN3JytLX7Shlw28U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sa/jGZpl4TGn/VS9TU3+pmG3gdT8LmX3tWAFom+DhZY4H5KZ0XBznJ1eYSZ7ER16A
-	 s+gWfff7G2P9pGJsE+JzZkny2jkfS2NCEBUTxYWt0GUfro7mf0tcbiRiojmonm4iQV
-	 7T2Pj3+znAeF1kcW+CgMbEeZC2HslU4kUHOjf41A=
+	b=jZ/4XXJBPV2WmPMWrAO1oRfkx557r7Zvufi13F66YgF2B7R+oK4D70rp74ORNRwxX
+	 J8U8Kxu5q1eSeBT/FXMkL6M9h3gptObUcPDAJM0nKGnDlQPu8NbcM/NiQiTzCtMwq/
+	 I0CSCDY/e69jVYHq4vWZ/1NRaQznqPsG/f3Okzc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Eric Auger <eric.auger@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 187/223] arm64/sysreg: Add register fields for HDFGRTR2_EL2
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 195/241] drm/amdgpu/mes11: optimize MES pipe FW version fetching
 Date: Wed, 23 Apr 2025 16:44:19 +0200
-Message-ID: <20250423142624.790246994@linuxfoundation.org>
+Message-ID: <20250423142628.477881123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 44844551670cff70a8aa5c1cde27ad1e0367e009 upstream.
+commit b71a2bb0ce07f40f92f59ed7f283068e41b10075 upstream.
 
-This adds register fields for HDFGRTR2_EL2 as per the definitions based
-on DDI0601 2024-12.
+Don't fetch it again if we already have it.  It seems the
+registers don't reliably have the value at resume in some
+cases.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250203050828.1049370-3-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Fixes: 028c3fb37e70 ("drm/amdgpu/mes11: initiate mes v11 support")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4083
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/tools/sysreg |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/tools/sysreg
-+++ b/arch/arm64/tools/sysreg
-@@ -2465,6 +2465,35 @@ Field	1	ICIALLU
- Field	0	ICIALLUIS
- EndSysreg
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -899,6 +899,10 @@ static void mes_v11_0_get_fw_version(str
+ {
+ 	int pipe;
  
-+Sysreg HDFGRTR2_EL2	3	4	3	1	0
-+Res0	63:25
-+Field	24	nPMBMAR_EL1
-+Field	23	nMDSTEPOP_EL1
-+Field	22	nTRBMPAM_EL1
-+Res0	21
-+Field	20	nTRCITECR_EL1
-+Field	19	nPMSDSFR_EL1
-+Field	18	nSPMDEVAFF_EL1
-+Field	17	nSPMID
-+Field	16	nSPMSCR_EL1
-+Field	15	nSPMACCESSR_EL1
-+Field	14	nSPMCR_EL0
-+Field	13	nSPMOVS
-+Field	12	nSPMINTEN
-+Field	11	nSPMCNTEN
-+Field	10	nSPMSELR_EL0
-+Field	9	nSPMEVTYPERn_EL0
-+Field	8	nSPMEVCNTRn_EL0
-+Field	7	nPMSSCR_EL1
-+Field	6	nPMSSDATA
-+Field	5	nMDSELR_EL1
-+Field	4	nPMUACR_EL1
-+Field	3	nPMICFILTR_EL0
-+Field	2	nPMICNTR_EL0
-+Field	1	nPMIAR_EL1
-+Field	0	nPMECR_EL1
-+EndSysreg
++	/* return early if we have already fetched these */
++	if (adev->mes.sched_version && adev->mes.kiq_version)
++		return;
 +
- Sysreg HDFGRTR_EL2	3	4	3	1	4
- Field	63	PMBIDR_EL1
- Field	62	nPMSNEVFR_EL1
+ 	/* get MES scheduler/KIQ versions */
+ 	mutex_lock(&adev->srbm_mutex);
+ 
 
 
 
