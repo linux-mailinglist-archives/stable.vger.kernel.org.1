@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-135977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E47A9913E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F418DA992F1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B512016DA08
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F0BA4A396C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976BC28BA97;
-	Wed, 23 Apr 2025 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C0D280CF6;
+	Wed, 23 Apr 2025 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="odwVNVVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opAGeGqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B2427FD4F;
-	Wed, 23 Apr 2025 15:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FF628E61B;
+	Wed, 23 Apr 2025 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421335; cv=none; b=oF7CqDe9+XxmHg7n5J5+4c0OSn+DKfwMSRQK1/8d8SxRuVEb3yz+4UPK8HrURjUTa631sZKeaD1jqh0apdUI/GF0rL3WnBrGfPvPvQb1Ex5tvWrnWwOXEUZUcX6ABos2+kGSQwzX7gSZ1k6QAW8iPXCmK/xlUKsz8Q8kjUyIEBQ=
+	t=1745422183; cv=none; b=OSIlua0CxUIuPlGTtFy4MsI4xWSttx5FXpWGY7c3XTOV2OTaePjESYz5Q4H3R5csEgSNhC08IITPbsW2fDRyNPS4yHe07GeF36KMGwR6AHkBkag6enONuGnAqdguVwCRc7ZcAk0tN3uEBMsK96P7PYJR+LYcETBzZ3VwP+bqRpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421335; c=relaxed/simple;
-	bh=TBOUkQ860d9y+MhKANkOEHtAXhiwPv+U8kMWAZJmcSk=;
+	s=arc-20240116; t=1745422183; c=relaxed/simple;
+	bh=rbHzUfWc7nHi6DWBTIv2NmiTM/mcWE8Y4nBaV3fakws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uaxu8TJGTjYdzArGqT6yuqWWmEkWhrqvx2JtfFWlfePT70p0QS2gxNzZcHA4uQn9o2CeWtmRhfR4EqHJRkX6o5HGRSWgCdjLLXDQnYnS2LC5moWGXwhpjB7P/Jh54cEKb5C9hblIUp9ovtMOqjw3cpx4JoV0aax7vESoQVSZeIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=odwVNVVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD296C4CEE2;
-	Wed, 23 Apr 2025 15:15:34 +0000 (UTC)
+	 MIME-Version; b=lOS11GMUm90Kz/Ga0H649SL4/Tr4t9qMERK7k9piJB1ULZ8IzC67z5uSegiUDGiNgLuBgfIXuKm3ZbJk9MtM+L94WosdTo1yuTmuqLLvoa4rEnt5C1he2aQ0orMW0yX9rcnP5O6/sIkdfe935/7DXapb/7dClCzXp9pDMllvfNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opAGeGqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADAAC4CEE2;
+	Wed, 23 Apr 2025 15:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421335;
-	bh=TBOUkQ860d9y+MhKANkOEHtAXhiwPv+U8kMWAZJmcSk=;
+	s=korg; t=1745422183;
+	bh=rbHzUfWc7nHi6DWBTIv2NmiTM/mcWE8Y4nBaV3fakws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=odwVNVVA66DFXpmV7KTg871sIREYUduvG5dpNMRMhTNUI8XWoaLC46nRg54JSVlnE
-	 v2MLl0a7c0uFlCG/mvkrjc5CjVXEts9E3/yU3bMC28El9CRJhNgXv5Bni30rbgD1na
-	 cvxElSGtVqbUIoVAKrmH9W699kbama40nWAutI+4=
+	b=opAGeGqu6rrcS8wprEEye6boQ8Y6PvDGIm8iiS+R+9kttqD1+A7WZ8PBv6QiqTL04
+	 l8j31OIwDEfiu9eOKBDDhQlg0u+toizQGzYgkyDf1NxGrB76PNHL2fdCMxofIq09tL
+	 jBsaomup4u3CYWHAkxRxLaw8d5rUrXscJLwymKgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 176/241] drm/amdgpu: Prefer shadow rom when available
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.1 251/291] KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
 Date: Wed, 23 Apr 2025 16:44:00 +0200
-Message-ID: <20250423142627.719314975@linuxfoundation.org>
+Message-ID: <20250423142634.685492599@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +66,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 27145f78f56a3178c4f9ffe51c4406d8dd0ca90c upstream.
+[ Upstream commit 459f059be702056d91537b99a129994aa6ccdd35 ]
 
-Fetch VBIOS from shadow ROM when available before trying other methods
-like EFI method.
+When KVM is in VHE mode, the host kernel tries to save and restore the
+configuration of CPACR_EL1.ZEN (i.e. CPTR_EL2.ZEN when HCR_EL2.E2H=1)
+across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
+configuration may be clobbered by hyp when running a vCPU. This logic is
+currently redundant.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Fixes: 9c081c11c621 ("drm/amdgpu: Reorder to read EFI exported ROM first")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4066
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+The VHE hyp code unconditionally configures CPTR_EL2.ZEN to 0b01 when
+returning to the host, permitting host kernel usage of SVE.
+
+Now that the host eagerly saves and unbinds its own FPSIMD/SVE/SME
+state, there's no need to save/restore the state of the EL0 SVE trap.
+The kernel can safely save/restore state without trapping, as described
+above, and will restore userspace state (including trap controls) before
+returning to userspace.
+
+Remove the redundant logic.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-4-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+[Rework for refactoring of where the flags are stored -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c |   36 ++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |    2 --
+ arch/arm64/kvm/fpsimd.c           |   16 ----------------
+ 2 files changed, 18 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-@@ -439,6 +439,13 @@ success:
- 	return true;
- }
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -556,8 +556,6 @@ struct kvm_vcpu_arch {
+ /* Save TRBE context if active  */
+ #define DEBUG_STATE_SAVE_TRBE	__vcpu_single_flag(iflags, BIT(6))
  
-+static bool amdgpu_prefer_rom_resource(struct amdgpu_device *adev)
-+{
-+	struct resource *res = &adev->pdev->resource[PCI_ROM_RESOURCE];
-+
-+	return (res->flags & IORESOURCE_ROM_SHADOW);
-+}
-+
- static bool amdgpu_get_bios_dgpu(struct amdgpu_device *adev)
- {
- 	if (amdgpu_atrm_get_bios(adev)) {
-@@ -457,14 +464,27 @@ static bool amdgpu_get_bios_dgpu(struct
- 		goto success;
- 	}
+-/* SVE enabled for host EL0 */
+-#define HOST_SVE_ENABLED	__vcpu_single_flag(sflags, BIT(0))
+ /* SME enabled for EL0 */
+ #define HOST_SME_ENABLED	__vcpu_single_flag(sflags, BIT(1))
+ /* Physical CPU not in supported_cpus */
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -88,10 +88,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
+ 	fpsimd_save_and_flush_cpu_state();
+ 	vcpu->arch.fp_state = FP_STATE_FREE;
  
--	if (amdgpu_read_platform_bios(adev)) {
--		dev_info(adev->dev, "Fetched VBIOS from platform\n");
--		goto success;
--	}
+-	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
+-	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
+-		vcpu_set_flag(vcpu, HOST_SVE_ENABLED);
 -
--	if (amdgpu_read_bios(adev)) {
--		dev_info(adev->dev, "Fetched VBIOS from ROM BAR\n");
--		goto success;
-+	if (amdgpu_prefer_rom_resource(adev)) {
-+		if (amdgpu_read_bios(adev)) {
-+			dev_info(adev->dev, "Fetched VBIOS from ROM BAR\n");
-+			goto success;
-+		}
-+
-+		if (amdgpu_read_platform_bios(adev)) {
-+			dev_info(adev->dev, "Fetched VBIOS from platform\n");
-+			goto success;
-+		}
-+
-+	} else {
-+		if (amdgpu_read_platform_bios(adev)) {
-+			dev_info(adev->dev, "Fetched VBIOS from platform\n");
-+			goto success;
-+		}
-+
-+		if (amdgpu_read_bios(adev)) {
-+			dev_info(adev->dev, "Fetched VBIOS from ROM BAR\n");
-+			goto success;
-+		}
+ 	/*
+ 	 * We don't currently support SME guests but if we leave
+ 	 * things in streaming mode then when the guest starts running
+@@ -193,18 +189,6 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcp
+ 		}
+ 
+ 		fpsimd_save_and_flush_cpu_state();
+-	} else if (has_vhe() && system_supports_sve()) {
+-		/*
+-		 * The FPSIMD/SVE state in the CPU has not been touched, and we
+-		 * have SVE (and VHE): CPACR_EL1 (alias CPTR_EL2) has been
+-		 * reset to CPACR_EL1_DEFAULT by the Hyp code, disabling SVE
+-		 * for EL0.  To avoid spurious traps, restore the trap state
+-		 * seen by kvm_arch_vcpu_load_fp():
+-		 */
+-		if (vcpu_get_flag(vcpu, HOST_SVE_ENABLED))
+-			sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_ZEN_EL0EN);
+-		else
+-			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
  	}
  
- 	if (amdgpu_read_bios_from_rom(adev)) {
+ 	local_irq_restore(flags);
 
 
 
