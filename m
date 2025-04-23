@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-135613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68C8A98F50
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:07:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC98A9928A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E2C21B86515
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739091BA35EA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE6F283680;
-	Wed, 23 Apr 2025 14:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0143228F50A;
+	Wed, 23 Apr 2025 15:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3VMOZc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkvMRq1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF282820D8;
-	Wed, 23 Apr 2025 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC61F5435;
+	Wed, 23 Apr 2025 15:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420384; cv=none; b=S9C2Hifx/cWtz1i2+zYYXqP6dBMPrY5lVVVU4VV+n877TResBJmRDFAwJ6QChWFlq8BrdHg+MQXc3ytm+Sm7vvEb5j2Zzv3N6Z4rDkjI6mmpfh3OnQn5x7bjmE/zkgRoR4FVdeW5AgnzsOOZK6Dds0z6gLX/LUZQ7h5NrAI518c=
+	t=1745421647; cv=none; b=LFefvc7GL5WoTufKuFpDMzd3v+O7jxwlM/cewggy6QActTExHHBCOg5C66NhXIkM7z9W1B0MkN8bc9FOwGvPpqX3bveh4A0ZY7Vj5ZKW4v1MS5wPE0oqKMKDBDeuppN1GZmyz42nNHtp00Ea+EKnvsS3t1S4tJlAlzuRUj3mZpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420384; c=relaxed/simple;
-	bh=9R+zCwnrL4f+QCKOT1SfgH6B7ExxwkFC2Lnlf+w5eVs=;
+	s=arc-20240116; t=1745421647; c=relaxed/simple;
+	bh=pJy4I3cziAS5RSqp3tSIU+u3kNIv4WRUECIpvPwfrXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lI7F6f8Q9R3QTS8iWmZfcMF5cLTWyp4m4KsAx0mdvkXLD9tm+SOphDfSBGnyy1AzFqISEX8361SLK8VGQ3Cg3QCFZOxWiHxBB+zlWFrPzKxw7EyIUONuRjr/fu5AAeKoIULkBxSogdCfv/trHCWiRYb/GQBb7bCc1JZWa4fWaDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3VMOZc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E90C4CEE3;
-	Wed, 23 Apr 2025 14:59:44 +0000 (UTC)
+	 MIME-Version; b=lBODrbyfZyyq2ml6+eFAzmRi9CotJ/lpm128KN1g34MTJxELtNs8SZFsixi5D/ct8D6R2MZa/kH6AJxSnmqmRT/fh1XFGSJhSvYesqldcHXgkaAKYXaJi8lPKmxfiixTL2oK0P3HM+ZKvbdRVWTc/e3X5g/6vdSWw4efZX6yKgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkvMRq1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B7C4CEE2;
+	Wed, 23 Apr 2025 15:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420384;
-	bh=9R+zCwnrL4f+QCKOT1SfgH6B7ExxwkFC2Lnlf+w5eVs=;
+	s=korg; t=1745421647;
+	bh=pJy4I3cziAS5RSqp3tSIU+u3kNIv4WRUECIpvPwfrXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3VMOZc3sfJfTYmeTWZw7z7LtMo+2bTHSF5dEo16PQsq1wyR0z+S//3or53okwN4L
-	 HRQEkEs1bq1CrMnYpq+7MPkGD4KhUejwnuSbrHmHt9VBgenNIoS5AicZm4QC0Opx8w
-	 +AMokfIqnSyppdAuAiWyGn/aYBA0h9R38R/aKvXM=
+	b=HkvMRq1cxMn3VvpxygJWHE5qbfNRwLCqp77+oGYjHUwCsNQOvA7B3sYEDbXzaFr4S
+	 FEp6rcYTAc2QGrusU9s0octp2nsAHu/FGDeVexlXce0IBsUoZFWFgCFDic998NfjVQ
+	 LRc7WAuv0EDaiYEMSISOh60H2AgGmVF+ouK34GDM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Will Pierce <wgpierce17@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 087/241] riscv: Use kvmalloc_array on relocation_hashtable
+	Roberto Ricci <io@r-ricci.it>,
+	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Kees Cook <keescook@chromium.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Len Brown <len.brown@intel.com>
+Subject: [PATCH 6.1 162/291] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
 Date: Wed, 23 Apr 2025 16:42:31 +0200
-Message-ID: <20250423142624.137079785@linuxfoundation.org>
+Message-ID: <20250423142631.015116279@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +67,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Pierce <wgpierce17@gmail.com>
+From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
 
-[ Upstream commit 8578b2f7e1fb79d4b92b62fbbe913548bb363654 ]
+commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
 
-The number of relocations may be a huge value that is unallocatable
-by kmalloc. Use kvmalloc instead so that it does not fail.
+While debugging kexec/hibernation hangs and crashes, it turned out that
+the current implementation of e820__register_nosave_regions() suffers from
+multiple serious issues:
 
-Fixes: 8fd6c5142395 ("riscv: Add remaining module relocations")
-Suggested-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Will Pierce <wgpierce17@gmail.com>
-Link: https://lore.kernel.org/r/20250402081426.5197-1-wgpierce17@gmail.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - The end of last region is tracked by PFN, causing it to find holes
+   that aren't there if two consecutive subpage regions are present
+
+ - The nosave PFN ranges derived from holes are rounded out (instead of
+   rounded in) which makes it inconsistent with how explicitly reserved
+   regions are handled
+
+Fix this by:
+
+ - Treating reserved regions as if they were holes, to ensure consistent
+   handling (rounding out nosave PFN ranges is more correct as the
+   kernel does not use partial pages)
+
+ - Tracking the end of the last RAM region by address instead of pages
+   to detect holes more precisely
+
+These bugs appear to have been introduced about ~18 years ago with the very
+first version of e820_mark_nosave_regions(), and its flawed assumptions were
+carried forward uninterrupted through various waves of rewrites and renames.
+
+[ mingo: Added Git archeology details, for kicks and giggles. ]
+
+Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
+Reported-by: Roberto Ricci <io@r-ricci.it>
+Tested-by: Roberto Ricci <io@r-ricci.it>
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Len Brown <len.brown@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
+Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
+Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/module.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kernel/e820.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index 47d0ebeec93c2..0ae34d79b87bd 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -648,7 +648,7 @@ process_accumulated_relocations(struct module *me,
- 		kfree(bucket_iter);
- 	}
+--- a/arch/x86/kernel/e820.c
++++ b/arch/x86/kernel/e820.c
+@@ -753,22 +753,21 @@ void __init e820__memory_setup_extended(
+ void __init e820__register_nosave_regions(unsigned long limit_pfn)
+ {
+ 	int i;
+-	unsigned long pfn = 0;
++	u64 last_addr = 0;
  
--	kfree(*relocation_hashtable);
-+	kvfree(*relocation_hashtable);
+ 	for (i = 0; i < e820_table->nr_entries; i++) {
+ 		struct e820_entry *entry = &e820_table->entries[i];
+ 
+-		if (pfn < PFN_UP(entry->addr))
+-			register_nosave_region(pfn, PFN_UP(entry->addr));
+-
+-		pfn = PFN_DOWN(entry->addr + entry->size);
+-
+ 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
+-			register_nosave_region(PFN_UP(entry->addr), pfn);
++			continue;
+ 
+-		if (pfn >= limit_pfn)
+-			break;
++		if (last_addr < entry->addr)
++			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
++
++		last_addr = entry->addr + entry->size;
+ 	}
++
++	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
  }
  
- static int add_relocation_to_accumulate(struct module *me, int type,
-@@ -752,9 +752,10 @@ initialize_relocation_hashtable(unsigned int num_relocations,
- 
- 	hashtable_size <<= should_double_size;
- 
--	*relocation_hashtable = kmalloc_array(hashtable_size,
--					      sizeof(**relocation_hashtable),
--					      GFP_KERNEL);
-+	/* Number of relocations may be large, so kvmalloc it */
-+	*relocation_hashtable = kvmalloc_array(hashtable_size,
-+					       sizeof(**relocation_hashtable),
-+					       GFP_KERNEL);
- 	if (!*relocation_hashtable)
- 		return 0;
- 
--- 
-2.39.5
-
+ #ifdef CONFIG_ACPI
 
 
 
