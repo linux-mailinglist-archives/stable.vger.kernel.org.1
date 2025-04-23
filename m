@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04C6A990BA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4BC7A98FEA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF91F17499F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A3A38E485E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B46E281507;
-	Wed, 23 Apr 2025 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244FB28B50E;
+	Wed, 23 Apr 2025 15:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wm90gbn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwYAziGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBECB281376;
-	Wed, 23 Apr 2025 15:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D489C28B511;
+	Wed, 23 Apr 2025 15:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421128; cv=none; b=aGArCBqKUrig+zfTmQcP8aPQzF1R3pyuRM9Iou8jPipT17ZiDbSm4W+b/KCNP3d1NCGv2Ur1WQLNLbNh3enwjhVeY+WsfkcLkpbhlhyQr1Yba0nHZv34mdm4fcuYdMHPYrED/Qm1ojBjYISmt0HlNsYpViCOp+4JZ2yhbZqseMg=
+	t=1745420671; cv=none; b=oI+d6pCjxlS8tclpSh2OBRLxKWDIvdsG1aQijpEsJCvf130wLdQw2jL63xoOi6J9mvUA29oCOJkwABg6k0EK+fxY3A+PgYwRkgyLi4K9fNpdU/utsLvyQdYfOIupo3Drv6sCOEVu17Cs+YRZHJvvG63Q8UttQBb2c+c9V7zGQms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421128; c=relaxed/simple;
-	bh=s8ROOpClq24505Tsy8X/qfxtJKZHfLWUKW/W/N1Vb/k=;
+	s=arc-20240116; t=1745420671; c=relaxed/simple;
+	bh=y9xOxbOvr5scDOv4oWgLO8YXxi6AVUvoDXS7AYWUl2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sXYjXgd3yHnBhKnwGHdXHNGHR9rqklkR6VWvP1BxQV8agiOtR7qwMorvRreKFDF41IRQyAObAvwIDbz1n1x8pDa3sKh4tGdXK0/Wtc47VuZ5jbqJCChe335edKqUj05HxA1AhzJES9nGFs/NkA4NTTD6j8SHOx6atuTa8/Zqepw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wm90gbn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E61BC4CEE2;
-	Wed, 23 Apr 2025 15:12:08 +0000 (UTC)
+	 MIME-Version; b=b2xfJt89o4r/5F2/BdObMuNsyf85IoktxjzmALR9GPHcJlkfUQApPmTZ66SqPh/mWiLWzJpSKtNVnhPhBsZDUqfseVqFF/dqfBxbRgoh7iT4YEQS6W66spyqLj8wxrT+6xzQK6D/mUU2Tlst5138KFAB68Wi0z6/fx+cMFwLD3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwYAziGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64FF9C4CEE2;
+	Wed, 23 Apr 2025 15:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421128;
-	bh=s8ROOpClq24505Tsy8X/qfxtJKZHfLWUKW/W/N1Vb/k=;
+	s=korg; t=1745420671;
+	bh=y9xOxbOvr5scDOv4oWgLO8YXxi6AVUvoDXS7AYWUl2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wm90gbn70roM4rM2Y3bimqa78wP/ar+bghiq7nZsDSqsTdMZJUzdntDX7gxSTuPxU
-	 dZuzfW6mSX3hf5QHhuAcsVcdAog0QGeNgrbKD4Ui1vpOsYg9YKPMpKXW2gS3iPVx6i
-	 tmsshErIofaTi6wDHRWW9scQ4mElhqUMelEdMWf4=
+	b=fwYAziGtnB3AfGJPonF5uZjPyAjjJgsNzWg9to8+fqY4PpmJY/+FQo+mFunBLt0IE
+	 p44mXNSYa0cQNawer2PAkpqAdaZkYeYqB8lL6Re9ts+Dw3DhqG43uVZM5nVTPZtr6r
+	 UdG4ZlrbK+vkvQznanu1mKsNibgErO6hG9vujxdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 149/393] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
+	Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Paco Avelar <pacoavelar@hotmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/291] drm: panel-orientation-quirks: Add quirks for AYA NEO Flip DS and KB
 Date: Wed, 23 Apr 2025 16:40:45 +0200
-Message-ID: <20250423142649.535982523@linuxfoundation.org>
+Message-ID: <20250423142626.670098000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
+[ Upstream commit 529741c331da1fbf54f86c6ec3a4558b9b0b16dc ]
 
-Implement the workaround for erratum
-  3.3 RGMII timing may be out of spec when transmit delay is enabled
-for the 6320 family, which says:
+The AYA NEO Flip DS and KB both use a 1080x1920 portrait LCD panel.  The
+Flip DS additionally uses a 640x960 portrait LCD panel as a second display.
 
-  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
-  cycle may be out of spec. Under very rare conditions this may cause
-  the attached device receive CRC errors.
+Add DMI matches to correctly rotate these panels.
 
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.4.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Co-developed-by: John Edwards <uejji@uejji.net>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: Paco Avelar <pacoavelar@hotmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-3-uejji@uejji.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3555,6 +3555,21 @@ static int mv88e6xxx_stats_setup(struct
- 	return mv88e6xxx_g1_stats_clear(chip);
- }
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 7bf096ddeb06d..d9ed6214cf28b 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -93,6 +93,12 @@ static const struct drm_dmi_panel_orientation_data onegx1_pro = {
+ 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
+ };
  
-+static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
-+{
-+	u16 dummy;
-+	int err;
++static const struct drm_dmi_panel_orientation_data lcd640x960_leftside_up = {
++	.width = 640,
++	.height = 960,
++	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
++};
 +
-+	/* Workaround for erratum
-+	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
-+	 */
-+	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
-+}
-+
- /* Check if the errata has already been applied. */
- static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
- {
-@@ -5005,6 +5020,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
-@@ -5054,6 +5070,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
+ static const struct drm_dmi_panel_orientation_data lcd720x1280_rightside_up = {
+ 	.width = 720,
+ 	.height = 1280,
+@@ -202,6 +208,18 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
+ 		},
+ 		.driver_data = (void *)&lcd1080x1920_leftside_up,
++	}, {    /* AYA NEO Flip DS Bottom Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "FLIP DS"),
++		},
++		.driver_data = (void *)&lcd640x960_leftside_up,
++	}, {    /* AYA NEO Flip KB/DS Top Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "FLIP"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* AYA NEO Founder */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
+-- 
+2.39.5
+
 
 
 
