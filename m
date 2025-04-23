@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-136374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D6CA99427
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:09:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C4AA993FB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8114D9A475C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F26099A487C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D113D2BD580;
-	Wed, 23 Apr 2025 15:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13D32BD5BB;
+	Wed, 23 Apr 2025 15:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2l+O5s87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwTMY1h2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F77D28F51E;
-	Wed, 23 Apr 2025 15:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBFC28B500;
+	Wed, 23 Apr 2025 15:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422378; cv=none; b=a3fKmS8owXS3RF9ObSvElxqg7+oEbEpd9HUtT5x3AV+bSgerCGBHOuqAjJsD90xc9M5kFHj50LJ7YU8/Z5g/GMVqWJjx5E9VBCb6EJYjHQ2PdL3c9z4mDCnUZ8koTry2V0/7Zv+JRzi4Hl1Q/fIJ5lFnChPoJmDmvG30ipjs6E8=
+	t=1745422383; cv=none; b=RJQPODOkb9NKUDMnxxItaqaRu6l0JvKOFvCGxf+tooPxuya+mwWCWnytxrkpA0OTLd5MqvE6kgyRc5weD6H+S4+hHGWmqCU8cLxXtDVYm0NSf/UjHKBdcvbS4aDGF/fJBg9xoa/dDcyz4P76+ElGQWmehyo+A6ZJ9/P2jokI6PE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422378; c=relaxed/simple;
-	bh=5wiYOCkEYYY5L6/o2Jy94t+LcFFNrYjd+nb4QViIbj4=;
+	s=arc-20240116; t=1745422383; c=relaxed/simple;
+	bh=L69KbWb81IJGRWYBY1q7H055KSHC6NNIz/YRLlgnBZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcxIMgRIUXR8pjRvn8nbv3P49vWMVVJDKL+JOXg2pnYU96S/zoL5YWQWgZ2ZFcdWewmdktLfwa3RigtcghCqJYvS0MX4HDK5Bm13Wb2UprSc7zp+1ANa2zMJS4D8IRqQRnOZBS6GXUYi0B4wy+ldHJZoAq8mS6e76Djo8zFfY64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2l+O5s87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC959C4CEE3;
-	Wed, 23 Apr 2025 15:32:57 +0000 (UTC)
+	 MIME-Version; b=DJ9VkQIqzOso13cRY2VP2scf9IJRZfdXjuxsHqLmymLMTWSAIASBKxCEOtVyYE9+7/8YHDKPomDLYnU6ZRkaHh8k5OB6YzSikiKRC16WDTA0XN0uacaksTLkgo8iIj5rB8vTmsa3x/zhKi27d6VBCMoQvUNSICg858uQTe7QZPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwTMY1h2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38D2C4CEE2;
+	Wed, 23 Apr 2025 15:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422378;
-	bh=5wiYOCkEYYY5L6/o2Jy94t+LcFFNrYjd+nb4QViIbj4=;
+	s=korg; t=1745422383;
+	bh=L69KbWb81IJGRWYBY1q7H055KSHC6NNIz/YRLlgnBZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2l+O5s87cbDdhje3y+WLq+OQOKa3e7TzGp+9cOxvU53r70HF60Go+d474l8RlTu2l
-	 2oiW9fOM+Hf8wdxjdH55RmBVtp/Lsr877fA/mPTUHpA+5vtzJQjGo5D+oVdEVC6eFB
-	 SgDUgdx7rHsB90eIX5Z81FSThMv8pF14aE89bN2g=
+	b=IwTMY1h2pf+SFetKdxbdYIyru83i1UgdTHEO4L01O/aChTsqwfrHzCjrZaorWJch5
+	 AZ9D8Iwy6xnH2oTFrDPcAy4J+7NYYgdK1fvmHYPkOeHrJtJC0bSGBed8R1dKBldl85
+	 X4mWuL6GBrTVknZDPRqXPinVg42/7i+AzrVJnZ+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 331/393] selftests/mm: generate a temporary mountpoint for cgroup filesystem
-Date: Wed, 23 Apr 2025 16:43:47 +0200
-Message-ID: <20250423142657.012359062@linuxfoundation.org>
+	Chunjie Zhu <chunjie.zhu@cloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 332/393] smb3 client: fix open hardlink on deferred close file error
+Date: Wed, 23 Apr 2025 16:43:48 +0200
+Message-ID: <20250423142657.054537596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -69,73 +65,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Chunjie Zhu <chunjie.zhu@cloud.com>
 
-commit 9c02223e2d9df5cb37c51aedb78f3960294e09b5 upstream.
+commit 262b73ef442e68e53220b9d6fc5a0d08b557fa42 upstream.
 
-Currently if the filesystem for the cgroups version it wants to use is not
-mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
-will attempt to mount it on the hard coded path /dev/cgroup/memory,
-deleting that directory when the test finishes.  This will fail if there
-is not a preexisting directory at that path, and since the directory is
-deleted subsequent runs of the test will fail.  Instead of relying on this
-hard coded directory name use mktemp to generate a temporary directory to
-use as a mountpoint, fixing both the assumption and the disruption caused
-by deleting a preexisting directory.
+The following Python script results in unexpected behaviour when run on
+a CIFS filesystem against a Windows Server:
 
-This means that if the relevant cgroup filesystem is not already mounted
-then we rely on having coreutils (which provides mktemp) installed.  I
-suspect that many current users are relying on having things automounted
-by default, and given that the script relies on bash it's probably not an
-unreasonable requirement.
+    # Create file
+    fd = os.open('test', os.O_WRONLY|os.O_CREAT)
+    os.write(fd, b'foo')
+    os.close(fd)
 
-Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
-Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+    # Open and close the file to leave a pending deferred close
+    fd = os.open('test', os.O_RDONLY|os.O_DIRECT)
+    os.close(fd)
+
+    # Try to open the file via a hard link
+    os.link('test', 'new')
+    newfd = os.open('new', os.O_RDONLY|os.O_DIRECT)
+
+The final open returns EINVAL due to the server returning
+STATUS_INVALID_PARAMETER. The root cause of this is that the client
+caches lease keys per inode, but the spec requires them to be related to
+the filename which causes problems when hard links are involved:
+
+>From MS-SMB2 section 3.3.5.9.11:
+
+"The server MUST attempt to locate a Lease by performing a lookup in the
+LeaseTable.LeaseList using the LeaseKey in the
+SMB2_CREATE_REQUEST_LEASE_V2 as the lookup key. If a lease is found,
+Lease.FileDeleteOnClose is FALSE, and Lease.Filename does not match the
+file name for the incoming request, the request MUST be failed with
+STATUS_INVALID_PARAMETER"
+
+On client side, we first check the context of file open, if it hits above
+conditions, we first close all opening files which are belong to the same
+inode, then we do open the hard link file.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |    4 ++--
- tools/testing/selftests/mm/hugetlb_reparenting_test.sh |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsproto.h |    2 ++
+ fs/smb/client/file.c      |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -27,7 +27,7 @@ fi
- if [[ $cgroup2 ]]; then
-   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup2 none $cgroup_path
-     do_umount=1
-   fi
-@@ -35,7 +35,7 @@ if [[ $cgroup2 ]]; then
- else
-   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup memory,hugetlb $cgroup_path
-     do_umount=1
-   fi
---- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-@@ -22,7 +22,7 @@ fi
- if [[ $cgroup2 ]]; then
-   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
--    CGROUP_ROOT=/dev/cgroup/memory
-+    CGROUP_ROOT=$(mktemp -d)
-     mount -t cgroup2 none $CGROUP_ROOT
-     do_umount=1
-   fi
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -158,6 +158,8 @@ extern int cifs_get_writable_path(struct
+ extern struct cifsFileInfo *find_readable_file(struct cifsInodeInfo *, bool);
+ extern int cifs_get_readable_path(struct cifs_tcon *tcon, const char *name,
+ 				  struct cifsFileInfo **ret_file);
++extern int cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				  struct file *file);
+ extern unsigned int smbCalcSize(void *buf);
+ extern int decode_negTokenInit(unsigned char *security_blob, int length,
+ 			struct TCP_Server_Info *server);
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -816,6 +816,11 @@ int cifs_open(struct inode *inode, struc
+ 		} else {
+ 			_cifsFileInfo_put(cfile, true, false);
+ 		}
++	} else {
++		/* hard link on the defeered close file */
++		rc = cifs_get_hardlink_path(tcon, inode, file);
++		if (rc)
++			cifs_close_deferred_file(CIFS_I(inode));
+ 	}
+ 
+ 	if (server->oplocks)
+@@ -1878,6 +1883,29 @@ cifs_move_llist(struct list_head *source
+ 		list_move(li, dest);
+ }
+ 
++int
++cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				struct file *file)
++{
++	struct cifsFileInfo *open_file = NULL;
++	struct cifsInodeInfo *cinode = CIFS_I(inode);
++	int rc = 0;
++
++	spin_lock(&tcon->open_file_lock);
++	spin_lock(&cinode->open_file_lock);
++
++	list_for_each_entry(open_file, &cinode->openFileList, flist) {
++		if (file->f_flags == open_file->f_flags) {
++			rc = -EINVAL;
++			break;
++		}
++	}
++
++	spin_unlock(&cinode->open_file_lock);
++	spin_unlock(&tcon->open_file_lock);
++	return rc;
++}
++
+ void
+ cifs_free_llist(struct list_head *llist)
+ {
 
 
 
