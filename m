@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB20FA99015
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB238A98DFF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FCE67AFF85
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570EE16A802
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F6828D835;
-	Wed, 23 Apr 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96A1281522;
+	Wed, 23 Apr 2025 14:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYLd24dR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqkLeurr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A046828D82C;
-	Wed, 23 Apr 2025 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773602701A0;
+	Wed, 23 Apr 2025 14:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421057; cv=none; b=a6v9d5H2aNl5FLqexbSw/33Lr4kV06piBGXJJapmSb4KWy5QbIzmhoYEQalbswlZX+FiEL4QJMjXXx5pvhBh4/UpMQG/cdIZ6JqCYXfKvTn0jL+VoHYCdlAFWR/GDMs3pnfmLpwwr/PBDaPjidFqOxkwzFmc4hQloNd+5cPU71I=
+	t=1745419811; cv=none; b=aq0CSdYQWLe6qYVV5VVqCVDSi4S5G/2OFFM0RMWzFaV6oJwH0CW4lKCoRLzIZab7lvnoJa3Rzg2jf+RDxyZ8aD/wV0vVv6DsWdLekUr8GJZt3nY0nb4DzcQ0j7mN8lwbHLAGvVrKajjnbje2cRNxjYrDjUABq1lqpPSFCyggP/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421057; c=relaxed/simple;
-	bh=ddJFFBdC73TIlFqzshy3Sg0mSboX9GUsDG317hVhjis=;
+	s=arc-20240116; t=1745419811; c=relaxed/simple;
+	bh=tuJqUfAJglmQgkA9cr3BT2H8+8IHd6+WmPmGAAkIyow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFMLh7+jVuWAF+aVCNleSI3xK0CbLtqqSjAp0yP1j726bqW7L7r/AehgzyV2M5HnfW5v9AQUWq0vA7jPZPUIYZmPc0DXhc2uBOuxoeB+co4aTBSyGjPPorB8kvvzHNxOQ7V2we8urHWjoZq0SjeF/s9dALXANxgLb4ZhO/lIW0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYLd24dR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3273AC4CEE2;
-	Wed, 23 Apr 2025 15:10:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OeZiEFz30m1pkqfmk8+suxodOgQw6EyUY2T7QSL1eefr5jdYsBUY3IyIddvceo+5VTfiL4aTA8nWd5PN3moS99NNXuQLucOreZE3BjO/z8b1mVrXV/kNFLA4/L+rwdH/QkxBLhrOzkoyBvlX2SE25Zg+Qik2CMUtfAilqY70O0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqkLeurr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97417C4CEE2;
+	Wed, 23 Apr 2025 14:50:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421057;
-	bh=ddJFFBdC73TIlFqzshy3Sg0mSboX9GUsDG317hVhjis=;
+	s=korg; t=1745419810;
+	bh=tuJqUfAJglmQgkA9cr3BT2H8+8IHd6+WmPmGAAkIyow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GYLd24dRVgWioIqW27bJR+u5n6/7BrkG2sBrZ06wYiMApWxqbL0PD1fH70X2+oxIW
-	 +lxsW+V3RuMkmQBF7G3mwzOFuhrH4tACLvfRLdPHNhBZBXMa9ulv5rjBYHA6IuJeEC
-	 71So6KM/OeoCxtIt4Adg/14iO5yN9ehlu//AWxwQ=
+	b=nqkLeurr8oNsRSmSQabT9ahdem91xWR9bvpILxcsb8rpzlYKpgThfJ5eI0G0e50xx
+	 ubj5HO9Rza0qMZNw/gk+OgH2fr5tIo/Ka8lvF2ftjhLmVDQ/55qOt4Gv8Ubewl6PcA
+	 b5ceFSw5PstHHY52cPuMdbSp8pqtnFiI1JpHlLy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 104/291] mtd: Replace kcalloc() with devm_kcalloc()
-Date: Wed, 23 Apr 2025 16:41:33 +0200
-Message-ID: <20250423142628.602163020@linuxfoundation.org>
+	David Thompson <davthompson@nvidia.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 030/241] mlxbf-bootctl: use sysfs_emit_at() in secure_boot_fuse_state_show()
+Date: Wed, 23 Apr 2025 16:41:34 +0200
+Message-ID: <20250423142621.750909398@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: David Thompson <davthompson@nvidia.com>
 
-commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
+[ Upstream commit b129005ddfc0e6daf04a6d3b928a9e474f9b3918 ]
 
-Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
-errors.
+A warning is seen when running the latest kernel on a BlueField SOC:
+[251.512704] ------------[ cut here ]------------
+[251.512711] invalid sysfs_emit: buf:0000000003aa32ae
+[251.512720] WARNING: CPU: 1 PID: 705264 at fs/sysfs/file.c:767 sysfs_emit+0xac/0xc8
 
-Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The warning is triggered because the mlxbf-bootctl driver invokes
+"sysfs_emit()" with a buffer pointer that is not aligned to the
+start of the page. The driver should instead use "sysfs_emit_at()"
+to support non-zero offsets into the destination buffer.
+
+Fixes: 9886f575de5a ("platform/mellanox: mlxbf-bootctl: use sysfs_emit() instead of sprintf()")
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Link: https://lore.kernel.org/r/20250407132558.2418719-1-davthompson@nvidia.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdpstore.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/platform/mellanox/mlxbf-bootctl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/mtdpstore.c
-+++ b/drivers/mtd/mtdpstore.c
-@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
+diff --git a/drivers/platform/mellanox/mlxbf-bootctl.c b/drivers/platform/mellanox/mlxbf-bootctl.c
+index 9cae07348d5eb..49d4394e9f8a3 100644
+--- a/drivers/platform/mellanox/mlxbf-bootctl.c
++++ b/drivers/platform/mellanox/mlxbf-bootctl.c
+@@ -332,9 +332,9 @@ static ssize_t secure_boot_fuse_state_show(struct device *dev,
+ 			else
+ 				status = valid ? "Invalid" : "Free";
+ 		}
+-		buf_len += sysfs_emit(buf + buf_len, "%d:%s ", key, status);
++		buf_len += sysfs_emit_at(buf, buf_len, "%d:%s ", key, status);
  	}
+-	buf_len += sysfs_emit(buf + buf_len, "\n");
++	buf_len += sysfs_emit_at(buf, buf_len, "\n");
  
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
--	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
--	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
--	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
-+	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
- 
- 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
- 		return;
-@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
- 	mtdpstore_flush_removed(cxt);
- 
- 	unregister_pstore_device(&cxt->dev);
--	kfree(cxt->badmap);
--	kfree(cxt->usedmap);
--	kfree(cxt->rmmap);
- 	cxt->mtd = NULL;
- 	cxt->index = -1;
+ 	return buf_len;
  }
+-- 
+2.39.5
+
 
 
 
