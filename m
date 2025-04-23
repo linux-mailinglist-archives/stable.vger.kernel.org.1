@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DB6A992DE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F49DA99013
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA5E4A2F68
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A808C5A7CC6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9276293478;
-	Wed, 23 Apr 2025 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F5728BA93;
+	Wed, 23 Apr 2025 15:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krUNTcpa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkCms9wj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C3D293472;
-	Wed, 23 Apr 2025 15:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B8127FD4F;
+	Wed, 23 Apr 2025 15:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422238; cv=none; b=sV1ceu5Sw6yK4/5CMo7J8qGbCrqT81oEZwQZgVBjky7BP7mMLfdTwugd6rsaZcOW7ZvwMz126094nrnD4SgBp9TvlSwX9dj+ffD+1vPpwQ9Tu94py0z52eHOFmTXWt16RVRG+qajwoyLTlJcpK5InsihdRVW/r3VMo+vkhksl38=
+	t=1745420680; cv=none; b=WHt6wASAIXTIDlH4GYWHhpQSQQgWiH+jd0b6Z07tbHHTAaYT3vMCqnq23HRd6km5nPZkSi6qnrgnufoTbqK1X5NdosXYH0ubHylPYoFIHEe2xvp3/kK/mIy6DLuB+9AoLXJKOHeLhJ71euE4lv5OzNSKo7KkTBH8wWpDZLdWwd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422238; c=relaxed/simple;
-	bh=gaMei66A29Qd7kbURtTAOHXePDvrlUbhnkD0YkaK91k=;
+	s=arc-20240116; t=1745420680; c=relaxed/simple;
+	bh=RoICGuCjCBcJnSLtZccIKa7Sn/APJSb3DRGPA3hEI7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CecmQYsodc9MLCzrwItnoAImI9neg3Kxm7DAUA38Ls5+O2VW8D5PM5HCTVX7UXouZc3jrDZl0LYgiqto1T/fVZopwcPmGLsgalW/nRk4r92Suf7a6rSQ8mkygMBwotCCi6s5xJ7h1OYwaZ3d+3SyoErp00CXT+rn4wOcTlBgrEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krUNTcpa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE810C4CEE2;
-	Wed, 23 Apr 2025 15:30:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c/CkHBl0+LXbPvalf2DsBGHXvQqpnuClX5R+2kDAvy38isylHGnTQCQ/6kaoy72MNmYadEluZ5NShTEIzDUUfLOMhGfDQrV5gmPW+upfAGAieCXLDt3vigRpgNojoSZLMV6hBt6ZvKnVgFfwYzBOZAy1sXhm6TNQuC6mYXo7HBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkCms9wj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5353DC4CEE2;
+	Wed, 23 Apr 2025 15:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422238;
-	bh=gaMei66A29Qd7kbURtTAOHXePDvrlUbhnkD0YkaK91k=;
+	s=korg; t=1745420679;
+	bh=RoICGuCjCBcJnSLtZccIKa7Sn/APJSb3DRGPA3hEI7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=krUNTcpar7FRDg1EpCVKvUeKpqPNQdD6vNZ8PX55RgCf2baKAiMX2xbCwrLFDlRGN
-	 ZKHQObZ+OMgXEL75MjN9uvV5RhBhGsDQi+4VyTVetF2abwjcvXvYha3qLuXF9zj7ev
-	 oWI/TsMoWg4pMi+6RPCP/wss6TXFNMDdWLHX6x+0=
+	b=tkCms9wjOCVpqY0bS3qmTauSsQ/7K3QKDYT++oKunWGNMVELd8s7sPEneKXBJx8Ey
+	 5K83nibEy7R4QM7EbrYsqD9Q2BJ4ZCO6Dm2yiyElCrr/pIP86xO3ZGMlHIRqO8OtFf
+	 GtpfAd/WR1EQXG4EysHLxjgMjy2mhgL/Y/deggJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 281/393] netlink: specs: rt-link: adjust mctp attribute naming
+Subject: [PATCH 6.14 113/241] drm/v3d: Fix Indirect Dispatch configuration for V3D 7.1.6 and later
 Date: Wed, 23 Apr 2025 16:42:57 +0200
-Message-ID: <20250423142654.953230855@linuxfoundation.org>
+Message-ID: <20250423142625.192185789@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit beb3c5ad8829b52057f48a776a9d9558b98c157f ]
+[ Upstream commit dcdae6e92d4e062da29235fe88980604595e3f0f ]
 
-MCTP attribute naming is inconsistent. In C we have:
-    IFLA_MCTP_NET,
-    IFLA_MCTP_PHYS_BINDING,
-         ^^^^
+This commit is a resubmission of commit 1fe1c66274fb ("drm/v3d: Fix
+Indirect Dispatch configuration for V3D 7.1.6 and later"), which was
+accidentally reverted by commit 91dae758bdb8 ("Merge tag
+'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel
+into drm-next"), likely due to an unfortunate conflict resolution.
 
-but in YAML:
-    - mctp-net
-    - phys-binding
-      ^
-       no "mctp"
+>From the original commit message:
 
-It's unclear whether the "mctp" part of the name is supposed
-to be a prefix or part of attribute name. Make it a prefix,
-seems cleaner, even tho technically phys-binding was added later.
+```
+`args->cfg[4]` is configured in Indirect Dispatch using the number of
+batches. Currently, for all V3D tech versions, `args->cfg[4]` equals the
+number of batches subtracted by 1. But, for V3D 7.1.6 and later, we must not
+subtract 1 from the number of batches.
 
-Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-8-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Implement the fix by checking the V3D tech version and revision.
+
+Fixes several `dEQP-VK.synchronization*` CTS tests related to Indirect Dispatch.
+```
+
+Fixes: 91dae758bdb8 ("Merge tag 'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-next")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Link: https://lore.kernel.org/r/20250409205051.9639-1-mcanal@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/rt_link.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/v3d/v3d_sched.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index 34f74c451dcdb..a8a1466adf179 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -1199,9 +1199,10 @@ attribute-sets:
-         type: u32
-   -
-     name: mctp-attrs
-+    name-prefix: ifla-mctp-
-     attributes:
-       -
--        name: mctp-net
-+        name: net
-         type: u32
-   -
-     name: stats-attrs
+diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
+index 05608c894ed93..6db503a569180 100644
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -428,7 +428,8 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 	struct v3d_bo *bo = to_v3d_bo(job->base.bo[0]);
+ 	struct v3d_bo *indirect = to_v3d_bo(indirect_csd->indirect);
+ 	struct drm_v3d_submit_csd *args = &indirect_csd->job->args;
+-	u32 *wg_counts;
++	struct v3d_dev *v3d = job->base.v3d;
++	u32 num_batches, *wg_counts;
+ 
+ 	v3d_get_bo_vaddr(bo);
+ 	v3d_get_bo_vaddr(indirect);
+@@ -441,8 +442,17 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
+ 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+ 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
+-	args->cfg[4] = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
+-		       (wg_counts[0] * wg_counts[1] * wg_counts[2]) - 1;
++
++	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
++		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
++
++	/* V3D 7.1.6 and later don't subtract 1 from the number of batches */
++	if (v3d->ver < 71 || (v3d->ver == 71 && v3d->rev < 6))
++		args->cfg[4] = num_batches - 1;
++	else
++		args->cfg[4] = num_batches;
++
++	WARN_ON(args->cfg[4] == ~0);
+ 
+ 	for (int i = 0; i < 3; i++) {
+ 		/* 0xffffffff indicates that the uniform rewrite is not needed */
 -- 
 2.39.5
 
