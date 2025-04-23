@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905F2A98DE1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E48A99051
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF514446A1E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05E361772A2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A2F280A4D;
-	Wed, 23 Apr 2025 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1EC28A1CF;
+	Wed, 23 Apr 2025 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0OJK82w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW94NSGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2862522B9;
-	Wed, 23 Apr 2025 14:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C0F27055F;
+	Wed, 23 Apr 2025 15:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419748; cv=none; b=jXsQagYupil5oRf+XBFKYjCE2r0RIjn3LG7LrN8E2yXukdZRHLY90s1Ucf3UG442dpXh8pVjfpjbfCSEyrBnax1uLLuo4R3sIgBTPXz/63p8Hhe3jT5tmA/ZOUd5uTyPWv6dvrnOC0HxlNus196+YSNh8GS97RpdwtiFk4IAUy8=
+	t=1745420950; cv=none; b=l/fg97zGMyLMpYbGlVcaA+de0oxIzVzbfYxqkXply41pT8p4BQ7giY/7igJDcEtc8BaEWM6CaC1KriAORNsGz8CR6o+7CaxbtetJ9h6cqUBf6qI8Lz7VRdD1IQ38cMrX/X6tTby2q1Rb9y2h4gurqZDbrb7Q224yumofaC1ygb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419748; c=relaxed/simple;
-	bh=1WEK0xOwivnJkgt0MAcK2+hMvRI+9lRP21eBNW0uh4E=;
+	s=arc-20240116; t=1745420950; c=relaxed/simple;
+	bh=rwWE5GoicQx7goHrywG+hzFIM7brtIz+78oySnFxQaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Db6rLN/2pFFa02AQCduR2fi/ue7Rbbgj41QEY7crJQrBAkQ0lWIecHGX62KhDKFkzWZtZmGFBuclwoR2lsQvfhmPkeCsRBOyLkt+PywatQJr80BWwcNzT/OiQEcEDDDO3BZd5gjJ8wQnnzLPcSKsUulrzdv7OsZtzv5dDAoih3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0OJK82w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B63CC4CEE3;
-	Wed, 23 Apr 2025 14:49:07 +0000 (UTC)
+	 MIME-Version; b=G8AdMpx1rQzJZctKlEb+fLEdx3HRyf4ysU55JtWInOmS4S/8J20FvG6lNoqvvX9lhI9arWcnGca1A9TBlUbAvuBiX2dpVASnuhJLRnzfFDI+029lnpIYpFDwiptr6tVOSvhDZE1hOVVMypa+3x0BKoyXcDwrN8Dt96+vaJhexjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW94NSGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0548C4CEE8;
+	Wed, 23 Apr 2025 15:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419747;
-	bh=1WEK0xOwivnJkgt0MAcK2+hMvRI+9lRP21eBNW0uh4E=;
+	s=korg; t=1745420950;
+	bh=rwWE5GoicQx7goHrywG+hzFIM7brtIz+78oySnFxQaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0OJK82wKiRZb2LNbi2pB5NJtF4VW7+z68o2P/vivumpfg8Zs6irA25w2bdlXWIrl
-	 7Koc1GZ0LDa5zPL/hVBFtKxRFtcEVhPSamA5izWWvIgrsjWu+IMyDEx7jPenCqocqf
-	 NbFlh8QyB7OBCWErMugZKCZBgFO/7flJmiJLm6Z8=
+	b=LW94NSGYSvgJ/b5JF//uwe7aSua6stncJW2uHk1E1hjEl5VOOcvLb9CUnd2M8l+ui
+	 974CHnlI5NnfaeiEjFCCrp7FCe4MFI7mgLscvpAUhrR8Z3QyciFMKSd5vdFVF88hgi
+	 HqxEb0I5XqxVVElLXJcvEKzHmt7JYrkMTFr0UPbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 020/241] ASoC: cs42l43: Reset clamp override on jack removal
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 095/291] media: i2c: ccs: Set the devices runtime PM status correctly in remove
 Date: Wed, 23 Apr 2025 16:41:24 +0200
-Message-ID: <20250423142621.344382775@linuxfoundation.org>
+Message-ID: <20250423142628.236261052@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 5fc7d2b5cab47f2ac712f689140b1fed978fb91c ]
+commit e04604583095faf455b3490b004254a225fd60d4 upstream.
 
-Some of the manually selected jack configurations will disable the
-headphone clamp override. Restore this on jack removal, such that
-the state is consistent for a new insert.
+Set the device's runtime PM status to suspended in device removal only if
+it wasn't suspended already.
 
-Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250409120717.1294528-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
+Cc: stable@vger.kernel.org # for >= v5.15
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs42l43-jack.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/i2c/ccs/ccs-core.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
-index ac19a572fe70c..20e6ab6f0d4ad 100644
---- a/sound/soc/codecs/cs42l43-jack.c
-+++ b/sound/soc/codecs/cs42l43-jack.c
-@@ -702,6 +702,9 @@ static void cs42l43_clear_jack(struct cs42l43_codec *priv)
- 			   CS42L43_PGA_WIDESWING_MODE_EN_MASK, 0);
- 	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CTRL,
- 			   CS42L43_JACK_STEREO_CONFIG_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CLAMP_CTRL,
-+			   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+			   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK);
- 	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
- 			   CS42L43_HSDET_MODE_MASK | CS42L43_HSDET_MANUAL_MODE_MASK,
- 			   0x2 << CS42L43_HSDET_MODE_SHIFT);
--- 
-2.39.5
-
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3674,9 +3674,10 @@ static void ccs_remove(struct i2c_client
+ 	v4l2_async_unregister_subdev(subdev);
+ 
+ 	pm_runtime_disable(&client->dev);
+-	if (!pm_runtime_status_suspended(&client->dev))
++	if (!pm_runtime_status_suspended(&client->dev)) {
+ 		ccs_power_off(&client->dev);
+-	pm_runtime_set_suspended(&client->dev);
++		pm_runtime_set_suspended(&client->dev);
++	}
+ 
+ 	for (i = 0; i < sensor->ssds_used; i++) {
+ 		v4l2_device_unregister_subdev(&sensor->ssds[i].sd);
 
 
 
