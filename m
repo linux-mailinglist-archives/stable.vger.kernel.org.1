@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-136400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B30A99403
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:07:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D6CA99427
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 696ED1B875F8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8114D9A475C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F152C256E;
-	Wed, 23 Apr 2025 15:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D113D2BD580;
+	Wed, 23 Apr 2025 15:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5qeFkez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2l+O5s87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9172BEC3A;
-	Wed, 23 Apr 2025 15:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F77D28F51E;
+	Wed, 23 Apr 2025 15:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422446; cv=none; b=gh4oYQm1LxvGq6zV4a4DDWMHjrsfxGfYaEEc+tLu+3dFOcFb9UbBfQpLfqjps/eUOihsrO6iqSlKI8fMM7QQm3/tp4LvezVi90BJMQB35SWzv9od2neTKJQZeG2i72T/b3lj0Fi3tCUb0AL2nfgATjFVkHaLeE3oTYWbvkdnDfk=
+	t=1745422378; cv=none; b=a3fKmS8owXS3RF9ObSvElxqg7+oEbEpd9HUtT5x3AV+bSgerCGBHOuqAjJsD90xc9M5kFHj50LJ7YU8/Z5g/GMVqWJjx5E9VBCb6EJYjHQ2PdL3c9z4mDCnUZ8koTry2V0/7Zv+JRzi4Hl1Q/fIJ5lFnChPoJmDmvG30ipjs6E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422446; c=relaxed/simple;
-	bh=tgtUzIv85qy0+SS+KnClh/omouzAwcW7FSX78CUxt9Q=;
+	s=arc-20240116; t=1745422378; c=relaxed/simple;
+	bh=5wiYOCkEYYY5L6/o2Jy94t+LcFFNrYjd+nb4QViIbj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t7IM99s9pZjmcTbB15Mm7/9mQDDmJPPVbJvlqGbCAcuLqun6ZvvU3UWP9AyTlvlHqShWrGayt59Id43M+rt+kTaWMg+c6VYU9gkCGkwOU0Z26r8H42yZg2tCPnNCV2st1jpcMrEUttgZPH54SZ1MMHWXqV5a1SVsbmc6RWgyGP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5qeFkez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C724C4CEE2;
-	Wed, 23 Apr 2025 15:34:05 +0000 (UTC)
+	 MIME-Version; b=BcxIMgRIUXR8pjRvn8nbv3P49vWMVVJDKL+JOXg2pnYU96S/zoL5YWQWgZ2ZFcdWewmdktLfwa3RigtcghCqJYvS0MX4HDK5Bm13Wb2UprSc7zp+1ANa2zMJS4D8IRqQRnOZBS6GXUYi0B4wy+ldHJZoAq8mS6e76Djo8zFfY64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2l+O5s87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC959C4CEE3;
+	Wed, 23 Apr 2025 15:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422446;
-	bh=tgtUzIv85qy0+SS+KnClh/omouzAwcW7FSX78CUxt9Q=;
+	s=korg; t=1745422378;
+	bh=5wiYOCkEYYY5L6/o2Jy94t+LcFFNrYjd+nb4QViIbj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o5qeFkezYTgbiZij9QTUjQCvQV2WQj1Ve6V+xOI+pCQnOfdt+ZqIDOMkTI1A9BKbe
-	 zGeUJtsG8OaiKZzWM9vNsgXVUH+D4luMKHMDNxAfy/x/6u0Ay94ZmHD6rAhDiBjYnf
-	 UhKy40fMAzOJDvd0l9q60f6NwtONVmflStv/2gEA=
+	b=2l+O5s87cbDdhje3y+WLq+OQOKa3e7TzGp+9cOxvU53r70HF60Go+d474l8RlTu2l
+	 2oiW9fOM+Hf8wdxjdH55RmBVtp/Lsr877fA/mPTUHpA+5vtzJQjGo5D+oVdEVC6eFB
+	 SgDUgdx7rHsB90eIX5Z81FSThMv8pF14aE89bN2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 327/393] ksmbd: fix the warning from __kernel_write_iter
-Date: Wed, 23 Apr 2025 16:43:43 +0200
-Message-ID: <20250423142656.835382006@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Aishwarya TCV <aishwarya.tcv@arm.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 331/393] selftests/mm: generate a temporary mountpoint for cgroup filesystem
+Date: Wed, 23 Apr 2025 16:43:47 +0200
+Message-ID: <20250423142657.012359062@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,37 +69,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Mark Brown <broonie@kernel.org>
 
-commit b37f2f332b40ad1c27f18682a495850f2f04db0a upstream.
+commit 9c02223e2d9df5cb37c51aedb78f3960294e09b5 upstream.
 
-[ 2110.972290] ------------[ cut here ]------------
-[ 2110.972301] WARNING: CPU: 3 PID: 735 at fs/read_write.c:599 __kernel_write_iter+0x21b/0x280
+Currently if the filesystem for the cgroups version it wants to use is not
+mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
+will attempt to mount it on the hard coded path /dev/cgroup/memory,
+deleting that directory when the test finishes.  This will fail if there
+is not a preexisting directory at that path, and since the directory is
+deleted subsequent runs of the test will fail.  Instead of relying on this
+hard coded directory name use mktemp to generate a temporary directory to
+use as a mountpoint, fixing both the assumption and the disruption caused
+by deleting a preexisting directory.
 
-This patch doesn't allow writing to directory.
+This means that if the relevant cgroup filesystem is not already mounted
+then we rely on having coreutils (which provides mktemp) installed.  I
+suspect that many current users are relying on having things automounted
+by default, and given that the script relies on bash it's probably not an
+unreasonable requirement.
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
+Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |    4 ++--
+ tools/testing/selftests/mm/hugetlb_reparenting_test.sh |    2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -496,7 +496,8 @@ int ksmbd_vfs_write(struct ksmbd_work *w
- 	int err = 0;
- 
- 	if (work->conn->connection_type) {
--		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE))) {
-+		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE)) ||
-+		    S_ISDIR(file_inode(fp->filp)->i_mode)) {
- 			pr_err("no right to write(%pD)\n", fp->filp);
- 			err = -EACCES;
- 			goto out;
+--- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
+@@ -27,7 +27,7 @@ fi
+ if [[ $cgroup2 ]]; then
+   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+-    cgroup_path=/dev/cgroup/memory
++    cgroup_path=$(mktemp -d)
+     mount -t cgroup2 none $cgroup_path
+     do_umount=1
+   fi
+@@ -35,7 +35,7 @@ if [[ $cgroup2 ]]; then
+ else
+   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+-    cgroup_path=/dev/cgroup/memory
++    cgroup_path=$(mktemp -d)
+     mount -t cgroup memory,hugetlb $cgroup_path
+     do_umount=1
+   fi
+--- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
++++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
+@@ -22,7 +22,7 @@ fi
+ if [[ $cgroup2 ]]; then
+   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+-    CGROUP_ROOT=/dev/cgroup/memory
++    CGROUP_ROOT=$(mktemp -d)
+     mount -t cgroup2 none $CGROUP_ROOT
+     do_umount=1
+   fi
 
 
 
