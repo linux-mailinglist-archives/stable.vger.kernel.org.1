@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C0BA98F26
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C618A992B6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69A48171FB6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 893B6924879
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85F327F751;
-	Wed, 23 Apr 2025 15:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C1C2BE7B8;
+	Wed, 23 Apr 2025 15:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCpY00jj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzpG+l1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2C617B421;
-	Wed, 23 Apr 2025 15:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658232BE7B1;
+	Wed, 23 Apr 2025 15:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420442; cv=none; b=CPbSBztBtcuRHqoE3iSlYuyzPngOdKJNo80sH6685PP50rA4XPCuEAk0g1AZq+Lwl8gIUitG+UamG3lCBYvazKmp9oH/Ski5x4d4Sj+9cV3/qERKePfwmgvRFJUTIRd/jYY3Jude8GL7k9EADZSv47hxBQc5DZkxFYIv+vO9kho=
+	t=1745421700; cv=none; b=O6jxyn29b8EJHtys7WtMQZD/guNRtnaqzoX7Z2bvlTTVOOKbOQXKNeLUOtgbIPeK01cdwAv/ICiyGkXEY8mLS9tMwRV+GpXGkZT3zA63CnoGUZtozOrC5gI2uTluMlG9dXv0bS1Xey39h5Gt/tQq7HS8oog4R0IYxLVpyBTGepg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420442; c=relaxed/simple;
-	bh=/5tddqCoVXmTkR/JGF9F6oV/9kg+EOnjl+W2BrIifdM=;
+	s=arc-20240116; t=1745421700; c=relaxed/simple;
+	bh=gIjeRaKjc8bHZOFRO6ZYsdTlmFbew9KnqNT5kWW+iVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YC3sqkCSnMhwJ5ZDgOucC+RD9FfWitKmoiI2KYQkte1j226MutG0m4MMqg/64XuCCcqjtQP2u1CxUnxNtlgada3Cb2F5UcwPuql2PUqN3kZeowLkb332ch5VOOce50rKAv5ghaG9422EcRY3/wK4Oky2IXvrOGfcf2V6irnC2q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCpY00jj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E70C4CEE3;
-	Wed, 23 Apr 2025 15:00:42 +0000 (UTC)
+	 MIME-Version; b=XoBGnVHr/LL+lgJNzbqm5FuFtNt7WTz/WSdw72BuyrCW/24XadM522JzatirsbwaiQXDEebACMN3Inmmdir6bO8PUKfJ+CdRCxrKdbdLexPg5EuaNejlcAW9D6TcH1OMgfBNhHB5h3cTIUCuniPlEGLOFFNc7gxZo68ptcLrWNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzpG+l1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC812C4CEE2;
+	Wed, 23 Apr 2025 15:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420442;
-	bh=/5tddqCoVXmTkR/JGF9F6oV/9kg+EOnjl+W2BrIifdM=;
+	s=korg; t=1745421700;
+	bh=gIjeRaKjc8bHZOFRO6ZYsdTlmFbew9KnqNT5kWW+iVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCpY00jjPq7PZYxCz/z3P1TaZkMY+AZPqrtB0cG0NSPYn9r2+GEwhLKvtMByLyyga
-	 CIWrFbpyLlBebkRC7ZTChSL9aCsSBF7vO5r0d9uHbtemxbX3uFzuKmY4rJvAcDaz9i
-	 xarpIaqyASVHMU7SQvUlD5pE32vSVD36l6gBPd5k=
+	b=TzpG+l1ZWu5b5ItAAe6oTs9/Uc1v6B4xmdcft+wAdEob+nep4Sg2ixq1kvxDN4p8x
+	 jNewNfi1sE1oJ41QoDx2OWa78hf1bg6BOeZJh7arXvwMukdUuTxWw0VeoLEilJsFun
+	 HgTumt9MHy14ny36Ave4HfrBrysKkLSwP6TwAttA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 092/241] thermal: intel: int340x: Fix Panther Lake DLVR support
-Date: Wed, 23 Apr 2025 16:42:36 +0200
-Message-ID: <20250423142624.339374713@linuxfoundation.org>
+Subject: [PATCH 6.1 168/291] wifi: mac80211: Purge vif txq in ieee80211_do_stop()
+Date: Wed, 23 Apr 2025 16:42:37 +0200
+Message-ID: <20250423142631.255651358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 00c5ff5e9a55dca2e7ca29af4e5f8708731faf11 ]
+[ Upstream commit 378677eb8f44621ecc9ce659f7af61e5baa94d81 ]
 
-Panther Lake uses the same DLVR register offsets as Lunar Lake, but the
-driver uses the default register offsets table for it by mistake.
+After ieee80211_do_stop() SKB from vif's txq could still be processed.
+Indeed another concurrent vif schedule_and_wake_txq call could cause
+those packets to be dequeued (see ieee80211_handle_wake_tx_queue())
+without checking the sdata current state.
 
-Move the selection of register offsets table from the actual attribute
-read/write callbacks to proc_thermal_rfim_add() and make it handle
-Panther Lake the same way as Lunar Lake.  This way it is clean and in
-the future such issues can be avoided.
+Because vif.drv_priv is now cleared in this function, this could lead to
+driver crash.
 
-Fixes: e50eeababa94 ("thermal: intel: int340x: Panther Lake DLVR support")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250411115438.594114-1-srinivas.pandruvada@linux.intel.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+For example in ath12k, ahvif is store in vif.drv_priv. Thus if
+ath12k_mac_op_tx() is called after ieee80211_do_stop(), ahvif->ah can be
+NULL, leading the ath12k_warn(ahvif->ah,...) call in this function to
+trigger the NULL deref below.
+
+  Unable to handle kernel paging request at virtual address dfffffc000000001
+  KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+  batman_adv: bat0: Interface deactivated: brbh1337
+  Mem abort info:
+    ESR = 0x0000000096000004
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x04: level 0 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+  [dfffffc000000001] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000004 [#1] SMP
+  CPU: 1 UID: 0 PID: 978 Comm: lbd Not tainted 6.13.0-g633f875b8f1e #114
+  Hardware name: HW (DT)
+  pstate: 10000005 (nzcV daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k]
+  lr : ath12k_mac_op_tx+0x174/0x29b8 [ath12k]
+  sp : ffffffc086ace450
+  x29: ffffffc086ace450 x28: 0000000000000000 x27: 1ffffff810d59ca4
+  x26: ffffff801d05f7c0 x25: 0000000000000000 x24: 000000004000001e
+  x23: ffffff8009ce4926 x22: ffffff801f9c0800 x21: ffffff801d05f7f0
+  x20: ffffff8034a19f40 x19: 0000000000000000 x18: ffffff801f9c0958
+  x17: ffffff800bc0a504 x16: dfffffc000000000 x15: ffffffc086ace4f8
+  x14: ffffff801d05f83c x13: 0000000000000000 x12: ffffffb003a0bf03
+  x11: 0000000000000000 x10: ffffffb003a0bf02 x9 : ffffff8034a19f40
+  x8 : ffffff801d05f818 x7 : 1ffffff0069433dc x6 : ffffff8034a19ee0
+  x5 : ffffff801d05f7f0 x4 : 0000000000000000 x3 : 0000000000000001
+  x2 : 0000000000000000 x1 : dfffffc000000000 x0 : 0000000000000008
+  Call trace:
+   ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k] (P)
+   ieee80211_handle_wake_tx_queue+0x16c/0x260
+   ieee80211_queue_skb+0xeec/0x1d20
+   ieee80211_tx+0x200/0x2c8
+   ieee80211_xmit+0x22c/0x338
+   __ieee80211_subif_start_xmit+0x7e8/0xc60
+   ieee80211_subif_start_xmit+0xc4/0xee0
+   __ieee80211_subif_start_xmit_8023.isra.0+0x854/0x17a0
+   ieee80211_subif_start_xmit_8023+0x124/0x488
+   dev_hard_start_xmit+0x160/0x5a8
+   __dev_queue_xmit+0x6f8/0x3120
+   br_dev_queue_push_xmit+0x120/0x4a8
+   __br_forward+0xe4/0x2b0
+   deliver_clone+0x5c/0xd0
+   br_flood+0x398/0x580
+   br_dev_xmit+0x454/0x9f8
+   dev_hard_start_xmit+0x160/0x5a8
+   __dev_queue_xmit+0x6f8/0x3120
+   ip6_finish_output2+0xc28/0x1b60
+   __ip6_finish_output+0x38c/0x638
+   ip6_output+0x1b4/0x338
+   ip6_local_out+0x7c/0xa8
+   ip6_send_skb+0x7c/0x1b0
+   ip6_push_pending_frames+0x94/0xd0
+   rawv6_sendmsg+0x1a98/0x2898
+   inet_sendmsg+0x94/0xe0
+   __sys_sendto+0x1e4/0x308
+   __arm64_sys_sendto+0xc4/0x140
+   do_el0_svc+0x110/0x280
+   el0_svc+0x20/0x60
+   el0t_64_sync_handler+0x104/0x138
+   el0t_64_sync+0x154/0x158
+
+To avoid that, empty vif's txq at ieee80211_do_stop() so no packet could
+be dequeued after ieee80211_do_stop() (new packets cannot be queued
+because SDATA_STATE_RUNNING is cleared at this point).
+
+Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/ff7849e268562456274213c0476e09481a48f489.1742833382.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../int340x_thermal/processor_thermal_rfim.c  | 33 ++++++++++---------
- 1 file changed, 17 insertions(+), 16 deletions(-)
+ net/mac80211/iface.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c
-index dad63f2d5f90f..3a028b78d9afc 100644
---- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c
-+++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c
-@@ -166,15 +166,18 @@ static const struct mmio_reg adl_dvfs_mmio_regs[] = {
- 	{ 0, 0x5A40, 1, 0x1, 0}, /* rfi_disable */
- };
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 8861f63e2cfb9..fc60e80088a38 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -688,6 +688,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
+ 		ieee80211_txq_remove_vlan(local, sdata);
  
-+static const struct mapping_table *dlvr_mapping;
-+static const struct mmio_reg *dlvr_mmio_regs_table;
++	if (sdata->vif.txq)
++		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
 +
- #define RFIM_SHOW(suffix, table)\
- static ssize_t suffix##_show(struct device *dev,\
- 			      struct device_attribute *attr,\
- 			      char *buf)\
- {\
--	const struct mapping_table *mapping = NULL;\
-+	const struct mmio_reg *mmio_regs = dlvr_mmio_regs_table;\
-+	const struct mapping_table *mapping = dlvr_mapping;\
- 	struct proc_thermal_device *proc_priv;\
- 	struct pci_dev *pdev = to_pci_dev(dev);\
--	const struct mmio_reg *mmio_regs;\
- 	const char **match_strs;\
- 	int ret, err;\
- 	u32 reg_val;\
-@@ -186,12 +189,6 @@ static ssize_t suffix##_show(struct device *dev,\
- 		mmio_regs = adl_dvfs_mmio_regs;\
- 	} else if (table == 2) { \
- 		match_strs = (const char **)dlvr_strings;\
--		if (pdev->device == PCI_DEVICE_ID_INTEL_LNLM_THERMAL) {\
--			mmio_regs = lnl_dlvr_mmio_regs;\
--			mapping = lnl_dlvr_mapping;\
--		} else {\
--			mmio_regs = dlvr_mmio_regs;\
--		} \
- 	} else {\
- 		match_strs = (const char **)fivr_strings;\
- 		mmio_regs = tgl_fivr_mmio_regs;\
-@@ -214,12 +211,12 @@ static ssize_t suffix##_store(struct device *dev,\
- 			       struct device_attribute *attr,\
- 			       const char *buf, size_t count)\
- {\
--	const struct mapping_table *mapping = NULL;\
-+	const struct mmio_reg *mmio_regs = dlvr_mmio_regs_table;\
-+	const struct mapping_table *mapping = dlvr_mapping;\
- 	struct proc_thermal_device *proc_priv;\
- 	struct pci_dev *pdev = to_pci_dev(dev);\
- 	unsigned int input;\
- 	const char **match_strs;\
--	const struct mmio_reg *mmio_regs;\
- 	int ret, err;\
- 	u32 reg_val;\
- 	u32 mask;\
-@@ -230,12 +227,6 @@ static ssize_t suffix##_store(struct device *dev,\
- 		mmio_regs = adl_dvfs_mmio_regs;\
- 	} else if (table == 2) { \
- 		match_strs = (const char **)dlvr_strings;\
--		if (pdev->device == PCI_DEVICE_ID_INTEL_LNLM_THERMAL) {\
--			mmio_regs = lnl_dlvr_mmio_regs;\
--			mapping = lnl_dlvr_mapping;\
--		} else {\
--			mmio_regs = dlvr_mmio_regs;\
--		} \
- 	} else {\
- 		match_strs = (const char **)fivr_strings;\
- 		mmio_regs = tgl_fivr_mmio_regs;\
-@@ -448,6 +439,16 @@ int proc_thermal_rfim_add(struct pci_dev *pdev, struct proc_thermal_device *proc
- 	}
+ 	sdata->bss = NULL;
  
- 	if (proc_priv->mmio_feature_mask & PROC_THERMAL_FEATURE_DLVR) {
-+		switch (pdev->device) {
-+		case PCI_DEVICE_ID_INTEL_LNLM_THERMAL:
-+		case PCI_DEVICE_ID_INTEL_PTL_THERMAL:
-+			dlvr_mmio_regs_table = lnl_dlvr_mmio_regs;
-+			dlvr_mapping = lnl_dlvr_mapping;
-+			break;
-+		default:
-+			dlvr_mmio_regs_table = dlvr_mmio_regs;
-+			break;
-+		}
- 		ret = sysfs_create_group(&pdev->dev.kobj, &dlvr_attribute_group);
- 		if (ret)
- 			return ret;
+ 	if (local->open_count == 0)
 -- 
 2.39.5
 
