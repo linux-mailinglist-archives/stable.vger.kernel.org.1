@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-135649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A264A98F36
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9210EA990B1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBF8A462E9B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3D51B87227
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC8A28467D;
-	Wed, 23 Apr 2025 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2608C28C5AF;
+	Wed, 23 Apr 2025 15:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLfcFybT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcCWRRUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ED6280A4F;
-	Wed, 23 Apr 2025 15:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77BF28C5AB;
+	Wed, 23 Apr 2025 15:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420479; cv=none; b=KO//VeIJtnCRkQVaXGFhhG4Mq7H1CgZcAQEK/Rsv+yRPv2lyQVDKQfugDZm8HSHbYo/HBXbE5mYQuch7iEWVYVz/agHZh0ToyDs3Ue/V0AfyvNr+PMSelRibq6OTA2FJX9dXRmCHQpbeWu8sH0KK7c5SiQMVa/7AkSOCmB3u8PQ=
+	t=1745421004; cv=none; b=VvyXUKT1He4TbV/lW9r9pSspH931h/HjlRsdIhi5Tmbehb8w1NCdi+zbinwN6n1/VsQ/u5I0O204dw/VfDSOeBPX3/izHy+chP9RB+vW5NU+1CLVqdA3fZsUIYbQa0e/2z3Z5FSTijDJHuUdp48s/1nYgJrOlTdKKveyKa6m8mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420479; c=relaxed/simple;
-	bh=16+1F53NjAPN2AMalJR8Kf2Ug5MD3j9oEg5gdIYURM8=;
+	s=arc-20240116; t=1745421004; c=relaxed/simple;
+	bh=mU4fDwBCYIxyUzqnU5mVEz+RBqOFbko7fJ58i4wjfbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F8pI3ImhY7GQBSs9NFsG7vdpZpYbwd3MYN4cL1ez8NQXqiWX6GQJ3s2mJgkPU7SZOv6sEZzVHXAlqvmlbXqd+o6Z4Bh1Xsq0roVewFQzezdmzYrzSfAKP9pZ63xhMtnWX5TYdF2rhjU1Rpw3e/UjhTfgVeVytcMKrtzDGDi55Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLfcFybT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50758C4CEE2;
-	Wed, 23 Apr 2025 15:01:19 +0000 (UTC)
+	 MIME-Version; b=CGoUU85cExYpjFIjQspRryK0Z04h2Ks/x3gTe9Az0+7dc+GJdsiwhdw1a3MtNNXBrWWq1pcgKyALAEvzCIHlY+0r9EMjgzWD3HzBBJSc2NIqs6jHNy5w29I/UajwqQCZLoZ+2P/QbmZuuy4LM9yyl46RReC/aIgdypra0+oEXDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcCWRRUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C2EC4CEE2;
+	Wed, 23 Apr 2025 15:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420479;
-	bh=16+1F53NjAPN2AMalJR8Kf2Ug5MD3j9oEg5gdIYURM8=;
+	s=korg; t=1745421004;
+	bh=mU4fDwBCYIxyUzqnU5mVEz+RBqOFbko7fJ58i4wjfbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLfcFybTxS1zaHGkMrnk0iDXTjwdZpBlGcLwM48Guyw/1A5iibjuBTgglTWS7glTS
-	 wgb6mxMjEtD2rmrBHpQ0lFtrfrHE4m7Rp/H987cQXBpLDWo2ABZapXj4md5iUkZstx
-	 dhvfUOlsY0O7iU4h9DoKo61fj0FvB9WbD1WAqY1I=
+	b=lcCWRRUB5A/OIWF0sWNKyFk3NWf8/jh+3qr81tlCN/60yCtn3vpjS9uMz/GYGESVM
+	 s7pFK5JDctrIT8QJlkMUl8KwGv5EyyMwTRW2gxpt1OWdCkKcTd4v3QQzvPNsG8SWrV
+	 qF1e/BuQAeMhs56cstO6EFCEVItaXgpA1W3iwL/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.12 135/223] x86/microcode/AMD: Extend the SHA check to Zen5, block loading of any unreleased standalone Zen5 microcode patches
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 143/241] ksmbd: Fix dangling pointer in krb_authenticate
 Date: Wed, 23 Apr 2025 16:43:27 +0200
-Message-ID: <20250423142622.591037913@linuxfoundation.org>
+Message-ID: <20250423142626.399808290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit 805b743fc163f1abef7ce1bea8eca8dfab5b685b upstream.
+commit 1e440d5b25b7efccb3defe542a73c51005799a5f upstream.
 
-All Zen5 machines out there should get BIOS updates which update to the
-correct microcode patches addressing the microcode signature issue.
-However, silly people carve out random microcode blobs from BIOS
-packages and think are doing other people a service this way...
+krb_authenticate frees sess->user and does not set the pointer
+to NULL. It calls ksmbd_krb5_authenticate to reinitialise
+sess->user but that function may return without doing so. If
+that happens then smb2_sess_setup, which calls krb_authenticate,
+will be accessing free'd memory when it later uses sess->user.
 
-Block loading of any unreleased standalone Zen5 microcode patches.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Cc: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20250410114222.32523-1-bp@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -199,6 +199,12 @@ static bool need_sha_check(u32 cur_rev)
- 	case 0xa70c0: return cur_rev <= 0xa70C009; break;
- 	case 0xaa001: return cur_rev <= 0xaa00116; break;
- 	case 0xaa002: return cur_rev <= 0xaa00218; break;
-+	case 0xb0021: return cur_rev <= 0xb002146; break;
-+	case 0xb1010: return cur_rev <= 0xb101046; break;
-+	case 0xb2040: return cur_rev <= 0xb204031; break;
-+	case 0xb4040: return cur_rev <= 0xb404031; break;
-+	case 0xb6000: return cur_rev <= 0xb600031; break;
-+	case 0xb7000: return cur_rev <= 0xb700031; break;
- 	default: break;
- 	}
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1602,8 +1602,10 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
  
-@@ -214,8 +220,7 @@ static bool verify_sha256_digest(u32 pat
- 	struct sha256_state s;
- 	int i;
+-	if (sess->state == SMB2_SESSION_VALID)
++	if (sess->state == SMB2_SESSION_VALID) {
+ 		ksmbd_free_user(sess->user);
++		sess->user = NULL;
++	}
  
--	if (x86_family(bsp_cpuid_1_eax) < 0x17 ||
--	    x86_family(bsp_cpuid_1_eax) > 0x19)
-+	if (x86_family(bsp_cpuid_1_eax) < 0x17)
- 		return true;
- 
- 	if (!need_sha_check(cur_rev))
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
 
 
 
