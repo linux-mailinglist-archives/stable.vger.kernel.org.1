@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-135598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396E6A98ED4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70369A99088
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF53D7AEB2D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E0808E25B7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C7281357;
-	Wed, 23 Apr 2025 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D48280A52;
+	Wed, 23 Apr 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNSs2rgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpl2aluB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F18280CCE;
-	Wed, 23 Apr 2025 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828A8281522;
+	Wed, 23 Apr 2025 15:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420345; cv=none; b=PcfruVdZpURO3hyXiTzOsWSeceTA68vE/dbZT68NmXnP4jwKBx2gem9/ouhv00hsmPcOvV7LrNNqtDY6m7d/AKmTpj/gWP+6VCyrWGfaZKbl+bCJ21oDSsrRGx/mfbX+ctd8K/zJENW66vUfmyuc4UECAblg5VU9tF6KNU2MAj4=
+	t=1745420832; cv=none; b=Zzf2QhgHX2ybg0c/fQ0ik0j/+citI2eCtUJTtHP0KdjwyDEJSbmcyhnKHFEDim2cbr7BOnq9r6U8oT0YCM1jr7HCAnjzAaoNeL5t+nAMKpwFqRS97rwthC+6Y3TcfCe9WxfRlhEPeAA0sdozsmA//IiPRot+/gCx9in9uhEnM/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420345; c=relaxed/simple;
-	bh=m1xoqtgq204qm0DAtR+NNA5JAdaBG3vzwOZNUNcGo3I=;
+	s=arc-20240116; t=1745420832; c=relaxed/simple;
+	bh=LDJSTXnTAYB8LOsWyEzYLZJcd8+aMBjq9YoMp4GuQow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGif3MW7h8QPQBtY1JEukeBPdk1dKsjAsKCniBuYRL4oc233FOvXBE1FOr7gJiBSgbuZuOzinGiBaXrbRa8NtkDTwaQQlInOB1JTn93sc2Ccx2zfBy7aVRN5uBI6f8j8/HwPl526lnrxFHoOYzHlJhjW0UcnrkM8VZVnW1LBGrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNSs2rgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05110C4CEE2;
-	Wed, 23 Apr 2025 14:59:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B7KoV/RrsGPs/r4aVBG5Bcp0WOCnjCu1U2tyc7kpNnyQTreDPzqJhoONSDttMVDEsWivyLV0badMuYae0zI4gni44TJcQHTGoy8EZtTqzC7rpV+5wN/O7JRr5HF3y00q81l+ksVG9sx4Wov7cS7nuYDddK8bUqnIr8aTRcOdWhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpl2aluB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F86C4CEE3;
+	Wed, 23 Apr 2025 15:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420345;
-	bh=m1xoqtgq204qm0DAtR+NNA5JAdaBG3vzwOZNUNcGo3I=;
+	s=korg; t=1745420832;
+	bh=LDJSTXnTAYB8LOsWyEzYLZJcd8+aMBjq9YoMp4GuQow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNSs2rgOgOUjXDRmS+0CKABd1ptSuD00Y0Jina3THKPMv61OJ8/VAnCx0F4wXp3Vz
-	 u1JKn85vnvlVAUwkoATdHbYKDFS2lzoyvgnyTL6iadAmoYS+96ednPcl51Ssc8d787
-	 +s8tLe5ZvGA2GMuKgXD5zbhvF1TYjvnP7kktgwOw=
+	b=kpl2aluBuoZQs9QdwO80Mn7ryUitHRCZPF1fuhv4kubnoPHPMrDKrnvQI5O7lBznk
+	 g4aGQ30Gif3e/KsIHZuqfcr3px9CtfltAbz1IHkdVmCBzTxyzAmDFhcZDw3J27TMqL
+	 ljaI84M+IfyRJilNPQAOODUEtxjo8pdrh2ykOLV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/291] perf: arm_pmu: Dont disable counter in armpmu_add()
+Subject: [PATCH 6.6 116/393] pwm: fsl-ftm: Handle clk_get_rate() returning 0
 Date: Wed, 23 Apr 2025 16:40:12 +0200
-Message-ID: <20250423142625.351721348@linuxfoundation.org>
+Message-ID: <20250423142648.151917932@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit dcca27bc1eccb9abc2552aab950b18a9742fb8e7 ]
+[ Upstream commit 928446a5302eee30ebb32075c0db5dda5a138fb7 ]
 
-Currently armpmu_add() tries to handle a newly-allocated counter having
-a stale associated event, but this should not be possible, and if this
-were to happen the current mitigation is insufficient and potentially
-expensive. It would be better to warn if we encounter the impossible
-case.
+Considering that the driver doesn't enable the used clocks (and also
+that clk_get_rate() returns 0 if CONFIG_HAVE_CLK is unset) better check
+the return value of clk_get_rate() for being non-zero before dividing by
+it.
 
-Calls to pmu::add() and pmu::del() are serialized by the core perf code,
-and armpmu_del() clears the relevant slot in pmu_hw_events::events[]
-before clearing the bit in pmu_hw_events::used_mask such that the
-counter can be reallocated. Thus when armpmu_add() allocates a counter
-index from pmu_hw_events::used_mask, it should not be possible to observe
-a stale even in pmu_hw_events::events[] unless either
-pmu_hw_events::used_mask or pmu_hw_events::events[] have been corrupted.
-
-If this were to happen, we'd end up with two events with the same
-event->hw.idx, which would clash with each other during reprogramming,
-deletion, etc, and produce bogus results. Add a WARN_ON_ONCE() for this
-case so that we can detect if this ever occurs in practice.
-
-That possiblity aside, there's no need to call arm_pmu::disable(event)
-for the new event. The PMU reset code initialises the counter in a
-disabled state, and armpmu_del() will disable the counter before it can
-be reused. Remove the redundant disable.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250218-arm-brbe-v19-v20-2-4e9922fc2e8e@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 3479bbd1e1f8 ("pwm: fsl-ftm: More relaxed permissions for updating period")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/b68351a51017035651bc62ad3146afcb706874f0.1743501688.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_pmu.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/pwm/pwm-fsl-ftm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
-index 3f07df5a7e950..d351d6ce750bf 100644
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -340,12 +340,10 @@ armpmu_add(struct perf_event *event, int flags)
- 	if (idx < 0)
- 		return idx;
+diff --git a/drivers/pwm/pwm-fsl-ftm.c b/drivers/pwm/pwm-fsl-ftm.c
+index b7c6045c5d089..2c60d67e9a4a4 100644
+--- a/drivers/pwm/pwm-fsl-ftm.c
++++ b/drivers/pwm/pwm-fsl-ftm.c
+@@ -119,6 +119,9 @@ static unsigned int fsl_pwm_ticks_to_ns(struct fsl_pwm_chip *fpc,
+ 	unsigned long long exval;
  
--	/*
--	 * If there is an event in the counter we are going to use then make
--	 * sure it is disabled.
--	 */
-+	/* The newly-allocated counter should be empty */
-+	WARN_ON_ONCE(hw_events->events[idx]);
+ 	rate = clk_get_rate(fpc->clk[fpc->period.clk_select]);
++	if (rate >> fpc->period.clk_ps == 0)
++		return 0;
 +
- 	event->hw.idx = idx;
--	armpmu->disable(event);
- 	hw_events->events[idx] = event;
+ 	exval = ticks;
+ 	exval *= 1000000000UL;
+ 	do_div(exval, rate >> fpc->period.clk_ps);
+@@ -191,6 +194,9 @@ static unsigned int fsl_pwm_calculate_duty(struct fsl_pwm_chip *fpc,
+ 	unsigned int period = fpc->period.mod_period + 1;
+ 	unsigned int period_ns = fsl_pwm_ticks_to_ns(fpc, period);
  
- 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
++	if (!period_ns)
++		return 0;
++
+ 	duty = (unsigned long long)duty_ns * period;
+ 	do_div(duty, period_ns);
+ 
 -- 
 2.39.5
 
