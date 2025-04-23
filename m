@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF501A993F1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:06:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED15CA993FD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD05D1BA3F47
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F959A4187
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088B2298CB5;
-	Wed, 23 Apr 2025 15:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CE02857C7;
+	Wed, 23 Apr 2025 15:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geifjLw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3lvD/k7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65E289374;
-	Wed, 23 Apr 2025 15:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0222857E2;
+	Wed, 23 Apr 2025 15:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422464; cv=none; b=u9GWqdRpaLtTUxHX4mXsZ5o/BoOGkoIUUZpttt9eT8jRJfKauHgAT1wSe0LSihc2MpTWcghBfI1UMiM3GFEiKCUibfxA+ZH8pSNS1ngURt42/bTHBrw+fWfrX+LdITwAp7KmYpZf2RV902lUb/1NH/jnG+shaaIdT+KZZfQBTKY=
+	t=1745422305; cv=none; b=oU6CfWRE9VR837OJ1z9B89qH48faQ/mv5K2ECQL/NaTj2r6FfGXIC5YVyrKWCD6Skt/AoSBUWiP/V+aZeePT7YgsE1iZkq+Hk66FAX+B044c8tvmVUvd/gH+29sCDtO0AyDA+VpAPzmqY6YZgXCEnpzwV0iOauZV7XneoyWFVGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422464; c=relaxed/simple;
-	bh=1JDi/9n3Z+ZU7/beSUpQXaTtfSA7eq+UTjVwxrOBWg4=;
+	s=arc-20240116; t=1745422305; c=relaxed/simple;
+	bh=kT8DJqszx5g4q+0r7P9M9Ipln2KCGSna//yIkARL10U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9PA7nS6c101Tsf6oXTr3VPJS94DQREocDoW6hULRYauoGzG3n6So1QveNBDm5ZnyTNdjYA3acMKLhfhLDc3laaJOKOn161ijt6uAhoqgg71hE9Jr9JUXlvO21ybdf8XQ8ca/FeRzmS+VXkEWzuIo+qVdw7BkypUrXxjz0LVm+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geifjLw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49285C4CEE2;
-	Wed, 23 Apr 2025 15:34:24 +0000 (UTC)
+	 MIME-Version; b=qbOYCUgSr+R+VqZmi83xVIzQOqXe9GBCXh86lZE1clLMt8e3h5J9pOUffdAd4vTggobMYDS81FBpW3GXNCqWb2P5r8AHHE75xTBlTtkZCGJsN8SEFJS3YAbBrhJrRamnP5G8xmSMs5xQQAJtRGb2YuWB/WiM/pPADkXHXIVTTzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3lvD/k7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B192DC4CEE2;
+	Wed, 23 Apr 2025 15:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422464;
-	bh=1JDi/9n3Z+ZU7/beSUpQXaTtfSA7eq+UTjVwxrOBWg4=;
+	s=korg; t=1745422304;
+	bh=kT8DJqszx5g4q+0r7P9M9Ipln2KCGSna//yIkARL10U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=geifjLw1MJEBGvUMtzNtu36w6iv3L4Kyl1J9MlGJE/LjCwctzgs50Hs/amvGnPh2P
-	 FO0ygNTEkBH4QdowY4oou4r32m6Hygg+IpC8VsLFXOUAUcKKtqwNePBjvWcpeD0+DX
-	 glWqldFKn3oKFAEtEnIw40cRnzIdgcz+JdWf72hM=
+	b=a3lvD/k7n9xKCTeXz1cTY1NAdzGLASg1J9js1K8KhzRL8B5FJox9snfj28ZbEI/Ty
+	 SwQTWRax64JL+mFq63AA1TarFMin4OjctkDw+gqBOSD4wwZL+hhFmphIh0qiPkyOTa
+	 Qd3dOgUvRFFGi2H96ysk5GaSStBtj/HIfndlF//4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 353/393] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 260/291] mptcp: sockopt: fix getting freebind & transparent
 Date: Wed, 23 Apr 2025 16:44:09 +0200
-Message-ID: <20250423142657.920262340@linuxfoundation.org>
+Message-ID: <20250423142635.052236091@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
+commit e2f4ac7bab2205d3c4dd9464e6ffd82502177c51 upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+IP(V6)_FREEBIND and IP(V6)_TRANSPARENT support for the setsockopt part
+has been added a while ago, but it looks like the get part got
+forgotten. It should have been present as a way to verify a setting has
+been set as expected, and not to act differently from TCP or any other
+socket types.
 
-Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover these specific getsockopt(), that seems
+safe.
+
+Fixes: c9406a23c116 ("mptcp: sockopt: add SOL_IP freebind & transparent options")
 Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-3-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflict in sockopt.c due to commit e08d0b3d1723 ("inet: implement
+  lockless IP_TOS") not being in this version. The conflict is in the
+  context and the modification can still be applied in
+  mptcp_getsockopt_v4() after the IP_TOS case.
+  Also, get the values without 'inet_test_bit()' like it was done in
+  this version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/sockopt.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -1227,7 +1227,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
- 	uint32_t tach_period;
- 	int ret;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1266,6 +1266,12 @@ static int mptcp_getsockopt_v4(struct mp
+ 	switch (optname) {
+ 	case IP_TOS:
+ 		return mptcp_put_int_option(msk, optval, optlen, inet_sk(sk)->tos);
++	case IP_FREEBIND:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_sk(sk)->freebind);
++	case IP_TRANSPARENT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_sk(sk)->transparent);
+ 	}
  
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
+ 	return -EOPNOTSUPP;
+@@ -1280,6 +1286,12 @@ static int mptcp_getsockopt_v6(struct mp
+ 	case IPV6_V6ONLY:
+ 		return mptcp_put_int_option(msk, optval, optlen,
+ 					    sk->sk_ipv6only);
++	case IPV6_TRANSPARENT:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_sk(sk)->transparent);
++	case IPV6_FREEBIND:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    inet_sk(sk)->freebind);
+ 	}
  
- 	ret = smu_v13_0_auto_fan_control(smu, 0);
+ 	return -EOPNOTSUPP;
 
 
 
