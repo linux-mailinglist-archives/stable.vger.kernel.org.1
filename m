@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B977A99036
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF4DA99293
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3A1616BF3B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31BD94679D2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2A6289349;
-	Wed, 23 Apr 2025 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D7028DEEF;
+	Wed, 23 Apr 2025 15:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/wOeI2/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo+WjbZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA008288CA0;
-	Wed, 23 Apr 2025 15:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DFA28DEE8;
+	Wed, 23 Apr 2025 15:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420906; cv=none; b=V8Ez0bgvKfx3FCKrINskzxOLgQ6UOe6nrrpANiWZg3OIy2tL+kPKr00QoFjEpUcd/hJdaJHr9vCPNo1C3DBx8giDSYj8GtpI1jq/MM14n0REUxbE1/oVA1AJRhQO0C+FpwfZ1rrJwtNjyltdIueEp15WuHB6yDqrk4JJabQ9oo8=
+	t=1745421955; cv=none; b=PS9jvKYkcu0Vszioq+iRBVCsPohMs38mXPvEyOkobj49Z/GKtxL/O2oyTkqffVNeroraLFWaCz3puQud55WGePVfg6UdduoxJygE6C7uZ/3Tm6IXtc9LR6aCuWRS1W9vfSJjizvtzwvqIT9/JJ43lCcgliRaTJ3buCOJkO06i2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420906; c=relaxed/simple;
-	bh=uwUGDG1BwmXpcoZ3u6hLlmuXzNhNp8kwW5qyDnfz0ZY=;
+	s=arc-20240116; t=1745421955; c=relaxed/simple;
+	bh=WQAe7SFxmWLY3B5h2hfUDJgknzf4GAhKt6QlM0BrKHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdgV5M8TtHq1v6YbjYtkkqGLeTG15lbwl0cAjmJ3z8vjW8EFjvDnN723j0C16BC90W8wrGv8bT6OErUNXmcvy7cvwfVB2ELnYn9O3N1/IuxF8Tna8k9DSwq9/P37jrIgcJ9rutPicNUqxkYFkpXPFP4nmYf4u28T45zI0iSmeqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/wOeI2/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4E0C4CEE2;
-	Wed, 23 Apr 2025 15:08:24 +0000 (UTC)
+	 MIME-Version; b=qmbEKQDcm3QdhPHY2RU+AP9KbIDi0uqa7L4KwngGlUzZfj/Hcn9IGOH+YQvYfmSG88tWZ9MJZsV949Bndn1DO3paKXXPs7PLHwtCWM+uQ6WoQkEstkwXdh75CNRFkhxtTDTCZT6ru7odyRRsBvLKgWqFMTiOOebOM+2DeyFpXjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo+WjbZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D56CC4CEE8;
+	Wed, 23 Apr 2025 15:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420905;
-	bh=uwUGDG1BwmXpcoZ3u6hLlmuXzNhNp8kwW5qyDnfz0ZY=;
+	s=korg; t=1745421955;
+	bh=WQAe7SFxmWLY3B5h2hfUDJgknzf4GAhKt6QlM0BrKHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/wOeI2/UnTggBGCCOzYzGpSZgH9w18XosEqjuqinNGzfhnQ2i1GHmMIdTuj2PWow
-	 NoHmkTT0BAVjiV03I1/JNxnFHn8ZWK6k8LHoiPYc4ylcQigSnb4Yoc1tTb5LZ14yvO
-	 hEqXFUktGULh2b147ZegXJ2NSlZ37BgGAqJTsw7g=
+	b=Xo+WjbZPZuxEO93vYpUtT+1w9UIA2ajhNTCwAprJj+eMhgcGbIEUMP6Dp8ynmddf3
+	 u7c+x4SpkKmrOHpSa6ODHet0nEE/6fFEIfGSkUkzLc+MH+zIY5YEw+zLI59dZqpEiv
+	 SJ9jXW1yxFmfvcYN8arjnhfdH/YP5jrjTmKN87Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>
-Subject: [PATCH 6.14 129/241] cpufreq/sched: Explicitly synchronize limits_changed flag handling
-Date: Wed, 23 Apr 2025 16:43:13 +0200
-Message-ID: <20250423142625.838549346@linuxfoundation.org>
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 205/291] nfsd: decrease sc_count directly if fail to queue dl_recall
+Date: Wed, 23 Apr 2025 16:43:14 +0200
+Message-ID: <20250423142632.759431278@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 79443a7e9da3c9f68290a8653837e23aba0fa89f upstream.
+[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
 
-The handling of the limits_changed flag in struct sugov_policy needs to
-be explicitly synchronized to ensure that cpufreq policy limits updates
-will not be missed in some cases.
+A deadlock warning occurred when invoking nfs4_put_stid following a failed
+dl_recall queue operation:
+            T1                            T2
+                                nfs4_laundromat
+                                 nfs4_get_client_reaplist
+                                  nfs4_anylock_blockers
+__break_lease
+ spin_lock // ctx->flc_lock
+                                   spin_lock // clp->cl_lock
+                                   nfs4_lockowner_has_blockers
+                                    locks_owner_has_blockers
+                                     spin_lock // flctx->flc_lock
+ nfsd_break_deleg_cb
+  nfsd_break_one_deleg
+   nfs4_put_stid
+    refcount_dec_and_lock
+     spin_lock // clp->cl_lock
 
-Without that synchronization it is theoretically possible that
-the limits_changed update in sugov_should_update_freq() will be
-reordered with respect to the reads of the policy limits in
-cpufreq_driver_resolve_freq() and in that case, if the limits_changed
-update in sugov_limits() clobbers the one in sugov_should_update_freq(),
-the new policy limits may not take effect for a long time.
+When a file is opened, an nfs4_delegation is allocated with sc_count
+initialized to 1, and the file_lease holds a reference to the delegation.
+The file_lease is then associated with the file through kernel_setlease.
 
-Likewise, the limits_changed update in sugov_limits() may theoretically
-get reordered with respect to the updates of the policy limits in
-cpufreq_set_policy() and if sugov_should_update_freq() runs between
-them, the policy limits change may be missed.
+The disassociation is performed in nfsd4_delegreturn via the following
+call chain:
+nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
+nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
+The corresponding sc_count reference will be released after this
+disassociation.
 
-To ensure that the above situations will not take place, add memory
-barriers preventing the reordering in question from taking place and
-add READ_ONCE() and WRITE_ONCE() annotations around all of the
-limits_changed flag updates to prevent the compiler from messing up
-with that code.
+Since nfsd_break_one_deleg executes while holding the flc_lock, the
+disassociation process becomes blocked when attempting to acquire flc_lock
+in generic_delete_lease. This means:
+1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
+2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
+acquire cl_lock;
+3) Consequently, no deadlock condition is created.
 
-Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
-Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
+safely perform refcount_dec on sc_count directly. This approach
+effectively avoids triggering deadlock warnings.
+
+Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpufreq_schedutil.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ fs/nfsd/nfs4state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -81,9 +81,20 @@ static bool sugov_should_update_freq(str
- 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
- 		return false;
- 
--	if (unlikely(sg_policy->limits_changed)) {
--		sg_policy->limits_changed = false;
-+	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
-+		WRITE_ONCE(sg_policy->limits_changed, false);
- 		sg_policy->need_freq_update = true;
-+
-+		/*
-+		 * The above limits_changed update must occur before the reads
-+		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
-+		 * limits update might be missed, so use a memory barrier to
-+		 * ensure it.
-+		 *
-+		 * This pairs with the write memory barrier in sugov_limits().
-+		 */
-+		smp_mb();
-+
- 		return true;
- 	}
- 
-@@ -377,7 +388,7 @@ static inline bool sugov_hold_freq(struc
- static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
- {
- 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
--		sg_cpu->sg_policy->limits_changed = true;
-+		WRITE_ONCE(sg_cpu->sg_policy->limits_changed, true);
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 628d20574a919..bdee95d714d0e 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4941,7 +4941,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
+ 	queued = nfsd4_run_cb(&dp->dl_recall);
+ 	WARN_ON_ONCE(!queued);
+ 	if (!queued)
+-		nfs4_put_stid(&dp->dl_stid);
++		refcount_dec(&dp->dl_stid.sc_count);
  }
  
- static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
-@@ -883,7 +894,16 @@ static void sugov_limits(struct cpufreq_
- 		mutex_unlock(&sg_policy->work_lock);
- 	}
- 
--	sg_policy->limits_changed = true;
-+	/*
-+	 * The limits_changed update below must take place before the updates
-+	 * of policy limits in cpufreq_set_policy() or a policy limits update
-+	 * might be missed, so use a memory barrier to ensure it.
-+	 *
-+	 * This pairs with the memory barrier in sugov_should_update_freq().
-+	 */
-+	smp_wmb();
-+
-+	WRITE_ONCE(sg_policy->limits_changed, true);
- }
- 
- struct cpufreq_governor schedutil_gov = {
+ /* Called from break_lease() with flc_lock held. */
+-- 
+2.39.5
+
 
 
 
