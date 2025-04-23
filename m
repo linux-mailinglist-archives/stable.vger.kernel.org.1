@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BCEA98FDC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD59A990AB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CF961B84AC6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA8951BA2568
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D34628B51A;
-	Wed, 23 Apr 2025 15:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9F927FD74;
+	Wed, 23 Apr 2025 15:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w40zTOwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/wksn8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD021A257D;
-	Wed, 23 Apr 2025 15:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBAE285412;
+	Wed, 23 Apr 2025 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420514; cv=none; b=HqiPR+Wg7T6cUkuZ0V2/SaP9Qz1rWQA0MPDicRoO2q7UXU5crjnJE6IFw0Bk5zVzmYcite+3TUQwhTCe+Ei1jyoKTYGzsHnqE+Z9C05AZV+//l7arv45QdZEsUsclbiGJzJ+J8jBP8nvpyzELpbQwTmVR1o/8rlS+wmV+vDCcJw=
+	t=1745421038; cv=none; b=r2MkSeZWiW4jmzQWUt27bsrBDYUoq+SbBtLox6FP+MDFJkJ/Tm809VQKIFWJ2EdKbfQgywrro6pYbtZZFH+IdT7inY1UFehohOhqO7BbIjCNEvh7w3728vzsNAJ5suwMPpORjGLkH48hzzz1Ijq1QeRv2jG/TI50JNnIKyelFUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420514; c=relaxed/simple;
-	bh=SSTPWL22jhv+9ID+uz+R4a37LRV+vbDN20z+7HxID8Y=;
+	s=arc-20240116; t=1745421038; c=relaxed/simple;
+	bh=/p7a+dxa2JfrKbs1epw8818vB8gIwODhvIMbTbELN5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UY1f3y2bg6rcw82OpK2+OWm5ZoQM0D81OntE3mL6sgW9zfJA7BfwI3hIDbVMlMhNPWk5BY+gJGmpE+7TpZodM/TOv3UAE3DQ4s3nFDY7CdebSsLh3unbNLONDPKUTzA4PdPPpJaloKOsASjIWIqDVGQ+6Usvn/7ynWsH2yDpXLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w40zTOwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4D5C4CEE2;
-	Wed, 23 Apr 2025 15:01:53 +0000 (UTC)
+	 MIME-Version; b=od7gal2uLrWxPLEjx4AU6IVlTpQ/skt97aCBQKbSKlomubvi64lNr1uVeCnLpwgk2TtNJBwuFHudJ+rMlQX2lAJ88U9ihP+g4yCOgXkkwhuRH/Dh+/SdtsYVFS1gbr+owLrDevXYxtnUrUM5meDSuc/pwXjqgL3vtG2Oh+tfT6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/wksn8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FCEC4CEE2;
+	Wed, 23 Apr 2025 15:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420513;
-	bh=SSTPWL22jhv+9ID+uz+R4a37LRV+vbDN20z+7HxID8Y=;
+	s=korg; t=1745421038;
+	bh=/p7a+dxa2JfrKbs1epw8818vB8gIwODhvIMbTbELN5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w40zTOwbD9s69hR6XvohdPMSrRwztSqgXARYPdIA5O22lOCmuvn3ESWMgj+230OEa
-	 zCbn1SL+9Jw41zl0F9IOKwbpebfvksyKrJ987Q4b57RpBXWAbuFAtx91Qll9i1Ylgn
-	 +P7yRvNIj+i00moCFPrL+rk0UaekvyZXTVm9Swh4=
+	b=V/wksn8maO/8sOJD3XpCeEcVLjT1JHLsj0uwjo/PCWRookLEVUOiuJqK81f0FgfKZ
+	 ZWJOG9TNY8p45YRghRcbb/vC7kKAxI9JhSAg1pU1m8GGN1AMkmmLnClcDEwohhOjVi
+	 fHx1zxLQl6w/BI2M9OiGB5NsqQoIEfcUy0tHetWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	Ryan Lahfa <ryan@lahfa.xyz>
-Subject: [PATCH 6.12 138/223] scsi: megaraid_sas: Block zero-length ATA VPD inquiry
+	Denis Arefev <arefev@swemel.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 146/241] ksmbd: Prevent integer overflow in calculation of deadtime
 Date: Wed, 23 Apr 2025 16:43:30 +0200
-Message-ID: <20250423142622.709563560@linuxfoundation.org>
+Message-ID: <20250423142626.518757454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit aad9945623ab4029ae7789609fb6166c97976c62 upstream.
+commit a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 upstream.
 
-A firmware bug was observed where ATA VPD inquiry commands with a
-zero-length data payload were not handled and failed with a non-standard
-status code of 0xf0.
+The user can set any value for 'deadtime'. This affects the arithmetic
+expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+overflow. The added check makes the server behavior more predictable.
 
-Avoid sending ATA VPD inquiry commands without data payload by setting
-the device no_vpd_size flag to 1. In addition, if the firmware returns a
-status code of 0xf0, set scsi_cmnd->result to CHECK_CONDITION to
-facilitate proper error handling.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Suggested-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250402193735.5098-1-chandrakanth.patil@broadcom.com
-Tested-by: Ryan Lahfa <ryan@lahfa.xyz>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c   |    9 +++++++--
- drivers/scsi/megaraid/megaraid_sas_fusion.c |    5 ++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ fs/smb/server/transport_ipc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -2103,6 +2103,9 @@ static int megasas_device_configure(stru
- 	/* This sdev property may change post OCR */
- 	megasas_set_dynamic_target_properties(sdev, lim, is_target_prop);
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -310,7 +310,11 @@ static int ipc_server_config_on_startup(
+ 	server_conf.signing = req->signing;
+ 	server_conf.tcp_port = req->tcp_port;
+ 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
+-	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
++	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
++					&server_conf.deadtime)) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
+ 	ksmbd_init_domain(req->sub_auth);
  
-+	if (!MEGASAS_IS_LOGICAL(sdev))
-+		sdev->no_vpd_size = 1;
-+
- 	mutex_unlock(&instance->reset_mutex);
- 
- 	return 0;
-@@ -3662,8 +3665,10 @@ megasas_complete_cmd(struct megasas_inst
- 
- 		case MFI_STAT_SCSI_IO_FAILED:
- 		case MFI_STAT_LD_INIT_IN_PROGRESS:
--			cmd->scmd->result =
--			    (DID_ERROR << 16) | hdr->scsi_status;
-+			if (hdr->scsi_status == 0xf0)
-+				cmd->scmd->result = (DID_ERROR << 16) | SAM_STAT_CHECK_CONDITION;
-+			else
-+				cmd->scmd->result = (DID_ERROR << 16) | hdr->scsi_status;
- 			break;
- 
- 		case MFI_STAT_SCSI_DONE_WITH_ERROR:
---- a/drivers/scsi/megaraid/megaraid_sas_fusion.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_fusion.c
-@@ -2043,7 +2043,10 @@ map_cmd_status(struct fusion_context *fu
- 
- 	case MFI_STAT_SCSI_IO_FAILED:
- 	case MFI_STAT_LD_INIT_IN_PROGRESS:
--		scmd->result = (DID_ERROR << 16) | ext_status;
-+		if (ext_status == 0xf0)
-+			scmd->result = (DID_ERROR << 16) | SAM_STAT_CHECK_CONDITION;
-+		else
-+			scmd->result = (DID_ERROR << 16) | ext_status;
- 		break;
- 
- 	case MFI_STAT_SCSI_DONE_WITH_ERROR:
+@@ -337,6 +341,7 @@ static int ipc_server_config_on_startup(
+ 	server_conf.bind_interfaces_only = req->bind_interfaces_only;
+ 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
+ 					req->ifc_list_sz);
++out:
+ 	if (ret) {
+ 		pr_err("Server configuration error: %s %s %s\n",
+ 		       req->netbios_name, req->server_string,
 
 
 
