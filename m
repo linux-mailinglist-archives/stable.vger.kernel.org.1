@@ -1,267 +1,130 @@
-Return-Path: <stable+bounces-136466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392EAA99797
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 20:15:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 126C6A9978F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 20:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA121B83156
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:15:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A2D5A21E2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719D828CF44;
-	Wed, 23 Apr 2025 18:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1DB28D850;
+	Wed, 23 Apr 2025 18:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VdMPgVIx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxtwqa1R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54085280A21;
-	Wed, 23 Apr 2025 18:15:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA12728CF7A;
+	Wed, 23 Apr 2025 18:14:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745432132; cv=none; b=rfvhz/A0oZRskpF61v5Fh5mIUW7xK2N/e4PkR3ubg5rxNvPwqId2iSYLe37FiGte7CUJIMc/U3N/a5hxVY8pPHds9i8nmVL30JdOFQgBeVDYm0+5L07gVbj6n7/fzbtAPQopVrujVCHqu8UUJVoopQgDWvf/AoGweu/oT0GFMTo=
+	t=1745432054; cv=none; b=qAOyp/xSN8SiW6e4LTIDnS4Sk3UNNZ8BJgTfwjsTUYpZMgKdLFpOqimAN7Lv8po3RQ81N8xRTktR0LxLC/9CaO9kTFQcB8kdQ3Fsip5htZ4lNx4+MXqrPHrrDsze+rDHaxqSbRlvpAc9Cipgur6b4l7D4w8oEZEZWUf1ADIWkxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745432132; c=relaxed/simple;
-	bh=bahC4EZGyLZ5JcodwBxNGpmpVQpi+ynBeIQYEPfwdfY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fecgTTyCIxBk8QXHlnu8dlwOTMel9IGEGUKwq1Lek0VN6AGL9HD5eVz5KIkpGG6YtTKC4S5TL4Czi5Jmam744zCJE5eZL5icU5PAAZtwXsdiHlpaydev10V6Khp0igi6TXijOSkxY/mphDhJBpZ55rFoEK48rwsrDSHvMLb/u0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VdMPgVIx; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1745432054; c=relaxed/simple;
+	bh=4JC22pUjr3FEUyvUE39zXrZ8IUXJDGvcrodpViq8wnQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pcAriwotYTP2bNQcmNo4DNdgVwscU5jhrdYUNBBbmmGKaHq594jSlIxLU65WG9hokme561/Ari/Fuiy3sqNxs6G20i7MCmKbyZ5HSZPjcg3PdCdM7U7rC75nxsxRNQ3ELL6/E8cyGP346dn0SPhphQ0yBbrAOG9CtVzeSFgQW88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxtwqa1R; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-54998f865b8so82172e87.3;
-        Wed, 23 Apr 2025 11:15:28 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-acbb85ce788so33186866b.3;
+        Wed, 23 Apr 2025 11:14:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745432127; x=1746036927; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=60ooqHv4lubF04MISs1yun2dS0JF24QIl5RyblgguIU=;
-        b=VdMPgVIxt/RtNU31RooXe4QjQ2d3c3IkX6kpvjteLUsLNirqR6scw5AyszlsfXSAg4
-         w/sS28MYmVQOsFZQiwzNKI47XZVWrqFsSKBgAnikDwENbyZqDfXKVTM5jWjmO/pWaEGJ
-         brbUkDDPcFbcKOIoy8MMjNUV7rAd2Pt6PiM92+6zPswEYb0W4wj0EGzxWl6bMMQkB+LP
-         S6Y7xwejaMrk/6p8EgMfRoimDCRsony2gwIyviYWR0hVBcE+hMHoqutJrvVlZK8Zm07x
-         kQR6XuNaxAtd8lRgTRo/4UYYU7U1ronHtYB2AffwdSokDveuZTNuixOeUA3CTow9juKm
-         x0gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745432127; x=1746036927;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1745432051; x=1746036851; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=60ooqHv4lubF04MISs1yun2dS0JF24QIl5RyblgguIU=;
-        b=QH+rCt/vUUSVfe4VoacLxd27rQqeCvBp4omzjPpTKnd3UZOT/9wk/nHJQOhLJY8bHU
-         8TfoI3Ytk+FZcx22py71b5VXTTuiD9O2k0eJgbunqKv9HGAP2O401hYRq9UOfYzev6v3
-         dqb4CiaXEbCfVAhf2NsBdo8kwSg2Lf+Oob0eMUIGNATmTGRnjSwzvUmsBM56nelM6aMP
-         G/74e5QzOTWflFzBLXZVLcxdoWLVyiadVmdK3R10duzzhDCH2EnInv9VdhNYqwDn8vSx
-         8h0qoEuqR2n/6kzxO7jiNjszxQQNq8S3FFd4khf+DuYDx25KUra6CXzBnOlVj+gjV4xj
-         ej1w==
-X-Forwarded-Encrypted: i=1; AJvYcCU0NQhl0NNLfklU2zU+6JQPp3+ox4vpf8UKLQV8LYwmztUGVi9UOvtrSYN9x+/gqTmWSrIIPWnl@vger.kernel.org, AJvYcCVxwfHzln4UMWqNC0/ZrYOQxZ0Q8Q2UsXQOMePtq21fcxS5RR9Dx8qkPr69sNFW4HekgyoZ23al@vger.kernel.org, AJvYcCX9pn6pqoxoiB8TUh8PW6AwVE7kjbSn1X4LJ3PPL3lQ3F+tWsxUDqmPgUtXJZt4ZsBGF0axP23mU0xsoV0DqAtM@vger.kernel.org, AJvYcCXvQPvURcf3rsGLtIlIEZsTRO+rR2WOLg+JSw4NNZq9wfJRewZBkPweLfA48Kr2CsAIHL1PQ5aNjIG5gwo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxad2leXoZox9FJsgaGM9LaC/yOVM9nyatAI6aBOcS2Vl7mfp1G
-	/Zj8nPDeWbGpjl/DmZWBHSQSLwLGtZ7lfV67mxpAFe1/gtwHDxuq
-X-Gm-Gg: ASbGncu4NhEuOM0wejGB8iy5vRj/unZq9uowOxjZ3D+7wm6wM7a8PIqhKltIFJOJkGv
-	n1kb3kwkCplHSVuU0Xjil7O1A+16yMNeGaIBUIaKosYtWPcp62pt18gFRp2nIEaopaRhkIFYV0R
-	hVNSi9HM0VlVu8tyTUV51MvYYo1Bf+KJkPvX89/R0YR1lDfVki7MJ/9/RDewjZqNXqne1QuEO1E
-	pm/KUMWeY8XCkY9R55KaEIPfPrqOidQOXqPXA7CGwV9TVKPih0UjLopARBY3RnMh6iLc7xo4fao
-	IUJu13a8tmAYnBfvcKNPud5yk2yjhxqxuiRCXaUOHqDA2cmC4ADgX6M=
-X-Google-Smtp-Source: AGHT+IFG0X8R3+9zVQjwFuLKdnVhwPWdDHjtGIJi+PAV1z4CfmJthxydm3SWJC3j0gwdpys72wiu6w==
-X-Received: by 2002:a05:6512:224b:b0:545:60b:f394 with SMTP id 2adb3069b0e04-54e7b5ba31cmr217791e87.4.1745432127102;
-        Wed, 23 Apr 2025 11:15:27 -0700 (PDT)
-Received: from localhost.localdomain ([87.249.25.136])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54d6e5d0146sm1603134e87.128.2025.04.23.11.15.24
+        bh=N38OFQgH4rJbYV1raBQPBjITY/pMbj/1Np3A8vNBTro=;
+        b=hxtwqa1R2EJA3yuhYrf+vd11XCoIL8WSY/U/B8fKxF3d+oTZS3n6isq4OBXwLx1OlS
+         ittAqujEWyHrp9NF4N6vikrbTJJJgIumjjPdXG3NQnPluQDjyqdZkzbfUO23H16SIxXF
+         JOEkD/isYj93+GuSqwD8Pip+6cRgicbm6Kuu5RHmkTqI8zBHZqoWWryUe5Nm45h299IM
+         NuTnwGme1yaraIg9EpCRKhF62JYJZM+H6DSF7vIIQL1OFAkMhoueFdY82/fJtcyuMILr
+         TQTx55sSbzhL7KFr4bPLxq6ringoescaNrNo0VncJ54hy4U4Bd5KcGo3oA6YOOtkxSDs
+         ILgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745432051; x=1746036851;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N38OFQgH4rJbYV1raBQPBjITY/pMbj/1Np3A8vNBTro=;
+        b=BndY7zJJYgTl/Ifc6YutsNxuEmJEOpOus3ua9Xlp4OnBVpYpyvs0UlsLOLLkKXn3Lq
+         AZ7tlAwiMt2THb0VDJcPVpXAGUZ9jxeQEJSsqwcm/p+CZNTTh7a2CNcpSLNUdKai5byE
+         E0QGIrbj4xCMQvXTNe1HqEpkmO/FEZP9X8rt5+3dRrGhDxpvyzc5NlqIanYPR4ZgHdca
+         bgyQ98n93J0Mp1VlCLPn+oyXUFCFbBaRAi5cww9PquEAy6BRnI5PUMl4lQYCy65JMDwV
+         +f76q9x5qnKm23vwA8JClmHhTRY3qKkAG/5ljXW1CyHHtQdo/0bo83tXlQDPCEoItFIC
+         LFGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnWzDXCAbGoEvo+Ugmt3fOyD6GdgWAvpidQmMoDV9JpobxBmnwvdVEhuLbY8pI7SsuHtewjfEhtsYQTQ==@vger.kernel.org, AJvYcCXA5QfSBwL5452xpgH362V3dcs07GdHuEGHvu66NLV/t8tb8KdZ0BO7Zktlo2g/JrPTsq+QdgTuY23/dXo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZyUfcBPpvJAaAKYd/IXOoFcAQOK6/J+GZJR4NQAVX84Qj9JBg
+	RI2z0UXsmQa/kNGoholDRA5C4KlgY9SdQRJRuoPyQsYBKW7rKavS322yqFaG
+X-Gm-Gg: ASbGncu2ljgIG9+1DXUJrosNLndquMevSz3LstFhGOvDleuwsBp+SwYdWzC8OV70k5j
+	DTlGBpT4OhWqkMaH1HJUquJBWsbT+EIaIeHBz+2C2Ag5gakajO33g5GsmmXyPUAL3GUalDPeFuA
+	H+CVH0ixR2SR/o07vzW+7l/eMYYBKCdzasVZ4gtOKC1eKy0vS2637I3KSTXfYbtOrALL5Sk1vfC
+	EV6y45xQEA4ARJ+XjZaXgMQvo9PmAeVLg5YVWMMcp1rknvWgsN7rWIljeEfjNsF+LiZSr/z6gNV
+	TRa0xJP3gwAZyAtlU0hXaC9uju8yLZkNdYEEIYgRFbfJPttRmw21Vdef5I1RwDG+quK1ITZUGA=
+	=
+X-Google-Smtp-Source: AGHT+IFMlXIPTFT4ln1LIoHIiN0yBilnqV1l8jFJ/7besP0nipzmBe1LCsN2p4R1gCZruu5fx0syoA==
+X-Received: by 2002:a17:907:3f19:b0:ac8:14ad:f3cf with SMTP id a640c23a62f3a-ace54eec178mr8227966b.23.1745432050712;
+        Wed, 23 Apr 2025 11:14:10 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ef475a0sm840074766b.147.2025.04.23.11.14.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 11:15:25 -0700 (PDT)
-From: Evgeny Pimenov <pimenoveu12@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Evgeny Pimenov <pimenoveu12@gmail.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Taehee Yoo <ap420073@gmail.com>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>
-Subject: [PATCH 5.10/5.15/6.1] netfilter: ipt_CLUSTERIP: change mutex location
-Date: Wed, 23 Apr 2025 21:12:46 +0300
-Message-Id: <20250423181245.14794-1-pimenoveu12@gmail.com>
-X-Mailer: git-send-email 2.39.5
+        Wed, 23 Apr 2025 11:14:10 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 6B9C8BE2DE0; Wed, 23 Apr 2025 20:14:09 +0200 (CEST)
+Date: Wed, 23 Apr 2025 20:14:09 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Yu Kuai <yukuai1@huaweicloud.com>, gregkh@linuxfoundation.org,
+	sashal@kernel.org
+Cc: stable@vger.kernel.org, song@kernel.org, linux-raid@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yukuai3@huawei.com,
+	yi.zhang@huawei.com, yangerkun@huawei.com, johnny.chenyi@huawei.com
+Subject: Re: [PATCH 6.1 0/2] md: fix mddev uaf while iterating all_mddevs list
+Message-ID: <aAkt8WLN1Gb9snv-@eldamar.lan>
+References: <20250419012303.85554-1-yukuai1@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250419012303.85554-1-yukuai1@huaweicloud.com>
 
-No upstream commit exists for this patch.
+Hi Greg, Sasha, Yu,
 
-The file ipt_CLUSTERIP.c was deleted in commit 9db5d918e2c0
-("netfilter: ip_tables: remove clusterip target"), but races still exist
-in stable branches.
+On Sat, Apr 19, 2025 at 09:23:01AM +0800, Yu Kuai wrote:
+> From: Yu Kuai <yukuai3@huawei.com>
+> 
+> Hi, Greg
+> 
+> This is the manual adaptation version for 6.1, for 6.6/6.12 commit
+> 8542870237c3 ("md: fix mddev uaf while iterating all_mddevs list") can
+> be applied cleanly, can you queue them as well?
+> 
+> Thanks!
+> 
+> Yu Kuai (2):
+>   md: factor out a helper from mddev_put()
+>   md: fix mddev uaf while iterating all_mddevs list
+> 
+>  drivers/md/md.c | 50 +++++++++++++++++++++++++++++--------------------
+>  1 file changed, 30 insertions(+), 20 deletions(-)
 
-Thread A in clusterip_config_entry_put() decrements refcount and removes
-config from the list but doesn't call proc_remove(). Thread B searches
-the config, doesn't find it, re-adds it to the list, and calls
-proc_create_data() with an IP that still exists in the tree.
+I noticed that the change 8542870237c3 was queued for 6.6.y and 6.12.y
+and is in the review now, but wonder should we do something more with
+6.1.y as this requires this series/manual adaption?
 
-|A| refcount_dec_and_lock()
-|A| list_del_rcu()
-=== Must be here
-|A| proc_remove()
-===
-|B| __clusterip_config_find()
-|B| list_add_rcu()
-|B| proc_create_data()
-|B| WARN()
+Or will it make for the next round of stable updates in 6.1.y? 
 
-As a fix, also cover with mutex the places of interaction with the list of
-configs before proc_remove() and proc_create_data() functions.
+(or did it just felt through the cracks and it is actually fine that I
+ping the thread on this question).
 
-------------[ cut here ]------------
-proc_dir_entry 'ipt_CLUSTERIP/100.1.1.2' already registered
-WARNING: CPU: 0 PID: 2597 at fs/proc/generic.c:381 proc_register+0x517/0x6e0 fs/proc/generic.c:381
-[...]
-Call Trace:
- proc_create_data+0x130/0x1a0 fs/proc/generic.c:583
- clusterip_config_init net/ipv4/netfilter/ipt_CLUSTERIP.c:281 [inline]
- clusterip_tg_check+0xb8d/0x1380 net/ipv4/netfilter/ipt_CLUSTERIP.c:502
- xt_check_target+0x27c/0xa00 net/netfilter/x_tables.c:1018
- check_target net/ipv4/netfilter/ip_tables.c:511 [inline]
- find_check_entry.constprop.0+0x7b0/0x9b0 net/ipv4/netfilter/ip_tables.c:553
- translate_table+0xc6a/0x16a0 net/ipv4/netfilter/ip_tables.c:717
- do_replace net/ipv4/netfilter/ip_tables.c:1138 [inline]
- do_ipt_set_ctl+0x54e/0xb00 net/ipv4/netfilter/ip_tables.c:1636
- nf_setsockopt+0x88/0xf0 net/netfilter/nf_sockopt.c:101
- ip_setsockopt+0xe4d/0x3d10 net/ipv4/ip_sockglue.c:1442
- sctp_setsockopt+0x135/0xa390 net/sctp/socket.c:4475
- __sys_setsockopt+0x234/0x5a0 net/socket.c:2145
- __do_sys_setsockopt net/socket.c:2156 [inline]
- __se_sys_setsockopt net/socket.c:2153 [inline]
- __x64_sys_setsockopt+0xb9/0x150 net/socket.c:2153
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 2a61d8b883bb ("netfilter: ipt_CLUSTERIP: fix sleep-in-atomic bug in clusterip_config_entry_put()")
-Cc: stable@vger.kernel.org # v5.4+
-Suggested-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Suggested-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Evgeny Pimenov <pimenoveu12@gmail.com>
----
- net/ipv4/netfilter/ipt_CLUSTERIP.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
-
-diff --git a/net/ipv4/netfilter/ipt_CLUSTERIP.c b/net/ipv4/netfilter/ipt_CLUSTERIP.c
-index 77e3b67e8790..61ccfd97841f 100644
---- a/net/ipv4/netfilter/ipt_CLUSTERIP.c
-+++ b/net/ipv4/netfilter/ipt_CLUSTERIP.c
-@@ -79,6 +79,22 @@ static inline struct clusterip_net *clusterip_pernet(struct net *net)
- 	return net_generic(net, clusterip_net_id);
- }
- 
-+static inline void
-+clusterip_net_lock(struct clusterip_net *cn)
-+{
-+#ifdef CONFIG_PROC_FS
-+	mutex_lock(&cn->mutex);
-+#endif
-+};
-+
-+static inline void
-+clusterip_net_unlock(struct clusterip_net *cn)
-+{
-+#ifdef CONFIG_PROC_FS
-+	mutex_unlock(&cn->mutex);
-+#endif
-+};
-+
- static inline void
- clusterip_config_get(struct clusterip_config *c)
- {
-@@ -114,6 +130,7 @@ clusterip_config_entry_put(struct clusterip_config *c)
- {
- 	struct clusterip_net *cn = clusterip_pernet(c->net);
- 
-+	clusterip_net_lock(cn);
- 	local_bh_disable();
- 	if (refcount_dec_and_lock(&c->entries, &cn->lock)) {
- 		list_del_rcu(&c->list);
-@@ -123,14 +140,14 @@ clusterip_config_entry_put(struct clusterip_config *c)
- 		 * functions are also incrementing the refcount on their own,
- 		 * so it's safe to remove the entry even if it's in use. */
- #ifdef CONFIG_PROC_FS
--		mutex_lock(&cn->mutex);
- 		if (cn->procdir)
- 			proc_remove(c->pde);
--		mutex_unlock(&cn->mutex);
- #endif
-+		clusterip_net_unlock(cn);
- 		return;
- 	}
- 	local_bh_enable();
-+	clusterip_net_unlock(cn);
- }
- 
- static struct clusterip_config *
-@@ -262,6 +279,7 @@ clusterip_config_init(struct net *net, const struct ipt_clusterip_tgt_info *i,
- 	c->net = net;
- 	refcount_set(&c->refcount, 1);
- 
-+	clusterip_net_lock(cn);
- 	spin_lock_bh(&cn->lock);
- 	if (__clusterip_config_find(net, ip)) {
- 		err = -EBUSY;
-@@ -277,11 +295,9 @@ clusterip_config_init(struct net *net, const struct ipt_clusterip_tgt_info *i,
- 
- 		/* create proc dir entry */
- 		sprintf(buffer, "%pI4", &ip);
--		mutex_lock(&cn->mutex);
- 		c->pde = proc_create_data(buffer, 0600,
- 					  cn->procdir,
- 					  &clusterip_proc_ops, c);
--		mutex_unlock(&cn->mutex);
- 		if (!c->pde) {
- 			err = -ENOMEM;
- 			goto err;
-@@ -290,6 +306,7 @@ clusterip_config_init(struct net *net, const struct ipt_clusterip_tgt_info *i,
- #endif
- 
- 	refcount_set(&c->entries, 1);
-+	clusterip_net_unlock(cn);
- 	return c;
- 
- #ifdef CONFIG_PROC_FS
-@@ -300,6 +317,7 @@ clusterip_config_init(struct net *net, const struct ipt_clusterip_tgt_info *i,
- out_config_put:
- 	spin_unlock_bh(&cn->lock);
- 	clusterip_config_put(c);
-+	clusterip_net_unlock(cn);
- 	return ERR_PTR(err);
- }
- 
-@@ -848,10 +866,10 @@ static void clusterip_net_exit(struct net *net)
- #ifdef CONFIG_PROC_FS
- 	struct clusterip_net *cn = clusterip_pernet(net);
- 
--	mutex_lock(&cn->mutex);
-+	clusterip_net_lock(cn);
- 	proc_remove(cn->procdir);
- 	cn->procdir = NULL;
--	mutex_unlock(&cn->mutex);
-+	clusterip_net_unlock(cn);
- #endif
- 	nf_unregister_net_hook(net, &cip_arp_ops);
- }
--- 
-2.39.5
+Regards,
+Salvatore
 
