@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13703A9931B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064E4A9937D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D27B99A1895
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C80D1B82FBD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAB228C5DE;
-	Wed, 23 Apr 2025 15:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D24280CD1;
+	Wed, 23 Apr 2025 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkdrccR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skoI6Aqf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA5817B421;
-	Wed, 23 Apr 2025 15:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8172B26A082;
+	Wed, 23 Apr 2025 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421877; cv=none; b=meyXqGj0Hm25jXLrsoCpP+kM4GjH9YPP+KiyrtQMRV+abPkRqk9RQR8h5UXLq4BabJOqk6tuk3hs7hhZUU06DMV0YHBygJ2Z3ouDSGaYA8C++c1PEs51GCYjk4ixfmiP07lBh5/0J8eWwFcg4FQoGZgIpIzjuuMyUWyKCw8fzoY=
+	t=1745422133; cv=none; b=hBrnY1G+I6Pi/dpzh2qho194ilH1A5gxVILir1Y1cyuPN6gDQEGJzF81EF04DLeCV86cmMkoVX1dMowsY3GQUM3vOXqAtghse8I9QCWirMkeqS28CdNB2Khqvkp62f4C6L1GTVVltJrAeYHeYH4oPaxAuqgurE+eTzhvgGWPhZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421877; c=relaxed/simple;
-	bh=TB5k+hKtaBiX++ScL635bbQTcgDj5ZrPjll8y6+iY2U=;
+	s=arc-20240116; t=1745422133; c=relaxed/simple;
+	bh=7o2noUH7fVOMAwUY9i2GAPvok+5TNrxvWXu8NzID/9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2moeoV4feHvEtVE1xztYmCcbtjf7JKr68kFPRi1BV5XuxhT0IKTLZUm53JbF738d4tcZGZL7kcEn+aD1539PyZI5CMWVt7ZckaabSZriNqxKPiPIaUjDPx3VGKg4ONtIXu47m+RuSv/3XX/KtOxbOQ5Pj7M1p9LXlSrSf4Ypo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkdrccR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AB5C4CEE2;
-	Wed, 23 Apr 2025 15:24:35 +0000 (UTC)
+	 MIME-Version; b=MTqrGZI4wwws+A8APCH8YaAhdd7dDb17SwkPoNy1aEw62NbN0yjJFucE9svhEesAF2RKSM1WwVHfsdTHBVCDyTBSYC2RZ69oMA+aBFKqOMIy+sAStPrJBIHA37AeGP5a6JXafCTTBzi2NOhC0+Wm36CXVur/Y1syyavbanTJBj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skoI6Aqf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1408CC4CEED;
+	Wed, 23 Apr 2025 15:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421876;
-	bh=TB5k+hKtaBiX++ScL635bbQTcgDj5ZrPjll8y6+iY2U=;
+	s=korg; t=1745422133;
+	bh=7o2noUH7fVOMAwUY9i2GAPvok+5TNrxvWXu8NzID/9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkdrccR1RehGl3TmvEJclFmnXIHALCgCnfwbO2I9r71DO14jnFPcrYkJMSQW4rQbM
-	 qtJkXvj0gctNAYXrH16Nc3C1mdRFiyTqLVS/cwEZfv932s+xe+uDA3I5fkK+RYIgcx
-	 xVWSFvnAqepDApMTX6uQafyZirvtGeCdwUiXX2SI=
+	b=skoI6Aqf1OgF/2H8otIHVbXLeO6Q7TmB4vTsQbHRtf3266PFOhRTkgtSRs6Bn/Kvy
+	 tV5cZD6w2OjrWBD6akBa1xuTZqtZWeY4KTQDYM6SVh7c09NJLOYrRQaJXPOdvVV9Qd
+	 ffnP0cFcNEsV+pVVoCfLZu5/nV9Pq1dSDVqmX17Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/291] net: dsa: mv88e6xxx: fix -ENOENT when deleting VLANs and MST is unsupported
+Subject: [PATCH 6.6 284/393] net: dsa: mv88e6xxx: avoid unregistering devlink regions which were never registered
 Date: Wed, 23 Apr 2025 16:43:00 +0200
-Message-ID: <20250423142632.188641500@linuxfoundation.org>
+Message-ID: <20250423142655.074885010@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit ea08dfc35f83cfc73493c52f63ae4f2e29edfe8d ]
+[ Upstream commit c84f6ce918a9e6f4996597cbc62536bbf2247c96 ]
 
-Russell King reports that on the ZII dev rev B, deleting a bridge VLAN
-from a user port fails with -ENOENT:
-https://lore.kernel.org/netdev/Z_lQXNP0s5-IiJzd@shell.armlinux.org.uk/
+Russell King reports that a system with mv88e6xxx dereferences a NULL
+pointer when unbinding this driver:
+https://lore.kernel.org/netdev/Z_lRkMlTJ1KQ0kVX@shell.armlinux.org.uk/
 
-This comes from mv88e6xxx_port_vlan_leave() -> mv88e6xxx_mst_put(),
-which tries to find an MST entry in &chip->msts associated with the SID,
-but fails and returns -ENOENT as such.
+The crash seems to be in devlink_region_destroy(), which is not NULL
+tolerant but is given a NULL devlink global region pointer.
 
-But we know that this chip does not support MST at all, so that is not
-surprising. The question is why does the guard in mv88e6xxx_mst_put()
-not exit early:
+At least on some chips, some devlink regions are conditionally registered
+since the blamed commit, see mv88e6xxx_setup_devlink_regions_global():
 
-	if (!sid)
-		return 0;
+		if (cond && !cond(chip))
+			continue;
 
-And the answer seems to be simple: the sid comes from vlan.sid which
-supposedly was previously populated by mv88e6xxx_vtu_get().
-But some chip->info->ops->vtu_getnext() implementations do not populate
-vlan.sid, for example see mv88e6185_g1_vtu_getnext(). In that case,
-later in mv88e6xxx_port_vlan_leave() we are using a garbage sid which is
-just residual stack memory.
+These are MV88E6XXX_REGION_STU and MV88E6XXX_REGION_PVT. If the chip
+does not have an STU or PVT, it should crash like this.
 
-Testing for sid == 0 covers all cases of a non-bridge VLAN or a bridge
-VLAN mapped to the default MSTI. For some chips, SID 0 is valid and
-installed by mv88e6xxx_stu_setup(). A chip which does not support the
-STU would implicitly only support mapping all VLANs to the default MSTI,
-so although SID 0 is not valid, it would be sufficient, if we were to
-zero-initialize the vlan structure, to fix the bug, due to the
-coincidence that a test for vlan.sid == 0 already exists and leads to
-the same (correct) behavior.
+To fix the issue, avoid unregistering those regions which are NULL, i.e.
+were skipped at mv88e6xxx_setup_devlink_regions_global() time.
 
-Another option which would be sufficient would be to add a test for
-mv88e6xxx_has_stu() inside mv88e6xxx_mst_put(), symmetric to the one
-which already exists in mv88e6xxx_mst_get(). But that placement means
-the caller will have to dereference vlan.sid, which means it will access
-uninitialized memory, which is not nice even if it ignores it later.
-
-So we end up making both modifications, in order to not rely just on the
-sid == 0 coincidence, but also to avoid having uninitialized structure
-fields which might get temporarily accessed.
-
-Fixes: acaf4d2e36b3 ("net: dsa: mv88e6xxx: MST Offloading")
+Fixes: 836021a2d0e0 ("net: dsa: mv88e6xxx: Export cross-chip PVT as devlink region")
+Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212913.2955253-1-vladimir.oltean@nxp.com
+Link: https://patch.msgid.link/20250414212850.2953957-1-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/devlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index d348078ec033c..4c60f79ce2697 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -1724,6 +1724,8 @@ static int mv88e6xxx_vtu_get(struct mv88e6xxx_chip *chip, u16 vid,
- 	if (!chip->info->ops->vtu_getnext)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/net/dsa/mv88e6xxx/devlink.c b/drivers/net/dsa/mv88e6xxx/devlink.c
+index a08dab75e0c0c..f57fde02077d2 100644
+--- a/drivers/net/dsa/mv88e6xxx/devlink.c
++++ b/drivers/net/dsa/mv88e6xxx/devlink.c
+@@ -743,7 +743,8 @@ void mv88e6xxx_teardown_devlink_regions_global(struct dsa_switch *ds)
+ 	int i;
  
-+	memset(entry, 0, sizeof(*entry));
-+
- 	entry->vid = vid ? vid - 1 : mv88e6xxx_max_vid(chip);
- 	entry->valid = false;
+ 	for (i = 0; i < ARRAY_SIZE(mv88e6xxx_regions); i++)
+-		dsa_devlink_region_destroy(chip->regions[i]);
++		if (chip->regions[i])
++			dsa_devlink_region_destroy(chip->regions[i]);
+ }
  
-@@ -1859,7 +1861,16 @@ static int mv88e6xxx_mst_put(struct mv88e6xxx_chip *chip, u8 sid)
- 	struct mv88e6xxx_mst *mst, *tmp;
- 	int err;
- 
--	if (!sid)
-+	/* If the SID is zero, it is for a VLAN mapped to the default MSTI,
-+	 * and mv88e6xxx_stu_setup() made sure it is always present, and thus,
-+	 * should not be removed here.
-+	 *
-+	 * If the chip lacks STU support, numerically the "sid" variable will
-+	 * happen to also be zero, but we don't want to rely on that fact, so
-+	 * we explicitly test that first. In that case, there is also nothing
-+	 * to do here.
-+	 */
-+	if (!mv88e6xxx_has_stu(chip) || !sid)
- 		return 0;
- 
- 	list_for_each_entry_safe(mst, tmp, &chip->msts, node) {
+ void mv88e6xxx_teardown_devlink_regions_port(struct dsa_switch *ds, int port)
 -- 
 2.39.5
 
