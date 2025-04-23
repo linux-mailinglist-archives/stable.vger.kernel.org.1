@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-135944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D00A9908C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2ABBA99014
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 238A27AEF58
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 633338E4952
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B07284B32;
-	Wed, 23 Apr 2025 15:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673DA28BA8E;
+	Wed, 23 Apr 2025 15:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joX8j7QO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4RDl162"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008E557C9F;
-	Wed, 23 Apr 2025 15:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251C528BA88;
+	Wed, 23 Apr 2025 15:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421249; cv=none; b=P363j2OVg4pyrIYZC/yfX5T2vKvMGF6k4i63LjMJEjfUOUAT+me94LOvJBAVbEqOe5BOtZiMGx50Bp1xceclXQTvaHEytIkdrcqD8WYZprNUDyqAKPaWwrU6VnJBEgyRWx40evOjjvozO2TZH2ZtWuM4urRW2inkhmnuqg51Sq8=
+	t=1745420677; cv=none; b=Xne8EuzwHXE+zaID27FlQRo6S3CtIHPm7uw/j/qtvWd2dOMu7M1aUzj/HqJE+4qu9SGTRnLL9sLJcsqnOcqK014p8TPHHCIhZDmIiPzJF8Y0EFTprL/CJW2wDoo/oa84eV7DsCnCXY08Vva5m/cLt5/FIQjzA3mNT6ULeP3211M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421249; c=relaxed/simple;
-	bh=yh2iXL7nrxKvWTBXzxWp7EQSeFdZ6O0SWU89ajZYbWM=;
+	s=arc-20240116; t=1745420677; c=relaxed/simple;
+	bh=1ty4Gve/xoaFtHhDA/pPHNB2KjSRtE4JpIX8tVD5RXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cALzuEQ35orVRLdLg8NfsLM7/213utFi/E2wsvrr9lyCPHQPIBB8dFx51zG8c2KsDr//gGvQ/tPHkJB3fiQ9G+JaDVpd9ggbSW/UhcR8Qn9Majbuz1rK3IKaDt0G8I7nAf9vr2C5JoauVvsDGqySm2kwvWInCS0azrboEr+pTJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joX8j7QO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BDCC4CEE3;
-	Wed, 23 Apr 2025 15:14:08 +0000 (UTC)
+	 MIME-Version; b=tBRRGL7qpLL9Mf+DZels6JEiLyAF2q5QbaL0fniyV3+tAkkXJxJboN9lYNDnxuLYo2CyamJY5oIJa4Q6D9+ffegN7GAO3TuBCxAZ85O+FxbNd2nKUEWtopEYVYxzJo0Mtfn22RdvAspsheASU8J8SoNanbeutzuurJqeTtg9FeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4RDl162; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB59C4CEE2;
+	Wed, 23 Apr 2025 15:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421248;
-	bh=yh2iXL7nrxKvWTBXzxWp7EQSeFdZ6O0SWU89ajZYbWM=;
+	s=korg; t=1745420677;
+	bh=1ty4Gve/xoaFtHhDA/pPHNB2KjSRtE4JpIX8tVD5RXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joX8j7QOoGK8yMzk9m/WPy8KuHZvRAVasIS6WLCZjDaxu1scqzlau8JoHUCgH6lis
-	 pso3S5a2ClCEalo6+RcZQ03+OJgBkcwAtyhmFk2FJL1l4KZ8f/Ypug3x8X+TDqt1Xf
-	 IdSar628ErRiaBw13o9TiuYL2/G9YnDuKTDfSsJ8=
+	b=P4RDl162cx9nCipbWuC7N46mDoaBfqJd/ctX2qKKM3VfdU2RD0lJA8fLUhtBDnixv
+	 PZy72wHn5DMW3TsyGKgbdhFAaJkEMz4bVsGGyh6mw9Zwresh/lgsJgVITC0zP7r6as
+	 +nytIPar++IwnLmVuViAEs0UXKTu7CqEeoLnrhXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Meng <cong.meng@oracle.com>,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 6.6 162/393] vdpa/mlx5: Fix oversized null mkey longer than 32bit
-Date: Wed, 23 Apr 2025 16:40:58 +0200
-Message-ID: <20250423142650.065800759@linuxfoundation.org>
+	Leonid Arapov <arapovl839@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/291] fbdev: omapfb: Add plane value check
+Date: Wed, 23 Apr 2025 16:40:59 +0200
+Message-ID: <20250423142627.233721679@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Leonid Arapov <arapovl839@gmail.com>
 
-commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
+[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
 
-create_user_mr() has correct code to count the number of null keys
-used to fill in a hole for the memory map. However, fill_indir()
-does not follow the same to cap the range up to the 1GB limit
-correspondingly. Fill in more null keys for the gaps in between,
-so that null keys are correctly populated.
+Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
+of the enum parameter plane.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Cc: stable@vger.kernel.org
-Reported-by: Cong Meng <cong.meng@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The value of this parameter is initialized in dss_init_overlays and in the
+current state of the code it cannot take this value so it's not a real
+problem.
+
+For the purposes of defensive coding it wouldn't be superfluous to check
+the parameter value, because some functions down the call stack process
+this value correctly and some not.
+
+For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+overflow.
+
+Add check for this value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/core/mr.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -166,9 +166,12 @@ again:
- 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
- 			preve = dmr->end;
- 		} else {
-+			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index 92fb6b7e1f681..a6225f9621902 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -2749,9 +2749,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ 		bool mem_to_mem)
+ {
+ 	int r;
+-	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
++	enum omap_overlay_caps caps;
+ 	enum omap_channel channel;
+ 
++	if (plane == OMAP_DSS_WB)
++		return -EINVAL;
 +
- 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
--			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
--			preve = dmr->start;
-+			klm->bcount = cpu_to_be32(klm_bcount(bcount));
-+			preve += bcount;
-+
- 			goto again;
- 		}
- 	}
++	caps = dss_feat_get_overlay_caps(plane);
+ 	channel = dispc_ovl_get_channel_out(plane);
+ 
+ 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
+-- 
+2.39.5
+
 
 
 
