@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90617A98E87
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B354DA98FE1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE815A7A10
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7DC11B86437
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC72727CB33;
-	Wed, 23 Apr 2025 14:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D281284678;
+	Wed, 23 Apr 2025 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6SrgzOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAjFw3C7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8789E18DB17;
-	Wed, 23 Apr 2025 14:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F22284677;
+	Wed, 23 Apr 2025 15:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420047; cv=none; b=hQX3NaMywRsueJOoVAHht9NfusBOwogFlnI6/qOKaMitzCBd0eAFj6T4olIYIveJCKrGw9BqzDOmlE6qtMufImzTxXVdJfH+7qBb2y7AiMilSO/Lfd1V/E/MiMWIMIoscJ0h081qWNh9qtEthg3g4zhcuie4krdL0cuYOvgInv0=
+	t=1745420564; cv=none; b=oZJTETEeT47uPHp1pjRcTHJV2pUR0NwI9CrhYlt1bm0uaPqF0OMk5V3a6RCBJzd+jJD/mhzgJdUftnwAHZPvVckD9MW0cP3oKSohvk1Di7ieEgoE3ctUZ6rgbtR1rj8rxzFwWJXZN6od5LlCAHdmybGWj91JLmr6anlNgxnqgRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420047; c=relaxed/simple;
-	bh=6FcaOJksybvfKCdmHltqmjceaT/NCRs+twjXBj9ayRc=;
+	s=arc-20240116; t=1745420564; c=relaxed/simple;
+	bh=6TfROoK9+/ZluI2/nDOXUW7Hz+gczqZZAM7kNBDUWms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2eDrwu0ER58FgkDSrAmFZ+tu2Sd3iTdiT/0P8Y44Ony8CxNTHepARIDeB8RsGWKOaIZ3ekT2+kDD8klDKJla+hj1PTufwlBvgZ+jkU2xg08hOxjB0DcdlAnwz7N5vKVjx69BHVR4AKbbKKgJKitvy3T+zDcFQKWpuDmnOnJuto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6SrgzOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1901BC4CEE2;
-	Wed, 23 Apr 2025 14:54:06 +0000 (UTC)
+	 MIME-Version; b=bQN/aMWmskNeuMIFwv0ypum4VUtkDLYox1OvUSWJ3wz4opss/PMGD80xggHyCi0qbPMfetTgQm927RvhrokMsLkrtMP5Hod72riiQ9TaVECKna0w3u5HeqkqG32zZGYZQt2Q/9g7gW0h+HhbjkYAblpGaPSxmCTh75CGw5fAtBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAjFw3C7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF68FC4CEE2;
+	Wed, 23 Apr 2025 15:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420047;
-	bh=6FcaOJksybvfKCdmHltqmjceaT/NCRs+twjXBj9ayRc=;
+	s=korg; t=1745420564;
+	bh=6TfROoK9+/ZluI2/nDOXUW7Hz+gczqZZAM7kNBDUWms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6SrgzOzVSt+qzAq2saOeHNcgej3N5wMxb8DwD/kJUVCb5qRmFYfbw8fbBRK3uV2z
-	 rGUHkIZ7Z3BOFPQlkZjZRjySa8olMaSLdGqXI8hIO6f1/qty11mqygF8Z12yzwm1hk
-	 aWFhobis6VKf0/OfU+Ic8dNzutSRgVf25As1gcQc=
+	b=IAjFw3C7cLiPMs4x/xIexpkOTjOBuCncSicQNNeMTW6gC6tBlborqaZzy6wZQAZOl
+	 dOrs1ESj8UwMd7qDDF+GX8I6CG+RYJfnfUnp3GOL8J/dTRUhzuZka1C7j9D03ejJIM
+	 iQ/Wc+ucklpSMNPDZr8YHavEHTJthu7Q3YFdi+14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 095/223] block: integrity: Do not call set_page_dirty_lock()
+	Cal Peake <cp@absolutedigital.net>,
+	Athul Krishna <athul.krishna.kr@protonmail.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Subject: [PATCH 6.14 103/241] Revert "PCI: Avoid reset when disabled via sysfs"
 Date: Wed, 23 Apr 2025 16:42:47 +0200
-Message-ID: <20250423142620.988311699@linuxfoundation.org>
+Message-ID: <20250423142624.779156242@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin K. Petersen <martin.petersen@oracle.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-commit 39e160505198ff8c158f11bce2ba19809a756e8b upstream.
+commit bc0b828ef6e561081ebc4c758d0c4d166bb9829c upstream.
 
-Placing multiple protection information buffers inside the same page
-can lead to oopses because set_page_dirty_lock() can't be called from
-interrupt context.
+This reverts commit 479380efe1625e251008d24b2810283db60d6fcd.
 
-Since a protection information buffer is not backed by a file there is
-no point in setting its page dirty, there is nothing to synchronize.
-Drop the call to set_page_dirty_lock() and remove the last argument to
-bio_integrity_unpin_bvec().
+The reset_method attribute on a PCI device is only intended to manage the
+availability of function scoped resets for a device.  It was never intended
+to restrict resets targeting the bus or slot.
 
+In introducing a restriction that each device must support function level
+reset by testing pci_reset_supported(), we essentially create a catch-22,
+that a device must have a function scope reset in order to support bus/slot
+reset, when we use bus/slot reset to effect a reset of a device that does
+not support a function scoped reset, especially multi-function devices.
+
+This breaks the majority of uses cases where vfio-pci uses bus/slot resets
+to manage multifunction devices that do not support function scoped resets.
+
+Fixes: 479380efe162 ("PCI: Avoid reset when disabled via sysfs")
+Reported-by: Cal Peake <cp@absolutedigital.net>
+Closes: https://lore.kernel.org/all/808e1111-27b7-f35b-6d5c-5b275e73677b@absolutedigital.net
+Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220010
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 492c5d455969 ("block: bio-integrity: directly map user buffers")
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/yq1v7r3ev9g.fsf@ca-mkp.ca.oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://patch.msgid.link/20250414211828.3530741-1-alex.williamson@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bio-integrity.c |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/pci/pci.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -104,16 +104,12 @@ err:
- }
- EXPORT_SYMBOL(bio_integrity_alloc);
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5419,8 +5419,6 @@ static bool pci_bus_resettable(struct pc
+ 		return false;
  
--static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs,
--				     bool dirty)
-+static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs)
- {
- 	int i;
- 
--	for (i = 0; i < nr_vecs; i++) {
--		if (dirty && !PageCompound(bv[i].bv_page))
--			set_page_dirty_lock(bv[i].bv_page);
-+	for (i = 0; i < nr_vecs; i++)
- 		unpin_user_page(bv[i].bv_page);
--	}
- }
- 
- static void bio_integrity_uncopy_user(struct bio_integrity_payload *bip)
-@@ -129,7 +125,7 @@ static void bio_integrity_uncopy_user(st
- 	ret = copy_to_iter(bvec_virt(bounce_bvec), bytes, &orig_iter);
- 	WARN_ON_ONCE(ret != bytes);
- 
--	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs, true);
-+	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs);
- }
- 
- /**
-@@ -149,8 +145,7 @@ void bio_integrity_unmap_user(struct bio
- 		return;
- 	}
- 
--	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt,
--			bio_data_dir(bio) == READ);
-+	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt);
- }
- 
- /**
-@@ -236,7 +231,7 @@ static int bio_integrity_copy_user(struc
- 	}
- 
- 	if (write)
--		bio_integrity_unpin_bvec(bvec, nr_vecs, false);
-+		bio_integrity_unpin_bvec(bvec, nr_vecs);
- 	else
- 		memcpy(&bip->bip_vec[1], bvec, nr_vecs * sizeof(*bvec));
- 
-@@ -362,7 +357,7 @@ int bio_integrity_map_user(struct bio *b
- 	return 0;
- 
- release_pages:
--	bio_integrity_unpin_bvec(bvec, nr_bvecs, false);
-+	bio_integrity_unpin_bvec(bvec, nr_bvecs);
- free_bvec:
- 	if (bvec != stack_vec)
- 		kfree(bvec);
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resettable(dev->subordinate)))
+ 			return false;
+@@ -5497,8 +5495,6 @@ static bool pci_slot_resettable(struct p
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resettable(dev->subordinate)))
+ 			return false;
 
 
 
