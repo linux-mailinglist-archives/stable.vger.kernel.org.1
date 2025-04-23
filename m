@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-135715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19189A99029
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E927EA99127
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95C345A7825
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 111819256E5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA3F28A3FE;
-	Wed, 23 Apr 2025 15:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7D7284695;
+	Wed, 23 Apr 2025 15:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENEeqoBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPM6PcHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDDACC8EB;
-	Wed, 23 Apr 2025 15:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB6157C9F;
+	Wed, 23 Apr 2025 15:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420654; cv=none; b=UqMknopLZOQmQkCO4bEbSYOW1wGaK7vPII2VgMR5ZPwN+GZZ6T8QJ8aYIxnRDR22hoK70S7RNx4gRDgf6LAi1IxC2nD32PVNx05IIKB2Iu8KICemfx6bPrWBvtAOXCe/JZkguAdGqWkwmGJPYX06I1HME/kLH/HK3e+Bh1ggwNY=
+	t=1745421238; cv=none; b=bEyZ+Yl+dszgoYPSOuCswlzVZyD0W08aXpOMFJBfLEGLaAtnfMaB6kVjOua5IgWV3QJlBeJnlxcfwlVPZPPtdGbKqSHOJpbX3jpgSb4w+QDI1ZR6S4z8wnZCXckWDTrcA/Ywg6uj1pX1XaxhOvXji2qFq5jdLRRsvSgQXqtGyik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420654; c=relaxed/simple;
-	bh=IKoYqb4RnSm/Y/bi5SEKlf0Xr6FkVsXHtsby7QPP3m8=;
+	s=arc-20240116; t=1745421238; c=relaxed/simple;
+	bh=WQUpr/QGRNBvrKjZOES7OlMNHWSHRTRkJt4YQo8f40c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aSNNZHO4PSNSe/BJRp12hgZ8XEFcgWj/craB2DTrsoZ1VYnarUYDrVRy3hn9TtPHsdi1L/zadKSvqrETXAryjpUcu+BPkQcWz5YVtohZBKzIMlip+vEFGUvKuEB6yh5jIkX2qj8cMMoQzGaIl4Ew5KfDVzBbQGsysji4nKd1d/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENEeqoBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89B6C4CEE2;
-	Wed, 23 Apr 2025 15:04:12 +0000 (UTC)
+	 MIME-Version; b=Czk3ScLWmtcfGGgT7+xPYcV24INZpr9JfqZxq58k0qSHG/v/nW9xKWa68tNqw9GD5xB/ADwuhalrN4rxXYmnmSAMKuMFe9TK5PQb9W9yjAgN+M3kKZ5MusorJQje6cMtv59fL0gsfofBLvRPsTzbq5qrTh58fYctyG5tkeJURDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPM6PcHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20559C4CEE2;
+	Wed, 23 Apr 2025 15:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420653;
-	bh=IKoYqb4RnSm/Y/bi5SEKlf0Xr6FkVsXHtsby7QPP3m8=;
+	s=korg; t=1745421238;
+	bh=WQUpr/QGRNBvrKjZOES7OlMNHWSHRTRkJt4YQo8f40c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENEeqoBjLXRPvJrMVY4N3ai/yxJSj1KjCkQZU85kURM0Ti7HqExtrLSi1hMNnPzov
-	 eR0fZJ2zq6Zq+QxWVajPIZSfrCwe5Jlx54VCPBn09dKbOubuAub8Ydcrw93Os8G/tp
-	 KDJs0Jx1kcmr4ZYZpIgsP0YCYQOx76wohWD/6JXU=
+	b=vPM6PcHh1EbhiQtzio2ZY7YCDolIeRzn2/wXoQcl6ByfpaQ49iy44gioKsNNb7G4o
+	 eF+dd5bbjAwGCWkqWxX7Wu25t4TqiKE6rAB1LbTO0FnxI8IkmBsjEeKDolup8WyM8u
+	 z/nD3w2xJQvqbI4Ud91y+aSAg4wwy+uytCZZE4Gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/291] PCI: vmd: Make vmd_dev::cfg_lock a raw_spinlock_t type
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Sunmin Jeong <s_min.jeong@samsung.com>,
+	Yeongjin Gil <youngjin.gil@samsung.com>,
+	Daeho Jeong <daehojeong@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 161/393] f2fs: fix to avoid atomicity corruption of atomic file
 Date: Wed, 23 Apr 2025 16:40:57 +0200
-Message-ID: <20250423142627.151646345@linuxfoundation.org>
+Message-ID: <20250423142650.024913877@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Yeongjin Gil <youngjin.gil@samsung.com>
 
-[ Upstream commit 18056a48669a040bef491e63b25896561ee14d90 ]
+commit f098aeba04c9328571567dca45159358a250240c upstream.
 
-The access to the PCI config space via pci_ops::read and pci_ops::write is
-a low-level hardware access. The functions can be accessed with disabled
-interrupts even on PREEMPT_RT. The pci_lock is a raw_spinlock_t for this
-purpose.
+In the case of the following call stack for an atomic file,
+FI_DIRTY_INODE is set, but FI_ATOMIC_DIRTIED is not subsequently set.
 
-A spinlock_t becomes a sleeping lock on PREEMPT_RT, so it cannot be
-acquired with disabled interrupts. The vmd_dev::cfg_lock is accessed in
-the same context as the pci_lock.
+f2fs_file_write_iter
+  f2fs_map_blocks
+    f2fs_reserve_new_blocks
+      inc_valid_block_count
+        __mark_inode_dirty(dquot)
+          f2fs_dirty_inode
 
-Make vmd_dev::cfg_lock a raw_spinlock_t type so it can be used with
-interrupts disabled.
+If FI_ATOMIC_DIRTIED is not set, atomic file can encounter corruption
+due to a mismatch between old file size and new data.
 
-This was reported as:
+To resolve this issue, I changed to set FI_ATOMIC_DIRTIED when
+FI_DIRTY_INODE is set. This ensures that FI_DIRTY_INODE, which was
+previously cleared by the Writeback thread during the commit atomic, is
+set and i_size is updated.
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  Call Trace:
-   rt_spin_lock+0x4e/0x130
-   vmd_pci_read+0x8d/0x100 [vmd]
-   pci_user_read_config_byte+0x6f/0xe0
-   pci_read_config+0xfe/0x290
-   sysfs_kf_bin_read+0x68/0x90
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Acked-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-[bigeasy: reword commit message]
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-off-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/r/20250218080830.ufw3IgyX@linutronix.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: add back report info from
-https://lore.kernel.org/lkml/20241218115951.83062-1-ryotkkr98@gmail.com/]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: fccaa81de87e ("f2fs: prevent atomic file from being dirtied before commit")
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Reviewed-by: Sunmin Jeong <s_min.jeong@samsung.com>
+Signed-off-by: Yeongjin Gil <youngjin.gil@samsung.com>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/vmd.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/f2fs/inode.c |    4 +---
+ fs/f2fs/super.c |    4 ++++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index a1dd614bdc324..09995b6e73bcc 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -110,7 +110,7 @@ struct vmd_irq_list {
- struct vmd_dev {
- 	struct pci_dev		*dev;
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -35,10 +35,8 @@ void f2fs_mark_inode_dirty_sync(struct i
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
  
--	spinlock_t		cfg_lock;
-+	raw_spinlock_t		cfg_lock;
- 	void __iomem		*cfgbar;
+-	if (f2fs_is_atomic_file(inode)) {
+-		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++	if (f2fs_is_atomic_file(inode))
+ 		return;
+-	}
  
- 	int msix_count;
-@@ -387,7 +387,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		*value = readb(addr);
-@@ -402,7 +402,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
+ 	mark_inode_dirty_sync(inode);
+ }
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1499,6 +1499,10 @@ int f2fs_inode_dirtied(struct inode *ino
+ 		inc_page_count(sbi, F2FS_DIRTY_IMETA);
  	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
+ 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
++
++	if (!ret && f2fs_is_atomic_file(inode))
++		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
++
  	return ret;
  }
  
-@@ -422,7 +422,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		writeb(value, addr);
-@@ -440,7 +440,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
- }
- 
-@@ -958,7 +958,7 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	if (features & VMD_FEAT_OFFSET_FIRST_VECTOR)
- 		vmd->first_vec = 1;
- 
--	spin_lock_init(&vmd->cfg_lock);
-+	raw_spin_lock_init(&vmd->cfg_lock);
- 	pci_set_drvdata(dev, vmd);
- 	err = vmd_enable_domain(vmd, features);
- 	if (err)
--- 
-2.39.5
-
 
 
 
