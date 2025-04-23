@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0984AA99161
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9948A992E8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAF28441078
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2CC1B870CB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4223C28D84E;
-	Wed, 23 Apr 2025 15:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2408294A14;
+	Wed, 23 Apr 2025 15:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQe1hTtx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zz/Nfrj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE90328CF52;
-	Wed, 23 Apr 2025 15:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE5428F53B;
+	Wed, 23 Apr 2025 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421424; cv=none; b=ocoRQhGrVWRcEl+Qfkh5ltDg0JfCJWaPaIuYknf2j3fGYXuDJc1TwuXOY92EDCcZH8SWBPC4Bb7aLiAKMgWyXiC9a6KhV9wNraAgjyYiMn5hfWyuAtuedJi7IROA7Q46Etlu5Xje4dcDWWj6kxzR4ykuZ0eG+hTPu62fdCHpHfQ=
+	t=1745421743; cv=none; b=ITj2ec9IgTMAda/Gzbr3s5izX0VhIttit6pZgvljWvMZlf/Pj/Vq5yrLHk9nrOOMbuUghXSg/C5WwSJn4bKYmHuNf90XQmh5IVK23KxTw1xbAfTPMO6iPyxPgfUCZBGw2nd6HavF/pBNZH3ljkDR+7OZFjVdNXmLsEgjXKWonLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421424; c=relaxed/simple;
-	bh=i4VwiWjkx2TTEqzUlCXgoWa2B0w6ls5EAK+tLQ/BkdA=;
+	s=arc-20240116; t=1745421743; c=relaxed/simple;
+	bh=vRQgy5D0utS/J3yGs+YfyOOKVeKVgj8A/qpgDxqCMpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uV8JLslSMVzCVRpNmXsw+IfMPaPZ6WLrWfP47nxKqZ7aae7dSbFTaXCPXlIEeTTqZZelrTxxn3UvHjnW2CSS8awMufSI79c8g63S+nUJeOBrR8GgD7PEMKEPcH/2CgDZ1CHXRIeY9eRyr7Mj/P8xNAodzBhtXG+1BI38RmqtXAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQe1hTtx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56872C4CEE2;
-	Wed, 23 Apr 2025 15:17:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hI2O48wkwNMP2VyNNPnIMEcTvh+Gz11nQ3Zn0NbMLSiEl+9MyjOBPsZm7nBls+tdKeLCWDKa9sADUQF/hCCeKQwRdd7tOx4n8Xomrwe9cf4HDAO6OGcENKYM5gA46OryKOhRE7DY/zLinss86y7Fq4CJVtJDMqfr/Gjh8mCJU4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zz/Nfrj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2520C4CEE2;
+	Wed, 23 Apr 2025 15:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421423;
-	bh=i4VwiWjkx2TTEqzUlCXgoWa2B0w6ls5EAK+tLQ/BkdA=;
+	s=korg; t=1745421742;
+	bh=vRQgy5D0utS/J3yGs+YfyOOKVeKVgj8A/qpgDxqCMpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQe1hTtxABm63bDxn7bdHIXTnU2ychHP0j8F4dK5NwaadczxrUYastHezhdUxUnEm
-	 Ih1vwkb7YpywpDCchIW6xFmUzx3/ejnX1LnQYc4Mx1oADSgJNBR+GcIiTVevY8UZuV
-	 UKsxeeZ5667EHTBgaQRX9QrGWN/Movd2v9/yzhgw=
+	b=Zz/Nfrj251WpCefPROs+ETyQS0KW+a7HD1sfiZroSlw0bN5BFIN/VSup/ACOKVFL2
+	 BpJ4fEuwGfI6pK007saDVz/fFFQQAnC7WP9PGOXJIMpr28xZh9/FXSJYw9UdSsgZsS
+	 hN8+1hYu4lBO5vYcnszNcafX6vkPK7ZkyGLhvRXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 220/223] selftests/bpf: validate that tail call invalidates packet pointers
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.14 228/241] cpufreq: Reference count policy in cpufreq_update_limits()
 Date: Wed, 23 Apr 2025 16:44:52 +0200
-Message-ID: <20250423142626.126458422@linuxfoundation.org>
+Message-ID: <20250423142629.879566331@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit d9706b56e13b7916461ca6b4b731e169ed44ed09 upstream.
+commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
 
-Add a test case with a tail call done from a global sub-program. Such
-tails calls should be considered as invalidating packet pointers.
+Since acpi_processor_notify() can be called before registering a cpufreq
+driver or even in cases when a cpufreq driver is not registered at all,
+cpufreq_update_limits() needs to check if a cpufreq driver is present
+and prevent it from being unregistered.
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-9-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
+policy pointer for the given CPU and reference count the corresponding
+policy object, if present.
+
+Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
+Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
+[do not use __free(cpufreq_cpu_put) in a backport]
+Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_sock.c |   28 ++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/cpufreq/cpufreq.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/tools/testing/selftests/bpf/progs/verifier_sock.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_sock.c
-@@ -50,6 +50,13 @@ struct {
- 	__uint(map_flags, BPF_F_NO_PREALLOC);
- } sk_storage_map SEC(".maps");
- 
-+struct {
-+	__uint(type, BPF_MAP_TYPE_PROG_ARRAY);
-+	__uint(max_entries, 1);
-+	__uint(key_size, sizeof(__u32));
-+	__uint(value_size, sizeof(__u32));
-+} jmp_table SEC(".maps");
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2780,10 +2780,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
+  */
+ void cpufreq_update_limits(unsigned int cpu)
+ {
++	struct cpufreq_policy *policy;
 +
- SEC("cgroup/skb")
- __description("skb->sk: no NULL check")
- __failure __msg("invalid mem access 'sock_common_or_null'")
-@@ -1004,5 +1011,26 @@ int invalidate_pkt_pointers_from_global_
- 	*p = 42; /* this is unsafe */
- 	return TCX_PASS;
++	policy = cpufreq_cpu_get(cpu);
++	if (!policy)
++		return;
++
+ 	if (cpufreq_driver->update_limits)
+ 		cpufreq_driver->update_limits(cpu);
+ 	else
+ 		cpufreq_update_policy(cpu);
++
++	cpufreq_cpu_put(policy);
  }
-+
-+__noinline
-+int tail_call(struct __sk_buff *sk)
-+{
-+	bpf_tail_call_static(sk, &jmp_table, 0);
-+	return 0;
-+}
-+
-+/* Tail calls invalidate packet pointers. */
-+SEC("tc")
-+__failure __msg("invalid mem access")
-+int invalidate_pkt_pointers_by_tail_call(struct __sk_buff *sk)
-+{
-+	int *p = (void *)(long)sk->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)sk->data_end)
-+		return TCX_DROP;
-+	tail_call(sk);
-+	*p = 42; /* this is unsafe */
-+	return TCX_PASS;
-+}
+ EXPORT_SYMBOL_GPL(cpufreq_update_limits);
  
- char _license[] SEC("license") = "GPL";
 
 
 
