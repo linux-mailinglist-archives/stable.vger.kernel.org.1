@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-136421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94017A99457
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:13:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED71FA99406
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88E851BA4BEC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2858092177D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4BF29B238;
-	Wed, 23 Apr 2025 15:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22F528A1EB;
+	Wed, 23 Apr 2025 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REwKiyMZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pd7beKwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB93728B4E6;
-	Wed, 23 Apr 2025 15:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8028A1D8;
+	Wed, 23 Apr 2025 15:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422501; cv=none; b=PTBwd75F904MvT+T3SxBPCQxzimPKoQyG0NGqKU+y2/p9ipCutMWyDQ6tRyd0WSeYvC+d65Pr5Jht7FnP2s58Fp3evGa5IT8SKAipRNlKOS5scUkFjshhCcftaNj4t5Q/ofdr6DFsQKZuV474KrUojC1D9jmQZXhlYeG34tcAqE=
+	t=1745422370; cv=none; b=QS3RQktMLAe6b8xfbRTLSbDTihMlsT8uTw3A572nvQV5bpayEve7LCp+itUJd5hmG/4xM3DUuYwiIfwzVMPObXyQSNDLYXBjITqtzRGOwKWjJNwGG5j/pitlK938ztNBNpAlAsgBhVmJYz9ZFg/rUlp5q/ECprHdS71WK1J7EuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422501; c=relaxed/simple;
-	bh=4w/SbY7zFNaEQeaa8HfabppZUJCHnM9+x68Pjc8hAPw=;
+	s=arc-20240116; t=1745422370; c=relaxed/simple;
+	bh=jhHp+ArDSf//S8vEXHkYuR/EKeQujT3/q9yOgVbEHoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMc3r9xyH4qEKOjh4YYAjdOlp8NytNe6EKDQhjBI3NeuJRBPBeWYKdo8i0NkQapMe2ED4/M9ssu6CB1kBTvFeOONGGc0R4/wwjT90qY2gGTNvn0L0HYVacwytTjDAOTqUKxozGvWohAftsZSuitavztD5TRv4bZ+DaWlpg8ohco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REwKiyMZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD326C4CEE3;
-	Wed, 23 Apr 2025 15:35:00 +0000 (UTC)
+	 MIME-Version; b=JcLN7JJBqr1x2vkgO6F51MTyew056gO4+oDB4f0NUkTv8R0tjg68i8yb44GvcLRQqD9J2YDhfsAcucluoyPC8bhwFKkJNPy1dSQ+AQvaG7/KocXLVoc+cIqU+VQHBSmLdztVlitxvqVNahKKDcQnWvp/CXf+48FTiMb5dYgmjK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pd7beKwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ACFC4CEE2;
+	Wed, 23 Apr 2025 15:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422501;
-	bh=4w/SbY7zFNaEQeaa8HfabppZUJCHnM9+x68Pjc8hAPw=;
+	s=korg; t=1745422370;
+	bh=jhHp+ArDSf//S8vEXHkYuR/EKeQujT3/q9yOgVbEHoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REwKiyMZn1j5UMSE3/U0922DSzXvnVbrk8W2WqO9DbNNh7KOst5327khBbIlhrOYm
-	 JrjNg5cQwvcg37X7391m0IaZYcD4h58PuFvI1HYq+PJFLH5dyApZ1syxeMmXUv0XYG
-	 T7xxL7uaW51s/OkV2pKZMvb873cLCu321K4jggBs=
+	b=Pd7beKwm6GFQNZZ2d04ZDlNE99BDHsqyztYEXx9cttBu0fmkTo4tXP/EX4Ub+L59s
+	 vCjATC3kJQMzILZjWgpGW3xXK3Lm8/mguYfegmDtgSqNp1XNf+Q0QG7wWLWllJMpp3
+	 pmmpXy2YgerWi46K3ftj8N+JjU/25yOzJlJyefI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Yingfu.zhou" <yingfu.zhou@shopee.com>,
-	"Chunguang.xu" <chunguang.xu@shopee.com>,
-	"Yue.zhao" <yue.zhao@shopee.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Feng Liu <Feng.Liu3@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 6.6 374/393] nvme-rdma: unquiesce admin_q before destroy it
-Date: Wed, 23 Apr 2025 16:44:30 +0200
-Message-ID: <20250423142658.780460334@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 283/291] blk-cgroup: support to track if policy is online
+Date: Wed, 23 Apr 2025 16:44:32 +0200
+Message-ID: <20250423142635.988029443@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +65,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunguang.xu <chunguang.xu@shopee.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit 5858b687559809f05393af745cbadf06dee61295 upstream.
+commit dfd6200a095440b663099d8d42f1efb0175a1ce3 upstream.
 
-Kernel will hang on destroy admin_q while we create ctrl failed, such
-as following calltrace:
+A new field 'online' is added to blkg_policy_data to fix following
+2 problem:
 
-PID: 23644    TASK: ff2d52b40f439fc0  CPU: 2    COMMAND: "nvme"
- #0 [ff61d23de260fb78] __schedule at ffffffff8323bc15
- #1 [ff61d23de260fc08] schedule at ffffffff8323c014
- #2 [ff61d23de260fc28] blk_mq_freeze_queue_wait at ffffffff82a3dba1
- #3 [ff61d23de260fc78] blk_freeze_queue at ffffffff82a4113a
- #4 [ff61d23de260fc90] blk_cleanup_queue at ffffffff82a33006
- #5 [ff61d23de260fcb0] nvme_rdma_destroy_admin_queue at ffffffffc12686ce
- #6 [ff61d23de260fcc8] nvme_rdma_setup_ctrl at ffffffffc1268ced
- #7 [ff61d23de260fd28] nvme_rdma_create_ctrl at ffffffffc126919b
- #8 [ff61d23de260fd68] nvmf_dev_write at ffffffffc024f362
- #9 [ff61d23de260fe38] vfs_write at ffffffff827d5f25
-    RIP: 00007fda7891d574  RSP: 00007ffe2ef06958  RFLAGS: 00000202
-    RAX: ffffffffffffffda  RBX: 000055e8122a4d90  RCX: 00007fda7891d574
-    RDX: 000000000000012b  RSI: 000055e8122a4d90  RDI: 0000000000000004
-    RBP: 00007ffe2ef079c0   R8: 000000000000012b   R9: 000055e8122a4d90
-    R10: 0000000000000000  R11: 0000000000000202  R12: 0000000000000004
-    R13: 000055e8122923c0  R14: 000000000000012b  R15: 00007fda78a54500
-    ORIG_RAX: 0000000000000001  CS: 0033  SS: 002b
+1) In blkcg_activate_policy(), if pd_alloc_fn() with 'GFP_NOWAIT'
+   failed, 'queue_lock' will be dropped and pd_alloc_fn() will try again
+   without 'GFP_NOWAIT'. In the meantime, remove cgroup can race with
+   it, and pd_offline_fn() will be called without pd_init_fn() and
+   pd_online_fn(). This way null-ptr-deference can be triggered.
 
-This due to we have quiesced admi_q before cancel requests, but forgot
-to unquiesce before destroy it, as a result we fail to drain the
-pending requests, and hang on blk_mq_freeze_queue_wait() forever. Here
-try to reuse nvme_rdma_teardown_admin_queue() to fix this issue and
-simplify the code.
+2) In order to synchronize pd_free_fn() from blkg_free_workfn() and
+   blkcg_deactivate_policy(), 'list_del_init(&blkg->q_node)' will be
+   delayed to blkg_free_workfn(), hence pd_offline_fn() can be called
+   first in blkg_destroy(), and then blkcg_deactivate_policy() will
+   call it again, we must prevent it.
 
-Fixes: 958dc1d32c80 ("nvme-rdma: add clean action for failed reconnection")
-Reported-by: Yingfu.zhou <yingfu.zhou@shopee.com>
-Signed-off-by: Chunguang.xu <chunguang.xu@shopee.com>
-Signed-off-by: Yue.zhao <yue.zhao@shopee.com>
+The new field 'online' will be set after pd_online_fn() and will be
+cleared after pd_offline_fn(), in the meantime pd_offline_fn() will only
+be called if 'online' is set.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Tejun Heo <tj@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[Minor context change fixed]
-Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/rdma.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ block/blk-cgroup.c |   24 +++++++++++++++++-------
+ block/blk-cgroup.h |    1 +
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
---- a/drivers/nvme/host/rdma.c
-+++ b/drivers/nvme/host/rdma.c
-@@ -1083,13 +1083,7 @@ destroy_io:
- 		nvme_rdma_free_io_queues(ctrl);
+--- a/block/blk-cgroup.c
++++ b/block/blk-cgroup.c
+@@ -255,6 +255,7 @@ static struct blkcg_gq *blkg_alloc(struc
+ 		blkg->pd[i] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = i;
++		pd->online = false;
  	}
- destroy_admin:
--	nvme_quiesce_admin_queue(&ctrl->ctrl);
--	blk_sync_queue(ctrl->ctrl.admin_q);
--	nvme_rdma_stop_queue(&ctrl->queues[0]);
--	nvme_cancel_admin_tagset(&ctrl->ctrl);
--	if (new)
--		nvme_remove_admin_tag_set(&ctrl->ctrl);
--	nvme_rdma_destroy_admin_queue(ctrl);
-+	nvme_rdma_teardown_admin_queue(ctrl, new);
- 	return ret;
- }
  
+ 	return blkg;
+@@ -326,8 +327,11 @@ static struct blkcg_gq *blkg_create(stru
+ 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 			struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-			if (blkg->pd[i] && pol->pd_online_fn)
+-				pol->pd_online_fn(blkg->pd[i]);
++			if (blkg->pd[i]) {
++				if (pol->pd_online_fn)
++					pol->pd_online_fn(blkg->pd[i]);
++				blkg->pd[i]->online = true;
++			}
+ 		}
+ 	}
+ 	blkg->online = true;
+@@ -432,8 +436,11 @@ static void blkg_destroy(struct blkcg_gq
+ 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
+ 		struct blkcg_policy *pol = blkcg_policy[i];
+ 
+-		if (blkg->pd[i] && pol->pd_offline_fn)
+-			pol->pd_offline_fn(blkg->pd[i]);
++		if (blkg->pd[i] && blkg->pd[i]->online) {
++			if (pol->pd_offline_fn)
++				pol->pd_offline_fn(blkg->pd[i]);
++			blkg->pd[i]->online = false;
++		}
+ 	}
+ 
+ 	blkg->online = false;
+@@ -1422,6 +1429,7 @@ retry:
+ 		blkg->pd[pol->plid] = pd;
+ 		pd->blkg = blkg;
+ 		pd->plid = pol->plid;
++		pd->online = false;
+ 	}
+ 
+ 	/* all allocated, init in the same order */
+@@ -1429,9 +1437,11 @@ retry:
+ 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
+ 			pol->pd_init_fn(blkg->pd[pol->plid]);
+ 
+-	if (pol->pd_online_fn)
+-		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
++	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
++		if (pol->pd_online_fn)
+ 			pol->pd_online_fn(blkg->pd[pol->plid]);
++		blkg->pd[pol->plid]->online = true;
++	}
+ 
+ 	__set_bit(pol->plid, q->blkcg_pols);
+ 	ret = 0;
+@@ -1493,7 +1503,7 @@ void blkcg_deactivate_policy(struct requ
+ 
+ 		spin_lock(&blkcg->lock);
+ 		if (blkg->pd[pol->plid]) {
+-			if (pol->pd_offline_fn)
++			if (blkg->pd[pol->plid]->online && pol->pd_offline_fn)
+ 				pol->pd_offline_fn(blkg->pd[pol->plid]);
+ 			pol->pd_free_fn(blkg->pd[pol->plid]);
+ 			blkg->pd[pol->plid] = NULL;
+--- a/block/blk-cgroup.h
++++ b/block/blk-cgroup.h
+@@ -125,6 +125,7 @@ struct blkg_policy_data {
+ 	/* the blkg and policy id this per-policy data belongs to */
+ 	struct blkcg_gq			*blkg;
+ 	int				plid;
++	bool				online;
+ };
+ 
+ /*
 
 
 
