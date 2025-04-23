@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-135446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA1C8A98E34
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8C9A98E64
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88D41447260
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFDD61B81E0B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E60C27FD67;
-	Wed, 23 Apr 2025 14:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E98C280CCE;
+	Wed, 23 Apr 2025 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vi86x0v4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1NGtCvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C712263F54;
-	Wed, 23 Apr 2025 14:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497C9C8EB;
+	Wed, 23 Apr 2025 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419945; cv=none; b=k17++8qBW2/MEzr9mU+dFA3VzrHjpBUTV2Dl/cjdbVCNKV8ZIxM83oQ3qTvrGoLxiIcnsndchRnjyWgU84ienylF+9bRwKl35MhheIbTDlgFOT8aBVYsSK5my8fZ9yuQKwnxWSLXOXIpsgjgz/7JcWweIm5d5UR561wJm24hScU=
+	t=1745419958; cv=none; b=h0J09Nwfrer6/DUTPdE4m/iilGNAF2RIfyPI8fN7gotOjTeMbyhbscRQW0UNFe4ylld4bLmIEFlEuykr2qgRyTWKahX54ctHYRAM8C29h8e1WtKMgNi6noNixoH6IaJqW2M2A/27tu/+dRpKCJ4x9j0z9Bg1rqB8rBL4K5GCFfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419945; c=relaxed/simple;
-	bh=1Y7cfDpjU0HAvY5+vkrHryANsdPwfyEO6CCvSMF/njk=;
+	s=arc-20240116; t=1745419958; c=relaxed/simple;
+	bh=v/3Z50G/ZVoVxB+Yqr79OSo8S82QOLed/8LQz5NHCoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTEuN5uv/qg1R922b80NPrLY+EKDryLNjcVFOeEIOrwokRsZ3NSo5NgrpM9+M1dpnYN5cbZCXbUcP8oX5YiOw8F7zd6nxHDm+LY8s6mhGYL0zF0Y1t1C9cKf57OYzDeEfLgwVyA7J50cGa4vQeETDzs5YlVwbHc4BLd41dVWzmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vi86x0v4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0757C4CEE2;
-	Wed, 23 Apr 2025 14:52:24 +0000 (UTC)
+	 MIME-Version; b=HBVyEYiB6g96rNRCFB0KdOkXdDl5LBJgeuSu8imgEwAaqoC9SMxuYtmtccYFpbequ7QY5nSzxfTW9dIi4Wy/L1m/+zPga82oB9cnXwSt1/sPjdD32n8yuT8UMgdy7HqX+sRWRiRY4EPHjqAmUsnXaF8NGSlakjQTdu4VzPqr6aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1NGtCvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15A1C4CEE2;
+	Wed, 23 Apr 2025 14:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419945;
-	bh=1Y7cfDpjU0HAvY5+vkrHryANsdPwfyEO6CCvSMF/njk=;
+	s=korg; t=1745419958;
+	bh=v/3Z50G/ZVoVxB+Yqr79OSo8S82QOLed/8LQz5NHCoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vi86x0v4uHYPmTsD5rDfl4h7LmKJCDjeZU89rO5C8F6CK4B4iZaY8xgFgfLDkbUlL
-	 iP5/STJkqnEUnCzLS9dfLUMqiDy7NlHyOkrZDp9KgWNrqPL3b0aRV7oAVhUa11Hefv
-	 Ay+bSdeQ7PRGhfZ8rmo7OSBXvcy3dsvBmSl4zHWk=
+	b=K1NGtCvA0r0qF4MPQKJXECfczWbkw8ri0Ggitft9eXzHtcEUm5S1S44DIPJys0bvN
+	 CWaOOrQyFWNUkFI0HL6CIVUFEgZppSK3CvUBfPeZYsqtJl4n1K+i6tbrNdnI3+IGQj
+	 Uxu828unvtT8E9NydN14gu7x0MlSIF1Vxo8dsQvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Philipp Stanner <phasta@mailbox.org>,
 	Thomas Zimmermann <tzimmermann@suse.de>,
 	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/393] drm/tests: helpers: Create kunit helper to destroy a drm_display_mode
-Date: Wed, 23 Apr 2025 16:38:39 +0200
-Message-ID: <20250423142644.220166239@linuxfoundation.org>
+Subject: [PATCH 6.6 024/393] drm/tests: cmdline: Fix drm_display_mode memory leak
+Date: Wed, 23 Apr 2025 16:38:40 +0200
+Message-ID: <20250423142644.263863381@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -68,74 +69,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 13c1d5f3a7fa7b55a26e73bb9e95342374a489b2 ]
+[ Upstream commit 70f29ca3117a8796cd6bde7612a3ded96d0f2dde ]
 
-A number of test suites call functions that expect the returned
-drm_display_mode to be destroyed eventually.
+drm_analog_tv_mode() and its variants return a drm_display_mode that
+needs to be destroyed later one. The drm_test_cmdline_tv_options() test
+never does however, which leads to a memory leak.
 
-However, none of the tests called drm_mode_destroy, which results in a
-memory leak.
+Let's make sure it's freed.
 
-Since drm_mode_destroy takes two pointers as argument, we can't use a
-kunit wrapper. Let's just create a helper every test suite can use.
-
+Reported-by: Philipp Stanner <phasta@mailbox.org>
+Closes: https://lore.kernel.org/dri-devel/a7655158a6367ac46194d57f4b7433ef0772a73e.camel@mailbox.org/
+Fixes: e691c9992ae1 ("drm/modes: Introduce the tv_mode property as a command-line option")
 Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-1-996305a2e75a@kernel.org
+Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-4-996305a2e75a@kernel.org
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Stable-dep-of: 70f29ca3117a ("drm/tests: cmdline: Fix drm_display_mode memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_kunit_helpers.c | 22 ++++++++++++++++++++++
- include/drm/drm_kunit_helpers.h           |  3 +++
- 2 files changed, 25 insertions(+)
+ drivers/gpu/drm/tests/drm_cmdline_parser_test.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-index 12d58353a54ef..04d98f81c5227 100644
---- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
-+++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-@@ -391,6 +391,28 @@ static void kunit_action_drm_mode_destroy(void *ptr)
- 	drm_mode_destroy(NULL, mode);
- }
+diff --git a/drivers/gpu/drm/tests/drm_cmdline_parser_test.c b/drivers/gpu/drm/tests/drm_cmdline_parser_test.c
+index 88f7f518ffb3b..05dd5cc3b604b 100644
+--- a/drivers/gpu/drm/tests/drm_cmdline_parser_test.c
++++ b/drivers/gpu/drm/tests/drm_cmdline_parser_test.c
+@@ -7,6 +7,7 @@
+ #include <kunit/test.h>
  
-+/**
-+ * drm_kunit_add_mode_destroy_action() - Add a drm_destroy_mode kunit action
-+ * @test: The test context object
-+ * @mode: The drm_display_mode to destroy eventually
-+ *
-+ * Registers a kunit action that will destroy the drm_display_mode at
-+ * the end of the test.
-+ *
-+ * If an error occurs, the drm_display_mode will be destroyed.
-+ *
-+ * Returns:
-+ * 0 on success, an error code otherwise.
-+ */
-+int drm_kunit_add_mode_destroy_action(struct kunit *test,
-+				      struct drm_display_mode *mode)
-+{
-+	return kunit_add_action_or_reset(test,
-+					 kunit_action_drm_mode_destroy,
-+					 mode);
-+}
-+EXPORT_SYMBOL_GPL(drm_kunit_add_mode_destroy_action);
-+
- /**
-  * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC for a KUnit test
-  * @test: The test context object
-diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
-index 3e5f4a23685ef..07e9a451262b6 100644
---- a/include/drm/drm_kunit_helpers.h
-+++ b/include/drm/drm_kunit_helpers.h
-@@ -120,6 +120,9 @@ drm_kunit_helper_create_crtc(struct kunit *test,
- 			     const struct drm_crtc_funcs *funcs,
- 			     const struct drm_crtc_helper_funcs *helper_funcs);
+ #include <drm/drm_connector.h>
++#include <drm/drm_kunit_helpers.h>
+ #include <drm/drm_modes.h>
  
-+int drm_kunit_add_mode_destroy_action(struct kunit *test,
-+				      struct drm_display_mode *mode);
+ static const struct drm_connector no_connector = {};
+@@ -955,8 +956,15 @@ struct drm_cmdline_tv_option_test {
+ static void drm_test_cmdline_tv_options(struct kunit *test)
+ {
+ 	const struct drm_cmdline_tv_option_test *params = test->param_value;
+-	const struct drm_display_mode *expected_mode = params->mode_fn(NULL);
++	struct drm_display_mode *expected_mode;
+ 	struct drm_cmdline_mode mode = { };
++	int ret;
 +
- struct drm_display_mode *
- drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
- 				    u8 video_code);
++	expected_mode = params->mode_fn(NULL);
++	KUNIT_ASSERT_NOT_NULL(test, expected_mode);
++
++	ret = drm_kunit_add_mode_destroy_action(test, expected_mode);
++	KUNIT_ASSERT_EQ(test, ret, 0);
+ 
+ 	KUNIT_EXPECT_TRUE(test, drm_mode_parse_command_line_for_connector(params->cmdline,
+ 									  &no_connector, &mode));
 -- 
 2.39.5
 
