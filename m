@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C72C4A98ED9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4732CA98E42
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 352757AEBF5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1454A5A695B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C0BF1A23B0;
-	Wed, 23 Apr 2025 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9605280A32;
+	Wed, 23 Apr 2025 14:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r042y6nk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnE9kCov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D2C1EFFB9;
-	Wed, 23 Apr 2025 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CADC8EB;
+	Wed, 23 Apr 2025 14:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420374; cv=none; b=pjxLkcHBqnxEppdDFKRmCa5iNkUaxX7E33xLltDbSyYRNv67+XePyaPOl8oeb/UfnD8dkflbgwg6NvsB9tv7tC+09gU1r+YLu/YMmjm2vTkj+Mu2Cbv84T4/FzI0boj5PB1HlM/9EztV8jGAAu762vcEVcT2E8Norp5JHv/e4tQ=
+	t=1745419908; cv=none; b=oi6WReQhjXbIaVeYJBHZyODon2H8V238sb6YqmvFCxbZu1ZCMa5w9kpgp0BxWMk25ovGM6yWs3vbZY6RoG/sRrrySxRoczGqi/f+ST8Y9HIdwiGPquglbH0XpzTIoApHqpYfJfg+UqHs+6iI8U6weNWhtcndeqWLp25tDr20ahg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420374; c=relaxed/simple;
-	bh=/sJY6dMCNdaXutJlAm1UIpKspKBLn265esQEtbDrEAs=;
+	s=arc-20240116; t=1745419908; c=relaxed/simple;
+	bh=XZ+p7uIPWIIhZp6lK4iRbcSoEX+WE0DJlxi4mUh99E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGLGsKWKfasovVQexu7UvrEVbHfsg7WTxFYp7Kf+C5NbNSS0MRlSCe+oot3MlK7Gf25aDALh1RtpfSFH4WNsX1NmxP37XY3FjVHImMeEvyiCEKIqG4WpS2c4rbW1ZfQwO0fKQqHlGtpcq9H6YDUuyLYpEHXwX4kyW3iMaZvnMsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r042y6nk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD92CC4CEE2;
-	Wed, 23 Apr 2025 14:59:33 +0000 (UTC)
+	 MIME-Version; b=Bw8MSbyGGOyGLTHJNQrlWBm5NtxzVtlqsKPwhleV3E2GSrSSb/3yNOzTWlvJhrw4K+kaLPrETSSVUrtcZJC0dX8wTXOWdYJ2OjHnyPQBkkBrVv2V+1VoGiiMeKudo4CoQW6WV2nZsvMuAzwps8uc6Rq4YT5DRxK/xdMXq0/kStI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnE9kCov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08730C4CEE8;
+	Wed, 23 Apr 2025 14:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420374;
-	bh=/sJY6dMCNdaXutJlAm1UIpKspKBLn265esQEtbDrEAs=;
+	s=korg; t=1745419908;
+	bh=XZ+p7uIPWIIhZp6lK4iRbcSoEX+WE0DJlxi4mUh99E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r042y6nkmRHLNsGo7nNUTyFKWwGbK2bB/3zRH1MBSZr6DRZd+C6gR6hCUDOP2nUqT
-	 vZ4RmSBq5YTwAnEUE0+Jz+6uKxoqX1eAjpFMDKMVmsbM48qskHqlQ93038unar9HzY
-	 QI/JY6kNnB+kFhJomGxOJvghR08+R0GBSEadr6oM=
+	b=nnE9kCov+ihLFTCRgFFXu68FZRVIptpt8WWvI+l151sPOX6zGRAshEn8pCLOWfYUR
+	 sV+ZSDTChY8AB4YOEyXoWQCtQ99nyRi4JQPveEiBWTvEy0o4T3lHlSgdbljY573McX
+	 +7f+5AtLHt6EtM+2Yi3/KsnpVLxWz4LLPf8qIzf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 086/241] net: ethernet: mtk_eth_soc: revise QDMA packet scheduler settings
+Subject: [PATCH 6.12 078/223] riscv: module: Allocate PLT entries for R_RISCV_PLT32
 Date: Wed, 23 Apr 2025 16:42:30 +0200
-Message-ID: <20250423142624.097462374@linuxfoundation.org>
+Message-ID: <20250423142620.300623913@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 1b66124135f5f8640bd540fadda4b20cdd23114b ]
+[ Upstream commit 1ee1313f4722e6d67c6e9447ee81d24d6e3ff4ad ]
 
-The QDMA packet scheduler suffers from a performance issue.
-Fix this by picking up changes from MediaTek's SDK which change to use
-Token Bucket instead of Leaky Bucket and fix the SPEED_1000 configuration.
+apply_r_riscv_plt32_rela() may need to emit a PLT entry for the
+referenced symbol, so there must be space allocated in the PLT.
 
-Fixes: 160d3a9b1929 ("net: ethernet: mtk_eth_soc: introduce MTK_NETSYS_V2 support")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/18040f60f9e2f5855036b75b28c4332a2d2ebdd8.1744764277.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8fd6c5142395 ("riscv: Add remaining module relocations")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250409171526.862481-2-samuel.holland@sifive.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/riscv/kernel/module-sections.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 6a34ad6483a14..0cd1ecacfd29f 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -762,8 +762,8 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 			break;
- 		case SPEED_1000:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 10) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 6) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 10);
- 			break;
- 		default:
-@@ -3274,7 +3274,7 @@ static int mtk_start_dma(struct mtk_eth *eth)
- 		if (mtk_is_netsys_v2_or_greater(eth))
- 			val |= MTK_MUTLI_CNT | MTK_RESV_BUF |
- 			       MTK_WCOMP_EN | MTK_DMAD_WR_WDONE |
--			       MTK_CHK_DDONE_EN | MTK_LEAKY_BUCKET_EN;
-+			       MTK_CHK_DDONE_EN;
- 		else
- 			val |= MTK_RX_BT_32DWORDS;
- 		mtk_w32(eth, val, reg_map->qdma.glo_cfg);
+diff --git a/arch/riscv/kernel/module-sections.c b/arch/riscv/kernel/module-sections.c
+index e264e59e596e8..91d0b355ceeff 100644
+--- a/arch/riscv/kernel/module-sections.c
++++ b/arch/riscv/kernel/module-sections.c
+@@ -73,16 +73,17 @@ static bool duplicate_rela(const Elf_Rela *rela, int idx)
+ static void count_max_entries(Elf_Rela *relas, int num,
+ 			      unsigned int *plts, unsigned int *gots)
+ {
+-	unsigned int type, i;
+-
+-	for (i = 0; i < num; i++) {
+-		type = ELF_RISCV_R_TYPE(relas[i].r_info);
+-		if (type == R_RISCV_CALL_PLT) {
++	for (int i = 0; i < num; i++) {
++		switch (ELF_R_TYPE(relas[i].r_info)) {
++		case R_RISCV_CALL_PLT:
++		case R_RISCV_PLT32:
+ 			if (!duplicate_rela(relas, i))
+ 				(*plts)++;
+-		} else if (type == R_RISCV_GOT_HI20) {
++			break;
++		case R_RISCV_GOT_HI20:
+ 			if (!duplicate_rela(relas, i))
+ 				(*gots)++;
++			break;
+ 		}
+ 	}
+ }
 -- 
 2.39.5
 
