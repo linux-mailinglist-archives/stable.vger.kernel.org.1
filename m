@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-135440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB27A98E15
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B86A98E4E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F6027AA799
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A42A5A701A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C1727CCFA;
-	Wed, 23 Apr 2025 14:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8259A27F755;
+	Wed, 23 Apr 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1ucUwFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgFTBglv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705785674E;
-	Wed, 23 Apr 2025 14:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F82918DB17;
+	Wed, 23 Apr 2025 14:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419929; cv=none; b=EzAYYDVnmM1xoM5CXW1PBFk9+oy4YqAj/UFY/o3rTS6gNObdiT+L/L9oaCgrBYNJOVb+zL/opvJqpjPK7R5YHN5Z79u98EhJ8BYIXbC6A6jt5ED75cPqjb0E+fUtgV//cpseFwJp4XSY34CXw3QRO9eiWfibbV02aeDGn/Kvrh4=
+	t=1745419937; cv=none; b=dg+oRj99JITuONuxS26+cGgYQ2imZkmfqgtCtxsu2I1zwDA2MOfgzjaXNFCyzK9okVST72uUERhJ86P+Z1zXqxj8BPJpVkLOb8R5+8ki+gnEErhkQatDJyC/B3crzwobu4XgaDiJQhAXTH43ik7XD/ZdFmpH9Vz63TSMwHuVYF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419929; c=relaxed/simple;
-	bh=w52cHdtaQ/a2EmCwXuIN1wXw0vbMOMZEKC6W2/XjuTY=;
+	s=arc-20240116; t=1745419937; c=relaxed/simple;
+	bh=2tY9F2s1ly2KRgMTcA5ZNpr2DN6kz2W3vouWsDDmC94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbktBllr88IuodVg9H5VCjGVORtZErOtCoOGnNw2JbYu8eBCpAteTziUEcBvglxOYsqJ7pbHm2fGE86YpYtB6UBvVyIQmb7PgUFjYGyyzU2rWEwSppAWclMrOHxbwZ158vGgYFpW27F+o75oEDAimtx2PB7KF8lO2lpf+qJyvOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1ucUwFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04354C4CEE2;
-	Wed, 23 Apr 2025 14:52:08 +0000 (UTC)
+	 MIME-Version; b=l/EuAFkMejDswfw9xUv0YgNEosSedFAmgXLjm5iuu9Q0kHh/06GNCjMOE2d3qnaWNOFdkvGf16YoIKxegcwi/uKh9p0m7n8Dgwwqz2xFwjK37sGFgsxkgQasPMLsg/g+YY5Y4WdmNGg7al1TaG5FVfoH7iFcOSS5mPKOnM+CrA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgFTBglv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B51C4CEE2;
+	Wed, 23 Apr 2025 14:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419929;
-	bh=w52cHdtaQ/a2EmCwXuIN1wXw0vbMOMZEKC6W2/XjuTY=;
+	s=korg; t=1745419937;
+	bh=2tY9F2s1ly2KRgMTcA5ZNpr2DN6kz2W3vouWsDDmC94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1ucUwFR53x6/HKXcuTfKsJvEp1zEQzWQ/Iq+QR8nk6kT9FCgXQs8ct/IHCum+p9S
-	 Rc3jlQydm5zDq8Atq2mX97MPi3oK2dWhq/Cex/6Hu71AOaL345MSmCL4kyRq74yId6
-	 Nb4a2DkzDSMYaMHsclleRAHVT11eHVDbJzro4Puk=
+	b=wgFTBglvsjVwHUnspMYSX33eTXNymW6gUBgUzjHcg7Uck7yANVKsC6bQ3SNPcbiCj
+	 3DNIiLKXF4HILSUghIqCRs4CpCzfpPbXcQ6JNhtvg1DhE+YfyhSPyHXXobOylHVzZn
+	 HZmPEXzcefMURUj5JL6Ep6PCP7ig/auxUc+1gCC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	kernel test robot <lkp@intel.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
 	Maxime Ripard <mripard@kernel.org>,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/393] drm/tests: helpers: Add helper for drm_display_mode_from_cea_vic()
-Date: Wed, 23 Apr 2025 16:38:37 +0200
-Message-ID: <20250423142644.140793487@linuxfoundation.org>
+Subject: [PATCH 6.6 022/393] drm/tests: helpers: Fix compiler warning
+Date: Wed, 23 Apr 2025 16:38:38 +0200
+Message-ID: <20250423142644.181918477@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,99 +69,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit caa714f86699bcfb01aa2d698db12d91af7d0d81 ]
+[ Upstream commit b9097e4c8bf3934e4e07e6f9b88741957fef351e ]
 
-As Maxime suggested, add a new helper
-drm_kunit_display_mode_from_cea_vic(), it can replace the direct call
-of drm_display_mode_from_cea_vic(), and it will help solving
-the `mode` memory leaks.
+Delete one line break to make the format correct, resolving the
+following warning during a W=1 build:
 
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-2-ruanjinjie@huawei.com
+>> drivers/gpu/drm/tests/drm_kunit_helpers.c:324: warning: bad line: for a KUnit test
+
+Fixes: caa714f86699 ("drm/tests: helpers: Add helper for drm_display_mode_from_cea_vic()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501032001.O6WY1VCW-lkp@intel.com/
+Reviewed-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Tested-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250104165134.1695864-1-eleanor15x@gmail.com
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Stable-dep-of: 70f29ca3117a ("drm/tests: cmdline: Fix drm_display_mode memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_kunit_helpers.c | 42 +++++++++++++++++++++++
- include/drm/drm_kunit_helpers.h           |  4 +++
- 2 files changed, 46 insertions(+)
+ drivers/gpu/drm/tests/drm_kunit_helpers.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-index ca513235b5e2a..9a35b2cf6a032 100644
+index 9a35b2cf6a032..12d58353a54ef 100644
 --- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
 +++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-@@ -3,6 +3,7 @@
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_drv.h>
-+#include <drm/drm_edid.h>
- #include <drm/drm_fourcc.h>
- #include <drm/drm_kunit_helpers.h>
- #include <drm/drm_managed.h>
-@@ -383,5 +384,46 @@ drm_kunit_helper_create_crtc(struct kunit *test,
+@@ -392,8 +392,7 @@ static void kunit_action_drm_mode_destroy(void *ptr)
  }
- EXPORT_SYMBOL_GPL(drm_kunit_helper_create_crtc);
  
-+static void kunit_action_drm_mode_destroy(void *ptr)
-+{
-+	struct drm_display_mode *mode = ptr;
-+
-+	drm_mode_destroy(NULL, mode);
-+}
-+
-+/**
-+ * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC
-+					   for a KUnit test
-+ * @test: The test context object
-+ * @dev: DRM device
-+ * @video_code: CEA VIC of the mode
-+ *
-+ * Creates a new mode matching the specified CEA VIC for a KUnit test.
-+ *
-+ * Resources will be cleaned up automatically.
-+ *
-+ * Returns: A new drm_display_mode on success or NULL on failure
-+ */
-+struct drm_display_mode *
-+drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
-+				    u8 video_code)
-+{
-+	struct drm_display_mode *mode;
-+	int ret;
-+
-+	mode = drm_display_mode_from_cea_vic(dev, video_code);
-+	if (!mode)
-+		return NULL;
-+
-+	ret = kunit_add_action_or_reset(test,
-+					kunit_action_drm_mode_destroy,
-+					mode);
-+	if (ret)
-+		return NULL;
-+
-+	return mode;
-+}
-+EXPORT_SYMBOL_GPL(drm_kunit_display_mode_from_cea_vic);
-+
- MODULE_AUTHOR("Maxime Ripard <maxime@cerno.tech>");
- MODULE_LICENSE("GPL");
-diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
-index 6e99627edf458..3e5f4a23685ef 100644
---- a/include/drm/drm_kunit_helpers.h
-+++ b/include/drm/drm_kunit_helpers.h
-@@ -120,4 +120,8 @@ drm_kunit_helper_create_crtc(struct kunit *test,
- 			     const struct drm_crtc_funcs *funcs,
- 			     const struct drm_crtc_helper_funcs *helper_funcs);
- 
-+struct drm_display_mode *
-+drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
-+				    u8 video_code);
-+
- #endif // DRM_KUNIT_HELPERS_H_
+ /**
+- * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC
+-					   for a KUnit test
++ * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC for a KUnit test
+  * @test: The test context object
+  * @dev: DRM device
+  * @video_code: CEA VIC of the mode
 -- 
 2.39.5
 
