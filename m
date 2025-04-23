@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77E5A98EA2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48152A9928E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 152CC446F1D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D062926F17
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5825D19DF4C;
-	Wed, 23 Apr 2025 14:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626702BE7DD;
+	Wed, 23 Apr 2025 15:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOpaxwtB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaUNYgxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C3B1EFFB9;
-	Wed, 23 Apr 2025 14:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2077A2BE7D7;
+	Wed, 23 Apr 2025 15:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420166; cv=none; b=AoxhfBDAc+YnEWgmxdzCl9eFaNlwY3SOCshARhE/pWw6FRhir6Qh1DzVOWXC1X7s8BURpIYPe40HHc5UgdFMG0KEAUmkwue1MLgOpTl94addYNguTEh4dxVTLrrSCkNXS3g7XLTvChALmgMot3y2781FHLs5HalJMdLfgDe7cI8=
+	t=1745421738; cv=none; b=ezhsg5BGeR23ZefgowI8Td2NUCBtOE7FiJpsyYYthS4A0MDWylE6htxr+pNPBbnlDKsa3yD/u7L47c95Fay3Z3ZH+s8JZULdJamAREQSW6G+wZdS9zEjsi9TkuX3lYeWKnaTiVipwokeZEAedU822GejqQ8e+zduvhQjGhj+oII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420166; c=relaxed/simple;
-	bh=/LcMsWxdnmK57ex0fXe+ddf6+MDFPcjhb70L0W4UDn8=;
+	s=arc-20240116; t=1745421738; c=relaxed/simple;
+	bh=824HpfQIYoeZW3MS/F3San1U5wcoc2wt+WWhPsgyQTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dqdv8jZmH1MaKj/BOKBbntAzA89CChuI8Yyna5BiW/xzCeKnMfwiu/C0UrXYjgp4xUHbsTQAB5ki5cEq4m39fn/cxxpefY3mqsSegV+Ij+fVBSUzQXI+YUMEkemqQfmvXauqIuAfyQ83ghn9CrtF6QAcea8pLZz02VxjO+vyLIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOpaxwtB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9961EC4CEE3;
-	Wed, 23 Apr 2025 14:56:05 +0000 (UTC)
+	 MIME-Version; b=NaOCL+HhAjBNZcM02ABmjWZl89Ldoru/l/Ay0/3pDLh0KsFQElGIWu5NyJrAFdcgjDN1Q55IYm35LCcQDSuohSzAPnadv53a01/OfESMq2kBQHY3INBWdx5f+7ikHupJMzfHUpU1J08nGA7o7tYaXqx+wthWWskESOvdyNMhRYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaUNYgxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFC5C4CEE2;
+	Wed, 23 Apr 2025 15:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420165;
-	bh=/LcMsWxdnmK57ex0fXe+ddf6+MDFPcjhb70L0W4UDn8=;
+	s=korg; t=1745421736;
+	bh=824HpfQIYoeZW3MS/F3San1U5wcoc2wt+WWhPsgyQTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOpaxwtBOOOrgIu6OtCLiyrVRGWaXlQm3uOw+77FpaHQuKjZnuF5cD2dFji14GViY
-	 PDfxeDY21/BjwQTsU29pxsyez//0a0OG+y8RQy6vqCPLUFThF5X5kbj3XoFDQ3nYyj
-	 QD7YU63gPHgqoj1aHHXagkti46DJ9wpf73w3fh9k=
+	b=eaUNYgxwHmFSnTlv0ULaWfFyh0BEREC9MDE7S7iBlyad+NvIYXQFUt/uj4XwjC30X
+	 Cka8V8BlWMmGCd+mKe7rJliASe0jXPDgb8IIYJAeubYIhModfLtqesag0S2pKwaFLc
+	 uPpDf2dnX5w0s2UoI17u5ujvwRHWfpYQuh9ldQ20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 050/241] net: hibmcge: fix not restore rx pause mac addr after reset issue
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 218/393] KVM: x86: Explicitly zero-initialize on-stack CPUID unions
 Date: Wed, 23 Apr 2025 16:41:54 +0200
-Message-ID: <20250423142622.551344262@linuxfoundation.org>
+Message-ID: <20250423142652.388239785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit ae6c1dce3244e31011ee65f89fc2484f3cf6cf85 ]
+commit bc52ae0a708cb6fa3926d11c88e3c55e1171b4a1 upstream.
 
-The MAC hardware supports receiving two types of
-pause frames from link partner.
-One is a pause frame with a destination address
-of 01:80:C2:00:00:01.
-The other is a pause frame whose destination address
-is the address of the hibmcge driver.
+Explicitly zero/empty-initialize the unions used for PMU related CPUID
+entries, instead of manually zeroing all fields (hopefully), or in the
+case of 0x80000022, relying on the compiler to clobber the uninitialized
+bitfields.
 
-01:80:C2:00:00:01 is supported by default.
-
-In .ndo_set_mac_address(), the hibmcge driver calls
-.hbg_hw_set_rx_pause_mac_addr() to set its mac address as the
-destination address of the rx puase frame.
-Therefore, pause frames with two types of MAC addresses can be received.
-
-Currently, the rx pause addr does not restored after reset.
-As a result, pause frames whose destination address is
-the hibmcge driver address cannot be correctly received.
-
-This patch restores the configuration by calling
-.hbg_hw_set_rx_pause_mac_addr() after reset is complete.
-
-Fixes: 3f5a61f6d504 ("net: hibmcge: Add reset supported in this module")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250410021327.590362-7-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Jim Mattson <jmattson@google.com>
+Message-ID: <20250315024102.2361628-1-seanjc@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/cpuid.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-index 4d1f4a33391a8..5e288db06d6f6 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_err.c
-@@ -26,12 +26,15 @@ static void hbg_restore_mac_table(struct hbg_priv *priv)
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1011,8 +1011,8 @@ static inline int __do_cpuid_func(struct
+ 		}
+ 		break;
+ 	case 0xa: { /* Architectural Performance Monitoring */
+-		union cpuid10_eax eax;
+-		union cpuid10_edx edx;
++		union cpuid10_eax eax = { };
++		union cpuid10_edx edx = { };
  
- static void hbg_restore_user_def_settings(struct hbg_priv *priv)
- {
-+	/* The index of host mac is always 0. */
-+	u64 rx_pause_addr = ether_addr_to_u64(priv->filter.mac_table[0].addr);
- 	struct ethtool_pauseparam *pause_param = &priv->user_def.pause_param;
+ 		if (!enable_pmu || !static_cpu_has(X86_FEATURE_ARCH_PERFMON)) {
+ 			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
+@@ -1028,8 +1028,6 @@ static inline int __do_cpuid_func(struct
  
- 	hbg_restore_mac_table(priv);
- 	hbg_hw_set_mtu(priv, priv->netdev->mtu);
- 	hbg_hw_set_pause_enable(priv, pause_param->tx_pause,
- 				pause_param->rx_pause);
-+	hbg_hw_set_rx_pause_mac_addr(priv, rx_pause_addr);
- }
+ 		if (kvm_pmu_cap.version)
+ 			edx.split.anythread_deprecated = 1;
+-		edx.split.reserved1 = 0;
+-		edx.split.reserved2 = 0;
  
- int hbg_rebuild(struct hbg_priv *priv)
--- 
-2.39.5
-
+ 		entry->eax = eax.full;
+ 		entry->ebx = kvm_pmu_cap.events_mask;
+@@ -1303,7 +1301,7 @@ static inline int __do_cpuid_func(struct
+ 		break;
+ 	/* AMD Extended Performance Monitoring and Debug */
+ 	case 0x80000022: {
+-		union cpuid_0x80000022_ebx ebx;
++		union cpuid_0x80000022_ebx ebx = { };
+ 
+ 		entry->ecx = entry->edx = 0;
+ 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
 
 
 
