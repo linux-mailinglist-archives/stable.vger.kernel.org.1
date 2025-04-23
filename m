@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-136433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7061CA99441
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:10:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8457FA99419
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E0A59A0CCA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ED549A3EF7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2948D29B23E;
-	Wed, 23 Apr 2025 15:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D97263C9E;
+	Wed, 23 Apr 2025 15:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKpsI3yo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgpUIJQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC6129B21F;
-	Wed, 23 Apr 2025 15:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025BD28468C;
+	Wed, 23 Apr 2025 15:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422532; cv=none; b=nLa2vRwSLVFpLSUoSpnhCKiMKjr3oPiL3GZttESdnxFPNHjVrzhY0JPYo+thPZT86BEBRv/w0VtudeEXtQij1LsV9x9TAEf2NJ82xhZEYxC8/qQfBRQpPJzstjy2iK/auJ3nOQJ29etkhfOfZPzZkLbPW83Qcr0wq/bnVCKCBck=
+	t=1745422257; cv=none; b=Hi9HAJJ1uRh0bkvpR0+Qsc5gNYU4mEsLdTE0rVZHOcwhUWAOMzYGiTU5y+EvMntCBhrc9EOWPvQGAlz8Rzu+75JCKI1BQTzx6A/xfkGi3T9sYfgXqQqzYZEYjFxSYcYE0yVXmWxBHDwxemGSOSbBXOu5Ih3LwPAY1hErIjNanzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422532; c=relaxed/simple;
-	bh=zr2KOjVCQkW2o52Mb/CeP9CdEb5VHurptIh0O6EDrE8=;
+	s=arc-20240116; t=1745422257; c=relaxed/simple;
+	bh=I2qeRkXRgGTWnyjjoemxW0vw1um3yWbQcDX/JX6SZuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cKf12BH7ZQnH+6iBCIaP1TuagVDtIvuDwtBg5j2o9VUfj4UUEcr1vOIiiX2hKyfEoYfyqA1AZ1hqNXBGpHaH40n7+3DH+p7mQc1d8fhcs0GlT2lWiaRQx9bBvlY/TXmK5IL5C60IEOAeIXyvYbb49hs7tiUvG/itj6IDKDFd1vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKpsI3yo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E36DC4CEE2;
-	Wed, 23 Apr 2025 15:35:32 +0000 (UTC)
+	 MIME-Version; b=CspsYq8exd8cwb18en1AUfK91O1UFA/vGr/1OeXEy3dKs1tAFB2KZG/infc14B9YoREX3eIEx4ud6YOR5oEO+4Eo2W4j8BXUPQtM7wkoSWiM1HCBdCzUdAJUEwVSiLj7e/m3PK7msySnaWpG1wseRnHgXyBHAxkfvH1CCKJk9is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgpUIJQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB5CC4CEE3;
+	Wed, 23 Apr 2025 15:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422532;
-	bh=zr2KOjVCQkW2o52Mb/CeP9CdEb5VHurptIh0O6EDrE8=;
+	s=korg; t=1745422256;
+	bh=I2qeRkXRgGTWnyjjoemxW0vw1um3yWbQcDX/JX6SZuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKpsI3yo7zZLWE/UhhoYt6c3Erc7ZM/ckGA9LsUhwUKOQNGMrhjaZlBZL+3uxN3VI
-	 o+d3jALfw/qMFQeZbryLL7ujbnXdWkPAIMPiS6BkpSqEQUc+1K3d76d6Q14I0fm1yP
-	 fTIRRbX4YkP0cpGNMEim7hrMHrVGD2TuPaolcOf4=
+	b=SgpUIJQidVm8ReRWVFTen6SCDc2dGAps9kqklHb/yKTPqkSwejowAVs1bp2Y+AMQL
+	 7nJdJ3KcLCKhDx++1TaWJPwn+LGaRmAZcZzDhhrJRpFYG9X4ok3Z4plMJBpzRqn9Ad
+	 hWSm0t51EcQZF4Xw93UgqnhuR+zaUak21cJj9Wrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Stable@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.6 356/393] drm/nouveau: prime: fix ttm_bo_delayed_delete oops
-Date: Wed, 23 Apr 2025 16:44:12 +0200
-Message-ID: <20250423142658.042350222@linuxfoundation.org>
+	Maksim Davydov <davydov-max@yandex-team.ru>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 6.1 265/291] x86/split_lock: Fix the delayed detection logic
+Date: Wed, 23 Apr 2025 16:44:14 +0200
+Message-ID: <20250423142635.253329987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +63,163 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
+From: Maksim Davydov <davydov-max@yandex-team.ru>
 
-commit 8ec0fbb28d049273bfd4f1e7a5ae4c74884beed3 upstream.
+commit c929d08df8bee855528b9d15b853c892c54e1eee upstream.
 
-Fix an oops in ttm_bo_delayed_delete which results from dererencing a
-dangling pointer:
+If the warning mode with disabled mitigation mode is used, then on each
+CPU where the split lock occurred detection will be disabled in order to
+make progress and delayed work will be scheduled, which then will enable
+detection back.
 
-Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b7b: 0000 [#1] PREEMPT SMP
-CPU: 4 UID: 0 PID: 1082 Comm: kworker/u65:2 Not tainted 6.14.0-rc4-00267-g505460b44513-dirty #216
-Hardware name: LENOVO 82N6/LNVNB161216, BIOS GKCN65WW 01/16/2024
-Workqueue: ttm ttm_bo_delayed_delete [ttm]
-RIP: 0010:dma_resv_iter_first_unlocked+0x55/0x290
-Code: 31 f6 48 c7 c7 00 2b fa aa e8 97 bd 52 ff e8 a2 c1 53 00 5a 85 c0 74 48 e9 88 01 00 00 4c 89 63 20 4d 85 e4 0f 84 30 01 00 00 <41> 8b 44 24 10 c6 43 2c 01 48 89 df 89 43 28 e8 97 fd ff ff 4c 8b
-RSP: 0018:ffffbf9383473d60 EFLAGS: 00010202
-RAX: 0000000000000001 RBX: ffffbf9383473d88 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffbf9383473d78 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 6b6b6b6b6b6b6b6b
-R13: ffffa003bbf78580 R14: ffffa003a6728040 R15: 00000000000383cc
-FS:  0000000000000000(0000) GS:ffffa00991c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000758348024dd0 CR3: 000000012c259000 CR4: 0000000000f50ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x19/0x26
- ? die_addr+0x3d/0x70
- ? exc_general_protection+0x159/0x460
- ? asm_exc_general_protection+0x27/0x30
- ? dma_resv_iter_first_unlocked+0x55/0x290
- dma_resv_wait_timeout+0x56/0x100
- ttm_bo_delayed_delete+0x69/0xb0 [ttm]
- process_one_work+0x217/0x5c0
- worker_thread+0x1c8/0x3d0
- ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
- kthread+0x10b/0x240
- ? kthreads_online_cpu+0x140/0x140
- ret_from_fork+0x40/0x70
- ? kthreads_online_cpu+0x140/0x140
- ret_from_fork_asm+0x11/0x20
- </TASK>
+Now it turns out that all CPUs use one global delayed work structure.
+This leads to the fact that if a split lock occurs on several CPUs
+at the same time (within 2 jiffies), only one CPU will schedule delayed
+work, but the rest will not.
 
-The cause of this is:
+The return value of schedule_delayed_work_on() would have shown this,
+but it is not checked in the code.
 
-- drm_prime_gem_destroy calls dma_buf_put(dma_buf) which releases the
-  reference to the shared dma_buf. The reference count is 0, so the
-  dma_buf is destroyed, which in turn decrements the corresponding
-  amdgpu_bo reference count to 0, and the amdgpu_bo is destroyed -
-  calling drm_gem_object_release then dma_resv_fini (which destroys the
-  reservation object), then finally freeing the amdgpu_bo.
+A diagram that can help to understand the bug reproduction:
 
-- nouveau_bo obj->bo.base.resv is now a dangling pointer to the memory
-  formerly allocated to the amdgpu_bo.
+ - sld_update_msr() enables/disables SLD on both CPUs on the same core
 
-- nouveau_gem_object_del calls ttm_bo_put(&nvbo->bo) which calls
-  ttm_bo_release, which schedules ttm_bo_delayed_delete.
+ - schedule_delayed_work_on() internally checks WORK_STRUCT_PENDING_BIT.
+   If a work has the 'pending' status, then schedule_delayed_work_on()
+   will return an error code and, most importantly, the work will not
+   be placed in the workqueue.
 
-- ttm_bo_delayed_delete runs and dereferences the dangling resv pointer,
-  resulting in a general protection fault.
+Let's say we have a multicore system on which split_lock_mitigate=0 and
+a multithreaded application is running that calls splitlock in multiple
+threads. Due to the fact that sld_update_msr() affects the entire core
+(both CPUs), we will consider 2 CPUs from different cores. Let the 2
+threads of this application schedule to CPU0 (core 0) and to CPU 2
+(core 1), then:
 
-Fix this by moving the drm_prime_gem_destroy call from
-nouveau_gem_object_del to nouveau_bo_del_ttm. This ensures that it will
-be run after ttm_bo_delayed_delete.
+|                                 ||                                   |
+|             CPU 0 (core 0)      ||          CPU 2 (core 1)           |
+|_________________________________||___________________________________|
+|                                 ||                                   |
+| 1) SPLIT LOCK occured           ||                                   |
+|                                 ||                                   |
+| 2) split_lock_warn()            ||                                   |
+|                                 ||                                   |
+| 3) sysctl_sld_mitigate == 0     ||                                   |
+|    (work = &sl_reenable)        ||                                   |
+|                                 ||                                   |
+| 4) schedule_delayed_work_on()   ||                                   |
+|    (reenable will be called     ||                                   |
+|     after 2 jiffies on CPU 0)   ||                                   |
+|                                 ||                                   |
+| 5) disable SLD for core 0       ||                                   |
+|                                 ||                                   |
+|    -------------------------    ||                                   |
+|                                 ||                                   |
+|                                 || 6) SPLIT LOCK occured             |
+|                                 ||                                   |
+|                                 || 7) split_lock_warn()              |
+|                                 ||                                   |
+|                                 || 8) sysctl_sld_mitigate == 0       |
+|                                 ||    (work = &sl_reenable,          |
+|                                 ||     the same address as in 3) )   |
+|                                 ||                                   |
+|            2 jiffies            || 9) schedule_delayed_work_on()     |
+|                                 ||    fials because the work is in   |
+|                                 ||    the pending state since 4).    |
+|                                 ||    The work wasn't placed to the  |
+|                                 ||    workqueue. reenable won't be   |
+|                                 ||    called on CPU 2                |
+|                                 ||                                   |
+|                                 || 10) disable SLD for core 0        |
+|                                 ||                                   |
+|                                 ||     From now on SLD will          |
+|                                 ||     never be reenabled on core 1  |
+|                                 ||                                   |
+|    -------------------------    ||                                   |
+|                                 ||                                   |
+|    11) enable SLD for core 0 by ||                                   |
+|        __split_lock_reenable    ||                                   |
+|                                 ||                                   |
 
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Fixes: 22b33e8ed0e3 ("nouveau: add PRIME support")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3937
-Cc: Stable@vger.kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/Z-P4epVK8k7tFZ7C@debian.local
+If the application threads can be scheduled to all processor cores,
+then over time there will be only one core left, on which SLD will be
+enabled and split lock will be able to be detected; and on all other
+cores SLD will be disabled all the time.
+
+Most likely, this bug has not been noticed for so long because
+sysctl_sld_mitigate default value is 1, and in this case a semaphore
+is used that does not allow 2 different cores to have SLD disabled at
+the same time, that is, strictly only one work is placed in the
+workqueue.
+
+In order to fix the warning mode with disabled mitigation mode,
+delayed work has to be per-CPU. Implement it.
+
+Fixes: 727209376f49 ("x86/split_lock: Add sysctl to control the misery mode")
+Signed-off-by: Maksim Davydov <davydov-max@yandex-team.ru>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20250115131704.132609-1-davydov-max@yandex-team.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c  |    3 +++
- drivers/gpu/drm/nouveau/nouveau_gem.c |    3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/intel.c |   20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -144,6 +144,9 @@ nouveau_bo_del_ttm(struct ttm_buffer_obj
- 	nouveau_bo_del_io_reserve_lru(bo);
- 	nv10_bo_put_tile_region(dev, nvbo->tile, NULL);
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -1204,7 +1204,13 @@ static void __split_lock_reenable(struct
+ {
+ 	sld_update_msr(true);
+ }
+-static DECLARE_DELAYED_WORK(sl_reenable, __split_lock_reenable);
++/*
++ * In order for each CPU to schedule its delayed work independently of the
++ * others, delayed work struct must be per-CPU. This is not required when
++ * sysctl_sld_mitigate is enabled because of the semaphore that limits
++ * the number of simultaneously scheduled delayed works to 1.
++ */
++static DEFINE_PER_CPU(struct delayed_work, sl_reenable);
  
-+	if (bo->base.import_attach)
-+		drm_prime_gem_destroy(&bo->base, bo->sg);
-+
- 	/*
- 	 * If nouveau_bo_new() allocated this buffer, the GEM object was never
- 	 * initialized, so don't attempt to release it.
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -87,9 +87,6 @@ nouveau_gem_object_del(struct drm_gem_ob
- 		return;
+ /*
+  * If a CPU goes offline with pending delayed work to re-enable split lock
+@@ -1225,7 +1231,7 @@ static int splitlock_cpu_offline(unsigne
+ 
+ static void split_lock_warn(unsigned long ip)
+ {
+-	struct delayed_work *work;
++	struct delayed_work *work = NULL;
+ 	int cpu;
+ 
+ 	if (!current->reported_split_lock)
+@@ -1247,11 +1253,17 @@ static void split_lock_warn(unsigned lon
+ 		if (down_interruptible(&buslock_sem) == -EINTR)
+ 			return;
+ 		work = &sl_reenable_unlock;
+-	} else {
+-		work = &sl_reenable;
  	}
  
--	if (gem->import_attach)
--		drm_prime_gem_destroy(gem, nvbo->bo.sg);
--
- 	ttm_bo_put(&nvbo->bo);
+ 	cpu = get_cpu();
++
++	if (!work) {
++		work = this_cpu_ptr(&sl_reenable);
++		/* Deferred initialization of per-CPU struct */
++		if (!work->work.func)
++			INIT_DELAYED_WORK(work, __split_lock_reenable);
++	}
++
+ 	schedule_delayed_work_on(cpu, work, 2);
  
- 	pm_runtime_mark_last_busy(dev);
+ 	/* Disable split lock detection on this CPU to make progress */
 
 
 
