@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B1BA9897C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:17:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E32AA9897F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9751316F39D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 12:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111431B63299
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 12:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF18632B;
-	Wed, 23 Apr 2025 12:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433BC20127B;
+	Wed, 23 Apr 2025 12:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLb3xwOR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P9F9Suiy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4594D1E86E
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 12:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045721FF1A0
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 12:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745410625; cv=none; b=fnXKocYaS4TCvG5x/QQJDm/M5zWhV/kO+Hh0a0H+EO7H417p7Yet5iuOjtXeUdwIme4o/Eiaz1Ax1E5NoZOX8/ydiZgzqyDQhVXCkgx4kOeMgdOSpQ1lwhYokq7KMngOA7EtOm9Xr7QR6EKBPM7MEBHDEr7ZpjcyuaclLfDMsGQ=
+	t=1745410627; cv=none; b=L8fq62RpTR7mXKbLM5CtW/G1KteoQw1ByuANGv1CRV2CTzMaYOrAaXVEXkSiNhWAKv/lI23nOFRi/1WUgU1hyzoHAcj/QtKOKcmsROg5r7tNu8/RWWD3JKt5L/vTbYQmXQV2z6aAeSvycx3VnZjicSARZ+03oXeXtNrT1/J76Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745410625; c=relaxed/simple;
-	bh=tVd4Jsj6NHNOl5giePyYKHJHYnNT4aY68CUsVTD1P9U=;
+	s=arc-20240116; t=1745410627; c=relaxed/simple;
+	bh=CpDss3LBVP9tcyTwM6F9D353HVcrgrT8GC/0hOD1GUU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AXYBGBnsIe0a0mvXWQBEXJ4+iUPYxoLlTEUWTGqQ1n2KsrRJ9/cHciYtFl4US7dw3d06GMCNY74umPou1Bv0wb9umjQ9Hm6xN5nxf03HMdhSfzwwwPSOeLN9DVBI8GYVabvz6toh7dPzadp1goAmrzMVNb6BPwW9zKkUdKMu5k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLb3xwOR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF683C4CEE2;
-	Wed, 23 Apr 2025 12:17:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fUYev/Uls4nfkOLVvmCGbHmwg5jf7ta4ONoCsuxp3if1fHm/exu57uKOMkO44JEHo9xq3s+q6+GpB1kU1RzD90+ZJ2cqTRrgkNVmo6JPCB38ov8wemZ6DYEwSiZ/93uvAcy2OURN5vLYJBiRsiMgnM5WRUkMcPyjnjXAnCH4uH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P9F9Suiy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB32C4CEE2;
+	Wed, 23 Apr 2025 12:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745410625;
-	bh=tVd4Jsj6NHNOl5giePyYKHJHYnNT4aY68CUsVTD1P9U=;
+	s=k20201202; t=1745410626;
+	bh=CpDss3LBVP9tcyTwM6F9D353HVcrgrT8GC/0hOD1GUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NLb3xwORbPrt9Ksz16YXNnW6CC7KeRcY6iF8U+vqYAffNYrEPcHufJtgz49t4PjS7
-	 66dCQIDoUQod1rOfu4xKVSRtHtnnYmuakYIY0Tw2c/HWa5jHh6c61cpqmVj96x+0B8
-	 oyYdg0IW7M4soKdpvKnfrNCNuZ7M7UtmX47huuUV/Ohk4rRBgLCe3GR2Mwo8iLAIXG
-	 0vJsTVVPgn1netGqfmpYp+LUzvW6JI7ziAUb4aIvR+kPk7+Lva3DTWM5G89mIZzlCg
-	 f+t1IadNrVAouakricK+vqs5+/1P9LnCukC2mfuHaqTtMI0abA08MpuhAkwzgKBgy+
-	 5OGbqLmPsHGhQ==
+	b=P9F9Suiyxev+XQdzKyp14LwkQ8MFRJiyQWioNpCAw0W1lf6U9VtOfZUE8IuhuX8lo
+	 guL4nJ6Kq9qvZw8N3GCB8vJnbhnNQxdpKoLVVp4C5fvt47q+JPESThuF8Tz3djoVwZ
+	 EHG41isT0CwElylwOkzmVHehJRt/tyKiwVYe8+3BGYxu1c1duJaOZN2RrIYr0HIHlj
+	 IBgoqmt4iswr5GK9iJ7TPijo5ujq8cC6nZLA4T2971+++D27CjdVGdu1fSo/rGyiLD
+	 kqNGZkCa5FFMbiwMPrjC6o/D9hMfuNiIYkHSiMbTUETjX6VHNWxl9ngsET6tpguoLn
+	 IBLPJHyFTY0Tg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Zhi Yang <Zhi.Yang@eng.windriver.com>,
+Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] xfs: add bounds checking to xlog_recover_process_data
-Date: Wed, 23 Apr 2025 08:17:03 -0400
-Message-Id: <20250423071750-c46e56727dc3bbcf@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] net/sched: act_mirred: don't override retval if we already lost the skb
+Date: Wed, 23 Apr 2025 08:17:05 -0400
+Message-Id: <20250423073225-0a390e62cf6bb07c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250423024008.1766299-1-Zhi.Yang@eng.windriver.com>
+In-Reply-To:  <20250423085936.2892096-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,44 +67,28 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: fb63435b7c7dc112b1ae1baea5486e0a6e27b196
+The upstream commit SHA1 provided is correct: 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Zhi Yang<Zhi.Yang@eng.windriver.com>
-Commit author: lei lu<llfamsec@gmail.com>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Jakub Kicinski<kuba@kernel.org>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 7cd9f0a33e73)
-6.1.y | Present (different SHA1: d1e3efe78336)
+6.6.y | Present (different SHA1: 28cdbbd38a44)
+6.1.y | Not found
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fb63435b7c7dc ! 1:  26087c0d9df82 xfs: add bounds checking to xlog_recover_process_data
-    @@ Metadata
-      ## Commit message ##
-         xfs: add bounds checking to xlog_recover_process_data
-     
-    +    commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
-    +
-         There is a lack of verification of the space occupied by fixed members
-         of xlog_op_header in the xlog_recover_process_data.
-     
-    @@ Commit message
-         Reviewed-by: Dave Chinner <dchinner@redhat.com>
-         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-    +    Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-     
-      ## fs/xfs/xfs_log_recover.c ##
-     @@ fs/xfs/xfs_log_recover.c: xlog_recover_process_data(
+1:  166c2c8a6a4dc < -:  ------------- net/sched: act_mirred: don't override retval if we already lost the skb
+-:  ------------- > 1:  80f8a61846a5e net/sched: act_mirred: don't override retval if we already lost the skb
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
