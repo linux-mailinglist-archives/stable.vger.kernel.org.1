@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4794A993D8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:04:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3376A9904A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66CB89A3A77
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E370317311A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D614283C98;
-	Wed, 23 Apr 2025 15:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C97628936F;
+	Wed, 23 Apr 2025 15:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNIiAw0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mecVSRNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D526F442;
-	Wed, 23 Apr 2025 15:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E43289344;
+	Wed, 23 Apr 2025 15:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422221; cv=none; b=Gpi8D11V8w4/KY7bGt8nmlrfJQbfs1FbyXrOfel2Nss7drR4+drllbE1wvcSps148L8hH9BMplMSbT50N5v9A1cVmhMCOWlySkz1EddtTydb542g92O8MM7AHwZmyXgKwL07BQ/6tlySr+Vffuwd8FpTe+3lkbbXbkYrKWPw1og=
+	t=1745420921; cv=none; b=TVfhVzUCDhDsqFOzphPJsuRDaTbRGNpNMqsY6FSs+jN5yxFaGPKLloQQ66vQPcqfdQjTAy1G4QyzLoSpadY3OAMSg6zswmFoOcY01KQ3SF1hZMKFXQ/UB8PSZErBXx07g9CPJawwwUdAJxblVbfWSAz/I5LWPr+WhV4C7Dg/V24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422221; c=relaxed/simple;
-	bh=gxNeq3ko1lVLV1JgwCKnDSA23hgIjT7mAS+qlr7n/Vk=;
+	s=arc-20240116; t=1745420921; c=relaxed/simple;
+	bh=txE9+Evako5+ncPA5BS4umDqLRL6LWvcRp8NI0Pbih8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gWak+uUXT33K62+06lKynVESIm9jBFz3h1wTE7a+kgmgcrErozCaoBwPmgS6UWbL8X+dEEi5qYrjcHl7tRvFbPUh+9qluEQS9Sa3TkMZ2K7wiM+sUvPOUyvOVIXXG+kTVwjPgnFU8RSOJRXjzx+M6R4UnpQ1781MQV8/vlUWEPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNIiAw0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F64C4CEE2;
-	Wed, 23 Apr 2025 15:30:16 +0000 (UTC)
+	 MIME-Version; b=fWcC+7JZOskSIfqOlLsd3klECe7PiOF5BHBsvno3U6T7F+yvosomRSn+PQexUvmt8vXQjV8s4h1+BfHS8I6ieTYE7FuIKnCD5XZlKh1r5xZqVUbcd4bFpHYBPvJ4rRo8oqa5R1nJH5eNavWGgv8Jnolsi1pATmrsIorvLmwB8V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mecVSRNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EB5C4CEE2;
+	Wed, 23 Apr 2025 15:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422217;
-	bh=gxNeq3ko1lVLV1JgwCKnDSA23hgIjT7mAS+qlr7n/Vk=;
+	s=korg; t=1745420921;
+	bh=txE9+Evako5+ncPA5BS4umDqLRL6LWvcRp8NI0Pbih8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNIiAw0r6Q7rdYzDTvpnjRQ4S1E8/UTwbFhOoKyZZkP1tNCEWSQGKatT6pYLunPad
-	 6oI/kUmRTWgRGxvg8YnDqkI89gKPhGEwv5YB5fC5fTpVuWmiMoMpgQ3CpTZsUcJXj3
-	 1uAdMZ/YwCGdpdmKuyj40VlI0LeTMB68/qXDid6c=
+	b=mecVSRNzEkrgK7UUJLdYUiiYzuvo61QJb8H5lQvqFl34e0TO++vJ0PfG13D5KiRG6
+	 ZsKu8ilmLBMny6qniU1V0JLFEatvruRFR3YPUM/nKGzpZPDRYePs3DQXgGiv5BaIrU
+	 S54jOPoWjmYfqss1hXgPoOhqYhTLFMHDxH5DJvqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.1 257/291] cpufreq: Reference count policy in cpufreq_update_limits()
+	stable@kernel.org,
+	Rolf Eike Beer <eb@emlix.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 6.12 174/223] drm/sti: remove duplicate object names
 Date: Wed, 23 Apr 2025 16:44:06 +0200
-Message-ID: <20250423142634.931857527@linuxfoundation.org>
+Message-ID: <20250423142624.250804436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Rolf Eike Beer <eb@emlix.com>
 
-commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
+commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
 
-Since acpi_processor_notify() can be called before registering a cpufreq
-driver or even in cases when a cpufreq driver is not registered at all,
-cpufreq_update_limits() needs to check if a cpufreq driver is present
-and prevent it from being unregistered.
+When merging 2 drivers common object files were not deduplicated.
 
-For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
-policy pointer for the given CPU and reference count the corresponding
-policy object, if present.
-
-Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
-Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
-[do not use __free(cpufreq_cpu_put) in a backport]
-Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
+Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
+Cc: stable@kernel.org
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/sti/Makefile |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2691,10 +2691,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
-  */
- void cpufreq_update_limits(unsigned int cpu)
- {
-+	struct cpufreq_policy *policy;
-+
-+	policy = cpufreq_cpu_get(cpu);
-+	if (!policy)
-+		return;
-+
- 	if (cpufreq_driver->update_limits)
- 		cpufreq_driver->update_limits(cpu);
- 	else
- 		cpufreq_update_policy(cpu);
-+
-+	cpufreq_cpu_put(policy);
- }
- EXPORT_SYMBOL_GPL(cpufreq_update_limits);
- 
+--- a/drivers/gpu/drm/sti/Makefile
++++ b/drivers/gpu/drm/sti/Makefile
+@@ -7,8 +7,6 @@ sti-drm-y := \
+ 	sti_compositor.o \
+ 	sti_crtc.o \
+ 	sti_plane.o \
+-	sti_crtc.o \
+-	sti_plane.o \
+ 	sti_hdmi.o \
+ 	sti_hdmi_tx3g4c28phy.o \
+ 	sti_dvo.o \
 
 
 
