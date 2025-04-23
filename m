@@ -1,59 +1,98 @@
-Return-Path: <stable+bounces-136461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABF7A9968F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:27:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12782A99676
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BE73465CF1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:27:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F78465C5C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8E228B516;
-	Wed, 23 Apr 2025 17:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAA328D82B;
+	Wed, 23 Apr 2025 17:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gHp0VWAR"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PIsTen+t"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420AE280CDC;
-	Wed, 23 Apr 2025 17:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3939D28BA88
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 17:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745429247; cv=none; b=uB54NR2tLhcc/a2PeODJTLMTsn6iwnEcvSFpp38hL/xMCXvcGUuB6YD5nGTXxlr2+3oUroJc3eCBm+F+omyyVF+Y4wVzlgQweXPdACSpI3vSCQVp5M+q1doCc/gCoASJqiFns7kg4JvV3Ow0RLijxd6tlrlXxBJaJx0etML8lIs=
+	t=1745428932; cv=none; b=qWXJme/X8X5ybdep5p+aBR6ilwTY2Opk63dzaJFsGJ3E3NXmrsorLNy82WdWO8oN0dRtd0dPfSCDnvos/p/jQg/+Xjsw00PKgY9aovIa/qakpTdqcZCmQedXrxb41G9e4o+qB2MkUHhokuMzNLezQ5ipYk1PkQwaFkWsLlH8CJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745429247; c=relaxed/simple;
-	bh=7QocEmAKlPrtEbN8wqYhG0hUbtD5vXfeYPczPaaBrt0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dlistPyfyujczGvJUNJqHdjeTEZCSTSDlBNRrd+8JiEeakqldV6uKMAg2D0jJs49d1jm1UT6bXoeYzRPlepxgeZw/7UTDP1bgyir4VBefpVIRAUI9urKUIHrc/gQcxZoVa2Yu5RzlKVabI4iTc7F4HrvDN6IeDg/fcwQxG8I2GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gHp0VWAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD766C4CEE2;
-	Wed, 23 Apr 2025 17:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745429246;
-	bh=7QocEmAKlPrtEbN8wqYhG0hUbtD5vXfeYPczPaaBrt0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gHp0VWARx+HaSd5ich2I+OayDPZkAd5vANfCbNIcP+TT4CEpxFy0/L+ETcJ0s10qa
-	 3BgqQPBoZU+yiEzY5A+xHJ6W7p1gIp65ZMXQgSji3zISfyNZI39y9i4n6BYg///XeH
-	 AkV/58HRcTg1x5NQsJkUAcffCRXBEbLXXgul0Y+ov97A4HvFN1i5xlM3VwMrpW0WZi
-	 vRC591ALkJ9ndzPa+2yB0azrrFf7vNFlLVJpK2YOnu+xWUJRZuz7SpxF/5XlL5GXSn
-	 ONVMhMh9UL3o/DXfZTKtHKmXSaFWcEGjYW7HpDWvpj5fXG4YkwXxQbZdRSYt5ryUgB
-	 Ucx53JaTniX3A==
-Date: Wed, 23 Apr 2025 22:48:31 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
-	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
-Message-ID: <y3c6mpt3w4pdx7xzaqdlsr3ci33cseuaxwdno4uh3jfb2ddvxp@kicc5stwtcto>
-References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
- <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+	s=arc-20240116; t=1745428932; c=relaxed/simple;
+	bh=oJSYqGkH8eJ7nnI4eONslaNCAK4zDKV2Mf6cPlywreQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=dcTo0M1cH1sSz2GyzT2QVNaD2FDY6rCA1pFtF47Bam6RSDj4EhTU2Tl0DL43M78es5U3PajVaO1db2QcuIOm6rJcOD7dslcTrAOK8u4uDMSz2716n5muK/EiSqbBZJTtypry3xtsuyHvD8bZ19hAE59Xj9dy4F9gSeUWuCLpHYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PIsTen+t; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-39d83782ef6so959555f8f.0
+        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 10:22:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745428928; x=1746033728; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=I/fWatsoyC3ISeEvWnCn+x63EPNqLu0aQi3bXvQHx9s=;
+        b=PIsTen+txJ4y14/TzBIiwRaPQhjL1Zx7srnlszJHjVqrqoKe6tLh23V9tXqmqwAVRo
+         7wEO3Vmo8s28ddYy9Ypyap4toFXwh/GUYi8/LOXySKfHS38D+4kGvEwhLks/LmtHT5ln
+         orS+xQg2/vhfolUbGfDwoSmMuNtf0HNlH42P8h+BtfjE8c9FCHMaNXs0iedaq8VNM0N8
+         xMrapZFwNbFHuxIU9PWus5fWm/CQyIY8oFLGwgqb9ckR3+3z1AnDFcztUPi8OU7ESN5D
+         jrDw6efb0GulF2VEsgAn9kNv6cIk3etFBwxRzW3u8LwJYToDTrSyxUf9RF7V4SgefNFI
+         gOaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745428928; x=1746033728;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=I/fWatsoyC3ISeEvWnCn+x63EPNqLu0aQi3bXvQHx9s=;
+        b=Yr8zREmhpPOADYaH6V77ug53S6FPKXPjI122BKJxTRTvW00i6h4bC/nQJJWP1ml0Pr
+         ACAVtq6HjWZHzUZXUjepK6y6dyXTn2n3gUfusKznIaqpd3m0u2zMFRmdLTLjzcTye3+Q
+         DkJkOYDHSqkFb/Vag2zuF4o6Bijlc6DuLBL4mhHQImWopmWrrQvIoLG5SmHVi/QUU6Zf
+         7Dy6YBLuRQ540OYb6XY2Actc+eDqnox1dS1WGS1Qb0na017YiZsRg6z/IUlFR7W3nrV/
+         Hv15yorS6pkmfeWVBTbEK6ylGHInDU7EkjCAO/0o/asFRmlyPdqm0LL31yeTZpiRueXB
+         Ra1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVk70i0fxHs9fWVX6xEiX+MNi7t0WJBV4sdrD8VQLCN4HTgUkTQL7rsrbHtC6ZiDmZqnDcu1b4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/IjlH/i9s2GvzxlA4dO1r+HYYHo3tlWwmFibu91aJ4ACuqHPD
+	nY1DIOi/wj3/LRB1liO8G8e/1FGRYcQmrZLmzk2nYDnqlEovJfQx6Ngc63IaWaQ=
+X-Gm-Gg: ASbGnctdNxvp989nP1NEFKz5B9I+oPCrk+2VCCDeP9Gp2+WdUeVGhcZ7rJlItN4BMEX
+	bDKlXuc+dD+tOEeExyfFDBzjpayui6ag6m74PA0TgtwJ1KhzIn37Ksj/LceonYWvV8i7MN+BK4P
+	SKvg15IE52cuWob2hkn0AFZRGQQs6T7zB/RR6wnXJqBG6+J4ufLZOK4iiGRjJDIJVCVK1X1m7Ah
+	SV2NP5Bn26DbXSE8PtaVqQ3nG5DFN/XWoEfCuHtBUF+8KquWx0bHy4BiL6DM5m5XPqvUwdLGegc
+	mYmbdM9v1B5XlFf4eB+kid0i8C2paTGsUBVrCOEWv11gIA==
+X-Google-Smtp-Source: AGHT+IHpb3M2AX8ubADr1y8Clnmgy74dWjubTc/OZ082AsTXoWv1+RFKxrQiRpJTvsF1zuzQls4pfQ==
+X-Received: by 2002:a05:6000:1acf:b0:39a:c9ae:9eea with SMTP id ffacd0b85a97d-3a06c6bd8cemr18787f8f.10.1745428928559;
+        Wed, 23 Apr 2025 10:22:08 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-39efa493115sm19460396f8f.78.2025.04.23.10.22.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 10:22:08 -0700 (PDT)
+Date: Wed, 23 Apr 2025 20:22:05 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, Liam Girdwood <lgirdwood@gmail.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Marek Vasut <marex@denx.de>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH] rpmsg: qcom_smd: Fix uninitialized return variable in
+ __qcom_smd_send()
+Message-ID: <aAkhvV0nSbrsef1P@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,126 +101,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <CA+G9fYs+z4-aCriaGHnrU=5A14cQskg=TMxzQ5MKxvjq_zCX6g@mail.gmail.com>
+X-Mailer: git-send-email haha only kidding
 
-On Fri, Apr 18, 2025 at 01:04:02PM -0700, Dan Williams wrote:
-> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
-> address space) via /dev/mem results in an SEPT violation.
-> 
-> The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
-> unencrypted mapping where the kernel had established an encrypted
-> mapping previously.
-> 
-> Linux traps read(2) access to the BIOS data area, and returns zero.
-> However, it turns out the kernel fails to enforce the same via mmap(2).
-> This is a hole, and unfortunately userspace has learned to exploit it
-> [2].
-> 
-> This means the kernel either needs a mechanism to ensure consistent
-> "encrypted" mappings of this /dev/mem mmap() hole, close the hole by
-> mapping the zero page in the mmap(2) path, block only BIOS data access
-> and let typical STRICT_DEVMEM protect the rest, or disable /dev/mem
-> altogether.
-> 
-> The simplest option for now is arrange for /dev/mem to always behave as
-> if lockdown is enabled for confidential guests. Require confidential
-> guest userspace to jettison legacy dependencies on /dev/mem similar to
-> how other legacy mechanisms are jettisoned for confidential operation.
-> Recall that modern methods for BIOS data access are available like
-> /sys/firmware/dmi/tables.
-> 
-> Cc: <x86@kernel.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: "Naveen N Rao" <naveen@kernel.org>
-> Cc: Vishal Annapurve <vannapurve@google.com>
-> Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
-> Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
-> Reported-by: Nikolay Borisov <nik.borisov@suse.com>
-> Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
-> Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
-> Cc: <stable@vger.kernel.org>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> ---
-> Changes since v3
-> * Fix a 0day kbuild robot report about missing cc_platform.h include.
-> 
->  arch/x86/Kconfig   |    4 ++++
->  drivers/char/mem.c |   10 ++++++++++
->  2 files changed, 14 insertions(+)
-> 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 4b9f378e05f6..bf4528d9fd0a 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
->  	depends on X86_X2APIC
->  	depends on EFI_STUB
->  	depends on PARAVIRT
-> +	depends on STRICT_DEVMEM
-> +	depends on IO_STRICT_DEVMEM
->  	select ARCH_HAS_CC_PLATFORM
->  	select X86_MEM_ENCRYPT
->  	select X86_MCE
-> @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
+The "ret" variable isn't initialized if we don't enter the loop.  For
+example,  if "channel->state" is not SMD_CHANNEL_OPENED.
 
-As far as I know, AMD_MEM_ENCRYPT is for the host SME support. Since 
-this is for encrypted guests, should the below dependencies be added to 
-CONFIG_SEV_GUEST instead?
+Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+Naresh, could you test this patch and see if it fixes the boot
+problems you saw?
 
-Tom?
+ drivers/rpmsg/qcom_smd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
->  	bool "AMD Secure Memory Encryption (SME) support"
->  	depends on X86_64 && CPU_SUP_AMD
->  	depends on EFI_STUB
-> +	depends on STRICT_DEVMEM
-> +	depends on IO_STRICT_DEVMEM
-
-Can we use 'select' for the dependency on IO_STRICT_DEVMEM, if not both 
-the above?
-
-IO_STRICT_DEVMEM in particular is not enabled by default, so applying 
-this patch and doing a 'make olddefconfig' disabled AMD_MEM_ENCRYPT, 
-which is not so good. Given that IO_STRICT_DEVMEM only depends on 
-STRICT_DEVMEM, I think a 'select' is ok.
-
->  	select DMA_COHERENT_POOL
->  	select ARCH_USE_MEMREMAP_PROT
->  	select INSTRUCTION_DECODER
-> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> index 48839958b0b1..47729606b817 100644
-> --- a/drivers/char/mem.c
-> +++ b/drivers/char/mem.c
-> @@ -30,6 +30,7 @@
->  #include <linux/uio.h>
->  #include <linux/uaccess.h>
->  #include <linux/security.h>
-> +#include <linux/cc_platform.h>
->  
->  #define DEVMEM_MINOR	1
->  #define DEVPORT_MINOR	4
-> @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
->  	if (rc)
->  		return rc;
->  
-> +	/*
-> +	 * Enforce encrypted mapping consistency and avoid unaccepted
-> +	 * memory conflicts, "lockdown" /dev/mem for confidential
-> +	 * guests.
-> +	 */
-> +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
-> +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-> +		return -EPERM;
-> +
->  	if (iminor(inode) != DEVMEM_MINOR)
->  		return 0;
->  
-> 
-
-Otherwise, this looks good to me.
-
-
-- Naveen
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index 40d386809d6b..bb161def3175 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
+ 	__le32 hdr[5] = { cpu_to_le32(len), };
+ 	int tlen = sizeof(hdr) + len;
+ 	unsigned long flags;
+-	int ret;
++	int ret = 0;
+ 
+ 	/* Word aligned channels only accept word size aligned data */
+ 	if (channel->info_word && len % 4)
+-- 
+2.47.2
 
 
