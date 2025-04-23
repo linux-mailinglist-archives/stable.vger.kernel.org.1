@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94253A9928B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CA1A98F4A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1239E4679FF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70B421B85CE1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60FD2957B7;
-	Wed, 23 Apr 2025 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E522127FD60;
+	Wed, 23 Apr 2025 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lN6454j2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fy02rAJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571B228DEFD;
-	Wed, 23 Apr 2025 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C7917B421;
+	Wed, 23 Apr 2025 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421976; cv=none; b=aFPSHQhU0GF3bjOKePAcRQAv14Ak/GjoKF4NWbr+ULEkDyqCDaG+99RMjxl7jImms0prxcYvs3YBTK2h4UBjj4Lt6gYaiZjVF1VrR/b+qjd1JdL1RvtCClqxvdNuMCbLU+mUXUzWjZ3Cbnv0mFhd/KzcQ8QdLACd2uVgE7OTrfs=
+	t=1745420371; cv=none; b=pQHZkkM6kqrctwps1g2lfq+7iz1ZYJeDlilZue/VBVtTj8w3dNgky9pY/o7/090h32ETktyqg6ZVbqAAXUopAe0RyNWaaIj2b8c7DpGg/132pJwvs4Kz37f/Q+C0iaE2HfJiM4d029EcaIH6QFfFxmCPBYdJmqJmw2lJ5AUFEuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421976; c=relaxed/simple;
-	bh=VPO4qKIgaZmRM7C4RZDTR6/oiLzW8bKVhAO8j2lO0QM=;
+	s=arc-20240116; t=1745420371; c=relaxed/simple;
+	bh=RKNq6EOjSx3hkYWVDPrFsuDWWRkThrOQgtHW74NgEc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cs6ADNVS0Bs4ouPj3IlsDLUxDfV4aiUe5nshHY9xFobXGOw7gmG/y/ZPl1AjRfLeFklAZyk3bTVgk95rlhGT/s5v2Gm3HcygOISXL/BmSqg3pN+ZN6hgSjfrdnOIQ+LxzmqEMSm929Xrc6ABUIoPoX82h0a1yynpaTLOeLftPvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lN6454j2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC54C4CEE2;
-	Wed, 23 Apr 2025 15:26:13 +0000 (UTC)
+	 MIME-Version; b=Z0Fsa4dgTTQ1I6noSpANoazsy5dkNWrxfJFr38hWF7QazkAdDHLGftiIZyIzNhOtgoO36CpSSeu4Fmt1Q68yNdYBVVvFj9utAKQdxAOR6IqUXif9eVS1H6DdycIm6LWHFOvwX0gp5QTzzCi5N/TYmOsYQSbNm412+WwbrDfZhj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fy02rAJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A4DC4CEE2;
+	Wed, 23 Apr 2025 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421973;
-	bh=VPO4qKIgaZmRM7C4RZDTR6/oiLzW8bKVhAO8j2lO0QM=;
+	s=korg; t=1745420371;
+	bh=RKNq6EOjSx3hkYWVDPrFsuDWWRkThrOQgtHW74NgEc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lN6454j2tKFOPWxonaR6sryXscEWeTx8TrfYjJtbfTeK2CnZ2V1VYMjnO2f3R+VLw
-	 Id+iWwV0FjNf6lQA9nuLLmvwiazMSHHb4HKzavYlniwAM0KXCNjc+CG9lXDnVlQ1zt
-	 nVycnr1Iv/tm+DcZKNpD1QSDqFE6znsiv3FRzD5k=
+	b=fy02rAJ4QZ0BGPplNJOlh/CG+faiSK2tiMTpgoKaPHFaXGKcko52A/hDEMoYqqlcB
+	 sdceWrnzb0s0mXgC/u9nJQ/vJmb8FTd6gUVSd1UkXXf5FwzGcDbv7i8JhXrrMXE9Se
+	 JrSbi49v6D5I9oHAzQ0LwCP8W4t39clY2+0pwPEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
-Subject: [PATCH 6.1 208/291] crypto: caam/qi - Fix drv_ctx refcount bug
-Date: Wed, 23 Apr 2025 16:43:17 +0200
-Message-ID: <20250423142632.885907628@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 126/223] Revert "smb: client: Fix netns refcount imbalance causing leaks and use-after-free"
+Date: Wed, 23 Apr 2025 16:43:18 +0200
+Message-ID: <20250423142622.232460003@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +59,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit b7b39df7e710b0068356e4c696af07aa10e2cd3d upstream.
+commit c707193a17128fae2802d10cbad7239cc57f0c95 upstream.
 
-Ensure refcount is raised before request is enqueued since it could
-be dequeued before the call returns.
+This reverts commit 4e7f1644f2ac6d01dc584f6301c3b1d5aac4eaef.
 
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: <stable@vger.kernel.org>
-Fixes: 11144416a755 ("crypto: caam/qi - optimize frame queue cleanup")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
-Tested-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
+rmmod") is not only a bogus fix for LOCKDEP null-ptr-deref but also
+introduces a real issue, TCP sockets leak, which will be explained in
+detail in the next revert.
+
+Also, CNA assigned CVE-2024-54680 to it but is rejecting it. [0]
+
+Thus, we are reverting the commit and its follow-up commit 4e7f1644f2ac
+("smb: client: Fix netns refcount imbalance causing leaks and
+use-after-free").
+
+Link: https://lore.kernel.org/all/2025040248-tummy-smilingly-4240@gregkh/ #[0]
+Fixes: 4e7f1644f2ac ("smb: client: Fix netns refcount imbalance causing leaks and use-after-free")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/qi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/connect.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/crypto/caam/qi.c
-+++ b/drivers/crypto/caam/qi.c
-@@ -115,12 +115,12 @@ int caam_qi_enqueue(struct device *qidev
- 	qm_fd_addr_set64(&fd, addr);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -316,7 +316,6 @@ cifs_abort_connection(struct TCP_Server_
+ 			 server->ssocket->flags);
+ 		sock_release(server->ssocket);
+ 		server->ssocket = NULL;
+-		put_net(cifs_net_ns(server));
+ 	}
+ 	server->sequence_number = 0;
+ 	server->session_estab = false;
+@@ -3142,12 +3141,8 @@ generic_ip_connect(struct TCP_Server_Inf
+ 		/*
+ 		 * Grab netns reference for the socket.
+ 		 *
+-		 * This reference will be released in several situations:
+-		 * - In the failure path before the cifsd thread is started.
+-		 * - In the all place where server->socket is released, it is
+-		 *   also set to NULL.
+-		 * - Ultimately in clean_demultiplex_info(), during the final
+-		 *   teardown.
++		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
++		 * teardown.
+ 		 */
+ 		get_net(net);
  
- 	do {
-+		refcount_inc(&req->drv_ctx->refcnt);
- 		ret = qman_enqueue(req->drv_ctx->req_fq, &fd);
--		if (likely(!ret)) {
--			refcount_inc(&req->drv_ctx->refcnt);
-+		if (likely(!ret))
- 			return 0;
--		}
+@@ -3163,8 +3158,10 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	}
  
-+		refcount_dec(&req->drv_ctx->refcnt);
- 		if (ret != -EBUSY)
- 			break;
- 		num_retries++;
+ 	rc = bind_socket(server);
+-	if (rc < 0)
++	if (rc < 0) {
++		put_net(cifs_net_ns(server));
+ 		return rc;
++	}
+ 
+ 	/*
+ 	 * Eventually check for other socket options to change from
+@@ -3210,6 +3207,9 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	if (sport == htons(RFC1001_PORT))
+ 		rc = ip_rfc1001_connect(server);
+ 
++	if (rc < 0)
++		put_net(cifs_net_ns(server));
++
+ 	return rc;
+ }
+ 
 
 
 
