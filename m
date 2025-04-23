@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E139A9914C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D312A98FA3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8861B67C22
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9EB016C1AE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BC0293B48;
-	Wed, 23 Apr 2025 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F2F28A40A;
+	Wed, 23 Apr 2025 15:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSMK8Lzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6S1Me70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2472293478;
-	Wed, 23 Apr 2025 15:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9D128A419;
+	Wed, 23 Apr 2025 15:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421173; cv=none; b=WuQF9x+LAwhMnWBTxiSCFwBArjzlKU0ksVMpG12UY6JAALe6N/Li2hwF97QO1iMlkUSDOoXD1M8znF/9SmTO7b7TqLYuGVTxVIFOiA/tyJbi7LC/YZpMGiglKDefX+RWd1lw85fwA6qQlh6jz6gMRk2B8aooSXFQXq5ssQC+WPU=
+	t=1745420661; cv=none; b=EVz1/9PuQ9/WFI8LYC9vGZn1k7zCw1ox3UrrtWOYDECpQbF0p+lm49T7qacbxjhO17LJ4K/BbJRYfetUWja9DuB0jPZSmoy7/Emx8MSSfp3i8g/P2kWnCRmArQ7JU7aruCNU28gW5w7uja7ZsXsMiwOW77L9DzVHOuPd5eDwsrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421173; c=relaxed/simple;
-	bh=j3Z4ttOkR+e89iv3cu+ynwlYaFEMaJw84jHthllfEyw=;
+	s=arc-20240116; t=1745420661; c=relaxed/simple;
+	bh=5sGWRvHneMxcFkcHN6NVakmiWGh9bAbFM9gB2KbZQHI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaEI54yo1qOb3zVQf74YGjNf/MaUvdp27V9JA/RlYbj+uzbZtFgpXWQa51x/oeQLtmBsSoEOuZtcmU594783rARgCUMRxJ72MYx6wMSnIRJ4D715dDN61WPAmVF83ilZSeTbGhbGkCplgOWD7YW4kKDl3bJ5uCJgz1UOKHHzeS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSMK8Lzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144D4C4CEE2;
-	Wed, 23 Apr 2025 15:12:52 +0000 (UTC)
+	 MIME-Version; b=UdPXI+QKT6V3NmBShJMWIbYW9e5ZfW1cgoqmw0dureStaRSz8EjeF9pSeQmE4WFncvKpVFRzfdDc67Wbom+bjtt/AAgSZ3+Y2czpg9Iuc7WaaaWo5bZGDJh5Y373WuycyFcWDNx2OVDgBteXraja4GV1YvXNG5i/KxQ4LMbzvVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6S1Me70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BA1C4CEE8;
+	Wed, 23 Apr 2025 15:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421173;
-	bh=j3Z4ttOkR+e89iv3cu+ynwlYaFEMaJw84jHthllfEyw=;
+	s=korg; t=1745420661;
+	bh=5sGWRvHneMxcFkcHN6NVakmiWGh9bAbFM9gB2KbZQHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSMK8LzcFqZz1ygFMu8OhC/n5ZbY8d9hJPwlx9/mLo3LdWGPTitu55C4PYK8B3TjS
-	 +yhlZ2cL53z3Pa1KFnIRsVghwvUhJZf4XoCltbHklFuZwc42cWqwiHHulxKnxF0kQd
-	 sAQZNLguyuTTV2payPoRvKffiqKeQ7dkn+oJwMro=
+	b=o6S1Me70vYnD/lR1SXhDskchpLBQ10o561lQfYM+EoxEdD1cQyW9Pd/0QS2s+0ZF1
+	 QopiC1vJdRYyGH/X4y0dj6JDX2cxAij7cz8zkN1IejjidDVpSNlpnXEqStxLIQIw3d
+	 MpayI5AHFYFU4RDxR0URwIJWplFAfuRVew71dy28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Borislav Petkov <bp@alien8.de>
-Subject: [PATCH 6.14 158/241] x86/cpu/amd: Fix workaround for erratum 1054
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.12 150/223] drm/msm/dsi: Add check for devm_kstrdup()
 Date: Wed, 23 Apr 2025 16:43:42 +0200
-Message-ID: <20250423142626.997658578@linuxfoundation.org>
+Message-ID: <20250423142623.289801051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit 263e55949d8902a6a09bdb92a1ab6a3f67231abe upstream.
+commit 52b3f0e118b1700e5c60ff676a1f522ce44fadc8 upstream.
 
-Erratum 1054 affects AMD Zen processors that are a part of Family 17h
-Models 00-2Fh and the workaround is to not set HWCR[IRPerfEn]. However,
-when X86_FEATURE_ZEN1 was introduced, the condition to detect unaffected
-processors was incorrectly changed in a way that the IRPerfEn bit gets
-set only for unaffected Zen 1 processors.
+Add check for the return value of devm_kstrdup() in
+dsi_host_parse_dt() to catch potential exception.
 
-Ensure that HWCR[IRPerfEn] is set for all unaffected processors. This
-includes a subset of Zen 1 (Family 17h Models 30h and above) and all
-later processors. Also clear X86_FEATURE_IRPERF on affected processors
-so that the IRPerfCount register is not used by other entities like the
-MSR PMU driver.
-
-Fixes: 232afb557835 ("x86/CPU/AMD: Add X86_FEATURE_ZEN1")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Borislav Petkov <bp@alien8.de>
+Fixes: 958d8d99ccb3 ("drm/msm/dsi: parse vsync source from device tree")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/caa057a9d6f8ad579e2f1abaa71efbd5bd4eaf6d.1744956467.git.sandipan.das@amd.com
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/638297/
+Link: https://lore.kernel.org/r/20250219040712.2598161-1-haoxiang_li2024@163.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -867,6 +867,16 @@ static void init_amd_zen1(struct cpuinfo
- 
- 	pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
- 	setup_force_cpu_bug(X86_BUG_DIV0);
-+
-+	/*
-+	 * Turn off the Instructions Retired free counter on machines that are
-+	 * susceptible to erratum #1054 "Instructions Retired Performance
-+	 * Counter May Be Inaccurate".
-+	 */
-+	if (c->x86_model < 0x30) {
-+		msr_clear_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
-+		clear_cpu_cap(c, X86_FEATURE_IRPERF);
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -1827,8 +1827,15 @@ static int dsi_host_parse_dt(struct msm_
+ 			__func__, ret);
+ 		goto err;
+ 	}
+-	if (!ret)
++	if (!ret) {
+ 		msm_dsi->te_source = devm_kstrdup(dev, te_source, GFP_KERNEL);
++		if (!msm_dsi->te_source) {
++			DRM_DEV_ERROR(dev, "%s: failed to allocate te_source\n",
++				__func__);
++			ret = -ENOMEM;
++			goto err;
++		}
 +	}
- }
+ 	ret = 0;
  
- static bool cpu_has_zenbleed_microcode(void)
-@@ -1050,13 +1060,8 @@ static void init_amd(struct cpuinfo_x86
- 	if (!cpu_feature_enabled(X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
- 
--	/*
--	 * Turn on the Instructions Retired free counter on machines not
--	 * susceptible to erratum #1054 "Instructions Retired Performance
--	 * Counter May Be Inaccurate".
--	 */
--	if (cpu_has(c, X86_FEATURE_IRPERF) &&
--	    (boot_cpu_has(X86_FEATURE_ZEN1) && c->x86_model > 0x2f))
-+	/* Enable the Instructions Retired free counter */
-+	if (cpu_has(c, X86_FEATURE_IRPERF))
- 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
- 
- 	check_null_seg_clears_base(c);
+ 	if (of_property_read_bool(np, "syscon-sfpb")) {
 
 
 
