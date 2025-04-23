@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C45A99132
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0CBEA99387
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A00DE16A91C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD13B1BC0DA3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B472949F6;
-	Wed, 23 Apr 2025 15:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1429229B778;
+	Wed, 23 Apr 2025 15:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jp3eOiam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldzxoXqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F14428B4FF;
-	Wed, 23 Apr 2025 15:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F2529B777;
+	Wed, 23 Apr 2025 15:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421322; cv=none; b=omk9OycR9Tmf4JwHyeDaqQqg47UfrGYt/y55owOcGsVP4jEvDSRsQQrMsz40idbpxypPIvA1VY9cuLJYYHAkqY5FIfXdU94pz5OLD9nFiVpbA5GGUQm4SeXOqqZ/aN3C2fprTuuhkUSoeZbl6B2M7Lyu3Qwtlf2CAUOCyT6b4fw=
+	t=1745422556; cv=none; b=N8aun2BwlqiQyiDtBlBNQNkwXHuab81x4c+Pniwp7nUmHEsNlrG4w6TUfPmcAh078BI/46qOoR03AcUzVNomjti7bx5BgSYfNxcn+/Xu9MC59F4Pp44U6nFdmH6QsBS5MCrr8SB+xEz0qlb6CIbd9w0+i6ugBMODESvgzH55mVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421322; c=relaxed/simple;
-	bh=NmKO6G51xM2C+OdH12Iwex6ZfzqOU77hep4X4MAq6WE=;
+	s=arc-20240116; t=1745422556; c=relaxed/simple;
+	bh=hrV1NMjLTWMYWggH5MtL6WEhlLab58Qh/xOpPuqrIBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cDZVE38cfIvKL5BGUGml1x9N2fSMMAd+mXO9ZtnT9mIElhE0ot/UK2Ob45wQFIaXjebfwKpFAy1DvNag3HazOx8kJmWQhtSo1CXQd0Ws2t3PyJF5/nmDPPYas9ATfBPwrIWr+DWDQQN44JWpnqympmKer3xiMcUgZB544N3UP+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jp3eOiam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57EAC4CEE2;
-	Wed, 23 Apr 2025 15:15:21 +0000 (UTC)
+	 MIME-Version; b=ueo0GrUkefV6ASeDWq1azK9Zho5oSRvdaklaBoUMThWzgjpnBCE/lHk6rNnWBiZpQoj0XDcey2oFGcPkJ1hsXKXcGQ+jUNFumt5E/144ifPgPr6nDpPdF0/JZtmA7iRwlbmRoBgyPY2//mWVjeGTcDn6C3VsGOsEw2GfFrAtSL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldzxoXqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20DAC4CEE3;
+	Wed, 23 Apr 2025 15:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421322;
-	bh=NmKO6G51xM2C+OdH12Iwex6ZfzqOU77hep4X4MAq6WE=;
+	s=korg; t=1745422556;
+	bh=hrV1NMjLTWMYWggH5MtL6WEhlLab58Qh/xOpPuqrIBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jp3eOiamPd5ONXkFpXlhMObUK20Hu06fSg0UtGC9PfOar/nFmGYzdC0BUERYNl7ww
-	 Ur4TX8GAi+ZfxshBlPsl06gnqULuxIazNNX2YMf9lQ+u6+/4oL5WTUs3yFCrBqVIXM
-	 L+Sx++gPtbrH83rw1qRTjh+8zUeBYidEn2jz/VBA=
+	b=ldzxoXqZDs3o+mbnAZzs8z+QA6IncwXj3q0MDSXB6n32EA7udBiy+F916i7oDnz2B
+	 hlyErXTvIlTxYUbsZvY4DBo76O87f+J9XI+uJKiTMm5mdXbzsbbkLjGsDMGTy9IHbf
+	 xBFs+lzB23SzxMhCc6jmxAlk1lwjvxzeSw1xQ07Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 211/223] MIPS: dec: Declare which_prom() as static
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 387/393] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
 Date: Wed, 23 Apr 2025 16:44:43 +0200
-Message-ID: <20250423142625.756577752@linuxfoundation.org>
+Message-ID: <20250423142659.305610692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +62,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Jan Stancek <jstancek@redhat.com>
 
-commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
+commit 467d60eddf55588add232feda325da7215ddaf30 upstream.
 
-Declare which_prom() as static to suppress gcc compiler warning that
-'missing-prototypes'. This function is not intended to be called
-from other parts.
+ERR_get_error_line() is deprecated since OpenSSL 3.0.
 
-Fix follow error with gcc-14 when -Werror:
+Use ERR_peek_error_line() instead, and combine display_openssl_errors()
+and drain_openssl_errors() to a single function where parameter decides
+if it should consume errors silently.
 
-arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
-   45 | void __init which_prom(s32 magic, s32 *prom_vec)
-      |             ^~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
-make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
-make[5]: *** Waiting for unfinished jobs....
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/prom/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ certs/extract-cert.c |    4 ++--
+ scripts/sign-file.c  |    6 +++---
+ scripts/ssl-common.h |   23 ++++++++---------------
+ 3 files changed, 13 insertions(+), 20 deletions(-)
 
---- a/arch/mips/dec/prom/init.c
-+++ b/arch/mips/dec/prom/init.c
-@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
-  * Detect which PROM the DECSTATION has, and set the callback vectors
-  * appropriately.
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -99,11 +99,11 @@ int main(int argc, char **argv)
+ 		parms.cert = NULL;
+ 
+ 		ENGINE_load_builtin_engines();
+-		drain_openssl_errors();
++		drain_openssl_errors(__LINE__, 1);
+ 		e = ENGINE_by_id("pkcs11");
+ 		ERR(!e, "Load PKCS#11 ENGINE");
+ 		if (ENGINE_init(e))
+-			drain_openssl_errors();
++			drain_openssl_errors(__LINE__, 1);
+ 		else
+ 			ERR(1, "ENGINE_init");
+ 		if (key_pass)
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -114,11 +114,11 @@ static EVP_PKEY *read_private_key(const
+ 		ENGINE *e;
+ 
+ 		ENGINE_load_builtin_engines();
+-		drain_openssl_errors();
++		drain_openssl_errors(__LINE__, 1);
+ 		e = ENGINE_by_id("pkcs11");
+ 		ERR(!e, "Load PKCS#11 ENGINE");
+ 		if (ENGINE_init(e))
+-			drain_openssl_errors();
++			drain_openssl_errors(__LINE__, 1);
+ 		else
+ 			ERR(1, "ENGINE_init");
+ 		if (key_pass)
+@@ -273,7 +273,7 @@ int main(int argc, char **argv)
+ 
+ 		/* Digest the module data. */
+ 		OpenSSL_add_all_digests();
+-		display_openssl_errors(__LINE__);
++		drain_openssl_errors(__LINE__, 0);
+ 		digest_algo = EVP_get_digestbyname(hash_algo);
+ 		ERR(!digest_algo, "EVP_get_digestbyname");
+ 
+--- a/scripts/ssl-common.h
++++ b/scripts/ssl-common.h
+@@ -3,7 +3,7 @@
+  * SSL helper functions shared by sign-file and extract-cert.
   */
--void __init which_prom(s32 magic, s32 *prom_vec)
-+static void __init which_prom(s32 magic, s32 *prom_vec)
+ 
+-static void display_openssl_errors(int l)
++static void drain_openssl_errors(int l, int silent)
  {
- 	/*
- 	 * No sign of the REX PROM's magic number means we assume a non-REX
+ 	const char *file;
+ 	char buf[120];
+@@ -11,28 +11,21 @@ static void display_openssl_errors(int l
+ 
+ 	if (ERR_peek_error() == 0)
+ 		return;
+-	fprintf(stderr, "At main.c:%d:\n", l);
++	if (!silent)
++		fprintf(stderr, "At main.c:%d:\n", l);
+ 
+-	while ((e = ERR_get_error_line(&file, &line))) {
++	while ((e = ERR_peek_error_line(&file, &line))) {
+ 		ERR_error_string(e, buf);
+-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
++		if (!silent)
++			fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
++		ERR_get_error();
+ 	}
+ }
+ 
+-static void drain_openssl_errors(void)
+-{
+-	const char *file;
+-	int line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	while (ERR_get_error_line(&file, &line)) {}
+-}
+-
+ #define ERR(cond, fmt, ...)				\
+ 	do {						\
+ 		bool __cond = (cond);			\
+-		display_openssl_errors(__LINE__);	\
++		drain_openssl_errors(__LINE__, 0);	\
+ 		if (__cond) {				\
+ 			errx(1, fmt, ## __VA_ARGS__);	\
+ 		}					\
 
 
 
