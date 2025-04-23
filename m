@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB325A99279
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:45:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4232AA990A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4204A15AA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D9A192122D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B002951CA;
-	Wed, 23 Apr 2025 15:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6052D263C9E;
+	Wed, 23 Apr 2025 15:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmLPEhqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIvUmgZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404F92951C3;
-	Wed, 23 Apr 2025 15:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E62284B3A;
+	Wed, 23 Apr 2025 15:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421969; cv=none; b=efBosqHteVfVLE9lD1VPSrL4LSK+nfTzVd2hvTBKz680TnwFDUVU4w1qqyQkjodFoiCW0Kp0v747L7uoYAVXF7HqI0LPGuiuFAmJtAkjMxNumBhgCxVAxTdCEnwR6KPpkmxnMKuBzXBmGc1X/QqNxFUEDlecWXXca0SsDLzjj6s=
+	t=1745420890; cv=none; b=rQzdxw/6yrZHsLBVrZTUcuf3LS27Fk5DvQ+o5PY5GjHwOdFrzN6lf3EZ6C4MjfuXvbXbdqh1bTdTEiofwKHX3nB/iazbMdr2L5UAaXwSwVGdVOe79KWaVvuVG8xSrg0CXlE/VWIQuEonSss17V202e3g5z+LgTrbNW57dK+eBZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421969; c=relaxed/simple;
-	bh=NqT8dQQ5IamaIkZqXGU/AZgo8s/u0mOpuIfuR/VKlrc=;
+	s=arc-20240116; t=1745420890; c=relaxed/simple;
+	bh=Pjtz5X0ZbNubMkdBWTjlkX4rFe7F1yanA9a0kFs7IVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRzZsGykbK3uaG2vakK1uTP87luKvSLCo8S1A76vDbUivDBfjo4HcahlCo+uZ8VsQy8MVgkgiOYSsbZ8qsnkTJlwJZokyZVpyNC7/X9S0UaGc1BsBbwKPwKqAXgI5jRB0qe46WvA86/KR144WoMav7qOpU3artukwY25oAMNvQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmLPEhqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5520BC4CEE2;
-	Wed, 23 Apr 2025 15:26:08 +0000 (UTC)
+	 MIME-Version; b=ju1lvZvtbNUO0ZOfNHCj6F257REL5Cd0rgXxlrttTeJM96C5WLBNbX9J84y1xmcnJYzu4FGyPg2zqBkz1ySEBHax8UqquaMyzL6yJmbHny+EcypiCzy4uqAOyUCT1nb5JIw4GInlLYPDxtvL4eRVG5pv7Ghlt5xHcDwQMFAzgOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIvUmgZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2C1C4CEE2;
+	Wed, 23 Apr 2025 15:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421968;
-	bh=NqT8dQQ5IamaIkZqXGU/AZgo8s/u0mOpuIfuR/VKlrc=;
+	s=korg; t=1745420889;
+	bh=Pjtz5X0ZbNubMkdBWTjlkX4rFe7F1yanA9a0kFs7IVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmLPEhqwUcnKjHDPxmail8vZ9s1/6fzOhTvEKhluq5FAtfLFXKLA5sA87ydM+R/x/
-	 M0dJ0umxOls87mEY2UWR7CYZaxxUEuTnosBnUwGx4oHpFn3ePybvhprALqzv+FjrHj
-	 64iO0addlZ/quJc11bt2YicG8xCKR4T3soaie8HA=
+	b=PIvUmgZTUUYMA5qs8GzUK//ux884CxuERll7qeGe+rcgXVSQihiyxUNmju0pxHVbU
+	 VUKUVh9SLnFhz9to7ZATb1foNRqEXcBGROwNSaPt4+UGIGY2/GZEUs/rpbVykc3gro
+	 gbDYkZFiEoSdeZ9Wz4j/a3tfQ6lHyI9beZeNhlOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.1 207/291] cpufreq: Avoid using inconsistent policy->min and policy->max
-Date: Wed, 23 Apr 2025 16:43:16 +0200
-Message-ID: <20250423142632.842623543@linuxfoundation.org>
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.14 133/241] i2c: cros-ec-tunnel: defer probe if parent EC is not present
+Date: Wed, 23 Apr 2025 16:43:17 +0200
+Message-ID: <20250423142625.999228436@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
+commit 424eafe65647a8d6c690284536e711977153195a upstream.
 
-Since cpufreq_driver_resolve_freq() can run in parallel with
-cpufreq_set_policy() and there is no synchronization between them,
-the former may access policy->min and policy->max while the latter
-is updating them and it may see intermediate values of them due
-to the way the update is carried out.  Also the compiler is free
-to apply any optimizations it wants both to the stores in
-cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
-which may result in additional inconsistencies.
+When i2c-cros-ec-tunnel and the EC driver are built-in, the EC parent
+device will not be found, leading to NULL pointer dereference.
 
-To address this, use WRITE_ONCE() when updating policy->min and
-policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
-them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
-in cpufreq_set_policy() to avoid storing intermediate values in
-policy->min and policy->max with the help of the observation that
-their new values are expected to be properly ordered upfront.
+That can also be reproduced by unbinding the controller driver and then
+loading i2c-cros-ec-tunnel module (or binding the device).
 
-Also modify cpufreq_driver_resolve_freq() to take the possible reverse
-ordering of policy->min and policy->max, which may happen depending on
-the ordering of operations when this function and cpufreq_set_policy()
-run concurrently, into account by always honoring the max when it
-turns out to be less than the min (in case it comes from thermal
-throttling or similar).
+[  271.991245] BUG: kernel NULL pointer dereference, address: 0000000000000058
+[  271.998215] #PF: supervisor read access in kernel mode
+[  272.003351] #PF: error_code(0x0000) - not-present page
+[  272.008485] PGD 0 P4D 0
+[  272.011022] Oops: Oops: 0000 [#1] SMP NOPTI
+[  272.015207] CPU: 0 UID: 0 PID: 3859 Comm: insmod Tainted: G S                  6.15.0-rc1-00004-g44722359ed83 #30 PREEMPT(full)  3c7fb39a552e7d949de2ad921a7d6588d3a4fdc5
+[  272.030312] Tainted: [S]=CPU_OUT_OF_SPEC
+[  272.034233] Hardware name: HP Berknip/Berknip, BIOS Google_Berknip.13434.356.0 05/17/2021
+[  272.042400] RIP: 0010:ec_i2c_probe+0x2b/0x1c0 [i2c_cros_ec_tunnel]
+[  272.048577] Code: 1f 44 00 00 41 57 41 56 41 55 41 54 53 48 83 ec 10 65 48 8b 05 06 a0 6c e7 48 89 44 24 08 4c 8d 7f 10 48 8b 47 50 4c 8b 60 78 <49> 83 7c 24 58 00 0f 84 2f 01 00 00 48 89 fb be 30 06 00 00 4c 9
+[  272.067317] RSP: 0018:ffffa32082a03940 EFLAGS: 00010282
+[  272.072541] RAX: ffff969580b6a810 RBX: ffff969580b68c10 RCX: 0000000000000000
+[  272.079672] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff969580b68c00
+[  272.086804] RBP: 00000000fffffdfb R08: 0000000000000000 R09: 0000000000000000
+[  272.093936] R10: 0000000000000000 R11: ffffffffc0600000 R12: 0000000000000000
+[  272.101067] R13: ffffffffa666fbb8 R14: ffffffffc05b5528 R15: ffff969580b68c10
+[  272.108198] FS:  00007b930906fc40(0000) GS:ffff969603149000(0000) knlGS:0000000000000000
+[  272.116282] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  272.122024] CR2: 0000000000000058 CR3: 000000012631c000 CR4: 00000000003506f0
+[  272.129155] Call Trace:
+[  272.131606]  <TASK>
+[  272.133709]  ? acpi_dev_pm_attach+0xdd/0x110
+[  272.137985]  platform_probe+0x69/0xa0
+[  272.141652]  really_probe+0x152/0x310
+[  272.145318]  __driver_probe_device+0x77/0x110
+[  272.149678]  driver_probe_device+0x1e/0x190
+[  272.153864]  __driver_attach+0x10b/0x1e0
+[  272.157790]  ? driver_attach+0x20/0x20
+[  272.161542]  bus_for_each_dev+0x107/0x150
+[  272.165553]  bus_add_driver+0x15d/0x270
+[  272.169392]  driver_register+0x65/0x110
+[  272.173232]  ? cleanup_module+0xa80/0xa80 [i2c_cros_ec_tunnel 3a00532f3f4af4a9eade753f86b0f8dd4e4e5698]
+[  272.182617]  do_one_initcall+0x110/0x350
+[  272.186543]  ? security_kernfs_init_security+0x49/0xd0
+[  272.191682]  ? __kernfs_new_node+0x1b9/0x240
+[  272.195954]  ? security_kernfs_init_security+0x49/0xd0
+[  272.201093]  ? __kernfs_new_node+0x1b9/0x240
+[  272.205365]  ? kernfs_link_sibling+0x105/0x130
+[  272.209810]  ? kernfs_next_descendant_post+0x1c/0xa0
+[  272.214773]  ? kernfs_activate+0x57/0x70
+[  272.218699]  ? kernfs_add_one+0x118/0x160
+[  272.222710]  ? __kernfs_create_file+0x71/0xa0
+[  272.227069]  ? sysfs_add_bin_file_mode_ns+0xd6/0x110
+[  272.232033]  ? internal_create_group+0x453/0x4a0
+[  272.236651]  ? __vunmap_range_noflush+0x214/0x2d0
+[  272.241355]  ? __free_frozen_pages+0x1dc/0x420
+[  272.245799]  ? free_vmap_area_noflush+0x10a/0x1c0
+[  272.250505]  ? load_module+0x1509/0x16f0
+[  272.254431]  do_init_module+0x60/0x230
+[  272.258181]  __se_sys_finit_module+0x27a/0x370
+[  272.262627]  do_syscall_64+0x6a/0xf0
+[  272.266206]  ? do_syscall_64+0x76/0xf0
+[  272.269956]  ? irqentry_exit_to_user_mode+0x79/0x90
+[  272.274836]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[  272.279887] RIP: 0033:0x7b9309168d39
+[  272.283466] Code: 5b 41 5c 5d c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d af 40 0c 00 f7 d8 64 89 01 8
+[  272.302210] RSP: 002b:00007fff50f1a288 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[  272.309774] RAX: ffffffffffffffda RBX: 000058bf9b50f6d0 RCX: 00007b9309168d39
+[  272.316905] RDX: 0000000000000000 RSI: 000058bf6c103a77 RDI: 0000000000000003
+[  272.324036] RBP: 00007fff50f1a2e0 R08: 00007fff50f19218 R09: 0000000021ec4150
+[  272.331166] R10: 000058bf9b50f7f0 R11: 0000000000000246 R12: 0000000000000000
+[  272.338296] R13: 00000000fffffffe R14: 0000000000000000 R15: 000058bf6c103a77
+[  272.345428]  </TASK>
+[  272.347617] Modules linked in: i2c_cros_ec_tunnel(+)
+[  272.364585] gsmi: Log Shutdown Reason 0x03
 
-Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
+Returning -EPROBE_DEFER will allow the device to be bound once the
+controller is bound, in the case of built-in drivers.
+
+Fixes: 9d230c9e4f4e ("i2c: ChromeOS EC tunnel driver")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: <stable@vger.kernel.org> # v3.16+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250407-null-ec-parent-v1-1-f7dda62d3110@igalia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-cros-ec-tunnel.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -532,8 +532,6 @@ static unsigned int __resolve_freq(struc
- {
- 	unsigned int idx;
+--- a/drivers/i2c/busses/i2c-cros-ec-tunnel.c
++++ b/drivers/i2c/busses/i2c-cros-ec-tunnel.c
+@@ -247,6 +247,9 @@ static int ec_i2c_probe(struct platform_
+ 	u32 remote_bus;
+ 	int err;
  
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
--
- 	if (!policy->freq_table)
- 		return target_freq;
- 
-@@ -557,7 +555,22 @@ static unsigned int __resolve_freq(struc
- unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
- 					 unsigned int target_freq)
- {
--	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
-+	unsigned int min = READ_ONCE(policy->min);
-+	unsigned int max = READ_ONCE(policy->max);
++	if (!ec)
++		return dev_err_probe(dev, -EPROBE_DEFER, "couldn't find parent EC device\n");
 +
-+	/*
-+	 * If this function runs in parallel with cpufreq_set_policy(), it may
-+	 * read policy->min before the update and policy->max after the update
-+	 * or the other way around, so there is no ordering guarantee.
-+	 *
-+	 * Resolve this by always honoring the max (in case it comes from
-+	 * thermal throttling or similar).
-+	 */
-+	if (unlikely(min > max))
-+		min = max;
-+
-+	return __resolve_freq(policy, clamp_val(target_freq, min, max),
-+			      CPUFREQ_RELATION_LE);
- }
- EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
- 
-@@ -2283,6 +2296,7 @@ int __cpufreq_driver_target(struct cpufr
- 	if (cpufreq_disabled())
- 		return -ENODEV;
- 
-+	target_freq = clamp_val(target_freq, policy->min, policy->max);
- 	target_freq = __resolve_freq(policy, target_freq, relation);
- 
- 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
-@@ -2573,11 +2587,15 @@ static int cpufreq_set_policy(struct cpu
- 	 * Resolve policy min/max to available frequencies. It ensures
- 	 * no frequency resolution will neither overshoot the requested maximum
- 	 * nor undershoot the requested minimum.
-+	 *
-+	 * Avoid storing intermediate values in policy->max or policy->min and
-+	 * compiler optimizations around them because they may be accessed
-+	 * concurrently by cpufreq_driver_resolve_freq() during the update.
- 	 */
--	policy->min = new_data.min;
--	policy->max = new_data.max;
--	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
--	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
-+	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
-+	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
-+	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
-+
- 	trace_cpu_frequency_limits(policy);
- 
- 	policy->cached_target_freq = UINT_MAX;
+ 	if (!ec->cmd_xfer) {
+ 		dev_err(dev, "Missing sendrecv\n");
+ 		return -EINVAL;
 
 
 
