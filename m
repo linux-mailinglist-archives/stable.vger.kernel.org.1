@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-135532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FFAA98E79
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBD0A99047
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 221717A2B64
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EA81B8075D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9446C27EC6C;
-	Wed, 23 Apr 2025 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFCE29114A;
+	Wed, 23 Apr 2025 15:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUAQhA8s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6GVz7s2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52382481CD;
-	Wed, 23 Apr 2025 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF55291140;
+	Wed, 23 Apr 2025 15:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420171; cv=none; b=V1p/W5N2rQDh/A2Gedycq/5+AdtiJVIKNV38RCcf69F/yDdFLwxxNTOszzzu5Z+VnYrTYmmS2SwVKwPKmgeYhhUGoO1Hu2ZBFjMMSEbxs6m1SflhokFcA03FlMlN9ZQv65iapcivXRYrNhKwLcKR1KFfoMjKJ42R3WSODgmZrn4=
+	t=1745420703; cv=none; b=Ay5XWmux8LOzA5uaYrDLufuXpVqEmllt716AEKm9mL7fGHZbWRx6N+808mp+d3i36B12BLGD6h/VRszvufRabKOVaTg0xBgThCjpxK3J6NtOJO3qxXz0XqLXnRdecD3/TWN/mcf6okOkCKW84UTh3s7XYX5oiyh/vJAz91A5sCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420171; c=relaxed/simple;
-	bh=42M8zHsDkoeSD1PzMc/W20L282vRFLcfM6kLolJ+x2Q=;
+	s=arc-20240116; t=1745420703; c=relaxed/simple;
+	bh=/2kghcT6WHzXPgc+MrSVAfJq8w6lsCVi8D0BBB+E69U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+9EwCbzHD2nwCmi27vjRHejxcDZa3KzYNaEv5AvQaZRd1AKELwDhaAA+9DpcLnatfiGVK3ICnbhua54jtrbeB7cCclHXmobpq+v//t8WOqtYlvjvzFHHr/8BxrYy2kjNoOPd1Qs4dGij6QNOSNlcRAY8Q2pgTgN7rGEq3M6IRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUAQhA8s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FE3C4CEE2;
-	Wed, 23 Apr 2025 14:56:10 +0000 (UTC)
+	 MIME-Version; b=AaxnRk6cidsxXtxCZbxTqbdsZjq8NVl+AZ71SHQ5fza0XNc+TGwC4E3hkR3eoGVwzWOuxfITZOtr9pFnSToGnTRzzOIuv2qcwPUQ9wp56SqTmzyyZCCcLtLNOfXQtueZD06B+GKtc7NC1BZDaK5XS4wWcGAbd40AN0tlzLZM2GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6GVz7s2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B08DC4CEEC;
+	Wed, 23 Apr 2025 15:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420171;
-	bh=42M8zHsDkoeSD1PzMc/W20L282vRFLcfM6kLolJ+x2Q=;
+	s=korg; t=1745420703;
+	bh=/2kghcT6WHzXPgc+MrSVAfJq8w6lsCVi8D0BBB+E69U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUAQhA8s1lXlM9UvRMNK5/WkofJyptRFaH//3oRSVztHfO0l7EL+AsUGFhyAeA1mj
-	 d0Htc64WhoO/kcJEp1mDczDLvHv0QVIcZqyVcAZiC0fdr0CW5UW356xBbQ93uzEWgR
-	 rj8qJJLnaIcQgdi7VvMDWmXzN2SUhw2H4ntnG7tQ=
+	b=X6GVz7s2fcJgBrZ+akRxB8K3tCvD7VPzaps2/HwrHJjUHfhpPpDR6/rpTEzo3GlnA
+	 Kh01JVc5H7mUT0GYYkuZI/y8RKc55c1wKGiPaCmWIl9YfRtQZzknFKzVlus2uN6EP3
+	 vhl2wu4saUY86z/CnsfPbBTt0SWeEokjczaym8to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Yat Sin <David.YatSin@amd.com>,
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/291] net/sched: cls_api: conditional notification of events
+Subject: [PATCH 6.6 101/393] drm/amdkfd: clamp queue size to minimum
 Date: Wed, 23 Apr 2025 16:39:57 +0200
-Message-ID: <20250423142624.752119822@linuxfoundation.org>
+Message-ID: <20250423142647.458279247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: David Yat Sin <David.YatSin@amd.com>
 
-[ Upstream commit 93775590b1ee98bf2976b1f4a1ed24e9ff76170f ]
+[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
 
-As of today tc-filter/chain events are unconditionally built and sent to
-RTNLGRP_TC. As with the introduction of rtnl_notify_needed we can check
-before-hand if they are really needed. This will help to alleviate
-system pressure when filters are concurrently added without the rtnl
-lock as in tc-flower.
+If queue size is less than minimum, clamp it to minimum to prevent
+underflow when writing queue mqd.
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://lore.kernel.org/r/20231208192847.714940-8-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 369609fc6272 ("tc: Ensure we have enough buffer space when sending filter netlink notifications")
+Signed-off-by: David Yat Sin <David.YatSin@amd.com>
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
+ include/uapi/linux/kfd_ioctl.h           |  2 ++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 445ab1b0537da..2b44b82877f5a 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -1885,6 +1885,9 @@ static int tfilter_notify(struct net *net, struct sk_buff *oskb,
- 	u32 portid = oskb ? NETLINK_CB(oskb).portid : 0;
- 	int err = 0;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index 8669677662d0c..35dc926f234e3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -212,6 +212,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
+ 		return -EINVAL;
+ 	}
  
-+	if (!unicast && !rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC))
-+		return 0;
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
 +
- 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
- 	if (!skb)
- 		return -ENOBUFS;
-@@ -1914,6 +1917,9 @@ static int tfilter_del_notify(struct net *net, struct sk_buff *oskb,
- 	u32 portid = oskb ? NETLINK_CB(oskb).portid : 0;
- 	int err;
+ 	if (!access_ok((const void __user *) args->read_pointer_address,
+ 			sizeof(uint32_t))) {
+ 		pr_err("Can't access read pointer\n");
+@@ -477,6 +482,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
+ 		return -EINVAL;
+ 	}
  
-+	if (!rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC))
-+		return tp->ops->delete(tp, fh, last, rtnl_held, extack);
++	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
++		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
++		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
++	}
 +
- 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
- 	if (!skb)
- 		return -ENOBUFS;
-@@ -2731,6 +2737,9 @@ static int tc_chain_notify(struct tcf_chain *chain, struct sk_buff *oskb,
- 	struct sk_buff *skb;
- 	int err = 0;
+ 	properties.queue_address = args->ring_base_address;
+ 	properties.queue_size = args->ring_size;
+ 	properties.queue_percent = args->queue_percentage & 0xFF;
+diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
+index cd924c959d732..1f753e72fa2c2 100644
+--- a/include/uapi/linux/kfd_ioctl.h
++++ b/include/uapi/linux/kfd_ioctl.h
+@@ -58,6 +58,8 @@ struct kfd_ioctl_get_version_args {
+ #define KFD_MAX_QUEUE_PERCENTAGE	100
+ #define KFD_MAX_QUEUE_PRIORITY		15
  
-+	if (!unicast && !rtnl_notify_needed(net, flags, RTNLGRP_TC))
-+		return 0;
++#define KFD_MIN_QUEUE_RING_SIZE		1024
 +
- 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
- 	if (!skb)
- 		return -ENOBUFS;
-@@ -2760,6 +2769,9 @@ static int tc_chain_notify_delete(const struct tcf_proto_ops *tmplt_ops,
- 	struct net *net = block->net;
- 	struct sk_buff *skb;
- 
-+	if (!rtnl_notify_needed(net, flags, RTNLGRP_TC))
-+		return 0;
-+
- 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
- 	if (!skb)
- 		return -ENOBUFS;
+ struct kfd_ioctl_create_queue_args {
+ 	__u64 ring_base_address;	/* to KFD */
+ 	__u64 write_pointer_address;	/* from KFD */
 -- 
 2.39.5
 
