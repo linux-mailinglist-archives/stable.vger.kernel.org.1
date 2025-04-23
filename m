@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F69EA99000
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11457A99134
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B99B8E3A02
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF5033A9C7F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E231A283680;
-	Wed, 23 Apr 2025 15:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A6B293B4A;
+	Wed, 23 Apr 2025 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coiFR7kV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oh5o0YJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE7757C9F;
-	Wed, 23 Apr 2025 15:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEBA293B47;
+	Wed, 23 Apr 2025 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420561; cv=none; b=UrT6fvLDHHvIHeyk/TRFslfCJDeLFNw0HiflEEufaL5gIZvZ/t5+V1BE75UftUh1PZiAx/6v/pUL4nOWnO5WQ0A1XUgX94HymOKTmpo04e4y9SdoE45mHbVOrIL6r+dYcC7Q7bRO55UYIMaaFqM0z3cRHhWDsVRK5/sXXungMkc=
+	t=1745421176; cv=none; b=PzHSkX3s4TpZrnB29T5h4PUsMK+IhkJAwM61ugvV1tg615UvcWIJoSoS7/Gx8yMqjdpg+hlwj+/RY5CZlpJ9HWr3dZ1KFK918ft+eWv7gbWvl1urQlsCzpRwRmj44+mhkYij+MblTeWSus58Y9LSGqp8oevluE+hpVEX7RZd6ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420561; c=relaxed/simple;
-	bh=uuarIOrZME47UYFhr4NdQYYGXefLM+IhYCoM+ptblXY=;
+	s=arc-20240116; t=1745421176; c=relaxed/simple;
+	bh=O+zq1fUF0kC6GbnIHwNU9Xch/o+p9HBnP13Jwmhg0E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSiZ/46sum3wmuaSTvQKCVI5XgmmfXwbFOh1dHK5D6hamMvsQbgTrP5gqDA9gQZEbVkGAMYcpwOEAvLyfaC5h1bS5/ylyUb3yBvzTV5HTPNdkhhNP+HLaIfI9YJWClbA3zmVxt5OTOfywL/6Aj8lG5ZpamQ+ikFJO7aojiYUz2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coiFR7kV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05F8CC4CEE2;
-	Wed, 23 Apr 2025 15:02:40 +0000 (UTC)
+	 MIME-Version; b=Dw/eaMktXTvVR3xbnsFqSx+9s/N+m66w0eHcxF6b+joufojAlhqw11AdfVOO0YB7HnlBGYzWXhrmpmCRooBoCR9THAIADnRM9HchWytH1II6anbkoCZkHHYmoy+k9ZEScqkuHBCtb07bVPuDON27MK53y8wH6zgXAdln8ZLKwfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oh5o0YJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A641EC4CEE2;
+	Wed, 23 Apr 2025 15:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420561;
-	bh=uuarIOrZME47UYFhr4NdQYYGXefLM+IhYCoM+ptblXY=;
+	s=korg; t=1745421176;
+	bh=O+zq1fUF0kC6GbnIHwNU9Xch/o+p9HBnP13Jwmhg0E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=coiFR7kVOBaHXTkReIufl90h42XJjTtFjFYSf9576eurb2GDoWWRXd27ugFFcbQXK
-	 zbVsup7afwKIy2gHEyYFZYUQ3P/uaXZ+9s5edXZ9nCE42trAqqrjVNIbGHssitCbRd
-	 eagfBrZmwFafLcChLv/zIAKFHWLeEX1c8shOIuSY=
+	b=oh5o0YJm3u0JjhBnTBGV2s4ngnradsxH7utB22C6lgltUgvaCfJ4BjczBrrynqqBI
+	 l7WOizWCeiVAcp3nh2yPr31rHWNFbk6nHPV7UPSxeX6mbfMSXbqWfPcWlrwVmP3JAS
+	 5pln7HysAlM/jMmnoidO5WkwjSAH0dyg6He6fEBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/291] drm/bridge: panel: forbid initializing a panel with unknown connector type
+	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 153/393] wifi: mac80211: fix integer overflow in hwmp_route_info_get()
 Date: Wed, 23 Apr 2025 16:40:49 +0200
-Message-ID: <20250423142626.828326598@linuxfoundation.org>
+Message-ID: <20250423142649.699500303@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit b296955b3a740ecc8b3b08e34fd64f1ceabb8fb4 ]
+commit d00c0c4105e5ab8a6a13ed23d701cceb285761fa upstream.
 
-Having an DRM_MODE_CONNECTOR_Unknown connector type is considered bad, and
-drm_panel_bridge_add_typed() and derivatives are deprecated for this.
+Since the new_metric and last_hop_metric variables can reach
+the MAX_METRIC(0xffffffff) value, an integer overflow may occur
+when multiplying them by 10/9. It can lead to incorrect behavior.
 
-drm_panel_init() won't prevent initializing a panel with a
-DRM_MODE_CONNECTOR_Unknown connector type. Luckily there are no in-tree
-users doing it, so take this as an opportinuty to document a valid
-connector type must be passed.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-Returning an error if this rule is violated is not possible because
-drm_panel_init() is a void function. Add at least a warning to make any
-violations noticeable, especially to non-upstream drivers.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250214-drm-assorted-cleanups-v7-5-88ca5827d7af@bootlin.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a8d418d9ac25 ("mac80211: mesh: only switch path when new metric is at least 10% better")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
+Link: https://patch.msgid.link/20250212082124.4078236-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panel.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/mac80211/mesh_hwmp.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel.c b/drivers/gpu/drm/drm_panel.c
-index 7fd3de89ed079..acd29b4f43f84 100644
---- a/drivers/gpu/drm/drm_panel.c
-+++ b/drivers/gpu/drm/drm_panel.c
-@@ -49,7 +49,7 @@ static LIST_HEAD(panel_list);
-  * @dev: parent device of the panel
-  * @funcs: panel operations
-  * @connector_type: the connector type (DRM_MODE_CONNECTOR_*) corresponding to
-- *	the panel interface
-+ *	the panel interface (must NOT be DRM_MODE_CONNECTOR_Unknown)
-  *
-  * Initialize the panel structure for subsequent registration with
-  * drm_panel_add().
-@@ -57,6 +57,9 @@ static LIST_HEAD(panel_list);
- void drm_panel_init(struct drm_panel *panel, struct device *dev,
- 		    const struct drm_panel_funcs *funcs, int connector_type)
- {
-+	if (connector_type == DRM_MODE_CONNECTOR_Unknown)
-+		DRM_WARN("%s: %s: a valid connector type is required!\n", __func__, dev_name(dev));
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -365,6 +365,12 @@ u32 airtime_link_metric_get(struct ieee8
+ 	return (u32)result;
+ }
+ 
++/* Check that the first metric is at least 10% better than the second one */
++static bool is_metric_better(u32 x, u32 y)
++{
++	return (x < y) && (x < (y - x / 10));
++}
 +
- 	INIT_LIST_HEAD(&panel->list);
- 	panel->dev = dev;
- 	panel->funcs = funcs;
--- 
-2.39.5
-
+ /**
+  * hwmp_route_info_get - Update routing info to originator and transmitter
+  *
+@@ -456,8 +462,8 @@ static u32 hwmp_route_info_get(struct ie
+ 				    (mpath->sn == orig_sn &&
+ 				     (rcu_access_pointer(mpath->next_hop) !=
+ 						      sta ?
+-					      mult_frac(new_metric, 10, 9) :
+-					      new_metric) >= mpath->metric)) {
++					      !is_metric_better(new_metric, mpath->metric) :
++					      new_metric >= mpath->metric))) {
+ 					process = false;
+ 					fresh_info = false;
+ 				}
+@@ -531,8 +537,8 @@ static u32 hwmp_route_info_get(struct ie
+ 			if ((mpath->flags & MESH_PATH_FIXED) ||
+ 			    ((mpath->flags & MESH_PATH_ACTIVE) &&
+ 			     ((rcu_access_pointer(mpath->next_hop) != sta ?
+-				       mult_frac(last_hop_metric, 10, 9) :
+-				       last_hop_metric) > mpath->metric)))
++				      !is_metric_better(last_hop_metric, mpath->metric) :
++				       last_hop_metric > mpath->metric))))
+ 				fresh_info = false;
+ 		} else {
+ 			mpath = mesh_path_add(sdata, ta);
 
 
 
