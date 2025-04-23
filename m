@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12A8A98E39
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A415FA98F7F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A35D5A5F7A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADBAB16AB9E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A1127FD4F;
-	Wed, 23 Apr 2025 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B0D728EA49;
+	Wed, 23 Apr 2025 15:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SVSoPs5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tO8CpY3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7EA27F755;
-	Wed, 23 Apr 2025 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27446281363;
+	Wed, 23 Apr 2025 15:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419889; cv=none; b=oXpvlFdw2KFt/k4N1UbhujBDoS2AR2JFTuCSI/RBIah58aybhEwAa64ExWWlrV+JzgTcxdqlje2hP1TFH47VRL17hQbM4wUqljO1wY9yWHwnjeXrTQEbtYRZe4turC5OHRMG4fBDYeUSVcDyPdcbrKEqzwcXFZsszr0W4XgvwsI=
+	t=1745420522; cv=none; b=oS1MonTXOW/f+3WiSbgZeykn0H54NsaHD96wdSYB/sRsvnOsq9T9hUJthiRF0ec/XgsqCjfj/7P622QyEcCBCIY6f+Ep0wJYZIrs5jEUqrpzXy0PiEy1H08aoMHRb1gDC1mZuTeRVxn38pP249FvjpBrrHnsLtpb7jqxvWPam3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419889; c=relaxed/simple;
-	bh=1dPfMqFpBXjbgqvsh3oh+v8nRefXwjriw6JNyPu91aY=;
+	s=arc-20240116; t=1745420522; c=relaxed/simple;
+	bh=q9XziRB7+D6qlrSXJ2ao7fSo9zn4wQdaYolPfHuzzP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DOAt+l1cA3u84ye+nbV2QE5ZVAQeqpMSpWeC86I/2l7v54mE7OQzbQUafA6fqx7s8F+E1iYzhLfr9NTy5/kakw1lWwZmrNJJr5dd0FwEfe/LF09CHoZ7XIM12jye7gim72/Zk7M7pl5WMaenFeuSh9ky518+gY4XfLna1b70PqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SVSoPs5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F912C4CEE8;
-	Wed, 23 Apr 2025 14:51:29 +0000 (UTC)
+	 MIME-Version; b=eMB2n+HMfJzRefE18R+xuKp+VKwBulVEGvqS7iDU5562Ty5JXiEhUOYpR2qC7TSbZ/Q8fQ8bKqpE/sD4jhDrZSyWXpxjNURcDzNoQglq2rTZC0zsXWytXyXpPgNF4U44snz+kZbA0y8sKZuiiI8PTmSXaPZq+pqNxpNYMFmXhQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tO8CpY3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59451C4CEE2;
+	Wed, 23 Apr 2025 15:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419889;
-	bh=1dPfMqFpBXjbgqvsh3oh+v8nRefXwjriw6JNyPu91aY=;
+	s=korg; t=1745420521;
+	bh=q9XziRB7+D6qlrSXJ2ao7fSo9zn4wQdaYolPfHuzzP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0SVSoPs5n5vflrX5au3Gj93Y+kgdT7PCG4kMyGnsCM1L0BkfsbsgLFEdr0QtlndMD
-	 1F+FZqAHjr12AGcH3sRGnCfIo1ze8kKnHdUdJoZVJFy6NyaYBUP00mrlk5Gd26lBxq
-	 Yx70slJDAkx7yAhKKVejIvdwQIf0QYfpx9nFd6c0=
+	b=tO8CpY3kBDGxqZGLJ8T4l7p6hBXMtNoITwdVjU0AQwBGQAq5cbbKy3zgIaWefXN/J
+	 yHnF653qpyvNPyEAr4QALZiOOlFF1RJjMpBjvv3vCHgckOqEPtQztqlOTM8cwsoDun
+	 zRwcks6tIZVoZFYqzU0z5YYgtdVZgHHVHHTd6ynw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/223] riscv: Properly export reserved regions in /proc/iomem
+Subject: [PATCH 6.14 084/241] net: ethernet: mtk_eth_soc: reapply mdc divider on reset
 Date: Wed, 23 Apr 2025 16:42:28 +0200
-Message-ID: <20250423142620.221159222@linuxfoundation.org>
+Message-ID: <20250423142624.011453278@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,122 +61,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit e94eb7ea6f206e229791761a5fdf9389f8dbd183 ]
+[ Upstream commit 6bc2b6c6f16d8e60de518d26da1bc6bc436cf71d ]
 
-The /proc/iomem represents the kernel's memory map. Regions marked
-with "Reserved" tells the user that the range should not be tampered
-with. Kexec-tools, when using the older kexec_load syscall relies on
-the "Reserved" regions to build the memory segments, that will be the
-target of the new kexec'd kernel.
+In the current method, the MDC divider was reset to the default setting
+of 2.5MHz after the NETSYS SER. Therefore, we need to reapply the MDC
+divider configuration function in mtk_hw_init() after reset.
 
-The RISC-V port tries to expose all reserved regions to userland, but
-some regions were not properly exposed: Regions that resided in both
-the "regular" and reserved memory block, e.g. the EFI Memory Map. A
-missing entry could result in reserved memory being overwritten.
-
-It turns out, that arm64, and loongarch had a similar issue a while
-back:
-
-  commit d91680e687f4 ("arm64: Fix /proc/iomem for reserved but not memory regions")
-  commit 50d7ba36b916 ("arm64: export memblock_reserve()d regions via /proc/iomem")
-
-Similar to the other ports, resolve the issue by splitting the regions
-in an arch initcall, since we need a working allocator.
-
-Fixes: ffe0e5261268 ("RISC-V: Improve init_resources()")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250409182129.634415-1-bjorn@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: c0a440031d431 ("net: ethernet: mtk_eth_soc: set MDIO bus clock frequency")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/8ab7381447e6cdcb317d5b5a6ddd90a1734efcb0.1744764277.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/setup.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 39 +++++++++++++--------
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h |  1 +
+ 2 files changed, 25 insertions(+), 15 deletions(-)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 7934613a98c88..194bda6d74ce7 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -66,6 +66,9 @@ static struct resource bss_res = { .name = "Kernel bss", };
- static struct resource elfcorehdr_res = { .name = "ELF Core hdr", };
- #endif
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 53485142938c4..7988de05e4ecd 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -823,9 +823,25 @@ static const struct phylink_mac_ops mtk_phylink_ops = {
+ 	.mac_link_up = mtk_mac_link_up,
+ };
  
-+static int num_standard_resources;
-+static struct resource *standard_resources;
-+
- static int __init add_resource(struct resource *parent,
- 				struct resource *res)
- {
-@@ -139,7 +142,7 @@ static void __init init_resources(void)
- 	struct resource *res = NULL;
- 	struct resource *mem_res = NULL;
- 	size_t mem_res_sz = 0;
--	int num_resources = 0, res_idx = 0;
-+	int num_resources = 0, res_idx = 0, non_resv_res = 0;
- 	int ret = 0;
- 
- 	/* + 1 as memblock_alloc() might increase memblock.reserved.cnt */
-@@ -195,6 +198,7 @@ static void __init init_resources(void)
- 	/* Add /memory regions to the resource tree */
- 	for_each_mem_region(region) {
- 		res = &mem_res[res_idx--];
-+		non_resv_res++;
- 
- 		if (unlikely(memblock_is_nomap(region))) {
- 			res->name = "Reserved";
-@@ -212,6 +216,9 @@ static void __init init_resources(void)
- 			goto error;
- 	}
- 
-+	num_standard_resources = non_resv_res;
-+	standard_resources = &mem_res[res_idx + 1];
-+
- 	/* Clean-up any unused pre-allocated resources */
- 	if (res_idx >= 0)
- 		memblock_free(mem_res, (res_idx + 1) * sizeof(*mem_res));
-@@ -223,6 +230,33 @@ static void __init init_resources(void)
- 	memblock_free(mem_res, mem_res_sz);
- }
- 
-+static int __init reserve_memblock_reserved_regions(void)
++static void mtk_mdio_config(struct mtk_eth *eth)
 +{
-+	u64 i, j;
++	u32 val;
 +
-+	for (i = 0; i < num_standard_resources; i++) {
-+		struct resource *mem = &standard_resources[i];
-+		phys_addr_t r_start, r_end, mem_size = resource_size(mem);
++	/* Configure MDC Divider */
++	val = FIELD_PREP(PPSC_MDC_CFG, eth->mdc_divider);
 +
-+		if (!memblock_is_region_reserved(mem->start, mem_size))
-+			continue;
++	/* Configure MDC Turbo Mode */
++	if (mtk_is_netsys_v3_or_greater(eth))
++		mtk_m32(eth, 0, MISC_MDC_TURBO, MTK_MAC_MISC_V3);
++	else
++		val |= PPSC_MDC_TURBO;
 +
-+		for_each_reserved_mem_range(j, &r_start, &r_end) {
-+			resource_size_t start, end;
-+
-+			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
-+			end = min(PFN_PHYS(PFN_UP(r_end)) - 1, mem->end);
-+
-+			if (start > mem->end || end < mem->start)
-+				continue;
-+
-+			reserve_region_with_split(mem, start, end, "Reserved");
-+		}
-+	}
-+
-+	return 0;
++	mtk_m32(eth, PPSC_MDC_CFG, val, MTK_PPSC);
 +}
-+arch_initcall(reserve_memblock_reserved_regions);
- 
- static void __init parse_dtb(void)
++
+ static int mtk_mdio_init(struct mtk_eth *eth)
  {
+-	unsigned int max_clk = 2500000, divider;
++	unsigned int max_clk = 2500000;
+ 	struct device_node *mii_np;
+ 	int ret;
+ 	u32 val;
+@@ -865,20 +881,9 @@ static int mtk_mdio_init(struct mtk_eth *eth)
+ 		}
+ 		max_clk = val;
+ 	}
+-	divider = min_t(unsigned int, DIV_ROUND_UP(MDC_MAX_FREQ, max_clk), 63);
+-
+-	/* Configure MDC Turbo Mode */
+-	if (mtk_is_netsys_v3_or_greater(eth))
+-		mtk_m32(eth, 0, MISC_MDC_TURBO, MTK_MAC_MISC_V3);
+-
+-	/* Configure MDC Divider */
+-	val = FIELD_PREP(PPSC_MDC_CFG, divider);
+-	if (!mtk_is_netsys_v3_or_greater(eth))
+-		val |= PPSC_MDC_TURBO;
+-	mtk_m32(eth, PPSC_MDC_CFG, val, MTK_PPSC);
+-
+-	dev_dbg(eth->dev, "MDC is running on %d Hz\n", MDC_MAX_FREQ / divider);
+-
++	eth->mdc_divider = min_t(unsigned int, DIV_ROUND_UP(MDC_MAX_FREQ, max_clk), 63);
++	mtk_mdio_config(eth);
++	dev_dbg(eth->dev, "MDC is running on %d Hz\n", MDC_MAX_FREQ / eth->mdc_divider);
+ 	ret = of_mdiobus_register(eth->mii_bus, mii_np);
+ 
+ err_put_node:
+@@ -3928,6 +3933,10 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
+ 	else
+ 		mtk_hw_reset(eth);
+ 
++	/* No MT7628/88 support yet */
++	if (reset && !MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
++		mtk_mdio_config(eth);
++
+ 	if (mtk_is_netsys_v3_or_greater(eth)) {
+ 		/* Set FE to PDMAv2 if necessary */
+ 		val = mtk_r32(eth, MTK_FE_GLO_MISC);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+index 0d5225f1d3eef..8d7b6818d8601 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+@@ -1260,6 +1260,7 @@ struct mtk_eth {
+ 	struct clk			*clks[MTK_CLK_MAX];
+ 
+ 	struct mii_bus			*mii_bus;
++	unsigned int			mdc_divider;
+ 	struct work_struct		pending_work;
+ 	unsigned long			state;
+ 
 -- 
 2.39.5
 
