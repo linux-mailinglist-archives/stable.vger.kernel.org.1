@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A060A991A6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD8FA98DCF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1AB01BA2EE9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAAD23AB216
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5469328469B;
-	Wed, 23 Apr 2025 15:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ACC628153C;
+	Wed, 23 Apr 2025 14:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOJwdhgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbJr7NGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1403B28DEF0;
-	Wed, 23 Apr 2025 15:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4125280CF6;
+	Wed, 23 Apr 2025 14:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421466; cv=none; b=mTzN33mbPOH54pFZFa2rhmOn7N3PrMr+4vDECzcgKLyIUmOqWapl7XO8pML/ytiWrG0sGeCLc6HyrxtThLIYD65tK2/4ei25H3fyKZgUtk1aa4jrUS7eOeZzg4VeYSmrJeG03YrhCfgufp6v48fG78oeRAbZ7rwQKupHOt+AoHc=
+	t=1745419708; cv=none; b=EnOQUBUQd0xrn/bgO+Z0H5K5o8xjsEXWUyeLNNll32OoxICMUm08El+jKDiJ55Lb+2e5IvvUrxTDVFzjv+rGqqIYGMu0nrFJqmI3IsIexQwSSA2vLuNMnsljMnCGcobXz5q8+3dNyrnQdhnGzDw8DgJRWmqy1lOytHe5FmfD95k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421466; c=relaxed/simple;
-	bh=awHRWfMgpexxqmMsK8k9pz0sVaeQ+aiKTQRvIR9n+ts=;
+	s=arc-20240116; t=1745419708; c=relaxed/simple;
+	bh=6XySZfHaMNW5XUp1TTt8p9B6xV/NwIMWNBYi6rsh2nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EZQnUZC0TsXq1+MS+aCok4EFa4CN3j2Qw1j3uw+iiJgKwrIuF0glGZOUlU+U9epD85F2N84/K53yFSdMUAegzY+gDDpx6vR8iooCl6OAZ+9rUpOAsHkvnPZmJGYjBl2GyJg1KAkSZXp973itetiO2jhNRn8W+4Tg6/fMU64yXu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOJwdhgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95546C4CEE2;
-	Wed, 23 Apr 2025 15:17:45 +0000 (UTC)
+	 MIME-Version; b=MXBTvFfjlCn2koyV/0fbF2rSUvMW/1Z6k4Ibo8vOdRxDVihKlbtDA76meuTonmvuz9zZ3L+7WIG2WHjQVycNcWkhZJyla06CR3ZDNVU62Lm/TZU2rALPakJzDfwkSajCZbkQtm0TP73Do2KmmoGj3UnFdq1n/2oZZ0ke2yL8hH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbJr7NGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78293C4CEE2;
+	Wed, 23 Apr 2025 14:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421465;
-	bh=awHRWfMgpexxqmMsK8k9pz0sVaeQ+aiKTQRvIR9n+ts=;
+	s=korg; t=1745419707;
+	bh=6XySZfHaMNW5XUp1TTt8p9B6xV/NwIMWNBYi6rsh2nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOJwdhgFa4Da+4wWSWtcsS1/SUAN/R8kwI46hOPArqHCxlX4DoeVn+dqH0byZeBTq
-	 V30klV8kDC3T3TEdlZ886teqylg3ep7SnVK92wvRIHwwjdPppjEDGSG5znY/88xv5O
-	 FWlG66S9AgeDcla57eisOVjd/8I7g3h9yE0BfSmQ=
+	b=AbJr7NGbmbAVYjd48LooHz4fVnculOHmvnyIbdua3SsGI87tR+lA57a3ZT35SBayI
+	 KcI4XRW1R/z8mNnqKhKZZKZREr+XicgGwhGGprHHxlsczYdYiHp+DHNdMMLJ4HXCtk
+	 dBDZJZJAKtQz6cO6DfqztwdR4tF5t/KD+52htQQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YH Huang <yh.huang@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 181/393] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+	Akhil R <akhilrajeev@nvidia.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 013/241] crypto: tegra - Fix IV usage for AES ECB
 Date: Wed, 23 Apr 2025 16:41:17 +0200
-Message-ID: <20250423142650.853427863@linuxfoundation.org>
+Message-ID: <20250423142621.062894755@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
+[ Upstream commit 1ddaff40c08abb926be5ba713c5efc412d0836c5 ]
 
-The MT8173 disp-pwm device should have only one compatible string, based
-on the following DT validation error:
+Modifying the crypto_request turns out to be not the right way to handle
+the stale value issue with the IV. Though the IV is not used for AES ECB,
+it eventually get used in algorithms like LRW in the next step after
+AES ECB encryption/decryption. Setting req->iv to NULL breaks the
+implementation of such algorithms. Hence modify only the local reqctx
+to check for IV.
 
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-
-Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
-
-Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
-Cc: YH Huang <yh.huang@mediatek.com>
-Cc: stable@vger.kernel.org # v4.5+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bde558220866 ("crypto: tegra - Set IV to NULL explicitly for AES ECB")
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/crypto/tegra/tegra-se-aes.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -1246,8 +1246,7 @@
- 		};
+diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
+index ca9d0cca1f748..0e07d0523291a 100644
+--- a/drivers/crypto/tegra/tegra-se-aes.c
++++ b/drivers/crypto/tegra/tegra-se-aes.c
+@@ -269,7 +269,7 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
+ 	unsigned int cmdlen, key1_id, key2_id;
+ 	int ret;
  
- 		pwm0: pwm@1401e000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401e000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
-@@ -1257,8 +1256,7 @@
- 		};
+-	rctx->iv = (u32 *)req->iv;
++	rctx->iv = (ctx->alg == SE_ALG_ECB) ? NULL : (u32 *)req->iv;
+ 	rctx->len = req->cryptlen;
+ 	key1_id = ctx->key1_id;
+ 	key2_id = ctx->key2_id;
+@@ -498,9 +498,6 @@ static int tegra_aes_crypt(struct skcipher_request *req, bool encrypt)
+ 	if (!req->cryptlen)
+ 		return 0;
  
- 		pwm1: pwm@1401f000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401f000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
+-	if (ctx->alg == SE_ALG_ECB)
+-		req->iv = NULL;
+-
+ 	rctx->encrypt = encrypt;
+ 
+ 	return crypto_transfer_skcipher_request_to_engine(ctx->se->engine, req);
+-- 
+2.39.5
+
 
 
 
