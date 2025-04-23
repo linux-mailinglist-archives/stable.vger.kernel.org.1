@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61870A99008
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6421FA9918C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B684649D1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 762761B83CDF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E6728EA51;
-	Wed, 23 Apr 2025 15:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820E5290BC8;
+	Wed, 23 Apr 2025 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLIVQh3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaNQe1bK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA6527FD7A;
-	Wed, 23 Apr 2025 15:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB7928D851;
+	Wed, 23 Apr 2025 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420837; cv=none; b=VHZeXk+CneUnlLgflL+/vn79L84+ILD8lundOH3zl5LLO615JD/klRCOCZ6+4HSrmijXFgrHsTCjwH9kjyxXe4kzmV8eA1ObsgOTSEezRAv4VmVu1BD5ttypn84+jSM5XbR1PcqeJW0eFY74aoUFmletS86oy8x25dutLt0+Pic=
+	t=1745421429; cv=none; b=UKRsELpDA7lKNJyLuDZeg7kbCvS2iBVS2aK1xDzsIuj4JcVa55qykVBp5kA09mjqkTOhN7DqjGXv6JBZiAN8s53/rHFl4QeW6J8SyKz8RY3tGkKBrB3++w89m2G47bfuMRfKrswzIWwQlt2w+F5VxJlD9RoPls2I298gplfJ/BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420837; c=relaxed/simple;
-	bh=aybqsk0sygU+NxD0f6PRZGz6GQ1Yj9rV0mQkto9SIVI=;
+	s=arc-20240116; t=1745421429; c=relaxed/simple;
+	bh=9tnOemIL/+kKY914uM0OGYWJxquWYmFYtTnK8s5/erc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khjPC7MgRLlICRY7HNKnRROJqfRdW5xTc9tyzSILXA3tghJ5iaWHdsLo5e6BZZwgR4/RG39eiIU0/l/JdaPGO8iyw1rFEt2/peux9v90I4kPgp5y4Jd8D/au71oXvD0lKJihtrj6Gvyeoi3fl7rKEs0bLEFCkkRrS0EKpjcvXC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLIVQh3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38668C4CEE2;
-	Wed, 23 Apr 2025 15:07:17 +0000 (UTC)
+	 MIME-Version; b=XCbs3H1kLAaOOmJbuw0J9kLxttN4PUsGl22lRjpLdpeP9rWz5wKYkj3oqH0+6PkMQQD2gPp/sx3L1d0kMAFzP/IapgCHl3KFZEpbwZstv80g89RzlZvS5+CgPwbBmWBbc71+g8FLBbQJ1ireGhBNvlkru+tG4SsxJIbrSv0Re8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GaNQe1bK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC638C4CEE2;
+	Wed, 23 Apr 2025 15:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420837;
-	bh=aybqsk0sygU+NxD0f6PRZGz6GQ1Yj9rV0mQkto9SIVI=;
+	s=korg; t=1745421429;
+	bh=9tnOemIL/+kKY914uM0OGYWJxquWYmFYtTnK8s5/erc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLIVQh3jh2oc32OO7qd72bSdtTG8UGwNPP5/ggdVhFg9gLkW/ofHJp1JiFg2eEfGZ
-	 4pNALtr/tKTPS9haYkSkLC+N3F8uuI1AJq3qbkv3Vbqu81Bihor9sS+rQKHeeNVQZz
-	 fLUuuZGGW3ATYKKjmr5WzIuFyOWNGW2k/DDL57UM=
+	b=GaNQe1bKT4rGrBvH/Rgk3obm146BQt+w3vBlTw7b9mRw4IrN3NxXjZhXzTBV4Gl0B
+	 7ooTDfc4qJ/6mIU9t6btkOcZO6zDoY3G6BBhpuGP/NfvkJl1tBNwgW25+TWLsYKYFx
+	 9q6PVVLqJWvPdBfgwD4l85nNCVJJKcr9berkuTd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Bauer <sbauer@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Trilok Soni <quic_tsoni@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.1 085/291] arm64: errata: Add QCOM_KRYO_4XX_GOLD to the spectre_bhb_k24_list
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 178/393] mtd: inftlcore: Add error check for inftl_read_oob()
 Date: Wed, 23 Apr 2025 16:41:14 +0200
-Message-ID: <20250423142627.838323629@linuxfoundation.org>
+Message-ID: <20250423142650.726813562@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit ed1ce841245d8febe3badf51c57e81c3619d0a1d upstream.
+commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
 
-Qualcomm Kryo 400-series Gold cores have a derivative of an ARM Cortex
-A76 in them. Since A76 needs Spectre mitigation via looping then the
-Kyro 400-series Gold cores also need Spectre mitigation via looping.
+In INFTL_findwriteunit(), the return value of inftl_read_oob()
+need to be checked. A proper implementation can be
+found in INFTL_deleteblock(). The status will be set as
+SECTOR_IGNORE to break from the while-loop correctly
+if the inftl_read_oob() fails.
 
-Qualcomm has confirmed that the proper "k" value for Kryo 400-series
-Gold cores is 24.
-
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
-Cc: stable@vger.kernel.org
-Cc: Scott Bauer <sbauer@quicinc.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
-Link: https://lore.kernel.org/r/20250107120555.v4.1.Ie4ef54abe02e7eb0eee50f830575719bf23bda48@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
+Cc: stable@vger.kernel.org # v2.6+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/proton-pack.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/inftlcore.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -878,6 +878,7 @@ u8 spectre_bhb_loop_affected(int scope)
- 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
- 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-+			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
- 			{},
- 		};
- 		static const struct midr_range spectre_bhb_k11_list[] = {
+--- a/drivers/mtd/inftlcore.c
++++ b/drivers/mtd/inftlcore.c
+@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
+ 		silly = MAX_LOOPS;
+ 
+ 		while (thisEUN <= inftl->lastEUN) {
+-			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
+-				       blockofs, 8, &retlen, (char *)&bci);
+-
+-			status = bci.Status | bci.Status1;
++			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
++				       blockofs, 8, &retlen, (char *)&bci) < 0)
++				status = SECTOR_IGNORE;
++			else
++				status = bci.Status | bci.Status1;
+ 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
+ 					block , writeEUN, status);
+ 
 
 
 
