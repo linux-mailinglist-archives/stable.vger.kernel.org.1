@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-136381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD8EA993CE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01E11A992CA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D12C41B86A22
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A6A94A383B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86B82949F8;
-	Wed, 23 Apr 2025 15:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B42280CEA;
+	Wed, 23 Apr 2025 15:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxRu1pWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+sFS/u+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8835D28F93A;
-	Wed, 23 Apr 2025 15:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2463226A082;
+	Wed, 23 Apr 2025 15:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422396; cv=none; b=SaglFmv134/ab+rfN1F9cxF8Qu4nb9tfPs5v2VlnFILV6zRMUZPwYQnv+ChijlYs4sLIhpZD/DllBrFz63jtIBYpQKBFkvcWCuDl2bLtGfc5VIa6jGgwY6Lad3cyaXceK7tgzytdvVDsbaJZ/BtxmMfhvRDCSnHZwUFADDrK7+0=
+	t=1745422136; cv=none; b=ENNwx9ZUwsoAEUZt1uT7pzm8kuYwjINtCu94FCL5e49X5GxUfp/DdS2etSZHK+eY+gEVvGHUid0oOc7FXQmyOdUDoRu5dEv8fidi0JEBf43g6eW7w6qnyG9zN2co8P183MLEeZvovcI/ML7X0Ey3/v+UIiwWpr5pJ79xKuShPeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422396; c=relaxed/simple;
-	bh=EjzYxBrbWJYK0VYWSWoR8pG5mXnAnA3djs/5nrtKors=;
+	s=arc-20240116; t=1745422136; c=relaxed/simple;
+	bh=n+PnQ60bHxWr8yNW87b57I81Gsjp+YX1SVb0wLFgC/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/qlFe8NLh0QGrdqdDD61tkOrWqpL/pVrFeyaWmw9J2HQSPcn9QKWJtwWqiRVHwbTBBhQKXnNPOwscsXbknFKc7JNeIixbtFeJmEbaMGCv7YdtiwGxpE8h43ybFALbAniNEOmCE2nmznP/a6BLVUp63hslfuvGj0+CwRflNDee4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxRu1pWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C958C4CEE3;
-	Wed, 23 Apr 2025 15:33:15 +0000 (UTC)
+	 MIME-Version; b=HPVfCRudZyyxYhyCRR7SHKAIu2Wuwle1eyYfo6M1xuIUpQ3Z5VnoeLuDMBXpSGywsF87LrBksW51cd41bts/YNwVUFd9RfV4VXvoK1lRwcE+lAi0EJI9uM2EIaWZ2d0U+SXvJGrPy4h+KsdDoGKVSBkpPgbO5omxvfoBMqBy09k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+sFS/u+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A71C4CEE2;
+	Wed, 23 Apr 2025 15:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422396;
-	bh=EjzYxBrbWJYK0VYWSWoR8pG5mXnAnA3djs/5nrtKors=;
+	s=korg; t=1745422136;
+	bh=n+PnQ60bHxWr8yNW87b57I81Gsjp+YX1SVb0wLFgC/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxRu1pWDfy0RF4A5c202s/6AeyyEW5g+wLXz/kU0P6BpFBWKkqlhw2CDD9j4lB6Xi
-	 S6Cg7icbz4fht+YyfZ3uhqQ2CmSDQPS+QpVlMsAStIr0aDKMetV1FF7iEiaEZPEugO
-	 dj7bQcleMIYtQANJL9o3F94xa4J5wDZx1MjtRd54=
+	b=x+sFS/u+tFBNgf482kdT3VEszwxoygScEQ0++YbhiE2MR+6RdlaNb1FtSl9w3Va/M
+	 ZueQrvja5qsVniAwyBfdZ8dm+2n3TB7PLKB59PzwwhSEAL8lznc6iTWVCogoUrjOxv
+	 ip6r4nLYENucy7RVBVW7fkZMSWvF1NGDiKbxIe0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 335/393] virtiofs: add filesystem context source name check
-Date: Wed, 23 Apr 2025 16:43:51 +0200
-Message-ID: <20250423142657.173409450@linuxfoundation.org>
+	Kees Cook <kees@kernel.org>,
+	Nicolas Chauvet <kwizart@gmail.com>,
+	Damian Tometzki <damian@riscv-rocks.de>,
+	Zhenyu Wang <zhenyuw.linux@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 243/291] drm/i915/gvt: fix unterminated-string-initialization warning
+Date: Wed, 23 Apr 2025 16:43:52 +0200
+Message-ID: <20250423142634.350627783@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
+commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
 
-In certain scenarios, for example, during fuzz testing, the source
-name may be NULL, which could lead to a kernel panic. Therefore, an
-extra check for the source name should be added.
+Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
+(which is "IntelGraphicsMem") drops the NUL termination of the
+string. This is intentional, but the compiler doesn't know this.
 
-Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
-Cc: <stable@vger.kernel.org> # all LTS kernels
-Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Switch to initializing header->signature directly from the string
+litaral, with sizeof destination rather than source. We don't treat the
+signature as a string other than for initialization; it's really just a
+blob of binary data.
+
+Add a static assert for good measure to cross-check the sizes.
+
+Reported-by: Kees Cook <kees@kernel.org>
+Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
+Tested-by: Nicolas Chauvet <kwizart@gmail.com>
+Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
+Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/virtio_fs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/gvt/opregion.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -1430,6 +1430,9 @@ static int virtio_fs_get_tree(struct fs_
- 	unsigned int virtqueue_size;
- 	int err = -EIO;
+--- a/drivers/gpu/drm/i915/gvt/opregion.c
++++ b/drivers/gpu/drm/i915/gvt/opregion.c
+@@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct inte
+ 	u8 *buf;
+ 	struct opregion_header *header;
+ 	struct vbt v;
+-	const char opregion_signature[16] = OPREGION_SIGNATURE;
  
-+	if (!fsc->source)
-+		return invalf(fsc, "No source specified");
+ 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
+ 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
+@@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct inte
+ 	/* emulated opregion with VBT mailbox only */
+ 	buf = (u8 *)vgpu_opregion(vgpu)->va;
+ 	header = (struct opregion_header *)buf;
+-	memcpy(header->signature, opregion_signature,
+-	       sizeof(opregion_signature));
 +
- 	/* This gets a reference on virtio_fs object. This ptr gets installed
- 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
- 	 * to drop the reference to this object.
++	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
++	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
++
+ 	header->size = 0x8;
+ 	header->opregion_ver = 0x02000000;
+ 	header->mboxes = MBOX_VBT;
 
 
 
