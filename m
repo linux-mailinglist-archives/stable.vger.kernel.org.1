@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-136356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC0FA9940E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94017A99457
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E53A41B86B02
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88E851BA4BEC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FDB298990;
-	Wed, 23 Apr 2025 15:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4BF29B238;
+	Wed, 23 Apr 2025 15:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHjB0Go5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REwKiyMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3CC288C9E;
-	Wed, 23 Apr 2025 15:32:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB93728B4E6;
+	Wed, 23 Apr 2025 15:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422331; cv=none; b=A1QGoK30wIwIL5Keq8EpPcyWo1FD/3F33AJJc3b54j2t+I2IZ6PdRw5R4QunA4xajak0ZUA/eLBgoEnpCfLw5vwAWBWI5Rv1HOmLqMFFFErpkRvqsN1kj9JW5mn/+0ISqZh/3OangH79dd2TI67pWVO3hBkx4yXC7AJNuwTmh1Q=
+	t=1745422501; cv=none; b=PTBwd75F904MvT+T3SxBPCQxzimPKoQyG0NGqKU+y2/p9ipCutMWyDQ6tRyd0WSeYvC+d65Pr5Jht7FnP2s58Fp3evGa5IT8SKAipRNlKOS5scUkFjshhCcftaNj4t5Q/ofdr6DFsQKZuV474KrUojC1D9jmQZXhlYeG34tcAqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422331; c=relaxed/simple;
-	bh=3tvOn2UlNCdsbegrifsRjxJ3l1cqpX/oxPyHFMAPhNo=;
+	s=arc-20240116; t=1745422501; c=relaxed/simple;
+	bh=4w/SbY7zFNaEQeaa8HfabppZUJCHnM9+x68Pjc8hAPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QK5CPDnnvwVMGuKMREYORShiCbzh17m0bXmuX+Bm9r1WJOKA2Epv2PWkJx2pyeBSvgnHh/Ans3CN+Zm13KSx+59gpyKCwwmkYCCT2MwKYTsZx0kqSldIpWF4LEEAwo4KYu/leR5E5FsCAdXRH0nvlQgREOD3eiu7Jk5uMoXqyfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHjB0Go5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BC7C4CEE2;
-	Wed, 23 Apr 2025 15:32:09 +0000 (UTC)
+	 MIME-Version; b=GMc3r9xyH4qEKOjh4YYAjdOlp8NytNe6EKDQhjBI3NeuJRBPBeWYKdo8i0NkQapMe2ED4/M9ssu6CB1kBTvFeOONGGc0R4/wwjT90qY2gGTNvn0L0HYVacwytTjDAOTqUKxozGvWohAftsZSuitavztD5TRv4bZ+DaWlpg8ohco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REwKiyMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD326C4CEE3;
+	Wed, 23 Apr 2025 15:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422330;
-	bh=3tvOn2UlNCdsbegrifsRjxJ3l1cqpX/oxPyHFMAPhNo=;
+	s=korg; t=1745422501;
+	bh=4w/SbY7zFNaEQeaa8HfabppZUJCHnM9+x68Pjc8hAPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHjB0Go503QAJkgS7aPHWQbFLmbmKcPabQeIldYCTV53gikpdzsSGD93inw5nTtbz
-	 eAIlsjCr/ml3MZ4sbVOixrOy0YlyBPx+KofRj2OBdvEQFd6LDr+RAzyKbvGq6lut0m
-	 mw+9Dr8tdus2C+RcTWw+1I3OiGTClS+EBcAzhlhc=
+	b=REwKiyMZn1j5UMSE3/U0922DSzXvnVbrk8W2WqO9DbNNh7KOst5327khBbIlhrOYm
+	 JrjNg5cQwvcg37X7391m0IaZYcD4h58PuFvI1HYq+PJFLH5dyApZ1syxeMmXUv0XYG
+	 T7xxL7uaW51s/OkV2pKZMvb873cLCu321K4jggBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@cjr.nz>,
-	Steve French <stfrench@microsoft.com>,
-	Andrew Paniakin <apanyaki@amazon.com>
-Subject: [PATCH 6.1 278/291] cifs: use origin fullpath for automounts
-Date: Wed, 23 Apr 2025 16:44:27 +0200
-Message-ID: <20250423142635.790666731@linuxfoundation.org>
+	"Yingfu.zhou" <yingfu.zhou@shopee.com>,
+	"Chunguang.xu" <chunguang.xu@shopee.com>,
+	"Yue.zhao" <yue.zhao@shopee.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Feng Liu <Feng.Liu3@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 6.6 374/393] nvme-rdma: unquiesce admin_q before destroy it
+Date: Wed, 23 Apr 2025 16:44:30 +0200
+Message-ID: <20250423142658.780460334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@cjr.nz>
+From: Chunguang.xu <chunguang.xu@shopee.com>
 
-commit 7ad54b98fc1f141cfb70cfe2a3d6def5a85169ff upstream.
+commit 5858b687559809f05393af745cbadf06dee61295 upstream.
 
-Use TCP_Server_Info::origin_fullpath instead of cifs_tcon::tree_name
-when building source paths for automounts as it will be useful for
-domain-based DFS referrals where the connections and referrals would
-get either re-used from the cache or re-created when chasing the dfs
-link.
+Kernel will hang on destroy admin_q while we create ctrl failed, such
+as following calltrace:
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[apanyaki: backport to v6.1-stable]
-Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+PID: 23644    TASK: ff2d52b40f439fc0  CPU: 2    COMMAND: "nvme"
+ #0 [ff61d23de260fb78] __schedule at ffffffff8323bc15
+ #1 [ff61d23de260fc08] schedule at ffffffff8323c014
+ #2 [ff61d23de260fc28] blk_mq_freeze_queue_wait at ffffffff82a3dba1
+ #3 [ff61d23de260fc78] blk_freeze_queue at ffffffff82a4113a
+ #4 [ff61d23de260fc90] blk_cleanup_queue at ffffffff82a33006
+ #5 [ff61d23de260fcb0] nvme_rdma_destroy_admin_queue at ffffffffc12686ce
+ #6 [ff61d23de260fcc8] nvme_rdma_setup_ctrl at ffffffffc1268ced
+ #7 [ff61d23de260fd28] nvme_rdma_create_ctrl at ffffffffc126919b
+ #8 [ff61d23de260fd68] nvmf_dev_write at ffffffffc024f362
+ #9 [ff61d23de260fe38] vfs_write at ffffffff827d5f25
+    RIP: 00007fda7891d574  RSP: 00007ffe2ef06958  RFLAGS: 00000202
+    RAX: ffffffffffffffda  RBX: 000055e8122a4d90  RCX: 00007fda7891d574
+    RDX: 000000000000012b  RSI: 000055e8122a4d90  RDI: 0000000000000004
+    RBP: 00007ffe2ef079c0   R8: 000000000000012b   R9: 000055e8122a4d90
+    R10: 0000000000000000  R11: 0000000000000202  R12: 0000000000000004
+    R13: 000055e8122923c0  R14: 000000000000012b  R15: 00007fda78a54500
+    ORIG_RAX: 0000000000000001  CS: 0033  SS: 002b
+
+This due to we have quiesced admi_q before cancel requests, but forgot
+to unquiesce before destroy it, as a result we fail to drain the
+pending requests, and hang on blk_mq_freeze_queue_wait() forever. Here
+try to reuse nvme_rdma_teardown_admin_queue() to fix this issue and
+simplify the code.
+
+Fixes: 958dc1d32c80 ("nvme-rdma: add clean action for failed reconnection")
+Reported-by: Yingfu.zhou <yingfu.zhou@shopee.com>
+Signed-off-by: Chunguang.xu <chunguang.xu@shopee.com>
+Signed-off-by: Yue.zhao <yue.zhao@shopee.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+[Minor context change fixed]
+Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_dfs_ref.c |   34 ++++++++++++++++++++++++++++++++--
- fs/smb/client/cifsproto.h    |   21 +++++++++++++++++++++
- fs/smb/client/dir.c          |   21 +++++++++++++++------
- 3 files changed, 68 insertions(+), 8 deletions(-)
+ drivers/nvme/host/rdma.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/fs/smb/client/cifs_dfs_ref.c
-+++ b/fs/smb/client/cifs_dfs_ref.c
-@@ -258,6 +258,31 @@ compose_mount_options_err:
- 	goto compose_mount_options_out;
- }
- 
-+static int set_dest_addr(struct smb3_fs_context *ctx, const char *full_path)
-+{
-+	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
-+	char *str_addr = NULL;
-+	int rc;
-+
-+	rc = dns_resolve_server_name_to_ip(full_path, &str_addr, NULL);
-+	if (rc < 0)
-+		goto out;
-+
-+	rc = cifs_convert_address(addr, str_addr, strlen(str_addr));
-+	if (!rc) {
-+		cifs_dbg(FYI, "%s: failed to convert ip address\n", __func__);
-+		rc = -EINVAL;
-+		goto out;
-+	}
-+
-+	cifs_set_port(addr, ctx->port);
-+	rc = 0;
-+
-+out:
-+	kfree(str_addr);
-+	return rc;
-+}
-+
- /*
-  * Create a vfsmount that we can automount
-  */
-@@ -295,8 +320,7 @@ static struct vfsmount *cifs_dfs_do_auto
- 	ctx = smb3_fc2context(fc);
- 
- 	page = alloc_dentry_path();
--	/* always use tree name prefix */
--	full_path = build_path_from_dentry_optional_prefix(mntpt, page, true);
-+	full_path = dfs_get_automount_devname(mntpt, page);
- 	if (IS_ERR(full_path)) {
- 		mnt = ERR_CAST(full_path);
- 		goto out;
-@@ -313,6 +337,12 @@ static struct vfsmount *cifs_dfs_do_auto
- 	if (rc) {
- 		mnt = ERR_PTR(rc);
- 		goto out;
-+	}
-+
-+	rc = set_dest_addr(ctx, full_path);
-+	if (rc) {
-+		mnt = ERR_PTR(rc);
-+		goto out;
+--- a/drivers/nvme/host/rdma.c
++++ b/drivers/nvme/host/rdma.c
+@@ -1083,13 +1083,7 @@ destroy_io:
+ 		nvme_rdma_free_io_queues(ctrl);
  	}
- 
- 	rc = smb3_parse_devname(full_path, ctx);
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -57,8 +57,29 @@ extern void exit_cifs_idmap(void);
- extern int init_cifs_spnego(void);
- extern void exit_cifs_spnego(void);
- extern const char *build_path_from_dentry(struct dentry *, void *);
-+char *__build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
-+					       const char *tree, int tree_len,
-+					       bool prefix);
- extern char *build_path_from_dentry_optional_prefix(struct dentry *direntry,
- 						    void *page, bool prefix);
-+
-+#ifdef CONFIG_CIFS_DFS_UPCALL
-+static inline char *dfs_get_automount_devname(struct dentry *dentry, void *page)
-+{
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(dentry->d_sb);
-+	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
-+	struct TCP_Server_Info *server = tcon->ses->server;
-+
-+	if (unlikely(!server->origin_fullpath))
-+		return ERR_PTR(-EREMOTE);
-+
-+	return __build_path_from_dentry_optional_prefix(dentry, page,
-+							server->origin_fullpath,
-+							strlen(server->origin_fullpath),
-+							true);
-+}
-+#endif
-+
- static inline void *alloc_dentry_path(void)
- {
- 	return __getname();
---- a/fs/smb/client/dir.c
-+++ b/fs/smb/client/dir.c
-@@ -78,14 +78,13 @@ build_path_from_dentry(struct dentry *di
- 						      prefix);
+ destroy_admin:
+-	nvme_quiesce_admin_queue(&ctrl->ctrl);
+-	blk_sync_queue(ctrl->ctrl.admin_q);
+-	nvme_rdma_stop_queue(&ctrl->queues[0]);
+-	nvme_cancel_admin_tagset(&ctrl->ctrl);
+-	if (new)
+-		nvme_remove_admin_tag_set(&ctrl->ctrl);
+-	nvme_rdma_destroy_admin_queue(ctrl);
++	nvme_rdma_teardown_admin_queue(ctrl, new);
+ 	return ret;
  }
  
--char *
--build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
--				       bool prefix)
-+char *__build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
-+					       const char *tree, int tree_len,
-+					       bool prefix)
- {
- 	int dfsplen;
- 	int pplen = 0;
- 	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
--	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
- 	char dirsep = CIFS_DIR_SEP(cifs_sb);
- 	char *s;
- 
-@@ -93,7 +92,7 @@ build_path_from_dentry_optional_prefix(s
- 		return ERR_PTR(-ENOMEM);
- 
- 	if (prefix)
--		dfsplen = strnlen(tcon->tree_name, MAX_TREE_SIZE + 1);
-+		dfsplen = strnlen(tree, tree_len + 1);
- 	else
- 		dfsplen = 0;
- 
-@@ -123,7 +122,7 @@ build_path_from_dentry_optional_prefix(s
- 	}
- 	if (dfsplen) {
- 		s -= dfsplen;
--		memcpy(s, tcon->tree_name, dfsplen);
-+		memcpy(s, tree, dfsplen);
- 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_POSIX_PATHS) {
- 			int i;
- 			for (i = 0; i < dfsplen; i++) {
-@@ -135,6 +134,16 @@ build_path_from_dentry_optional_prefix(s
- 	return s;
- }
- 
-+char *build_path_from_dentry_optional_prefix(struct dentry *direntry, void *page,
-+					     bool prefix)
-+{
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(direntry->d_sb);
-+	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
-+
-+	return __build_path_from_dentry_optional_prefix(direntry, page, tcon->tree_name,
-+							MAX_TREE_SIZE, prefix);
-+}
-+
- /*
-  * Don't allow path components longer than the server max.
-  * Don't allow the separator character in a path component.
 
 
 
