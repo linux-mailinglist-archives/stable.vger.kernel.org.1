@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F24DA99174
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DACCDA99236
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF54920166
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC055923655
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7712D288CAB;
-	Wed, 23 Apr 2025 15:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAFC2BEC26;
+	Wed, 23 Apr 2025 15:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fcdy3kke"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+j88Te4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338D33A1B6;
-	Wed, 23 Apr 2025 15:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71AA0294A11;
+	Wed, 23 Apr 2025 15:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421304; cv=none; b=RmbvQfrKekJ9Grzq0OvkoerA81mn1Cfn5b8Y2KtXsc5Muk0AR69VBy3Qyf+ZNSD7mZvBHTE6Vclq8rUaPHZWSuqBtMMYrY1XfovXc0Exq+BKrodOkuU44jjLVDG+IvO1ExM01S8qgpaSlU/eJneRmhTn0e7f/GGczaIYuTI7fqA=
+	t=1745421747; cv=none; b=E5rQFHeaMOEkPJIH6tgMcujjdEYABWA8TcX6neZ5CwUcO8Vc4FasTfi9PZr1hwhNCBC6LoJWqI+Fh+SDI+M040UXP6FgjoYX1Rn18MeaTWQOeHSYltTwfB+5dVKdTq63zfCt8hRcTz50iHZsQ0YTbhve9CSD12MILT+KG1oBNf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421304; c=relaxed/simple;
-	bh=F6tfxhEiBC7R8h5doMYo7Z3UQ+/QE2ZJra1ojHZwwa0=;
+	s=arc-20240116; t=1745421747; c=relaxed/simple;
+	bh=ijrtdpBNXAu+P5WQ0j8VVLlK7f/r8hFLJSf3GBLWuDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORIvhRm7G6habayjrA9UcMRHr38bOrte6YKy0kI2cxub7m7EPsXiC+jS/BICl1hCJ/rqoUJ5RUrCKjLuCmh2nRG7H1Erqjd0zItiIuFQYm/UFeFaz31UZvsqolhyUcWosEyOP2RUJ94oiTMhpA1FaSBoBEq1NCgdveW6Xkpamak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fcdy3kke; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B934FC4CEE2;
-	Wed, 23 Apr 2025 15:15:03 +0000 (UTC)
+	 MIME-Version; b=fctg/z//gwUhzaiNB8bb5tMWkqq2ac2SrxEj65VORFucrO+llEGHyUCoGSGKk7xytnIDsjn5w/JcBZHAQQHMDE6trTa6ApuHmH94WjyFBYqSD6wgj9ZEVWavxFt+zCsLQtyfwUc1qzqzn1nDnvwXRju9d9wZcs/xGvywwCLusB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+j88Te4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0563FC4CEE2;
+	Wed, 23 Apr 2025 15:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421304;
-	bh=F6tfxhEiBC7R8h5doMYo7Z3UQ+/QE2ZJra1ojHZwwa0=;
+	s=korg; t=1745421747;
+	bh=ijrtdpBNXAu+P5WQ0j8VVLlK7f/r8hFLJSf3GBLWuDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fcdy3kkez0UYWyGhl5XY58Q3jNqsT5KZiO72PXBW4oe2d/QUYRUgCkCLiG/d+bEf4
-	 MzT3SrOD4Pyhyr0l4LUkx8NmcjNB3wv+jNzMh5NHgZqVlTojQdQ09+dsJJGr2YjIt8
-	 w1inwwZbnUvlnMwU/ba4zVZHppfcF4bJ9Eu9riXc=
+	b=e+j88Te4/dUNx1S3N7mEurx1R7wIIVngUSKjeA/CxAp3eYKpvYJz8Pvm2DsXjZsIV
+	 KuSo1Mgk2dOYDoFMdN/MEKwLZBf8waPH+bk/GrRjThXfDgSKCzlUID6WgAh+VyErAe
+	 tkH4VuFDyAlhqGKKX7+2w9F5wzJqiSyDmGxCIH50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 125/291] mtd: inftlcore: Add error check for inftl_read_oob()
-Date: Wed, 23 Apr 2025 16:41:54 +0200
-Message-ID: <20250423142629.509230094@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.6 219/393] KVM: x86: Acquire SRCU in KVM_GET_MP_STATE to protect guest memory accesses
+Date: Wed, 23 Apr 2025 16:41:55 +0200
+Message-ID: <20250423142652.430176510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
+commit ef01cac401f18647d62720cf773d7bb0541827da upstream.
 
-In INFTL_findwriteunit(), the return value of inftl_read_oob()
-need to be checked. A proper implementation can be
-found in INFTL_deleteblock(). The status will be set as
-SECTOR_IGNORE to break from the while-loop correctly
-if the inftl_read_oob() fails.
+Acquire a lock on kvm->srcu when userspace is getting MP state to handle a
+rather extreme edge case where "accepting" APIC events, i.e. processing
+pending INIT or SIPI, can trigger accesses to guest memory.  If the vCPU
+is in L2 with INIT *and* a TRIPLE_FAULT request pending, then getting MP
+state will trigger a nested VM-Exit by way of ->check_nested_events(), and
+emuating the nested VM-Exit can access guest memory.
 
-Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+The splat was originally hit by syzkaller on a Google-internal kernel, and
+reproduced on an upstream kernel by hacking the triple_fault_event_test
+selftest to stuff a pending INIT, store an MSR on VM-Exit (to generate a
+memory access on VMX), and do vcpu_mp_state_get() to trigger the scenario.
+
+  =============================
+  WARNING: suspicious RCU usage
+  6.14.0-rc3-b112d356288b-vmx/pi_lockdep_false_pos-lock #3 Not tainted
+  -----------------------------
+  include/linux/kvm_host.h:1058 suspicious rcu_dereference_check() usage!
+
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  1 lock held by triple_fault_ev/1256:
+   #0: ffff88810df5a330 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0x8b/0x9a0 [kvm]
+
+  stack backtrace:
+  CPU: 11 UID: 1000 PID: 1256 Comm: triple_fault_ev Not tainted 6.14.0-rc3-b112d356288b-vmx #3
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x7f/0x90
+   lockdep_rcu_suspicious+0x144/0x190
+   kvm_vcpu_gfn_to_memslot+0x156/0x180 [kvm]
+   kvm_vcpu_read_guest+0x3e/0x90 [kvm]
+   read_and_check_msr_entry+0x2e/0x180 [kvm_intel]
+   __nested_vmx_vmexit+0x550/0xde0 [kvm_intel]
+   kvm_check_nested_events+0x1b/0x30 [kvm]
+   kvm_apic_accept_events+0x33/0x100 [kvm]
+   kvm_arch_vcpu_ioctl_get_mpstate+0x30/0x1d0 [kvm]
+   kvm_vcpu_ioctl+0x33e/0x9a0 [kvm]
+   __x64_sys_ioctl+0x8b/0xb0
+   do_syscall_64+0x6c/0x170
+   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+   </TASK>
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250401150504.829812-1-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/inftlcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mtd/inftlcore.c
-+++ b/drivers/mtd/inftlcore.c
-@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
- 		silly = MAX_LOOPS;
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11396,6 +11396,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
+ 	if (kvm_mpx_supported())
+ 		kvm_load_guest_fpu(vcpu);
  
- 		while (thisEUN <= inftl->lastEUN) {
--			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
--				       blockofs, 8, &retlen, (char *)&bci);
--
--			status = bci.Status | bci.Status1;
-+			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
-+				       blockofs, 8, &retlen, (char *)&bci) < 0)
-+				status = SECTOR_IGNORE;
-+			else
-+				status = bci.Status | bci.Status1;
- 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
- 					block , writeEUN, status);
++	kvm_vcpu_srcu_read_lock(vcpu);
++
+ 	r = kvm_apic_accept_events(vcpu);
+ 	if (r < 0)
+ 		goto out;
+@@ -11409,6 +11411,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
+ 		mp_state->mp_state = vcpu->arch.mp_state;
  
+ out:
++	kvm_vcpu_srcu_read_unlock(vcpu);
++
+ 	if (kvm_mpx_supported())
+ 		kvm_put_guest_fpu(vcpu);
+ 	vcpu_put(vcpu);
 
 
 
