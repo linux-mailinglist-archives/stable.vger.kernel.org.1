@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-136133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9948A992E8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4224AA991A3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2CC1B870CB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EDEE7A59A5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2408294A14;
-	Wed, 23 Apr 2025 15:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098CE29899A;
+	Wed, 23 Apr 2025 15:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zz/Nfrj2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6wrtyU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE5428F53B;
-	Wed, 23 Apr 2025 15:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C77298985;
+	Wed, 23 Apr 2025 15:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421743; cv=none; b=ITj2ec9IgTMAda/Gzbr3s5izX0VhIttit6pZgvljWvMZlf/Pj/Vq5yrLHk9nrOOMbuUghXSg/C5WwSJn4bKYmHuNf90XQmh5IVK23KxTw1xbAfTPMO6iPyxPgfUCZBGw2nd6HavF/pBNZH3ljkDR+7OZFjVdNXmLsEgjXKWonLU=
+	t=1745421752; cv=none; b=fy8MRq64nYv7lYWJ8eprM4z65t05sliB2mOxz2iMHZTOp/h4ycJSjRYmNabG5DowzG6HPLM2IcqkM4AzC0i5vmROOWP/x7sJrv9MNrvUjGnwz8BMtIQtORAccw5Azuhqb1D1jKIHvKQ6CUoy5B7bXmK8PeV90Hg5IHYkNqJnJ9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421743; c=relaxed/simple;
-	bh=vRQgy5D0utS/J3yGs+YfyOOKVeKVgj8A/qpgDxqCMpE=;
+	s=arc-20240116; t=1745421752; c=relaxed/simple;
+	bh=SY0SOMH4x3xEXcIVNVFqD5+s54F9EmFql6qhyt3gtik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hI2O48wkwNMP2VyNNPnIMEcTvh+Gz11nQ3Zn0NbMLSiEl+9MyjOBPsZm7nBls+tdKeLCWDKa9sADUQF/hCCeKQwRdd7tOx4n8Xomrwe9cf4HDAO6OGcENKYM5gA46OryKOhRE7DY/zLinss86y7Fq4CJVtJDMqfr/Gjh8mCJU4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zz/Nfrj2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2520C4CEE2;
-	Wed, 23 Apr 2025 15:22:21 +0000 (UTC)
+	 MIME-Version; b=jhYptYP/2TuiEcz/aVpG0eWGvOxA1RR/LUrk+50zNwL8mY7tvOortmH2mU3za8Y5Tp0ohjEZhoEuKbK6CCAvz9bmcBurcQBUHoDnXLfIo1vzdiF7Kp+5h3bQm7zZnzEWPFWAen/ICsL0gQtXMCGkIQU8lkSg02dHy7xYdyWl2lI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6wrtyU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40511C4CEE2;
+	Wed, 23 Apr 2025 15:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421742;
-	bh=vRQgy5D0utS/J3yGs+YfyOOKVeKVgj8A/qpgDxqCMpE=;
+	s=korg; t=1745421752;
+	bh=SY0SOMH4x3xEXcIVNVFqD5+s54F9EmFql6qhyt3gtik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zz/Nfrj251WpCefPROs+ETyQS0KW+a7HD1sfiZroSlw0bN5BFIN/VSup/ACOKVFL2
-	 BpJ4fEuwGfI6pK007saDVz/fFFQQAnC7WP9PGOXJIMpr28xZh9/FXSJYw9UdSsgZsS
-	 hN8+1hYu4lBO5vYcnszNcafX6vkPK7ZkyGLhvRXM=
+	b=C6wrtyU+wTVy42DZG2Mruw4i3dSeheyLTGKRk2bgTkfsarAnjH+2ZmCzRdgiVxGhm
+	 stTZG+b+DJ+pnJCQc9oIHZ0bf+ZoQff83q31eZqoSLtBj6VX3ooQ09pMO97qFYFuYz
+	 Ftb2t+YY35/n8uchOoaD3sF0KbrhjKl6ODjkq5GY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.14 228/241] cpufreq: Reference count policy in cpufreq_update_limits()
-Date: Wed, 23 Apr 2025 16:44:52 +0200
-Message-ID: <20250423142629.879566331@linuxfoundation.org>
+	Lukas Fischer <kernel@o1oo11oo.de>,
+	Tamir Duberstein <tamird@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.14 229/241] scripts: generate_rust_analyzer: Add ffi crate
+Date: Wed, 23 Apr 2025 16:44:53 +0200
+Message-ID: <20250423142629.930105185@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -60,61 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Lukas Fischer <kernel@o1oo11oo.de>
 
-commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
+commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
 
-Since acpi_processor_notify() can be called before registering a cpufreq
-driver or even in cases when a cpufreq driver is not registered at all,
-cpufreq_update_limits() needs to check if a cpufreq driver is present
-and prevent it from being unregistered.
+Commit d072acda4862 ("rust: use custom FFI integer types") did not
+update rust-analyzer to include the new crate.
 
-For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
-policy pointer for the given CPU and reference count the corresponding
-policy object, if present.
+To enable rust-analyzer support for these custom ffi types, add the
+`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
+crates, which all directly depend on it.
 
-Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
-Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
-[do not use __free(cpufreq_cpu_put) in a backport]
-Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
+Fixes: d072acda4862 ("rust: use custom FFI integer types")
+Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
+Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ scripts/generate_rust_analyzer.py |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2780,10 +2780,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
-  */
- void cpufreq_update_limits(unsigned int cpu)
- {
-+	struct cpufreq_policy *policy;
-+
-+	policy = cpufreq_cpu_get(cpu);
-+	if (!policy)
-+		return;
-+
- 	if (cpufreq_driver->update_limits)
- 		cpufreq_driver->update_limits(cpu);
- 	else
- 		cpufreq_update_policy(cpu);
-+
-+	cpufreq_cpu_put(policy);
- }
- EXPORT_SYMBOL_GPL(cpufreq_update_limits);
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -97,6 +97,12 @@ def generate_crates(srctree, objtree, sy
+         ["core", "compiler_builtins"],
+     )
  
++    append_crate(
++        "ffi",
++        srctree / "rust" / "ffi.rs",
++        ["core", "compiler_builtins"],
++    )
++
+     def append_crate_with_generated(
+         display_name,
+         deps,
+@@ -116,9 +122,9 @@ def generate_crates(srctree, objtree, sy
+             "exclude_dirs": [],
+         }
+ 
+-    append_crate_with_generated("bindings", ["core"])
+-    append_crate_with_generated("uapi", ["core"])
+-    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
++    append_crate_with_generated("bindings", ["core", "ffi"])
++    append_crate_with_generated("uapi", ["core", "ffi"])
++    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
+ 
+     def is_root_crate(build_file, target):
+         try:
 
 
 
