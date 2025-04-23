@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-135941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77828A9910F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2812AA9939D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7F35444A08
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B0F79A182A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C55284694;
-	Wed, 23 Apr 2025 15:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA54329A3DE;
+	Wed, 23 Apr 2025 15:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQxGEWaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="md3SHryQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E057C9F;
-	Wed, 23 Apr 2025 15:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76008298CB5;
+	Wed, 23 Apr 2025 15:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421241; cv=none; b=XJbKW1qjAqV6echHRi6/Eu88rc0YWl3FAjnUTpPwTgv8rVD9Ju+vej8t3q43Og19kY/IE3Z8fPPMDBXLhLEEDcrD07JS1mxfdM0tSqaoM2d9fXZ9SOT8xVzvqsHuCCyn90bpT/gGSWkwVGwcezIj/BE+V8eTAzPDWeVTrIV+eV4=
+	t=1745422459; cv=none; b=elsSLn9EYi5HeRhjMfVCOWHgI7IhVtL32Lrlj0uddvfhJs9CBJ/CTwXdcOFyH80op3aLAaHZ/y4a18igUiXpt81h4R7z48BscoqD7oxfeLZSP+4clPDWFCpZApaZN7mhqkVRCSx0HbvhB5ZE++C3bFKV+3771ytDKGM9aJWAwbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421241; c=relaxed/simple;
-	bh=YF8TeajqCQP5U28EZzKjHRvrUAm8BBGP6q3PJ/uc35Q=;
+	s=arc-20240116; t=1745422459; c=relaxed/simple;
+	bh=2mS9irV8Xwct1MpiAFwVeNAhkdmVOmtXTh3mB+eZpn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DO79YlVl2VO/b8OMQ1LK3slO4JmjGYCN3Gr/IktZo5qBnTt81HduRCmZSm/WuazlJAvxXzMQNasKD2AAxG5AWJuy7uaezQaubMu5FI0WIutXItwWuOgsGS+0q08M1N2p7Yi8uMzW2uzIRK5AlBYCdwHk2AgZ9emhAfPR8wZ3hjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQxGEWaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DBBC4CEE2;
-	Wed, 23 Apr 2025 15:14:00 +0000 (UTC)
+	 MIME-Version; b=HiFOszz3fZTc2w3x+fhSnjHbM7IEfY6/qdU+jgIUxM6NXpQ0Fqpe61HGuUzg/J+2Z6UT/D1nflPule+C2hCrD8g4Jd8adLq1wHBw8mTrb5aRsFWmnmHwZ+oAEcDFe3P9AdJZPmNe764GzhvFjMYsImdiN+5S6erZWP8CnBlIk4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=md3SHryQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0044EC4CEE2;
+	Wed, 23 Apr 2025 15:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421241;
-	bh=YF8TeajqCQP5U28EZzKjHRvrUAm8BBGP6q3PJ/uc35Q=;
+	s=korg; t=1745422459;
+	bh=2mS9irV8Xwct1MpiAFwVeNAhkdmVOmtXTh3mB+eZpn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQxGEWaPDen0JFdRyyRRV8f1kNq/lhvytkn3tCPIfqYYWlyXzZhUrSslXZ35lkIMe
-	 dMhkhCkcmLM67cgG2sTPw5k0UanZeQ1NjhTzPHieYYy+PBv+zIIX7XyjuNzfcVe9nI
-	 Yv+iYEuUNUepjtyazKSj8ftXP++Ngaqzo0zdOMok=
+	b=md3SHryQH1J4wr/yclnk8gVzlvw8bNCD5ULZS0Qq+pBJJn08RsCWzFqK31/vIZ5A6
+	 F3ZZZ71EuN2nOZcgjFOraSLmMUBEmlqWeY4io/ocJJFptq+5tc6GIQbhxksL0PnBIq
+	 q+87ZM4MDnDBUJkeAYA5eyeJnG1/JKCJgcCQt4ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 204/223] drm/amd/display: Temporarily disable hostvm on DCN31
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 287/291] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
 Date: Wed, 23 Apr 2025 16:44:36 +0200
-Message-ID: <20250423142625.477282455@linuxfoundation.org>
+Message-ID: <20250423142636.147703380@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Jan Stancek <jstancek@redhat.com>
 
-commit ba93dddfc92084a1e28ea447ec4f8315f3d8d3fd upstream.
+commit 467d60eddf55588add232feda325da7215ddaf30 upstream.
 
-With HostVM enabled, DCN31 fails to pass validation for 3x4k60. Some Linux
-userspace does not downgrade one of the monitors to 4k30, and the result
-is that the monitor does not light up. Disable it until the bandwidth
-calculation failure is resolved.
+ERR_get_error_line() is deprecated since OpenSSL 3.0.
 
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Use ERR_peek_error_line() instead, and combine display_openssl_errors()
+and drain_openssl_errors() to a single function where parameter decides
+if it should consume errors silently.
+
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ certs/extract-cert.c |    4 ++--
+ scripts/sign-file.c  |    6 +++---
+ scripts/ssl-common.h |   23 ++++++++---------------
+ 3 files changed, 13 insertions(+), 20 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-@@ -891,7 +891,7 @@ static const struct dc_debug_options deb
- 	.disable_z10 = true,
- 	.enable_legacy_fast_update = true,
- 	.enable_z9_disable_interface = true, /* Allow support for the PMFW interface for disable Z9*/
--	.dml_hostvm_override = DML_HOSTVM_NO_OVERRIDE,
-+	.dml_hostvm_override = DML_HOSTVM_OVERRIDE_FALSE,
- 	.using_dml2 = false,
- };
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -96,11 +96,11 @@ int main(int argc, char **argv)
+ 		parms.cert = NULL;
  
+ 		ENGINE_load_builtin_engines();
+-		drain_openssl_errors();
++		drain_openssl_errors(__LINE__, 1);
+ 		e = ENGINE_by_id("pkcs11");
+ 		ERR(!e, "Load PKCS#11 ENGINE");
+ 		if (ENGINE_init(e))
+-			drain_openssl_errors();
++			drain_openssl_errors(__LINE__, 1);
+ 		else
+ 			ERR(1, "ENGINE_init");
+ 		if (key_pass)
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -114,11 +114,11 @@ static EVP_PKEY *read_private_key(const
+ 		ENGINE *e;
+ 
+ 		ENGINE_load_builtin_engines();
+-		drain_openssl_errors();
++		drain_openssl_errors(__LINE__, 1);
+ 		e = ENGINE_by_id("pkcs11");
+ 		ERR(!e, "Load PKCS#11 ENGINE");
+ 		if (ENGINE_init(e))
+-			drain_openssl_errors();
++			drain_openssl_errors(__LINE__, 1);
+ 		else
+ 			ERR(1, "ENGINE_init");
+ 		if (key_pass)
+@@ -273,7 +273,7 @@ int main(int argc, char **argv)
+ 
+ 		/* Digest the module data. */
+ 		OpenSSL_add_all_digests();
+-		display_openssl_errors(__LINE__);
++		drain_openssl_errors(__LINE__, 0);
+ 		digest_algo = EVP_get_digestbyname(hash_algo);
+ 		ERR(!digest_algo, "EVP_get_digestbyname");
+ 
+--- a/scripts/ssl-common.h
++++ b/scripts/ssl-common.h
+@@ -3,7 +3,7 @@
+  * SSL helper functions shared by sign-file and extract-cert.
+  */
+ 
+-static void display_openssl_errors(int l)
++static void drain_openssl_errors(int l, int silent)
+ {
+ 	const char *file;
+ 	char buf[120];
+@@ -11,28 +11,21 @@ static void display_openssl_errors(int l
+ 
+ 	if (ERR_peek_error() == 0)
+ 		return;
+-	fprintf(stderr, "At main.c:%d:\n", l);
++	if (!silent)
++		fprintf(stderr, "At main.c:%d:\n", l);
+ 
+-	while ((e = ERR_get_error_line(&file, &line))) {
++	while ((e = ERR_peek_error_line(&file, &line))) {
+ 		ERR_error_string(e, buf);
+-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
++		if (!silent)
++			fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
++		ERR_get_error();
+ 	}
+ }
+ 
+-static void drain_openssl_errors(void)
+-{
+-	const char *file;
+-	int line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	while (ERR_get_error_line(&file, &line)) {}
+-}
+-
+ #define ERR(cond, fmt, ...)				\
+ 	do {						\
+ 		bool __cond = (cond);			\
+-		display_openssl_errors(__LINE__);	\
++		drain_openssl_errors(__LINE__, 0);	\
+ 		if (__cond) {				\
+ 			errx(1, fmt, ## __VA_ARGS__);	\
+ 		}					\
 
 
 
