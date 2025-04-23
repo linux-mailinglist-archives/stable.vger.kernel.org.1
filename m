@@ -1,78 +1,55 @@
-Return-Path: <stable+bounces-135993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C813A99147
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68671A99252
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C9E176C63
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23F6E4A23B5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0968A28C5DF;
-	Wed, 23 Apr 2025 15:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56E929AAF3;
+	Wed, 23 Apr 2025 15:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzvd3l0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1W8Q+5kS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26628A403;
-	Wed, 23 Apr 2025 15:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6327929AAF0;
+	Wed, 23 Apr 2025 15:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421378; cv=none; b=WWx9nLvT7pFm5JHm/BZbsBH2Qx2dFCFFIpj0Jx8k4ucgMex/Z6oHLGljjmtZKhUlplBoucaggKBP54Aj+UvOFLZ2mf4TldfgyNK6U7g1SrYC/2iQLszTGpeablAj/uqbriQCx7wNg6P93X4PRTqE6NQcDajNo+MCFPyMuKzSEt0=
+	t=1745421789; cv=none; b=T6UlJoGsQzbTLCR+2vGngMH7eDlk/xPiMfdejWfN4VXpLMHy7zjJrVUsmWxej6gsrOQurXMW4Qp5kBYhW7hzrsi0tTULPsvhaTPDI6nuD8Jub+ePviDtyW6kECxQxV98bFNejB/uCmhMGv9Gef7hw+KRPKnN34FeywPPVspK1Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421378; c=relaxed/simple;
-	bh=YXckWmnZtolJIBQUClRPvHLiQJI15xBZzCZpC++n+Mg=;
+	s=arc-20240116; t=1745421789; c=relaxed/simple;
+	bh=CnSJjSQYh6lN2yi/Y/JyrTSlEv2xWqJNrhLY07P8C/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lb2HauhBaiEx90VspFajO304D1keo3XloC9HGf3LbrOmNQ/wq+YC4UhwBs1r3eybXfbu3T1ZiaD03j86Kp7DvQmNWwpbS06yozYnmbdHnO0cD0BHw/I0/rQRYvTVuAI/67ruYDF8LlkevSVTc9Lsq9FfdZMcXDDmePWb15VaFCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzvd3l0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ECFC4CEE2;
-	Wed, 23 Apr 2025 15:16:15 +0000 (UTC)
+	 MIME-Version; b=SPvE/qI4rqx35YSaxwMQdc6tt3VMN1yjiyfn1rF0bJIGb6gHgQb2JfB+gk9VhpxE8eFWmJmva5cH90X9NFcL9F3SkJdjrivPmz3HghMohTclxCfHixe4WkuBgVuWK8SD35CCp3hCWIEff+IfAlIxQqUBKDzrC/q9eVsQ99kGAJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1W8Q+5kS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2DDC4CEE2;
+	Wed, 23 Apr 2025 15:23:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421376;
-	bh=YXckWmnZtolJIBQUClRPvHLiQJI15xBZzCZpC++n+Mg=;
+	s=korg; t=1745421789;
+	bh=CnSJjSQYh6lN2yi/Y/JyrTSlEv2xWqJNrhLY07P8C/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzvd3l0+6HLHhyM3M5qtJwIdRVKWidld2i+UT85n+CBm6zUse2c8N27uTY59IHnUl
-	 JQeNLfsoXNGsDRBii6Uz5ngxhKyv6z5jMuM5Fw9/fz7Wvk/zY3V5RW2VuAsOYyOcwi
-	 yx78U7n4IJHrQq29uRdx5h4ydHbiy0xahwMzAQDE=
+	b=1W8Q+5kSpnWyK9pSwKqVGkzwv6PE0WzJPvtQiVc+JymOAtLrhy3mefyk2rBREue6Z
+	 iwaC61C7U3PCLWwAObLGQ6f6N6+8HxDSl7Yclys2OssxaqhXaK0wWFmTq04uzvDCGl
+	 zFgVuFfG7RaxQw/7jQaFhMPiP2rg+ZuEAQ9jDPUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Alex Shi <alexs@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Dave Airlie <airlied@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Jerome Glisse <jglisse@redhat.com>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Karol Herbst <kherbst@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Lyude <lyude@redhat.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Peter Xu <peterx@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	SeongJae Park <sj@kernel.org>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 131/291] mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.6 224/393] of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
 Date: Wed, 23 Apr 2025 16:42:00 +0200
-Message-ID: <20250423142629.752934190@linuxfoundation.org>
+Message-ID: <20250423142652.639725557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -84,71 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit bc3fe6805cf09a25a086573a17d40e525208c5d8 upstream.
+commit 962a2805e47b933876ba0e4c488d9e89ced2dd29 upstream.
 
-Even though FOLL_SPLIT_PMD on hugetlb now always fails with -EOPNOTSUPP,
-let's add a safety net in case FOLL_SPLIT_PMD usage would ever be
-reworked.
+In irq_of_parse_and_map(), refcount of device node @oirq.np was got
+by successful of_irq_parse_one() invocation, but it does not put the
+refcount before return, so causes @oirq.np refcount leakage.
 
-In particular, before commit 9cb28da54643 ("mm/gup: handle hugetlb in the
-generic follow_page_mask code"), GUP(FOLL_SPLIT_PMD) would just have
-returned a page.  In particular, hugetlb folios that are not PMD-sized
-would never have been prone to FOLL_SPLIT_PMD.
+Fix by putting @oirq.np refcount before return.
 
-hugetlb folios can be anonymous, and page_make_device_exclusive_one() is
-not really prepared for handling them at all.  So let's spell that out.
-
-Link: https://lkml.kernel.org/r/20250210193801.781278-3-david@redhat.com
-Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Cc: Alex Shi <alexs@kernel.org>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Jerome Glisse <jglisse@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Lyude <lyude@redhat.com>
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yanteng Si <si.yanteng@linux.dev>
-Cc: Barry Song <v-songbaohua@oppo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: e3873444990d ("of/irq: Move irq_of_parse_and_map() to common code")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-6-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/rmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/irq.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2306,7 +2306,7 @@ static bool folio_make_device_exclusive(
- 	 * Restrict to anonymous folios for now to avoid potential writeback
- 	 * issues.
- 	 */
--	if (!folio_test_anon(folio))
-+	if (!folio_test_anon(folio) || folio_test_hugetlb(folio))
- 		return false;
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -39,11 +39,15 @@
+ unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
+ {
+ 	struct of_phandle_args oirq;
++	unsigned int ret;
  
- 	rmap_walk(folio, &rwc);
+ 	if (of_irq_parse_one(dev, index, &oirq))
+ 		return 0;
+ 
+-	return irq_create_of_mapping(&oirq);
++	ret = irq_create_of_mapping(&oirq);
++	of_node_put(oirq.np);
++
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(irq_of_parse_and_map);
+ 
 
 
 
