@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443DBA991DB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:36:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12A8A98E39
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE01925CF6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A35D5A5F7A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4633F28CF6B;
-	Wed, 23 Apr 2025 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A1127FD4F;
+	Wed, 23 Apr 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWUt7cKv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0SVSoPs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04270283687;
-	Wed, 23 Apr 2025 15:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7EA27F755;
+	Wed, 23 Apr 2025 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421624; cv=none; b=GvxMhjyJAIgs+HjE2UCds4Ouf/NWdD9Cz5g7GhWoVo28OP7TSaCq4v5bud69bbwlBBsZdsVzU1ci04V3SYC3BY3RI3EIVHOeBCJDR36dFzbcWy8Go90/eWD3mQuGden7tcylVGX4B09cwUA/K3aGoYy/SGNtaD6MJP51YvcT8c8=
+	t=1745419889; cv=none; b=oXpvlFdw2KFt/k4N1UbhujBDoS2AR2JFTuCSI/RBIah58aybhEwAa64ExWWlrV+JzgTcxdqlje2hP1TFH47VRL17hQbM4wUqljO1wY9yWHwnjeXrTQEbtYRZe4turC5OHRMG4fBDYeUSVcDyPdcbrKEqzwcXFZsszr0W4XgvwsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421624; c=relaxed/simple;
-	bh=Z+26j0WzcyPKEdiAYsBAMMzmij1hPWPZF98lu0Y3e2U=;
+	s=arc-20240116; t=1745419889; c=relaxed/simple;
+	bh=1dPfMqFpBXjbgqvsh3oh+v8nRefXwjriw6JNyPu91aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D8FKU96AY4ogA/rLwy6rdaE21e2XDOw6aPeHnZ0grVFlp6FevFSYWc6TIAsyRxUOz6yYqscD/SilfbWbvXKzCq61On6cYeJOf3J4Elzwg9ToE3B4Hj+qWSoM2CoY3EuEux64aOewUgivMMMo5ToOwxD+AMwXkDOsRlHMbLzJ2oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWUt7cKv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C386C4CEE2;
-	Wed, 23 Apr 2025 15:20:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DOAt+l1cA3u84ye+nbV2QE5ZVAQeqpMSpWeC86I/2l7v54mE7OQzbQUafA6fqx7s8F+E1iYzhLfr9NTy5/kakw1lWwZmrNJJr5dd0FwEfe/LF09CHoZ7XIM12jye7gim72/Zk7M7pl5WMaenFeuSh9ky518+gY4XfLna1b70PqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0SVSoPs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F912C4CEE8;
+	Wed, 23 Apr 2025 14:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421623;
-	bh=Z+26j0WzcyPKEdiAYsBAMMzmij1hPWPZF98lu0Y3e2U=;
+	s=korg; t=1745419889;
+	bh=1dPfMqFpBXjbgqvsh3oh+v8nRefXwjriw6JNyPu91aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWUt7cKvutS0oE5LZYXBICVOB9x5DLVA/IY/0dQZEdmlOn63Vik47+5JmtdQ3GlVf
-	 z1funhir5dgiK6pK5jjwjn9TZ7G2EzoUfTJS4+vn0s6t6DPuF+WDpfciK+EnAjAXRY
-	 L5cAHfg3AOzeYQ7d1T6FF+IFkb15cEWKgujQ9klM=
+	b=0SVSoPs5n5vflrX5au3Gj93Y+kgdT7PCG4kMyGnsCM1L0BkfsbsgLFEdr0QtlndMD
+	 1F+FZqAHjr12AGcH3sRGnCfIo1ze8kKnHdUdJoZVJFy6NyaYBUP00mrlk5Gd26lBxq
+	 Yx70slJDAkx7yAhKKVejIvdwQIf0QYfpx9nFd6c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Liu <liucong2@kylinos.cn>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 159/291] selftests: mptcp: close fd_in before returning in main_loop
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 076/223] riscv: Properly export reserved regions in /proc/iomem
 Date: Wed, 23 Apr 2025 16:42:28 +0200
-Message-ID: <20250423142630.888642467@linuxfoundation.org>
+Message-ID: <20250423142620.221159222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
+[ Upstream commit e94eb7ea6f206e229791761a5fdf9389f8dbd183 ]
 
-The file descriptor 'fd_in' is opened when cfg_input is configured, but
-not closed in main_loop(), this patch fixes it.
+The /proc/iomem represents the kernel's memory map. Regions marked
+with "Reserved" tells the user that the range should not be tampered
+with. Kexec-tools, when using the older kexec_load syscall relies on
+the "Reserved" regions to build the memory segments, that will be the
+target of the new kexec'd kernel.
 
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-Cc: stable@vger.kernel.org
-Co-developed-by: Cong Liu <liucong2@kylinos.cn>
-Signed-off-by: Cong Liu <liucong2@kylinos.cn>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-3-34161a482a7f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The RISC-V port tries to expose all reserved regions to userland, but
+some regions were not properly exposed: Regions that resided in both
+the "regular" and reserved memory block, e.g. the EFI Memory Map. A
+missing entry could result in reserved memory being overwritten.
+
+It turns out, that arm64, and loongarch had a similar issue a while
+back:
+
+  commit d91680e687f4 ("arm64: Fix /proc/iomem for reserved but not memory regions")
+  commit 50d7ba36b916 ("arm64: export memblock_reserve()d regions via /proc/iomem")
+
+Similar to the other ports, resolve the issue by splitting the regions
+in an arch initcall, since we need a working allocator.
+
+Fixes: ffe0e5261268 ("RISC-V: Improve init_resources()")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250409182129.634415-1-bjorn@kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/riscv/kernel/setup.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -1213,7 +1213,7 @@ again:
- 	/* close the client socket open only if we are not going to reconnect */
- 	ret = copyfd_io(fd_in, fd, 1, 0);
- 	if (ret)
--		return ret;
-+		goto out;
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index 7934613a98c88..194bda6d74ce7 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -66,6 +66,9 @@ static struct resource bss_res = { .name = "Kernel bss", };
+ static struct resource elfcorehdr_res = { .name = "ELF Core hdr", };
+ #endif
  
- 	if (cfg_truncate > 0) {
- 		shutdown(fd, SHUT_WR);
-@@ -1233,7 +1233,10 @@ again:
- 		close(fd);
++static int num_standard_resources;
++static struct resource *standard_resources;
++
+ static int __init add_resource(struct resource *parent,
+ 				struct resource *res)
+ {
+@@ -139,7 +142,7 @@ static void __init init_resources(void)
+ 	struct resource *res = NULL;
+ 	struct resource *mem_res = NULL;
+ 	size_t mem_res_sz = 0;
+-	int num_resources = 0, res_idx = 0;
++	int num_resources = 0, res_idx = 0, non_resv_res = 0;
+ 	int ret = 0;
+ 
+ 	/* + 1 as memblock_alloc() might increase memblock.reserved.cnt */
+@@ -195,6 +198,7 @@ static void __init init_resources(void)
+ 	/* Add /memory regions to the resource tree */
+ 	for_each_mem_region(region) {
+ 		res = &mem_res[res_idx--];
++		non_resv_res++;
+ 
+ 		if (unlikely(memblock_is_nomap(region))) {
+ 			res->name = "Reserved";
+@@ -212,6 +216,9 @@ static void __init init_resources(void)
+ 			goto error;
  	}
  
--	return 0;
-+out:
-+	if (cfg_input)
-+		close(fd_in);
-+	return ret;
++	num_standard_resources = non_resv_res;
++	standard_resources = &mem_res[res_idx + 1];
++
+ 	/* Clean-up any unused pre-allocated resources */
+ 	if (res_idx >= 0)
+ 		memblock_free(mem_res, (res_idx + 1) * sizeof(*mem_res));
+@@ -223,6 +230,33 @@ static void __init init_resources(void)
+ 	memblock_free(mem_res, mem_res_sz);
  }
  
- int parse_proto(const char *proto)
++static int __init reserve_memblock_reserved_regions(void)
++{
++	u64 i, j;
++
++	for (i = 0; i < num_standard_resources; i++) {
++		struct resource *mem = &standard_resources[i];
++		phys_addr_t r_start, r_end, mem_size = resource_size(mem);
++
++		if (!memblock_is_region_reserved(mem->start, mem_size))
++			continue;
++
++		for_each_reserved_mem_range(j, &r_start, &r_end) {
++			resource_size_t start, end;
++
++			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
++			end = min(PFN_PHYS(PFN_UP(r_end)) - 1, mem->end);
++
++			if (start > mem->end || end < mem->start)
++				continue;
++
++			reserve_region_with_split(mem, start, end, "Reserved");
++		}
++	}
++
++	return 0;
++}
++arch_initcall(reserve_memblock_reserved_regions);
+ 
+ static void __init parse_dtb(void)
+ {
+-- 
+2.39.5
+
 
 
 
