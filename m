@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24213A990AD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA311A98F2B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799C69221C7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9DF61B847AF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E75F27FD42;
-	Wed, 23 Apr 2025 15:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5E0281531;
+	Wed, 23 Apr 2025 14:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PERM+Re8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqETvQj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C994280CDC;
-	Wed, 23 Apr 2025 15:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BDB281524;
+	Wed, 23 Apr 2025 14:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420942; cv=none; b=U3LkdSmHKEi6bqjjUYyq7ZyiOkxVppdbpt0hCEemtEq8r0fqFYzZ+awteLxQOBEr+oH6yUB0SaKpkb1k8KNG4cw/x8/dCtBex9jUwaQqvIbQOJkV4138DdD7yGtKiHyvD66cQ11pABkKzp6OsRL6rWhD3fXexSR+nGcWnFWmjiw=
+	t=1745420326; cv=none; b=kp+lbVa7mH1idspI0sIw8m6q3Y47b1kTrDlYUyyPtWvEABdi8i1R7OMQYo04Tx+XhhH8hTZZQnF8J5k0lRCFMBv0/WivJuLwqrU1TcWrqLvwbIQwTV62AlvyqPmE/Q7018l7iDsV9Y0ZHutgzuQ/aFwZl3YKMllVvBr4+2UrtIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420942; c=relaxed/simple;
-	bh=ATeDfx/p2dRTUghLskiZPon7YXSplR3XFUo98I+ORCg=;
+	s=arc-20240116; t=1745420326; c=relaxed/simple;
+	bh=m1IcsdKbiY0Zq4nkjLU+J5YPNxgqZMkxNeFJlmy520c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NYzrHwWSd3TODlmH/3UZ488uZqbqMbM6UK70G2Ys1HFeU0qVkYAODxhV3xtghJEV5WPqMnn+ZE9BBiPwYAxmT68gs6nRZmxPluX1FT5j+OLyR/bxhtQAhNoIHUTd6KUSMJyse2JoBssXkWQbnnT8xXJoluKfPpJZt3Q4ULbk340=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PERM+Re8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D466EC4CEE3;
-	Wed, 23 Apr 2025 15:09:01 +0000 (UTC)
+	 MIME-Version; b=Slujee92iZ8xMBHBFD+AnSeS4P+GVFIxqF3ir/B4yOIX/3FVC2eLB8vPq5Tb5oa8keThBr0CQ9KiVyCWB7j94PzUSIY0xicH15btkqoo4bakob1wwzVvImzGFIPW1yws6ZRZS0Ts4e99kZwFlYw3/dqxgxgCmqdqF2NNZSRnNMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqETvQj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4606DC4CEE2;
+	Wed, 23 Apr 2025 14:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420942;
-	bh=ATeDfx/p2dRTUghLskiZPon7YXSplR3XFUo98I+ORCg=;
+	s=korg; t=1745420326;
+	bh=m1IcsdKbiY0Zq4nkjLU+J5YPNxgqZMkxNeFJlmy520c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PERM+Re80HRgN4j/qJKWors8FTt0EFKSUOkl7wlQsgvTrw/23U83Pvc+SdCLUqdoP
-	 K2bnMbkVjK4hKTYNmwwfa/tpWo58Wawr9HrIB/cnZE8dtEJAt1AWKPv1C3kGylALek
-	 56cbXWZa0sZopM7gatoFlB4hYn/omC1ijsnBTxnM=
+	b=YqETvQj67w3mnCVP1lvw28WAZKvv3AqwUDCZvBTvFVQemf+FUpyvhTyy76bf2JZvb
+	 2pibQoEkEHljLOsSAamrqb0kALPZLkY7LFKJOMbM7TvMVai1r5Qm26UqUZq89LhFy0
+	 v4031WQFZ03BgMRxlr4sbDqWbMHnk1eYSjpjFMnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Bauer <sbauer@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Trilok Soni <quic_tsoni@quicinc.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 129/393] arm64: errata: Add QCOM_KRYO_4XX_GOLD to the spectre_bhb_k24_list
-Date: Wed, 23 Apr 2025 16:40:25 +0200
-Message-ID: <20250423142648.689249355@linuxfoundation.org>
+	Zhongqiu Han <quic_zhonhan@quicinc.com>,
+	syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/291] jfs: Fix uninit-value access of imap allocated in the diMount() function
+Date: Wed, 23 Apr 2025 16:40:26 +0200
+Message-ID: <20250423142625.909635376@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Zhongqiu Han <quic_zhonhan@quicinc.com>
 
-commit ed1ce841245d8febe3badf51c57e81c3619d0a1d upstream.
+[ Upstream commit 9629d7d66c621671d9a47afe27ca9336bfc8a9ea ]
 
-Qualcomm Kryo 400-series Gold cores have a derivative of an ARM Cortex
-A76 in them. Since A76 needs Spectre mitigation via looping then the
-Kyro 400-series Gold cores also need Spectre mitigation via looping.
+syzbot reports that hex_dump_to_buffer is using uninit-value:
 
-Qualcomm has confirmed that the proper "k" value for Kryo 400-series
-Gold cores is 24.
+=====================================================
+BUG: KMSAN: uninit-value in hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+hex_dump_to_buffer+0x888/0x1100 lib/hexdump.c:171
+print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
+diFree+0x5ba/0x4350 fs/jfs/jfs_imap.c:876
+jfs_evict_inode+0x510/0x550 fs/jfs/inode.c:156
+evict+0x723/0xd10 fs/inode.c:796
+iput_final fs/inode.c:1946 [inline]
+iput+0x97b/0xdb0 fs/inode.c:1972
+txUpdateMap+0xf3e/0x1150 fs/jfs/jfs_txnmgr.c:2367
+txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+jfs_lazycommit+0x627/0x11d0 fs/jfs/jfs_txnmgr.c:2733
+kthread+0x6b9/0xef0 kernel/kthread.c:464
+ret_from_fork+0x6d/0x90 arch/x86/kernel/process.c:148
+ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
 
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
-Cc: stable@vger.kernel.org
-Cc: Scott Bauer <sbauer@quicinc.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
-Link: https://lore.kernel.org/r/20250107120555.v4.1.Ie4ef54abe02e7eb0eee50f830575719bf23bda48@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Uninit was created at:
+slab_post_alloc_hook mm/slub.c:4121 [inline]
+slab_alloc_node mm/slub.c:4164 [inline]
+__kmalloc_cache_noprof+0x8e3/0xdf0 mm/slub.c:4320
+kmalloc_noprof include/linux/slab.h:901 [inline]
+diMount+0x61/0x7f0 fs/jfs/jfs_imap.c:105
+jfs_mount+0xa8e/0x11d0 fs/jfs/jfs_mount.c:176
+jfs_fill_super+0xa47/0x17c0 fs/jfs/super.c:523
+get_tree_bdev_flags+0x6ec/0x910 fs/super.c:1636
+get_tree_bdev+0x37/0x50 fs/super.c:1659
+jfs_get_tree+0x34/0x40 fs/jfs/super.c:635
+vfs_get_tree+0xb1/0x5a0 fs/super.c:1814
+do_new_mount+0x71f/0x15e0 fs/namespace.c:3560
+path_mount+0x742/0x1f10 fs/namespace.c:3887
+do_mount fs/namespace.c:3900 [inline]
+__do_sys_mount fs/namespace.c:4111 [inline]
+__se_sys_mount+0x71f/0x800 fs/namespace.c:4088
+__x64_sys_mount+0xe4/0x150 fs/namespace.c:4088
+x64_sys_call+0x39bf/0x3c30 arch/x86/include/generated/asm/syscalls_64.h:166
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+=====================================================
+
+The reason is that imap is not properly initialized after memory
+allocation. It will cause the snprintf() function to write uninitialized
+data into linebuf within hex_dump_to_buffer().
+
+Fix this by using kzalloc instead of kmalloc to clear its content at the
+beginning in diMount().
+
+Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
+Reported-by: syzbot+df6cdcb35904203d2b6d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/67b5d07e.050a0220.14d86d.00e6.GAE@google.com/
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/proton-pack.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_imap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -866,6 +866,7 @@ u8 spectre_bhb_loop_affected(int scope)
- 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
- 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
-+			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
- 			{},
- 		};
- 		static const struct midr_range spectre_bhb_k11_list[] = {
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index c72e97f065798..309b5f6e977d7 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -102,7 +102,7 @@ int diMount(struct inode *ipimap)
+ 	 * allocate/initialize the in-memory inode map control structure
+ 	 */
+ 	/* allocate the in-memory inode map control structure. */
+-	imap = kmalloc(sizeof(struct inomap), GFP_KERNEL);
++	imap = kzalloc(sizeof(struct inomap), GFP_KERNEL);
+ 	if (imap == NULL)
+ 		return -ENOMEM;
+ 
+-- 
+2.39.5
+
 
 
 
