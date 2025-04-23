@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-136295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5F1A99335
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16167A99055
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4004C9237C4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F74A5A0D50
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 842CA28E613;
-	Wed, 23 Apr 2025 15:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEA42820D7;
+	Wed, 23 Apr 2025 15:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLB78qdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YO1PZ8B3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4204B2820AE;
-	Wed, 23 Apr 2025 15:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC872820CC;
+	Wed, 23 Apr 2025 15:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422170; cv=none; b=aPa5ChwiPDJTUITI5Yy5Q5/v2KRih3oesUxKbkFhi4NUwgv4KPz5hocpbin3S0XhCEcj77CnkVccKjRc1ClKQMuwBlEBof9ARIcfGyLs72/EbcHQbroQsJgV94IItSKItkKspMfgyihF3CGHpabLFU8wOZWHrOw7EbB7dlyjMK4=
+	t=1745420830; cv=none; b=CHPU5u91HqMahioO8k19DmfsXqp7iZvq4XBlcN2JXhABb/74bob1t4YdRC4lq4iHCEpWHwHe5ea1LdLsGd5LhpqSHASoapCmsNbdGcKDedvrN5F1kbo/Bwv/XV51ugMguUZopor5mRB23ise9OYBi7Mf6zv6v1BU2O/CQg71b8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422170; c=relaxed/simple;
-	bh=0Ht6l0reqSPJkFds3vO4n6G+LpGDSLpso7JhBIfsO3o=;
+	s=arc-20240116; t=1745420830; c=relaxed/simple;
+	bh=zjDE5/MyZwIct41uQFDVpqJ2LOqJUUHZ9Av+ABeUR6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDMvyGIYSrFWhHodmCTV1oYE0THpsioSy67sdoPuXUnh7RfJQoA/LzWoxf+TNRhI0dRE3idjQLm24eDFnUzs5g2cxaTvONCCHEJuBsAAMQQTBO/4apxonrTBdm9ZWmU+j9IeCBvj7qvlgpcyyABEqDg2jMYLmAvS8CssUCGzVJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLB78qdl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A318AC4CEE2;
-	Wed, 23 Apr 2025 15:29:29 +0000 (UTC)
+	 MIME-Version; b=nXoHLP7OREAMB1EhvoxnwBVlx29tmS12zpHZ5Z6xNUhVfFR/jhj3xLzbjQJaCl9LjAdt6kdpyCzYk7aWlH63M3djRyPlFhlQd/0zxqfDVXb53Zh2br2pGypJ+Os2SYN2spBpY8aPEAKjSP1KJx/pNWIoF1Bhk6RIqXA4/BbuR2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YO1PZ8B3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB4BC4CEE2;
+	Wed, 23 Apr 2025 15:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422170;
-	bh=0Ht6l0reqSPJkFds3vO4n6G+LpGDSLpso7JhBIfsO3o=;
+	s=korg; t=1745420829;
+	bh=zjDE5/MyZwIct41uQFDVpqJ2LOqJUUHZ9Av+ABeUR6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLB78qdl8zKCVHK6eLUReY0BZutKY48A2XXpNzA4t/ikpedMdUpVLSqyCwq5MxRPf
-	 OmWQfqOjVcHDW0sf3lWaYhBMjXTQPI8EvjNlt2oKjfPZ29VTSnaueu/HXhaXYL9I34
-	 yDjTGyxnBFI+Dv5g2X0soK4AVqRkLYdarzo/z3ic=
+	b=YO1PZ8B3MeoJthjenVkrP56n51XaoVg7UYe72e4GGRcAq38iGrHWrdOYpTp/cs9iY
+	 vHeogL2A9OlpEDoUf36WwA4koiEZt9fZpmKrzZMHl0TAurTmRr9GjxTCsloONjiESX
+	 kuUbPKnx3g6GfzmpRUatefT2WndqExv7QRusyTfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Auger <eauger@redhat.com>,
-	Wilco Dijkstra <wilco.dijkstra@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Eric Auger <eric.auger@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Florian Weimer <fweimer@redhat.com>,
-	Fuad Tabba <tabba@google.com>,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.1 249/291] KVM: arm64: Unconditionally save+flush host FPSIMD/SVE/SME state
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 166/223] drm/amd/display: Add HP Elitebook 645 to the quirk list for eDP on DP1
 Date: Wed, 23 Apr 2025 16:43:58 +0200
-Message-ID: <20250423142634.594890586@linuxfoundation.org>
+Message-ID: <20250423142623.930586886@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,146 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit fbc7e61195e23f744814e78524b73b59faa54ab4 ]
+commit 1c5fdef30ed120613e769a3bd2a144cfd4c688d6 upstream.
 
-There are several problems with the way hyp code lazily saves the host's
-FPSIMD/SVE state, including:
+[Why]
+HP Elitebook 645 has DP0 and DP1 swapped.
 
-* Host SVE being discarded unexpectedly due to inconsistent
-  configuration of TIF_SVE and CPACR_ELx.ZEN. This has been seen to
-  result in QEMU crashes where SVE is used by memmove(), as reported by
-  Eric Auger:
+[How]
+Add HP Elitebook 645 to DP0/DP1 swap quirk list.
 
-  https://issues.redhat.com/browse/RHEL-68997
-
-* Host SVE state is discarded *after* modification by ptrace, which was an
-  unintentional ptrace ABI change introduced with lazy discarding of SVE state.
-
-* The host FPMR value can be discarded when running a non-protected VM,
-  where FPMR support is not exposed to a VM, and that VM uses
-  FPSIMD/SVE. In these cases the hyp code does not save the host's FPMR
-  before unbinding the host's FPSIMD/SVE/SME state, leaving a stale
-  value in memory.
-
-Avoid these by eagerly saving and "flushing" the host's FPSIMD/SVE/SME
-state when loading a vCPU such that KVM does not need to save any of the
-host's FPSIMD/SVE/SME state. For clarity, fpsimd_kvm_prepare() is
-removed and the necessary call to fpsimd_save_and_flush_cpu_state() is
-placed in kvm_arch_vcpu_load_fp(). As 'fpsimd_state' and 'fpmr_ptr'
-should not be used, they are set to NULL; all uses of these will be
-removed in subsequent patches.
-
-Historical problems go back at least as far as v5.17, e.g. erroneous
-assumptions about TIF_SVE being clear in commit:
-
-  8383741ab2e773a9 ("KVM: arm64: Get rid of host SVE tracking/saving")
-
-... and so this eager save+flush probably needs to be backported to ALL
-stable trees.
-
-Fixes: 93ae6b01bafee8fa ("KVM: arm64: Discard any SVE state when entering KVM guests")
-Fixes: 8c845e2731041f0f ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
-Fixes: ef3be86021c3bdf3 ("KVM: arm64: Add save/restore support for FPMR")
-Reported-by: Eric Auger <eauger@redhat.com>
-Reported-by: Wilco Dijkstra <wilco.dijkstra@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Tested-by: Eric Auger <eric.auger@redhat.com>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Florian Weimer <fweimer@redhat.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Jeremy Linton <jeremy.linton@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-2-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-[ Mark: Handle vcpu/host flag conflict, remove host_data_ptr() ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3701
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |   25 -------------------------
- arch/arm64/kvm/fpsimd.c    |   18 ++++++++++--------
- 2 files changed, 10 insertions(+), 33 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1672,31 +1672,6 @@ void fpsimd_signal_preserve_current_stat
- }
- 
- /*
-- * Called by KVM when entering the guest.
-- */
--void fpsimd_kvm_prepare(void)
--{
--	if (!system_supports_sve())
--		return;
--
--	/*
--	 * KVM does not save host SVE state since we can only enter
--	 * the guest from a syscall so the ABI means that only the
--	 * non-saved SVE state needs to be saved.  If we have left
--	 * SVE enabled for performance reasons then update the task
--	 * state to be FPSIMD only.
--	 */
--	get_cpu_fpsimd_context();
--
--	if (test_and_clear_thread_flag(TIF_SVE)) {
--		sve_to_fpsimd(current);
--		current->thread.fp_type = FP_STATE_FPSIMD;
--	}
--
--	put_cpu_fpsimd_context();
--}
--
--/*
-  * Associate current's FPSIMD context with this cpu
-  * The caller must have ownership of the cpu FPSIMD context before calling
-  * this function.
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -79,9 +79,16 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
- 	if (!system_supports_fpsimd())
- 		return;
- 
--	fpsimd_kvm_prepare();
--
--	vcpu->arch.fp_state = FP_STATE_HOST_OWNED;
-+	/*
-+	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
-+	 * that the host kernel is responsible for restoring this state upon
-+	 * return to userspace, and the hyp code doesn't need to save anything.
-+	 *
-+	 * When the host may use SME, fpsimd_save_and_flush_cpu_state() ensures
-+	 * that PSTATE.{SM,ZA} == {0,0}.
-+	 */
-+	fpsimd_save_and_flush_cpu_state();
-+	vcpu->arch.fp_state = FP_STATE_FREE;
- 
- 	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
- 	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
-@@ -100,11 +107,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
- 		vcpu_clear_flag(vcpu, HOST_SME_ENABLED);
- 		if (read_sysreg(cpacr_el1) & CPACR_EL1_SMEN_EL0EN)
- 			vcpu_set_flag(vcpu, HOST_SME_ENABLED);
--
--		if (read_sysreg_s(SYS_SVCR) & (SVCR_SM_MASK | SVCR_ZA_MASK)) {
--			vcpu->arch.fp_state = FP_STATE_FREE;
--			fpsimd_save_and_flush_cpu_state();
--		}
- 	}
- }
- 
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1694,6 +1694,13 @@ static const struct dmi_system_id dmi_qu
+ 		.callback = edp0_on_dp1_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 645 14 inch G11 Notebook PC"),
++		},
++	},
++	{
++		.callback = edp0_on_dp1_callback,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
+ 		},
+ 	},
 
 
 
