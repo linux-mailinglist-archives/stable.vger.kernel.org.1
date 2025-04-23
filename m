@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FBBA98DD9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AA2A98EA5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E16616D97C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478C21B67CE2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD882820C8;
-	Wed, 23 Apr 2025 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAFD27F4D1;
+	Wed, 23 Apr 2025 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olk1saQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6L4kUhE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD3C2820B4;
-	Wed, 23 Apr 2025 14:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7818A143736;
+	Wed, 23 Apr 2025 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419728; cv=none; b=EDu5Rv37Q9nWSaWHQybYmZwDV5LR2jQwlcD0PWW0/x2gx68KpNgxQDAnCZ1Etv57x860sJ+l1Q2pJBnw9w5lQ3FTLXP6CzxwjfEo7hgEFEc3YIBB//jgcJ54gk/JWXd6R5U52NyKSgtM9WSdX0vKsdBdBXYpn2lLWm/QvdQO5M8=
+	t=1745420097; cv=none; b=ZWfweRNUNlwDlKhrHn7xItSVD3aNrUUgsgBZ0CvkfWeDG/z9i3bbPk2f9GiZUn+MLdx7rUOIkQGj2YcPufLs0RpZV/G4wYS9aCEN/+XBlSHX7FyeDy+Z3ngRIxpPESbg5MY5GThBaWABzHc0pJCZPDriyDlrLImxS30wCd8Jz1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419728; c=relaxed/simple;
-	bh=F1BuUm+W59FuG010QQpKVt0+t4AG8t+Z4uF7mApuMQs=;
+	s=arc-20240116; t=1745420097; c=relaxed/simple;
+	bh=U0gXrbJPDB+zwu8UioTJxG6jvZLctjJMJILmNJ29ynQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQGJbCYyPaM2f2PEHYZYXBpl/tQOxc2enIiTZDGmaUFRT/awFJcbnDxN8FWW27lSM08wRXHnRrwbkWlkAUgmIkJN6/bF6bWsNLd1jZiP4SzvrLAtFqANjs5C+VQY6kue2qDA61DWMofxGicm4WL88nVCTDxIV6oPjA8/IA7AX2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olk1saQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81E6C4CEE2;
-	Wed, 23 Apr 2025 14:48:45 +0000 (UTC)
+	 MIME-Version; b=jPQfQb8pgufQgbEZp6uH4wwzNNvSytGreGFpTdZpz20fYhx9GXAFk3l8ULUqg8zD53ObEioV9SRhkoTECLhc8NvSyP99liCqn0glvOpcwRXLbHYTURCjblZspxG7UZAzMMediWxoswrnseyQjwhXqHFmczFRxI/KC79AbRmIWfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6L4kUhE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCE6C4CEE3;
+	Wed, 23 Apr 2025 14:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419726;
-	bh=F1BuUm+W59FuG010QQpKVt0+t4AG8t+Z4uF7mApuMQs=;
+	s=korg; t=1745420097;
+	bh=U0gXrbJPDB+zwu8UioTJxG6jvZLctjJMJILmNJ29ynQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olk1saQ5B8mHyGmlDGjqwAtqsH/jY9VlpDydM7pDiWYLk09i2L7jzKeKzsIJ9ewfF
-	 JllrkNYUiDwd0XlXT9uX291kQ3HOAhDD93UHeBuTQXiZeBvn4Nd/NGcJ/Z6pse81KO
-	 7efnMrEx257DRfyTQho9rKZK+t87WuUmZOFI8+0Y=
+	b=f6L4kUhEgO8WKEYVRxEpmhbkmRjhpUhmh7rpA4T5KdceQ+sdfYSLTQAz9F8VJtqas
+	 6JATrwCrsEzF/zgoInI/zw6pVuOrVyVRJYAZ3E7xQgQTMJc12gnXpuRM5cUZY2UzLl
+	 lGdomgQ7Wfjtrb7hOlMdXOuiJNHYG/RG8Sp+7T8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yunlong Xing <yunlong.xing@unisoc.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/223] eth: bnxt: fix missing ring index trim on error path
+Subject: [PATCH 6.14 059/241] loop: aio inherit the ioprio of original request
 Date: Wed, 23 Apr 2025 16:42:03 +0200
-Message-ID: <20250423142619.212984078@linuxfoundation.org>
+Message-ID: <20250423142623.017042589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Yunlong Xing <yunlong.xing@unisoc.com>
 
-[ Upstream commit 12f2d033fae957d84c2c0ce604d2a077e61fa2c0 ]
+[ Upstream commit 1fdb8188c3d505452b40cdb365b1bb32be533a8e ]
 
-Commit under Fixes converted tx_prod to be free running but missed
-masking it on the Tx error path. This crashes on error conditions,
-for example when DMA mapping fails.
+Set cmd->iocb.ki_ioprio to the ioprio of loop device's request.
+The purpose is to inherit the original request ioprio in the aio
+flow.
 
-Fixes: 6d1add95536b ("bnxt_en: Modify TX ring indexing logic.")
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250414143210.458625-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yunlong Xing <yunlong.xing@unisoc.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250414030159.501180-1-yunlong.xing@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: f2fed441c69b ("loop: stop using vfs_iter_{read,write} for buffered I/O")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/loop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index e7580df13229a..016dcfec8d496 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -758,7 +758,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	dev_kfree_skb_any(skb);
- tx_kick_pending:
- 	if (BNXT_TX_PTP_IS_SET(lflags)) {
--		txr->tx_buf_ring[txr->tx_prod].is_ts_pkt = 0;
-+		txr->tx_buf_ring[RING_TX(bp, txr->tx_prod)].is_ts_pkt = 0;
- 		atomic64_inc(&bp->ptp_cfg->stats.ts_err);
- 		if (!(bp->fw_cap & BNXT_FW_CAP_TX_TS_CMP))
- 			/* set SKB to err so PTP worker will clean up */
-@@ -766,7 +766,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
- 	if (txr->kick_pending)
- 		bnxt_txr_db_kick(bp, txr, txr->tx_prod);
--	txr->tx_buf_ring[txr->tx_prod].skb = NULL;
-+	txr->tx_buf_ring[RING_TX(bp, txr->tx_prod)].skb = NULL;
- 	dev_core_stats_tx_dropped_inc(dev);
- 	return NETDEV_TX_OK;
- }
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index c05fe27a96b64..1a4dbd4116069 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -471,7 +471,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
+ 	cmd->iocb.ki_filp = file;
+ 	cmd->iocb.ki_complete = lo_rw_aio_complete;
+ 	cmd->iocb.ki_flags = IOCB_DIRECT;
+-	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
++	cmd->iocb.ki_ioprio = req_get_ioprio(rq);
+ 
+ 	if (rw == ITER_SOURCE)
+ 		ret = file->f_op->write_iter(&cmd->iocb, &iter);
 -- 
 2.39.5
 
