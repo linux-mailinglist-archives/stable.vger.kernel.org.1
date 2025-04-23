@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-135315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 771C7A98D93
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBB9A98DD3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E16D445824
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CA343B8130
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D099227F4F3;
-	Wed, 23 Apr 2025 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74FC2820AB;
+	Wed, 23 Apr 2025 14:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWh/XO/J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Be+gymBD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D38EC8EB;
-	Wed, 23 Apr 2025 14:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7399F269826;
+	Wed, 23 Apr 2025 14:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419599; cv=none; b=klNRPks09FBBNA630+nDyqdECCQsU/zz9LtiTO5TCpgmZyuiHBM/OupIIqSfgNP3v8C8TgAPC16SKNKOJAkvoUC7pO/cqJ+b2Uj//i9g2TwaLUzFSzI2VtkZCwXZ86tLBspCbN/gqxJ32A+1hnXgc7CIk6/MpbMxSOXwhCml1Nw=
+	t=1745419718; cv=none; b=DXTqyN4Gja0jo1GtRgEhLS7ZnNGgHUzTQKnG4ItYn+Iu2yHT3C4y4Nqo4YQ4WUoy3ok2nfrJX3aAvCT1fErZTYKv547TQ7fi7fik6yBpgHKibXQWzoAMP4l9PmQxusJyF7flTcDCFHGxkzeioWPslwMhPnvu/KuHINuMFd+ktbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419599; c=relaxed/simple;
-	bh=2heZO1M83XAwHDe+P8Rjf958t2yCjlc2hYr6cdldgAI=;
+	s=arc-20240116; t=1745419718; c=relaxed/simple;
+	bh=WEnNbO5WFK27nfWZPcLu6JCXCwO1BfFiCC164Lyptso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P98A06d+wmMrVhPez0M9q1ZbSyhaA4ujDzhy38EaSLUKbVfXNN7bF7wLwBoRdgSJIlssc7GoAPbA/N49xgll2VD4NSK696bRBbh7rXh/TUH80AnRfJR1lMdOTfHf1dAMyEtcKxPA9CEAc0Z0TlIN3N32uWU/N0ueNQUgc7FpvN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWh/XO/J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BCAC4CEE2;
-	Wed, 23 Apr 2025 14:46:38 +0000 (UTC)
+	 MIME-Version; b=i+rJbAGnnXGL1GeYIiJ6Z+JnqI7Hgv+09X7Pvrj+lm+pF8bjRwYs7ZQNcumZjDOjYJMQPbuQVi5Fp/RHtjMVKSuMGe0ays7Gt+DaXe7nAUMpQeLPy3ZTK9zWXmtJrr2//wpz7f7z1hqGCUNCVUzVkDERwhMxGsTTd03t0UKieWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Be+gymBD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06259C4CEE2;
+	Wed, 23 Apr 2025 14:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419599;
-	bh=2heZO1M83XAwHDe+P8Rjf958t2yCjlc2hYr6cdldgAI=;
+	s=korg; t=1745419718;
+	bh=WEnNbO5WFK27nfWZPcLu6JCXCwO1BfFiCC164Lyptso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWh/XO/JPNb9xlgyTOvs8YdgGLKPaoo/EJDVFsdbzi0Y8L2oUnbUMCeMeggfRShog
-	 s8VuWUkWq/mlDyPabQNetME9DJjQiFrIx3Qgq1e0R8xkbCe0ivY1HR/cA7+O6cH3e7
-	 0QDBt0oDMzS3XN3O1PY0XeXo8durABQ1HJKaU8wo=
+	b=Be+gymBDMltT48W9TlC2iDl7FZpASiI9DGuNIOhbd0Qz+3AwvCxTwX6UQmcXyDxra
+	 zoTX/H9Gc+KNjEtNTaH7Ujlp4RIAwbPvdlEaexooiV5QOoE7RQszmlADx/A0fPVpCM
+	 mEMvIfrJ2orhGgx1itCDHfrCDnmJfv5Lf0QY2VNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Daniel Wagner <wagi@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/223] driver core: bus: add irq_get_affinity callback to bus_type
+Subject: [PATCH 6.14 015/241] RDMA/bnxt_re: Fix budget handling of notification queue
 Date: Wed, 23 Apr 2025 16:41:19 +0200
-Message-ID: <20250423142617.420331149@linuxfoundation.org>
+Message-ID: <20250423142621.141849860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit fea4952df0eeec4e1a295ebaac9f61c0065fae87 ]
+[ Upstream commit 6b395d31146a3fae775823ea8570a37b922f6685 ]
 
-Introducing a callback in struct bus_type so that a subsystem
-can hook up the getters directly. This approach avoids exposing
-random getters in any subsystems APIs.
+The cited commit in Fixes tag introduced a bug which can cause hang
+of completion queue processing because of notification queue budget
+goes to zero.
 
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Link: https://lore.kernel.org/r/20241202-refactor-blk-affinity-helpers-v6-1-27211e9c2cd5@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: a2d5a0072235 ("scsi: smartpqi: Use is_kdump_kernel() to check for kdump")
+Found while doing nfs over rdma mount and umount.
+Below message is noticed because of the existing bug.
+
+kernel: cm_destroy_id_wait_timeout: cm_id=00000000ff6c6cc6 timed out. state 11 -> 0, refcnt=1
+
+Fix to handle this issue -
+Driver will not change nq->budget upon create and destroy of cq and srq
+rdma resources.
+
+Fixes: cb97b377a135 ("RDMA/bnxt_re: Refurbish CQ to NQ hash calculation")
+Link: https://patch.msgid.link/r/20250324040935.90182-1-kalesh-anakkur.purayil@broadcom.com
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/device/bus.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
-index cdc4757217f9b..b18658bce2c38 100644
---- a/include/linux/device/bus.h
-+++ b/include/linux/device/bus.h
-@@ -48,6 +48,7 @@ struct fwnode_handle;
-  *		will never get called until they do.
-  * @remove:	Called when a device removed from this bus.
-  * @shutdown:	Called at shut-down time to quiesce the device.
-+ * @irq_get_affinity:	Get IRQ affinity mask for the device on this bus.
-  *
-  * @online:	Called to put the device back online (after offlining it).
-  * @offline:	Called to put the device offline for hot-removal. May fail.
-@@ -87,6 +88,8 @@ struct bus_type {
- 	void (*sync_state)(struct device *dev);
- 	void (*remove)(struct device *dev);
- 	void (*shutdown)(struct device *dev);
-+	const struct cpumask *(*irq_get_affinity)(struct device *dev,
-+			unsigned int irq_vec);
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 6f5db32082dd7..cb9b820c613d6 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1784,8 +1784,6 @@ int bnxt_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata)
+ 	bnxt_qplib_destroy_srq(&rdev->qplib_res, qplib_srq);
+ 	ib_umem_release(srq->umem);
+ 	atomic_dec(&rdev->stats.res.srq_count);
+-	if (nq)
+-		nq->budget--;
+ 	return 0;
+ }
  
- 	int (*online)(struct device *dev);
- 	int (*offline)(struct device *dev);
+@@ -1907,8 +1905,6 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
+ 			goto fail;
+ 		}
+ 	}
+-	if (nq)
+-		nq->budget++;
+ 	active_srqs = atomic_inc_return(&rdev->stats.res.srq_count);
+ 	if (active_srqs > rdev->stats.res.srq_watermark)
+ 		rdev->stats.res.srq_watermark = active_srqs;
+@@ -3078,7 +3074,6 @@ int bnxt_re_destroy_cq(struct ib_cq *ib_cq, struct ib_udata *udata)
+ 	ib_umem_release(cq->umem);
+ 
+ 	atomic_dec(&rdev->stats.res.cq_count);
+-	nq->budget--;
+ 	kfree(cq->cql);
+ 	return 0;
+ }
 -- 
 2.39.5
 
