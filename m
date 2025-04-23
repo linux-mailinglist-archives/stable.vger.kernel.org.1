@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5CD1A9913D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D7CA98E52
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2542E16ACA4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E8D163BD8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E24228BAB2;
-	Wed, 23 Apr 2025 15:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A5827A12D;
+	Wed, 23 Apr 2025 14:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0O7jA78J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v08kL6ak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DFA2367A0;
-	Wed, 23 Apr 2025 15:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C709627055F;
+	Wed, 23 Apr 2025 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421338; cv=none; b=McSnNEvij+ywo03LkFGsYn4O/nFjOaSAAMMsyq7wDeIIwejtMsglJ5NssPmRBRVYtK9d0tNAoUyyVcpKzSfLq2O0kW0cWpUQ8hteeL6E+JC9ZmNfuAWzV+Vd2yfQOXTGeMGzKhnwFDZNhCWJSUP9u7sTfdd+sPZ5ryXvW7kIuPc=
+	t=1745420026; cv=none; b=G2A0Mw12zFQstlm1iE0zcsM4YLdzfPktvCq9jm0IcqNC1BWAZZO+QJu/8b2xWL81Tr0o/92JKNs5XwyXe8rZez/NNtptSjZNUVmVT7NNWIPQaYiQ9HlxUeZVNmS0oWCDeDZ2mOhmrrVHLwyz7G/DcZxSLy/mFgiaPNTP7TFzDpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421338; c=relaxed/simple;
-	bh=pf0FhH6ltE9CPEMP55zCgwfGPHQ7Qgx6SqVSTt/YbCg=;
+	s=arc-20240116; t=1745420026; c=relaxed/simple;
+	bh=gwRyLtFK+Ut2AaUFQAQOJUM3nFoRJVRJ3AiZ14P/CoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rg5BcuvKg08IjRXTkdtmCSqXIzAVn7dlSVxTyEhUtJfPR1J9k61Xh7fK4pN21lgz6GNm38Mhvei8pbnM+UTWN4GgeVTKyiRaGyhIRF2CbQftyx4+K98unhN0HiFitlskgpJybu9fawofZAqiP0HX7BgFLoAyCaXBO5r+qXdjY/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0O7jA78J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819A7C4CEE2;
-	Wed, 23 Apr 2025 15:15:37 +0000 (UTC)
+	 MIME-Version; b=gfCdIUCy/RtVwvXXQBBrhGt/MXBszsxwL6odwH5u2Y9WTKx/wK2ETzCBBSziOPsOLbThUtMt+2/tSm1l5vxDkBSJuYH5w1ylk5vCHby605MKfrF7YxJek0MC9d95zGuFuHO4wX6ayBDl8zN5dB5/OMXGb1tH9Tq1QwYB1DuqwO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v08kL6ak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFCCC4CEE3;
+	Wed, 23 Apr 2025 14:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421337;
-	bh=pf0FhH6ltE9CPEMP55zCgwfGPHQ7Qgx6SqVSTt/YbCg=;
+	s=korg; t=1745420026;
+	bh=gwRyLtFK+Ut2AaUFQAQOJUM3nFoRJVRJ3AiZ14P/CoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0O7jA78Jn68UbtRjsgLBrGOSbZuWC9Obpz+f3XGeX1YshKYyVCH9o96NN7v5bE2kF
-	 BwszlVARm0R2OnumNdSF1Q7qIxSOgg+Pq98i98rnfNwWISFMmXaWWtnnAqCVVaVuPj
-	 zoH7NsvmALMwz4ytgGZ1SbRJUyM4eggGhp3novlo=
+	b=v08kL6ak/OnWI4WmNMByVDju6HaDvfZ0w1/8LgzN3wDH2JK6FiJ668pFxXhFCy2ZH
+	 B7DTN8m5jxI5RhVBDA4p1QxcnwT8jhqGw708hmR+1/nxbwRVRtTfqJpbCcX/F+Yikq
+	 Dx4Qk58NlUF9RTDCtRs1Alsyv6ABL8FDubSX65mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YH Huang <yh.huang@mediatek.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.1 128/291] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 053/241] net: openvswitch: fix nested key length validation in the set() action
 Date: Wed, 23 Apr 2025 16:41:57 +0200
-Message-ID: <20250423142629.629716917@linuxfoundation.org>
+Message-ID: <20250423142622.674250578@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
+[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
 
-The MT8173 disp-pwm device should have only one compatible string, based
-on the following DT validation error:
+It's not safe to access nla_len(ovs_key) if the data is smaller than
+the netlink header.  Check that the attribute is OK first.
 
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
-	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
-	    'mediatek,mt8173-disp-pwm' was expected
-	    'mediatek,mt8183-disp-pwm' was expected
-	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
-
-Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
-
-Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
-Cc: YH Huang <yh.huang@mediatek.com>
-Cc: stable@vger.kernel.org # v4.5+
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
+Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/openvswitch/flow_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
-@@ -1247,8 +1247,7 @@
- 		};
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 95e0dd14dc1a3..518be23e48ea9 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2876,7 +2876,8 @@ static int validate_set(const struct nlattr *a,
+ 	size_t key_len;
  
- 		pwm0: pwm@1401e000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401e000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
-@@ -1258,8 +1257,7 @@
- 		};
+ 	/* There can be only one key in a action */
+-	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
++	if (!nla_ok(ovs_key, nla_len(a)) ||
++	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
+ 		return -EINVAL;
  
- 		pwm1: pwm@1401f000 {
--			compatible = "mediatek,mt8173-disp-pwm",
--				     "mediatek,mt6595-disp-pwm";
-+			compatible = "mediatek,mt8173-disp-pwm";
- 			reg = <0 0x1401f000 0 0x1000>;
- 			#pwm-cells = <2>;
- 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
+ 	key_len = nla_len(ovs_key);
+-- 
+2.39.5
+
 
 
 
