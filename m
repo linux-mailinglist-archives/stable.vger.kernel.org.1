@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-136309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2ECA992F0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8D2A992A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE9C89A39C0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A366C1BA37F1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D2028935A;
-	Wed, 23 Apr 2025 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F628CF6E;
+	Wed, 23 Apr 2025 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eEyCM9T1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9bPkZPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A4E1714B4;
-	Wed, 23 Apr 2025 15:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EB127F4D9;
+	Wed, 23 Apr 2025 15:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422207; cv=none; b=VRQ8whSoDofxtJZpibC2khQTIOY6nhzsMq0O6jVohSFldmVIF2P56mc69PW5pYvTCFoRFPXj1QAAmSLamdSFkf7WN+Y6codkeHG73JJ9Bb2vLxR4BDEgyLZ/BR9aoDfTRA2LYacT1cJkboa29BXwXlwK6a+TCRbcXJIYhphkb6M=
+	t=1745421929; cv=none; b=iJx/NYXouJAyRzVrc2Hp7SyEYHarPUWE7PefNcL9yVHja4fTa0+XmwBTdg9FFSaj8RmDIz9dgOwzVAoRpfzuQ2tmQyEERzaUU5ydpsYCp3v/b/E65zUjjQs7vhC0CM3u1Hljnovsf6z/6iSVjPS0hY05/swB4afvqzfilflYRlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422207; c=relaxed/simple;
-	bh=h+9u1g5HEktgXssSho2aZZSx0pu+e6HjKfRSu/rBqX4=;
+	s=arc-20240116; t=1745421929; c=relaxed/simple;
+	bh=ubNGzRovKsW1KPic2qPIo+KJey+p62ke8zerwxfRKH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oZIJbYP+5XuLt7VtREARI/Td0388hPbD0IWIRN0rnCPlzaX5OuZJSdudzYcbZxyHoLf+gxGg9aB677ZJbNwFIJtKuzFiSMN5i6S7Lbvtfj6VFGx1bjhN4D6we1/gT04O4ZaQ/x4NMuk8DJIn9UAqj29M6G8943rFAeoa4AzNCPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eEyCM9T1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772BBC4CEE2;
-	Wed, 23 Apr 2025 15:30:06 +0000 (UTC)
+	 MIME-Version; b=DeglL59Ol56x+NLLbOoJj2RsgQO2H6YDWfLy6gMqF2VjWFG7WJJxAmTtJlgbAZVdrwFJ8PlOwU968Z1ygMMYt5aaWmWElvsYYRuT+MGR025ioJxrHLj2t89RzXVUfYh3+4FpBPlZxK5M0Lh15kj1hC2WqbqNNORri8huVxXTPUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9bPkZPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907A5C4CEE2;
+	Wed, 23 Apr 2025 15:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422207;
-	bh=h+9u1g5HEktgXssSho2aZZSx0pu+e6HjKfRSu/rBqX4=;
+	s=korg; t=1745421928;
+	bh=ubNGzRovKsW1KPic2qPIo+KJey+p62ke8zerwxfRKH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eEyCM9T1wjthkf/GduIhVuaOCYPy/lhcXzA8fKl/Kmq+Tvvh8T2h7I/YprtZU3Wic
-	 y+itrMTuuTCZhQy6QM6rChguqNXP4hndf807hJg4fBtObxKfp/1dhLwpNRtcFy8bDQ
-	 lAAWeo/LFu9ldEdB0ayHKmtBFSkExlKwxPt7XEfE=
+	b=t9bPkZPFYwtQLphuB6uXrhvyKEVkbufSgpmzQ1TkXwZBuu5OT01rsT/v4ScaIw/Ff
+	 PvtDh3Q4/NgMgO6U4WGMMoaiTOtAZWNa3d9bkNzuqQRrk1yOfBcPy61obDJho4Fq/E
+	 0R0D1dwmlzhSRPsxe4JxwUwjK821KS8KXo5u/My0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/393] tools: ynl-gen: individually free previous values on double set
-Date: Wed, 23 Apr 2025 16:42:55 +0200
-Message-ID: <20250423142654.872369654@linuxfoundation.org>
+Subject: [PATCH 6.1 187/291] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
+Date: Wed, 23 Apr 2025 16:42:56 +0200
+Message-ID: <20250423142632.016287321@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,205 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit ce6cb8113c842b94e77364b247c4f85c7b34e0c2 ]
+[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
 
-When user calls request_attrA_set() multiple times (for the same
-attribute), and attrA is of type which allocates memory -
-we try to free the previously associated values. For array
-types (including multi-attr) we have only freed the array,
-but the array may have contained pointers.
+In the for loop used to allocate the loc_array and bmap for each port, a
+memory leak is possible when the allocation for loc_array succeeds,
+but the allocation for bmap fails. This is because when the control flow
+goes to the label free_eth_finfo, only the allocations starting from
+(i-1)th iteration are freed.
 
-Refactor the code generation for free attr and reuse the generated
-lines in setters to flush out the previous state. Since setters
-are static inlines in the header we need to add forward declarations
-for the free helpers of pure nested structs. Track which types get
-used by arrays and include the right forwad declarations.
+Fix that by freeing the loc_array in the bmap allocation error path.
 
-At least ethtool string set and bit set would not be freed without
-this. Tho, admittedly, overriding already set attribute twice is likely
-a very very rare thing to do.
-
-Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-4-kuba@kernel.org
+Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/ynl-gen-c.py | 62 +++++++++++++++++++++++++++-----------
- 1 file changed, 45 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index 9e37d14d76bf9..53c86d3897e13 100755
---- a/tools/net/ynl/ynl-gen-c.py
-+++ b/tools/net/ynl/ynl-gen-c.py
-@@ -107,9 +107,15 @@ class Type(SpecAttr):
-     def free_needs_iter(self):
-         return False
- 
--    def free(self, ri, var, ref):
-+    def _free_lines(self, ri, var, ref):
-         if self.is_multi_val() or self.presence_type() == 'len':
--            ri.cw.p(f'free({var}->{ref}{self.c_name});')
-+            return [f'free({var}->{ref}{self.c_name});']
-+        return []
-+
-+    def free(self, ri, var, ref):
-+        lines = self._free_lines(ri, var, ref)
-+        for line in lines:
-+            ri.cw.p(line)
- 
-     def arg_member(self, ri):
-         member = self._complex_member_type(ri)
-@@ -205,6 +211,10 @@ class Type(SpecAttr):
-         var = "req"
-         member = f"{var}->{'.'.join(ref)}"
- 
-+        local_vars = []
-+        if self.free_needs_iter():
-+            local_vars += ['unsigned int i;']
-+
-         code = []
-         presence = ''
-         for i in range(0, len(ref)):
-@@ -214,6 +224,10 @@ class Type(SpecAttr):
-             if i == len(ref) - 1 and self.presence_type() != 'bit':
-                 continue
-             code.append(presence + ' = 1;')
-+        ref_path = '.'.join(ref[:-1])
-+        if ref_path:
-+            ref_path += '.'
-+        code += self._free_lines(ri, var, ref_path)
-         code += self._setter_lines(ri, member, presence)
- 
-         func_name = f"{op_prefix(ri, direction, deref=deref)}_set_{'_'.join(ref)}"
-@@ -221,7 +235,8 @@ class Type(SpecAttr):
-         alloc = bool([x for x in code if 'alloc(' in x])
-         if free and not alloc:
-             func_name = '__' + func_name
--        ri.cw.write_func('static inline void', func_name, body=code,
-+        ri.cw.write_func('static inline void', func_name, local_vars=local_vars,
-+                         body=code,
-                          args=[f'{type_name(ri, direction, deref=deref)} *{var}'] + self.arg_member(ri))
- 
- 
-@@ -397,8 +412,7 @@ class TypeString(Type):
-                ['unsigned int len;']
- 
-     def _setter_lines(self, ri, member, presence):
--        return [f"free({member});",
--                f"{presence}_len = strlen({self.c_name});",
-+        return [f"{presence}_len = strlen({self.c_name});",
-                 f"{member} = malloc({presence}_len + 1);",
-                 f'memcpy({member}, {self.c_name}, {presence}_len);',
-                 f'{member}[{presence}_len] = 0;']
-@@ -441,8 +455,7 @@ class TypeBinary(Type):
-                ['unsigned int len;']
- 
-     def _setter_lines(self, ri, member, presence):
--        return [f"free({member});",
--                f"{presence}_len = len;",
-+        return [f"{presence}_len = len;",
-                 f"{member} = malloc({presence}_len);",
-                 f'memcpy({member}, {self.c_name}, {presence}_len);']
- 
-@@ -454,12 +467,14 @@ class TypeNest(Type):
-     def _complex_member_type(self, ri):
-         return self.nested_struct_type
- 
--    def free(self, ri, var, ref):
-+    def _free_lines(self, ri, var, ref):
-+        lines = []
-         at = '&'
-         if self.is_recursive_for_op(ri):
-             at = ''
--            ri.cw.p(f'if ({var}->{ref}{self.c_name})')
--        ri.cw.p(f'{self.nested_render_name}_free({at}{var}->{ref}{self.c_name});')
-+            lines += [f'if ({var}->{ref}{self.c_name})']
-+        lines += [f'{self.nested_render_name}_free({at}{var}->{ref}{self.c_name});']
-+        return lines
- 
-     def _attr_typol(self):
-         return f'.type = YNL_PT_NEST, .nest = &{self.nested_render_name}_nest, '
-@@ -519,15 +534,19 @@ class TypeMultiAttr(Type):
-     def free_needs_iter(self):
-         return 'type' not in self.attr or self.attr['type'] == 'nest'
- 
--    def free(self, ri, var, ref):
-+    def _free_lines(self, ri, var, ref):
-+        lines = []
-         if self.attr['type'] in scalars:
--            ri.cw.p(f"free({var}->{ref}{self.c_name});")
-+            lines += [f"free({var}->{ref}{self.c_name});"]
-         elif 'type' not in self.attr or self.attr['type'] == 'nest':
--            ri.cw.p(f"for (i = 0; i < {var}->{ref}n_{self.c_name}; i++)")
--            ri.cw.p(f'{self.nested_render_name}_free(&{var}->{ref}{self.c_name}[i]);')
--            ri.cw.p(f"free({var}->{ref}{self.c_name});")
-+            lines += [
-+                f"for (i = 0; i < {var}->{ref}n_{self.c_name}; i++)",
-+                f'{self.nested_render_name}_free(&{var}->{ref}{self.c_name}[i]);',
-+                f"free({var}->{ref}{self.c_name});",
-+            ]
-         else:
-             raise Exception(f"Free of MultiAttr sub-type {self.attr['type']} not supported yet")
-+        return lines
- 
-     def _attr_policy(self, policy):
-         return self.base_type._attr_policy(policy)
-@@ -553,8 +572,7 @@ class TypeMultiAttr(Type):
-     def _setter_lines(self, ri, member, presence):
-         # For multi-attr we have a count, not presence, hack up the presence
-         presence = presence[:-(len('_present.') + len(self.c_name))] + "n_" + self.c_name
--        return [f"free({member});",
--                f"{member} = {self.c_name};",
-+        return [f"{member} = {self.c_name};",
-                 f"{presence} = n_{self.c_name};"]
- 
- 
-@@ -639,6 +657,7 @@ class Struct:
-         self.request = False
-         self.reply = False
-         self.recursive = False
-+        self.in_multi_val = False  # used by a MultiAttr or and legacy arrays
- 
-         self.attr_list = []
-         self.attrs = dict()
-@@ -987,6 +1006,10 @@ class Family(SpecFamily):
-                     if attr in rs_members['reply']:
-                         self.pure_nested_structs[nested].reply = True
- 
-+                if spec.is_multi_val():
-+                    child = self.pure_nested_structs.get(nested)
-+                    child.in_multi_val = True
-+
-         self._sort_pure_types()
- 
-         # Propagate the request / reply / recursive
-@@ -1001,6 +1024,8 @@ class Family(SpecFamily):
-                             struct.child_nests.update(child.child_nests)
-                         child.request |= struct.request
-                         child.reply |= struct.reply
-+                        if spec.is_multi_val():
-+                            child.in_multi_val = True
-                 if attr_set in struct.child_nests:
-                     struct.recursive = True
- 
-@@ -2552,6 +2577,9 @@ def main():
-             for attr_set, struct in parsed.pure_nested_structs.items():
-                 ri = RenderInfo(cw, parsed, args.mode, "", "", attr_set)
-                 print_type_full(ri, struct)
-+                if struct.request and struct.in_multi_val:
-+                    free_rsp_nested_prototype(ri)
-+                    cw.nl()
- 
-             for op_name, op in parsed.ops.items():
-                 cw.p(f"/* ============== {op.enum_name} ============== */")
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+index 8477a93cee6bd..b77897aa06c4f 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+@@ -2273,6 +2273,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
+ 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
+ 		if (!eth_filter->port[i].bmap) {
+ 			ret = -ENOMEM;
++			kvfree(eth_filter->port[i].loc_array);
+ 			goto free_eth_finfo;
+ 		}
+ 	}
 -- 
 2.39.5
 
