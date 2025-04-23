@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B32EA98E3C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 176C6A98E56
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377A5171887
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64D0D3B69AF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF52279345;
-	Wed, 23 Apr 2025 14:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EADC1A9B39;
+	Wed, 23 Apr 2025 14:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaC6vKNg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmC5KAYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8775DC8EB;
-	Wed, 23 Apr 2025 14:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB83A23D298;
+	Wed, 23 Apr 2025 14:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419963; cv=none; b=MExvquHD6al9bP9LxRMGa9FdqITTLub+FW5/bcX+CHoc3GjVbhFlhVdabl3tmCww40rgSm3nHipThNS0ebOyAilPLyasIIFSgaKMwC446xSpov2q0oguXLc85nyaek+oLOcGYhUKlelKIw2bHFVsOMdw8azaX5WY4fEek0sDJew=
+	t=1745419974; cv=none; b=lzUaj3OLeSCs9i3Jyh1dAUSNn4zyfhJBJSlZ86YuxZTLH6zuOgALRdMsAWaUANKD0dK5xG1kUZY6bG5x4gJb396YE/SvwTylizT8tdI+hMQm2aWD23V431liy4AIbCfLefILkYWDi9ivqN7YWItrItoExAkq2l/FWMMO8SQaz84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419963; c=relaxed/simple;
-	bh=q0iwB5cqfCLeUpTlBgn/Ashx6yJOgnIRPVZJbDW0MYU=;
+	s=arc-20240116; t=1745419974; c=relaxed/simple;
+	bh=f09dpu4JuaXkZZhD8pkXE67bZfQ44EH+3fAjB4vEXhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAzE6xS8IdVvpDuRm8TeSFEnl/24ipfMh5M8uWf5p7ElnzfukSCaEtAqJI9CT57gilDHBGk08/3xKGpmTxLgFdCAqKY3t67PLIQGMQ7HJllLhlD5SuCC46Yl6JdZpyhnZjSAWXadn7lrq0qYlD2lPZrnoxYKfMLCddE5/+Evmro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaC6vKNg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13138C4CEE3;
-	Wed, 23 Apr 2025 14:52:42 +0000 (UTC)
+	 MIME-Version; b=DF/dluUjIiFv5J1TNrqH9D61uWRQiDwhax2Fy4STBOva7aatwNUq9zae2U7y8JhiOnZ90UKaXrWeJNRcn6TR0PGPY59zIcQ/JMsjPsuqf/vJvXU9QidV1ela4zJTv/ZaOlDR/t7/KrnsWEM3gOA9c9Tp62CYGovZL1SDnPWnmH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmC5KAYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DFC5C4CEE2;
+	Wed, 23 Apr 2025 14:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419963;
-	bh=q0iwB5cqfCLeUpTlBgn/Ashx6yJOgnIRPVZJbDW0MYU=;
+	s=korg; t=1745419973;
+	bh=f09dpu4JuaXkZZhD8pkXE67bZfQ44EH+3fAjB4vEXhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaC6vKNgdgoIrzWhjspu155xRtmtSWG4p72ppEo41IFxiZpNINMBV68YZOtCV73Yj
-	 B05vXhlaU1TOHhx5W5qh25Fx1KLXAh0cQ1gF7OIV8kwmMs2LLBdK9klwTcIIYpvPEI
-	 s+OD7Objyg2B3cYGATxzUu+EhfH7OEVWjxGOnBQA=
+	b=tmC5KAYV1d3aCnhDaHOvKQDexmuSKNt74sgG9C8LZ8y6j05uZg7OeGCL9WyaFqsKw
+	 EUNF8V1XdpjNz1szmDLhcnNfLgxceRhnwPaXCd4cbymzxjrbgihdHpViQdyBNqyoFx
+	 G9kDRqx9TagZ/7FqcRF4MX8rCWjhTwLZQDmbIfxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com,
+	Jiri Pirko <jiri@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/291] net: tls: explicitly disallow disconnect
-Date: Wed, 23 Apr 2025 16:39:54 +0200
-Message-ID: <20250423142624.634306940@linuxfoundation.org>
+Subject: [PATCH 6.1 006/291] rtnl: add helper to check if rtnl group has listeners
+Date: Wed, 23 Apr 2025 16:39:55 +0200
+Message-ID: <20250423142624.673378406@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -69,67 +70,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 ]
+[ Upstream commit c5e2a973448d958feb7881e4d875eac59fdeff3d ]
 
-syzbot discovered that it can disconnect a TLS socket and then
-run into all sort of unexpected corner cases. I have a vague
-recollection of Eric pointing this out to us a long time ago.
-Supporting disconnect is really hard, for one thing if offload
-is enabled we'd need to wait for all packets to be _acked_.
-Disconnect is not commonly used, disallow it.
+As of today, rtnl code creates a new skb and unconditionally fills and
+broadcasts it to the relevant group. For most operations this is okay
+and doesn't waste resources in general.
 
-The immediate problem syzbot run into is the warning in the strp,
-but that's just the easiest bug to trigger:
+When operations are done without the rtnl_lock, as in tc-flower, such
+skb allocation, message fill and no-op broadcasting can happen in all
+cores of the system, which contributes to system pressure and wastes
+precious cpu cycles when no one will receive the built message.
 
-  WARNING: CPU: 0 PID: 5834 at net/tls/tls_strp.c:486 tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
-  RIP: 0010:tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
-  Call Trace:
-   <TASK>
-   tls_rx_rec_wait+0x280/0xa60 net/tls/tls_sw.c:1363
-   tls_sw_recvmsg+0x85c/0x1c30 net/tls/tls_sw.c:2043
-   inet6_recvmsg+0x2c9/0x730 net/ipv6/af_inet6.c:678
-   sock_recvmsg_nosec net/socket.c:1023 [inline]
-   sock_recvmsg+0x109/0x280 net/socket.c:1045
-   __sys_recvfrom+0x202/0x380 net/socket.c:2237
+Introduce this helper so rtnetlink operations can simply check if someone
+is listening and then proceed if necessary.
 
-Fixes: 3c4d7559159b ("tls: kernel TLS support")
-Reported-by: syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://lore.kernel.org/r/20231208192847.714940-2-pctammela@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250404180334.3224206-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 369609fc6272 ("tc: Ensure we have enough buffer space when sending filter netlink notifications")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/rtnetlink.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 75cd20c0e3fdb..14d01558311d2 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -900,6 +900,11 @@ static int tls_setsockopt(struct sock *sk, int level, int optname,
- 	return do_tls_setsockopt(sk, optname, optval, optlen);
- }
+diff --git a/include/linux/rtnetlink.h b/include/linux/rtnetlink.h
+index ae2c6a3cec5db..ad5f15d369235 100644
+--- a/include/linux/rtnetlink.h
++++ b/include/linux/rtnetlink.h
+@@ -138,4 +138,11 @@ extern int ndo_dflt_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
  
-+static int tls_disconnect(struct sock *sk, int flags)
+ extern void rtnl_offload_xstats_notify(struct net_device *dev);
+ 
++static inline int rtnl_has_listeners(const struct net *net, u32 group)
 +{
-+	return -EOPNOTSUPP;
++	struct sock *rtnl = net->rtnl;
++
++	return netlink_has_listeners(rtnl, group);
 +}
 +
- struct tls_context *tls_ctx_create(struct sock *sk)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
-@@ -995,6 +1000,7 @@ static void build_protos(struct proto prot[TLS_NUM_CONFIG][TLS_NUM_CONFIG],
- 	prot[TLS_BASE][TLS_BASE] = *base;
- 	prot[TLS_BASE][TLS_BASE].setsockopt	= tls_setsockopt;
- 	prot[TLS_BASE][TLS_BASE].getsockopt	= tls_getsockopt;
-+	prot[TLS_BASE][TLS_BASE].disconnect	= tls_disconnect;
- 	prot[TLS_BASE][TLS_BASE].close		= tls_sk_proto_close;
- 
- 	prot[TLS_SW][TLS_BASE] = prot[TLS_BASE][TLS_BASE];
+ #endif	/* __LINUX_RTNETLINK_H */
 -- 
 2.39.5
 
