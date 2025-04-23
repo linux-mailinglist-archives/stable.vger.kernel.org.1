@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D41DA992E0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 325E1A98EC5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDE8292651B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23FEF1B84B9A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE023294A10;
-	Wed, 23 Apr 2025 15:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D2B280A32;
+	Wed, 23 Apr 2025 14:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhKzUUqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQwGJAlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA92294A0C;
-	Wed, 23 Apr 2025 15:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CAF280A5A;
+	Wed, 23 Apr 2025 14:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421739; cv=none; b=a9UWWeSuCYTpi0wjtNokAsf/pZXH/w+9k0oBXnIMWm2ZMPtJLTygQ3JpWrQbPMJtMe42A7oSIpA+2wD/GPml6+kpnujX1waVdZMP8wDWNHClxuUzJuMVqcFbw+SICEWCSx3W3hKpHp9nkPXba4xXN2yr1T+N8AaVDkSp3Ny/kqw=
+	t=1745420144; cv=none; b=FG987FNhVrzOcwNbZC1E5Y29HFmwiGFxOgX4R1TDJDzotPKgLzPu2UnfCwjY5ZUTk9aExyfF6ux8mBcX+nXQj3Hy0cciu0NB2znT5MtGjjMBeruiw80GrGw41f3ZLqvl1ako0xbK3P1eJZBktjIxZMLqH1j1T6/EwYK+hhrvX3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421739; c=relaxed/simple;
-	bh=UfYma3B05NmtVkrjJjaN6w/IlBTaGflsJR71zq29nd8=;
+	s=arc-20240116; t=1745420144; c=relaxed/simple;
+	bh=v3hbHNRYa3H0b7FNrxOBDF/dU7YwM4VBHXWVz/sRTSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q1p3yRl+qRHPWfH7yyD5u1UQ7I+LrFE/m0NWdtdaL40C+VJ60sI0hVTg6FU6IKsioNgxYlZJOWVYVLkIPZ/5yRlshzBQkxiIWLEdPathwdsoKEgfXK6nwr2nnVAJouS7bIHL+BRA9iWDXWZYqnRS16HpP/PorucmZfLsEUFaAZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhKzUUqb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAD6C4CEE2;
-	Wed, 23 Apr 2025 15:22:19 +0000 (UTC)
+	 MIME-Version; b=q42UncIFjl6YNzw7UGjxj9RGLBEaLMsS/v+h8BbQdUv5hOpGUTrnMkBK9jeYnVAc9AmyS4oG1ahCHx2AvSplskXVmsMWaMujMy1ITulk7ng8QWbfchhzwaajTyqoHLm/THsbMlW9XnzMEWjhMjXpRHrXD0LEKhl2jOIMxeUu9pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQwGJAlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC3DC4CEE3;
+	Wed, 23 Apr 2025 14:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421739;
-	bh=UfYma3B05NmtVkrjJjaN6w/IlBTaGflsJR71zq29nd8=;
+	s=korg; t=1745420144;
+	bh=v3hbHNRYa3H0b7FNrxOBDF/dU7YwM4VBHXWVz/sRTSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhKzUUqb60soAtQlJjSliFxhpJiu7fmoc3T8a0L4T8kd0nmzJfAM1zsjzbXTNuAnN
-	 Md5/eGj7gCNBwtCAhZPBNUD0nynkotIZpBG4N80F6oilus9VPr3wGZEmYYsR93CSQH
-	 10nJu/oqsaXmRma4Q6JNbYwnpU09H807Gx7gnkQY=
+	b=gQwGJAlrWDss8hoHmMmAQ/QvITy+koX6O6mJWfM6Won7whO6c5t04v3UCSu7Nanch
+	 qXIUScBexYoLTVuh66HzN9JXaKeNLUt3plL7eRPZ8k6tDV3y5XAQh3ZKLh2Dpwe6YT
+	 Gy3XaK9ZY2g1M/qSYdb1IxlZoZ8HL+S6JdnwP0GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 173/291] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 090/223] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
 Date: Wed, 23 Apr 2025 16:42:42 +0200
-Message-ID: <20250423142631.454625279@linuxfoundation.org>
+Message-ID: <20250423142620.787951817@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
+commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
 
-drivers/infiniband/hw/usnic/usnic_ib_main.c:590
- usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
+Currently the VI feedback rate is set to fixed 8K, fix this by getting
+the correct rate from params_rate.
 
-Make usnic_ib_device_add() return NULL on fail path, also remove
-useless NULL check for usnic_ib_discover_pf()
+Without this patch incorrect rate will be set on the VI feedback
+recording resulting in rate miss match and audio artifacts.
 
-Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
-Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-index 46653ad56f5a1..ec2d8f78c898b 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
- 	if (!us_ibdev) {
- 		usnic_err("Device %s context alloc failed\n",
- 				netdev_name(pci_get_drvdata(dev)));
--		return ERR_PTR(-EFAULT);
-+		return NULL;
- 	}
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -63,6 +63,10 @@
+ #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
+ #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
+@@ -407,6 +411,7 @@ struct wsa_macro {
+ 	int ear_spkr_gain;
+ 	int spkr_gain_offset;
+ 	int spkr_mode;
++	u32 pcm_rate_vi;
+ 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
+ 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
+ 	struct regmap *regmap;
+@@ -1280,6 +1285,7 @@ static int wsa_macro_hw_params(struct sn
+ 			       struct snd_soc_dai *dai)
+ {
+ 	struct snd_soc_component *component = dai->component;
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	int ret;
  
- 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
-@@ -500,8 +500,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
+ 	switch (substream->stream) {
+@@ -1292,6 +1298,11 @@ static int wsa_macro_hw_params(struct sn
+ 			return ret;
+ 		}
+ 		break;
++	case SNDRV_PCM_STREAM_CAPTURE:
++		if (dai->id == WSA_MACRO_AIF_VI)
++			wsa->pcm_rate_vi = params_rate(params);
++
++		break;
+ 	default:
+ 		break;
  	}
+@@ -1465,6 +1476,28 @@ static int wsa_macro_enable_vi_feedback(
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	u32 tx_reg0, tx_reg1;
++	u32 rate_val;
++
++	switch (wsa->pcm_rate_vi) {
++	case 8000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	case 16000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
++		break;
++	case 24000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
++		break;
++	case 32000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
++		break;
++	case 48000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
++		break;
++	default:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	}
  
- 	us_ibdev = usnic_ib_device_add(parent_pci);
--	if (IS_ERR_OR_NULL(us_ibdev)) {
--		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
-+	if (!us_ibdev) {
-+		us_ibdev = ERR_PTR(-EFAULT);
- 		goto out;
- 	}
+ 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+ 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+@@ -1476,7 +1509,7 @@ static int wsa_macro_enable_vi_feedback(
  
-@@ -569,10 +569,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
- 	}
- 
- 	pf = usnic_ib_discover_pf(vf->vnic);
--	if (IS_ERR_OR_NULL(pf)) {
--		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
--				pci_name(pdev), PTR_ERR(pf));
--		err = pf ? PTR_ERR(pf) : -EFAULT;
-+	if (IS_ERR(pf)) {
-+		err = PTR_ERR(pf);
-+		usnic_err("Failed to discover pf of vnic %s with err%d\n",
-+				pci_name(pdev), err);
- 		goto out_clean_vnic;
- 	}
- 
--- 
-2.39.5
-
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+-			/* Enable V&I sensing */
++		/* Enable V&I sensing */
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+@@ -1485,10 +1518,10 @@ static int wsa_macro_enable_vi_feedback(
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg1,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
 
 
 
