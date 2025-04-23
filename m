@@ -1,124 +1,137 @@
-Return-Path: <stable+bounces-136476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690DBA998A7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 21:36:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580EFA998AE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 21:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C811B86923
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:36:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92A164A1E6A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBACC28EA76;
-	Wed, 23 Apr 2025 19:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="V3QU37Tz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D35FF29344B;
+	Wed, 23 Apr 2025 19:38:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BD325C834;
-	Wed, 23 Apr 2025 19:36:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6D8291170;
+	Wed, 23 Apr 2025 19:38:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745436992; cv=none; b=CXvODuqa9O8794QvNz8zENIco2LbA83y932OQ4JjPDVIFNIQvIIyOGY8wL86iX4QWjJSkjQziRTp5krYvxhwthWsl2omfzQzBrN58IJ35ciWSM1CLPsxDgPOpm75gngkNZ4FCk/zJnVxcD7/sGHfYDQQewaUr7WGMmKkq6Ozo40=
+	t=1745437096; cv=none; b=ZZ5xTrT8+BAzn0MQLqkentm2dYXi24XrQBwFb+h7rdoSMD7WOmnyMmgyZmQUYQuxJ5wYrE7xQ6jFis0Bdt+PjFHSTlz055Utf+5fOVPKosofQcLrrlaeGevvtUF3aD1T5Som8Lf9RBX+r/GC6Kc1GrnUnSn/wsL2fulkavdnxeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745436992; c=relaxed/simple;
-	bh=F8Lms9WWcqbi9UKLZVM3A4yA8hdTJR3kmzCK+DkmcwM=;
+	s=arc-20240116; t=1745437096; c=relaxed/simple;
+	bh=ZMAy0koe8QRjR90kEa0BTwUcnx789qVMbwmNTlSN4N4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pJT71R8vCV3aozqLgrQ+4sSRXN5H8c/EiFBwChHDkR3pLQPROOJeRxthDL2cTgqlOLdQhgskMITo0KH5vXTLzkHIDzuI4+E7kymW2PESSrCSQDMh1DjPQ4xs12Y+J239ZXHT2+H+VBK95UG2i3+lvrZGV83SdP5fFI+yPXZcrBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=V3QU37Tz; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso1488485e9.1;
-        Wed, 23 Apr 2025 12:36:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1745436989; x=1746041789; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J13/1f/4bpG2OkBxc41bbyLlaHxbEughKpa7FrPZ83o=;
-        b=V3QU37TzhticWADYrKgkY1nsiFJqQatyjyNptKiTiNmqbaOGZ+B9jM9sGvz2eG8nvc
-         3NtGGfn9U9noTSSX6wfZzslF4ad9mS5Un+BSkb/XmyYJMxcSIytFLT4fesEafyRysJNk
-         QzXVl/9m+izTYha2Hn6OKVuxs8Y30Hmhl0QuHLit+S7RfR0OwiVSgRtzSpyrqy4pWeFQ
-         BE5heJyXEfJlxVbSrWBkF6elH6cMikRazdLf6RYJ+qr/mS/LPyw3av9Wu+T8fOu7SnaR
-         R0qOhla84wDzAeZDFzXCUjj3iPhg6a/QM2nyFDV4EY9xLONDj105DUcIHWxw3HJhS0/Z
-         s6CQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745436989; x=1746041789;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J13/1f/4bpG2OkBxc41bbyLlaHxbEughKpa7FrPZ83o=;
-        b=pQd3FiL8iDCPB+zfxAzH65OLRl14K33IAZVFMcs6SEjRfMSXxZZNhneDQspiWLSCim
-         Flxhz/+Oh0F2dJfLNF2HBEJlcZBW/LLEpcUOjEJ5CH6AJHLADsDT3wc6ZrcWgEhnLj7w
-         /oVRCY6iXPypRra5GrKDtfvb9Owi1JyJc3O0G1s2V7u7u4wCBD3ZskWMIIoMJ3sOqJ7h
-         Ibos9BKgJBJ5amuwJUAxzr5C4h8Onox1O32eJhAm9RpWAtV/hLNWUOVAWiaBd7yUcwGs
-         c/NVky7u5jP06xXYWER5GPHMqhhCpHjTohLCVjY1yB8wCoeVZpi9ohWbBKMenrNr22JI
-         6KXA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/MTOwprAbjDmDlBDmTu0uH95pqmIlxQcXw3nNRoE+Wmk44AtQGAp3lqKX7ioJEiZmWkJxTuRq@vger.kernel.org, AJvYcCVzkyI8d85XADqfFpHCtz/7up0XwEi2bl9jn3fyrQbdiucmCLD6MXCpZAMsHa+vOdA24v+h00TzZZOU13s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwX5BOAFAU1nFSo3pz0uEZikFgjMz5P/vvOFeMjgj50WuauA5OL
-	dOzPbY0M59im1td+ZoTr9qw0qq5jHDX8lXuoHOhKwC+vhlytWSE=
-X-Gm-Gg: ASbGncs7bQln4UPKdPVSWIjEximhP9aHYC2UtdWyKUI+ZPIsoiSUxkFwCNtpS+HOyRd
-	oiWlaWgomKSF+72KFJf/6xr1AvoXWA9VFEo40n7aNuIEHVkFhfgdZN2O8Ce3IJG1CEu8nAdvCym
-	Esz6vc1FqDjGCSughewazlYag36rjjOfcqntsubhi7nfq9Xd1vFHJyCzIBXsFFlSNQRi6fywQvh
-	rte4YCV1YwZaA4ZDD5iPfgQTCIiXhVHk3LtaaefZgJNyr2dntkguQZd0x6+SqfiCzcxyAgOef+t
-	p2UJkYq5dmg5cXzCP7fDAa5+VyGhBZbPeEETqo6iF38w2IMMIwS+RNgidyXNBT5B1bP6xymXPxd
-	ocArnNKZSaqBhPp87SA==
-X-Google-Smtp-Source: AGHT+IHXrAT5Ym8Wfi9Mv5P7WsaXUZaJTk3APhWCaUhtxOeEgA1taGsSqysoypMvC/sD45jNiPBpgQ==
-X-Received: by 2002:a05:600c:4e8f:b0:43d:47e:3205 with SMTP id 5b1f17b1804b1-4406ab99521mr172733875e9.11.1745436989205;
-        Wed, 23 Apr 2025 12:36:29 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac758.dip0.t-ipconnect.de. [91.42.199.88])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44092d369f1sm35725315e9.29.2025.04.23.12.36.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Apr 2025 12:36:28 -0700 (PDT)
-Message-ID: <0f058a7b-72ac-49b5-8121-92a189e7b82b@googlemail.com>
-Date: Wed, 23 Apr 2025 21:36:27 +0200
+	 In-Reply-To:Content-Type; b=Iz9btPxFZN13BOVvdCrgTmYqyPx3J1fx6pGHID0IudkLWGKbLdItUMA3MZCe/QiQGBCnqUhi8kGsUtrkLzVnV0xiVJr3PO3I973jKtS2pbRwgIxx6+O6QtkQgs3e1dvspR2YygngczIm1eulnLwTeWLhAa3ELVl6Q75OsqskxrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C4BA12B;
+	Wed, 23 Apr 2025 12:38:07 -0700 (PDT)
+Received: from [10.57.74.63] (unknown [10.57.74.63])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D79F83F5A1;
+	Wed, 23 Apr 2025 12:38:10 -0700 (PDT)
+Message-ID: <3c7cdc09-272f-4226-851c-dfc50777f2dc@arm.com>
+Date: Wed, 23 Apr 2025 20:38:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/223] 6.12.25-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250423142617.120834124@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] iommu: Allow attaching static domains in
+ iommu_attach_device_pasid()
+To: Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Kevin Tian <kevin.tian@intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, shangsong2@lenovo.com,
+ Dave Jiang <dave.jiang@intel.com>
+Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250423021839.2189204-1-baolu.lu@linux.intel.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20250423021839.2189204-1-baolu.lu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Am 23.04.2025 um 16:41 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.25 release.
-> There are 223 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 2025-04-23 3:18 am, Lu Baolu wrote:
+> The idxd driver attaches the default domain to a PASID of the device to
+> perform kernel DMA using that PASID. The domain is attached to the
+> device's PASID through iommu_attach_device_pasid(), which checks if the
+> domain->owner matches the iommu_ops retrieved from the device. If they
+> do not match, it returns a failure.
+> 
+>          if (ops != domain->owner || pasid == IOMMU_NO_PASID)
+>                  return -EINVAL;
+> 
+> The static identity domain implemented by the intel iommu driver doesn't
+> specify the domain owner. Therefore, kernel DMA with PASID doesn't work
+> for the idxd driver if the device translation mode is set to passthrough.
+> 
+> Generally the owner field of static domains are not set because they are
+> already part of iommu ops. Add a helper domain_iommu_ops_compatible()
+> that checks if a domain is compatible with the device's iommu ops. This
+> helper explicitly allows the static blocked and identity domains associated
+> with the device's iommu_ops to be considered compatible.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+With the other domain->owner checks also wrapped as Jason pointed out 
+(since it would be weird but not impossible for static domains to get 
+into those paths as well),
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
+> Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220031
+> Cc: stable@vger.kernel.org
+> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+> Link: https://lore.kernel.org/linux-iommu/20250422191554.GC1213339@ziepe.ca/
+> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+> ---
+>   drivers/iommu/iommu.c | 16 +++++++++++++++-
+>   1 file changed, 15 insertions(+), 1 deletion(-)
+> 
+> Change log:
+> -v2:
+>   - Make the solution generic for all static domains as suggested by
+>     Jason.
+> -v1: https://lore.kernel.org/linux-iommu/20250422075422.2084548-1-baolu.lu@linux.intel.com/
+> 
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 4f91a740c15f..abda40ec377a 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -3402,6 +3402,19 @@ static void __iommu_remove_group_pasid(struct iommu_group *group,
+>   		iommu_remove_dev_pasid(device->dev, pasid, domain);
+>   }
+>   
+> +static bool domain_iommu_ops_compatible(const struct iommu_ops *ops,
+> +					struct iommu_domain *domain)
+> +{
+> +	if (domain->owner == ops)
+> +		return true;
+> +
+> +	/* For static domains, owner isn't set. */
+> +	if (domain == ops->blocked_domain || domain == ops->identity_domain)
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>   /*
+>    * iommu_attach_device_pasid() - Attach a domain to pasid of device
+>    * @domain: the iommu domain.
+> @@ -3435,7 +3448,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
+>   	    !ops->blocked_domain->ops->set_dev_pasid)
+>   		return -EOPNOTSUPP;
+>   
+> -	if (ops != domain->owner || pasid == IOMMU_NO_PASID)
+> +	if (!domain_iommu_ops_compatible(ops, domain) ||
+> +	    pasid == IOMMU_NO_PASID)
+>   		return -EINVAL;
+>   
+>   	mutex_lock(&group->mutex);
 
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
