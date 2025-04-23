@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E46DA99149
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA12A991E6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F7D924716
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D639F924938
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B322980A1;
-	Wed, 23 Apr 2025 15:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9FC2918F9;
+	Wed, 23 Apr 2025 15:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSp9lOXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGOF054P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76CE3297A62;
-	Wed, 23 Apr 2025 15:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5F92918EE;
+	Wed, 23 Apr 2025 15:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421131; cv=none; b=VqIt+gmMOMYcbdC/8fjqNBefT5nABn6WeL6MqMtPARWy10QSdkH+yQ1i4JtvnTmPG6tBKiOF0kkA2eikk0OtYVDCx7y19beIrmyKbDRxqCa/7kz9U/r4t3/nsJWKt4HCfQCLJZJyHqoOoMvK4AUtZKqUsw1p/xEs5lvnQACJd2o=
+	t=1745421563; cv=none; b=IXSY/sqH+RGcxg234LNnJFiXHpYNbn8ng0wALeK1YWs78E5tYHX4IvLdpewqLGGPDNbfK8zxQkMT7yyLySPQACNZEdb1VavJPjoTyeeyhRIEGN5XMcedABMJQVBZkDcjgYBjjEwmvt/KYtCZ3EbTLnt962c3RDShNv7PZTnyZN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421131; c=relaxed/simple;
-	bh=egaRAHAW2A59Ky7lry7evxNSsKe9tJYRrD0EdgwUw34=;
+	s=arc-20240116; t=1745421563; c=relaxed/simple;
+	bh=kBeQkmntcoI2tYNYuNQFgwEHVjBle6fyGOJG8t7qlWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFyB9k35CLT7HU9eFIHjt8WhpHRjR/zByhZBusb9VTHsrRB8pXjDeJyI9NQW7gtioC9fNzQNtk/To5IDXijNBqjcuV5lC09WMOxBLBEYhrKM6IXvjDH0OkASdJeJ6QHoVQt6cKsomvrg/CoFyFj3k6odX57OWM8zbpFD/hBDT34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSp9lOXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 073BEC4CEE2;
-	Wed, 23 Apr 2025 15:12:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dglRq1Q2BG+Em+G/fkumCOyxX36MiyFTT5MZmyABCoowHBkZG7tDBl7GT476AiR9DI73nJTW1JiAy9BBd4/4i1NYkHTnLXeV6DlEidpbR95juV/ag9IkYRUOIhLoxFDwTX4rgo26+67husQMNN9tbDSvUl9i0NCzoK1xRwfko/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGOF054P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4057C4CEE2;
+	Wed, 23 Apr 2025 15:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421131;
-	bh=egaRAHAW2A59Ky7lry7evxNSsKe9tJYRrD0EdgwUw34=;
+	s=korg; t=1745421563;
+	bh=kBeQkmntcoI2tYNYuNQFgwEHVjBle6fyGOJG8t7qlWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSp9lOXQ4vRxChAQx6wmjlzGdIFNfW7ZBZ1V8T1YJpujts+rtc+8+4KfwDu6PIpjN
-	 hZi7GHQDFxwidfW1pAoUbLTlG9nTYf/idoB7HTfkjgiSo8xEmAsdsaBnr5i4L/u0Mu
-	 4vt4cuWBEB4Oo/qLK87xK0hEsfNadeMsWuU9NNnU=
+	b=MGOF054PdvUOiFdACgPEOppVaBmy4HTvSUO74qFK0YcyDaj1kvH32PjM50WZXvZkU
+	 FWBNd8dBwTy1Z+TzcK6XIgZVi5S6u0EbuPfKI2clAoFEC1i2lIP8em1tfNkzJwq+4w
+	 cvI+4EGgo6YQXm5RhR7N/jozQkNrKdPvPXG/kI9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Fischer <kernel@o1oo11oo.de>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 194/223] scripts: generate_rust_analyzer: Add ffi crate
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.14 202/241] drm/i915: Fix scanline_offset for LNL+ and BMG+
 Date: Wed, 23 Apr 2025 16:44:26 +0200
-Message-ID: <20250423142625.077924572@linuxfoundation.org>
+Message-ID: <20250423142628.778529760@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Fischer <kernel@o1oo11oo.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
+commit ed583d008edcb021c30ecad2e9d5c868d9ed5862 upstream.
 
-Commit d072acda4862 ("rust: use custom FFI integer types") did not
-update rust-analyzer to include the new crate.
+Turns out LNL+ and BMG+ no longer have the weird extra scanline
+offset for HDMI outputs. Fix intel_crtc_scanline_offset()
+accordingly so that scanline evasion/etc. works correctly on
+HDMI outputs on these new platforms.
 
-To enable rust-analyzer support for these custom ffi types, add the
-`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
-crates, which all directly depend on it.
-
-Fixes: d072acda4862 ("rust: use custom FFI integer types")
-Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250207215406.19348-2-ville.syrjala@linux.intel.com
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+(cherry picked from commit fede97b72b957b46260ca98fc924ba2b916e50d7)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_vblank.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -90,6 +90,12 @@ def generate_crates(srctree, objtree, sy
-         ["core", "compiler_builtins"],
-     )
- 
-+    append_crate(
-+        "ffi",
-+        srctree / "rust" / "ffi.rs",
-+        ["core", "compiler_builtins"],
-+    )
-+
-     def append_crate_with_generated(
-         display_name,
-         deps,
-@@ -109,9 +115,9 @@ def generate_crates(srctree, objtree, sy
-             "exclude_dirs": [],
-         }
- 
--    append_crate_with_generated("bindings", ["core"])
--    append_crate_with_generated("uapi", ["core"])
--    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
-+    append_crate_with_generated("bindings", ["core", "ffi"])
-+    append_crate_with_generated("uapi", ["core", "ffi"])
-+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
- 
-     def is_root_crate(build_file, target):
-         try:
+--- a/drivers/gpu/drm/i915/display/intel_vblank.c
++++ b/drivers/gpu/drm/i915/display/intel_vblank.c
+@@ -222,7 +222,9 @@ int intel_crtc_scanline_offset(const str
+ 	 * However if queried just before the start of vblank we'll get an
+ 	 * answer that's slightly in the future.
+ 	 */
+-	if (DISPLAY_VER(display) == 2)
++	if (DISPLAY_VER(display) >= 20 || display->platform.battlemage)
++		return 1;
++	else if (DISPLAY_VER(display) == 2)
+ 		return -1;
+ 	else if (HAS_DDI(display) && intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI))
+ 		return 2;
 
 
 
