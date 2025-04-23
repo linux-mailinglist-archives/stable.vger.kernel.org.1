@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF3DA98F42
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD5CA991EA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984AE3B846F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0810E922F61
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7A27CCC7;
-	Wed, 23 Apr 2025 14:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F2F7284666;
+	Wed, 23 Apr 2025 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn10up+B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLp5aGgu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADC41A23B0;
-	Wed, 23 Apr 2025 14:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE8F293B5B;
+	Wed, 23 Apr 2025 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420363; cv=none; b=ONULjejX/QpA3NNRawF5nv6r16o6FQgJSsH7VIZhxTMASpWZjGlgDPvyZsl3NGh4u/6ii0hYu/RGTQE4lT4TMzwQRUw6YxvfhnIw62Pe9qB9x26HU60FsaIGxVhIoKGRBYo55xiocpotAHrIXat5OcMiinAeyDSo/rvnCJr51eg=
+	t=1745421631; cv=none; b=TZQAGwi/Hiq/juNT3bm68SG6dhdf115MHKfcRgz6j7rblxzaUstYRph7rIObgsUQEzoKKDWkev7qc+jggu3kONuOpj4bhf6eYozghQphD33TPT+ljvLVfFiFyLw03UN8sH9bOKHb7LDwkFAHQxjLBCHU4++0pRPuB/Ezdsxujnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420363; c=relaxed/simple;
-	bh=eu4AExGYxOLsgLzaLcZ89j86An9HG5ktvLOwMCIAwxI=;
+	s=arc-20240116; t=1745421631; c=relaxed/simple;
+	bh=aMr1n90udowTlCLlyLeU97wLfkH22ecW3Xm+Id0ucfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N/3vbzJHrQ31iCll2hYU5SM9DDvTMx9+nb07DLDUIbPJtiVcWg/qYdKEplObQo7ZRXDorpm4vFricfhf4M/8EXUiK1dfo6XBF7eIVNccIjNxK18yMVZsskDdb7nx+xiVYM2/mydm8/ZbSzb77gZK+HRYZL8nnMWXnTD5en0EPkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn10up+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C4C4CEE2;
-	Wed, 23 Apr 2025 14:59:23 +0000 (UTC)
+	 MIME-Version; b=dDCzIcT/LONDH38awYDz1Z5XeMFOXpuzONXYKUzakcspX3OYkXEWhxZsak9ZiHeh/edQDTW7veU00ZV5vnlSyhOuKQdPN00ssmW+GLjWjcbFBTgRXAiuqtFvSruIc7aTm1MKydSdyJVwo5JdBqj3tvJMDo41DY/7usmLGEPAQpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLp5aGgu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DA6C4CEE2;
+	Wed, 23 Apr 2025 15:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420363;
-	bh=eu4AExGYxOLsgLzaLcZ89j86An9HG5ktvLOwMCIAwxI=;
+	s=korg; t=1745421631;
+	bh=aMr1n90udowTlCLlyLeU97wLfkH22ecW3Xm+Id0ucfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kn10up+B1OON2fz5KjvFzgueM4fn1V10oFrd3QxwSkOb4V8BwY4JmBhd9An8q0RUx
-	 pty7gdSj638CwYoxVPDVMKOBYGxMmXnkbtEQRWZ8SV4yvJyT/BFQPOfAUdnWfyHi8x
-	 BIWAfllSbv6W/Jk3ds7caKnEfpu6TVkczhm1TSno=
+	b=nLp5aGgu0beeV7Bd0tIDt3Z4uptY4yzpl8UJK8vIbga8WHpOZWvVAzWLHw8+d2sm4
+	 3ccO+PZxOzGrlsY/t5jvR26UxTaLSzIO01Qz42JxOnIC3qcsaqk6HO+20m3IbtvXw1
+	 qYpsDLlRkfAj+DnUz7/YtXx4sbk+JjcuOqLMfAQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 085/241] net: ethernet: mtk_eth_soc: correct the max weight of the queue limit for 100Mbps
+	Douglas Anderson <dianders@chromium.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 160/291] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
 Date: Wed, 23 Apr 2025 16:42:29 +0200
-Message-ID: <20250423142624.051265628@linuxfoundation.org>
+Message-ID: <20250423142630.935150731@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 6b02eb372c6776c9abb8bc81cf63f96039c24664 ]
+commit a5951389e58d2e816eed3dbec5877de9327fd881 upstream.
 
-Without this patch, the maximum weight of the queue limit will be
-incorrect when linked at 100Mbps due to an apparent typo.
+When comparing to the ARM list [1], it appears that several ARM cores
+were missing from the lists in spectre_bhb_loop_affected(). Add them.
 
-Fixes: f63959c7eec31 ("net: ethernet: mtk_eth_soc: implement multi-queue support for per-port queues")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/74111ba0bdb13743313999ed467ce564e8189006.1744764277.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+NOTE: for some of these cores it may not matter since other ways of
+clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
+but it still seems good to have all the info from ARM's whitepaper
+included.
+
+[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
+
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 7988de05e4ecd..6a34ad6483a14 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -734,7 +734,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 		case SPEED_100:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 103) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3);
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
- 			break;
- 		case SPEED_1000:
-@@ -757,7 +757,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 		case SPEED_100:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5);
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
- 			break;
- 		case SPEED_1000:
--- 
-2.39.5
-
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -888,6 +888,14 @@ static u8 spectre_bhb_loop_affected(void
+ {
+ 	u8 k = 0;
+ 
++	static const struct midr_range spectre_bhb_k132_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
++		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
++	};
++	static const struct midr_range spectre_bhb_k38_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++	};
+ 	static const struct midr_range spectre_bhb_k32_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+@@ -901,6 +909,7 @@ static u8 spectre_bhb_loop_affected(void
+ 	};
+ 	static const struct midr_range spectre_bhb_k24_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+@@ -916,7 +925,11 @@ static u8 spectre_bhb_loop_affected(void
+ 		{},
+ 	};
+ 
+-	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
++	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
++		k = 132;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
++		k = 38;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+ 		k = 32;
+ 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+ 		k = 24;
 
 
 
