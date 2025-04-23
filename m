@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12985A9907D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51CEA99377
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 854187AC392
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF6BE16F092
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F2128EA59;
-	Wed, 23 Apr 2025 15:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881472C2AD8;
+	Wed, 23 Apr 2025 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFIllbT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCY24hjl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF4E2836A4;
-	Wed, 23 Apr 2025 15:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400792C2AC8;
+	Wed, 23 Apr 2025 15:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421202; cv=none; b=LV0dITISAk2CdlkPCePs6D6qh1QepYm+kWX38AMaLeOJRffjcfzddRPr1yjYQLfuzaWHp33mypOToG1UWGB9a2mmqBSYMKQ2w2x9JpCFMo7rhfjYVo8I/QsyQMODFeefm/j0Z9gecNziv1l/wpZTlYmJowZtkfJLZg6PPQxWPCo=
+	t=1745422509; cv=none; b=lU6GBN6rOG0ZJL37EfoaDiD9xQj4n+wrBXWvV+FIehY5L6PV5dNyrKaU/1MAkG84OQzIhyVUf/9KYE60oxG5ONxus10lsAqGa/KLI/c7oDZLvoXveRPqIpSGAUxcdTpzEH7pMz6cALZLRnMuklfDc0SzmiMf+w+S8SvxTVvn+10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421202; c=relaxed/simple;
-	bh=Res+6Spr1NR3gcGRxFUpEOXFel2mErs9elgTOAlpalY=;
+	s=arc-20240116; t=1745422509; c=relaxed/simple;
+	bh=IDDgZwio+OwZ8EomMjwVD23tDj8xXQznlr7y8GnX0Jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ex0pluC95PxoS+t4yDmuL6fEth+9RFhlffZmRPf0aW/NtXyfveCa1WW2KSgoHtxbO8+Z8lfj5V2SvSKBF/Yjbrm2wclU3Y0IzCsNee2luaDFwFvt8z4HRfqu4ektB+QME4sBTJWWZhaaBLUzX3bYGZqeRWgIfiYycQmjGc0ORzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFIllbT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A456FC4CEE2;
-	Wed, 23 Apr 2025 15:13:21 +0000 (UTC)
+	 MIME-Version; b=k287fZDP9d8ZIEvxVVS0a2YhhK4A7utv44FfTm01ggGYWKB6QJ1NW8XsVTzJltDaI0dCCJ4Rje6QErjbilqbSFWAQz5gNNPAEyshgt+lDIW5WFzhsQulP3fhbshofSU5uF9ZwkBM6oEgImQSp7Qk0c45sn0Fga+U0mpsg/rdwAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCY24hjl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D38C4CEE8;
+	Wed, 23 Apr 2025 15:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421202;
-	bh=Res+6Spr1NR3gcGRxFUpEOXFel2mErs9elgTOAlpalY=;
+	s=korg; t=1745422509;
+	bh=IDDgZwio+OwZ8EomMjwVD23tDj8xXQznlr7y8GnX0Jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zFIllbT43WYgtQsnLsKadUfgZ6pUalikqCsLJFeAzUfgfJd/EfoKz7HlWuQQgXv8P
-	 kwgeq0zx1QlZCcw+I/Q/R5582O8TeezgU7P6d6X1qy5Y9Erff6/EBiBIJxLnggD/rw
-	 oaE/eod3UnwwpdbrOtkbGqHuEolZkWmCcj3gnT9U=
+	b=bCY24hjlALPq7q0QVXyeWrUg/EXdqVKCvAN9lHS9L1zZ73ynux3Plvb8F+LzO23sJ
+	 wEZbLbc0YAKrRYdH6XD2fkJTgZMvT5pAVkk1AQeOWGVW+++5ulRS2GLWHRMD0dIIgx
+	 KlosXDz5wEiqrHil90+ZBiVVSUuxsQaisUPYePJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.12 200/223] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
-Date: Wed, 23 Apr 2025 16:44:32 +0200
-Message-ID: <20250423142625.317089491@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 377/393] usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
+Date: Wed, 23 Apr 2025 16:44:33 +0200
+Message-ID: <20250423142658.902670515@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
+commit e56aac6e5a25630645607b6856d4b2a17b2311a5 upstream.
 
-After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
-the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
-have been released.
+The "command" variable can be controlled by the user via debugfs.  The
+worry is that if con_index is zero then "&uc->ucsi->connector[con_index
+- 1]" would be an array underflow.
 
-However, some requested IRQs remain unreleased, so there are still
-/proc/irq/* entries remaining, and this results in WARN() with the
-following message:
-
-  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
-  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
-
-To solve this issue, set the number of remaining IRQs to test->num_irqs,
-and release IRQs in advance by calling pci_endpoint_test_release_irq().
-
-Cc: stable@vger.kernel.org
-Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Fixes: 170a6726d0e2 ("usb: typec: ucsi: add support for separate DP altmode devices")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/c69ef0b3-61b0-4dde-98dd-97b97f81d912@stanley.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Minor context change fixed.
+ 13f2ec3115c8 ("usb: typec: ucsi: simplify command sending API") rename
+ ucsi_ccg_sync_write to ucsi_ccg_sync_control in v6.11, so this patch is
+ applied in ucsi_ccg_sync_write in v6.6.]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/ucsi/ucsi_ccg.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -251,6 +251,9 @@ fail:
- 		break;
- 	}
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -585,6 +585,10 @@ static int ucsi_ccg_sync_write(struct uc
+ 		    uc->has_multiple_dp) {
+ 			con_index = (uc->last_cmd_sent >> 16) &
+ 				    UCSI_CMD_CONNECTOR_MASK;
++			if (con_index == 0) {
++				ret = -EINVAL;
++				goto unlock;
++			}
+ 			con = &uc->ucsi->connector[con_index - 1];
+ 			ucsi_ccg_update_set_new_cam_cmd(uc, con, (u64 *)val);
+ 		}
+@@ -600,6 +604,7 @@ static int ucsi_ccg_sync_write(struct uc
+ err_clear_bit:
+ 	clear_bit(DEV_CMD_PENDING, &uc->flags);
+ 	pm_runtime_put_sync(uc->dev);
++unlock:
+ 	mutex_unlock(&uc->lock);
  
-+	test->num_irqs = i;
-+	pci_endpoint_test_release_irq(test);
-+
- 	return false;
- }
- 
+ 	return ret;
 
 
 
