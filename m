@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907E8A9908D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8BFA99037
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069C87AEF97
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E711BA147A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F3A2853FC;
-	Wed, 23 Apr 2025 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9991A317A;
+	Wed, 23 Apr 2025 15:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6zeV+rL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZgVsuWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6A6280CF0;
-	Wed, 23 Apr 2025 15:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6A728D858;
+	Wed, 23 Apr 2025 15:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421254; cv=none; b=eJGcJAGkXfN0XtQ6zhox4dCNg0zFC6CWo/nQoc9EKLPJIr2nyJDtzjpM1n3iylESNUewz46FWmDL/widCA7OXFBopn4QrFNmdo+b9STLwSqfpOZRCScDOx0SgQPhMVTHiQSuDf6jC+3V4kUGM15z/ORa+9To0sphrALEfveiA/M=
+	t=1745420772; cv=none; b=nznSNASTiLNWmuIyDnC8D/I9h5UXGVWtPahuzxumsw3OP5x7+3OGxYKvsDtFkKoiVpVfh9m2Kj4IT8UEpjjMafpzvLaJmF3Xm3ZLuOXI6zeIlM8ioauDgeUiTAEDMA9LL8rTHxJsNHuwTiohvdLxxZ1YY3nu0WjHuZMTGzMH5CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421254; c=relaxed/simple;
-	bh=BOhgZc9Ac1WfyGgDD+4xqwlauCAnIX4lu5VCYeP+DHo=;
+	s=arc-20240116; t=1745420772; c=relaxed/simple;
+	bh=vYTh7ccb9P5jX+LqRC2OsxJ36p2ik6lSp4l0zh221xU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ielucvh2ZpGMqYE8Ml+nRYNCyqcapLdzAqg63Hbe8pvBYNnHpwcYq6YguCfoge34iV3u9diaJJDJZ6oUsvr1UO3IzraB8GSYVN62kQZnS68XYX9XaeF7bAovSXtfR/GMn7bpQ6h+xb5yKiNiTCsoVt8yL9WxWX7bmdonAxS1grc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6zeV+rL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27E3C4CEE2;
-	Wed, 23 Apr 2025 15:14:13 +0000 (UTC)
+	 MIME-Version; b=oHqO6S/26wflWBcdxlzacl7WlZOCoLtXNw/BP4ECQOh5QzkWtYMLPs96n6hSJajq4VzorsJJMvcDrFxksDgOOVhPsczxU/51JTiyMjhvxqq+Y2K35kHP7wz7m8E6v/BqAh8VdijmDdJxKOCk5kYLNlVKL+RQOW/W0zfVYwWnRUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZgVsuWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8899C4CEE2;
+	Wed, 23 Apr 2025 15:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421254;
-	bh=BOhgZc9Ac1WfyGgDD+4xqwlauCAnIX4lu5VCYeP+DHo=;
+	s=korg; t=1745420772;
+	bh=vYTh7ccb9P5jX+LqRC2OsxJ36p2ik6lSp4l0zh221xU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6zeV+rLUbf7zdficGwpXWlOpWlJgkD8q16wcWa376O1X+8w1kj95SQWbqlBrf/2M
-	 C7LcouRIFbVDfPQjYzjFujTNcbDRVIWYqHhKbc+bxvI/jurv5u6fIsBuFvriYNfH5R
-	 oC7XzSFLK238zT7JCGSMW6ucgNGXeB0cLXXq05gY=
+	b=aZgVsuWQPaLPT1GWWP4T/yGsQmpcoj5PVIZwmUMzgA+n1JiEZAxYhLi3YimFsDoTO
+	 6Limj/0W89edgmuZqSshBXILm1vy1a9D/qkjUIyZNdCyQAkvMHQJ2594Ovij8Okuzb
+	 21G3RYxIcUW95n6SliwlKQbtHHIcQrzURLz2eKBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 6.14 169/241] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 161/223] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:43:53 +0200
-Message-ID: <20250423142627.437718385@linuxfoundation.org>
+Message-ID: <20250423142623.727742543@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
+commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
 
-There was a mistake in the SNR uncore spec. The counter increments for
-every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
-which was documented in the spec.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-The event list has been updated:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
-  "BriefDescription": "Free running counter that increments for every 32
-		       bytes of data sent from the IO agent to the SOC",
-
-Update the scale of the IIO bandwidth in free running counters as well.
-
-Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4891,28 +4891,28 @@ static struct uncore_event_desc snr_unco
- 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
- 	/* Free-Running IIO BANDWIDTH IN Counters */
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
- 	{ /* end: all zeroes */ },
- };
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -1228,7 +1228,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
+ 	uint32_t tach_period;
+ 	int ret;
+ 
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
+ 
+ 	ret = smu_v13_0_auto_fan_control(smu, 0);
 
 
 
