@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D1AA98E92
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9177A98DD2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB8F5A6EF4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE683A925E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181BE27FD67;
-	Wed, 23 Apr 2025 14:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795322820AC;
+	Wed, 23 Apr 2025 14:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGwx2vc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZ7yc3Vh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF9175BF;
-	Wed, 23 Apr 2025 14:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343F92820A8;
+	Wed, 23 Apr 2025 14:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420073; cv=none; b=idkjtWBBgYrdnf4Tm1zBUdq6xWodHIK3g52VsG+SHjxeos9RcENkrXB9g+aGR1z2IsJzpIbzYsLNOcttdCTeQI6/KpLPi3mLV19LoTnj8rIpZY6AJopQm/EejeaT2me1HIJ5NWuQ6gUKjtRRhXk1vk0as2w3rrwwWbFmmbS2AWc=
+	t=1745419716; cv=none; b=ioh67zqhtxmDIdcTWXJ6OL2iR3DoID3Q86lnp1+mP/zOLnl58jB4BZ7hDCPN95hvbxwLLFNPoEEhiNPIqwSNIeQ5IIWpiKqwMJiVBB5GiH2XTi6KLPpiKhXOZYNbICQstUmlxUI6jiPBvGrd9sEiRsQdbWFBUfhkqjlF5+qa3lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420073; c=relaxed/simple;
-	bh=+uiZoT4UOS2wvRgP9L1bYKwM5wQccnRXlOgmmennzq8=;
+	s=arc-20240116; t=1745419716; c=relaxed/simple;
+	bh=b8Phdis1FucKWwuQV7D5WXZzDo4tEYHjFAZvymAa7ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=coESweJJWTD6DT1CCtijBtzV4uqRop3SXECQuQAcExDfrAOQ9+fJMTQl7ySiH9x0X/6BmxYKHL2DFkuxjq49PCr+iiSAYugmpVws9Xk2GFLYp/Kly+r4WlYUwxX1yANbM/tqe0kl0nD+dIoXRvRjefxrtv4QGfCpPWJb0Yt5zds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGwx2vc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DA7C4CEE2;
-	Wed, 23 Apr 2025 14:54:33 +0000 (UTC)
+	 MIME-Version; b=N7ds5VNYI34DpMwgsInfJ6Bjj6j/x8uP8PPDn5EPbcss7DB27NNPiyLaFFQCEW0L4Geqi+kmP/8YMhbgdspvEtxHENeU9TTSkoyfzW9wpBEcLbrWNTLH4xUGINU+dMhgYT9zZEiPUVzZpXo4jOmYwkakIKu2hwVpIa+tZmJaCy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZ7yc3Vh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEBEC4CEE2;
+	Wed, 23 Apr 2025 14:48:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420073;
-	bh=+uiZoT4UOS2wvRgP9L1bYKwM5wQccnRXlOgmmennzq8=;
+	s=korg; t=1745419715;
+	bh=b8Phdis1FucKWwuQV7D5WXZzDo4tEYHjFAZvymAa7ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGwx2vc5OxkRcSCC1l8FxNOd6qs7qNaUNw0+9H161LMCotGGkZ9pe9nu5h4yAyvt0
-	 W0umYM0zuCN5caaoCjNifb6+oyD9C0YW1yIi6UcCDmwUB2VrIPyS37wHPu/9kCXnUq
-	 mcF/xaoG4ME0VjPBJhiIt5u8eVxO0xgorsJ50vmI=
+	b=LZ7yc3VhpCe6ls6KEZsFxn5vl/7hExpbovEvBoNo5uIPEBz5wHYOSvG+zxl1ZRADL
+	 q4V2cDEHxTC+Hq32VUpV0Ny9zzyytCIUcREVCvelKJyU/61Y+0y1fg8hKbaVtx5mYv
+	 WMEMvKkPJBh0euh7yLyhUNVvYLxB4v58+3rccxAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 057/241] net: ethernet: ti: am65-cpsw: fix port_np reference counting
+Subject: [PATCH 6.12 049/223] net: ngbe: fix memory leak in ngbe_probe() error path
 Date: Wed, 23 Apr 2025 16:42:01 +0200
-Message-ID: <20250423142622.933654904@linuxfoundation.org>
+Message-ID: <20250423142619.131864738@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit 903d2b9f9efc5b3339d74015fcfc0d9fff276c4c ]
+[ Upstream commit 88fa80021b77732bc98f73fb69d69c7cc37b9f0d ]
 
-A reference to the device tree node is stored in a private struct, thus
-the reference count has to be incremented. Also, decrement the count on
-device removal and in the error path.
+When ngbe_sw_init() is called, memory is allocated for wx->rss_key
+in wx_init_rss_key(). However, in ngbe_probe() function, the subsequent
+error paths after ngbe_sw_init() don't free the rss_key. Fix that by
+freeing it in error path along with wx->mac_table.
 
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250414083942.4015060-1-mwalle@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also change the label to which execution jumps when ngbe_sw_init()
+fails, because otherwise, it could lead to a double free for rss_key,
+when the mac_table allocation fails in wx_sw_init().
+
+Fixes: 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20250412154927.25908-1-abdun.nihaal@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index bef734c6e5c2b..afe8127fd32be 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2756,7 +2756,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 				of_property_read_bool(port_np, "ti,mac-only");
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index 53aeae2f884b0..1be2a5cc4a83c 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -607,7 +607,7 @@ static int ngbe_probe(struct pci_dev *pdev,
+ 	/* setup the private structure */
+ 	err = ngbe_sw_init(wx);
+ 	if (err)
+-		goto err_free_mac_table;
++		goto err_pci_release_regions;
  
- 		/* get phy/link info */
--		port->slave.port_np = port_np;
-+		port->slave.port_np = of_node_get(port_np);
- 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
- 		if (ret) {
- 			dev_err(dev, "%pOF read phy-mode err %d\n",
-@@ -2810,6 +2810,17 @@ static void am65_cpsw_nuss_phylink_cleanup(struct am65_cpsw_common *common)
- 	}
- }
- 
-+static void am65_cpsw_remove_dt(struct am65_cpsw_common *common)
-+{
-+	struct am65_cpsw_port *port;
-+	int i;
-+
-+	for (i = 0; i < common->port_num; i++) {
-+		port = &common->ports[i];
-+		of_node_put(port->slave.port_np);
-+	}
-+}
-+
- static int
- am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
- {
-@@ -3708,6 +3719,7 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 	am65_cpsw_nuss_cleanup_ndev(common);
- 	am65_cpsw_nuss_phylink_cleanup(common);
- 	am65_cpts_release(common->cpts);
-+	am65_cpsw_remove_dt(common);
- err_of_clear:
- 	if (common->mdio_dev)
- 		of_platform_device_destroy(common->mdio_dev, NULL);
-@@ -3747,6 +3759,7 @@ static void am65_cpsw_nuss_remove(struct platform_device *pdev)
- 	am65_cpsw_nuss_phylink_cleanup(common);
- 	am65_cpts_release(common->cpts);
- 	am65_cpsw_disable_serdes_phy(common);
-+	am65_cpsw_remove_dt(common);
- 
- 	if (common->mdio_dev)
- 		of_platform_device_destroy(common->mdio_dev, NULL);
+ 	/* check if flash load is done after hw power up */
+ 	err = wx_check_flash_load(wx, NGBE_SPI_ILDR_STATUS_PERST);
+@@ -701,6 +701,7 @@ static int ngbe_probe(struct pci_dev *pdev,
+ err_clear_interrupt_scheme:
+ 	wx_clear_interrupt_scheme(wx);
+ err_free_mac_table:
++	kfree(wx->rss_key);
+ 	kfree(wx->mac_table);
+ err_pci_release_regions:
+ 	pci_release_selected_regions(pdev,
 -- 
 2.39.5
 
