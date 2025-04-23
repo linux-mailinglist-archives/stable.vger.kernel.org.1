@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA65A99092
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 338D8A98F8B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E41E46408B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A4B5A7A13
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A78329116A;
-	Wed, 23 Apr 2025 15:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE3D262FD6;
+	Wed, 23 Apr 2025 15:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWhiAwxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tlp0TUxv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3771C28D854;
-	Wed, 23 Apr 2025 15:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B24B27CB12;
+	Wed, 23 Apr 2025 15:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421071; cv=none; b=ujui9TCeyyvpmoD3iZFlRl2T636LX3fyrdzZWLzKS73MukwV07cGfsqb6SpRAGghGOYGxTHzdec/AgCj3vc9yZf3/X9tynspxQ8FwhpFjuurssG0wi2oV37khPBf3IJ+yRvQ5cPP/VQwlfSZn2GRsmt3flDDHb/ZkwllxNAJ/aI=
+	t=1745420495; cv=none; b=fj8zbKDFLFbD4CeenjkaBnTMOqmh/owx665YhJOhBuYy5kx9S+Z/NCAwzHh5gnsfeB+oN3cNbVjs+pU/u8GVMQxkuPXuWKpX+QnQtoM4Q+h0oBDg40I6hGJSv5Mo8HyT6Af57SQ/j7fYG0WyPiy4Bq31NnIx8JZ+fZqG361rpFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421071; c=relaxed/simple;
-	bh=YOYAv+YwPa4kh5yGVBQI7MEyDsTgh20PimoPWYQvbfk=;
+	s=arc-20240116; t=1745420495; c=relaxed/simple;
+	bh=fFyRXWEhV1odPhixUuv+JTA4avgIyjPVqvD8vQU7/JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnKRP217sxAmKqHcU8Y9k3+i/6JJNcAy4ifvHpag2Pw0RBeBHyxbi1eRaop2U8a5SDJVzNm/Ufkfdzt0TVX8F1lpGumOgCH++KYYvb5Ax+kAMK76j5KYsY8yETvj+9HSdhUPEppNtgMDiRSLC24kVtzkBb+5KOTZo24tPBmwFds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWhiAwxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6506DC4CEE2;
-	Wed, 23 Apr 2025 15:11:10 +0000 (UTC)
+	 MIME-Version; b=EXkI1DV9+Ljz0mJTAQEzPmlJmCOAQ93q85W61nw+M8yvToMCmODMCGLfr9YeWyeLfQGn0YHgdxS1b49YtBZc/xfdQHqvxMrKx4zGHCy1xCJYROlc+qlfgrRFZaTzay1uL61Yly3ceqKbuVJ24O7wh4SgE2STL3PW6tBY+8Ij6Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tlp0TUxv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8F4C4CEE2;
+	Wed, 23 Apr 2025 15:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421070;
-	bh=YOYAv+YwPa4kh5yGVBQI7MEyDsTgh20PimoPWYQvbfk=;
+	s=korg; t=1745420495;
+	bh=fFyRXWEhV1odPhixUuv+JTA4avgIyjPVqvD8vQU7/JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWhiAwxmyVa7a3MAQdl/ZIZ8EDM/OOVdNJqBZ7nCEyIdlojQkbQjl2LxHI5LmIOnr
-	 ivOS1jt2EyvA/TnnYYRlcx1ZGXP23Fi8hBLNkVTXgmadleJUENWGz0IjZfZZ8RPWEy
-	 zQPQR9ZkUmKMRnzGHl9dKqF6ONXjgzwupi+d9v98=
+	b=Tlp0TUxvAEVYUOUxCaWOcPOIIagjwuDbm/q3tDLZC64ZwFUPY1rKSVh4fNnl6zfY7
+	 noNnhl5/T/8M+HlZRQ7l+NSSJyqparjsEpOlZ9XOQlSgBBvLy9j0A0l/+HxMAXRKnz
+	 SV9VpFI7ezzHMzXPVN+MPnJf6PpujB6cPzpfDfB0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 144/393] media: venus: hfi_parser: add check to avoid out of bound access
-Date: Wed, 23 Apr 2025 16:40:40 +0200
-Message-ID: <20250423142649.330699316@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/291] Bluetooth: qca: simplify WCN399x NVM loading
+Date: Wed, 23 Apr 2025 16:40:41 +0200
+Message-ID: <20250423142626.511946882@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
+[ Upstream commit 1cc41b5092e3aa511454ec882c525af311bee631 ]
 
-There is a possibility that init_codecs is invoked multiple times during
-manipulated payload from video firmware. In such case, if codecs_count
-can get incremented to value more than MAX_CODEC_NUM, there can be OOB
-access. Reset the count so that it always starts from beginning.
+The WCN399x code has two separate cases for loading the NVM data. In
+preparation to adding support for WCN3950, which also requires similar
+quirk, split the "variant" to be specified explicitly and merge two
+snprintfs into a single one.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btqca.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
- 	struct hfi_plat_caps *caps = core->caps, *cap;
- 	unsigned long bit;
- 
-+	core->codecs_count = 0;
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index 892e2540f008a..5651f40db1736 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -807,6 +807,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		   const char *firmware_name)
+ {
+ 	struct qca_fw_config config = {};
++	const char *variant = "";
+ 	int err;
+ 	u8 rom_ver = 0;
+ 	u32 soc_ver;
+@@ -901,13 +902,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
+ 		case QCA_WCN3990:
+ 		case QCA_WCN3991:
+ 		case QCA_WCN3998:
+-			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
+-				snprintf(config.fwname, sizeof(config.fwname),
+-					 "qca/crnv%02xu.bin", rom_ver);
+-			} else {
+-				snprintf(config.fwname, sizeof(config.fwname),
+-					 "qca/crnv%02x.bin", rom_ver);
+-			}
++			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID)
++				variant = "u";
 +
- 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
- 		return;
- 
++			snprintf(config.fwname, sizeof(config.fwname),
++				 "qca/crnv%02x%s.bin", rom_ver, variant);
+ 			break;
+ 		case QCA_WCN3988:
+ 			snprintf(config.fwname, sizeof(config.fwname),
+-- 
+2.39.5
+
 
 
 
