@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C07CA99003
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CFCA99289
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7560117D3A1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B5901BA7619
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D05293B5F;
-	Wed, 23 Apr 2025 15:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDE928D853;
+	Wed, 23 Apr 2025 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aufDaAvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdLT2F1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7F7293B56;
-	Wed, 23 Apr 2025 15:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD3128CF52;
+	Wed, 23 Apr 2025 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420835; cv=none; b=O1vDKCJcBhltMr7o4GDiHZIghtJQSipwqFQgewllHsJv+JoUSrPRTB60u9/7nBC4tT1/m3HwRsylNcOn5xtdeAQXuiUZXVGj5iRfVVMlIiWglCP5lncA7HWjHhESNHV+qCmchthq7Gmqr06o4HKNWmwalJaA5I8ifbRHjy11kWA=
+	t=1745421934; cv=none; b=sbOHEX26GB4CbZoF6pk8rFlcydi6mRdKijtCVTn1eGhrKPFLq60Y7GSdL7s9MrwNPgfhBJ1gKGGqEcC2aj8y3zq7g5o5iAnjk1lJ7a4Ktzqi+zafxU75yj3nEDyMTvPMRzz12NgHxw/FVxbQU+UxvRTBXoGYhz0eGTtx6MpA+JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420835; c=relaxed/simple;
-	bh=JjCV5CDo1B1PAc1LYJYaSXXLKLU9ichSN3WupyTSvjg=;
+	s=arc-20240116; t=1745421934; c=relaxed/simple;
+	bh=oQ+Kx9jkZs/BROxDXu0TwBq4p/h4n01zWB0XEC++q+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXtois169jtopgSmG3v1yqCSsY1HfkdaXZMqjhANMFjCjIN3pFmeaz+XV0HpnM2cmOwa0bLWVh5Ur3bvRRUeU+5z96B9iXkX+miXU2tbgAO1AwGljTuk9Mcj6ppDXCxaxs7w6y2pN6TlcqhedReURSSOwt8rZ8IZfVPpUuBOYa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aufDaAvB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CB3C4CEE3;
-	Wed, 23 Apr 2025 15:07:14 +0000 (UTC)
+	 MIME-Version; b=cbukPag0J2vez/QkmsicdOZDU9+PfSau7TGCe4RDuysM4Bmt0NsIFaUho2R/5XyBZDEMCSZSGvHrP8kulPfMWWrsTnJfMQ3Wnod1inX1DdngNPCBVIvmjny2QuXfFdqSo0LJXleZEFKa9L46e9q2uJlVzkMCyBlW1qhWgbjwnWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdLT2F1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B02C4CEE2;
+	Wed, 23 Apr 2025 15:25:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420835;
-	bh=JjCV5CDo1B1PAc1LYJYaSXXLKLU9ichSN3WupyTSvjg=;
+	s=korg; t=1745421934;
+	bh=oQ+Kx9jkZs/BROxDXu0TwBq4p/h4n01zWB0XEC++q+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aufDaAvBNs0KUQBDY9slb7YZAxBPbtB5o+NO9tzGQpcXH0RtOm2rVbfYZ08lGAWWo
-	 K+x++BPO+mvKqS+XxMyxayijzEeS9EFYK4IG5u4HphTqzAOGcUebI+3ENclKKFvX0z
-	 2BkBJbBugXEzwAJe/U8sWyC2w+Tk3KmSuv011CAY=
+	b=AdLT2F1/eVcJ0QENlIC1TsqBw2GMUjuUSwTDx+Lg8V3CqHpZ8o/UElrky6djo0dru
+	 4wv46H9mQLXdTb3HfEMjA8bbBqT1nTMa17p6DliuxBt8YnzxBJmyW3CDLnRy07q9ti
+	 /E4wv71Ixk8WUO2PU7sF3iNyetTedvt6wnWu6o1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.14 126/241] Bluetooth: vhci: Avoid needless snprintf() calls
+	Manikantan R <quic_manrav@quicinc.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 201/291] ASoC: codecs:lpass-wsa-macro: Fix logic of enabling vi channels
 Date: Wed, 23 Apr 2025 16:43:10 +0200
-Message-ID: <20250423142625.717732865@linuxfoundation.org>
+Message-ID: <20250423142632.592758689@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit 875db86e1ec75fe633f1e85ed2f92c731cdbf760 upstream.
+commit 7648beb65600220996ebb2da207610b1ff9b735e upstream.
 
-Avoid double-copying of string literals. Use a "const char *" for each
-string instead of copying from .rodata into stack and then into the skb.
-We can go directly from .rodata to the skb.
+Existing code only configures one of WSA_MACRO_TX0 or WSA_MACRO_TX1
+paths eventhough we enable both of them. Fix this bug by adding proper
+checks and rearranging some of the common code to able to allow setting
+both TX0 and TX1 paths
 
-This also works around a Clang bug (that has since been fixed[1]).
+Without this patch only one channel gets enabled in VI path instead of 2
+channels. End result would be 1 channel recording instead of 2.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401250927.1poZERd6-lkp@intel.com/
-Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
-Link: https://github.com/llvm/llvm-project/commit/ea2e66aa8b6e363b89df66dc44275a0d7ecd70ce [1]
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
 Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Co-developed-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_vhci.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |  108 +++++++++++++++++++++----------------
+ 1 file changed, 63 insertions(+), 45 deletions(-)
 
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -289,18 +289,18 @@ static void vhci_coredump(struct hci_dev
- 
- static void vhci_coredump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	char buf[80];
-+	const char *buf;
- 
--	snprintf(buf, sizeof(buf), "Controller Name: vhci_ctrl\n");
-+	buf = "Controller Name: vhci_ctrl\n";
- 	skb_put_data(skb, buf, strlen(buf));
- 
--	snprintf(buf, sizeof(buf), "Firmware Version: vhci_fw\n");
-+	buf = "Firmware Version: vhci_fw\n";
- 	skb_put_data(skb, buf, strlen(buf));
- 
--	snprintf(buf, sizeof(buf), "Driver: vhci_drv\n");
-+	buf = "Driver: vhci_drv\n";
- 	skb_put_data(skb, buf, strlen(buf));
- 
--	snprintf(buf, sizeof(buf), "Vendor: vhci\n");
-+	buf = "Vendor: vhci\n";
- 	skb_put_data(skb, buf, strlen(buf));
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1150,6 +1150,67 @@ static void wsa_macro_mclk_enable(struct
+ 	}
  }
+ 
++static void wsa_macro_enable_disable_vi_sense(struct snd_soc_component *component, bool enable,
++						u32 tx_reg0, u32 tx_reg1, u32 val)
++{
++	if (enable) {
++		/* Enable V&I sensing */
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++	} else {
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++	}
++}
++
++static void wsa_macro_enable_disable_vi_feedback(struct snd_soc_component *component,
++						 bool enable, u32 rate)
++{
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
++
++	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX0_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX1_SPKR_PROT_PATH_CTL, rate);
++
++	if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX2_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX3_SPKR_PROT_PATH_CTL, rate);
++}
++
+ static int wsa_macro_mclk_event(struct snd_soc_dapm_widget *w,
+ 				struct snd_kcontrol *kcontrol, int event)
+ {
+@@ -1166,7 +1227,6 @@ static int wsa_macro_enable_vi_feedback(
+ {
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+-	u32 tx_reg0, tx_reg1;
+ 	u32 rate_val;
+ 
+ 	switch (wsa->pcm_rate_vi) {
+@@ -1190,56 +1250,14 @@ static int wsa_macro_enable_vi_feedback(
+ 		break;
+ 	}
+ 
+-	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
+-	} else if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
+-	}
+-
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+ 		/* Enable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		wsa_macro_enable_disable_vi_feedback(component, true, rate_val);
+ 		break;
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		/* Disable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		wsa_macro_enable_disable_vi_feedback(component, false, rate_val);
+ 		break;
+ 	}
  
 
 
