@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-135319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461A2A98D97
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA46BA991F7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1072C445691
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C7E93B8A7B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8812227FD7F;
-	Wed, 23 Apr 2025 14:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C666E28E606;
+	Wed, 23 Apr 2025 15:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAtObwFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAl7YqAi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDD127EC91;
-	Wed, 23 Apr 2025 14:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7C27D763;
+	Wed, 23 Apr 2025 15:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419610; cv=none; b=ea0JxjSMTUtaIjptr2F1keqlp9TEyGo+Xel0g+tzRQKfeulbd2HK5agsQocWM2yggQKVVbQG0vXQEnocAD78j6XbpV6+AjCE0hJztxgpnKR1iP2XaWzCBR+TB045wjdHFK4ZNq/sBYBftgcAqYm27fxFswThcYGU+Y5WL0RYYH8=
+	t=1745421516; cv=none; b=aXt7H3xSp/Ob3Rmerx0DCJOXxos9hr2ettytSEMsE/cOuTYSx/aiZxXrLV2kW+1U+wLTEgQkE8osGQJpADaGL/C07m+2jZYKlWXbQGnDzS3Wgq0A0gmi4teXH62/OGooqYmOAsm6F686e3TR1vrXDbSoQ2k/Yv7WaDKRUDz47FI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419610; c=relaxed/simple;
-	bh=JbeAlUdCUUugWBlxoWGrr1XsI1e4q8rrQxw74RoiNqg=;
+	s=arc-20240116; t=1745421516; c=relaxed/simple;
+	bh=Pa82AtQN3BH1foV03NF9BOsrwUMq9DOxifXuBBBc5SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cIcBIJId45VJXlrYjbmfpSkTDV6UeGfwVQYEnUWkWZSBkGULO4SkfoFEWIvgZkeYoOyLHOS7JDg82VG8DLHh96tgmKIqxFNpstq9Q3IvpWRVXLVgIDLrtwW+vHd8qcjnuwfj55YwRSx9376Iu41ygQr2V/BybTVXTS719CInZtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAtObwFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E105C4CEE2;
-	Wed, 23 Apr 2025 14:46:49 +0000 (UTC)
+	 MIME-Version; b=fVv3mhHDUH/nUD5GVPHyLL5IX6fFXOiclya3nrS+oZCGbFBosCmxODYfcBWCR+zvv5nD9TfY14z7C7qBFb+H1qfOs/8McCz4DbbL4Fbmqg0ADj7HVC2pYW20KLxdCKAl0xWv6c/geBGzGvRspQp96KJU1exkUBYiqj3FZVhufcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAl7YqAi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB45C4CEE2;
+	Wed, 23 Apr 2025 15:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419610;
-	bh=JbeAlUdCUUugWBlxoWGrr1XsI1e4q8rrQxw74RoiNqg=;
+	s=korg; t=1745421515;
+	bh=Pa82AtQN3BH1foV03NF9BOsrwUMq9DOxifXuBBBc5SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAtObwFYh4oeXEvy5WeWtZjyQMyLiWuxyUNCYqeFY7utRenTKd9m9AVvbPWGB5l5y
-	 KVwjOs0cuIg1BSPPReWJBVPoD7NRw3xBmIhHDasL6y/hNqFzz4RvPnLyGQi0qoiSC3
-	 2ARZhXUiDRES2mnnAPnhgCPTBD41t4I48ubkg75Q=
+	b=PAl7YqAin9ks7sV7a7aFBJFyGoO0i3iwkitbou7vOUjEn+vcqDT7aXNJQ3ouP5UtP
+	 Bi/y10/UH7dBvSU1hsMWbtec2rgz3XL8/W++KYrJFc0NDue/Pzp/0zRP3FSfyTTVUF
+	 ZeNMNmyeOHRwQH2H5Q1ch1ae8o+qz65/GWiPPOLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Coly Li <colyli@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/223] md/raid10: fix missing discard IO accounting
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Juergen Gross <jgross@suse.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 187/393] sparc/mm: disable preemption in lazy mmu mode
 Date: Wed, 23 Apr 2025 16:41:23 +0200
-Message-ID: <20250423142617.580729571@linuxfoundation.org>
+Message-ID: <20250423142651.102970329@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +73,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit d05af90d6218e9c8f1c2026990c3f53c1b41bfb0 ]
+commit a1d416bf9faf4f4871cb5a943614a07f80a7d70f upstream.
 
-md_account_bio() is not called from raid10_handle_discard(), now that we
-handle bitmap inside md_account_bio(), also fix missing
-bitmap_startwrite for discard.
+Since commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+updates") it's been possible for arch_[enter|leave]_lazy_mmu_mode() to be
+called without holding a page table lock (for the kernel mappings case),
+and therefore it is possible that preemption may occur while in the lazy
+mmu mode.  The Sparc lazy mmu implementation is not robust to preemption
+since it stores the lazy mode state in a per-cpu structure and does not
+attempt to manage that state on task switch.
 
-Test whole disk discard for 20G raid10:
+Powerpc had the same issue and fixed it by explicitly disabling preemption
+in arch_enter_lazy_mmu_mode() and re-enabling in
+arch_leave_lazy_mmu_mode().  See commit b9ef323ea168 ("powerpc/64s:
+Disable preemption in hash lazy mmu mode").
 
-Before:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    48.00     16.00     0.00   0.00    5.42   341.33
+Given Sparc's lazy mmu mode is based on powerpc's, let's fix it in the
+same way here.
 
-After:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    68.00  20462.00     0.00   0.00    2.65 308133.65
-
-Link: https://lore.kernel.org/linux-raid/20250325015746.3195035-1-yukuai1@huaweicloud.com
-Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Coly Li <colyli@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250303141542.3371656-4-ryan.roberts@arm.com
+Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Juergen Gross <jgross@suse.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juegren Gross <jgross@suse.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/sparc/mm/tlb.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index a214fed4f1622..cc194f6ec18da 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1687,6 +1687,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	 * The discard bio returns only first r10bio finishes
- 	 */
- 	if (first_copy) {
-+		md_account_bio(mddev, &bio);
- 		r10_bio->master_bio = bio;
- 		set_bit(R10BIO_Discard, &r10_bio->state);
- 		first_copy = false;
--- 
-2.39.5
-
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -52,8 +52,10 @@ out:
+ 
+ void arch_enter_lazy_mmu_mode(void)
+ {
+-	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++	struct tlb_batch *tb;
+ 
++	preempt_disable();
++	tb = this_cpu_ptr(&tlb_batch);
+ 	tb->active = 1;
+ }
+ 
+@@ -64,6 +66,7 @@ void arch_leave_lazy_mmu_mode(void)
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+ 	tb->active = 0;
++	preempt_enable();
+ }
+ 
+ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 
 
 
