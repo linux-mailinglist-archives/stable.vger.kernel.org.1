@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EB32A98FBA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:13:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1007DA99144
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D195A3B7219
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2FB11B84115
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BE828467A;
-	Wed, 23 Apr 2025 15:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C13288CB2;
+	Wed, 23 Apr 2025 15:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mnmngoaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6F2giZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E89A280A4F;
-	Wed, 23 Apr 2025 15:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DB02820CC;
+	Wed, 23 Apr 2025 15:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420572; cv=none; b=cKcjhbngwTXo9gBqFBnO3ZEjR9a3jdeyMdNlhRX/wKHVX/v2xQmnEvihYaLvKDCJYMwC00AqKAPgjk378rwZSikmQ6+EjGD/lgYG7wW1sXL4W3fnjDcQxklzRsVRpAoUNVeF+CSyN84FZHsmzk6l13H1TbADhoPRfOqKq15S2so=
+	t=1745421197; cv=none; b=si3VV859Dz0PwKLFhgbniFdwuj4dN7VcLVy3YgqSbdjWzlazJVoe9yTcLKA6vxr8Nf8nKOsAgBpdkIIJH7AaQIatHU14UiI2zt+l6tmQkhue5vDTpBdHUbC+gu+186wWXJ3KvHl1qeycHmgbFqAO4H0lKgZ7GatnfMl+dhz1nHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420572; c=relaxed/simple;
-	bh=E7HqegBKTet/wL7Y3vHhYuu7en06Ovh31WoKond4uWk=;
+	s=arc-20240116; t=1745421197; c=relaxed/simple;
+	bh=Gn0NcaCaMvcYEiTh7Cc5h/qYDLw2uMokDDGdyw9iIJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i1r3yY4N4xAdP3FiBIlL8FE5j9LyePrMlm2vqOAH5VrrdqlqGOlFaGVSkebVlOnFpwGkSgAkGhrd+YQBFcW+HUtvy9TN/zfxYTh/ZlwdvfSczY4+m2TtT+wusZcZvhVY3rcN7UpA14MA2eh1j4b11JUs4DSbFy2JuMue8Pm4hF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mnmngoaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9495BC4CEE2;
-	Wed, 23 Apr 2025 15:02:51 +0000 (UTC)
+	 MIME-Version; b=VDy1350aDfk/yTeIPuA1MkyrPZd2roWbHkRaZUYS0AuYP1Wn9Hp4g74vlDorh2fBuvyb5+HW6b8GEFK8MqdoTCb25nKGzhqfZ+K78JftUKpU1m3Egz4WgXTNMxhsZxpsAzAu0OectoAbCIUpElzNSepniFR0JHJATS3iFN0H/yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6F2giZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790F5C4CEE3;
+	Wed, 23 Apr 2025 15:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420571;
-	bh=E7HqegBKTet/wL7Y3vHhYuu7en06Ovh31WoKond4uWk=;
+	s=korg; t=1745421196;
+	bh=Gn0NcaCaMvcYEiTh7Cc5h/qYDLw2uMokDDGdyw9iIJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MnmngoajoM8athWCrP4YaH+Wi7g/f8Wmg2liT3P1Q4WSqDEMN8Ai6PW5qa9eW2MnB
-	 moLu4nMQKUWD7DFAqF8Pk4/63LNlK43Ii1k6n/3r/4fGgqj39yLUZ/r9IR18KH4rTG
-	 Ajf/vdxwNCn9UzmvuGQkd5IlACLTg10R0GhtkXH4=
+	b=Q6F2giZn0fU4WmkUdrWdFSBjP7LAFBKtf6amNJx38NyyCxEhDhcneK2zu6x3nf1w/
+	 GRAmKSm4BF3ypcjocKlmwEqMWuS4f2XmirhsY8CsEL48ivVT2ITacS/4AOTsGTMhnr
+	 /hSy4RSWNKjOEQkk/uJHDI6JuS0k+o7IcEmT4yg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/291] drivers: base: devres: Allow to release group on device release
-Date: Wed, 23 Apr 2025 16:40:50 +0200
-Message-ID: <20250423142626.867427723@linuxfoundation.org>
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 155/393] ASoC: q6apm: add q6apm_get_hw_pointer helper
+Date: Wed, 23 Apr 2025 16:40:51 +0200
+Message-ID: <20250423142649.779592841@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 8e1ddfada4530939a8cb64ee9251aef780474274 ]
+commit 0badb5432fd525a00db5630c459b635e9d47f445 upstream.
 
-When releasing a device, if the release action causes a group to be
-released, a warning is emitted because it can't find the group. This
-happens because devres_release_all() moves the entire list to a todo
-list and also move the group markers. Considering r* normal resource
-nodes and g1 a group resource node:
+Implement an helper function in q6apm to be able to read the current
+hardware pointer for both read and write buffers.
 
-		    g1 -----------.
-		    v		  v
-	r1 -> r2 -> g1[0] -> r3-> g[1] -> r4
+This should help q6apm-dai to get the hardware pointer consistently
+without it doing manual calculation, which could go wrong in some race
+conditions.
 
-After devres_release_all(), dev->devres_head becomes empty and the todo
-list it iterates on becomes:
-
-			       g1
-			       v
-	r1 -> r2 -> r3-> r4 -> g1[0]
-
-When a call to component_del() is made and takes down the aggregate
-device, a warning like this happen:
-
-	RIP: 0010:devres_release_group+0x362/0x530
-	...
-	Call Trace:
-	 <TASK>
-	 component_unbind+0x156/0x380
-	 component_unbind_all+0x1d0/0x270
-	 mei_component_master_unbind+0x28/0x80 [mei_hdcp]
-	 take_down_aggregate_device+0xc1/0x160
-	 component_del+0x1c6/0x3e0
-	 intel_hdcp_component_fini+0xf1/0x170 [xe]
-	 xe_display_fini+0x1e/0x40 [xe]
-
-Because the devres group corresponding to the hdcp component cannot be
-found. Just ignore this corner case: if the dev->devres_head is empty
-and the caller is trying to remove a group, it's likely in the process
-of device cleanup so just ignore it instead of warning.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250222001051.3012936-2-lucas.demarchi@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/devres.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/qcom/qdsp6/q6apm.c |   18 +++++++++++++++++-
+ sound/soc/qcom/qdsp6/q6apm.h |    3 +++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 35d1e2864696f..9d0ea5c14bc50 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -684,6 +684,13 @@ int devres_release_group(struct device *dev, void *id)
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -494,6 +494,19 @@ int q6apm_read(struct q6apm_graph *graph
+ }
+ EXPORT_SYMBOL_GPL(q6apm_read);
  
- 		release_nodes(dev, &todo);
-+	} else if (list_empty(&dev->devres_head)) {
-+		/*
-+		 * dev is probably dying via devres_release_all(): groups
-+		 * have already been removed and are on the process of
-+		 * being released - don't touch and don't warn.
-+		 */
-+		spin_unlock_irqrestore(&dev->devres_lock, flags);
- 	} else {
- 		WARN_ON(1);
- 		spin_unlock_irqrestore(&dev->devres_lock, flags);
--- 
-2.39.5
-
++int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir)
++{
++	struct audioreach_graph_data *data;
++
++	if (dir == SNDRV_PCM_STREAM_PLAYBACK)
++		data = &graph->rx_data;
++	else
++		data = &graph->tx_data;
++
++	return (int)atomic_read(&data->hw_ptr);
++}
++EXPORT_SYMBOL_GPL(q6apm_get_hw_pointer);
++
+ static int graph_callback(struct gpr_resp_pkt *data, void *priv, int op)
+ {
+ 	struct data_cmd_rsp_rd_sh_mem_ep_data_buffer_done_v2 *rd_done;
+@@ -520,7 +533,8 @@ static int graph_callback(struct gpr_res
+ 		done = data->payload;
+ 		phys = graph->rx_data.buf[token].phys;
+ 		mutex_unlock(&graph->lock);
+-
++		/* token numbering starts at 0 */
++		atomic_set(&graph->rx_data.hw_ptr, token + 1);
+ 		if (lower_32_bits(phys) == done->buf_addr_lsw &&
+ 		    upper_32_bits(phys) == done->buf_addr_msw) {
+ 			graph->result.opcode = hdr->opcode;
+@@ -553,6 +567,8 @@ static int graph_callback(struct gpr_res
+ 		rd_done = data->payload;
+ 		phys = graph->tx_data.buf[hdr->token].phys;
+ 		mutex_unlock(&graph->lock);
++		/* token numbering starts at 0 */
++		atomic_set(&graph->tx_data.hw_ptr, hdr->token + 1);
+ 
+ 		if (upper_32_bits(phys) == rd_done->buf_addr_msw &&
+ 		    lower_32_bits(phys) == rd_done->buf_addr_lsw) {
+--- a/sound/soc/qcom/qdsp6/q6apm.h
++++ b/sound/soc/qcom/qdsp6/q6apm.h
+@@ -2,6 +2,7 @@
+ #ifndef __Q6APM_H__
+ #define __Q6APM_H__
+ #include <linux/types.h>
++#include <linux/atomic.h>
+ #include <linux/slab.h>
+ #include <linux/wait.h>
+ #include <linux/kernel.h>
+@@ -78,6 +79,7 @@ struct audioreach_graph_data {
+ 	uint32_t num_periods;
+ 	uint32_t dsp_buf;
+ 	uint32_t mem_map_handle;
++	atomic_t hw_ptr;
+ };
+ 
+ struct audioreach_graph {
+@@ -151,4 +153,5 @@ int q6apm_enable_compress_module(struct
+ int q6apm_remove_initial_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
+ int q6apm_remove_trailing_silence(struct device *dev, struct q6apm_graph *graph, uint32_t samples);
+ int q6apm_set_real_module_id(struct device *dev, struct q6apm_graph *graph, uint32_t codec_id);
++int q6apm_get_hw_pointer(struct q6apm_graph *graph, int dir);
+ #endif /* __APM_GRAPH_ */
 
 
 
