@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D861EA9931A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D09EA9900D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32A3D1BA7688
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D11E74409AC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B360F29009C;
-	Wed, 23 Apr 2025 15:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B7A28EA59;
+	Wed, 23 Apr 2025 15:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZJ+eRa8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWY+V/pO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1DB28D84D;
-	Wed, 23 Apr 2025 15:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7928828EA70;
+	Wed, 23 Apr 2025 15:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421939; cv=none; b=ACAsmBbui683Wr+7SnF6rdvR0QFxyExPYyfTccfeOwqx2ybfeoyB95mBWrWGGImr8CUJR8l/SacQST8tMeNQ7uqYcy1jhEmD95EOBq7mjDc5EEjvWiVCcWHiexV1X5amLgZiAT8gkyw/BbiO2bwm1dmgV+Df2cZYtBf6Gl1uLLY=
+	t=1745420845; cv=none; b=uDrbO9yxUn7LB/oKMvkBPcGrZ3z0ZQ7t0eS9BsQ/DbjI0LTyUZQM2pqjAHr6hvid21MGdtduzD567gLpIZzFHRMHJNQlHysHt1J0pc7tYSpjFSZ/p1BWNm1PCr+3hudUGxWqX9gIYz2KkUMhszAUaTojiFeUp9CC8bDDC4+CzCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421939; c=relaxed/simple;
-	bh=ifrlf4BUVlvkB0+5HLv1v79yVHY+Hg2wLl7anqT7/Ww=;
+	s=arc-20240116; t=1745420845; c=relaxed/simple;
+	bh=cSXmgXUZX9El/81XCNjTvmS1yjMrS2sgtBSSt81maYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j8WqUOUNj5fbOK/r2zChUPwUA0qD0Ofk3SRkDQUNK7jAOWI27Wl5hGcqQfSMx6GQGcgiwLXGo8EAaHR5ePqvf15KIwb1gPGugbrPafQ1lIcrMz9Z4XCiYGWw5DEfVOE/Bf9l18D848koqyLpqMBOdoyE+Aixyx18N74F9KfAZq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZJ+eRa8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0320FC4CEE2;
-	Wed, 23 Apr 2025 15:25:38 +0000 (UTC)
+	 MIME-Version; b=M6DWEnl8KbH787AbMlhBktI1rrpEUyVTCa6MyxTL0OBjNcH1vaBHimR+FyfTsNnKZ1KORsnilbkzT5WMPEZgks3+quJvIp8FAFLXE4vEh9+zqERMqWzUu5K0ecuK3+S8ZTuXRuxlcPj898oS5QiT/O2yoqzLbkvWdLrsKi1E3jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWY+V/pO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C75C4CEE3;
+	Wed, 23 Apr 2025 15:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421939;
-	bh=ifrlf4BUVlvkB0+5HLv1v79yVHY+Hg2wLl7anqT7/Ww=;
+	s=korg; t=1745420845;
+	bh=cSXmgXUZX9El/81XCNjTvmS1yjMrS2sgtBSSt81maYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZJ+eRa8UP0bQ+odYvNDW6OXQzcnM/XamJNYBhmhG9NNQXj/XASzd2mcQzLdIFVbc
-	 jc7T4zc+PzRo0ZOH36J0hVWQY4/palj1RN6G9wldifBSwZtAABs3wQMf+t4Lw+hxTd
-	 EDhJ6rYJ5Ual+YpSYOVJeEFBbbhArdYPoLhjTkkc=
+	b=KWY+V/pObM5tgm1P4r4f6IwF4UnmaZE4+bvuWLzlj5UbIlxVH9YmqcsvBBGCjRG8T
+	 bcwiNvDwCd9Sy6D41uLqzPQoS6xjyzUCzD6xi4j+7JOz2o/hcJ0L2+NzGEAMMRG6zA
+	 YKF38Qv3quqR4839ICpIcTWWA6pvfvrqzI1VD0u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.1 202/291] asus-laptop: Fix an uninitialized variable
+	Sidong Yang <sidong.yang@furiosa.ai>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.14 127/241] btrfs: ioctl: dont free iov when btrfs_encoded_read() returns -EAGAIN
 Date: Wed, 23 Apr 2025 16:43:11 +0200
-Message-ID: <20250423142632.632824738@linuxfoundation.org>
+Message-ID: <20250423142625.757186658@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Sidong Yang <sidong.yang@furiosa.ai>
 
-commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
+commit 8e587ab43cb92a9e57f99ea8d6c069ee65863707 upstream.
 
-The value returned by acpi_evaluate_integer() is not checked,
-but the result is not always successful, so it is necessary to
-add a check of the returned value.
+Fix a bug in encoded read that mistakenly frees the iov in case
+btrfs_encoded_read() returns -EAGAIN assuming the structure will be
+reused.  This can happen when when receiving requests concurrently, the
+io_uring subsystem does not reset the data, and the last free will
+happen in btrfs_uring_read_finished().
 
-If the result remains negative during three iterations of the loop,
-then the uninitialized variable 'val' will be used in the clamp_val()
-macro, so it must be initialized with the current value of the 'curr'
-variable.
+Handle the -EAGAIN error and skip freeing iov.
 
-In this case, the algorithm should be less noisy.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+CC: stable@vger.kernel.org # 6.13+
+Signed-off-by: Sidong Yang <sidong.yang@furiosa.ai>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-laptop.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/ioctl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -427,11 +427,14 @@ static int asus_pega_lucid_set(struct as
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4903,6 +4903,8 @@ static int btrfs_uring_encoded_read(stru
  
- static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
- {
-+	unsigned long long val = (unsigned long long)curr;
-+	acpi_status status;
- 	int i, delta;
--	unsigned long long val;
--	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
--		acpi_evaluate_integer(asus->handle, method, NULL, &val);
+ 	ret = btrfs_encoded_read(&kiocb, &data->iter, &data->args, &cached_state,
+ 				 &disk_bytenr, &disk_io_size);
++	if (ret == -EAGAIN)
++		goto out_acct;
+ 	if (ret < 0 && ret != -EIOCBQUEUED)
+ 		goto out_free;
  
-+	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
-+		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
-+		if (ACPI_FAILURE(status))
-+			continue;
- 		/* The output is noisy.  From reading the ASL
- 		 * dissassembly, timeout errors are returned with 1's
- 		 * in the high word, and the lack of locking around
 
 
 
