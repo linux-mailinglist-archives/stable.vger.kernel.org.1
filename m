@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5340EA98F37
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:06:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A28AA99018
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 257431B84FA4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD69B464BCC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AB3280A4F;
-	Wed, 23 Apr 2025 14:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0E528466E;
+	Wed, 23 Apr 2025 15:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDZwX7js"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCwmVzyI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D798284693;
-	Wed, 23 Apr 2025 14:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B36E27F725;
+	Wed, 23 Apr 2025 15:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420334; cv=none; b=HVq1J9N5wV7IhfEivP48/79Tb4FEedtkFpfwxY53kv+ITCv/3bM00meWTSufkhWY4yj0Cjbdf40BOykpqYT9vhSDQNv6heNmNj2nGy4sohCXwwxSlk6Gyc9D4SaF7VmhW0StJo5ngJVarEYPudwtX2COw8ddEVlqsbLJfDZXn/M=
+	t=1745420858; cv=none; b=hNHyTs5zk6uqaOBPGDCadS9E/QEPWtWCcWK9qTcGS80sZ6j4WQuQKJtTLzNdLGWqVXOx72JnuLhhkdT5vIqeJCwgNeVG5YJBVgJ1fcZSQgWyG9+FoPmZHe0n+8Fv6HC4FEzQadjUgFPqbUe3urS70RufYvlEhEYsz0d5IwEavns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420334; c=relaxed/simple;
-	bh=6x1Y2qDzDgeFRvuqpF5qfn/n066UG/0AcB1gZWGko1M=;
+	s=arc-20240116; t=1745420858; c=relaxed/simple;
+	bh=p0TGkP6uBs+CJ9wsLSbsyWq3ldbRC0yJIH+FnpWjnxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NZOe01QUWAWxOJAg0NdQeo1GRt8yhwLyMLu9e/Yuz3fDMIayRZbFS/AeG6qZg6zWmwqfbT4qB+gIeiMo5VU5l9hatSrWA/nY8jtOvGnb78D41ZhB47PaQD3oxAia0J9j4AEhkgSAoaAzNFnlcKRtJVs4n0OZfdryFoFQBwU3jlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDZwX7js; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C7EC4CEE2;
-	Wed, 23 Apr 2025 14:58:54 +0000 (UTC)
+	 MIME-Version; b=Od66G0ZTXo+5JA2192aQx4euj3tWQ6Rsl6cUBUWLA/QHacjq33X6HCpXSc4KImyRaF0+Y8ZybvRPyg7F0T1dhdqyy7hI5xgubDYFitforR57XYFKY7sMALRZb3SgP21OVX8afZ7mmtnCz9IIhzHjhB6FniIIyOO1022gXt4wh6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCwmVzyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE3EC4CEE2;
+	Wed, 23 Apr 2025 15:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420334;
-	bh=6x1Y2qDzDgeFRvuqpF5qfn/n066UG/0AcB1gZWGko1M=;
+	s=korg; t=1745420858;
+	bh=p0TGkP6uBs+CJ9wsLSbsyWq3ldbRC0yJIH+FnpWjnxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDZwX7jsq4GesmyQ4Oy75KEraz9DAhWwFZexScZqVgf9z2Xn9w9uPf/H1wXyuS10z
-	 ISNeRam9QwRwtIr0k7sGmKpkbQrlEvi9hzNd9gu0ntWjsbTY6kO4/KXsknZBrE2gtF
-	 dwQlQx6KuuDlE8Sc2G1bsooQ808YaciDoBLPjymo=
+	b=vCwmVzyI1G758lrbB4f3ViX8Lnq/TeSO1dpGHy4h6FP9NIahznRjcfeJwlORFouX1
+	 qeWumzkjRK9eqlKvd3LVdN4BkxwO/rIFykgWNo1SBZsm+fZ14eMIr/XIAmjwhe6Dz4
+	 GZF1RzLOXWa1xw0dBqWxZ8gs2AkVI9aftSqaVNVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Daniel Axtens <dja@axtens.net>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 120/223] mm: fix apply_to_existing_page_range()
+	Calvin Walton <calvin.walton@kepstin.ca>,
+	Johannes Kimmel <kernel@bareminimum.eu>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.14 128/241] btrfs: correctly escape subvol in btrfs_show_options()
 Date: Wed, 23 Apr 2025 16:43:12 +0200
-Message-ID: <20250423142621.995251391@linuxfoundation.org>
+Message-ID: <20250423142625.797762612@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Johannes Kimmel <kernel@bareminimum.eu>
 
-commit a995199384347261bb3f21b2e171fa7f988bd2f8 upstream.
+commit dc08c58696f8555e4a802f1f23c894a330d80ab7 upstream.
 
-In the case of apply_to_existing_page_range(), apply_to_pte_range() is
-reached with 'create' set to false.  When !create, the loop over the PTE
-page table is broken.
+Currently, displaying the btrfs subvol mount option doesn't escape ','.
+This makes parsing /proc/self/mounts and /proc/self/mountinfo
+ambiguous for subvolume names that contain commas. The text after the
+comma could be mistaken for another option (think "subvol=foo,ro", where
+ro is actually part of the subvolumes name).
 
-apply_to_pte_range() will only move to the next PTE entry if 'create' is
-true or if the current entry is not pte_none().
+Replace the manual escape characters list with a call to
+seq_show_option(). Thanks to Calvin Walton for suggesting this approach.
 
-This means that the user of apply_to_existing_page_range() will not have
-'fn' called for any entries after the first pte_none() in the PTE page
-table.
-
-Fix the loop logic in apply_to_pte_range().
-
-There are no known runtime issues from this, but the fix is trivial enough
-for stable@ even without a known buggy user.
-
-Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
-Cc: Daniel Axtens <dja@axtens.net>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c8d3fe028f64 ("Btrfs: show subvol= and subvolid= in /proc/mounts")
+CC: stable@vger.kernel.org # 5.4+
+Suggested-by: Calvin Walton <calvin.walton@kepstin.ca>
+Signed-off-by: Johannes Kimmel <kernel@bareminimum.eu>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/super.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2811,11 +2811,11 @@ static int apply_to_pte_range(struct mm_
- 	if (fn) {
- 		do {
- 			if (create || !pte_none(ptep_get(pte))) {
--				err = fn(pte++, addr, data);
-+				err = fn(pte, addr, data);
- 				if (err)
- 					break;
- 			}
--		} while (addr += PAGE_SIZE, addr != end);
-+		} while (pte++, addr += PAGE_SIZE, addr != end);
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1139,8 +1139,7 @@ static int btrfs_show_options(struct seq
+ 	subvol_name = btrfs_get_subvol_name_from_objectid(info,
+ 			btrfs_root_id(BTRFS_I(d_inode(dentry))->root));
+ 	if (!IS_ERR(subvol_name)) {
+-		seq_puts(seq, ",subvol=");
+-		seq_escape(seq, subvol_name, " \t\n\\");
++		seq_show_option(seq, "subvol", subvol_name);
+ 		kfree(subvol_name);
  	}
- 	*mask |= PGTBL_PTE_MODIFIED;
- 
+ 	return 0;
 
 
 
