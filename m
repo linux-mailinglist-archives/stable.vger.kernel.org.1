@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFE8A98FE3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DDDA9918B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49CE61B87033
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52AC49265A8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5DA28A1D2;
-	Wed, 23 Apr 2025 15:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B7528C5D1;
+	Wed, 23 Apr 2025 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcaGRmHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcAOIgaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE65728A1CD;
-	Wed, 23 Apr 2025 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBE227933C;
+	Wed, 23 Apr 2025 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420630; cv=none; b=FEsf6kS1dfqU+716ep+AlMw90c5ZlPhF//ySzVwMybKVGEk3TQL4IJEl8t3045hNItBBN5qAsnl0CetnRPn+pjQLmFSzhTmfTBqQYUt+Syx4Dh1JlnmQtoo//9zZuPFy2IdSnbcrNmWSzEZLZCKR5DTJxH5pUHjEtHMhy1YoyNc=
+	t=1745421373; cv=none; b=T2S2JtzU2pa1hRrWMCkKXuA3fqHPpbE3ZmF6wd/P8ERB4hGdgnLqUr2YN8FbColMMevcWztJaKUNoQA7Y/KPXljHRaSArmG/jQPUqukP2SetLCKX7ykbMQ9w/6HlDDL6C/XMhoxTCQb+k7CiLgINyvXeVmS2hp9YP2asXbbWEZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420630; c=relaxed/simple;
-	bh=3YwvLqm06v1n9+hyFBbRIm2KnMjPdsNmEEkqO8Kj+EE=;
+	s=arc-20240116; t=1745421373; c=relaxed/simple;
+	bh=5OLZGgxZDa1kk7WYyN8E6XOHfuSTaSdpCDnuCFuQ/wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvBrk14gGM8dTy4gLwtoeoEqGNfE8pH0o1SrznkrxO+i+GfceCpLpkVGGwAUuBDl787lDxjtD2sVAL0LbDztggPslbDZtMinOfL2GENs/C/pUxzD7MVMr+GFsI4CrtnzBUMzTZF+NbmW+v7BmNBJR00+80G63fOKyhKXqXXnY8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcaGRmHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70105C4CEE2;
-	Wed, 23 Apr 2025 15:03:49 +0000 (UTC)
+	 MIME-Version; b=aCUZm7dcqdCi8DIotX3apxXCrgjdHnH5j5H7dzeFdaFG3PBnpHeEJ+pwQacnaUxJXVVDg7sun9rYahikzDDyGkV9mvSxx9Q89a4Uq5XEE+QABesfXGfH7rafSo4SYXEraU5vlpOiuv05cV77RZxNy1Z5hPegLEICQ+bwO4jR63U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcAOIgaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3829FC4CEE2;
+	Wed, 23 Apr 2025 15:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420629;
-	bh=3YwvLqm06v1n9+hyFBbRIm2KnMjPdsNmEEkqO8Kj+EE=;
+	s=korg; t=1745421373;
+	bh=5OLZGgxZDa1kk7WYyN8E6XOHfuSTaSdpCDnuCFuQ/wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcaGRmHcFZZWDLToCZ2SbiiaC1ImcNtBzeerZVJWl3DH6WvbKQDdPF+2kUTzMw+0y
-	 uyHeHw3qMMSoWt0F+n+t+UNETmuD8AtRoYoE+jJrffp//s8p5B5btvOjTDoDFPj7KM
-	 cGIFLq+EryohgOmfyJjbbmkUJHiEmfpKjTOkUrPc=
+	b=vcAOIgaNmh57OHFoY1/kgFCsdE+hyCOKbkk3fZQHyjzU//FH/dcx6s4gNEgOEyy2d
+	 ntNQvTlFnnr83BTwKqOcGk3TAgDBoFtuIJIw/XrknUuptEe1cUMYOP+vCP/s7KK3xc
+	 9bxU3QtShhJXKdRcBfvj4GjLj+3Z59oMPXtMWC2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/291] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Troy Hanson <quic_thanson@quicinc.com>
+Subject: [PATCH 6.6 159/393] bus: mhi: host: Fix race between unprepare and queue_buf
 Date: Wed, 23 Apr 2025 16:40:55 +0200
-Message-ID: <20250423142627.070311827@linuxfoundation.org>
+Message-ID: <20250423142649.943400330@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jeff Hugo <quic_jhugo@quicinc.com>
 
-[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
+commit 0686a818d77a431fc3ba2fab4b46bbb04e8c9380 upstream.
 
-In preparation for adding support for MT8195's HDMI reserved
-DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
-for the TVD clock: in this particular case, the aforementioned
-clock is not (and cannot be) parented to neither pixel or engine
-clocks hence it won't get enabled automatically by the clock
-framework.
+A client driver may use mhi_unprepare_from_transfer() to quiesce
+incoming data during the client driver's tear down. The client driver
+might also be processing data at the same time, resulting in a call to
+mhi_queue_buf() which will invoke mhi_gen_tre(). If mhi_gen_tre() runs
+after mhi_unprepare_from_transfer() has torn down the channel, a panic
+will occur due to an invalid dereference leading to a page fault.
 
-Please note that on all of the currently supported MediaTek
-platforms, the TVD clock is always a parent of either pixel or
-engine clocks, and this means that the common clock framework
-is already enabling this clock before the children.
-On such platforms, this commit will only increase the refcount
-of the TVD clock without any functional change.
+This occurs because mhi_gen_tre() does not verify the channel state
+after locking it. Fix this by having mhi_gen_tre() confirm the channel
+state is valid, or return error to avoid accessing deinitialized data.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.8
+Fixes: b89b6a863dd5 ("bus: mhi: host: Add spinlock to protect WP access when queueing TREs")
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Link: https://lore.kernel.org/r/20250306172913.856982-1-jeff.hugo@oss.qualcomm.com
+[mani: added stable tag]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/bus/mhi/host/main.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index cab4b3451187d..1fa958e8c40a1 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -463,6 +463,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -1204,11 +1204,16 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	struct mhi_ring_element *mhi_tre;
+ 	struct mhi_buf_info *buf_info;
+ 	int eot, eob, chain, bei;
+-	int ret;
++	int ret = 0;
  
- 	mtk_dpi_disable(dpi);
- 	clk_disable_unprepare(dpi->pixel_clk);
-+	clk_disable_unprepare(dpi->tvd_clk);
- 	clk_disable_unprepare(dpi->engine_clk);
- }
+ 	/* Protect accesses for reading and incrementing WP */
+ 	write_lock_bh(&mhi_chan->lock);
  
-@@ -479,6 +480,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 		goto err_refcount;
- 	}
- 
-+	ret = clk_prepare_enable(dpi->tvd_clk);
-+	if (ret) {
-+		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
-+		goto err_engine;
++	if (mhi_chan->ch_state != MHI_CH_STATE_ENABLED) {
++		ret = -ENODEV;
++		goto out;
 +	}
 +
- 	ret = clk_prepare_enable(dpi->pixel_clk);
- 	if (ret) {
- 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
-@@ -488,6 +495,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 	return 0;
+ 	buf_ring = &mhi_chan->buf_ring;
+ 	tre_ring = &mhi_chan->tre_ring;
  
- err_pixel:
-+	clk_disable_unprepare(dpi->tvd_clk);
-+err_engine:
- 	clk_disable_unprepare(dpi->engine_clk);
- err_refcount:
- 	dpi->refcount--;
--- 
-2.39.5
-
+@@ -1226,10 +1231,8 @@ int mhi_gen_tre(struct mhi_controller *m
+ 
+ 	if (!info->pre_mapped) {
+ 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+-		if (ret) {
+-			write_unlock_bh(&mhi_chan->lock);
+-			return ret;
+-		}
++		if (ret)
++			goto out;
+ 	}
+ 
+ 	eob = !!(flags & MHI_EOB);
+@@ -1246,9 +1249,10 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	mhi_add_ring_element(mhi_cntrl, tre_ring);
+ 	mhi_add_ring_element(mhi_cntrl, buf_ring);
+ 
++out:
+ 	write_unlock_bh(&mhi_chan->lock);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ int mhi_queue_buf(struct mhi_device *mhi_dev, enum dma_data_direction dir,
 
 
 
