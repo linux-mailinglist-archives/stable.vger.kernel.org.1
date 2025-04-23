@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-136165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34544A99276
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E745A98E85
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 813734A081D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9455F4608FA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A17D2853F8;
-	Wed, 23 Apr 2025 15:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2784C27F4D9;
+	Wed, 23 Apr 2025 14:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+lW0Wn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMrBPKX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269F728B4F4;
-	Wed, 23 Apr 2025 15:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7178143736;
+	Wed, 23 Apr 2025 14:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421829; cv=none; b=M3iBxwmJSskDR0MDSb7y6uOeitcQnJQhxvWNsZJMAm71krneAJF/YfARwWy5Q6NEAaZN+lKcUmL0iF2cuICl3yRmeDMVcLldDR3U908xaTkaSfBOd2RBdMbUzYdut6aYz24fMRo6pAjAnDubI2Y/BkDP3ClBe6bLHzsJGVhQ9BM=
+	t=1745420105; cv=none; b=BDmP1TehaDxXQMYfBiYtGlr2keBLzAdHomPPKYse7f1cb7+MKuTs4kEo2DBM52XyJYpmrQk8Y+BMyH4W5q1mazyat14Nd4+NLj7np88yMSapcJBy05dLj8r0dv4p8Rv1FXKd7EVnLXl19/o6+OzI0zf5P78IEeIWBRTiAU1RLXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421829; c=relaxed/simple;
-	bh=X0ijJ55qql9APwH73dAZtusvSs67Xee350O2w40OR+k=;
+	s=arc-20240116; t=1745420105; c=relaxed/simple;
+	bh=imMnaAbJUoAUmlgJA10AsNObMu9PGxHaAqc+NuvINZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdBUKQ4V5Van8ofulkDFTyke9x+OzdL5nIA6xQCjJ0BaI3viwFGrKcBtLpcu4exhqHtsPwSZbqPk/jCuRkFyeJAo2/Xt6vC03UocEd5aIqTLtbALih8+uVNra5xb8SY3QnS+pVXc1ImWSbYg1ypXe33PQ9ILuvbxUjqE8fxFtGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+lW0Wn1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56455C4CEE2;
-	Wed, 23 Apr 2025 15:23:48 +0000 (UTC)
+	 MIME-Version; b=VoWx87fXxi/4YLOv4y+ZTGbJ1esAhNBfLOZiJbOpfkk8uJTy7hy0Tslhj/QXnRY1kdg7G5eaGqtLUaspPBjEFWxQfNCG72YGK7xib3y/FdPDYfyGAyFa71+hBsyCKWqoXJtsGy71a4nHvLDqlr1B1XRpffeZXWHAfKVIjYvF0IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMrBPKX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA21DC4CEEB;
+	Wed, 23 Apr 2025 14:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421828;
-	bh=X0ijJ55qql9APwH73dAZtusvSs67Xee350O2w40OR+k=;
+	s=korg; t=1745420105;
+	bh=imMnaAbJUoAUmlgJA10AsNObMu9PGxHaAqc+NuvINZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+lW0Wn1MiHt81kZiysyzWhG5f+iKVqBiVye2nJBJjOv3J3I5IQO6KKGvwQ921gqk
-	 DL6rh0Fh/fi+KE5oKsmM8uvOSWsKNF9ybYarTz2bOOj0ilBf2HUGo+979VPJgexTYC
-	 BAcgoUqBecqOIvaD8Seba/2q4OAtUvHxSyoMufdc=
+	b=eMrBPKX7WHzUie6P9NXSmIR2wL+WjmHUbFNcZCHrbjp5YAArX6Xp5UJxB/HgyFt7S
+	 iCp+UjE7nZtegU57mGEV5ix3ZfxiK0VaohOFRgG3muFKu8spA6pvR7Jf+XrdZSZSOG
+	 PdEazBIgQj4fA4nX4sI8mrJyxPF5vJvS/nTJc6xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/291] igc: cleanup PTP module if probe fails
+Subject: [PATCH 6.12 100/223] i2c: atr: Fix wrong include
 Date: Wed, 23 Apr 2025 16:42:52 +0200
-Message-ID: <20250423142631.857382878@linuxfoundation.org>
+Message-ID: <20250423142621.188357923@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,41 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1f025759ba394dd53e434d2668cb0597886d9b69 ]
+[ Upstream commit 75caec0c2aa3a7ec84348d438c74cb8a2eb4de97 ]
 
-Make sure that the PTP module is cleaned up if the igc_probe() fails by
-calling igc_ptp_stop() on exit.
+The fwnode.h is not supposed to be used by the drivers as it
+has the definitions for the core parts for different device
+property provider implementations. Drop it.
 
-Fixes: d89f88419f99 ("igc: Add skeletal frame for Intel(R) 2.5G Ethernet Controller support")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Note, that fwnode API for drivers is provided in property.h
+which is included here.
+
+Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+[wsa: reworded subject]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/i2c-atr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 6ae2d0b723c82..082f78beeb4ed 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6725,6 +6725,7 @@ static int igc_probe(struct pci_dev *pdev,
+diff --git a/drivers/i2c/i2c-atr.c b/drivers/i2c/i2c-atr.c
+index 0d54d0b5e3273..5342e934aa5e4 100644
+--- a/drivers/i2c/i2c-atr.c
++++ b/drivers/i2c/i2c-atr.c
+@@ -8,12 +8,12 @@
+  * Originally based on i2c-mux.c
+  */
  
- err_register:
- 	igc_release_hw_control(adapter);
-+	igc_ptp_stop(adapter);
- err_eeprom:
- 	if (!igc_check_reset_block(hw))
- 		igc_reset_phy(hw);
+-#include <linux/fwnode.h>
+ #include <linux/i2c-atr.h>
+ #include <linux/i2c.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/spinlock.h>
+ 
 -- 
 2.39.5
 
