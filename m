@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06C10A990BD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AD8A99378
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B82A39213DC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C8179A33E2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35912853E1;
-	Wed, 23 Apr 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AC6284B37;
+	Wed, 23 Apr 2025 15:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ScjtKvf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNolddA/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FD40280A3C;
-	Wed, 23 Apr 2025 15:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F5F27FD73;
+	Wed, 23 Apr 2025 15:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420900; cv=none; b=WmFNR2ZJDF+XxqwhLGIbZp+aVJrOW7Yleh8xwufxiJCwuiHWMXXKhIUoQekRsZUWNCLj5GYW/94o82pkzOrNxS92zt5yCBhb8byBOXCcJ2+yGSgx4/Ki+HIp0VOH7RahQXI/nxufe03P/1nAV06ihB7T5M++zCGB0BcocD6OR1Y=
+	t=1745422117; cv=none; b=fjQmWJzYBonpDUVPst7WwOwmEw5wbNpvykLuUk4od21R2jLwLrTlhGiKhg19vBXXQs5//CmMKFM9J3Fkm3y81p/1lfKjJRyciAKLAddSy5ZkJUGHyH0c745SpKcJrPrRUpPg8qM2BlCNOG+HMRGZo47AxJVAt2rAQnfVS9PAmlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420900; c=relaxed/simple;
-	bh=kiINfWDG73vhL8nOxUuw7loHYnG85OjGCluAvQqrymM=;
+	s=arc-20240116; t=1745422117; c=relaxed/simple;
+	bh=OmBvdm9ufcvvr2qY/kCh04MpXz/42jxQ7LZJX8jLXQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ToeJggZKY3FBEWsKggjwAUsztZoHHwO56T5e5gXfzfj6a3rZuqmZO/o4zQ6UdCi4wc8t/bpjeYGpcbS0SizWc+fTdmKqVdjg2bHhdg2j7jmmAuH4GOSCwu/rMTayjd+OvbEXUt0XiUlnZVaLP6A/mTd7oOb/WYmyhoxYY4VXG3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ScjtKvf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36CBC4CEE2;
-	Wed, 23 Apr 2025 15:08:19 +0000 (UTC)
+	 MIME-Version; b=KwTiCH3HWZQulPkVnsZYaN7xG9uyeixvJCm42+6fHBjOPA66IQHZCzMtvoTdGlsAnnzjX04NdQ1YWNvlSbqLFSf6b5wz83E/QNQCNzidLfkW1GUzrPbCLalBtS+RPVfBaFPgbEjjPn+qrJNNdV1eq6m+l7nGcCB582X2Yp0OADA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNolddA/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B873C4CEE2;
+	Wed, 23 Apr 2025 15:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420900;
-	bh=kiINfWDG73vhL8nOxUuw7loHYnG85OjGCluAvQqrymM=;
+	s=korg; t=1745422117;
+	bh=OmBvdm9ufcvvr2qY/kCh04MpXz/42jxQ7LZJX8jLXQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ScjtKvf0liC0kUIK8DV3mD9aA0yBeJGwK7VMq+R+QtJwVv0UdMfRYnKcrXO3APpdo
-	 7D6sQtHPTK7eZPfEljxH8l4QYrQPpic3nLcHxbEgHpNT1eX2lG8pXlE6U7fSH95qot
-	 5J/FznIhfIMN/Ps6aSbqiR4tkQcpz44qSq9cEIsU=
+	b=gNolddA/HImTN7os8sIbvvRFLus6ptPZTQOF7kzC0z8v1qbvLaGauo55DqOGPzYLr
+	 2cyj0GSz4b6j/n84E0Yg7eaZKgD9CPHDP39rsmtWQbpo1DEy0XTRa7ADxb2fx03UMM
+	 152MXGvM960ODMXuYLkfUqh9m3cZQlyTof1tmuhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.14 134/241] isofs: Prevent the use of too small fid
+	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 209/291] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
 Date: Wed, 23 Apr 2025 16:43:18 +0200
-Message-ID: <20250423142626.040054849@linuxfoundation.org>
+Message-ID: <20250423142632.925100383@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 0405d4b63d082861f4eaff9d39c78ee9dc34f845 upstream.
+commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
 
-syzbot reported a slab-out-of-bounds Read in isofs_fh_to_parent. [1]
+Syzbot reported an issue in hfs subsystem:
 
-The handle_bytes value passed in by the reproducing program is equal to 12.
-In handle_to_path(), only 12 bytes of memory are allocated for the structure
-file_handle->f_handle member, which causes an out-of-bounds access when
-accessing the member parent_block of the structure isofs_fid in isofs,
-because accessing parent_block requires at least 16 bytes of f_handle.
-Here, fh_len is used to indirectly confirm that the value of handle_bytes
-is greater than 3 before accessing parent_block.
+BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
 
-[1]
-BUG: KASAN: slab-out-of-bounds in isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
-Read of size 4 at addr ffff0000cc030d94 by task syz-executor215/6466
-CPU: 1 UID: 0 PID: 6466 Comm: syz-executor215 Not tainted 6.14.0-rc7-syzkaller-ga2392f333575 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+Call Trace:
+ <TASK>
  __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0x198/0x550 mm/kasan/report.c:521
- kasan_report+0xd8/0x138 mm/kasan/report.c:634
- __asan_report_load4_noabort+0x20/0x2c mm/kasan/report_generic.c:380
- isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
- exportfs_decode_fh_raw+0x2dc/0x608 fs/exportfs/expfs.c:523
- do_handle_to_path+0xa0/0x198 fs/fhandle.c:257
- handle_to_path fs/fhandle.c:385 [inline]
- do_handle_open+0x8cc/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ memcpy_from_page include/linux/highmem.h:423 [inline]
+ hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+ hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+ hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+ hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+ hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+ vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+ __do_sys_mkdir fs/namei.c:4300 [inline]
+ __se_sys_mkdir fs/namei.c:4298 [inline]
+ __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbdd6057a99
 
-Allocated by task 6466:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:562
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4294 [inline]
- __kmalloc_noprof+0x32c/0x54c mm/slub.c:4306
- kmalloc_noprof include/linux/slab.h:905 [inline]
- handle_to_path fs/fhandle.c:357 [inline]
- do_handle_open+0x5a4/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+Add a check for key length in hfs_bnode_read_key to prevent
+out-of-bounds memory access. If the key length is invalid, the
+key buffer is cleared, improving stability and reliability.
 
-Reported-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4d7cd7dd0ce1aa8d5c65
-Tested-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/tencent_9C8CB8A7E7C6C512C7065DC98B6EDF6EC606@qq.com
+Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/bnode.c     |    6 ++++++
+ fs/hfsplus/bnode.c |    6 ++++++
+ 2 files changed, 12 insertions(+)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -180,7 +180,7 @@ static struct dentry *isofs_fh_to_parent
- 		return NULL;
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 1;
  
- 	return isofs_export_iget(sb,
--			fh_len > 2 ? ifid->parent_block : 0,
-+			fh_len > 3 ? ifid->parent_block : 0,
- 			ifid->parent_offset,
- 			fh_len > 4 ? ifid->parent_generation : 0);
++	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfs_btree_key));
++		pr_err("hfs: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
  }
+ 
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 2;
+ 
++	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfsplus_btree_key));
++		pr_err("hfsplus: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
 
 
 
