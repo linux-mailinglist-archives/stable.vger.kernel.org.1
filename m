@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-136245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12A0A992C8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A100A99191
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDDE24A1897
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C3831BA3647
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C468629CB58;
-	Wed, 23 Apr 2025 15:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B403293B63;
+	Wed, 23 Apr 2025 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7npAKPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGSQ16Wy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ED029CB4F;
-	Wed, 23 Apr 2025 15:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB055293B5C;
+	Wed, 23 Apr 2025 15:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422040; cv=none; b=iC7DgxlATJvdXBJIeLKpVwSC+yoMP0zGO/MnoVh2/+rUqNZsY/2omJ8coxhj4SCRKYID3zn/IXP1g26lXEIfUL/rwhpKlGRZYiR+13Yj/DWncXssRppteHjAEd15xjP29PfCnas53Enzlp7E+ec6oSG7uXBuWZ/kmo/f1bdo7Ys=
+	t=1745421223; cv=none; b=nl0jKNbr2Garq2Xaa54pqp5kkCl06ycSKqNtSITDfjCZTVAHMwJluPDWyf+Xiioi6oU/UUNL7C2KV/y5oinAqs/N7HgtjYSw8cXYeyXhLmmrzYT/JOrYXq3eiWG72Hsl4rOdYYXrEu8zycUHH+UMI4xI4WWbe7dmgrWLJhnFtpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422040; c=relaxed/simple;
-	bh=PYRy9mSNd45eh0W0dLK6quNm/HVGA98UeIx+nBHmRGo=;
+	s=arc-20240116; t=1745421223; c=relaxed/simple;
+	bh=3CBQ3O+6UACtDgt8hpfx0NYvvVhYd+l/vkRZBXEWzJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLAui7O2kQUWB5MJ8AwX5DRX42iZl+vIWgEoi2H/v3e4V3vGxkSdsPGtOcubVO1GROnSjeuQbXna6XHmaW/m0JXY0zhgqtZZwDGnAQZbwysDHvAKcCvxpeNcpFEuqhUXRqcLcNcd/QciFpxCH9oQoRnn7sEIluwKKu+AVs7um2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7npAKPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77226C4CEE2;
-	Wed, 23 Apr 2025 15:27:16 +0000 (UTC)
+	 MIME-Version; b=h21Z5e/7WvuR+f4vy1cfts2dXpgGb5wPOgzkytJipE7/MQB72IYW0NrCrqZBspuNQD0F23vRB7pOmhy2NLbABxWW+gKb4LPhNogo8QQv4ofH82QafMo7a4L4kiUXffTEFpIC0us1rKCvej81Cz+r/xsbgKoir2AkUXXzNaMuESM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGSQ16Wy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795C0C4CEE3;
+	Wed, 23 Apr 2025 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422037;
-	bh=PYRy9mSNd45eh0W0dLK6quNm/HVGA98UeIx+nBHmRGo=;
+	s=korg; t=1745421222;
+	bh=3CBQ3O+6UACtDgt8hpfx0NYvvVhYd+l/vkRZBXEWzJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7npAKPlp8WUrwej+r/frXXvgd6f4jUNkjTaKlVgHhDKv5TZcsOBXNakiZoI8BFi7
-	 R6p3Ky6kRxHRp8Iq1v1fE9/AxyKQ6XTvyj4+R5X/M/PMZIBYKcF5O6q8yh6CuvLeVk
-	 EI4PkUa8FDpRBdl9SDDRi1e3+ZZBzZ3+Fli248k4=
+	b=hGSQ16Wy/9G+ARB3tjQgsEl0GzfdgCY28k0BQPDhQcIrpZvB7pEEIMNhJ1D9Gmxjm
+	 gwAfi6ZVPYweFExFdbR9bQElp22l8SBgWYMJu9Sjq9n1+BKEyWXWKKssUbAeKDxSTY
+	 d2+TQ38HCG+OPDOCaGosBUb8thwur/bWM1xZNJAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 222/291] tracing: Fix filter string testing
-Date: Wed, 23 Apr 2025 16:43:31 +0200
-Message-ID: <20250423142633.493532678@linuxfoundation.org>
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 148/241] Revert "smb: client: Fix netns refcount imbalance causing leaks and use-after-free"
+Date: Wed, 23 Apr 2025 16:43:32 +0200
+Message-ID: <20250423142626.596435848@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit a8c5b0ed89a3f2c81c6ae0b041394e6eea0e7024 upstream.
+commit c707193a17128fae2802d10cbad7239cc57f0c95 upstream.
 
-The filter string testing uses strncpy_from_kernel/user_nofault() to
-retrieve the string to test the filter against. The if() statement was
-incorrect as it considered 0 as a fault, when it is only negative that it
-faulted.
+This reverts commit 4e7f1644f2ac6d01dc584f6301c3b1d5aac4eaef.
 
-Running the following commands:
+The commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
+rmmod") is not only a bogus fix for LOCKDEP null-ptr-deref but also
+introduces a real issue, TCP sockets leak, which will be explained in
+detail in the next revert.
 
-  # cd /sys/kernel/tracing
-  # echo "filename.ustring ~ \"/proc*\"" > events/syscalls/sys_enter_openat/filter
-  # echo 1 > events/syscalls/sys_enter_openat/enable
-  # ls /proc/$$/maps
-  # cat trace
+Also, CNA assigned CVE-2024-54680 to it but is rejecting it. [0]
 
-Would produce nothing, but with the fix it will produce something like:
+Thus, we are reverting the commit and its follow-up commit 4e7f1644f2ac
+("smb: client: Fix netns refcount imbalance causing leaks and
+use-after-free").
 
-      ls-1192    [007] .....  8169.828333: sys_openat(dfd: ffffffffffffff9c, filename: 7efc18359904, flags: 80000, mode: 0)
-
-Link: https://lore.kernel.org/all/CAEf4BzbVPQ=BjWztmEwBPRKHUwNfKBkS3kce-Rzka6zvbQeVpg@mail.gmail.com/
-
+Link: https://lore.kernel.org/all/2025040248-tummy-smilingly-4240@gregkh/ #[0]
+Fixes: 4e7f1644f2ac ("smb: client: Fix netns refcount imbalance causing leaks and use-after-free")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250417183003.505835fb@gandalf.local.home
-Fixes: 77360f9bbc7e5 ("tracing: Add test for user space strings when filtering on string pointers")
-Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Reported-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_filter.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -716,7 +716,7 @@ static __always_inline char *test_string
- 	kstr = ubuf->buffer;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -300,7 +300,6 @@ cifs_abort_connection(struct TCP_Server_
+ 			 server->ssocket->flags);
+ 		sock_release(server->ssocket);
+ 		server->ssocket = NULL;
+-		put_net(cifs_net_ns(server));
+ 	}
+ 	server->sequence_number = 0;
+ 	server->session_estab = false;
+@@ -3127,12 +3126,8 @@ generic_ip_connect(struct TCP_Server_Inf
+ 		/*
+ 		 * Grab netns reference for the socket.
+ 		 *
+-		 * This reference will be released in several situations:
+-		 * - In the failure path before the cifsd thread is started.
+-		 * - In the all place where server->socket is released, it is
+-		 *   also set to NULL.
+-		 * - Ultimately in clean_demultiplex_info(), during the final
+-		 *   teardown.
++		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
++		 * teardown.
+ 		 */
+ 		get_net(net);
  
- 	/* For safety, do not trust the string pointer */
--	if (!strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE))
-+	if (strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE) < 0)
- 		return NULL;
- 	return kstr;
+@@ -3148,8 +3143,10 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	}
+ 
+ 	rc = bind_socket(server);
+-	if (rc < 0)
++	if (rc < 0) {
++		put_net(cifs_net_ns(server));
+ 		return rc;
++	}
+ 
+ 	/*
+ 	 * Eventually check for other socket options to change from
+@@ -3195,6 +3192,9 @@ generic_ip_connect(struct TCP_Server_Inf
+ 	if (sport == htons(RFC1001_PORT))
+ 		rc = ip_rfc1001_connect(server);
+ 
++	if (rc < 0)
++		put_net(cifs_net_ns(server));
++
+ 	return rc;
  }
-@@ -735,7 +735,7 @@ static __always_inline char *test_ustrin
  
- 	/* user space address? */
- 	ustr = (char __user *)str;
--	if (!strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE))
-+	if (strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE) < 0)
- 		return NULL;
- 
- 	return kstr;
 
 
 
