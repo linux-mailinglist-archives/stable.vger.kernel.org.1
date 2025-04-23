@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AB5A98DAD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC77A99156
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC44D1889C5E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D44C7AAC40
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8795280A5F;
-	Wed, 23 Apr 2025 14:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10153288CB2;
+	Wed, 23 Apr 2025 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN87owDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNBtKBvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6A21A9B39;
-	Wed, 23 Apr 2025 14:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C055C283689;
+	Wed, 23 Apr 2025 15:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419623; cv=none; b=FYPA/ZGjuAYGwkt+GrsFVE8uLh34s8VpPJppMVrnWNNntMEMIW92UDiRkuXT8Uy+eN6GPnHd7yiJrDlHp4gNmZaz2CVyBSyshT9j6n7NO6Aa+7E13M6NniWRYc3X1gLHG7R240z+7NqCk1Z9pyT/9UupIkmUPzObtH0ZVVDxrj4=
+	t=1745421615; cv=none; b=OqJNLQg/Eg2YlXaSdzTe8RlfjVcfcpseVgmJvgDAbXBPm7F+7ZqZBmQP6rvV21B2BP4bQAm8U9/vohJWzKZG5+x3Ifh47iaLWBn2qDxhiimWwe//WZ+DXZJrYxwKIOkCWrLs9+kUVBbFXE86hBhzqoEqxknpnM3oHQpJs6EesLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419623; c=relaxed/simple;
-	bh=DrVNhr77YpxdqZSu3bmJzyuy0wfyZlTslwRq4YE3dZw=;
+	s=arc-20240116; t=1745421615; c=relaxed/simple;
+	bh=PR2h3D9DAsGG6BMWqO/a2WUrgMZiOiPQhcMLA4MuH/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qtG2QI1HjngXpM95G+fs4RVsr/1xvWT6ddXfDFIMWKeFAFGUew50jFrl1eQa6X7b7ZR0kgJFypFgpa1s1iNDilxQUAD9WWPHAAOCpxiGnwJ8c5GPeMg1Tozh/t71h3M+aUobKjvePX8AdIJ0BDE7FxbFtcfUTlKqjuJBcwJG2UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN87owDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E22C4CEE2;
-	Wed, 23 Apr 2025 14:47:02 +0000 (UTC)
+	 MIME-Version; b=nLdQVuiwieMqjlspOxKBvOAFriyh+Rrn+iZGSYdrMEFXZQMo83eC3cHvkbBwRNCfrHjigFF6xg+zj9FII9dTM/txbQ6MXCqbwJKgATK7jdBmqqghNf5wCLnxL4ry5BAruLGaiSOijVarBLSpWNMCcfVOLBwB9iSCi5C27hemEFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNBtKBvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53349C4CEE3;
+	Wed, 23 Apr 2025 15:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419623;
-	bh=DrVNhr77YpxdqZSu3bmJzyuy0wfyZlTslwRq4YE3dZw=;
+	s=korg; t=1745421615;
+	bh=PR2h3D9DAsGG6BMWqO/a2WUrgMZiOiPQhcMLA4MuH/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cN87owDQ7z83HVMuO4TTJU5ZZOwIfX+dhfFFtmJ768abue1KESdSzO41q+P0lvm4G
-	 kvOMVQtOAshYh0V5tu5P9J5uxToN2GvAkPbPCAxeP5d7k2xAVNu3YiTmwf6pmqFacg
-	 eBZ8kD6jOngKf+iC5K7ieg7E8xqohDJoMao1K3Ls=
+	b=VNBtKBvq+4NmtOgoicWYCCrZKiEMvW719a8np4hmweDUmHWBHUzULms9iE5i6//rx
+	 t+2XuztEZM6FS63QpzofvDfXoNZdgrsAG3MY92X36ETYEQ0JZZqgsQHAjxBFW7oXmA
+	 diuRKMbvvXkWLsUYXCsx37UGJwcdCD4pw+NSgmpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 024/223] ALSA: hda/realtek - Fixed ASUS platform headset Mic issue
+	Trevor Woerner <twoerner@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.6 200/393] thermal/drivers/rockchip: Add missing rk3328 mapping entry
 Date: Wed, 23 Apr 2025 16:41:36 +0200
-Message-ID: <20250423142618.101175233@linuxfoundation.org>
+Message-ID: <20250423142651.651320994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Trevor Woerner <twoerner@gmail.com>
 
-[ Upstream commit b5458fcabd96ce29adbf7225c1741ecdfff70a91 ]
+commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
 
-ASUS platform Headset Mic was disable by default.
-Assigned verb table for Mic pin will enable it.
+The mapping table for the rk3328 is missing the entry for -25C which is
+found in the TRM section 9.5.2 "Temperature-to-code mapping".
 
-Fixes: 7ab61d0a9a35 ("ALSA: hda/realtek: Add support for ASUS B3405 and B3605 Laptops using CS35L41 HDA")
-Fixes: c86dd79a7c33 ("ALSA: hda/realtek: Add support for ASUS B5405 and B5605 Laptops using CS35L41 HDA")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/0fe3421a6850461fb0b7012cb28ef71d@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+      4096-<code in table>. Whereas the table in the TRM gives the code
+      "3774" for -25C, the kernel uses 4096-3774=322.
+
+[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
+  well as through the downstream kernel code, it seems we may have
+  some troubles at our hands.  Let me explain, please.
+
+  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
+  the equation for the output when tsadc_q_sel equals 1 is (4096 -
+  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
+  equation is (1024 - tsadc_q) in that case.
+
+  The downstream kernel code, however, treats the RK3308 and RK3328
+  tables and their values as being the same.  It even mentions 1024 as
+  the "offset" value in a comment block for the rk_tsadcv3_control()
+  function, just like the upstream code does, which is obviously wrong
+  "offset" value when correlated with the table on page 544 of part 1
+  of the RK3308 TRM v1.1.
+
+  With all this in mind, it's obvious that more work is needed to make
+  it clear where's the actual mistake (it could be that the TRM is
+  wrong), which I'll volunteer for as part of the SoC binning project.
+  In the meantime, this patch looks fine as-is to me, by offering
+  what's a clear improvement to the current state of the upstream
+  code"
+
+Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+Cc: stable@vger.kernel.org
+Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ drivers/thermal/rockchip_thermal.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index b660bbfc6b0cc..4171aa22747c3 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7910,6 +7910,7 @@ enum {
- 	ALC233_FIXUP_MEDION_MTL_SPK,
- 	ALC294_FIXUP_BASS_SPEAKER_15,
- 	ALC283_FIXUP_DELL_HP_RESUME,
-+	ALC294_FIXUP_ASUS_CS35L41_SPI_2,
- };
- 
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -10252,6 +10253,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc283_fixup_dell_hp_resume,
- 	},
-+	[ALC294_FIXUP_ASUS_CS35L41_SPI_2] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_spi_two,
-+		.chained = true,
-+		.chain_id = ALC294_FIXUP_ASUS_HEADSET_MIC,
-+	},
- };
- 
- static const struct hda_quirk alc269_fixup_tbl[] = {
-@@ -10715,7 +10722,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
- 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
-@@ -10804,14 +10811,14 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
--	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
--	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
- 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
--- 
-2.39.5
-
+--- a/drivers/thermal/rockchip_thermal.c
++++ b/drivers/thermal/rockchip_thermal.c
+@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
+ 	{296, -40000},
+ 	{304, -35000},
+ 	{313, -30000},
++	{322, -25000},
+ 	{331, -20000},
+ 	{340, -15000},
+ 	{349, -10000},
 
 
 
