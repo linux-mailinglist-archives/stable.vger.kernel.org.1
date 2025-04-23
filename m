@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B31A98ED6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F40BA98F6D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3126A3BA1CF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428141B87246
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371D627F4F3;
-	Wed, 23 Apr 2025 14:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDD7280A5F;
+	Wed, 23 Apr 2025 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INONRfCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/ojZg/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70FA481CD;
-	Wed, 23 Apr 2025 14:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1527F280A52;
+	Wed, 23 Apr 2025 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420174; cv=none; b=DhpaTBCMZnGhB9H6oZyLmkJyurqDQXQg9vJA/wRWqFUuv9a9KDcUEjZskJwm1V4pPZ37f4FOphznIDYChUWhW6wkjKb489yBH1zZHIjp9cgAUqNN3NHP6TcSQP2h1dCnt5EvKGTOgHYuW/DRcgh2qD1aj0uV1+fOT/N0zlkrt7E=
+	t=1745420464; cv=none; b=KQzrxv3aSxyRWLG82xRPwLN+F7Fqi30bBFmrKVnKJW1vJAZcpaHHeSgPq4js2ugokEMv9DhUif1ZbQLrYgrkMofomZpitr4I8QpuOD3Bffo6tiT4Ot5Y3ji2/5+4CZrpVuF6CVwhcdN+9jfIVhgshRZAoGXVHfU6h9MAy5WGfPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420174; c=relaxed/simple;
-	bh=s8tpM+J00SHHB6T8AuGjfdjH8wQqLWrG3nniwL8Fkgo=;
+	s=arc-20240116; t=1745420464; c=relaxed/simple;
+	bh=oDGwC/AdcWxK3ichHF3hr/l0sIZ834/4Wc+CFdFRFLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7MShXsymgsAzP+iQWYD4wlqxLCP9/DbwtzjjUU2ZpHTxuHIqukGmVYoWina8P1IOicsHQAKHaqeqdj/IePTbrRzD1Nm8Y+VS8eriKjGpsHzYrt3hDZXEWat5wpIBguYhlkYUAulupI5yLYlC3mBlfZr/aOglpOjIRDyq8xMYjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INONRfCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0D2C4CEE2;
-	Wed, 23 Apr 2025 14:56:13 +0000 (UTC)
+	 MIME-Version; b=OIPzrz9pXArngDUpvySj+JHcv+Z/8sfLGUuTbyW/JGuq1M3SWicrovR30Aq3pKv1nsO4mMk2HGZycXG45LicredIAU0nxOU22dqqh6KKcvDwC5Yt22SeDFsUtzD2Ir7KxD38D48+uCOryOuWOQH6d18DlzrOojxedWI5b+N0taM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/ojZg/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D126C4CEE2;
+	Wed, 23 Apr 2025 15:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420173;
-	bh=s8tpM+J00SHHB6T8AuGjfdjH8wQqLWrG3nniwL8Fkgo=;
+	s=korg; t=1745420464;
+	bh=oDGwC/AdcWxK3ichHF3hr/l0sIZ834/4Wc+CFdFRFLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INONRfCGktH9B00FCDJN5XcMjAZTuqbWE4H0t1hzbE37CtAZ3yeV0SldTVqYl1FDi
-	 oiq5Q9COlVWGD9yHbqMtvIoBZ6ns3sIBCEiRQM3LoMJzS45U6xmrsFkagPjDkITsiJ
-	 kTX4ipxg+jFFVXzcAO3TbsbrxhfAJ0HiaLj9AdEA=
+	b=v/ojZg/rryHdrpLLgKnxtoNNrkaCQXzX6DBM0mIGnG0MhQEjJlOFIMwxbY5fKXUlv
+	 hypqSvEEH4KMT+krx44WQm8Oq6WXGwo+kVCFsox1s+nkijEbRR7+xuMnY76s/tR6Dy
+	 pFRmgznub7yK8kSjK69dlLJfLpT19n6Lv1+iTzjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	moyi geek <1441339168@qq.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 086/223] rust: kbuild: use `pound` to support GNU Make < 4.3
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 094/241] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
 Date: Wed, 23 Apr 2025 16:42:38 +0200
-Message-ID: <20250423142620.626359313@linuxfoundation.org>
+Message-ID: <20250423142624.420219545@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 1c4494c14b4124f3a13a7f4912b84b633ff4f9ba upstream.
+[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
 
-GNU Make 4.3 changed the behavior of `#` inside commands in commit
-c6966b323811 ("[SV 20513] Un-escaped # are not comments in function
-invocations"):
+[ Quoting Samuel Holland: ]
 
-    * WARNING: Backward-incompatibility!
-      Number signs (#) appearing inside a macro reference or function invocation
-      no longer introduce comments and should not be escaped with backslashes:
-      thus a call such as:
-        foo := $(shell echo '#')
-      is legal.  Previously the number sign needed to be escaped, for example:
-        foo := $(shell echo '\#')
-      Now this latter will resolve to "\#".  If you want to write makefiles
-      portable to both versions, assign the number sign to a variable:
-        H := \#
-        foo := $(shell echo '$H')
-      This was claimed to be fixed in 3.81, but wasn't, for some reason.
-      To detect this change search for 'nocomment' in the .FEATURES variable.
+  This is a separate issue, but using ".option rvc" here is a bug.
+  It will unconditionally enable the C extension for the rest of
+  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
 
-Unlike other commits in the kernel about this issue, such as commit
-633174a7046e ("lib/raid6/test/Makefile: Use $(pound) instead of \#
-for Make 4.3"), that fixed the issue for newer GNU Makes, in our case
-it was the opposite, i.e. we need to fix it for the older ones: someone
-building with e.g. 4.2.1 gets the following error:
+[ Quoting Palmer Dabbelt: ]
 
-    scripts/Makefile.compiler:81: *** unterminated call to function 'call': missing ')'.  Stop.
+  We're just looking at the address of kgdb_compiled_break, so it's
+  fine if it ends up as a c.ebreak.
 
-Thus use the existing variable to fix it.
+[ Quoting Alexandre Ghiti: ]
 
-Reported-by: moyi geek <1441339168@qq.com>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565/topic/x/near/512001985
-Cc: stable@vger.kernel.org
-Fixes: e72a076c620f ("kbuild: fix issues with rustc-option")
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250414171241.2126137-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  .option norvc is used to prevent the assembler from using compressed
+  instructions, but it's generally used when we need to ensure the
+  size of the instructions that are used, which is not the case here
+  as noted by Palmer since we only care about the address. So yes
+  it will work fine with C enabled :)
+
+So let's just remove them all.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.compiler |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kernel/kgdb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -75,7 +75,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
- # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
- # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
- __rustc-option = $(call try-run,\
--	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
-+	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
- 	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
- 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 5d1ce8dacaf58..9f3db3503dabd 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -257,9 +257,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ noinline void arch_kgdb_breakpoint(void)
+ {
+ 	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
++	    "kgdb_compiled_break: ebreak\n");
+ }
  
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+-- 
+2.39.5
+
 
 
 
