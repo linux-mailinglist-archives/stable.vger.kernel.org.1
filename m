@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-136412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544B5A99390
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E528AA9932E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4A141BC201F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19475926465
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3449029AAF7;
-	Wed, 23 Apr 2025 15:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB892857DC;
+	Wed, 23 Apr 2025 15:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTakviCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RR3C5gjz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AD729AAE8;
-	Wed, 23 Apr 2025 15:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC53279345;
+	Wed, 23 Apr 2025 15:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422478; cv=none; b=IKkr9j0MoWCMMw+Eg/Dpi4hx1YK/4zmaDmcUswPhs1iu5759Wa0XD2HwC7PPkiDHl+897oK10gDD4asgSp0EPpm6k59c32FSIqRC6Ft7oF58Q8WAIvmRhtj5mx4kI9SLNeBzrLcz/gbAcTO1bGc3c6FV3s6EjQgg/OFBbO9THFU=
+	t=1745422302; cv=none; b=ptWQ9Z+IR2+TRMU4eMFbdPmCrgy3qh4vR4qvi1Ij8VpXPwLqN326TT2kHHwl4O2Fuxpc1UiDueAPdB9VIFmGTO/DxpGIKs5StTuh21CmCMwlbpQh8t8/oRKD/v148LSlo/aZLjMC7ZVBbdU3OKtnQplM63ZMNmbPI2lDmbQEjM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422478; c=relaxed/simple;
-	bh=Ku3WKY9YToDwwuqydEvlDjw8feXMHH3YXpOpfqNldaQ=;
+	s=arc-20240116; t=1745422302; c=relaxed/simple;
+	bh=xwFeZe3Du8pq/LMKx34xCQvs7cTX6FrlDf0/zOH9BZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ViBrCgpGcjOIEUM5AyvrVDUJvRFiEuN5RLYtrrmsKhJhnz2BChkox/SALgwDPPbQ33AtCPGXmI9rdXhwm/rZzUkGe6gsYnVthGh2pkJExcIJtWxWRodBbBk/+MPXX4wjcg6u4M0NkxzXTXPy83qibLlkLWUIdZPa6MWv8+S7wiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTakviCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B2CC4CEE2;
-	Wed, 23 Apr 2025 15:34:37 +0000 (UTC)
+	 MIME-Version; b=ayB/5BXJI1hy61cimTaNSJoFnEpg96CIp9LZ2dAo5TA8+kpsi1dx9ZwuUXSVth6E4KH8xTFJA9P4gJdhgzELYJvmuf1405KZCBCJRPuViPUwkTKTbqcjJ6KIjIIRbTIrv4UawEWv+NrMNtWBIPU1+2vkGB/RLAKWjZ1F3uA/eYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RR3C5gjz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 217AFC4CEE2;
+	Wed, 23 Apr 2025 15:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422477;
-	bh=Ku3WKY9YToDwwuqydEvlDjw8feXMHH3YXpOpfqNldaQ=;
+	s=korg; t=1745422301;
+	bh=xwFeZe3Du8pq/LMKx34xCQvs7cTX6FrlDf0/zOH9BZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTakviCyb3+K9XVC8kNq9qaHW97mwcVDa3lsJDWxomfW9gJ473CrXqDLhaZig0Y8s
-	 Lry7+8LcVenyxbqIvwIPc3lvx0oKW6Na4axpoiQJ9+tPbn1RtqhRVwxR35VaCWBW4Q
-	 ltLUIFgO4S/JlIAeBrucc04SvSMrLh40ZpOGMti0=
+	b=RR3C5gjzQR3CpyKzD1JE7WqqdigSaX5ZOCvzCieIAZKpqF/1KMuSBbawutCYeSObt
+	 QHtJ8VYnkRdDeGCfoJ7nfKQIWMPTlpEJPiNcLlaFZxbiw4fJ7pK4Fl3Dof3HeXLeug
+	 WdmXl4Xx0cM7SI55XvoyEZUQZoXXu58jOwSeeyv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.6 366/393] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 273/291] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
 Date: Wed, 23 Apr 2025 16:44:22 +0200
-Message-ID: <20250423142658.455746756@linuxfoundation.org>
+Message-ID: <20250423142635.587608878@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +64,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 upstream.
+commit cf8b16857db702ceb8d52f9219a4613363e2b1cf upstream.
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, global "irq_type" and "test->irq_type".
+[Why]
+Coverity report OVERRUN warning. There are
+only max_links elements within dc->links. link
+count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
 
-The former is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+[How]
+Make sure link count less than max_links.
 
-In the pci_endpoint_test_request_irq(), since this global variable
-is referenced when an error occurs, the unintended error message is
-displayed.
-
-For example, after running "pcitest -i 2", the following message
-shows "MSI 3" even if the current IRQ type becomes "MSI-X":
-
-  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
-  SET IRQ TYPE TO MSI-X:          NOT OKAY
-
-Fix this issue by using "test->irq_type" instead of global "irq_type".
-
-Cc: stable@vger.kernel.org
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Minor conflict resolved due to code context change. And the macro MAX_LINKS
+ is introduced by Commit 60df5628144b ("drm/amd/display: handle invalid
+ connector indices") after 6.10. So here we still use the original array
+ length MAX_PIPES * 2]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -243,7 +243,7 @@ static bool pci_endpoint_test_request_ir
- 	return true;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4499,17 +4499,17 @@ static int amdgpu_dm_initialize_drm_devi
+ 		}
+ 	}
  
- fail:
--	switch (irq_type) {
-+	switch (test->irq_type) {
- 	case IRQ_TYPE_LEGACY:
- 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
- 			pci_irq_vector(pdev, i));
++	if (link_cnt > (MAX_PIPES * 2)) {
++		DRM_ERROR(
++			"KMS: Cannot support more than %d display indexes\n",
++				MAX_PIPES * 2);
++		goto fail;
++	}
++
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
+ 
+-		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
+-			DRM_ERROR(
+-				"KMS: Cannot support more than %d display indexes\n",
+-					AMDGPU_DM_MAX_DISPLAY_INDEX);
+-			continue;
+-		}
+-
+ 		aconnector = kzalloc(sizeof(*aconnector), GFP_KERNEL);
+ 		if (!aconnector)
+ 			goto fail;
 
 
 
