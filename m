@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 981D5A9912D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:27:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4F4A99253
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 870CA925292
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48B66927AA9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F94284663;
-	Wed, 23 Apr 2025 15:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03372283C82;
+	Wed, 23 Apr 2025 15:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB1Bqwo2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVj1QPVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760CD2641EA;
-	Wed, 23 Apr 2025 15:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B448A281357;
+	Wed, 23 Apr 2025 15:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421212; cv=none; b=ZutMB/dOkK0w+42r47ogYB/RXazsyu4jQrl2TgYpi5xK9Y3QL4A1hroIeBbW/SGGQvp6PYhHSofPrcFDFokcmWykr0+V8rwIQ+v0/+A4RkO2DpqEJveeBNaVNtd9UAWaRcqqVUj2QFwVptqZ/gJ8v9XCQRtKA0EMk40zjseHYZg=
+	t=1745421594; cv=none; b=qP60YaqZDQWnoJyJOiAfClbfiqVEQthRKkxfLncbkKS6FWrOVW3ZZ10/u8ZJdnGeTwownZz1HwHyQAZYYG2VLTSrN4pFd8N4a19ii9n92ODZTs5q1QwVKbI64fdR0QyKx4R5Ij2YqexsjB+vwryfTxUyOPclrY/H/DDLDU2MNMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421212; c=relaxed/simple;
-	bh=ieCeMDaReC7fKsv2n9Bfiea8L0ShWsJk+IKOwCOfw7Y=;
+	s=arc-20240116; t=1745421594; c=relaxed/simple;
+	bh=oj+7VVXXA5Ca/PKmp3l2NN5ESuQ7mUhy7wZIRX6yo40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d/etlao5Egs02RkreFI6oqJ5thProxnRxKts6AhwuCipJcQQto008JKRSgoXe28eeMKPYvsQboEOVbA3KdsdSrAT56/Kcn40TyI0AXi1TcQURJO+Ov/PQTnM+HLpM8VEdmXE7HHFficT3J8ZMWdVYmTVYADlAVaaDWjE1uBA4Qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB1Bqwo2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06FEDC4CEE2;
-	Wed, 23 Apr 2025 15:13:31 +0000 (UTC)
+	 MIME-Version; b=A8U20v73UrQutXLbzXDiL8ysvq65fKxbhvvGn4ZHk5O4tCl1CWs2B1zmzKkuOu1SgR/gonUDmHQP7jMdSsL4w8zWK4cohrtfyxlbhKOcTGVKzZOzb1M4H+dfvINVyqAiuIgPmOASkrDjqTJEcJPSeXd8KfUl+FrHHkHW6VBNGqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVj1QPVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F4F3C4CEE2;
+	Wed, 23 Apr 2025 15:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421212;
-	bh=ieCeMDaReC7fKsv2n9Bfiea8L0ShWsJk+IKOwCOfw7Y=;
+	s=korg; t=1745421594;
+	bh=oj+7VVXXA5Ca/PKmp3l2NN5ESuQ7mUhy7wZIRX6yo40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vB1Bqwo2pDYqP68T5C5uVcWezf1+hZVPhmpn7OvLOjjSDHDjOAoT6k9CORWU0/tV3
-	 7RobgVUs3AsBigFFfXCGzNtZYK5Rd1soy9r9bagaXX8KZJZLDcqzjaIXivYGehGw6E
-	 VaSy1arIU4GUXzCn+8d32SGaCYHDj2OJLulx6nDE=
+	b=xVj1QPVYisy3p79DL1S+TXpFK/khy7fOJX5qaGOEnitHm0n9Ca4xWHpZ4OG5oBJFe
+	 Jq8r2c+HasC92VxWDqMg0InnlF897B1aPnZp/oZG4fl1Q3w1evYAJjwKCI1cE6uBOD
+	 0cIzPmeTDosK547s19E3qBLTdhiDFavSLMb4JgvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.12 201/223] misc: pci_endpoint_test: Fix irq_type to convey the correct type
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 209/241] drm/amd/display: Do not enable Replay and PSR while VRR is on in amdgpu_dm_commit_planes()
 Date: Wed, 23 Apr 2025 16:44:33 +0200
-Message-ID: <20250423142625.357996033@linuxfoundation.org>
+Message-ID: <20250423142629.074643999@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Tom Chung <chiahsuan.chung@amd.com>
 
-commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
+commit 69a46ce1f15b4391c128d581f6936750f9bfa052 upstream.
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, "irq_type" as global and "test->irq_type".
+[Why]
+Replay and PSR will cause some video corruption while VRR is enabled.
 
-The global is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+[How]
+Do not enable the Replay and PSR while VRR is active in
+amdgpu_dm_enable_self_refresh().
 
-The type set in this function isn't reflected in the global "irq_type",
-so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
-
-As a result, the wrong type is displayed in old version of "pcitest"
-as follows:
-
-  - Result of running "pcitest -i 0"
-
-      SET IRQ TYPE TO LEGACY:         OKAY
-
-  - Result of running "pcitest -I"
-
-      GET IRQ TYPE:           MSI
-
-Whereas running the new version of "pcitest" in kselftest results in an
-error as follows:
-
-  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
-
-Fix this issue by propagating the current type to the global "irq_type".
-
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 67edb81d6e9a ("drm/amd/display: Disable replay and psr while VRR is enabled")
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -741,6 +741,7 @@ static bool pci_endpoint_test_set_irq(st
- 	if (!pci_endpoint_test_request_irq(test))
- 		goto err;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -113,6 +113,7 @@ bool amdgpu_dm_crtc_vrr_active(const str
+  *
+  * Panel Replay and PSR SU
+  * - Enable when:
++ *      - VRR is disabled
+  *      - vblank counter is disabled
+  *      - entry is allowed: usermode demonstrates an adequate number of fast
+  *        commits)
+@@ -131,19 +132,20 @@ static void amdgpu_dm_crtc_set_panel_sr_
+ 	bool is_sr_active = (link->replay_settings.replay_allow_active ||
+ 				 link->psr_settings.psr_allow_active);
+ 	bool is_crc_window_active = false;
++	bool vrr_active = amdgpu_dm_crtc_vrr_active_irq(vblank_work->acrtc);
  
-+	irq_type = test->irq_type;
- 	return true;
+ #ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
+ 	is_crc_window_active =
+ 		amdgpu_dm_crc_window_is_activated(&vblank_work->acrtc->base);
+ #endif
  
- err:
+-	if (link->replay_settings.replay_feature_enabled &&
++	if (link->replay_settings.replay_feature_enabled && !vrr_active &&
+ 		allow_sr_entry && !is_sr_active && !is_crc_window_active) {
+ 		amdgpu_dm_replay_enable(vblank_work->stream, true);
+ 	} else if (vblank_enabled) {
+ 		if (link->psr_settings.psr_version < DC_PSR_VERSION_SU_1 && is_sr_active)
+ 			amdgpu_dm_psr_disable(vblank_work->stream, false);
+-	} else if (link->psr_settings.psr_feature_enabled &&
++	} else if (link->psr_settings.psr_feature_enabled && !vrr_active &&
+ 		allow_sr_entry && !is_sr_active && !is_crc_window_active) {
+ 
+ 		struct amdgpu_dm_connector *aconn =
 
 
 
