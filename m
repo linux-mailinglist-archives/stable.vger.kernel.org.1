@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-136300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F418DA992F1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FC5A99330
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F0BA4A396C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C54D16D1D8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C0D280CF6;
-	Wed, 23 Apr 2025 15:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E8B2980D4;
+	Wed, 23 Apr 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opAGeGqu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMbFYuAn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FF628E61B;
-	Wed, 23 Apr 2025 15:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27728A415;
+	Wed, 23 Apr 2025 15:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422183; cv=none; b=OSIlua0CxUIuPlGTtFy4MsI4xWSttx5FXpWGY7c3XTOV2OTaePjESYz5Q4H3R5csEgSNhC08IITPbsW2fDRyNPS4yHe07GeF36KMGwR6AHkBkag6enONuGnAqdguVwCRc7ZcAk0tN3uEBMsK96P7PYJR+LYcETBzZ3VwP+bqRpU=
+	t=1745422422; cv=none; b=O8ttvDN17ChBKj5lu1Ik0lMVXmJ+9vPmnETBP0JBL2DrEVpGULquSh0O6KPtpN7ac0dxRBoDISxYt2siE6Tf9WTnd0KqhXt9FHUS9IhsQH50mZZncWFamLK0bsEc6k2hKuCVZpa7+wEvD0KwQNK7tvtppKv7Oqdz/0/36YAPCyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422183; c=relaxed/simple;
-	bh=rbHzUfWc7nHi6DWBTIv2NmiTM/mcWE8Y4nBaV3fakws=;
+	s=arc-20240116; t=1745422422; c=relaxed/simple;
+	bh=bA08hSpX804y/uiXrjWGu/gj/n8ubmH2kPC4zuOl4xA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOS11GMUm90Kz/Ga0H649SL4/Tr4t9qMERK7k9piJB1ULZ8IzC67z5uSegiUDGiNgLuBgfIXuKm3ZbJk9MtM+L94WosdTo1yuTmuqLLvoa4rEnt5C1he2aQ0orMW0yX9rcnP5O6/sIkdfe935/7DXapb/7dClCzXp9pDMllvfNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opAGeGqu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADAAC4CEE2;
-	Wed, 23 Apr 2025 15:29:42 +0000 (UTC)
+	 MIME-Version; b=qauFldK9MEV50Qxj9/f3a4RIsklhbDQMHRaH3C0LJruilMlN+KWGFkbgGmJftOZZYQ5ODU+NRqFhmLmN/3JvBvWkeRqm1ZBmlv1Pu+ynhVlDwv/L3kYmUFPEWt8cdp5xUcF7dAeQhvEDpW3q8kbCeWjuWRuUrfdvdgvNq95Pxyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dMbFYuAn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8DAC4CEE2;
+	Wed, 23 Apr 2025 15:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422183;
-	bh=rbHzUfWc7nHi6DWBTIv2NmiTM/mcWE8Y4nBaV3fakws=;
+	s=korg; t=1745422422;
+	bh=bA08hSpX804y/uiXrjWGu/gj/n8ubmH2kPC4zuOl4xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=opAGeGqu6rrcS8wprEEye6boQ8Y6PvDGIm8iiS+R+9kttqD1+A7WZ8PBv6QiqTL04
-	 l8j31OIwDEfiu9eOKBDDhQlg0u+toizQGzYgkyDf1NxGrB76PNHL2fdCMxofIq09tL
-	 jBsaomup4u3CYWHAkxRxLaw8d5rUrXscJLwymKgI=
+	b=dMbFYuAn1Gzpu9WRN4ERuQZWQsRFA0rK+6SBUiMoVnUZUsBcR0Hhf8qVTmhprgbHm
+	 k5TtinLrXLLsbrVfoVaGySyecQOJi+jGjnplCpdbQen3fG9I3a2EqCDkq/wnFiTcxl
+	 5nGEmsaUySZhJXt8EiovA0IMWJvwEvvLrCAP6YzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.1 251/291] KVM: arm64: Remove VHE host restore of CPACR_EL1.ZEN
+	Tang Jun <dukang.tj@alibaba-inc.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 6.6 344/393] perf/x86/intel/uncore: Fix the scale of IIO free running counters on ICX
 Date: Wed, 23 Apr 2025 16:44:00 +0200
-Message-ID: <20250423142634.685492599@linuxfoundation.org>
+Message-ID: <20250423142657.550764568@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,93 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit 459f059be702056d91537b99a129994aa6ccdd35 ]
+commit 32c7f1150225694d95a51110a93be25db03bb5db upstream.
 
-When KVM is in VHE mode, the host kernel tries to save and restore the
-configuration of CPACR_EL1.ZEN (i.e. CPTR_EL2.ZEN when HCR_EL2.E2H=1)
-across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
-configuration may be clobbered by hyp when running a vCPU. This logic is
-currently redundant.
+There was a mistake in the ICX uncore spec too. The counter increments
+for every 32 bytes rather than 4 bytes.
 
-The VHE hyp code unconditionally configures CPTR_EL2.ZEN to 0b01 when
-returning to the host, permitting host kernel usage of SVE.
+The same as SNR, there are 1 ioclk and 8 IIO bandwidth in free running
+counters. Reuse the snr_uncore_iio_freerunning_events().
 
-Now that the host eagerly saves and unbinds its own FPSIMD/SVE/SME
-state, there's no need to save/restore the state of the EL0 SVE trap.
-The kernel can safely save/restore state without trapping, as described
-above, and will restore userspace state (including trap controls) before
-returning to userspace.
-
-Remove the redundant logic.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-4-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-[Rework for refactoring of where the flags are stored -- broonie]
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 2b3b76b5ec67 ("perf/x86/intel/uncore: Add Ice Lake server uncore support")
+Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250416142426.3933977-2-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h |    2 --
- arch/arm64/kvm/fpsimd.c           |   16 ----------------
- 2 files changed, 18 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c |   33 +--------------------------------
+ 1 file changed, 1 insertion(+), 32 deletions(-)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -556,8 +556,6 @@ struct kvm_vcpu_arch {
- /* Save TRBE context if active  */
- #define DEBUG_STATE_SAVE_TRBE	__vcpu_single_flag(iflags, BIT(6))
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -5476,37 +5476,6 @@ static struct freerunning_counters icx_i
+ 	[ICX_IIO_MSR_BW_IN]	= { 0xaa0, 0x1, 0x10, 8, 48, icx_iio_bw_freerunning_box_offsets },
+ };
  
--/* SVE enabled for host EL0 */
--#define HOST_SVE_ENABLED	__vcpu_single_flag(sflags, BIT(0))
- /* SME enabled for EL0 */
- #define HOST_SME_ENABLED	__vcpu_single_flag(sflags, BIT(1))
- /* Physical CPU not in supported_cpus */
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -88,10 +88,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
- 	fpsimd_save_and_flush_cpu_state();
- 	vcpu->arch.fp_state = FP_STATE_FREE;
- 
--	vcpu_clear_flag(vcpu, HOST_SVE_ENABLED);
--	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
--		vcpu_set_flag(vcpu, HOST_SVE_ENABLED);
+-static struct uncore_event_desc icx_uncore_iio_freerunning_events[] = {
+-	/* Free-Running IIO CLOCKS Counter */
+-	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+-	/* Free-Running IIO BANDWIDTH IN Counters */
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+-	{ /* end: all zeroes */ },
+-};
 -
- 	/*
- 	 * We don't currently support SME guests but if we leave
- 	 * things in streaming mode then when the guest starts running
-@@ -193,18 +189,6 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcp
- 		}
+ static struct intel_uncore_type icx_uncore_iio_free_running = {
+ 	.name			= "iio_free_running",
+ 	.num_counters		= 9,
+@@ -5514,7 +5483,7 @@ static struct intel_uncore_type icx_unco
+ 	.num_freerunning_types	= ICX_IIO_FREERUNNING_TYPE_MAX,
+ 	.freerunning		= icx_iio_freerunning,
+ 	.ops			= &skx_uncore_iio_freerunning_ops,
+-	.event_descs		= icx_uncore_iio_freerunning_events,
++	.event_descs		= snr_uncore_iio_freerunning_events,
+ 	.format_group		= &skx_uncore_iio_freerunning_format_group,
+ };
  
- 		fpsimd_save_and_flush_cpu_state();
--	} else if (has_vhe() && system_supports_sve()) {
--		/*
--		 * The FPSIMD/SVE state in the CPU has not been touched, and we
--		 * have SVE (and VHE): CPACR_EL1 (alias CPTR_EL2) has been
--		 * reset to CPACR_EL1_DEFAULT by the Hyp code, disabling SVE
--		 * for EL0.  To avoid spurious traps, restore the trap state
--		 * seen by kvm_arch_vcpu_load_fp():
--		 */
--		if (vcpu_get_flag(vcpu, HOST_SVE_ENABLED))
--			sysreg_clear_set(CPACR_EL1, 0, CPACR_EL1_ZEN_EL0EN);
--		else
--			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
- 	}
- 
- 	local_irq_restore(flags);
 
 
 
