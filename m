@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764BBA993A9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D949A99300
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BBB9922EA2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86B89A1F07
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57A328C5C7;
-	Wed, 23 Apr 2025 15:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7076428D82F;
+	Wed, 23 Apr 2025 15:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbK35Jnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFX8d5fc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720B92820AE;
-	Wed, 23 Apr 2025 15:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D88E27F4D9;
+	Wed, 23 Apr 2025 15:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422162; cv=none; b=g3b/YvfeW0v4MHve2PSaKY4+A8NSPO4ENrCPojd2tylpigvYrSvmFZj1bKJkRt6uMbAmoCKm/8ssrImfCn/XLE67kZehsMD9e3A3yFu22HCqJdkAVVj2s6iN9ldBao/9/Ixo0N9/5PMfxsQtLrUN+hKTt/W15k4RZFuYZidpyjc=
+	t=1745421911; cv=none; b=lodRut/r0UKMfb3uDje+anqlANOUBFZ98zEBnLGgUdu0DVb+7MD7ZhNuAWuLPb5TLFc+9OoTNntDJWQyKkTUBNW0G8jSxmaFaFILH1nDc56QGeHsyedLXAww7G/hp7zN63a+HT8hdZQRXDq7BlrG5x8zOp5eGU+9IlkcXP3y2Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422162; c=relaxed/simple;
-	bh=w563MhAKs28ebAe7LBAInPROAJelIXZ5ogRpuGyGFFU=;
+	s=arc-20240116; t=1745421911; c=relaxed/simple;
+	bh=JBaxcfzVqdQ5w1B2tSuN8VKhbBbpV0cj5bVnkX4B4jQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmZdFA2mdslFabeeCI1utcLPQzvVhTkGMHpV9wRG6B6BfKBxj/0ZawNT4krgqoVCy0/J4cdraavYbraSoQuEz9D9w7OAWOQIiKRH3p5b3kDyk4jQ8u69JLbEGywML0ig0QnRx4/MgBEIOhCSz69IlMwG0a4LhhNJXjxgxjDtQoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbK35Jnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E87C4CEE2;
-	Wed, 23 Apr 2025 15:29:21 +0000 (UTC)
+	 MIME-Version; b=pmWXYJRgt3C5ADqz7WiWUZqkZU0A2CesK59Oq9IBjN93pWWOK9YRnV1NmAlFeLP9d5Kp2l4ReR6rYjDoaoMvpwwUPPWWJb3266O53UgVvs3weiJ49ho9VCZwEOgo8N9LZi8/RLTIqtXQRzqa+7eLBI5xG+fy8xNi3wLdfYUJ6Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFX8d5fc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB5DC4CEE2;
+	Wed, 23 Apr 2025 15:25:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422162;
-	bh=w563MhAKs28ebAe7LBAInPROAJelIXZ5ogRpuGyGFFU=;
+	s=korg; t=1745421910;
+	bh=JBaxcfzVqdQ5w1B2tSuN8VKhbBbpV0cj5bVnkX4B4jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbK35JnlIsvrzrQJIHli/snP63hVKyAEmtc5YZeEfq0UmRHwrn3/K0q2TWErt9TR3
-	 sWNYKn/C2aRz58qIEhGrrg+9/ycfZ5cbhU9KvTrVL1KiVWye1m5+XwP5SJ4jtJ592A
-	 AV0YGcQnjlTjg6YnhDJEVgaPkQ8gU4EcQ2ukGCxg=
+	b=IFX8d5fc3RbQ5XJqi9Bd3FUbk85UYmUi5grvnJSNyT78xzS1KE5iZN1RAyx0e2htE
+	 AYcgkvZv8AoM42TaX/IUWdHgpafe0n4T5PXAXjnNbyxSA2r9g19ZzwV6UcWE8ugnKo
+	 p9XZU2P/JmImYOpKs1ytVcu5mLIdkbPVazFj7WBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Maimon <maimon.sagi@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/393] ptp: ocp: fix start time alignment in ptp_ocp_signal_set
-Date: Wed, 23 Apr 2025 16:43:05 +0200
-Message-ID: <20250423142655.277779114@linuxfoundation.org>
+Subject: [PATCH 6.1 197/291] cpufreq/sched: Fix the usage of CPUFREQ_NEED_UPDATE_LIMITS
+Date: Wed, 23 Apr 2025 16:43:06 +0200
+Message-ID: <20250423142632.435020018@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Maimon <maimon.sagi@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 2a5970d5aaff8f3e33ce3bfaa403ae88c40de40d ]
+[ Upstream commit cfde542df7dd51d26cf667f4af497878ddffd85a ]
 
-In ptp_ocp_signal_set, the start time for periodic signals is not
-aligned to the next period boundary. The current code rounds up the
-start time and divides by the period but fails to multiply back by
-the period, causing misaligned signal starts. Fix this by multiplying
-the rounded-up value by the period to ensure the start time is the
-closest next period.
+Commit 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused
+by need_freq_update") modified sugov_should_update_freq() to set the
+need_freq_update flag only for drivers with CPUFREQ_NEED_UPDATE_LIMITS
+set, but that flag generally needs to be set when the policy limits
+change because the driver callback may need to be invoked for the new
+limits to take effect.
 
-Fixes: 4bd46bb037f8e ("ptp: ocp: Use DIV64_U64_ROUND_UP for rounding.")
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250415053131.129413-1-maimon.sagi@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, if the return value of cpufreq_driver_resolve_freq() after
+applying the new limits is still equal to the previously selected
+frequency, the driver callback needs to be invoked only in the case
+when CPUFREQ_NEED_UPDATE_LIMITS is set (which means that the driver
+specifically wants its callback to be invoked every time the policy
+limits change).
+
+Update the code accordingly to avoid missing policy limits changes for
+drivers without CPUFREQ_NEED_UPDATE_LIMITS.
+
+Fixes: 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused by need_freq_update")
+Closes: https://lore.kernel.org/lkml/Z_Tlc6Qs-tYpxWYb@linaro.org/
+Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3010358.e9J7NaK4W3@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_ocp.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/cpufreq_schedutil.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 13343c3198770..4899fdf9bdf7a 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -1842,6 +1842,7 @@ ptp_ocp_signal_set(struct ptp_ocp *bp, int gen, struct ptp_ocp_signal *s)
- 	if (!s->start) {
- 		/* roundup() does not work on 32-bit systems */
- 		s->start = DIV64_U64_ROUND_UP(start_ns, s->period);
-+		s->start *= s->period;
- 		s->start = ktime_add(s->start, s->phase);
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 542c0e82a9005..4dcb489733181 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -84,7 +84,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ 
+ 	if (unlikely(sg_policy->limits_changed)) {
+ 		sg_policy->limits_changed = false;
+-		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
++		sg_policy->need_freq_update = true;
+ 		return true;
  	}
  
+@@ -96,10 +96,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
+ 				   unsigned int next_freq)
+ {
+-	if (sg_policy->need_freq_update)
++	if (sg_policy->need_freq_update) {
+ 		sg_policy->need_freq_update = false;
+-	else if (sg_policy->next_freq == next_freq)
++		/*
++		 * The policy limits have changed, but if the return value of
++		 * cpufreq_driver_resolve_freq() after applying the new limits
++		 * is still equal to the previously selected frequency, the
++		 * driver callback need not be invoked unless the driver
++		 * specifically wants that to happen on every update of the
++		 * policy limits.
++		 */
++		if (sg_policy->next_freq == next_freq &&
++		    !cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS))
++			return false;
++	} else if (sg_policy->next_freq == next_freq) {
+ 		return false;
++	}
+ 
+ 	sg_policy->next_freq = next_freq;
+ 	sg_policy->last_freq_update_time = time;
 -- 
 2.39.5
 
