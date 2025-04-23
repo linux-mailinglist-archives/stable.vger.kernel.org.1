@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-136333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DC2A99324
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F111FA992C0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A31F4A297D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 916AD920E4E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F682980B7;
-	Wed, 23 Apr 2025 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4DF2C17BE;
+	Wed, 23 Apr 2025 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkc2V4vF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="119tlLu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F07C283C81;
-	Wed, 23 Apr 2025 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DBE2C17BB;
+	Wed, 23 Apr 2025 15:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422270; cv=none; b=CSS9h40eN3iXN6S+eSYDON83je1mnyTQA8vJfVyouR5rZDPeXm4q3bnVz7lj2xL3xWSushVhFpr5FOj//f+wLvuFAPcWKhIhl7AuEhsN0PkJQdRjxlxmZPofuLYwKJ0TWk+Ws4H5yrOUwCcW+KEi1+th7QJ5GR08mMAFTDE5dhY=
+	t=1745422013; cv=none; b=L4AZ2nbGAn718N6RlrMcERfZQv61CxG20+F6IpEnVX9zsvv2NASvM6w1yafxls985s7AiDl6Snc2PucLbqZiZe7rHWY363fvLzBHiVvc0DrgzFsZ+kqn1jjz8kOirrli228z1AaKWFdPTodRuzRio5r8qVs8lrhdr2dL3/RerUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422270; c=relaxed/simple;
-	bh=s+VlBeonnlrfrhrR83GXZ4Q244BSPZAInk+nvvto/Bo=;
+	s=arc-20240116; t=1745422013; c=relaxed/simple;
+	bh=vhruyPu7hxYCcMlyIeEUu487t08hcKKrJdN3xmYyKII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SChO9jECJOAyNqlwiBgPpMkhM4uxyzcuPKQ7dIH07T6qKG5hkqTmIsubgtEcZyfkNO8HktxrZVTMLSzIOrhiJbS2m7st7NBebIqHOVyEb/IAEVlXTixKp0ONWGfGJyAQNyQfPhpB92CTWUCnLNQwBW5e7la0RJrcmW3vcUq2/SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkc2V4vF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BC1C4CEE2;
-	Wed, 23 Apr 2025 15:31:09 +0000 (UTC)
+	 MIME-Version; b=SinTx4XejpDJ+P2KQsxdEYfUhRQj7WHqsDoggHqlaEgJPXHbspO80e7N/ZohdkB7HwnIlxGoevKfxPxj1hv4jOIOtZ6BLlT+og6juwF8kqAnkZFKMW8tLOaSj5O6saAGg38XkRGBy4rwVGvfZmMApE+H/uNMYOq1l5Gi1M5ZeNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=119tlLu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC3FC4CEE2;
+	Wed, 23 Apr 2025 15:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422270;
-	bh=s+VlBeonnlrfrhrR83GXZ4Q244BSPZAInk+nvvto/Bo=;
+	s=korg; t=1745422013;
+	bh=vhruyPu7hxYCcMlyIeEUu487t08hcKKrJdN3xmYyKII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qkc2V4vF0MWnHQd0+PYGKI9jmELXwYl9+tqfs+EktVpdzNQ3s4KVP1GCe74k7Sg8t
-	 2TxyCEgfpvZQ1UdrGSUe5xBoxPhjGQTBqraT7ZqvPa8jYI+hZi8sUMxnukjlw5Ghr4
-	 qz8J6W4KOwDa/R5reQu7WW6PsduYFRJbsUeHGpNA=
+	b=119tlLu33ygWId2WSQZLxHyK2/tBBrgWrQX9/0RJQXTR0T7mmrHyO8BXRifE3YbUD
+	 HEU8PZC3RNtpMgGGiNgaf5hgx6iVKsuP67gLVixsGDfoPXlD+aYOqyEpfPAZBQfocG
+	 PMohW7a4kXFyWe+6xZWu23n+Nz0YmckcMLGUPt0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 311/393] Bluetooth: vhci: Avoid needless snprintf() calls
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 218/291] ksmbd: fix the warning from __kernel_write_iter
 Date: Wed, 23 Apr 2025 16:43:27 +0200
-Message-ID: <20250423142656.173322289@linuxfoundation.org>
+Message-ID: <20250423142633.314290088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 875db86e1ec75fe633f1e85ed2f92c731cdbf760 upstream.
+commit b37f2f332b40ad1c27f18682a495850f2f04db0a upstream.
 
-Avoid double-copying of string literals. Use a "const char *" for each
-string instead of copying from .rodata into stack and then into the skb.
-We can go directly from .rodata to the skb.
+[ 2110.972290] ------------[ cut here ]------------
+[ 2110.972301] WARNING: CPU: 3 PID: 735 at fs/read_write.c:599 __kernel_write_iter+0x21b/0x280
 
-This also works around a Clang bug (that has since been fixed[1]).
+This patch doesn't allow writing to directory.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401250927.1poZERd6-lkp@intel.com/
-Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
-Link: https://github.com/llvm/llvm-project/commit/ea2e66aa8b6e363b89df66dc44275a0d7ecd70ce [1]
 Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_vhci.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/server/vfs.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -289,18 +289,18 @@ static void vhci_coredump(struct hci_dev
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -493,7 +493,8 @@ int ksmbd_vfs_write(struct ksmbd_work *w
+ 	int err = 0;
  
- static void vhci_coredump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	char buf[80];
-+	const char *buf;
- 
--	snprintf(buf, sizeof(buf), "Controller Name: vhci_ctrl\n");
-+	buf = "Controller Name: vhci_ctrl\n";
- 	skb_put_data(skb, buf, strlen(buf));
- 
--	snprintf(buf, sizeof(buf), "Firmware Version: vhci_fw\n");
-+	buf = "Firmware Version: vhci_fw\n";
- 	skb_put_data(skb, buf, strlen(buf));
- 
--	snprintf(buf, sizeof(buf), "Driver: vhci_drv\n");
-+	buf = "Driver: vhci_drv\n";
- 	skb_put_data(skb, buf, strlen(buf));
- 
--	snprintf(buf, sizeof(buf), "Vendor: vhci\n");
-+	buf = "Vendor: vhci\n";
- 	skb_put_data(skb, buf, strlen(buf));
- }
- 
+ 	if (work->conn->connection_type) {
+-		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE))) {
++		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE)) ||
++		    S_ISDIR(file_inode(fp->filp)->i_mode)) {
+ 			pr_err("no right to write(%pD)\n", fp->filp);
+ 			err = -EACCES;
+ 			goto out;
 
 
 
