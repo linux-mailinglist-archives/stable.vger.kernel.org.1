@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D001A990B4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40475A98F93
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F153175CE8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6346117A983
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B74628E619;
-	Wed, 23 Apr 2025 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C5328F523;
+	Wed, 23 Apr 2025 15:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXiYWKmn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQiuMhhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BB128E5F5;
-	Wed, 23 Apr 2025 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B2C28F526;
+	Wed, 23 Apr 2025 15:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421118; cv=none; b=u4j3t//NkXAnCDc7InYARcbzhI2LtUb4om5dqHNOQpu0d5lznoHWEFkr5p0ysVT1RhrvWslE6SGmKzkO3FPXMG8SBDDjd1U+2K+/BJYYKjmnsbK39GRLG0NXyEuFRM/Hlyg+A3bohOOXWOQUNhyBBjbiIZ1lDCJF+ELhv4RHJZs=
+	t=1745420614; cv=none; b=aJWT4d0yH3Bo80LiWDrUTk1IHFrjG3NU6VLZQ5EAaM1iujEht/0F1DXHOrbvv9SY+xzWmm5p7uMl08nCeSjCI799WsgVLL5SvVxf2o7QZNR85VC7jNxI1eXVK5Z43CQaQinv0hskdNTLQrpUwfWmSBWjruyb7FzKq8pgshqdDYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421118; c=relaxed/simple;
-	bh=q7Hiy/oMKmIGA9jBcxoLcW40QVJRElc4J2wvwhopIm0=;
+	s=arc-20240116; t=1745420614; c=relaxed/simple;
+	bh=7pIDcHWRfKYHcWbYvyiYBVqB78m8nn18NeJFo9UW6RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mO+Rxt+LlS5YFHNYMGEq6Uv8HZS18Rra8EO0XcGCyVdlcq7ig+9MXFG3TamWMDuVLDjtvNi2KBxOwRQ4MXLi2WXx2Ge8XdIkI5y+kQfSHcX8VvtNINGLlv2faqaTwnbpFeJ+fD4blg3Y81+8b7KtCJpfGn4e0JxFW1jdghM6Oxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXiYWKmn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B09C4CEE8;
-	Wed, 23 Apr 2025 15:11:57 +0000 (UTC)
+	 MIME-Version; b=sZFLYFFH4Frhmw2g7/RVfjx/x1/LjdQjb+rxpN+khEx4rScxQi/QSNDa8v0ln1p60n0EbNE68WjxS30005qbFiXk++pJSTOn1CHwZOtvPdKLg6A7fbx3lgrsnT6m8STEH58wL3anqrfskDqEWq8H8trps4iwfyWlvF1ZEvrxRVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQiuMhhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A24C4AF0E;
+	Wed, 23 Apr 2025 15:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421118;
-	bh=q7Hiy/oMKmIGA9jBcxoLcW40QVJRElc4J2wvwhopIm0=;
+	s=korg; t=1745420614;
+	bh=7pIDcHWRfKYHcWbYvyiYBVqB78m8nn18NeJFo9UW6RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXiYWKmnETSmFKmtiMGJXg/g6Bn9tJ3m4BV2R5l4s55oqMpPfpZT+yN0kMW4Zp/Fo
-	 AyIEDU8yoiG1r88l5xycano31XGZ0VrhGwKe/s6uYbuQaY/S8P1sdNINU/VraYYQAL
-	 DW6xUmptaCH/hSIZgn2aXsnsCUc61Ogs4b9ffVVA=
+	b=iQiuMhhHqhBEjJx75pWNurt91qi+hI1Yakh49B61n9uqrJ69PYGr4+iXhtLOHRZ9O
+	 8H+5ZGP3L1p1qiK5N34QeaU1a8Kw79tIeuNS0omvHwnuGSmxBfC2GOpmWERQ26JTa6
+	 uEUKP1vtUyBr6mCrKZcs1G9hzUv9nzYb75bBzM5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 148/393] mtd: Add check for devm_kcalloc()
+	Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/291] drm: panel-orientation-quirks: Add support for AYANEO 2S
 Date: Wed, 23 Apr 2025 16:40:44 +0200
-Message-ID: <20250423142649.496114794@linuxfoundation.org>
+Message-ID: <20250423142626.631251174@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-commit 2aee30bb10d7bad0a60255059c9ce1b84cf0130e upstream.
+[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
 
-Add a check for devm_kcalloc() to ensure successful allocation.
+AYANEO 2S uses the same panel and orientation as the AYANEO 2.
 
-Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
-Cc: stable@vger.kernel.org # v5.10+
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Update the AYANEO 2 DMI match to also match AYANEO 2S.
+
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: John Edwards <uejji@uejji.net>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtdpstore.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/mtdpstore.c
-+++ b/drivers/mtd/mtdpstore.c
-@@ -423,6 +423,9 @@ static void mtdpstore_notify_add(struct
- 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
- 	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
- 
-+	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
-+		return;
-+
- 	/* just support dmesg right now */
- 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
- 	cxt->dev.zone.read = mtdpstore_read;
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index c00f6f16244c0..7bf096ddeb06d 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -184,10 +184,10 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
+-	}, {	/* AYA NEO AYANEO 2 */
++	}, {	/* AYA NEO AYANEO 2/2S */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
+-		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
+ 		},
+ 		.driver_data = (void *)&lcd1200x1920_rightside_up,
+ 	}, {	/* AYA NEO 2021 */
+-- 
+2.39.5
+
 
 
 
