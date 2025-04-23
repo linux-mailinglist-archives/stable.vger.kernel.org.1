@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-136226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1EEAA992A3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA3A9923B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A2D9A2558
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09FC07AD474
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20502957B6;
-	Wed, 23 Apr 2025 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053FF280A5B;
+	Wed, 23 Apr 2025 15:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5JLFxb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie8zzkCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F3C146447;
-	Wed, 23 Apr 2025 15:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D41279906;
+	Wed, 23 Apr 2025 15:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421989; cv=none; b=i6ncBXINMmw6J50O7Fi8wvafNiT15w8QN2tZxNEfd+NROyZis4+O6HWvuSX1eb1Co2iChl7TAK779fPOPo1iTSLkbAKTde+3yVDNw8Cu0rJg5+996NB/sngaSUWh2qlBw6F/GRjsND3Jfk2PtSoUayCZ2Ywljn0Z9wckZbdz/YE=
+	t=1745422128; cv=none; b=f1eB1ggh0/pDb41gHs5CyZRvOuqOpYx23FTqdAKY82NAe1YCthAfCCGfDJr5vXrb5V/4I1RJl1HddBV/YChBpajCfAAWDcwdkXA9/nOWZOkLCoDRKUDBu723nzc5TRybA7AYX2ZNh/T7Ni/D4g4mkSN/z5Y5riphtEJ+1JJWKRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421989; c=relaxed/simple;
-	bh=j6UdI4IUo4oGgAc60c8nm6h7snqTnaZbY4XovDW6PoU=;
+	s=arc-20240116; t=1745422128; c=relaxed/simple;
+	bh=ePAOj0PPFgq2hUQiMLGULG5LSAd8aGOSrDnonvEIPZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwak3egGBT93wx2tBRrkuqzwxidy9MUmazQtBjGNTdIekw/yVhKOOAQf18XDR2k00CL3EYSlQhexPaDnsDwKKnD/t4D63Bu/YlhNR39pt5J6T5WrihXoS2GI5K3003rUH2ETZRNiqQlL3XfkqywyCmM4ggtM8xAuCXpceyl/nN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5JLFxb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAE4C4CEE2;
-	Wed, 23 Apr 2025 15:26:29 +0000 (UTC)
+	 MIME-Version; b=K7Nv1WFcBu4Xn8/5iF9rycoC97aPSzCuJs5A7pMJgy5dTliZCQRmQc9ChOJBieeWTp7hwBLekAcMs5nF6s2AKLn0C0egjnuymVDx6t7Op6t3oSq4LQiyTXB0NE/VTlyiBBu0gXt4lT1d9djXC4LHreMT8F0POQpkc0KNrZj+/Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie8zzkCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4D9C4CEE2;
+	Wed, 23 Apr 2025 15:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421989;
-	bh=j6UdI4IUo4oGgAc60c8nm6h7snqTnaZbY4XovDW6PoU=;
+	s=korg; t=1745422128;
+	bh=ePAOj0PPFgq2hUQiMLGULG5LSAd8aGOSrDnonvEIPZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5JLFxb2lq6DC3n5Q92p6ttyqIn8iuyjXjYVea0EI5O6d7SNNlzI3IQBi+Mu8hnHq
-	 kNXLw6A0TInyEApDbfUdxqs5Vk7ijlTb/LKit/AwYHLxUuscvFf15wqb9+PGTX/tQ6
-	 EEv4SbQvj66wSa+INaxBXNGrWcwkmCyzlvZHk0kQ=
+	b=Ie8zzkCwfVb5Vpf3ZqH/iFB3rgh3wRF/Tf8FFn1a+n8kw1Ozze5rCTKCoFrTRcfaw
+	 GCCAaRwwgp96mKqrTnCXLyeHMetXprMwfxQpWHoYLnF0lcYuAerd9rudIIBE94slig
+	 Rl4aF1/WI5jGATHYj8cXg6MH56bwRLzd3ElkiY9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/291] net: dsa: mv88e6xxx: avoid unregistering devlink regions which were never registered
+Subject: [PATCH 6.6 283/393] net: bridge: switchdev: do not notify new brentries as changed
 Date: Wed, 23 Apr 2025 16:42:59 +0200
-Message-ID: <20250423142632.148287313@linuxfoundation.org>
+Message-ID: <20250423142655.034475454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit c84f6ce918a9e6f4996597cbc62536bbf2247c96 ]
+[ Upstream commit eb25de13bd9cf025413a04f25e715d0e99847e30 ]
 
-Russell King reports that a system with mv88e6xxx dereferences a NULL
-pointer when unbinding this driver:
-https://lore.kernel.org/netdev/Z_lRkMlTJ1KQ0kVX@shell.armlinux.org.uk/
+When adding a bridge vlan that is pvid or untagged after the vlan has
+already been added to any other switchdev backed port, the vlan change
+will be propagated as changed, since the flags change.
 
-The crash seems to be in devlink_region_destroy(), which is not NULL
-tolerant but is given a NULL devlink global region pointer.
+This causes the vlan to not be added to the hardware for DSA switches,
+since the DSA handler ignores any vlans for the CPU or DSA ports that
+are changed.
 
-At least on some chips, some devlink regions are conditionally registered
-since the blamed commit, see mv88e6xxx_setup_devlink_regions_global():
+E.g. the following order of operations would work:
 
-		if (cond && !cond(chip))
-			continue;
+$ ip link add swbridge type bridge vlan_filtering 1 vlan_default_pvid 0
+$ ip link set lan1 master swbridge
+$ bridge vlan add dev swbridge vid 1 pvid untagged self
+$ bridge vlan add dev lan1 vid 1 pvid untagged
 
-These are MV88E6XXX_REGION_STU and MV88E6XXX_REGION_PVT. If the chip
-does not have an STU or PVT, it should crash like this.
+but this order would break:
 
-To fix the issue, avoid unregistering those regions which are NULL, i.e.
-were skipped at mv88e6xxx_setup_devlink_regions_global() time.
+$ ip link add swbridge type bridge vlan_filtering 1 vlan_default_pvid 0
+$ ip link set lan1 master swbridge
+$ bridge vlan add dev lan1 vid 1 pvid untagged
+$ bridge vlan add dev swbridge vid 1 pvid untagged self
 
-Fixes: 836021a2d0e0 ("net: dsa: mv88e6xxx: Export cross-chip PVT as devlink region")
-Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212850.2953957-1-vladimir.oltean@nxp.com
+Additionally, the vlan on the bridge itself would become undeletable:
+
+$ bridge vlan
+port              vlan-id
+lan1              1 PVID Egress Untagged
+swbridge          1 PVID Egress Untagged
+$ bridge vlan del dev swbridge vid 1 self
+$ bridge vlan
+port              vlan-id
+lan1              1 PVID Egress Untagged
+swbridge          1 Egress Untagged
+
+since the vlan was never added to DSA's vlan list, so deleting it will
+cause an error, causing the bridge code to not remove it.
+
+Fix this by checking if flags changed only for vlans that are already
+brentry and pass changed as false for those that become brentries, as
+these are a new vlan (member) from the switchdev point of view.
+
+Since *changed is set to true for becomes_brentry = true regardless of
+would_change's value, this will not change any rtnetlink notification
+delivery, just the value passed on to switchdev in vlan->changed.
+
+Fixes: 8d23a54f5bee ("net: bridge: switchdev: differentiate new VLANs from changed ones")
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250414200020.192715-1-jonas.gorski@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/devlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bridge/br_vlan.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/devlink.c b/drivers/net/dsa/mv88e6xxx/devlink.c
-index 1266eabee0863..2ab2eb2cb47be 100644
---- a/drivers/net/dsa/mv88e6xxx/devlink.c
-+++ b/drivers/net/dsa/mv88e6xxx/devlink.c
-@@ -743,7 +743,8 @@ void mv88e6xxx_teardown_devlink_regions_global(struct dsa_switch *ds)
- 	int i;
+diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
+index be714b4d7b430..a1c22eab71ffe 100644
+--- a/net/bridge/br_vlan.c
++++ b/net/bridge/br_vlan.c
+@@ -715,8 +715,8 @@ static int br_vlan_add_existing(struct net_bridge *br,
+ 				u16 flags, bool *changed,
+ 				struct netlink_ext_ack *extack)
+ {
+-	bool would_change = __vlan_flags_would_change(vlan, flags);
+ 	bool becomes_brentry = false;
++	bool would_change = false;
+ 	int err;
  
- 	for (i = 0; i < ARRAY_SIZE(mv88e6xxx_regions); i++)
--		dsa_devlink_region_destroy(chip->regions[i]);
-+		if (chip->regions[i])
-+			dsa_devlink_region_destroy(chip->regions[i]);
- }
+ 	if (!br_vlan_is_brentry(vlan)) {
+@@ -725,6 +725,8 @@ static int br_vlan_add_existing(struct net_bridge *br,
+ 			return -EINVAL;
  
- void mv88e6xxx_teardown_devlink_regions_port(struct dsa_switch *ds, int port)
+ 		becomes_brentry = true;
++	} else {
++		would_change = __vlan_flags_would_change(vlan, flags);
+ 	}
+ 
+ 	/* Master VLANs that aren't brentries weren't notified before,
 -- 
 2.39.5
 
