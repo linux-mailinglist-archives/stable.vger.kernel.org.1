@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86254A990A3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CCBA99189
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FA971BA0089
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 628711B874C9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BE428369C;
-	Wed, 23 Apr 2025 15:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD85D28C5AD;
+	Wed, 23 Apr 2025 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbfUDQZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUydXMqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AC227FD75;
-	Wed, 23 Apr 2025 15:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637DC28C5A4;
+	Wed, 23 Apr 2025 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420863; cv=none; b=ZYLbxjzRp7XyIHlQUtjBC4eL32P/U5N5VuZfUwr2lqysx4Log1XUDQSjet/B4AXRgie/xleTRl1jGaG93UKnhguUe8EaybrC6y4zdfAEVVeexJFGLDpQbdIb6iUeGO2vhPZVBl97eCupor1oLz5tC/8p1fdlJGb2JtHnTFhizu4=
+	t=1745421348; cv=none; b=F/03Zr/3CvwMbsr3t/Bt8NGPN7lXVFFCkPT8mhrzrtivods0AJ/DmzECmzwq7N+N1hbTb9ZWwIj4/r5FO28d2M7W0FWllnag96P7czv3COT35IfDxnGhd+m4kZWGAF+NMhEctClmOT0hbhtGki/n/SyJ31mvapNWmPXsxIf7bhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420863; c=relaxed/simple;
-	bh=dKK7Hycen4Uc9fLuWUy8/8zWHBvMzc673l7NbIQ4uds=;
+	s=arc-20240116; t=1745421348; c=relaxed/simple;
+	bh=EA38VdJovGL3ILlTgZ2ukOUzrMxgNLi3hJCeoGVGxzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzNzpgE/EWUKIMAVDvp2NKM1dAgS4XNoy8JWYNM7qwrY6CSWdcOhaNRE+Dre+IVlB3Vxp+NZocjDcFkmwHJmvRBRSJvRL2nPyoUGRCPmHE8pLK/az3dMkeJT/zxFTN47n83ACZuDb/qHPPQnAZ6edjxIKZWT5jgpojdojaMVIek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mbfUDQZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC31C4CEE2;
-	Wed, 23 Apr 2025 15:07:43 +0000 (UTC)
+	 MIME-Version; b=jBwbjsyeSM1qNNLFiSXc6Yy0zFjwvKYKvp+6qQ/c3HbkQE/3lZk2PBFbDNW1dhD0N/aLn16DHnB5jSc7p+GfKgbjG1PrkeQ+LZ6kMMgv7ueh9uljKxEnuy4j6SvB3fx+XqnFrek5mJpw69758ErcGwOCj7Ffn31J5kR+Tfix4k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUydXMqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA916C4CEE2;
+	Wed, 23 Apr 2025 15:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420863;
-	bh=dKK7Hycen4Uc9fLuWUy8/8zWHBvMzc673l7NbIQ4uds=;
+	s=korg; t=1745421348;
+	bh=EA38VdJovGL3ILlTgZ2ukOUzrMxgNLi3hJCeoGVGxzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mbfUDQZzoFsWedwv+JUIgXPqqodCVpXzAKOK82426VJZNaLATzVFIcyXTB0E4RpIH
-	 l2pTFsVxLFSTjGHUGQ9+5Fehs/ZlZoyukPzLJqRefRKwR6ZLGTgA8w+UuiKaTIsBRV
-	 R+D8WVUQToPA4SHYkr0d946AWi4gkfjtj3at9qho=
+	b=WUydXMqJzrsS4CXxkzln3ReNYM79qICD4MfVjDs6PfjpRm0zExZDBkXFk6vtiHhTi
+	 7lK+0rhP5rpP5jU+iHjcYr0MrIR/LErbVnZPg0X3EKBRUue9ytCCCDZuRcY6Vbsepq
+	 0OCIIbqeZ+oo5kwS1F/1qNZlKm6UdsW7RsZ7jMNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Brendan Tam <Brendan.Tam@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 169/223] drm/amdgpu/mes11: optimize MES pipe FW version fetching
+Subject: [PATCH 6.14 177/241] drm/amd/display: prevent hang on link training fail
 Date: Wed, 23 Apr 2025 16:44:01 +0200
-Message-ID: <20250423142624.048584677@linuxfoundation.org>
+Message-ID: <20250423142627.757707726@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Brendan Tam <Brendan.Tam@amd.com>
 
-commit b71a2bb0ce07f40f92f59ed7f283068e41b10075 upstream.
+commit 8058061ed9d6bc259d1e678607b07d259342c08f upstream.
 
-Don't fetch it again if we already have it.  It seems the
-registers don't reliably have the value at resume in some
-cases.
+[Why]
+When link training fails, the phy clock will be disabled. However, in
+enable_streams, it is assumed that link training succeeded and the
+mux selects the phy clock, causing a hang when a register write is made.
 
-Fixes: 028c3fb37e70 ("drm/amdgpu/mes11: initiate mes v11 support")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4083
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+[How]
+When enable_stream is hit, check if link training failed. If it did, fall
+back to the ref clock to avoid a hang and keep the system in a recoverable
+state.
+
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Brendan Tam <Brendan.Tam@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c   |    6 +++++-
+ drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    7 +++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -859,6 +859,10 @@ static void mes_v11_0_get_fw_version(str
- {
- 	int pipe;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -3027,7 +3027,11 @@ void dcn20_enable_stream(struct pipe_ctx
+ 		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
  
-+	/* return early if we have already fetched these */
-+	if (adev->mes.sched_version && adev->mes.kiq_version)
-+		return;
-+
- 	/* get MES scheduler/KIQ versions */
- 	mutex_lock(&adev->srbm_mutex);
- 
+ 		phyd32clk = get_phyd32clk_src(link);
+-		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++		if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
++			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
++		} else {
++			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++		}
+ 	} else {
+ 		if (dccg->funcs->enable_symclk_se)
+ 			dccg->funcs->enable_symclk_se(dccg, stream_enc->stream_enc_inst,
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
+@@ -936,8 +936,11 @@ void dcn401_enable_stream(struct pipe_ct
+ 	if (dc_is_dp_signal(pipe_ctx->stream->signal) || dc_is_virtual_signal(pipe_ctx->stream->signal)) {
+ 		if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
+ 			dccg->funcs->set_dpstreamclk(dccg, DPREFCLK, tg->inst, dp_hpo_inst);
+-
+-			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++			if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
++				dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
++			} else {
++				dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
++			}
+ 		} else {
+ 			dccg->funcs->enable_symclk_se(dccg, stream_enc->stream_enc_inst,
+ 					link_enc->transmitter - TRANSMITTER_UNIPHY_A);
 
 
 
