@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-135678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91604A98F8A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:10:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D001A990B4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93CB463465
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F153175CE8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52828466E;
-	Wed, 23 Apr 2025 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B74628E619;
+	Wed, 23 Apr 2025 15:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnhIhSbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXiYWKmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34996283C81;
-	Wed, 23 Apr 2025 15:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BB128E5F5;
+	Wed, 23 Apr 2025 15:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420556; cv=none; b=CiPVAonJ3Bb1hrXEnO7p0R7wjNwF9NqbPiAvPDhRSAbUWD2PY/uWm9BTw/barTE8O9U4R4YGxIQuchkqU1jIlD3/AjcZDQz4eKFdNZf26K6vxjp7PwuLs9Puokkz7DeaZne+yyyu5EqCFfr7dQzaG+W0oHQj8B8ufRTygcduvhQ=
+	t=1745421118; cv=none; b=u4j3t//NkXAnCDc7InYARcbzhI2LtUb4om5dqHNOQpu0d5lznoHWEFkr5p0ysVT1RhrvWslE6SGmKzkO3FPXMG8SBDDjd1U+2K+/BJYYKjmnsbK39GRLG0NXyEuFRM/Hlyg+A3bohOOXWOQUNhyBBjbiIZ1lDCJF+ELhv4RHJZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420556; c=relaxed/simple;
-	bh=cSzmSi7PuwPDOD1yNHIwy1m5qe1kZMhXETj9Z9cPYTI=;
+	s=arc-20240116; t=1745421118; c=relaxed/simple;
+	bh=q7Hiy/oMKmIGA9jBcxoLcW40QVJRElc4J2wvwhopIm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEv4E4KqQrEwE3MIjnm5sKYXkTj/2GhJEqqdPoK67uY3Wqmj+mnX1vtxlHOPS6YEM/7lEOYM4NTWppOL2pYYYOrUMVj/xQ7BMMvwONbjSfvdAzxvYxeQcTnL4kQvv2PeInbbys9FEk+B+UGTLe6Eq9DVt/ReFstEAvVqWFlJ7L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnhIhSbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B0DC4CEE2;
-	Wed, 23 Apr 2025 15:02:35 +0000 (UTC)
+	 MIME-Version; b=mO+Rxt+LlS5YFHNYMGEq6Uv8HZS18Rra8EO0XcGCyVdlcq7ig+9MXFG3TamWMDuVLDjtvNi2KBxOwRQ4MXLi2WXx2Ge8XdIkI5y+kQfSHcX8VvtNINGLlv2faqaTwnbpFeJ+fD4blg3Y81+8b7KtCJpfGn4e0JxFW1jdghM6Oxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXiYWKmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B09C4CEE8;
+	Wed, 23 Apr 2025 15:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420556;
-	bh=cSzmSi7PuwPDOD1yNHIwy1m5qe1kZMhXETj9Z9cPYTI=;
+	s=korg; t=1745421118;
+	bh=q7Hiy/oMKmIGA9jBcxoLcW40QVJRElc4J2wvwhopIm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnhIhSbcBQVo+ZN0S0oxyLFoKw+Ym/P7tumTcK/eZabU+HB+bkglPA8KqDRlcU8b7
-	 XI2xWGFTdSZvr/uYRU6vKcO+cxzCZ9Apm1lqQnNwkQpQrqCChuIEtSp6pNmStYlUM2
-	 HpIUZCoX7iaATouHkWcxmbqkgUf9z/OX88k+CDP4=
+	b=FXiYWKmnETSmFKmtiMGJXg/g6Bn9tJ3m4BV2R5l4s55oqMpPfpZT+yN0kMW4Zp/Fo
+	 AyIEDU8yoiG1r88l5xycano31XGZ0VrhGwKe/s6uYbuQaY/S8P1sdNINU/VraYYQAL
+	 DW6xUmptaCH/hSIZgn2aXsnsCUc61Ogs4b9ffVVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Zhikai Zhai <zhikai.zhai@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/291] drm/amd/display: Update Cursor request mode to the beginning prefetch always
-Date: Wed, 23 Apr 2025 16:40:43 +0200
-Message-ID: <20250423142626.591093156@linuxfoundation.org>
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 148/393] mtd: Add check for devm_kcalloc()
+Date: Wed, 23 Apr 2025 16:40:44 +0200
+Message-ID: <20250423142649.496114794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 4a4077b4b63a8404efd6d37fc2926f03fb25bace ]
+commit 2aee30bb10d7bad0a60255059c9ce1b84cf0130e upstream.
 
-[Why]
-The double buffer cursor registers is updated by the cursor
-vupdate event. There is a gap between vupdate and cursor data
-fetch if cursor fetch data reletive to cursor position.
-Cursor corruption will happen if we update the cursor surface
-in this gap.
+Add a check for devm_kcalloc() to ensure successful allocation.
 
-[How]
-Modify the cursor request mode to the beginning prefetch always
-and avoid wraparound calculation issues.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../amd/display/dc/dcn10/dcn10_hw_sequencer.c | 22 ++++++++-----------
- .../gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c |  2 +-
- 2 files changed, 10 insertions(+), 14 deletions(-)
+ drivers/mtd/mtdpstore.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-index 416168c7dcc52..b120aa67d26c1 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -1947,20 +1947,11 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	dc->hwss.get_position(&pipe_ctx, 1, &position);
- 	vpos = position.vertical_count;
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -423,6 +423,9 @@ static void mtdpstore_notify_add(struct
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+ 	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
  
--	/* Avoid wraparound calculation issues */
--	vupdate_start += stream->timing.v_total;
--	vupdate_end += stream->timing.v_total;
--	vpos += stream->timing.v_total;
--
- 	if (vpos <= vupdate_start) {
- 		/* VPOS is in VACTIVE or back porch. */
- 		lines_to_vupdate = vupdate_start - vpos;
--	} else if (vpos > vupdate_end) {
--		/* VPOS is in the front porch. */
--		return;
- 	} else {
--		/* VPOS is in VUPDATE. */
--		lines_to_vupdate = 0;
-+		lines_to_vupdate = stream->timing.v_total - vpos + vupdate_start;
- 	}
- 
- 	/* Calculate time until VUPDATE in microseconds. */
-@@ -1968,13 +1959,18 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 		stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz;
- 	us_to_vupdate = lines_to_vupdate * us_per_line;
- 
-+	/* Stall out until the cursor update completes. */
-+	if (vupdate_end < vupdate_start)
-+		vupdate_end += stream->timing.v_total;
++	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
++		return;
 +
-+	/* Position is in the range of vupdate start and end*/
-+	if (lines_to_vupdate > stream->timing.v_total - vupdate_end + vupdate_start)
-+		us_to_vupdate = 0;
-+
- 	/* 70 us is a conservative estimate of cursor update time*/
- 	if (us_to_vupdate > 70)
- 		return;
- 
--	/* Stall out until the cursor update completes. */
--	if (vupdate_end < vupdate_start)
--		vupdate_end += stream->timing.v_total;
- 	us_vupdate = (vupdate_end - vupdate_start + 1) * us_per_line;
- 	udelay(us_to_vupdate + us_vupdate);
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
-index 39a57bcd78667..576acf2ce10dd 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
-@@ -44,7 +44,7 @@ void hubp31_set_unbounded_requesting(struct hubp *hubp, bool enable)
- 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
- 
- 	REG_UPDATE(DCHUBP_CNTL, HUBP_UNBOUNDED_REQ_MODE, enable);
--	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, enable);
-+	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, 1);
- }
- 
- void hubp31_soft_reset(struct hubp *hubp, bool reset)
--- 
-2.39.5
-
+ 	/* just support dmesg right now */
+ 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+ 	cxt->dev.zone.read = mtdpstore_read;
 
 
 
