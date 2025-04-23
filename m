@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6058A9900A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BA1A990B3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAC6188D524
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D639466095
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3742857D7;
-	Wed, 23 Apr 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052E028E618;
+	Wed, 23 Apr 2025 15:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03hy2l+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9NW03ZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A0263F2D;
-	Wed, 23 Apr 2025 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C5F28E5F3;
+	Wed, 23 Apr 2025 15:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420593; cv=none; b=nf1IsLnE6ugFH3+vUTemXx56kO8wgQwuwTWrzFDyACRlydBpmFyQMzb1zh4bnX3dHdQZ4XlLvh6eKPUWVSs5pzdZSx8VyfM91p76kr52u8/tA5sMMdZ2p6XkdJvq+yJSy6Lipajb6/9ylmAPR7H/2oXLPVTxt9Uggm2PMlxzoN8=
+	t=1745421115; cv=none; b=BjgAPkM6Nfy60hfJKsPz+XBL9osp3iPN1yhacDAxG9GI/SooCJTJoaxQpmJIyZSgwFlZvBGGuYHjLwOmxnxYXQkiBaQug0IqPtZULVhf/uaFur2OxlhzpEKTdIJ8ZeMu75oFP2i0SytE3BR37e2t88BmIs7B9Q32AT4yYz+b4k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420593; c=relaxed/simple;
-	bh=+to4sGxpEoFDow8++EZUSW5eSA7gdP2rXjTsApVqA0M=;
+	s=arc-20240116; t=1745421115; c=relaxed/simple;
+	bh=8PzN5IH8KhTuaQPVXnEdF+ePZe9QN650naIoJPV8/aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRvL/jdDhfnvs0BmpNaSdTaZhmdYHeR/GjY4nOyCq5QXlh5qz68/PlHSAzXFYyD2V5QjV3wkzDtB9RIjpScPNA+xxYjc9O1c9tfiJhxs23mfXG9Qc5lHcv8alXs15E5Y658EngrrTN2nFplE7sl8V5iLXTX1uj/JTxyoTosJejk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=03hy2l+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBF5C4CEE3;
-	Wed, 23 Apr 2025 15:03:12 +0000 (UTC)
+	 MIME-Version; b=GHK+5nScabw+7k2fBEw7uINqYj6iTm6n8gbkqn5XDUbp2+jUkvgRbSNLQQzqvFP9G7PIlVYSCBGr0EY8VPRjeek606PPOHFSYhsNjkb92jhp6043XlWIqNkPa3hc7HfuSpmMq/FCUUOTNoPaJc+6QiLIL32DKnspKY2lgkLLKGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9NW03ZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49163C4CEE2;
+	Wed, 23 Apr 2025 15:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420593;
-	bh=+to4sGxpEoFDow8++EZUSW5eSA7gdP2rXjTsApVqA0M=;
+	s=korg; t=1745421115;
+	bh=8PzN5IH8KhTuaQPVXnEdF+ePZe9QN650naIoJPV8/aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=03hy2l+E5SydbNFD+UMJv5VUv3lg/y8wGeatJb4q4sDlS47944QzIME9fo2ilyRTe
-	 J/hG1C85uZNoTSfq009b7cOBU2SC51m4TvFFZVqodChCxrfFvug0FyoQWRMS4vmvcj
-	 huikFoIv2xVdj+DRJud/eSzlqnrrIB7qr/gowjh8=
+	b=Y9NW03ZXu+/A5gc39rPJ7V4dWElfFB2U3zcftL/bWQoYNmSgoxaT0071n3ionDp6W
+	 yE1gy7ASeL2EXjBib6zHKT6e2CKn0HuY0v9lvOoSfDiH/6BrW2mGU5h3KPfAd3dZri
+	 hQUkGKcNgbklOK/xwNp4AFI8iSicIf1L91feFPCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.12 144/223] perf/x86/intel: Allow to update user space GPRs from PEBS records
-Date: Wed, 23 Apr 2025 16:43:36 +0200
-Message-ID: <20250423142623.050773701@linuxfoundation.org>
+	Chunjie Zhu <chunjie.zhu@cloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 153/241] smb3 client: fix open hardlink on deferred close file error
+Date: Wed, 23 Apr 2025 16:43:37 +0200
+Message-ID: <20250423142626.792891577@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Chunjie Zhu <chunjie.zhu@cloud.com>
 
-commit 71dcc11c2cd9e434c34a63154ecadca21c135ddd upstream.
+commit 262b73ef442e68e53220b9d6fc5a0d08b557fa42 upstream.
 
-Currently when a user samples user space GPRs (--user-regs option) with
-PEBS, the user space GPRs actually always come from software PMI
-instead of from PEBS hardware. This leads to the sampled GPRs to
-possibly be inaccurate for single PEBS record case because of the
-skid between counter overflow and GPRs sampling on PMI.
+The following Python script results in unexpected behaviour when run on
+a CIFS filesystem against a Windows Server:
 
-For the large PEBS case, it is even worse. If user sets the
-exclude_kernel attribute, large PEBS would be used to sample user space
-GPRs, but since PEBS GPRs group is not really enabled, it leads to all
-samples in the large PEBS record to share the same piece of user space
-GPRs, like this reproducer shows:
+    # Create file
+    fd = os.open('test', os.O_WRONLY|os.O_CREAT)
+    os.write(fd, b'foo')
+    os.close(fd)
 
-  $ perf record -e branches:pu --user-regs=ip,ax -c 100000 ./foo
-  $ perf report -D | grep "AX"
+    # Open and close the file to leave a pending deferred close
+    fd = os.open('test', os.O_RDONLY|os.O_DIRECT)
+    os.close(fd)
 
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
+    # Try to open the file via a hard link
+    os.link('test', 'new')
+    newfd = os.open('new', os.O_RDONLY|os.O_DIRECT)
 
-So enable GPRs group for user space GPRs sampling and prioritize reading
-GPRs from PEBS. If the PEBS sampled GPRs is not user space GPRs (single
-PEBS record case), perf_sample_regs_user() modifies them to user space
-GPRs.
+The final open returns EINVAL due to the server returning
+STATUS_INVALID_PARAMETER. The root cause of this is that the client
+caches lease keys per inode, but the spec requires them to be related to
+the filename which causes problems when hard links are involved:
 
-[ mingo: Clarified the changelog. ]
+>From MS-SMB2 section 3.3.5.9.11:
 
-Fixes: c22497f5838c ("perf/x86/intel: Support adaptive PEBS v4")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+"The server MUST attempt to locate a Lease by performing a lookup in the
+LeaseTable.LeaseList using the LeaseKey in the
+SMB2_CREATE_REQUEST_LEASE_V2 as the lookup key. If a lease is found,
+Lease.FileDeleteOnClose is FALSE, and Lease.Filename does not match the
+file name for the incoming request, the request MUST be failed with
+STATUS_INVALID_PARAMETER"
+
+On client side, we first check the context of file open, if it hits above
+conditions, we first close all opening files which are belong to the same
+inode, then we do open the hard link file.
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250415104135.318169-2-dapeng1.mi@linux.intel.com
+Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/ds.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsproto.h |    2 ++
+ fs/smb/client/file.c      |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -1317,8 +1317,10 @@ static u64 pebs_update_adaptive_cfg(stru
- 	 * + precise_ip < 2 for the non event IP
- 	 * + For RTM TSX weight we need GPRs for the abort code.
- 	 */
--	gprs = (sample_type & PERF_SAMPLE_REGS_INTR) &&
--	       (attr->sample_regs_intr & PEBS_GP_REGS);
-+	gprs = ((sample_type & PERF_SAMPLE_REGS_INTR) &&
-+		(attr->sample_regs_intr & PEBS_GP_REGS)) ||
-+	       ((sample_type & PERF_SAMPLE_REGS_USER) &&
-+		(attr->sample_regs_user & PEBS_GP_REGS));
- 
- 	tsx_weight = (sample_type & PERF_SAMPLE_WEIGHT_TYPE) &&
- 		     ((attr->config & INTEL_ARCH_EVENT_MASK) ==
-@@ -1970,7 +1972,7 @@ static void setup_pebs_adaptive_sample_d
- 			regs->flags &= ~PERF_EFLAGS_EXACT;
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -160,6 +160,8 @@ extern int cifs_get_writable_path(struct
+ extern struct cifsFileInfo *find_readable_file(struct cifsInodeInfo *, bool);
+ extern int cifs_get_readable_path(struct cifs_tcon *tcon, const char *name,
+ 				  struct cifsFileInfo **ret_file);
++extern int cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				  struct file *file);
+ extern unsigned int smbCalcSize(void *buf);
+ extern int decode_negTokenInit(unsigned char *security_blob, int length,
+ 			struct TCP_Server_Info *server);
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -1007,6 +1007,11 @@ int cifs_open(struct inode *inode, struc
+ 		} else {
+ 			_cifsFileInfo_put(cfile, true, false);
  		}
- 
--		if (sample_type & PERF_SAMPLE_REGS_INTR)
-+		if (sample_type & (PERF_SAMPLE_REGS_INTR | PERF_SAMPLE_REGS_USER))
- 			adaptive_pebs_save_regs(regs, gprs);
++	} else {
++		/* hard link on the defeered close file */
++		rc = cifs_get_hardlink_path(tcon, inode, file);
++		if (rc)
++			cifs_close_deferred_file(CIFS_I(inode));
  	}
  
+ 	if (server->oplocks)
+@@ -2071,6 +2076,29 @@ cifs_move_llist(struct list_head *source
+ 		list_move(li, dest);
+ }
+ 
++int
++cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				struct file *file)
++{
++	struct cifsFileInfo *open_file = NULL;
++	struct cifsInodeInfo *cinode = CIFS_I(inode);
++	int rc = 0;
++
++	spin_lock(&tcon->open_file_lock);
++	spin_lock(&cinode->open_file_lock);
++
++	list_for_each_entry(open_file, &cinode->openFileList, flist) {
++		if (file->f_flags == open_file->f_flags) {
++			rc = -EINVAL;
++			break;
++		}
++	}
++
++	spin_unlock(&cinode->open_file_lock);
++	spin_unlock(&tcon->open_file_lock);
++	return rc;
++}
++
+ void
+ cifs_free_llist(struct list_head *llist)
+ {
 
 
 
