@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AA7A99186
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF041A98E3F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70AC17A14A5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 586EF5A6722
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E202BE11B;
-	Wed, 23 Apr 2025 15:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049E1280A56;
+	Wed, 23 Apr 2025 14:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQzY4DAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQqgl9dX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63992BE114;
-	Wed, 23 Apr 2025 15:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4887C8EB;
+	Wed, 23 Apr 2025 14:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421687; cv=none; b=ef3k9IIwn1v11eF29AKSnoLtQYBGXMHikN1MxgDDOq9p/8ulKfitYiSEa/e+mw0uMdFcQb8O4ifLXi0x/7jRaUNMYBI3GZpM8epmUdDrPknTxWDnOy7/TF6dqtGEhkLNpkJ7CVmUSTpRepp9k4oZMIvroNyYFzrEKbe65OzOOfE=
+	t=1745419897; cv=none; b=d7zqemlO28K5HvFN4IaTcchfJGY5BAofLN2qqg8MmJw+UcqdnbAtsgrJj2/AXEh94p8mxs2B0o/3r2f6GnlQSZda3D98o7qlFZKs3UwvELdB0n7YUjHO9zDEqPRnHCTiXg1tfU4KUpI0Z1/fgNYZH+20a5gisbO1kmvcbd+7FMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421687; c=relaxed/simple;
-	bh=R0oxMAPEdE9jsg7+4/IuhpO63mfluFNC5ubu12KGHCk=;
+	s=arc-20240116; t=1745419897; c=relaxed/simple;
+	bh=N8a9FN8L16Pxj3IxMJhYU7hiywIaa7BuAouDQXEpLiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LlbURY7w7kV5lm2i2TeOR4Opyr/gX58l4oCCJSvUxnlJfjgvslOnkor+2dVQ36xUWB4q5tLrGs8OGO+CvsVkcw2epVthPBkJiwAgat1LITENErCTvMQ/Mg7JbWoPQ3fCMBwv7xgAq6ALDaHk9r+bOA+469Gy0SgZgPhJ3drq4Uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQzY4DAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0CDBC4CEE8;
-	Wed, 23 Apr 2025 15:21:26 +0000 (UTC)
+	 MIME-Version; b=q5URN871GLI8PBw0LLArqurWw0qzsHwFSbXVz6pu5YIKDYFnJD5CqL3ciMVoo6eQimj62RVwCIxAiKYucXZ0ejjb6MWpq+CKdFHYbfXDTh2HBzZrQ0cP5MAGv03QuAA+rPflkjke+j7WM1nBQBNLOnk7CCyYJZ14DAg/lIc+vM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQqgl9dX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F05DC4CEE2;
+	Wed, 23 Apr 2025 14:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421687;
-	bh=R0oxMAPEdE9jsg7+4/IuhpO63mfluFNC5ubu12KGHCk=;
+	s=korg; t=1745419897;
+	bh=N8a9FN8L16Pxj3IxMJhYU7hiywIaa7BuAouDQXEpLiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQzY4DAwejGcxonf8gpyBYfbJBOi6IE3cTrlLj8AwIAwe0DAaQ/xI5ABBjuufK1Yx
-	 CEf4ZP/1sIBpzlhnWg+M1Kr2fXOhuWqiCwMM4htWzEjW30vbK1u3LrY6zO2cCkH3SC
-	 EwDYIws4/GEIJpzPhN3TQJu4PdZkWZAzpUv/4vTs=
+	b=EQqgl9dXr1lNN+H2CKcNHZKoOxmvUQ9ddfAlhgmLei4/oCumBohPl/RhlZ9v/fOme
+	 e3JVor8Gu0c+PcnjSlBFsLC9zxGAu2o4LUme8E5Fq7phiUgHmY0+oVBeQ6MWiREMgq
+	 p60zZhbtYMaHTekb7AVgty4X3d/4UoN1BKyJo92Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 208/393] crypto: ccp - Fix check for the primary ASP device
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Frank Li <Frank.Li@nxp.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 040/241] dt-bindings: soc: fsl: fsl,ls1028a-reset: Fix maintainer entry
 Date: Wed, 23 Apr 2025 16:41:44 +0200
-Message-ID: <20250423142651.977297413@linuxfoundation.org>
+Message-ID: <20250423142622.149730455@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 07bb097b92b987db518e72525b515d77904e966e upstream.
+[ Upstream commit d5f49921707cc73376ad6cf8410218b438fcd233 ]
 
-Currently, the ASP primary device check does not have support for PCI
-domains, and, as a result, when the system is configured with PCI domains
-(PCI segments) the wrong device can be selected as primary. This results
-in commands submitted to the device timing out and failing. The device
-check also relies on specific device and function assignments that may
-not hold in the future.
+make dt_binding_check:
 
-Fix the primary ASP device check to include support for PCI domains and
-to perform proper checking of the Bus/Device/Function positions.
+    Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml: maintainers:0: 'Frank Li' does not match '@'
+	    from schema $id: http://devicetree.org/meta-schemas/base.yaml#
 
-Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by adding Frank's email address.
+
+Fixes: 9ca5a7d9d2e05de6 ("dt-bindings: soc: fsl: Add fsl,ls1028a-reset for reset syscon node")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/185e1e06692dc5b08abcde2d3dd137c78e979d08.1744301283.git.geert+renesas@glider.be
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ .../devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml          | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -243,14 +243,17 @@ static bool sp_pci_is_master(struct sp_d
- 	pdev_new = to_pci_dev(dev_new);
- 	pdev_cur = to_pci_dev(dev_cur);
+diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+index 31295be910130..234089b5954dd 100644
+--- a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
++++ b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+@@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+ title: Freescale Layerscape Reset Registers Module
  
--	if (pdev_new->bus->number < pdev_cur->bus->number)
--		return true;
-+	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
-+		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
+ maintainers:
+-  - Frank Li
++  - Frank Li <Frank.Li@nxp.com>
  
--	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
--		return true;
-+	if (pdev_new->bus->number != pdev_cur->bus->number)
-+		return pdev_new->bus->number < pdev_cur->bus->number;
- 
--	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
--		return true;
-+	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
-+		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
-+
-+	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
-+		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
- 
- 	return false;
- }
+ description:
+   Reset Module includes chip reset, service processor control and Reset Control
+-- 
+2.39.5
+
 
 
 
