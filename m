@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-136159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32764A991B8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A59A992B7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6F0F7A5ABF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E72D4A35E3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7936D29B220;
-	Wed, 23 Apr 2025 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D04529E044;
+	Wed, 23 Apr 2025 15:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efBN8mDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2/2BdGy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BB7298CB0;
-	Wed, 23 Apr 2025 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291CD29DB9D;
+	Wed, 23 Apr 2025 15:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421810; cv=none; b=HInn06dyt1Id8ado0NYJ7Z+ij3/sTEC5unfUJsccPgxXDfjcz9HjsxJdmYDvr91SXIEBwJLeg+/6/+wsYnsZOtmS2zaRNF/Z8I8AWumh7ZNIm8LlTnQ3TS3BS2dk3jdetabS4Q4uHPbLWr2liLT7BTDz7ig+2TNTzUzQj4Dkd+8=
+	t=1745422079; cv=none; b=i89s1e8cYZ15X4Ju6nBUZFSTp4DKpxieW9FXCmhTqx6nYMkpqvdbmi5czUOTjyP1mCyDB25Af8qxrp7ElZFNVMeFfGoKONtFRzsHTtVws6VzA0gOZSFDtbvW9RwmbKUAVbZ4KJo/DCtohhqRLnxMeGYy7QIgK/KewjpZmafSOGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421810; c=relaxed/simple;
-	bh=blQHXIY7UzT4KNPJwPNYuMD5vUBQ5A1tTjBjqUrZdbU=;
+	s=arc-20240116; t=1745422079; c=relaxed/simple;
+	bh=X+xTr1K14pnexeOaRPs7gESKXMKjERmbV2ZWYAPezIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dLb2p7ZApv0SfIZ29fSZoQX4E3Vwr7I7MVhaKdlIOFH+dYUKAERAboQB6HCfWcYGhwr8dpWcLZaZS2Zw2c5ys2W5uQNNpvc2K5BFrPngdZD1fRlV1bzv97O9A9a6J8xWpHA6pe++lhNqsTIUlIX5Eup52BsrwpiYNq+cHZvOwP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efBN8mDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A056CC4CEE2;
-	Wed, 23 Apr 2025 15:23:29 +0000 (UTC)
+	 MIME-Version; b=l5JhbpZohKo+qFWOkotKPuPVeR7olQVv7pN+6+ht7F7KKiekWMzfvanoLnmN1Wrcq//H3RiQrYSHpqB8TG3oSfKfY+Uwbw5xLSmKerLOLBMjkoY+34eUiItN0J6H/wZ6WVvP9+MCoiQCcp+BGHnuauTV+kXpU9VwNqphQngYCeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2/2BdGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B00C4CEE2;
+	Wed, 23 Apr 2025 15:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421810;
-	bh=blQHXIY7UzT4KNPJwPNYuMD5vUBQ5A1tTjBjqUrZdbU=;
+	s=korg; t=1745422078;
+	bh=X+xTr1K14pnexeOaRPs7gESKXMKjERmbV2ZWYAPezIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=efBN8mDKH1qyTumaXD8hwJcnRldpCJJUx3tXlZKlKrdgOTga4lu5EuStKu2xnUYwD
-	 fQ4z35BUaKtPvM9JnYEjsnypn7XgRio/3WCZIAtIExTebvqWTOpRRLBeZIErn967D8
-	 WqJVGFRvIc8o9FCpfML79VoGxvyXjNSs030iB1yo=
+	b=h2/2BdGyTkC3Qerfl4jrdUq4j7CLDfqim4km0PfWXizIRW3Op9woqZdJJQUNw+Nmy
+	 U/LjaajugeNNlM+E6oQVeKAirDV2qE/Dr4i23drTlnWIVOq8CJsfgZ00rQwOAVzS1Z
+	 AtCHzuYYJmG4iCs1AuFZLweX90xt4GhzIqY8zaKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jacob Keller <jacob.e.keller@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/291] igc: move ktime snapshot into PTM retry loop
+Subject: [PATCH 6.6 274/393] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
 Date: Wed, 23 Apr 2025 16:42:50 +0200
-Message-ID: <20250423142631.776254558@linuxfoundation.org>
+Message-ID: <20250423142654.672125801@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-[ Upstream commit cd7f7328d691937102732f39f97ead35b15bf803 ]
+[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
 
-Move ktime_get_snapshot() into the loop. If a retry does occur, a more
-recent snapshot will result in a more accurate cross-timestamp.
+In the for loop used to allocate the loc_array and bmap for each port, a
+memory leak is possible when the allocation for loc_array succeeds,
+but the allocation for bmap fails. This is because when the control flow
+goes to the label free_eth_finfo, only the allocations starting from
+(i-1)th iteration are freed.
 
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fix that by freeing the loc_array in the bmap allocation error path.
+
+Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index b4720545191ff..5616b7f4e504f 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -881,16 +881,16 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
- 	int err, count = 100;
- 	ktime_t t1, t2_curr;
- 
--	/* Get a snapshot of system clocks to use as historic value. */
--	ktime_get_snapshot(&adapter->snapshot);
--
-+	/* Doing this in a loop because in the event of a
-+	 * badly timed (ha!) system clock adjustment, we may
-+	 * get PTM errors from the PCI root, but these errors
-+	 * are transitory. Repeating the process returns valid
-+	 * data eventually.
-+	 */
- 	do {
--		/* Doing this in a loop because in the event of a
--		 * badly timed (ha!) system clock adjustment, we may
--		 * get PTM errors from the PCI root, but these errors
--		 * are transitory. Repeating the process returns valid
--		 * data eventually.
--		 */
-+		/* Get a snapshot of system clocks to use as historic value. */
-+		ktime_get_snapshot(&adapter->snapshot);
-+
- 		igc_ptm_trigger(hw);
- 
- 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+index 8477a93cee6bd..b77897aa06c4f 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+@@ -2273,6 +2273,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
+ 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
+ 		if (!eth_filter->port[i].bmap) {
+ 			ret = -ENOMEM;
++			kvfree(eth_filter->port[i].loc_array);
+ 			goto free_eth_finfo;
+ 		}
+ 	}
 -- 
 2.39.5
 
