@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BB7A98DDE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86422A98E7E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1B4F7ACDB9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 929A6189063E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2D8281363;
-	Wed, 23 Apr 2025 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7288527CCFA;
+	Wed, 23 Apr 2025 14:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v73tUhAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ONmqbAl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6A280CD4;
-	Wed, 23 Apr 2025 14:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAF1175BF;
+	Wed, 23 Apr 2025 14:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419764; cv=none; b=YrE75Rc3rw3G66A+Jko1/7BfJyPUuhuoz8Xmgr85xlGoxWhZGPMuJy/5CkxPx83OKhY46SOpwGwhpH34PCmHruwz9kkLhkeyEKbzowt+TC/ELG3nbu4Pla3vZ7S2kodrzR4QKP8IL37JK7J54U4aOwvBXx6PGtgNQqc5GKePAVk=
+	t=1745420016; cv=none; b=VjTTZe7LT4kP4MITQr2WPKEvPbSUsajHcXLzR7Xi0q5bcbXjiJ/wg379qvXStLukoxIE5gYEqvbsvVTbN1MseVcz5jJ/7CjC96DSfISdQwHWtTX6fjhuvBGTd3aUqimHgCE5ybQcOPyBHEvvXkggI58j+S9UzaV5LqtTvK3L/p8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419764; c=relaxed/simple;
-	bh=qDD4jF4dw8yHOxQjreqnE31HKok2GNCIr3xYlCuml8w=;
+	s=arc-20240116; t=1745420016; c=relaxed/simple;
+	bh=Ac0NspLDLPtRRtZaA4c+j/b5WbeyF1YQTfK7aXtCx48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEwpw/e0TTX4iT+ydUkPsYnydtrJh3Wq3c1trTwXVBXi3McnVV6Zpa8pB1Mzs+0d/0WcAeXW/Ey9KUORO5ySX0sbr2xIc+agR94Ul2ADrxM+0+6pm4rhMLSxeyRRArY0/ZGfjbMRH5gvVQtHNjfrABBQZL37C/8MuQMrYpNe4FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v73tUhAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AC4C4CEEC;
-	Wed, 23 Apr 2025 14:49:22 +0000 (UTC)
+	 MIME-Version; b=MsOP+ZrtnamSlRV94tFIPAxdFXwYZp06q4nMXZ0RaHA/iziJ0HErfEPZwAQekwny0v+tO8ERipv7Axj9iWp6Sgl9EoJ8VLv2y87n9zX5q32tDrceN3bLtfrR1IVhkvHNo4OaYp3Z80SgUsXUwd728HiEGl4VMDaVuACoDptvt88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ONmqbAl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5524DC4CEE2;
+	Wed, 23 Apr 2025 14:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419763;
-	bh=qDD4jF4dw8yHOxQjreqnE31HKok2GNCIr3xYlCuml8w=;
+	s=korg; t=1745420015;
+	bh=Ac0NspLDLPtRRtZaA4c+j/b5WbeyF1YQTfK7aXtCx48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v73tUhAfiHbF4QPCT3uLhjNa99JtxHKdKITc+7c8vVP9RTSnswjB51CWzkeUTfSGC
-	 DI8aPVsGOL8aET5G23EJuaEtO5G6FqwLbMgrvyzjVMrENCp9as67B8fhEUVCtCZpUI
-	 xlbQ8sg3QWERpOhUTygAt8592fayqU1dDTvE3KHk=
+	b=2ONmqbAlHJ4ZoqOKIJKDDBo5izb9eHM2p0Hyo94yQbnzNvpdQM3EHxqpj/cmLxQPk
+	 YULWuDK0mFAd3YDR45UjoW/vy66IyGwqfbKt9BXTG8fM5PEp0iBeTFgFDRYN31GOEB
+	 NWcN4i42vsEy2jsI8iZ/j5IT768K5N6w11QoDmeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/223] net: mctp: Set SOCK_RCU_FREE
+Subject: [PATCH 6.14 052/241] netlink: specs: ovs_vport: align with C codegen capabilities
 Date: Wed, 23 Apr 2025 16:41:56 +0200
-Message-ID: <20250423142618.928143451@linuxfoundation.org>
+Message-ID: <20250423142622.633013128@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 52024cd6ec71a6ca934d0cc12452bd8d49850679 ]
+[ Upstream commit 747fb8413aaa36e4c988d45c4fe20d4c2b0778cd ]
 
-Bind lookup runs under RCU, so ensure that a socket doesn't go away in
-the middle of a lookup.
+We started generating C code for OvS a while back, but actually
+C codegen only supports fixed headers specified at the family
+level right now (schema also allows specifying them per op).
+ovs_flow and ovs_datapath already specify the fixed header
+at the family level but ovs_vport does it per op.
+Move the property, all ops use the same header.
 
-Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250410-mctp-rcu-sock-v1-1-872de9fdc877@codeconstruct.com.au
+This ensures YNL C sees the correct hdr_len:
+
+   const struct ynl_family ynl_ovs_vport_family =  {
+          .name           = "ovs_vport",
+  -       .hdr_len        = sizeof(struct genlmsghdr),
+  +       .hdr_len        = sizeof(struct genlmsghdr) + sizeof(struct ovs_header),
+   };
+
+Fixes: 7c59c9c8f202 ("tools: ynl: generate code for ovs families")
+Link: https://patch.msgid.link/20250409145541.580674-1-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/af_mctp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/netlink/specs/ovs_vport.yaml | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index f6de136008f6f..57850d4dac5db 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -630,6 +630,9 @@ static int mctp_sk_hash(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
+diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
+index 86ba9ac2a5210..b538bb99ee9b5 100644
+--- a/Documentation/netlink/specs/ovs_vport.yaml
++++ b/Documentation/netlink/specs/ovs_vport.yaml
+@@ -123,12 +123,12 @@ attribute-sets:
  
-+	/* Bind lookup runs under RCU, remain live during that. */
-+	sock_set_flag(sk, SOCK_RCU_FREE);
-+
- 	mutex_lock(&net->mctp.bind_lock);
- 	sk_add_node_rcu(sk, &net->mctp.binds);
- 	mutex_unlock(&net->mctp.bind_lock);
+ operations:
+   name-prefix: ovs-vport-cmd-
++  fixed-header: ovs-header
+   list:
+     -
+       name: new
+       doc: Create a new OVS vport
+       attribute-set: vport
+-      fixed-header: ovs-header
+       do:
+         request:
+           attributes:
+@@ -141,7 +141,6 @@ operations:
+       name: del
+       doc: Delete existing OVS vport from a data path
+       attribute-set: vport
+-      fixed-header: ovs-header
+       do:
+         request:
+           attributes:
+@@ -152,7 +151,6 @@ operations:
+       name: get
+       doc: Get / dump OVS vport configuration and state
+       attribute-set: vport
+-      fixed-header: ovs-header
+       do: &vport-get-op
+         request:
+           attributes:
 -- 
 2.39.5
 
