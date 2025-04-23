@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC687A99353
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EBDA98EC8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79350927CAF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92AD44598F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0E126A082;
-	Wed, 23 Apr 2025 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516A427F4F3;
+	Wed, 23 Apr 2025 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTsPOPVr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDxXZwy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2BC2820AE;
-	Wed, 23 Apr 2025 15:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDEC19E966;
+	Wed, 23 Apr 2025 14:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422157; cv=none; b=YjwfJtVWpTirWlDTGmmPfYOPLg+uOixD0UQiLijvyiN+Er1Z3mLK4/u1jZBeFDg0o/Xv2JBASAZejQrnSS7bYpI7XNmjnQGC1Gswnn4SaL7uSkC00etkx/NCH9Nd2v40RGUItVIX6C6ndjcoEoCbB1OZFuidlPMs9+NxUXNyG3M=
+	t=1745420253; cv=none; b=iH5VeZT74YcZNPYAtq3cR/B5LbWCIp8Mb8ZDb+UISIa3M6KllCpchNGQlxNjYIfl9MVilqkctqyawurdW5jcsld/bpjmsqvLoLx4W01N/H6gosg6HinCU7sJR+KrWW7JJ+mzaWrOFKwUTPiOQ8ySDIAdKGVcN2Wcal0BWXpENiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422157; c=relaxed/simple;
-	bh=Caqw28F119hMOT1o27R4w5r/COTo+ZFEvqjix/o/mBs=;
+	s=arc-20240116; t=1745420253; c=relaxed/simple;
+	bh=8fLU5mLnaYUd0y7ZxIt/fzx3N4hkZgRsU4jCryQPVJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApHxxpfxcs1Dx5GGwJOrmnH6ab2BoIfGVUe+Z1R3jPuLoqt1KcfzP7ufb7MjyrM+caCOzQatqo3aJhLTJhm09itu8TshTqnnJ/fnj5hWXdG1xV5MgQ9CYRsOIY6EMaIoeSkb0AcVviWgnZF2CHeR+TvA4bvEBiSucqd5coPSdfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTsPOPVr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74B1C4CEE3;
-	Wed, 23 Apr 2025 15:29:16 +0000 (UTC)
+	 MIME-Version; b=QG11GMyj7Fxa592r4vqN0YO8NknGX3M6U9bc9ABbZFAtL2UjfLy93iPIvqSZ/inr6F8mYX6qWSkU9Yh8dXcYRc3ktjUnTcUae0JJUezwGNdskOfdG3nBx/sNt+7sKbBR6CfmG0QjxctiWMaMTBAnQexImXsFNdGmeM7Alv0dU08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDxXZwy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A43C4CEE2;
+	Wed, 23 Apr 2025 14:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422157;
-	bh=Caqw28F119hMOT1o27R4w5r/COTo+ZFEvqjix/o/mBs=;
+	s=korg; t=1745420252;
+	bh=8fLU5mLnaYUd0y7ZxIt/fzx3N4hkZgRsU4jCryQPVJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTsPOPVry2XXagwd7t5zHIWKIQTVccZeT4Uw9Y3M6BwWCeihuKISdWK0gLCsRCqQ0
-	 RyuI8IdJsgp5b/Aro0njVVfaFAeTxa0//hqc/clnnXJATE9vitU/St7xXgvQrjF5cC
-	 ZKWuzCoT2DwgBrQ6UDTZXKSaX6VxG7rFqjn4Cxpc=
+	b=GDxXZwy9apURMPrhfzjx07q93C2oI9wDD5LPx06oZYPaUhSVhS9Gg06srz80hJQET
+	 To0EUSFVmofsRnTOAeUP8D44rygJBSZnDjgXBlsWvgQQb76VbLdbfI4ftfj3AjAoeg
+	 LnnLOiIqoXqBb3SZNEFOmOCFu835cv35INRLjVeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 288/393] net: dsa: avoid refcount warnings when ds->ops->tag_8021q_vlan_del() fails
-Date: Wed, 23 Apr 2025 16:43:04 +0200
-Message-ID: <20250423142655.238272462@linuxfoundation.org>
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 113/223] i2c: cros-ec-tunnel: defer probe if parent EC is not present
+Date: Wed, 23 Apr 2025 16:43:05 +0200
+Message-ID: <20250423142621.710952289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 514eff7b0aa1c5eb645ddbb8676ef3e2d88a8b99 ]
+commit 424eafe65647a8d6c690284536e711977153195a upstream.
 
-This is very similar to the problem and solution from commit
-232deb3f9567 ("net: dsa: avoid refcount warnings when
-->port_{fdb,mdb}_del returns error"), except for the
-dsa_port_do_tag_8021q_vlan_del() operation.
+When i2c-cros-ec-tunnel and the EC driver are built-in, the EC parent
+device will not be found, leading to NULL pointer dereference.
 
-Fixes: c64b9c05045a ("net: dsa: tag_8021q: add proper cross-chip notifier support")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414213020.2959021-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That can also be reproduced by unbinding the controller driver and then
+loading i2c-cros-ec-tunnel module (or binding the device).
+
+[  271.991245] BUG: kernel NULL pointer dereference, address: 0000000000000058
+[  271.998215] #PF: supervisor read access in kernel mode
+[  272.003351] #PF: error_code(0x0000) - not-present page
+[  272.008485] PGD 0 P4D 0
+[  272.011022] Oops: Oops: 0000 [#1] SMP NOPTI
+[  272.015207] CPU: 0 UID: 0 PID: 3859 Comm: insmod Tainted: G S                  6.15.0-rc1-00004-g44722359ed83 #30 PREEMPT(full)  3c7fb39a552e7d949de2ad921a7d6588d3a4fdc5
+[  272.030312] Tainted: [S]=CPU_OUT_OF_SPEC
+[  272.034233] Hardware name: HP Berknip/Berknip, BIOS Google_Berknip.13434.356.0 05/17/2021
+[  272.042400] RIP: 0010:ec_i2c_probe+0x2b/0x1c0 [i2c_cros_ec_tunnel]
+[  272.048577] Code: 1f 44 00 00 41 57 41 56 41 55 41 54 53 48 83 ec 10 65 48 8b 05 06 a0 6c e7 48 89 44 24 08 4c 8d 7f 10 48 8b 47 50 4c 8b 60 78 <49> 83 7c 24 58 00 0f 84 2f 01 00 00 48 89 fb be 30 06 00 00 4c 9
+[  272.067317] RSP: 0018:ffffa32082a03940 EFLAGS: 00010282
+[  272.072541] RAX: ffff969580b6a810 RBX: ffff969580b68c10 RCX: 0000000000000000
+[  272.079672] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff969580b68c00
+[  272.086804] RBP: 00000000fffffdfb R08: 0000000000000000 R09: 0000000000000000
+[  272.093936] R10: 0000000000000000 R11: ffffffffc0600000 R12: 0000000000000000
+[  272.101067] R13: ffffffffa666fbb8 R14: ffffffffc05b5528 R15: ffff969580b68c10
+[  272.108198] FS:  00007b930906fc40(0000) GS:ffff969603149000(0000) knlGS:0000000000000000
+[  272.116282] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  272.122024] CR2: 0000000000000058 CR3: 000000012631c000 CR4: 00000000003506f0
+[  272.129155] Call Trace:
+[  272.131606]  <TASK>
+[  272.133709]  ? acpi_dev_pm_attach+0xdd/0x110
+[  272.137985]  platform_probe+0x69/0xa0
+[  272.141652]  really_probe+0x152/0x310
+[  272.145318]  __driver_probe_device+0x77/0x110
+[  272.149678]  driver_probe_device+0x1e/0x190
+[  272.153864]  __driver_attach+0x10b/0x1e0
+[  272.157790]  ? driver_attach+0x20/0x20
+[  272.161542]  bus_for_each_dev+0x107/0x150
+[  272.165553]  bus_add_driver+0x15d/0x270
+[  272.169392]  driver_register+0x65/0x110
+[  272.173232]  ? cleanup_module+0xa80/0xa80 [i2c_cros_ec_tunnel 3a00532f3f4af4a9eade753f86b0f8dd4e4e5698]
+[  272.182617]  do_one_initcall+0x110/0x350
+[  272.186543]  ? security_kernfs_init_security+0x49/0xd0
+[  272.191682]  ? __kernfs_new_node+0x1b9/0x240
+[  272.195954]  ? security_kernfs_init_security+0x49/0xd0
+[  272.201093]  ? __kernfs_new_node+0x1b9/0x240
+[  272.205365]  ? kernfs_link_sibling+0x105/0x130
+[  272.209810]  ? kernfs_next_descendant_post+0x1c/0xa0
+[  272.214773]  ? kernfs_activate+0x57/0x70
+[  272.218699]  ? kernfs_add_one+0x118/0x160
+[  272.222710]  ? __kernfs_create_file+0x71/0xa0
+[  272.227069]  ? sysfs_add_bin_file_mode_ns+0xd6/0x110
+[  272.232033]  ? internal_create_group+0x453/0x4a0
+[  272.236651]  ? __vunmap_range_noflush+0x214/0x2d0
+[  272.241355]  ? __free_frozen_pages+0x1dc/0x420
+[  272.245799]  ? free_vmap_area_noflush+0x10a/0x1c0
+[  272.250505]  ? load_module+0x1509/0x16f0
+[  272.254431]  do_init_module+0x60/0x230
+[  272.258181]  __se_sys_finit_module+0x27a/0x370
+[  272.262627]  do_syscall_64+0x6a/0xf0
+[  272.266206]  ? do_syscall_64+0x76/0xf0
+[  272.269956]  ? irqentry_exit_to_user_mode+0x79/0x90
+[  272.274836]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[  272.279887] RIP: 0033:0x7b9309168d39
+[  272.283466] Code: 5b 41 5c 5d c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d af 40 0c 00 f7 d8 64 89 01 8
+[  272.302210] RSP: 002b:00007fff50f1a288 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[  272.309774] RAX: ffffffffffffffda RBX: 000058bf9b50f6d0 RCX: 00007b9309168d39
+[  272.316905] RDX: 0000000000000000 RSI: 000058bf6c103a77 RDI: 0000000000000003
+[  272.324036] RBP: 00007fff50f1a2e0 R08: 00007fff50f19218 R09: 0000000021ec4150
+[  272.331166] R10: 000058bf9b50f7f0 R11: 0000000000000246 R12: 0000000000000000
+[  272.338296] R13: 00000000fffffffe R14: 0000000000000000 R15: 000058bf6c103a77
+[  272.345428]  </TASK>
+[  272.347617] Modules linked in: i2c_cros_ec_tunnel(+)
+[  272.364585] gsmi: Log Shutdown Reason 0x03
+
+Returning -EPROBE_DEFER will allow the device to be bound once the
+controller is bound, in the case of built-in drivers.
+
+Fixes: 9d230c9e4f4e ("i2c: ChromeOS EC tunnel driver")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: <stable@vger.kernel.org> # v3.16+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250407-null-ec-parent-v1-1-f7dda62d3110@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_8021q.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-cros-ec-tunnel.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/dsa/tag_8021q.c b/net/dsa/tag_8021q.c
-index cbdfc392f7e0d..a5420421e462e 100644
---- a/net/dsa/tag_8021q.c
-+++ b/net/dsa/tag_8021q.c
-@@ -197,7 +197,7 @@ static int dsa_port_do_tag_8021q_vlan_del(struct dsa_port *dp, u16 vid)
+--- a/drivers/i2c/busses/i2c-cros-ec-tunnel.c
++++ b/drivers/i2c/busses/i2c-cros-ec-tunnel.c
+@@ -247,6 +247,9 @@ static int ec_i2c_probe(struct platform_
+ 	u32 remote_bus;
+ 	int err;
  
- 	err = ds->ops->tag_8021q_vlan_del(ds, port, vid);
- 	if (err) {
--		refcount_inc(&v->refcount);
-+		refcount_set(&v->refcount, 1);
- 		return err;
- 	}
- 
--- 
-2.39.5
-
++	if (!ec)
++		return dev_err_probe(dev, -EPROBE_DEFER, "couldn't find parent EC device\n");
++
+ 	if (!ec->cmd_xfer) {
+ 		dev_err(dev, "Missing sendrecv\n");
+ 		return -EINVAL;
 
 
 
