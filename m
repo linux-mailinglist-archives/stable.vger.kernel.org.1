@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D939A990D8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67674A98DDA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6829B1B85DE2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4005016DF29
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356122857C1;
-	Wed, 23 Apr 2025 15:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1052820BA;
+	Wed, 23 Apr 2025 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6exY0B9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpFX8uz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F84285414;
-	Wed, 23 Apr 2025 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C4F27FD5B;
+	Wed, 23 Apr 2025 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420903; cv=none; b=Ep4GGXR5G7DTQxxYV8JID2ZxVPO4nieyF0HWkYyyvMkt+GbQWojqrZREQrK0FGSX3FNz4Ymtlt6KpDidftJAZK2i4F5bKr6LtIrRYm1cjjK9Ie6GIqOeIrvWHv76/nCx1Vi+aq5BBDILwuewNUxvISGzhBCOEy+p5T2o3uQnfeI=
+	t=1745419729; cv=none; b=g3TSLDICaeChDhPLPO7WbVdknOC3ClKJYqUfuIGuOZoFLqQ+Fl52A7lUScf3K2eZiEJGiuLkckHkCtFCnThkuDUiLTKuVyLtFHQLhs80ZPDf0AyX/J+ZwKhEnn17ObMfwOvaNnnoXVC/egX4nON16b+s/0nTcQymwirSqMvLq/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420903; c=relaxed/simple;
-	bh=qo2XXHvTGJJhD4UkvChU660G17HtLqFWGAMBCwwehao=;
+	s=arc-20240116; t=1745419729; c=relaxed/simple;
+	bh=mHVgr6uPtwCV57zu6StomSpIbHky9K2Ul6J1BR6b+ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tnW72bNTmbysAZucBAI+QV6mzxvchyS4hzPZzphQQUffmdXkULlmsxEnj8SJ45K479NUg/qxbwBtSfATN2fp9Y5BNn5cL0QGHlfTu50Zf+wXjSU54+K8ZX2E0mEIv/fUuiZG6OyquDOiWCNTKUYiOoifBtgGBd1X62w+RBb62QY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6exY0B9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2BEC4CEE2;
-	Wed, 23 Apr 2025 15:08:22 +0000 (UTC)
+	 MIME-Version; b=SLAqCSysyMUD+GKssl3lnl39AyHhbMLxwUYw3WMKZ1hkKYIqhTUnudovj5W7kYU2vNToyJM4im3LM37AQpcruAQNPT3FBaqjBz+PjgZBitvqHP9Js6cV2dwYv+auYbcUEv15QyQZHwisgNi/agApl1SFIITVOa7bfJz9bazO+HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpFX8uz4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7DCC4CEE8;
+	Wed, 23 Apr 2025 14:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420902;
-	bh=qo2XXHvTGJJhD4UkvChU660G17HtLqFWGAMBCwwehao=;
+	s=korg; t=1745419728;
+	bh=mHVgr6uPtwCV57zu6StomSpIbHky9K2Ul6J1BR6b+ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6exY0B9BtIFJ3Urag4RvqlT+lb4s2IIPg/sCKCoKpoige8/Qwpd2HIsXHVJYo1Wf
-	 BDlR/uoAxMoZ51RxejMDawggX2qZJRU0NDCRKxgU/4URDlOwGoaOpEgfuy8Ucmfejc
-	 24tSuzsTsIOYp2dDg/8eHJOYIU+JQ+04FIBrVhAo=
+	b=jpFX8uz4x8evqJNLoFANvTNrGclpRxcwyDYBcFaiwU/Kv/aBAEIhyDVXFtkNCw4/u
+	 3lahPaeN9l59Im+3FdjImpeEV/g4lWL1zPSazuJkXE/9dmH/RL/jpTcHwZckLyZEJK
+	 zyoYjuE+WjS3P2P5puXQ6ewgjqDsTM6d0TjfchvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	=?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.1 091/291] tpm, tpm_tis: Fix timeout handling when waiting for TPM status
-Date: Wed, 23 Apr 2025 16:41:20 +0200
-Message-ID: <20250423142628.075834559@linuxfoundation.org>
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 017/241] RDMA/hns: Fix wrong maximum DMA segment size
+Date: Wed, 23 Apr 2025 16:41:21 +0200
+Message-ID: <20250423142621.221794247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit 7146dffa875cd00e7a7f918e1fce79c7593ac1fa upstream.
+[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
 
-The change to only use interrupts to handle supported status changes
-introduced an issue when it is necessary to poll for the status. Rather
-than checking for the status after sleeping the code now sleeps after
-the check. This means a correct, but slower, status change on the part
-of the TPM can be missed, resulting in a spurious timeout error,
-especially on a more loaded system. Switch back to sleeping *then*
-checking. An up front check of the status has been done at the start of
-the function, so this does not cause an additional delay when the status
-is already what we're looking for.
+Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
+Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -104,11 +104,10 @@ again:
- 		return 0;
- 	/* process status changes without irq support */
- 	do {
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 		status = chip->ops->status(chip);
- 		if ((status & mask) == mask)
- 			return 0;
--		usleep_range(priv->timeout_min,
--			     priv->timeout_max);
- 	} while (time_before(jiffies, stop));
- 	return -ETIME;
- }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index cf89a8db4f64c..8d0b63d4b50a6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -763,7 +763,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
+ 		if (ret)
+ 			return ret;
+ 	}
+-	dma_set_max_seg_size(dev, UINT_MAX);
++	dma_set_max_seg_size(dev, SZ_2G);
+ 	ret = ib_register_device(ib_dev, "hns_%d", dev);
+ 	if (ret) {
+ 		dev_err(dev, "ib_register_device failed!\n");
+-- 
+2.39.5
+
 
 
 
