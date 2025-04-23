@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-136018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BB4A9916B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6404A98DE3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22302467A43
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C9E3B3237
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8887528DEE8;
-	Wed, 23 Apr 2025 15:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E74D283C87;
+	Wed, 23 Apr 2025 14:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kj+JUjFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDxLsDuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBCF28D856;
-	Wed, 23 Apr 2025 15:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5D6283689;
+	Wed, 23 Apr 2025 14:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421440; cv=none; b=ftB+Yu+y7gHtdkM8kCqKF3X2FNs54WPk1Kfi2BTy1OsHiB9fgfmQxC2dvad8yxJ64uQjmDv8QxZalFYyn8R9k+s5NS7lWgyAD7q8chC8NLtscq9ueR1MovlqVnD8qcrlXk0Kt8HUHBE0Ct00plb0+dC0o+1Njwrhvz4xHwWJMh4=
+	t=1745419750; cv=none; b=G7nA/bMevxpk9U0Lg4B3OBRQ0vMZ1D5EMxxO4d4KWrq2dakMsJ46J+A/O9PD7M16yMafh+EIbvCJE5RhQs1ZMdBLe23xsBUhKmK2KMpPz5oVwjXgZzbmWSfjE9EYyB+m8PevoEWuo8ax/f2uNUkS1hwFfgBbus/P42ZcUrjd7Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421440; c=relaxed/simple;
-	bh=LqFHXLQnO3pbL5ia+1YBfu69gf1YxnArb4Xccr+OOgw=;
+	s=arc-20240116; t=1745419750; c=relaxed/simple;
+	bh=iRYKpa8FRbxc4RRIKjD7jMBQV7FNyHKPB60cy8XT8es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLkD7H0gBLvGWiR+lG+a/5FKBJaprAIer/ETDowd3MuU0qeQrsas7D84zLLHYIUsIleLMawq8xP0I4FWkssXTNPynLo1AhOJ+IkjoTBFuk6++afF8/GLA2WA2coEZMNTm9oJljS8eKZSNRWHkbI48WdH2iTIspaU1OWS0GFLJ7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kj+JUjFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55291C4CEE2;
-	Wed, 23 Apr 2025 15:17:19 +0000 (UTC)
+	 MIME-Version; b=N8mdP5yXuUXOgDHJZ9L/Bah4yK0bnQrFhd8cXqHpVWK05GxjXjobJ0S54Duoi+VStb/8FK74QiJkHKaGaPpcjYmrg2PmtWhmcTrbfHGUs/UQhGXKt2AIewWzYubooWwBCx1O7MzfA1l1udXE3P80WeKpgLypezhPf9E+PpGyjkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDxLsDuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA7AC4CEE3;
+	Wed, 23 Apr 2025 14:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421439;
-	bh=LqFHXLQnO3pbL5ia+1YBfu69gf1YxnArb4Xccr+OOgw=;
+	s=korg; t=1745419750;
+	bh=iRYKpa8FRbxc4RRIKjD7jMBQV7FNyHKPB60cy8XT8es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kj+JUjFv5JAkNx5fkNMm1nE3kjY5IUsT5yaEgurWgqXIV5ypIPiuZ21FHjZlLXG38
-	 yUwwQaHi+zIxSLR676w8ky4qDHkJVno/DBYl6KApsxtBnrRFWFvmJIquenR2iKfOPB
-	 /Q4+kzr1jDgHuZZZ8J9YhCskCar50ORx0YYdDEXM=
+	b=VDxLsDuzgqXOiiBMAgIjNHWuXQ6cD4Ze6kDh57SQz9Zm13V+Y1SfMF9QpCrah6h5W
+	 l1VKprbadImRjjIQecj3d5dDwIwIPEGDV8/M/HyeI+vm21+giFAc9TZ18nM8EYYura
+	 JcErac9SzNAubPZ150G3N1lj83BsrSQDKyIvr0KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Smirnov <r.smirnov@omp.ru>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 137/291] cifs: fix integer overflow in match_server()
-Date: Wed, 23 Apr 2025 16:42:06 +0200
-Message-ID: <20250423142630.007014255@linuxfoundation.org>
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 055/223] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
+Date: Wed, 23 Apr 2025 16:42:07 +0200
+Message-ID: <20250423142619.369869195@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Smirnov <r.smirnov@omp.ru>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 2510859475d7f46ed7940db0853f3342bf1b65ee upstream.
+[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
 
-The echo_interval is not limited in any way during mounting,
-which makes it possible to write a large number to it. This can
-cause an overflow when multiplying ctx->echo_interval by HZ in
-match_server().
+In the for loop used to allocate the loc_array and bmap for each port, a
+memory leak is possible when the allocation for loc_array succeeds,
+but the allocation for bmap fails. This is because when the control flow
+goes to the label free_eth_finfo, only the allocations starting from
+(i-1)th iteration are freed.
 
-Add constraints for echo_interval to smb3_fs_context_parse_param().
+Fix that by freeing the loc_array in the bmap allocation error path.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: adfeb3e00e8e1 ("cifs: Make echo interval tunable")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -1111,6 +1111,11 @@ static int smb3_fs_context_parse_param(s
- 		ctx->closetimeo = HZ * result.uint_32;
- 		break;
- 	case Opt_echo_interval:
-+		if (result.uint_32 < SMB_ECHO_INTERVAL_MIN ||
-+		    result.uint_32 > SMB_ECHO_INTERVAL_MAX) {
-+			cifs_errorf(fc, "echo interval is out of bounds\n");
-+			goto cifs_parse_mount_err;
-+		}
- 		ctx->echo_interval = result.uint_32;
- 		break;
- 	case Opt_snapshot:
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+index 7f3f5afa864f4..1546c3db08f09 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+@@ -2270,6 +2270,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
+ 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
+ 		if (!eth_filter->port[i].bmap) {
+ 			ret = -ENOMEM;
++			kvfree(eth_filter->port[i].loc_array);
+ 			goto free_eth_finfo;
+ 		}
+ 	}
+-- 
+2.39.5
+
 
 
 
