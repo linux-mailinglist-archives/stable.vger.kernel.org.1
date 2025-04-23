@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-136210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E5DA992D3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5451BA98E35
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD7C7926EEC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2FAD1896493
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4DD528D854;
-	Wed, 23 Apr 2025 15:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCFB280CD3;
+	Wed, 23 Apr 2025 14:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQ0SmjnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU3zztQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FFB269B07;
-	Wed, 23 Apr 2025 15:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09293280A32;
+	Wed, 23 Apr 2025 14:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421947; cv=none; b=ZtRax4B3tBUtkKvLiCGXFYIA0i6dlwXQJ0pcQIOtUqhH5E2eZKxHekENTB6u8bghi37yXaj77XdC3ZweXe39do2+tq6IrXoHjgVedxJtX7tFHETfb8IAKe51USlebLwmjgc0fvl/a4x5c68v7fxWWeSfXDKRZ51IsavAcz2Womg=
+	t=1745419874; cv=none; b=UZ3ONE0IXZBM2A7qLO0acB7xS1TdKVwjQIr7MH32IABAgh0HsOq7fIctoh6FUCny17vk8rH2I1cXvHuw2Y1nY+Ova3QLe7sKfcLrFHWHkmrz8Q+PZAooyGf/0NP0hrRM3KJXUU6P/OTcGfw3sY7+JR5H0esCHwXUccrizLWZyPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421947; c=relaxed/simple;
-	bh=eWgLSW+21k6c0gdBkvCBr22pm6ePWey5Sk/nujmkD5s=;
+	s=arc-20240116; t=1745419874; c=relaxed/simple;
+	bh=svr9Gup1SEt9osdtExRXH4U8L8HilPU3OjjUxGJzn2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcVjnEZoCQpuRxEvTLvE+lbQ7/ocEnYlrN49E9keaxA4rNtDOCGfVom+i5LbNMDjRlGow9Uib4v9DahlHXdLY9zSSg+R22bApKfIvLbh6X1MfripNH/UzJ+Qyu9ZolaUd7OVAjY4gd65+Kkrn2MqLENiWXk/40GysEF5WAm70qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQ0SmjnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029DCC4CEE2;
-	Wed, 23 Apr 2025 15:25:46 +0000 (UTC)
+	 MIME-Version; b=Axdcjw8WK7JPNx9cFsTVg8hiq/FH3Dk1AeVuR0azUFhcUT87+rUDTCHFHAB8h826E8yP2ekR2WN1HC731G8XQsScZovrHbGISevRXOIfCeJeyqJ3h08e/5r/sTNZub0go6a0dIiYeoyLStditxDYP+tuCPgH8Y38kPCqrPOzvZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU3zztQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89560C4CEE2;
+	Wed, 23 Apr 2025 14:51:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421947;
-	bh=eWgLSW+21k6c0gdBkvCBr22pm6ePWey5Sk/nujmkD5s=;
+	s=korg; t=1745419873;
+	bh=svr9Gup1SEt9osdtExRXH4U8L8HilPU3OjjUxGJzn2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQ0SmjnLvTZd7Xie6DC0/kjdvelLInERw7c54uAG9SkNHjSPYVJNG36V2uyOO23Bg
-	 wvSD7DFVhKEI8y/zRae04oPbvFjz8tzgPkdHp2XPvizMXzfmp261rZGzGHCn5df4Ax
-	 /SeFKR+TYSPzjAdy1dSak/bVbA4kICpZATcsr50E=
+	b=tU3zztQl1BXLI3lCe5mjfMKPWwMEiG2zn8kx0Yy6XrXq0nUVGnx5cI6pNCfryIUQP
+	 XmH1e+9SkH7Ffias+lqoIHyb/HYdr7tA4mAXHiSlh3haqNH2hCoTbbKjCBZXzlx5y8
+	 CeChIYOk1ubK9+NfWqDUYDU9LiDCq6oNVImWgsyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuseppe Scrivano <gscrivan@redhat.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Alexander Larsson <alexl@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 250/393] ovl: remove unused forward declaration
+Subject: [PATCH 6.12 074/223] net: ethernet: mtk_eth_soc: revise QDMA packet scheduler settings
 Date: Wed, 23 Apr 2025 16:42:26 +0200
-Message-ID: <20250423142653.700219083@linuxfoundation.org>
+Message-ID: <20250423142620.141422362@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,40 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giuseppe Scrivano <gscrivan@redhat.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit a6eb9a4a69cc360b930dad9dc8513f8fd9b3577f ]
+[ Upstream commit 1b66124135f5f8640bd540fadda4b20cdd23114b ]
 
-The ovl_get_verity_xattr() function was never added, only its declaration.
+The QDMA packet scheduler suffers from a performance issue.
+Fix this by picking up changes from MediaTek's SDK which change to use
+Token Bucket instead of Leaky Bucket and fix the SPEED_1000 configuration.
 
-Signed-off-by: Giuseppe Scrivano <gscrivan@redhat.com>
-Fixes: 184996e92e86 ("ovl: Validate verity xattr when resolving lowerdata")
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Alexander Larsson <alexl@redhat.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fixes: 160d3a9b1929 ("net: ethernet: mtk_eth_soc: introduce MTK_NETSYS_V2 support")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/18040f60f9e2f5855036b75b28c4332a2d2ebdd8.1744764277.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/overlayfs.h | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
-index 981967e507b3e..23b5c5f9c7823 100644
---- a/fs/overlayfs/overlayfs.h
-+++ b/fs/overlayfs/overlayfs.h
-@@ -506,8 +506,6 @@ int ovl_set_metacopy_xattr(struct ovl_fs *ofs, struct dentry *d,
- bool ovl_is_metacopy_dentry(struct dentry *dentry);
- char *ovl_get_redirect_xattr(struct ovl_fs *ofs, const struct path *path, int padding);
- int ovl_ensure_verity_loaded(struct path *path);
--int ovl_get_verity_xattr(struct ovl_fs *ofs, const struct path *path,
--			 u8 *digest_buf, int *buf_length);
- int ovl_validate_verity(struct ovl_fs *ofs,
- 			struct path *metapath,
- 			struct path *datapath);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 941c7c380870b..d408dcda76d79 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -762,8 +762,8 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 			break;
+ 		case SPEED_1000:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 10) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 6) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 10);
+ 			break;
+ 		default:
+@@ -3274,7 +3274,7 @@ static int mtk_start_dma(struct mtk_eth *eth)
+ 		if (mtk_is_netsys_v2_or_greater(eth))
+ 			val |= MTK_MUTLI_CNT | MTK_RESV_BUF |
+ 			       MTK_WCOMP_EN | MTK_DMAD_WR_WDONE |
+-			       MTK_CHK_DDONE_EN | MTK_LEAKY_BUCKET_EN;
++			       MTK_CHK_DDONE_EN;
+ 		else
+ 			val |= MTK_RX_BT_32DWORDS;
+ 		mtk_w32(eth, val, reg_map->qdma.glo_cfg);
 -- 
 2.39.5
 
