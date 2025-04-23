@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-135736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D119BA98FC1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:13:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2C5A9906E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6543944368E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 955F31B67669
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672B627F4D9;
-	Wed, 23 Apr 2025 15:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E6328CF4A;
+	Wed, 23 Apr 2025 15:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cisOFNJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YakV61/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2462028C5D2;
-	Wed, 23 Apr 2025 15:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3443C8EB;
+	Wed, 23 Apr 2025 15:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420709; cv=none; b=tMTv7DxXEI6XiNPxE5vRNUEuEB+qTs083GUePvxhNqVJIPZfVZlSaDhanukgc4EC7RsOeOHzxQneCn1ZRLUA4tQluGztQ0QlSpvnqTXiKjnoz/3MpU+cKOQmTaIVBWEzcqYbebtcx4M5KIF4FTFceGalHM1vzDvx+vu7TuzpThE=
+	t=1745420720; cv=none; b=lIbt9fFNHYZto9wexLjs1ybe0B9rmOmX3VkVjsx+Uez4/dMZGhH+W0nvmVryfuCWQMa+zL1gTeJs+G+0QukKcnweFrZXSj2uNwBglG43WXn4wy0IMzJLlwBOoC55qXmwiJtHEvbKiEVUB9Ipml6UNzvC2OR70bpVWyjI70O6jMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420709; c=relaxed/simple;
-	bh=RbMABq4ZzxISwfXuOTtPD1lG5iafqfC/2vXPEn1VQh0=;
+	s=arc-20240116; t=1745420720; c=relaxed/simple;
+	bh=ow1Ze8xBmK7TJz0+kZRbh2WO0pfQ/gPB7np4xzZCM20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyccIVwgZeSL2Vo97VjXW70DOifmwgE/CkptRlak6KPI80XmJ3VsjllTq9RKJuRk9FO1Amg5miXLrWXJvT3IPQsEat7Uc3ITz/tMFmWtOmevuhozy2gqXmRuhAkbzljSOh0RQRrxddncsDWnTvz57CFLpQrUX8iH2TKvkfBEkx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cisOFNJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DEEC4CEE2;
-	Wed, 23 Apr 2025 15:05:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PtUuk8kOkIzlvvVCH7WKPsoFEPCQFQ0NHOLttaziQz35jfYbjlsJPdpbQLMfJg7Q2l+pOlp5beoV83XQ/2ByMmgoGXo/mU7SYp3zqcEkoluBGrktuxqX3VjJQ8TXjJs2XzYRBQMqQwU5qovPYqYWJ8K1GntsrWZwfUS35QHca/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YakV61/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8DAC4CEE2;
+	Wed, 23 Apr 2025 15:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420708;
-	bh=RbMABq4ZzxISwfXuOTtPD1lG5iafqfC/2vXPEn1VQh0=;
+	s=korg; t=1745420719;
+	bh=ow1Ze8xBmK7TJz0+kZRbh2WO0pfQ/gPB7np4xzZCM20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cisOFNJXGFVsziMsgsRVDpWs9sc9ejrxevQteW1UWaoqNn0uWWkgTkthzD17apUje
-	 iBx+TjfL0tdo+Z8vm5KWnORmiFgGPJXQz/cunN/ugoBdn10Q6Thsr5pBY3CoCAJ5/o
-	 5zfSTy44dl1D0mn2wNnJOuanqxRUGL9jdio7DfXM=
+	b=0YakV61/m7SsR2wqhlWLGCwelmDtfZohtyMp4eBZeTSemc46ZGm8FQ71538jMeuQU
+	 NVi4hcmPsm2AfMp/fyEnmmUflInCrq5h27T1z8aVCBG1h3UBfElfb5wPnVxiivH9YZ
+	 Dd7GaLyKSDqCc2fvpB3w/+BuJbAn3qekycCiX/28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 115/241] drm/msm/dpu: drop rogue intr_tear_rd_ptr values
-Date: Wed, 23 Apr 2025 16:42:59 +0200
-Message-ID: <20250423142625.273536888@linuxfoundation.org>
+Subject: [PATCH 6.14 116/241] dma-buf/sw_sync: Decrement refcount on error in sw_sync_ioctl_get_deadline()
+Date: Wed, 23 Apr 2025 16:43:00 +0200
+Message-ID: <20250423142625.323196748@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -60,189 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ddfa00afae800b3dea02fa36f3f4012a8379ae58 ]
+[ Upstream commit d27326a9999286fa45ad063f760e63329254f130 ]
 
-The commit 5a9d50150c2c ("drm/msm/dpu: shift IRQ indices by 1") shifted
-IRQ indices by 1, making 'NO_IRQ' to be 0 rather than -1 (and allowing
-to skip the definition if the IRQ is not present).
-Several platform files were sketched before that commit, but got applied
-afterwards. As such, they inherited historical (and currently incorrect)
-setting of .intr_tear_rd_ptr = -1 for 'NO_IRQ' value.
+Call dma_fence_put(fence) before returning an error if
+dma_fence_to_sync_pt() fails.  Use an unwind ladder at the
+end of the function to do the cleanup.
 
-Drop that setting for all the affected platforms.
-
-Fixes: 62af6e1cb596 ("drm/msm/dpu: Add support for MSM8917")
-Fixes: c079680bb0fa ("drm/msm/dpu: Add support for MSM8937")
-Fixes: 7a6109ce1c2c ("drm/msm/dpu: Add support for MSM8953")
-Fixes: daf9a92daeb8 ("drm/msm/dpu: Add support for MSM8996")
-Fixes: 7204df5e7e68 ("drm/msm/dpu: add support for SDM660 and SDM630 platforms")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/647486/
-Link: https://lore.kernel.org/r/20250408-dpu-drop-intr-rd-ptr-v1-1-eeac337d88f8@oss.qualcomm.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 70e67aaec2f4 ("dma-buf/sw_sync: Add fence deadline support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/a010a1ac-107b-4fc0-a052-9fd3706ad690@stanley.mountain
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h | 2 --
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h | 1 -
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h | 3 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h  | 4 ----
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h   | 3 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h   | 2 --
- 6 files changed, 15 deletions(-)
+ drivers/dma-buf/sw_sync.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h
-index ab3dfb0b374ea..cb89d8cf300f9 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h
-@@ -132,7 +132,6 @@ static const struct dpu_intf_cfg msm8937_intf[] = {
- 		.prog_fetch_lines_worst_case = 14,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_2", .id = INTF_2,
- 		.base = 0x6b000, .len = 0x268,
-@@ -141,7 +140,6 @@ static const struct dpu_intf_cfg msm8937_intf[] = {
- 		.prog_fetch_lines_worst_case = 14,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
--		.intr_tear_rd_ptr = -1,
- 	},
- };
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index f5905d67dedbb..22a808995f106 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -438,15 +438,17 @@ static int sw_sync_ioctl_get_deadline(struct sync_timeline *obj, unsigned long a
+ 		return -EINVAL;
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
-index 6bdaecca67614..b2a38e62d3a93 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
-@@ -118,7 +118,6 @@ static const struct dpu_intf_cfg msm8917_intf[] = {
- 		.prog_fetch_lines_worst_case = 14,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
--		.intr_tear_rd_ptr = -1,
- 	},
- };
+ 	pt = dma_fence_to_sync_pt(fence);
+-	if (!pt)
+-		return -EINVAL;
++	if (!pt) {
++		ret = -EINVAL;
++		goto put_fence;
++	}
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
-index 14f36ea6ad0eb..06859984d2a5c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
-@@ -131,7 +131,6 @@ static const struct dpu_intf_cfg msm8953_intf[] = {
- 		.prog_fetch_lines_worst_case = 14,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_1", .id = INTF_1,
- 		.base = 0x6a800, .len = 0x268,
-@@ -140,7 +139,6 @@ static const struct dpu_intf_cfg msm8953_intf[] = {
- 		.prog_fetch_lines_worst_case = 14,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_2", .id = INTF_2,
- 		.base = 0x6b000, .len = 0x268,
-@@ -149,7 +147,6 @@ static const struct dpu_intf_cfg msm8953_intf[] = {
- 		.prog_fetch_lines_worst_case = 14,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
--		.intr_tear_rd_ptr = -1,
- 	},
- };
+ 	spin_lock_irqsave(fence->lock, flags);
+-	if (test_bit(SW_SYNC_HAS_DEADLINE_BIT, &fence->flags)) {
+-		data.deadline_ns = ktime_to_ns(pt->deadline);
+-	} else {
++	if (!test_bit(SW_SYNC_HAS_DEADLINE_BIT, &fence->flags)) {
+ 		ret = -ENOENT;
++		goto unlock;
+ 	}
++	data.deadline_ns = ktime_to_ns(pt->deadline);
+ 	spin_unlock_irqrestore(fence->lock, flags);
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h
-index 491f6f5827d15..153e275513c31 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h
-@@ -241,7 +241,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
- 		.prog_fetch_lines_worst_case = 25,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_1", .id = INTF_1,
- 		.base = 0x6a800, .len = 0x268,
-@@ -250,7 +249,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
- 		.prog_fetch_lines_worst_case = 25,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_2", .id = INTF_2,
- 		.base = 0x6b000, .len = 0x268,
-@@ -259,7 +257,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
- 		.prog_fetch_lines_worst_case = 25,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_3", .id = INTF_3,
- 		.base = 0x6b800, .len = 0x268,
-@@ -267,7 +264,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
- 		.prog_fetch_lines_worst_case = 25,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 30),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 31),
--		.intr_tear_rd_ptr = -1,
- 	},
- };
+ 	dma_fence_put(fence);
+@@ -458,6 +460,13 @@ static int sw_sync_ioctl_get_deadline(struct sync_timeline *obj, unsigned long a
+ 		return -EFAULT;
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h
-index 424815e7fb7dd..f247625ed7e5b 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h
-@@ -202,7 +202,6 @@ static const struct dpu_intf_cfg sdm660_intf[] = {
- 		.prog_fetch_lines_worst_case = 21,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_1", .id = INTF_1,
- 		.base = 0x6a800, .len = 0x280,
-@@ -211,7 +210,6 @@ static const struct dpu_intf_cfg sdm660_intf[] = {
- 		.prog_fetch_lines_worst_case = 21,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_2", .id = INTF_2,
- 		.base = 0x6b000, .len = 0x280,
-@@ -220,7 +218,6 @@ static const struct dpu_intf_cfg sdm660_intf[] = {
- 		.prog_fetch_lines_worst_case = 21,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
--		.intr_tear_rd_ptr = -1,
- 	},
- };
+ 	return 0;
++
++unlock:
++	spin_unlock_irqrestore(fence->lock, flags);
++put_fence:
++	dma_fence_put(fence);
++
++	return ret;
+ }
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h
-index df01227fc3646..5ddd2b3c0cd2e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h
-@@ -147,7 +147,6 @@ static const struct dpu_intf_cfg sdm630_intf[] = {
- 		.prog_fetch_lines_worst_case = 21,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
--		.intr_tear_rd_ptr = -1,
- 	}, {
- 		.name = "intf_1", .id = INTF_1,
- 		.base = 0x6a800, .len = 0x280,
-@@ -156,7 +155,6 @@ static const struct dpu_intf_cfg sdm630_intf[] = {
- 		.prog_fetch_lines_worst_case = 21,
- 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
- 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
--		.intr_tear_rd_ptr = -1,
- 	},
- };
- 
+ static long sw_sync_ioctl(struct file *file, unsigned int cmd,
 -- 
 2.39.5
 
