@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-136259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E647A992E7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8363A992DC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9205A1693BB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F7761758B9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F7628D83D;
-	Wed, 23 Apr 2025 15:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F3A29E075;
+	Wed, 23 Apr 2025 15:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKp6j7Gu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoBSeeLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049BA29DB84;
-	Wed, 23 Apr 2025 15:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DC229E05C;
+	Wed, 23 Apr 2025 15:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422076; cv=none; b=p11EnGp1szb5ErsVNBk8wqwVNFmMDsMOaGDSMT3dxTQOkTIuFPgpMOGBrovAc+Q0jVlk8XC1QucDiGXkjE72wB1VeaYr3CnetrhnLViV5K6Bis5guAf5YON5auyFIcoGNOtY8FUM3pbfFmDVx6SGraI2K33PXaJsvN0fmbEytPo=
+	t=1745422084; cv=none; b=M2Q8Qr2NXO6Jb6tHaE74GVEe6XYjBs9j8iAruCmyS/sq66GyQHSC6VIG8PVCHFAc0QnbkGFx6YwbWBlfep35vYJTd1BBZV0oadtYvcpsXz6xF7v1QjytjGUFcf7nghkv5jiwIDwm3mKEQbS6GcCaHgKo+UQf7u0PdcM/Wg0jt4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422076; c=relaxed/simple;
-	bh=x/YoQUMRvhmn3XZu83IC2jJEcXqApxBo760SSbPlHI0=;
+	s=arc-20240116; t=1745422084; c=relaxed/simple;
+	bh=WZBc2dY61EmZNYd9EPmculhVVs9uSHKdFmCVPqWwtMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2JG7QyJl75eSv0kyq04NuqSisp06vqfSYYoufIJI4oZKdfrfkA7a8P1Yxlq58IcgdjKfUyKA6AEJ/hJxiBxWlt9TUq3l9D3nk5X6+N/XYu0wHXC8CV+O+CW1oIzSFVZ38XLAyJD87w5oQLW+UBGFfEi3LUIcZfQ05rQc4wtI4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKp6j7Gu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8957BC4CEE2;
-	Wed, 23 Apr 2025 15:27:55 +0000 (UTC)
+	 MIME-Version; b=QX62H70e8+JTTEg65x+IYgcvR3Y//ZT5xzs6+r1qIxh92sMNB+ZEWRUOOv6keYdPNAnS2Wg2kHz20spyGm2MTovWwy5O0wgvS0A7sCZOQIe3h20G0KDT8ckOzDogDg+ENc6KK9jm1OZGq9YUwD6lzPvHMrAscPoSxbXcu1O/DqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoBSeeLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EC7C4CEE2;
+	Wed, 23 Apr 2025 15:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422075;
-	bh=x/YoQUMRvhmn3XZu83IC2jJEcXqApxBo760SSbPlHI0=;
+	s=korg; t=1745422083;
+	bh=WZBc2dY61EmZNYd9EPmculhVVs9uSHKdFmCVPqWwtMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKp6j7GuqeKhwu1oS7xjwpipgBeL4rjyEP/ylfMHvkLv3vH5hHNngPk/xpPOglWOf
-	 1l8NkWzo6WauUsHrcfAKegeVLcpxNLUXGFaaGYJNrKFV9zGgSrgorPYkOoINhvLUs3
-	 yIFDv9QOi3RPzJoydsKmGUA1EJGoseWj1pwNphGw=
+	b=GoBSeeLDgPqFbzOgfx9CKw4/Mm0M0W/dJziEKkrsvPgLKWzmjaziIf2eNrixoq9XX
+	 UWM5xBc6F9cWK8+ca2rgwPzHm2kd48gdb9YihXmblstFO6LlxEYRdrTao6ZRfZxMK2
+	 ooqYYK/mNBsYQEuRNLqSxRJJc28GBaHCvnJX5TLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kan Liang <kan.liang@linux.intel.com>,
 	Ingo Molnar <mingo@kernel.org>,
 	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 6.1 229/291] perf/x86/intel/uncore: Fix the scale of IIO free running counters on ICX
-Date: Wed, 23 Apr 2025 16:43:38 +0200
-Message-ID: <20250423142633.780788779@linuxfoundation.org>
+Subject: [PATCH 6.1 230/291] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SPR
+Date: Wed, 23 Apr 2025 16:43:39 +0200
+Message-ID: <20250423142633.819413947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -69,33 +69,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 32c7f1150225694d95a51110a93be25db03bb5db upstream.
+commit 506f981ab40f0b03a11a640cfd77f48b09aff330 upstream.
 
-There was a mistake in the ICX uncore spec too. The counter increments
-for every 32 bytes rather than 4 bytes.
+The scale of IIO bandwidth in free running counters is inherited from
+the ICX. The counter increments for every 32 bytes rather than 4 bytes.
 
-The same as SNR, there are 1 ioclk and 8 IIO bandwidth in free running
-counters. Reuse the snr_uncore_iio_freerunning_events().
+The IIO bandwidth out free running counters don't increment with a
+consistent size. The increment depends on the requested size. It's
+impossible to find a fixed increment. Remove it from the event_descs.
 
-Fixes: 2b3b76b5ec67 ("perf/x86/intel/uncore: Add Ice Lake server uncore support")
+Fixes: 0378c93a92e2 ("perf/x86/intel/uncore: Support IIO free-running counters on Sapphire Rapids server")
 Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
 Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-2-kan.liang@linux.intel.com
+Link: https://lore.kernel.org/r/20250416142426.3933977-3-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   33 +--------------------------------
- 1 file changed, 1 insertion(+), 32 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c |   58 -----------------------------------
+ 1 file changed, 1 insertion(+), 57 deletions(-)
 
 --- a/arch/x86/events/intel/uncore_snbep.c
 +++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -5250,37 +5250,6 @@ static struct freerunning_counters icx_i
- 	[ICX_IIO_MSR_BW_IN]	= { 0xaa0, 0x1, 0x10, 8, 48, icx_iio_bw_freerunning_box_offsets },
+@@ -5826,69 +5826,13 @@ static struct freerunning_counters spr_i
+ 	[SPR_IIO_MSR_BW_OUT]	= { 0x3808, 0x1, 0x10, 8, 48 },
  };
  
--static struct uncore_event_desc icx_uncore_iio_freerunning_events[] = {
+-static struct uncore_event_desc spr_uncore_iio_freerunning_events[] = {
 -	/* Free-Running IIO CLOCKS Counter */
 -	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
 -	/* Free-Running IIO BANDWIDTH IN Counters */
@@ -123,17 +124,41 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 -	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
 -	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
 -	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+-	/* Free-Running IIO BANDWIDTH OUT Counters */
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0,		"event=0xff,umask=0x30"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port0.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1,		"event=0xff,umask=0x31"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port1.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2,		"event=0xff,umask=0x32"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port2.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3,		"event=0xff,umask=0x33"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port3.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4,		"event=0xff,umask=0x34"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port4.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5,		"event=0xff,umask=0x35"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port5.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6,		"event=0xff,umask=0x36"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port6.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7,		"event=0xff,umask=0x37"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_out_port7.unit,	"MiB"),
 -	{ /* end: all zeroes */ },
 -};
 -
- static struct intel_uncore_type icx_uncore_iio_free_running = {
+ static struct intel_uncore_type spr_uncore_iio_free_running = {
  	.name			= "iio_free_running",
- 	.num_counters		= 9,
-@@ -5288,7 +5257,7 @@ static struct intel_uncore_type icx_unco
- 	.num_freerunning_types	= ICX_IIO_FREERUNNING_TYPE_MAX,
- 	.freerunning		= icx_iio_freerunning,
+ 	.num_counters		= 17,
+ 	.num_freerunning_types	= SPR_IIO_FREERUNNING_TYPE_MAX,
+ 	.freerunning		= spr_iio_freerunning,
  	.ops			= &skx_uncore_iio_freerunning_ops,
--	.event_descs		= icx_uncore_iio_freerunning_events,
+-	.event_descs		= spr_uncore_iio_freerunning_events,
 +	.event_descs		= snr_uncore_iio_freerunning_events,
  	.format_group		= &skx_uncore_iio_freerunning_format_group,
  };
