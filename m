@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B3BA99229
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F52A9936D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:58:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E7AB925C0C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A206923039
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F17281375;
-	Wed, 23 Apr 2025 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F3529B216;
+	Wed, 23 Apr 2025 15:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0piyLWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKOL4+eR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E441D1EFFB9;
-	Wed, 23 Apr 2025 15:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DF52C2598;
+	Wed, 23 Apr 2025 15:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421545; cv=none; b=tvxLGXuxA5iRxsflA509YVCnyFZKxX31e2Kz7tm8MgY2zNWKA1hD4tECv5iXAT3wkjMjfE+D/Jm2iy6Pev62yS0eU897b3woSnAgCK81+ezIWxz/PCZFxJB6uRqZjNuQbxeeAF2bHTU3tawgCmmq1p3tnRvX0tBV2cTbHdRI8H4=
+	t=1745422486; cv=none; b=lT3UqHFdgOXWATK1kOFQ7avoSbOXp7/bB899JSGTCwu9PjUjrhrupSUhN/bx+AfMF5SjLQWPxji0IdHlr5KxwSXwL3AucVDgFz3eKHFIjtclrSuulMzU5DpcEHmlTmT920cAVOHm23oSgKv072M+pV/uwgy/v/7Rh+sQMdvtsFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421545; c=relaxed/simple;
-	bh=10sMYugoKCKXgKWZgUAx0m2PwSi04HEsbjzBhyRVf30=;
+	s=arc-20240116; t=1745422486; c=relaxed/simple;
+	bh=IjRbjy5JJiXhw7bmD6BoKqi+bzN6hVAGwgVD/vzU/Vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BC1Yz2XgXTrT09Db54tUuY9eOB/VL/vcWrhA11JSpRgIlfDJl7DkqPqP8cO3Jo1Nj6Sb4Y/BZYjw+9pPohA52Emhtv0QT1PSBBGCJ91rccmcDz77++RhJxuQV9Vt9+VblekBvBKtz9H5Mt3Sse3jAxhIHNbf0sW/aVvXTT4Hk/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0piyLWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751F1C4CEE2;
-	Wed, 23 Apr 2025 15:19:04 +0000 (UTC)
+	 MIME-Version; b=tp8GW7z47VLlYco3Iux5KcbBabqA/XPnqiZws2JYbW3nN8h6QmWfW/aeyi+gdwBmBRAG/YNgKUQatt9HqnYDRCPSL93p3a9ZWJjzK1naJCsghJ1V2hqVCdEKSHVuOz/puJRxfZlXmkk4PtVMlp/9mnJIC3RWrHpf1xvTf5tBeJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKOL4+eR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B933C4CEE3;
+	Wed, 23 Apr 2025 15:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421544;
-	bh=10sMYugoKCKXgKWZgUAx0m2PwSi04HEsbjzBhyRVf30=;
+	s=korg; t=1745422485;
+	bh=IjRbjy5JJiXhw7bmD6BoKqi+bzN6hVAGwgVD/vzU/Vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0piyLWgj4SB72RtHS5YfhnIURrlu4ePcZUmB7iSP3vqwHWBECtBmFRMAN9FyBmuf
-	 sqvYn9ih7bRHWMp2r9xn9qMslKbEStXKciepLN9lQ4TRyabA8hEJdtM8uO/8E8RxaE
-	 XsWVG96kkjS3WpboRjxoaO+jNgVBrKQIQyAlVWgM=
+	b=wKOL4+eRQw2757pdGtZ9AqRGwZl6q+X0I4fFA36uIjBhnQ9a5yEanxDP5iTm5KjDl
+	 lYhMMlhhh66te7L6iPC07iMYz1Czsql0aDUjKbKxpICXIMoLlLKteAoN9Xn1dd9MR4
+	 vEkO4vHXRRj9AUNaqOwFWIt0Mi2eE36KSombuGbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rolf Eike Beer <eb@emlix.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 6.14 201/241] drm/sti: remove duplicate object names
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Allen Pais <apais@linux.microsoft.com>
+Subject: [PATCH 6.6 369/393] efi/libstub: Bump up EFI_MMAP_NR_SLACK_SLOTS to 32
 Date: Wed, 23 Apr 2025 16:44:25 +0200
-Message-ID: <20250423142628.725858210@linuxfoundation.org>
+Message-ID: <20250423142658.578731331@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 
-commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
+commit ec4696925da6b9baec38345184403ce9e29a2e48 upstream.
 
-When merging 2 drivers common object files were not deduplicated.
+Recent platforms require more slack slots than the current value of
+EFI_MMAP_NR_SLACK_SLOTS, otherwise they fail to boot. The current
+workaround is to append `efi=disable_early_pci_dma` to the kernel's
+cmdline. So, bump up EFI_MMAP_NR_SLACK_SLOTS to 32 to allow those
+platforms to boot with the aforementioned workaround.
 
-Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
-Cc: stable@kernel.org
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Signed-off-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Allen Pais <apais@linux.microsoft.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/firmware/efi/libstub/efistub.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/sti/Makefile
-+++ b/drivers/gpu/drm/sti/Makefile
-@@ -7,8 +7,6 @@ sti-drm-y := \
- 	sti_compositor.o \
- 	sti_crtc.o \
- 	sti_plane.o \
--	sti_crtc.o \
--	sti_plane.o \
- 	sti_hdmi.o \
- 	sti_hdmi_tx3g4c28phy.o \
- 	sti_dvo.o \
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -171,7 +171,7 @@ void efi_set_u64_split(u64 data, u32 *lo
+  * the EFI memory map. Other related structures, e.g. x86 e820ext, need
+  * to factor in this headroom requirement as well.
+  */
+-#define EFI_MMAP_NR_SLACK_SLOTS	8
++#define EFI_MMAP_NR_SLACK_SLOTS	32
+ 
+ typedef struct efi_generic_dev_path efi_device_path_protocol_t;
+ 
 
 
 
