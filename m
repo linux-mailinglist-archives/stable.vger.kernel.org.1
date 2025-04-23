@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E53A98F0F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C781A9906A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19301B83397
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D378E1047
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7225B280A5C;
-	Wed, 23 Apr 2025 14:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682EC239085;
+	Wed, 23 Apr 2025 15:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT/z4Fsc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2wZUagL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEC127FD5B;
-	Wed, 23 Apr 2025 14:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2362A285405;
+	Wed, 23 Apr 2025 15:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420266; cv=none; b=F8OhUcUOJMpn4RV3uPjT4CtwormAS7LXq5WHzyzObj+MTYPoZlgPJRRdmz5g2YB3OTVTT9OSCr+RAKVFsIjwwhWK+gmbLUati27OSSj/xaPikupvgWF4l0iHeFzFSC/NUOOqFufbRSJD8m/QCZCajX8Qu5OMVUUO6IbG/czlydI=
+	t=1745420788; cv=none; b=mu/bC+HSvgXkTLT8TqlU+sN+3RJ5oPfqu6xEusq/BfXkclAbyVY8ZTG4sFYKdDy0lwe1dx+DMaopsgrCp141LuL2Tk0SxQFRqM/nb6nzsVOqDhJmqBEzYjdXtaUj6JAJkerpiowbomXzO8mfienQYaNuv1K57mAnUOARGLgtoq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420266; c=relaxed/simple;
-	bh=Yo832697sqJs7kWAxwSRpFTENjg5Xtc89s/7CqvYR5I=;
+	s=arc-20240116; t=1745420788; c=relaxed/simple;
+	bh=HI1O8EA1Q8ZV9bVG2qfxhTxtwvBpa7nmbhk1fgEqeyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2hBvXLNcneIllIZicpcRkmtCR8D7Zl4qDUseyckjwks1Tl/OLE3docmhnAxwLSl4gz2Cx0j3L+CX1eiiWZ8RKC838PVubgJPZwIe0yNQCol8lZlYfC2tv37c9u4MAYYUUdLb6RjY/Xb7faiBWXrQ4ViEY64RE2FsKxyoMWCAFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT/z4Fsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74F2C4CEE3;
-	Wed, 23 Apr 2025 14:57:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B1cI/c34rNQR4I7h6mWyRXA0bxzUyt8Y+cn5n/7BCPoCJUgpy95j4zBFqQHg2NuPQ2NzwSEb6N+kkhhYWSDw+VOXi8tNsz3ndI1XmfYLOXstvRcTMkx/chthxmuvpqIJBetMasEmVlX9PrzyTZ0dfite+eTb9GAifbGUe1Y0dP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2wZUagL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE029C4CEE2;
+	Wed, 23 Apr 2025 15:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420266;
-	bh=Yo832697sqJs7kWAxwSRpFTENjg5Xtc89s/7CqvYR5I=;
+	s=korg; t=1745420788;
+	bh=HI1O8EA1Q8ZV9bVG2qfxhTxtwvBpa7nmbhk1fgEqeyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WT/z4Fsc17XIvtKnxUTlp4Mz6i7Pvc7R3J5QZ2ZoeqdolMCQoD8WRsfzfC4HJn7en
-	 ++wNEqtwzWr7xfPAf3ZHuYTHunNLBcuHqDStxMJbEGck66u/oc0MxGMPuEknBilWcl
-	 FVrzYej4c9jVQCorUXtv8ns7PuD7BWOmkJksgOmc=
+	b=m2wZUagLMXqa1v+LxllCuQbIHVFNbLNRt+XA14J2HrlSoxRPjV8weII8I4pgBtjZq
+	 DmwjZJ+jdxGvDIKWR95PVTlN0MfeQAjQinCBzOnr1bv8pwxkVGSZoLtRVidOIWYrIN
+	 7QjIlfh/DIqwzwEasDspdCvm48qVZKzBsJP+Lm+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 114/223] isofs: Prevent the use of too small fid
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 122/241] fs: move the bdex_statx call to vfs_getattr_nosec
 Date: Wed, 23 Apr 2025 16:43:06 +0200
-Message-ID: <20250423142621.752391818@linuxfoundation.org>
+Message-ID: <20250423142625.563593359@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +61,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 0405d4b63d082861f4eaff9d39c78ee9dc34f845 upstream.
+[ Upstream commit 777d0961ff95b26d5887fdae69900374364976f3 ]
 
-syzbot reported a slab-out-of-bounds Read in isofs_fh_to_parent. [1]
+Currently bdex_statx is only called from the very high-level
+vfs_statx_path function, and thus bypassing it for in-kernel calls
+to vfs_getattr or vfs_getattr_nosec.
 
-The handle_bytes value passed in by the reproducing program is equal to 12.
-In handle_to_path(), only 12 bytes of memory are allocated for the structure
-file_handle->f_handle member, which causes an out-of-bounds access when
-accessing the member parent_block of the structure isofs_fid in isofs,
-because accessing parent_block requires at least 16 bytes of f_handle.
-Here, fh_len is used to indirectly confirm that the value of handle_bytes
-is greater than 3 before accessing parent_block.
+This breaks querying the block ѕize of the underlying device in the
+loop driver and also is a pitfall for any other new kernel caller.
 
-[1]
-BUG: KASAN: slab-out-of-bounds in isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
-Read of size 4 at addr ffff0000cc030d94 by task syz-executor215/6466
-CPU: 1 UID: 0 PID: 6466 Comm: syz-executor215 Not tainted 6.14.0-rc7-syzkaller-ga2392f333575 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0x198/0x550 mm/kasan/report.c:521
- kasan_report+0xd8/0x138 mm/kasan/report.c:634
- __asan_report_load4_noabort+0x20/0x2c mm/kasan/report_generic.c:380
- isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
- exportfs_decode_fh_raw+0x2dc/0x608 fs/exportfs/expfs.c:523
- do_handle_to_path+0xa0/0x198 fs/fhandle.c:257
- handle_to_path fs/fhandle.c:385 [inline]
- do_handle_open+0x8cc/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+Move the call into the lowest level helper to ensure all callers get
+the right results.
 
-Allocated by task 6466:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:562
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4294 [inline]
- __kmalloc_noprof+0x32c/0x54c mm/slub.c:4306
- kmalloc_noprof include/linux/slab.h:905 [inline]
- handle_to_path fs/fhandle.c:357 [inline]
- do_handle_open+0x5a4/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-
-Reported-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4d7cd7dd0ce1aa8d5c65
-Tested-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/tencent_9C8CB8A7E7C6C512C7065DC98B6EDF6EC606@qq.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d985f8c6b91 ("vfs: support STATX_DIOALIGN on block devices")
+Fixes: f4774e92aab8 ("loop: take the file system minimum dio alignment into account")
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/20250417064042.712140-1-hch@lst.de
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/bdev.c           |  3 +--
+ fs/stat.c              | 32 ++++++++++++++++++--------------
+ include/linux/blkdev.h |  6 +++---
+ 3 files changed, 22 insertions(+), 19 deletions(-)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -180,7 +180,7 @@ static struct dentry *isofs_fh_to_parent
- 		return NULL;
+diff --git a/block/bdev.c b/block/bdev.c
+index 9d73a8fbf7f99..e5147cab21b21 100644
+--- a/block/bdev.c
++++ b/block/bdev.c
+@@ -1268,8 +1268,7 @@ void sync_bdevs(bool wait)
+ /*
+  * Handle STATX_{DIOALIGN, WRITE_ATOMIC} for block devices.
+  */
+-void bdev_statx(struct path *path, struct kstat *stat,
+-		u32 request_mask)
++void bdev_statx(const struct path *path, struct kstat *stat, u32 request_mask)
+ {
+ 	struct inode *backing_inode;
+ 	struct block_device *bdev;
+diff --git a/fs/stat.c b/fs/stat.c
+index f13308bfdc983..3d9222807214a 100644
+--- a/fs/stat.c
++++ b/fs/stat.c
+@@ -204,12 +204,25 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
+ 				  STATX_ATTR_DAX);
  
- 	return isofs_export_iget(sb,
--			fh_len > 2 ? ifid->parent_block : 0,
-+			fh_len > 3 ? ifid->parent_block : 0,
- 			ifid->parent_offset,
- 			fh_len > 4 ? ifid->parent_generation : 0);
+ 	idmap = mnt_idmap(path->mnt);
+-	if (inode->i_op->getattr)
+-		return inode->i_op->getattr(idmap, path, stat,
+-					    request_mask,
+-					    query_flags);
++	if (inode->i_op->getattr) {
++		int ret;
++
++		ret = inode->i_op->getattr(idmap, path, stat, request_mask,
++				query_flags);
++		if (ret)
++			return ret;
++	} else {
++		generic_fillattr(idmap, request_mask, inode, stat);
++	}
++
++	/*
++	 * If this is a block device inode, override the filesystem attributes
++	 * with the block device specific parameters that need to be obtained
++	 * from the bdev backing inode.
++	 */
++	if (S_ISBLK(stat->mode))
++		bdev_statx(path, stat, request_mask);
+ 
+-	generic_fillattr(idmap, request_mask, inode, stat);
+ 	return 0;
  }
+ EXPORT_SYMBOL(vfs_getattr_nosec);
+@@ -295,15 +308,6 @@ static int vfs_statx_path(struct path *path, int flags, struct kstat *stat,
+ 	if (path_mounted(path))
+ 		stat->attributes |= STATX_ATTR_MOUNT_ROOT;
+ 	stat->attributes_mask |= STATX_ATTR_MOUNT_ROOT;
+-
+-	/*
+-	 * If this is a block device inode, override the filesystem
+-	 * attributes with the block device specific parameters that need to be
+-	 * obtained from the bdev backing inode.
+-	 */
+-	if (S_ISBLK(stat->mode))
+-		bdev_statx(path, stat, request_mask);
+-
+ 	return 0;
+ }
+ 
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index d37751789bf58..38fc78501ef2d 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1664,7 +1664,7 @@ int sync_blockdev(struct block_device *bdev);
+ int sync_blockdev_range(struct block_device *bdev, loff_t lstart, loff_t lend);
+ int sync_blockdev_nowait(struct block_device *bdev);
+ void sync_bdevs(bool wait);
+-void bdev_statx(struct path *, struct kstat *, u32);
++void bdev_statx(const struct path *path, struct kstat *stat, u32 request_mask);
+ void printk_all_partitions(void);
+ int __init early_lookup_bdev(const char *pathname, dev_t *dev);
+ #else
+@@ -1682,8 +1682,8 @@ static inline int sync_blockdev_nowait(struct block_device *bdev)
+ static inline void sync_bdevs(bool wait)
+ {
+ }
+-static inline void bdev_statx(struct path *path, struct kstat *stat,
+-				u32 request_mask)
++static inline void bdev_statx(const struct path *path, struct kstat *stat,
++		u32 request_mask)
+ {
+ }
+ static inline void printk_all_partitions(void)
+-- 
+2.39.5
+
 
 
 
