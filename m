@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8714A990F1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69EB1A98F69
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 382DD9222AF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2CA41B86EF7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38E228A1E9;
-	Wed, 23 Apr 2025 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A13027CCD7;
+	Wed, 23 Apr 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7sQmZEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZy2W5JU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7175A27055F;
-	Wed, 23 Apr 2025 15:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C2C269B07;
+	Wed, 23 Apr 2025 15:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420947; cv=none; b=EwUJsZXPpzYHYVLBxnlhsZegPO7xXE5Sq14qklw1tGXfUIfbpQrGeMXqTwsthE7a2gAycd27Ef2GILVd8a2qMPfgQY/w4dptUThxT4VWcWwik+71rQsZs06xp1UAK2aRq/6KF1lop1vAVy+yOMd37gHVQmxGm6lPm0JAX5pM6k4=
+	t=1745420432; cv=none; b=axaBYxxjtavJDEX07eEy9j8EcQ8VVXP7pDebSW82RZbRoNBlr3DtQUQOXqFtTqH3ms3YcUyqJ7BVKZfgXhdoY6NWtoWn5tNW8L3GfVJJCe1nEOhKipAf4/AOPrU0D1t8GmuntOBtZX0DPP91PYchCgAF3GPANbX1NAj3lwhGsC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420947; c=relaxed/simple;
-	bh=CpCEYuyAOHkJKrclegSWwyOrBN/oZApYVqVt+kiDJUM=;
+	s=arc-20240116; t=1745420432; c=relaxed/simple;
+	bh=s7Fy4eXXXDuPR829HR9mpWTeRpTULyHbMq/rU+RAfkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Icef1ltIxZFnUzNDTRrLBc/kPHp8fJL3/NClQzGz5Z7KO682QzzOWQ5cyjiu6Pflo8EsGJ142alJPnVcWLJ35qOwAbNegIhTJwPIWmcJEJ0IRVPMcFKgmdzBGlWnse34dRFB2WL17Pn543irTOmxLmQk69jjDgcnPEBO9LCg1dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7sQmZEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06575C4CEE3;
-	Wed, 23 Apr 2025 15:09:06 +0000 (UTC)
+	 MIME-Version; b=ait3ZAxc8sEUIaUzBjS5XHR9rz+86TPuOwyQIKGIHgcLX3U0TZt90H/kNbeOLXpXKz+QIZ0j9VlZZzb6ouN/A95n7XzM7/yjQFDoWIg50Jy6l9JR0XyOH6ZpSGTbhABiNzxtfcpwspUuKD9Y9kD+53zhwu0bKi6NHOucWyamu+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZy2W5JU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7B7C4CEE2;
+	Wed, 23 Apr 2025 15:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420947;
-	bh=CpCEYuyAOHkJKrclegSWwyOrBN/oZApYVqVt+kiDJUM=;
+	s=korg; t=1745420432;
+	bh=s7Fy4eXXXDuPR829HR9mpWTeRpTULyHbMq/rU+RAfkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7sQmZEu5y5NeUX2rH0nEMDryzXUpYlM3DCKeFQUZT/Kge8Q0Qvk1yl103UxAEtpN
-	 llm1gGvp62d/8PxuP47DSKMnhDVGbe7u+Q6Of2xxfeGN29Pu+qhNl5LaGyi1LfqMw4
-	 crXdoBDeXpsyHHkAsulU9I5gCbxmZD8m0VdWWmrI=
+	b=UZy2W5JUMzUat0Sy4ItTA6IZg50AFVEa1VZxN6prV858ZXgIpe2YEwCa96R5hyrcD
+	 SPQqIjixNunqBSyVZWFFp/n9OCc8ecMoLwkHDrvtk5aIN0vbZ4AfvyqlOwovyBfaH7
+	 28caIcW2LfbiSIuM66aHfQnzAfzL2zDBlxQJRTF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Zi Yan <ziy@nvidia.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 138/241] mm/compaction: fix bug in hugetlb handling pathway
-Date: Wed, 23 Apr 2025 16:43:22 +0200
-Message-ID: <20250423142626.197299914@linuxfoundation.org>
+	Chunjie Zhu <chunjie.zhu@cloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 131/223] smb3 client: fix open hardlink on deferred close file error
+Date: Wed, 23 Apr 2025 16:43:23 +0200
+Message-ID: <20250423142622.429409369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+From: Chunjie Zhu <chunjie.zhu@cloud.com>
 
-commit a84edd52f0a0fa193f0f685769939cf84510755b upstream.
+commit 262b73ef442e68e53220b9d6fc5a0d08b557fa42 upstream.
 
-The compaction code doesn't take references on pages until we're certain
-we should attempt to handle it.
+The following Python script results in unexpected behaviour when run on
+a CIFS filesystem against a Windows Server:
 
-In the hugetlb case, isolate_or_dissolve_huge_page() may return -EBUSY
-without taking a reference to the folio associated with our pfn.  If our
-folio's refcount drops to 0, compound_nr() becomes unpredictable, making
-low_pfn and nr_scanned unreliable.  The user-visible effect is minimal -
-this should rarely happen (if ever).
+    # Create file
+    fd = os.open('test', os.O_WRONLY|os.O_CREAT)
+    os.write(fd, b'foo')
+    os.close(fd)
 
-Fix this by storing the folio statistics earlier on the stack (just like
-the THP and Buddy cases).
+    # Open and close the file to leave a pending deferred close
+    fd = os.open('test', os.O_RDONLY|os.O_DIRECT)
+    os.close(fd)
 
-Also revert commit 66fe1cf7f581 ("mm: compaction: use helper compound_nr
-in isolate_migratepages_block") to make backporting easier.
+    # Try to open the file via a hard link
+    os.link('test', 'new')
+    newfd = os.open('new', os.O_RDONLY|os.O_DIRECT)
 
-Link: https://lkml.kernel.org/r/20250401021025.637333-1-vishal.moola@gmail.com
-Fixes: 369fa227c219 ("mm: make alloc_contig_range handle free hugetlb pages")
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The final open returns EINVAL due to the server returning
+STATUS_INVALID_PARAMETER. The root cause of this is that the client
+caches lease keys per inode, but the spec requires them to be related to
+the filename which causes problems when hard links are involved:
+
+>From MS-SMB2 section 3.3.5.9.11:
+
+"The server MUST attempt to locate a Lease by performing a lookup in the
+LeaseTable.LeaseList using the LeaseKey in the
+SMB2_CREATE_REQUEST_LEASE_V2 as the lookup key. If a lease is found,
+Lease.FileDeleteOnClose is FALSE, and Lease.Filename does not match the
+file name for the incoming request, the request MUST be failed with
+STATUS_INVALID_PARAMETER"
+
+On client side, we first check the context of file open, if it hits above
+conditions, we first close all opening files which are belong to the same
+inode, then we do open the hard link file.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/compaction.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsproto.h |    2 ++
+ fs/smb/client/file.c      |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -981,13 +981,13 @@ isolate_migratepages_block(struct compac
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -160,6 +160,8 @@ extern int cifs_get_writable_path(struct
+ extern struct cifsFileInfo *find_readable_file(struct cifsInodeInfo *, bool);
+ extern int cifs_get_readable_path(struct cifs_tcon *tcon, const char *name,
+ 				  struct cifsFileInfo **ret_file);
++extern int cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				  struct file *file);
+ extern unsigned int smbCalcSize(void *buf);
+ extern int decode_negTokenInit(unsigned char *security_blob, int length,
+ 			struct TCP_Server_Info *server);
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -1002,6 +1002,11 @@ int cifs_open(struct inode *inode, struc
+ 		} else {
+ 			_cifsFileInfo_put(cfile, true, false);
  		}
++	} else {
++		/* hard link on the defeered close file */
++		rc = cifs_get_hardlink_path(tcon, inode, file);
++		if (rc)
++			cifs_close_deferred_file(CIFS_I(inode));
+ 	}
  
- 		if (PageHuge(page)) {
-+			const unsigned int order = compound_order(page);
- 			/*
- 			 * skip hugetlbfs if we are not compacting for pages
- 			 * bigger than its order. THPs and other compound pages
- 			 * are handled below.
- 			 */
- 			if (!cc->alloc_contig) {
--				const unsigned int order = compound_order(page);
+ 	if (server->oplocks)
+@@ -2066,6 +2071,29 @@ cifs_move_llist(struct list_head *source
+ 		list_move(li, dest);
+ }
  
- 				if (order <= MAX_PAGE_ORDER) {
- 					low_pfn += (1UL << order) - 1;
-@@ -1011,8 +1011,8 @@ isolate_migratepages_block(struct compac
- 				 /* Do not report -EBUSY down the chain */
- 				if (ret == -EBUSY)
- 					ret = 0;
--				low_pfn += compound_nr(page) - 1;
--				nr_scanned += compound_nr(page) - 1;
-+				low_pfn += (1UL << order) - 1;
-+				nr_scanned += (1UL << order) - 1;
- 				goto isolate_fail;
- 			}
- 
++int
++cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				struct file *file)
++{
++	struct cifsFileInfo *open_file = NULL;
++	struct cifsInodeInfo *cinode = CIFS_I(inode);
++	int rc = 0;
++
++	spin_lock(&tcon->open_file_lock);
++	spin_lock(&cinode->open_file_lock);
++
++	list_for_each_entry(open_file, &cinode->openFileList, flist) {
++		if (file->f_flags == open_file->f_flags) {
++			rc = -EINVAL;
++			break;
++		}
++	}
++
++	spin_unlock(&cinode->open_file_lock);
++	spin_unlock(&tcon->open_file_lock);
++	return rc;
++}
++
+ void
+ cifs_free_llist(struct list_head *llist)
+ {
 
 
 
