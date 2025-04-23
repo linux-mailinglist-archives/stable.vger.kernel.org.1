@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C43AEA991FA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F03A98F67
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 417C84A15D2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:31:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BD071894429
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894A02853F2;
-	Wed, 23 Apr 2025 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F38328134C;
+	Wed, 23 Apr 2025 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0Y0iuJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDFIK9QQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7A0284B48;
-	Wed, 23 Apr 2025 15:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAD1280CC8;
+	Wed, 23 Apr 2025 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421674; cv=none; b=Rer+j1KkdqFNFUjninGrR8+Ts9Mzdzjed1l71IPCyOOSgtS8sA8NdrP/aHFBm7UeMutADNWvoVhn87oj8P1rnaEqiBaIVMXuDbCz67CyvaW7NaeGh5CzsTXo3AOtKoNJVFyGTlu+VRgUdGMQSEHvDk/MC4oOZCndBj9Y620t8Dc=
+	t=1745420419; cv=none; b=UqUvaL80L5JLQ03WFCqACS/fG78Mlp3zKqfR9bfICBWFum4HKNjS0vM7LjWxi9F2EzZItPXGPuvV6Iq3sAnCkflkfhn1lCuIXmjC65GlfbLqcCpWCsaAo9QXwPi8c2mw6n5hHoB9qCt4Ih+9YfrMeDpsq8Ww6d+b4YNv2s2Q8kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421674; c=relaxed/simple;
-	bh=5zQsvFksd49Ocq1CjRJgD7lyEDYlMIOTQSWju5zr4QE=;
+	s=arc-20240116; t=1745420419; c=relaxed/simple;
+	bh=BiyU+7nFuHPsSj/Q7uuZyInzi2IKbgSkiu5rzlS3cCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHPBLnUGeeGphXPt3RLF3fvHp9kz6K7brKotssDvk/jT+2+Nh4RKkH5Xrw/ulVxIjw/j1Lmk3h6sdB7wpOnFLgzn96Pr5DPLm9nU0qrh4QxaJJCuP4Ke71n3gLCAXdnaCfupAZppPGqAvgyka9KNxgNRq7q9lhP4emB5OFZfGAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0Y0iuJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0289C4CEE8;
-	Wed, 23 Apr 2025 15:21:13 +0000 (UTC)
+	 MIME-Version; b=fe4cAvOqZv/DmQDKTpC7SsoiEw530iCAVHqnl153oGcqY+8RehyAlBnp1t1Dd5hGzw9coFsfz9/k6OEEtyF5AxeYnDmfmWUQX/wXJwl3tCpcH8sPkwiYHIubExpfJau0sKaeG4+hmZ8m9fMvePPLilTvMpTBZZT6ZJe1jPIbx+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDFIK9QQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E7BC4CEE2;
+	Wed, 23 Apr 2025 15:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421674;
-	bh=5zQsvFksd49Ocq1CjRJgD7lyEDYlMIOTQSWju5zr4QE=;
+	s=korg; t=1745420418;
+	bh=BiyU+7nFuHPsSj/Q7uuZyInzi2IKbgSkiu5rzlS3cCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0Y0iuJyMI5WGMmPEe9T7rhJKEvQE5/A/ew4RFIY+2xwGRHbGkIHmZIes7cM9xKZo
-	 PjyuhvLoQ9BfwiVaUGBTTa7teZHjocACL4Tc/Zj07vFgRzNtJXFxY6ip5OaEDB1sDl
-	 TeXQ/vQQ3bpGvaLJiNAsW3DWuZ9+uEBHuB0+tViY=
+	b=ZDFIK9QQWsG3VfOg9LPpA1PgNs0NWBEly9o2IjJdHVnQ9e+7a53PUiQYnch5R6p+d
+	 3XnjJD4DycsKx7fes21P0EEfvEnNnUBe1A+a5lUgaXSk7BQ08AVf9T3A5OXQ3BacpZ
+	 eRf+MWAEAY4m63T72/gnNtJaO+Hf4RVYxpkRFOws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/291] scsi: hisi_sas: Enable force phy when SATA disk directly connected
+Subject: [PATCH 6.14 090/241] riscv: module: Allocate PLT entries for R_RISCV_PLT32
 Date: Wed, 23 Apr 2025 16:42:34 +0200
-Message-ID: <20250423142631.134360550@linuxfoundation.org>
+Message-ID: <20250423142624.259281956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 8aa580cd92843b60d4d6331f3b0a9e8409bb70eb ]
+[ Upstream commit 1ee1313f4722e6d67c6e9447ee81d24d6e3ff4ad ]
 
-when a SATA disk is directly connected the SAS controller determines the
-disk to which I/Os are delivered based on the port ID in the DQ entry.
+apply_r_riscv_plt32_rela() may need to emit a PLT entry for the
+referenced symbol, so there must be space allocated in the PLT.
 
-When many phys are disconnected and reconnect, the port ID of phys were
-changed and used by other link, resulting in I/O being sent to incorrect
-disk. Data inconsistency on the SATA disk may occur during I/O retries
-using the old port ID. So enable force phy, then force the command to be
-executed in a certain phy, and if the actual phy ID of the port does not
-match the phy configured in the command, the chip will stop delivering the
-I/O to disk.
-
-Fixes: ce60689e12dd ("scsi: hisi_sas: add v3 code to send ATA frame")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20250312095135.3048379-2-yangxingui@huawei.com
-Reviewed-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 8fd6c5142395 ("riscv: Add remaining module relocations")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250409171526.862481-2-samuel.holland@sifive.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  9 +++++++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 14 ++++++++++++--
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ arch/riscv/kernel/module-sections.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index 50697672146ad..ae39f6b5dc9a8 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -2502,6 +2502,7 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
- 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
- 	struct sas_ata_task *ata_task = &task->ata_task;
- 	struct sas_tmf_task *tmf = slot->tmf;
-+	int phy_id;
- 	u8 *buf_cmd;
- 	int has_data = 0, hdr_tag = 0;
- 	u32 dw0, dw1 = 0, dw2 = 0;
-@@ -2509,10 +2510,14 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
- 	/* create header */
- 	/* dw0 */
- 	dw0 = port->id << CMD_HDR_PORT_OFF;
--	if (parent_dev && dev_is_expander(parent_dev->dev_type))
-+	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
- 		dw0 |= 3 << CMD_HDR_CMD_OFF;
--	else
-+	} else {
-+		phy_id = device->phy->identify.phy_identifier;
-+		dw0 |= (1U << phy_id) << CMD_HDR_PHY_ID_OFF;
-+		dw0 |= CMD_HDR_FORCE_PHY_MSK;
- 		dw0 |= 4 << CMD_HDR_CMD_OFF;
-+	}
- 
- 	if (tmf && ata_task->force_phy) {
- 		dw0 |= CMD_HDR_FORCE_PHY_MSK;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 05dcd925a3fab..20b4d76e07149 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -357,6 +357,10 @@
- #define CMD_HDR_RESP_REPORT_MSK		(0x1 << CMD_HDR_RESP_REPORT_OFF)
- #define CMD_HDR_TLR_CTRL_OFF		6
- #define CMD_HDR_TLR_CTRL_MSK		(0x3 << CMD_HDR_TLR_CTRL_OFF)
-+#define CMD_HDR_PHY_ID_OFF		8
-+#define CMD_HDR_PHY_ID_MSK		(0x1ff << CMD_HDR_PHY_ID_OFF)
-+#define CMD_HDR_FORCE_PHY_OFF		17
-+#define CMD_HDR_FORCE_PHY_MSK		(0x1U << CMD_HDR_FORCE_PHY_OFF)
- #define CMD_HDR_PORT_OFF		18
- #define CMD_HDR_PORT_MSK		(0xf << CMD_HDR_PORT_OFF)
- #define CMD_HDR_PRIORITY_OFF		27
-@@ -1385,15 +1389,21 @@ static void prep_ata_v3_hw(struct hisi_hba *hisi_hba,
- 	struct hisi_sas_cmd_hdr *hdr = slot->cmd_hdr;
- 	struct asd_sas_port *sas_port = device->port;
- 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
-+	int phy_id;
- 	u8 *buf_cmd;
- 	int has_data = 0, hdr_tag = 0;
- 	u32 dw1 = 0, dw2 = 0;
- 
- 	hdr->dw0 = cpu_to_le32(port->id << CMD_HDR_PORT_OFF);
--	if (parent_dev && dev_is_expander(parent_dev->dev_type))
-+	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
- 		hdr->dw0 |= cpu_to_le32(3 << CMD_HDR_CMD_OFF);
--	else
-+	} else {
-+		phy_id = device->phy->identify.phy_identifier;
-+		hdr->dw0 |= cpu_to_le32((1U << phy_id)
-+				<< CMD_HDR_PHY_ID_OFF);
-+		hdr->dw0 |= CMD_HDR_FORCE_PHY_MSK;
- 		hdr->dw0 |= cpu_to_le32(4U << CMD_HDR_CMD_OFF);
-+	}
- 
- 	switch (task->data_dir) {
- 	case DMA_TO_DEVICE:
+diff --git a/arch/riscv/kernel/module-sections.c b/arch/riscv/kernel/module-sections.c
+index e264e59e596e8..91d0b355ceeff 100644
+--- a/arch/riscv/kernel/module-sections.c
++++ b/arch/riscv/kernel/module-sections.c
+@@ -73,16 +73,17 @@ static bool duplicate_rela(const Elf_Rela *rela, int idx)
+ static void count_max_entries(Elf_Rela *relas, int num,
+ 			      unsigned int *plts, unsigned int *gots)
+ {
+-	unsigned int type, i;
+-
+-	for (i = 0; i < num; i++) {
+-		type = ELF_RISCV_R_TYPE(relas[i].r_info);
+-		if (type == R_RISCV_CALL_PLT) {
++	for (int i = 0; i < num; i++) {
++		switch (ELF_R_TYPE(relas[i].r_info)) {
++		case R_RISCV_CALL_PLT:
++		case R_RISCV_PLT32:
+ 			if (!duplicate_rela(relas, i))
+ 				(*plts)++;
+-		} else if (type == R_RISCV_GOT_HI20) {
++			break;
++		case R_RISCV_GOT_HI20:
+ 			if (!duplicate_rela(relas, i))
+ 				(*gots)++;
++			break;
+ 		}
+ 	}
+ }
 -- 
 2.39.5
 
