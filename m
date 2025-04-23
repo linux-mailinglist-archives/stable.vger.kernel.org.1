@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B3FA993D3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0718A9904B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBC781BA3780
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66AF31BA015C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E282820AB;
-	Wed, 23 Apr 2025 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F10528E61B;
+	Wed, 23 Apr 2025 15:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPugYwJy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGAIRqoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52482820B1;
-	Wed, 23 Apr 2025 15:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B75628E613;
+	Wed, 23 Apr 2025 15:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422167; cv=none; b=mSRK05CrxAKu64KoujCX1qpKXtLvdOnNtYS0SK6LtVW32X+DgroMHZGz6wqtq/gWaHCyMBhkk9/A435CeJM94q7NTyYuMq3yUBfjEpz87HywS0+xTya3BxKULdhoEJdY4wUEf41icnOJupd7jEs41SRXl88rA3w8aV8fyMPL5rg=
+	t=1745420801; cv=none; b=bQmGp9/vbDGAXnd46CvX4lbHemee5HIcmPslVfxmNTOUkhBZoKmBIpQ2+hK/cvZOdC6qvrbX+v6BsNlmj+9OzYiSRq4Yow9N0z7osByR2J+aAM/LkhCgEkcZbXwORX/fCwuTFTpAM7P5DHP0qXaMNglDkjxYTdlJ/dAZhFzNgiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422167; c=relaxed/simple;
-	bh=CZMfoO+JEZGu69ewiU2q3ld1oOQ7qGronSUoBvQvlxg=;
+	s=arc-20240116; t=1745420801; c=relaxed/simple;
+	bh=7Y2VH2DM89Je1lveUwpO/GybBdW5V6FR6RwoQhmZMps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a32YO7QbiQTSf0lRJ8lSlnVmitfZBinWlQLY0CIXz7ut8+xw5eASLriHMzcNEBOwOOyhqlfA3AntZtNyAmaOwEvbujaXmB/E2kWe/8csT6XybomI0ViwUYLTE1jVXYQrjTy4vc5RMPgmB+Zlx7KMJb26ZMm/YBgP/owu9rI4jlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPugYwJy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369ADC4CEE2;
-	Wed, 23 Apr 2025 15:29:27 +0000 (UTC)
+	 MIME-Version; b=X+sQWtBioNH7FwaxxdB7hwYCBJmjDyPK4ME+vMI/Cdn6kdsjvKliDW5v4wgMWcS+Qjqhuxh8fxHJLOXybgOzgzS7vZhBEtM9iRQD9y6P27ull72YBTjj7Oe0Ji/SBBOGhbvYI2FqFXUoPXQTtaxuyKsntJQpuL6/L8Ikf8GXoZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGAIRqoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30CDC4CEE2;
+	Wed, 23 Apr 2025 15:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422167;
-	bh=CZMfoO+JEZGu69ewiU2q3ld1oOQ7qGronSUoBvQvlxg=;
+	s=korg; t=1745420801;
+	bh=7Y2VH2DM89Je1lveUwpO/GybBdW5V6FR6RwoQhmZMps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPugYwJysLHjHPh258oTVAArdyZvBXGyVP+8AyFA+qebDzM9/LW0Uk0nfXbP8QPp3
-	 wB/KN1ie+R9zN/k0Yn1JPrm89AgN8Tb0YT1hhWKh7xDzTbGby6i3zXOJUwZq89pvco
-	 DEK3XKSb+2foM/LiGsvKSEGHt6uyFltGL5fwMmn0=
+	b=iGAIRqoy87sS1Q1qb74orB2y8RhoLp5UmqFiOo5W1FEup8THR6GJjGX+ZGp7uLjTN
+	 3AqGCeJMpNrlq1vuCcSJ7DFaLyIXc3m4AlUZwtO7KEBAvTkaRWryv0eymW/rB0Rxzr
+	 ezTHnhitBZxS3koTl0h3o0HI49VZSNH5obdd/c5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 290/393] net: ti: icss-iep: Add pwidth configuration for perout signal
-Date: Wed, 23 Apr 2025 16:43:06 +0200
-Message-ID: <20250423142655.319919768@linuxfoundation.org>
+Subject: [PATCH 6.14 123/241] ftrace: fix incorrect hash size in register_ftrace_direct()
+Date: Wed, 23 Apr 2025 16:43:07 +0200
+Message-ID: <20250423142625.602006598@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit e5b456a14215e3c0e84844c2926861b972e03632 ]
+[ Upstream commit 92f1d3b40179b15630d72e2c6e4e25a899b67ba9 ]
 
-icss_iep_perout_enable_hw() is a common function for generating
-both pps and perout signals. When enabling pps, the application needs
-to only pass enable/disable argument, whereas for perout it supports
-different flags to configure the signal.
+The maximum of the ftrace hash bits is made fls(32) in
+register_ftrace_direct(), which seems illogical. So, we fix it by making
+the max hash bits FTRACE_HASH_MAX_BITS instead.
 
-But icss_iep_perout_enable_hw() function is missing to hook the
-configuration params passed by the app, causing perout to behave
-same a pps (except being able to configure the period). As duty cycle
-is also one feature which can configured for perout, incorporate this
-in the function to get the expected signal.
-
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20250304105753.1552159-2-m-malladi@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7349c9e99793 ("net: ti: icss-iep: Fix possible NULL pointer dereference for perout request")
+Link: https://lore.kernel.org/20250413014444.36724-1-dongml2@chinatelecom.cn
+Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 47 ++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 3 deletions(-)
+ kernel/trace/ftrace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 3f9a030471fe2..923ac58c9de5b 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -476,9 +476,16 @@ static void icss_iep_update_to_next_boundary(struct icss_iep *iep, u64 start_ns)
- static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 				     struct ptp_perout_request *req, int on)
- {
-+	struct timespec64 ts;
-+	u64 ns_width;
- 	int ret;
- 	u64 cmp;
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 62d300eee7eb8..201e770185dde 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5912,9 +5912,10 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
  
-+	/* Calculate width of the signal for PPS/PEROUT handling */
-+	ts.tv_sec = req->on.sec;
-+	ts.tv_nsec = req->on.nsec;
-+	ns_width = timespec64_to_ns(&ts);
-+
- 	if (iep->ops && iep->ops->perout_enable) {
- 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
- 		if (ret)
-@@ -489,8 +496,9 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
- 			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
- 				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
--			/* Configure SYNC, 1ms pulse width */
--			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG, 1000000);
-+			/* Configure SYNC, based on req on width */
-+			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
-+				     div_u64(ns_width, iep->def_inc));
- 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
- 			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
- 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
-@@ -517,6 +525,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 				   + req->period.nsec;
- 			icss_iep_update_to_next_boundary(iep, start_ns);
+ 	/* Make a copy hash to place the new and the old entries in */
+ 	size = hash->count + direct_functions->count;
+-	if (size > 32)
+-		size = 32;
+-	new_hash = alloc_ftrace_hash(fls(size));
++	size = fls(size);
++	if (size > FTRACE_HASH_MAX_BITS)
++		size = FTRACE_HASH_MAX_BITS;
++	new_hash = alloc_ftrace_hash(size);
+ 	if (!new_hash)
+ 		goto out_unlock;
  
-+			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
-+				     div_u64(ns_width, iep->def_inc));
- 			/* Enable Sync in single shot mode  */
- 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
- 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
-@@ -544,7 +554,36 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- static int icss_iep_perout_enable(struct icss_iep *iep,
- 				  struct ptp_perout_request *req, int on)
- {
--	return -EOPNOTSUPP;
-+	int ret = 0;
-+
-+	/* Reject requests with unsupported flags */
-+	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE)
-+		return -EOPNOTSUPP;
-+
-+	mutex_lock(&iep->ptp_clk_mutex);
-+
-+	if (iep->pps_enabled) {
-+		ret = -EBUSY;
-+		goto exit;
-+	}
-+
-+	if (iep->perout_enabled == !!on)
-+		goto exit;
-+
-+	/* Set default "on" time (1ms) for the signal if not passed by the app */
-+	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
-+		req->on.sec = 0;
-+		req->on.nsec = NSEC_PER_MSEC;
-+	}
-+
-+	ret = icss_iep_perout_enable_hw(iep, req, on);
-+	if (!ret)
-+		iep->perout_enabled = !!on;
-+
-+exit:
-+	mutex_unlock(&iep->ptp_clk_mutex);
-+
-+	return ret;
- }
- 
- static int icss_iep_pps_enable(struct icss_iep *iep, int on)
-@@ -572,6 +611,8 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
- 		rq.perout.period.nsec = 0;
- 		rq.perout.start.sec = ts.tv_sec + 2;
- 		rq.perout.start.nsec = 0;
-+		rq.perout.on.sec = 0;
-+		rq.perout.on.nsec = NSEC_PER_MSEC;
- 		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
- 	} else {
- 		ret = icss_iep_perout_enable_hw(iep, &rq.perout, on);
 -- 
 2.39.5
 
