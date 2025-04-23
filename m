@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-136247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B634A992B3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F2BFA98F80
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF34A16D366
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8D244660F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A652C1E31;
-	Wed, 23 Apr 2025 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7A4280A3A;
+	Wed, 23 Apr 2025 15:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKFWk3BB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYYhOZzx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88822C1E33;
-	Wed, 23 Apr 2025 15:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FED327FD7A;
+	Wed, 23 Apr 2025 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422044; cv=none; b=VFIhUjkbEake/BKQkvgnQYRX+kb2bCqqzy2UilgSbH4Y5ew4OK/xHpUukK3wnAGplNB/bVJv1Ls22htVFbMato5QLBf1OSYmIGrO9HBJ2IeaTG5Bsl6lakq2sasKw53Ejmvclo1T6HM2YT6QUSZc0PRFZ/u2sZ9Zfty1/3LDZXU=
+	t=1745420532; cv=none; b=P1ZXKXyh1B73A29gOCXP2687Kar9+kdzjiN9Tj6oO3s8Cpf6dcOntuceeYhwL71ELjMks2Hil0TgNJwW0T8DDOO7ywUGTRgHZ8EwB1gWH8LuKnf+LEF6WNvJgNIbw4TjA8fRony7xes+eDvLeQue1CagX+6XF+4uRcswqOAg350=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422044; c=relaxed/simple;
-	bh=5pgt83/LlkZ7UjKxdvfQfvBaFWAIYd5DkSYTk+tes3M=;
+	s=arc-20240116; t=1745420532; c=relaxed/simple;
+	bh=4nEDYjELJxj3ldq2SCyA6/T+uY4YOKvRXOvyavJTBOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1yvbKLSa2b5Bl77MwClR3/IRT9iuHRKoPdekpZZZNvJGufQRMy8KMei6r7bN8vC3ve01Yb47bggtQOZGvknFRjNvNQ70YdEaOGtKgTnoRtTK5uAWCuO0GIt9uYUS0thR/PodFA5pFhanWMzqd+P9DoS0U0xB42H7CEw+dcNqoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKFWk3BB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68982C4AF0D;
-	Wed, 23 Apr 2025 15:27:24 +0000 (UTC)
+	 MIME-Version; b=UNAeRX3aFk21G+6rLpm2b9CcwvkpL+PTc7DuOcCw95anhxKMgtSTB3II5nGfCl/++UJhY7zeGOybjURGHrCJ+7LTnM9IKG8nD4N8Sir3drMcEPtT+TaFIUhuSBHAutMfmZxjFb+xBbJdPQ6NKUInqry8UY6g6DXuYke00LePh1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aYYhOZzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45273C4CEE2;
+	Wed, 23 Apr 2025 15:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422044;
-	bh=5pgt83/LlkZ7UjKxdvfQfvBaFWAIYd5DkSYTk+tes3M=;
+	s=korg; t=1745420529;
+	bh=4nEDYjELJxj3ldq2SCyA6/T+uY4YOKvRXOvyavJTBOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JKFWk3BBuyb1WwZiT2PEa+Dg+hOJ2IygX6YAapLrmNVCizq7W8uHJnx2FvrDTkFy7
-	 JSIIMnZE+PVbc2LzdVT55ltVp7GSQalg0n4t+Z25BJ4AFQp0K2u/sMOyaI9om3SvHs
-	 fmQhwitjP/cVUBSMFSq2KWlGFn9mSo1dwnKNgE68=
+	b=aYYhOZzxgaJL4+eWl3BNBjZFQaujkENEaVElY+o3/Z7/6RrB5MSftdAHwirvflNt6
+	 7VOVeS989nPSiBcWpgxzQehv6d9I36vf4Ybc/db4Vlt7Dq9kJFaDyDO87CuI7X06S7
+	 W1jpXqCYGQ9Xdu4/EmRZi6vYY1Nc9CkmSmOkXXW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/393] block: fix resource leak in blk_register_queue() error path
+	Sami Tolvanen <samitolvanen@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.14 100/241] rust: kbuild: Dont export __pfx symbols
 Date: Wed, 23 Apr 2025 16:42:44 +0200
-Message-ID: <20250423142654.432829863@linuxfoundation.org>
+Message-ID: <20250423142624.661696388@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Sami Tolvanen <samitolvanen@google.com>
 
-[ Upstream commit 40f2eb9b531475dd01b683fdaf61ca3cfd03a51e ]
+commit c59026c0570a2a97ce2e7d5ae5e9c48fc841542b upstream.
 
-When registering a queue fails after blk_mq_sysfs_register() is
-successful but the function later encounters an error, we need
-to clean up the blk_mq_sysfs resources.
+With CONFIG_PREFIX_SYMBOLS, objtool adds __pfx prefix symbols
+to claim the compiler emitted call padding bytes. When
+CONFIG_X86_KERNEL_IBT is not selected, the symbols are added to
+individual object files and for Rust objects, they end up being
+exported, resulting in warnings with CONFIG_GENDWARFKSYMS as the
+symbols have no debugging information:
 
-Add the missing blk_mq_sysfs_unregister() call in the error path
-to properly clean up these resources and prevent a memory leak.
+warning: gendwarfksyms: symbol_print_versions: no information for symbol __pfx_rust_helper_put_task_struct
+warning: gendwarfksyms: symbol_print_versions: no information for symbol __pfx_rust_helper_task_euid
+warning: gendwarfksyms: symbol_print_versions: no information for symbol __pfx_rust_helper_readq_relaxed
+...
 
-Fixes: 320ae51feed5 ("blk-mq: new multi-queue block IO queueing mechanism")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20250412092554.475218-1-zhengqixing@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Filter out the __pfx prefix from exported symbols similarly to
+the existing __cfi and __odr_asan prefixes.
+
+Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Cc: stable@vger.kernel.org
+Fixes: ac61506bf2d1 ("rust: Use gendwarfksyms + extended modversions for CONFIG_MODVERSIONS")
+Link: https://lore.kernel.org/r/20250318231815.917621-2-samitolvanen@google.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-sysfs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ rust/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 4990a19e60133..74839f6f2e0cb 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -854,6 +854,8 @@ int blk_register_queue(struct gendisk *disk)
- out_debugfs_remove:
- 	blk_debugfs_remove(disk);
- 	mutex_unlock(&q->sysfs_lock);
-+	if (queue_is_mq(q))
-+		blk_mq_sysfs_unregister(disk);
- out_put_queue_kobj:
- 	kobject_put(&disk->queue_kobj);
- 	mutex_unlock(&q->sysfs_dir_lock);
--- 
-2.39.5
-
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -334,7 +334,7 @@ $(obj)/bindings/bindings_helpers_generat
+ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
+ 	$(call if_changed_dep,bindgen)
+ 
+-rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ && $$3!~/__odr_asan/ { printf $(2),$$3 }'
++rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
+ 
+ quiet_cmd_exports = EXPORTS $@
+       cmd_exports = \
 
 
 
