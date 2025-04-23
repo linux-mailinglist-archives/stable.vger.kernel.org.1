@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5EBA9908E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51DBBA99172
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36BF78E50F5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827D81BA37E0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD5428D83D;
-	Wed, 23 Apr 2025 15:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE129280A3C;
+	Wed, 23 Apr 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utpIB1uV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd4kMad0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDEF239085;
-	Wed, 23 Apr 2025 15:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA8C2853F3;
+	Wed, 23 Apr 2025 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420783; cv=none; b=FrE9bhXywwx6HUf5GQAH6n7d5qJWjgewynedDe/tKlB3qRfoaSN786QgSA6S3/WH5CHV26T0dk32TN2e8UnxBZanztVCSe4DhBdWfQX++oVV3UmN/3FiYRjwmtcZFmF2IbU1moXDqtLpGe+i2GsIqt8vKpYWogsLwnIxdNk4mzc=
+	t=1745421267; cv=none; b=p7bC5g5KiOI/qcqPyn8ef9FPNAG42d/+pMdY1ZWV5cOZfwiHLPAJ52em7o+BAE+blVQR4TZlwb+KzWvXxcrOeIScjC3jacRjYk1q0vOLdlrd7h7MMt7Pr2X2E+mkVYXOgsOeb31xg7Vfptmt+Ez/Z99TIyDsA3yPCvlxLI1XjPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420783; c=relaxed/simple;
-	bh=7iNR0lGjnr6rFgC7Qw4Bz75+XhbgjSamWyikW6B01yo=;
+	s=arc-20240116; t=1745421267; c=relaxed/simple;
+	bh=i/9XDULQQS/enmEFVmklta2NsMiYJHWIM9plZ3zO+R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMcq2wbVs2M69efbI0rU/pDOt1MTLQ96dXy6ZGH9NeAkx8/kjo6PHZGtTGP2RDGIrczpFvlyIEytGns7ZaUs9Og27QGgS2sT2gGFDS9fHJGSca/llvtytbA9m+xZAAP6nwLpswr/2qncJ4tyQfQ+IcilQgIyWu05RLSYkh5Wzas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utpIB1uV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76732C4CEE2;
-	Wed, 23 Apr 2025 15:06:22 +0000 (UTC)
+	 MIME-Version; b=MVPd7ukq81XlQW8rIT5AmA87j8nzCL5WVr9YQmhIVBsUiRFZwxHGG4VapgdujT2XNk/GdHWh0PE+m/TPtbGsRX4T5yzcxiSvTNqmK3Bqa2t6Wywe1ORJ0IV2fbjV9SrgUy0Tt3iUD/oMDNBp7umEeJEk10STWq6Z8guJxr36c7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd4kMad0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C486C4CEE2;
+	Wed, 23 Apr 2025 15:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420782;
-	bh=7iNR0lGjnr6rFgC7Qw4Bz75+XhbgjSamWyikW6B01yo=;
+	s=korg; t=1745421267;
+	bh=i/9XDULQQS/enmEFVmklta2NsMiYJHWIM9plZ3zO+R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=utpIB1uVDJ2XrSJ82Lx1qa0L+fhymUraZAnrtFR7jAgYiJ5CjUKNaLGh9Rq/B96S2
-	 L8DrrPweS5pHOGC2fk64OOswDOBm//1DrpFS67jcvjBXSm6nS5T3zXNMXNlH9WnCTx
-	 6o/wALPahWR1EPBNnQsvyUiEYx7057K9vhUpBTjU=
+	b=Qd4kMad0krbz4O1tREwvcglA9ZRNY9nQ/NCp8CVBoA1CGiD7ns/C9vXcRlU0OX7mu
+	 fKE1WWiiLsWPq+1EluQfFVc37hlgLiGqchaqmLFRaF0M75524J2wkTSTjMNGEoBlW5
+	 LzmLBPiz0fqX+6fwswh+DpZ/4VF5wpHpkhPVcxtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 162/223] drm/amd/pm/powerplay/hwmgr/vega20_thermal: Prevent division by zero
+	Tang Jun <dukang.tj@alibaba-inc.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 6.14 170/241] perf/x86/intel/uncore: Fix the scale of IIO free running counters on ICX
 Date: Wed, 23 Apr 2025 16:43:54 +0200
-Message-ID: <20250423142623.767645702@linuxfoundation.org>
+Message-ID: <20250423142627.479449781@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c upstream.
+commit 32c7f1150225694d95a51110a93be25db03bb5db upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+There was a mistake in the ICX uncore spec too. The counter increments
+for every 32 bytes rather than 4 bytes.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The same as SNR, there are 1 ioclk and 8 IIO bandwidth in free running
+counters. Reuse the snr_uncore_iio_freerunning_events().
 
-Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 2b3b76b5ec67 ("perf/x86/intel/uncore: Add Ice Lake server uncore support")
+Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250416142426.3933977-2-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/uncore_snbep.c |   33 +--------------------------------
+ 1 file changed, 1 insertion(+), 32 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
-@@ -191,7 +191,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(st
- 	uint32_t tach_period, crystal_clock_freq;
- 	int result = 0;
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -5485,37 +5485,6 @@ static struct freerunning_counters icx_i
+ 	[ICX_IIO_MSR_BW_IN]	= { 0xaa0, 0x1, 0x10, 8, 48, icx_iio_bw_freerunning_box_offsets },
+ };
  
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
+-static struct uncore_event_desc icx_uncore_iio_freerunning_events[] = {
+-	/* Free-Running IIO CLOCKS Counter */
+-	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+-	/* Free-Running IIO BANDWIDTH IN Counters */
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+-	{ /* end: all zeroes */ },
+-};
+-
+ static struct intel_uncore_type icx_uncore_iio_free_running = {
+ 	.name			= "iio_free_running",
+ 	.num_counters		= 9,
+@@ -5523,7 +5492,7 @@ static struct intel_uncore_type icx_unco
+ 	.num_freerunning_types	= ICX_IIO_FREERUNNING_TYPE_MAX,
+ 	.freerunning		= icx_iio_freerunning,
+ 	.ops			= &skx_uncore_iio_freerunning_ops,
+-	.event_descs		= icx_uncore_iio_freerunning_events,
++	.event_descs		= snr_uncore_iio_freerunning_events,
+ 	.format_group		= &skx_uncore_iio_freerunning_format_group,
+ };
  
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
 
 
 
