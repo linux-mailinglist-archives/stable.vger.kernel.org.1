@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-136429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237C4A9939C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA405A991C9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC30B3B7DF0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321CA922AA3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF852BF3D3;
-	Wed, 23 Apr 2025 15:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2B2290BAB;
+	Wed, 23 Apr 2025 15:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTxQsBDv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ65GTh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC9F2BF3CF;
-	Wed, 23 Apr 2025 15:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950A428CF52;
+	Wed, 23 Apr 2025 15:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422522; cv=none; b=uj8QixD7eWlMn9zOmfHMAO1jQaG5fgriMdzgNTlZztE0geLpFD2AoTYWHhlETgIImFV1gNsJACRWxeM2nPXpQZ3f3aEamTqJkhCxQPzwEJFiqzc4y/UlNwviZQD7D8cmvUUViFi2lMTVbeGraay8JPNX3jFGxeyMLXSr5dyUuZs=
+	t=1745421422; cv=none; b=H5eq0a6g+q2Wiei4op3mCSNFx96qWwrYXKpRdOSvNTxRvkaSy74DsvRWvZrukW0jJkqdxuhFG/iXNNkqwLYXUoeYiOdeNRvXifvz/jFpI4vihKy5BMx5W+w8iMLNDjo5jDDV4LrVi+FTii+1mEaKJYU7S+zTmRWDnHzCkSNlxMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422522; c=relaxed/simple;
-	bh=3EYnCP5RtwtEli1FECfEimCTXzYm+R8awyzjPQgqzvI=;
+	s=arc-20240116; t=1745421422; c=relaxed/simple;
+	bh=GxCRJM/nGm1Auv3K60Lz6L3E9jf6jK69X5sJCbSB5HI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q7Uc4UIbvT/2szUMkFvWxo9FOpRMAC2ZWkL1e1b1SlL1Qgzz+65na9fUJtlIBFQ3HQtBOqWEfQnpML5fzkoamK8lORnF7/Rzw9xbAj7K5IGBLfZPXkU1AdFoXNXNI6H08ai82JOLxo0fLzKJdZBSTexe6wRNss2ecHEMuZ7977E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTxQsBDv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DD4C4CEE8;
-	Wed, 23 Apr 2025 15:35:21 +0000 (UTC)
+	 MIME-Version; b=FO2ijOq+XjRrsoSmKvHhlV4TfSFPS/iLOWcTPNF9DA5Kl0P12sAsPDwRTgbyiwDoA71yQid0vWi/BWRWRpkirQna0t8HFvcwzrULPkJix8FS1a69apGDENGqJXnvxUPmD2aYMU7cxMKco4kvZYViG6dli0g3OxhRW15Dj/MYvoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ65GTh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C173AC4CEE2;
+	Wed, 23 Apr 2025 15:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422522;
-	bh=3EYnCP5RtwtEli1FECfEimCTXzYm+R8awyzjPQgqzvI=;
+	s=korg; t=1745421421;
+	bh=GxCRJM/nGm1Auv3K60Lz6L3E9jf6jK69X5sJCbSB5HI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTxQsBDvtiQGjx+Vh8TEk67vMjurNxNLLwhJQqD+JQZIIFkJYIpHDESDFY+m5ivkB
-	 uryM+HUmjEUN9ZvhZSKkLOjzF9n4lNWxH6ysT8R4Uj2Vm3PomsArTOPCm8VyaUrsss
-	 N6029XuvpDEYBceS5jectCQGgV2nS1I5OXWZwPJI=
+	b=AZ65GTh4lYghvTElYTRy1gnefGf15SQKe+0Tv5cg3/BXDbCgRXtCwMuwC4hj6xhwa
+	 84CALXnVToPUMO2Y1x3P4gjQEtBF7wH3PtEAk6O6ePrBTA+esRALyUD9GoZQ2nuorO
+	 Vk0TyX83GOAzRZyYxKJZS0OZ0tngdN9MuK8Y9SkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
+	"Shaoyun.liu" <Shaoyun.liu@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 355/393] drm/amdgpu/dma_buf: fix page_link check
-Date: Wed, 23 Apr 2025 16:44:11 +0200
-Message-ID: <20250423142658.000897554@linuxfoundation.org>
+Subject: [PATCH 6.14 188/241] drm/amdgpu/mes12: optimize MES pipe FW version fetching
+Date: Wed, 23 Apr 2025 16:44:12 +0200
+Message-ID: <20250423142628.202294010@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit c0dd8a9253fadfb8e5357217d085f1989da4ef0a upstream.
+commit 34779e14461cf715238dec5fd43a1e11977ec115 upstream.
 
-The page_link lower bits of the first sg could contain something like
-SG_END, if we are mapping a single VRAM page or contiguous blob which
-fits into one sg entry. Rather pull out the struct page, and use that in
-our check to know if we mapped struct pages vs VRAM.
+Don't fetch it again if we already have it.  It seems the
+registers don't reliably have the value at resume in some
+cases.
 
-Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Fixes: 785f0f9fe742 ("drm/amdgpu: Add mes v12_0 ip block support (v4)")
+Reviewed-by: Shaoyun.liu <Shaoyun.liu@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9e7b08d239c2f21e8f417854f81e5ff40edbebff)
+Cc: stable@vger.kernel.org # 6.12.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -211,7 +211,7 @@ static void amdgpu_dma_buf_unmap(struct
- 				 struct sg_table *sgt,
- 				 enum dma_data_direction dir)
- {
--	if (sgt->sgl->page_link) {
-+	if (sg_page(sgt->sgl)) {
- 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
- 		sg_free_table(sgt);
- 		kfree(sgt);
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -1390,17 +1390,20 @@ static int mes_v12_0_queue_init(struct a
+ 		mes_v12_0_queue_init_register(ring);
+ 	}
+ 
+-	/* get MES scheduler/KIQ versions */
+-	mutex_lock(&adev->srbm_mutex);
+-	soc21_grbm_select(adev, 3, pipe, 0, 0);
++	if (((pipe == AMDGPU_MES_SCHED_PIPE) && !adev->mes.sched_version) ||
++	    ((pipe == AMDGPU_MES_KIQ_PIPE) && !adev->mes.kiq_version)) {
++		/* get MES scheduler/KIQ versions */
++		mutex_lock(&adev->srbm_mutex);
++		soc21_grbm_select(adev, 3, pipe, 0, 0);
+ 
+-	if (pipe == AMDGPU_MES_SCHED_PIPE)
+-		adev->mes.sched_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
+-	else if (pipe == AMDGPU_MES_KIQ_PIPE && adev->enable_mes_kiq)
+-		adev->mes.kiq_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
++		if (pipe == AMDGPU_MES_SCHED_PIPE)
++			adev->mes.sched_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
++		else if (pipe == AMDGPU_MES_KIQ_PIPE && adev->enable_mes_kiq)
++			adev->mes.kiq_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
+ 
+-	soc21_grbm_select(adev, 0, 0, 0, 0);
+-	mutex_unlock(&adev->srbm_mutex);
++		soc21_grbm_select(adev, 0, 0, 0, 0);
++		mutex_unlock(&adev->srbm_mutex);
++	}
+ 
+ 	return 0;
+ }
 
 
 
