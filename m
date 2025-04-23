@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76FBEA98EC4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9B3A99327
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68DA8445352
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 662371BA4D51
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF8E2820B1;
-	Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32D528CF4E;
+	Wed, 23 Apr 2025 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F96UMUX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NE/0vmSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABEA2820A7;
-	Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609F028C5AB;
+	Wed, 23 Apr 2025 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420244; cv=none; b=Fpo+9rLbd1HGt2PKCHYyfiA5pHyOcPEeIQ1mkFq1g4zsLw4+hVW7aos/oigL7SaeEO3zqM0napluePM8hVgAKSyW0W/tyvLj/Bc4p1lWDI2qECNb99adp1GyHr7vQC+gTowHZcMyzSuk+KBj4wKUJznTheZcdgR2743ikI6fNXE=
+	t=1745421897; cv=none; b=chVdx6V4KzHfBPkQpsuelf8MjmTV3iDdb705ry9AcOzBHjiz4spa1VHpGKRmljTNLGqay+BLRDLZ4b0SeZxbk+/jo0LQMBDpMvw0SR04Iq4CgvIWM0hCyqiaitD10uDQKbJpC5F+g+EdfDePH0X0LBpi5B0yj0Ej7V51xkHebYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420244; c=relaxed/simple;
-	bh=rOq8RU/qySFhzEnGPQC9u/SwbO2giNbUaJeYFOjDx+I=;
+	s=arc-20240116; t=1745421897; c=relaxed/simple;
+	bh=aq/oIcSBccrR5rCr4VZtfo0ghRXvrnoQtu1mo2Yndbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUO1nGhoqADziPIj/2wfyFGvVuUOswyzXSRUx67eoAJCdIaMeH1Re1vQK5MgYxc26BH4WqA1+QCMT3qla0Asz4hDG8mlesP2OrN/Vjle8cpUnPspmYMsoKQdRkv5SLuS5a+IuHWOh8o/PaIiwnvSUQTFm/2lAS41n6nC72r6g0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F96UMUX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9CCC4CEE2;
-	Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
+	 MIME-Version; b=iE6NaASpfWffnk6TCHsIyEWGSvnNs3MqzB6gkzqPuholRYYLaU12rNcZOTfBANH/E1DhpzoJAjh+l90sNHRm0iclQ3tQQicYwhtnRAmm4VHN04+st8HkihdvfD6YjmOjKzGtFxVa9wPuezHnhK95Up4c5+aX9rHWtvVzkrNSDWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NE/0vmSF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5729C4CEE2;
+	Wed, 23 Apr 2025 15:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420244;
-	bh=rOq8RU/qySFhzEnGPQC9u/SwbO2giNbUaJeYFOjDx+I=;
+	s=korg; t=1745421897;
+	bh=aq/oIcSBccrR5rCr4VZtfo0ghRXvrnoQtu1mo2Yndbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F96UMUX6ehvl/2fET/Y02KZSp9Rl1yaHLgHAN/iOHA4NOGl0xWjq/kmyTs4xzmkBe
-	 ZomJP0GIQGxgF2g+70EL5xtRMGqTXF9snlzHv6tMCAon2Xt9qUg73xwzcX/eueZhp5
-	 u1W142A4B6UM5Q4cuf6qj/x3nAiHXup7GxfQV4mM=
+	b=NE/0vmSFx+FWXjFfhh3kPEfA1LZdxkwZRMQB6VSHDBXeicG4mcvsqg/siQy99DoES
+	 mpmS35intcaTazESY7X4CKNMn31TA27+SmB2LySIihyKH0+pMk8SRKWZ7zdEXMQi7j
+	 nifzdA+dQDEKKUD5KOpPvjOWUgAD8kHTChR0lClM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 112/223] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
+	Huacai Chen <chenhuacai@loongson.cn>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 195/291] riscv: KGDB: Do not inline arch_kgdb_breakpoint()
 Date: Wed, 23 Apr 2025 16:43:04 +0200
-Message-ID: <20250423142621.671111499@linuxfoundation.org>
+Message-ID: <20250423142632.348669705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
+[ Upstream commit 3af4bec9c1db3f003be4d5ae09b6a737e4be1612 ]
 
-Syzbot reported an issue in hfs subsystem:
+The arch_kgdb_breakpoint() function defines the kgdb_compiled_break
+symbol using inline assembly.
 
-BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
-BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
-BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
-Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
+There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_compiled_break
+symbol multiple times, leading to fail to link vmlinux.o.
 
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- memcpy_from_page include/linux/highmem.h:423 [inline]
- hfs_bnode_read fs/hfs/bnode.c:35 [inline]
- hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
- hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
- hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
- hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
- vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
- do_mkdirat+0x264/0x3a0 fs/namei.c:4280
- __do_sys_mkdir fs/namei.c:4300 [inline]
- __se_sys_mkdir fs/namei.c:4298 [inline]
- __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fbdd6057a99
+This isn't merely a potential compilation problem. The intent here
+is to determine the global symbol address of kgdb_compiled_break,
+and if this function is inlined multiple times, it would logically
+be a grave error.
 
-Add a check for key length in hfs_bnode_read_key to prevent
-out-of-bounds memory access. If the key length is invalid, the
-key buffer is cleared, improving stability and reliability.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/5b0adf9b-2b22-43fe-ab74-68df94115b9a@ghiti.fr/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Co-developed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/F22359AFB6FF9FD8+20250411073222.56820-1-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfs/bnode.c     |    6 ++++++
- fs/hfsplus/bnode.c |    6 ++++++
- 2 files changed, 12 insertions(+)
+ arch/riscv/include/asm/kgdb.h | 9 +--------
+ arch/riscv/kernel/kgdb.c      | 8 ++++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
---- a/fs/hfs/bnode.c
-+++ b/fs/hfs/bnode.c
-@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
- 	else
- 		key_len = tree->max_key_len + 1;
+diff --git a/arch/riscv/include/asm/kgdb.h b/arch/riscv/include/asm/kgdb.h
+index 46677daf708bd..cc11c4544cffd 100644
+--- a/arch/riscv/include/asm/kgdb.h
++++ b/arch/riscv/include/asm/kgdb.h
+@@ -19,16 +19,9 @@
  
-+	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
-+		memset(key, 0, sizeof(hfs_btree_key));
-+		pr_err("hfs: Invalid key length: %d\n", key_len);
-+		return;
-+	}
-+
- 	hfs_bnode_read(node, key, off, key_len);
+ #ifndef	__ASSEMBLY__
+ 
++void arch_kgdb_breakpoint(void);
+ extern unsigned long kgdb_compiled_break;
+ 
+-static inline void arch_kgdb_breakpoint(void)
+-{
+-	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
+-}
+-
+ #endif /* !__ASSEMBLY__ */
+ 
+ #define DBG_REG_ZERO "zero"
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 963ed7edcff26..b0db3350d243b 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -273,6 +273,14 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->epc = pc;
  }
  
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
- 	else
- 		key_len = tree->max_key_len + 2;
- 
-+	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
-+		memset(key, 0, sizeof(hfsplus_btree_key));
-+		pr_err("hfsplus: Invalid key length: %d\n", key_len);
-+		return;
-+	}
++noinline void arch_kgdb_breakpoint(void)
++{
++	asm(".global kgdb_compiled_break\n"
++	    ".option norvc\n"
++	    "kgdb_compiled_break: ebreak\n"
++	    ".option rvc\n");
++}
 +
- 	hfs_bnode_read(node, key, off, key_len);
- }
- 
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+ 				char *remcom_out_buffer)
+ {
+-- 
+2.39.5
+
 
 
 
