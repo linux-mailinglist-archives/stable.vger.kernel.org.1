@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-136327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E613A99320
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D009A98F6E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C78E14A2EE2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FF53ABE52
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A44296D38;
-	Wed, 23 Apr 2025 15:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C586280A20;
+	Wed, 23 Apr 2025 15:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2SNP0Lr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhL5RIYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B88296D1C;
-	Wed, 23 Apr 2025 15:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7BE2F2E;
+	Wed, 23 Apr 2025 15:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422254; cv=none; b=gekYHgieTm/1PDYlka52nO79s7zFDPTOWObSZTw+gFaUnTf0zBtapnoVqmcm8fZfhZpsdETmzLUuVp8EsUojhJr1dmQYcm0VcOFyatXs+yNP8baHluy3iNjPKQ8sj0K6wxFeYPIjXkGyEbt+N/5qaET2zcGScC7Bnzx8iSKZvco=
+	t=1745420445; cv=none; b=L+OmbADbOKkmcbTiaue6PT8xbblODQuwvcRVGHJWcMZrhSQ8ivl1JHGZQXj+cayrIp1+6zRzxV49J1LulAMef++XTP18CqFBu9WPkaQAqwp64hyD4Lhil6jZUDFQYVzDey+h/UUmU7SHpJ01/NulovTZDWc/B4x8FWXxfXWvx1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422254; c=relaxed/simple;
-	bh=brEVplFA4S22X0XLHGfRoiG7eKxHQ0FFLaFiqfi+30Q=;
+	s=arc-20240116; t=1745420445; c=relaxed/simple;
+	bh=zJam47IZXdD1LlLyIiAd1raicCt/BNMFp6WjP5qEMYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9boKvs1Kg4zpCkEnAHTTofs007VITnNXyVZg7QbRTX1xRn6bhK/5QeiZAIFLpdW7H6dpOCQ7w2BkpFXTNBe5TpX7o5KmmMlvXEHm4snrq+SvNFqWnLWRdUEl/IMcaH1esJUfvc8pH3ZCnjM6XZ2+JChql8/IlUyYRoBS+cm+BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2SNP0Lr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39B4C4CEE8;
-	Wed, 23 Apr 2025 15:30:53 +0000 (UTC)
+	 MIME-Version; b=n4eV1/iUQtTcQuIQGPxItzo6ZXQzrxXGs78UAetct2YmB6wy6Mto09lO3ovKfT/6n+n6i1soeVgrDN/ubZDqpIuRVG8F5gJqMMjUZMIf8CvIIjenau2mb2wtuB2RjiaT0Hk+Vn1OMqK/kUJaB3H73U+JtEDKWCmFw9zNqoHpG3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhL5RIYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC89C4CEED;
+	Wed, 23 Apr 2025 15:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422254;
-	bh=brEVplFA4S22X0XLHGfRoiG7eKxHQ0FFLaFiqfi+30Q=;
+	s=korg; t=1745420445;
+	bh=zJam47IZXdD1LlLyIiAd1raicCt/BNMFp6WjP5qEMYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2SNP0LrNyPtwtiwLVlKob1URuuQ2ehjFmMYhaqEaq+GO37gwD/ByRC37dXSniUFO
-	 DAuYyf1xLbFlzQKDuFp0rdioat3N1gQsznOeWtQpSS8vBx4Rb6bjp9CXiW/C1bQGTS
-	 VrR99Jxuxqtjy3Y0+n7XvAcWptjXLZXBEwUi3iyw=
+	b=XhL5RIYYcfQSYP0Rtpt7BReV+3WyCnsIcUEvEH/C3QvjVArTZtJoh2Px5/F0P1MWT
+	 kvp6ObMjyH5PnQ9MLPayE8U0zUYdFF+zUZTFF2a2CRme47grAIef95zjyC2oYZ/Aw1
+	 j4Ip3VceW3Cg/ODY4FqDR2umVgx4XNGW/YhmdYpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/393] i2c: atr: Fix wrong include
+	Peter Collingbourne <pcc@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.12 132/223] string: Add load_unaligned_zeropad() code path to sized_strscpy()
 Date: Wed, 23 Apr 2025 16:43:24 +0200
-Message-ID: <20250423142656.052956435@linuxfoundation.org>
+Message-ID: <20250423142622.469328139@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Peter Collingbourne <pcc@google.com>
 
-[ Upstream commit 75caec0c2aa3a7ec84348d438c74cb8a2eb4de97 ]
+commit d94c12bd97d567de342fd32599e7cd9e50bfa140 upstream.
 
-The fwnode.h is not supposed to be used by the drivers as it
-has the definitions for the core parts for different device
-property provider implementations. Drop it.
+The call to read_word_at_a_time() in sized_strscpy() is problematic
+with MTE because it may trigger a tag check fault when reading
+across a tag granule (16 bytes) boundary. To make this code
+MTE compatible, let's start using load_unaligned_zeropad()
+on architectures where it is available (i.e. architectures that
+define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
+takes care of page boundaries as well as tag granule boundaries,
+also disable the code preventing crossing page boundaries when using
+load_unaligned_zeropad().
 
-Note, that fwnode API for drivers is provided in property.h
-which is included here.
-
-Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-[wsa: reworded subject]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+Cc: stable@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20250403000703.2584581-2-pcc@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-atr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/string.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/i2c-atr.c b/drivers/i2c/i2c-atr.c
-index c03196da11635..03caa4ef012f1 100644
---- a/drivers/i2c/i2c-atr.c
-+++ b/drivers/i2c/i2c-atr.c
-@@ -8,12 +8,12 @@
-  * Originally based on i2c-mux.c
-  */
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -113,6 +113,7 @@ ssize_t sized_strscpy(char *dest, const
+ 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
+ 		return -E2BIG;
  
--#include <linux/fwnode.h>
- #include <linux/i2c-atr.h>
- #include <linux/i2c.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
++#ifndef CONFIG_DCACHE_WORD_ACCESS
+ #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	/*
+ 	 * If src is unaligned, don't cross a page boundary,
+@@ -128,11 +129,13 @@ ssize_t sized_strscpy(char *dest, const
+ 	if (((long) dest | (long) src) & (sizeof(long) - 1))
+ 		max = 0;
+ #endif
++#endif
  
--- 
-2.39.5
-
+ 	/*
+-	 * read_word_at_a_time() below may read uninitialized bytes after the
+-	 * trailing zero and use them in comparisons. Disable this optimization
+-	 * under KMSAN to prevent false positive reports.
++	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
++	 * uninitialized bytes after the trailing zero and use them in
++	 * comparisons. Disable this optimization under KMSAN to prevent
++	 * false positive reports.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_KMSAN))
+ 		max = 0;
+@@ -140,7 +143,11 @@ ssize_t sized_strscpy(char *dest, const
+ 	while (max >= sizeof(unsigned long)) {
+ 		unsigned long c, data;
+ 
++#ifdef CONFIG_DCACHE_WORD_ACCESS
++		c = load_unaligned_zeropad(src+res);
++#else
+ 		c = read_word_at_a_time(src+res);
++#endif
+ 		if (has_zero(c, &data, &constants)) {
+ 			data = prep_zero_mask(c, data, &constants);
+ 			data = create_zero_mask(data);
 
 
 
