@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-136234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9321A992EE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E6FA98E4C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 746E6924232
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1544F448092
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3487C29CB24;
-	Wed, 23 Apr 2025 15:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE4227FD60;
+	Wed, 23 Apr 2025 14:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOsLPhvb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5Jof5TR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173829C35B;
-	Wed, 23 Apr 2025 15:26:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF32269826;
+	Wed, 23 Apr 2025 14:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422011; cv=none; b=pjOPJn7t6b7jE1Kl6LbLvdsMf8uOa3Fw+bc/629UUelKWwKtmmst8XU5Bw3vuzp/8kOHnnFl3NtQlFk8Wxe8oz6axKPH8LB6aZ15VZndcDDPXUBCHv1SvNnMtdzHdPSFrhfLApzHxeBYTBgg3OQ99K1fp1w+/GoYWMDZkIe23Sw=
+	t=1745420000; cv=none; b=WcAkwUXT+yJ1af1LMgyFJyJdDD8Z1BaEbN3fkuxSLU3WdyUEf1FlmtQW14myZRTDm/ceW5YinGCxbaZHRf9d56tfP4k/KBkApl/3gxGJbB6HIUW07uoxqzh0cx8GLhiy9RBMf28nJQP9OdoVS3XsYIp3RkS4yrzcu/ZCc98kohM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422011; c=relaxed/simple;
-	bh=reJfm/CqDHFFZ12zaOxi7tglSlWOY3jDDUJOCtJlt7U=;
+	s=arc-20240116; t=1745420000; c=relaxed/simple;
+	bh=3CpTZWLtT2RMXozdcOGaMzlPbkNQcredwoNl+0zf3Kc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6Z9BqCWvq5G0lZevzmvwiaaD05uFb03TZZK77NxwGzYzvDUq4pkOfmzj/XtrvWBUk6CjQ1hMx30OK++4z8kM9e6gUzAYCgWxw2XaatDcDM8IX2CyfvvD6SeS9xbfsya+i2TNvm3zigNBifb1vtYo3SNGprZU8DJLozpwRRVmGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOsLPhvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B99C4CEE2;
-	Wed, 23 Apr 2025 15:26:49 +0000 (UTC)
+	 MIME-Version; b=Dzov8JqvIfsx5ZvKlEXYtS+1P2xPUA3WnSrpHsAdKueyobqWBtZVOWSihg+8RCfpsJQuIRpMG2NhSTCu5p/ZvKkcwvnvXZ46p+FivoXc2qhg1XGGFtwspe9rTmR1pxfMTL6FAdHaCUQ++aZCUVVtU50JO/gIz8MnJygZd7nIejA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5Jof5TR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C2CC4CEE2;
+	Wed, 23 Apr 2025 14:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422010;
-	bh=reJfm/CqDHFFZ12zaOxi7tglSlWOY3jDDUJOCtJlt7U=;
+	s=korg; t=1745420000;
+	bh=3CpTZWLtT2RMXozdcOGaMzlPbkNQcredwoNl+0zf3Kc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOsLPhvbzsFcSIPmZImdAo/X67bM/W6mIQShNRfKyHMpyAauUs/IO5/6JQWjgq9WT
-	 9yRHQ7cAEU3PNa91iJudmqEYhWwooFQ4Vnp0oB+z6aK/mi1mH0wFyy1NcqhjH/9znK
-	 /EdOeSXI9E5A6QzwoA0Aaq9MGjE9bpkOJAK9I4Co=
+	b=x5Jof5TRKRrKgsZfabc+Uys/MRcKOAlIPfd2dS06QqZDgx9gvDT6bo85DDkX0Ia1K
+	 WbVjoSZfxxxjvtuzLpBngTBX7jGg0dNJPycYdfY+y5sM3oMj4gs9FQ6NTla4+LAcJ/
+	 otOt01SBE6llOGEMDpTSwvZbTnYOnP5MQ3Ik7Hcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 262/393] igc: handle the IGC_PTP_ENABLED flag correctly
-Date: Wed, 23 Apr 2025 16:42:38 +0200
-Message-ID: <20250423142654.191156592@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 087/223] writeback: fix false warning in inode_to_wb()
+Date: Wed, 23 Apr 2025 16:42:39 +0200
+Message-ID: <20250423142620.667197376@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
+commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
 
-All functions in igc_ptp.c called from igc_main.c should check the
-IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
-functions.
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/backing-dev.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index adb31cccaf9a5..c5387610ca3df 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -1191,8 +1191,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
-  **/
- void igc_ptp_stop(struct igc_adapter *adapter)
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inod
  {
-+	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
-+		return;
-+
- 	igc_ptp_suspend(adapter);
- 
-+	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
- 	if (adapter->ptp_clock) {
- 		ptp_clock_unregister(adapter->ptp_clock);
- 		netdev_info(adapter->netdev, "PHC removed\n");
-@@ -1213,6 +1217,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 	unsigned long flags;
- 	u32 timadj;
- 
-+	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
-+		return;
-+
- 	/* reset the tstamp_config */
- 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
- 
--- 
-2.39.5
-
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
 
 
