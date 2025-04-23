@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37B67A98FE6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D184A98F14
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B2316BF37
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81B6D1B800E3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA61280A51;
-	Wed, 23 Apr 2025 15:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7396E27F755;
+	Wed, 23 Apr 2025 14:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMORqya8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTZsZF/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C221EEA3E;
-	Wed, 23 Apr 2025 15:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE6C27D763;
+	Wed, 23 Apr 2025 14:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420811; cv=none; b=VNIkAAdiccUvBXqaVSgXAi+limIhwCg/whCt0V8WZVB2/bhkn71fXICCPl4Ey82T0nokmVxzGA5AU73xW/gWX8snpuAzWTjkfYZndxywdZFIvfWEuA39KSIMjrU0dmK85ThiZRku9yjLc+22tU3XLbOl9L001gvxAfBh9lQn4TY=
+	t=1745420287; cv=none; b=SuIfvN+CWTPYifzj7cldei6y99fCUv+TGPNyBFlidoR/kWUhRibRkvAzsCRascDtUF3ucsY5Y2fyGHwCuvdk371QRYhiRdbDMeWKvfV2yzKdBrjJKZ+VXjlRQlns2DrUvbURMblaMIPpDZrNXHSAyx9Mv/w5exATIrdRgC6GBwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420811; c=relaxed/simple;
-	bh=/y3PXEWiZYktXloAE/89xr5lUskF/Wo7xnE45lofjA8=;
+	s=arc-20240116; t=1745420287; c=relaxed/simple;
+	bh=JIpKNCSSwhrp6h7EkIntaz+hBkYz72GyvZ9Qbtk/F9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcORDJXSaCZSfCeoh+aa1vP7R4YB2TuI4MosMcc00fAcqmqMZpBmM8ijwmzOpy6CL5d1NXljjr3sTFia80JkAxId1I5qPDwipEJybYnexBIKMLB6xo9qtN5TL8dZJhHSa+JS2uuRzuKXKFnlLDsZtqtQrKvn3qypoYwwE8e5NFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMORqya8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D21FC4CEE2;
-	Wed, 23 Apr 2025 15:06:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h8QhyLRts4KeTXqCB3ps2BioyttFQPaYdGi755CoKEUlrgIHBYsGZhOa5Rq77o2TnyAaaUaOMHtmdAnvVHZIAgv0J5Cqe3iEzrZVjP95VBet+1zSKbPKPZez3AyGkcf/1N6xL7a99KBFtjGZtwx70B3ORQcTkSJHsMrK57a63l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTZsZF/S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2254C4CEE2;
+	Wed, 23 Apr 2025 14:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420811;
-	bh=/y3PXEWiZYktXloAE/89xr5lUskF/Wo7xnE45lofjA8=;
+	s=korg; t=1745420287;
+	bh=JIpKNCSSwhrp6h7EkIntaz+hBkYz72GyvZ9Qbtk/F9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMORqya8lt4O0bT4zlGjnLj6DR7SbzqqEKzvkicBotxxfUw0SOImIaZz9ba/iWnjn
-	 hFQ0hx6e/74fsnDn8zMYvf/5DqtCEyUGtmtKPuMG3PpSkqfhngQhW6XRAdJ0ovgr6w
-	 LvVJ8TApPJfKU2NzpYC9Y1RvjMKuD2bLrHpv9zS0=
+	b=tTZsZF/Sm04rIcyilcLlUQfJMyGlGcK6f9nh5xNVGAMDX1xXuk2SK/4/bmFbhdhPz
+	 t03JQdQWrviIQESO82P0IiDUdN9QNXgauqNiG0ITbt3v72B60U58/s/94SkRqeB7mp
+	 jILlmVkYN8E/CZGT/4bj6p80DTc6vA1mZIslQ7QI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 124/241] drm/msm/a6xx+: Dont let IB_SIZE overflow
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Jan Kara <jack@suse.cz>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 116/223] loop: LOOP_SET_FD: send uevents for partitions
 Date: Wed, 23 Apr 2025 16:43:08 +0200
-Message-ID: <20250423142625.641506990@linuxfoundation.org>
+Message-ID: <20250423142621.835390054@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit 9d78f02503227d3554d26cf8ca73276105c98f3e ]
+commit 0dba7a05b9e47d8b546399117b0ddf2426dc6042 upstream.
 
-IB_SIZE is only b0..b19.  Starting with a6xx gen3, additional fields
-were added above the IB_SIZE.  Accidentially setting them can cause
-badness.  Fix this by properly defining the CP_INDIRECT_BUFFER packet
-and using the generated builder macro to ensure unintended bits are not
-set.
+Remove the suppression of the uevents before scanning for partitions.
+The partitions inherit their suppression settings from their parent device,
+which lead to the uevents being dropped.
 
-v2: add missing type attribute for IB_BASE
-v3: fix offset attribute in xml
+This is similar to the same changes for LOOP_CONFIGURE done in
+commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
 
-Reported-by: Connor Abbott <cwabbott0@gmail.com>
-Fixes: a83366ef19ea ("drm/msm/a6xx: add A640/A650 to gpulist")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/643396/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c               | 8 ++++----
- drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml | 7 +++++++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+ drivers/block/loop.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index 0ae29a7c8a4d3..2a317cdb8eaa1 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -242,10 +242,10 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 				break;
- 			fallthrough;
- 		case MSM_SUBMIT_CMD_BUF:
--			OUT_PKT7(ring, CP_INDIRECT_BUFFER_PFE, 3);
-+			OUT_PKT7(ring, CP_INDIRECT_BUFFER, 3);
- 			OUT_RING(ring, lower_32_bits(submit->cmd[i].iova));
- 			OUT_RING(ring, upper_32_bits(submit->cmd[i].iova));
--			OUT_RING(ring, submit->cmd[i].size);
-+			OUT_RING(ring, A5XX_CP_INDIRECT_BUFFER_2_IB_SIZE(submit->cmd[i].size));
- 			ibs++;
- 			break;
- 		}
-@@ -377,10 +377,10 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
- 				break;
- 			fallthrough;
- 		case MSM_SUBMIT_CMD_BUF:
--			OUT_PKT7(ring, CP_INDIRECT_BUFFER_PFE, 3);
-+			OUT_PKT7(ring, CP_INDIRECT_BUFFER, 3);
- 			OUT_RING(ring, lower_32_bits(submit->cmd[i].iova));
- 			OUT_RING(ring, upper_32_bits(submit->cmd[i].iova));
--			OUT_RING(ring, submit->cmd[i].size);
-+			OUT_RING(ring, A5XX_CP_INDIRECT_BUFFER_2_IB_SIZE(submit->cmd[i].size));
- 			ibs++;
- 			break;
- 		}
-diff --git a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
-index 55a35182858cc..5a6ae9fc31945 100644
---- a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
-+++ b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
-@@ -2259,5 +2259,12 @@ opcode: CP_LOAD_STATE4 (30) (4 dwords)
- 	</reg32>
- </domain>
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -568,12 +568,12 @@ static int loop_change_fd(struct loop_de
+ 	 * dependency.
+ 	 */
+ 	fput(old_file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	if (partscan)
+ 		loop_reread_partitions(lo);
  
-+<domain name="CP_INDIRECT_BUFFER" width="32" varset="chip" prefix="chip" variants="A5XX-">
-+	<reg64 offset="0" name="IB_BASE" type="address"/>
-+	<reg32 offset="2" name="2">
-+		<bitfield name="IB_SIZE" low="0" high="19"/>
-+	</reg32>
-+</domain>
-+
- </database>
+ 	error = 0;
+ done:
+-	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 	return error;
  
--- 
-2.39.5
-
+@@ -581,6 +581,7 @@ out_err:
+ 	loop_global_unlock(lo, is_loop);
+ out_putf:
+ 	fput(file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	goto done;
+ }
+ 
 
 
 
