@@ -1,55 +1,67 @@
-Return-Path: <stable+bounces-136151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68671A99252
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C968EA990EB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23F6E4A23B5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F2D87A3BEB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56E929AAF3;
-	Wed, 23 Apr 2025 15:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFF728FFD5;
+	Wed, 23 Apr 2025 15:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1W8Q+5kS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqnItTnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6327929AAF0;
-	Wed, 23 Apr 2025 15:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4C828CF6B;
+	Wed, 23 Apr 2025 15:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421789; cv=none; b=T6UlJoGsQzbTLCR+2vGngMH7eDlk/xPiMfdejWfN4VXpLMHy7zjJrVUsmWxej6gsrOQurXMW4Qp5kBYhW7hzrsi0tTULPsvhaTPDI6nuD8Jub+ePviDtyW6kECxQxV98bFNejB/uCmhMGv9Gef7hw+KRPKnN34FeywPPVspK1Go=
+	t=1745421386; cv=none; b=gxAR0teAZ3IIIo6RyUfRSxxFCFTtBN+G1AS3vMyRqYQ9T/a/zWCDPyfOErUY2WLQiLA6oso4PbdTR6fEwpD5cUl9Cejv9xJ0ea/2XjUe95G57c0qVNorRhO0T4JAxjAMFyNUF9ulEFDvpSnPwtQ5C6MsTyCihxm75pSAAJeotsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421789; c=relaxed/simple;
-	bh=CnSJjSQYh6lN2yi/Y/JyrTSlEv2xWqJNrhLY07P8C/s=;
+	s=arc-20240116; t=1745421386; c=relaxed/simple;
+	bh=idD66FNbxnzWEMPCw8mhG6iVtLNpuzf3kXbJrBQehCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPvE/qI4rqx35YSaxwMQdc6tt3VMN1yjiyfn1rF0bJIGb6gHgQb2JfB+gk9VhpxE8eFWmJmva5cH90X9NFcL9F3SkJdjrivPmz3HghMohTclxCfHixe4WkuBgVuWK8SD35CCp3hCWIEff+IfAlIxQqUBKDzrC/q9eVsQ99kGAJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1W8Q+5kS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2DDC4CEE2;
-	Wed, 23 Apr 2025 15:23:08 +0000 (UTC)
+	 MIME-Version; b=qqHJG37Qt8HbRhcqZx8cBV71Z4AF04NsjqlsFpjz5kE8ey4fUK7PHj81jsyLkeYx7dPvN92vdkLuUpvF7WpsODLRvKt8PwIERbLEezBQ8jauTZnPaK6/x7M5+bTwMtMohprU2oKDkJDH29AAnMYhMamneYtFTBtFGxyxv+e14HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqnItTnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A68C4CEE2;
+	Wed, 23 Apr 2025 15:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421789;
-	bh=CnSJjSQYh6lN2yi/Y/JyrTSlEv2xWqJNrhLY07P8C/s=;
+	s=korg; t=1745421386;
+	bh=idD66FNbxnzWEMPCw8mhG6iVtLNpuzf3kXbJrBQehCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1W8Q+5kSpnWyK9pSwKqVGkzwv6PE0WzJPvtQiVc+JymOAtLrhy3mefyk2rBREue6Z
-	 iwaC61C7U3PCLWwAObLGQ6f6N6+8HxDSl7Yclys2OssxaqhXaK0wWFmTq04uzvDCGl
-	 zFgVuFfG7RaxQw/7jQaFhMPiP2rg+ZuEAQ9jDPUY=
+	b=nqnItTnMBhkcPW3I/R8PjRrGqzSF75LjBTD6oEcVFk3C2oKU1jXziPc9Ik3JEfE7v
+	 vi4mIqXrgoWBhr2VIx4OrowWASi5FP0pdojnQlhFUOjpWKwOsFy1G/aM8jcK4P3njT
+	 /lzYcuhhWrGg2AVV9R2A7hOKGKe9cxaELtrb2s+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.6 224/393] of/irq: Fix device node refcount leakage in API irq_of_parse_and_map()
-Date: Wed, 23 Apr 2025 16:42:00 +0200
-Message-ID: <20250423142652.639725557@linuxfoundation.org>
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 132/291] mm: add missing release barrier on PGDAT_RECLAIM_LOCKED unlock
+Date: Wed, 23 Apr 2025 16:42:01 +0200
+Message-ID: <20250423142629.793168397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +73,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-commit 962a2805e47b933876ba0e4c488d9e89ced2dd29 upstream.
+commit c0ebbb3841e07c4493e6fe351698806b09a87a37 upstream.
 
-In irq_of_parse_and_map(), refcount of device node @oirq.np was got
-by successful of_irq_parse_one() invocation, but it does not put the
-refcount before return, so causes @oirq.np refcount leakage.
+The PGDAT_RECLAIM_LOCKED bit is used to provide mutual exclusion of node
+reclaim for struct pglist_data using a single bit.
 
-Fix by putting @oirq.np refcount before return.
+It is "locked" with a test_and_set_bit (similarly to a try lock) which
+provides full ordering with respect to loads and stores done within
+__node_reclaim().
 
-Fixes: e3873444990d ("of/irq: Move irq_of_parse_and_map() to common code")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-6-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+It is "unlocked" with clear_bit(), which does not provide any ordering
+with respect to loads and stores done before clearing the bit.
+
+The lack of clear_bit() memory ordering with respect to stores within
+__node_reclaim() can cause a subsequent CPU to fail to observe stores from
+a prior node reclaim.  This is not an issue in practice on TSO (e.g.
+x86), but it is an issue on weakly-ordered architectures (e.g.  arm64).
+
+Fix this by using clear_bit_unlock rather than clear_bit to clear
+PGDAT_RECLAIM_LOCKED with a release memory ordering semantic.
+
+This provides stronger memory ordering (release rather than relaxed).
+
+Link: https://lkml.kernel.org/r/20250312141014.129725-1-mathieu.desnoyers@efficios.com
+Fixes: d773ed6b856a ("mm: test and set zone reclaim lock before starting reclaim")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Andrea Parri <parri.andrea@gmail.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jade Alglave <j.alglave@ucl.ac.uk>
+Cc: Luc Maranget <luc.maranget@inria.fr>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/vmscan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -39,11 +39,15 @@
- unsigned int irq_of_parse_and_map(struct device_node *dev, int index)
- {
- 	struct of_phandle_args oirq;
-+	unsigned int ret;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7729,7 +7729,7 @@ int node_reclaim(struct pglist_data *pgd
+ 		return NODE_RECLAIM_NOSCAN;
  
- 	if (of_irq_parse_one(dev, index, &oirq))
- 		return 0;
+ 	ret = __node_reclaim(pgdat, gfp_mask, order);
+-	clear_bit(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
++	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
  
--	return irq_create_of_mapping(&oirq);
-+	ret = irq_create_of_mapping(&oirq);
-+	of_node_put(oirq.np);
-+
-+	return ret;
- }
- EXPORT_SYMBOL_GPL(irq_of_parse_and_map);
- 
+ 	if (!ret)
+ 		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
 
 
 
