@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-136236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD9BA99397
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00EC9A99271
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79EEC1BA80B6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D0324A2EE9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEDB529CB35;
-	Wed, 23 Apr 2025 15:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC8D28C5BD;
+	Wed, 23 Apr 2025 15:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeZpC+Or"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQXctAtY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC3829CB2E;
-	Wed, 23 Apr 2025 15:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00F28C5B2;
+	Wed, 23 Apr 2025 15:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422015; cv=none; b=habrI+A0MAsr7gLO0nf1qZ4t17GX5vp4e29P162qT1M997VtbDt9YNmQgwIv8BQnebstZ8JaXbVgI9xro7WoQBHMZP4sa3CXKoRor23TypFhHScmyFKFHE7ZA1PP6xPLfp53pS+YNR8zE5g8T6rnkEMgUj2XnAcZp2KMaZxBlaw=
+	t=1745421866; cv=none; b=RRlonYaUqfj97NCNrb3mUlFxJCZMA9hy22ffUcOQETVhvuB02+kvYFnEdzhHeKjBJlgzBMjBpLfl4HI86MqWTXklnDytBjLuhdQT1PrwQYjXOB/JnJnjBnk4/PSBLn5WRc1a/KcGRtviZFf1eg/nZsQF6YELsPIWchCfuc1IASs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422015; c=relaxed/simple;
-	bh=Tact1xaPNT9ctQOIDHP/GyMlG+V9q/v8J0CVeA+9TeE=;
+	s=arc-20240116; t=1745421866; c=relaxed/simple;
+	bh=LQCyjDzI4XJcsikgZvaxnHmtAzvYUZNqAE5FJ288yi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyZH4a+mMAMcH3VmmYCdNl67s3mikOt5noRTZY3ZES5/bj0xPf2m+imsYr1lJmW1q+lC7itmPBnWpRbIzo70Rmdg3Bfx2LtBszNOpBJe8kAwh6jvjYdRhRS/3SFtEVBi8ipENF7f2iv0Sn21+8CLxCrJ4haCg+7+C8e7kBjwI4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeZpC+Or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE24C4CEE2;
-	Wed, 23 Apr 2025 15:26:55 +0000 (UTC)
+	 MIME-Version; b=NqeTEpqw3y2FiSzo14IRWOFTxBkK8eGjuPBKdkC/cc9RapdAgBWXqkhK7kLCzlawwB6x4CZuxr0Fcj4UFaY8qYW8N6Lr5nZyR1SWVYUZoyFSfrZpHAveI7wcKOfgmsbLuUYo1ukYMw7wWjYhNpfBPro+PRIrLwSdHU4pG7vKmmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQXctAtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2A0C4CEE3;
+	Wed, 23 Apr 2025 15:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422015;
-	bh=Tact1xaPNT9ctQOIDHP/GyMlG+V9q/v8J0CVeA+9TeE=;
+	s=korg; t=1745421865;
+	bh=LQCyjDzI4XJcsikgZvaxnHmtAzvYUZNqAE5FJ288yi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FeZpC+OrNUbB0D7aNJJfLO1Swu6O/V3uZk8ZeUudqdaXlhxAgoEAplFRdh+pSYLjR
-	 QsuaYisJHhSvHFY9KBHJ9OE06WvbEemPEf+ke+s/lLhqbYvpq4yEn8P/ta9jqPcEls
-	 ObIDISlnv0WS1UpExd7HlVGmHqe+NYAAMrAMPty4=
+	b=OQXctAtYcEuHY7GN5/h2aii5Z+EfJkDYctOsAHasZynnXsydSswYZBiEJ4amKJAVh
+	 Xpw6e4CkgE9zvx/jF+eCO3+fxYUJQgGzMgqYpkLcPj9xJ24r2TL6RlaOqShYM1Lmqp
+	 Bc2m5AlS8/qYe1p4NJQKxTttLUvYUPjwPItVOT74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/393] igc: cleanup PTP module if probe fails
+Subject: [PATCH 6.1 170/291] scsi: iscsi: Fix missing scsi_host_put() in error path
 Date: Wed, 23 Apr 2025 16:42:39 +0200
-Message-ID: <20250423142654.231665447@linuxfoundation.org>
+Message-ID: <20250423142631.333637260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 1f025759ba394dd53e434d2668cb0597886d9b69 ]
+[ Upstream commit 72eea84a1092b50a10eeecfeba4b28ac9f1312ab ]
 
-Make sure that the PTP module is cleaned up if the igc_probe() fails by
-calling igc_ptp_stop() on exit.
+Add goto to ensure scsi_host_put() is called in all error paths of
+iscsi_set_host_param() function. This fixes a potential memory leak when
+strlen() check fails.
 
-Fixes: d89f88419f99 ("igc: Add skeletal frame for Intel(R) 2.5G Ethernet Controller support")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: ce51c8170084 ("scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250318094344.91776-1-linmq006@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/scsi_transport_iscsi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index ae93b45cf55e8..e2f5c4384455e 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -6951,6 +6951,7 @@ static int igc_probe(struct pci_dev *pdev,
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 687487ea4fd3b..7f0fd03dd03bc 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3207,11 +3207,14 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+ 	}
  
- err_register:
- 	igc_release_hw_control(adapter);
-+	igc_ptp_stop(adapter);
- err_eeprom:
- 	if (!igc_check_reset_block(hw))
- 		igc_reset_phy(hw);
+ 	/* see similar check in iscsi_if_set_param() */
+-	if (strlen(data) > ev->u.set_host_param.len)
+-		return -EINVAL;
++	if (strlen(data) > ev->u.set_host_param.len) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
+ 					data, ev->u.set_host_param.len);
++out:
+ 	scsi_host_put(shost);
+ 	return err;
+ }
 -- 
 2.39.5
 
