@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-136296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B35A993E8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:05:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CE56A993E6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68CDD1B85E63
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700869A3CE7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218DB28E619;
-	Wed, 23 Apr 2025 15:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C92293B58;
+	Wed, 23 Apr 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNWj3Ldb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsgcBjBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F5E2820DC;
-	Wed, 23 Apr 2025 15:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EF9293B57;
+	Wed, 23 Apr 2025 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422172; cv=none; b=TXogrDsbwP3yWL3GXEsHLbsVcaWrNgUhDh7M3t5K77j53z5MW7iExiowLxR9/96lsgyBkwhOmilWC+53x4AzM0nVNumPaLMM4c73WGofm+JCal8H7rSwZOORefh6PIdP3qdDWgzkEyIp1Tjse+zrNEycrxGgZNLceJzB4FiTmu0=
+	t=1745422246; cv=none; b=k5kkNJ0/eJOAqB0QsFmOMeJImo2oC8spUUBv3+2RnrIs+i2P3eL8rToytc1sTUrTvnKmDDX54FeZi1bAGCOL0Wa1fm3XZHbSMF8R68IaHUUNtUwQghvvpCXLFcQo3mMQUtBBoFe6IWCT4alsTN+Sib2OvlXMFpP9dBrtNCchyNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422172; c=relaxed/simple;
-	bh=Rwr1+ya7mlQxTaZ2QK62OYCWvyzUCCY2yFFbGVN0Ir4=;
+	s=arc-20240116; t=1745422246; c=relaxed/simple;
+	bh=rbOUXNxgQDtxilzDbJ+hyvxCsXb14AhOUtm6+CVBqTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DP+IQ8o4WGrqZzpCFHR35dTzMnVh0LgNLcCvyv/WRXtn+gKUuNXTG0VBUsp0zVd7goC1HHxuh/0fzQikUya+ykXwdWeDEwk2Asb7dXWoqVT5HcwZf8SZ18meWgKgzafP57U+FA2SENjrm2z9/WA4bTPXhKe6wOGYFSd/ls/XA3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNWj3Ldb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6785BC4CEE2;
-	Wed, 23 Apr 2025 15:29:32 +0000 (UTC)
+	 MIME-Version; b=AGYn92UPSmU0lQBrhytVxnqcNyhfANAh/AdDnQG3kEpoWF6muQtupClw6LV1W4od/tSKvCpqz/J7fdJtHsmFhdabZ4KH/HUxge9X/afVLEvwO1yoPcmiDItyXMsWUfpmez6rwrUb/enx+AOApD1kEzQKfEIphpEnMBSYtLLPnmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsgcBjBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3792C4CEE3;
+	Wed, 23 Apr 2025 15:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422172;
-	bh=Rwr1+ya7mlQxTaZ2QK62OYCWvyzUCCY2yFFbGVN0Ir4=;
+	s=korg; t=1745422246;
+	bh=rbOUXNxgQDtxilzDbJ+hyvxCsXb14AhOUtm6+CVBqTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNWj3LdbqY0ZTaj83NkmVm5Onv2OYWfOi8BqCMMprFsbJQ9eCsmcLMyMp2lauHdk/
-	 Bolt9PrmLNg7SkG4EamwBB4p+iTZ3FYXdIz0rURhQMt6QvW4qIyibDIH9c0QIlafK/
-	 wTP7jvDV82+WsBwNSpZqWyYJtIusSF2slTXFjB6M=
+	b=GsgcBjBhcbhghqPOS4DsmrPJGwjs0bt9r0q5On6YzC3q0TrsgIAHaWgIdbC2IX2Gj
+	 dbe41RK9vjhQSfxiBHAk898rVmEHxmA7vWZscxvSlnjtBGLINATuh2qw0BBueAEUsr
+	 1OOtRzrcft8xIKUIeg60eoD5o93rlD/LGlGX95sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 291/393] net: ti: icss-iep: Add phase offset configuration for perout signal
-Date: Wed, 23 Apr 2025 16:43:07 +0200
-Message-ID: <20250423142655.361510236@linuxfoundation.org>
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 302/393] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
+Date: Wed, 23 Apr 2025 16:43:18 +0200
+Message-ID: <20250423142655.810677709@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -68,99 +66,119 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 220cb1be647a7ca4e60241405c66f8f612c9b046 ]
+commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
 
-icss_iep_perout_enable_hw() is a common function for generating
-both pps and perout signals. When enabling pps, the application needs
-to only pass enable/disable argument, whereas for perout it supports
-different flags to configure the signal.
+Currently the VI feedback rate is set to fixed 8K, fix this by getting
+the correct rate from params_rate.
 
-In case the app passes a valid phase offset value, the signal should
-start toggling after that phase offset, else start immediately or
-as soon as possible. ICSS_IEP_SYNC_START_REG register take number of
-clock cycles to wait before starting the signal after activation time.
-Set appropriate value to this register to support phase offset.
+Without this patch incorrect rate will be set on the VI feedback
+recording resulting in rate miss match and audio artifacts.
 
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20250304105753.1552159-3-m-malladi@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7349c9e99793 ("net: ti: icss-iep: Fix possible NULL pointer dereference for perout request")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 923ac58c9de5b..6006276ecce6f 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -477,6 +477,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 				     struct ptp_perout_request *req, int on)
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -66,6 +66,10 @@
+ #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
+ #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
+@@ -347,6 +351,7 @@ struct wsa_macro {
+ 	int ear_spkr_gain;
+ 	int spkr_gain_offset;
+ 	int spkr_mode;
++	u32 pcm_rate_vi;
+ 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
+ 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
+ 	struct regmap *regmap;
+@@ -974,6 +979,7 @@ static int wsa_macro_hw_params(struct sn
+ 			       struct snd_soc_dai *dai)
  {
- 	struct timespec64 ts;
-+	u64 ns_start;
- 	u64 ns_width;
+ 	struct snd_soc_component *component = dai->component;
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
  	int ret;
- 	u64 cmp;
-@@ -486,6 +487,14 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 	ts.tv_nsec = req->on.nsec;
- 	ns_width = timespec64_to_ns(&ts);
  
-+	if (req->flags & PTP_PEROUT_PHASE) {
-+		ts.tv_sec = req->phase.sec;
-+		ts.tv_nsec = req->phase.nsec;
-+		ns_start = timespec64_to_ns(&ts);
-+	} else {
-+		ns_start = 0;
-+	}
+ 	switch (substream->stream) {
+@@ -986,6 +992,11 @@ static int wsa_macro_hw_params(struct sn
+ 			return ret;
+ 		}
+ 		break;
++	case SNDRV_PCM_STREAM_CAPTURE:
++		if (dai->id == WSA_MACRO_AIF_VI)
++			wsa->pcm_rate_vi = params_rate(params);
 +
- 	if (iep->ops && iep->ops->perout_enable) {
- 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
- 		if (ret)
-@@ -500,7 +509,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
- 				     div_u64(ns_width, iep->def_inc));
- 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
--			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
-+			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
-+				     div_u64(ns_start, iep->def_inc));
- 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
- 			/* Enable CMP 1 */
- 			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
-@@ -527,6 +537,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -1159,6 +1170,28 @@ static int wsa_macro_enable_vi_feedback(
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	u32 tx_reg0, tx_reg1;
++	u32 rate_val;
++
++	switch (wsa->pcm_rate_vi) {
++	case 8000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	case 16000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
++		break;
++	case 24000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
++		break;
++	case 32000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
++		break;
++	case 48000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
++		break;
++	default:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	}
  
- 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
- 				     div_u64(ns_width, iep->def_inc));
-+			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
-+				     div_u64(ns_start, iep->def_inc));
- 			/* Enable Sync in single shot mode  */
- 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
- 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
-@@ -557,7 +569,8 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
- 	int ret = 0;
+ 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+ 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+@@ -1170,7 +1203,7 @@ static int wsa_macro_enable_vi_feedback(
  
- 	/* Reject requests with unsupported flags */
--	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE)
-+	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
-+			  PTP_PEROUT_PHASE))
- 		return -EOPNOTSUPP;
- 
- 	mutex_lock(&iep->ptp_clk_mutex);
-@@ -607,6 +620,7 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
- 	if (on) {
- 		ns = icss_iep_gettime(iep, NULL);
- 		ts = ns_to_timespec64(ns);
-+		rq.perout.flags = 0;
- 		rq.perout.period.sec = 1;
- 		rq.perout.period.nsec = 0;
- 		rq.perout.start.sec = ts.tv_sec + 2;
--- 
-2.39.5
-
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+-			/* Enable V&I sensing */
++		/* Enable V&I sensing */
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+@@ -1179,10 +1212,10 @@ static int wsa_macro_enable_vi_feedback(
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg1,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
 
 
 
