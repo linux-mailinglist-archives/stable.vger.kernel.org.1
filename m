@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1941AA99396
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F737A99166
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D61A71BA0463
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86E941B66EED
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6372428A415;
-	Wed, 23 Apr 2025 15:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7242A28C5D0;
+	Wed, 23 Apr 2025 15:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U31IQJC6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHFxlS1u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F172176242;
-	Wed, 23 Apr 2025 15:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEF928C5BF;
+	Wed, 23 Apr 2025 15:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422431; cv=none; b=MKhXA2qbMDZ4W+L8iMnFgnjFhp50J0NSRZwS4Kpt3cr0BNf1/7pEzRTP9B3lVtNqtX2Pc9zgaYjW5Dbutvk0mLieIgcMkc0795MJym0TOXt9MD9UCHBmjoBYnZpxkRdgDGF5FLhnV++/1L+jccvcCctWEuNAnB5WbdPlAUQetbE=
+	t=1745421360; cv=none; b=EFUpo+DdVTg+GKpYF95AX5DB0MAS2U7YpejqgmSJ/jpJI3m66l0aESAs6P3/VoStwU/qA7syd8rRrKtmpP/HodRopiGSytJuSJFMZ1IgKFY3oz1i8XHxNvXuy6f6xiqeEyn+S1Bf5Jjn28L8GXeXxB4gnXKTclznjOU34XVGbFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422431; c=relaxed/simple;
-	bh=zr1IdI0r7UncH8qSEoQldn3tSH2++h7dTtGGkStKxlo=;
+	s=arc-20240116; t=1745421360; c=relaxed/simple;
+	bh=NTT0sBUSZIL6IcfXkuRzN9wVmNEsffD4RcPXtnZf9Vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OY9eKQIRohMth5ENq3NHBX7jDEou6HLWK3nF5FNJ1i00KO0d0L9CGvGKh2sqWCWCI9HeEB6d2tkSN8TL+URGpvC3V6v6GpOm7FBpdlrHsbBGUDlXgtHcxgJWTY7cmOGNWEcTnrFDOFps6ymZWA77vMfu2F4j0tATgt2+unH9YmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U31IQJC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4405DC4CEE2;
-	Wed, 23 Apr 2025 15:33:50 +0000 (UTC)
+	 MIME-Version; b=uPolGlcvwlwEsi1kpaC/S5RGwNMXEWddkkFmgSZ31UAww/+vUdS606KOIG/sKPGQpS2xp9bsJVchFWW65igW7IFkhsK8o91mWE6fH88Ngm3jAGwSdb/iPYqjAlbe+HYrXUJDGYhacPo3sFGGmAx9cnLqVX9t6IivEgsZHEn+q9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHFxlS1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02D3C4CEE2;
+	Wed, 23 Apr 2025 15:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422430;
-	bh=zr1IdI0r7UncH8qSEoQldn3tSH2++h7dTtGGkStKxlo=;
+	s=korg; t=1745421360;
+	bh=NTT0sBUSZIL6IcfXkuRzN9wVmNEsffD4RcPXtnZf9Vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U31IQJC6EL5eAh2aVDCATCOTUW0GJJgU2iFsGwIsQHV9MErjdmcTs9hlcGf9BnLiu
-	 AIZq2weDiBgfKh3rEe6puopjgyFciuhsKwcBN6igjehCM8U/LePL64DvinglzaBHeV
-	 k6QjdZS09+ueBHHPsBB1rvJbInuZxQA7s68CUtpc=
+	b=uHFxlS1uLcr2llZamHt3+un4PZTFwS/MXakSB840Q2JG3TS+57j6FqJbGDhl7JdL+
+	 bXwVKi2x5ni210YiqDeviRTjCI0L4bhBHd+SOlC2KTA2iWjP3BjzzSw4gHf//Se5Cn
+	 gM+LSSaNVLrwHw3HMEaECCISVJMocKBpUqBeX6dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Lanzano <lanzano.alex@gmail.com>
-Subject: [PATCH 6.6 346/393] drm/repaper: fix integer overflows in repeat functions
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 178/241] drm/amd: Handle being compiled without SI or CIK support better
 Date: Wed, 23 Apr 2025 16:44:02 +0200
-Message-ID: <20250423142657.630750686@linuxfoundation.org>
+Message-ID: <20250423142627.796814891@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
+commit 5f054ddead33c1622ea9c0c0aaf07c6843fc7ab0 upstream.
 
-There are conditions, albeit somewhat unlikely, under which right hand
-expressions, calculating the end of time period in functions like
-repaper_frame_fixed_repeat(), may overflow.
+If compiled without SI or CIK support but amdgpu tries to load it
+will run into failures with uninitialized callbacks.
 
-For instance, if 'factor10x' in repaper_get_temperature() is high
-enough (170), as is 'epd->stage_time' in repaper_probe(), then the
-resulting value of 'end' will not fit in unsigned int expression.
+Show a nicer message in this case and fail probe instead.
 
-Mitigate this by casting 'epd->factored_stage_time' to wider type before
-any multiplication is done.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4050
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/repaper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |   44 +++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 20 deletions(-)
 
---- a/drivers/gpu/drm/tiny/repaper.c
-+++ b/drivers/gpu/drm/tiny/repaper.c
-@@ -455,7 +455,7 @@ static void repaper_frame_fixed_repeat(s
- 				       enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -1791,7 +1791,6 @@ static const u16 amdgpu_unsupported_pcii
+ };
  
- 	do {
- 		repaper_frame_fixed(epd, fixed_value, stage);
-@@ -466,7 +466,7 @@ static void repaper_frame_data_repeat(st
- 				      const u8 *mask, enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+ static const struct pci_device_id pciidlist[] = {
+-#ifdef CONFIG_DRM_AMDGPU_SI
+ 	{0x1002, 0x6780, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+ 	{0x1002, 0x6784, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+ 	{0x1002, 0x6788, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
+@@ -1864,8 +1863,6 @@ static const struct pci_device_id pciidl
+ 	{0x1002, 0x6665, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
+ 	{0x1002, 0x6667, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
+ 	{0x1002, 0x666F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
+-#endif
+-#ifdef CONFIG_DRM_AMDGPU_CIK
+ 	/* Kaveri */
+ 	{0x1002, 0x1304, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
+ 	{0x1002, 0x1305, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
+@@ -1948,7 +1945,6 @@ static const struct pci_device_id pciidl
+ 	{0x1002, 0x985D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
+ 	{0x1002, 0x985E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
+ 	{0x1002, 0x985F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
+-#endif
+ 	/* topaz */
+ 	{0x1002, 0x6900, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
+ 	{0x1002, 0x6901, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
+@@ -2280,14 +2276,14 @@ static int amdgpu_pci_probe(struct pci_d
+ 		return -ENOTSUPP;
+ 	}
  
- 	do {
- 		repaper_frame_data(epd, image, mask, stage);
++	switch (flags & AMD_ASIC_MASK) {
++	case CHIP_TAHITI:
++	case CHIP_PITCAIRN:
++	case CHIP_VERDE:
++	case CHIP_OLAND:
++	case CHIP_HAINAN:
+ #ifdef CONFIG_DRM_AMDGPU_SI
+-	if (!amdgpu_si_support) {
+-		switch (flags & AMD_ASIC_MASK) {
+-		case CHIP_TAHITI:
+-		case CHIP_PITCAIRN:
+-		case CHIP_VERDE:
+-		case CHIP_OLAND:
+-		case CHIP_HAINAN:
++		if (!amdgpu_si_support) {
+ 			dev_info(&pdev->dev,
+ 				 "SI support provided by radeon.\n");
+ 			dev_info(&pdev->dev,
+@@ -2295,16 +2291,18 @@ static int amdgpu_pci_probe(struct pci_d
+ 				);
+ 			return -ENODEV;
+ 		}
+-	}
++		break;
++#else
++		dev_info(&pdev->dev, "amdgpu is built without SI support.\n");
++		return -ENODEV;
+ #endif
++	case CHIP_KAVERI:
++	case CHIP_BONAIRE:
++	case CHIP_HAWAII:
++	case CHIP_KABINI:
++	case CHIP_MULLINS:
+ #ifdef CONFIG_DRM_AMDGPU_CIK
+-	if (!amdgpu_cik_support) {
+-		switch (flags & AMD_ASIC_MASK) {
+-		case CHIP_KAVERI:
+-		case CHIP_BONAIRE:
+-		case CHIP_HAWAII:
+-		case CHIP_KABINI:
+-		case CHIP_MULLINS:
++		if (!amdgpu_cik_support) {
+ 			dev_info(&pdev->dev,
+ 				 "CIK support provided by radeon.\n");
+ 			dev_info(&pdev->dev,
+@@ -2312,8 +2310,14 @@ static int amdgpu_pci_probe(struct pci_d
+ 				);
+ 			return -ENODEV;
+ 		}
+-	}
++		break;
++#else
++		dev_info(&pdev->dev, "amdgpu is built without CIK support.\n");
++		return -ENODEV;
+ #endif
++	default:
++		break;
++	}
+ 
+ 	adev = devm_drm_dev_alloc(&pdev->dev, &amdgpu_kms_driver, typeof(*adev), ddev);
+ 	if (IS_ERR(adev))
 
 
 
