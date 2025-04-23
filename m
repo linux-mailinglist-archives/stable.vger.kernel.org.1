@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-136225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8383A9934B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FD6A98F47
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A359A2548
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 574071B82902
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 456462957DE;
-	Wed, 23 Apr 2025 15:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2027F281364;
+	Wed, 23 Apr 2025 14:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljchWsQC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUafnvqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0178028CF64;
-	Wed, 23 Apr 2025 15:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2022281344;
+	Wed, 23 Apr 2025 14:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421987; cv=none; b=ny0sRdLbcqYQzBmj5cSHmKMYQlmBlEPzRxxqywj9FHLVO0I/28obiBsmGGvhcrc1RSkia4sKPTFW2S1bds9hqyazZlfITThD952v07xC6DOQtVzKRuFYnSlx7WNw3+SWov+MQ2udqQ/uEBBWaU5R8JeCO68rYvvxf3f1MKNYeZs=
+	t=1745420342; cv=none; b=E9xcKQmkEfr2+ikU9twd2u59aewck3x5tEMx83iuwbF6JKGufxm4x8Oh6p667IrVzPrnCPtjFHH/D4C2XZvhOYcvvCAihFlVTeyA2VK1aPSxr3gURxZU02MpB5yjW5BJIWWUZFSN5z9Du/EW7bpbpLHYOz6KHhj2OWTjH12agGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421987; c=relaxed/simple;
-	bh=AKBrkWGm2AZHx6Br4W7WfvRgLJ1O4Wi4nd75NAvE+0c=;
+	s=arc-20240116; t=1745420342; c=relaxed/simple;
+	bh=YyMBXsvPuUWLaphv/MV+3bJKRTCXKMO44EVGvMJxwc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQ6ISqRSk/aFaeZeFzI6JTJxap3F6TcFC/GfUK3syBjLAMAu31NF5o9rqOsmsnreNf2rMYpMZKa2h5DIp9tzPiKwWMPi6HUTmncthyd8XuHA3UelWWx4YlR4BJBYyZQGMH9hTNXZm+HTulgxtGIYTGMHF3r70VSCTXuLfF4a0Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljchWsQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 886FDC4CEE2;
-	Wed, 23 Apr 2025 15:26:26 +0000 (UTC)
+	 MIME-Version; b=LMKTMmiwv8CzwuC3ItOfFZyTShTmrDkW0r+tC6ieNcu3YIuOJr2jfaRW5Tbzl7T7JtxL3IY94LNdHx0ow1JUj5MBLO64lwJnwmyo71EaQsEwU++Cd5xh8KjfaZzB3oehiZk0b/ECEHzRN/AumgojqgHABo1lX27jq0pJEIQfSD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUafnvqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E80C4CEE2;
+	Wed, 23 Apr 2025 14:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421986;
-	bh=AKBrkWGm2AZHx6Br4W7WfvRgLJ1O4Wi4nd75NAvE+0c=;
+	s=korg; t=1745420342;
+	bh=YyMBXsvPuUWLaphv/MV+3bJKRTCXKMO44EVGvMJxwc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljchWsQC2iOvK4jys3kgj7ppvHhAZsUyJsVYnDvIApnmB4Srekm/7jxJEC5xCo2J8
-	 ZeR5Q6KZTWw4AGV7gxUFalNvHEi1ja54QnPyj5IVuupe35AYIXP78ondYdzNqQlFhm
-	 0x2QTqPCnI2+OlxSc0YkpnA8gwX2iDhXpAscyojA=
+	b=bUafnvqKPI3vQ7CCzUddTqg+IKbAq7AWm+2Mxok51Rh5E/F9w9vrXh08aUIwkZzMq
+	 SB5AqtrI+1Wps8NEAA1+8jQdAA3WPyFU8JI/nNoMjQHFbBf1HlSRjPndMMiPHfdTJH
+	 8F14FRAh+um77LO04pNmaro3P3zkAboQIY0YAim4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Ricci <io@r-ricci.it>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Len Brown <len.brown@intel.com>
-Subject: [PATCH 6.6 236/393] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 068/241] netlink: specs: rtnetlink: attribute naming corrections
 Date: Wed, 23 Apr 2025 16:42:12 +0200
-Message-ID: <20250423142653.135755841@linuxfoundation.org>
+Message-ID: <20250423142623.377768943@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
+[ Upstream commit 540201c0ef7e8e7b169f68a238ade931a81a31a6 ]
 
-While debugging kexec/hibernation hangs and crashes, it turned out that
-the current implementation of e820__register_nosave_regions() suffers from
-multiple serious issues:
+Some attribute names diverge in very minor ways from the C names.
+These are most likely typos, and they prevent the C codegen from
+working.
 
- - The end of last region is tracked by PFN, causing it to find holes
-   that aren't there if two consecutive subpage regions are present
-
- - The nosave PFN ranges derived from holes are rounded out (instead of
-   rounded in) which makes it inconsistent with how explicitly reserved
-   regions are handled
-
-Fix this by:
-
- - Treating reserved regions as if they were holes, to ensure consistent
-   handling (rounding out nosave PFN ranges is more correct as the
-   kernel does not use partial pages)
-
- - Tracking the end of the last RAM region by address instead of pages
-   to detect holes more precisely
-
-These bugs appear to have been introduced about ~18 years ago with the very
-first version of e820_mark_nosave_regions(), and its flawed assumptions were
-carried forward uninterrupted through various waves of rewrites and renames.
-
-[ mingo: Added Git archeology details, for kicks and giggles. ]
-
-Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
-Reported-by: Roberto Ricci <io@r-ricci.it>
-Tested-by: Roberto Ricci <io@r-ricci.it>
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Len Brown <len.brown@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
-Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bc515ed06652 ("netlink: specs: Add a spec for neighbor tables in rtnetlink")
+Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250414211851.602096-7-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/e820.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ Documentation/netlink/specs/rt_link.yaml  | 6 +++---
+ Documentation/netlink/specs/rt_neigh.yaml | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -753,22 +753,21 @@ void __init e820__memory_setup_extended(
- void __init e820__register_nosave_regions(unsigned long limit_pfn)
- {
- 	int i;
--	unsigned long pfn = 0;
-+	u64 last_addr = 0;
- 
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		struct e820_entry *entry = &e820_table->entries[i];
- 
--		if (pfn < PFN_UP(entry->addr))
--			register_nosave_region(pfn, PFN_UP(entry->addr));
--
--		pfn = PFN_DOWN(entry->addr + entry->size);
--
- 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
--			register_nosave_region(PFN_UP(entry->addr), pfn);
-+			continue;
- 
--		if (pfn >= limit_pfn)
--			break;
-+		if (last_addr < entry->addr)
-+			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
-+
-+		last_addr = entry->addr + entry->size;
- 	}
-+
-+	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
- }
- 
- #ifdef CONFIG_ACPI
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index 1eab6aeaa2193..9f0ca05df0b98 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -1576,7 +1576,7 @@ attribute-sets:
+         name: nf-call-iptables
+         type: u8
+       -
+-        name: nf-call-ip6-tables
++        name: nf-call-ip6tables
+         type: u8
+       -
+         name: nf-call-arptables
+@@ -2064,7 +2064,7 @@ attribute-sets:
+         name: id
+         type: u16
+       -
+-        name: flag
++        name: flags
+         type: binary
+         struct: ifla-vlan-flags
+       -
+@@ -2152,7 +2152,7 @@ attribute-sets:
+         type: binary
+         struct: ifla-cacheinfo
+       -
+-        name: icmp6-stats
++        name: icmp6stats
+         type: binary
+         struct: ifla-icmp6-stats
+       -
+diff --git a/Documentation/netlink/specs/rt_neigh.yaml b/Documentation/netlink/specs/rt_neigh.yaml
+index e670b6dc07be4..a1e137a16abd5 100644
+--- a/Documentation/netlink/specs/rt_neigh.yaml
++++ b/Documentation/netlink/specs/rt_neigh.yaml
+@@ -189,7 +189,7 @@ attribute-sets:
+         type: binary
+         display-hint: ipv4
+       -
+-        name: lladr
++        name: lladdr
+         type: binary
+         display-hint: mac
+       -
+-- 
+2.39.5
+
 
 
 
