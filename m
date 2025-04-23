@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-135983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CCBA99189
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B684FA992F4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 628711B874C9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E3584A01A2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD85D28C5AD;
-	Wed, 23 Apr 2025 15:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E052918D2;
+	Wed, 23 Apr 2025 15:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUydXMqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdFv46xi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637DC28C5A4;
-	Wed, 23 Apr 2025 15:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2FD28E61B;
+	Wed, 23 Apr 2025 15:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421348; cv=none; b=F/03Zr/3CvwMbsr3t/Bt8NGPN7lXVFFCkPT8mhrzrtivods0AJ/DmzECmzwq7N+N1hbTb9ZWwIj4/r5FO28d2M7W0FWllnag96P7czv3COT35IfDxnGhd+m4kZWGAF+NMhEctClmOT0hbhtGki/n/SyJ31mvapNWmPXsxIf7bhY=
+	t=1745422188; cv=none; b=I8nkVqLsBcs19zWwOrYjz4LjM57iOFjF+QMwGrCrFUTLRDILGRLrO//INPyVYJXVonH68Ism/Lx7atC1g2bdDZbeS0fxqgvHancM48A5NMKbNh8LDAE1g+IPdpyEsVum3d+4VTyPKEBTm8nQmWToxMWTH12AfOzmq7LUBFmrSi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421348; c=relaxed/simple;
-	bh=EA38VdJovGL3ILlTgZ2ukOUzrMxgNLi3hJCeoGVGxzs=;
+	s=arc-20240116; t=1745422188; c=relaxed/simple;
+	bh=Sxi2TNO+cJxSiip7ZK2SMuPUOnITNicKG2nJkKmeLiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBwbjsyeSM1qNNLFiSXc6Yy0zFjwvKYKvp+6qQ/c3HbkQE/3lZk2PBFbDNW1dhD0N/aLn16DHnB5jSc7p+GfKgbjG1PrkeQ+LZ6kMMgv7ueh9uljKxEnuy4j6SvB3fx+XqnFrek5mJpw69758ErcGwOCj7Ffn31J5kR+Tfix4k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUydXMqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA916C4CEE2;
-	Wed, 23 Apr 2025 15:15:47 +0000 (UTC)
+	 MIME-Version; b=Zi39JxxBjoHZkRv1AeO9JuI78osdP4kC90VT+7/MA27JEt/FCB1+EQhTVhMmFnXIMnxOchS0dRAy6LohcrqCMepWS1Cqlet94dKrAdXCg/LtgMMSfaSUFiuIgq8T7HUmbrqDoDnYb/qVz69VrKlpxfBIvW2DWMM91fdkcyDTfuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdFv46xi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1120FC4CEE2;
+	Wed, 23 Apr 2025 15:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421348;
-	bh=EA38VdJovGL3ILlTgZ2ukOUzrMxgNLi3hJCeoGVGxzs=;
+	s=korg; t=1745422188;
+	bh=Sxi2TNO+cJxSiip7ZK2SMuPUOnITNicKG2nJkKmeLiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUydXMqJzrsS4CXxkzln3ReNYM79qICD4MfVjDs6PfjpRm0zExZDBkXFk6vtiHhTi
-	 7lK+0rhP5rpP5jU+iHjcYr0MrIR/LErbVnZPg0X3EKBRUue9ytCCCDZuRcY6Vbsepq
-	 0OCIIbqeZ+oo5kwS1F/1qNZlKm6UdsW7RsZ7jMNs=
+	b=OdFv46xim4W70lJmZ4XHpBAuCMIElpp1SkRPB4PZEde1rN8iq9FoTHH2tWZD88Rgj
+	 v8+Gfq4SSDDk4DdyTUUYWRsPI3X2Gs8FnVFXbxWDXcmTAtXPYYtgKVIc4WtGhqRKxp
+	 3r56uqghMDyenRYKIFNQZvBlkvdqrxl+aXMFDaXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Brendan Tam <Brendan.Tam@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 177/241] drm/amd/display: prevent hang on link training fail
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.1 252/291] KVM: arm64: Remove VHE host restore of CPACR_EL1.SMEN
 Date: Wed, 23 Apr 2025 16:44:01 +0200
-Message-ID: <20250423142627.757707726@linuxfoundation.org>
+Message-ID: <20250423142634.726385012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +66,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brendan Tam <Brendan.Tam@amd.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 8058061ed9d6bc259d1e678607b07d259342c08f upstream.
+[ Upstream commit 407a99c4654e8ea65393f412c421a55cac539f5b ]
 
-[Why]
-When link training fails, the phy clock will be disabled. However, in
-enable_streams, it is assumed that link training succeeded and the
-mux selects the phy clock, causing a hang when a register write is made.
+When KVM is in VHE mode, the host kernel tries to save and restore the
+configuration of CPACR_EL1.SMEN (i.e. CPTR_EL2.SMEN when HCR_EL2.E2H=1)
+across kvm_arch_vcpu_load_fp() and kvm_arch_vcpu_put_fp(), since the
+configuration may be clobbered by hyp when running a vCPU. This logic
+has historically been broken, and is currently redundant.
 
-[How]
-When enable_stream is hit, check if link training failed. If it did, fall
-back to the ref clock to avoid a hang and keep the system in a recoverable
-state.
+This logic was originally introduced in commit:
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Brendan Tam <Brendan.Tam@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+  861262ab86270206 ("KVM: arm64: Handle SME host state when running guests")
+
+At the time, the VHE hyp code would reset CPTR_EL2.SMEN to 0b00 when
+returning to the host, trapping host access to SME state. Unfortunately,
+this was unsafe as the host could take a softirq before calling
+kvm_arch_vcpu_put_fp(), and if a softirq handler were to use kernel mode
+NEON the resulting attempt to save the live FPSIMD/SVE/SME state would
+result in a fatal trap.
+
+That issue was limited to VHE mode. For nVHE/hVHE modes, KVM always
+saved/restored the host kernel's CPACR_EL1 value, and configured
+CPTR_EL2.TSM to 0b0, ensuring that host usage of SME would not be
+trapped.
+
+The issue above was incidentally fixed by commit:
+
+  375110ab51dec5dc ("KVM: arm64: Fix resetting SME trap values on reset for (h)VHE")
+
+That commit changed the VHE hyp code to configure CPTR_EL2.SMEN to 0b01
+when returning to the host, permitting host kernel usage of SME,
+avoiding the issue described above. At the time, this was not identified
+as a fix for commit 861262ab86270206.
+
+Now that the host eagerly saves and unbinds its own FPSIMD/SVE/SME
+state, there's no need to save/restore the state of the EL0 SME trap.
+The kernel can safely save/restore state without trapping, as described
+above, and will restore userspace state (including trap controls) before
+returning to userspace.
+
+Remove the redundant logic.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-5-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+[Update for rework of flags storage -- broonie]
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c   |    6 +++++-
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    7 +++++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/kvm_host.h |    2 --
+ arch/arm64/kvm/fpsimd.c           |   31 -------------------------------
+ 2 files changed, 33 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -3027,7 +3027,11 @@ void dcn20_enable_stream(struct pipe_ctx
- 		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -556,8 +556,6 @@ struct kvm_vcpu_arch {
+ /* Save TRBE context if active  */
+ #define DEBUG_STATE_SAVE_TRBE	__vcpu_single_flag(iflags, BIT(6))
  
- 		phyd32clk = get_phyd32clk_src(link);
--		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+		if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
-+			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
-+		} else {
-+			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+		}
- 	} else {
- 		if (dccg->funcs->enable_symclk_se)
- 			dccg->funcs->enable_symclk_se(dccg, stream_enc->stream_enc_inst,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -936,8 +936,11 @@ void dcn401_enable_stream(struct pipe_ct
- 	if (dc_is_dp_signal(pipe_ctx->stream->signal) || dc_is_virtual_signal(pipe_ctx->stream->signal)) {
- 		if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
- 			dccg->funcs->set_dpstreamclk(dccg, DPREFCLK, tg->inst, dp_hpo_inst);
+-/* SME enabled for EL0 */
+-#define HOST_SME_ENABLED	__vcpu_single_flag(sflags, BIT(1))
+ /* Physical CPU not in supported_cpus */
+ #define ON_UNSUPPORTED_CPU	__vcpu_single_flag(sflags, BIT(2))
+ /* WFIT instruction trapped */
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -87,21 +87,6 @@ void kvm_arch_vcpu_load_fp(struct kvm_vc
+ 	 */
+ 	fpsimd_save_and_flush_cpu_state();
+ 	vcpu->arch.fp_state = FP_STATE_FREE;
 -
--			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+			if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
-+				dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
-+			} else {
-+				dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+			}
- 		} else {
- 			dccg->funcs->enable_symclk_se(dccg, stream_enc->stream_enc_inst,
- 					link_enc->transmitter - TRANSMITTER_UNIPHY_A);
+-	/*
+-	 * We don't currently support SME guests but if we leave
+-	 * things in streaming mode then when the guest starts running
+-	 * FPSIMD or SVE code it may generate SME traps so as a
+-	 * special case if we are in streaming mode we force the host
+-	 * state to be saved now and exit streaming mode so that we
+-	 * don't have to handle any SME traps for valid guest
+-	 * operations. Do this for ZA as well for now for simplicity.
+-	 */
+-	if (system_supports_sme()) {
+-		vcpu_clear_flag(vcpu, HOST_SME_ENABLED);
+-		if (read_sysreg(cpacr_el1) & CPACR_EL1_SMEN_EL0EN)
+-			vcpu_set_flag(vcpu, HOST_SME_ENABLED);
+-	}
+ }
+ 
+ /*
+@@ -162,22 +147,6 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcp
+ 
+ 	local_irq_save(flags);
+ 
+-	/*
+-	 * If we have VHE then the Hyp code will reset CPACR_EL1 to
+-	 * CPACR_EL1_DEFAULT and we need to reenable SME.
+-	 */
+-	if (has_vhe() && system_supports_sme()) {
+-		/* Also restore EL0 state seen on entry */
+-		if (vcpu_get_flag(vcpu, HOST_SME_ENABLED))
+-			sysreg_clear_set(CPACR_EL1, 0,
+-					 CPACR_EL1_SMEN_EL0EN |
+-					 CPACR_EL1_SMEN_EL1EN);
+-		else
+-			sysreg_clear_set(CPACR_EL1,
+-					 CPACR_EL1_SMEN_EL0EN,
+-					 CPACR_EL1_SMEN_EL1EN);
+-	}
+-
+ 	if (vcpu->arch.fp_state == FP_STATE_GUEST_OWNED) {
+ 		if (vcpu_has_sve(vcpu)) {
+ 			__vcpu_sys_reg(vcpu, ZCR_EL1) = read_sysreg_el1(SYS_ZCR);
 
 
 
