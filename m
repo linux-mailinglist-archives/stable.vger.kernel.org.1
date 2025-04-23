@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-136110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC718A99204
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4125EA99209
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7381445487
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:31:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B2854A197E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6C142857CD;
-	Wed, 23 Apr 2025 15:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D412BE7A0;
+	Wed, 23 Apr 2025 15:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9PjX7FJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLlUVD61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9107A2BE101;
-	Wed, 23 Apr 2025 15:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2CE2BE118;
+	Wed, 23 Apr 2025 15:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421682; cv=none; b=skMSkIMR57jLZsKs1wtsblLg9cr8DCZS+wBZVF9TE4BBPH1q7xHzST5Vvi6uPUaVsTeQq7u5uDZcuZ7BeWoH5d1AYT65qakw4SD8yIUerl6P9QMfLHJLXt4a4IaYJh5/uTnmptys5x+vjJcis2Dc7+demIxqR8lVYm8OdfW1Ic0=
+	t=1745421690; cv=none; b=hPjTUWi9r09Jrmxm0CHCGzqbi5mdxFdBNU7XsWol1JBQyg3fWaZTsMtf3GHoAoPUAftoydsvpAr1ecBtPvQyGTnoMEiwv4zCD3qhbQ+An1OWLvNTsUyCSIvBSuw6X/6LkZtq/akQ1IdhdAXNkUwPtJFm0pVw/iC5gEh2wZRke5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421682; c=relaxed/simple;
-	bh=icdxCIF20ysLf8BxQUFbsqXxC2ZaOEksU/qxC2yFAfI=;
+	s=arc-20240116; t=1745421690; c=relaxed/simple;
+	bh=luU7Xf68R7FGwCo0tbyhNU1AaqAuBVNpZPJ3YmrUKKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ICP9iEd8xkRt3N9YYUrcFhoECHd/UaS5R23CuY9lVe/0WCC2c2OUrlUpA2x/2fAmmQtJ30NYiRIzGtacxVM2zl7ASQeTibD31gnYrtXY79TR9nhgcV2150t8bkZWFcnQQjD9ASXGDOQMX1ubQVycDVOGfHd2YMSRUmdfp3ldEOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9PjX7FJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968D2C4CEE8;
-	Wed, 23 Apr 2025 15:21:21 +0000 (UTC)
+	 MIME-Version; b=dL3cXePOKaUp65+vOn9XkjtthnrTEqLaUHfi6fmwJNAbB2TLmiszyQdCSKoLta3mJ6AqAu/ptOyKF6EjS8Y1hWdm+iLEKd9gUo3Mr++AQZmVCtPes6jPcBGg14KI5QEKYNfoe0P2qPhN8RtoH5zaMTKkz9EQLBLdA4kX8M76J3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLlUVD61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6EAC4CEE2;
+	Wed, 23 Apr 2025 15:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421681;
-	bh=icdxCIF20ysLf8BxQUFbsqXxC2ZaOEksU/qxC2yFAfI=;
+	s=korg; t=1745421689;
+	bh=luU7Xf68R7FGwCo0tbyhNU1AaqAuBVNpZPJ3YmrUKKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9PjX7FJ9F3T+HI4WXGewcubo6aqOsHmShvV2RuQQP8OM1aTO3emFzIjrsBPaz2EB
-	 0wiAVdRdAHmGEOaZO3klerWBd6DraFfGiFhm/Sbi358CYvfRPigYziwMXeQb6dZJkk
-	 rB34+LvRgeep/ZVcyQrCfMHifhbgK2zo0WRSA4Lk=
+	b=qLlUVD61oIqnqtbT7hoGUR3biRCNA3c2sDM9TXDr+xlH5eAsh0Po0HX7yZwII/SVc
+	 MoVGoWdbC1WSlTj7VquKNwLr1h1ao6aIZUWNxHNKNOvydMVBaPzJ42qAT5JG5jZFWM
+	 6I2cVvhu+ufJHV53AODLpuS9OQwSOTGPNBJI9jBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wakko Warner <wakko@animx.eu.org>,
-	=?UTF-8?q?=D0=A1=D0=B5=D1=80=D0=B3=D0=B5=D0=B9?= <afmerlord@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.14 219/241] drm/mgag200: Fix value in <VBLKSTR> register
-Date: Wed, 23 Apr 2025 16:44:43 +0200
-Message-ID: <20250423142629.505225032@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 220/241] io_uring: dont post tag CQEs on file/buffer registration failure
+Date: Wed, 23 Apr 2025 16:44:44 +0200
+Message-ID: <20250423142629.546149474@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -63,54 +59,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 76c332d119f9048c6e16b52359f401510f18b2ff upstream.
+Commit ab6005f3912fff07330297aba08922d2456dcede upstream.
 
-Fix an off-by-one error when setting the vblanking start in
-<VBLKSTR>. Commit d6460bd52c27 ("drm/mgag200: Add dedicated
-variables for blanking fields") switched the value from
-crtc_vdisplay to crtc_vblank_start, which DRM helpers copy
-from the former. The commit missed to subtract one though.
+Buffer / file table registration is all or nothing, if it fails all
+resources we might have partially registered are dropped and the table
+is killed. If that happens, it doesn't make sense to post any rsrc tag
+CQEs. That would be confusing to the application, which should not need
+to handle that case.
 
-Reported-by: Wakko Warner <wakko@animx.eu.org>
-Closes: https://lore.kernel.org/dri-devel/CAMwc25rKPKooaSp85zDq2eh-9q4UPZD=RqSDBRp1fAagDnmRmA@mail.gmail.com/
-Reported-by: Сергей <afmerlord@gmail.com>
-Closes: https://lore.kernel.org/all/5b193b75-40b1-4342-a16a-ae9fc62f245a@gmail.com/
-Closes: https://bbs.archlinux.org/viewtopic.php?id=303819
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: d6460bd52c27 ("drm/mgag200: Add dedicated variables for blanking fields")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.12+
-Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
-Tested-by: Wakko Warner <wakko@animx.eu.org>
-Link: https://lore.kernel.org/r/20250416083847.51764-1-tzimmermann@suse.de
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Fixes: 7029acd8a9503 ("io_uring/rsrc: get rid of per-ring io_rsrc_node list")
+Link: https://lore.kernel.org/r/c514446a8dcb0197cddd5d4ba8f6511da081cf1f.1743777957.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mgag200/mgag200_mode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/rsrc.c |   17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mgag200/mgag200_mode.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
-@@ -223,7 +223,7 @@ void mgag200_set_mode_regs(struct mga_de
- 	vsyncstr = mode->crtc_vsync_start - 1;
- 	vsyncend = mode->crtc_vsync_end - 1;
- 	vtotal = mode->crtc_vtotal - 2;
--	vblkstr = mode->crtc_vblank_start;
-+	vblkstr = mode->crtc_vblank_start - 1;
- 	vblkend = vtotal + 1;
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -130,6 +130,18 @@ struct io_rsrc_node *io_rsrc_node_alloc(
+ 	return node;
+ }
  
- 	linecomp = vdispend;
++static void io_clear_table_tags(struct io_rsrc_data *data)
++{
++	int i;
++
++	for (i = 0; i < data->nr; i++) {
++		struct io_rsrc_node *node = data->nodes[i];
++
++		if (node)
++			node->tag = 0;
++	}
++}
++
+ __cold void io_rsrc_data_free(struct io_ring_ctx *ctx, struct io_rsrc_data *data)
+ {
+ 	if (!data->nr)
+@@ -539,6 +551,7 @@ int io_sqe_files_register(struct io_ring
+ 	io_file_table_set_alloc_range(ctx, 0, ctx->file_table.data.nr);
+ 	return 0;
+ fail:
++	io_clear_table_tags(&ctx->file_table.data);
+ 	io_sqe_files_unregister(ctx);
+ 	return ret;
+ }
+@@ -855,8 +868,10 @@ int io_sqe_buffers_register(struct io_ri
+ 	}
+ 
+ 	ctx->buf_table = data;
+-	if (ret)
++	if (ret) {
++		io_clear_table_tags(&ctx->buf_table);
+ 		io_sqe_buffers_unregister(ctx);
++	}
+ 	return ret;
+ }
+ 
 
 
 
