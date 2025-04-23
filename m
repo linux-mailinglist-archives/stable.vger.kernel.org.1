@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-135883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFA8A99108
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F51A992E9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAA21BA12AF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB3D2465C3B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C422918C1;
-	Wed, 23 Apr 2025 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8619296161;
+	Wed, 23 Apr 2025 15:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZYn9l1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iV7m51cz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA52519E966;
-	Wed, 23 Apr 2025 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6528728DEEA;
+	Wed, 23 Apr 2025 15:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421091; cv=none; b=QQiIx/JVJkqwCBi8LBuP3pPfGy/IOwZEdtDK8Xei/dCN0Yp7/oyL5lqlqijTLEg8elSPqhKLmOMgrx5lYEF/207/PTS57K6FWwqHvbCRs+O2Nz1wWsZz1/bWoSiONXZw79hRpnBM4TUEgxpH9FUFC+ArIpibJGl5L7nRLamxmls=
+	t=1745422060; cv=none; b=X5u/d4Ju0J99ytS1V6e/m9m/IBsAppEcac+31VnqauDjAyQeTAWfFBO6Zl4j43Lawq3gBYGKM0NsudZLx04ukWv6YWLUTmpVLqt38OSqnKBABgIlT9jiv87rtCKfV4FTJ7gAkhI8bJdLzMTAN+FprU1KHLXEWYEFKjgtcjcS7yE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421091; c=relaxed/simple;
-	bh=y3L0iDXdc1Yz0P2d/jW9n0mKkw+vgD7SHC3fgsQNkYw=;
+	s=arc-20240116; t=1745422060; c=relaxed/simple;
+	bh=rJemsLZrIlseUWWQy4xlmBvD3yCaENLUHFkYj8Mc3XI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/BL5iOGAIsWQQ2Iyl1FP9HXBLl4vEIDE8cLiqpt/CChZzpk3jTT6xycsEbGtteRyBSGxSuY5H4ojFDUtVLqxJOiIpS52DiFfzRAU7eRGQNVuODkgZAlVUkdKyWKSSp1u1AsaFZ7baNzaoaOhjQ/kEHJyDTuhEDYPGFP0vQFBZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZYn9l1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E16AC4CEE2;
-	Wed, 23 Apr 2025 15:11:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pe9C8LFjKEw1qQQALj5jkJ96B1r7hmLI2p2RxPieRNRYYF/dkdRWA8LQjnz/NSdHmc9rOAk0chxZOdpeSLiD/47QCFxSKCx+iZDGeDCbZUCeurscMF3kvmZgAMPHX2fwxs0Tj0Z6pujFv3beAF/D3PAEZ/I9ilS0C0xr9zHdewU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iV7m51cz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EEEC4CEE2;
+	Wed, 23 Apr 2025 15:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421091;
-	bh=y3L0iDXdc1Yz0P2d/jW9n0mKkw+vgD7SHC3fgsQNkYw=;
+	s=korg; t=1745422060;
+	bh=rJemsLZrIlseUWWQy4xlmBvD3yCaENLUHFkYj8Mc3XI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZYn9l1YhvFX6kHncdRSLqHt3EipCjDk2jTeeiIoAtCFLUFPXEXEXJKq3dTpvKqTQ
-	 IvJyGS81C0hjkGU6HV4xKYhJ7HnOlyrdIVnleOYaCcX0fFZUqtM3f0J2sNdHBC84nO
-	 PxyFatYOoVAs0F2uewZIJ3PZlzLCjAvBvL5nrBgw=
+	b=iV7m51czSmuWdTcwxTJxJ/0HR4DBAVclVxmq9R2bkvutwYh2B10WM8Hr15MjFUFfN
+	 EgEB1VlwWULC7xvuYirhSV2sGfOvpNBbPu/gbm3d329SY+2AWQIBOvhQ/0NSyzjeOz
+	 wlj/vrGUGA94Oeox4q0eQY7ie3svZ699d7GEChdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Aishwarya TCV <aishwarya.tcv@arm.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 151/241] selftests/mm: generate a temporary mountpoint for cgroup filesystem
+	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 226/291] RDMA/cma: Fix workqueue crash in cma_netevent_work_handler
 Date: Wed, 23 Apr 2025 16:43:35 +0200
-Message-ID: <20250423142626.713189737@linuxfoundation.org>
+Message-ID: <20250423142633.658526588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
 
-commit 9c02223e2d9df5cb37c51aedb78f3960294e09b5 upstream.
+commit 45f5dcdd049719fb999393b30679605f16ebce14 upstream.
 
-Currently if the filesystem for the cgroups version it wants to use is not
-mounted charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh tests
-will attempt to mount it on the hard coded path /dev/cgroup/memory,
-deleting that directory when the test finishes.  This will fail if there
-is not a preexisting directory at that path, and since the directory is
-deleted subsequent runs of the test will fail.  Instead of relying on this
-hard coded directory name use mktemp to generate a temporary directory to
-use as a mountpoint, fixing both the assumption and the disruption caused
-by deleting a preexisting directory.
+struct rdma_cm_id has member "struct work_struct net_work"
+that is reused for enqueuing cma_netevent_work_handler()s
+onto cma_wq.
 
-This means that if the relevant cgroup filesystem is not already mounted
-then we rely on having coreutils (which provides mktemp) installed.  I
-suspect that many current users are relying on having things automounted
-by default, and given that the script relies on bash it's probably not an
-unreasonable requirement.
+Below crash[1] can occur if more than one call to
+cma_netevent_callback() occurs in quick succession,
+which further enqueues cma_netevent_work_handler()s for the
+same rdma_cm_id, overwriting any previously queued work-item(s)
+that was just scheduled to run i.e. there is no guarantee
+the queued work item may run between two successive calls
+to cma_netevent_callback() and the 2nd INIT_WORK would overwrite
+the 1st work item (for the same rdma_cm_id), despite grabbing
+id_table_lock during enqueue.
 
-Link: https://lkml.kernel.org/r/20250404-kselftest-mm-cgroup2-detection-v1-1-3dba6d32ba8c@kernel.org
-Fixes: 209376ed2a84 ("selftests/vm: make charge_reserved_hugetlb.sh work with existing cgroup setting")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Waiman Long <longman@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Also drgn analysis [2] indicates the work item was likely overwritten.
+
+Fix this by moving the INIT_WORK() to __rdma_create_id(),
+so that it doesn't race with any existing queue_work() or
+its worker thread.
+
+[1] Trimmed crash stack:
+=============================================
+BUG: kernel NULL pointer dereference, address: 0000000000000008
+kworker/u256:6 ... 6.12.0-0...
+Workqueue:  cma_netevent_work_handler [rdma_cm] (rdma_cm)
+RIP: 0010:process_one_work+0xba/0x31a
+Call Trace:
+ worker_thread+0x266/0x3a0
+ kthread+0xcf/0x100
+ ret_from_fork+0x31/0x50
+ ret_from_fork_asm+0x1a/0x30
+=============================================
+
+[2] drgn crash analysis:
+
+>>> trace = prog.crashed_thread().stack_trace()
+>>> trace
+(0)  crash_setup_regs (./arch/x86/include/asm/kexec.h:111:15)
+(1)  __crash_kexec (kernel/crash_core.c:122:4)
+(2)  panic (kernel/panic.c:399:3)
+(3)  oops_end (arch/x86/kernel/dumpstack.c:382:3)
+...
+(8)  process_one_work (kernel/workqueue.c:3168:2)
+(9)  process_scheduled_works (kernel/workqueue.c:3310:3)
+(10) worker_thread (kernel/workqueue.c:3391:4)
+(11) kthread (kernel/kthread.c:389:9)
+
+Line workqueue.c:3168 for this kernel version is in process_one_work():
+3168	strscpy(worker->desc, pwq->wq->name, WORKER_DESC_LEN);
+
+>>> trace[8]["work"]
+*(struct work_struct *)0xffff92577d0a21d8 = {
+	.data = (atomic_long_t){
+		.counter = (s64)536870912,    <=== Note
+	},
+	.entry = (struct list_head){
+		.next = (struct list_head *)0xffff924d075924c0,
+		.prev = (struct list_head *)0xffff924d075924c0,
+	},
+	.func = (work_func_t)cma_netevent_work_handler+0x0 = 0xffffffffc2cec280,
+}
+
+Suspicion is that pwq is NULL:
+>>> trace[8]["pwq"]
+(struct pool_workqueue *)<absent>
+
+In process_one_work(), pwq is assigned from:
+struct pool_workqueue *pwq = get_work_pwq(work);
+
+and get_work_pwq() is:
+static struct pool_workqueue *get_work_pwq(struct work_struct *work)
+{
+ 	unsigned long data = atomic_long_read(&work->data);
+
+ 	if (data & WORK_STRUCT_PWQ)
+ 		return work_struct_pwq(data);
+ 	else
+ 		return NULL;
+}
+
+WORK_STRUCT_PWQ is 0x4:
+>>> print(repr(prog['WORK_STRUCT_PWQ']))
+Object(prog, 'enum work_flags', value=4)
+
+But work->data is 536870912 which is 0x20000000.
+So, get_work_pwq() returns NULL and we crash in process_one_work():
+3168	strscpy(worker->desc, pwq->wq->name, WORKER_DESC_LEN);
+=============================================
+
+Fixes: 925d046e7e52 ("RDMA/core: Add a netevent notifier to cma")
+Cc: stable@vger.kernel.org
+Co-developed-by: Håkon Bugge <haakon.bugge@oracle.com>
+Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
+Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Link: https://patch.msgid.link/bf0082f9-5b25-4593-92c6-d130aa8ba439@oracle.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/charge_reserved_hugetlb.sh  |    4 ++--
- tools/testing/selftests/mm/hugetlb_reparenting_test.sh |    2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/core/cma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/mm/charge_reserved_hugetlb.sh
-@@ -29,7 +29,7 @@ fi
- if [[ $cgroup2 ]]; then
-   cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup2 none $cgroup_path
-     do_umount=1
-   fi
-@@ -37,7 +37,7 @@ if [[ $cgroup2 ]]; then
- else
-   cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
--    cgroup_path=/dev/cgroup/memory
-+    cgroup_path=$(mktemp -d)
-     mount -t cgroup memory,hugetlb $cgroup_path
-     do_umount=1
-   fi
---- a/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/mm/hugetlb_reparenting_test.sh
-@@ -23,7 +23,7 @@ fi
- if [[ $cgroup2 ]]; then
-   CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
--    CGROUP_ROOT=/dev/cgroup/memory
-+    CGROUP_ROOT=$(mktemp -d)
-     mount -t cgroup2 none $CGROUP_ROOT
-     do_umount=1
-   fi
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -72,6 +72,8 @@ static const char * const cma_events[] =
+ static void cma_iboe_set_mgid(struct sockaddr *addr, union ib_gid *mgid,
+ 			      enum ib_gid_type gid_type);
+ 
++static void cma_netevent_work_handler(struct work_struct *_work);
++
+ const char *__attribute_const__ rdma_event_msg(enum rdma_cm_event_type event)
+ {
+ 	size_t index = event;
+@@ -994,6 +996,7 @@ __rdma_create_id(struct net *net, rdma_c
+ 	get_random_bytes(&id_priv->seq_num, sizeof id_priv->seq_num);
+ 	id_priv->id.route.addr.dev_addr.net = get_net(net);
+ 	id_priv->seq_num &= 0x00ffffff;
++	INIT_WORK(&id_priv->id.net_work, cma_netevent_work_handler);
+ 
+ 	rdma_restrack_new(&id_priv->res, RDMA_RESTRACK_CM_ID);
+ 	if (parent)
+@@ -5186,7 +5189,6 @@ static int cma_netevent_callback(struct
+ 		if (!memcmp(current_id->id.route.addr.dev_addr.dst_dev_addr,
+ 			   neigh->ha, ETH_ALEN))
+ 			continue;
+-		INIT_WORK(&current_id->id.net_work, cma_netevent_work_handler);
+ 		cma_id_get(current_id);
+ 		queue_work(cma_wq, &current_id->id.net_work);
+ 	}
 
 
 
