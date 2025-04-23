@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-136123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F37A9921C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCA7A98E45
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F2592318C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 137825A6C5D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5740A27F755;
-	Wed, 23 Apr 2025 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF675280CF0;
+	Wed, 23 Apr 2025 14:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvAJK4Kb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFPdlTVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1376354670;
-	Wed, 23 Apr 2025 15:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A67419E966;
+	Wed, 23 Apr 2025 14:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421716; cv=none; b=pcLWw48WWz38dldQejo8/6bP88T+e94OhpxmHyNalhOlRRd0kLOL25JwJA08hJkES/REqzHAR7xFp5bqNZG1NMA7l/yiEWRTztslj0zQQ0zPKDOa/ue8JmebK3YVy3d/vszWGR8cJ98gRDRD6zHzyrOWk2Z7MU/P8FnhVl/NxDg=
+	t=1745419921; cv=none; b=JvAMJ2li0nPRkaKJf5qUd3DjlTJU68kYFcCQ1WtHrqpl0u9EFAd3ST/P3T5Ad+yHJV+jNf6IijfAdPRGdxTN4ZV1RclGnVVqo5rRQQuAmbYXxto+P3UEeI876HXTiI7wizXNqzjvVXNKGIP1/FrylkwR3h3IHYM4eeRZ/KgV8oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421716; c=relaxed/simple;
-	bh=N0fspCMpZSHZihjY2whUSfny333Kv7rePkE+dJNHskI=;
+	s=arc-20240116; t=1745419921; c=relaxed/simple;
+	bh=KVzYnKDglhntuzzI9HTX5wqUBwp9+o2M+E030Ki1+5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rNkNM3hSbiKJZVThJzkgadlZQ66CjARPhidJu/V4tLEi1cSed4014mmsa88xJ3MfOeqToxet8VHaeVop2ymGvmp8YxgYvnhqH3azO9A+3XXIUPj9+//IxIC4Dqe+LW6RNhhEa2DG37dcRfK0+74VldQ9zTYbAlxPPlTHWyFCMfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvAJK4Kb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A162C4CEE2;
-	Wed, 23 Apr 2025 15:21:55 +0000 (UTC)
+	 MIME-Version; b=mcNP/JKI3mvgpH3IDsO9PEbHK4k+RMGiKbeGb6+VOGgpf9Bcum21467nZabYk42LmvNXq9FhOQxpGsOTbxd05bmxuszL5M6IYQifH9xJuPseILx4wmVHGM4sv67FRviDqrchJhAc6kYBLbsUrUWWlFqh6ohLXwtQbgaq48Jxeng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFPdlTVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20717C4CEE2;
+	Wed, 23 Apr 2025 14:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421716;
-	bh=N0fspCMpZSHZihjY2whUSfny333Kv7rePkE+dJNHskI=;
+	s=korg; t=1745419921;
+	bh=KVzYnKDglhntuzzI9HTX5wqUBwp9+o2M+E030Ki1+5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvAJK4KbxFQGwb8XSxY+7Ya6ywfLVMKRXHpSFklqBmHKKwO0wc/gpgrgRSxJXLjU/
-	 QbqfofzpOkwb0OH9rM66RZeCV9al6kxfWkbihdiLbJZmrHwnI6ROxCcQ0jCPhl2Lcr
-	 wqS3P5sS/6b/OpRQDLk4E7PVUbSkQWkAI6ac6j/g=
+	b=bFPdlTVFDXwfFCJHtjiDWSqbZtCzNYAXNPIcYZZtEFIaS7uHfSKyL4NesryFXzOX1
+	 DLEqCsEyC8P9B3Cwm6dNelg1KYR0WAJkcUJWiJWvdUCuYtMHWxhDMv0o2hVk3CjpZG
+	 VdkSKthefWYNZWFRKTcmNuK8YmoNLZMFpAFh+6U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 211/393] dm-verity: fix prefetch-vs-suspend race
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 043/241] selftests: mincore: fix tmpfs mincore test failure
 Date: Wed, 23 Apr 2025 16:41:47 +0200
-Message-ID: <20250423142652.099171366@linuxfoundation.org>
+Message-ID: <20250423142622.267613046@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +68,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-commit 2de510fccbca3d1906b55f4be5f1de83fa2424ef upstream.
+[ Upstream commit 8c583e538aa681ecb293d5606054de70f44b5558 ]
 
-There's a possible race condition in dm-verity - the prefetch work item
-may race with suspend and it is possible that prefetch continues to run
-while the device is suspended. Fix this by calling flush_workqueue and
-dm_bufio_client_reset in the postsuspend hook.
+When running mincore test cases, I encountered the following failures:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"
+mincore_selftest.c:359:check_tmpfs_mmap:Expected ra_pages (511) == 0 (0)
+mincore_selftest.c:360:check_tmpfs_mmap:Read-ahead pages found in memory
+check_tmpfs_mmap: Test terminated by assertion
+          FAIL  global.check_tmpfs_mmap
+not ok 5 global.check_tmpfs_mmap
+FAILED: 4 / 5 tests passed
+"
+
+The reason for the test case failure is that my system automatically enabled
+tmpfs large folio allocation by adding the 'transparent_hugepage_tmpfs=always'
+cmdline. However, the test case still expects the tmpfs mounted on /dev/shm to
+allocate small folios, which leads to assertion failures when verifying readahead
+pages.
+
+As discussed with David, there's no reason to continue checking the readahead
+logic for tmpfs. Drop it to fix this issue.
+
+Link: https://lkml.kernel.org/r/9a00856cc6a8b4e46f4ab8b1af11ce5fc1a31851.1744025467.git.baolin.wang@linux.alibaba.com
+Fixes: d635ccdb435c ("mm: shmem: add a kernel command line to change the default huge policy for tmpfs")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-target.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../testing/selftests/mincore/mincore_selftest.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -836,6 +836,13 @@ static int verity_map(struct dm_target *
- 	return DM_MAPIO_SUBMITTED;
- }
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index e949a43a61450..0fd4b00bd345b 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -286,8 +286,7 @@ TEST(check_file_mmap)
  
-+static void verity_postsuspend(struct dm_target *ti)
-+{
-+	struct dm_verity *v = ti->private;
-+	flush_workqueue(v->verify_wq);
-+	dm_bufio_client_reset(v->bufio);
-+}
-+
  /*
-  * Status: V (valid) or C (corruption found)
+  * Test mincore() behavior on a page backed by a tmpfs file.  This test
+- * performs the same steps as the previous one. However, we don't expect
+- * any readahead in this case.
++ * performs the same steps as the previous one.
   */
-@@ -1557,6 +1564,7 @@ static struct target_type verity_target
- 	.ctr		= verity_ctr,
- 	.dtr		= verity_dtr,
- 	.map		= verity_map,
-+	.postsuspend	= verity_postsuspend,
- 	.status		= verity_status,
- 	.prepare_ioctl	= verity_prepare_ioctl,
- 	.iterate_devices = verity_iterate_devices,
+ TEST(check_tmpfs_mmap)
+ {
+@@ -298,7 +297,6 @@ TEST(check_tmpfs_mmap)
+ 	int page_size;
+ 	int fd;
+ 	int i;
+-	int ra_pages = 0;
+ 
+ 	page_size = sysconf(_SC_PAGESIZE);
+ 	vec_size = FILE_SIZE / page_size;
+@@ -341,8 +339,7 @@ TEST(check_tmpfs_mmap)
+ 	}
+ 
+ 	/*
+-	 * Touch a page in the middle of the mapping. We expect only
+-	 * that page to be fetched into memory.
++	 * Touch a page in the middle of the mapping.
+ 	 */
+ 	addr[FILE_SIZE / 2] = 1;
+ 	retval = mincore(addr, FILE_SIZE, vec);
+@@ -351,15 +348,6 @@ TEST(check_tmpfs_mmap)
+ 		TH_LOG("Page not found in memory after use");
+ 	}
+ 
+-	i = FILE_SIZE / 2 / page_size + 1;
+-	while (i < vec_size && vec[i]) {
+-		ra_pages++;
+-		i++;
+-	}
+-	ASSERT_EQ(ra_pages, 0) {
+-		TH_LOG("Read-ahead pages found in memory");
+-	}
+-
+ 	munmap(addr, FILE_SIZE);
+ 	close(fd);
+ 	free(vec);
+-- 
+2.39.5
+
 
 
 
