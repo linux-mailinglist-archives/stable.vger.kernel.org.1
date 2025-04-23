@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8E9A99380
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D34CA993A0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49DD91BC18B6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A513BBB1D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583AB2BCF76;
-	Wed, 23 Apr 2025 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513C728E618;
+	Wed, 23 Apr 2025 15:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRus3oY9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6uDJbb7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF97298997;
-	Wed, 23 Apr 2025 15:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43828152D;
+	Wed, 23 Apr 2025 15:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422373; cv=none; b=pjD/5vYtypY+8FKbqGfQLXaonEaiVL9Ga25+J3mFgDpbUqng/snKTw+GqG9weRsHyya9326J6rXSuOWbYJTzUgXma2GpwPYr9EsYriWZgvtOXCKW5FrNwTav5TUQDZP9/Zv1421t3Cg5gerKncwiGex6OUxpK6qRmyWmXT0JbbM=
+	t=1745422178; cv=none; b=AHBr6IFky3MSp3vL1aptkWwkb4SC32n799TO1WCwYGN962wCffqjse+iiRhXaemSmKg3ALkBPGcI8ienoE09CIZ2/Codc54syZT/m2ex0A8Zjs6Ztvp/3rXG6WHbPv2XQgD77r+AYLl+Dpw3TaBomKohAc1t7xNpKfkHWYQz+LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422373; c=relaxed/simple;
-	bh=3cfrNAQk1fJN5KiAGdk+DKGWUwF1RrYpJMtTbXtlZUU=;
+	s=arc-20240116; t=1745422178; c=relaxed/simple;
+	bh=LPqZ5Q7hUUJV0bBkrP8H0xLU5zpoCqI/YJXzeaFe1Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEnkY8ewt3oN9dbV5Vdjcfc3zK+lHpzPlrfrc456+oT1Rb+VFBSOsSlGA7eDtFPdBPvvcBJTmOo0JzljAzPQNgeEmE5jMmphBJWwFA2/0+TS4mbBGxNBSlWeXTHun2Vzdq7jZ08YlG37G//cT3sr3VJIB8iYuip9tf4Uw2H0HoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRus3oY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90294C4CEE2;
-	Wed, 23 Apr 2025 15:32:52 +0000 (UTC)
+	 MIME-Version; b=j6NXVpp5qbvPyc6pxuMZhQCCigGZ1c1zHgSYjm/fFrUTdIlWQVd/SoaX2G7WR59ANMsbtQtN2NgxR0WSupw4WsJxjLO9Umixc+Hyh90MPxA30yXzC9ePxltqqmelLZcrDaQsgIWiAn6YFLSmn1cwvJedz3CrNLB4y5opBVXQXT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6uDJbb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DF2C4CEE3;
+	Wed, 23 Apr 2025 15:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422372;
-	bh=3cfrNAQk1fJN5KiAGdk+DKGWUwF1RrYpJMtTbXtlZUU=;
+	s=korg; t=1745422177;
+	bh=LPqZ5Q7hUUJV0bBkrP8H0xLU5zpoCqI/YJXzeaFe1Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRus3oY9lOii6G52Yex4ga4Gucg+6bhDd64kUgs38ssyhwbdttlw5SkVExr6KPjvY
-	 jxNa8uyJwzIJDX3MwUxyQpIW/L2A41A11ccg7p+uEoNY2kGwaIr92rEqZYoLvICKAP
-	 3lkjjceEw6+AiTQoRX5e4beknXlJllCT+XEavX/0=
+	b=d6uDJbb7yZakaLgQCR20ydGTF2POEQFW1HJv9g50PvkvjI5yF64KlTp/+mAeagEJI
+	 Xvpv0qKgyGGUogGEVE6/Bv/GrVtET5igLQO+Xcx1brzvxzCeuYMbzbtajFvliZYXDP
+	 gKylFm3zYN1I5axo5WdkYwRGCVDYKizcepszwZok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 330/393] riscv: Avoid fortify warning in syscall_get_arguments()
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 237/291] drm/amd/pm/powerplay/hwmgr/smu7_thermal: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:43:46 +0200
-Message-ID: <20250423142656.971134671@linuxfoundation.org>
+Message-ID: <20250423142634.100748840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit adf53771a3123df99ca26e38818760fbcf5c05d0 upstream.
+commit 7c246a05df51c52fe0852ce56ba10c41e6ed1f39 upstream.
 
-When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
-because of the memcpy() in syscall_get_arguments():
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-  In file included from include/linux/string.h:392,
-                   from include/linux/bitmap.h:13,
-                   from include/linux/cpumask.h:12,
-                   from arch/riscv/include/asm/processor.h:55,
-                   from include/linux/sched.h:13,
-                   from kernel/ptrace.c:13:
-  In function 'fortify_memcpy_chk',
-      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
-  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-    580 |                         __read_overflow2_field(q_size_field, size);
-        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-The fortified memcpy() routine enforces that the source is not overread
-and the destination is not overwritten if the size of either field and
-the size of the copy are known at compile time. The memcpy() in
-syscall_get_arguments() intentionally overreads from a1 to a5 in
-'struct pt_regs' but this is bigger than the size of a1.
-
-Normally, this could be solved by wrapping a1 through a5 with
-struct_group() but there was already a struct_group() applied to these
-members in commit bba547810c66 ("riscv: tracing: Fix
-__write_overflow_field in ftrace_partial_regs()").
-
-Just avoid memcpy() altogether and write the copying of args from regs
-manually, which clears up the warning at the expense of three extra
-lines of code.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dmitry V. Levin <ldv@strace.io>
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/syscall.h |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -62,8 +62,11 @@ static inline void syscall_get_arguments
- 					 unsigned long *args)
- {
- 	args[0] = regs->orig_a0;
--	args++;
--	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
-+	args[1] = regs->a1;
-+	args[2] = regs->a2;
-+	args[3] = regs->a3;
-+	args[4] = regs->a4;
-+	args[5] = regs->a5;
- }
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
+@@ -267,10 +267,10 @@ int smu7_fan_ctrl_set_fan_speed_rpm(stru
+ 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
+ 			(hwmgr->thermal_controller.fanInfo.
+ 			ucTachometerPulsesPerRevolution == 0) ||
+-			speed == 0 ||
++			(!speed || speed > UINT_MAX/8) ||
+ 			(speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
+ 			(speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
+-		return 0;
++		return -EINVAL;
  
- static inline int syscall_get_arch(struct task_struct *task)
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
+ 		smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
