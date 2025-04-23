@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53B5A9934C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6E5A98FEB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 836C21BA4582
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88E8B7AB2DE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17F529C34D;
-	Wed, 23 Apr 2025 15:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01C728A3F3;
+	Wed, 23 Apr 2025 15:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFfkzuBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chINjexJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E5229C346;
-	Wed, 23 Apr 2025 15:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793FD28A1FD;
+	Wed, 23 Apr 2025 15:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422002; cv=none; b=IvH3yf4sXcSN3iposAXRGkU7iws/nA+1ZKPq/AeVFRplHcTsP8tgi3PS0XZt8JAinCUzzifwx5BK9TeUXIAJWM2WHyEibcBsl4igE61k0bxmXDptzYYWU67Ww0AmUx7r3RGCXUhxnZphwQ76KYzhoP7J0e9IQQYrlA9ddbGxgp0=
+	t=1745420981; cv=none; b=MX803fbdISbZqQXaqNfQqHyBAkdLEIk0S5MMSpt+sxPU3ZsyiBOofiwiD4MEvH31UxjzCTdD1ROwLgXB56D4Mu8AZmOOM/cZupQppPOivTdmmkXRqLjcJ5RjIWBu1wyZLb0kYZu7x1n5gS20Wa6TGs8XwyfEd0x7MA9ZkdSF8BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422002; c=relaxed/simple;
-	bh=Jms9kSzbSX23joVlMl7toMxBSJnNRoivJCYHmjBoUQ0=;
+	s=arc-20240116; t=1745420981; c=relaxed/simple;
+	bh=kFF5Vlv7srnylU0Fy3fhpXl4YiEgka0ZyODbhWcuOjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gQ+mgXwhtP2NUqkuvKUGCV5Cuvhui3VHsa+K0Ve/QLNbt2omLYm0WWitow213Xzb54SSBYbg03TNqfXlN75WWhY2cfnH2z+Dw0F4MiCUSy0lMRwRnnIM4G9TYZLRM7LHqpLPP1vFmOrkM0suZQYCXSrD4sOpw/TthwESQBjjfFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFfkzuBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28831C4CEE3;
-	Wed, 23 Apr 2025 15:26:42 +0000 (UTC)
+	 MIME-Version; b=oXjMpYw3f6063NoBjt4rJK/3wi5J16apmzREs2yqYnPZAmc5rBUun+rAYZ4+bNr2F2ZlCTgDp3K+OgZi5fEwMY5f8v7zVfkNn3Th57wtWsuS92pI3jTOlhH0tyfSqc8wwwxricUCtINAyLxqxAw1hghVaN90WGcQjrMrYlyN2ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chINjexJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00679C4CEE2;
+	Wed, 23 Apr 2025 15:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422002;
-	bh=Jms9kSzbSX23joVlMl7toMxBSJnNRoivJCYHmjBoUQ0=;
+	s=korg; t=1745420981;
+	bh=kFF5Vlv7srnylU0Fy3fhpXl4YiEgka0ZyODbhWcuOjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFfkzuBjq3h/7TC8d6wwlBYXzeO7rP6q/7gX4uU5R2j4qrqyfcsyBIirWdmfq/EEV
-	 pbBcaDKSD+2MvZBkeOxM94XW8DK1t010ASOEnh/7flOEcXBmxFANfmwFv5qEkvh1Vx
-	 Z9oQs1bwdWh46+7b01w6R5QJEqbDER2Qt+/5NlsU=
+	b=chINjexJ+1Eh8v6PTaaUbRh6ckEyvp+DFO0ZJAWTIjTXX3W0sWQKM//SlHj5ssQtb
+	 rV4YmJ8eCuUW46zIX4Im/UKojq+dyjJAjEuoNAbio9pJXgkJ9WEszagsLn9vV6lc9Y
+	 2OstA4Z5pGwct0HI2sfou585QVG3/mtnBnehm+l8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 216/291] ksmbd: Fix dangling pointer in krb_authenticate
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Daniel Axtens <dja@axtens.net>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14 141/241] mm: fix apply_to_existing_page_range()
 Date: Wed, 23 Apr 2025 16:43:25 +0200
-Message-ID: <20250423142633.219607233@linuxfoundation.org>
+Message-ID: <20250423142626.319426616@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Heelan <seanheelan@gmail.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 1e440d5b25b7efccb3defe542a73c51005799a5f upstream.
+commit a995199384347261bb3f21b2e171fa7f988bd2f8 upstream.
 
-krb_authenticate frees sess->user and does not set the pointer
-to NULL. It calls ksmbd_krb5_authenticate to reinitialise
-sess->user but that function may return without doing so. If
-that happens then smb2_sess_setup, which calls krb_authenticate,
-will be accessing free'd memory when it later uses sess->user.
+In the case of apply_to_existing_page_range(), apply_to_pte_range() is
+reached with 'create' set to false.  When !create, the loop over the PTE
+page table is broken.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Heelan <seanheelan@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+apply_to_pte_range() will only move to the next PTE entry if 'create' is
+true or if the current entry is not pte_none().
+
+This means that the user of apply_to_existing_page_range() will not have
+'fn' called for any entries after the first pte_none() in the PTE page
+table.
+
+Fix the loop logic in apply_to_pte_range().
+
+There are no known runtime issues from this, but the fix is trivial enough
+for stable@ even without a known buggy user.
+
+Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1615,8 +1615,10 @@ static int krb5_authenticate(struct ksmb
- 	if (prev_sess_id && prev_sess_id != sess->id)
- 		destroy_previous_session(conn, sess->user, prev_sess_id);
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2904,11 +2904,11 @@ static int apply_to_pte_range(struct mm_
+ 	if (fn) {
+ 		do {
+ 			if (create || !pte_none(ptep_get(pte))) {
+-				err = fn(pte++, addr, data);
++				err = fn(pte, addr, data);
+ 				if (err)
+ 					break;
+ 			}
+-		} while (addr += PAGE_SIZE, addr != end);
++		} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	}
+ 	*mask |= PGTBL_PTE_MODIFIED;
  
--	if (sess->state == SMB2_SESSION_VALID)
-+	if (sess->state == SMB2_SESSION_VALID) {
- 		ksmbd_free_user(sess->user);
-+		sess->user = NULL;
-+	}
- 
- 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
- 					 out_blob, &out_len);
 
 
 
