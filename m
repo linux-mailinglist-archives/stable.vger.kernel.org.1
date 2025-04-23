@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0383A9931C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B049A9907B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FD419A3B2F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E078921057
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA7628A1D7;
-	Wed, 23 Apr 2025 15:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF19228468C;
+	Wed, 23 Apr 2025 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hp+/leKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rhxkzr/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DEA26A08C;
-	Wed, 23 Apr 2025 15:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777B820D4F8;
+	Wed, 23 Apr 2025 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422225; cv=none; b=WkLhwdpkUAix8OdmfHdIqZEGC3HcWtx2ZazzgjNrTBfNS9WVRVK7EkIs2zG9tfIwH+gGcUr/yjf23cmLcJBAoMW29bsHOqLbJkL4UPt2nR1vtvOTu/RnW7FjH8BT6tgHxD8wEQ9MjQg7oD/7vqA/BHR3TgGUwbD60nWcgvNdOT0=
+	t=1745420879; cv=none; b=j5OofP+4L7FLyDkWYIzwRYUh46JgxNd7i6UpRxUOz90GYkPK1aRST80LphBaHc0mhe90yyn5rDlVHx4AlyXfmLwG/qjzEl+E2FKqCN5pYbOFC16+9Va9CrN4/pOsGeH+i/PXg1mL8p6uc915ltrNzv/+PhzcZoBCkdXcB1H3QvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422225; c=relaxed/simple;
-	bh=yJV96ou52T7t2FdpsOBOocReJkF7ZvLRfa6mDwRQP4U=;
+	s=arc-20240116; t=1745420879; c=relaxed/simple;
+	bh=g5ywuTJkPg5oot71gxD/gdoR/v+6ydezZlMd+/2YqzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOb5tV7qARUmpJ/L7iMR07JC+ZK/TlYPd35hltCTO5pkdqwh22Joi6hfNcHU3KlZV1JgunshueW6tTcWwrFALcMoNdOw03MoiXwdVcznv85NGSyry28YEuPKpzj5ORFbH/R9UIHP0V4bg8ioQ4EJzuVJSjdbYbGZRjAiOpMJyxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hp+/leKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D29C4CEE2;
-	Wed, 23 Apr 2025 15:30:24 +0000 (UTC)
+	 MIME-Version; b=TQrUbjmCChOJvU2tQYD7URYkQpQ7HepaxoCeIN4tZP3kivXd1gizBjZGAQiDYgatvmFUg0vhg0Yvt/04tDABet34733tEEqc7zTMZLYM86960z4yClwviSxttbctzFEXrnv7S5gghijTLZ5LcL0klFLtjvWC4860XqrdiPUYOfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rhxkzr/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5DCC4CEE2;
+	Wed, 23 Apr 2025 15:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422225;
-	bh=yJV96ou52T7t2FdpsOBOocReJkF7ZvLRfa6mDwRQP4U=;
+	s=korg; t=1745420879;
+	bh=g5ywuTJkPg5oot71gxD/gdoR/v+6ydezZlMd+/2YqzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hp+/leKtmRCDIb1HJHpvYwpiLDaOI5fCHp/NG3k6t8L5crKn6pSw9NfMoajvSswct
-	 AEyLM+FKGttxZ/A3eowQGlePjiB9sKLszv08129uZjcxIRFGjj6h8ZAcO2nnutdjve
-	 Asxdrjl5KGiclpOmKFsoAG6vgFuUwdfP3ynmcVfA=
+	b=Rhxkzr/54q6GnXCEepgc3ZupaKF1U/Fz2hEJaUxFgOZ6so0HrnP/55D38v03jjJ/l
+	 ZVvDnZ9kZpC13h5NWHd0c1/2SY4pvTPZKbWDxFed6B70uCjigeTiuqDI0PGxYnjsCX
+	 yBYSw0Jftf0+Ci4v5w50ZlKVs6sFIQh7lrtEKP0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 300/393] writeback: fix false warning in inode_to_wb()
+	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.14 132/241] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
 Date: Wed, 23 Apr 2025 16:43:16 +0200
-Message-ID: <20250423142655.728663935@linuxfoundation.org>
+Message-ID: <20250423142625.960528318@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
+commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+Syzbot reported an issue in hfs subsystem:
 
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ memcpy_from_page include/linux/highmem.h:423 [inline]
+ hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+ hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+ hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+ hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+ hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+ vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+ __do_sys_mkdir fs/namei.c:4300 [inline]
+ __se_sys_mkdir fs/namei.c:4298 [inline]
+ __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbdd6057a99
+
+Add a check for key length in hfs_bnode_read_key to prevent
+out-of-bounds memory access. If the key length is invalid, the
+key buffer is cleared, improving stability and reliability.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
+ fs/hfs/bnode.c     |    6 ++++++
+ fs/hfsplus/bnode.c |    6 ++++++
+ 2 files changed, 12 insertions(+)
 
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -250,6 +250,7 @@ static inline struct bdi_writeback *inod
- {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 1;
+ 
++	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfs_btree_key));
++		pr_err("hfs: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 2;
+ 
++	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfsplus_btree_key));
++		pr_err("hfsplus: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
 
 
 
