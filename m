@@ -1,124 +1,201 @@
-Return-Path: <stable+bounces-136455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7850EA995CA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:53:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B2AA995E8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD26D7AFADF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BE381B64065
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75889288CBC;
-	Wed, 23 Apr 2025 16:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B99326561E;
+	Wed, 23 Apr 2025 16:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="KvGH/8va"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="0pjYZGjB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD6328468D;
-	Wed, 23 Apr 2025 16:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9730E280A3A
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 16:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745427181; cv=none; b=FwrHQhC0myZPr6lnjTuGkPR6l/nNNCZdurNG56J0dGph+SEpM4iZzK0BGVoJqlDJbxK3vzweK1z2smPYDB1c61sX5yT3tCU8yPRW1TpyKm4p3qA5RWLbLcAAc8M5VeI2PD9XHex0lSWn0S0HunI//jJqKJON7R/qbZ6Wd7iBlf4=
+	t=1745427549; cv=none; b=UHuvAxDU6ZjPsX9EDmUWeZ1whBbPmhaaDJe0JEpxMDOtW6ARwi5uHAU9XmBGK8wDVZNcKKqDggZnANewVWAAbxA+sZ6qUnxnOd21IJgsb4VgeSRHuUKjmUvGGTEiShnHd0CG77M95wrp7O1BlNz4N8SDW3Mlp2o93djjuzdzDr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745427181; c=relaxed/simple;
-	bh=m1JW6JCpT5K62iypPeyrD5Xxw8L3gfy6sXHK50Nf0JI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JB7L9a98K2mQZKb036JLKu9QX0MsdZOMlPussG7ymedN1INZB3asmcg5j3a+hhS+RtMlcEq8hna/je8heYXo2PvsZt6LeS/eRog25O0qJ7IOlMUfU6oPbu9AD1jsAPQMJsO+oNP0SNTiT3K8ChYFRO3yJVhBTxHLGrCPoSJblAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=KvGH/8va; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-39ee5a5bb66so22269f8f.3;
-        Wed, 23 Apr 2025 09:52:59 -0700 (PDT)
+	s=arc-20240116; t=1745427549; c=relaxed/simple;
+	bh=3C/Paa1MQLmvs88+icj61iicrQxQgOtK0/sPfn2D8MI=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=CYYMTH2O2tOaSIf48qdua+m5Y8IT4pvBmWc3Fdu0SGKR9C5Kiy87c+bgbTf1TikGrBZLQdQla0NnzZLGL034KUWYIHQPgriw5FSgloLfNuHGlJ2url/qDNqP6cZU8wP/UcMwPeIQnbib6DBRN1KCqSmYC9yEH+bQJK+UXdqk7wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=0pjYZGjB; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-7082e46880eso1670907b3.1
+        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 09:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1745427178; x=1746031978; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Mp1u/sIDVPqsXQLkzZlVGoz0PRI6pxyHbfKJBelf6DE=;
-        b=KvGH/8vaoZZnZhO3Xy18rV/VQ9XTbSUtq+j7bmRUE0FqWtRe5RIyBxL79S+zIS2mSr
-         3f65XqcHP/7L7xZH9k2J/Q6yy3AOtoXQ2WYlAA2rt5zCflFMLAhS1+lOpg6r+1Z5rwi9
-         +Zph8IqbC1hlA0PKAtC8IOQ3B2L+oCrD7tOBmPycLhIx+8Zm4KjqeqXVGUJfMqHPW12V
-         mq21bggu1xd6fVala14bL8GD4wSdDoVTAnf4FsXg3X3zIapB+aoZRcfIMgVAd8/MU/6/
-         OL86v6hKCrpywtw/yXTG5ZpM52SjTSv+nGVN6S5iH/ILq1rhrPmiEtVYotFJwcRqUSxb
-         bIIw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1745427545; x=1746032345; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VeoNenHFQxf2rJjhRDI+VQigXWkAGBhYIdmir9wPZoM=;
+        b=0pjYZGjBb9KiEu+9ZKLbNtYfrcaq+pVY61CLFYfHSLs46txNL0Uke42j2i3XlzlUMv
+         pqluvVLi0Ij/Y/8UmDO94Nx6UDkx0iFaFklSSWWZU6YB5lUOH7G2VhR0n1uj5OyydYrX
+         +N/Jb5IkioHeJmJKEvI+2zpsj/pxrjb4rFLm23UO7Lz3oiI/SQ/f94BPgHJnmBcaHtNm
+         9yPNxkV160pR8KYddnxFK27ctSJ0VFgK768AZfpr8lF7bQl1Zoy6yF1ZfgRlkLrgRUvY
+         hLoumR/B9VUBpWzLu7DW1t2WCqaLRESmdqDor1aju9v0iF4FdNoRR0C+7CIW2shKO6id
+         5Qmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745427178; x=1746031978;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1745427545; x=1746032345;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mp1u/sIDVPqsXQLkzZlVGoz0PRI6pxyHbfKJBelf6DE=;
-        b=ZJcLN/9UigaNQpvMJtYN2k+ufArCHxb67G27NeXC0+9Q+gr14jSF+HAlX89RcAiwSB
-         NZ8+4fSN9GklsG06yPdI0gTPAjIfUBpPM3Yy42rH+QcFzPnFO5akMS0mJFvvQE3iGmff
-         8dQAh3GXQHfpxpU9Q/nUNQJe0fo6YQpb2rS1g10ZoB4Z7OA1++HHOwOBQwxwDcNv1EaZ
-         A4KbjwxJ5PfxmylozqC53ayAIkZY27QXKGKl5cuiFpI7LyvQyy8FREVDNDuDJg4pPlZj
-         wfdjXeyKRiM/iH4/8V6UhAp01sKJ9N+aFe/HuuBp3W34SEnX7AsKt3qm+R2JYnYIl8Yl
-         9J0w==
-X-Forwarded-Encrypted: i=1; AJvYcCU/WEfJ2b9BinnIJv0eufcD62W5/dCI1HnMaY34YVhcfhNUGXn3gXmVF9+tAJ7fRFtuCB0RVQYku6ci//I=@vger.kernel.org, AJvYcCXG7WYT4QTDtI4r7NbbGFPROnQoATE++WGXyOpSMc824puI9oVmLJhwU9/XCjSiOgU2gcxBT5vY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt407PMhAfIbd03jAkl/IPiK6XhwpO46XNoBOAN3GZEQkXLNxB
-	j61/Ejdos5gXCqfklj5PO2i43kDX0TzEpLwOHzICKNA2Mbt5J5M=
-X-Gm-Gg: ASbGncs92NnCULCl76tONrCLDFAEMGoiKiPimPp8sRrO1RRyBddzVYRMAQ9ahjFYYLd
-	6TMHIeK+1T5hPreW5zMFhabUCeiZjq7a7VCz12AxYzRUpr3AectZHMZsf3mDGjfYmO676K8f4Yq
-	etg32DzK2hz8TrSeDbIis43vtDF96XAC96kC6LcbbXQGk6r4XhRL70H2budFzqX0nHajwVo4xk5
-	lQcQtiw64+7k5hykO4KCwOvs2TWKCBkNrF2aM9NOVJDHSHGXZfFSots235gOwg9EkQ1SnJr44ML
-	uXUU+xt6mi6JOImnQHohbiuaFVQsVg1junrpwmZvX3O67wl6eCL6T+blLDZ4lhd/1wKfd0V+tGt
-	fN5inX7ZUJXk6NYdnfw==
-X-Google-Smtp-Source: AGHT+IHLHgQwjBt14DC1pTfqWWanbV25/yLubDo519FkOCkJkmpwKCc8feIRKpjRKMsqiMdEH3ytRg==
-X-Received: by 2002:a5d:5f47:0:b0:391:22e2:cd21 with SMTP id ffacd0b85a97d-3a06c43fb78mr229330f8f.36.1745427177790;
-        Wed, 23 Apr 2025 09:52:57 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac758.dip0.t-ipconnect.de. [91.42.199.88])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa420837sm19598917f8f.10.2025.04.23.09.52.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Apr 2025 09:52:57 -0700 (PDT)
-Message-ID: <c799db97-19f7-426e-892e-7da3d36a98f5@googlemail.com>
-Date: Wed, 23 Apr 2025 18:52:55 +0200
+        bh=VeoNenHFQxf2rJjhRDI+VQigXWkAGBhYIdmir9wPZoM=;
+        b=voBtwq1KuKxP4v7jI7yTDGjkCMlwfHwbhC8oCIyTeQEMb7pWyOLKGEsFpgjQfmRKrn
+         urY/ETIWCuFiCZPWcux4katWae/49ri8ZMfNrU/svKF1gsU+JIh06RPoQ6eL4jjAj+QV
+         lTIVbKtnIAgKTKsPBR9yaSCCXAq6/5tIJsL2b3dYYD7Dlpv4GZiroPn2Cb282hzE3CA7
+         mBr9pHdEiqOW5UZPn6Yyl9IUBgzlD89cpTRDcQVsZtceecQAkkWpJeEXlnxsM0HnWlun
+         foJ4C5kSJL9PP8dqy84+q5+eHeoJ5Qu1v2bNJ8MBMXBLx4oUZ8jcGpMKAoM8sExT3wpb
+         +sNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWURoPhor4RGshFD+deYGrIDE7zslI+/yyWGNihtTGReYpCr8WmP5xyBqdctxR5Pf82l8TTi9E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwmWVa6zmvgqFKIG5BduPqRCqts5BzD2iO3K4P0/QiG4+kCO+Mq
+	n4pAa/yss8JdRB4z6ey/MWMNDmWuQvZkgQAq1bV9ytjN/k8zffCjnDQ/7qp33sCgkd+OsxqgHKT
+	cGq94xKUYDyelIyR8XWrJR3N4VZmq+MTjRBiSJDrJIAfs7yf6r7M=
+X-Gm-Gg: ASbGnctBAZ/+g3o48+6BpmoeGfgOO8o+SVT91dX7zZbn08Ez6YRey0J3sDzlv2zdzdP
+	DFwZSi4cAWdV4W4YeFVvk+aAt2nBNVdSIT30dg+4BNTBVLIMlxb42Xa8c87PtitdiLtarIvgEhj
+	aFOQyFchNryPIoEDhd6MDpqkx9UWBg+dQ=
+X-Google-Smtp-Source: AGHT+IHzmtbWshY4kpROf0vgpONjEob9s6TJG2gR1CHVMzLp0MFcTvy9sABVz0Uxvhq9fLbeBLSnOwZ8rfzYudsgWDI=
+X-Received: by 2002:a05:690c:ec8:b0:6fd:22fb:f21b with SMTP id
+ 00721157ae682-7083c4892e4mr5688037b3.18.1745427545375; Wed, 23 Apr 2025
+ 09:59:05 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 23 Apr 2025 09:59:04 -0700
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 23 Apr 2025 09:59:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.1 000/291] 6.1.135-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250423142624.409452181@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Wed, 23 Apr 2025 09:59:04 -0700
+X-Gm-Features: ATxdqUHYG2Hh0LIvRCHHjn1IpjVGP9mca90NynQOGb2InFJZmehizmj1VLOMjaY
+Message-ID: <CACo-S-3O0Oob3EtXyPne=i0akBiCanX8GrJb3W9tOFXy7W-5JQ@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-5.15.y: (build) variable 'is_redirect'
+ is used uninitialized whenever 'if' conditi...
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Am 23.04.2025 um 16:39 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.1.135 release.
-> There are 291 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hello,
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+New build issue found on stable-rc/linux-5.15.y:
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+---
+ variable 'is_redirect' is used uninitialized whenever 'if' condition
+is true [-Werror,-Wsometimes-uninitialized] in net/sched/act_mirred.o
+(net/sched/act_mirred.c) [logspec:kbuild,kbuild.compiler.error]
+---
+
+- dashboard: https://d.kernelci.org/i/maestro:72f9cc14e764580fd20bda28956c2ddf82023571
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  dd688b41d9038dbc86718bae12ed995d596c1de5
 
 
-Beste Grüße,
-Peter Schneider
+Log excerpt:
+=====================================================
+net/sched/act_mirred.c:264:6: error: variable 'is_redirect' is used
+uninitialized whenever 'if' condition is true
+[-Werror,-Wsometimes-uninitialized]
+  264 |         if (unlikely(!(dev->flags & IFF_UP)) ||
+!netif_carrier_ok(dev)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:78:22: note: expanded from macro 'unlikely'
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                         ^
+net/sched/act_mirred.c:331:6: note: uninitialized use occurs here
+  331 |         if (is_redirect)
+      |             ^~~~~~~~~~~
+net/sched/act_mirred.c:264:2: note: remove the 'if' if its condition
+is always false
+  264 |         if (unlikely(!(dev->flags & IFF_UP)) ||
+!netif_carrier_ok(dev)) {
+      |
+^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  265 |                 net_notice_ratelimited("tc mirred to Houston:
+device %s is down\n",
+      |
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  266 |                                        dev->name);
+      |                                        ~~~~~~~~~~~
+  267 |                 goto err_cant_do;
+      |                 ~~~~~~~~~~~~~~~~~
+  268 |         }
+      |         ~
+net/sched/act_mirred.c:264:6: error: variable 'is_redirect' is used
+uninitialized whenever '||' condition is true
+[-Werror,-Wsometimes-uninitialized]
+  264 |         if (unlikely(!(dev->flags & IFF_UP)) ||
+!netif_carrier_ok(dev)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:78:22: note: expanded from macro 'unlikely'
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+net/sched/act_mirred.c:331:6: note: uninitialized use occurs here
+  331 |         if (is_redirect)
+      |             ^~~~~~~~~~~
+net/sched/act_mirred.c:264:6: note: remove the '||' if its condition
+is always false
+  264 |         if (unlikely(!(dev->flags & IFF_UP)) ||
+!netif_carrier_ok(dev)) {
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+./include/linux/compiler.h:78:22: note: expanded from macro 'unlikely'
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                         ^
+net/sched/act_mirred.c:259:6: error: variable 'is_redirect' is used
+uninitialized whenever 'if' condition is true
+[-Werror,-Wsometimes-uninitialized]
+  259 |         if (unlikely(!dev)) {
+      |             ^~~~~~~~~~~~~~
+./include/linux/compiler.h:78:22: note: expanded from macro 'unlikely'
+   78 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
+net/sched/act_mirred.c:331:6: note: uninitialized use occurs here
+  331 |         if (is_redirect)
+      |             ^~~~~~~~~~~
+net/sched/act_mirred.c:259:2: note: remove the 'if' if its condition
+is always false
+  259 |         if (unlikely(!dev)) {
+      |         ^~~~~~~~~~~~~~~~~~~~~
+  260 |                 pr_notice_once("tc mirred: target device is gone\n");
+      |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  261 |                 goto err_cant_do;
+      |                 ~~~~~~~~~~~~~~~~~
+  262 |         }
+      |         ~
+net/sched/act_mirred.c:237:18: note: initialize the variable
+'is_redirect' to silence this warning
+  237 |         bool is_redirect;
+      |                         ^
+      |                          = 0
+3 errors generated.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+=====================================================
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+
+# Builds where the incident occurred:
+
+## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
+- compiler: clang-17
+- dashboard: https://d.kernelci.org/build/maestro:6808fe8b43948caad9509059
+
+
+#kernelci issue maestro:72f9cc14e764580fd20bda28956c2ddf82023571
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
