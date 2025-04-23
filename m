@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15C7A98EC6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7FDA98F40
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9AE03A9FBC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9158D3B6831
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBFC827A12D;
-	Wed, 23 Apr 2025 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB3A280CDC;
+	Wed, 23 Apr 2025 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dkKBqeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M34DQABL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9606F175BF;
-	Wed, 23 Apr 2025 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8E127F755;
+	Wed, 23 Apr 2025 14:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420155; cv=none; b=BvQaxufJ4m5g1xhZ5NQSBjZ5hHOhMmLLO1ZA4WXSndplVQO2EZK4hoZqvEAiXkpeUlPDt46LmZ0kUFTznsnrsviCtL2ZYu0zyoll/5cNRQY/wwS0lkxYnFZKEZHGNhjaex1izxDTeUlMVmrHgRPlpoON8bbkljQujRg3mydNiYY=
+	t=1745420350; cv=none; b=j7w7VhSYqKElmM3DUdo1eqJ7fj8w5+GvpaWrF31ECTWPq7VfbySmNAQm+Zckcgnzsd2Vxl/Ub76a3+5cx/o1ewxkLzCz8BT9sNVBuojqvPm/NJ3JMnCPKtnOENk98GKq7J7d7bdnsi6WVm/Rw5CK5R3a67CuoeetqVfw9Q9FBZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420155; c=relaxed/simple;
-	bh=NEltszxiG1DHgIQFp76zobX8cAdwrsvEDM2OIzPrwq0=;
+	s=arc-20240116; t=1745420350; c=relaxed/simple;
+	bh=wh0SvGpLh7slmzNPbN79DJC5XfhlbKmP0guO86vTOO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SYTqilFph12HG3cxTiTwfQX0VCnVuc0iyUEZ2ZBED87z8MUb4NQQuPY4pWRZgFQ7jGLF7N2FJh+uaBJwytMQyNTzOhx30JQyNsg1JrJHZh2QeYJrNr+UiTuyI3eVcMxx+Lv+67bx8wLcKPfri5xJ1Ex4oZu8knzZAbii1/odhuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dkKBqeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279D3C4CEE8;
-	Wed, 23 Apr 2025 14:55:54 +0000 (UTC)
+	 MIME-Version; b=OEA2I1iJ1KPBbTplJmHNvLeUE/2t2Hydaz2wwM/mfVQDQkUjLqaBbmYVYsFut+EDAXWWKQG/mfdgahSnTvCzf+rtJ2d2NavQMm1N/p9yvvEQguHzQaLb3hLM2KBpmkLbBXyL+d/UKwyRbv85lffIjnLD3J/KuoE1TFwpFgOK/Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M34DQABL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F35BC4CEE2;
+	Wed, 23 Apr 2025 14:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420155;
-	bh=NEltszxiG1DHgIQFp76zobX8cAdwrsvEDM2OIzPrwq0=;
+	s=korg; t=1745420350;
+	bh=wh0SvGpLh7slmzNPbN79DJC5XfhlbKmP0guO86vTOO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dkKBqeFFpuZGmRlRLLiTsID2za6LgZ7oRz6Day/UD2RxCTziDhHbyRAJTWFuctkL
-	 tu1pbo6he8DZKkTdpwCvF7wtRUvFNRluZQzGhBftjixg8t3RKzw1cmgbuCmSBny5fy
-	 sGwcnpdCY+CbwR2c8WDYNk1xPqtmFC4+heeRejJw=
+	b=M34DQABLOW/S9pY53gI5VJlffSMTboeqoC7dxVQaBlfVqWAJeB9+Zda8a+qvWNuFX
+	 HsfapnKApza/WmTCMCrPzowtt4pDK/Xc7UbKe2ic0wg+H0PIeJveDxaLVmXZrAtSUG
+	 FqM+RbzLjQTk3Pggd+6ijod+R/8aJ7EP1oB8sgG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 043/393] perf: arm_pmu: Dont disable counter in armpmu_add()
-Date: Wed, 23 Apr 2025 16:38:59 +0200
-Message-ID: <20250423142645.069549068@linuxfoundation.org>
+Subject: [PATCH 6.6 044/393] arm64: cputype: Add QCOM_CPU_PART_KRYO_3XX_GOLD
+Date: Wed, 23 Apr 2025 16:39:00 +0200
+Message-ID: <20250423142645.109013321@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -69,65 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit dcca27bc1eccb9abc2552aab950b18a9742fb8e7 ]
+[ Upstream commit 401c3333bb2396aa52e4121887a6f6a6e2f040bc ]
 
-Currently armpmu_add() tries to handle a newly-allocated counter having
-a stale associated event, but this should not be possible, and if this
-were to happen the current mitigation is insufficient and potentially
-expensive. It would be better to warn if we encounter the impossible
-case.
+Add a definition for the Qualcomm Kryo 300-series Gold cores.
 
-Calls to pmu::add() and pmu::del() are serialized by the core perf code,
-and armpmu_del() clears the relevant slot in pmu_hw_events::events[]
-before clearing the bit in pmu_hw_events::used_mask such that the
-counter can be reallocated. Thus when armpmu_add() allocates a counter
-index from pmu_hw_events::used_mask, it should not be possible to observe
-a stale even in pmu_hw_events::events[] unless either
-pmu_hw_events::used_mask or pmu_hw_events::events[] have been corrupted.
-
-If this were to happen, we'd end up with two events with the same
-event->hw.idx, which would clash with each other during reprogramming,
-deletion, etc, and produce bogus results. Add a WARN_ON_ONCE() for this
-case so that we can detect if this ever occurs in practice.
-
-That possiblity aside, there's no need to call arm_pmu::disable(event)
-for the new event. The PMU reset code initialises the counter in a
-disabled state, and armpmu_del() will disable the counter before it can
-be reused. Remove the redundant disable.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Link: https://lore.kernel.org/r/20250218-arm-brbe-v19-v20-2-4e9922fc2e8e@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20241219131107.v3.1.I18e0288742871393228249a768e5d56ea65d93dc@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_pmu.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
-index d712a19e47ac1..b3bb4d62f13dc 100644
---- a/drivers/perf/arm_pmu.c
-+++ b/drivers/perf/arm_pmu.c
-@@ -342,12 +342,10 @@ armpmu_add(struct perf_event *event, int flags)
- 	if (idx < 0)
- 		return idx;
- 
--	/*
--	 * If there is an event in the counter we are going to use then make
--	 * sure it is disabled.
--	 */
-+	/* The newly-allocated counter should be empty */
-+	WARN_ON_ONCE(hw_events->events[idx]);
-+
- 	event->hw.idx = idx;
--	armpmu->disable(event);
- 	hw_events->events[idx] = event;
- 
- 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 488f8e7513495..c8058f91a5bd3 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -119,6 +119,7 @@
+ #define QCOM_CPU_PART_KRYO		0x200
+ #define QCOM_CPU_PART_KRYO_2XX_GOLD	0x800
+ #define QCOM_CPU_PART_KRYO_2XX_SILVER	0x801
++#define QCOM_CPU_PART_KRYO_3XX_GOLD	0x802
+ #define QCOM_CPU_PART_KRYO_3XX_SILVER	0x803
+ #define QCOM_CPU_PART_KRYO_4XX_GOLD	0x804
+ #define QCOM_CPU_PART_KRYO_4XX_SILVER	0x805
+@@ -195,6 +196,7 @@
+ #define MIDR_QCOM_KRYO MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO)
+ #define MIDR_QCOM_KRYO_2XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_GOLD)
+ #define MIDR_QCOM_KRYO_2XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_2XX_SILVER)
++#define MIDR_QCOM_KRYO_3XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_GOLD)
+ #define MIDR_QCOM_KRYO_3XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_3XX_SILVER)
+ #define MIDR_QCOM_KRYO_4XX_GOLD MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_GOLD)
+ #define MIDR_QCOM_KRYO_4XX_SILVER MIDR_CPU_MODEL(ARM_CPU_IMP_QCOM, QCOM_CPU_PART_KRYO_4XX_SILVER)
 -- 
 2.39.5
 
