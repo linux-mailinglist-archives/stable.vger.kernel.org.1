@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2484A98FAA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A03E1A98E99
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944E3168BFF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E811317E451
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564E128FFF9;
-	Wed, 23 Apr 2025 15:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F8A27F4D1;
+	Wed, 23 Apr 2025 14:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEbs5Oug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVjXCUin"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EBE28A408;
-	Wed, 23 Apr 2025 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73A21EFFB9;
+	Wed, 23 Apr 2025 14:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420667; cv=none; b=oq3lTPHLfIOqZLO2y4usibZY07JXTWQQ6VAEQ/GmYT+jIhOY6v/HGb1izhSxjohNbeS0y6OIONDhxxrLSTyCCK/kTHQdOsVL8/xKpGAekbKC9bTQ3Sh+ZSKdUiS89wJU++Nhos8UEiDi+HWKjX4sA7BhaQEgofpPt99U4LDJ42M=
+	t=1745420153; cv=none; b=AsQbFxj0SXsq0NGZtW2v9tixl7DiPyWVZZEQ8gWIwojhrIGnVzzbCn0mvuF0IQwKy/OTMff9YXuoMT44f2RqraUfdNnp3y9dChH3ayyHlS244Dns0FmRW+na331yTo9v3DPP4TSBEg7t8EtPNtEzQ+gn62/6FopyAl6PhQuF03o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420667; c=relaxed/simple;
-	bh=fPI+XquWNzTsCzEZUGQWYPZy2e8oVJ7mg9mw4Jc62Ws=;
+	s=arc-20240116; t=1745420153; c=relaxed/simple;
+	bh=q1AzHKTwpNxcr3JA2EFzfg4IzDOC8cD6M8HTGBsnkUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FehEEJ/sQVooF6MIyQl5cUC3M8kHlP3yAzxyXt4CXTyzhc2ZTz62CLZB2CICPp0v4CtrJ94kjEX2uTtg1IHKiNnKDVJqWk5Zd+cL2kElOSGIV5GZ99HJaKXzUEzu1t7cxUT2W167KwPAACzg8psCwOJbTJGC3dLTlzSh9yDIYq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEbs5Oug; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E13C4CEE2;
-	Wed, 23 Apr 2025 15:04:26 +0000 (UTC)
+	 MIME-Version; b=iy8HfunSdZQzgmoOptBsUW27h7e801Kbmmf4tZgalinvT8XEcTXtKfX8WpeL2b8Dxvp3InGBT62zfDC7WrZauoegII1Q785BMDk99cLcTA2ZzVepOHZchdg/WRNHepS2+WzInLRv2fADtRN4YwRQPEujRQau4ZbHXn8wP6RCTFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVjXCUin; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783ECC4CEE2;
+	Wed, 23 Apr 2025 14:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420666;
-	bh=fPI+XquWNzTsCzEZUGQWYPZy2e8oVJ7mg9mw4Jc62Ws=;
+	s=korg; t=1745420152;
+	bh=q1AzHKTwpNxcr3JA2EFzfg4IzDOC8cD6M8HTGBsnkUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HEbs5OugRKcZVwp7P7nrCbrfkYZsjlJXrXzkYgZmFxMgEhy1c16xUpl3wOscYrxaa
-	 v5hVg2UrCMyUEA3t1p4rYta8IBDx5NCZdfhJ2MBcetQ/4/yfQCIiokxjo0IpgrzVrS
-	 xuTck4KZdW3TWwI4MyhpAl1RsCs3+MSX7LO+7WRs=
+	b=vVjXCUinoHuYfB1D+3pNYbon8OvxseT2DI/BYwRA35nkfwM7ipBEukmMEjBXQVe1L
+	 GKaXQgTHVkenyF5dGKL13uO8KyXM1aGTc80xrzEfrBLrfsvOQNXrp47PNT2ngGhCNk
+	 AdAmtrxSGRaMvnerm9SmSIOUPLSOTQ1SpFanl1U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.14 112/241] block: integrity: Do not call set_page_dirty_lock()
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 104/223] ftrace: fix incorrect hash size in register_ftrace_direct()
 Date: Wed, 23 Apr 2025 16:42:56 +0200
-Message-ID: <20250423142625.153518371@linuxfoundation.org>
+Message-ID: <20250423142621.349320061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin K. Petersen <martin.petersen@oracle.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-commit 39e160505198ff8c158f11bce2ba19809a756e8b upstream.
+[ Upstream commit 92f1d3b40179b15630d72e2c6e4e25a899b67ba9 ]
 
-Placing multiple protection information buffers inside the same page
-can lead to oopses because set_page_dirty_lock() can't be called from
-interrupt context.
+The maximum of the ftrace hash bits is made fls(32) in
+register_ftrace_direct(), which seems illogical. So, we fix it by making
+the max hash bits FTRACE_HASH_MAX_BITS instead.
 
-Since a protection information buffer is not backed by a file there is
-no point in setting its page dirty, there is nothing to synchronize.
-Drop the call to set_page_dirty_lock() and remove the last argument to
-bio_integrity_unpin_bvec().
-
-Cc: stable@vger.kernel.org
-Fixes: 492c5d455969 ("block: bio-integrity: directly map user buffers")
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/yq1v7r3ev9g.fsf@ca-mkp.ca.oracle.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250413014444.36724-1-dongml2@chinatelecom.cn
+Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bio-integrity.c |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ kernel/trace/ftrace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/block/bio-integrity.c
-+++ b/block/bio-integrity.c
-@@ -104,16 +104,12 @@ err:
- }
- EXPORT_SYMBOL(bio_integrity_alloc);
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 90b59c627bb8e..e67d67f7b9065 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5944,9 +5944,10 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
  
--static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs,
--				     bool dirty)
-+static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs)
- {
- 	int i;
+ 	/* Make a copy hash to place the new and the old entries in */
+ 	size = hash->count + direct_functions->count;
+-	if (size > 32)
+-		size = 32;
+-	new_hash = alloc_ftrace_hash(fls(size));
++	size = fls(size);
++	if (size > FTRACE_HASH_MAX_BITS)
++		size = FTRACE_HASH_MAX_BITS;
++	new_hash = alloc_ftrace_hash(size);
+ 	if (!new_hash)
+ 		goto out_unlock;
  
--	for (i = 0; i < nr_vecs; i++) {
--		if (dirty && !PageCompound(bv[i].bv_page))
--			set_page_dirty_lock(bv[i].bv_page);
-+	for (i = 0; i < nr_vecs; i++)
- 		unpin_user_page(bv[i].bv_page);
--	}
- }
- 
- static void bio_integrity_uncopy_user(struct bio_integrity_payload *bip)
-@@ -129,7 +125,7 @@ static void bio_integrity_uncopy_user(st
- 	ret = copy_to_iter(bvec_virt(bounce_bvec), bytes, &orig_iter);
- 	WARN_ON_ONCE(ret != bytes);
- 
--	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs, true);
-+	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs);
- }
- 
- /**
-@@ -149,8 +145,7 @@ void bio_integrity_unmap_user(struct bio
- 		return;
- 	}
- 
--	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt,
--			bio_data_dir(bio) == READ);
-+	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt);
- }
- 
- /**
-@@ -236,7 +231,7 @@ static int bio_integrity_copy_user(struc
- 	}
- 
- 	if (write)
--		bio_integrity_unpin_bvec(bvec, nr_vecs, false);
-+		bio_integrity_unpin_bvec(bvec, nr_vecs);
- 	else
- 		memcpy(&bip->bip_vec[1], bvec, nr_vecs * sizeof(*bvec));
- 
-@@ -357,7 +352,7 @@ int bio_integrity_map_user(struct bio *b
- 	return 0;
- 
- release_pages:
--	bio_integrity_unpin_bvec(bvec, nr_bvecs, false);
-+	bio_integrity_unpin_bvec(bvec, nr_bvecs);
- free_bvec:
- 	if (bvec != stack_vec)
- 		kfree(bvec);
+-- 
+2.39.5
+
 
 
 
