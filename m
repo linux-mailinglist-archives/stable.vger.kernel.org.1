@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA00A99238
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90617A98E87
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98CD94A2321
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADE815A7A10
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EECE28B50E;
-	Wed, 23 Apr 2025 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC72727CB33;
+	Wed, 23 Apr 2025 14:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFs7t1Q2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6SrgzOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACF225EF8E;
-	Wed, 23 Apr 2025 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8789E18DB17;
+	Wed, 23 Apr 2025 14:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421784; cv=none; b=YwbmI169NZ9Zwj2LK8kOVNEl7yTDESLfGg9zt4vdWt7pAUEjvzkr+cqP31a1KtCUPyoqYigpbQu11pr4MK/0hiEJm8lXd5N2CQDL8QQ7JXPLjiwPg5+04/LIq7jLjkrcwm71368c73c5vMPnsOcTFhWV5+fFp9d3ewWcBuywUO0=
+	t=1745420047; cv=none; b=hQX3NaMywRsueJOoVAHht9NfusBOwogFlnI6/qOKaMitzCBd0eAFj6T4olIYIveJCKrGw9BqzDOmlE6qtMufImzTxXVdJfH+7qBb2y7AiMilSO/Lfd1V/E/MiMWIMIoscJ0h081qWNh9qtEthg3g4zhcuie4krdL0cuYOvgInv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421784; c=relaxed/simple;
-	bh=Hig+eDCqAmO5JV//k5eeOJYUpX2nUdHWM84+FTxfLjg=;
+	s=arc-20240116; t=1745420047; c=relaxed/simple;
+	bh=6FcaOJksybvfKCdmHltqmjceaT/NCRs+twjXBj9ayRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l+BKUmE9Io3uSsGA2SRXcQTtNv9TXf5jaI5MnYLBYTqvqeT/bV2zkRGwTrO6VUnWl5QpeCZxY0OP36kwMA/M0AxqhHLPv6Smhouylp9Gx/rQJgF1+InkOoJAY4EBNvANItU7bT2OdbSZpyD2inDP1lZwEO00I+convxOaXb24ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFs7t1Q2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCA8C4CEE2;
-	Wed, 23 Apr 2025 15:23:03 +0000 (UTC)
+	 MIME-Version; b=U2eDrwu0ER58FgkDSrAmFZ+tu2Sd3iTdiT/0P8Y44Ony8CxNTHepARIDeB8RsGWKOaIZ3ekT2+kDD8klDKJla+hj1PTufwlBvgZ+jkU2xg08hOxjB0DcdlAnwz7N5vKVjx69BHVR4AKbbKKgJKitvy3T+zDcFQKWpuDmnOnJuto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6SrgzOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1901BC4CEE2;
+	Wed, 23 Apr 2025 14:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421784;
-	bh=Hig+eDCqAmO5JV//k5eeOJYUpX2nUdHWM84+FTxfLjg=;
+	s=korg; t=1745420047;
+	bh=6FcaOJksybvfKCdmHltqmjceaT/NCRs+twjXBj9ayRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFs7t1Q2+eBKE4NulyyYZVDGG6iBfhwUSZmlas6+sfcJNJzgTBiEhkF4mcZFSgj/a
-	 IoBcZx74PxlrwARy1+rPLo6IZcQFJOYIAKlK7SQFS3zzzkUYKEui2PJON00FOYpYzi
-	 QQqxA+GtzGyt8FH5zia0RA1pFkdkY6BWI17hKyds=
+	b=i6SrgzOzVSt+qzAq2saOeHNcgej3N5wMxb8DwD/kJUVCb5qRmFYfbw8fbBRK3uV2z
+	 rGUHkIZ7Z3BOFPQlkZjZRjySa8olMaSLdGqXI8hIO6f1/qty11mqygF8Z12yzwm1hk
+	 aWFhobis6VKf0/OfU+Ic8dNzutSRgVf25As1gcQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/291] Bluetooth: l2cap: Check encryption key size on incoming connection
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 095/223] block: integrity: Do not call set_page_dirty_lock()
 Date: Wed, 23 Apr 2025 16:42:47 +0200
-Message-ID: <20250423142631.657925160@linuxfoundation.org>
+Message-ID: <20250423142620.988311699@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-[ Upstream commit 522e9ed157e3c21b4dd623c79967f72c21e45b78 ]
+commit 39e160505198ff8c158f11bce2ba19809a756e8b upstream.
 
-This is required for passing GAP/SEC/SEM/BI-04-C PTS test case:
-  Security Mode 4 Level 4, Responder - Invalid Encryption Key Size
-  - 128 bit
+Placing multiple protection information buffers inside the same page
+can lead to oopses because set_page_dirty_lock() can't be called from
+interrupt context.
 
-This tests the security key with size from 1 to 15 bytes while the
-Security Mode 4 Level 4 requests 16 bytes key size.
+Since a protection information buffer is not backed by a file there is
+no point in setting its page dirty, there is nothing to synchronize.
+Drop the call to set_page_dirty_lock() and remove the last argument to
+bio_integrity_unpin_bvec().
 
-Currently PTS fails with the following logs:
-- expected:Connection Response:
-    Code: [3 (0x03)] Code
-    Identifier: (lt)WildCard: Exists(gt)
-    Length: [8 (0x0008)]
-    Destination CID: (lt)WildCard: Exists(gt)
-    Source CID: [64 (0x0040)]
-    Result: [3 (0x0003)] Connection refused - Security block
-    Status: (lt)WildCard: Exists(gt),
-but received:Connection Response:
-    Code: [3 (0x03)] Code
-    Identifier: [1 (0x01)]
-    Length: [8 (0x0008)]
-    Destination CID: [64 (0x0040)]
-    Source CID: [64 (0x0040)]
-    Result: [0 (0x0000)] Connection Successful
-    Status: [0 (0x0000)] No further information available
-
-And HCI logs:
-< HCI Command: Read Encrypti.. (0x05|0x0008) plen 2
-        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Success (0x00)
-        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
-        Key size: 7
-> ACL Data RX: Handle 14 flags 0x02 dlen 12
-      L2CAP: Connection Request (0x02) ident 1 len 4
-        PSM: 4097 (0x1001)
-        Source CID: 64
-< ACL Data TX: Handle 14 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 1 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection successful (0x0000)
-        Status: No further information available (0x0000)
-
-Fixes: 288c06973daa ("Bluetooth: Enforce key size of 16 bytes on FIPS level")
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 492c5d455969 ("block: bio-integrity: directly map user buffers")
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/yq1v7r3ev9g.fsf@ca-mkp.ca.oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ block/bio-integrity.c |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 21a79ef7092d7..222105e24d2d8 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4186,7 +4186,8 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -104,16 +104,12 @@ err:
+ }
+ EXPORT_SYMBOL(bio_integrity_alloc);
  
- 	/* Check if the ACL is secure enough (if not SDP) */
- 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
--	    !hci_conn_check_link_mode(conn->hcon)) {
-+	    (!hci_conn_check_link_mode(conn->hcon) ||
-+	    !l2cap_check_enc_key_size(conn->hcon))) {
- 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
- 		result = L2CAP_CR_SEC_BLOCK;
- 		goto response;
--- 
-2.39.5
-
+-static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs,
+-				     bool dirty)
++static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < nr_vecs; i++) {
+-		if (dirty && !PageCompound(bv[i].bv_page))
+-			set_page_dirty_lock(bv[i].bv_page);
++	for (i = 0; i < nr_vecs; i++)
+ 		unpin_user_page(bv[i].bv_page);
+-	}
+ }
+ 
+ static void bio_integrity_uncopy_user(struct bio_integrity_payload *bip)
+@@ -129,7 +125,7 @@ static void bio_integrity_uncopy_user(st
+ 	ret = copy_to_iter(bvec_virt(bounce_bvec), bytes, &orig_iter);
+ 	WARN_ON_ONCE(ret != bytes);
+ 
+-	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs, true);
++	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs);
+ }
+ 
+ /**
+@@ -149,8 +145,7 @@ void bio_integrity_unmap_user(struct bio
+ 		return;
+ 	}
+ 
+-	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt,
+-			bio_data_dir(bio) == READ);
++	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt);
+ }
+ 
+ /**
+@@ -236,7 +231,7 @@ static int bio_integrity_copy_user(struc
+ 	}
+ 
+ 	if (write)
+-		bio_integrity_unpin_bvec(bvec, nr_vecs, false);
++		bio_integrity_unpin_bvec(bvec, nr_vecs);
+ 	else
+ 		memcpy(&bip->bip_vec[1], bvec, nr_vecs * sizeof(*bvec));
+ 
+@@ -362,7 +357,7 @@ int bio_integrity_map_user(struct bio *b
+ 	return 0;
+ 
+ release_pages:
+-	bio_integrity_unpin_bvec(bvec, nr_bvecs, false);
++	bio_integrity_unpin_bvec(bvec, nr_bvecs);
+ free_bvec:
+ 	if (bvec != stack_vec)
+ 		kfree(bvec);
 
 
 
