@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-135748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38538A9902E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D77A98E9A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8BCD5A80D5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93345A725F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D1228CF6B;
-	Wed, 23 Apr 2025 15:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734C427A12D;
+	Wed, 23 Apr 2025 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mm+JBH2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtCF6RZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30B628CF61;
-	Wed, 23 Apr 2025 15:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D196175BF;
+	Wed, 23 Apr 2025 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420741; cv=none; b=H9RJS6ztHS6zBqgLpy/SSB9nSSA8q78TUwvHAHICv1vNIrxsISIzvEN6jL/gvVS/wQnjeaFyl3b/4F87rIKGqYgO9H8J130Pb1VjGU3EU5cvmCV4HktO3Y7lIX7tAngK4mMMft5uXqMxbOacbQVleVJsCBNGkO4E90GjQxq4imE=
+	t=1745420092; cv=none; b=tdPHsaM19KxCLTGmO00pJLFovkBlComeEE8hOs1PoZTVs1v4wHesjGip4sYQ/MWXOYQpKlvaHSOcKH+IwP8qfyoCoZrN/kQOPoRltduD4bmdYR5ExDpRps6d+/7fi6tsM8f/zcTa4oKkJBRW+9H3bENoehL9+Gm7/p+rG1CPSZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420741; c=relaxed/simple;
-	bh=hMunZ6zfNFcGD0eeQ6W8Fyse0jo6T1bZNbVJ3E274KQ=;
+	s=arc-20240116; t=1745420092; c=relaxed/simple;
+	bh=m6IQi1jidH0qivW3cJGPapwrYm1BZ4Zo2gnF1W00iiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufv6j0Ptbp6gLOljYnOjLgShDWuS6pe5oIF63mZhT9AWe3Q327c9K9qlD65W2BQrhMe9c8iAgO1jhZaDNtyjHpASulOqxqE9wiF0GjGDTz43do5MV4JWc6lFAn6AaiYuG73eAG+AscKfaKL5ykyDd8g2HrSsqu+RBa9VM7qyfFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mm+JBH2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DB3C4CEE2;
-	Wed, 23 Apr 2025 15:05:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mwIKK0SGhAoyF30L3fz2HFZYg1IkmtzcKGORbMeJ0voziGw2ssaKW1M2bR6E1N9AicpF9ykz/a5pefsmlqU+/zM5W2aTM7tNETdlSF/lwyaQW2h84aeXw/dfI8uhxP3bPNzQZZCSMIItizjQJdeMZ/1Uv3AyL5UW6eUAfX/4sOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtCF6RZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B504DC4CEE2;
+	Wed, 23 Apr 2025 14:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420740;
-	bh=hMunZ6zfNFcGD0eeQ6W8Fyse0jo6T1bZNbVJ3E274KQ=;
+	s=korg; t=1745420092;
+	bh=m6IQi1jidH0qivW3cJGPapwrYm1BZ4Zo2gnF1W00iiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mm+JBH2tGUe2TSNWeoL/smj7JAjgIe8HJVZLOVfAdf3ljNy/05g2JAxh+4+vjZuSU
-	 ga2ADpvY/PFn8YIotNhmEaxbxOphsOSMoyYoDu0splpxrwWYvEpPftUn/JqpFVZsVe
-	 ge7C4H2gFE2EvNYQia2jX/Ow9BqZBZpWfvvoVJCk=
+	b=RtCF6RZzLDyqKhr+gHY1zuTDbyymIazxDjE1yqQI0vTvTIBWXRy2cn0yCXx+1qa04
+	 gsg6WSdENpgOUn7tuUykM/tHmp2OOADGFkFsym7evfJF3Ka3F6tEbW9oyv3BzEqm4I
+	 6voD8oaTLf/5QoIqDurQ+KX/N6EhT0XRxbtVDY6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/393] PCI: vmd: Make vmd_dev::cfg_lock a raw_spinlock_t type
-Date: Wed, 23 Apr 2025 16:40:04 +0200
-Message-ID: <20250423142647.742978377@linuxfoundation.org>
+Subject: [PATCH 6.1 016/291] net: ppp: Add bound checking for skb data on ppp_sync_txmung
+Date: Wed, 23 Apr 2025 16:40:05 +0200
+Message-ID: <20250423142625.069033314@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +64,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 18056a48669a040bef491e63b25896561ee14d90 ]
+[ Upstream commit aabc6596ffb377c4c9c8f335124b92ea282c9821 ]
 
-The access to the PCI config space via pci_ops::read and pci_ops::write is
-a low-level hardware access. The functions can be accessed with disabled
-interrupts even on PREEMPT_RT. The pci_lock is a raw_spinlock_t for this
-purpose.
+Ensure we have enough data in linear buffer from skb before accessing
+initial bytes. This prevents potential out-of-bounds accesses
+when processing short packets.
 
-A spinlock_t becomes a sleeping lock on PREEMPT_RT, so it cannot be
-acquired with disabled interrupts. The vmd_dev::cfg_lock is accessed in
-the same context as the pci_lock.
+When ppp_sync_txmung receives an incoming package with an empty
+payload:
+(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
+$18 = {
+	type = 0x1,
+	ver = 0x1,
+	code = 0x0,
+	sid = 0x2,
+        length = 0x0,
+	tag = 0xffff8880371cdb96
+}
 
-Make vmd_dev::cfg_lock a raw_spinlock_t type so it can be used with
-interrupts disabled.
+from the skb struct (trimmed)
+      tail = 0x16,
+      end = 0x140,
+      head = 0xffff88803346f400 "4",
+      data = 0xffff88803346f416 ":\377",
+      truesize = 0x380,
+      len = 0x0,
+      data_len = 0x0,
+      mac_len = 0xe,
+      hdr_len = 0x0,
 
-This was reported as:
+it is not safe to access data[2].
 
-  BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  Call Trace:
-   rt_spin_lock+0x4e/0x130
-   vmd_pci_read+0x8d/0x100 [vmd]
-   pci_user_read_config_byte+0x6f/0xe0
-   pci_read_config+0xfe/0x290
-   sysfs_kf_bin_read+0x68/0x90
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Tested-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Acked-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-[bigeasy: reword commit message]
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-off-by: Luis Claudio R. Goncalves <lgoncalv@redhat.com>
-Link: https://lore.kernel.org/r/20250218080830.ufw3IgyX@linutronix.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: add back report info from
-https://lore.kernel.org/lkml/20241218115951.83062-1-ryotkkr98@gmail.com/]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
+Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Link: https://patch.msgid.link/20250408-bound-checking-ppp_txmung-v2-1-94bb6e1b92d0@arnaud-lcm.com
+[pabeni@redhat.com: fixed subj typo]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/vmd.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-index 5ff2066aa5164..dfa222e02c4da 100644
---- a/drivers/pci/controller/vmd.c
-+++ b/drivers/pci/controller/vmd.c
-@@ -125,7 +125,7 @@ struct vmd_irq_list {
- struct vmd_dev {
- 	struct pci_dev		*dev;
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 94ef6f9ca5103..fb533c43deeea 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -515,6 +515,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
+ 	unsigned char *data;
+ 	int islcp;
  
--	spinlock_t		cfg_lock;
-+	raw_spinlock_t		cfg_lock;
- 	void __iomem		*cfgbar;
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!pskb_may_pull(skb, 3)) {
++		kfree_skb(skb);
++		return NULL;
++	}
+ 	data  = skb->data;
+ 	proto = get_unaligned_be16(data);
  
- 	int msix_count;
-@@ -402,7 +402,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		*value = readb(addr);
-@@ -417,7 +417,7 @@ static int vmd_pci_read(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
- }
- 
-@@ -437,7 +437,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 	if (!addr)
- 		return -EFAULT;
- 
--	spin_lock_irqsave(&vmd->cfg_lock, flags);
-+	raw_spin_lock_irqsave(&vmd->cfg_lock, flags);
- 	switch (len) {
- 	case 1:
- 		writeb(value, addr);
-@@ -455,7 +455,7 @@ static int vmd_pci_write(struct pci_bus *bus, unsigned int devfn, int reg,
- 		ret = -EINVAL;
- 		break;
- 	}
--	spin_unlock_irqrestore(&vmd->cfg_lock, flags);
-+	raw_spin_unlock_irqrestore(&vmd->cfg_lock, flags);
- 	return ret;
- }
- 
-@@ -1020,7 +1020,7 @@ static int vmd_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	if (features & VMD_FEAT_OFFSET_FIRST_VECTOR)
- 		vmd->first_vec = 1;
- 
--	spin_lock_init(&vmd->cfg_lock);
-+	raw_spin_lock_init(&vmd->cfg_lock);
- 	pci_set_drvdata(dev, vmd);
- 	err = vmd_enable_domain(vmd, features);
- 	if (err)
 -- 
 2.39.5
 
