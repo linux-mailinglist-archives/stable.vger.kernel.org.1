@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-135899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1CDA990CB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0335A98E21
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82DB216ADE4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DB263B64C3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946FB281505;
-	Wed, 23 Apr 2025 15:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970B027FD7D;
+	Wed, 23 Apr 2025 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IjPk3jm3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gv1fbu8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5020D2820A8;
-	Wed, 23 Apr 2025 15:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258727FD60;
+	Wed, 23 Apr 2025 14:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421134; cv=none; b=H4ZN4Lpe/1jZ49/ojLObuVIwU2SxO6f4FAqKisPwYbYF0hfXfmgtlw6Kjh8FlWlMbL3HiDBesXM6XyKMJq2JofUmNSFx9wCnKsldmvzXq3VBXY/kwkJiDT3wrHC/Luk52dBFvaFaxoauUn7NW4Y0iH8JYixPlkUfoUoFCePyGM0=
+	t=1745419861; cv=none; b=KRgvt1HyaLm5MTgay6+poxCtXdkzw4+Nf8TzPh1jFAZkTJGFBeqLJOx7XarBatel1jMWlrb7FAtcColfYMi6dqonN8xDfjVrnilDMENoaAgWv8BfPc5b9gyGaS0oRk/C5VAMD6dz7UWfUUXvLgz6mgvXMCeie+KSjo4FwB7e3h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421134; c=relaxed/simple;
-	bh=zKhMxDWi3zj37wvL7SZZprALyGwvPNBq6mOrgD0eeKQ=;
+	s=arc-20240116; t=1745419861; c=relaxed/simple;
+	bh=fCpXMaK2C/jnDxrmlbE27TX1N7SHsnuNMHAv2H6srYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PI9F0LMGOPnr9jaMaJlQ3fn5IvqcPy2LC9GwVwevwZeiGI1Cy1eX1jbWaG9nQKKcVgE0Ze5XUWUAVHncwD1I7tWBFUHsecZaaGtWgSLNXsf5dfDLKqP5ZoRyDFYJ1LprADzxhBlF5kzhx4w+PYEk5ZXE+d9eWXJqiu7ru5hxWKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IjPk3jm3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A953AC4CEE3;
-	Wed, 23 Apr 2025 15:12:13 +0000 (UTC)
+	 MIME-Version; b=E/T3JZ43Byihom07TvMD/pcotfnsb+cvFtnVVey32dqcFR2R+C4tJ+hSZ66qt9hPVWMNU5Bik2NuGyVHAmTcVgdjo8BUtLTlQXrKVQw3x+F48RcUK36OOB9BzFcwn0Skz24wzPLAMvg73pzhtVVJJ+Ct4hHFQeGjMTmmzTZ8ohA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gv1fbu8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C072C4CEE2;
+	Wed, 23 Apr 2025 14:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421134;
-	bh=zKhMxDWi3zj37wvL7SZZprALyGwvPNBq6mOrgD0eeKQ=;
+	s=korg; t=1745419860;
+	bh=fCpXMaK2C/jnDxrmlbE27TX1N7SHsnuNMHAv2H6srYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IjPk3jm3dOYXPs9zgmqo9FG2ruS6By4XRveDq588sWXbUjKVfwvzkNzc1XslZSldi
-	 7wOie6VP/hIKHUXxBUC++imoCO5buk/6UWAnxEQ45Ugh2IxNfJtm3JuH/IhdrXllyu
-	 Fjyh2xMeLsArJI5Ln40+lsbxSOJx6DWA2+J7z8mE=
+	b=gv1fbu8/fkvXrlKBEf4aK+MkCB9ca5DvH2BKhSigrzRfu8Du65HtV6Zr6qIImfYi/
+	 87ntatEQiiBeE4NfSdkDSqLpmMHKuLq4GwP7xlTwQpi+NzW7BQ3sJvE8rWq5fAX+8s
+	 sRo6VITfEfzP96Vc1cWzBl/FMr+ffBLcbmAbBqOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 111/291] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 036/241] igc: handle the IGC_PTP_ENABLED flag correctly
 Date: Wed, 23 Apr 2025 16:41:40 +0200
-Message-ID: <20250423142628.909927666@linuxfoundation.org>
+Message-ID: <20250423142621.989800879@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Klimov <alexey.klimov@linaro.org>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
+[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
 
-In case of attempts to compress playback something, for instance,
-when audio routing is not set up correctly, the audio DSP is left in
-inconsistent state because we are not doing the correct things in
-the error path of q6asm_dai_compr_set_params().
+All functions in igc_ptp.c called from igc_main.c should check the
+IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
+functions.
 
-So, when routing is not set up and compress playback is attempted
-the following errors are present (simplified log):
-
-q6routing routing: Routing not setup for MultiMedia-1 Session
-q6asm-dai dais: Stream reg failed ret:-22
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-After setting the correct routing the compress playback will always fail:
-
-q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
-q6asm-dai dais: DSP returned error[9]
-q6asm-dai dais: q6asm_open_write failed
-q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
-on 17300000.remoteproc:glink-edge:apr:service@7:dais
-
-0x9 here means "Operation is already processed". The CMD_OPEN here was
-sent the second time hence DSP responds that it was already done.
-
-Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
-succeeded but something failed after that, for instance, routing
-setup.
-
-Fix this by slightly reworking the error path in
-q6asm_dai_compr_set_params().
-
-Tested on QRB5165 RB5 and SDM845 RB3 boards.
-
-Cc: stable@vger.kernel.org
-Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -902,9 +902,7 @@ static int q6asm_dai_compr_set_params(st
- 
- 		if (ret < 0) {
- 			dev_err(dev, "q6asm_open_write failed\n");
--			q6asm_audio_client_free(prtd->audio_client);
--			prtd->audio_client = NULL;
--			return ret;
-+			goto open_err;
- 		}
- 	}
- 
-@@ -913,7 +911,7 @@ static int q6asm_dai_compr_set_params(st
- 			      prtd->session_id, dir);
- 	if (ret) {
- 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
-@@ -921,7 +919,7 @@ static int q6asm_dai_compr_set_params(st
- 						 prtd->stream_id);
- 	if (ret) {
- 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
--		return ret;
-+		goto q6_err;
- 	}
- 
- 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
-@@ -930,12 +928,21 @@ static int q6asm_dai_compr_set_params(st
- 
- 	if (ret < 0) {
- 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto q6_err;
- 	}
- 
- 	prtd->state = Q6ASM_STREAM_RUNNING;
- 
- 	return 0;
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 516abe7405dee..343205bffc355 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1244,8 +1244,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
+  **/
+ void igc_ptp_stop(struct igc_adapter *adapter)
+ {
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
 +
-+q6_err:
-+	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
-+
-+open_err:
-+	q6asm_audio_client_free(prtd->audio_client);
-+	prtd->audio_client = NULL;
-+	return ret;
- }
+ 	igc_ptp_suspend(adapter);
  
- static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
++	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
+ 	if (adapter->ptp_clock) {
+ 		ptp_clock_unregister(adapter->ptp_clock);
+ 		netdev_info(adapter->netdev, "PHC removed\n");
+@@ -1266,6 +1270,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	unsigned long flags;
+ 	u32 timadj;
+ 
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+ 
+-- 
+2.39.5
+
 
 
 
