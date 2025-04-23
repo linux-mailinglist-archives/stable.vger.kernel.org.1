@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C313A98DEB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1C2A99118
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46B21737E4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE07B7A47C9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890F227D76E;
-	Wed, 23 Apr 2025 14:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E128B29C35C;
+	Wed, 23 Apr 2025 15:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUniwyiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCyJup6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A1280A32;
-	Wed, 23 Apr 2025 14:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F84529C351;
+	Wed, 23 Apr 2025 15:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419761; cv=none; b=ggtQ3U2rBzTowb7hnVjUdkQCgOtOUlFbOeJMxviQQYoLIlVraiCIBAfFDjhitwnyNa8JW+e3TZTOjxkenR6h7Vb2rweAaTVhjjdKlpGHVxlcFQJRPOOah4oFOgsjXGzoLqXGCWT443D9SJRb8+e7j2fgUm4osfyoJ7eM6gOSQvw=
+	t=1745421471; cv=none; b=VngDgTw37mni3kDD7WeQzjDV2Xy+viCr1K/oMbj3pIhL+wXdcx1R8MH/Zz/B+bEualiaVr2vfQ1K+hn5L0GWDfDCxEW0MphsbJxrjbFtR0+gLDtLFnxTvhIJvmD8w4NNC2qmIBc+6EgCx+z0aeU/vTfs0Qa6Cw2Z0fZCDkq/ji8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419761; c=relaxed/simple;
-	bh=qVfEIvv+xTbZuKxoAQ1JL/p3+EgCzvitIJ61RtV4+ak=;
+	s=arc-20240116; t=1745421471; c=relaxed/simple;
+	bh=93SOK3Nh1BEYVVDHatB15LgofFD6THrX5Ig3WRutXcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qx2OHqfoegIjH9MISNFd2awxQJWYWk+OdUNEbjQHZecJShncisT8FuIUCKNRr4q95baHnwpijo1hAAPpnq32guJSW9bZACCpISEA4Bc8DEvZUItqVlZxZdkDCfaCAoIUpEhqNT/5LcKQ8VaGanVZvwGugwmYHdyGZRHkXmcVQn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUniwyiL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2D9C4CEE2;
-	Wed, 23 Apr 2025 14:49:20 +0000 (UTC)
+	 MIME-Version; b=K7/Qm6POleEfgBlFsPAuW1mcRAVqaTCI11vb425J6NFhicVIUEH15nPpR6BOBem+9l32tNbzScFMMVx0mi3tgLaV6K98nyz/58vKoNXgbcTSrqK/CV7A/NEkJKcWZ6Uaxqc/wOv6m7tJ8gHbvnbAkIoaP9nRei5pqOeZA5068o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCyJup6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAD8C4CEEB;
+	Wed, 23 Apr 2025 15:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419760;
-	bh=qVfEIvv+xTbZuKxoAQ1JL/p3+EgCzvitIJ61RtV4+ak=;
+	s=korg; t=1745421471;
+	bh=93SOK3Nh1BEYVVDHatB15LgofFD6THrX5Ig3WRutXcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUniwyiLnJ3SCCcVoPSUgwNl2fCl+xBb3oWk1f2bv+SbhH5p7az+k4wMgU7TcBji0
-	 bpd77cmsl8BxGEYG+VDZp0YQgMGKD/E/IhVMxyI/ocrZKjZbXstt2q6xThfSWleGPr
-	 u8VnWDtlBjbI6YMQ7vEq1J9ROguESypXgi/1edNI=
+	b=DCyJup6sSvy+Uh9SjGgrEB5POEMXVVAwNnsXPLHejp+8l1Uvr3sCXmISM4BYYCzZ6
+	 4le2yO/q6G6/aRpUd1jVrAFFeDkaNDBTgmbSpUmG8/Ejcp7hNYr+hlTlL3tUEvxigL
+	 AZngfoqmoSeFf32z9kz7O8WaDN60KqfuBp193eaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/223] tools: ynl-gen: make sure we validate subtype of array-nest
+	Taniya Das <quic_tdas@quicinc.com>,
+	Imran Shaik <quic_imrashai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 140/291] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
 Date: Wed, 23 Apr 2025 16:42:09 +0200
-Message-ID: <20250423142619.450198831@linuxfoundation.org>
+Message-ID: <20250423142630.130800524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Taniya Das <quic_tdas@quicinc.com>
 
-[ Upstream commit 57e7dedf2b8c72caa6f04b9e08b19e4f370562fa ]
+commit 25708f73ff171bb4171950c9f4be5aa8504b8459 upstream.
 
-ArrayNest AKA indexed-array support currently skips inner type
-validation. We count the attributes and then we parse them,
-make sure we call validate, too. Otherwise buggy / unexpected
-kernel response may lead to crashes.
+Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
+Once the GDSCR moves to HW control, SW no longer can determine the state
+of the GDSCR and setting the retain_ff bit could destroy all the register
+contents we intended to save.
+Therefore, move the retain_ff configuration before switching the GDSC to
+HW trigger mode.
 
-Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-5-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
+Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
+Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
+Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
+Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/net/ynl/ynl-gen-c.py | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index 265a0ec0ef811..40f1c3631f985 100755
---- a/tools/net/ynl/ynl-gen-c.py
-+++ b/tools/net/ynl/ynl-gen-c.py
-@@ -665,8 +665,11 @@ class TypeArrayNest(Type):
-     def _attr_get(self, ri, var):
-         local_vars = ['const struct nlattr *attr2;']
-         get_lines = [f'attr_{self.c_name} = attr;',
--                     'ynl_attr_for_each_nested(attr2, attr)',
--                     f'\t{var}->n_{self.c_name}++;']
-+                     'ynl_attr_for_each_nested(attr2, attr) {',
-+                     '\tif (ynl_attr_validate(yarg, attr2))',
-+                     '\t\treturn YNL_PARSE_CB_ERROR;',
-+                     f'\t{var}->n_{self.c_name}++;',
-+                     '}']
-         return get_lines, None, local_vars
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -290,6 +290,9 @@ static int gdsc_enable(struct generic_pm
+ 	 */
+ 	udelay(1);
  
++	if (sc->flags & RETAIN_FF_ENABLE)
++		gdsc_retain_ff_on(sc);
++
+ 	/* Turn on HW trigger mode if supported */
+ 	if (sc->flags & HW_CTRL) {
+ 		ret = gdsc_hwctrl(sc, true);
+@@ -306,9 +309,6 @@ static int gdsc_enable(struct generic_pm
+ 		udelay(1);
+ 	}
  
--- 
-2.39.5
-
+-	if (sc->flags & RETAIN_FF_ENABLE)
+-		gdsc_retain_ff_on(sc);
+-
+ 	return 0;
+ }
+ 
+@@ -418,13 +418,6 @@ static int gdsc_init(struct gdsc *sc)
+ 				goto err_disable_supply;
+ 		}
+ 
+-		/* Turn on HW trigger mode if supported */
+-		if (sc->flags & HW_CTRL) {
+-			ret = gdsc_hwctrl(sc, true);
+-			if (ret < 0)
+-				goto err_disable_supply;
+-		}
+-
+ 		/*
+ 		 * Make sure the retain bit is set if the GDSC is already on,
+ 		 * otherwise we end up turning off the GDSC and destroying all
+@@ -432,6 +425,14 @@ static int gdsc_init(struct gdsc *sc)
+ 		 */
+ 		if (sc->flags & RETAIN_FF_ENABLE)
+ 			gdsc_retain_ff_on(sc);
++
++		/* Turn on HW trigger mode if supported */
++		if (sc->flags & HW_CTRL) {
++			ret = gdsc_hwctrl(sc, true);
++			if (ret < 0)
++				goto err_disable_supply;
++		}
++
+ 	} else if (sc->flags & ALWAYS_ON) {
+ 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
+ 		gdsc_enable(&sc->pd);
 
 
 
