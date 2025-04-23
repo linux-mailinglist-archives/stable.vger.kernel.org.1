@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-135963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25836A99098
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB97A993B4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58C577AF33A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 052C19A5BAF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2FD288CBB;
-	Wed, 23 Apr 2025 15:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5426D2BF3E9;
+	Wed, 23 Apr 2025 15:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOvnmUWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/Hj0buR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09F027055F;
-	Wed, 23 Apr 2025 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A3928A3E1;
+	Wed, 23 Apr 2025 15:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421298; cv=none; b=T7JwukcaqOu4X1IFOLPkAFQfkgRHuXDLN/4FNq/Yo1qjdT7YWr8NKYbvrhfgzkj9tpS48YMExDJB0nj91ARBf4K3QI/IZXYobY0gMjXt24nfHtEOoQoPnHUbmT+PdfCoAgoEc07cgmpMD0Ah/S3te9Cqj9nrWWBDsi2rnpQunLE=
+	t=1745422554; cv=none; b=rbyxRLF4JGNp8m0TjU6oVhDUteXcC+tZqy7YgXK74Uy6QmVoszq3g+vS57KhiQEo+FoQwnGlxSCYVx84yV8jP3/mnmMrKndlR1qkSx/Mtm2myEOOe+vODz7oggGm+xRYqVzktWP6S+stRDCEBiQ8ifsB4LeWqq2YKDJ5arOQv4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421298; c=relaxed/simple;
-	bh=1sgeAukXwMQGYqlWE8t7ZwKkFF3UqUu96Ar45lhhEu8=;
+	s=arc-20240116; t=1745422554; c=relaxed/simple;
+	bh=f69ZN3Kv6plWewp0kVICOnCsvOFm9G4JcRBVxoDmrA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCyBrylEMUiSPMQiCw7GqFuPg43AXFclKyXSq0SUkx+dDt+pdvCU+pZaBCJNILCimT1ww7id1UNgaq1GgAtNtq3kqHAGco5oKGmaANnMa6ZJFZLRL1ROtjByZr2pQyUgRRlJnZdt4HgcbZ/RJ7qfuI2Do+JYkvo+Sqc0gOJJtAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOvnmUWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6278CC4CEE2;
-	Wed, 23 Apr 2025 15:14:58 +0000 (UTC)
+	 MIME-Version; b=HG82PuYl5KNyd1X6nPv/wnhQ/FTQVJ5EUfTZMCqIfdyO84mjx9G7FNFYjgLQk32xV2/gF+JPEE6a/zO7511hE7PcVEdFon2LwcLz+a6jksEV+NJpMYjA9holRfTHE1mGWYp2amoVnnG0+PSScwmP/PPl8UbBRwrWPYjpE8+Oc78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/Hj0buR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 396C1C4CEE3;
+	Wed, 23 Apr 2025 15:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421298;
-	bh=1sgeAukXwMQGYqlWE8t7ZwKkFF3UqUu96Ar45lhhEu8=;
+	s=korg; t=1745422553;
+	bh=f69ZN3Kv6plWewp0kVICOnCsvOFm9G4JcRBVxoDmrA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOvnmUWJa9KMD59TDJ3ruDwcMZbYIVOWssRwyt9i3YwpkAgxdnQwQ/0ec6haV8wJz
-	 q4P7jTatBMk4UdaNWebMmtrrwG8NiaEV/Jk/Ps3MWMCrewu8yV0HNUUrgDN1apkOZk
-	 kDp4z/rxEK1FaAXvq4F7CV6l+YXDwXcinHHsg85Q=
+	b=z/Hj0buReImMvu7whR/W8okMa8kC/Ht8DFXVvYJw1Qfa9VD2bxTMQEaXxXyBpTl55
+	 ZO0cplKctGVrSC4yF6/IzPcCypkbHjgelKrj3kb+r5F+bULrgxyR6P8vc7vPmdEEST
+	 pqfxnAdsggQ3/wNYwDSL4enAh09L6QVBfTnHSe4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 209/223] mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
-Date: Wed, 23 Apr 2025 16:44:41 +0200
-Message-ID: <20250423142625.677479188@linuxfoundation.org>
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 386/393] sign-file,extract-cert: move common SSL helper functions to a header
+Date: Wed, 23 Apr 2025 16:44:42 +0200
+Message-ID: <20250423142659.263262510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,204 +64,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Jan Stancek <jstancek@redhat.com>
 
-commit 41e6ddcaa0f18dda4c3fadf22533775a30d6f72f upstream.
+commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
 
-Currently, if a VMA merge fails due to an OOM condition arising on commit
-merge or a failure to duplicate anon_vma's, we report this so the caller
-can handle it.
+Couple error handling helpers are repeated in both tools, so
+move them to a common header.
 
-However there are cases where the caller is only ostensibly trying a
-merge, and doesn't mind if it fails due to this condition.
-
-Since we do not want to introduce an implicit assumption that we only
-actually modify VMAs after OOM conditions might arise, add a 'give up on
-oom' option and make an explicit contract that, should this flag be set, we
-absolutely will not modify any VMAs should OOM arise and just bail out.
-
-Since it'd be very unusual for a user to try to vma_modify() with this flag
-set but be specifying a range within a VMA which ends up being split (which
-can fail due to rlimit issues, not only OOM), we add a debug warning for
-this condition.
-
-The motivating reason for this is uffd release - syzkaller (and Pedro
-Falcato's VERY astute analysis) found a way in which an injected fault on
-allocation, triggering an OOM condition on commit merge, would result in
-uffd code becoming confused and treating an error value as if it were a VMA
-pointer.
-
-To avoid this, we make use of this new VMG flag to ensure that this never
-occurs, utilising the fact that, should we be clearing entire VMAs, we do
-not wish an OOM event to be reported to us.
-
-Many thanks to Pedro Falcato for his excellent analysis and Jann Horn for
-his insightful and intelligent analysis of the situation, both of whom were
-instrumental in this fix.
-
-Link: https://lkml.kernel.org/r/20250321100937.46634-1-lorenzo.stoakes@oracle.com
-Reported-by: syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001e.GAE@google.com/
-Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Suggested-by: Pedro Falcato <pfalcato@suse.de>
-Suggested-by: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/userfaultfd.c |   13 +++++++++++--
- mm/vma.c         |   38 ++++++++++++++++++++++++++++++++++----
- mm/vma.h         |    9 ++++++++-
- 3 files changed, 53 insertions(+), 7 deletions(-)
+ MAINTAINERS          |    1 +
+ certs/Makefile       |    2 +-
+ certs/extract-cert.c |   37 ++-----------------------------------
+ scripts/sign-file.c  |   37 ++-----------------------------------
+ scripts/ssl-common.h |   39 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 45 insertions(+), 71 deletions(-)
+ create mode 100644 scripts/ssl-common.h
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1873,6 +1873,14 @@ struct vm_area_struct *userfaultfd_clear
- 					     unsigned long end)
- {
- 	struct vm_area_struct *ret;
-+	bool give_up_on_oom = false;
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4784,6 +4784,7 @@ S:	Maintained
+ F:	Documentation/admin-guide/module-signing.rst
+ F:	certs/
+ F:	scripts/sign-file.c
++F:	scripts/ssl-common.h
+ F:	tools/certs/
+ 
+ CFAG12864B LCD DRIVER
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -84,5 +84,5 @@ targets += x509_revocation_list
+ 
+ hostprogs := extract-cert
+ 
+-HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
++HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null) -I$(srctree)/scripts
+ HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -23,6 +23,8 @@
+ #include <openssl/err.h>
+ #include <openssl/engine.h>
+ 
++#include "ssl-common.h"
 +
-+	/*
-+	 * If we are modifying only and not splitting, just give up on the merge
-+	 * if OOM prevents us from merging successfully.
-+	 */
-+	if (start == vma->vm_start && end == vma->vm_end)
-+		give_up_on_oom = true;
- 
- 	/* Reset ptes for the whole vma range if wr-protected */
- 	if (userfaultfd_wp(vma))
-@@ -1880,7 +1888,7 @@ struct vm_area_struct *userfaultfd_clear
- 
- 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
- 				    vma->vm_flags & ~__VM_UFFD_FLAGS,
--				    NULL_VM_UFFD_CTX);
-+				    NULL_VM_UFFD_CTX, give_up_on_oom);
- 
- 	/*
- 	 * In the vma_merge() successful mprotect-like case 8:
-@@ -1931,7 +1939,8 @@ int userfaultfd_register_range(struct us
- 		new_flags = (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags;
- 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
- 					    new_flags,
--					    (struct vm_userfaultfd_ctx){ctx});
-+					    (struct vm_userfaultfd_ctx){ctx},
-+					    /* give_up_on_oom = */false);
- 		if (IS_ERR(vma))
- 			return PTR_ERR(vma);
- 
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -846,7 +846,13 @@ static struct vm_area_struct *vma_merge_
- 		if (anon_dup)
- 			unlink_anon_vmas(anon_dup);
- 
--		vmg->state = VMA_MERGE_ERROR_NOMEM;
-+		/*
-+		 * We've cleaned up any cloned anon_vma's, no VMAs have been
-+		 * modified, no harm no foul if the user requests that we not
-+		 * report this and just give up, leaving the VMAs unmerged.
-+		 */
-+		if (!vmg->give_up_on_oom)
-+			vmg->state = VMA_MERGE_ERROR_NOMEM;
- 		return NULL;
- 	}
- 
-@@ -859,7 +865,15 @@ static struct vm_area_struct *vma_merge_
- abort:
- 	vma_iter_set(vmg->vmi, start);
- 	vma_iter_load(vmg->vmi);
--	vmg->state = VMA_MERGE_ERROR_NOMEM;
-+
-+	/*
-+	 * This means we have failed to clone anon_vma's correctly, but no
-+	 * actual changes to VMAs have occurred, so no harm no foul - if the
-+	 * user doesn't want this reported and instead just wants to give up on
-+	 * the merge, allow it.
-+	 */
-+	if (!vmg->give_up_on_oom)
-+		vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	return NULL;
+ /*
+  * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
+  *
+@@ -40,41 +42,6 @@ void format(void)
+ 	exit(2);
  }
  
-@@ -1033,9 +1047,15 @@ int vma_expand(struct vma_merge_struct *
- 	return 0;
+-static void display_openssl_errors(int l)
+-{
+-	const char *file;
+-	char buf[120];
+-	int e, line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	fprintf(stderr, "At main.c:%d:\n", l);
+-
+-	while ((e = ERR_get_error_line(&file, &line))) {
+-		ERR_error_string(e, buf);
+-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
+-	}
+-}
+-
+-static void drain_openssl_errors(void)
+-{
+-	const char *file;
+-	int line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	while (ERR_get_error_line(&file, &line)) {}
+-}
+-
+-#define ERR(cond, fmt, ...)				\
+-	do {						\
+-		bool __cond = (cond);			\
+-		display_openssl_errors(__LINE__);	\
+-		if (__cond) {				\
+-			err(1, fmt, ## __VA_ARGS__);	\
+-		}					\
+-	} while(0)
+-
+ static const char *key_pass;
+ static BIO *wb;
+ static char *cert_dst;
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -29,6 +29,8 @@
+ #include <openssl/err.h>
+ #include <openssl/engine.h>
  
- nomem:
--	vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	if (anon_dup)
- 		unlink_anon_vmas(anon_dup);
-+	/*
-+	 * If the user requests that we just give upon OOM, we are safe to do so
-+	 * here, as commit merge provides this contract to us. Nothing has been
-+	 * changed - no harm no foul, just don't report it.
-+	 */
-+	if (!vmg->give_up_on_oom)
-+		vmg->state = VMA_MERGE_ERROR_NOMEM;
- 	return -ENOMEM;
++#include "ssl-common.h"
++
+ /*
+  * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
+  *
+@@ -83,41 +85,6 @@ void format(void)
+ 	exit(2);
  }
  
-@@ -1428,6 +1448,13 @@ static struct vm_area_struct *vma_modify
- 	if (vmg_nomem(vmg))
- 		return ERR_PTR(-ENOMEM);
+-static void display_openssl_errors(int l)
+-{
+-	const char *file;
+-	char buf[120];
+-	int e, line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	fprintf(stderr, "At main.c:%d:\n", l);
+-
+-	while ((e = ERR_get_error_line(&file, &line))) {
+-		ERR_error_string(e, buf);
+-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
+-	}
+-}
+-
+-static void drain_openssl_errors(void)
+-{
+-	const char *file;
+-	int line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	while (ERR_get_error_line(&file, &line)) {}
+-}
+-
+-#define ERR(cond, fmt, ...)				\
+-	do {						\
+-		bool __cond = (cond);			\
+-		display_openssl_errors(__LINE__);	\
+-		if (__cond) {				\
+-			errx(1, fmt, ## __VA_ARGS__);	\
+-		}					\
+-	} while(0)
+-
+ static const char *key_pass;
  
-+	/*
-+	 * Split can fail for reasons other than OOM, so if the user requests
-+	 * this it's probably a mistake.
-+	 */
-+	VM_WARN_ON(vmg->give_up_on_oom &&
-+		   (vma->vm_start != start || vma->vm_end != end));
+ static int pem_pw_cb(char *buf, int len, int w, void *v)
+--- /dev/null
++++ b/scripts/ssl-common.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: LGPL-2.1+ */
++/*
++ * SSL helper functions shared by sign-file and extract-cert.
++ */
 +
- 	/* Split any preceding portion of the VMA. */
- 	if (vma->vm_start < start) {
- 		int err = split_vma(vmg->vmi, vma, start, 1);
-@@ -1496,12 +1523,15 @@ struct vm_area_struct
- 		       struct vm_area_struct *vma,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long new_flags,
--		       struct vm_userfaultfd_ctx new_ctx)
-+		       struct vm_userfaultfd_ctx new_ctx,
-+		       bool give_up_on_oom)
- {
- 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
- 
- 	vmg.flags = new_flags;
- 	vmg.uffd_ctx = new_ctx;
-+	if (give_up_on_oom)
-+		vmg.give_up_on_oom = true;
- 
- 	return vma_modify(&vmg);
- }
---- a/mm/vma.h
-+++ b/mm/vma.h
-@@ -87,6 +87,12 @@ struct vma_merge_struct {
- 	struct anon_vma_name *anon_name;
- 	enum vma_merge_flags merge_flags;
- 	enum vma_merge_state state;
++static void display_openssl_errors(int l)
++{
++	const char *file;
++	char buf[120];
++	int e, line;
 +
-+	/*
-+	 * If a merge is possible, but an OOM error occurs, give up and don't
-+	 * execute the merge, returning NULL.
-+	 */
-+	bool give_up_on_oom :1;
- };
- 
- static inline bool vmg_nomem(struct vma_merge_struct *vmg)
-@@ -303,7 +309,8 @@ struct vm_area_struct
- 		       struct vm_area_struct *vma,
- 		       unsigned long start, unsigned long end,
- 		       unsigned long new_flags,
--		       struct vm_userfaultfd_ctx new_ctx);
-+		       struct vm_userfaultfd_ctx new_ctx,
-+		       bool give_up_on_oom);
- 
- struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
- 
++	if (ERR_peek_error() == 0)
++		return;
++	fprintf(stderr, "At main.c:%d:\n", l);
++
++	while ((e = ERR_get_error_line(&file, &line))) {
++		ERR_error_string(e, buf);
++		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
++	}
++}
++
++static void drain_openssl_errors(void)
++{
++	const char *file;
++	int line;
++
++	if (ERR_peek_error() == 0)
++		return;
++	while (ERR_get_error_line(&file, &line)) {}
++}
++
++#define ERR(cond, fmt, ...)				\
++	do {						\
++		bool __cond = (cond);			\
++		display_openssl_errors(__LINE__);	\
++		if (__cond) {				\
++			errx(1, fmt, ## __VA_ARGS__);	\
++		}					\
++	} while (0)
 
 
 
