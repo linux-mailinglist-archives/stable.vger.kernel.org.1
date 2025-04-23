@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-136293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D85A99243
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE515A99140
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC6C87AF818
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C93899202F7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E57A2820C8;
-	Wed, 23 Apr 2025 15:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A4528A3EF;
+	Wed, 23 Apr 2025 15:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2wolQtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfGeDOo7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4672820AC;
-	Wed, 23 Apr 2025 15:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028D028936D;
+	Wed, 23 Apr 2025 15:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422165; cv=none; b=EpBH5DHx3NLkaZVgwna4hA9h60BQciylNvBbkmPvBfwY6XTijuMZGOXsBRByIkbukuvzmsfkaFEu8UwypfMlMKQTCvvpup7W+dzfMm/uEhsJozGDlmgq20xeHG8JexRg3wY4ZB7BsXXe69kRyw5w79wVPV3cHn+JNrrihDwMk+c=
+	t=1745421312; cv=none; b=SqTCWYSP0kQDf/MYC0T49AT0EF+wWGcIM8W/omhDmEMABD/i5qdPiebJ1nuP3SN/ZDRvTiO0CTVdslJj+wlw8s+v4lQtkFSatJvT278SnAsCSGv9wbdnNHsZJUwgncCvEnPhN6ZPjt+5tQ56dyuMmeeO33siDWNiNi9OMZ93fDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422165; c=relaxed/simple;
-	bh=+Y1yKls/L5V92Y8GJu8oyksDhZRkzqh6pOONKfFLIT4=;
+	s=arc-20240116; t=1745421312; c=relaxed/simple;
+	bh=X+ogWlbRNJhclx7MozH3FekpRf9YgB5PN9vSItlJo7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nngjpg3ixxA46n1FadKX8TK7EzavtipDurVUNZh/pC4Ea2tVUkBDTsVnPImKFOmFnXAgG/8TjOsM5Mh8uo0RK6RcITp/FtwHt0vzK+AIz36GS69bUHgy1LXWUyj4AaKeHPf6YmcARwVsSNFn2a35S61Fzj6vstV4xmzDG1zKo1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2wolQtu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947FBC4CEE2;
-	Wed, 23 Apr 2025 15:29:24 +0000 (UTC)
+	 MIME-Version; b=ouDRzM50qJm/UquwX8KA9QCPOWGrisoxvBgyW+K4L4sxQOGUzmPbygtbqzZWzWPY0AM2btTEqTR5kd6+X44OSTlxzvWa/pUzKcR2b+aLloo/iF9lCsIu65ZVxgJB03nh4jgHB1ZpvRJ2TdfCldV/RN8XslgOj71tJ6VRlacJ588=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfGeDOo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B741C4CEE2;
+	Wed, 23 Apr 2025 15:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422164;
-	bh=+Y1yKls/L5V92Y8GJu8oyksDhZRkzqh6pOONKfFLIT4=;
+	s=korg; t=1745421311;
+	bh=X+ogWlbRNJhclx7MozH3FekpRf9YgB5PN9vSItlJo7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j2wolQtuk+RU17roevU6IQs4tG9lJQUoti2cYfpTmvPcSshN5pFHuF3g5F6ZbkG26
-	 LJXhgE8xKkZRUVlZiQ8R55oNxeE7Tm/lSr3zPE+uPlzNWLDL0oK5zW/qvuHQeFuoIf
-	 37GxomSFNnW8mxVG7+jPRG9WcOaatfSKNqcMxaxA=
+	b=BfGeDOo7DSk9Sv6Lzn0/DyHKLqcAjZ2JbpOpMyjJJdztKLRxG8jUl8OwRnEQw2J7R
+	 fFzQb1HNA97Udaa8VyJ59i2XD3jCwcw0rrQovHb6umKt2RJsnxMvWNkhKqMpzXnlzY
+	 G5zE+1RNwa2dfHrMd+ndMg3bAAjhWmox2pDk+xxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>
-Subject: [PATCH 6.1 248/291] arm64/fpsimd: Stop using TIF_SVE to manage register saving in KVM
-Date: Wed, 23 Apr 2025 16:43:57 +0200
-Message-ID: <20250423142634.551972488@linuxfoundation.org>
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH 6.14 174/241] drm/msm/dsi: Add check for devm_kstrdup()
+Date: Wed, 23 Apr 2025 16:43:58 +0200
+Message-ID: <20250423142627.641541642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 62021cc36add7b2c015b837f7893f2fb4b8c2586 ]
+commit 52b3f0e118b1700e5c60ff676a1f522ce44fadc8 upstream.
 
-Now that we are explicitly telling the host FP code which register state
-it needs to save we can remove the manipulation of TIF_SVE from the KVM
-code, simplifying it and allowing us to optimise our handling of normal
-tasks. Remove the manipulation of TIF_SVE from KVM and instead rely on
-to_save to ensure we save the correct data for it.
+Add check for the return value of devm_kstrdup() in
+dsi_host_parse_dt() to catch potential exception.
 
-There should be no functional or performance impact from this change.
-
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221115094640.112848-5-broonie@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 958d8d99ccb3 ("drm/msm/dsi: parse vsync source from device tree")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/638297/
+Link: https://lore.kernel.org/r/20250219040712.2598161-1-haoxiang_li2024@163.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |   22 ++++------------------
- arch/arm64/kvm/fpsimd.c    |    3 ---
- 2 files changed, 4 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -439,8 +439,8 @@ static void task_fpsimd_load(void)
-  * last, if KVM is involved this may be the guest VM context rather
-  * than the host thread for the VM pointed to by current. This means
-  * that we must always reference the state storage via last rather
-- * than via current, other than the TIF_ flags which KVM will
-- * carefully maintain for us.
-+ * than via current, if we are saving KVM state then it will have
-+ * ensured that the type of registers to save is set in last->to_save.
-  */
- static void fpsimd_save(void)
- {
-@@ -457,27 +457,13 @@ static void fpsimd_save(void)
- 	if (test_thread_flag(TIF_FOREIGN_FPSTATE))
- 		return;
- 
--	if (test_thread_flag(TIF_SVE)) {
-+	if ((last->to_save == FP_STATE_CURRENT && test_thread_flag(TIF_SVE)) ||
-+	    last->to_save == FP_STATE_SVE) {
- 		save_sve_regs = true;
- 		save_ffr = true;
- 		vl = last->sve_vl;
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -1827,8 +1827,15 @@ static int dsi_host_parse_dt(struct msm_
+ 			__func__, ret);
+ 		goto err;
  	}
+-	if (!ret)
++	if (!ret) {
+ 		msm_dsi->te_source = devm_kstrdup(dev, te_source, GFP_KERNEL);
++		if (!msm_dsi->te_source) {
++			DRM_DEV_ERROR(dev, "%s: failed to allocate te_source\n",
++				__func__);
++			ret = -ENOMEM;
++			goto err;
++		}
++	}
+ 	ret = 0;
  
--	/*
--	 * Validate that an explicitly specified state to save is
--	 * consistent with the task state.
--	 */
--	switch (last->to_save) {
--	case FP_STATE_CURRENT:
--		break;
--	case FP_STATE_FPSIMD:
--		WARN_ON_ONCE(save_sve_regs);
--		break;
--	case FP_STATE_SVE:
--		WARN_ON_ONCE(!save_sve_regs);
--		break;
--	}
--
- 	if (system_supports_sme()) {
- 		u64 *svcr = last->svcr;
- 
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -151,7 +151,6 @@ void kvm_arch_vcpu_ctxsync_fp(struct kvm
- 					 &vcpu->arch.fp_type, fp_type);
- 
- 		clear_thread_flag(TIF_FOREIGN_FPSTATE);
--		update_thread_flag(TIF_SVE, vcpu_has_sve(vcpu));
- 	}
- }
- 
-@@ -208,7 +207,5 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcp
- 			sysreg_clear_set(CPACR_EL1, CPACR_EL1_ZEN_EL0EN, 0);
- 	}
- 
--	update_thread_flag(TIF_SVE, 0);
--
- 	local_irq_restore(flags);
- }
+ 	if (of_property_present(np, "syscon-sfpb")) {
 
 
 
