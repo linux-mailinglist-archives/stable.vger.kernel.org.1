@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD456A99122
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:27:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFD5A98DC5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A621BA3833
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AB8716B41C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E57288C94;
-	Wed, 23 Apr 2025 15:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 025D1280A32;
+	Wed, 23 Apr 2025 14:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jGM1VM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZU0qLpWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31DF2561B3;
-	Wed, 23 Apr 2025 15:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30E627B4F2;
+	Wed, 23 Apr 2025 14:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421280; cv=none; b=HHiv3UjShc4wOOv9Lrd9AmBkcfZMR0gpRgZr5QHfhrQEqSBzdEk87l/nbyv7e4+D5+4bs/nn3LBqbRPNKCxDHW7WVu798TtOjwia4pSZWOMGv4YDYpKdlXz41uvV38XkbqX2CPfFBUYpZ/8SSj3wv+OgVWqRcW2npK+a30PF1bE=
+	t=1745419673; cv=none; b=fYjDmYhMrFZZfwlM7dni+s7nzkMHePthnE/Htw9dbjc++XZPFocVGJPff8qT3OqDExodMu6C+380TOXDfTP/1VhfxRZ5gmd48CniEwPXYVpHOt7VNWSyfLWuvUNsJu/CyvMfZOvxpOpu+52nJZ+3/cdJnkpAaRES75njUDvkvnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421280; c=relaxed/simple;
-	bh=5E3eABZWuq4fnArr8cPRmxLWaESHJOPdbYef9gZSpaA=;
+	s=arc-20240116; t=1745419673; c=relaxed/simple;
+	bh=LkKlog1a9fTkQJCz4dmGt3tsbcN3nyjRnvHls/Rz6yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eS7tIBrgnXLLiBErEO3S0nxw51GFK90xiXCvjZM1LV5oQkf7g+k+hpK7LnrOSvdlgZokUNnOwQU63UbQ4hX372FYcde2vaoM/DLy9c4RHFxwGw9X3V/3opmljIc4908FH663sSOBowDy5aknJsAylj0HZFZV1J62VbhlG8aoZ5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jGM1VM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C8BC4CEE2;
-	Wed, 23 Apr 2025 15:14:39 +0000 (UTC)
+	 MIME-Version; b=vCTvb4Uyl2R27E3VNu6tFdJmmZFhDKxls6erkvXeezic1aiQ5VtplAmzO9Scpt5mQoYhieF2AaHMwJ2mO4z2CmZUYQRm/EW0sSPK6KJHPv+EO/pMQqfCxZD+0u5A3lbFnbZZhenMARETMNxUiPYpOXCdIFgV9MGlAj7Vqnjxzak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZU0qLpWi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CB4C4CEE3;
+	Wed, 23 Apr 2025 14:47:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421280;
-	bh=5E3eABZWuq4fnArr8cPRmxLWaESHJOPdbYef9gZSpaA=;
+	s=korg; t=1745419673;
+	bh=LkKlog1a9fTkQJCz4dmGt3tsbcN3nyjRnvHls/Rz6yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jGM1VM+xxF0KMbrmEIZBiFk00WG3973pLE8iVuH/7NoT3csD67PGdvhAIyiCje1C
-	 F/3FP7Yk8q37ZXj1aoRWuGg6wxX68hbc0os2EaXHpsdBMXZxOpA4tFmrToIffYDusx
-	 X9ygQuGawq44GfB/m8t++PBLlROMfCvWHNeEqUM8=
+	b=ZU0qLpWirQGbf7DsbiafytcgRwA5K3RqeXx4Uh5m6iZmbhHl1X2lA0y5GWa8Hrk7o
+	 cOw8oE5tVm8GDw2HNS8XTe84H6XYgdRwnW/lMX/OajSdoPAw3MR0Qjnz+WXJBSyJrh
+	 yIsoXR4KRt3PtMZPadmDaiOaGBwidWCUE1CKWvHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Gang Yan <yangang@kylinos.cn>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 123/291] mptcp: fix NULL pointer in can_accept_new_subflow
+	syzbot+be6f4b383534d88989f7@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 040/223] smc: Fix lockdep false-positive for IPPROTO_SMC.
 Date: Wed, 23 Apr 2025 16:41:52 +0200
-Message-ID: <20250423142629.427113211@linuxfoundation.org>
+Message-ID: <20250423142618.761389192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +64,235 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 443041deb5ef6a1289a99ed95015ec7442f141dc upstream.
+[ Upstream commit 752e2217d789be2c6a6ac66554b981cd71cd9f31 ]
 
-When testing valkey benchmark tool with MPTCP, the kernel panics in
-'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
+SMC consists of two sockets: smc_sock and kernel TCP socket.
 
-Call trace:
+Currently, there are two ways of creating the sockets, and syzbot reported
+a lockdep splat [0] for the newer way introduced by commit d25a92ccae6b
+("net/smc: Introduce IPPROTO_SMC").
 
-  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
-  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
-  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
-  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
-  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
-  ip_local_deliver (./net/ipv4/ip_input.c:254)
-  ip_rcv_finish (./net/ipv4/ip_input.c:449)
-  ...
+  socket(AF_SMC             , SOCK_STREAM, SMCPROTO_SMC or SMCPROTO_SMC6)
+  socket(AF_INET or AF_INET6, SOCK_STREAM, IPPROTO_SMC)
 
-According to the debug log, the same req received two SYN-ACK in a very
-short time, very likely because the client retransmits the syn ack due
-to multiple reasons.
+When a socket is allocated, sock_lock_init() sets a lockdep lock class to
+sk->sk_lock.slock based on its protocol family.  In the IPPROTO_SMC case,
+AF_INET or AF_INET6 lock class is assigned to smc_sock.
 
-Even if the packets are transmitted with a relevant time interval, they
-can be processed by the server on different CPUs concurrently). The
-'subflow_req->msk' ownership is transferred to the subflow the first,
-and there will be a risk of a null pointer dereference here.
+The repro sets IPV6_JOIN_ANYCAST for IPv6 UDP and SMC socket and exercises
+smc_switch_to_fallback() for IPPROTO_SMC.
 
-This patch fixes this issue by moving the 'subflow_req->msk' under the
-`own_req == true` conditional.
+  1. smc_switch_to_fallback() is called under lock_sock() and holds
+     smc->clcsock_release_lock.
 
-Note that the !msk check in subflow_hmac_valid() can be dropped, because
-the same check already exists under the own_req mpj branch where the
-code has been moved to.
+      sk_lock-AF_INET6 -> &smc->clcsock_release_lock
+      (sk_lock-AF_SMC)
 
-Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
+  2. Setting IPV6_JOIN_ANYCAST to SMC holds smc->clcsock_release_lock
+     and calls setsockopt() for the kernel TCP socket, which holds RTNL
+     and the kernel socket's lock_sock().
+
+      &smc->clcsock_release_lock -> rtnl_mutex (-> k-sk_lock-AF_INET6)
+
+  3. Setting IPV6_JOIN_ANYCAST to UDP holds RTNL and lock_sock().
+
+      rtnl_mutex -> sk_lock-AF_INET6
+
+Then, lockdep detects a false-positive circular locking,
+
+  .-> sk_lock-AF_INET6 -> &smc->clcsock_release_lock -> rtnl_mutex -.
+  `-----------------------------------------------------------------'
+
+but IPPROTO_SMC should have the same locking rule as AF_SMC.
+
+      sk_lock-AF_SMC   -> &smc->clcsock_release_lock -> rtnl_mutex -> k-sk_lock-AF_INET6
+
+Let's set the same lock class for smc_sock.
+
+Given AF_SMC uses the same lock class for SMCPROTO_SMC and SMCPROTO_SMC6,
+we do not need to separate the class for AF_INET and AF_INET6.
+
+[0]:
+WARNING: possible circular locking dependency detected
+6.14.0-rc3-syzkaller-00267-gff202c5028a1 #0 Not tainted
+
+syz.4.1528/11571 is trying to acquire lock:
+ffffffff8fef8de8 (rtnl_mutex){+.+.}-{4:4}, at: ipv6_sock_ac_close+0xd9/0x110 net/ipv6/anycast.c:220
+
+but task is already holding lock:
+ffff888027f596a8 (&smc->clcsock_release_lock){+.+.}-{4:4}, at: smc_clcsock_release+0x75/0xe0 net/smc/smc_close.c:30
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+ -> #2 (&smc->clcsock_release_lock){+.+.}-{4:4}:
+       __mutex_lock_common kernel/locking/mutex.c:585 [inline]
+       __mutex_lock+0x19b/0xb10 kernel/locking/mutex.c:730
+       smc_switch_to_fallback+0x2d/0xa00 net/smc/af_smc.c:903
+       smc_sendmsg+0x13d/0x520 net/smc/af_smc.c:2781
+       sock_sendmsg_nosec net/socket.c:718 [inline]
+       __sock_sendmsg net/socket.c:733 [inline]
+       ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+       ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+       __sys_sendmsg+0x16e/0x220 net/socket.c:2659
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+ -> #1 (sk_lock-AF_INET6){+.+.}-{0:0}:
+       lock_sock_nested+0x3a/0xf0 net/core/sock.c:3645
+       lock_sock include/net/sock.h:1624 [inline]
+       sockopt_lock_sock net/core/sock.c:1133 [inline]
+       sockopt_lock_sock+0x54/0x70 net/core/sock.c:1124
+       do_ipv6_setsockopt+0x2160/0x4520 net/ipv6/ipv6_sockglue.c:567
+       ipv6_setsockopt+0xcb/0x170 net/ipv6/ipv6_sockglue.c:993
+       udpv6_setsockopt+0x7d/0xd0 net/ipv6/udp.c:1850
+       do_sock_setsockopt+0x222/0x480 net/socket.c:2303
+       __sys_setsockopt+0x1a0/0x230 net/socket.c:2328
+       __do_sys_setsockopt net/socket.c:2334 [inline]
+       __se_sys_setsockopt net/socket.c:2331 [inline]
+       __x64_sys_setsockopt+0xbd/0x160 net/socket.c:2331
+       do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+       do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+ -> #0 (rtnl_mutex){+.+.}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3163 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3282 [inline]
+       validate_chain kernel/locking/lockdep.c:3906 [inline]
+       __lock_acquire+0x249e/0x3c40 kernel/locking/lockdep.c:5228
+       lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
+       __mutex_lock_common kernel/locking/mutex.c:585 [inline]
+       __mutex_lock+0x19b/0xb10 kernel/locking/mutex.c:730
+       ipv6_sock_ac_close+0xd9/0x110 net/ipv6/anycast.c:220
+       inet6_release+0x47/0x70 net/ipv6/af_inet6.c:485
+       __sock_release net/socket.c:647 [inline]
+       sock_release+0x8e/0x1d0 net/socket.c:675
+       smc_clcsock_release+0xb7/0xe0 net/smc/smc_close.c:34
+       __smc_release+0x5c2/0x880 net/smc/af_smc.c:301
+       smc_release+0x1fc/0x5f0 net/smc/af_smc.c:344
+       __sock_release+0xb0/0x270 net/socket.c:647
+       sock_close+0x1c/0x30 net/socket.c:1398
+       __fput+0x3ff/0xb70 fs/file_table.c:464
+       task_work_run+0x14e/0x250 kernel/task_work.c:227
+       resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+       exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+       exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+       __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+       syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
+       do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  rtnl_mutex --> sk_lock-AF_INET6 --> &smc->clcsock_release_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&smc->clcsock_release_lock);
+                               lock(sk_lock-AF_INET6);
+                               lock(&smc->clcsock_release_lock);
+  lock(rtnl_mutex);
+
+ *** DEADLOCK ***
+
+2 locks held by syz.4.1528/11571:
+ #0: ffff888077e88208 (&sb->s_type->i_mutex_key#10){+.+.}-{4:4}, at: inode_lock include/linux/fs.h:877 [inline]
+ #0: ffff888077e88208 (&sb->s_type->i_mutex_key#10){+.+.}-{4:4}, at: __sock_release+0x86/0x270 net/socket.c:646
+ #1: ffff888027f596a8 (&smc->clcsock_release_lock){+.+.}-{4:4}, at: smc_clcsock_release+0x75/0xe0 net/smc/smc_close.c:30
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 11571 Comm: syz.4.1528 Not tainted 6.14.0-rc3-syzkaller-00267-gff202c5028a1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_circular_bug+0x490/0x760 kernel/locking/lockdep.c:2076
+ check_noncircular+0x31a/0x400 kernel/locking/lockdep.c:2208
+ check_prev_add kernel/locking/lockdep.c:3163 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3282 [inline]
+ validate_chain kernel/locking/lockdep.c:3906 [inline]
+ __lock_acquire+0x249e/0x3c40 kernel/locking/lockdep.c:5228
+ lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
+ __mutex_lock_common kernel/locking/mutex.c:585 [inline]
+ __mutex_lock+0x19b/0xb10 kernel/locking/mutex.c:730
+ ipv6_sock_ac_close+0xd9/0x110 net/ipv6/anycast.c:220
+ inet6_release+0x47/0x70 net/ipv6/af_inet6.c:485
+ __sock_release net/socket.c:647 [inline]
+ sock_release+0x8e/0x1d0 net/socket.c:675
+ smc_clcsock_release+0xb7/0xe0 net/smc/smc_close.c:34
+ __smc_release+0x5c2/0x880 net/smc/af_smc.c:301
+ smc_release+0x1fc/0x5f0 net/smc/af_smc.c:344
+ __sock_release+0xb0/0x270 net/socket.c:647
+ sock_close+0x1c/0x30 net/socket.c:1398
+ __fput+0x3ff/0xb70 fs/file_table.c:464
+ task_work_run+0x14e/0x250 kernel/task_work.c:227
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x27b/0x2a0 kernel/entry/common.c:218
+ do_syscall_64+0xda/0x250 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f8b4b38d169
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe4efd22d8 EFLAGS: 00000246 ORIG_RAX: 00000000000001b4
+RAX: 0000000000000000 RBX: 00000000000b14a3 RCX: 00007f8b4b38d169
+RDX: 0000000000000000 RSI: 000000000000001e RDI: 0000000000000003
+RBP: 00007f8b4b5a7ba0 R08: 0000000000000001 R09: 000000114efd25cf
+R10: 00007f8b4b200000 R11: 0000000000000246 R12: 00007f8b4b5a5fac
+R13: 00007f8b4b5a5fa0 R14: ffffffffffffffff R15: 00007ffe4efd23f0
+ </TASK>
+
+Fixes: d25a92ccae6b ("net/smc: Introduce IPPROTO_SMC")
+Reported-by: syzbot+be6f4b383534d88989f7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=be6f4b383534d88989f7
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://patch.msgid.link/20250407170332.26959-1-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c |   15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/smc/af_smc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -643,8 +643,6 @@ static bool subflow_hmac_valid(const str
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index ebc41a7b13dbe..78b0e6dba0a2b 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -362,6 +362,9 @@ static void smc_destruct(struct sock *sk)
+ 		return;
+ }
  
- 	subflow_req = mptcp_subflow_rsk(req);
- 	msk = subflow_req->msk;
--	if (!msk)
--		return false;
- 
- 	subflow_generate_hmac(msk->remote_key, msk->local_key,
- 			      subflow_req->remote_nonce,
-@@ -739,12 +737,8 @@ static struct sock *subflow_syn_recv_soc
- 
- 	} else if (subflow_req->mp_join) {
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
--		    !subflow_hmac_valid(req, &mp_opt) ||
--		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
--			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK))
- 			fallback = true;
--		}
- 	}
- 
- create_child:
-@@ -793,6 +787,13 @@ create_child:
- 				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
- 				goto dispose_child;
- 			}
++static struct lock_class_key smc_key;
++static struct lock_class_key smc_slock_key;
 +
-+			if (!subflow_hmac_valid(req, &mp_opt) ||
-+			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
-+				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
-+				subflow_add_reset_reason(skb, MPTCP_RST_EPROHIBIT);
-+				goto dispose_child;
-+			}
- 
- 			/* move the msk reference ownership to the subflow */
- 			subflow_req->msk = NULL;
+ void smc_sk_init(struct net *net, struct sock *sk, int protocol)
+ {
+ 	struct smc_sock *smc = smc_sk(sk);
+@@ -375,6 +378,8 @@ void smc_sk_init(struct net *net, struct sock *sk, int protocol)
+ 	INIT_WORK(&smc->connect_work, smc_connect_work);
+ 	INIT_DELAYED_WORK(&smc->conn.tx_work, smc_tx_work);
+ 	INIT_LIST_HEAD(&smc->accept_q);
++	sock_lock_init_class_and_name(sk, "slock-AF_SMC", &smc_slock_key,
++				      "sk_lock-AF_SMC", &smc_key);
+ 	spin_lock_init(&smc->accept_q_lock);
+ 	spin_lock_init(&smc->conn.send_lock);
+ 	sk->sk_prot->hash(sk);
+-- 
+2.39.5
+
 
 
 
