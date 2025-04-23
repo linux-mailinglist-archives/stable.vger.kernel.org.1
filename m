@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-135459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53CFEA98E2D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD88BA98E8C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6652B7A0FB6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 098F85A7B68
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA03280CFF;
-	Wed, 23 Apr 2025 14:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55104202978;
+	Wed, 23 Apr 2025 14:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTeIvdZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3Ha1WvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36212280CF0;
-	Wed, 23 Apr 2025 14:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1384B27EC6C;
+	Wed, 23 Apr 2025 14:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419979; cv=none; b=e0KCiNLqCgCVoapkdq8fKZIu/mevC6MGWqScuPu5IJinUNh0ypdNz+5JpLgdvnFz1lVZXADrpaBnjW7w8q1KbJZjtrakbM3cBim1T2A3+aUt2h2WbpQDs9nkY6rq0APmcwB34BMzdPz7A96Oa4riak4SKDw4kpY42w2u1I778hA=
+	t=1745420058; cv=none; b=ktvcNAc7Sqqik2AVpDtnZyeVLFYDdjAwxI0U/kOw8QKD1Aind1+oaoKlGV4fSxpiIVOtxeB1W4SFAPeliN3CPohehPGCMK+RSaAJzLtQh2JBYhyYZIzr0BSyx6px0imquuuIrCqqIBwaSuBLIMajxja4fIi6mzzNhApZF9WFZJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419979; c=relaxed/simple;
-	bh=1wXJK2/ewcLJg4jTxHVJOPOi17XR7rYor7FRs+OqBMQ=;
+	s=arc-20240116; t=1745420058; c=relaxed/simple;
+	bh=nG8mpdekUKMYw34I6Oze0umIpbzZgvA9MKJbcvwqO5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxl2WjJnyUJwoLR2Kjvm2xkNYYPZ28wKMaT7Pe76BICvUcUBvUbl2BXT1G9FtySsxdime5Qqam7YRViP6ANgejpPpD37+CJZ13jChzcjeKf6RaU60cu77zvPYzQRZHlDJalkJNR0QmgHmO9ZzhxJLkGPuqaPymwQ9MGOS9gBQcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTeIvdZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB18C4CEE2;
-	Wed, 23 Apr 2025 14:52:58 +0000 (UTC)
+	 MIME-Version; b=VBBqz56GXGfh1rnro82ZdqirJkhrrtOWLsNsrSbbWkC3EmRKN4R0oda72yex9jehByrA3ms1QtzDvGH5jeG7iCxAQ5PsnHxyB49LODHxvhZ9xmxC41nroxbWKWzPgShX4ig1n8EWF8ATG0SccOCE9gTexr6K7kt5whZY+JVTlx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3Ha1WvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996A9C4CEE2;
+	Wed, 23 Apr 2025 14:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419979;
-	bh=1wXJK2/ewcLJg4jTxHVJOPOi17XR7rYor7FRs+OqBMQ=;
+	s=korg; t=1745420058;
+	bh=nG8mpdekUKMYw34I6Oze0umIpbzZgvA9MKJbcvwqO5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTeIvdZGPgu0a7YQG/10fgFulYy9xeoaMcXqzaGkY4kwHV+zzfkhqQ50elR28dzZq
-	 pZ51n1sQ14KexVp/dcYOLiJMDXbtH8q1+6z3W2kkLpmVSnUCs4xX9i3ONO+VxciocX
-	 yn3TEnypXaR8z5jsmF1CCIvsOjZ8rPWl/QS5l4Bg=
+	b=x3Ha1WvSwWLeOgsWcTvX4pzwaLUbtwyvQK43C6XCoASOLquL3Es/dfUq9YOPot1Fu
+	 MGo1A2cRdhib1q+obcT8R1xFFJF1ogJui1SWrIYU1PBec8O5g4jxnzTQo7adNV/IoB
+	 s83IKNzi2EcWbLWtJLxLglRf+WMNje0a6LanztI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <phasta@mailbox.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Maxime Ripard <mripard@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/393] drm/tests: probe-helper: Fix drm_display_mode memory leak
-Date: Wed, 23 Apr 2025 16:38:42 +0200
-Message-ID: <20250423142644.352387339@linuxfoundation.org>
+Subject: [PATCH 6.6 027/393] net: libwx: handle page_pool_dev_alloc_pages error
+Date: Wed, 23 Apr 2025 16:38:43 +0200
+Message-ID: <20250423142644.393262011@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -67,61 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 8b6f2e28431b2f9f84073bff50353aeaf25559d0 ]
+[ Upstream commit 7f1ff1b38a7c8b872382b796023419d87d78c47e ]
 
-drm_analog_tv_mode() and its variants return a drm_display_mode that
-needs to be destroyed later one. The
-drm_test_connector_helper_tv_get_modes_check() test never does however,
-which leads to a memory leak.
+page_pool_dev_alloc_pages could return NULL. There was a WARN_ON(!page)
+but it would still proceed to use the NULL pointer and then crash.
 
-Let's make sure it's freed.
+This is similar to commit 001ba0902046
+("net: fec: handle page_pool_dev_alloc_pages error").
 
-Reported-by: Philipp Stanner <phasta@mailbox.org>
-Closes: https://lore.kernel.org/dri-devel/a7655158a6367ac46194d57f4b7433ef0772a73e.camel@mailbox.org/
-Fixes: 1e4a91db109f ("drm/probe-helper: Provide a TV get_modes helper")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-7-996305a2e75a@kernel.org
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+This is found by our static analysis tool KNighter.
+
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: 3c47e8ae113a ("net: libwx: Support to receive packets in NAPI")
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250407184952.2111299-1-chenyuan0y@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_probe_helper_test.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tests/drm_probe_helper_test.c b/drivers/gpu/drm/tests/drm_probe_helper_test.c
-index 1a2044070a6cb..2a7984431d47b 100644
---- a/drivers/gpu/drm/tests/drm_probe_helper_test.c
-+++ b/drivers/gpu/drm/tests/drm_probe_helper_test.c
-@@ -98,7 +98,7 @@ drm_test_connector_helper_tv_get_modes_check(struct kunit *test)
- 	struct drm_connector *connector = &priv->connector;
- 	struct drm_cmdline_mode *cmdline = &connector->cmdline_mode;
- 	struct drm_display_mode *mode;
--	const struct drm_display_mode *expected;
-+	struct drm_display_mode *expected;
- 	size_t len;
- 	int ret;
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+index c37500aa06379..c019fe964ecea 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+@@ -311,7 +311,8 @@ static bool wx_alloc_mapped_page(struct wx_ring *rx_ring,
+ 		return true;
  
-@@ -134,6 +134,9 @@ drm_test_connector_helper_tv_get_modes_check(struct kunit *test)
+ 	page = page_pool_dev_alloc_pages(rx_ring->page_pool);
+-	WARN_ON(!page);
++	if (unlikely(!page))
++		return false;
+ 	dma = page_pool_get_dma_addr(page);
  
- 		KUNIT_EXPECT_TRUE(test, drm_mode_equal(mode, expected));
- 		KUNIT_EXPECT_TRUE(test, mode->type & DRM_MODE_TYPE_PREFERRED);
-+
-+		ret = drm_kunit_add_mode_destroy_action(test, expected);
-+		KUNIT_ASSERT_EQ(test, ret, 0);
- 	}
- 
- 	if (params->num_expected_modes >= 2) {
-@@ -145,6 +148,9 @@ drm_test_connector_helper_tv_get_modes_check(struct kunit *test)
- 
- 		KUNIT_EXPECT_TRUE(test, drm_mode_equal(mode, expected));
- 		KUNIT_EXPECT_FALSE(test, mode->type & DRM_MODE_TYPE_PREFERRED);
-+
-+		ret = drm_kunit_add_mode_destroy_action(test, expected);
-+		KUNIT_ASSERT_EQ(test, ret, 0);
- 	}
- 
- 	mutex_unlock(&priv->drm->mode_config.mutex);
+ 	bi->page_dma = dma;
 -- 
 2.39.5
 
