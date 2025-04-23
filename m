@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CA8A99198
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EC1A99383
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 658251888485
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1DBA1BC1294
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C3028C5A5;
-	Wed, 23 Apr 2025 15:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E61293B53;
+	Wed, 23 Apr 2025 15:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVhDQGOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZnl93BP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3422028C5A0;
-	Wed, 23 Apr 2025 15:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818B8293452;
+	Wed, 23 Apr 2025 15:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421343; cv=none; b=cx7cpGhi4YdKYuK8YVFTeL1vzu4NJonIwBrDeC59YVNmeAZYSpYzOqfPnjjVLEe9wcrgKFo37updSMsT1EFGzjPLqxyfoDKRAg/OoiL/gCgrG3F/f0XxY9yCaZLC2FXqZY8ZqKHQhCmHiyxHuBhJz1JcsWupmYHNiXh2/sre474=
+	t=1745422242; cv=none; b=TTgLKM7W8ZqPBKI+wlvmPxQkuFPUeibVv9BbFp3e3NDOKEcAZV8xnbJ7z3hezixVQbaKWqEnBq4wynv77FeAu87+87UF6Jlz1tJO/YfvBU54SC5WTrRlkXK9zuxJg8OMHDLz2E/aK9+7uWivBRGIKb7JQocJQsZ+TEm09CzB4gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421343; c=relaxed/simple;
-	bh=3Pmr8/LKLF8/Dty3XgylC1vTta5mjYjQHBYS1T0NL9I=;
+	s=arc-20240116; t=1745422242; c=relaxed/simple;
+	bh=aAIu2FxSlWJ9K6jSn7AhiUCrmZVG2wSv6DaO3Y+Rqkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Af4Jfao/POv08urV9atFhhEcuMtyfLF0cH44z3AErRKxfQ2YNTQ6m834W+RCMpbHUe6ChzqchUDLj4KaBtLKTzohmMjVXcwwEFa9Gcem3nqmGMu5YD2Fb7Z/jJoyS6UnSyQILJBkcPNpMkBm/SstL6K7mLErxcNw4toO50xmXsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVhDQGOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95E6C4CEE2;
-	Wed, 23 Apr 2025 15:15:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zbx9jIIOt5JnvSe8YB2gkjFPlJNK9mMV04yHGxxgYfD2Gtpzgs/SkyiZSA1u5gW4JNSu6rdjoLdO2D2vqLcXjFgl8hBzX41GPpt3Jqi9VegcZ3sX5gTCFKkLBV/i6ED0oFzB6gxP9N7fjR0cVt7zDFDjNvzBoNtqi4s5UFUzMSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZnl93BP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DE4C4CEE8;
+	Wed, 23 Apr 2025 15:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421343;
-	bh=3Pmr8/LKLF8/Dty3XgylC1vTta5mjYjQHBYS1T0NL9I=;
+	s=korg; t=1745422240;
+	bh=aAIu2FxSlWJ9K6jSn7AhiUCrmZVG2wSv6DaO3Y+Rqkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EVhDQGOxgEleI9rY9iurjEEZAsGa4W/90s/8xyw0AiJhE5MQDyobvvXN32BAwjTn+
-	 gJJgEL4yWbqNBAfupKmD9n2TLxA9p0SsAhz8o6Yy23WZ+6QB3tPA6PK9ihUbGrxM27
-	 GhanzbLYfoBt3+02SEaeRMTY0uv8R93fVe+sLKCU=
+	b=AZnl93BPaDXpVwtwlSbfU36ngqEnMWCMtnufvoUeITQdyr4GG1z9KdLh2DY5G86KD
+	 hxobVCp4bjC6p2zofdGKPbntYtyxu4fUB1X7xNnmbq37tQOHoAY/rF6XoBg7y88M1v
+	 kfG45M63Gi7qB9kRM6pqKNLloUce7HXl7Pepbzoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.14 165/241] RAS/AMD/ATL: Include row[13] bit in row retirement
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 240/291] drm/amdgpu/dma_buf: fix page_link check
 Date: Wed, 23 Apr 2025 16:43:49 +0200
-Message-ID: <20250423142627.273940576@linuxfoundation.org>
+Message-ID: <20250423142634.219917441@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,69 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 6c44e5354d4d16d9d891a419ca3f57abfe18ce7a upstream.
+commit c0dd8a9253fadfb8e5357217d085f1989da4ef0a upstream.
 
-Based on feedback from hardware folks, row[13] is part of the variable
-bits within a physical row (along with all column bits).
+The page_link lower bits of the first sg could contain something like
+SG_END, if we are mapping a single VRAM page or contiguous blob which
+fits into one sg entry. Rather pull out the struct page, and use that in
+our check to know if we mapped struct pages vs VRAM.
 
-Only half the physical addresses affected by a row are calculated if
-this bit is not included.
-
-Add the row[13] bit to the row retirement flow.
-
-Fixes: 3b566b30b414 ("RAS/AMD/ATL: Add MI300 row retirement support")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250401-fix-fmpm-extra-records-v1-1-840bcf7a8ac5@amd.com
+Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ras/amd/atl/umc.c |   19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ras/amd/atl/umc.c
-+++ b/drivers/ras/amd/atl/umc.c
-@@ -320,7 +320,7 @@ static unsigned long convert_dram_to_nor
-  * See amd_atl::convert_dram_to_norm_addr_mi300() for MI300 address formats.
-  */
- #define MI300_NUM_COL		BIT(HWEIGHT(MI300_UMC_MCA_COL))
--static void retire_row_mi300(struct atl_err *a_err)
-+static void _retire_row_mi300(struct atl_err *a_err)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -210,7 +210,7 @@ static void amdgpu_dma_buf_unmap(struct
+ 				 struct sg_table *sgt,
+ 				 enum dma_data_direction dir)
  {
- 	unsigned long addr;
- 	struct page *p;
-@@ -351,6 +351,23 @@ static void retire_row_mi300(struct atl_
- 	}
- }
- 
-+/*
-+ * In addition to the column bits, the row[13] bit should also be included when
-+ * calculating addresses affected by a physical row.
-+ *
-+ * Instead of running through another loop over a single bit, just run through
-+ * the column bits twice and flip the row[13] bit in-between.
-+ *
-+ * See MI300_UMC_MCA_ROW for the row bits in MCA_ADDR_UMC value.
-+ */
-+#define MI300_UMC_MCA_ROW13	BIT(23)
-+static void retire_row_mi300(struct atl_err *a_err)
-+{
-+	_retire_row_mi300(a_err);
-+	a_err->addr ^= MI300_UMC_MCA_ROW13;
-+	_retire_row_mi300(a_err);
-+}
-+
- void amd_retire_dram_row(struct atl_err *a_err)
- {
- 	if (df_cfg.rev == DF4p5 && df_cfg.flags.heterogeneous)
+-	if (sgt->sgl->page_link) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
 
 
 
