@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D7DA993AA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECBEA992E1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AF34678E0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7C94662B0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028462C256C;
-	Wed, 23 Apr 2025 15:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AE927FD67;
+	Wed, 23 Apr 2025 15:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4WMRErj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVS1WImo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD50B29A3D1;
-	Wed, 23 Apr 2025 15:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E592F279906;
+	Wed, 23 Apr 2025 15:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422451; cv=none; b=g0tIk3MK5k6VGjdsXLGQKOio66yilzPaZopn9O4PWsz1J157Jgk48k+S0QCsVHk0QRHu4X5qyXNr+alLUsoTIgnVKnTRAXzEpT6YAlYem1FFNbhR3C0UGCxitl+EshbjCV9aRsrxq4iIE/uqwj0vaCfXD5QZrBrEC2m649fowEw=
+	t=1745422121; cv=none; b=hrwKIVQJQU5klkDPZQQzzjvWVBObRZ8jOpRaKDlmwmerc6mDelcbd8vVf/9HrQKCwUATkBRMwoEbQSatKlbseSOR+UuoO7gglUgr07G96uNRfo4NdKnF9rYt/BkbGdXSFu4h9OMO0NfsEucwXKOhcEfScjsSzo9o+0QnBgYx/ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422451; c=relaxed/simple;
-	bh=vCvuENb1ko4Poz1+WRo6EEqm4WcbUq0+vCxijuW2F2A=;
+	s=arc-20240116; t=1745422121; c=relaxed/simple;
+	bh=uCXTZf/K3l02Zp8OAX5eFLM9j/DpaPCFoe09gtLASxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EfTv9C4XYuXYJbAiAEvCxCXQiQMpbKHIO2Ebr8ZAVDEkYrc2Xk/ZaeyJrX6e/8C/0xUAMhy4JQIuMv9EqsUev/2xglDcDEDB2/0l0FsGr+trtA5cb4lvZ08sj6kiBJdge6e+AvRRq5tyZOaW6jq0kZ+kDjocxiBPY6olKBRosz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4WMRErj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409D2C4CEE3;
-	Wed, 23 Apr 2025 15:34:11 +0000 (UTC)
+	 MIME-Version; b=swv18zvRcTDbUxN8SnXAo75AIfTumhU2VLN1JFYYQe8gTnu0EksQCH4zMFJpMQyKHAsQBCqm3fLQhNS3jlXpdeT3rizELBOoa9V3k/oWJN8Dx7FfxLDYnSHTprxPDmsYL7JpaYvWbLTW9flWkWtj/CG7BGv6C4W7q8BZENMrYNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVS1WImo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F53AC4CEE2;
+	Wed, 23 Apr 2025 15:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422451;
-	bh=vCvuENb1ko4Poz1+WRo6EEqm4WcbUq0+vCxijuW2F2A=;
+	s=korg; t=1745422120;
+	bh=uCXTZf/K3l02Zp8OAX5eFLM9j/DpaPCFoe09gtLASxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4WMRErjC3fe+goRy16sE4AafCUqG66KRQjMktNn+LqQ4tN1oAOOuv7c2v4wyrCVu
-	 XsNuc1wN6IOLGJtHdDX6FzNc4fjHxgBfoybz5d7NohUgLsBvktP9dwiTw2l6aM27BF
-	 p1zq6lM4ensECG6bgt3yeFMMGFzD0t3Di90hO02s=
+	b=uVS1WImoNhyU17Dw0FlP8WdlrAW6Y09fU0WLijkPwRWqWQz3KN8jyP3rKZNjbTZg8
+	 L+wEV2syISewe9n6IITVbGslss3J7V4kzKuo1+pwLH9HRunmEObZAtPSUrrPp37qyV
+	 iRSzZLhb0bYqp+Q0pW3Q81YQar1kBO9xXt60JFNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 328/393] Revert "smb: client: Fix netns refcount imbalance causing leaks and use-after-free"
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 235/291] drm/amd/pm/powerplay: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:43:44 +0200
-Message-ID: <20250423142656.883584756@linuxfoundation.org>
+Message-ID: <20250423142634.021414177@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit c707193a17128fae2802d10cbad7239cc57f0c95 upstream.
+commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
 
-This reverts commit 4e7f1644f2ac6d01dc584f6301c3b1d5aac4eaef.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-The commit e9f2517a3e18 ("smb: client: fix TCP timers deadlock after
-rmmod") is not only a bogus fix for LOCKDEP null-ptr-deref but also
-introduces a real issue, TCP sockets leak, which will be explained in
-detail in the next revert.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Also, CNA assigned CVE-2024-54680 to it but is rejecting it. [0]
-
-Thus, we are reverting the commit and its follow-up commit 4e7f1644f2ac
-("smb: client: Fix netns refcount imbalance causing leaks and
-use-after-free").
-
-Link: https://lore.kernel.org/all/2025040248-tummy-smilingly-4240@gregkh/ #[0]
-Fixes: 4e7f1644f2ac ("smb: client: Fix netns refcount imbalance causing leaks and use-after-free")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -316,7 +316,6 @@ cifs_abort_connection(struct TCP_Server_
- 			 server->ssocket->flags);
- 		sock_release(server->ssocket);
- 		server->ssocket = NULL;
--		put_net(cifs_net_ns(server));
- 	}
- 	server->sequence_number = 0;
- 	server->session_estab = false;
-@@ -3150,12 +3149,8 @@ generic_ip_connect(struct TCP_Server_Inf
- 		/*
- 		 * Grab netns reference for the socket.
- 		 *
--		 * This reference will be released in several situations:
--		 * - In the failure path before the cifsd thread is started.
--		 * - In the all place where server->socket is released, it is
--		 *   also set to NULL.
--		 * - Ultimately in clean_demultiplex_info(), during the final
--		 *   teardown.
-+		 * It'll be released here, on error, or in clean_demultiplex_info() upon server
-+		 * teardown.
- 		 */
- 		get_net(net);
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
+@@ -307,10 +307,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
+ 	int result = 0;
  
-@@ -3171,8 +3166,10 @@ generic_ip_connect(struct TCP_Server_Inf
- 	}
+ 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
+-	    speed == 0 ||
++	    (!speed || speed > UINT_MAX/8) ||
+ 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
+ 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
+-		return -1;
++		return -EINVAL;
  
- 	rc = bind_socket(server);
--	if (rc < 0)
-+	if (rc < 0) {
-+		put_net(cifs_net_ns(server));
- 		return rc;
-+	}
- 
- 	/*
- 	 * Eventually check for other socket options to change from
-@@ -3218,6 +3215,9 @@ generic_ip_connect(struct TCP_Server_Inf
- 	if (sport == htons(RFC1001_PORT))
- 		rc = ip_rfc1001_connect(server);
- 
-+	if (rc < 0)
-+		put_net(cifs_net_ns(server));
-+
- 	return rc;
- }
- 
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
+ 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
