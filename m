@@ -1,57 +1,78 @@
-Return-Path: <stable+bounces-135357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6836FA98DD0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C813A99147
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCD2A3BBA0B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4C9E176C63
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F0B2820A3;
-	Wed, 23 Apr 2025 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0968A28C5DF;
+	Wed, 23 Apr 2025 15:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWdDyei6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzvd3l0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE9F28134C;
-	Wed, 23 Apr 2025 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26628A403;
+	Wed, 23 Apr 2025 15:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419710; cv=none; b=bErLR6sqbk1XAt4knuJff9aEQOHkGyq42AzEShjpivkM8ueq94paD3cd1K3pgRRb4CyfGqKwUO5/xs9+8bU+xpsVg/beX0wF0xpdQCWXH6kmPkCrGetI4N7dZ6V2J2RW8R/d9IQIPze0G01CsdU/q7FilFyteYmTkH2ineNzd+w=
+	t=1745421378; cv=none; b=WWx9nLvT7pFm5JHm/BZbsBH2Qx2dFCFFIpj0Jx8k4ucgMex/Z6oHLGljjmtZKhUlplBoucaggKBP54Aj+UvOFLZ2mf4TldfgyNK6U7g1SrYC/2iQLszTGpeablAj/uqbriQCx7wNg6P93X4PRTqE6NQcDajNo+MCFPyMuKzSEt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419710; c=relaxed/simple;
-	bh=n2WiBPdErB05xkyu+MfAFo1k8IIpSd5/aLmlmRIqh9A=;
+	s=arc-20240116; t=1745421378; c=relaxed/simple;
+	bh=YXckWmnZtolJIBQUClRPvHLiQJI15xBZzCZpC++n+Mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/UiUW94VzbwpCFBLY3SLAwEXAilxhoT3N7QNUB1ZOG1eAsoK2iwAnE1uuO6qE4beoyDe2uOoBAqqxkSl7BfdKsK5jave80QYXaDXmSkAGNypGHG1CYg+nPNJOGo7ECJ1KVTXxK3vRTALUMEOzCVPZIFKV5kcNO6jveGQT+O9y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWdDyei6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B7CC4CEE2;
-	Wed, 23 Apr 2025 14:48:29 +0000 (UTC)
+	 MIME-Version; b=Lb2HauhBaiEx90VspFajO304D1keo3XloC9HGf3LbrOmNQ/wq+YC4UhwBs1r3eybXfbu3T1ZiaD03j86Kp7DvQmNWwpbS06yozYnmbdHnO0cD0BHw/I0/rQRYvTVuAI/67ruYDF8LlkevSVTc9Lsq9FfdZMcXDDmePWb15VaFCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzvd3l0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ECFC4CEE2;
+	Wed, 23 Apr 2025 15:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419710;
-	bh=n2WiBPdErB05xkyu+MfAFo1k8IIpSd5/aLmlmRIqh9A=;
+	s=korg; t=1745421376;
+	bh=YXckWmnZtolJIBQUClRPvHLiQJI15xBZzCZpC++n+Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWdDyei6lxXDyeWp6ll6HIW4maF75kjfHY88ac3nWnHJfWuRyN1QweSQ1TLZs1k9k
-	 o0CnwLRATGfjJpqKWTY6MCpNYd3nBpg37KZEjOEXb5uAuk1RxQdthq85o7n5pnx+58
-	 rpLmeqZnGZoHILIWmx2gmoLp4WTtaWD4Zi01U2rw=
+	b=zzvd3l0+6HLHhyM3M5qtJwIdRVKWidld2i+UT85n+CBm6zUse2c8N27uTY59IHnUl
+	 JQeNLfsoXNGsDRBii6Uz5ngxhKyv6z5jMuM5Fw9/fz7Wvk/zY3V5RW2VuAsOYyOcwi
+	 yx78U7n4IJHrQq29uRdx5h4ydHbiy0xahwMzAQDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weizhao Ouyang <o451686892@gmail.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 048/223] can: rockchip_canfd: fix broken quirks checks
+	David Hildenbrand <david@redhat.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Alex Shi <alexs@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Dave Airlie <airlied@gmail.com>,
+	Jann Horn <jannh@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Jerome Glisse <jglisse@redhat.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Karol Herbst <kherbst@redhat.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Lyude <lyude@redhat.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Peter Xu <peterx@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	SeongJae Park <sj@kernel.org>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Yanteng Si <si.yanteng@linux.dev>,
+	Barry Song <v-songbaohua@oppo.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 131/291] mm/rmap: reject hugetlb folios in folio_make_device_exclusive()
 Date: Wed, 23 Apr 2025 16:42:00 +0200
-Message-ID: <20250423142619.090464799@linuxfoundation.org>
+Message-ID: <20250423142629.752934190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +84,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weizhao Ouyang <o451686892@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 6315d93541f8a5f77c5ef5c4f25233e66d189603 ]
+commit bc3fe6805cf09a25a086573a17d40e525208c5d8 upstream.
 
-First get the devtype_data then check quirks.
+Even though FOLL_SPLIT_PMD on hugetlb now always fails with -EOPNOTSUPP,
+let's add a safety net in case FOLL_SPLIT_PMD usage would ever be
+reworked.
 
-Fixes: bbdffb341498 ("can: rockchip_canfd: add quirk for broken CAN-FD support")
-Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250324114416.10160-1-o451686892@gmail.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In particular, before commit 9cb28da54643 ("mm/gup: handle hugetlb in the
+generic follow_page_mask code"), GUP(FOLL_SPLIT_PMD) would just have
+returned a page.  In particular, hugetlb folios that are not PMD-sized
+would never have been prone to FOLL_SPLIT_PMD.
+
+hugetlb folios can be anonymous, and page_make_device_exclusive_one() is
+not really prepared for handling them at all.  So let's spell that out.
+
+Link: https://lkml.kernel.org/r/20250210193801.781278-3-david@redhat.com
+Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Tested-by: Alistair Popple <apopple@nvidia.com>
+Cc: Alex Shi <alexs@kernel.org>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Jerome Glisse <jglisse@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Karol Herbst <kherbst@redhat.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Lyude <lyude@redhat.com>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yanteng Si <si.yanteng@linux.dev>
+Cc: Barry Song <v-songbaohua@oppo.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/rockchip/rockchip_canfd-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/rmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
-index d9a937ba126c3..ac514766d431c 100644
---- a/drivers/net/can/rockchip/rockchip_canfd-core.c
-+++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
-@@ -907,15 +907,16 @@ static int rkcanfd_probe(struct platform_device *pdev)
- 	priv->can.data_bittiming_const = &rkcanfd_data_bittiming_const;
- 	priv->can.ctrlmode_supported = CAN_CTRLMODE_LOOPBACK |
- 		CAN_CTRLMODE_BERR_REPORTING;
--	if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
--		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
- 	priv->can.do_set_mode = rkcanfd_set_mode;
- 	priv->can.do_get_berr_counter = rkcanfd_get_berr_counter;
- 	priv->ndev = ndev;
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2306,7 +2306,7 @@ static bool folio_make_device_exclusive(
+ 	 * Restrict to anonymous folios for now to avoid potential writeback
+ 	 * issues.
+ 	 */
+-	if (!folio_test_anon(folio))
++	if (!folio_test_anon(folio) || folio_test_hugetlb(folio))
+ 		return false;
  
- 	match = device_get_match_data(&pdev->dev);
--	if (match)
-+	if (match) {
- 		priv->devtype_data = *(struct rkcanfd_devtype_data *)match;
-+		if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
-+			priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
-+	}
- 
- 	err = can_rx_offload_add_manual(ndev, &priv->offload,
- 					RKCANFD_NAPI_WEIGHT);
--- 
-2.39.5
-
+ 	rmap_walk(folio, &rwc);
 
 
 
