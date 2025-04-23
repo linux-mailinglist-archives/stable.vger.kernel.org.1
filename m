@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E418A98DC0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 878C9A991EF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9442D3BAE04
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 256A6921549
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C03280CCD;
-	Wed, 23 Apr 2025 14:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62FCB2820AF;
+	Wed, 23 Apr 2025 15:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCTLXGce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YriI35rO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3243F27D76E;
-	Wed, 23 Apr 2025 14:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB03280A52;
+	Wed, 23 Apr 2025 15:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419692; cv=none; b=HLIlctXmPg0GSNUQuwrORwQdStJVsZwiJJtmK0Twjz/NLWrykIMNeFq1w5xLN8RleTKJBQWtS516NTNBn40yH/ALIR76SrrvjaRb8HLc54RdPvvpFa+0pL5T1gEcOaRuT/tf364bR9+5MDuKSXgMTa4hX8P5KgGmdJtAN967+yM=
+	t=1745421592; cv=none; b=RFPFE2DyPqHdZN2E0nwwfDcNAwrS2Ge2tXDdDhv7o2+tLslYrzkI5VObaiuhxVttLHbl/dVEGWcZIrT5K7UwemKm6XQtdLlzMniQTewUZb/tLqYWAr0CWJpPQ2ESwNYNJZrUiSQQRQhrqvoLs7qXz+omdiTHdNg5wjDDI7oeFmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419692; c=relaxed/simple;
-	bh=3LDvnr0IxNe31HJF/pNIfjQ5OPim/hb7+MiZ5dsJKp8=;
+	s=arc-20240116; t=1745421592; c=relaxed/simple;
+	bh=bDcowQl2M7zgCzJAZa1PrDkStgAcohlGwaE2fxqS2FY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGTKZKFWgZfqKWVSHkTrCPyGhMaHfjJ1T8fAKblv3FIq26VM+rF3zmlPwLmke1Y5t4S5Sa8Yh5YyziP4BfSBDgwYaAp2Aap11COhhgpOkwnIq3+GZ2EGVyBl/GBEjfUTyxGFa5mTt2100dccwczXOQRbYLVeyxxwab/aArvOJAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCTLXGce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6EAC4CEE2;
-	Wed, 23 Apr 2025 14:48:11 +0000 (UTC)
+	 MIME-Version; b=mnaZ7u4n54UdCT6naas6CROrruEDM6ASvmuGMJtHEXQYq5FM7xQEzmfQzMJjR+EBQJDkDGR2f6FqOp1AfQmUujXmlMWu5/YCVlJxoWDbDKECZrIFa9ZAGduIhWJwKsJKrqL4nSWN0lXSx1RLjiWE42W077lUPaLCSxgdAc6Iy/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YriI35rO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4795C4CEE2;
+	Wed, 23 Apr 2025 15:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419692;
-	bh=3LDvnr0IxNe31HJF/pNIfjQ5OPim/hb7+MiZ5dsJKp8=;
+	s=korg; t=1745421592;
+	bh=bDcowQl2M7zgCzJAZa1PrDkStgAcohlGwaE2fxqS2FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCTLXGceXWHGaDHgD7KaDLvd4iuynCgOMxueThelmPvS10xlrezp2E0JXsAl2VAmP
-	 YvJ5P94B9IgotJeezxs0AwdFZT2zO0iHm6EM0pG5ho9jpkEAB838NYgUbsyykGm+W3
-	 vvBwuueOy6Sm8K9HQw8GJU0/R2tsuxInk7/jWSwg=
+	b=YriI35rOEnQA3BsfxfNrdFkfIdCgqvpDy0QOTIuandnqN1UVUDtOsrLTFVRHHj2dT
+	 NBU+yxOdKFRQT9K0rSKfqjX9u30Tj+JVxAP32wz6H1sPHAfPhrD49fXSPt13wtVPqO
+	 pryfhEeZTQvpEcoUoOuS+dxsZXQVAyILy64ggSAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/223] crypto: tegra - Do not use fixed size buffers
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 192/393] mm/mremap: correctly handle partial mremap() of VMA starting at 0
 Date: Wed, 23 Apr 2025 16:41:28 +0200
-Message-ID: <20250423142617.780437398@linuxfoundation.org>
+Message-ID: <20250423142651.316543768@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,386 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 1cb328da4e8f34350c61a2b6548766c79b4bb64c ]
+commit 937582ee8e8d227c30ec147629a0179131feaa80 upstream.
 
-Allocate the buffer based on the request instead of a fixed buffer
-length. In operations which may require larger buffer size, a fixed
-buffer may fail.
+Patch series "refactor mremap and fix bug", v3.
 
-Fixes: 0880bb3b00c8 ("crypto: tegra - Add Tegra Security Engine driver")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 1ddaff40c08a ("crypto: tegra - Fix IV usage for AES ECB")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The existing mremap() logic has grown organically over a very long period
+of time, resulting in code that is in many parts, very difficult to follow
+and full of subtleties and sources of confusion.
+
+In addition, it is difficult to thread state through the operation
+correctly, as function arguments have expanded, some parameters are
+expected to be temporarily altered during the operation, others are
+intended to remain static and some can be overridden.
+
+This series completely refactors the mremap implementation, sensibly
+separating functions, adding comments to explain the more subtle aspects
+of the implementation and making use of small structs to thread state
+through everything.
+
+The reason for doing so is to lay the groundwork for planned future
+changes to the mremap logic, changes which require the ability to easily
+pass around state.
+
+Additionally, it would be unhelpful to add yet more logic to code that is
+already difficult to follow without first refactoring it like this.
+
+The first patch in this series additionally fixes a bug when a VMA with
+start address zero is partially remapped.
+
+Tested on real hardware under heavy workload and all self tests are
+passing.
+
+
+This patch (of 3):
+
+Consider the case of a partial mremap() (that results in a VMA split) of
+an accountable VMA (i.e.  which has the VM_ACCOUNT flag set) whose start
+address is zero, with the MREMAP_MAYMOVE flag specified and a scenario
+where a move does in fact occur:
+
+       addr  end
+        |     |
+        v     v
+    |-------------|
+    |     vma     |
+    |-------------|
+    0
+
+This move is affected by unmapping the range [addr, end).  In order to
+prevent an incorrect decrement of accounted memory which has already been
+determined, the mremap() code in move_vma() clears VM_ACCOUNT from the VMA
+prior to doing so, before reestablishing it in each of the VMAs
+post-split:
+
+    addr  end
+     |     |
+     v     v
+ |---|     |---|
+ | A |     | B |
+ |---|     |---|
+
+Commit 6b73cff239e5 ("mm: change munmap splitting order and move_vma()")
+changed this logic such as to determine whether there is a need to do so
+by establishing account_start and account_end and, in the instance where
+such an operation is required, assigning them to vma->vm_start and
+vma->vm_end.
+
+Later the code checks if the operation is required for 'A' referenced
+above thusly:
+
+	if (account_start) {
+		...
+	}
+
+However, if the VMA described above has vma->vm_start == 0, which is now
+assigned to account_start, this branch will not be executed.
+
+As a result, the VMA 'A' above will remain stripped of its VM_ACCOUNT
+flag, incorrectly.
+
+The fix is to simply convert these variables to booleans and set them as
+required.
+
+Link: https://lkml.kernel.org/r/cover.1741639347.git.lorenzo.stoakes@oracle.com
+Link: https://lkml.kernel.org/r/dc55cb6db25d97c3d9e460de4986a323fa959676.1741639347.git.lorenzo.stoakes@oracle.com
+Fixes: 6b73cff239e5 ("mm: change munmap splitting order and move_vma()")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c  | 124 ++++++++++++++-------------
- drivers/crypto/tegra/tegra-se-hash.c |  38 +++++---
- drivers/crypto/tegra/tegra-se.h      |   2 -
- 3 files changed, 89 insertions(+), 75 deletions(-)
+ mm/mremap.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index 9ab832bee81a2..46c4dac92dd7a 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -263,12 +263,6 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 	unsigned int cmdlen;
- 	int ret;
- 
--	rctx->datbuf.buf = dma_alloc_coherent(se->dev, SE_AES_BUFLEN,
--					      &rctx->datbuf.addr, GFP_KERNEL);
--	if (!rctx->datbuf.buf)
--		return -ENOMEM;
--
--	rctx->datbuf.size = SE_AES_BUFLEN;
- 	rctx->iv = (u32 *)req->iv;
- 	rctx->len = req->cryptlen;
- 
-@@ -278,6 +272,12 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 			rctx->len += AES_BLOCK_SIZE - (rctx->len % AES_BLOCK_SIZE);
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -599,8 +599,8 @@ static unsigned long move_vma(struct vm_
+ 	unsigned long vm_flags = vma->vm_flags;
+ 	unsigned long new_pgoff;
+ 	unsigned long moved_len;
+-	unsigned long account_start = 0;
+-	unsigned long account_end = 0;
++	bool account_start = false;
++	bool account_end = false;
+ 	unsigned long hiwater_vm;
+ 	int err = 0;
+ 	bool need_rmap_locks;
+@@ -684,9 +684,9 @@ static unsigned long move_vma(struct vm_
+ 	if (vm_flags & VM_ACCOUNT && !(flags & MREMAP_DONTUNMAP)) {
+ 		vm_flags_clear(vma, VM_ACCOUNT);
+ 		if (vma->vm_start < old_addr)
+-			account_start = vma->vm_start;
++			account_start = true;
+ 		if (vma->vm_end > old_addr + old_len)
+-			account_end = vma->vm_end;
++			account_end = true;
  	}
  
-+	rctx->datbuf.size = rctx->len;
-+	rctx->datbuf.buf = dma_alloc_coherent(se->dev, rctx->datbuf.size,
-+					      &rctx->datbuf.addr, GFP_KERNEL);
-+	if (!rctx->datbuf.buf)
-+		return -ENOMEM;
-+
- 	scatterwalk_map_and_copy(rctx->datbuf.buf, req->src, 0, req->cryptlen, 0);
- 
- 	/* Prepare the command and submit for execution */
-@@ -289,7 +289,7 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 	scatterwalk_map_and_copy(rctx->datbuf.buf, req->dst, 0, req->cryptlen, 1);
- 
- 	/* Free the buffer */
--	dma_free_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
- 			  rctx->datbuf.buf, rctx->datbuf.addr);
- 
- 	crypto_finalize_skcipher_request(se->engine, req, ret);
-@@ -1120,6 +1120,11 @@ static int tegra_ccm_crypt_init(struct aead_request *req, struct tegra_se *se,
- 	rctx->assoclen = req->assoclen;
- 	rctx->authsize = crypto_aead_authsize(tfm);
- 
-+	if (rctx->encrypt)
-+		rctx->cryptlen = req->cryptlen;
-+	else
-+		rctx->cryptlen = req->cryptlen - rctx->authsize;
-+
- 	memcpy(iv, req->iv, 16);
- 
- 	ret = tegra_ccm_check_iv(iv);
-@@ -1148,30 +1153,26 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 	struct tegra_se *se = ctx->se;
- 	int ret;
- 
-+	ret = tegra_ccm_crypt_init(req, se, rctx);
-+	if (ret)
-+		return ret;
-+
- 	/* Allocate buffers required */
--	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
-+	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
- 					     &rctx->inbuf.addr, GFP_KERNEL);
- 	if (!rctx->inbuf.buf)
- 		return -ENOMEM;
- 
--	rctx->inbuf.size = SE_AES_BUFLEN;
--
--	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	rctx->outbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen + 100;
-+	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->outbuf.size,
- 					      &rctx->outbuf.addr, GFP_KERNEL);
- 	if (!rctx->outbuf.buf) {
- 		ret = -ENOMEM;
- 		goto outbuf_err;
+ 	/*
+@@ -726,7 +726,7 @@ static unsigned long move_vma(struct vm_
+ 		/* OOM: unable to split vma, just get accounts right */
+ 		if (vm_flags & VM_ACCOUNT && !(flags & MREMAP_DONTUNMAP))
+ 			vm_acct_memory(old_len >> PAGE_SHIFT);
+-		account_start = account_end = 0;
++		account_start = account_end = false;
  	}
  
--	rctx->outbuf.size = SE_AES_BUFLEN;
--
--	ret = tegra_ccm_crypt_init(req, se, rctx);
--	if (ret)
--		goto out;
--
- 	if (rctx->encrypt) {
--		rctx->cryptlen = req->cryptlen;
--
- 		/* CBC MAC Operation */
- 		ret = tegra_ccm_compute_auth(ctx, rctx);
- 		if (ret)
-@@ -1182,8 +1183,6 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 		if (ret)
- 			goto out;
- 	} else {
--		rctx->cryptlen = req->cryptlen - ctx->authsize;
--
- 		/* CTR operation */
- 		ret = tegra_ccm_do_ctr(ctx, rctx);
- 		if (ret)
-@@ -1196,11 +1195,11 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 	}
- 
- out:
--	dma_free_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
- 			  rctx->outbuf.buf, rctx->outbuf.addr);
- 
- outbuf_err:
--	dma_free_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
- 			  rctx->inbuf.buf, rctx->inbuf.addr);
- 
- 	crypto_finalize_aead_request(ctx->se->engine, req, ret);
-@@ -1216,23 +1215,6 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
- 	struct tegra_aead_reqctx *rctx = aead_request_ctx(req);
- 	int ret;
- 
--	/* Allocate buffers required */
--	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, SE_AES_BUFLEN,
--					     &rctx->inbuf.addr, GFP_KERNEL);
--	if (!rctx->inbuf.buf)
--		return -ENOMEM;
--
--	rctx->inbuf.size = SE_AES_BUFLEN;
--
--	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, SE_AES_BUFLEN,
--					      &rctx->outbuf.addr, GFP_KERNEL);
--	if (!rctx->outbuf.buf) {
--		ret = -ENOMEM;
--		goto outbuf_err;
--	}
--
--	rctx->outbuf.size = SE_AES_BUFLEN;
--
- 	rctx->src_sg = req->src;
- 	rctx->dst_sg = req->dst;
- 	rctx->assoclen = req->assoclen;
-@@ -1246,6 +1228,21 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
- 	memcpy(rctx->iv, req->iv, GCM_AES_IV_SIZE);
- 	rctx->iv[3] = (1 << 24);
- 
-+	/* Allocate buffers required */
-+	rctx->inbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
-+	rctx->inbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->inbuf.size,
-+					     &rctx->inbuf.addr, GFP_KERNEL);
-+	if (!rctx->inbuf.buf)
-+		return -ENOMEM;
-+
-+	rctx->outbuf.size = rctx->assoclen + rctx->authsize + rctx->cryptlen;
-+	rctx->outbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->outbuf.size,
-+					      &rctx->outbuf.addr, GFP_KERNEL);
-+	if (!rctx->outbuf.buf) {
-+		ret = -ENOMEM;
-+		goto outbuf_err;
-+	}
-+
- 	/* If there is associated data perform GMAC operation */
- 	if (rctx->assoclen) {
- 		ret = tegra_gcm_do_gmac(ctx, rctx);
-@@ -1269,11 +1266,11 @@ static int tegra_gcm_do_one_req(struct crypto_engine *engine, void *areq)
- 		ret = tegra_gcm_do_verify(ctx->se, rctx);
- 
- out:
--	dma_free_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	dma_free_coherent(ctx->se->dev, rctx->outbuf.size,
- 			  rctx->outbuf.buf, rctx->outbuf.addr);
- 
- outbuf_err:
--	dma_free_coherent(ctx->se->dev, SE_AES_BUFLEN,
-+	dma_free_coherent(ctx->se->dev, rctx->inbuf.size,
- 			  rctx->inbuf.buf, rctx->inbuf.addr);
- 
- 	/* Finalize the request if there are no errors */
-@@ -1500,6 +1497,11 @@ static int tegra_cmac_do_update(struct ahash_request *req)
- 		return 0;
- 	}
- 
-+	rctx->datbuf.buf = dma_alloc_coherent(se->dev, rctx->datbuf.size,
-+					      &rctx->datbuf.addr, GFP_KERNEL);
-+	if (!rctx->datbuf.buf)
-+		return -ENOMEM;
-+
- 	/* Copy the previous residue first */
- 	if (rctx->residue.size)
- 		memcpy(rctx->datbuf.buf, rctx->residue.buf, rctx->residue.size);
-@@ -1525,6 +1527,9 @@ static int tegra_cmac_do_update(struct ahash_request *req)
- 
- 	tegra_cmac_copy_result(ctx->se, rctx);
- 
-+	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
-+			  rctx->datbuf.buf, rctx->datbuf.addr);
-+
- 	return ret;
- }
- 
-@@ -1539,10 +1544,20 @@ static int tegra_cmac_do_final(struct ahash_request *req)
- 
- 	if (!req->nbytes && !rctx->total_len && ctx->fallback_tfm) {
- 		return crypto_shash_tfm_digest(ctx->fallback_tfm,
--					rctx->datbuf.buf, 0, req->result);
-+					NULL, 0, req->result);
-+	}
-+
-+	if (rctx->residue.size) {
-+		rctx->datbuf.buf = dma_alloc_coherent(se->dev, rctx->residue.size,
-+						      &rctx->datbuf.addr, GFP_KERNEL);
-+		if (!rctx->datbuf.buf) {
-+			ret = -ENOMEM;
-+			goto out_free;
-+		}
-+
-+		memcpy(rctx->datbuf.buf, rctx->residue.buf, rctx->residue.size);
- 	}
- 
--	memcpy(rctx->datbuf.buf, rctx->residue.buf, rctx->residue.size);
- 	rctx->datbuf.size = rctx->residue.size;
- 	rctx->total_len += rctx->residue.size;
- 	rctx->config = tegra234_aes_cfg(SE_ALG_CMAC, 0);
-@@ -1568,8 +1583,10 @@ static int tegra_cmac_do_final(struct ahash_request *req)
- 		writel(0, se->base + se->hw->regs->result + (i * 4));
- 
- out:
--	dma_free_coherent(se->dev, SE_SHA_BUFLEN,
--			  rctx->datbuf.buf, rctx->datbuf.addr);
-+	if (rctx->residue.size)
-+		dma_free_coherent(se->dev, rctx->datbuf.size,
-+				  rctx->datbuf.buf, rctx->datbuf.addr);
-+out_free:
- 	dma_free_coherent(se->dev, crypto_ahash_blocksize(tfm) * 2,
- 			  rctx->residue.buf, rctx->residue.addr);
- 	return ret;
-@@ -1681,28 +1698,15 @@ static int tegra_cmac_init(struct ahash_request *req)
- 	rctx->residue.buf = dma_alloc_coherent(se->dev, rctx->blk_size * 2,
- 					       &rctx->residue.addr, GFP_KERNEL);
- 	if (!rctx->residue.buf)
--		goto resbuf_fail;
-+		return -ENOMEM;
- 
- 	rctx->residue.size = 0;
- 
--	rctx->datbuf.buf = dma_alloc_coherent(se->dev, SE_SHA_BUFLEN,
--					      &rctx->datbuf.addr, GFP_KERNEL);
--	if (!rctx->datbuf.buf)
--		goto datbuf_fail;
--
--	rctx->datbuf.size = 0;
--
- 	/* Clear any previous result */
- 	for (i = 0; i < CMAC_RESULT_REG_COUNT; i++)
- 		writel(0, se->base + se->hw->regs->result + (i * 4));
- 
- 	return 0;
--
--datbuf_fail:
--	dma_free_coherent(se->dev, rctx->blk_size, rctx->residue.buf,
--			  rctx->residue.addr);
--resbuf_fail:
--	return -ENOMEM;
- }
- 
- static int tegra_cmac_setkey(struct crypto_ahash *tfm, const u8 *key,
-diff --git a/drivers/crypto/tegra/tegra-se-hash.c b/drivers/crypto/tegra/tegra-se-hash.c
-index 726e30c0e63eb..451b8eaab16aa 100644
---- a/drivers/crypto/tegra/tegra-se-hash.c
-+++ b/drivers/crypto/tegra/tegra-se-hash.c
-@@ -332,6 +332,11 @@ static int tegra_sha_do_update(struct ahash_request *req)
- 		return 0;
- 	}
- 
-+	rctx->datbuf.buf = dma_alloc_coherent(ctx->se->dev, rctx->datbuf.size,
-+					      &rctx->datbuf.addr, GFP_KERNEL);
-+	if (!rctx->datbuf.buf)
-+		return -ENOMEM;
-+
- 	/* Copy the previous residue first */
- 	if (rctx->residue.size)
- 		memcpy(rctx->datbuf.buf, rctx->residue.buf, rctx->residue.size);
-@@ -368,6 +373,9 @@ static int tegra_sha_do_update(struct ahash_request *req)
- 	if (!(rctx->task & SHA_FINAL))
- 		tegra_sha_copy_hash_result(se, rctx);
- 
-+	dma_free_coherent(ctx->se->dev, rctx->datbuf.size,
-+			  rctx->datbuf.buf, rctx->datbuf.addr);
-+
- 	return ret;
- }
- 
-@@ -380,7 +388,17 @@ static int tegra_sha_do_final(struct ahash_request *req)
- 	u32 *cpuvaddr = se->cmdbuf->addr;
- 	int size, ret = 0;
- 
--	memcpy(rctx->datbuf.buf, rctx->residue.buf, rctx->residue.size);
-+	if (rctx->residue.size) {
-+		rctx->datbuf.buf = dma_alloc_coherent(se->dev, rctx->residue.size,
-+						      &rctx->datbuf.addr, GFP_KERNEL);
-+		if (!rctx->datbuf.buf) {
-+			ret = -ENOMEM;
-+			goto out_free;
-+		}
-+
-+		memcpy(rctx->datbuf.buf, rctx->residue.buf, rctx->residue.size);
-+	}
-+
- 	rctx->datbuf.size = rctx->residue.size;
- 	rctx->total_len += rctx->residue.size;
- 
-@@ -397,8 +415,10 @@ static int tegra_sha_do_final(struct ahash_request *req)
- 	memcpy(req->result, rctx->digest.buf, rctx->digest.size);
- 
- out:
--	dma_free_coherent(se->dev, SE_SHA_BUFLEN,
--			  rctx->datbuf.buf, rctx->datbuf.addr);
-+	if (rctx->residue.size)
-+		dma_free_coherent(se->dev, rctx->datbuf.size,
-+				  rctx->datbuf.buf, rctx->datbuf.addr);
-+out_free:
- 	dma_free_coherent(se->dev, crypto_ahash_blocksize(tfm),
- 			  rctx->residue.buf, rctx->residue.addr);
- 	dma_free_coherent(se->dev, rctx->digest.size, rctx->digest.buf,
-@@ -534,19 +554,11 @@ static int tegra_sha_init(struct ahash_request *req)
- 	if (!rctx->residue.buf)
- 		goto resbuf_fail;
- 
--	rctx->datbuf.buf = dma_alloc_coherent(se->dev, SE_SHA_BUFLEN,
--					      &rctx->datbuf.addr, GFP_KERNEL);
--	if (!rctx->datbuf.buf)
--		goto datbuf_fail;
--
- 	return 0;
- 
--datbuf_fail:
--	dma_free_coherent(se->dev, rctx->blk_size, rctx->residue.buf,
--			  rctx->residue.addr);
- resbuf_fail:
--	dma_free_coherent(se->dev, SE_SHA_BUFLEN, rctx->datbuf.buf,
--			  rctx->datbuf.addr);
-+	dma_free_coherent(se->dev, rctx->digest.size, rctx->digest.buf,
-+			  rctx->digest.addr);
- digbuf_fail:
- 	return -ENOMEM;
- }
-diff --git a/drivers/crypto/tegra/tegra-se.h b/drivers/crypto/tegra/tegra-se.h
-index b54aefe717a17..e196a90eedb92 100644
---- a/drivers/crypto/tegra/tegra-se.h
-+++ b/drivers/crypto/tegra/tegra-se.h
-@@ -340,8 +340,6 @@
- #define SE_CRYPTO_CTR_REG_COUNT			4
- #define SE_MAX_KEYSLOT				15
- #define SE_MAX_MEM_ALLOC			SZ_4M
--#define SE_AES_BUFLEN				0x8000
--#define SE_SHA_BUFLEN				0x2000
- 
- #define SHA_FIRST	BIT(0)
- #define SHA_UPDATE	BIT(1)
--- 
-2.39.5
-
+ 	if (vm_flags & VM_LOCKED) {
 
 
 
