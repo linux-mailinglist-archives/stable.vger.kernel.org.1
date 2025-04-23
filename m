@@ -1,136 +1,161 @@
-Return-Path: <stable+bounces-135241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B90A97FF1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 08:58:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B071A98019
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 09:08:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1BEA177B50
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 06:58:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27DBE189FA14
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 07:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9238267721;
-	Wed, 23 Apr 2025 06:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FDE264615;
+	Wed, 23 Apr 2025 07:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PId8dGmd"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="taM+nq0T"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115F1267705;
-	Wed, 23 Apr 2025 06:58:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D292676FC;
+	Wed, 23 Apr 2025 07:08:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745391506; cv=none; b=q6SH/id36/u8FqLSG/imcbnqVGVBEhLVYxCBPms6l36GPfy8MTpPKUEnVYXgRr2dONwnRYfqc/5LIfgOv7KVWsEpmEaCI7LWcZK9Bj+uk+A5ZltP1mp5jXbrtlEECz9093j2IjfMEwhVTEGYSWt/Cbyc9IAP7mohvOfDyPjahss=
+	t=1745392095; cv=none; b=AJJInJ/ORKTXVnN3zhh8F9HrERwug2zmrB7Oaps5fwwcgGi3jukDwdGmCRYKVw63BsmlnX54Vl9do8cK+OTNAiTHMHW7SykQBS/liFbl0uDZRT+KFaSB5epFYAuSgQkXQ6dJ6pb7j5OUizquV2Ad6yPcNXWwz1lZjc48VzKNfoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745391506; c=relaxed/simple;
-	bh=HMNJlmqQNyCKxS5iOuTUhx2tkjEmifC5MWeVDgopB0A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bROkyctZdGEc6lBRzJTGAynBNJVN5hPf1lfUkKj9TWx2eq+5L897km/3y0A6+OWKf3HUccf1nD5jsZpfJktLfUqJgNGnyepjHc21i/2+Kxccn7n58+O9wtjLDxrXMttN9lKUhPgiG0dqR34STrqLfzfT+VwRJVC6xmIJKoa0SLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PId8dGmd; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745391505; x=1776927505;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=HMNJlmqQNyCKxS5iOuTUhx2tkjEmifC5MWeVDgopB0A=;
-  b=PId8dGmdSe0Gqfzo0wJaVtpIVPTtsbYAO+VOGs1+2ZH3ISfW9GShgF0v
-   s1nIqqzYEVOAt7P+tLxS1pS23chTIIqi/ntremYCnBQitUWXbEuSOnkq6
-   QauX/u+z+nPWlSPh2pMnXKwyo2IkVG9DvJs+nF9mMs5mhQREf2VE32TGj
-   6DkH9Uprt+qrF8tQD4GHC31HPK2Cp+JYGNELthru2VDWzbUwOpLXWUcwh
-   njzRpLVK4wxyAZsgx7mVDqcL52iOwqJCRuN/FNtYGM6dYdQe7pgQmpLYH
-   tSV7oGvvcQRzK3rr07rnZcRs+VBeiyHbmfJ8JasV9tRDFlEewhjaCUVvN
-   w==;
-X-CSE-ConnectionGUID: BLZXn2SLT72x0YKEJow2JQ==
-X-CSE-MsgGUID: lpe0+uvSTJCXwYCP6hVUog==
-X-IronPort-AV: E=McAfee;i="6700,10204,11411"; a="46206421"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="46206421"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2025 23:58:24 -0700
-X-CSE-ConnectionGUID: oh9+vzQkSsywG6vIhzsntw==
-X-CSE-MsgGUID: p8i5TqEIRGm4tjZzRQC9tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="163192890"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa002.jf.intel.com with ESMTP; 22 Apr 2025 23:58:22 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 845EB1E5; Wed, 23 Apr 2025 09:58:20 +0300 (EEST)
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	stable@vger.kernel.org,
-	Adrian Hunter <adrian.hunter@intel.com>
-Subject: [PATCH] x86/insn: Fix CTEST instruction decoding
-Date: Wed, 23 Apr 2025 09:58:15 +0300
-Message-ID: <20250423065815.2003231-1-kirill.shutemov@linux.intel.com>
-X-Mailer: git-send-email 2.47.2
+	s=arc-20240116; t=1745392095; c=relaxed/simple;
+	bh=7mnMqfZJXmRF7AEubXC5Quz0rD3EwGLxnuaIQrs31aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lGUuY5DKZgT2tGD3vQDnyxQgxKOnFraMjbQa5kKedVgn7Ud5Rin32RHc0i0UrKgi7kGhAfMawB+IvrGh1tVNEBE1muJbVCkB3ThOtGfTualdYJHe0oAybR4ynjGX6xy5/tpYHt9t2sp0AI8wudSk1IfTElpT3ToKKN+trf+SMjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=taM+nq0T; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id DB3B91F984;
+	Wed, 23 Apr 2025 09:08:08 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1745392089;
+	bh=/0EQyW6sKhsHbEM0FiXvZEMPWbxrVBqoFMcw038Fo0o=; h=From:To:Subject;
+	b=taM+nq0Tp+9ii+S0WaDF9seZryAoqKrz/vlplFL9/ZBKvYNh75kCC715TxDFQa+7j
+	 C/sGGFpIK77WVU5hAsa96KvTgz0cbCtwlSeMWTZM1eSsgb80787R1TEDZ13sDDM7GW
+	 m9Z7zfRZZMUu6acYf0lAsIKp7oi/a6A+Q9yGEc/kyS63x9sEef5+xz2ESa0JVOJ5d3
+	 eOdQVUXumLYh6f12oLeAynDGKptfRtEJhUzCj7jMfFXKsVktMRWbgLkMojclU174EO
+	 /wrDlZW4ofcXxj2R+S0I3MGfFJcZRhDvsNVCxViB6AMQjgUiz1cFqeO5rPYDOfd35J
+	 /6AKlQjxqp/Kg==
+Date: Wed, 23 Apr 2025 09:08:07 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Frieder Schrempf <frieder.schrempf@kontron.de>
+Cc: Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
+	linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, devicetree@vger.kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Philippe Schenker <philippe.schenker@impulsing.ch>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to
+ usdhc2
+Message-ID: <20250423070807.GB4811@francesco-nb>
+References: <20250422124619.713235-1-Wojciech.Dubowik@mt.com>
+ <522decdf-faa0-433b-8b92-760f8fd04388@kontron.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <522decdf-faa0-433b-8b92-760f8fd04388@kontron.de>
 
-insn_decoder_test found a problem with decoding APX CTEST instruction:
+Hello Frieder,
 
-	Found an x86 instruction decoder bug, please report this.
-	ffffffff810021df	62 54 94 05 85 ff    	ctestneq
-	objdump says 6 bytes, but insn_get_length() says 5
+On Wed, Apr 23, 2025 at 08:50:54AM +0200, Frieder Schrempf wrote:
+> Am 22.04.25 um 14:46 schrieb Wojciech Dubowik:
+> > [Sie erhalten nicht häufig E-Mails von wojciech.dubowik@mt.com. Weitere Informationen, warum dies wichtig ist, finden Sie unter https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > Define vqmmc regulator-gpio for usdhc2 with vin-supply
+> > coming from LDO5.
+> > 
+> > Without this definition LDO5 will be powered down, disabling
+> > SD card after bootup. This has been introduced in commit
+> > f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5").
+> > 
+> > Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
+> > 
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+> > ---
+> > v1 -> v2: https://lore.kernel.org/all/20250417112012.785420-1-Wojciech.Dubowik@mt.com/
+> >  - define gpio regulator for LDO5 vin controlled by vselect signal
+> > ---
+> >  .../boot/dts/freescale/imx8mm-verdin.dtsi     | 23 +++++++++++++++----
+> >  1 file changed, 19 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > index 7251ad3a0017..9b56a36c5f77 100644
+> > --- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > +++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+> > @@ -144,6 +144,19 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+> >                 startup-delay-us = <20000>;
+> >         };
+> > 
+> > +       reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
+> > +               compatible = "regulator-gpio";
+> > +               pinctrl-names = "default";
+> > +               pinctrl-0 = <&pinctrl_usdhc2_vsel>;
+> > +               gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+> > +               regulator-max-microvolt = <3300000>;
+> > +               regulator-min-microvolt = <1800000>;
+> > +               states = <1800000 0x1>,
+> > +                        <3300000 0x0>;
+> > +               regulator-name = "PMIC_USDHC_VSELECT";
+> > +               vin-supply = <&reg_nvcc_sd>;
+> > +       };
+> 
+> Please do not describe the SD_VSEL of the PMIC as gpio-regulator. There
+> already is a regulator node reg_nvcc_sd for the LDO5 of the PMIC.
+> 
+> > +
+> >         reserved-memory {
+> >                 #address-cells = <2>;
+> >                 #size-cells = <2>;
+> > @@ -785,6 +798,7 @@ &usdhc2 {
+> >         pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
+> >         pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_cd_sleep>;
+> >         vmmc-supply = <&reg_usdhc2_vmmc>;
+> > +       vqmmc-supply = <&reg_usdhc2_vqmmc>;
+> 
+> You should reference the reg_nvcc_sd directly here and actually this
+> should be the only change you need to fix things, no?
 
-It happens because x86-opcode-map.txt doesn't specify arguments for the
-instruction and the decoder doesn't expect to see ModRM byte.
+If you just do this change you end-up in the situation I described in
+the v1 version of this patch
+https://lore.kernel.org/all/20250417130342.GA18817@francesco-nb/
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: 690ca3a3067f ("x86/insn: Add support for APX EVEX instructions to the opcode map")
-Cc: stable@vger.kernel.org # v6.10+
-Cc: Adrian Hunter <adrian.hunter@intel.com>
----
- arch/x86/lib/x86-opcode-map.txt       | 4 ++--
- tools/arch/x86/lib/x86-opcode-map.txt | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+With the IO being driven by the SDHCI core, while the linux driver
+changes the voltage over i2c.
 
-diff --git a/arch/x86/lib/x86-opcode-map.txt b/arch/x86/lib/x86-opcode-map.txt
-index caedb3ef6688..f5dd84eb55dc 100644
---- a/arch/x86/lib/x86-opcode-map.txt
-+++ b/arch/x86/lib/x86-opcode-map.txt
-@@ -996,8 +996,8 @@ AVXcode: 4
- 83: Grp1 Ev,Ib (1A),(es)
- # CTESTSCC instructions are: CTESTB, CTESTBE, CTESTF, CTESTL, CTESTLE, CTESTNB, CTESTNBE, CTESTNL,
- #			     CTESTNLE, CTESTNO, CTESTNS, CTESTNZ, CTESTO, CTESTS, CTESTT, CTESTZ
--84: CTESTSCC (ev)
--85: CTESTSCC (es) | CTESTSCC (66),(es)
-+84: CTESTSCC Eb,Gb (ev)
-+85: CTESTSCC Ev,Gv (es) | CTESTSCC Ev,Gv (66),(es)
- 88: POPCNT Gv,Ev (es) | POPCNT Gv,Ev (66),(es)
- 8f: POP2 Bq,Rq (000),(11B),(ev)
- a5: SHLD Ev,Gv,CL (es) | SHLD Ev,Gv,CL (66),(es)
-diff --git a/tools/arch/x86/lib/x86-opcode-map.txt b/tools/arch/x86/lib/x86-opcode-map.txt
-index caedb3ef6688..f5dd84eb55dc 100644
---- a/tools/arch/x86/lib/x86-opcode-map.txt
-+++ b/tools/arch/x86/lib/x86-opcode-map.txt
-@@ -996,8 +996,8 @@ AVXcode: 4
- 83: Grp1 Ev,Ib (1A),(es)
- # CTESTSCC instructions are: CTESTB, CTESTBE, CTESTF, CTESTL, CTESTLE, CTESTNB, CTESTNBE, CTESTNL,
- #			     CTESTNLE, CTESTNO, CTESTNS, CTESTNZ, CTESTO, CTESTS, CTESTT, CTESTZ
--84: CTESTSCC (ev)
--85: CTESTSCC (es) | CTESTSCC (66),(es)
-+84: CTESTSCC Eb,Gb (ev)
-+85: CTESTSCC Ev,Gv (es) | CTESTSCC Ev,Gv (66),(es)
- 88: POPCNT Gv,Ev (es) | POPCNT Gv,Ev (66),(es)
- 8f: POP2 Bq,Rq (000),(11B),(ev)
- a5: SHLD Ev,Gv,CL (es) | SHLD Ev,Gv,CL (66),(es)
--- 
-2.47.2
+I was not aware of this sd-vsel-gpios, that if I understand correctly
+should handle the concern I raised initially, having the PMIC driver
+aware of this GPIO, however I do not see why that solution should be
+better than this one.
+
+BTW, is this solution safe from any kind of race condition? You have
+this IO driven by the SDHCI IP, and the I2C communication to the PMIC
+driven by the mmc driver, with the PMIC driver just reading this GPIO
+once when changing/reading the voltage.
+
+With this solution (that I proposed), the sdcard driver just use the
+GPIO to select the right voltage and that's it, simple, no un-needed i2c
+communication with the PMIC, and the DT clearly describe the way the HW
+is designed.
+
+Francesco
 
 
