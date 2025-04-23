@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-135414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0335A98E21
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892C8A99214
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DB263B64C3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45BE61BA54BC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970B027FD7D;
-	Wed, 23 Apr 2025 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD7C2980B7;
+	Wed, 23 Apr 2025 15:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gv1fbu8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtzMklYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5258727FD60;
-	Wed, 23 Apr 2025 14:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E703293B7C;
+	Wed, 23 Apr 2025 15:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419861; cv=none; b=KRgvt1HyaLm5MTgay6+poxCtXdkzw4+Nf8TzPh1jFAZkTJGFBeqLJOx7XarBatel1jMWlrb7FAtcColfYMi6dqonN8xDfjVrnilDMENoaAgWv8BfPc5b9gyGaS0oRk/C5VAMD6dz7UWfUUXvLgz6mgvXMCeie+KSjo4FwB7e3h8=
+	t=1745421653; cv=none; b=b+zwZq/epF7aVz5NI9sNHkqGrIJt27nIzIDXEkUEWZbp17hkOEyu7eunMT4zF3lcQTReEnK5bv6dCNM0ZyrqvBbROtnzYxtipXriTClOE2RBFbmozYHkq0ceHGDiyo8SBLBWsVoZmaTPnmuwmfo3/D+7qoLeJ46Q1kL8qA1+8b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419861; c=relaxed/simple;
-	bh=fCpXMaK2C/jnDxrmlbE27TX1N7SHsnuNMHAv2H6srYs=;
+	s=arc-20240116; t=1745421653; c=relaxed/simple;
+	bh=utvS4QWKDf/Z/RyuAu6RXolrlzYufeV9htX67rwNKC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/T3JZ43Byihom07TvMD/pcotfnsb+cvFtnVVey32dqcFR2R+C4tJ+hSZ66qt9hPVWMNU5Bik2NuGyVHAmTcVgdjo8BUtLTlQXrKVQw3x+F48RcUK36OOB9BzFcwn0Skz24wzPLAMvg73pzhtVVJJ+Ct4hHFQeGjMTmmzTZ8ohA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gv1fbu8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C072C4CEE2;
-	Wed, 23 Apr 2025 14:51:00 +0000 (UTC)
+	 MIME-Version; b=P7oT37NyyG9vBx1VuEnpyQeQyOQoRbVxKsNz2riO5ypoE47rC1z5T0Dcj8zO4jQz6LyjbBeqU1hR6LAQ6yp1hlCU/BMN7Hrv0EwliSks0fnJN0oOk/QJyOwz6dVYssJPWpZ0RKtc3gc7a4vzJKvWbeaEyAPizsO6eL/hhUOHITQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtzMklYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172A2C4CEE2;
+	Wed, 23 Apr 2025 15:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419860;
-	bh=fCpXMaK2C/jnDxrmlbE27TX1N7SHsnuNMHAv2H6srYs=;
+	s=korg; t=1745421652;
+	bh=utvS4QWKDf/Z/RyuAu6RXolrlzYufeV9htX67rwNKC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gv1fbu8/fkvXrlKBEf4aK+MkCB9ca5DvH2BKhSigrzRfu8Du65HtV6Zr6qIImfYi/
-	 87ntatEQiiBeE4NfSdkDSqLpmMHKuLq4GwP7xlTwQpi+NzW7BQ3sJvE8rWq5fAX+8s
-	 sRo6VITfEfzP96Vc1cWzBl/FMr+ffBLcbmAbBqOw=
+	b=gtzMklYGKUiXiRYM3Lelj5qi8KWVCjvZaLirw+F1TZzeMcpohr6eSQN5lpSvWkyzO
+	 +8OSd4Cd2nFv88HUxeQOKJS1E0JDG/ODrCcr9ZIilOOyUYNUnP3mgqs7dH3Ug0zuLT
+	 FQSK7l0oWxNXLBvbJLr4tObERKOzSIzby+OBMKj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 036/241] igc: handle the IGC_PTP_ENABLED flag correctly
+	Ajit Pandey <quic_ajipan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 204/393] clk: qcom: clk-branch: Fix invert halt status bit check for votable clocks
 Date: Wed, 23 Apr 2025 16:41:40 +0200
-Message-ID: <20250423142621.989800879@linuxfoundation.org>
+Message-ID: <20250423142651.813881712@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Ajit Pandey <quic_ajipan@quicinc.com>
 
-[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
+commit 5eac348182d2b5ed1066459abedb7bc6b5466f81 upstream.
 
-All functions in igc_ptp.c called from igc_main.c should check the
-IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
-functions.
+BRANCH_HALT_ENABLE and BRANCH_HALT_ENABLE_VOTED flags are used to check
+halt status of branch clocks, which have an inverted logic for the halt
+bit in CBCR register. However, the current logic in the _check_halt()
+method only compares the BRANCH_HALT_ENABLE flags, ignoring the votable
+branch clocks.
 
-Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Update the logic to correctly handle the invert logic for votable clocks
+using the BRANCH_HALT_ENABLE_VOTED flags.
+
+Fixes: 9092d1083a62 ("clk: qcom: branch: Extend the invert logic for branch2 clocks")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ajit Pandey <quic_ajipan@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250128-push_fix-v1-1-fafec6747881@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/clk/qcom/clk-branch.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 516abe7405dee..343205bffc355 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -1244,8 +1244,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
-  **/
- void igc_ptp_stop(struct igc_adapter *adapter)
+--- a/drivers/clk/qcom/clk-branch.c
++++ b/drivers/clk/qcom/clk-branch.c
+@@ -27,7 +27,7 @@ static bool clk_branch_in_hwcg_mode(cons
+ 
+ static bool clk_branch_check_halt(const struct clk_branch *br, bool enabling)
  {
-+	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
-+		return;
-+
- 	igc_ptp_suspend(adapter);
+-	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
++	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
+ 	u32 val;
  
-+	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
- 	if (adapter->ptp_clock) {
- 		ptp_clock_unregister(adapter->ptp_clock);
- 		netdev_info(adapter->netdev, "PHC removed\n");
-@@ -1266,6 +1270,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 	unsigned long flags;
- 	u32 timadj;
+ 	regmap_read(br->clkr.regmap, br->halt_reg, &val);
+@@ -43,7 +43,7 @@ static bool clk_branch2_check_halt(const
+ {
+ 	u32 val;
+ 	u32 mask;
+-	bool invert = (br->halt_check == BRANCH_HALT_ENABLE);
++	bool invert = (br->halt_check & BRANCH_HALT_ENABLE);
  
-+	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
-+		return;
-+
- 	/* reset the tstamp_config */
- 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
- 
--- 
-2.39.5
-
+ 	mask = CBCR_NOC_FSM_STATUS;
+ 	mask |= CBCR_CLK_OFF;
 
 
 
