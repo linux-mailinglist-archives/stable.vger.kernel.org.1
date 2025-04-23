@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6404A98DE3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8423EA9916C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C9E3B3237
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FC7D443756
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E74D283C87;
-	Wed, 23 Apr 2025 14:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F0128D849;
+	Wed, 23 Apr 2025 15:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDxLsDuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RIZjQBN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5D6283689;
-	Wed, 23 Apr 2025 14:49:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2C21A317A;
+	Wed, 23 Apr 2025 15:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419750; cv=none; b=G7nA/bMevxpk9U0Lg4B3OBRQ0vMZ1D5EMxxO4d4KWrq2dakMsJ46J+A/O9PD7M16yMafh+EIbvCJE5RhQs1ZMdBLe23xsBUhKmK2KMpPz5oVwjXgZzbmWSfjE9EYyB+m8PevoEWuo8ax/f2uNUkS1hwFfgBbus/P42ZcUrjd7Aw=
+	t=1745421450; cv=none; b=IY8TWDm2MUp0dWvm8vqvKVmvVBGWVdjkjAijxl7EHXVb8Y/xBxoUnrEfizmg+SCkl8VqAE3u0XYy8IXRv/KjvmDO62OnD52/xm+KI6nz+/mPmnB4spNBzaiE4W45awdEEy0R1As4H9wCrs7DSp224nAlRdYNavJKk3NwfA9jZG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419750; c=relaxed/simple;
-	bh=iRYKpa8FRbxc4RRIKjD7jMBQV7FNyHKPB60cy8XT8es=;
+	s=arc-20240116; t=1745421450; c=relaxed/simple;
+	bh=cCyZKUzO0RJJZsZxZZ9WBIRtuYWfrqCYWNzUnhfzO1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8mdP5yXuUXOgDHJZ9L/Bah4yK0bnQrFhd8cXqHpVWK05GxjXjobJ0S54Duoi+VStb/8FK74QiJkHKaGaPpcjYmrg2PmtWhmcTrbfHGUs/UQhGXKt2AIewWzYubooWwBCx1O7MzfA1l1udXE3P80WeKpgLypezhPf9E+PpGyjkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDxLsDuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA7AC4CEE3;
-	Wed, 23 Apr 2025 14:49:09 +0000 (UTC)
+	 MIME-Version; b=nZ8gh1MbxIbT6Vo6+yo351Ipz9weO4kZpn2dDUseSfJETW6i0nQilMQJZ/1f240/MVRglq64eXya63yVy+NjoUa/CJizZ817TM60MNPRmzuevIZI4IkH8+prcDl9cbFC/mSYvupXy45BDWPiUiizvvf+mYBZCK1sl2XUTJrDeO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RIZjQBN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03EFC4CEE2;
+	Wed, 23 Apr 2025 15:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419750;
-	bh=iRYKpa8FRbxc4RRIKjD7jMBQV7FNyHKPB60cy8XT8es=;
+	s=korg; t=1745421450;
+	bh=cCyZKUzO0RJJZsZxZZ9WBIRtuYWfrqCYWNzUnhfzO1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VDxLsDuzgqXOiiBMAgIjNHWuXQ6cD4Ze6kDh57SQz9Zm13V+Y1SfMF9QpCrah6h5W
-	 l1VKprbadImRjjIQecj3d5dDwIwIPEGDV8/M/HyeI+vm21+giFAc9TZ18nM8EYYura
-	 JcErac9SzNAubPZ150G3N1lj83BsrSQDKyIvr0KU=
+	b=RIZjQBN0lDRmHNdtLOGeglblHnCxS4euyGRAJy1v15Bfng4RplQU9urNmwY0E9F+F
+	 p0ZjmRTBrpLrdfN8/Hbd3nijlWTM//3x/cuEq8JCzy3Iq+CSWYr+LoYUhn6CnnG+SE
+	 DOibW6vPyJhp76Klyjukb+p3Mo8l/0Dm3x2uc9RI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/223] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 138/291] clk: qcom: gdsc: Release pm subdomains in reverse add order
 Date: Wed, 23 Apr 2025 16:42:07 +0200
-Message-ID: <20250423142619.369869195@linuxfoundation.org>
+Message-ID: <20250423142630.046575627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
+commit 0e6dfde439df0bb977cddd3cf7fff150a084a9bf upstream.
 
-In the for loop used to allocate the loc_array and bmap for each port, a
-memory leak is possible when the allocation for loc_array succeeds,
-but the allocation for bmap fails. This is because when the control flow
-goes to the label free_eth_finfo, only the allocations starting from
-(i-1)th iteration are freed.
+gdsc_unregister() should release subdomains in the reverse order to the
+order in which those subdomains were added.
 
-Fix that by freeing the loc_array in the bmap allocation error path.
+I've made this patch a standalone patch because it facilitates a subsequent
+fix to stable.
 
-Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1b771839de05 ("clk: qcom: gdsc: enable optional power domain support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-1-13f2bb656dad@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gdsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 7f3f5afa864f4..1546c3db08f09 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -2270,6 +2270,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
- 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
- 		if (!eth_filter->port[i].bmap) {
- 			ret = -ENOMEM;
-+			kvfree(eth_filter->port[i].loc_array);
- 			goto free_eth_finfo;
- 		}
- 	}
--- 
-2.39.5
-
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -523,7 +523,7 @@ void gdsc_unregister(struct gdsc_desc *d
+ 	size_t num = desc->num;
+ 
+ 	/* Remove subdomains */
+-	for (i = 0; i < num; i++) {
++	for (i = num - 1; i >= 0; i--) {
+ 		if (!scs[i])
+ 			continue;
+ 		if (scs[i]->parent)
 
 
 
