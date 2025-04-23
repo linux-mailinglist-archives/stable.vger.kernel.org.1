@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-136072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7DCA99260
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07504A98E08
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B660A1B666CB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541861B823CD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A82820CD;
-	Wed, 23 Apr 2025 15:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B77027FD4F;
+	Wed, 23 Apr 2025 14:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgSZf0Rb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2a3Apt6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B72E2820B2;
-	Wed, 23 Apr 2025 15:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4933D19DF4C;
+	Wed, 23 Apr 2025 14:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421583; cv=none; b=ASQXawJ1DgwpDV6OWZd6QEmnYfPatIDQBq8VRLxcNZpMOEC5wHzEMRioDoeVACi3UwBKC4RpRdSIDgNeKWuApmBeVZGgFdOFt4qDHXPskgX+bXFGMaWkpwX0cBxkTOVOn1QBRQfiebIpDa+zaTHsLuYfzXyOhLpxxRPa1fbyoFc=
+	t=1745419795; cv=none; b=Y/TV8C1SBmG414IY1y0mRUmht8rt2hiBpEhS4hq8trgBOjwMLDRFFeQ+2X1j5/b3Vpo4rkY7FX5cY0MXeoZgHtZTH6VQAB+hyRcQfcgtV20ow92KhYSchiGDCxQZO4wVwxkiemsVDMtontdx2aMYynkY8GUnCQhPRorJVZTJG/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421583; c=relaxed/simple;
-	bh=gCR+5VrWdO/mZRsJdMPC1CnSe9V6eZEq11SEnm21Lbk=;
+	s=arc-20240116; t=1745419795; c=relaxed/simple;
+	bh=ff9ccShpa+kvHkbHOQHpbHoG0y9cDcypt3/SrxH67FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWFoyGp7zIwxaufTPp8wFgOuHmMcVrN/CTduSI9S7GEch+r8kx6dtCVfcHz9GvTzmrnedCrrtn1t7/T7S/YcYMXNIwXg7cH8dcRT0zvKIrJ8u+hR3O42OQP/JvDnsBvefbawzVc87U7nBCYr3ls4e7rOefFK6OnSoTUZS0QNXSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgSZf0Rb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3210CC4CEE2;
-	Wed, 23 Apr 2025 15:19:41 +0000 (UTC)
+	 MIME-Version; b=s8OqfJQHnjpJ8RtW4pVH5/2jxf2lsbdtEuR32Rn55bXEGgLV/Vs9iS4peBJDXtvrFFzT/0RCmBT4pj0OLR95WXaH29eIl7PHE/Q3mJD4B6iUPar3y6Sy9NTY/QrQkoNh6Okeay+Y7VWafgnB5qj4I/C+pAj1vba/L8ewLHnVR7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2a3Apt6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF72C4CEE2;
+	Wed, 23 Apr 2025 14:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421581;
-	bh=gCR+5VrWdO/mZRsJdMPC1CnSe9V6eZEq11SEnm21Lbk=;
+	s=korg; t=1745419795;
+	bh=ff9ccShpa+kvHkbHOQHpbHoG0y9cDcypt3/SrxH67FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgSZf0Rb82jPI5Lba9+grZI762HqRu5Xyp3QZIt0tNnvS+WDnmzgyYNGOqNps9jwY
-	 17P1rwJt6v58LqRuDXQFBN4JQi2AtLZgYwnzIYxEu0/lk2qPIQGrkZOHWE/RFLtcPZ
-	 0xl91SdhbOPhGXb5Yo5cGhKmleWduPlZPrQJb45A=
+	b=b2a3Apt6qFN/dHVJ/dedXxrFx7HxatgCgWcgMpAgCmVRZj1eKQoEt8R1WQ4WBGXqb
+	 D7yNktvvEoYo6fnaxPIiL+G5E57BZY9pMYrsjCt/nTNkws6bpFBfbcDPFErwVzZxQv
+	 E4f5n57oaBF3JsQokSyV2E9r+mgAVoKmDrMPg2EY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Herbert <Marc.Herbert@linux.intel.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 196/393] mm/hugetlb: move hugetlb_sysctl_init() to the __init section
+	Jianlin Shi <jishi@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 028/241] ipv6: add exception routes to GC list in rt6_insert_exception
 Date: Wed, 23 Apr 2025 16:41:32 +0200
-Message-ID: <20250423142651.482684840@linuxfoundation.org>
+Message-ID: <20250423142621.667120678@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Herbert <Marc.Herbert@linux.intel.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 1ca77ff1837249701053a7fcbdedabc41f4ae67c upstream.
+[ Upstream commit cfe82469a00f0c0983bf4652de3a2972637dfc56 ]
 
-hugetlb_sysctl_init() is only invoked once by an __init function and is
-merely a wrapper around another __init function so there is not reason to
-keep it.
+Commit 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list
+of routes.") introduced a separated list for managing route expiration via
+the GC timer.
 
-Fixes the following warning when toning down some GCC inline options:
+However, it missed adding exception routes (created by ip6_rt_update_pmtu()
+and rt6_do_redirect()) to this GC list. As a result, these exceptions were
+never considered for expiration and removal, leading to stale entries
+persisting in the routing table.
 
- WARNING: modpost: vmlinux: section mismatch in reference:
-   hugetlb_sysctl_init+0x1b (section: .text) ->
-     __register_sysctl_init (section: .init.text)
+This patch fixes the issue by calling fib6_add_gc_list() in
+rt6_insert_exception(), ensuring that exception routes are properly tracked
+and garbage collected when expired.
 
-Link: https://lkml.kernel.org/r/20250319060041.2737320-1-marc.herbert@linux.intel.com
-Signed-off-by: Marc Herbert <Marc.Herbert@linux.intel.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list of routes.")
+Reported-by: Jianlin Shi <jishi@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/837e7506ffb63f47faa2b05d9b85481aad28e1a4.1744134377.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/route.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4695,7 +4695,7 @@ static struct ctl_table hugetlb_table[]
- 	{ }
- };
- 
--static void hugetlb_sysctl_init(void)
-+static void __init hugetlb_sysctl_init(void)
- {
- 	register_sysctl_init("vm", hugetlb_table);
- }
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 08cee62e789e1..21eca985a1fd1 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1771,6 +1771,7 @@ static int rt6_insert_exception(struct rt6_info *nrt,
+ 	if (!err) {
+ 		spin_lock_bh(&f6i->fib6_table->tb6_lock);
+ 		fib6_update_sernum(net, f6i);
++		fib6_add_gc_list(f6i);
+ 		spin_unlock_bh(&f6i->fib6_table->tb6_lock);
+ 		fib6_force_start_gc(net);
+ 	}
+-- 
+2.39.5
+
 
 
 
