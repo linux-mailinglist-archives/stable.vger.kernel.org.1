@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-135950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306C6A99170
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F73A992F5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9E13BDB9B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3EFC7AD8E6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857792857E4;
-	Wed, 23 Apr 2025 15:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B99E2C3756;
+	Wed, 23 Apr 2025 15:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqhgRCaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbD1mXzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401502857CD;
-	Wed, 23 Apr 2025 15:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4A328B51F;
+	Wed, 23 Apr 2025 15:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421265; cv=none; b=CA80XOJztgpi2tI3OihwYH16vQxp6YsPVL2kBR3lHUo5XuV46NggFN3z/zLT3RiizDOBGrYUzRcoTnd5RsT58cZsscBfgpGqGCIiOZgXaI+eMoGm1LUPsTDuAPJYNBypDiL0b2S22aIL/g4VjP137lzEaNJgsJejiCPbRvIBiJI=
+	t=1745422525; cv=none; b=hKJDrZ7gJqYcOSefxW1uSvsDK+cwkg8my94Itdy3E0j5LGN62Cg2vICZT+llFuAkHxeuhnGbsmghltohKJn8ygbqeV06VgC0xVL1EA2thh0MH2yU/s7lefFv6TRrphRPxCG1TzQW/TH4nlI5Bm5niIqJikE4Zf5JCCfMtRmI7gY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421265; c=relaxed/simple;
-	bh=hw0rKbF/vQbEdGpyYHsoA+rNFiYf9tQ4TTPDBrOmhf0=;
+	s=arc-20240116; t=1745422525; c=relaxed/simple;
+	bh=PYSQParwnSfbLxZ/QlxIfCXlM124c+995y7tfxeyhCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TdoL8YJaMWH6lbikNC98Z0MsJ+IMeaATd94oHJDr8Zrl7SowLVaTLi7M3i1rK0D3Kz0nKHLga+eLdTwWqWCk9CWL5JXS0swMmMwuVs0jHL+GQHMiYNrZgZoP4wsIBzAukmG5yJB5bKRtvzon5c7dzzhUcjZj1T6ieCbVVBtY2Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqhgRCaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623D9C4CEE2;
-	Wed, 23 Apr 2025 15:14:24 +0000 (UTC)
+	 MIME-Version; b=P4XEhpjZngJvHL0rniVC6Wke/xtv5GRBRA4/6OePX6q3PXDYp2B6sOdwnnIpNPhc61X6fz4lYLK+qGl/gcJJvEYMMBckQ1HHDD30pSDH0hAk7NxsKGW7+tqy9SPM4vQZG4G/h0qfng1AcigSc5D3ojm1SXqHv8TzD58VY23MlEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbD1mXzg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724BEC4CEE3;
+	Wed, 23 Apr 2025 15:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421264;
-	bh=hw0rKbF/vQbEdGpyYHsoA+rNFiYf9tQ4TTPDBrOmhf0=;
+	s=korg; t=1745422524;
+	bh=PYSQParwnSfbLxZ/QlxIfCXlM124c+995y7tfxeyhCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqhgRCaC0DNAPM9Ge6DAJN+dtAJ8zvvq/esZI+7tGjNeVNCSiHfJuVKPynOzg3awc
-	 y18Ss1MhkpbY5Ei3RY5YBWNJ5KHLMdywKOjgWwJi4X2BhrKYj2j25wGLG8Ev+z2acU
-	 kpxnIvU/x88ZvlaErbSK+QY1ilLThwaqfYqeEWu0=
+	b=cbD1mXzg11XYzyx3/a7R8VaINnbidmoDx7mBnincCXlxHtSbgo2BmHuP6JUfozkfm
+	 t8Z6Hcx6/3qQw9YUJUCdocZl+cBgWGMmEYKlErpddoPLjr+vGVn+iBdlK5ruBowUN/
+	 7oFsccvkNNeY5svlsD0ERZ9yLqP99TuCxa9JZPIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 6.12 206/223] block: remove rq_list_move
+	Harry Wentland <harry.wentland@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 382/393] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
 Date: Wed, 23 Apr 2025 16:44:38 +0200
-Message-ID: <20250423142625.556877965@linuxfoundation.org>
+Message-ID: <20250423142659.103295014@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +66,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-commit e8225ab15006fbcdb14cef426a0a54475292fbbc upstream.
+commit cf8b16857db702ceb8d52f9219a4613363e2b1cf upstream.
 
-Unused now.
+[Why]
+Coverity report OVERRUN warning. There are
+only max_links elements within dc->links. link
+count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241113152050.157179-4-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+[How]
+Make sure link count less than max_links.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[Minor conflict resolved due to code context change. And the macro MAX_LINKS
+ is introduced by Commit 60df5628144b ("drm/amd/display: handle invalid
+ connector indices") after 6.10. So here we still use the original array
+ length MAX_PIPES * 2]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/blk-mq.h |   17 -----------------
- 1 file changed, 17 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -270,23 +270,6 @@ static inline unsigned short req_get_iop
- #define rq_list_empty(list)	((list) == (struct request *) NULL)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4484,17 +4484,17 @@ static int amdgpu_dm_initialize_drm_devi
+ 		}
+ 	}
  
- /**
-- * rq_list_move() - move a struct request from one list to another
-- * @src: The source list @rq is currently in
-- * @dst: The destination list that @rq will be appended to
-- * @rq: The request to move
-- * @prev: The request preceding @rq in @src (NULL if @rq is the head)
-- */
--static inline void rq_list_move(struct request **src, struct request **dst,
--				struct request *rq, struct request *prev)
--{
--	if (prev)
--		prev->rq_next = rq->rq_next;
--	else
--		*src = rq->rq_next;
--	rq_list_add(dst, rq);
--}
++	if (link_cnt > (MAX_PIPES * 2)) {
++		DRM_ERROR(
++			"KMS: Cannot support more than %d display indexes\n",
++				MAX_PIPES * 2);
++		goto fail;
++	}
++
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
+ 
+-		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
+-			DRM_ERROR(
+-				"KMS: Cannot support more than %d display indexes\n",
+-					AMDGPU_DM_MAX_DISPLAY_INDEX);
+-			continue;
+-		}
 -
--/**
-  * enum blk_eh_timer_return - How the timeout handler should proceed
-  * @BLK_EH_DONE: The block driver completed the command or will complete it at
-  *	a later time.
+ 		aconnector = kzalloc(sizeof(*aconnector), GFP_KERNEL);
+ 		if (!aconnector)
+ 			goto fail;
 
 
 
