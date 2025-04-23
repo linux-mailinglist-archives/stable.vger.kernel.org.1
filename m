@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE54A99167
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91AB4A993D1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51E6A1BA4195
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D3D0468288
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD75128C5CF;
-	Wed, 23 Apr 2025 15:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAE828A1F4;
+	Wed, 23 Apr 2025 15:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytPv5Ds4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWo34LOz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B53223D298;
-	Wed, 23 Apr 2025 15:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4939527FD49;
+	Wed, 23 Apr 2025 15:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421368; cv=none; b=nUlg30HvLeWJMsQXKpBxzDEC3/ks6x7uEn0fNTFWgTP0P2v8zvgyfHStcXuAU9+CCgT5M+pahpoYmI5Q/GMNUiS+GIdXIkmm8umhSLTNRF9yRKN8Li++ivCuPBgP6AFTZz3nUObAO2S1kuZHrm9miWwbZULaj61m//w6SvPsxpU=
+	t=1745422567; cv=none; b=fC1FRjd94O26B9y8wIfbYmvDr4riRV2L/k8RAKptgEwzI/Hy746uUw7yoD27ZdJWw9/c8W34Dx0p9NnPN1ilsw3Vv4ToZkHe7nZfPamI7M487jzGNau2zeKb7wj+hSWFOCzkZ4T4aU5LysRBn1thZgrlqswfCm/ogWY39sxwWzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421368; c=relaxed/simple;
-	bh=vpVpRoZmfVAx3PP6PAAsQQDnNxgnf5B37J3+Q7emOmY=;
+	s=arc-20240116; t=1745422567; c=relaxed/simple;
+	bh=3uLRkz4lYgYofM/A9VatQ7U2vAk2CmUYgOx1drD32vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwVI+Wi148vWwaVV+Gok+8+DhqgReuxvscUtkHow8bCodzkxl3/N8mXVxoolmK1uhRMLC0TJH2TsrcJNCu91uNlU11AAjD8yi4jkdJsxq+M9+k3fk9LL/S4zJdnJffg6Lv6GPTt/OwSE/CpfDLDwwtWqgESm0Am/6xEJ6nMDwu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytPv5Ds4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97FBC4CEE2;
-	Wed, 23 Apr 2025 15:16:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ExqfQUMU+ihW6hn7cDKc5fHyNygBq0qGV6JHxc4sR+4vVDbFvux6CfIApHV4+OvQGTWjaJ/AUb5QvB7w5WWNt11Yn/U3MwNW9zQ/MVyjL/6+zzRn8QY2S18o+ZvrbB1eqtDmcYBGvqgTb1Q+mobWkTpP312G4jzQktPdA7Lm7wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWo34LOz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE995C4CEE2;
+	Wed, 23 Apr 2025 15:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421368;
-	bh=vpVpRoZmfVAx3PP6PAAsQQDnNxgnf5B37J3+Q7emOmY=;
+	s=korg; t=1745422567;
+	bh=3uLRkz4lYgYofM/A9VatQ7U2vAk2CmUYgOx1drD32vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytPv5Ds4/thI6/9pMTic6D7FrlXW2akbgsxbZBBagfM4ekVO41RuunozErnCDu3RM
-	 yt2XV8ZwRb8qkCEAyS4KRZcUsYmKYzg72PnvbqUDk4aKVNY2tDiqsbyDlloHDLg9bW
-	 dKkJkMhVLnTHJCplSiMEIu5Om2OgSezE6DmGHvnE=
+	b=zWo34LOzeINKsZP6ORz9OqL4yEtmtc/Jke9FLqjrqe1nQM1iIOu9Wob/UwQMvg/if
+	 +V5ZdCEqAw5tgkvNphroGyWxIogwFevkHzTo9FQiZenNjokbUEcIFvtA7SzngBuvBv
+	 6YvIYEQp7vxs0++Rbz6MByjTJOmOagPnl5ZbtQJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 215/223] bpf: add find_containing_subprog() utility function
+	WangYuli <wangyuli@uniontech.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 391/393] MIPS: ds1287: Match ds1287_set_base_clock() function types
 Date: Wed, 23 Apr 2025 16:44:47 +0200
-Message-ID: <20250423142625.925478805@linuxfoundation.org>
+Message-ID: <20250423142659.463531883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 27e88bc4df1d80888fe1aaca786a7cc6e69587e2 upstream.
+commit a759109b234385b74d2f5f4c86b5f59b3201ec12 upstream.
 
-Add a utility function, looking for a subprogram containing a given
-instruction index, rewrite find_subprog() to use this function.
+Synchronize the declaration of ds1287_set_base_clock() between
+cevt-ds1287.c and ds1287.h.
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fix follow error with gcc-14 when -Werror:
+
+arch/mips/kernel/cevt-ds1287.c:21:5: error: conflicting types for ‘ds1287_set_base_clock’; have ‘int(unsigned int)’
+   21 | int ds1287_set_base_clock(unsigned int hz)
+      |     ^~~~~~~~~~~~~~~~~~~~~
+In file included from arch/mips/kernel/cevt-ds1287.c:13:
+./arch/mips/include/asm/ds1287.h:11:13: note: previous declaration of ‘ds1287_set_base_clock’ with type ‘void(unsigned int)’
+   11 | extern void ds1287_set_base_clock(unsigned int clock);
+      |             ^~~~~~~~~~~~~~~~~~~~~
+make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
+make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
+make[6]: *** Waiting for unfinished jobs....
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |   28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/ds1287.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2528,16 +2528,36 @@ static int cmp_subprogs(const void *a, c
- 	       ((struct bpf_subprog_info *)b)->start;
- }
+--- a/arch/mips/include/asm/ds1287.h
++++ b/arch/mips/include/asm/ds1287.h
+@@ -8,7 +8,7 @@
+ #define __ASM_DS1287_H
  
-+/* Find subprogram that contains instruction at 'off' */
-+static struct bpf_subprog_info *find_containing_subprog(struct bpf_verifier_env *env, int off)
-+{
-+	struct bpf_subprog_info *vals = env->subprog_info;
-+	int l, r, m;
-+
-+	if (off >= env->prog->len || off < 0 || env->subprog_cnt == 0)
-+		return NULL;
-+
-+	l = 0;
-+	r = env->subprog_cnt - 1;
-+	while (l < r) {
-+		m = l + (r - l + 1) / 2;
-+		if (vals[m].start <= off)
-+			l = m;
-+		else
-+			r = m - 1;
-+	}
-+	return &vals[l];
-+}
-+
-+/* Find subprogram that starts exactly at 'off' */
- static int find_subprog(struct bpf_verifier_env *env, int off)
- {
- 	struct bpf_subprog_info *p;
+ extern int ds1287_timer_state(void);
+-extern void ds1287_set_base_clock(unsigned int clock);
++extern int ds1287_set_base_clock(unsigned int hz);
+ extern int ds1287_clockevent_init(int irq);
  
--	p = bsearch(&off, env->subprog_info, env->subprog_cnt,
--		    sizeof(env->subprog_info[0]), cmp_subprogs);
--	if (!p)
-+	p = find_containing_subprog(env, off);
-+	if (!p || p->start != off)
- 		return -ENOENT;
- 	return p - env->subprog_info;
--
- }
- 
- static int add_subprog(struct bpf_verifier_env *env, int off)
+ #endif
 
 
 
