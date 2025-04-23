@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF872A98E91
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AA8A98E1C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7EE6189739F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6904C1B81E57
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F1127CCFA;
-	Wed, 23 Apr 2025 14:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2C5280A5F;
+	Wed, 23 Apr 2025 14:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ra0yqlw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUWu+1d+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E490F18DB17;
-	Wed, 23 Apr 2025 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0D127FD7A;
+	Wed, 23 Apr 2025 14:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420040; cv=none; b=C00kxcOae5RRiMR+9nAyAlA/WcmxN0cIsIdVXR7eSVJnQVVcRv3w3YRpg+UVDTq0CdTUgEEqSe/t69IN9WV3+Jte3AbXlgqb0qqCJJh32lRnlT3JArOlR6+i+6CwhWOmJUgVr4ocGuOku/ee2QWDY5jVjaQI/LvdILQz+bh3I7E=
+	t=1745419827; cv=none; b=jg3TMdjRS46KcJ48w7H6ErbR68oqkplWEYqmSr0pHzXlzV8RjPwpCUMCCkWLxNxd8EFmFdOK8uZK7VrQfJY4wYftKvv8hHlmGRDe7N6u3cDx5QE8RAmcymiJcWh/Y52uGFPsXREmKs6r761GgN/pkRJMOHNa3dZiKC21CgTwNWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420040; c=relaxed/simple;
-	bh=gcxMeKa4i0X1Debv9JhfMPihW4TV7S2dBArdPX36wYA=;
+	s=arc-20240116; t=1745419827; c=relaxed/simple;
+	bh=oWa4vu39wJpmQTMskEITDtkBgroq5P+Qlv4QjbN7XL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dt2OK25aUW85Tm3peqXCHC6fpJPjiYnnOLg/tjBYeqmEpTBSa7Ajv6HrPOYouRP7uNcSwf1VZmz/M5yZKMY+ox+sB9X82D+ip1TpkJ1cTy57JeHkhRZKXZ7+hiqpP+BdMZ9Hge6vRyP1LMacb0ToHXp4ZIyOFOEp8mlvPYKiE38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ra0yqlw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A79C4CEE2;
-	Wed, 23 Apr 2025 14:53:58 +0000 (UTC)
+	 MIME-Version; b=fjtF812BASkCvz5VTDtaSpFyiBe1X9UGwPzqA4+wgKeYCiZfU8qjDKSEHyxvpgtSX6YEMao6lqFlJ/q1BpXqTP7T+Kh43Duz+QWrLgrOsbd5sbUPaDK5ntFHoziqbNsOGgf0azcpMQroFZV2ZOwWIGhjxy3BORj6unIW7wxZtYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUWu+1d+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2D9C4CEE2;
+	Wed, 23 Apr 2025 14:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420039;
-	bh=gcxMeKa4i0X1Debv9JhfMPihW4TV7S2dBArdPX36wYA=;
+	s=korg; t=1745419826;
+	bh=oWa4vu39wJpmQTMskEITDtkBgroq5P+Qlv4QjbN7XL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ra0yqlwW9v8+vPhFYmAZzfP3oVHUHy3oSuX61EXlpn3NjoBVok9usmjo/KW+e09N
-	 x+KVtseCjGUx+v8Wv9AcSmMs8DJFywKgWKk+pdJtcjkUlLltEFflGuTJBtLLw23rbQ
-	 +U/W6jpo6jjN/H5G+82u+xm0VCjAsjhfVGM+aK7g=
+	b=uUWu+1d+YrqLggVsFE61ga8aSJ1LYxA14LCkmMc6T9SKsMWyArwmSh9ZTonaLI9Ki
+	 APNIAjhCbNwOJfV2ya0ucf8bMeauBp8sbZi4xkri2PMsIhKN/XpCEU8JXpQV26IJiN
+	 XbSmQRfmsUwUWAf6DJXrxVaVSLAdMp1VGuDenNzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weizhao Ouyang <o451686892@gmail.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 054/241] can: rockchip_canfd: fix broken quirks checks
+Subject: [PATCH 6.12 046/223] netlink: specs: ovs_vport: align with C codegen capabilities
 Date: Wed, 23 Apr 2025 16:41:58 +0200
-Message-ID: <20250423142622.714545855@linuxfoundation.org>
+Message-ID: <20250423142619.009771107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weizhao Ouyang <o451686892@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 6315d93541f8a5f77c5ef5c4f25233e66d189603 ]
+[ Upstream commit 747fb8413aaa36e4c988d45c4fe20d4c2b0778cd ]
 
-First get the devtype_data then check quirks.
+We started generating C code for OvS a while back, but actually
+C codegen only supports fixed headers specified at the family
+level right now (schema also allows specifying them per op).
+ovs_flow and ovs_datapath already specify the fixed header
+at the family level but ovs_vport does it per op.
+Move the property, all ops use the same header.
 
-Fixes: bbdffb341498 ("can: rockchip_canfd: add quirk for broken CAN-FD support")
-Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20250324114416.10160-1-o451686892@gmail.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+This ensures YNL C sees the correct hdr_len:
+
+   const struct ynl_family ynl_ovs_vport_family =  {
+          .name           = "ovs_vport",
+  -       .hdr_len        = sizeof(struct genlmsghdr),
+  +       .hdr_len        = sizeof(struct genlmsghdr) + sizeof(struct ovs_header),
+   };
+
+Fixes: 7c59c9c8f202 ("tools: ynl: generate code for ovs families")
+Link: https://patch.msgid.link/20250409145541.580674-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/rockchip/rockchip_canfd-core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Documentation/netlink/specs/ovs_vport.yaml | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
-index 46201c126703c..7107a37da36c7 100644
---- a/drivers/net/can/rockchip/rockchip_canfd-core.c
-+++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
-@@ -902,15 +902,16 @@ static int rkcanfd_probe(struct platform_device *pdev)
- 	priv->can.data_bittiming_const = &rkcanfd_data_bittiming_const;
- 	priv->can.ctrlmode_supported = CAN_CTRLMODE_LOOPBACK |
- 		CAN_CTRLMODE_BERR_REPORTING;
--	if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
--		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
- 	priv->can.do_set_mode = rkcanfd_set_mode;
- 	priv->can.do_get_berr_counter = rkcanfd_get_berr_counter;
- 	priv->ndev = ndev;
+diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
+index 86ba9ac2a5210..b538bb99ee9b5 100644
+--- a/Documentation/netlink/specs/ovs_vport.yaml
++++ b/Documentation/netlink/specs/ovs_vport.yaml
+@@ -123,12 +123,12 @@ attribute-sets:
  
- 	match = device_get_match_data(&pdev->dev);
--	if (match)
-+	if (match) {
- 		priv->devtype_data = *(struct rkcanfd_devtype_data *)match;
-+		if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
-+			priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
-+	}
- 
- 	err = can_rx_offload_add_manual(ndev, &priv->offload,
- 					RKCANFD_NAPI_WEIGHT);
+ operations:
+   name-prefix: ovs-vport-cmd-
++  fixed-header: ovs-header
+   list:
+     -
+       name: new
+       doc: Create a new OVS vport
+       attribute-set: vport
+-      fixed-header: ovs-header
+       do:
+         request:
+           attributes:
+@@ -141,7 +141,6 @@ operations:
+       name: del
+       doc: Delete existing OVS vport from a data path
+       attribute-set: vport
+-      fixed-header: ovs-header
+       do:
+         request:
+           attributes:
+@@ -152,7 +151,6 @@ operations:
+       name: get
+       doc: Get / dump OVS vport configuration and state
+       attribute-set: vport
+-      fixed-header: ovs-header
+       do: &vport-get-op
+         request:
+           attributes:
 -- 
 2.39.5
 
