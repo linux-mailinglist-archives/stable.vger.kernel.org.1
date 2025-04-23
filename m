@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E426DA9911F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:27:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D61A99350
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9889C92567E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16E31BC1F5C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710C8280CFC;
-	Wed, 23 Apr 2025 15:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9460B2BEC3D;
+	Wed, 23 Apr 2025 15:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWwNbsH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBc1XzPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E71657C9F;
-	Wed, 23 Apr 2025 15:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501A0298CB5;
+	Wed, 23 Apr 2025 15:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421231; cv=none; b=QLXCt726O0vy7a5y5tAqBall7i/Z2TaZYzFgwfeXDRyl65kUvbA/Vz9ND6BcAMvFrrzmO3e5RgjoOji3CSnihObCaH/u4K2barux/+XIsk0a0Yt7K2ZHweMOd5fguU3C21NLqdzXgcP4BmoPmS7JgjHOsvgrJo6bGHZzUnbBNck=
+	t=1745422454; cv=none; b=eh3GqPmuCKzvmnAzwJ5fR4ggG9/F07lijywMWNuMB57m2PEPMrAqkHY1uOaipIkS6s8+pvsicNQn7mXyEIgC/XLBLRriofGMjT7kR3ijvGz69jCbI3I9JYcP9vhAE/tsX/G19UED4u2wks5yyRxlBwqmFPj35+cgLyjjBOZrgjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421231; c=relaxed/simple;
-	bh=DdBU2tJJar09JQkTZMRtJCK3xZmjch3QFbNJhn+7iy0=;
+	s=arc-20240116; t=1745422454; c=relaxed/simple;
+	bh=e56ht0jkcxoAhITfZ2MmMK6kWsq9mCXZSmoYP4KUDos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kI27ds6KW3lMCG0hTlXEDc4tQosgh/gwWaxVlUUn8I/ERwETP2G6kj8bwh0U7YCS9oixz1wqt28fVt50/o2gvIklheFzZR6rfic0EyHXVUdNIlw6ieNdlApbGkXL0JhZ3j9Uct8zIeut6gqvM86tDq0Xmn7mB7BGUWPa7qIJAd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWwNbsH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52AD0C4CEE3;
-	Wed, 23 Apr 2025 15:13:50 +0000 (UTC)
+	 MIME-Version; b=T/RDH6qADSR8QDybTnkMuqDmC8sUWa6Zj47oD6Zw8NW+NyEzYomgWAnEESC1qCjL8WTuRsmiyfyu91b1c6m3evKXrIDUsGeEKYLSMCw7stAtu9v7s5hJiyqgs6un0AJP7FVwKl9phNyXi4PHsiwUle32jPKTx3cT5t7jWJNDfGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBc1XzPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5292C4CEE2;
+	Wed, 23 Apr 2025 15:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421230;
-	bh=DdBU2tJJar09JQkTZMRtJCK3xZmjch3QFbNJhn+7iy0=;
+	s=korg; t=1745422454;
+	bh=e56ht0jkcxoAhITfZ2MmMK6kWsq9mCXZSmoYP4KUDos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWwNbsH4bkdBOr/JJBIo211m6fOAM+vptKhL2QIGlFU0L/SaO/YAznQPKBRpnKO7y
-	 pmT3BXL5MrWCcvve+vAW+Z06ISN0IW/AaW9lDZYTkkUWeU7n/FCV7FdEKY+aZugtLa
-	 h+KtiOgM/MRooZPztBExFVvve16Huwp+zYa+IY3s=
+	b=eBc1XzPsN5HzzPpHqgygAWqy6lHJEFnPMcSQvDqJ2yST/JlE6qjOHxYHBwrbrl7Ec
+	 D2oFSZFia3HXJq67siwZyyIsx/huxNTXmvSNa5J+dRQ7mOK5SnaZmjtWfQGjA+XDhX
+	 FLI0hEFM4hGC07hnk0bNi7qChsZeKl0o8ZvlcQ1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuli Wang <wangyuli@uniontech.com>,
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>,
 	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 203/223] LoongArch: Eliminate superfluous get_numa_distances_cnt()
+Subject: [PATCH 6.1 286/291] sign-file,extract-cert: move common SSL helper functions to a header
 Date: Wed, 23 Apr 2025 16:44:35 +0200
-Message-ID: <20250423142625.438801395@linuxfoundation.org>
+Message-ID: <20250423142636.107824391@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,200 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuli Wang <wangyuli@uniontech.com>
+From: Jan Stancek <jstancek@redhat.com>
 
-commit a0d3c8bcb9206ac207c7ad3182027c6b0a1319bb upstream.
+commit 300e6d4116f956b035281ec94297dc4dc8d4e1d3 upstream.
 
-In LoongArch, get_numa_distances_cnt() isn't in use, resulting in a
-compiler warning.
+Couple error handling helpers are repeated in both tools, so
+move them to a common header.
 
-Fix follow errors with clang-18 when W=1e:
-
-arch/loongarch/kernel/acpi.c:259:28: error: unused function 'get_numa_distances_cnt' [-Werror,-Wunused-function]
-  259 | static inline unsigned int get_numa_distances_cnt(struct acpi_table_slit *slit)
-      |                            ^~~~~~~~~~~~~~~~~~~~~~
-1 error generated.
-
-Link: https://lore.kernel.org/all/Z7bHPVUH4lAezk0E@kernel.org/
-Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/acpi.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ MAINTAINERS          |    1 +
+ certs/Makefile       |    2 +-
+ certs/extract-cert.c |   37 ++-----------------------------------
+ scripts/sign-file.c  |   37 ++-----------------------------------
+ scripts/ssl-common.h |   39 +++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 45 insertions(+), 71 deletions(-)
+ create mode 100644 scripts/ssl-common.h
 
---- a/arch/loongarch/kernel/acpi.c
-+++ b/arch/loongarch/kernel/acpi.c
-@@ -249,18 +249,6 @@ static __init int setup_node(int pxm)
- 	return acpi_map_pxm_to_node(pxm);
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -4833,6 +4833,7 @@ S:	Maintained
+ F:	Documentation/admin-guide/module-signing.rst
+ F:	certs/
+ F:	scripts/sign-file.c
++F:	scripts/ssl-common.h
+ F:	tools/certs/
+ 
+ CFAG12864B LCD DRIVER
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -84,5 +84,5 @@ targets += x509_revocation_list
+ 
+ hostprogs := extract-cert
+ 
+-HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null)
++HOSTCFLAGS_extract-cert.o = $(shell $(HOSTPKG_CONFIG) --cflags libcrypto 2> /dev/null) -I$(srctree)/scripts
+ HOSTLDLIBS_extract-cert = $(shell $(HOSTPKG_CONFIG) --libs libcrypto 2> /dev/null || echo -lcrypto)
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -23,6 +23,8 @@
+ #include <openssl/err.h>
+ #include <openssl/engine.h>
+ 
++#include "ssl-common.h"
++
+ /*
+  * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
+  *
+@@ -40,41 +42,6 @@ void format(void)
+ 	exit(2);
  }
  
--/*
-- * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
-- * I/O localities since SRAT does not list them.  I/O localities are
-- * not supported at this point.
-- */
--unsigned int numa_distance_cnt;
--
--static inline unsigned int get_numa_distances_cnt(struct acpi_table_slit *slit)
+-static void display_openssl_errors(int l)
 -{
--	return slit->locality_count;
+-	const char *file;
+-	char buf[120];
+-	int e, line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	fprintf(stderr, "At main.c:%d:\n", l);
+-
+-	while ((e = ERR_get_error_line(&file, &line))) {
+-		ERR_error_string(e, buf);
+-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
+-	}
 -}
 -
- void __init numa_set_distance(int from, int to, int distance)
- {
- 	if ((u8)distance != distance || (from == to && distance != LOCAL_DISTANCE)) {
+-static void drain_openssl_errors(void)
+-{
+-	const char *file;
+-	int line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	while (ERR_get_error_line(&file, &line)) {}
+-}
+-
+-#define ERR(cond, fmt, ...)				\
+-	do {						\
+-		bool __cond = (cond);			\
+-		display_openssl_errors(__LINE__);	\
+-		if (__cond) {				\
+-			err(1, fmt, ## __VA_ARGS__);	\
+-		}					\
+-	} while(0)
+-
+ static const char *key_pass;
+ static BIO *wb;
+ static char *cert_dst;
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -29,6 +29,8 @@
+ #include <openssl/err.h>
+ #include <openssl/engine.h>
+ 
++#include "ssl-common.h"
++
+ /*
+  * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
+  *
+@@ -83,41 +85,6 @@ void format(void)
+ 	exit(2);
+ }
+ 
+-static void display_openssl_errors(int l)
+-{
+-	const char *file;
+-	char buf[120];
+-	int e, line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	fprintf(stderr, "At main.c:%d:\n", l);
+-
+-	while ((e = ERR_get_error_line(&file, &line))) {
+-		ERR_error_string(e, buf);
+-		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
+-	}
+-}
+-
+-static void drain_openssl_errors(void)
+-{
+-	const char *file;
+-	int line;
+-
+-	if (ERR_peek_error() == 0)
+-		return;
+-	while (ERR_get_error_line(&file, &line)) {}
+-}
+-
+-#define ERR(cond, fmt, ...)				\
+-	do {						\
+-		bool __cond = (cond);			\
+-		display_openssl_errors(__LINE__);	\
+-		if (__cond) {				\
+-			errx(1, fmt, ## __VA_ARGS__);	\
+-		}					\
+-	} while(0)
+-
+ static const char *key_pass;
+ 
+ static int pem_pw_cb(char *buf, int len, int w, void *v)
+--- /dev/null
++++ b/scripts/ssl-common.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: LGPL-2.1+ */
++/*
++ * SSL helper functions shared by sign-file and extract-cert.
++ */
++
++static void display_openssl_errors(int l)
++{
++	const char *file;
++	char buf[120];
++	int e, line;
++
++	if (ERR_peek_error() == 0)
++		return;
++	fprintf(stderr, "At main.c:%d:\n", l);
++
++	while ((e = ERR_get_error_line(&file, &line))) {
++		ERR_error_string(e, buf);
++		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
++	}
++}
++
++static void drain_openssl_errors(void)
++{
++	const char *file;
++	int line;
++
++	if (ERR_peek_error() == 0)
++		return;
++	while (ERR_get_error_line(&file, &line)) {}
++}
++
++#define ERR(cond, fmt, ...)				\
++	do {						\
++		bool __cond = (cond);			\
++		display_openssl_errors(__LINE__);	\
++		if (__cond) {				\
++			errx(1, fmt, ## __VA_ARGS__);	\
++		}					\
++	} while (0)
 
 
 
