@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F17A9916D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DF7A993AC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 952571BA1B15
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5123F466741
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81057288C89;
-	Wed, 23 Apr 2025 15:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4AB2C3759;
+	Wed, 23 Apr 2025 15:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1awVTBt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCuLrmAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2AB285417;
-	Wed, 23 Apr 2025 15:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5F62C3746;
+	Wed, 23 Apr 2025 15:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421275; cv=none; b=reV3C4YXT/4Mm7XcGwDc9Z74/r34MdO3ZUZ8KxPS8rdmKXAv/IyyigyU7DiRVLOIxMdukVKeTzUOcJsxnMrpZzdmT9283e5q0po3PQ48T8124Ujv0bCE68Th1xB9oV7S1x+U+34RoZ46zCReYnchebHzc3FN077jJQJd6u0zL7I=
+	t=1745422528; cv=none; b=EuqoACWwFw/gEr+pJiH3iTYvelv0w25Qj5LKmkj5Pcx3FI/VEpLjBnhJdck176Qz2JG5CNWlVIS3UWkJAzDrOTTvbH67/SWGtg8mHYy2/t3YzPxVO+7zA4iDrl87nq2S6gy+3UrnERX60p3VWMjcvav7xtjPQWEv66dSdMMyUM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421275; c=relaxed/simple;
-	bh=+cS6xMgFAIgI5NAVDalKNrzm2v+ie5AQhDGfmjFw8a0=;
+	s=arc-20240116; t=1745422528; c=relaxed/simple;
+	bh=f9C7P+EeQ3d/reQTUhuh1dQfWvXo6OU6qe/MA4fG33E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hq3WwbhtdFIezkZNsp22WGPxI0qNYlv9mAVqmJF3dAWErdLjD/VxzIl3NWBsORrrpA1nnpwqYm80EHPIgU3K0kFSuq4IXBOm+CUlSb+BGYQVa1tUCVjKLWMhrxnWQHHAFcWoIfa0e6Yp31Jd24Hbysxegq7gS2UBDAIyXiy1HMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1awVTBt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29BEC4CEE2;
-	Wed, 23 Apr 2025 15:14:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YGnbOXJVOe4750SGHagOl4WbrSVA56J9DnypzPeH1q0xtGD921GmciBBFGgNEnurmiTcxTBwQwjGqZXRXbZRHM3DA91L3VtsSJ/1WLCE/5fG3TuYmWFd1S30+p7BilqdCSDuz79wSY/kXqG73Ap+kGiIBqCKj0ObFfBa/0guIkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCuLrmAG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CABCC4CEE3;
+	Wed, 23 Apr 2025 15:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421275;
-	bh=+cS6xMgFAIgI5NAVDalKNrzm2v+ie5AQhDGfmjFw8a0=;
+	s=korg; t=1745422527;
+	bh=f9C7P+EeQ3d/reQTUhuh1dQfWvXo6OU6qe/MA4fG33E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1awVTBt1Xo4YrlfQPQYzv0IyYLvXrUEYUd5ZohY/lrJe07mgHKXsBsgPkC8Pvcdv
-	 Lt5Xzi+CatOKBF2lDJRFCyPWihGjaluZoPrbHZDX5lj3lrdnHzGmtlbYsWpJDF7fWD
-	 gaFKca9NURv+Nx4j0yYGw83ylrbX4idueTAXAI4o=
+	b=LCuLrmAGAGCnpg83k2u/0pxH2DH6jGt7xezmnaBD+A83aFwQ2u3mjMrGTpXdU6g7N
+	 FFvG0CDfKq+DoieqON0O9T/Db1XKCmpydEBYRwfG6ztaqi0zQKS9XlAQ/OwfsVl4bT
+	 fk0oGXTeKCz9sDD0HAcnUQLQ1/BqwhYLlk4h82GE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 6.12 207/223] block: add a rq_list type
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+Subject: [PATCH 6.6 383/393] landlock: Add the errata interface
 Date: Wed, 23 Apr 2025 16:44:39 +0200
-Message-ID: <20250423142625.598293474@linuxfoundation.org>
+Message-ID: <20250423142659.142994095@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,540 +59,341 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Mickaël Salaün <mic@digikod.net>
 
-commit a3396b99990d8b4e5797e7b16fdeb64c15ae97bb upstream.
+commit 15383a0d63dbcd63dc7e8d9ec1bf3a0f7ebf64ac upstream.
 
-Replace the semi-open coded request list helpers with a proper rq_list
-type that mirrors the bio_list and has head and tail pointers.  Besides
-better type safety this actually allows to insert at the tail of the
-list, which will be useful soon.
+Some fixes may require user space to check if they are applied on the
+running kernel before using a specific feature.  For instance, this
+applies when a restriction was previously too restrictive and is now
+getting relaxed (e.g. for compatibility reasons).  However, non-visible
+changes for legitimate use (e.g. security fixes) do not require an
+erratum.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241113152050.157179-5-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Because fixes are backported down to a specific Landlock ABI, we need a
+way to avoid cherry-pick conflicts.  The solution is to only update a
+file related to the lower ABI impacted by this issue.  All the ABI files
+are then used to create a bitmask of fixes.
+
+The new errata interface is similar to the one used to get the supported
+Landlock ABI version, but it returns a bitmask instead because the order
+of fixes may not match the order of versions, and not all fixes may
+apply to all versions.
+
+The actual errata will come with dedicated commits.  The description is
+not actually used in the code but serves as documentation.
+
+Create the landlock_abi_version symbol and use its value to check errata
+consistency.
+
+Update test_base's create_ruleset_checks_ordering tests and add errata
+tests.
+
+This commit is backportable down to the first version of Landlock.
+
+Fixes: 3532b0b4352c ("landlock: Enable user space to infer supported features")
+Cc: Günther Noack <gnoack@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250318161443.279194-3-mic@digikod.net
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-core.c              |    6 +-
- block/blk-merge.c             |    2 
- block/blk-mq.c                |   40 +++++++++----------
- block/blk-mq.h                |    2 
- drivers/block/null_blk/main.c |    9 +---
- drivers/block/virtio_blk.c    |   13 ++----
- drivers/nvme/host/apple.c     |    2 
- drivers/nvme/host/pci.c       |   15 +++----
- include/linux/blk-mq.h        |   88 ++++++++++++++++++++++++------------------
- include/linux/blkdev.h        |   11 +++--
- io_uring/rw.c                 |    4 -
- 11 files changed, 104 insertions(+), 88 deletions(-)
+ include/uapi/linux/landlock.h                |    2 
+ security/landlock/errata.h                   |   87 +++++++++++++++++++++++++++
+ security/landlock/setup.c                    |   30 +++++++++
+ security/landlock/setup.h                    |    3 
+ security/landlock/syscalls.c                 |   22 +++++-
+ tools/testing/selftests/landlock/base_test.c |   46 +++++++++++++-
+ 6 files changed, 185 insertions(+), 5 deletions(-)
+ create mode 100644 security/landlock/errata.h
 
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1121,8 +1121,8 @@ void blk_start_plug_nr_ios(struct blk_pl
- 		return;
- 
- 	plug->cur_ktime = 0;
--	plug->mq_list = NULL;
--	plug->cached_rq = NULL;
-+	rq_list_init(&plug->mq_list);
-+	rq_list_init(&plug->cached_rqs);
- 	plug->nr_ios = min_t(unsigned short, nr_ios, BLK_MAX_REQUEST_COUNT);
- 	plug->rq_count = 0;
- 	plug->multiple_queues = false;
-@@ -1218,7 +1218,7 @@ void __blk_flush_plug(struct blk_plug *p
- 	 * queue for cached requests, we don't want a blocked task holding
- 	 * up a queue freeze/quiesce event.
- 	 */
--	if (unlikely(!rq_list_empty(plug->cached_rq)))
-+	if (unlikely(!rq_list_empty(&plug->cached_rqs)))
- 		blk_mq_free_plug_rqs(plug);
- 
- 	plug->cur_ktime = 0;
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -1175,7 +1175,7 @@ bool blk_attempt_plug_merge(struct reque
- 	struct blk_plug *plug = current->plug;
- 	struct request *rq;
- 
--	if (!plug || rq_list_empty(plug->mq_list))
-+	if (!plug || rq_list_empty(&plug->mq_list))
- 		return false;
- 
- 	rq_list_for_each(&plug->mq_list, rq) {
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -506,7 +506,7 @@ __blk_mq_alloc_requests_batch(struct blk
- 		prefetch(tags->static_rqs[tag]);
- 		tag_mask &= ~(1UL << i);
- 		rq = blk_mq_rq_ctx_init(data, tags, tag);
--		rq_list_add(data->cached_rq, rq);
-+		rq_list_add_head(data->cached_rqs, rq);
- 		nr++;
- 	}
- 	if (!(data->rq_flags & RQF_SCHED_TAGS))
-@@ -515,7 +515,7 @@ __blk_mq_alloc_requests_batch(struct blk
- 	percpu_ref_get_many(&data->q->q_usage_counter, nr - 1);
- 	data->nr_tags -= nr;
- 
--	return rq_list_pop(data->cached_rq);
-+	return rq_list_pop(data->cached_rqs);
- }
- 
- static struct request *__blk_mq_alloc_requests(struct blk_mq_alloc_data *data)
-@@ -612,7 +612,7 @@ static struct request *blk_mq_rq_cache_f
- 		.flags		= flags,
- 		.cmd_flags	= opf,
- 		.nr_tags	= plug->nr_ios,
--		.cached_rq	= &plug->cached_rq,
-+		.cached_rqs	= &plug->cached_rqs,
- 	};
- 	struct request *rq;
- 
-@@ -637,14 +637,14 @@ static struct request *blk_mq_alloc_cach
- 	if (!plug)
- 		return NULL;
- 
--	if (rq_list_empty(plug->cached_rq)) {
-+	if (rq_list_empty(&plug->cached_rqs)) {
- 		if (plug->nr_ios == 1)
- 			return NULL;
- 		rq = blk_mq_rq_cache_fill(q, plug, opf, flags);
- 		if (!rq)
- 			return NULL;
- 	} else {
--		rq = rq_list_peek(&plug->cached_rq);
-+		rq = rq_list_peek(&plug->cached_rqs);
- 		if (!rq || rq->q != q)
- 			return NULL;
- 
-@@ -653,7 +653,7 @@ static struct request *blk_mq_alloc_cach
- 		if (op_is_flush(rq->cmd_flags) != op_is_flush(opf))
- 			return NULL;
- 
--		plug->cached_rq = rq_list_next(rq);
-+		rq_list_pop(&plug->cached_rqs);
- 		blk_mq_rq_time_init(rq, 0);
- 	}
- 
-@@ -830,7 +830,7 @@ void blk_mq_free_plug_rqs(struct blk_plu
- {
- 	struct request *rq;
- 
--	while ((rq = rq_list_pop(&plug->cached_rq)) != NULL)
-+	while ((rq = rq_list_pop(&plug->cached_rqs)) != NULL)
- 		blk_mq_free_request(rq);
- }
- 
-@@ -1386,8 +1386,7 @@ static void blk_add_rq_to_plug(struct bl
- 	 */
- 	if (!plug->has_elevator && (rq->rq_flags & RQF_SCHED_TAGS))
- 		plug->has_elevator = true;
--	rq->rq_next = NULL;
--	rq_list_add(&plug->mq_list, rq);
-+	rq_list_add_head(&plug->mq_list, rq);
- 	plug->rq_count++;
- }
- 
-@@ -2781,7 +2780,7 @@ static void blk_mq_plug_issue_direct(str
- 	blk_status_t ret = BLK_STS_OK;
- 
- 	while ((rq = rq_list_pop(&plug->mq_list))) {
--		bool last = rq_list_empty(plug->mq_list);
-+		bool last = rq_list_empty(&plug->mq_list);
- 
- 		if (hctx != rq->mq_hctx) {
- 			if (hctx) {
-@@ -2824,8 +2823,7 @@ static void blk_mq_dispatch_plug_list(st
- {
- 	struct blk_mq_hw_ctx *this_hctx = NULL;
- 	struct blk_mq_ctx *this_ctx = NULL;
--	struct request *requeue_list = NULL;
--	struct request **requeue_lastp = &requeue_list;
-+	struct rq_list requeue_list = {};
- 	unsigned int depth = 0;
- 	bool is_passthrough = false;
- 	LIST_HEAD(list);
-@@ -2839,12 +2837,12 @@ static void blk_mq_dispatch_plug_list(st
- 			is_passthrough = blk_rq_is_passthrough(rq);
- 		} else if (this_hctx != rq->mq_hctx || this_ctx != rq->mq_ctx ||
- 			   is_passthrough != blk_rq_is_passthrough(rq)) {
--			rq_list_add_tail(&requeue_lastp, rq);
-+			rq_list_add_tail(&requeue_list, rq);
- 			continue;
- 		}
- 		list_add(&rq->queuelist, &list);
- 		depth++;
--	} while (!rq_list_empty(plug->mq_list));
-+	} while (!rq_list_empty(&plug->mq_list));
- 
- 	plug->mq_list = requeue_list;
- 	trace_block_unplug(this_hctx->queue, depth, !from_sched);
-@@ -2899,19 +2897,19 @@ void blk_mq_flush_plug_list(struct blk_p
- 		if (q->mq_ops->queue_rqs) {
- 			blk_mq_run_dispatch_ops(q,
- 				__blk_mq_flush_plug_list(q, plug));
--			if (rq_list_empty(plug->mq_list))
-+			if (rq_list_empty(&plug->mq_list))
- 				return;
- 		}
- 
- 		blk_mq_run_dispatch_ops(q,
- 				blk_mq_plug_issue_direct(plug));
--		if (rq_list_empty(plug->mq_list))
-+		if (rq_list_empty(&plug->mq_list))
- 			return;
- 	}
- 
- 	do {
- 		blk_mq_dispatch_plug_list(plug, from_schedule);
--	} while (!rq_list_empty(plug->mq_list));
-+	} while (!rq_list_empty(&plug->mq_list));
- }
- 
- static void blk_mq_try_issue_list_directly(struct blk_mq_hw_ctx *hctx,
-@@ -2976,7 +2974,7 @@ static struct request *blk_mq_get_new_re
- 	if (plug) {
- 		data.nr_tags = plug->nr_ios;
- 		plug->nr_ios = 1;
--		data.cached_rq = &plug->cached_rq;
-+		data.cached_rqs = &plug->cached_rqs;
- 	}
- 
- 	rq = __blk_mq_alloc_requests(&data);
-@@ -2999,7 +2997,7 @@ static struct request *blk_mq_peek_cache
- 
- 	if (!plug)
- 		return NULL;
--	rq = rq_list_peek(&plug->cached_rq);
-+	rq = rq_list_peek(&plug->cached_rqs);
- 	if (!rq || rq->q != q)
- 		return NULL;
- 	if (type != rq->mq_hctx->type &&
-@@ -3013,14 +3011,14 @@ static struct request *blk_mq_peek_cache
- static void blk_mq_use_cached_rq(struct request *rq, struct blk_plug *plug,
- 		struct bio *bio)
- {
--	WARN_ON_ONCE(rq_list_peek(&plug->cached_rq) != rq);
-+	if (rq_list_pop(&plug->cached_rqs) != rq)
-+		WARN_ON_ONCE(1);
- 
- 	/*
- 	 * If any qos ->throttle() end up blocking, we will have flushed the
- 	 * plug and hence killed the cached_rq list as well. Pop this entry
- 	 * before we throttle.
- 	 */
--	plug->cached_rq = rq_list_next(rq);
- 	rq_qos_throttle(rq->q, bio);
- 
- 	blk_mq_rq_time_init(rq, 0);
---- a/block/blk-mq.h
-+++ b/block/blk-mq.h
-@@ -155,7 +155,7 @@ struct blk_mq_alloc_data {
- 
- 	/* allocate multiple requests/tags in one go */
- 	unsigned int nr_tags;
--	struct request **cached_rq;
-+	struct rq_list *cached_rqs;
- 
- 	/* input & output parameter */
- 	struct blk_mq_ctx *ctx;
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1638,10 +1638,9 @@ static blk_status_t null_queue_rq(struct
- 	return BLK_STS_OK;
- }
- 
--static void null_queue_rqs(struct request **rqlist)
-+static void null_queue_rqs(struct rq_list *rqlist)
- {
--	struct request *requeue_list = NULL;
--	struct request **requeue_lastp = &requeue_list;
-+	struct rq_list requeue_list = {};
- 	struct blk_mq_queue_data bd = { };
- 	blk_status_t ret;
- 
-@@ -1651,8 +1650,8 @@ static void null_queue_rqs(struct reques
- 		bd.rq = rq;
- 		ret = null_queue_rq(rq->mq_hctx, &bd);
- 		if (ret != BLK_STS_OK)
--			rq_list_add_tail(&requeue_lastp, rq);
--	} while (!rq_list_empty(*rqlist));
-+			rq_list_add_tail(&requeue_list, rq);
-+	} while (!rq_list_empty(rqlist));
- 
- 	*rqlist = requeue_list;
- }
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -472,7 +472,7 @@ static bool virtblk_prep_rq_batch(struct
- }
- 
- static void virtblk_add_req_batch(struct virtio_blk_vq *vq,
--					struct request **rqlist)
-+		struct rq_list *rqlist)
- {
- 	struct request *req;
- 	unsigned long flags;
-@@ -499,11 +499,10 @@ static void virtblk_add_req_batch(struct
- 		virtqueue_notify(vq->vq);
- }
- 
--static void virtio_queue_rqs(struct request **rqlist)
-+static void virtio_queue_rqs(struct rq_list *rqlist)
- {
--	struct request *submit_list = NULL;
--	struct request *requeue_list = NULL;
--	struct request **requeue_lastp = &requeue_list;
-+	struct rq_list submit_list = { };
-+	struct rq_list requeue_list = { };
- 	struct virtio_blk_vq *vq = NULL;
- 	struct request *req;
- 
-@@ -515,9 +514,9 @@ static void virtio_queue_rqs(struct requ
- 		vq = this_vq;
- 
- 		if (virtblk_prep_rq_batch(req))
--			rq_list_add(&submit_list, req); /* reverse order */
-+			rq_list_add_head(&submit_list, req); /* reverse order */
- 		else
--			rq_list_add_tail(&requeue_lastp, req);
-+			rq_list_add_tail(&requeue_list, req);
- 	}
- 
- 	if (vq)
---- a/drivers/nvme/host/apple.c
-+++ b/drivers/nvme/host/apple.c
-@@ -650,7 +650,7 @@ static bool apple_nvme_handle_cq(struct
- 
- 	found = apple_nvme_poll_cq(q, &iob);
- 
--	if (!rq_list_empty(iob.req_list))
-+	if (!rq_list_empty(&iob.req_list))
- 		apple_nvme_complete_batch(&iob);
- 
- 	return found;
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -985,7 +985,7 @@ static blk_status_t nvme_queue_rq(struct
- 	return BLK_STS_OK;
- }
- 
--static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct request **rqlist)
-+static void nvme_submit_cmds(struct nvme_queue *nvmeq, struct rq_list *rqlist)
- {
- 	struct request *req;
- 
-@@ -1013,11 +1013,10 @@ static bool nvme_prep_rq_batch(struct nv
- 	return nvme_prep_rq(nvmeq->dev, req) == BLK_STS_OK;
- }
- 
--static void nvme_queue_rqs(struct request **rqlist)
-+static void nvme_queue_rqs(struct rq_list *rqlist)
- {
--	struct request *submit_list = NULL;
--	struct request *requeue_list = NULL;
--	struct request **requeue_lastp = &requeue_list;
-+	struct rq_list submit_list = { };
-+	struct rq_list requeue_list = { };
- 	struct nvme_queue *nvmeq = NULL;
- 	struct request *req;
- 
-@@ -1027,9 +1026,9 @@ static void nvme_queue_rqs(struct reques
- 		nvmeq = req->mq_hctx->driver_data;
- 
- 		if (nvme_prep_rq_batch(nvmeq, req))
--			rq_list_add(&submit_list, req); /* reverse order */
-+			rq_list_add_head(&submit_list, req); /* reverse order */
- 		else
--			rq_list_add_tail(&requeue_lastp, req);
-+			rq_list_add_tail(&requeue_list, req);
- 	}
- 
- 	if (nvmeq)
-@@ -1176,7 +1175,7 @@ static irqreturn_t nvme_irq(int irq, voi
- 	DEFINE_IO_COMP_BATCH(iob);
- 
- 	if (nvme_poll_cq(nvmeq, &iob)) {
--		if (!rq_list_empty(iob.req_list))
-+		if (!rq_list_empty(&iob.req_list))
- 			nvme_pci_complete_batch(&iob);
- 		return IRQ_HANDLED;
- 	}
---- a/include/linux/blk-mq.h
-+++ b/include/linux/blk-mq.h
-@@ -230,44 +230,60 @@ static inline unsigned short req_get_iop
- #define rq_dma_dir(rq) \
- 	(op_is_write(req_op(rq)) ? DMA_TO_DEVICE : DMA_FROM_DEVICE)
- 
--#define rq_list_add(listptr, rq)	do {		\
--	(rq)->rq_next = *(listptr);			\
--	*(listptr) = rq;				\
--} while (0)
--
--#define rq_list_add_tail(lastpptr, rq)	do {		\
--	(rq)->rq_next = NULL;				\
--	**(lastpptr) = rq;				\
--	*(lastpptr) = &rq->rq_next;			\
--} while (0)
--
--#define rq_list_pop(listptr)				\
--({							\
--	struct request *__req = NULL;			\
--	if ((listptr) && *(listptr))	{		\
--		__req = *(listptr);			\
--		*(listptr) = __req->rq_next;		\
--	}						\
--	__req;						\
--})
-+static inline int rq_list_empty(const struct rq_list *rl)
-+{
-+	return rl->head == NULL;
-+}
- 
--#define rq_list_peek(listptr)				\
--({							\
--	struct request *__req = NULL;			\
--	if ((listptr) && *(listptr))			\
--		__req = *(listptr);			\
--	__req;						\
--})
-+static inline void rq_list_init(struct rq_list *rl)
-+{
-+	rl->head = NULL;
-+	rl->tail = NULL;
-+}
-+
-+static inline void rq_list_add_tail(struct rq_list *rl, struct request *rq)
-+{
-+	rq->rq_next = NULL;
-+	if (rl->tail)
-+		rl->tail->rq_next = rq;
-+	else
-+		rl->head = rq;
-+	rl->tail = rq;
-+}
-+
-+static inline void rq_list_add_head(struct rq_list *rl, struct request *rq)
-+{
-+	rq->rq_next = rl->head;
-+	rl->head = rq;
-+	if (!rl->tail)
-+		rl->tail = rq;
-+}
-+
-+static inline struct request *rq_list_pop(struct rq_list *rl)
-+{
-+	struct request *rq = rl->head;
-+
-+	if (rq) {
-+		rl->head = rl->head->rq_next;
-+		if (!rl->head)
-+			rl->tail = NULL;
-+		rq->rq_next = NULL;
-+	}
-+
-+	return rq;
-+}
- 
--#define rq_list_for_each(listptr, pos)			\
--	for (pos = rq_list_peek((listptr)); pos; pos = rq_list_next(pos))
-+static inline struct request *rq_list_peek(struct rq_list *rl)
-+{
-+	return rl->head;
-+}
- 
--#define rq_list_for_each_safe(listptr, pos, nxt)			\
--	for (pos = rq_list_peek((listptr)), nxt = rq_list_next(pos);	\
--		pos; pos = nxt, nxt = pos ? rq_list_next(pos) : NULL)
-+#define rq_list_for_each(rl, pos)					\
-+	for (pos = rq_list_peek((rl)); (pos); pos = pos->rq_next)
- 
--#define rq_list_next(rq)	(rq)->rq_next
--#define rq_list_empty(list)	((list) == (struct request *) NULL)
-+#define rq_list_for_each_safe(rl, pos, nxt)				\
-+	for (pos = rq_list_peek((rl)), nxt = pos->rq_next;		\
-+		pos; pos = nxt, nxt = pos ? pos->rq_next : NULL)
+--- a/include/uapi/linux/landlock.h
++++ b/include/uapi/linux/landlock.h
+@@ -38,9 +38,11 @@ struct landlock_ruleset_attr {
+  *
+  * - %LANDLOCK_CREATE_RULESET_VERSION: Get the highest supported Landlock ABI
+  *   version.
++ * - %LANDLOCK_CREATE_RULESET_ERRATA: Get a bitmask of fixed issues.
+  */
+ /* clang-format off */
+ #define LANDLOCK_CREATE_RULESET_VERSION			(1U << 0)
++#define LANDLOCK_CREATE_RULESET_ERRATA			(1U << 1)
+ /* clang-format on */
  
  /**
-  * enum blk_eh_timer_return - How the timeout handler should proceed
-@@ -560,7 +576,7 @@ struct blk_mq_ops {
- 	 * empty the @rqlist completely, then the rest will be queued
- 	 * individually by the block layer upon return.
- 	 */
--	void (*queue_rqs)(struct request **rqlist);
-+	void (*queue_rqs)(struct rq_list *rqlist);
- 
- 	/**
- 	 * @get_budget: Reserve budget before queue request, once .queue_rq is
-@@ -893,7 +909,7 @@ static inline bool blk_mq_add_to_batch(s
- 	else if (iob->complete != complete)
- 		return false;
- 	iob->need_ts |= blk_mq_need_time_stamp(req);
--	rq_list_add(&iob->req_list, req);
-+	rq_list_add_head(&iob->req_list, req);
- 	return true;
- }
- 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -996,6 +996,11 @@ extern void blk_put_queue(struct request
- void blk_mark_disk_dead(struct gendisk *disk);
- 
- #ifdef CONFIG_BLOCK
-+struct rq_list {
-+	struct request *head;
-+	struct request *tail;
+--- /dev/null
++++ b/security/landlock/errata.h
+@@ -0,0 +1,87 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Landlock - Errata information
++ *
++ * Copyright Â© 2025 Microsoft Corporation
++ */
++
++#ifndef _SECURITY_LANDLOCK_ERRATA_H
++#define _SECURITY_LANDLOCK_ERRATA_H
++
++#include <linux/init.h>
++
++struct landlock_erratum {
++	const int abi;
++	const u8 number;
 +};
 +
- /*
-  * blk_plug permits building a queue of related requests by holding the I/O
-  * fragments for a short period. This allows merging of sequential requests
-@@ -1008,10 +1013,10 @@ void blk_mark_disk_dead(struct gendisk *
-  * blk_flush_plug() is called.
++/* clang-format off */
++#define LANDLOCK_ERRATUM(NUMBER) \
++	{ \
++		.abi = LANDLOCK_ERRATA_ABI, \
++		.number = NUMBER, \
++	},
++/* clang-format on */
++
++/*
++ * Some fixes may require user space to check if they are applied on the running
++ * kernel before using a specific feature.  For instance, this applies when a
++ * restriction was previously too restrictive and is now getting relaxed (for
++ * compatibility or semantic reasons).  However, non-visible changes for
++ * legitimate use (e.g. security fixes) do not require an erratum.
++ */
++static const struct landlock_erratum landlock_errata_init[] __initconst = {
++
++/*
++ * Only Sparse may not implement __has_include.  If a compiler does not
++ * implement __has_include, a warning will be printed at boot time (see
++ * setup.c).
++ */
++#ifdef __has_include
++
++#define LANDLOCK_ERRATA_ABI 1
++#if __has_include("errata/abi-1.h")
++#include "errata/abi-1.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 2
++#if __has_include("errata/abi-2.h")
++#include "errata/abi-2.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 3
++#if __has_include("errata/abi-3.h")
++#include "errata/abi-3.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++#define LANDLOCK_ERRATA_ABI 4
++#if __has_include("errata/abi-4.h")
++#include "errata/abi-4.h"
++#endif
++#undef LANDLOCK_ERRATA_ABI
++
++/*
++ * For each new erratum, we need to include all the ABI files up to the impacted
++ * ABI to make all potential future intermediate errata easy to backport.
++ *
++ * If such change involves more than one ABI addition, then it must be in a
++ * dedicated commit with the same Fixes tag as used for the actual fix.
++ *
++ * Each commit creating a new security/landlock/errata/abi-*.h file must have a
++ * Depends-on tag to reference the commit that previously added the line to
++ * include this new file, except if the original Fixes tag is enough.
++ *
++ * Each erratum must be documented in its related ABI file, and a dedicated
++ * commit must update Documentation/userspace-api/landlock.rst to include this
++ * erratum.  This commit will not be backported.
++ */
++
++#endif
++
++	{}
++};
++
++#endif /* _SECURITY_LANDLOCK_ERRATA_H */
+--- a/security/landlock/setup.c
++++ b/security/landlock/setup.c
+@@ -6,11 +6,13 @@
+  * Copyright © 2018-2020 ANSSI
   */
- struct blk_plug {
--	struct request *mq_list; /* blk-mq requests */
-+	struct rq_list mq_list; /* blk-mq requests */
  
- 	/* if ios_left is > 1, we can batch tag/rq allocations */
--	struct request *cached_rq;
-+	struct rq_list cached_rqs;
- 	u64 cur_ktime;
- 	unsigned short nr_ios;
++#include <linux/bits.h>
+ #include <linux/init.h>
+ #include <linux/lsm_hooks.h>
  
-@@ -1660,7 +1665,7 @@ int bdev_thaw(struct block_device *bdev)
- void bdev_fput(struct file *bdev_file);
- 
- struct io_comp_batch {
--	struct request *req_list;
-+	struct rq_list req_list;
- 	bool need_ts;
- 	void (*complete)(struct io_comp_batch *);
+ #include "common.h"
+ #include "cred.h"
++#include "errata.h"
+ #include "fs.h"
+ #include "ptrace.h"
+ #include "setup.h"
+@@ -24,8 +26,36 @@ struct lsm_blob_sizes landlock_blob_size
+ 	.lbs_superblock = sizeof(struct landlock_superblock_security),
  };
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -1190,12 +1190,12 @@ int io_do_iopoll(struct io_ring_ctx *ctx
- 			poll_flags |= BLK_POLL_ONESHOT;
  
- 		/* iopoll may have completed current req */
--		if (!rq_list_empty(iob.req_list) ||
-+		if (!rq_list_empty(&iob.req_list) ||
- 		    READ_ONCE(req->iopoll_completed))
- 			break;
++int landlock_errata __ro_after_init;
++
++static void __init compute_errata(void)
++{
++	size_t i;
++
++#ifndef __has_include
++	/*
++	 * This is a safeguard to make sure the compiler implements
++	 * __has_include (see errata.h).
++	 */
++	WARN_ON_ONCE(1);
++	return;
++#endif
++
++	for (i = 0; landlock_errata_init[i].number; i++) {
++		const int prev_errata = landlock_errata;
++
++		if (WARN_ON_ONCE(landlock_errata_init[i].abi >
++				 landlock_abi_version))
++			continue;
++
++		landlock_errata |= BIT(landlock_errata_init[i].number - 1);
++		WARN_ON_ONCE(prev_errata == landlock_errata);
++	}
++}
++
+ static int __init landlock_init(void)
+ {
++	compute_errata();
+ 	landlock_add_cred_hooks();
+ 	landlock_add_ptrace_hooks();
+ 	landlock_add_fs_hooks();
+--- a/security/landlock/setup.h
++++ b/security/landlock/setup.h
+@@ -11,7 +11,10 @@
+ 
+ #include <linux/lsm_hooks.h>
+ 
++extern const int landlock_abi_version;
++
+ extern bool landlock_initialized;
++extern int landlock_errata;
+ 
+ extern struct lsm_blob_sizes landlock_blob_sizes;
+ 
+--- a/security/landlock/syscalls.c
++++ b/security/landlock/syscalls.c
+@@ -150,7 +150,9 @@ static const struct file_operations rule
+  *        the new ruleset.
+  * @size: Size of the pointed &struct landlock_ruleset_attr (needed for
+  *        backward and forward compatibility).
+- * @flags: Supported value: %LANDLOCK_CREATE_RULESET_VERSION.
++ * @flags: Supported value:
++ *         - %LANDLOCK_CREATE_RULESET_VERSION
++ *         - %LANDLOCK_CREATE_RULESET_ERRATA
+  *
+  * This system call enables to create a new Landlock ruleset, and returns the
+  * related file descriptor on success.
+@@ -159,6 +161,10 @@ static const struct file_operations rule
+  * 0, then the returned value is the highest supported Landlock ABI version
+  * (starting at 1).
+  *
++ * If @flags is %LANDLOCK_CREATE_RULESET_ERRATA and @attr is NULL and @size is
++ * 0, then the returned value is a bitmask of fixed issues for the current
++ * Landlock ABI version.
++ *
+  * Possible returned errors are:
+  *
+  * - %EOPNOTSUPP: Landlock is supported by the kernel but disabled at boot time;
+@@ -181,9 +187,15 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 		return -EOPNOTSUPP;
+ 
+ 	if (flags) {
+-		if ((flags == LANDLOCK_CREATE_RULESET_VERSION) && !attr &&
+-		    !size)
+-			return LANDLOCK_ABI_VERSION;
++		if (attr || size)
++			return -EINVAL;
++
++		if (flags == LANDLOCK_CREATE_RULESET_VERSION)
++			return landlock_abi_version;
++
++		if (flags == LANDLOCK_CREATE_RULESET_ERRATA)
++			return landlock_errata;
++
+ 		return -EINVAL;
  	}
  
--	if (!rq_list_empty(iob.req_list))
-+	if (!rq_list_empty(&iob.req_list))
- 		iob.complete(&iob);
- 	else if (!pos)
- 		return 0;
+@@ -213,6 +225,8 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 	return ruleset_fd;
+ }
+ 
++const int landlock_abi_version = LANDLOCK_ABI_VERSION;
++
+ /*
+  * Returns an owned ruleset from a FD. It is thus needed to call
+  * landlock_put_ruleset() on the return value.
+--- a/tools/testing/selftests/landlock/base_test.c
++++ b/tools/testing/selftests/landlock/base_test.c
+@@ -98,10 +98,54 @@ TEST(abi_version)
+ 	ASSERT_EQ(EINVAL, errno);
+ }
+ 
++/*
++ * Old source trees might not have the set of Kselftest fixes related to kernel
++ * UAPI headers.
++ */
++#ifndef LANDLOCK_CREATE_RULESET_ERRATA
++#define LANDLOCK_CREATE_RULESET_ERRATA (1U << 1)
++#endif
++
++TEST(errata)
++{
++	const struct landlock_ruleset_attr ruleset_attr = {
++		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_FILE,
++	};
++	int errata;
++
++	errata = landlock_create_ruleset(NULL, 0,
++					 LANDLOCK_CREATE_RULESET_ERRATA);
++	/* The errata bitmask will not be backported to tests. */
++	ASSERT_LE(0, errata);
++	TH_LOG("errata: 0x%x", errata);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(&ruleset_attr, 0,
++					      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(NULL, sizeof(ruleset_attr),
++					      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1,
++		  landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr),
++					  LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(EINVAL, errno);
++
++	ASSERT_EQ(-1, landlock_create_ruleset(
++			      NULL, 0,
++			      LANDLOCK_CREATE_RULESET_VERSION |
++				      LANDLOCK_CREATE_RULESET_ERRATA));
++	ASSERT_EQ(-1, landlock_create_ruleset(NULL, 0,
++					      LANDLOCK_CREATE_RULESET_ERRATA |
++						      1 << 31));
++	ASSERT_EQ(EINVAL, errno);
++}
++
+ /* Tests ordering of syscall argument checks. */
+ TEST(create_ruleset_checks_ordering)
+ {
+-	const int last_flag = LANDLOCK_CREATE_RULESET_VERSION;
++	const int last_flag = LANDLOCK_CREATE_RULESET_ERRATA;
+ 	const int invalid_flag = last_flag << 1;
+ 	int ruleset_fd;
+ 	const struct landlock_ruleset_attr ruleset_attr = {
 
 
 
