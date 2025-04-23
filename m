@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-135549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF595A98EEA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:01:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B319FA9908F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB7B5A638F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91DD11BA0390
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43885280A20;
-	Wed, 23 Apr 2025 14:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7AA28A1D5;
+	Wed, 23 Apr 2025 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ8TFGIk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hscYIbPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E49263C9E;
-	Wed, 23 Apr 2025 14:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A44628A1CF;
+	Wed, 23 Apr 2025 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420216; cv=none; b=Jdd/urs4wxSf30IEYa5uUVjtFQhM8/ilIaIEBaD3ld3EUyAjsCGE2YDoPBrp+1yUVIhgczFcfPePGt01pydRRTTHc4Up2KD5LEqBZaHVuXcnoX2Kvpu6BvNFAkhGeANSW7H2uW6fJcagB2sbueV0znbCJVMB9hz0I5kRRSNiEXw=
+	t=1745420934; cv=none; b=H4Rk9fnzejMQq0Jh61TdK2l1HwNuZ3TfLInBlnAP75wyo9utZQCX3TWxXBbeBA2BkAtSuv7jo51ZFGQqy0qaP1LH/SVLx3h41ohkCBj4nEc0JKraxwQDurPeRSdBOuuSfgmU0My6KQXedHiOfgQCjaXC2YkK9rH/eBrCN6qw3yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420216; c=relaxed/simple;
-	bh=S6V5bJ+N5PlrJwibQL/JRrioylb+rLvKHahO/tuOYEU=;
+	s=arc-20240116; t=1745420934; c=relaxed/simple;
+	bh=os7KqS6dqVWxn2JFj9MFOZa/wsas/n0WTQKfYWohwa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aK/74C9u1p0IAvd1v0Jvy3xl1Yy/Iq4hXyC9WEOGaN036YemA2W7br9p+pOIbWUht/gv5LoAgWrOjQN/3VwvBYDKOIxmqMUJshjngx318uMLnWdYixi871ZdJeW0/TE4XnFSCI02peWT4so554TvzcmHo+PLpUumtENPm5l7yKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ8TFGIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A7AC4CEE2;
-	Wed, 23 Apr 2025 14:56:55 +0000 (UTC)
+	 MIME-Version; b=htH7iuUJFddtBqQMZaZ2bkEI/WLPQm1pGNKr1kA7PV1z4hWzeGrlyd0JZU1KQQjwKaXefakUclL8y0Ub/c6HeJ+yjcC3zVbF7oqFxhtEFP4p0gwn0sqBn3/cbl4uPuthG9uIvhWMnlV3ZM6fkyGpHtnVRkLVCgIsx8HcwGbeWhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hscYIbPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0431C4CEE2;
+	Wed, 23 Apr 2025 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420215;
-	bh=S6V5bJ+N5PlrJwibQL/JRrioylb+rLvKHahO/tuOYEU=;
+	s=korg; t=1745420934;
+	bh=os7KqS6dqVWxn2JFj9MFOZa/wsas/n0WTQKfYWohwa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZ8TFGIkINOCSiehfzRZw8mUmJk42mx8jKKtfBswNkKfbR8yk92nvtQHlO3dVNcoF
-	 30GeXWu5JbBz2EOnJS1s/coiMM5s7bg1T6ok1qEBnr1POjfckktPRyuN69RO7ZdOqX
-	 Ef9txJTUVb03cE3aNV4KSJsPnWAXNCEPHjmE2UGg=
+	b=hscYIbPQ5VQJbjrEpfvQIMhefcawQkrwD0WoM1oxTPa0ngr0gn+HNhyqH82LvcCHq
+	 1Z4IzAk65LsUWjx3YAHriKkNo/eq7g3YH7yLtev8C8oedahZei/r1nCSIfn6F37HkQ
+	 hc/xmmGcipeZplCrwX8idl+QNVtJBowYiaMcL+LM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/291] HID: pidff: Do not send effect envelope if its empty
-Date: Wed, 23 Apr 2025 16:40:16 +0200
-Message-ID: <20250423142625.510472882@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Courbot <acourbot@google.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 121/393] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+Date: Wed, 23 Apr 2025 16:40:17 +0200
+Message-ID: <20250423142648.365505240@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 8876fc1884f5b39550c8387ff3176396c988541d ]
+commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 upstream.
 
-Envelope struct is always initialized, but the envelope itself is
-optional as described in USB PID Device class definition 1.0.
+This is one of three clang warnings about incompatible enum types
+in a conditional expression:
 
-5.1.1.1 Type Specific Block Offsets
-...
-4) Effects that do not use Condition Blocks use 1 Parameter Block and
-an *optional* Envelope Block.
+drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
+  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
+      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
 
-Sending out "empty" envelope breaks force feedback on some devices with
-games that use SINE effect + offset to emulate constant force effect, as
-well as generally breaking Constant/Periodic effects. One of the affected
-brands is Moza Racing.
+The code is correct, so just rework it to avoid the warning.
 
-This change prevents the envelope from being sent if it contains all
-0 values while keeping the old behavior of only sending it, if it differs
-from the old one.
-
-Changes in v6:
-- Simplify the checks to make them clearer
-- Fix possible null pointer dereference while calling
-  pidff_needs_set_envelope
-
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Alexandre Courbot <acourbot@google.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 42 +++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 18 deletions(-)
+ drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index 5fe4422bb5bad..a01c1b2ab2f4c 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -262,10 +262,22 @@ static void pidff_set_envelope_report(struct pidff_device *pidff,
- static int pidff_needs_set_envelope(struct ff_envelope *envelope,
- 				    struct ff_envelope *old)
- {
--	return envelope->attack_level != old->attack_level ||
--	       envelope->fade_level != old->fade_level ||
-+	bool needs_new_envelope;
-+	needs_new_envelope = envelope->attack_level  != 0 ||
-+			     envelope->fade_level    != 0 ||
-+			     envelope->attack_length != 0 ||
-+			     envelope->fade_length   != 0;
+--- a/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
+@@ -594,7 +594,11 @@ static int h264_enc_init(struct mtk_vcod
+ 
+ 	inst->ctx = ctx;
+ 	inst->vpu_inst.ctx = ctx;
+-	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
++	if (is_ext)
++		inst->vpu_inst.id = SCP_IPI_VENC_H264;
++	else
++		inst->vpu_inst.id = IPI_VENC_H264;
 +
-+	if (!needs_new_envelope)
-+		return false;
-+
-+	if (!old)
-+		return needs_new_envelope;
-+
-+	return envelope->attack_level  != old->attack_level  ||
-+	       envelope->fade_level    != old->fade_level    ||
- 	       envelope->attack_length != old->attack_length ||
--	       envelope->fade_length != old->fade_length;
-+	       envelope->fade_length   != old->fade_length;
- }
+ 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx->dev->reg_base, VENC_SYS);
  
- /*
-@@ -580,11 +592,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 			pidff_set_effect_report(pidff, effect);
- 		if (!old || pidff_needs_set_constant(effect, old))
- 			pidff_set_constant_force_report(pidff, effect);
--		if (!old ||
--		    pidff_needs_set_envelope(&effect->u.constant.envelope,
--					&old->u.constant.envelope))
--			pidff_set_envelope_report(pidff,
--					&effect->u.constant.envelope);
-+		if (pidff_needs_set_envelope(&effect->u.constant.envelope,
-+					old ? &old->u.constant.envelope : NULL))
-+			pidff_set_envelope_report(pidff, &effect->u.constant.envelope);
- 		break;
- 
- 	case FF_PERIODIC:
-@@ -619,11 +629,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 			pidff_set_effect_report(pidff, effect);
- 		if (!old || pidff_needs_set_periodic(effect, old))
- 			pidff_set_periodic_report(pidff, effect);
--		if (!old ||
--		    pidff_needs_set_envelope(&effect->u.periodic.envelope,
--					&old->u.periodic.envelope))
--			pidff_set_envelope_report(pidff,
--					&effect->u.periodic.envelope);
-+		if (pidff_needs_set_envelope(&effect->u.periodic.envelope,
-+					old ? &old->u.periodic.envelope : NULL))
-+			pidff_set_envelope_report(pidff, &effect->u.periodic.envelope);
- 		break;
- 
- 	case FF_RAMP:
-@@ -637,11 +645,9 @@ static int pidff_upload_effect(struct input_dev *dev, struct ff_effect *effect,
- 			pidff_set_effect_report(pidff, effect);
- 		if (!old || pidff_needs_set_ramp(effect, old))
- 			pidff_set_ramp_force_report(pidff, effect);
--		if (!old ||
--		    pidff_needs_set_envelope(&effect->u.ramp.envelope,
--					&old->u.ramp.envelope))
--			pidff_set_envelope_report(pidff,
--					&effect->u.ramp.envelope);
-+		if (pidff_needs_set_envelope(&effect->u.ramp.envelope,
-+					old ? &old->u.ramp.envelope : NULL))
-+			pidff_set_envelope_report(pidff, &effect->u.ramp.envelope);
- 		break;
- 
- 	case FF_SPRING:
--- 
-2.39.5
-
+ 	ret = vpu_enc_init(&inst->vpu_inst);
 
 
 
