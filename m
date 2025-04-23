@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D7ABA9929B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72026A993BE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CBE9922CD6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1875E921CCE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56DE5298998;
-	Wed, 23 Apr 2025 15:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1624289359;
+	Wed, 23 Apr 2025 15:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXUIXtae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gBc76dnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1496B189F39;
-	Wed, 23 Apr 2025 15:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD63929CB4F;
+	Wed, 23 Apr 2025 15:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421750; cv=none; b=tqSqCdXaqhiq5yU9dXKkYZA6UDzSwtbibWAjFvBZrNVmme1mlmpU4ds9c1zSFxiONV1nzi2Y4co15c5vzqPBukdOZFbMvRjQJN1Z2TWHShocDf3GYSZR2X6wcyI6uCLvr8T2+FOF6QoGN4V90AsF6KxKn4t8RZ5dr8jG1pFCrro=
+	t=1745422039; cv=none; b=DhK3J4xnJjBy6oL8HbQjN6pHL7SX1K/JDi+Im506f/4ldDewcsyty5kGeOct1hzlJPLfo6U8FALBnVo827ugNQuh4FA6nH4Aafdc2rwTEkOZhNuWd0mPc4FFjkRUlSQRjzUvwJO1WJK63TM629+4KDMac9g+AGLaqn3w4dL+2wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421750; c=relaxed/simple;
-	bh=vYMBSWXINaYq945sryZJqNb5vdrtYb3awEbysn+c3eY=;
+	s=arc-20240116; t=1745422039; c=relaxed/simple;
+	bh=xA9ZkHq9KuXooIpJQ4D5RADMlJoGdFW15FjkkGGNTgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZjgD1UUC8tQdV3rq8T2f+eZsP+A9wUP1+nLrI+Ka7M8Sg+I2UoOHJsXud/K3MVM/garsbaahvmNlN3JKE0Qo4nPfc9L8ry9zcRUXNvZ3HcRvEU+WAB/LW8iQ0JRXaPtew1f6Sv2r5PGUsPV00UjlRVbj6kYuljdx/wvfya2C8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXUIXtae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAD3C4CEE8;
-	Wed, 23 Apr 2025 15:22:29 +0000 (UTC)
+	 MIME-Version; b=Wko1mcc6WnAXcV+oxgwNxJJz0bdg4Uak2Ip8Qsu41cw3ohWkdkZHIHuSgZMmuRK001kSwWuwezMevl0OZSnQLytBMOstzFf+gfOtJ6rIctY9s6uXlruAqbC4JDXbfpnzRs1F4nWYKfpiVHTEzws0g9T9QhFkTzgRpkCBRArl0tQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gBc76dnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405ABC4CEE3;
+	Wed, 23 Apr 2025 15:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421750;
-	bh=vYMBSWXINaYq945sryZJqNb5vdrtYb3awEbysn+c3eY=;
+	s=korg; t=1745422039;
+	bh=xA9ZkHq9KuXooIpJQ4D5RADMlJoGdFW15FjkkGGNTgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXUIXtaedntf4/3xDNpGYv5dMLo/aOs1VlSFcJLv7ZB/1hyKRApvi+FVrKIaLH9aw
-	 Lm4/81g2PREELI1EvK1gv+qrAYdJ5ARhUUWqKUbxPte8Qx+Zq3B9SpYgNa8Zi4vPnM
-	 b4whLgNJ06N6JNmaL4YBNG0fZB/HFZroCeU75NiQ=
+	b=gBc76dnS+ge3VaDScfQCUC1KflHiP9+vbIwvwERHnMYUrFzznCGZJorXgAH/lroIg
+	 07fBJ2gwU9QxKQLMNhBqvFTEJdNo4cHN2Vtnz2oNCYM+zQAdPwZP/zSGwPlMMFpJby
+	 HeXfCDFm9Ji6lD/Y/3zrmNRbyVibphD46KREtFGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/291] RDMA/hns: Fix wrong maximum DMA segment size
+Subject: [PATCH 6.6 267/393] net: mctp: Set SOCK_RCU_FREE
 Date: Wed, 23 Apr 2025 16:42:43 +0200
-Message-ID: <20250423142631.494334950@linuxfoundation.org>
+Message-ID: <20250423142654.392382208@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
+[ Upstream commit 52024cd6ec71a6ca934d0cc12452bd8d49850679 ]
 
-Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
+Bind lookup runs under RCU, so ensure that a socket doesn't go away in
+the middle of a lookup.
 
-Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
-Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250410-mctp-rcu-sock-v1-1-872de9fdc877@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mctp/af_mctp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 5106b3ce89f08..eae22ac42e05d 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -642,7 +642,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
- 		if (ret)
- 			return ret;
- 	}
--	dma_set_max_seg_size(dev, UINT_MAX);
-+	dma_set_max_seg_size(dev, SZ_2G);
- 	ret = ib_register_device(ib_dev, "hns_%d", dev);
- 	if (ret) {
- 		dev_err(dev, "ib_register_device failed!\n");
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 28be85d055330..8032cfba22d1c 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -550,6 +550,9 @@ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
+ 
++	/* Bind lookup runs under RCU, remain live during that. */
++	sock_set_flag(sk, SOCK_RCU_FREE);
++
+ 	mutex_lock(&net->mctp.bind_lock);
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+ 	mutex_unlock(&net->mctp.bind_lock);
 -- 
 2.39.5
 
