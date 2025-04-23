@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-135852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DC6A99070
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC39A993D0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EC47179B4C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52B894A584D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDB528FFE3;
-	Wed, 23 Apr 2025 15:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871E82BF3D8;
+	Wed, 23 Apr 2025 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTH0OLO6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeDNgFHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D5B28FFDE;
-	Wed, 23 Apr 2025 15:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E5528F933;
+	Wed, 23 Apr 2025 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421013; cv=none; b=gz54btkvSPcj+Qfcf5Lkp5t/NkiW02DPwY65/345R4PJStPVaJQXArVq3U+fB5GhQw5PAbpkPVhj+n2yjMNadSPgiljFBbr1o8SJsBZm8oXyjOpdvYi/Vqpx7DWrsz4gDhE21ateAjRg4YDtH29kMx1xQoLigqHL6FcX7iL8Yno=
+	t=1745422538; cv=none; b=n0wX4wJ1XK/8etQs5I6xfMHRl4T8HwMaoncYvsSVfDYR694+WUrAs9OSS4E6oA2sy4lmqfUfLibxesInlHRqiT1XZuiGvZbtsygfOGBVA3BJCOSHUtZ4U/UqQlXW90mqdNrr20LaDrlEf6wqnwuYzv3PST4KuYBe5H3bDISI9nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421013; c=relaxed/simple;
-	bh=v8NPUE3eU5BKPHVbb11VDZFIa5qcaL2VnJTAu0vwqbc=;
+	s=arc-20240116; t=1745422538; c=relaxed/simple;
+	bh=oNpnBbM9V3bCOb15p7DdmMaWOVcSAwBWxkQUNSar+tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qDAAhBoa1U9oXTaelOIgD4ei4xLKSvubV19Eaj2YcAFxRzKLL5akidX2Rm8Vq6vXPvmLcYaEWLlDROs91yLxWf/6+wclQYodg/SJPk0tt1h6pbQqch4peijZ+TQBGbhIPvGXNN91KiouHpI0pEj3H9bBCNusf+sHLlohzyOcFWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTH0OLO6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC34C4CEE3;
-	Wed, 23 Apr 2025 15:10:11 +0000 (UTC)
+	 MIME-Version; b=Qmd0QOk8c9b1wKc9GDp76eqdZVJdedVwfZIXE5ox8hD6UY+PqekSrVN8qNJAxz9JwJ66/W1EGRbCXbX0hlLxSvj2cnYDqkzO46CmQgn7gyDTBuNZDDEr6aA+vez5yc3QmZcS+0A72/aZQsDurgLBJ2MdWOAqfVfPxSLTLWNTkIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeDNgFHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0F7C4CEE2;
+	Wed, 23 Apr 2025 15:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421012;
-	bh=v8NPUE3eU5BKPHVbb11VDZFIa5qcaL2VnJTAu0vwqbc=;
+	s=korg; t=1745422538;
+	bh=oNpnBbM9V3bCOb15p7DdmMaWOVcSAwBWxkQUNSar+tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTH0OLO6udVj6w7l/ZYqON1SnOUVoa94Y4OFr9rCu9C/b1nehNJk8XVhNJhovQkH8
-	 6zp2gmzaZFfavZUIovcLkw9Wv9/KIOlhy+WwbZN7JVGpn4KpSoYrlB4nynv+dl1G6W
-	 ErHujNgvJQDAxgXZadrYUM1E83UQrxugUl8Nh7uQ=
+	b=eeDNgFHEOUeST3nbH1s9fXjXcoQcdoBRHNPfnRwCtq3FsKJ6BVs4IAqFZcEWPLUe1
+	 JkERQlFYji3O/KE6okAHndEvJS2tapiEOdLf/Xm1CfzPEUgJqQolZmGvF8IFXvZ1Qe
+	 ZDalI/AlIUE2GHM4rqJJlxYPdpUmKqVpICtU0x68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.12 182/223] drm/xe/userptr: fix notifier vs folio deadlock
+	Kees Cook <kees@kernel.org>,
+	Nicolas Chauvet <kwizart@gmail.com>,
+	Damian Tometzki <damian@riscv-rocks.de>,
+	Zhenyu Wang <zhenyuw.linux@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 358/393] drm/i915/gvt: fix unterminated-string-initialization warning
 Date: Wed, 23 Apr 2025 16:44:14 +0200
-Message-ID: <20250423142624.584259682@linuxfoundation.org>
+Message-ID: <20250423142658.123030115@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 2577b202458cddff85cc154b1fe7f313e0d1f418 upstream.
+commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
 
-User is reporting what smells like notifier vs folio deadlock, where
-migrate_pages_batch() on core kernel side is holding folio lock(s) and
-then interacting with the mappings of it, however those mappings are
-tied to some userptr, which means calling into the notifier callback and
-grabbing the notifier lock. With perfect timing it looks possible that
-the pages we pulled from the hmm fault can get sniped by
-migrate_pages_batch() at the same time that we are holding the notifier
-lock to mark the pages as accessed/dirty, but at this point we also want
-to grab the folio locks(s) to mark them as dirty, but if they are
-contended from notifier/migrate_pages_batch side then we deadlock since
-folio lock won't be dropped until we drop the notifier lock.
+Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
+(which is "IntelGraphicsMem") drops the NUL termination of the
+string. This is intentional, but the compiler doesn't know this.
 
-Fortunately the mark_page_accessed/dirty is not really needed in the
-first place it seems and should have already been done by hmm fault, so
-just remove it.
+Switch to initializing header->signature directly from the string
+litaral, with sizeof destination rather than source. We don't treat the
+signature as a string other than for initialization; it's really just a
+blob of binary data.
 
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4765
-Fixes: 0a98219bcc96 ("drm/xe/hmm: Don't dereference struct page pointers without notifier lock")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250414132539.26654-2-matthew.auld@intel.com
-(cherry picked from commit bd7c0cb695e87c0e43247be8196b4919edbe0e85)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Add a static assert for good measure to cross-check the sizes.
+
+Reported-by: Kees Cook <kees@kernel.org>
+Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
+Tested-by: Nicolas Chauvet <kwizart@gmail.com>
+Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
+Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_hmm.c |   24 ------------------------
- 1 file changed, 24 deletions(-)
+ drivers/gpu/drm/i915/gvt/opregion.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_hmm.c
-+++ b/drivers/gpu/drm/xe/xe_hmm.c
-@@ -19,29 +19,6 @@ static u64 xe_npages_in_range(unsigned l
- 	return (end - start) >> PAGE_SHIFT;
- }
+--- a/drivers/gpu/drm/i915/gvt/opregion.c
++++ b/drivers/gpu/drm/i915/gvt/opregion.c
+@@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct inte
+ 	u8 *buf;
+ 	struct opregion_header *header;
+ 	struct vbt v;
+-	const char opregion_signature[16] = OPREGION_SIGNATURE;
  
--/**
-- * xe_mark_range_accessed() - mark a range is accessed, so core mm
-- * have such information for memory eviction or write back to
-- * hard disk
-- * @range: the range to mark
-- * @write: if write to this range, we mark pages in this range
-- * as dirty
-- */
--static void xe_mark_range_accessed(struct hmm_range *range, bool write)
--{
--	struct page *page;
--	u64 i, npages;
--
--	npages = xe_npages_in_range(range->start, range->end);
--	for (i = 0; i < npages; i++) {
--		page = hmm_pfn_to_page(range->hmm_pfns[i]);
--		if (write)
--			set_page_dirty_lock(page);
--
--		mark_page_accessed(page);
--	}
--}
--
- static int xe_alloc_sg(struct xe_device *xe, struct sg_table *st,
- 		       struct hmm_range *range, struct rw_semaphore *notifier_sem)
- {
-@@ -331,7 +308,6 @@ int xe_hmm_userptr_populate_range(struct
- 	if (ret)
- 		goto out_unlock;
- 
--	xe_mark_range_accessed(&hmm_range, write);
- 	userptr->sg = &userptr->sgt;
- 	xe_hmm_userptr_set_mapped(uvma);
- 	userptr->notifier_seq = hmm_range.notifier_seq;
+ 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
+ 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
+@@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct inte
+ 	/* emulated opregion with VBT mailbox only */
+ 	buf = (u8 *)vgpu_opregion(vgpu)->va;
+ 	header = (struct opregion_header *)buf;
+-	memcpy(header->signature, opregion_signature,
+-	       sizeof(opregion_signature));
++
++	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
++	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
++
+ 	header->size = 0x8;
+ 	header->opregion_ver = 0x02000000;
+ 	header->mboxes = MBOX_VBT;
 
 
 
