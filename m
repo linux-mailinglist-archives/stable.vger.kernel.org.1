@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB92DA9901F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9276A98EB3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38EC8E4613
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDDAE3BB01F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3273F28A3F2;
-	Wed, 23 Apr 2025 15:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5137F27F4D1;
+	Wed, 23 Apr 2025 14:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksJAKqxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeEeWv+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D8C27FD42;
-	Wed, 23 Apr 2025 15:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6B41EFFB9;
+	Wed, 23 Apr 2025 14:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420646; cv=none; b=RmHAXDIY2rlsGpasNK7Pyed++PVs4PCcXVKtSrmTeYrQ7N7iGs2/ldamozYyB2veGdzJ0sLuH2xNGYsihceHly9k/m0e8yd2KcEefLujtuKp+LTMkbAH0Wr0peQqCtX37URsP+gFBls70S1j8n5EM44Oz2f/5LWj9NsU6BPMopk=
+	t=1745420129; cv=none; b=BmTLAJVaEIOMz/qc4T8Ys+82HocpPlfFgXuGD9RlNbQU90EF9/6hEHLbnfJF+IeBiZNJ0aiE0g+vg0W9XxqAFthiwDVJo7fNLx7d3LIyOR1FE3CGoq+siyYL8OV036DuunXXq0sW/IiD8LJlk0oeRobZd6XHPiTQrPc3EwlcExk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420646; c=relaxed/simple;
-	bh=HPn6nQYW4Lc77o/HQlizEoKClyGAdvusAZZNXmYG7Yw=;
+	s=arc-20240116; t=1745420129; c=relaxed/simple;
+	bh=C7kzoWcXQoWVR0Tei/zS5JFLNPBkC/mJVTRNxIi08wg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQR8h0vxs3xhr3zn7r6CapOzdB6prsOMhQ/CCfK1HRgXzkqoi33jt1zABcCP07sL9BUIJm2CfZSoLa3yl63GRGUpC1OPS+wNgMLULavAwVloBg3sJ5BS6tcn6hA7+GfD61SjYSichFXv/KQPhSMHYzpYKazPDNg8KOF+NTFa8o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksJAKqxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F71C4CEE2;
-	Wed, 23 Apr 2025 15:04:04 +0000 (UTC)
+	 MIME-Version; b=WawdIP6dNl6bhzWRXwJ9IVXPWxjNJIhhofEdUR5RZQTkE3Ke8z2jq6AI7hFJxaEjYdEpHo8cIJgDQGg0DI99+Mu1tXPRl1ZvXNSIlDw4OJ3THhyGEQ2vzZG7V0jYpANOorfMMDTqTS+F/ypxeDT6zH0DTU03lhwmtKEAHNf09aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeEeWv+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97302C4CEE3;
+	Wed, 23 Apr 2025 14:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420645;
-	bh=HPn6nQYW4Lc77o/HQlizEoKClyGAdvusAZZNXmYG7Yw=;
+	s=korg; t=1745420128;
+	bh=C7kzoWcXQoWVR0Tei/zS5JFLNPBkC/mJVTRNxIi08wg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ksJAKqxWB4gH998ezEyICKJ1GAlbDorD3X7S/oZSWlFYqKrOCvAXLvLEMAi5unf8n
-	 QS4yP4UF9rPTx2tXGb6HMd9hYKfeVoOzPLJpcfFeAcvAfk/B1HPO77ENBjSyC/UTEx
-	 e1LzaW0kdnxIHjRSfNnni+IhMC/43IeeUA3s8y+E=
+	b=PeEeWv+HBDCSSJwwfTSkUs/ym8UCbfPqxpqyhRFYwJwFTMJb+rwTnynbCUBM+jQjC
+	 Q+9QCy5mmdPAxn4uGmowV9266Z0y9z1LD37UgBJNclHqcoDy2exTEPJg7cesZQMh02
+	 c0gSb8TGNNmvd2XxUon+F7gZcaKCvSsBZT6h47KM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Janghyuck Kim <janghyuck.kim@samsung.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 110/241] alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
+	Su Hui <suhui@nfschina.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 102/223] fs/stat.c: avoid harmless garbage value problem in vfs_statx_path()
 Date: Wed, 23 Apr 2025 16:42:54 +0200
-Message-ID: <20250423142625.074999173@linuxfoundation.org>
+Message-ID: <20250423142621.267815264@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit e6e07b696da529e85d1ba880555b5df5c80a46bd upstream.
+[ Upstream commit 0fac3ed473dd2955053be6671cdd747807f5e488 ]
 
-alloc_pages_bulk_node() may partially succeed and allocate fewer than the
-requested nr_pages.  There are several conditions under which this can
-occur, but we have encountered the case where CONFIG_PAGE_OWNER is enabled
-causing all bulk allocations to always fallback to single page allocations
-due to commit 187ad460b841 ("mm/page_alloc: avoid page allocator recursion
-with pagesets.lock held").
+Clang static checker(scan-build) warning:
+fs/stat.c:287:21: warning: The left expression of the compound assignment is
+an uninitialized value. The computed value will also be garbage.
+  287 |                 stat->result_mask |= STATX_MNT_ID_UNIQUE;
+      |                 ~~~~~~~~~~~~~~~~~ ^
+fs/stat.c:290:21: warning: The left expression of the compound assignment is
+an uninitialized value. The computed value will also be garbage.
+  290 |                 stat->result_mask |= STATX_MNT_ID;
 
-Currently vm_module_tags_populate() immediately fails when
-alloc_pages_bulk_node() returns fewer than the requested number of pages.
-When this happens memory allocation profiling gets disabled, for example
+When vfs_getattr() failed because of security_inode_getattr(), 'stat' is
+uninitialized. In this case, there is a harmless garbage problem in
+vfs_statx_path(). It's better to return error directly when
+vfs_getattr() failed, avoiding garbage value and more clearly.
 
-[   14.297583] [9:       modprobe:  465] Failed to allocate memory for allocation tags in the module scsc_wlan. Memory allocation profiling is disabled!
-[   14.299339] [9:       modprobe:  465] modprobe: Failed to insmod '/vendor/lib/modules/scsc_wlan.ko' with args '': Out of memory
-
-This patch causes vm_module_tags_populate() to retry bulk allocations for
-the remaining memory instead of failing immediately which will avoid the
-disablement of memory allocation profiling.
-
-Link: https://lkml.kernel.org/r/20250409225111.3770347-1-tjmercier@google.com
-Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Reported-by: Janghyuck Kim <janghyuck.kim@samsung.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20250119025946.1168957-1-suhui@nfschina.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 777d0961ff95 ("fs: move the bdex_statx call to vfs_getattr_nosec")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/alloc_tag.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ fs/stat.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/lib/alloc_tag.c
-+++ b/lib/alloc_tag.c
-@@ -422,11 +422,20 @@ static int vm_module_tags_populate(void)
- 		unsigned long old_shadow_end = ALIGN(phys_end, MODULE_ALIGN);
- 		unsigned long new_shadow_end = ALIGN(new_end, MODULE_ALIGN);
- 		unsigned long more_pages;
--		unsigned long nr;
-+		unsigned long nr = 0;
+diff --git a/fs/stat.c b/fs/stat.c
+index cbc0fcd4fba39..b399b881bbbf9 100644
+--- a/fs/stat.c
++++ b/fs/stat.c
+@@ -246,6 +246,8 @@ static int vfs_statx_path(struct path *path, int flags, struct kstat *stat,
+ 			  u32 request_mask)
+ {
+ 	int error = vfs_getattr(path, stat, request_mask, flags);
++	if (error)
++		return error;
  
- 		more_pages = ALIGN(new_end - phys_end, PAGE_SIZE) >> PAGE_SHIFT;
--		nr = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
--					   NUMA_NO_NODE, more_pages, next_page);
-+		while (nr < more_pages) {
-+			unsigned long allocated;
-+
-+			allocated = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
-+				NUMA_NO_NODE, more_pages - nr, next_page + nr);
-+
-+			if (!allocated)
-+				break;
-+			nr += allocated;
-+		}
-+
- 		if (nr < more_pages ||
- 		    vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
- 				     next_page, PAGE_SHIFT) < 0) {
+ 	if (request_mask & STATX_MNT_ID_UNIQUE) {
+ 		stat->mnt_id = real_mount(path->mnt)->mnt_id_unique;
+@@ -267,7 +269,7 @@ static int vfs_statx_path(struct path *path, int flags, struct kstat *stat,
+ 	if (S_ISBLK(stat->mode))
+ 		bdev_statx(path, stat, request_mask);
+ 
+-	return error;
++	return 0;
+ }
+ 
+ static int vfs_statx_fd(int fd, int flags, struct kstat *stat,
+-- 
+2.39.5
+
 
 
 
