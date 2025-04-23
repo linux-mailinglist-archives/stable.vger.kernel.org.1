@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4125EA99209
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 659D9A9915B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B2854A197E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB665A785D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D412BE7A0;
-	Wed, 23 Apr 2025 15:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B8928F951;
+	Wed, 23 Apr 2025 15:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLlUVD61"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUijAzEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2CE2BE118;
-	Wed, 23 Apr 2025 15:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37BE28BA94;
+	Wed, 23 Apr 2025 15:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421690; cv=none; b=hPjTUWi9r09Jrmxm0CHCGzqbi5mdxFdBNU7XsWol1JBQyg3fWaZTsMtf3GHoAoPUAftoydsvpAr1ecBtPvQyGTnoMEiwv4zCD3qhbQ+An1OWLvNTsUyCSIvBSuw6X/6LkZtq/akQ1IdhdAXNkUwPtJFm0pVw/iC5gEh2wZRke5M=
+	t=1745421332; cv=none; b=nZHV1pcVYfbg6AXuxbzhxYwTnUj7b3AuNRwJvkUaxAWtGwP43+hWG8W+RMZVy1w29h+4xhOO7Aak8KmZWKgl4Zi+ff7kI/SYq7yL9cYlFV+wqBU+2fcclApuqT3T0eeR97eHJd1C2GVUNj0QPF6IZNZdilDLW+5oOLmryMdjlHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421690; c=relaxed/simple;
-	bh=luU7Xf68R7FGwCo0tbyhNU1AaqAuBVNpZPJ3YmrUKKM=;
+	s=arc-20240116; t=1745421332; c=relaxed/simple;
+	bh=eTUJfoP2Oy94PydZIcPPvYVgtUnQlMZsYNC+h8ZJ3gE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dL3cXePOKaUp65+vOn9XkjtthnrTEqLaUHfi6fmwJNAbB2TLmiszyQdCSKoLta3mJ6AqAu/ptOyKF6EjS8Y1hWdm+iLEKd9gUo3Mr++AQZmVCtPes6jPcBGg14KI5QEKYNfoe0P2qPhN8RtoH5zaMTKkz9EQLBLdA4kX8M76J3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLlUVD61; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6EAC4CEE2;
-	Wed, 23 Apr 2025 15:21:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KwmwscIG7ItN3skp/QOhTIz0zszkzo1/wi0YnwVPPig+HH0S3QA0DwhODWyvlUn3bGQFq6c6vUnmsgMeiEpzYaTbBSnvDxN3hGFhDfVcyAgdIapmuB7qBaSzQnca37yfNcjOCH/mL8vV1eg+QgBF/9sIknWmyrRvdtgoEcpEPys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUijAzEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458EDC4CEE2;
+	Wed, 23 Apr 2025 15:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421689;
-	bh=luU7Xf68R7FGwCo0tbyhNU1AaqAuBVNpZPJ3YmrUKKM=;
+	s=korg; t=1745421332;
+	bh=eTUJfoP2Oy94PydZIcPPvYVgtUnQlMZsYNC+h8ZJ3gE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLlUVD61oIqnqtbT7hoGUR3biRCNA3c2sDM9TXDr+xlH5eAsh0Po0HX7yZwII/SVc
-	 MoVGoWdbC1WSlTj7VquKNwLr1h1ao6aIZUWNxHNKNOvydMVBaPzJ42qAT5JG5jZFWM
-	 6I2cVvhu+ufJHV53AODLpuS9OQwSOTGPNBJI9jBQ=
+	b=WUijAzEn9vEY27yW6qCMHp+YIjs8aRt5nr73uepYlCdqy7csxqqGneSdDgolugcjZ
+	 DA0JyRGlsaAXzFVhiKClTtavGSOzMhNZmxNi/tAkbRdK7QJWANOIsNN98oPh2hJtWx
+	 KZ+LeK1r4x3u6FmeaKgpC+PTzk4qcLAaolPBZIN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.14 220/241] io_uring: dont post tag CQEs on file/buffer registration failure
+	WangYuli <wangyuli@uniontech.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 212/223] MIPS: cevt-ds1287: Add missing ds1287.h include
 Date: Wed, 23 Apr 2025 16:44:44 +0200
-Message-ID: <20250423142629.546149474@linuxfoundation.org>
+Message-ID: <20250423142625.796410612@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-Commit ab6005f3912fff07330297aba08922d2456dcede upstream.
+commit f3be225f338a578851a7b607a409f476354a8deb upstream.
 
-Buffer / file table registration is all or nothing, if it fails all
-resources we might have partially registered are dropped and the table
-is killed. If that happens, it doesn't make sense to post any rsrc tag
-CQEs. That would be confusing to the application, which should not need
-to handle that case.
+Address the issue of cevt-ds1287.c not including the ds1287.h header
+file.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Fixes: 7029acd8a9503 ("io_uring/rsrc: get rid of per-ring io_rsrc_node list")
-Link: https://lore.kernel.org/r/c514446a8dcb0197cddd5d4ba8f6511da081cf1f.1743777957.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fix follow errors with gcc-14 when -Werror:
+
+arch/mips/kernel/cevt-ds1287.c:15:5: error: no previous prototype for ‘ds1287_timer_state’ [-Werror=missing-prototypes]
+   15 | int ds1287_timer_state(void)
+      |     ^~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:20:5: error: no previous prototype for ‘ds1287_set_base_clock’ [-Werror=missing-prototypes]
+   20 | int ds1287_set_base_clock(unsigned int hz)
+      |     ^~~~~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:103:12: error: no previous prototype for ‘ds1287_clockevent_init’ [-Werror=missing-prototypes]
+  103 | int __init ds1287_clockevent_init(int irq)
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
+make[7]: *** Waiting for unfinished jobs....
+make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
+make[6]: *** Waiting for unfinished jobs....
+
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rsrc.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ arch/mips/kernel/cevt-ds1287.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -130,6 +130,18 @@ struct io_rsrc_node *io_rsrc_node_alloc(
- 	return node;
- }
+--- a/arch/mips/kernel/cevt-ds1287.c
++++ b/arch/mips/kernel/cevt-ds1287.c
+@@ -10,6 +10,7 @@
+ #include <linux/mc146818rtc.h>
+ #include <linux/irq.h>
  
-+static void io_clear_table_tags(struct io_rsrc_data *data)
-+{
-+	int i;
-+
-+	for (i = 0; i < data->nr; i++) {
-+		struct io_rsrc_node *node = data->nodes[i];
-+
-+		if (node)
-+			node->tag = 0;
-+	}
-+}
-+
- __cold void io_rsrc_data_free(struct io_ring_ctx *ctx, struct io_rsrc_data *data)
- {
- 	if (!data->nr)
-@@ -539,6 +551,7 @@ int io_sqe_files_register(struct io_ring
- 	io_file_table_set_alloc_range(ctx, 0, ctx->file_table.data.nr);
- 	return 0;
- fail:
-+	io_clear_table_tags(&ctx->file_table.data);
- 	io_sqe_files_unregister(ctx);
- 	return ret;
- }
-@@ -855,8 +868,10 @@ int io_sqe_buffers_register(struct io_ri
- 	}
++#include <asm/ds1287.h>
+ #include <asm/time.h>
  
- 	ctx->buf_table = data;
--	if (ret)
-+	if (ret) {
-+		io_clear_table_tags(&ctx->buf_table);
- 		io_sqe_buffers_unregister(ctx);
-+	}
- 	return ret;
- }
- 
+ int ds1287_timer_state(void)
 
 
 
