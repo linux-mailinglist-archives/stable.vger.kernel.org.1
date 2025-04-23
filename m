@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A072A99399
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB84A9923C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48616463CCE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0C21B66691
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9572BE7D6;
-	Wed, 23 Apr 2025 15:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88A928E618;
+	Wed, 23 Apr 2025 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkb5b4en"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eOrXTqX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF0D2BE7CF;
-	Wed, 23 Apr 2025 15:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A404D2820BC;
+	Wed, 23 Apr 2025 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422436; cv=none; b=VzkrCwMP/2FZUwBM8VZFbzrMBowWbpR5seHvtHQoUrKJ2LyJipOduV3UeAYBAK58nG9gzZ9eBJRK0S8L3t0NXGExPuPMyplPtORSbQBZdkPUO8riUhzM4K/VwL/0JIUJrunng27oaJCLlTQkWTnlJQA8JLHOJ7ykDtcR1mcTxQU=
+	t=1745421560; cv=none; b=AroRJvGuki7rb/6rIrUAEC6QzQ7Rd0KUEtpxWlM0kR9qX6blxgdtC4TKsHkMr1iNnCkM7zrMQQu4bz/VvhrpGalFruF/6aGW5COCE+1Rd6Vnr667OQZ8PGhShgew248+ZHLNCOZY9/uFiALKpHRa3r6LXr5hkD+reC4qbznu9lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422436; c=relaxed/simple;
-	bh=hxAxmFpuCQwroTl5bBDTeaZQm5Cmbe9xH4H4KJZoCkI=;
+	s=arc-20240116; t=1745421560; c=relaxed/simple;
+	bh=m5u7Tpv+H5nUDl4EEa68gVkNGLsExaDiRte8HEfwhyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvceJGP5O71G8gIvGQ/z4TmDOSyQ5cL4eewfocecZBTSX76P3O467h47+L3vaLyByXV6Jb3HUy/uXDNpMGyCXHxEaUx9q7i/aXp5nZu6R5kYmV4wbuajhxgUVLKquv/VZetMIqlu4vl3jwI6lh+RDHCfgjtYtfaZkA1dX88ZV7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkb5b4en; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D86CC4CEE2;
-	Wed, 23 Apr 2025 15:33:55 +0000 (UTC)
+	 MIME-Version; b=m6e/z7YbhDidf+z/DvEgad6k7++D7RATFvQJcCN2BcbjJy/W8cRn8S6gR2NoU+5ebvLG7Z0XLB/4bmjfzmoiYJ0TrLJJN4hsrDSG5PWsYVWLa404DUIEm7C34ffHWzKnbKJzYFOc+5EBovRSMHlJaPPJuFZLOojKK4mYzECZNuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eOrXTqX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369C7C4CEE2;
+	Wed, 23 Apr 2025 15:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422435;
-	bh=hxAxmFpuCQwroTl5bBDTeaZQm5Cmbe9xH4H4KJZoCkI=;
+	s=korg; t=1745421560;
+	bh=m5u7Tpv+H5nUDl4EEa68gVkNGLsExaDiRte8HEfwhyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkb5b4encjH3iybcpLvUAkqmEngD+pYjI/+nayR9IQ7jB2uXsxEn94mCGtndtF/rG
-	 lVgiflsG8g7OHCp76XXfXeJvR/2k/SZyLoarPOmDuOf9CWXtF03KvLt+4vCeVWs6CA
-	 sXKr1Oi8lQcjV4TSfQQKVmZZKhM3dSJoX/oVbhBM=
+	b=0eOrXTqX/yP5AeSChs6NZZymKRzciZ/j6HUlFiksKWCPb5kCZDNJT3LuD2/NRp6+H
+	 RDACoV93vDblnB/+Beg230FI1vDvDmlPSeamIhogrDq/9bunfQFuGFbC9syNcOL1zz
+	 ftvKALbdFuTAIyDnXgfw3qCnUYh6WbJvwb8+oOvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Denis Arefev <arefev@swemel.ru>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 348/393] drm/amd: Handle being compiled without SI or CIK support better
-Date: Wed, 23 Apr 2025 16:44:04 +0200
-Message-ID: <20250423142657.714167069@linuxfoundation.org>
+Subject: [PATCH 6.14 181/241] drm/amd/pm: Prevent division by zero
+Date: Wed, 23 Apr 2025 16:44:05 +0200
+Message-ID: <20250423142627.915564516@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 5f054ddead33c1622ea9c0c0aaf07c6843fc7ab0 upstream.
+commit 7d641c2b83275d3b0424127b2e0d2d0f7dd82aef upstream.
 
-If compiled without SI or CIK support but amdgpu tries to load it
-will run into failures with uninitialized callbacks.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-Show a nicer message in this case and fail probe instead.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4050
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b64625a303de ("drm/amd/pm: correct the address of Arcturus fan related registers")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |   44 +++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -1651,7 +1651,6 @@ static const u16 amdgpu_unsupported_pcii
- };
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -1267,6 +1267,9 @@ static int arcturus_set_fan_speed_rpm(st
+ 	uint32_t crystal_clock_freq = 2500;
+ 	uint32_t tach_period;
  
- static const struct pci_device_id pciidlist[] = {
--#ifdef CONFIG_DRM_AMDGPU_SI
- 	{0x1002, 0x6780, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
- 	{0x1002, 0x6784, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
- 	{0x1002, 0x6788, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
-@@ -1724,8 +1723,6 @@ static const struct pci_device_id pciidl
- 	{0x1002, 0x6665, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
- 	{0x1002, 0x6667, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
- 	{0x1002, 0x666F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
--#endif
--#ifdef CONFIG_DRM_AMDGPU_CIK
- 	/* Kaveri */
- 	{0x1002, 0x1304, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
- 	{0x1002, 0x1305, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
-@@ -1808,7 +1805,6 @@ static const struct pci_device_id pciidl
- 	{0x1002, 0x985D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
- 	{0x1002, 0x985E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
- 	{0x1002, 0x985F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
--#endif
- 	/* topaz */
- 	{0x1002, 0x6900, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
- 	{0x1002, 0x6901, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
-@@ -2090,14 +2086,14 @@ static int amdgpu_pci_probe(struct pci_d
- 		return -ENOTSUPP;
- 	}
- 
-+	switch (flags & AMD_ASIC_MASK) {
-+	case CHIP_TAHITI:
-+	case CHIP_PITCAIRN:
-+	case CHIP_VERDE:
-+	case CHIP_OLAND:
-+	case CHIP_HAINAN:
- #ifdef CONFIG_DRM_AMDGPU_SI
--	if (!amdgpu_si_support) {
--		switch (flags & AMD_ASIC_MASK) {
--		case CHIP_TAHITI:
--		case CHIP_PITCAIRN:
--		case CHIP_VERDE:
--		case CHIP_OLAND:
--		case CHIP_HAINAN:
-+		if (!amdgpu_si_support) {
- 			dev_info(&pdev->dev,
- 				 "SI support provided by radeon.\n");
- 			dev_info(&pdev->dev,
-@@ -2105,16 +2101,18 @@ static int amdgpu_pci_probe(struct pci_d
- 				);
- 			return -ENODEV;
- 		}
--	}
-+		break;
-+#else
-+		dev_info(&pdev->dev, "amdgpu is built without SI support.\n");
-+		return -ENODEV;
- #endif
-+	case CHIP_KAVERI:
-+	case CHIP_BONAIRE:
-+	case CHIP_HAWAII:
-+	case CHIP_KABINI:
-+	case CHIP_MULLINS:
- #ifdef CONFIG_DRM_AMDGPU_CIK
--	if (!amdgpu_cik_support) {
--		switch (flags & AMD_ASIC_MASK) {
--		case CHIP_KAVERI:
--		case CHIP_BONAIRE:
--		case CHIP_HAWAII:
--		case CHIP_KABINI:
--		case CHIP_MULLINS:
-+		if (!amdgpu_cik_support) {
- 			dev_info(&pdev->dev,
- 				 "CIK support provided by radeon.\n");
- 			dev_info(&pdev->dev,
-@@ -2122,8 +2120,14 @@ static int amdgpu_pci_probe(struct pci_d
- 				);
- 			return -ENODEV;
- 		}
--	}
-+		break;
-+#else
-+		dev_info(&pdev->dev, "amdgpu is built without CIK support.\n");
-+		return -ENODEV;
- #endif
-+	default:
-+		break;
-+	}
- 
- 	adev = devm_drm_dev_alloc(&pdev->dev, &amdgpu_kms_driver, typeof(*adev), ddev);
- 	if (IS_ERR(adev))
++	if (!speed || speed > UINT_MAX/8)
++		return -EINVAL;
++
+ 	tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
+ 	WREG32_SOC15(THM, 0, mmCG_TACH_CTRL_ARCT,
+ 		     REG_SET_FIELD(RREG32_SOC15(THM, 0, mmCG_TACH_CTRL_ARCT),
 
 
 
