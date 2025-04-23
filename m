@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819C9A991F8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7CFA991E1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08D84927C07
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C25641B85A85
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E0C28EA55;
-	Wed, 23 Apr 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092D228EA76;
+	Wed, 23 Apr 2025 15:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlP9mGFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxoW738v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574F6283C98;
-	Wed, 23 Apr 2025 15:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BF42641EA;
+	Wed, 23 Apr 2025 15:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421618; cv=none; b=PNq5CqaKCTBbOrn75CF/+M7YiQtPAPBYyyex/0QUXyMsQ0rbUlAVUqAWtaDPIYirZmoR2whL9AM4Q6ZArtqlTTOaF4NhxiJHuRR7twRgbbR10MgUCm/N7aEMLSh04oXhGrFSFHsL/BsoYbEbvb0BpmAT/TACioIFZDw7Q2sodtQ=
+	t=1745421628; cv=none; b=aIlnfIDMChTjJ5R67Crj1+o+0DKtttHwDsucmvkw0ZIurLI6FsdZWiBYXr0Ve98zYtwI/sRA+s3GNFKdqVD3HC+rsdZ/QRL/MHhzZnBSWI7vNFLkT8fr7Pn4dYQF76BjaO7aZGJIYZZuURB4NsVaD+ahzbxQosBSA9VSjC9gZJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421618; c=relaxed/simple;
-	bh=tnUac6utk5nc/nppFvT1+IWmfDmoSvpEUWAJDkQrc2g=;
+	s=arc-20240116; t=1745421628; c=relaxed/simple;
+	bh=xoP1KCN4ZY7R692igvLNk0CaOlS692Qy1NeEeH5Xz1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nvaf+GixOgBhnUCdlxGR7yQPWFZtZDO4T8MGcIndFTc+vTV/PvXmQ4cCPFOpwLoQ5lycYHefjm+tWP9TlZnL03dE5mdUKX+j2npr3/jdow5J/ARRZdRp6jJ7j1QnsB1ZkipmKqSakO/IE++BedUpGYPDqhUP8wXjqx2XBt1h1P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlP9mGFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D73C4CEE2;
-	Wed, 23 Apr 2025 15:20:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PB/I0EdgSYn0r+hY6jfG7Ip7YJeGwdT8dKmlIolLnYvoUHsCY6VItRp0ffbY99LBDogQBFvUEVAxmmDvoEDhk4ZjyCHam+Nns18MzbnHN9ZqWqGTorwfrJQttImtrOujBAh9FCXvOmFTd0H3+GSjqNjxz9RuErC9zYDyD2MYIlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxoW738v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A594C4CEE2;
+	Wed, 23 Apr 2025 15:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421618;
-	bh=tnUac6utk5nc/nppFvT1+IWmfDmoSvpEUWAJDkQrc2g=;
+	s=korg; t=1745421628;
+	bh=xoP1KCN4ZY7R692igvLNk0CaOlS692Qy1NeEeH5Xz1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlP9mGFetR/1EKWfD+DWc3nrt5mFPJg7dwue3p2/3JIhDB9cXCKb/YdXQCzq49FBe
-	 a1SyDctH7k8QWV+ZhHmg1i6uHmyxj5/ZN7cFEJI7uNw88+eZ4iovLUCRTpMhV2wmMl
-	 EsFm0dWOqQ/w8iYM1xW+Mm5DNw3wBtU61uQI5Wfo=
+	b=pxoW738vAU+DvifspDJIIaHYrZGdngOgHlSoRboFgjxmXhqMnj5ijwdbh1lucMtLu
+	 hzMowFv/OAttQrOPA3SXDmoeheibV6zWTf4unatSkE2HYBDqoirJHUDijsAjF1u069
+	 FCCP3cjs/UxT4xeJqPJg/T1zp7CuHcJtUUJfn3a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@intel.com>,
 	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.14 212/241] drm/xe/dma_buf: stop relying on placement in unmap
-Date: Wed, 23 Apr 2025 16:44:36 +0200
-Message-ID: <20250423142629.209447971@linuxfoundation.org>
+Subject: [PATCH 6.14 213/241] drm/xe/userptr: fix notifier vs folio deadlock
+Date: Wed, 23 Apr 2025 16:44:37 +0200
+Message-ID: <20250423142629.261025398@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -71,56 +71,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Matthew Auld <matthew.auld@intel.com>
 
-commit 25583ad42d091819157832e894179200ba8b54ee upstream.
+commit 2577b202458cddff85cc154b1fe7f313e0d1f418 upstream.
 
-The is_vram() is checking the current placement, however if we consider
-exported VRAM with dynamic dma-buf, it looks possible for the xe driver
-to async evict the memory, notifying the importer, however importer does
-not have to call unmap_attachment() immediately, but rather just as
-"soon as possible", like when the dma-resv idles. Following from this we
-would then pipeline the move, attaching the fence to the manager, and
-then update the current placement. But when the unmap_attachment() runs
-at some later point we might see that is_vram() is now false, and take
-the complete wrong path when dma-unmapping the sg, leading to
-explosions.
+User is reporting what smells like notifier vs folio deadlock, where
+migrate_pages_batch() on core kernel side is holding folio lock(s) and
+then interacting with the mappings of it, however those mappings are
+tied to some userptr, which means calling into the notifier callback and
+grabbing the notifier lock. With perfect timing it looks possible that
+the pages we pulled from the hmm fault can get sniped by
+migrate_pages_batch() at the same time that we are holding the notifier
+lock to mark the pages as accessed/dirty, but at this point we also want
+to grab the folio locks(s) to mark them as dirty, but if they are
+contended from notifier/migrate_pages_batch side then we deadlock since
+folio lock won't be dropped until we drop the notifier lock.
 
-To fix this check if the sgl was mapping a struct page.
+Fortunately the mark_page_accessed/dirty is not really needed in the
+first place it seems and should have already been done by hmm fault, so
+just remove it.
 
-v2:
-  - The attachment can be mapped multiple times it seems, so we can't
-    really rely on encoding something in the attachment->priv. Instead
-    see if the page_link has an encoded struct page. For vram we expect
-    this to be NULL.
-
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4563
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4765
+Fixes: 0a98219bcc96 ("drm/xe/hmm: Don't dereference struct page pointers without notifier lock")
 Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@intel.com>
 Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Acked-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250410162716.159403-2-matthew.auld@intel.com
-(cherry picked from commit d755887f8e5a2a18e15e6632a5193e5feea18499)
+Cc: <stable@vger.kernel.org> # v6.10+
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://lore.kernel.org/r/20250414132539.26654-2-matthew.auld@intel.com
+(cherry picked from commit bd7c0cb695e87c0e43247be8196b4919edbe0e85)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_dma_buf.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_hmm.c |   24 ------------------------
+ 1 file changed, 24 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_dma_buf.c
-+++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -145,10 +145,7 @@ static void xe_dma_buf_unmap(struct dma_
- 			     struct sg_table *sgt,
- 			     enum dma_data_direction dir)
- {
--	struct dma_buf *dma_buf = attach->dmabuf;
--	struct xe_bo *bo = gem_to_xe_bo(dma_buf->priv);
+--- a/drivers/gpu/drm/xe/xe_hmm.c
++++ b/drivers/gpu/drm/xe/xe_hmm.c
+@@ -19,29 +19,6 @@ static u64 xe_npages_in_range(unsigned l
+ 	return (end - start) >> PAGE_SHIFT;
+ }
+ 
+-/**
+- * xe_mark_range_accessed() - mark a range is accessed, so core mm
+- * have such information for memory eviction or write back to
+- * hard disk
+- * @range: the range to mark
+- * @write: if write to this range, we mark pages in this range
+- * as dirty
+- */
+-static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+-{
+-	struct page *page;
+-	u64 i, npages;
 -
--	if (!xe_bo_is_vram(bo)) {
-+	if (sg_page(sgt->sgl)) {
- 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
- 		sg_free_table(sgt);
- 		kfree(sgt);
+-	npages = xe_npages_in_range(range->start, range->end);
+-	for (i = 0; i < npages; i++) {
+-		page = hmm_pfn_to_page(range->hmm_pfns[i]);
+-		if (write)
+-			set_page_dirty_lock(page);
+-
+-		mark_page_accessed(page);
+-	}
+-}
+-
+ static int xe_alloc_sg(struct xe_device *xe, struct sg_table *st,
+ 		       struct hmm_range *range, struct rw_semaphore *notifier_sem)
+ {
+@@ -331,7 +308,6 @@ int xe_hmm_userptr_populate_range(struct
+ 	if (ret)
+ 		goto out_unlock;
+ 
+-	xe_mark_range_accessed(&hmm_range, write);
+ 	userptr->sg = &userptr->sgt;
+ 	xe_hmm_userptr_set_mapped(uvma);
+ 	userptr->notifier_seq = hmm_range.notifier_seq;
 
 
 
