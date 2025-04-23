@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-136383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81B01A9938C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AAAA9902D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F32DA9A4BAE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A2B38E4F76
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E42C2BE7A9;
-	Wed, 23 Apr 2025 15:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE543291174;
+	Wed, 23 Apr 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYt5IEIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08u6Gn6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D762C284692;
-	Wed, 23 Apr 2025 15:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACC0291171;
+	Wed, 23 Apr 2025 15:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422401; cv=none; b=W5MLPMW50jxy+00o39vhZa5AVNtOEwBdB9jNmRwM5u1XMo3h+MEUX5t4QZMs4T3YFC1s4Bg8FDFgalRZN9WKlSb2IDa/2/o857Ysi70skxjfnX7uWSnP8oRWQ+6mE6wxZtAQR5jeHCH4Bq4o2ct41Mf8OIgOjXnXEKE50wrOeQY=
+	t=1745420759; cv=none; b=fvORmW3iyooZdKTzhLB1/W+ZeZR1rlT3rauQMrVzIGTgdUUk69C1MxIMI42xn7ff/4GL0gY0TVxgwU8BJsIO2Z1kWMSodDMe0PxCbwKSwcn78TIBBnQueZyW4K29oTPw2erMVAfKlcaYCLyAwgWvu26yKwrIIFXKKaOXwpvlyiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422401; c=relaxed/simple;
-	bh=wS+q+tuwb5kMB7zN9skvqNNiu9QDUkcPODfBTIQ1Gks=;
+	s=arc-20240116; t=1745420759; c=relaxed/simple;
+	bh=BhhRXFfoMY3t/YC2FITSjkvO1IxYVY3LuLrn+E4fn/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkPH/OwtDPxWmR2IXfXsQRFlkuMU2enXZwzeEzrgzcorx239wS2wum4qJT7IMlKMNFhome8csec/XupIypnU4xXcrl+Zja+Y4o2Q7MAG3jA1Y1fu/k1zZmTiiPHJ4fpftil11G1eUmUilvpUOiezHtkPOs0PSx/+iZAVqDogM7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYt5IEIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 654E1C4CEE2;
-	Wed, 23 Apr 2025 15:33:21 +0000 (UTC)
+	 MIME-Version; b=l4iyCm99f+ZgD+p9Z7GERKZbO5KAurEZtzKvZ/v2poQFe+Yx9M5qVT+OPV+Jtv6PMy6fMYJEXdp0GGyd61XtoR6vL0Uj4fVD53FOm41TK41/vCxrZU3sbBX67q48xtX7eGpC+Bn1f4a00BeNzg/NiL+ojn/nHNjiHayn4rW7GXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08u6Gn6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00BFC4CEE3;
+	Wed, 23 Apr 2025 15:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422401;
-	bh=wS+q+tuwb5kMB7zN9skvqNNiu9QDUkcPODfBTIQ1Gks=;
+	s=korg; t=1745420759;
+	bh=BhhRXFfoMY3t/YC2FITSjkvO1IxYVY3LuLrn+E4fn/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYt5IEIYVikarPCPzPc47Km2rw2OYxNwQwwq2AWBQNXyDGmWfIsWmNmWQ8RlPxWvy
-	 rriWjV3sYEQ2EjbASAdAXivetUIj5bOJ/eTWDY0cgKrA1CMkjItvxvf5zEj6TOLbEf
-	 Tprq+PZmPSF2irpbm6OdaM3kpwyvL3wwPhBVONrA=
+	b=08u6Gn6hpQG2ImTXearo9pbStOiIMRUbQ3fZJ6AKO0hfs2s6KMU8gaW8eVbsXqCb3
+	 KF+V4anTMKAE+MFpKt1mivETCWn6uMBttokRZ/v6Uw87BX32AlwHCgEmBOg+ugaMYp
+	 +2PyMSUAjbW8NatvFxCTy8+VYFGrtH+PN627b7XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>
-Subject: [PATCH 6.6 336/393] x86/microcode/AMD: Extend the SHA check to Zen5, block loading of any unreleased standalone Zen5 microcode patches
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 160/223] drm/amd/pm/powerplay/hwmgr/smu7_thermal: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:43:52 +0200
-Message-ID: <20250423142657.214465712@linuxfoundation.org>
+Message-ID: <20250423142623.687526775@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 805b743fc163f1abef7ce1bea8eca8dfab5b685b upstream.
+commit 7c246a05df51c52fe0852ce56ba10c41e6ed1f39 upstream.
 
-All Zen5 machines out there should get BIOS updates which update to the
-correct microcode patches addressing the microcode signature issue.
-However, silly people carve out random microcode blobs from BIOS
-packages and think are doing other people a service this way...
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-Block loading of any unreleased standalone Zen5 microcode patches.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
-Cc: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20250410114222.32523-1-bp@kernel.org
+Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/microcode/amd.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -201,6 +201,12 @@ static bool need_sha_check(u32 cur_rev)
- 	case 0xa70c0: return cur_rev <= 0xa70C009; break;
- 	case 0xaa001: return cur_rev <= 0xaa00116; break;
- 	case 0xaa002: return cur_rev <= 0xaa00218; break;
-+	case 0xb0021: return cur_rev <= 0xb002146; break;
-+	case 0xb1010: return cur_rev <= 0xb101046; break;
-+	case 0xb2040: return cur_rev <= 0xb204031; break;
-+	case 0xb4040: return cur_rev <= 0xb404031; break;
-+	case 0xb6000: return cur_rev <= 0xb600031; break;
-+	case 0xb7000: return cur_rev <= 0xb700031; break;
- 	default: break;
- 	}
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
+@@ -267,10 +267,10 @@ int smu7_fan_ctrl_set_fan_speed_rpm(stru
+ 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
+ 			(hwmgr->thermal_controller.fanInfo.
+ 			ucTachometerPulsesPerRevolution == 0) ||
+-			speed == 0 ||
++			(!speed || speed > UINT_MAX/8) ||
+ 			(speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
+ 			(speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
+-		return 0;
++		return -EINVAL;
  
-@@ -216,8 +222,7 @@ static bool verify_sha256_digest(u32 pat
- 	struct sha256_state s;
- 	int i;
- 
--	if (x86_family(bsp_cpuid_1_eax) < 0x17 ||
--	    x86_family(bsp_cpuid_1_eax) > 0x19)
-+	if (x86_family(bsp_cpuid_1_eax) < 0x17)
- 		return true;
- 
- 	if (!need_sha_check(cur_rev))
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
+ 		smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
