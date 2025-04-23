@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52043A98DB9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AF9A990C6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D423A7948
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BA279223CE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BDD27FD67;
-	Wed, 23 Apr 2025 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB5F27055F;
+	Wed, 23 Apr 2025 15:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOw0er2c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gTD/+AR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738C72D613;
-	Wed, 23 Apr 2025 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883B427CB12;
+	Wed, 23 Apr 2025 15:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419668; cv=none; b=YkTNtYw4AkrrCilbOa0b41XJWT09F9zOhzfVa81ijpMGUXbkmyA1dpNJfg4gfrcvbCjbu81XJDKEebFQ4Qzzyyqf2XT2dPKANAuAxxHwvgpylEhB0aAm0EprCS9cFse+IEGhK4sM7WTrXJNVVfRtTVJAXym21QFuRXeF6kzG4Z4=
+	t=1745420960; cv=none; b=BStvFiK/baz2ADhm2nZ7UF4MPGmO16KM/Mmz2ZFV8YBdYKW5upm8Qw6EN2IWPOedmr1+fp9N36qT7Pknx9j12gng+Xu3bvXDV2HI1erkGSYKq6L/CZUGREpDS1QYcv6CNFwXjcT4stGYk2UgMgrk5jKkfD5LjvIGYLHji08uM10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419668; c=relaxed/simple;
-	bh=TcdNewgQNsMOUOJR6PaOVRrVne0yuUb66a8cBZ6/C9g=;
+	s=arc-20240116; t=1745420960; c=relaxed/simple;
+	bh=YHAqohmTYkpP98Y57k6hqv7EmNFaUw2RBPDxUBcdU2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqfmSpZkft9QLaLAFxNx/K0rWLCq8qe/RNsGmBysFQZvYvT+M8IIyTqjhxfwxUXzYSdO8mIy/U4LZAD7ObNotJ8EuBs+2wHki0FVjrzit3RoiEY1csrNqArAwUzUOMozYRFFg3tk5jXuXBwDPJf79MnIALuXHB6S8dTfpTQXkyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOw0er2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0944FC4CEE2;
-	Wed, 23 Apr 2025 14:47:47 +0000 (UTC)
+	 MIME-Version; b=XZ/s2BpbrV7o891PaixwLuYS2f8DfbRMOV+EQUbjJVxUN74G4E8em4TrFYYCj/nKKdUqfaPkbC2nnc4UotYjcrdbjGLIMwN7V7ju7blcR7KplUNS5aXDQ8YIMN92GdksXX6AcjDq1HyCy8hWrvMOKAC35EeQe+0W6QwCyHTOT7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gTD/+AR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136FDC4CEE3;
+	Wed, 23 Apr 2025 15:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419668;
-	bh=TcdNewgQNsMOUOJR6PaOVRrVne0yuUb66a8cBZ6/C9g=;
+	s=korg; t=1745420960;
+	bh=YHAqohmTYkpP98Y57k6hqv7EmNFaUw2RBPDxUBcdU2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zOw0er2cVBffbmnrmgabDrWgbhFEBVIkZG5DCuW8HuA55VQc03pqL+/IVQZBEvsXs
-	 LRofRm/DZVyHNacUqSHMFINnTk23ZDaVaCIAaBcqGUm7Kob2giXWAeJGLGPgJn1V1y
-	 MPmS0wCG7HAKuM/CpAuDqfnfyFLXwKS+l6v+CbRU=
+	b=2gTD/+ARkrJNLrxR89vkXUF2Y3Ri7jDdtn1ZGrzr8SxZB97RwfQ59WrT4oaSqLw3k
+	 S5NXchr3iGMsOmpPxeq+FQ5XnZRdUr7p7e+SFSyy18WRfIs0Vgh6i1pX9Mdk1hxV82
+	 gtXyVe44cfMfoFpeKOAmmnC1c1eIBTDAlNIpNFFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brady Norander <bradynorander@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 013/223] ASoC: dwc: always enable/disable i2s irqs
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 096/291] media: i2c: ccs: Set the devices runtime PM status correctly in probe
 Date: Wed, 23 Apr 2025 16:41:25 +0200
-Message-ID: <20250423142617.660654000@linuxfoundation.org>
+Message-ID: <20250423142628.279425259@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brady Norander <bradynorander@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 2b727b3f8a04fe52f55316ccb8792cfd9b2dd05d ]
+commit 80704d14f1bd3628f578510e0a88b66824990ef6 upstream.
 
-Commit a42e988 ("ASoC: dwc: add DMA handshake control") changed the
-behavior of the driver to not enable or disable i2s irqs if using DMA. This
-breaks platforms such as AMD ACP. Audio playback appears to work but no
-audio can be heard. Revert to the old behavior by always enabling and
-disabling i2s irqs while keeping DMA handshake control.
+Set the device's runtime PM status to suspended in probe error paths where
+it was previously set to active.
 
-Fixes: a42e988b626 ("ASoC: dwc: add DMA handshake control")
-Signed-off-by: Brady Norander <bradynorander@gmail.com>
-Link: https://patch.msgid.link/20250330130852.37881-3-bradynorander@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
+Cc: stable@vger.kernel.org # for >= v5.15
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/dwc/dwc-i2s.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/media/i2c/ccs/ccs-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
-index 57b789d7fbedd..5b4f20dbf7bba 100644
---- a/sound/soc/dwc/dwc-i2s.c
-+++ b/sound/soc/dwc/dwc-i2s.c
-@@ -199,12 +199,10 @@ static void i2s_start(struct dw_i2s_dev *dev,
- 	else
- 		i2s_write_reg(dev->i2s_base, IRER, 1);
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3642,6 +3642,7 @@ static int ccs_probe(struct i2c_client *
+ out_disable_runtime_pm:
+ 	pm_runtime_put_noidle(&client->dev);
+ 	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
  
--	/* I2S needs to enable IRQ to make a handshake with DMAC on the JH7110 SoC */
--	if (dev->use_pio || dev->is_jh7110)
--		i2s_enable_irqs(dev, substream->stream, config->chan_nr);
--	else
-+	if (!(dev->use_pio || dev->is_jh7110))
- 		i2s_enable_dma(dev, substream->stream);
- 
-+	i2s_enable_irqs(dev, substream->stream, config->chan_nr);
- 	i2s_write_reg(dev->i2s_base, CER, 1);
- }
- 
-@@ -218,11 +216,12 @@ static void i2s_stop(struct dw_i2s_dev *dev,
- 	else
- 		i2s_write_reg(dev->i2s_base, IRER, 0);
- 
--	if (dev->use_pio || dev->is_jh7110)
--		i2s_disable_irqs(dev, substream->stream, 8);
--	else
-+	if (!(dev->use_pio || dev->is_jh7110))
- 		i2s_disable_dma(dev, substream->stream);
- 
-+	i2s_disable_irqs(dev, substream->stream, 8);
-+
-+
- 	if (!dev->active) {
- 		i2s_write_reg(dev->i2s_base, CER, 0);
- 		i2s_write_reg(dev->i2s_base, IER, 0);
--- 
-2.39.5
-
+ out_media_entity_cleanup:
+ 	media_entity_cleanup(&sensor->src->sd.entity);
 
 
 
