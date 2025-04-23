@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6CEA99151
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F39A98FE4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2461B83D90
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07D216A926
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C9C288C90;
-	Wed, 23 Apr 2025 15:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA58427FD67;
+	Wed, 23 Apr 2025 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7SaBfOY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DayABlNE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E782853F3;
-	Wed, 23 Apr 2025 15:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692C71EEA3E;
+	Wed, 23 Apr 2025 15:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421277; cv=none; b=IYW/PFMYlJE8Bytum3fUwJrC5ApEFB3y5AUR2SwlUH6J6hQ6jf9fUm4usRJAp0J3iN/N0rwIhaT8ioxnu2XVi6uE9Q6v55OT8wCm+fKRyX7dd3ja68jPBT6ClAXNVgKN0VguT3ztcEceo8QngCkqgpvCthc+hnkA2UMdIX6eXQY=
+	t=1745420806; cv=none; b=i0dYpCDgqWsLODfZRHvDaa71z+maPr1I6/c7uJK9+EhuHafV1x9HA8RIonxC6O9kDXO2RywoIc0s96TAOBO+XyHAASoNANN0ozCJX+JFBQk10GyyGCajOYLjjOIRmk4UFS3zuFwsHfY/u2iTxN9+QJ3o2KcH4QcT1AoJRGQJBms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421277; c=relaxed/simple;
-	bh=wSPEtEY/PEO5apaB1pM20dt+oHv5NN27mPm/Kz0TID4=;
+	s=arc-20240116; t=1745420806; c=relaxed/simple;
+	bh=HyYBx3ZTa1JGr1WpE+eU+g4EdUFwtvaHG5Uud3S3Qx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llH5yNBr3OZqkIkbnBXHhv50E19LBVYJUIjqJLs4Q2NEo8feCVv9Skg6IrEN8K46edqEwnMK9KUOiVcEr7gZnx8AFtm8Ki7B2y50MaeYCKAXGNbuV2+SMQTNJRn9CVTxwwSapeqP34bNzOEkQmzh4+cN2phn1xipTiksQoQUe8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7SaBfOY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6110EC4CEE2;
-	Wed, 23 Apr 2025 15:14:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GxAqVhdKuRXFu52LQj0aYyuayX6ykgAGzK0Y5503kDRfMlHfpnCSgxXCH8dD1x0ctus3Xp788L6pb8+mN5ORJvpS/FqG0yNiZiU5dugRKlWd7HSjD9GdXCYdnGrh1pKXORP8+dL7J8lmmDncuHgTHOWArKBzTdc6iY6v/JgoNMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DayABlNE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8378C4CEE2;
+	Wed, 23 Apr 2025 15:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421277;
-	bh=wSPEtEY/PEO5apaB1pM20dt+oHv5NN27mPm/Kz0TID4=;
+	s=korg; t=1745420806;
+	bh=HyYBx3ZTa1JGr1WpE+eU+g4EdUFwtvaHG5Uud3S3Qx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I7SaBfOY526RYpMIBiZbcL6bKCFdQ3+aLFXcoaMATWe7p7s3alh2nz5/sO9LOKMYB
-	 Es9A0HMNNFzyUKxuJmijfq69+/bQsw+Oy+HpJqh2lUn4dTpTLYvOzqjMmwPJPbm25J
-	 Rc666qVyIuzcmrfsRGlJgVkUiwUYYyzYHNtdQvZE=
+	b=DayABlNEQ4KML+5jU7UuHmMuI95hvNMJhxg2JmZ6y+mKHRGrKxG8OF9HFrRuuA+QL
+	 CmbFXdnlvp4NvJycU/y8bFh2UjLDH/lyK0SpE/qduEDcSa1FB49bhXIyfH2a9BZa4T
+	 NK0O1G13s7hlgWNmFQs5bj3mNR0ESJO7NEj8CRoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tang Jun <dukang.tj@alibaba-inc.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 6.14 171/241] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SPR
-Date: Wed, 23 Apr 2025 16:43:55 +0200
-Message-ID: <20250423142627.517975571@linuxfoundation.org>
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.12 164/223] drm/i915/vrr: Add vrr.vsync_{start, end} in vrr_params_changed
+Date: Wed, 23 Apr 2025 16:43:56 +0200
+Message-ID: <20250423142623.849254978@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-commit 506f981ab40f0b03a11a640cfd77f48b09aff330 upstream.
+commit a421f5033c82990d795f8fcd30d5b835f8975508 upstream.
 
-The scale of IIO bandwidth in free running counters is inherited from
-the ICX. The counter increments for every 32 bytes rather than 4 bytes.
+Add the missing vrr parameters in vrr_params_changed() helper.
+This ensures that changes in vrr.vsync_{start,end} trigger a call to
+appropriate helpers to update the VRR registers.
 
-The IIO bandwidth out free running counters don't increment with a
-consistent size. The increment depends on the requested size. It's
-impossible to find a fixed increment. Remove it from the event_descs.
-
-Fixes: 0378c93a92e2 ("perf/x86/intel/uncore: Support IIO free-running counters on Sapphire Rapids server")
-Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-3-kan.liang@linux.intel.com
+Fixes: e8cd188e91bb ("drm/i915/display: Compute vrr_vsync params")
+Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404080540.2059511-1-ankit.k.nautiyal@intel.com
+(cherry picked from commit ced5e64f011cb5cd541988442997ceaa7385827e)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   58 -----------------------------------
- 1 file changed, 1 insertion(+), 57 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6289,69 +6289,13 @@ static struct freerunning_counters spr_i
- 	[SPR_IIO_MSR_BW_OUT]	= { 0x3808, 0x1, 0x10, 8, 48 },
- };
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -1006,7 +1006,9 @@ static bool vrr_params_changed(const str
+ 		old_crtc_state->vrr.vmin != new_crtc_state->vrr.vmin ||
+ 		old_crtc_state->vrr.vmax != new_crtc_state->vrr.vmax ||
+ 		old_crtc_state->vrr.guardband != new_crtc_state->vrr.guardband ||
+-		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full;
++		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full ||
++		old_crtc_state->vrr.vsync_start != new_crtc_state->vrr.vsync_start ||
++		old_crtc_state->vrr.vsync_end != new_crtc_state->vrr.vsync_end;
+ }
  
--static struct uncore_event_desc spr_uncore_iio_freerunning_events[] = {
--	/* Free-Running IIO CLOCKS Counter */
--	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
--	/* Free-Running IIO BANDWIDTH IN Counters */
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
--	/* Free-Running IIO BANDWIDTH OUT Counters */
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0,		"event=0xff,umask=0x30"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1,		"event=0xff,umask=0x31"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2,		"event=0xff,umask=0x32"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3,		"event=0xff,umask=0x33"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4,		"event=0xff,umask=0x34"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5,		"event=0xff,umask=0x35"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6,		"event=0xff,umask=0x36"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7,		"event=0xff,umask=0x37"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7.unit,	"MiB"),
--	{ /* end: all zeroes */ },
--};
--
- static struct intel_uncore_type spr_uncore_iio_free_running = {
- 	.name			= "iio_free_running",
- 	.num_counters		= 17,
- 	.num_freerunning_types	= SPR_IIO_FREERUNNING_TYPE_MAX,
- 	.freerunning		= spr_iio_freerunning,
- 	.ops			= &skx_uncore_iio_freerunning_ops,
--	.event_descs		= spr_uncore_iio_freerunning_events,
-+	.event_descs		= snr_uncore_iio_freerunning_events,
- 	.format_group		= &skx_uncore_iio_freerunning_format_group,
- };
- 
+ static bool cmrr_params_changed(const struct intel_crtc_state *old_crtc_state,
 
 
 
