@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5363A992A7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81BB7A98DDE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4B44923342
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1B4F7ACDB9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05340298985;
-	Wed, 23 Apr 2025 15:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2D8281363;
+	Wed, 23 Apr 2025 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAF62guO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v73tUhAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6973189F39;
-	Wed, 23 Apr 2025 15:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD6A280CD4;
+	Wed, 23 Apr 2025 14:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421755; cv=none; b=uLAQf5r/3tFTgnj0ylKRxsWLWAGpIe3MUzHRWWFQ1ZKepAnSeJQzyx2xHbOjJpI3WOKFUCpyW3mrbnLW95oYWb2Fl5YNAyF83FG/JLuOhA///8vQ5dzAAquF3RGWNCKPvAlVEe1jJsO5z7RIXLpgdHtEuXhLZfZ1jsOej378bak=
+	t=1745419764; cv=none; b=YrE75Rc3rw3G66A+Jko1/7BfJyPUuhuoz8Xmgr85xlGoxWhZGPMuJy/5CkxPx83OKhY46SOpwGwhpH34PCmHruwz9kkLhkeyEKbzowt+TC/ELG3nbu4Pla3vZ7S2kodrzR4QKP8IL37JK7J54U4aOwvBXx6PGtgNQqc5GKePAVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421755; c=relaxed/simple;
-	bh=2S/YBmFH/bN7uerbwVnhh9YvU/G6QWS6S2Ru8zyRsWg=;
+	s=arc-20240116; t=1745419764; c=relaxed/simple;
+	bh=qDD4jF4dw8yHOxQjreqnE31HKok2GNCIr3xYlCuml8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIfwctHJZclly/zLv2KyuN0hs+w3p8QntEuIp7NSHpcavI+0j6XW7kS14BOP3nriGz3bnD1pmJLjjk5cNt+C6s3TDwchXqJuz9II0pJxuCATc2YcmlQIWou52Nwe2WA4CuIFLCmYTKlQCOhhm5s0+My46aYhmSry738mg7jglhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAF62guO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC082C4CEE2;
-	Wed, 23 Apr 2025 15:22:34 +0000 (UTC)
+	 MIME-Version; b=bEwpw/e0TTX4iT+ydUkPsYnydtrJh3Wq3c1trTwXVBXi3McnVV6Zpa8pB1Mzs+0d/0WcAeXW/Ey9KUORO5ySX0sbr2xIc+agR94Ul2ADrxM+0+6pm4rhMLSxeyRRArY0/ZGfjbMRH5gvVQtHNjfrABBQZL37C/8MuQMrYpNe4FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v73tUhAf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03AC4C4CEEC;
+	Wed, 23 Apr 2025 14:49:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421755;
-	bh=2S/YBmFH/bN7uerbwVnhh9YvU/G6QWS6S2Ru8zyRsWg=;
+	s=korg; t=1745419763;
+	bh=qDD4jF4dw8yHOxQjreqnE31HKok2GNCIr3xYlCuml8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAF62guO0WACluJDTwTg6MaTJsuBzXMkygdKIMifnpkXup//NoWd3ZkOdNAIKH3Jp
-	 HOla5/5+H8vsDRdDRtP4MxVBvlczFAzTDCNvndwsKaKOcgNF0/PBtBEkbGQwyW7R4Q
-	 A/CSADrrphOK7vhXXMzkYFrZ4yVTHLTrDAmTGZ80=
+	b=v73tUhAfiHbF4QPCT3uLhjNa99JtxHKdKITc+7c8vVP9RTSnswjB51CWzkeUTfSGC
+	 DI8aPVsGOL8aET5G23EJuaEtO5G6FqwLbMgrvyzjVMrENCp9as67B8fhEUVCtCZpUI
+	 xlbQ8sg3QWERpOhUTygAt8592fayqU1dDTvE3KHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.6 220/393] ntb: use 64-bit arithmetic for the MSI doorbell mask
+	Matt Johnston <matt@codeconstruct.com.au>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 044/223] net: mctp: Set SOCK_RCU_FREE
 Date: Wed, 23 Apr 2025 16:41:56 +0200
-Message-ID: <20250423142652.473904773@linuxfoundation.org>
+Message-ID: <20250423142618.928143451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-commit fd5625fc86922f36bedee5846fefd647b7e72751 upstream.
+[ Upstream commit 52024cd6ec71a6ca934d0cc12452bd8d49850679 ]
 
-msi_db_mask is of type 'u64', still the standard 'int' arithmetic is
-performed to compute its value.
+Bind lookup runs under RCU, so ensure that a socket doesn't go away in
+the middle of a lookup.
 
-While most of the ntb_hw drivers actually don't utilize the higher 32
-bits of the doorbell mask now, this may be the case for Switchtec - see
-switchtec_ntb_init_db().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Fixes: 2b0569b3b7e6 ("NTB: Add MSI interrupt support to ntb_transport")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250410-mctp-rcu-sock-v1-1-872de9fdc877@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mctp/af_mctp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1351,7 +1351,7 @@ static int ntb_transport_probe(struct nt
- 	qp_count = ilog2(qp_bitmap);
- 	if (nt->use_msi) {
- 		qp_count -= 1;
--		nt->msi_db_mask = 1 << qp_count;
-+		nt->msi_db_mask = BIT_ULL(qp_count);
- 		ntb_db_clear_mask(ndev, nt->msi_db_mask);
- 	}
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index f6de136008f6f..57850d4dac5db 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -630,6 +630,9 @@ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
  
++	/* Bind lookup runs under RCU, remain live during that. */
++	sock_set_flag(sk, SOCK_RCU_FREE);
++
+ 	mutex_lock(&net->mctp.bind_lock);
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+ 	mutex_unlock(&net->mctp.bind_lock);
+-- 
+2.39.5
+
 
 
 
