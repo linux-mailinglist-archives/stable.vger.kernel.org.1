@@ -1,55 +1,67 @@
-Return-Path: <stable+bounces-136148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0EEA991B0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443D3A99192
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A0DF7A7E17
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20D44926568
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA0B29AAE0;
-	Wed, 23 Apr 2025 15:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7A628C5C1;
+	Wed, 23 Apr 2025 15:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc+4LtNv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCCNiiBR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E1028B50E;
-	Wed, 23 Apr 2025 15:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF5428BA96;
+	Wed, 23 Apr 2025 15:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421783; cv=none; b=GGheeSACMGb5IBWFsh2ctHjiPV0Fx7Y+gGiF2ESOudVy2PM+37lfWb7PS5oCe1zYK2SbbUa9KPLErMozNMRazkjSl+CCd5CkGKwOXvqEPt4L/j1n/HLHuYvYg3abRPXg9pNIr8WaMLhtLApcDnUv/vIZZ2VdRyxOeo3voOowq1Q=
+	t=1745421363; cv=none; b=hMHxTQP6LRErCTZK8DPLO0iR5Qwb2LZ0+7Yah7Js/u+EDxDElsaCYeG/hYamGu+aAoq0xbOjkIlBuWGSzSh+cqlbt8o+WvIgmXhqxYj5ry/YLi/up7p4Tu1oLEJ3SLrMGlAuJC1s9i5XD4zwkA+40v1XE3W5fgi72mQgykJdZPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421783; c=relaxed/simple;
-	bh=nWp9oOKgYfOLWoA+iYlLRzQIrhPplAEkdFNel/RzgFk=;
+	s=arc-20240116; t=1745421363; c=relaxed/simple;
+	bh=eYLKWm+7dxnML/gQUxeYRNYO/vUqvtkMP30DV6am7w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qplrv7ac6x3rvgM/hcG3Amtt1B6A6BlJfaEI+3klIuQDNxwn17M4o4PoC8Nl3MQvqovtw7qT3x+8bWUbch9k54tMXnktv3lSa6jU8bVjzrY4W4E0x9sncQaIMUtwcu51o2RCnYxinWx+njeGZJXt72rZJZs0xvUC+4Yq8kgJ5Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc+4LtNv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E111C4CEE2;
-	Wed, 23 Apr 2025 15:23:01 +0000 (UTC)
+	 MIME-Version; b=NJlbFurMi+EM5GP7ePpLW2kU4sPPy8/nzNoG9EPrH+L8SIhHEIxonB6gnGpujKkwCY4aS80CrpiRaxW3gFtfebH82LM63sX77owR8g4js0QMbwr6vAt+z+8m7OwzZN+QMwbJNPyd+zwPrdk1f3s+0GHBit8lsYlC5uYwD582/yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCCNiiBR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D74C4CEE2;
+	Wed, 23 Apr 2025 15:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421781;
-	bh=nWp9oOKgYfOLWoA+iYlLRzQIrhPplAEkdFNel/RzgFk=;
+	s=korg; t=1745421362;
+	bh=eYLKWm+7dxnML/gQUxeYRNYO/vUqvtkMP30DV6am7w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vc+4LtNvL8FJRGg9czDVQtFvlTBTH/wD2Hcz96UQ9sA1u0Q2NP+cLTyCvr94GrpO7
-	 NF+5Kc88mCxTCMpInyJFTgsMbcR/4IdbVczyCECPR/AF3pdBzzj5dnTdmm2AAZrEoe
-	 amhbj7MypLwOjmZ0xiyVTGOYx1s74N10j3SxNVQg=
+	b=kCCNiiBRznEpqFQSiyOwFQYoCmYRpWIVK9qnrvzWf6EdnqOyJgiu84qG2K3kyj64N
+	 n7i4VJiFt6j1rGcivm/vY9+QwhtX0QrNYiP+LfkyDEWSHLF9TEeoSF4Sepyfw6BO1T
+	 O/KebgbQGt5aKhtZB04qiIwn/UloUI/dpHMfcIVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.6 223/393] of/irq: Fix device node refcount leakages in of_irq_count()
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Juergen Gross <jgross@suse.com>,
+	Borislav Betkov <bp@alien8.de>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Thomas Gleinxer <tglx@linutronix.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 130/291] sparc/mm: disable preemption in lazy mmu mode
 Date: Wed, 23 Apr 2025 16:41:59 +0200
-Message-ID: <20250423142652.598365857@linuxfoundation.org>
+Message-ID: <20250423142629.712463475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +73,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
+commit a1d416bf9faf4f4871cb5a943614a07f80a7d70f upstream.
 
-of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
-invocation of the later will get device node @irq.np refcount, but the
-former does not put the refcount before next iteration invocation, hence
-causes device node refcount leakages.
+Since commit 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy
+updates") it's been possible for arch_[enter|leave]_lazy_mmu_mode() to be
+called without holding a page table lock (for the kernel mappings case),
+and therefore it is possible that preemption may occur while in the lazy
+mmu mode.  The Sparc lazy mmu implementation is not robust to preemption
+since it stores the lazy mode state in a per-cpu structure and does not
+attempt to manage that state on task switch.
 
-Fix by putting @irq.np refcount before the next iteration invocation.
+Powerpc had the same issue and fixed it by explicitly disabling preemption
+in arch_enter_lazy_mmu_mode() and re-enabling in
+arch_leave_lazy_mmu_mode().  See commit b9ef323ea168 ("powerpc/64s:
+Disable preemption in hash lazy mmu mode").
 
-Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Given Sparc's lazy mmu mode is based on powerpc's, let's fix it in the
+same way here.
+
+Link: https://lkml.kernel.org/r/20250303141542.3371656-4-ryan.roberts@arm.com
+Fixes: 38e0edb15bd0 ("mm/apply_to_range: call pte function with lazy updates")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Andreas Larsson <andreas@gaisler.com>
+Acked-by: Juergen Gross <jgross@suse.com>
+Cc: Borislav Betkov <bp@alien8.de>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juegren Gross <jgross@suse.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/sparc/mm/tlb.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -509,8 +509,10 @@ int of_irq_count(struct device_node *dev
- 	struct of_phandle_args irq;
- 	int nr = 0;
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -52,8 +52,10 @@ out:
  
--	while (of_irq_parse_one(dev, nr, &irq) == 0)
-+	while (of_irq_parse_one(dev, nr, &irq) == 0) {
-+		of_node_put(irq.np);
- 		nr++;
-+	}
+ void arch_enter_lazy_mmu_mode(void)
+ {
+-	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++	struct tlb_batch *tb;
  
- 	return nr;
++	preempt_disable();
++	tb = this_cpu_ptr(&tlb_batch);
+ 	tb->active = 1;
  }
+ 
+@@ -64,6 +66,7 @@ void arch_leave_lazy_mmu_mode(void)
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
+ 	tb->active = 0;
++	preempt_enable();
+ }
+ 
+ static void tlb_batch_add_one(struct mm_struct *mm, unsigned long vaddr,
 
 
 
