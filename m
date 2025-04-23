@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-136067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99026A991E2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF972A993A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 013C43AF099
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77895924B26
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9304296D1B;
-	Wed, 23 Apr 2025 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411C7F9CB;
+	Wed, 23 Apr 2025 15:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5qMVGjy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As01AszD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955E82918F5;
-	Wed, 23 Apr 2025 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22EF2BEC57;
+	Wed, 23 Apr 2025 15:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421568; cv=none; b=bGxZEOcSq+FJ+rSZTuQhmf4uWsH+DlVJogHJqwfs8IFIFaOgDiZhzdn7D2LbU3V1jKEnv045CTiyjsUOI1iAoDWpN4v46Ry8RcvMLvddS6W4SB+UVKvwRrhwCZcXT+OoMYyt9PpaekIMuCx5nbXw19dnv7Lww8EfXLBQ+NbhRss=
+	t=1745422504; cv=none; b=hmO+SIE5QQ72Bk6nY2a+0zSmKYfc3BmTD4mb600+HAzT9QjOAT/X+FyyDr1ecitqY7gPwDyRsB02KxH+IaDVmAJgVXlArWYT4W5UbZnzcXk45ehEQp4AWNi1pqOR9qcux3UcUU6pqA8koRzVsWmH+S6SuzmTD9LyYQBTP4emnEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421568; c=relaxed/simple;
-	bh=Fm0jhXmib3qO1+S1Ru5C9IBoXWaweqQNn+hDHhNQ9cU=;
+	s=arc-20240116; t=1745422504; c=relaxed/simple;
+	bh=1PNNUbFx2wXciHDJ5F4LNqqn7iNP9l8GbN8FbQ9KJpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIgumjVZL7RIiRsDxWGIkrIL2h6SLX6Y467gzsDWY0E99tzv9FJtxJ6S/t7+EeBYoCIIrqWxIRyRqbM92TIoRitOrdLAdyek62xp7d04Y88JJFWKlV7rsykl7PVJ862d0SNUUsFa5MhcrAXTzbOocrU1qvnfjaWSF161X8kqFgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5qMVGjy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E202C4CEE2;
-	Wed, 23 Apr 2025 15:19:27 +0000 (UTC)
+	 MIME-Version; b=Z8ZwzCcpWC8GzoMJHq+U7ncHTewpRJmPR2jqq+AGq9jeH2t3mtD3o6xl1QcwzJWoMtY3mdfl6qB75YU6LKJ1Gk+NIphvhzNfqqeBS57A9xTfxyIJtLxrOXm/K4L0A05lcc/npVdVnJWc4Pag03FLW/D1jhtoW+U7MP4oqOgiBCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As01AszD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8223BC4CEE3;
+	Wed, 23 Apr 2025 15:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421568;
-	bh=Fm0jhXmib3qO1+S1Ru5C9IBoXWaweqQNn+hDHhNQ9cU=;
+	s=korg; t=1745422503;
+	bh=1PNNUbFx2wXciHDJ5F4LNqqn7iNP9l8GbN8FbQ9KJpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5qMVGjyDVT1GDfwjrnby2Z251oONVunk28jITNl1gjXXw7ROHWxhbHxUs462+R8o
-	 JVMnSKsS2nURKC3LiWe1HdnJFVOEOl1/5K06hLnrDANeo/e9UB91QM9hSxLiIvvbfo
-	 c03F+AW3FEr13OTVjkD3JStBuAaaY1tgXzyUW6bc=
+	b=As01AszDmxaTUap1aKF3hbzbfwl2WLmzYjbJcwQyU+kmrL+iAvrxfDd5/P8tg1Ef3
+	 E9lz7mBPAfWDuzVu7/vE97+QocFrQTxMcVH7ktV8oZfUJGOewOkN93MH1SY3JwjMY9
+	 4XiAZUvDAUgrCvnnb+Dc1ako/3JfU6iBeqNMoUUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.14 206/241] drm/i915/xe2hpd: Identify the memory type for SKUs with GDDR + ECC
-Date: Wed, 23 Apr 2025 16:44:30 +0200
-Message-ID: <20250423142628.956945156@linuxfoundation.org>
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 6.6 375/393] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+Date: Wed, 23 Apr 2025 16:44:31 +0200
+Message-ID: <20250423142658.821992892@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,112 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-commit bc1feb8174b7e46c1806a6f684d89a47508f3a53 upstream.
+commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
 
-Some SKUs of Xe2_HPD platforms (such as BMG) have GDDR memory type
-with ECC enabled. We need to identify this scenario and add a new
-case in xelpdp_get_dram_info() to handle it. In addition, the
-derating value needs to be adjusted accordingly to compensate for
-the limited bandwidth.
+Smatch warns:
 
-Bspec: 64602
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Fixes: 3adcf970dc7e ("drm/xe/bmg: Drop force_probe requirement")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Acked-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250324-tip-v2-1-38397de319f8@intel.com
-(cherry picked from commit 327e30123cafcb45c0fc5843da0367b90332999d)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
+
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
+
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+[Minor context change fixed]
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_bw.c |   14 +++++++++++++-
- drivers/gpu/drm/i915/i915_drv.h         |    1 +
- drivers/gpu/drm/i915/soc/intel_dram.c   |    4 ++++
- drivers/gpu/drm/xe/xe_device_types.h    |    1 +
- 4 files changed, 19 insertions(+), 1 deletion(-)
+ arch/powerpc/kernel/rtas.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_bw.c
-+++ b/drivers/gpu/drm/i915/display/intel_bw.c
-@@ -244,6 +244,7 @@ static int icl_get_qgv_points(struct drm
- 			qi->deinterleave = 4;
- 			break;
- 		case INTEL_DRAM_GDDR:
-+		case INTEL_DRAM_GDDR_ECC:
- 			qi->channel_width = 32;
- 			break;
- 		default:
-@@ -398,6 +399,12 @@ static const struct intel_sa_info xe2_hp
- 	/* Other values not used by simplified algorithm */
- };
- 
-+static const struct intel_sa_info xe2_hpd_ecc_sa_info = {
-+	.derating = 45,
-+	.deprogbwlimit = 53,
-+	/* Other values not used by simplified algorithm */
-+};
-+
- static int icl_get_bw_info(struct drm_i915_private *dev_priv, const struct intel_sa_info *sa)
- {
- 	struct intel_qgv_info qi = {};
-@@ -740,10 +747,15 @@ static unsigned int icl_qgv_bw(struct dr
- 
- void intel_bw_init_hw(struct drm_i915_private *dev_priv)
- {
-+	const struct dram_info *dram_info = &dev_priv->dram_info;
-+
- 	if (!HAS_DISPLAY(dev_priv))
- 		return;
- 
--	if (DISPLAY_VERx100(dev_priv) >= 1401 && IS_DGFX(dev_priv))
-+	if (DISPLAY_VERx100(dev_priv) >= 1401 && IS_DGFX(dev_priv) &&
-+		 dram_info->type == INTEL_DRAM_GDDR_ECC)
-+		xe2_hpd_get_bw_info(dev_priv, &xe2_hpd_ecc_sa_info);
-+	else if (DISPLAY_VERx100(dev_priv) >= 1401 && IS_DGFX(dev_priv))
- 		xe2_hpd_get_bw_info(dev_priv, &xe2_hpd_sa_info);
- 	else if (DISPLAY_VER(dev_priv) >= 14)
- 		tgl_get_bw_info(dev_priv, &mtl_sa_info);
---- a/drivers/gpu/drm/i915/i915_drv.h
-+++ b/drivers/gpu/drm/i915/i915_drv.h
-@@ -306,6 +306,7 @@ struct drm_i915_private {
- 			INTEL_DRAM_DDR5,
- 			INTEL_DRAM_LPDDR5,
- 			INTEL_DRAM_GDDR,
-+			INTEL_DRAM_GDDR_ECC,
- 		} type;
- 		u8 num_qgv_points;
- 		u8 num_psf_gv_points;
---- a/drivers/gpu/drm/i915/soc/intel_dram.c
-+++ b/drivers/gpu/drm/i915/soc/intel_dram.c
-@@ -687,6 +687,10 @@ static int xelpdp_get_dram_info(struct d
- 		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));
- 		dram_info->type = INTEL_DRAM_GDDR;
- 		break;
-+	case 9:
-+		drm_WARN_ON(&i915->drm, !IS_DGFX(i915));
-+		dram_info->type = INTEL_DRAM_GDDR_ECC;
-+		break;
- 	default:
- 		MISSING_CASE(val);
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -18,6 +18,7 @@
+ #include <linux/kernel.h>
+ #include <linux/lockdep.h>
+ #include <linux/memblock.h>
++#include <linux/nospec.h>
+ #include <linux/of.h>
+ #include <linux/of_fdt.h>
+ #include <linux/reboot.h>
+@@ -1839,6 +1840,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
  		return -EINVAL;
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -559,6 +559,7 @@ struct xe_device {
- 			INTEL_DRAM_DDR5,
- 			INTEL_DRAM_LPDDR5,
- 			INTEL_DRAM_GDDR,
-+			INTEL_DRAM_GDDR_ECC,
- 		} type;
- 		u8 num_qgv_points;
- 		u8 num_psf_gv_points;
+ 
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
 
 
 
