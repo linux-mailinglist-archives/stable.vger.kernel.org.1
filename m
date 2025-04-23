@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-136443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC77AA99303
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2ACA9921B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F7357AE15D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB10A1BA4288
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D56028BA94;
-	Wed, 23 Apr 2025 15:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F44288CB5;
+	Wed, 23 Apr 2025 15:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+2e6K6W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbZqPiwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9491A0BE0;
-	Wed, 23 Apr 2025 15:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2FC2F2E;
+	Wed, 23 Apr 2025 15:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422562; cv=none; b=HRiOQSMEPht1HpLJriQpbHbHST4WgZHdEhH3ADaHAjRCz/XtgXQrrLzG7maQ7cQsojB6KBXql1Z0LmnbACpzR2GpOQYMT1IZX9dR/DXA+zz0L4+a4kaaHxo77gmbhf0Dl/qC4rzSg51gp6XAVXBw5BV803o3N9GHB+6B80+M968=
+	t=1745421698; cv=none; b=b99CmNsf9GEaBjzR/+WaR0qezURbOheZCbW4UKZIuoKSRcpdUxRUtKU5Bncl1K8K/4v+XkryGpOV7qQ84tvP+F07Bxk9wDVR2HomAHiIWTL5SXeBZ0pkEUyr7qmODj/EsD27uTEuVnzBxkiA6qT/y+GBBp1KFsCX4GkHgWuKtGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422562; c=relaxed/simple;
-	bh=tsj06aHCxSHFqd4K/tGsaBIbk4TQ+r+qp+q801e16Ko=;
+	s=arc-20240116; t=1745421698; c=relaxed/simple;
+	bh=NkZRqXQRTNgj9/u3XXnJVb4GYvU54IhrT3eUzBk3RiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nkXBkI1+eMrfFckPRDRKeIYr5Vz3uZhXZVvyz0SLb+oJ6u3Vl1iXGASWIKhVw2pgMbztCPTpKLoxhapXhoC3gphnAMUD9EwujqmhoLgcPZxVxXexdmoSss5lLtGpscodmb9tFgvSH4rk86rHUytJvfIIrDs6szBvWUa6mn/FGo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+2e6K6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82687C4CEE3;
-	Wed, 23 Apr 2025 15:36:01 +0000 (UTC)
+	 MIME-Version; b=S/BgDYu6Aico1eehqE6SqFWck09+qrzC/UypnET3xBBwX4lZQOJ5b+181zGf4MhQfuOi0vVFxVp7Ta3Vd+78VaO1BNmYsCrMmH2OII8je04At0zi6+xYNLJHFYudQt1WgTGki3y1e79Mo4ZrfTA6xnN+BeykBDbgy0+TftvLVwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbZqPiwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55682C4AF0C;
+	Wed, 23 Apr 2025 15:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422561;
-	bh=tsj06aHCxSHFqd4K/tGsaBIbk4TQ+r+qp+q801e16Ko=;
+	s=korg; t=1745421697;
+	bh=NkZRqXQRTNgj9/u3XXnJVb4GYvU54IhrT3eUzBk3RiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+2e6K6Wi4sOVYCBiMH1Gq7ufEMQMgcCxKwYxNI3yJPKS9W65+CE4mEA+K9mB8QhW
-	 cLKIivifGMZ45kevw+dQXjC4XcG53Zp/XfcpmSro2LG9Mmw5X/38gXzdur0FyE4jdu
-	 xlgQx78W5awfO+AOwXUvOnH/cg164mjcZk4903Ow=
+	b=rbZqPiwjAJiOP7/WJ8xwzFyqQjmYliIOkn+vRpGtui8xQ5yYXLbOHNcB23Fh/naCH
+	 IJ02w8qcA11i2CTsKbxL1wSGC+nZ99ucKeo2kruSRj1txmSxRKhHcsY00LkO5u8gnD
+	 amavq0AtAA2I16g2CHDsvTBAWFK3RI2JGsO6lZ8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 389/393] MIPS: dec: Declare which_prom() as static
+	Will Deacon <will@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Eric Auger <eric.auger@redhat.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.14 221/241] arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
 Date: Wed, 23 Apr 2025 16:44:45 +0200
-Message-ID: <20250423142659.384979724@linuxfoundation.org>
+Message-ID: <20250423142629.585270529@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +64,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
+commit cc15f548cc77574bcd68425ae01a796659bd3705 upstream.
 
-Declare which_prom() as static to suppress gcc compiler warning that
-'missing-prototypes'. This function is not intended to be called
-from other parts.
+This updates ID_AA64MMFR0_EL1 register fields as per the definitions based
+on DDI0601 2024-12.
 
-Fix follow error with gcc-14 when -Werror:
-
-arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
-   45 | void __init which_prom(s32 magic, s32 *prom_vec)
-      |             ^~~~~~~~~~
-cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
-make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
-make[5]: *** Waiting for unfinished jobs....
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250203050828.1049370-2-anshuman.khandual@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/prom/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/tools/sysreg |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/dec/prom/init.c
-+++ b/arch/mips/dec/prom/init.c
-@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
-  * Detect which PROM the DECSTATION has, and set the callback vectors
-  * appropriately.
-  */
--void __init which_prom(s32 magic, s32 *prom_vec)
-+static void __init which_prom(s32 magic, s32 *prom_vec)
- {
- 	/*
- 	 * No sign of the REX PROM's magic number means we assume a non-REX
+--- a/arch/arm64/tools/sysreg
++++ b/arch/arm64/tools/sysreg
+@@ -1664,6 +1664,7 @@ EndEnum
+ UnsignedEnum	59:56	FGT
+ 	0b0000	NI
+ 	0b0001	IMP
++	0b0010	FGT2
+ EndEnum
+ Res0	55:48
+ UnsignedEnum	47:44	EXS
+@@ -1725,6 +1726,7 @@ Enum	3:0	PARANGE
+ 	0b0100	44
+ 	0b0101	48
+ 	0b0110	52
++	0b0111	56
+ EndEnum
+ EndSysreg
+ 
 
 
 
