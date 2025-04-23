@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-135545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD16A98EB4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790D2A98ECA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E3BC1744E3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F2C445FC2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1664279790;
-	Wed, 23 Apr 2025 14:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D024B27FD67;
+	Wed, 23 Apr 2025 14:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWo8kUmJ"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltoD0c04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E83219DF4C;
-	Wed, 23 Apr 2025 14:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D921269B07;
+	Wed, 23 Apr 2025 14:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420205; cv=none; b=VFyw4AxKEedMXGmb4s6wmnx0gBa22hG27UXiaLEMHtJ19i7kJKRmmK5R3lMGo3mbeqVtlys0GLmQZa8a3ChaN5kW2a+aeC6hNqBKlwON9TdeWUOXKZpwV+bPilSUPg3kLjuCIgTktkrQ9iTgmb2bV+xM4LZaOh0hPixswHsFTBg=
+	t=1745420263; cv=none; b=kMhYXV2BJ9rHUxfzJskEe9naIL9wDQ/grEVibPyU9eEdT8wwC2N6OHcXntAo04PVOpG+IqxrpIRyYez5ZHdhRDjRW2jS3E6yxEt2LpGhrY5L2dDIR6+8eGayhWFymp0cPNWRu4pv0kCUjXkvJEVapjTnySzZRVhT6Vn7dgONPzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420205; c=relaxed/simple;
-	bh=QXnyqxG9Ea2F41suhcjEVOVveF5VSYY4UNPDuZ32GpA=;
+	s=arc-20240116; t=1745420263; c=relaxed/simple;
+	bh=axNaMpf0KKZvbhf309aZuAZOSchNI/tzL9GFhN/AAeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNEPnlJdujoy/ua9321ectqfplhYexwdNNmuHyVJKOce5Og90WFIC12J4Orvrof865fiW96u/r16i6MuscNoocLbvzxhio24aTw1QBpoa3+Ug0wl3CsQfLZEeyeMk6Z0DEB4hfvKkBj12I8SIxWXC63/7WhJ8coA96XoYXAjDYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWo8kUmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF64C4CEE2;
-	Wed, 23 Apr 2025 14:56:44 +0000 (UTC)
+	 MIME-Version; b=jGlKWpvR+XOEeOu5LlvM5NWWdmoc4qxW1svpaWF3YiB7+8+onNhRVJIpH4XYnRu89t9AhNyv6OHfXHFjJjCuakbysWFkHDJHmU7WYBo7Vsf8kIe7VO5dGeUexo3FE33qeGruYLX1l8JJQZDaas2wxsxRgB3cIt9AOQHpVo5UdwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltoD0c04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAE7C4CEE2;
+	Wed, 23 Apr 2025 14:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420205;
-	bh=QXnyqxG9Ea2F41suhcjEVOVveF5VSYY4UNPDuZ32GpA=;
+	s=korg; t=1745420263;
+	bh=axNaMpf0KKZvbhf309aZuAZOSchNI/tzL9GFhN/AAeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWo8kUmJ3h0IXNlWxjX2YGy9VMBJ4XsQgKC5CYuehxuJHKy/UpCWJ7Ok2o+UpLWuR
-	 ehK88BPbypMoKmN5Cmpf/bF8gxOMx5y+p7YaIQaIFXVFlIXWqkJp0KHMuCdbOy/cV5
-	 8ix3ihgPCzFfw4Ke6dBu5rIA6KasIBRbQJaDkOaE=
+	b=ltoD0c04LTJE8yRH3rybXJIE+A4p0KyTdo/Vln16GqMYwFUjNAFOufC2JeKv7aeZP
+	 AoCTEJWIvwOcydZ4G/3iP6ogVGT8jyXCPv7+/hK9A+WNN+HgD0aRa/umBikg0TPK9l
+	 zuryPU6h32gwgH006xjCKM2IxlWQRRTxznn+KWuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/393] xen/mcelog: Add __nonstring annotations for unterminated strings
-Date: Wed, 23 Apr 2025 16:39:01 +0200
-Message-ID: <20250423142645.148655212@linuxfoundation.org>
+	patches@lists.linux.dev, Michael Kelley <mhklinux@outlook.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	"https://lore.kernel.org/r/SN6PR02MB415723FBCD79365E8D72CA5FD4D82"@SN6PR02MB4157.namprd02.prod.outlook.com
+Subject: [PATCH 6.6 046/393] zstd: Increase DYNAMIC_BMI2 GCC version cutoff from 4.8 to 11.0 to work around compiler segfault
+Date: Wed, 23 Apr 2025 16:39:02 +0200
+Message-ID: <20250423142645.188625951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -69,43 +67,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Ingo Molnar <mingo@kernel.org>
 
-[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
+[ Upstream commit 1400c87e6cac47eb243f260352c854474d9a9073 ]
 
-When a character array without a terminating NUL character has a static
-initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+Due to pending percpu improvements in -next, GCC9 and GCC10 are
+crashing during the build with:
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: xen-devel@lists.xenproject.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250310222234.work.473-kees@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+    lib/zstd/compress/huf_compress.c:1033:1: internal compiler error: Segmentation fault
+     1033 | {
+          | ^
+    Please submit a full bug report,
+    with preprocessed source if appropriate.
+    See <file:///usr/share/doc/gcc-9/README.Bugs> for instructions.
+
+The DYNAMIC_BMI2 feature is a known-challenging feature of
+the ZSTD library, with an existing GCC quirk turning it off
+for GCC versions below 4.8.
+
+Increase the DYNAMIC_BMI2 version cutoff to GCC 11.0 - GCC 10.5
+is the last version known to crash.
+
+Reported-by: Michael Kelley <mhklinux@outlook.com>
+Debugged-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: https://lore.kernel.org/r/SN6PR02MB415723FBCD79365E8D72CA5FD4D82@SN6PR02MB4157.namprd02.prod.outlook.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/xen/interface/xen-mca.h | 2 +-
+ lib/zstd/common/portability_macros.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
-index 464aa6b3a5f92..1c9afbe8cc260 100644
---- a/include/xen/interface/xen-mca.h
-+++ b/include/xen/interface/xen-mca.h
-@@ -372,7 +372,7 @@ struct xen_mce {
- #define XEN_MCE_LOG_LEN 32
- 
- struct xen_mce_log {
--	char signature[12]; /* "MACHINECHECK" */
-+	char signature[12] __nonstring; /* "MACHINECHECK" */
- 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
- 	unsigned next;
- 	unsigned flags;
+diff --git a/lib/zstd/common/portability_macros.h b/lib/zstd/common/portability_macros.h
+index 0e3b2c0a527db..0dde8bf56595e 100644
+--- a/lib/zstd/common/portability_macros.h
++++ b/lib/zstd/common/portability_macros.h
+@@ -55,7 +55,7 @@
+ #ifndef DYNAMIC_BMI2
+   #if ((defined(__clang__) && __has_attribute(__target__)) \
+       || (defined(__GNUC__) \
+-          && (__GNUC__ >= 5 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))) \
++          && (__GNUC__ >= 11))) \
+       && (defined(__x86_64__) || defined(_M_X64)) \
+       && !defined(__BMI2__)
+   #  define DYNAMIC_BMI2 1
 -- 
 2.39.5
 
