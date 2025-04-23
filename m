@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD23A98EC7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7ADEA99322
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2D71B84BC8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23859225B8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF64280A5A;
-	Wed, 23 Apr 2025 14:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83CF27FD74;
+	Wed, 23 Apr 2025 15:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpPVv/gn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilS9bzRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992B927FD56;
-	Wed, 23 Apr 2025 14:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164517B421;
+	Wed, 23 Apr 2025 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420147; cv=none; b=VIlE5d6IwmdDNqsdjOgGnhT+Y7ZYP2UDgoO67BUifdyj5KUrtxSG6jVY/XMeKdKE1DB++AkhfBnolKyYI2/q4r1z3dv7Bejx4/qN2u0/Rd7h92ApXdNGpM9f8xXdXYF08y4RYdVpnjSprSdI7nN23XlT5IWEShz3pXqaBQOsDBA=
+	t=1745421872; cv=none; b=XtOqeoBg6gzWoi8+7HdOcidjpclYB+4tzDf5YCDUtZ+EHwX1rZK0R6FpE2V2T7Gdn03CvuaCa9UyTESRSoQu8W5g/A6RuNGjpctUPmYy9d82dBNqRvCewY0yvV+Lj1yZuUSr+2QQSEH4VJQ+khvXI29WDFtNxIg4QwvQ1rxIj64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420147; c=relaxed/simple;
-	bh=TVrbWaFI4LS5KgmEj4NeQur9EhjFjQo3gPVFGjQAVAw=;
+	s=arc-20240116; t=1745421872; c=relaxed/simple;
+	bh=nXg2PM9SySyVz5h3ny3BjpyQJdqiwHr4v21wWFt97Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nspcmdn2Rhyjja2qPgtyBst9l1h3crv64stAIXR7AKW9k3yv6wzw97V+2xFdKaORNxjZezTR7BhbI0rE2nQ+I+M2zQsmbPPoll1IL9VE5NOGiLk8HSsXEIyDQFb2q8PhorRtn3VT2D8rV1YZTbaQehBKaPFL+Omiun5X6ojzhZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpPVv/gn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2DAC4CEE2;
-	Wed, 23 Apr 2025 14:55:47 +0000 (UTC)
+	 MIME-Version; b=Ah8BtVF/c4owCEwKbCrp+KAQj+Eye5IPX4MrmEGp37fqDOQcgO9atY5j1ETeHv2K9JAOtecUcyQn1eZf6o+uDcyZOSv2GFPNCEJYagZZVryy0rqIcd7RNXcbEIEqabZ2pGpkzFO3mYqRCrADSXHi/boK4Xk2FieP8gp4ZPS6gr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilS9bzRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FFEC4CEE2;
+	Wed, 23 Apr 2025 15:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420147;
-	bh=TVrbWaFI4LS5KgmEj4NeQur9EhjFjQo3gPVFGjQAVAw=;
+	s=korg; t=1745421871;
+	bh=nXg2PM9SySyVz5h3ny3BjpyQJdqiwHr4v21wWFt97Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpPVv/gnyDwydsh990RBfogR2PKlyiT8QncgntCIIv1ACLzGK0r6WQmoilXM+t/r/
-	 pIGcL2KB4GLtvozQqBjj4sIZMjrrDGOvyVTk++gZQ3YQQqFRH+36zVxCLJXAQBaeyf
-	 dxu5KUuFFOxQe+suRrIFK4bfCJxZp91pg2NKOPDg=
+	b=ilS9bzRsYwSFubDr/HHwN2C7ZOa704CzXERonRIemHxwYGQw5mS/eDNpzjFB6kSCQ
+	 +d8LsjnxJG/Ijy7A9qIrNaoEfhfk5/pMHcw0wB/2/uP6l22wGyhmP98rsOXHbn7HZb
+	 vUIl4abScyry3tHJRuBcAAd2Z61XVxpeRz/ytfh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 063/241] ata: libata-sata: Save all fields from sense data descriptor
-Date: Wed, 23 Apr 2025 16:42:07 +0200
-Message-ID: <20250423142623.176292859@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 232/393] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
+Date: Wed, 23 Apr 2025 16:42:08 +0200
+Message-ID: <20250423142652.975262328@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 399eab7f92fb73ffe621294a2d6bec8fc9f3b36b ]
+commit a5951389e58d2e816eed3dbec5877de9327fd881 upstream.
 
-When filling the taskfile result for a successful NCQ command, we use
-the SDB FIS from the FIS Receive Area, see e.g. ahci_qc_ncq_fill_rtf().
+When comparing to the ARM list [1], it appears that several ARM cores
+were missing from the lists in spectre_bhb_loop_affected(). Add them.
 
-However, the SDB FIS only has fields STATUS and ERROR.
+NOTE: for some of these cores it may not matter since other ways of
+clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
+but it still seems good to have all the info from ARM's whitepaper
+included.
 
-For a successful NCQ command that has sense data, we will have a
-successful sense data descriptor, in the Sense Data for Successful NCQ
-Commands log.
+[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
 
-Since we have access to additional taskfile result fields, fill in these
-additional fields in qc->result_tf.
-
-This matches how for failing/aborted NCQ commands, we will use e.g.
-ahci_qc_fill_rtf() to fill in some fields, but then for the command that
-actually caused the NCQ error, we will use ata_eh_read_log_10h(), which
-provides additional fields, saving additional fields/overriding the
-qc->result_tf that was fetched using ahci_qc_fill_rtf().
-
-Fixes: 18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-sata.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index ba300cc0a3a32..2e4463d3a3561 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -1510,6 +1510,8 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
- 	unsigned int err_mask, tag;
- 	u8 *sense, sk = 0, asc = 0, ascq = 0;
- 	u64 sense_valid, val;
-+	u16 extended_sense;
-+	bool aux_icc_valid;
- 	int ret = 0;
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -876,6 +876,14 @@ static u8 spectre_bhb_loop_affected(void
+ {
+ 	u8 k = 0;
  
- 	err_mask = ata_read_log_page(dev, ATA_LOG_SENSE_NCQ, 0, buf, 2);
-@@ -1529,6 +1531,8 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
++	static const struct midr_range spectre_bhb_k132_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
++		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
++	};
++	static const struct midr_range spectre_bhb_k38_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++	};
+ 	static const struct midr_range spectre_bhb_k32_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+@@ -889,6 +897,7 @@ static u8 spectre_bhb_loop_affected(void
+ 	};
+ 	static const struct midr_range spectre_bhb_k24_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+@@ -904,7 +913,11 @@ static u8 spectre_bhb_loop_affected(void
+ 		{},
+ 	};
  
- 	sense_valid = (u64)buf[8] | ((u64)buf[9] << 8) |
- 		((u64)buf[10] << 16) | ((u64)buf[11] << 24);
-+	extended_sense = get_unaligned_le16(&buf[14]);
-+	aux_icc_valid = extended_sense & BIT(15);
- 
- 	ata_qc_for_each_raw(ap, qc, tag) {
- 		if (!(qc->flags & ATA_QCFLAG_EH) ||
-@@ -1556,6 +1560,17 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
- 			continue;
- 		}
- 
-+		qc->result_tf.nsect = sense[6];
-+		qc->result_tf.hob_nsect = sense[7];
-+		qc->result_tf.lbal = sense[8];
-+		qc->result_tf.lbam = sense[9];
-+		qc->result_tf.lbah = sense[10];
-+		qc->result_tf.hob_lbal = sense[11];
-+		qc->result_tf.hob_lbam = sense[12];
-+		qc->result_tf.hob_lbah = sense[13];
-+		if (aux_icc_valid)
-+			qc->result_tf.auxiliary = get_unaligned_le32(&sense[16]);
-+
- 		/* Set sense without also setting scsicmd->result */
- 		scsi_build_sense_buffer(dev->flags & ATA_DFLAG_D_SENSE,
- 					qc->scsicmd->sense_buffer, sk,
--- 
-2.39.5
-
+-	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
++	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
++		k = 132;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
++		k = 38;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+ 		k = 32;
+ 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+ 		k = 24;
 
 
 
