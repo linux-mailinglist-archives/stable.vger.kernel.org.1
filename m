@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0CCA990EF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91604A98F8A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7111B8765F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D93CB463465
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6917528134C;
-	Wed, 23 Apr 2025 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D52828466E;
+	Wed, 23 Apr 2025 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6PNdmO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnhIhSbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C4A27F4D1;
-	Wed, 23 Apr 2025 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34996283C81;
+	Wed, 23 Apr 2025 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421105; cv=none; b=cWBCDB47Ys4rkQsc1oMYpNLVPAeZSfLpgZrNLMl+ObtaQoYzucMj2PlctkDsMly1knlI0Y4wM/4HPmb6+fU59BNzgzrcLMY+Gj8atnX+k2TkQoVxlaieQooq8M0N2CwCFHModo/prKb45VpoS8tZj9T6MlcPhA3wHU+TAtyIXnA=
+	t=1745420556; cv=none; b=CiPVAonJ3Bb1hrXEnO7p0R7wjNwF9NqbPiAvPDhRSAbUWD2PY/uWm9BTw/barTE8O9U4R4YGxIQuchkqU1jIlD3/AjcZDQz4eKFdNZf26K6vxjp7PwuLs9Puokkz7DeaZne+yyyu5EqCFfr7dQzaG+W0oHQj8B8ufRTygcduvhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421105; c=relaxed/simple;
-	bh=hz9Os8Ix1ivrN0xL3Yg7dy0SgWY22T+StdHNHgb/C0w=;
+	s=arc-20240116; t=1745420556; c=relaxed/simple;
+	bh=cSzmSi7PuwPDOD1yNHIwy1m5qe1kZMhXETj9Z9cPYTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pzm/2utAdy9kZU6m6BJroyY9HK5cMQxup/3ua4FJqoyt5su7oxjyG8s/HqFwWZzE+KXDeVvdWyEEXWMoJ0VXsZTsQhp3OHd0E+e+85+VNWXZ1kZVr3cb1B5zLEaE2KjWMTOuAp5tnpUpA6Kr+8SmOc9/madtTObfjXm9rzW9piM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6PNdmO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB430C4CEE2;
-	Wed, 23 Apr 2025 15:11:44 +0000 (UTC)
+	 MIME-Version; b=JEv4E4KqQrEwE3MIjnm5sKYXkTj/2GhJEqqdPoK67uY3Wqmj+mnX1vtxlHOPS6YEM/7lEOYM4NTWppOL2pYYYOrUMVj/xQ7BMMvwONbjSfvdAzxvYxeQcTnL4kQvv2PeInbbys9FEk+B+UGTLe6Eq9DVt/ReFstEAvVqWFlJ7L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lnhIhSbc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B0DC4CEE2;
+	Wed, 23 Apr 2025 15:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421105;
-	bh=hz9Os8Ix1ivrN0xL3Yg7dy0SgWY22T+StdHNHgb/C0w=;
+	s=korg; t=1745420556;
+	bh=cSzmSi7PuwPDOD1yNHIwy1m5qe1kZMhXETj9Z9cPYTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6PNdmO7jz678j57nYtIPsyy3+CiR+XhgrRWrgRchNQdBi4/3j5TZPKAgJzJUslld
-	 oYWQanp3iy37K1u1u/QhDY9Z5X5be4mrJzeQhuu3Ay1LWwmnE4aKzjPkQx13FFg4Sr
-	 fYVfFEtha8Ugy9ulK2898br/SHXJtJayJN2Yisz8=
+	b=lnhIhSbcBQVo+ZN0S0oxyLFoKw+Ym/P7tumTcK/eZabU+HB+bkglPA8KqDRlcU8b7
+	 XI2xWGFTdSZvr/uYRU6vKcO+cxzCZ9Apm1lqQnNwkQpQrqCChuIEtSp6pNmStYlUM2
+	 HpIUZCoX7iaATouHkWcxmbqkgUf9z/OX88k+CDP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 147/393] mptcp: sockopt: fix getting IPV6_V6ONLY
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Zhikai Zhai <zhikai.zhai@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 054/291] drm/amd/display: Update Cursor request mode to the beginning prefetch always
 Date: Wed, 23 Apr 2025 16:40:43 +0200
-Message-ID: <20250423142649.455843877@linuxfoundation.org>
+Message-ID: <20250423142626.591093156@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Zhikai Zhai <zhikai.zhai@amd.com>
 
-commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
+[ Upstream commit 4a4077b4b63a8404efd6d37fc2926f03fb25bace ]
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+[Why]
+The double buffer cursor registers is updated by the cursor
+vupdate event. There is a gap between vupdate and cursor data
+fetch if cursor fetch data reletive to cursor position.
+Cursor corruption will happen if we update the cursor surface
+in this gap.
 
-IPV6_V6ONLY support for the setsockopt part has been added a while ago,
-but it looks like the get part got forgotten. It should have been
-present as a way to verify a setting has been set as expected, and not
-to act differently from TCP or any other socket types.
+[How]
+Modify the cursor request mode to the beginning prefetch always
+and avoid wraparound calculation issues.
 
-Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
-to check the default value, before doing extra actions. On Linux, the
-default value is 0, but this can be changed with the net.ipv6.bindv6only
-sysctl knob. On Windows, it is set to 1 by default. So supporting the
-get part, like for all other socket options, is important.
-
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover this specific getsockopt(), that seems
-safe.
-
-Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../amd/display/dc/dcn10/dcn10_hw_sequencer.c | 22 ++++++++-----------
+ .../gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c |  2 +-
+ 2 files changed, 10 insertions(+), 14 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1393,6 +1393,20 @@ static int mptcp_getsockopt_v4(struct mp
- 	return -EOPNOTSUPP;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+index 416168c7dcc52..b120aa67d26c1 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+@@ -1947,20 +1947,11 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 	dc->hwss.get_position(&pipe_ctx, 1, &position);
+ 	vpos = position.vertical_count;
+ 
+-	/* Avoid wraparound calculation issues */
+-	vupdate_start += stream->timing.v_total;
+-	vupdate_end += stream->timing.v_total;
+-	vpos += stream->timing.v_total;
+-
+ 	if (vpos <= vupdate_start) {
+ 		/* VPOS is in VACTIVE or back porch. */
+ 		lines_to_vupdate = vupdate_start - vpos;
+-	} else if (vpos > vupdate_end) {
+-		/* VPOS is in the front porch. */
+-		return;
+ 	} else {
+-		/* VPOS is in VUPDATE. */
+-		lines_to_vupdate = 0;
++		lines_to_vupdate = stream->timing.v_total - vpos + vupdate_start;
+ 	}
+ 
+ 	/* Calculate time until VUPDATE in microseconds. */
+@@ -1968,13 +1959,18 @@ static void delay_cursor_until_vupdate(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 		stream->timing.h_total * 10000u / stream->timing.pix_clk_100hz;
+ 	us_to_vupdate = lines_to_vupdate * us_per_line;
+ 
++	/* Stall out until the cursor update completes. */
++	if (vupdate_end < vupdate_start)
++		vupdate_end += stream->timing.v_total;
++
++	/* Position is in the range of vupdate start and end*/
++	if (lines_to_vupdate > stream->timing.v_total - vupdate_end + vupdate_start)
++		us_to_vupdate = 0;
++
+ 	/* 70 us is a conservative estimate of cursor update time*/
+ 	if (us_to_vupdate > 70)
+ 		return;
+ 
+-	/* Stall out until the cursor update completes. */
+-	if (vupdate_end < vupdate_start)
+-		vupdate_end += stream->timing.v_total;
+ 	us_vupdate = (vupdate_end - vupdate_start + 1) * us_per_line;
+ 	udelay(us_to_vupdate + us_vupdate);
+ }
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
+index 39a57bcd78667..576acf2ce10dd 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_hubp.c
+@@ -44,7 +44,7 @@ void hubp31_set_unbounded_requesting(struct hubp *hubp, bool enable)
+ 	struct dcn20_hubp *hubp2 = TO_DCN20_HUBP(hubp);
+ 
+ 	REG_UPDATE(DCHUBP_CNTL, HUBP_UNBOUNDED_REQ_MODE, enable);
+-	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, enable);
++	REG_UPDATE(CURSOR_CONTROL, CURSOR_REQ_MODE, 1);
  }
  
-+static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
-+			       char __user *optval, int __user *optlen)
-+{
-+	struct sock *sk = (void *)msk;
-+
-+	switch (optname) {
-+	case IPV6_V6ONLY:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    sk->sk_ipv6only);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
- 				      char __user *optval, int __user *optlen)
- {
-@@ -1432,6 +1446,8 @@ int mptcp_getsockopt(struct sock *sk, in
- 
- 	if (level == SOL_IP)
- 		return mptcp_getsockopt_v4(msk, optname, optval, option);
-+	if (level == SOL_IPV6)
-+		return mptcp_getsockopt_v6(msk, optname, optval, option);
- 	if (level == SOL_TCP)
- 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
- 	if (level == SOL_MPTCP)
+ void hubp31_soft_reset(struct hubp *hubp, bool reset)
+-- 
+2.39.5
+
 
 
 
