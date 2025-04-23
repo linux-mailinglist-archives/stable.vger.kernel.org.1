@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51F22A990AE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396E6A98ED4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8F308E5206
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF53D7AEB2D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF932820AE;
-	Wed, 23 Apr 2025 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C7281357;
+	Wed, 23 Apr 2025 14:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDkB1tlP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNSs2rgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1932B28150B;
-	Wed, 23 Apr 2025 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F18280CCE;
+	Wed, 23 Apr 2025 14:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420822; cv=none; b=HlTOl+IyO8Od3MHb+3PDyqz2SoAtdyAJwykZo7Oi3uFtFLWm/a3NgVr/KF8EgNmrdEgjmVLJAL/FXvah3jeC+k3Ynr+84TEJw3o8n0EybAEWif3QxZbTeaE3q7Tht8gPI6Bib74Wi2DfaXe6V/bOcYM+QQoxl5mkKQgVArzllkA=
+	t=1745420345; cv=none; b=PcfruVdZpURO3hyXiTzOsWSeceTA68vE/dbZT68NmXnP4jwKBx2gem9/ouhv00hsmPcOvV7LrNNqtDY6m7d/AKmTpj/gWP+6VCyrWGfaZKbl+bCJ21oDSsrRGx/mfbX+ctd8K/zJENW66vUfmyuc4UECAblg5VU9tF6KNU2MAj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420822; c=relaxed/simple;
-	bh=9VHs/pb8lA+9yPRcQcQ8GEw84ipWnBPXE5QCGgCnUEw=;
+	s=arc-20240116; t=1745420345; c=relaxed/simple;
+	bh=m1xoqtgq204qm0DAtR+NNA5JAdaBG3vzwOZNUNcGo3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XxzGXdeoJeUfFdSej3u53mheayzkFLnH3inQFlluasKV/IKtYCotdsM8Qvl7oZRizOHUWCZ35nHiKw7WHtH3+IDFy544khNMfAOnnYCMzPrxjp/H1f+Zq0ltG+e9rD39ebHm/f/vht4/WS/c6OpMzhI/knsku70/jP4goiPve9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDkB1tlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E416C4CEE2;
-	Wed, 23 Apr 2025 15:07:01 +0000 (UTC)
+	 MIME-Version; b=VGif3MW7h8QPQBtY1JEukeBPdk1dKsjAsKCniBuYRL4oc233FOvXBE1FOr7gJiBSgbuZuOzinGiBaXrbRa8NtkDTwaQQlInOB1JTn93sc2Ccx2zfBy7aVRN5uBI6f8j8/HwPl526lnrxFHoOYzHlJhjW0UcnrkM8VZVnW1LBGrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNSs2rgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05110C4CEE2;
+	Wed, 23 Apr 2025 14:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420822;
-	bh=9VHs/pb8lA+9yPRcQcQ8GEw84ipWnBPXE5QCGgCnUEw=;
+	s=korg; t=1745420345;
+	bh=m1xoqtgq204qm0DAtR+NNA5JAdaBG3vzwOZNUNcGo3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDkB1tlP6nFIi3AtXw1v+FlY44FZDtUvkE6czorZ73O4ht8Wy0aoWNjZr4muR1CS0
-	 P2Hag2xFuXv3meJcEdeCNxDpif3y8iQTw+5Ld1NKGfUJlmpGvmhVgBjHoJD9PD3+vY
-	 NGNeLCcbgQEwfe97i1IoogYdjlvEKkM17EryVTKY=
+	b=TNSs2rgOgOUjXDRmS+0CKABd1ptSuD00Y0Jina3THKPMv61OJ8/VAnCx0F4wXp3Vz
+	 u1JKn85vnvlVAUwkoATdHbYKDFS2lzoyvgnyTL6iadAmoYS+96ednPcl51Ssc8d787
+	 +s8tLe5ZvGA2GMuKgXD5zbhvF1TYjvnP7kktgwOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/393] pwm: rcar: Improve register calculation
-Date: Wed, 23 Apr 2025 16:40:11 +0200
-Message-ID: <20250423142648.113788920@linuxfoundation.org>
+Subject: [PATCH 6.1 023/291] perf: arm_pmu: Dont disable counter in armpmu_add()
+Date: Wed, 23 Apr 2025 16:40:12 +0200
+Message-ID: <20250423142625.351721348@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit e7327c193014a4d8666e9c1cda09cf2c060518e8 ]
+[ Upstream commit dcca27bc1eccb9abc2552aab950b18a9742fb8e7 ]
 
-There were several issues in the function rcar_pwm_set_counter():
+Currently armpmu_add() tries to handle a newly-allocated counter having
+a stale associated event, but this should not be possible, and if this
+were to happen the current mitigation is insufficient and potentially
+expensive. It would be better to warn if we encounter the impossible
+case.
 
- - The u64 values period_ns and duty_ns were cast to int on function
-   call which might loose bits on 32 bit architectures.
-   Fix: Make parameters to rcar_pwm_set_counter() u64
- - The algorithm divided by the result of a division which looses
-   precision.
-   Fix: Make use of mul_u64_u64_div_u64()
- - The calculated values were just masked to fit the respective register
-   fields which again might loose bits.
-   Fix: Explicitly check for overlow
+Calls to pmu::add() and pmu::del() are serialized by the core perf code,
+and armpmu_del() clears the relevant slot in pmu_hw_events::events[]
+before clearing the bit in pmu_hw_events::used_mask such that the
+counter can be reallocated. Thus when armpmu_add() allocates a counter
+index from pmu_hw_events::used_mask, it should not be possible to observe
+a stale even in pmu_hw_events::events[] unless either
+pmu_hw_events::used_mask or pmu_hw_events::events[] have been corrupted.
 
-Implement the respective fixes.
+If this were to happen, we'd end up with two events with the same
+event->hw.idx, which would clash with each other during reprogramming,
+deletion, etc, and produce bogus results. Add a WARN_ON_ONCE() for this
+case so that we can detect if this ever occurs in practice.
 
-A side effect of fixing the 2nd issue is that there is no division by 0
-if clk_get_rate() returns 0.
+That possiblity aside, there's no need to call arm_pmu::disable(event)
+for the new event. The PMU reset code initialises the counter in a
+disabled state, and armpmu_del() will disable the counter before it can
+be reused. Remove the redundant disable.
 
-Fixes: ed6c1476bf7f ("pwm: Add support for R-Car PWM Timer")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/ab3dac794b2216cc1cc56d65c93dd164f8bd461b.1743501688.git.u.kleine-koenig@baylibre.com
-[ukleinek: Added an explicit #include <linux/bitfield.h> to please the
-0day build bot]
-Link: https://lore.kernel.org/oe-kbuild-all/202504031354.VJtxScP5-lkp@intel.com/
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Link: https://lore.kernel.org/r/20250218-arm-brbe-v19-v20-2-4e9922fc2e8e@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-rcar.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/perf/arm_pmu.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pwm/pwm-rcar.c b/drivers/pwm/pwm-rcar.c
-index 5b5f357c44de6..18fa2d40d9365 100644
---- a/drivers/pwm/pwm-rcar.c
-+++ b/drivers/pwm/pwm-rcar.c
-@@ -8,6 +8,7 @@
-  * - The hardware cannot generate a 0% duty cycle.
-  */
+diff --git a/drivers/perf/arm_pmu.c b/drivers/perf/arm_pmu.c
+index 3f07df5a7e950..d351d6ce750bf 100644
+--- a/drivers/perf/arm_pmu.c
++++ b/drivers/perf/arm_pmu.c
+@@ -340,12 +340,10 @@ armpmu_add(struct perf_event *event, int flags)
+ 	if (idx < 0)
+ 		return idx;
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/err.h>
- #include <linux/io.h>
-@@ -103,23 +104,24 @@ static void rcar_pwm_set_clock_control(struct rcar_pwm_chip *rp,
- 	rcar_pwm_write(rp, value, RCAR_PWMCR);
- }
+-	/*
+-	 * If there is an event in the counter we are going to use then make
+-	 * sure it is disabled.
+-	 */
++	/* The newly-allocated counter should be empty */
++	WARN_ON_ONCE(hw_events->events[idx]);
++
+ 	event->hw.idx = idx;
+-	armpmu->disable(event);
+ 	hw_events->events[idx] = event;
  
--static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, int duty_ns,
--				int period_ns)
-+static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, u64 duty_ns,
-+				u64 period_ns)
- {
--	unsigned long long one_cycle, tmp;	/* 0.01 nanoseconds */
-+	unsigned long long tmp;
- 	unsigned long clk_rate = clk_get_rate(rp->clk);
- 	u32 cyc, ph;
- 
--	one_cycle = NSEC_PER_SEC * 100ULL << div;
--	do_div(one_cycle, clk_rate);
-+	/* div <= 24 == RCAR_PWM_MAX_DIVISION, so the shift doesn't overflow. */
-+	tmp = mul_u64_u64_div_u64(period_ns, clk_rate, (u64)NSEC_PER_SEC << div);
-+	if (tmp > FIELD_MAX(RCAR_PWMCNT_CYC0_MASK))
-+		tmp = FIELD_MAX(RCAR_PWMCNT_CYC0_MASK);
- 
--	tmp = period_ns * 100ULL;
--	do_div(tmp, one_cycle);
--	cyc = (tmp << RCAR_PWMCNT_CYC0_SHIFT) & RCAR_PWMCNT_CYC0_MASK;
-+	cyc = FIELD_PREP(RCAR_PWMCNT_CYC0_MASK, tmp);
- 
--	tmp = duty_ns * 100ULL;
--	do_div(tmp, one_cycle);
--	ph = tmp & RCAR_PWMCNT_PH0_MASK;
-+	tmp = mul_u64_u64_div_u64(duty_ns, clk_rate, (u64)NSEC_PER_SEC << div);
-+	if (tmp > FIELD_MAX(RCAR_PWMCNT_PH0_MASK))
-+		tmp = FIELD_MAX(RCAR_PWMCNT_PH0_MASK);
-+	ph = FIELD_PREP(RCAR_PWMCNT_PH0_MASK, tmp);
- 
- 	/* Avoid prohibited setting */
- 	if (cyc == 0 || ph == 0)
+ 	hwc->state = PERF_HES_STOPPED | PERF_HES_UPTODATE;
 -- 
 2.39.5
 
