@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E845AA99356
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B31A98ED6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1104A9A14DB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3126A3BA1CF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA0E27FD49;
-	Wed, 23 Apr 2025 15:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371D627F4F3;
+	Wed, 23 Apr 2025 14:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBWPZUdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INONRfCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2810627FD4F;
-	Wed, 23 Apr 2025 15:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70FA481CD;
+	Wed, 23 Apr 2025 14:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421858; cv=none; b=uREMfdRRhpvPoj1AWvLGrYKijj5PTRnJ758eh4K7p4oYwrATiSCdyd3eqLkGejx5Zw7SmE+lH8XrCtctsQ0Y7UYsB28YmUWvbxc5bMQefQoww50nPhv4i0bIxzbeC8c9S4SjGFnVh1l0t5eVtJxTgrEmoigg8ZrZBvQ5p8ShAnA=
+	t=1745420174; cv=none; b=DhpaTBCMZnGhB9H6oZyLmkJyurqDQXQg9vJA/wRWqFUuv9a9KDcUEjZskJwm1V4pPZ37f4FOphznIDYChUWhW6wkjKb489yBH1zZHIjp9cgAUqNN3NHP6TcSQP2h1dCnt5EvKGTOgHYuW/DRcgh2qD1aj0uV1+fOT/N0zlkrt7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421858; c=relaxed/simple;
-	bh=UOHC1jev8ANNVU5EObjmQn7tzb4wxrDoRzGS5Awaes4=;
+	s=arc-20240116; t=1745420174; c=relaxed/simple;
+	bh=s8tpM+J00SHHB6T8AuGjfdjH8wQqLWrG3nniwL8Fkgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UebjuR7K48mXu7mpxXDdDs03huI50eWled3CGdVG5jS21CI9bdemwwoH4LICh/AacBXaNfHIQzMwa9Y+BypTPqRviLv64Aor+9DpU78bMCauQ016Rr5rLthtzhWHv5aPfFYGIWCmkLFEX+LYcmSghyrOMngFj0i4QuwVWq0dSVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBWPZUdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFE7C4CEE2;
-	Wed, 23 Apr 2025 15:24:17 +0000 (UTC)
+	 MIME-Version; b=r7MShXsymgsAzP+iQWYD4wlqxLCP9/DbwtzjjUU2ZpHTxuHIqukGmVYoWina8P1IOicsHQAKHaqeqdj/IePTbrRzD1Nm8Y+VS8eriKjGpsHzYrt3hDZXEWat5wpIBguYhlkYUAulupI5yLYlC3mBlfZr/aOglpOjIRDyq8xMYjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INONRfCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0D2C4CEE2;
+	Wed, 23 Apr 2025 14:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421858;
-	bh=UOHC1jev8ANNVU5EObjmQn7tzb4wxrDoRzGS5Awaes4=;
+	s=korg; t=1745420173;
+	bh=s8tpM+J00SHHB6T8AuGjfdjH8wQqLWrG3nniwL8Fkgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBWPZUdAilpkhvsUJKFPc64vZr3M1ZloHY2pupAHhR9M/n3XuXEr0Xntyh1oMR4ro
-	 EEdskoB0NZXpNXbG6RZ0GFx+UNoM9lLasmb+4oOHu83kG7h778z32uCu9+Pu2129xI
-	 DdT1tof3b7ixiW8iAuiZxBocmfOmHSrJ4dS/zjL4=
+	b=INONRfCGktH9B00FCDJN5XcMjAZTuqbWE4H0t1hzbE37CtAZ3yeV0SldTVqYl1FDi
+	 oiq5Q9COlVWGD9yHbqMtvIoBZ6ns3sIBCEiRQM3LoMJzS45U6xmrsFkagPjDkITsiJ
+	 kTX4ipxg+jFFVXzcAO3TbsbrxhfAJ0HiaLj9AdEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Michael Nemanov <michael.nemanov@ti.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/291] wifi: wl1251: fix memory leak in wl1251_tx_work
+	moyi geek <1441339168@qq.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 086/223] rust: kbuild: use `pound` to support GNU Make < 4.3
 Date: Wed, 23 Apr 2025 16:42:38 +0200
-Message-ID: <20250423142631.294737333@linuxfoundation.org>
+Message-ID: <20250423142620.626359313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit a0f0dc96de03ffeefc2a177b7f8acde565cb77f4 ]
+commit 1c4494c14b4124f3a13a7f4912b84b633ff4f9ba upstream.
 
-The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
-with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
+GNU Make 4.3 changed the behavior of `#` inside commands in commit
+c6966b323811 ("[SV 20513] Un-escaped # are not comments in function
+invocations"):
 
-Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
-Link: https://patch.msgid.link/20250330104532.44935-1-abdun.nihaal@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    * WARNING: Backward-incompatibility!
+      Number signs (#) appearing inside a macro reference or function invocation
+      no longer introduce comments and should not be escaped with backslashes:
+      thus a call such as:
+        foo := $(shell echo '#')
+      is legal.  Previously the number sign needed to be escaped, for example:
+        foo := $(shell echo '\#')
+      Now this latter will resolve to "\#".  If you want to write makefiles
+      portable to both versions, assign the number sign to a variable:
+        H := \#
+        foo := $(shell echo '$H')
+      This was claimed to be fixed in 3.81, but wasn't, for some reason.
+      To detect this change search for 'nocomment' in the .FEATURES variable.
+
+Unlike other commits in the kernel about this issue, such as commit
+633174a7046e ("lib/raid6/test/Makefile: Use $(pound) instead of \#
+for Make 4.3"), that fixed the issue for newer GNU Makes, in our case
+it was the opposite, i.e. we need to fix it for the older ones: someone
+building with e.g. 4.2.1 gets the following error:
+
+    scripts/Makefile.compiler:81: *** unterminated call to function 'call': missing ')'.  Stop.
+
+Thus use the existing variable to fix it.
+
+Reported-by: moyi geek <1441339168@qq.com>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565/topic/x/near/512001985
+Cc: stable@vger.kernel.org
+Fixes: e72a076c620f ("kbuild: fix issues with rustc-option")
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250414171241.2126137-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/Makefile.compiler |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index e9dc3c72bb110..06dc74cc6cb52 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
- 	while ((skb = skb_dequeue(&wl->tx_queue))) {
- 		if (!woken_up) {
- 			ret = wl1251_ps_elp_wakeup(wl);
--			if (ret < 0)
-+			if (ret < 0) {
-+				skb_queue_head(&wl->tx_queue, skb);
- 				goto out;
-+			}
- 			woken_up = true;
- 		}
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -75,7 +75,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
+ # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+-	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
++	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+ 	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
  
--- 
-2.39.5
-
 
 
 
