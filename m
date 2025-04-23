@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77F1A99016
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD8EA993CE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A42CC8E13A6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D12C41B86A22
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D5B28CF75;
-	Wed, 23 Apr 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86B82949F8;
+	Wed, 23 Apr 2025 15:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lq4uFLuX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxRu1pWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D244288CBC;
-	Wed, 23 Apr 2025 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8835D28F93A;
+	Wed, 23 Apr 2025 15:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420749; cv=none; b=ATDyrfFEpjhZKKppf/8zd7KSfdCZaQ4ctvVxO1gnb6aYQaLUUVNm/odX9vX24D6cxWiYDzkTPggdTT8ojokXGdZXtlxGslBgUEDw+eNm2QfNEiv2Y8+pYkn7zvfV4NoXuDNCFk5NwPeqg3EIhn2NUej/hwHtL0WeF73VgieLGhE=
+	t=1745422396; cv=none; b=SaglFmv134/ab+rfN1F9cxF8Qu4nb9tfPs5v2VlnFILV6zRMUZPwYQnv+ChijlYs4sLIhpZD/DllBrFz63jtIBYpQKBFkvcWCuDl2bLtGfc5VIa6jGgwY6Lad3cyaXceK7tgzytdvVDsbaJZ/BtxmMfhvRDCSnHZwUFADDrK7+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420749; c=relaxed/simple;
-	bh=EmKcxj/MbhSoIoFpDf4VaWRB9a+TV5WnYS/tXzeZpbU=;
+	s=arc-20240116; t=1745422396; c=relaxed/simple;
+	bh=EjzYxBrbWJYK0VYWSWoR8pG5mXnAnA3djs/5nrtKors=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8DZKsZ2GKA+puis20KRGkG6jSOYSDsEPqV+2ayxcmORRbncSJAexYHeTNa7TY2mLw3qRw45oVSNvmwmErJIkEovtgD/8wiNwp1KqKf3Gu79JaxG28YN1mY1+QN2UnQWyXQsb5jyPMd0D0HdST+u8UJJSfbZv2t+difQwbwq46c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lq4uFLuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FF9C4CEE8;
-	Wed, 23 Apr 2025 15:05:47 +0000 (UTC)
+	 MIME-Version; b=d/qlFe8NLh0QGrdqdDD61tkOrWqpL/pVrFeyaWmw9J2HQSPcn9QKWJtwWqiRVHwbTBBhQKXnNPOwscsXbknFKc7JNeIixbtFeJmEbaMGCv7YdtiwGxpE8h43ybFALbAniNEOmCE2nmznP/a6BLVUp63hslfuvGj0+CwRflNDee4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxRu1pWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C958C4CEE3;
+	Wed, 23 Apr 2025 15:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420748;
-	bh=EmKcxj/MbhSoIoFpDf4VaWRB9a+TV5WnYS/tXzeZpbU=;
+	s=korg; t=1745422396;
+	bh=EjzYxBrbWJYK0VYWSWoR8pG5mXnAnA3djs/5nrtKors=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lq4uFLuX3frp7s/hTm/ji2G6CxIfmxLW9aq6uM3wDkLosKxVayMmyFXAhhxQNDzHX
-	 a5WBAyxlVd6L0jGodcdpiGHut+2KbGJB6KdCTVNvstdRolUBBMAAm8dZ6NX1r6uhMn
-	 cRLXE4yJECZIwiVR0utdgIJBdqmMSQpQIipQ74ss=
+	b=AxRu1pWDfy0RF4A5c202s/6AeyyEW5g+wLXz/kU0P6BpFBWKkqlhw2CDD9j4lB6Xi
+	 S6Cg7icbz4fht+YyfZ3uhqQ2CmSDQPS+QpVlMsAStIr0aDKMetV1FF7iEiaEZPEugO
+	 dj7bQcleMIYtQANJL9o3F94xa4J5wDZx1MjtRd54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 159/223] drm/amd/pm/smu11: Prevent division by zero
+	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 335/393] virtiofs: add filesystem context source name check
 Date: Wed, 23 Apr 2025 16:43:51 +0200
-Message-ID: <20250423142623.647754155@linuxfoundation.org>
+Message-ID: <20250423142657.173409450@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 
-commit 7ba88b5cccc1a99c1afb96e31e7eedac9907704c upstream.
+commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+In certain scenarios, for example, during fuzz testing, the source
+name may be NULL, which could lead to a kernel panic. Therefore, an
+extra check for the source name should be added.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1e866f1fe528 ("drm/amd/pm: Prevent divide by zero")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit da7dc714a8f8e1c9fc33c57cd63583779a3bef71)
-Cc: stable@vger.kernel.org
+Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
+Cc: <stable@vger.kernel.org> # all LTS kernels
+Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/virtio_fs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-@@ -1199,7 +1199,7 @@ int smu_v11_0_set_fan_speed_rpm(struct s
- 	uint32_t crystal_clock_freq = 2500;
- 	uint32_t tach_period;
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1430,6 +1430,9 @@ static int virtio_fs_get_tree(struct fs_
+ 	unsigned int virtqueue_size;
+ 	int err = -EIO;
  
--	if (speed == 0)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
- 	/*
- 	 * To prevent from possible overheat, some ASICs may have requirement
++	if (!fsc->source)
++		return invalf(fsc, "No source specified");
++
+ 	/* This gets a reference on virtio_fs object. This ptr gets installed
+ 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
+ 	 * to drop the reference to this object.
 
 
 
