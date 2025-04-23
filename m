@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEAE2A9920F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A01EAA99044
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DC7921A50
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CEB717254D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707D12BD582;
-	Wed, 23 Apr 2025 15:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF836289367;
+	Wed, 23 Apr 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2X2z/jAn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeUIT5Eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2C72BCF7F;
-	Wed, 23 Apr 2025 15:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F2E28936B;
+	Wed, 23 Apr 2025 15:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421500; cv=none; b=cpdybnOp4PMAZT/7JVXSjVUiyCvdrNO7WO32vMn/NRZZsUTuvdKINvyN56x43e8nhKRDOGxnQSnawAqiU8JkRs2ULFaBZj7H3KQTPQDhIOVrPT9QPOMJOk87yATXc7IdLfQVJQfGvmh0EQa9GbMv10p8kWyZ5B19OTSCk2P3yF4=
+	t=1745420916; cv=none; b=mGgWdSNtkBXrfFJSSF47APdgECYHMxWxWZlETTrnTi2qc/zKOPxIlJRZrI7ZiWj1mjyU+vCgNMvtBw37e/vr2XH7L2ZTC8aArfnTR74g7tpux+N9mrVrSMaT50bqRfIDph1JN8hPOd4SzCQAjP5idNSALBeVAAttn7OkAOu5Ys4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421500; c=relaxed/simple;
-	bh=Y2OeIHOClCJsou7Cq8lcAddAUk2qAkJ7jIpDs9hwdPY=;
+	s=arc-20240116; t=1745420916; c=relaxed/simple;
+	bh=0YRS8zDXQBg5ki+tMemr/uhlHvQZWfgUC1l53FrhyD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8mhoeTLGzgHLfLGr7VWsibZ1e9OtHwxlJx0nIo/br98lg1tJ19ANLpYGCfmoa4I8HhoQr+6XGr7kmowEcV8zdBiG6igbcfalhZpjBjyzs62hGrTcry3X3Y31MpqnCxKX/FS+5wV+I/HXQdpT5crqyVbS4mG+024IjMlWiB+x2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2X2z/jAn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2848C4CEE3;
-	Wed, 23 Apr 2025 15:18:19 +0000 (UTC)
+	 MIME-Version; b=Z6DjPkIye1SFLPl6RWXfz38FdATJsXgPWO6kUbdpAOyZSxRCNt0Tx/yZK9D6M/Mef1hm/lN4pEP6Gel40FkfmiaDDlXw1JwZkKmTINUyGnw4QJw6XZQ36B0G2f+nM853RZ0msQF15AzRbUfgNfR+eCMUKUAMLpe7KjgXHvrTbYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeUIT5Eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96631C4CEE2;
+	Wed, 23 Apr 2025 15:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421500;
-	bh=Y2OeIHOClCJsou7Cq8lcAddAUk2qAkJ7jIpDs9hwdPY=;
+	s=korg; t=1745420915;
+	bh=0YRS8zDXQBg5ki+tMemr/uhlHvQZWfgUC1l53FrhyD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2X2z/jAnkqBrNmzhRquDE4Yly1X2LOG6iCI+rQUBTk3SIo8ttHW6rb3xtYei2PWBF
-	 gebpnPmHnasr82zAhpRGIcYpoDHkh5XvOq74lNR8gFWQnOsU/dkBSiMneoSXUOfDD7
-	 OGIJSBpaGwistyHZrndgm6zTr+ocNVucRQvr8HUE=
+	b=BeUIT5EbkbCix6gFRfiUsB4QmKPiODZNjr1j1YGfCI7SXwTMhkDGaqqr6pyw4EFwH
+	 y+6fLbgObSq4ECwzyeXKtVqLdZ6p5DGH71+C+AVMtWWnsU2l8NQU7NQIvsAr2Taz2c
+	 yYWWLac/ekjeYSVqgCqHMnqhXCA+PYuZo+9UIbik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 185/393] btrfs: zoned: fix zone finishing with missing devices
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 092/291] media: streamzap: prevent processing IR data on URB failure
 Date: Wed, 23 Apr 2025 16:41:21 +0200
-Message-ID: <20250423142651.022134777@linuxfoundation.org>
+Message-ID: <20250423142628.116385875@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 35fec1089ebb5617f85884d3fa6a699ce6337a75 upstream.
+commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
 
-If do_zone_finish() is called with a filesystem that has missing devices
-(e.g. a RAID file system mounted in degraded mode) it is accessing the
-btrfs_device::zone_info pointer, which will not be set if the device
-in question is missing.
+If streamzap_callback() receives an urb with any non-critical error
+status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
+it will try to process IR data, ignoring a possible transfer failure.
 
-Check if the device is present (by checking if it has a valid block device
-pointer associated) and if not, skip zone finishing for it.
+Make streamzap_callback() process IR data only when urb->status is 0.
+Move processing logic to a separate function to make code cleaner and
+more similar to the URB completion handlers in other RC drivers.
 
-Fixes: 4dcbb8ab31c1 ("btrfs: zoned: make zone finishing multi stripe capable")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2168,6 +2168,9 @@ static int do_zone_finish(struct btrfs_b
- 		const u64 physical = map->stripes[i].physical;
- 		struct btrfs_zoned_device_info *zinfo = device->zone_info;
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -138,39 +138,10 @@ static void sz_push_half_space(struct st
+ 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
+ }
  
-+		if (!device->bdev)
-+			continue;
+-/*
+- * streamzap_callback - usb IRQ handler callback
+- *
+- * This procedure is invoked on reception of data from
+- * the usb remote.
+- */
+-static void streamzap_callback(struct urb *urb)
++static void sz_process_ir_data(struct streamzap_ir *sz, int len)
+ {
+-	struct streamzap_ir *sz;
+ 	unsigned int i;
+-	int len;
+-
+-	if (!urb)
+-		return;
+-
+-	sz = urb->context;
+-	len = urb->actual_length;
+-
+-	switch (urb->status) {
+-	case -ECONNRESET:
+-	case -ENOENT:
+-	case -ESHUTDOWN:
+-		/*
+-		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+-		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
+-		return;
+-	default:
+-		break;
+-	}
+ 
+-	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
+ 	for (i = 0; i < len; i++) {
+ 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
+ 			i, (unsigned char)sz->buf_in[i]);
+@@ -219,6 +190,43 @@ static void streamzap_callback(struct ur
+ 	}
+ 
+ 	ir_raw_event_handle(sz->rdev);
++}
 +
- 		if (zinfo->max_active_zones == 0)
- 			continue;
++/*
++ * streamzap_callback - usb IRQ handler callback
++ *
++ * This procedure is invoked on reception of data from
++ * the usb remote.
++ */
++static void streamzap_callback(struct urb *urb)
++{
++	struct streamzap_ir *sz;
++	int len;
++
++	if (!urb)
++		return;
++
++	sz = urb->context;
++	len = urb->actual_length;
++
++	switch (urb->status) {
++	case 0:
++		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
++		sz_process_ir_data(sz, len);
++		break;
++	case -ECONNRESET:
++	case -ENOENT:
++	case -ESHUTDOWN:
++		/*
++		 * this urb is terminated, clean up.
++		 * sz might already be invalid at this point
++		 */
++		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		return;
++	default:
++		break;
++	}
++
+ 	usb_submit_urb(urb, GFP_ATOMIC);
+ }
  
 
 
