@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-136349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E9AA993ED
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:05:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9290EA99417
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30E531BC16BD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 532B29A420F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8BA22857DF;
-	Wed, 23 Apr 2025 15:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F85288C89;
+	Wed, 23 Apr 2025 15:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjOu5zkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSJgDSmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B723279345;
-	Wed, 23 Apr 2025 15:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959C62857C1;
+	Wed, 23 Apr 2025 15:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422313; cv=none; b=YOcWEL1IvSm7gJ+WsEOOeg/g9gxAUDybL4yb+Nz1Unph6ZkYpt6TtZTZ2SPM36smks3e89bYn4sD8hO9HgyUs0Dna2q2CIM8thu6quWqsxR28kZR2fj5gIjxKCWGVTSYDcP6MrAI6TIeib09VlbW40BYIMpCx80bdjclg+vnR3Y=
+	t=1745422317; cv=none; b=b2eCLu2YsPqACHiBinjo7/XZyVGj9z6NTTmpQfPdMDGUlW7rooiVebUK0pLgWlgC1bVPwjNFa05GeQKdYX7EAL5SS6sBlSwS/wGf+z6Tekus5tmD/VjTSz9hcFF5VgNZ/PhMmgPNwOPD0H45V1lofmvFrFWGDd94LyfYRSbt3Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422313; c=relaxed/simple;
-	bh=Se2tV4GxNuphmIlPu2UFVBaKsGBW8QKScK5LjlKIN+U=;
+	s=arc-20240116; t=1745422317; c=relaxed/simple;
+	bh=8LlWXlITa5Pzf13CWE6bf1XVQpjEc9nsKayOOV6JtbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rZ31eglH5jgY/qWcGKeW9adJP7Q3giLOf4RnIEKVW4/dF5OkvmRQAFWFfzHPi7nnEocKFGJmWjnjYKOoz8dB/x7hNRYed0yf9aZQj8VpmV5emF2aPmQzEqkW0HJa7nBlJEGibUYfvj0WiJdBEBCwdLbuQy2LpUSvBkG9lB+2mng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wjOu5zkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86757C4CEE2;
-	Wed, 23 Apr 2025 15:31:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ncrRREMvO97qs2d+74QxlCDauXaUwDv7wkMbUSIl+6Lxesss0iOb/cpnciDL0IzfyumLB8ly+/IGYwWN78qlpyu4vK9dc/so2UrktYSYmYoQmkYwsCimLBjGTfyZZsmH1fkdQedpBcnCJk0/Cyn1KAaWigf1y0D/8AJdCGpqPiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSJgDSmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10CEC4CEE2;
+	Wed, 23 Apr 2025 15:31:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422311;
-	bh=Se2tV4GxNuphmIlPu2UFVBaKsGBW8QKScK5LjlKIN+U=;
+	s=korg; t=1745422317;
+	bh=8LlWXlITa5Pzf13CWE6bf1XVQpjEc9nsKayOOV6JtbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjOu5zknhGWRap4QzvPCeGBkDIhEAm77Etsa/SBN7EwZ1Dw/sfyT3eyFmqE7izIDd
-	 mQuV+k7fs0kcAPECXLhSl7yygdf9OOEx+T3ZWDaJhCAxcXt8HSxoWI3aTRXCAJOX9c
-	 2KwgXcfFLjAX9egxKKr0mO+mng0fPoL7g3MvUFSo=
+	b=bSJgDSmpTw4AYCL8IPWWqxfvglcZMzUOR3Y2VlfP1LKXnOF8Jjfx57Gcw5gtDnOox
+	 BgQtUS81IOULhTg///lEEAfMGvqWUsRnaLlpips03ZCT2DhQmbBPBeJX4U8puMLSUP
+	 QeuFg4xnm1C42YcWY5FC15k4i8xy2SRethJrh3Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Jan Kara <jack@suse.cz>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 318/393] loop: properly send KOBJ_CHANGED uevent for disk device
-Date: Wed, 23 Apr 2025 16:43:34 +0200
-Message-ID: <20250423142656.474977139@linuxfoundation.org>
+Subject: [PATCH 6.6 319/393] loop: LOOP_SET_FD: send uevents for partitions
+Date: Wed, 23 Apr 2025 16:43:35 +0200
+Message-ID: <20250423142656.516821285@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -68,55 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit e7bc0010ceb403d025100698586c8e760921d471 upstream.
+commit 0dba7a05b9e47d8b546399117b0ddf2426dc6042 upstream.
 
-The original commit message and the wording "uncork" in the code comment
-indicate that it is expected that the suppressed event instances are
-automatically sent after unsuppressing.
-This is not the case, instead they are discarded.
-In effect this means that no "changed" events are emitted on the device
-itself by default.
-While each discovered partition does trigger a changed event on the
-device, devices without partitions don't have any event emitted.
+Remove the suppression of the uevents before scanning for partitions.
+The partitions inherit their suppression settings from their parent device,
+which lead to the uevents being dropped.
 
-This makes udev miss the device creation and prompted workarounds in
-userspace. See the linked util-linux/losetup bug.
+This is similar to the same changes for LOOP_CONFIGURE done in
+commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
 
-Explicitly emit the events and drop the confusingly worded comments.
-
-Link: https://github.com/util-linux/util-linux/issues/2434
 Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
 Cc: stable@vger.kernel.org
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/loop.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 --- a/drivers/block/loop.c
 +++ b/drivers/block/loop.c
-@@ -629,8 +629,8 @@ static int loop_change_fd(struct loop_de
+@@ -624,12 +624,12 @@ static int loop_change_fd(struct loop_de
+ 	 * dependency.
+ 	 */
+ 	fput(old_file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	if (partscan)
+ 		loop_reread_partitions(lo);
  
  	error = 0;
  done:
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+-	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
  	return error;
  
- out_err:
-@@ -1104,8 +1104,8 @@ static int loop_configure(struct loop_de
- 	if (partscan)
- 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
- 
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 
+@@ -637,6 +637,7 @@ out_err:
  	loop_global_unlock(lo, is_loop);
- 	if (partscan)
+ out_putf:
+ 	fput(file);
++	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
+ 	goto done;
+ }
+ 
 
 
 
