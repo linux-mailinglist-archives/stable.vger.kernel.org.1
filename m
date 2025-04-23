@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-135704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABF8A99025
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDBC3A98D7D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75FB51B86E9F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43E8F7A919A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094F928937F;
-	Wed, 23 Apr 2025 15:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCC227D788;
+	Wed, 23 Apr 2025 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhuUj92T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q2Ks5Yd8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB320289373;
-	Wed, 23 Apr 2025 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69E027D76A;
+	Wed, 23 Apr 2025 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420624; cv=none; b=H7QEYmD3HPkU8itGIqflziHvd01EBdWYOPBlqkjJ2dZxy+MdF76aYA65RNYDnMOS9QanJJgaMaPnEfmEtb+YB7ZYRrcrB8dRVThnNrz/A3uX7n1mY5h6dgkfh4n48bz3XLJ8ThVOgydK3JV6N0QYbcS1/2iHYAxN0BiyEhTPfuU=
+	t=1745419553; cv=none; b=ai5zJVRFh8czVLTE0hZPUMCd3ANQ0BpkJxCrkkqhNNJc92xzj8zYer0SBewMIaPq74QCChKtKXsOml/s/eJVCBsWvcdMz58s3T9dMeLQfj8Lf6SM6+vpyp0YL2JX2TEaMwEVXwKyJ/8Q8V5FNokedaafpM2eEulN7kptkn0TBss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420624; c=relaxed/simple;
-	bh=05+x6+9RfuwIfKSd2QKwy350Z+6nczptq66RbTa0FPo=;
+	s=arc-20240116; t=1745419553; c=relaxed/simple;
+	bh=DoJ7TjcU8pol8t777NriQGoLPozWA3SoqUoViOkbiVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CthQ8szJjwbWgHYkh8vsSD6Jne20Z4q85c+c5Gx7oQK4XTzU19/z+yqAF3AT6Df9vUsPSU6hDAffEz1cL8wNDj9R6ch7jQTfYlShSql46ZR0sxjZk90uQ+A3yJK1us9vRX+7EB7Rvd+t8i1KGwvSi1V73DfleN7wfvPbN4dDZyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhuUj92T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FC3DC4CEE2;
-	Wed, 23 Apr 2025 15:03:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bQJJFHoPwLy5W/ekIdzm6YDXn2S794MGd44JfElRhflHkQkDm/NOX6C0NeFzTpLYhEJXpP6AyMUUShDmIARgA1hV5JLezo6KQLlPJGGYlg4825H3jFvzQVJxpsn2igso7pnrIn3UGIAXt8UuhXfTouYnaEDR51FTP1stXaTc9Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q2Ks5Yd8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F04C4CEE2;
+	Wed, 23 Apr 2025 14:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420624;
-	bh=05+x6+9RfuwIfKSd2QKwy350Z+6nczptq66RbTa0FPo=;
+	s=korg; t=1745419553;
+	bh=DoJ7TjcU8pol8t777NriQGoLPozWA3SoqUoViOkbiVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RhuUj92TyQqGJMRLpcj6hsmAMMVTmV/qyxi869Eqdp7hFn3oc3PmTy63xFV0CdIMr
-	 57G9T6I6V/iQ0rfAO1NTiMnmlzTdaGeRDp7NWDVII1Dlx3WstHgQCM+32Dv0+A0u/c
-	 yCJStXXXLNQ4E6sZXs/cfjuXhfmaily0VHkJlz2c=
+	b=q2Ks5Yd8+r7L2V2DVES9ezQndBgai0MYpj4ci52kiWxR6iMa8PMcgf1bUa7qAFdkp
+	 0tL7YqSVIdlMHLHsJDSxJXgmpEA01Rnv1f2SBWNYpje8fCe7CLXWi86tAHFGwIsmfN
+	 Atj/g4E/g6/yfI7JmndcIuL3OdU70NgVr3GO0Nck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Edward Liaw <edliaw@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/393] drm: panel-orientation-quirks: Add support for AYANEO 2S
+Subject: [PATCH 6.1 001/291] selftests/futex: futex_waitv wouldblock test should fail
 Date: Wed, 23 Apr 2025 16:39:50 +0200
-Message-ID: <20250423142647.174892190@linuxfoundation.org>
+Message-ID: <20250423142624.472346689@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Edward Liaw <edliaw@google.com>
 
-[ Upstream commit eb8f1e3e8ee10cff591d4a47437dfd34d850d454 ]
+[ Upstream commit 7d50e00fef2832e98d7e06bbfc85c1d66ee110ca ]
 
-AYANEO 2S uses the same panel and orientation as the AYANEO 2.
+Testcase should fail if -EWOULDBLOCK is not returned when expected value
+differs from actual value from the waiter.
 
-Update the AYANEO 2 DMI match to also match AYANEO 2S.
-
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-2-uejji@uejji.net
+Link: https://lore.kernel.org/r/20250404221225.1596324-1-edliaw@google.com
+Fixes: 9d57f7c79748920636f8293d2f01192d702fe390 ("selftests: futex: Test sys_futex_waitv() wouldblock")
+Signed-off-by: Edward Liaw <edliaw@google.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: André Almeida <andrealmeid@igalia.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../testing/selftests/futex/functional/futex_wait_wouldblock.c  | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index c00f6f16244c0..7bf096ddeb06d 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -184,10 +184,10 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "T103HAF"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
--	}, {	/* AYA NEO AYANEO 2 */
-+	}, {	/* AYA NEO AYANEO 2/2S */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
--		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "AYANEO 2"),
- 		},
- 		.driver_data = (void *)&lcd1200x1920_rightside_up,
- 	}, {	/* AYA NEO 2021 */
+diff --git a/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c b/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c
+index 7d7a6a06cdb75..2d8230da90642 100644
+--- a/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c
++++ b/tools/testing/selftests/futex/functional/futex_wait_wouldblock.c
+@@ -98,7 +98,7 @@ int main(int argc, char *argv[])
+ 	info("Calling futex_waitv on f1: %u @ %p with val=%u\n", f1, &f1, f1+1);
+ 	res = futex_waitv(&waitv, 1, 0, &to, CLOCK_MONOTONIC);
+ 	if (!res || errno != EWOULDBLOCK) {
+-		ksft_test_result_pass("futex_waitv returned: %d %s\n",
++		ksft_test_result_fail("futex_waitv returned: %d %s\n",
+ 				      res ? errno : res,
+ 				      res ? strerror(errno) : "");
+ 		ret = RET_FAIL;
 -- 
 2.39.5
 
