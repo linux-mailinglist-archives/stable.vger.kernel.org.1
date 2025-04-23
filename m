@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A891A99023
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C80BA99155
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E37051B87EE3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5479817E418
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4440128D856;
-	Wed, 23 Apr 2025 15:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB27029009C;
+	Wed, 23 Apr 2025 15:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akIFFITw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfXzAnwq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03073269B07;
-	Wed, 23 Apr 2025 15:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A7F27F4D9;
+	Wed, 23 Apr 2025 15:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420762; cv=none; b=oPnrN7ODEj74NmI6xyQYEU+ccfwPR21G+yFOUyUEAkZWsTieFYTk901Vn8U8WUli2qZmQssgAQv1RXDlJvIZlNHFvgD6rTdKZBkfL2ubwxb9+Cl6SN1G3kccw/8lacPviWdTsTr3uVz4+9nt+o1fo1Y+KgXud7v3W7uNhEbeMTg=
+	t=1745421402; cv=none; b=lgjIS2vo3i07FDIcvXruRCVhdfZImJm7vCTSOMFAcHXDcvfho9Dc1NghFz4jIs9FHoF4c0Uq80Hr1Yavdfg/P6MhaYz324ezyBSwYMnEBSCYGo3kM+DuZVG8mqGP/5Vp+6AXB3OwLNdJjWCYZN+n9P7wrmdNb1oMbVO1IiWu1m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420762; c=relaxed/simple;
-	bh=pNSsrPr+JOgwsb1c6OA/XhgINNBavOo0g/42pNpDOHk=;
+	s=arc-20240116; t=1745421402; c=relaxed/simple;
+	bh=tCJf6gMl/6vR1YTVgzhX0JzoQorK55+6q5NgNXnr+Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GmrR38nTvbx7NMPQZlk7VL99pSgyPkiJ7hybUKjOI3LqASHbCYFPJ4LHduoYGqk+fnIkCHQfdM+/7NgKF0yrYXTkFOaYpgiQnk/0ciEzOGpcT/a6IXctllDZzUiN4xcA01DJCaFQTJKshuIKKljhFMBgW0BnWcUwr8VmOVCfEFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akIFFITw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868C0C4CEE2;
-	Wed, 23 Apr 2025 15:06:01 +0000 (UTC)
+	 MIME-Version; b=ELD6ZvBovkLrgeDG/sqMYO5Llk6sO/tp1zQtn2Y9vE1+eJJTPnXr90DufMG915GxxGg10MWCZ+U3+jHsmF+ydLXgVKlTt7xHKRvUmKmK6naS+o8o7h3keG88+6t9nnHpQms1cDMyNwxOUfp0ul3u/UIZIP8h52F1cutXDcHrRBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfXzAnwq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB68C4CEE2;
+	Wed, 23 Apr 2025 15:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420761;
-	bh=pNSsrPr+JOgwsb1c6OA/XhgINNBavOo0g/42pNpDOHk=;
+	s=korg; t=1745421402;
+	bh=tCJf6gMl/6vR1YTVgzhX0JzoQorK55+6q5NgNXnr+Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akIFFITwo6/sySPShOjDBl1nWxD43i8zf7RM76kI0L5gXKZ2yNGIimnp8wa/54Ki7
-	 aOQq1TWhcqpCs4HfICKPNetXWI+MhWZYpV2InTPI39dH27f+kzm/N4TxlbCLrlpuJv
-	 DgTQWZBdlQYvvJmQIPe9YB/QTS2g1KQoY5KkRNuU=
+	b=qfXzAnwqsrv8714p+smEW0xmiy3biog6pvf04flKH7yXlJatg1VNrIAgEXVKxszAN
+	 Adi5qH8Ua9gdBan3hW9cQKUZr9Irl5Vuf7Cs0NsdF+Zy3BfRieSs8zRIWx3EEI7i89
+	 NB5nf+UH+HBLH79LNh8QGolxICW5KvksYNZkISLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Brendan Tam <Brendan.Tam@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 153/223] drm/amd/display: prevent hang on link training fail
-Date: Wed, 23 Apr 2025 16:43:45 +0200
-Message-ID: <20250423142623.409283431@linuxfoundation.org>
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Chanho Park <chanho61.park@samsung.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.14 162/241] scsi: ufs: exynos: Disable iocc if dma-coherent property isnt set
+Date: Wed, 23 Apr 2025 16:43:46 +0200
+Message-ID: <20250423142627.154733524@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brendan Tam <Brendan.Tam@amd.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit 8058061ed9d6bc259d1e678607b07d259342c08f upstream.
+commit f92bb7436802f8eb7ee72dc911a33c8897fde366 upstream.
 
-[Why]
-When link training fails, the phy clock will be disabled. However, in
-enable_streams, it is assumed that link training succeeded and the
-mux selects the phy clock, causing a hang when a register write is made.
+If dma-coherent property isn't set then descriptors are non-cacheable
+and the iocc shareability bits should be disabled. Without this UFS can
+end up in an incompatible configuration and suffer from random cache
+related stability issues.
 
-[How]
-When enable_stream is hit, check if link training failed. If it did, fall
-back to the ref clock to avoid a hang and keep the system in a recoverable
-state.
-
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Brendan Tam <Brendan.Tam@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Bart Van Assche <bvanassche@acm.org>
+Fixes: cc52e15397cc ("scsi: ufs: ufs-exynos: Support ExynosAuto v9 UFS")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-3-96722cc2ba1b@linaro.org
+Cc: Chanho Park <chanho61.park@samsung.com>
 Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c   |    6 +++++-
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    7 +++++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/ufs/host/ufs-exynos.c |   17 +++++++++++++----
+ drivers/ufs/host/ufs-exynos.h |    3 ++-
+ 2 files changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -3003,7 +3003,11 @@ void dcn20_enable_stream(struct pipe_ctx
- 		dccg->funcs->set_dpstreamclk(dccg, DTBCLK0, tg->inst, dp_hpo_inst);
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -214,8 +214,8 @@ static int exynos_ufs_shareability(struc
+ 	/* IO Coherency setting */
+ 	if (ufs->sysreg) {
+ 		return regmap_update_bits(ufs->sysreg,
+-					  ufs->shareability_reg_offset,
+-					  ufs->iocc_mask, ufs->iocc_mask);
++					  ufs->iocc_offset,
++					  ufs->iocc_mask, ufs->iocc_val);
+ 	}
  
- 		phyd32clk = get_phyd32clk_src(link);
--		dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+		if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
-+			dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
-+		} else {
-+			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+		}
- 	} else {
- 		if (dccg->funcs->enable_symclk_se)
- 			dccg->funcs->enable_symclk_se(dccg, stream_enc->stream_enc_inst,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -1001,8 +1001,11 @@ void dcn401_enable_stream(struct pipe_ct
- 	if (dc_is_dp_signal(pipe_ctx->stream->signal) || dc_is_virtual_signal(pipe_ctx->stream->signal)) {
- 		if (dc->link_srv->dp_is_128b_132b_signal(pipe_ctx)) {
- 			dccg->funcs->set_dpstreamclk(dccg, DPREFCLK, tg->inst, dp_hpo_inst);
--
--			dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+			if (link->cur_link_settings.link_rate == LINK_RATE_UNKNOWN) {
-+				dccg->funcs->disable_symclk32_se(dccg, dp_hpo_inst);
-+			} else {
-+				dccg->funcs->enable_symclk32_se(dccg, dp_hpo_inst, phyd32clk);
-+			}
- 		} else {
- 			/* need to set DTBCLK_P source to DPREFCLK for DP8B10B */
- 			dccg->funcs->set_dtbclk_p_src(dccg, DPREFCLK, tg->inst);
+ 	return 0;
+@@ -1173,13 +1173,22 @@ static int exynos_ufs_parse_dt(struct de
+ 		ufs->sysreg = NULL;
+ 	else {
+ 		if (of_property_read_u32_index(np, "samsung,sysreg", 1,
+-					       &ufs->shareability_reg_offset)) {
++					       &ufs->iocc_offset)) {
+ 			dev_warn(dev, "can't get an offset from sysreg. Set to default value\n");
+-			ufs->shareability_reg_offset = UFS_SHAREABILITY_OFFSET;
++			ufs->iocc_offset = UFS_SHAREABILITY_OFFSET;
+ 		}
+ 	}
+ 
+ 	ufs->iocc_mask = ufs->drv_data->iocc_mask;
++	/*
++	 * no 'dma-coherent' property means the descriptors are
++	 * non-cacheable so iocc shareability should be disabled.
++	 */
++	if (of_dma_is_coherent(dev->of_node))
++		ufs->iocc_val = ufs->iocc_mask;
++	else
++		ufs->iocc_val = 0;
++
+ 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
+ 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
+ 
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -231,8 +231,9 @@ struct exynos_ufs {
+ 	ktime_t entry_hibern8_t;
+ 	const struct exynos_ufs_drv_data *drv_data;
+ 	struct regmap *sysreg;
+-	u32 shareability_reg_offset;
++	u32 iocc_offset;
+ 	u32 iocc_mask;
++	u32 iocc_val;
+ 
+ 	u32 opts;
+ #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
 
 
 
