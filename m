@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B460A99056
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39222A99319
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A9B167F23
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61B211B86748
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F13E28A3F8;
-	Wed, 23 Apr 2025 15:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFD2289358;
+	Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfcMkkWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JsZUav2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5729228A1FD;
-	Wed, 23 Apr 2025 15:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD38A279792;
+	Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420968; cv=none; b=LuWljIRDI2B4DaYLVI9L8Mg377lxJkGgHAIMBp+HgX8TO7DP/HaeOhb7gXw84nhdVq7mOYVSollHb2Vw5Qt/y8von3mK48cl78aPJoABIBWDfiv8kIUGRytfETgBzeClJZmhJXHyrfYOLds/zsyjud7g8F6xefKFWWHgK18jQR0=
+	t=1745422354; cv=none; b=AYOZ5X8TNFoyDdrU7C23r5r5E0N3Me88kJsEAZ3yhwMYCyVL1/nT/MfgFmv4ykFYF6NqGwCXzakgjRvcQOZMgdUT37jMQgokHw5U3e56I783kkvrEjks3esWhYuIb4ngoZ+/n5bh6bUQn4jgCoOOoJrKVI+o/yLrQYATXomtQkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420968; c=relaxed/simple;
-	bh=AA0h21vWcdv/q1UVKGkIxLp99nqsS/G0Goaz8mNsNTM=;
+	s=arc-20240116; t=1745422354; c=relaxed/simple;
+	bh=ZyKAmf1xJ5xWKOn5gVTEJQioUh7g5svyZq+Q3eQf2nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WnqO8G4Qgz0mR30+7w6xsmxnnAgaBzkwKOS7TCBvnDlbXUfPjV8lE6xHo6ZtTuDgwnBKfhPhKbIAhjjMsIKH7nWTG3+tN7LCuWW6lAG5Exs3abXQ0lYIr3THTeaF5Z2Cx41bAjX/nvRi85EAgUUZePFigqhtp4Sxa2x0DmzkX8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfcMkkWV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE7AC4CEE2;
-	Wed, 23 Apr 2025 15:09:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bIwkIiOGjzTnASUYd86iqXwXBwJ9XaagiTLgLaw+BPTFkkM0Kmi0sLxZT0Eam3l++Kxjjsa7/YL8MLXxnjJS+T59lUa2708dgtnBXubVcHPuL1m2oRswOLpvDEYwnLrn7FL9NUCKNao/okYFqWJnkuytHB8x9EFd/WfxCugeAWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JsZUav2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAD4C4CEE2;
+	Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420968;
-	bh=AA0h21vWcdv/q1UVKGkIxLp99nqsS/G0Goaz8mNsNTM=;
+	s=korg; t=1745422354;
+	bh=ZyKAmf1xJ5xWKOn5gVTEJQioUh7g5svyZq+Q3eQf2nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfcMkkWV0FYbkeqfoemKXHjxM8i+Jb3bV/vpgYcpUWHxRWIm9y9K1ZZ1T1c4zonyr
-	 6llc3GvKngYZenjPA7ntlMBDTxrWPDc8p8FEOEF3rfwXgUWugfX/Ptv8uFcyZnjPKH
-	 RHeyjrfgHLF4AoejsKaG5307kKgmViZvdX9YfH9A=
+	b=1JsZUav2hMavcfKw703DaQeVR4smhnPdx+4WcTChSdHDczYQ+QTw34qPAnY3iiv1r
+	 pPhh1d6/ts6IegsDMFs03tS3U6tjU3LMVndm2qJGapnei3w1+69lTnSIqXRsxvHhpZ
+	 nbPIDIsUI/0YLGnvSRArlWGcnVn1dZW3VQY3WgaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 178/223] drm/amd/display: Do not enable Replay and PSR while VRR is on in amdgpu_dm_commit_planes()
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.1 261/291] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
 Date: Wed, 23 Apr 2025 16:44:10 +0200
-Message-ID: <20250423142624.422221831@linuxfoundation.org>
+Message-ID: <20250423142635.092725996@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Chung <chiahsuan.chung@amd.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 69a46ce1f15b4391c128d581f6936750f9bfa052 upstream.
+commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
 
-[Why]
-Replay and PSR will cause some video corruption while VRR is enabled.
+After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
+the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
+have been released.
 
-[How]
-Do not enable the Replay and PSR while VRR is active in
-amdgpu_dm_enable_self_refresh().
+However, some requested IRQs remain unreleased, so there are still
+/proc/irq/* entries remaining, and this results in WARN() with the
+following message:
 
-Fixes: 67edb81d6e9a ("drm/amd/display: Disable replay and psr while VRR is enabled")
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
+  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
+
+To solve this issue, set the number of remaining IRQs to test->num_irqs,
+and release IRQs in advance by calling pci_endpoint_test_release_irq().
+
 Cc: stable@vger.kernel.org
+Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-index 36a830a7440f..87058271b00c 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
-@@ -113,6 +113,7 @@ bool amdgpu_dm_crtc_vrr_active(const struct dm_crtc_state *dm_state)
-  *
-  * Panel Replay and PSR SU
-  * - Enable when:
-+ *      - VRR is disabled
-  *      - vblank counter is disabled
-  *      - entry is allowed: usermode demonstrates an adequate number of fast
-  *        commits)
-@@ -131,19 +132,20 @@ static void amdgpu_dm_crtc_set_panel_sr_feature(
- 	bool is_sr_active = (link->replay_settings.replay_allow_active ||
- 				 link->psr_settings.psr_allow_active);
- 	bool is_crc_window_active = false;
-+	bool vrr_active = amdgpu_dm_crtc_vrr_active_irq(vblank_work->acrtc);
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -262,6 +262,9 @@ fail:
+ 		break;
+ 	}
  
- #ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
- 	is_crc_window_active =
- 		amdgpu_dm_crc_window_is_activated(&vblank_work->acrtc->base);
- #endif
++	test->num_irqs = i;
++	pci_endpoint_test_release_irq(test);
++
+ 	return false;
+ }
  
--	if (link->replay_settings.replay_feature_enabled &&
-+	if (link->replay_settings.replay_feature_enabled && !vrr_active &&
- 		allow_sr_entry && !is_sr_active && !is_crc_window_active) {
- 		amdgpu_dm_replay_enable(vblank_work->stream, true);
- 	} else if (vblank_enabled) {
- 		if (link->psr_settings.psr_version < DC_PSR_VERSION_SU_1 && is_sr_active)
- 			amdgpu_dm_psr_disable(vblank_work->stream, false);
--	} else if (link->psr_settings.psr_feature_enabled &&
-+	} else if (link->psr_settings.psr_feature_enabled && !vrr_active &&
- 		allow_sr_entry && !is_sr_active && !is_crc_window_active) {
- 
- 		struct amdgpu_dm_connector *aconn =
--- 
-2.49.0
-
 
 
 
