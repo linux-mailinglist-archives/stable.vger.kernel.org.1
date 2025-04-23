@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-136204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4489A99274
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:45:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBD9A992B5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA051467A24
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52FA1926FDD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530A328FFF9;
-	Wed, 23 Apr 2025 15:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F3A290098;
+	Wed, 23 Apr 2025 15:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSS4yzT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8+D7LNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D86927F4D9;
-	Wed, 23 Apr 2025 15:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AB029008C;
+	Wed, 23 Apr 2025 15:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421932; cv=none; b=HQdIgbFHvjmhDEnxuPSFRk+JGxLmWnaN+ZDV3ecqVQQOkPdT/S5hUOsx4S3AXGdinJOSx+e6eGig0Y4IHT53sM2kvFiECdyE1hs0cO2iX+7DMpvz0Sgn0IS31UmopsbN+lek7ZijrQtbCc1zbxCpnEUBixMtH5eEz07i9ARxICA=
+	t=1745421936; cv=none; b=CM8HhL+fEHUogSfytHcpAwbbAABwttQ+ZABPKAHZsez+9QXxRwCx4NLVsxkcuG7M/9SSIT3HHTofvO/EBvyHbWneBIu/NKxNyCiNks0XIBMacoVv33cjCuB8izRLiEI6i341uVJF5p+ya1Qs94aabHHhbAw8RpbpeUxbhB2NU7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421932; c=relaxed/simple;
-	bh=RafI/QgSK8DVAkh228TsmBPM7LcTt38/Revd1D38KFk=;
+	s=arc-20240116; t=1745421936; c=relaxed/simple;
+	bh=Ov8nMAE0xJOCeZMVZNSNcGtaEINL8E898ohRwIssse4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWFEf2jr8IUbG7LYGQVMdmfEymKWGiImF4w0X395DjUosCyccwVA1cymwTi3hvkcbhpXAs34N6l3yruSrQ0VRN4ltglfLrDZrBlegnPNG52N2Ik1w6L6BGSq3b4HIkK2my6mQYFqnRBB1JXP4dATiH5+9k6AJe33zaaXEONF6vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSS4yzT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31803C4CEE2;
-	Wed, 23 Apr 2025 15:25:31 +0000 (UTC)
+	 MIME-Version; b=N11sxWawsaSitk4CYlGB8ShdXqWtkE9WtqADtwkTXoxTn6MdzowyOqyTWMI2F2/ya5BtmYbo4Potpq1uu8G/iasUCL2V8bC4xngDMjFB5WMIXzebepPQ/Cda04WnsYAyhoxhpCtWMeasnlfeE9+oFZsrWThB9KsI/ISADz0XCHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8+D7LNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6574AC4CEEC;
+	Wed, 23 Apr 2025 15:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421931;
-	bh=RafI/QgSK8DVAkh228TsmBPM7LcTt38/Revd1D38KFk=;
+	s=korg; t=1745421936;
+	bh=Ov8nMAE0xJOCeZMVZNSNcGtaEINL8E898ohRwIssse4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSS4yzT9i0zujS4IlmRY1PTIZh14QyCy9ywsM+Z65OQFeQOl9Q6IGYKOY4B/gxbmQ
-	 wSfbfvrfSlYBZmYyJd/3LX2LrSWAy2HlJ8cIgfpLKxwwWcqMfaC4i43Xfo4dptix7A
-	 EsfbroOaut+kOdWm2tGuWwVtORDDcmkPIifA4dlc=
+	b=B8+D7LNgrWq9nKWLOwlSHKoCHtSwrqCg84fIKoQh2tsH/BClPbAKpK6K5lnlBTnTD
+	 1cy2UcNUp7IGjoYSggf1ppaQpz5YXumzTT0iElOPN4bxiUZi1MFC/9AkJVNcJ2t83V
+	 ajrKKjNWXCi8pkNLo9iVn0rPSblfSCHykUtJ3P4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
+	Brady Norander <bradynorander@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/393] md/md-bitmap: fix stats collection for external bitmaps
-Date: Wed, 23 Apr 2025 16:42:23 +0200
-Message-ID: <20250423142653.582514970@linuxfoundation.org>
+Subject: [PATCH 6.6 248/393] ASoC: dwc: always enable/disable i2s irqs
+Date: Wed, 23 Apr 2025 16:42:24 +0200
+Message-ID: <20250423142653.621407247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,47 +66,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Brady Norander <bradynorander@gmail.com>
 
-[ Upstream commit 6ec1f0239485028445d213d91cfee5242f3211ba ]
+[ Upstream commit 2b727b3f8a04fe52f55316ccb8792cfd9b2dd05d ]
 
-The bitmap_get_stats() function incorrectly returns -ENOENT for external
-bitmaps.
+Commit a42e988 ("ASoC: dwc: add DMA handshake control") changed the
+behavior of the driver to not enable or disable i2s irqs if using DMA. This
+breaks platforms such as AMD ACP. Audio playback appears to work but no
+audio can be heard. Revert to the old behavior by always enabling and
+disabling i2s irqs while keeping DMA handshake control.
 
-Remove the external bitmap check as the statistics should be available
-regardless of bitmap storage location.
-
-Return -EINVAL only for invalid bitmap with no storage (neither in
-superblock nor in external file).
-
-Note: "bitmap_info.external" here refers to a bitmap stored in a separate
-file (bitmap_file), not to external metadata.
-
-Fixes: 8d28d0ddb986 ("md/md-bitmap: Synchronize bitmap_get_stats() with bitmap lifetime")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Link: https://lore.kernel.org/linux-raid/20250403015322.2873369-1-zhengqixing@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: a42e988b626 ("ASoC: dwc: add DMA handshake control")
+Signed-off-by: Brady Norander <bradynorander@gmail.com>
+Link: https://patch.msgid.link/20250330130852.37881-3-bradynorander@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/soc/dwc/dwc-i2s.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index deb40a8ba3999..8317e07b326d0 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2119,9 +2119,8 @@ int md_bitmap_get_stats(struct bitmap *bitmap, struct md_bitmap_stats *stats)
+diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
+index 9ea4be56d3b70..43edad6c887dc 100644
+--- a/sound/soc/dwc/dwc-i2s.c
++++ b/sound/soc/dwc/dwc-i2s.c
+@@ -199,12 +199,10 @@ static void i2s_start(struct dw_i2s_dev *dev,
+ 	else
+ 		i2s_write_reg(dev->i2s_base, IRER, 1);
  
- 	if (!bitmap)
- 		return -ENOENT;
--	if (bitmap->mddev->bitmap_info.external)
--		return -ENOENT;
--	if (!bitmap->storage.sb_page) /* no superblock */
-+	if (!bitmap->mddev->bitmap_info.external &&
-+	    !bitmap->storage.sb_page)
- 		return -EINVAL;
- 	sb = kmap_local_page(bitmap->storage.sb_page);
- 	stats->sync_size = le64_to_cpu(sb->sync_size);
+-	/* I2S needs to enable IRQ to make a handshake with DMAC on the JH7110 SoC */
+-	if (dev->use_pio || dev->is_jh7110)
+-		i2s_enable_irqs(dev, substream->stream, config->chan_nr);
+-	else
++	if (!(dev->use_pio || dev->is_jh7110))
+ 		i2s_enable_dma(dev, substream->stream);
+ 
++	i2s_enable_irqs(dev, substream->stream, config->chan_nr);
+ 	i2s_write_reg(dev->i2s_base, CER, 1);
+ }
+ 
+@@ -218,11 +216,12 @@ static void i2s_stop(struct dw_i2s_dev *dev,
+ 	else
+ 		i2s_write_reg(dev->i2s_base, IRER, 0);
+ 
+-	if (dev->use_pio || dev->is_jh7110)
+-		i2s_disable_irqs(dev, substream->stream, 8);
+-	else
++	if (!(dev->use_pio || dev->is_jh7110))
+ 		i2s_disable_dma(dev, substream->stream);
+ 
++	i2s_disable_irqs(dev, substream->stream, 8);
++
++
+ 	if (!dev->active) {
+ 		i2s_write_reg(dev->i2s_base, CER, 0);
+ 		i2s_write_reg(dev->i2s_base, IER, 0);
 -- 
 2.39.5
 
