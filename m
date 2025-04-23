@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C76FA9933F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05BC5A9906B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2039C179EC3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DC6A7A615E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BC7F510;
-	Wed, 23 Apr 2025 15:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE33292927;
+	Wed, 23 Apr 2025 15:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqFty9hV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hl1nvSG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95901A08A4;
-	Wed, 23 Apr 2025 15:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44347292924;
+	Wed, 23 Apr 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422346; cv=none; b=A9P45Wcgv63mT2PyFX9s2C+Bd/ZSWb6ur9OV4JMvwvVQyF3TyHy3ZjJi/23YQactEvQFivFiSLLwmAafQDDB8tWdj/LVnB130sif3MAN1tiCc4kqFWfJF2S0cd+txta1pQSLBo/zazgbLk4HeDgjr7stc0EWjm9pvuglvpqCVvk=
+	t=1745421150; cv=none; b=pm617h8YWFIwMuLx5Z8SpNUCsV6Z4aniVpPCBB+6PiQGPcC5c6VXX1nEaal8HZcQ2sJ7ugd7npg6uYxHppsaBfYF26+fGJ//ryZ0mFTUWeWBC6UtM5j1smx3AdPur/Emk79Qs50+fqBrCrzs5Io+oFjtCmd6dVEdR0UkSdxhi1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422346; c=relaxed/simple;
-	bh=iGsjGiaxlIaMm9lc3jCkHWzmjBnjwW6A0lgeL2tUY+s=;
+	s=arc-20240116; t=1745421150; c=relaxed/simple;
+	bh=fyxK4pC8hABooZLL0kJLWZ4/zVedanC1dal8t9SQFzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfTOWBcvy0KGpPQng/EM2UwVq3ivA7I3n2OtUMV8Cnfk1AhRnaV6oIiapbxITNAVbFM7o9jNXMXpHULS0spO8SL6OnLd2XVOjYbXVueOtEqgsdahEvO9jr6tOcG2LG0BQNB1ER2ugZHocZZuUv3bFhPUqMKHRYXGvmO/WwyOUtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqFty9hV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F9CC4CEE3;
-	Wed, 23 Apr 2025 15:32:26 +0000 (UTC)
+	 MIME-Version; b=l05PA80OlTwae5hf/54Epxt+Pb3BuGDplJ7R1sih9cGMTV/XE5e3jtRI2eqvBnB8VdUBN1vn0ULFmLxhT2l5I2djhnccsYdQ5Ac23+p3MnclyszEl1F+0p/gEiVDBi/VxPKMYU1yKKK8uBRkMJRVulaGHeFTenQ3UL7EPMGyURs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hl1nvSG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D16EC4CEE2;
+	Wed, 23 Apr 2025 15:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422346;
-	bh=iGsjGiaxlIaMm9lc3jCkHWzmjBnjwW6A0lgeL2tUY+s=;
+	s=korg; t=1745421149;
+	bh=fyxK4pC8hABooZLL0kJLWZ4/zVedanC1dal8t9SQFzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqFty9hVlgmOpvzafm8iJfrDM0tGYrwCXtMtrI1Bj7vh2svvkpgWcv76VmZpZUzrr
-	 zaIKoegUsddALeGjY9LROe+I02D48S3ix4OV6TC8gWCjXZH7UoQtL29cOJDocik57u
-	 5NZdB0NN0WqxCraiczIv8lsQ0iWzcXRvh756evuY=
+	b=Hl1nvSG+9/Dx9vym27LudTSBBEWoIwo77Y8gVR05ZvQCbbJ4WYpbckT0Oa68QIKTR
+	 2JGgIsUSLiCMgCak4nRS1bFjYsgUZwdbCngBU2PSDiEvjKDbgzzPUacPMBx0nK8Rfm
+	 wvdPd9Yl3WKqBom4Nc4rxoolbwFMOAt8xFZo/yXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 324/393] ksmbd: Fix dangling pointer in krb_authenticate
+	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.14 156/241] virtiofs: add filesystem context source name check
 Date: Wed, 23 Apr 2025 16:43:40 +0200
-Message-ID: <20250423142656.716204404@linuxfoundation.org>
+Message-ID: <20250423142626.916370239@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Heelan <seanheelan@gmail.com>
+From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 
-commit 1e440d5b25b7efccb3defe542a73c51005799a5f upstream.
+commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
 
-krb_authenticate frees sess->user and does not set the pointer
-to NULL. It calls ksmbd_krb5_authenticate to reinitialise
-sess->user but that function may return without doing so. If
-that happens then smb2_sess_setup, which calls krb_authenticate,
-will be accessing free'd memory when it later uses sess->user.
+In certain scenarios, for example, during fuzz testing, the source
+name may be NULL, which could lead to a kernel panic. Therefore, an
+extra check for the source name should be added.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Heelan <seanheelan@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
+Cc: <stable@vger.kernel.org> # all LTS kernels
+Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/fuse/virtio_fs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1599,8 +1599,10 @@ static int krb5_authenticate(struct ksmb
- 	if (prev_sess_id && prev_sess_id != sess->id)
- 		destroy_previous_session(conn, sess->user, prev_sess_id);
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1670,6 +1670,9 @@ static int virtio_fs_get_tree(struct fs_
+ 	unsigned int virtqueue_size;
+ 	int err = -EIO;
  
--	if (sess->state == SMB2_SESSION_VALID)
-+	if (sess->state == SMB2_SESSION_VALID) {
- 		ksmbd_free_user(sess->user);
-+		sess->user = NULL;
-+	}
- 
- 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
- 					 out_blob, &out_len);
++	if (!fsc->source)
++		return invalf(fsc, "No source specified");
++
+ 	/* This gets a reference on virtio_fs object. This ptr gets installed
+ 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
+ 	 * to drop the reference to this object.
 
 
 
