@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D77A98E9A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CABCA99064
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93345A725F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA1DF8E0A20
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734C427A12D;
-	Wed, 23 Apr 2025 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EC328CF73;
+	Wed, 23 Apr 2025 15:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtCF6RZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3VRYlcS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D196175BF;
-	Wed, 23 Apr 2025 14:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95873269B07;
+	Wed, 23 Apr 2025 15:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420092; cv=none; b=tdPHsaM19KxCLTGmO00pJLFovkBlComeEE8hOs1PoZTVs1v4wHesjGip4sYQ/MWXOYQpKlvaHSOcKH+IwP8qfyoCoZrN/kQOPoRltduD4bmdYR5ExDpRps6d+/7fi6tsM8f/zcTa4oKkJBRW+9H3bENoehL9+Gm7/p+rG1CPSZU=
+	t=1745420751; cv=none; b=mBtnltoWoBOUHyVj8ZCDLljDtDrsRFDlqbGhIpt9GYy8nzeq+GyqCKiZru1yyUQznwUoTGDkfOHCHgokaTMh1UbPAz+5bLcwltTHGwvOLbWDgY5FoudmRJAtPorkYT15Ierh0mgvs+aGh5kWOUPcyB1t42hWLatl5DClBdrBy5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420092; c=relaxed/simple;
-	bh=m6IQi1jidH0qivW3cJGPapwrYm1BZ4Zo2gnF1W00iiI=;
+	s=arc-20240116; t=1745420751; c=relaxed/simple;
+	bh=K5SKCB1K0F2HL7aA00Il6ku5cJQPThLArLBy3ayDQew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mwIKK0SGhAoyF30L3fz2HFZYg1IkmtzcKGORbMeJ0voziGw2ssaKW1M2bR6E1N9AicpF9ykz/a5pefsmlqU+/zM5W2aTM7tNETdlSF/lwyaQW2h84aeXw/dfI8uhxP3bPNzQZZCSMIItizjQJdeMZ/1Uv3AyL5UW6eUAfX/4sOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtCF6RZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B504DC4CEE2;
-	Wed, 23 Apr 2025 14:54:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=onwblubE+nhG/qqDGdx6OVmalDrNMmn26mvvKNzO1WYD6WtW3Yj7gHnSl7VkgwymQx+LeIfKI3JA7aIdjVIL5dMH108LdQGz2H9zvkgi84Bgzye2pLhncFvL2YKf01KXeii8w4+sdPZ2enq8fZJu/QLCVFVnA3mOXt0XvWqWo64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3VRYlcS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270C8C4CEE2;
+	Wed, 23 Apr 2025 15:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420092;
-	bh=m6IQi1jidH0qivW3cJGPapwrYm1BZ4Zo2gnF1W00iiI=;
+	s=korg; t=1745420751;
+	bh=K5SKCB1K0F2HL7aA00Il6ku5cJQPThLArLBy3ayDQew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtCF6RZzLDyqKhr+gHY1zuTDbyymIazxDjE1yqQI0vTvTIBWXRy2cn0yCXx+1qa04
-	 gsg6WSdENpgOUn7tuUykM/tHmp2OOADGFkFsym7evfJF3Ka3F6tEbW9oyv3BzEqm4I
-	 6voD8oaTLf/5QoIqDurQ+KX/N6EhT0XRxbtVDY6I=
+	b=d3VRYlcSaxocbfdWkmX6g5HjToUSgnlXnh7lecUms6Ugws1Y6C7YceeGOaagn0kt5
+	 fL3UJaY+apqz6pUSOOhe8NSfdgwXTAYvUQw2BrXNVexB7o1Xpy1vSlFn8dUIR3Me5S
+	 2a6j4QCByT96DvpcDogV2TLzMtcGG4QzHOpORFWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com,
-	Arnaud Lecomte <contact@arnaud-lcm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/291] net: ppp: Add bound checking for skb data on ppp_sync_txmung
+Subject: [PATCH 6.6 109/393] drm/amdgpu: grab an additional reference on the gang fence v2
 Date: Wed, 23 Apr 2025 16:40:05 +0200
-Message-ID: <20250423142625.069033314@linuxfoundation.org>
+Message-ID: <20250423142647.784728803@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaud Lecomte <contact@arnaud-lcm.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit aabc6596ffb377c4c9c8f335124b92ea282c9821 ]
+[ Upstream commit 0d9a95099dcb05b5f4719c830d15bf4fdcad0dc2 ]
 
-Ensure we have enough data in linear buffer from skb before accessing
-initial bytes. This prevents potential out-of-bounds accesses
-when processing short packets.
+We keep the gang submission fence around in adev, make sure that it
+stays alive.
 
-When ppp_sync_txmung receives an incoming package with an empty
-payload:
-(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
-$18 = {
-	type = 0x1,
-	ver = 0x1,
-	code = 0x0,
-	sid = 0x2,
-        length = 0x0,
-	tag = 0xffff8880371cdb96
-}
+v2: fix memory leak on retry
 
-from the skb struct (trimmed)
-      tail = 0x16,
-      end = 0x140,
-      head = 0xffff88803346f400 "4",
-      data = 0xffff88803346f416 ":\377",
-      truesize = 0x380,
-      len = 0x0,
-      data_len = 0x0,
-      mac_len = 0xe,
-      hdr_len = 0x0,
-
-it is not safe to access data[2].
-
-Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
-Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
-Link: https://patch.msgid.link/20250408-bound-checking-ppp_txmung-v2-1-94bb6e1b92d0@arnaud-lcm.com
-[pabeni@redhat.com: fixed subj typo]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_synctty.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index 94ef6f9ca5103..fb533c43deeea 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -515,6 +515,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
- 	unsigned char *data;
- 	int islcp;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 45dd6cbad81e7..10f5a3d0f5916 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -6015,6 +6015,7 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
+ {
+ 	struct dma_fence *old = NULL;
  
-+	/* Ensure we can safely access protocol field and LCP code */
-+	if (!pskb_may_pull(skb, 3)) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
- 	data  = skb->data;
- 	proto = get_unaligned_be16(data);
++	dma_fence_get(gang);
+ 	do {
+ 		dma_fence_put(old);
+ 		rcu_read_lock();
+@@ -6024,12 +6025,19 @@ struct dma_fence *amdgpu_device_switch_gang(struct amdgpu_device *adev,
+ 		if (old == gang)
+ 			break;
  
+-		if (!dma_fence_is_signaled(old))
++		if (!dma_fence_is_signaled(old)) {
++			dma_fence_put(gang);
+ 			return old;
++		}
+ 
+ 	} while (cmpxchg((struct dma_fence __force **)&adev->gang_submit,
+ 			 old, gang) != old);
+ 
++	/*
++	 * Drop it once for the exchanged reference in adev and once for the
++	 * thread local reference acquired in amdgpu_device_get_gang().
++	 */
++	dma_fence_put(old);
+ 	dma_fence_put(old);
+ 	return NULL;
+ }
 -- 
 2.39.5
 
