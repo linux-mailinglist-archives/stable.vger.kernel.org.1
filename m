@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04BA1A990B3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DE7A9901A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D639466095
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 838FE3B457D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052E028E618;
-	Wed, 23 Apr 2025 15:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DB9288C8A;
+	Wed, 23 Apr 2025 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9NW03ZX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjh1I5M9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C5F28E5F3;
-	Wed, 23 Apr 2025 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57D4280A22;
+	Wed, 23 Apr 2025 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421115; cv=none; b=BjgAPkM6Nfy60hfJKsPz+XBL9osp3iPN1yhacDAxG9GI/SooCJTJoaxQpmJIyZSgwFlZvBGGuYHjLwOmxnxYXQkiBaQug0IqPtZULVhf/uaFur2OxlhzpEKTdIJ8ZeMu75oFP2i0SytE3BR37e2t88BmIs7B9Q32AT4yYz+b4k0=
+	t=1745420603; cv=none; b=Iwcsd7owNB/HTfLMRwYAQCugd/3ZFHLFdwtvZviR/VcDFIMi7lU+3/N5XwBxr2SMtLK5bZ2ErEXzdUMJbpBnKlFpaqlVnM53G1pw1Em8/ZyXdraszcu7ylUlI3wcMNS4dpTgaHNTN3fKu4fuDUI5k6C79XzLfmtqbF2LRxUJOzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421115; c=relaxed/simple;
-	bh=8PzN5IH8KhTuaQPVXnEdF+ePZe9QN650naIoJPV8/aE=;
+	s=arc-20240116; t=1745420603; c=relaxed/simple;
+	bh=K+SLxCTlrxFDIbx6UMrTV97HmstD0yGUtzzPkhQFO4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHK+5nScabw+7k2fBEw7uINqYj6iTm6n8gbkqn5XDUbp2+jUkvgRbSNLQQzqvFP9G7PIlVYSCBGr0EY8VPRjeek606PPOHFSYhsNjkb92jhp6043XlWIqNkPa3hc7HfuSpmMq/FCUUOTNoPaJc+6QiLIL32DKnspKY2lgkLLKGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9NW03ZX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49163C4CEE2;
-	Wed, 23 Apr 2025 15:11:55 +0000 (UTC)
+	 MIME-Version; b=ZrcFaNcu5XcsFVFWj/TwHXCLBE+w17E4Ii4oTR88v7rRUmKVab9SAYKHPwWFNqhy0sSbJoNetuq4CJ8okIScMN5jsKa3WeKOFHqc9r2ia3/wxXuWX24qzXmhbgwR31dJfF2vUUrGRTi9rV7TAbUaEY15q6vQY032ops6sXo4Ecw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjh1I5M9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D2AC4CEE2;
+	Wed, 23 Apr 2025 15:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421115;
-	bh=8PzN5IH8KhTuaQPVXnEdF+ePZe9QN650naIoJPV8/aE=;
+	s=korg; t=1745420603;
+	bh=K+SLxCTlrxFDIbx6UMrTV97HmstD0yGUtzzPkhQFO4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y9NW03ZXu+/A5gc39rPJ7V4dWElfFB2U3zcftL/bWQoYNmSgoxaT0071n3ionDp6W
-	 yE1gy7ASeL2EXjBib6zHKT6e2CKn0HuY0v9lvOoSfDiH/6BrW2mGU5h3KPfAd3dZri
-	 hQUkGKcNgbklOK/xwNp4AFI8iSicIf1L91feFPCk=
+	b=cjh1I5M9/QpxTJ08cG38Wq8xitUZ4W50zBfgrfIoo4PKED1E30EnG8U5S5623tMxy
+	 mlgRAoNen+jQ/973P8Rl5p3S16MGvY76xj0FqxojrS3G5kebMd4pWLfZp53cE1iUFx
+	 WSQO489zLV73RBPLlpfDYKdPWIIQd3aaSyO05PBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunjie Zhu <chunjie.zhu@cloud.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 153/241] smb3 client: fix open hardlink on deferred close file error
+	Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 6.12 145/223] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
 Date: Wed, 23 Apr 2025 16:43:37 +0200
-Message-ID: <20250423142626.792891577@linuxfoundation.org>
+Message-ID: <20250423142623.089212681@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunjie Zhu <chunjie.zhu@cloud.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 262b73ef442e68e53220b9d6fc5a0d08b557fa42 upstream.
+commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
 
-The following Python script results in unexpected behaviour when run on
-a CIFS filesystem against a Windows Server:
+There was a mistake in the SNR uncore spec. The counter increments for
+every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
+which was documented in the spec.
 
-    # Create file
-    fd = os.open('test', os.O_WRONLY|os.O_CREAT)
-    os.write(fd, b'foo')
-    os.close(fd)
+The event list has been updated:
 
-    # Open and close the file to leave a pending deferred close
-    fd = os.open('test', os.O_RDONLY|os.O_DIRECT)
-    os.close(fd)
+  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
+  "BriefDescription": "Free running counter that increments for every 32
+		       bytes of data sent from the IO agent to the SOC",
 
-    # Try to open the file via a hard link
-    os.link('test', 'new')
-    newfd = os.open('new', os.O_RDONLY|os.O_DIRECT)
+Update the scale of the IIO bandwidth in free running counters as well.
 
-The final open returns EINVAL due to the server returning
-STATUS_INVALID_PARAMETER. The root cause of this is that the client
-caches lease keys per inode, but the spec requires them to be related to
-the filename which causes problems when hard links are involved:
-
->From MS-SMB2 section 3.3.5.9.11:
-
-"The server MUST attempt to locate a Lease by performing a lookup in the
-LeaseTable.LeaseList using the LeaseKey in the
-SMB2_CREATE_REQUEST_LEASE_V2 as the lookup key. If a lease is found,
-Lease.FileDeleteOnClose is FALSE, and Lease.Filename does not match the
-file name for the incoming request, the request MUST be failed with
-STATUS_INVALID_PARAMETER"
-
-On client side, we first check the context of file open, if it hits above
-conditions, we first close all opening files which are belong to the same
-inode, then we do open the hard link file.
-
+Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsproto.h |    2 ++
- fs/smb/client/file.c      |   28 ++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+)
+ arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -160,6 +160,8 @@ extern int cifs_get_writable_path(struct
- extern struct cifsFileInfo *find_readable_file(struct cifsInodeInfo *, bool);
- extern int cifs_get_readable_path(struct cifs_tcon *tcon, const char *name,
- 				  struct cifsFileInfo **ret_file);
-+extern int cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
-+				  struct file *file);
- extern unsigned int smbCalcSize(void *buf);
- extern int decode_negTokenInit(unsigned char *security_blob, int length,
- 			struct TCP_Server_Info *server);
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -1007,6 +1007,11 @@ int cifs_open(struct inode *inode, struc
- 		} else {
- 			_cifsFileInfo_put(cfile, true, false);
- 		}
-+	} else {
-+		/* hard link on the defeered close file */
-+		rc = cifs_get_hardlink_path(tcon, inode, file);
-+		if (rc)
-+			cifs_close_deferred_file(CIFS_I(inode));
- 	}
- 
- 	if (server->oplocks)
-@@ -2071,6 +2076,29 @@ cifs_move_llist(struct list_head *source
- 		list_move(li, dest);
- }
- 
-+int
-+cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
-+				struct file *file)
-+{
-+	struct cifsFileInfo *open_file = NULL;
-+	struct cifsInodeInfo *cinode = CIFS_I(inode);
-+	int rc = 0;
-+
-+	spin_lock(&tcon->open_file_lock);
-+	spin_lock(&cinode->open_file_lock);
-+
-+	list_for_each_entry(open_file, &cinode->openFileList, flist) {
-+		if (file->f_flags == open_file->f_flags) {
-+			rc = -EINVAL;
-+			break;
-+		}
-+	}
-+
-+	spin_unlock(&cinode->open_file_lock);
-+	spin_unlock(&tcon->open_file_lock);
-+	return rc;
-+}
-+
- void
- cifs_free_llist(struct list_head *llist)
- {
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4891,28 +4891,28 @@ static struct uncore_event_desc snr_unco
+ 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+ 	/* Free-Running IIO BANDWIDTH IN Counters */
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+ 	{ /* end: all zeroes */ },
+ };
 
 
 
