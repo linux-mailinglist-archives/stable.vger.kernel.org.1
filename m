@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-136325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CDBA9932C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729BEA990BE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EED9C1BA19A4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59533922399
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AE4293B6D;
-	Wed, 23 Apr 2025 15:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372B328A1F8;
+	Wed, 23 Apr 2025 15:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndCox2BJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYxDf+RF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01331293B57;
-	Wed, 23 Apr 2025 15:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90AF28A1F1;
+	Wed, 23 Apr 2025 15:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422249; cv=none; b=TonN1+TPPW53zDHeH85lZzTI2tezzkxC7sK9LPmxMgYVNYwWYxyFQL2esblGD4wLaLg8GvyCzXZAHXSxY9nU5uKP9ubtEPpM/3N4OnGBzXaWTKXa4i/v4oCCVHs7Xk2e18dzjFQpLFONyWnM2kp4VLp9XAQNUlqe/So1U3sOjoE=
+	t=1745420958; cv=none; b=NTiPL7DMwu5XfPhSqRom/5nQ89G/drs0PtU9Rqiuk+nu8ptIK2E0ctJUhEUP+uZFi7NTNSieIe41/6aIVJ7IVdUCkKDn1ZBsNAf7ve2Y5qFc83sW40QYmcuOeFssLrX2VGNU3U61ELl4goiS1ruZ1kXyip+nYAVffz6KVlLP0m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422249; c=relaxed/simple;
-	bh=sONtULOyiWBZU0jH+oLwPIfhVHl2WFoUEMZRZSDGfas=;
+	s=arc-20240116; t=1745420958; c=relaxed/simple;
+	bh=0KSJMyjxZrbq1DpLzPTzhyr5Jh+TvUKKDx09ekXXkyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8L+MX+casyo2iDjSJKO9XosLg8HwWj5QkDqSVVMcTggNKJY3gCsxYz1AVsUyiMU0h12eczmmvH4CfR8kv37rSwvl++/VPBejxY6ntJprHiDZxCdC5mIlLbnrzMgIIr/iIoFa0XhP+kIlq7KG3+bp2JRs/6UcZFrfXk/GEh9tS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndCox2BJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888A8C4CEE2;
-	Wed, 23 Apr 2025 15:30:48 +0000 (UTC)
+	 MIME-Version; b=qL6aIGWTkDHKcoCyOzlu7JSG/DBcO7agosRYYO7aPJnWE4V19oPaVxo4wsftddQUxLbfhrgPnYfdN23NYgfgaqtz7U9Lf7LKvZVkZxpoNK7g/IJwe5jDNpU3lNhfyVLPi/nM2+LWuSmRIonlokEWsP9vkPd6T4B8FBZ28FleDFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYxDf+RF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4F1C4CEE2;
+	Wed, 23 Apr 2025 15:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422248;
-	bh=sONtULOyiWBZU0jH+oLwPIfhVHl2WFoUEMZRZSDGfas=;
+	s=korg; t=1745420957;
+	bh=0KSJMyjxZrbq1DpLzPTzhyr5Jh+TvUKKDx09ekXXkyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndCox2BJrliEB1eNGdgEek4kxv0baouWf3kqrCYjN2i7wrdF5fy5Xdr47f9lcG8uy
-	 0VHNt4ctGrUOWm9Ya7HhC0+Iuah5li2+nfPNmmT0xn4LCto70c1Opx64HsCOHqZFVw
-	 DEZthLxcofcU4h4HwmW6cczKqPK69aus+0lKgSok=
+	b=VYxDf+RF2DhPpfbmME7SBDvhPxF9EmcQxv69RXRNle3oHepbjKyY8mJizRlYLb3ib
+	 swFIHNZr/bBUJ5zNh9DJgC47J/A3cuqh/w0LiGROHMA3+U4vpsTrHRO/U7Y0e/JwEp
+	 L9WTlWg2hy+9yXGVQHrC3aACFV2W6t4WofwItvAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/393] nfsd: decrease sc_count directly if fail to queue dl_recall
+	Baoquan He <bhe@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14 139/241] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
 Date: Wed, 23 Apr 2025 16:43:23 +0200
-Message-ID: <20250423142656.013246204@linuxfoundation.org>
+Message-ID: <20250423142626.237969108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
+commit 8c03ebd7cdc06bd0d2fecb4d1a609ef1dbb7d0aa upstream.
 
-A deadlock warning occurred when invoking nfs4_put_stid following a failed
-dl_recall queue operation:
-            T1                            T2
-                                nfs4_laundromat
-                                 nfs4_get_client_reaplist
-                                  nfs4_anylock_blockers
-__break_lease
- spin_lock // ctx->flc_lock
-                                   spin_lock // clp->cl_lock
-                                   nfs4_lockowner_has_blockers
-                                    locks_owner_has_blockers
-                                     spin_lock // flctx->flc_lock
- nfsd_break_deleg_cb
-  nfsd_break_one_deleg
-   nfs4_put_stid
-    refcount_dec_and_lock
-     spin_lock // clp->cl_lock
+Not like fault_in_readable() or fault_in_writeable(), in
+fault_in_safe_writeable() local variable 'start' is increased page by page
+to loop till the whole address range is handled.  However, it mistakenly
+calculates the size of the handled range with 'uaddr - start'.
 
-When a file is opened, an nfs4_delegation is allocated with sc_count
-initialized to 1, and the file_lease holds a reference to the delegation.
-The file_lease is then associated with the file through kernel_setlease.
+Fix it here.
 
-The disassociation is performed in nfsd4_delegreturn via the following
-call chain:
-nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
-nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
-The corresponding sc_count reference will be released after this
-disassociation.
+Andreas said:
 
-Since nfsd_break_one_deleg executes while holding the flc_lock, the
-disassociation process becomes blocked when attempting to acquire flc_lock
-in generic_delete_lease. This means:
-1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
-2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
-acquire cl_lock;
-3) Consequently, no deadlock condition is created.
+: In gfs2, fault_in_iov_iter_writeable() is used in
+: gfs2_file_direct_read() and gfs2_file_read_iter(), so this potentially
+: affects buffered as well as direct reads.  This bug could cause those
+: gfs2 functions to spin in a loop.
 
-Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
-safely perform refcount_dec on sc_count directly. This approach
-effectively avoids triggering deadlock warnings.
-
-Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250410035717.473207-1-bhe@redhat.com
+Link: https://lkml.kernel.org/r/20250410035717.473207-2-bhe@redhat.com
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Fixes: fe673d3f5bf1 ("mm: gup: make fault_in_safe_writeable() use fixup_user_fault()")
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/gup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 140784446ad22..e2875706e6bfd 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4938,7 +4938,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- 	queued = nfsd4_run_cb(&dp->dl_recall);
- 	WARN_ON_ONCE(!queued);
- 	if (!queued)
--		nfs4_put_stid(&dp->dl_stid);
-+		refcount_dec(&dp->dl_stid.sc_count);
- }
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2210,8 +2210,8 @@ size_t fault_in_safe_writeable(const cha
+ 	} while (start != end);
+ 	mmap_read_unlock(mm);
  
- /* Called from break_lease() with flc_lock held. */
--- 
-2.39.5
-
+-	if (size > (unsigned long)uaddr - start)
+-		return size - ((unsigned long)uaddr - start);
++	if (size > start - (unsigned long)uaddr)
++		return size - (start - (unsigned long)uaddr);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(fault_in_safe_writeable);
 
 
 
