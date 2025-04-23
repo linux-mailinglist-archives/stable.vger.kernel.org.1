@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F1EA99336
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5181FA9921F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 509F69A2DD6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3256A3A7F32
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB17E29DB6F;
-	Wed, 23 Apr 2025 15:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048502BD5B0;
+	Wed, 23 Apr 2025 15:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DriiBlhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4cNjbBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83C228DEEA;
-	Wed, 23 Apr 2025 15:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2672284B35;
+	Wed, 23 Apr 2025 15:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422052; cv=none; b=m04DQzcet770Q1stIofm9a0ioHLmxb9Qzke398lfgXph5mvjsI8pLfOyaounp1Nm4/nozbvSlZFC1G/sPJe75kb8VFV1WPvXJUSlyAMmTRKtO7sOqyTVcKreyaHxdi9u9dYL5NpvcyJzgBNTsaDkk6iHaSKGN11FICZi6lyI3ms=
+	t=1745421667; cv=none; b=pMAaQnlzlcS0mbkgjn0l7bdygWgy8H5Llv4whoIetfPY22vu50LrOdGEWhAjn7LgT3yXkEV7GbkuHrJzLxIfUJ3x8ZYFDmGvf2VZdP6Cf6usGicTqWQuBSeFeWGkzUy039cAsxH5QbjY4X0p8oSrqGBYRxNf7HE6fCs88Bi6zLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422052; c=relaxed/simple;
-	bh=tonkvqmEJU035JKxUsDP2ZMBPeSyvE+4fZhmSLdBq+Y=;
+	s=arc-20240116; t=1745421667; c=relaxed/simple;
+	bh=cx6b7TFJaARhOMNIhRy847cj8kkKPZgXlrQt7O3c828=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lf+JbfvYJOSorvOgQh0US118CGeJzNRhARhR33LaWOGYkitjAC2HKg7hEQS0gX3P3wtrR61VSPfacLFpjPvroF4HVpi+tTdfOYLVU51hM6XIqIvozV21lG83kMuRCz5JGkTb/l/pBDHhNa+LFiFLqbmV8mdoBCCaKbn+i5hA+u8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DriiBlhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CA0C4CEE2;
-	Wed, 23 Apr 2025 15:27:32 +0000 (UTC)
+	 MIME-Version; b=chLBJhcJNm7/iUQAIZf6cIV3Wj458+DXNY+2QcwALuRI/Ar3/J2Coqd3ryIrOMpVYhF2JNuACGNrJTGiuQTByIJh1XlyDdYG4I8jOvwYeeeZQXCJ/1sQTVZe7iPLPVv0swFKsf+7ZGg9rDzK/GhuvQvwVyvq2CrdRWSdnJfCEm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4cNjbBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3403C4CEEB;
+	Wed, 23 Apr 2025 15:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422052;
-	bh=tonkvqmEJU035JKxUsDP2ZMBPeSyvE+4fZhmSLdBq+Y=;
+	s=korg; t=1745421666;
+	bh=cx6b7TFJaARhOMNIhRy847cj8kkKPZgXlrQt7O3c828=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DriiBlhz/QYmkpmmIjDtObQssNNjjB1rB5cjjKBJTQNFwQLEShWWV4i5F1++XKQko
-	 95UXl97q9qHekq1g+7j3ESIs7LibMcipfUBIr+QG7u1mg0zznpYuQy+KkW0+qSPZCg
-	 /Uciu/ktobbV01eAMdJB2ZQk4r1fF/Fk9F/KzT+k=
+	b=Y4cNjbBr5WbTT0kohargiUZxrdk/UTcyWzrsu5Ij/NWrBh9b8wWSFXzQAAF2GgOVY
+	 Vd0YYzM74acJTuI4A6tjR1hecOK4G14/DZ33+yyIMyLZZBXtjbDuuuSOwNfuGSgTN7
+	 MmekgOGfux/SW5pKB8sE/ai1OTCycZH1ysL7LfGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/393] Bluetooth: btrtl: Prevent potential NULL dereference
-Date: Wed, 23 Apr 2025 16:42:32 +0200
-Message-ID: <20250423142653.948154001@linuxfoundation.org>
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.1 164/291] HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
+Date: Wed, 23 Apr 2025 16:42:33 +0200
+Message-ID: <20250423142631.094535840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit 324dddea321078a6eeb535c2bff5257be74c9799 ]
+commit e3f88665a78045fe35c7669d2926b8d97b892c11 upstream.
 
-The btrtl_initialize() function checks that rtl_load_file() either
-had an error or it loaded a zero length file.  However, if it loaded
-a zero length file then the error code is not set correctly.  It
-results in an error pointer vs NULL bug, followed by a NULL pointer
-dereference.  This was detected by Smatch:
+In the ssi_protocol_probe() function, &ssi->work is bound with
+ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
+within the ssip_pn_ops structure is capable of starting the
+work.
 
-drivers/bluetooth/btrtl.c:592 btrtl_initialize() warn: passing zero to 'ERR_PTR'
+If we remove the module which will call ssi_protocol_remove()
+to make a cleanup, it will free ssi through kfree(ssi),
+while the work mentioned above will be used. The sequence
+of operations that may lead to a UAF bug is as follows:
 
-Fixes: 26503ad25de8 ("Bluetooth: btrtl: split the device initialization into smaller parts")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU0                                    CPU1
+
+                        | ssip_xmit_work
+ssi_protocol_remove     |
+kfree(ssi);             |
+                        | struct hsi_client *cl = ssi->cl;
+                        | // use ssi
+
+Fix it by ensuring that the work is canceled before proceeding
+with the cleanup in ssi_protocol_remove().
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btrtl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hsi/clients/ssi_protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 1e7c1f9db9e4b..7f67e460f7f49 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -1194,6 +1194,8 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 			rtl_dev_err(hdev, "mandatory config file %s not found",
- 				    btrtl_dev->ic_info->cfg_name);
- 			ret = btrtl_dev->cfg_len;
-+			if (!ret)
-+				ret = -EINVAL;
- 			goto err_free;
- 		}
- 	}
--- 
-2.39.5
-
+--- a/drivers/hsi/clients/ssi_protocol.c
++++ b/drivers/hsi/clients/ssi_protocol.c
+@@ -403,6 +403,7 @@ static void ssip_reset(struct hsi_client
+ 	del_timer(&ssi->rx_wd);
+ 	del_timer(&ssi->tx_wd);
+ 	del_timer(&ssi->keep_alive);
++	cancel_work_sync(&ssi->work);
+ 	ssi->main_state = 0;
+ 	ssi->send_state = 0;
+ 	ssi->recv_state = 0;
 
 
 
