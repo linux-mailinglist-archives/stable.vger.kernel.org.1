@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-135998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D2FA991C0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185ADA9922B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 284191B84C32
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CEB792582F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A15F28CF7A;
-	Wed, 23 Apr 2025 15:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735A728E619;
+	Wed, 23 Apr 2025 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9qQ4TCW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtULyzly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9DC828CF6B;
-	Wed, 23 Apr 2025 15:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3107828153C;
+	Wed, 23 Apr 2025 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421389; cv=none; b=pLEk3Guj9qVj+jRVrb0XmpDi3CYOjP74Y/Et0bdaev6hgiPU3kKT6+VOElFpy2S0hFMvwn6frCCPJlpWthZRR4Z+O+jYxTvdRjz+xY/0anDCiyh/QNxsSHiuYVwUyZLhrExqWaKKqa/B7J8a4lY+hYElxAU63bgN+lcm//korao=
+	t=1745421550; cv=none; b=ZQYnyY0pgwgkCJKiQ2IYxDzLmkz2poOKVKfjulkrOKk9JzkuTRjDmKQc7yeoFtwJrMYN/ihbVaDZgmKavwfZ4wmxYibOdIy6j/4jtoAEB5/sTmHmzmfMUqQshqZ65hn+JUQQTUtkPSLCcjifUYD3XAa72SzuivV4CJ6xraBoIiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421389; c=relaxed/simple;
-	bh=XMUTozSxSg2oCXA1VlQdOnzOwK2sUCg0maTrksKppCw=;
+	s=arc-20240116; t=1745421550; c=relaxed/simple;
+	bh=2pYaw9UVzeiOerh5RU30MRxC2sTxZjpAbGnTBksJkyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iV+NEZSkyT42FAglcCcxXH5ymX7sFUBEK++OpkhnjV+O7SEx1abpyx/wlLYm2NB91mLSZkuWlXeu5RGgK1XAFIdK9z5ZLePXImSSqzB9diCpUeP+u8lNxLXnarlXzBN4dVXjxWHgnHT18TqS5z+d4b4Wh8pHqxoqUsHylVXKgrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9qQ4TCW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062D4C4CEE2;
-	Wed, 23 Apr 2025 15:16:28 +0000 (UTC)
+	 MIME-Version; b=kOfEnYYxIvD0f8iZah7VZJ6RwZZ0FnARfi1i/pqwvxn2jA7d3iluwzIIjFFCcuumWdCpi1/Og8S3yVzCjtMXBr10tPNpe/qVxzUJn0FolfLwKXWTSC5U3Xl8CQp18/HGkFBJFSnXsgDUw1lCAfjD+7REPHeTjJ5Odb9wDh4pogA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtULyzly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5FEAC4CEE2;
+	Wed, 23 Apr 2025 15:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421389;
-	bh=XMUTozSxSg2oCXA1VlQdOnzOwK2sUCg0maTrksKppCw=;
+	s=korg; t=1745421550;
+	bh=2pYaw9UVzeiOerh5RU30MRxC2sTxZjpAbGnTBksJkyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q9qQ4TCWgiHKPRTkVq+0SazGRI26J96qoKDWGHaD33rPGsJUCqP2RAoiJSIsXZQbM
-	 GRD0yd/aFHoiXQgThnAYzSQnfmUiqxNAtCnQwo9xICvZvGJ8pCPGRUXJSyWf1l1apE
-	 S0JwSnF5lPp2gVJf3WJmUZdq9SEtlBqnvo0reEMU=
+	b=XtULyzlyVnaGiQLqhB2sAoT2ndrx8DOs5ofTt/tvN3VaMh+VQfD14Kb/bTC/MDcpA
+	 0R/GqZGssiR28e3dszsAikCQLw+3z99CF7rjwK6FtwwNTEtrgosgEKqg+afR03aJPq
+	 Jjl9GtXygjYKjlQKoi9xRGU8Bzki2AZGFyzomBzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 6.6 174/393] locking/lockdep: Decrease nr_unused_locks if lock unused in zap_class()
-Date: Wed, 23 Apr 2025 16:41:10 +0200
-Message-ID: <20250423142650.567657531@linuxfoundation.org>
+	T Pratham <t-pratham@ti.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kamlesh Gurudasani <kamlesh@ti.com>,
+	Praneeth Bajjuri <praneeth@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 175/393] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+Date: Wed, 23 Apr 2025 16:41:11 +0200
+Message-ID: <20250423142650.606976525@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,48 +70,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Boqun Feng <boqun.feng@gmail.com>
+From: T Pratham <t-pratham@ti.com>
 
-commit 495f53d5cca0f939eaed9dca90b67e7e6fb0e30c upstream.
+commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
 
-Currently, when a lock class is allocated, nr_unused_locks will be
-increased by 1, until it gets used: nr_unused_locks will be decreased by
-1 in mark_lock(). However, one scenario is missed: a lock class may be
-zapped without even being used once. This could result into a situation
-that nr_unused_locks != 0 but no unused lock class is active in the
-system, and when `cat /proc/lockdep_stats`, a WARN_ON() will
-be triggered in a CONFIG_DEBUG_LOCKDEP=y kernel:
+The split_sg_phys function was incorrectly setting the offsets of all
+scatterlist entries (except the first) to 0.  Only the first scatterlist
+entry's offset and length needs to be modified to account for the skip.
+Setting the rest entries' offsets to 0 could lead to incorrect data
+access.
 
-  [...] DEBUG_LOCKS_WARN_ON(debug_atomic_read(nr_unused_locks) != nr_unused)
-  [...] WARNING: CPU: 41 PID: 1121 at kernel/locking/lockdep_proc.c:283 lockdep_stats_show+0xba9/0xbd0
+I am using this function in a crypto driver that I'm currently developing
+(not yet sent to mailing list).  During testing, it was observed that the
+output scatterlists (except the first one) contained incorrect garbage
+data.
 
-And as a result, lockdep will be disabled after this.
+I narrowed this issue down to the call of sg_split().  Upon debugging
+inside this function, I found that this resetting of offset is the cause
+of the problem, causing the subsequent scatterlists to point to incorrect
+memory locations in a page.  By removing this code, I am obtaining
+expected data in all the split output scatterlists.  Thus, this was indeed
+causing observable runtime effects!
 
-Therefore, nr_unused_locks needs to be accounted correctly at
-zap_class() time.
+This patch removes the offending code, ensuring that the page offsets in
+the input scatterlist are preserved in the output scatterlist.
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250326180831.510348-1-boqun.feng@gmail.com
+Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
+Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
+Signed-off-by: T Pratham <t-pratham@ti.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Praneeth Bajjuri <praneeth@ti.com>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/lockdep.c |    3 +++
- 1 file changed, 3 insertions(+)
+ lib/sg_split.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -6141,6 +6141,9 @@ static void zap_class(struct pending_fre
- 		hlist_del_rcu(&class->hash_entry);
- 		WRITE_ONCE(class->key, NULL);
- 		WRITE_ONCE(class->name, NULL);
-+		/* Class allocated but not used, -1 in nr_unused_locks */
-+		if (class->usage_mask == 0)
-+			debug_atomic_dec(nr_unused_locks);
- 		nr_lock_classes--;
- 		__clear_bit(class - lock_classes, lock_classes_in_use);
- 		if (class - lock_classes == max_lock_class_idx)
+--- a/lib/sg_split.c
++++ b/lib/sg_split.c
+@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
+ 			if (!j) {
+ 				out_sg->offset += split->skip_sg0;
+ 				out_sg->length -= split->skip_sg0;
+-			} else {
+-				out_sg->offset = 0;
+ 			}
+ 			sg_dma_address(out_sg) = 0;
+ 			sg_dma_len(out_sg) = 0;
 
 
 
