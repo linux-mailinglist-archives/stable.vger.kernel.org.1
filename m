@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F68A98E8E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4040A98FD6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C148189A3EE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1651C8E01B2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E9B27F4D9;
-	Wed, 23 Apr 2025 14:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337AD2836A4;
+	Wed, 23 Apr 2025 15:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCpBfFf8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFKu3xKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6AA27EC6C;
-	Wed, 23 Apr 2025 14:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F2B283686;
+	Wed, 23 Apr 2025 15:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420037; cv=none; b=b+Lv/+MiHajDV3ANNKwiyEhP+f7TDcV1BHJnFNYS+uDYZoykcXUJggpe0t8PVnlNvxngp1YZZ3LTmVSxbqljglDYr8EaFqsFwPR3tkFrS28SXwmL1Gm5HlDvTRQ7j14vYGxIYcLe54rJPcALI/KgFeTVB7FiHxdIAVKGprx9TYM=
+	t=1745420551; cv=none; b=KjgnfkzGZJXj1tnwkTrjctgZeWeeM/Epb6IU626AV4DNN52WaDdkrSWeOoqydxIADQbaiNEjImEsuQT/qEDxJ9CE0kNhEZ2a5eE/4lmRM2ZGrvkf9IWX1bXIfBPz7yQ9I2VXaefmrScMEZWZ2ZUqdze6DrCUZnI2/nsbxpEsnYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420037; c=relaxed/simple;
-	bh=LZN3AL7YY1a0bor5alRjiRgQKeMxEi22nyTzzJXwNTE=;
+	s=arc-20240116; t=1745420551; c=relaxed/simple;
+	bh=O9M2672Txs6vOhk9gBfcm1a6rQjmgsXd6BBQDRAT6+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rvbs5UKR61hjiaLRKt5qM5WZztAKDotLWLDNd9H+YLUiAFJiJLO9ttSjhOI5G1bZO2iP43Qpv/C4VzxkgXbSapDcUfIwD3OzAPO6hiBgktZaYYzOLlnl+sKcDUdaqLw12/h9dhhD2jYYnSczqHGWKldVkzT6AnqTQ9gUc7mHrNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCpBfFf8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E959C4CEEB;
-	Wed, 23 Apr 2025 14:53:56 +0000 (UTC)
+	 MIME-Version; b=AAh+rHjFxEfmux/s6hlo4IIjMhqU1pZyOceMc6v+N1phH2Lw7+zZDUKWnqGyTE4YzBSWw9B77ftYRW4riPZXcLhPx1EBjWL7Zgx5v6IOAiLEdIMonOu0bXI0QKQPVyHHJSZmhqO9iB3D0jKE5cOLLXJ3hDfrsjIizakhOGULT7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFKu3xKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694AFC4CEE8;
+	Wed, 23 Apr 2025 15:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420036;
-	bh=LZN3AL7YY1a0bor5alRjiRgQKeMxEi22nyTzzJXwNTE=;
+	s=korg; t=1745420550;
+	bh=O9M2672Txs6vOhk9gBfcm1a6rQjmgsXd6BBQDRAT6+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCpBfFf8nPB4UkPuJ80886Xhavv6Gj72iD081ywdw2a+31ZIjxAg8rE0wpdJwrg6a
-	 ri0lyUy2aibpQZjGzU0CzJc1VFjEapUE0IciOH8190ZzVmpgZvWr4nca8NROF5sUzY
-	 Q6F56df1kXjBcJYv5C1f6kq04m/h104jI3sgDq3I=
+	b=sFKu3xKRExgtaGuxi4nDj0LLXrtI+6v0/VcjWEVSAVIMYv8OpJgl9sCDqxA3PeVSs
+	 Swb1AFdTucQxnMVIlMwwfspE+xsZK1RJ5fDxxhPLyXEWu25+YyOSJm8WwQKc1Vdf5E
+	 cn5+HXJd1TYUvAW7WktwjkGO88h+fZsWh8wjxpKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 094/223] asus-laptop: Fix an uninitialized variable
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14 102/241] writeback: fix false warning in inode_to_wb()
 Date: Wed, 23 Apr 2025 16:42:46 +0200
-Message-ID: <20250423142620.948653587@linuxfoundation.org>
+Message-ID: <20250423142624.740592403@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
+commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
 
-The value returned by acpi_evaluate_integer() is not checked,
-but the result is not always successful, so it is necessary to
-add a check of the returned value.
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-If the result remains negative during three iterations of the loop,
-then the uninitialized variable 'val' will be used in the clamp_val()
-macro, so it must be initialized with the current value of the 'curr'
-variable.
-
-In this case, the algorithm should be less noisy.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-laptop.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/linux/backing-dev.h |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -426,11 +426,14 @@ static int asus_pega_lucid_set(struct as
- 
- static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inod
  {
-+	unsigned long long val = (unsigned long long)curr;
-+	acpi_status status;
- 	int i, delta;
--	unsigned long long val;
--	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
--		acpi_evaluate_integer(asus->handle, method, NULL, &val);
- 
-+	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
-+		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
-+		if (ACPI_FAILURE(status))
-+			continue;
- 		/* The output is noisy.  From reading the ASL
- 		 * dissassembly, timeout errors are returned with 1's
- 		 * in the high word, and the lack of locking around
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
 
 
