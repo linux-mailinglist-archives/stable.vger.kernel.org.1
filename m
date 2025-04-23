@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC8DA991AC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237C4A9939C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1532D5A71AE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC30B3B7DF0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC37428D836;
-	Wed, 23 Apr 2025 15:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF852BF3D3;
+	Wed, 23 Apr 2025 15:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ufiYxrkG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTxQsBDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5D528D833;
-	Wed, 23 Apr 2025 15:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC9F2BF3CF;
+	Wed, 23 Apr 2025 15:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421410; cv=none; b=TD6ZpIRayIq53ZwMIUi+oSH6+pa49VfgDJGh1ixhHDZjITOQ/QjNhtjU65I4RHHnGcE7lvzwqyeJOhyVLxoXNLsCsb0JKktquvT22FAaL7GCelNcIw0vaxdQWWO/WV8YchxYOMA4sm8Gg9dXl06BqbPNBd/R1frobIO4hcSSi20=
+	t=1745422522; cv=none; b=uj8QixD7eWlMn9zOmfHMAO1jQaG5fgriMdzgNTlZztE0geLpFD2AoTYWHhlETgIImFV1gNsJACRWxeM2nPXpQZ3f3aEamTqJkhCxQPzwEJFiqzc4y/UlNwviZQD7D8cmvUUViFi2lMTVbeGraay8JPNX3jFGxeyMLXSr5dyUuZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421410; c=relaxed/simple;
-	bh=LbyDJDDfwyUtkretEYyOgtvJBZSPWnoQo66VpmJ5xX0=;
+	s=arc-20240116; t=1745422522; c=relaxed/simple;
+	bh=3EYnCP5RtwtEli1FECfEimCTXzYm+R8awyzjPQgqzvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvwbMetTpZaMy3G/a0Mt4hmDnIFNkt/bqezzHVq3v+LLbxr9nAKLXZKl8e2tNAd2lFYayjbF9fXOK9ZiB0crwQ9rHErKsn8XNckFR0EmV2+NzwUJjJotsaVXNFryTIaGgRS7o8Ieo/w5HKN7gx9PirZmtEVTzQ4uvrSzYiCyvwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ufiYxrkG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCF2C4CEE2;
-	Wed, 23 Apr 2025 15:16:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q7Uc4UIbvT/2szUMkFvWxo9FOpRMAC2ZWkL1e1b1SlL1Qgzz+65na9fUJtlIBFQ3HQtBOqWEfQnpML5fzkoamK8lORnF7/Rzw9xbAj7K5IGBLfZPXkU1AdFoXNXNI6H08ai82JOLxo0fLzKJdZBSTexe6wRNss2ecHEMuZ7977E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTxQsBDv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DD4C4CEE8;
+	Wed, 23 Apr 2025 15:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421410;
-	bh=LbyDJDDfwyUtkretEYyOgtvJBZSPWnoQo66VpmJ5xX0=;
+	s=korg; t=1745422522;
+	bh=3EYnCP5RtwtEli1FECfEimCTXzYm+R8awyzjPQgqzvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ufiYxrkGk2VTZUIOjX1Xj7N8Oz3of0t6jEPNcX4b3a3+a3E1hLRyu3qrmujHVaHdT
-	 o6XTxUtAFJrQRNIlVTb716sKlQgKCIoNrEqLsrnqbKUqapc3YHuW2w8dAUkH3wBU/D
-	 M1r1NL+ApkRonOeny+Pm2lTTRczw0TzT9v0PV+JY=
+	b=CTxQsBDvtiQGjx+Vh8TEk67vMjurNxNLLwhJQqD+JQZIIFkJYIpHDESDFY+m5ivkB
+	 uryM+HUmjEUN9ZvhZSKkLOjzF9n4lNWxH6ysT8R4Uj2Vm3PomsArTOPCm8VyaUrsss
+	 N6029XuvpDEYBceS5jectCQGgV2nS1I5OXWZwPJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 187/241] drm/amd/pm/powerplay/hwmgr/vega20_thermal: Prevent division by zero
+Subject: [PATCH 6.6 355/393] drm/amdgpu/dma_buf: fix page_link check
 Date: Wed, 23 Apr 2025 16:44:11 +0200
-Message-ID: <20250423142628.162165552@linuxfoundation.org>
+Message-ID: <20250423142658.000897554@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 4e3d9508c056d7e0a56b58d5c81253e2a0d22b6c upstream.
+commit c0dd8a9253fadfb8e5357217d085f1989da4ef0a upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+The page_link lower bits of the first sg could contain something like
+SG_END, if we are mapping a single VRAM page or contiguous blob which
+fits into one sg entry. Rather pull out the struct page, and use that in
+our check to know if we mapped struct pages vs VRAM.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 031db09017da ("drm/amd/powerplay/vega20: enable fan RPM and pwm settings V2")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega20_thermal.c
-@@ -191,7 +191,7 @@ int vega20_fan_ctrl_set_fan_speed_rpm(st
- 	uint32_t tach_period, crystal_clock_freq;
- 	int result = 0;
- 
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
- 
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl)) {
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -211,7 +211,7 @@ static void amdgpu_dma_buf_unmap(struct
+ 				 struct sg_table *sgt,
+ 				 enum dma_data_direction dir)
+ {
+-	if (sgt->sgl->page_link) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
 
 
 
