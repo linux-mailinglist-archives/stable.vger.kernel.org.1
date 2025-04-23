@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-135373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143B7A98DE7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A35A991CF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151C33BEB0D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC7F79278C9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE0328466F;
-	Wed, 23 Apr 2025 14:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882062798E3;
+	Wed, 23 Apr 2025 15:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0EG7lBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Faa0tinN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FDD280A56;
-	Wed, 23 Apr 2025 14:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431CC1EFFB9;
+	Wed, 23 Apr 2025 15:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419753; cv=none; b=kePuk85J/4ZY0H105oiM8iX12oSMCjwg5E31fuZCXi+4iJVqWFybeLFS6EDI542ZuFVuhNLQIYnw8eus4IGrtscDx2uU2fJSkrmVt8GpkP5RLEVJ0nIfvD7P2Su/VtjFAREkNwz+auTM1a5I6/7bXlySAPigFKQzp214IKFdkgU=
+	t=1745421542; cv=none; b=mS2CarGpzpdSSVWgSVlJmvmYYcwT1KbRX9qC7P1aa0zEjW5L3lpB9FGKSukW388vi3X8Be7sCZ0zJQ46I/anPs/4h0Zt7vUj06kVuCCr3XikdEgHdGII4jnm9vHUmIQnoMnAsJX/JreeSop38eXyUOXkyqyOoglfTgQ1yOsSe3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419753; c=relaxed/simple;
-	bh=mynjToUnXwLt+ngc8CeLH/uTnu6nQtg1mu94tR1V3Fc=;
+	s=arc-20240116; t=1745421542; c=relaxed/simple;
+	bh=DRp1oIIWetkesQhj+5xLltDuJi3UnY5kj2PuG3J5uU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lIF9p4vrEtzpiSsa4qEwGAFhTZ6tPIY1NpuMUrDxmchhQyXYnAeqr6XBXEDTJNWf2cQfkA76w0vR2LPkekhBE2evWh5r6tY9+fL8b4uClqVo1T+Z4A0wLF+bWHQWxzd95d+qV47TZA4MP16yf+GtiYWOt4WKXEAMni4oxv3Yuk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0EG7lBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843B0C4CEE2;
-	Wed, 23 Apr 2025 14:49:12 +0000 (UTC)
+	 MIME-Version; b=eFo7+IKeXqQrMXd+MHBZZIVXLzh9O6c9hW4hllYneTGU3ZW0kSFGvFPs+QpQlkbomC700coO4zqhgowSoPN/yFb40gsfXpXQ7PiVT3wuCnGO6GV0PXGXQM5v9bHQajjWQsP1X44bqa9XaMTTESOT9cTRkk9CBVBvdGuIswVB7Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Faa0tinN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EF7C4CEE2;
+	Wed, 23 Apr 2025 15:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419752;
-	bh=mynjToUnXwLt+ngc8CeLH/uTnu6nQtg1mu94tR1V3Fc=;
+	s=korg; t=1745421542;
+	bh=DRp1oIIWetkesQhj+5xLltDuJi3UnY5kj2PuG3J5uU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0EG7lBPFjzJYvW4c7tyJ+To2wUa7I+x9Xdg3IZy2bf0Wak9H7Ib0dw3Z0bhA6SoW
-	 cUX8DA2r3p5aH8oxZPwz3V5a57MARqLkzZdfIkjFsFQNUIVqdCahzCexPAQzbya4LB
-	 /xS2sTrIY9OcsystNLvadShXr/Y8pLlAR3QgcXCI=
+	b=Faa0tinNnwHPvUssw36cpPCoZQTlZjYGWkxVcRdaZQ9ft8gki7QNQ84feXwkCkD+c
+	 Eu4jwhrrPueowGOltNr8CDnE+ModdIPIxj/T/Ijam30zuW//1bBfMWQBaToY0wwE4t
+	 ZChGXu5zFZTcUKzEsQULOaiaHE+pjNPHPdB5umSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 021/241] RDMA/core: Silence oversized kvmalloc() warning
-Date: Wed, 23 Apr 2025 16:41:25 +0200
-Message-ID: <20250423142621.387383204@linuxfoundation.org>
+	Jane Chu <jane.chu@oracle.com>,
+	Hugh Dickins <hughd@google.com>,
+	"Kirill A. Shuemov" <kirill.shutemov@linux.intel.com>,
+	linmiaohe <linmiaohe@huawei.com>,
+	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 190/393] mm: make page_mapped_in_vma() hugetlb walk aware
+Date: Wed, 23 Apr 2025 16:41:26 +0200
+Message-ID: <20250423142651.234737483@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +66,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Jane Chu <jane.chu@oracle.com>
 
-[ Upstream commit 9a0e6f15029e1a8a21e40f06fd05aa52b7f063de ]
+commit 442b1eca223b4860cc85ef970ae602d125aec5a4 upstream.
 
-syzkaller triggered an oversized kvmalloc() warning.
-Silence it by adding __GFP_NOWARN.
+When a process consumes a UE in a page, the memory failure handler
+attempts to collect information for a potential SIGBUS.  If the page is an
+anonymous page, page_mapped_in_vma(page, vma) is invoked in order to
 
-syzkaller log:
- WARNING: CPU: 7 PID: 518 at mm/util.c:665 __kvmalloc_node_noprof+0x175/0x180
- CPU: 7 UID: 0 PID: 518 Comm: c_repro Not tainted 6.11.0-rc6+ #6
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:__kvmalloc_node_noprof+0x175/0x180
- RSP: 0018:ffffc90001e67c10 EFLAGS: 00010246
- RAX: 0000000000000100 RBX: 0000000000000400 RCX: ffffffff8149d46b
- RDX: 0000000000000000 RSI: ffff8881030fae80 RDI: 0000000000000002
- RBP: 000000712c800000 R08: 0000000000000100 R09: 0000000000000000
- R10: ffffc90001e67c10 R11: 0030ae0601000000 R12: 0000000000000000
- R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000000
- FS:  00007fde79159740(0000) GS:ffff88813bdc0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000020000180 CR3: 0000000105eb4005 CR4: 00000000003706b0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ib_umem_odp_get+0x1f6/0x390
-  mlx5_ib_reg_user_mr+0x1e8/0x450
-  ib_uverbs_reg_mr+0x28b/0x440
-  ib_uverbs_write+0x7d3/0xa30
-  vfs_write+0x1ac/0x6c0
-  ksys_write+0x134/0x170
-  ? __sanitizer_cov_trace_pc+0x1c/0x50
-  do_syscall_64+0x50/0x110
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  1. retrieve the vaddr from the process' address space,
 
-Fixes: 37824952dc8f ("RDMA/odp: Use kvcalloc for the dma_list and page_list")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Link: https://patch.msgid.link/c6cb92379de668be94894f49c2cfa40e73f94d56.1742388096.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  2. verify that the vaddr is indeed mapped to the poisoned page,
+     where 'page' is the precise small page with UE.
+
+It's been observed that when injecting poison to a non-head subpage of an
+anonymous hugetlb page, no SIGBUS shows up, while injecting to the head
+page produces a SIGBUS.  The cause is that, though hugetlb_walk() returns
+a valid pmd entry (on x86), but check_pte() detects mismatch between the
+head page per the pmd and the input subpage.  Thus the vaddr is considered
+not mapped to the subpage and the process is not collected for SIGBUS
+purpose.  This is the calling stack:
+
+      collect_procs_anon
+        page_mapped_in_vma
+          page_vma_mapped_walk
+            hugetlb_walk
+              huge_pte_lock
+                check_pte
+
+check_pte() header says that it
+"check if [pvmw->pfn, @pvmw->pfn + @pvmw->nr_pages) is mapped at the @pvmw->pte"
+but practically works only if pvmw->pfn is the head page pfn at pvmw->pte.
+Hindsight acknowledging that some pvmw->pte could point to a hugepage of
+some sort such that it makes sense to make check_pte() work for hugepage.
+
+Link: https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kirill A. Shuemov <kirill.shutemov@linux.intel.com>
+Cc: linmiaohe <linmiaohe@huawei.com>
+Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/umem_odp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/page_vma_mapped.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
-index e9fa22d31c233..c48ef60830205 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -76,12 +76,14 @@ static inline int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -77,6 +77,7 @@ static bool map_pte(struct page_vma_mapp
+  * mapped at the @pvmw->pte
+  * @pvmw: page_vma_mapped_walk struct, includes a pair pte and pfn range
+  * for checking
++ * @pte_nr: the number of small pages described by @pvmw->pte.
+  *
+  * page_vma_mapped_walk() found a place where pfn range is *potentially*
+  * mapped. check_pte() has to validate this.
+@@ -93,7 +94,7 @@ static bool map_pte(struct page_vma_mapp
+  * Otherwise, return false.
+  *
+  */
+-static bool check_pte(struct page_vma_mapped_walk *pvmw)
++static bool check_pte(struct page_vma_mapped_walk *pvmw, unsigned long pte_nr)
+ {
+ 	unsigned long pfn;
+ 	pte_t ptent = ptep_get(pvmw->pte);
+@@ -126,7 +127,11 @@ static bool check_pte(struct page_vma_ma
+ 		pfn = pte_pfn(ptent);
+ 	}
  
- 		npfns = (end - start) >> PAGE_SHIFT;
- 		umem_odp->pfn_list = kvcalloc(
--			npfns, sizeof(*umem_odp->pfn_list), GFP_KERNEL);
-+			npfns, sizeof(*umem_odp->pfn_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->pfn_list)
- 			return -ENOMEM;
+-	return (pfn - pvmw->pfn) < pvmw->nr_pages;
++	if ((pfn + pte_nr - 1) < pvmw->pfn)
++		return false;
++	if (pfn > (pvmw->pfn + pvmw->nr_pages - 1))
++		return false;
++	return true;
+ }
  
- 		umem_odp->dma_list = kvcalloc(
--			ndmas, sizeof(*umem_odp->dma_list), GFP_KERNEL);
-+			ndmas, sizeof(*umem_odp->dma_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->dma_list) {
- 			ret = -ENOMEM;
- 			goto out_pfn_list;
--- 
-2.39.5
-
+ /* Returns true if the two ranges overlap.  Careful to not overflow. */
+@@ -201,7 +206,7 @@ bool page_vma_mapped_walk(struct page_vm
+ 			return false;
+ 
+ 		pvmw->ptl = huge_pte_lock(hstate, mm, pvmw->pte);
+-		if (!check_pte(pvmw))
++		if (!check_pte(pvmw, pages_per_huge_page(hstate)))
+ 			return not_found(pvmw);
+ 		return true;
+ 	}
+@@ -283,7 +288,7 @@ restart:
+ 			goto next_pte;
+ 		}
+ this_pte:
+-		if (check_pte(pvmw))
++		if (check_pte(pvmw, 1))
+ 			return true;
+ next_pte:
+ 		do {
 
 
 
