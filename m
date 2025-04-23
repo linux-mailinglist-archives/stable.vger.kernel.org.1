@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AED9A99120
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:27:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF139A991B3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A8601BA1D65
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4075E7A7C7C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DE9284B3C;
-	Wed, 23 Apr 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F1529AB03;
+	Wed, 23 Apr 2025 15:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+Z4DxGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQNBZGYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F17A280CD9;
-	Wed, 23 Apr 2025 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5548725EF8E;
+	Wed, 23 Apr 2025 15:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421246; cv=none; b=FAEfk3lT9kJ1mchZHluUS6cOvEucChv/aGwtlBZq9XfbBxCTf+D6ZmRjZJr+xZ2POClZuItKdLKAJGdDiQqKpuHOZS5ApL3W7roBHrNnWHEDZpuPyl3A+YeYXwcLCQQOsGYr1ssewXGLLTpTJl7fG9T3m/GjayoUwubp/+dkbUg=
+	t=1745421802; cv=none; b=hQXkCEdgZ46TTBqIEb8PjsmmATO7eFsrvjLQrE/ALdHwqTt9tD8Bvf1B8z+ZuZ3DJE10haJsj+QnVnL6N3qoej9rI8rjUsed9bXESuQYqoPPH7lwunsxhDZ/96teqtbaXk6u4H8suUcquE3ypsNmpCyCRNAjBWXJmJeSSWyHjqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421246; c=relaxed/simple;
-	bh=zOxaRruJnbG7QLJLiiLZWBP9Y0+PVMDGUGCIuS9SQNg=;
+	s=arc-20240116; t=1745421802; c=relaxed/simple;
+	bh=/jo1/nFCp2a2Xos8IpevB/JdbAzJKd1VrW+F/Ue9Eq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTL88b1MVa5PVtF+4+/IENzd3f+e2Scf4wD45rzeSWJWrApeCPkEzxe+4NMee2KIDCOzJPwP7iRA/d7BKRH1+8+iJ1MLBAXc1XfH8IX3s0e/0dDfmGUE4szbtyjDjkwrKTE2B6kXJXfn0XQi1xpLtqGhp6CBWfLsu0JZsMt93iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+Z4DxGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2089C4CEE2;
-	Wed, 23 Apr 2025 15:14:05 +0000 (UTC)
+	 MIME-Version; b=swXjqNKiR7LHozWkikJlKaWRK6n1t7tXI8RWR0mzmm++RY9VS8jpeU4e8XuuZqxqTgUOYutqEdAIf19LanXDso1H3WAjlZpOOUy5O1+FTLL7wMXHNk0evpvtIwYIvNYafupjhdWGswdDaWf/pxNBlDVPhGeztDyRaHqzevlfG2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQNBZGYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA85EC4CEE2;
+	Wed, 23 Apr 2025 15:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421246;
-	bh=zOxaRruJnbG7QLJLiiLZWBP9Y0+PVMDGUGCIuS9SQNg=;
+	s=korg; t=1745421802;
+	bh=/jo1/nFCp2a2Xos8IpevB/JdbAzJKd1VrW+F/Ue9Eq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+Z4DxGJsd8yPYXtr9S44AB1eNpSpkcBPr1vbOuAlLXwimBcFdrIYyKlAaERZoTur
-	 7/nEV5CJSw8UTLrjSMvSZbwgJPZJk0tlp93OSzme9fWlahbsVhnOQGLsiLxYxQQVVT
-	 i0DpXZiEL/I+WI3l/u6CJqh59yri3O+c7MNH4vyk=
+	b=PQNBZGYz7WeGFr660QvcywrDNhAIjS5LzZWitUid5ukLVPWt/LBHriyGxkAuBQced
+	 fJhaUmntQ7DGATBroNCvE2dn9E3qYxOaE/A4zU8Ud6wlXR0CExDfaWnamyeb6GVSFn
+	 pLreiNi1D0m1w2pZUoxD4ijeqf7FPyK+zVGtJdS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lee Jones <lee@kernel.org>,
-	Chenyuan Yang <chenyuan0y@gmail.com>
-Subject: [PATCH 6.1 120/291] mfd: ene-kb3930: Fix a potential NULL pointer dereference
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 6.6 213/393] dt-bindings: coresight: qcom,coresight-tpdm: Fix too many reg
 Date: Wed, 23 Apr 2025 16:41:49 +0200
-Message-ID: <20250423142629.306450359@linuxfoundation.org>
+Message-ID: <20250423142652.180490784@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
+commit 1e4e454223f770748775f211455513c79cb3121e upstream.
 
-The off_gpios could be NULL. Add missing check in the kb3930_probe().
-This is similar to the issue fixed in commit b1ba8bcb2d1f
-("backlight: hx8357: Fix potential NULL pointer dereference").
+Binding listed variable number of IO addresses without defining them,
+however example DTS code, all in-tree DTS and Linux kernel driver
+mention only one address space, so drop the second to make binding
+precise and correctly describe the hardware.
 
-This was detected by our static analysis tool.
-
+Fixes: 6c781a35133d ("dt-bindings: arm: Add CoreSight TPDM hardware")
 Cc: stable@vger.kernel.org
-Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
-Suggested-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250226112914.94361-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/ene-kb3930.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/mfd/ene-kb3930.c
-+++ b/drivers/mfd/ene-kb3930.c
-@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
- 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
- 		if (IS_ERR(ddata->off_gpios))
- 			return PTR_ERR(ddata->off_gpios);
--		if (ddata->off_gpios->ndescs < 2) {
-+		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
- 			dev_err(dev, "invalid off-gpios property\n");
- 			return -EINVAL;
- 		}
+--- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml
+@@ -41,8 +41,7 @@ properties:
+       - const: arm,primecell
+ 
+   reg:
+-    minItems: 1
+-    maxItems: 2
++    maxItems: 1
+ 
+   clocks:
+     maxItems: 1
 
 
 
