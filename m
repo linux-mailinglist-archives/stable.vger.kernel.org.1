@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-135643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F40BA98F6D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9321A992EE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428141B87246
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 746E6924232
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BDD7280A5F;
-	Wed, 23 Apr 2025 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3487C29CB24;
+	Wed, 23 Apr 2025 15:26:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/ojZg/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOsLPhvb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1527F280A52;
-	Wed, 23 Apr 2025 15:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E173829C35B;
+	Wed, 23 Apr 2025 15:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420464; cv=none; b=KQzrxv3aSxyRWLG82xRPwLN+F7Fqi30bBFmrKVnKJW1vJAZcpaHHeSgPq4js2ugokEMv9DhUif1ZbQLrYgrkMofomZpitr4I8QpuOD3Bffo6tiT4Ot5Y3ji2/5+4CZrpVuF6CVwhcdN+9jfIVhgshRZAoGXVHfU6h9MAy5WGfPI=
+	t=1745422011; cv=none; b=pjOPJn7t6b7jE1Kl6LbLvdsMf8uOa3Fw+bc/629UUelKWwKtmmst8XU5Bw3vuzp/8kOHnnFl3NtQlFk8Wxe8oz6axKPH8LB6aZ15VZndcDDPXUBCHv1SvNnMtdzHdPSFrhfLApzHxeBYTBgg3OQ99K1fp1w+/GoYWMDZkIe23Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420464; c=relaxed/simple;
-	bh=oDGwC/AdcWxK3ichHF3hr/l0sIZ834/4Wc+CFdFRFLQ=;
+	s=arc-20240116; t=1745422011; c=relaxed/simple;
+	bh=reJfm/CqDHFFZ12zaOxi7tglSlWOY3jDDUJOCtJlt7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIPzrz9pXArngDUpvySj+JHcv+Z/8sfLGUuTbyW/JGuq1M3SWicrovR30Aq3pKv1nsO4mMk2HGZycXG45LicredIAU0nxOU22dqqh6KKcvDwC5Yt22SeDFsUtzD2Ir7KxD38D48+uCOryOuWOQH6d18DlzrOojxedWI5b+N0taM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/ojZg/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D126C4CEE2;
-	Wed, 23 Apr 2025 15:01:03 +0000 (UTC)
+	 MIME-Version; b=b6Z9BqCWvq5G0lZevzmvwiaaD05uFb03TZZK77NxwGzYzvDUq4pkOfmzj/XtrvWBUk6CjQ1hMx30OK++4z8kM9e6gUzAYCgWxw2XaatDcDM8IX2CyfvvD6SeS9xbfsya+i2TNvm3zigNBifb1vtYo3SNGprZU8DJLozpwRRVmGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOsLPhvb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B99C4CEE2;
+	Wed, 23 Apr 2025 15:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420464;
-	bh=oDGwC/AdcWxK3ichHF3hr/l0sIZ834/4Wc+CFdFRFLQ=;
+	s=korg; t=1745422010;
+	bh=reJfm/CqDHFFZ12zaOxi7tglSlWOY3jDDUJOCtJlt7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/ojZg/rryHdrpLLgKnxtoNNrkaCQXzX6DBM0mIGnG0MhQEjJlOFIMwxbY5fKXUlv
-	 hypqSvEEH4KMT+krx44WQm8Oq6WXGwo+kVCFsox1s+nkijEbRR7+xuMnY76s/tR6Dy
-	 pFRmgznub7yK8kSjK69dlLJfLpT19n6Lv1+iTzjI=
+	b=EOsLPhvbzsFcSIPmZImdAo/X67bM/W6mIQShNRfKyHMpyAauUs/IO5/6JQWjgq9WT
+	 9yRHQ7cAEU3PNa91iJudmqEYhWwooFQ4Vnp0oB+z6aK/mi1mH0wFyy1NcqhjH/9znK
+	 /EdOeSXI9E5A6QzwoA0Aaq9MGjE9bpkOJAK9I4Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 094/241] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
+Subject: [PATCH 6.6 262/393] igc: handle the IGC_PTP_ENABLED flag correctly
 Date: Wed, 23 Apr 2025 16:42:38 +0200
-Message-ID: <20250423142624.420219545@linuxfoundation.org>
+Message-ID: <20250423142654.191156592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
+[ Upstream commit 26a3910afd111f7c1a96dace6dc02f3225063896 ]
 
-[ Quoting Samuel Holland: ]
+All functions in igc_ptp.c called from igc_main.c should check the
+IGC_PTP_ENABLED flag. Adding check for this flag to stop and reset
+functions.
 
-  This is a separate issue, but using ".option rvc" here is a bug.
-  It will unconditionally enable the C extension for the rest of
-  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
-
-[ Quoting Palmer Dabbelt: ]
-
-  We're just looking at the address of kgdb_compiled_break, so it's
-  fine if it ends up as a c.ebreak.
-
-[ Quoting Alexandre Ghiti: ]
-
-  .option norvc is used to prevent the assembler from using compressed
-  instructions, but it's generally used when we need to ensure the
-  size of the instructions that are used, which is not the case here
-  as noted by Palmer since we only care about the address. So yes
-  it will work fine with C enabled :)
-
-So let's just remove them all.
-
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 5f2958052c58 ("igc: Add basic skeleton for PTP")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/kgdb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index 5d1ce8dacaf58..9f3db3503dabd 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -257,9 +257,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- noinline void arch_kgdb_breakpoint(void)
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index adb31cccaf9a5..c5387610ca3df 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1191,8 +1191,12 @@ void igc_ptp_suspend(struct igc_adapter *adapter)
+  **/
+ void igc_ptp_stop(struct igc_adapter *adapter)
  {
- 	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
-+	    "kgdb_compiled_break: ebreak\n");
- }
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	igc_ptp_suspend(adapter);
  
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
++	adapter->ptp_flags &= ~IGC_PTP_ENABLED;
+ 	if (adapter->ptp_clock) {
+ 		ptp_clock_unregister(adapter->ptp_clock);
+ 		netdev_info(adapter->netdev, "PHC removed\n");
+@@ -1213,6 +1217,9 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	unsigned long flags;
+ 	u32 timadj;
+ 
++	if (!(adapter->ptp_flags & IGC_PTP_ENABLED))
++		return;
++
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+ 
 -- 
 2.39.5
 
