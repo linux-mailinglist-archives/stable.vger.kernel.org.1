@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E124A9926D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC5AA98E5A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 435EC4A0833
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 568C57A3AF8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1525529B231;
-	Wed, 23 Apr 2025 15:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4801E27FD56;
+	Wed, 23 Apr 2025 14:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VWra9eq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnaFwRi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FA428B4F4;
-	Wed, 23 Apr 2025 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D9C27A12D;
+	Wed, 23 Apr 2025 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421825; cv=none; b=t7UrUFrrHnDHxsawZhSwNa0y0jw2jid55ELMMhtKusYzfWECiqyE+rQhM/wD63W0XXmrbIDLNjIRZ8nCvXS3hL1+GttEFHlAYB+2VIY6ZsCfMoFY70WSR3nhaJSjmOwQW53PE6UNt0hkkKT9WJaxgohFuNzvOfs7bmqe7W/0cHA=
+	t=1745420108; cv=none; b=ePfJ8wWsEQ4oYCsTdBLjdiTnIjKtOdX9cdiTN0qsWiaNY4zXh1CbcLtcQGzD9Q5Snstp4vxmURvV/qAvkXLnLE3TMU4Oi8v3MMpzf7J2GT2QVwXEfFdbGosKkCGv10P4LOqe6r+tcfSlZSPKvk4O5eWOp9sz4tOeSW+niUYwHIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421825; c=relaxed/simple;
-	bh=xK6AHEf9e9H18NDIAzQS2rhYHy9WYTwKyivLSUfxCQE=;
+	s=arc-20240116; t=1745420108; c=relaxed/simple;
+	bh=VyJeN127bCwjCck4YkkOmjPpjljSHLDCjtLrVdCp100=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dsv5NIYL7f23KU3G2EjY2SYXto37d5DJEsq1RLdjN2YTo95s1mURXzyF1O8zd7v/pn6h747L0QnC+de83Xo/Ee1eD8LywZsJHIfElC0C+BLzRgdGhbNYUIHp+W+janxlEdjfUPlOEHywlraj/aYOt/IvruPhKzaJv3d3zZuUCVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VWra9eq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B5CC4CEE2;
-	Wed, 23 Apr 2025 15:23:45 +0000 (UTC)
+	 MIME-Version; b=HnFU2RfdcelMc2Jud2Xr9Uphs/W+WOEwu0G2Itm1jbwhqlmHZxx31HriWFj78uGFTsOT1Sidy5h/QSC/wSNnOiCGT4H5lKj8q4aqndMervz8ztJGYLdda10y+e5WyKsGn7K5aubz4tqvSSWSBlKfI5xVmMYWmJSuSoQhJK2JN60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnaFwRi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B205C4CEE2;
+	Wed, 23 Apr 2025 14:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421825;
-	bh=xK6AHEf9e9H18NDIAzQS2rhYHy9WYTwKyivLSUfxCQE=;
+	s=korg; t=1745420107;
+	bh=VyJeN127bCwjCck4YkkOmjPpjljSHLDCjtLrVdCp100=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VWra9eqeuZsmGMD1VuQ5WhrpYL0MiITJGFno/95l8+Pl3sMK4wHHiYeFk/1rqWkC
-	 Xm61ZDTtHT7lFy7soWg0MJhv1M/lHTOBOJD23c7973NpKZvsPZA3GPVIUboqUFpgBc
-	 dbyKgYrFVSBf0g2pco+bvx2kQmqYk76wLG/OqM7M=
+	b=vnaFwRi/kl2EZRmXk4UOqgSj2xbQ8tBveQzu8mn9ITTJZppT5Ub63eqXzVLrcvt2/
+	 atVMPUoEwjpj6akN3LrT8IwUTGLbZgzNpVa6uwv1QOZHrUgVQC4pdVfFToOJOAvtMa
+	 XrtzQRP4EhHMg7bx8o8/KrWeSDcJpJXCNnozyung=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 228/393] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 060/241] loop: stop using vfs_iter_{read,write} for buffered I/O
 Date: Wed, 23 Apr 2025 16:42:04 +0200
-Message-ID: <20250423142652.805174324@linuxfoundation.org>
+Message-ID: <20250423142623.057337056@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,225 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit aecb63e88c5e5fb9afb782a1577264c76f179af9 upstream.
+[ Upstream commit f2fed441c69b9237760840a45a004730ff324faf ]
 
-Ensure the PHY reset and perst is asserted during power-off to
-guarantee it is in a reset state upon repeated power-on calls. This
-resolves an issue where the PHY may not properly initialize during
-subsequent power-on cycles. Power-on will deassert the reset at the
-appropriate time after tuning the PHY parameters.
+vfs_iter_{read,write} always perform direct I/O when the file has the
+O_DIRECT flag set, which breaks disabling direct I/O using the
+LOOP_SET_STATUS / LOOP_SET_STATUS64 ioctls.
 
-During suspend/resume cycles, we observed that the PHY PLL failed to
-lock during resume when the CPU temperature increased from 65C to 75C.
-The observed errors were:
-  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
-  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
-  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
-  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
+This was recenly reported as a regression, but as far as I can tell
+was only uncovered by better checking for block sizes and has been
+around since the direct I/O support was added.
 
-This resulted in a complete CPU freeze, which is resolved by ensuring
-the PHY is in reset during power-on, thus preventing PHY PLL failures.
+Fix this by using the existing aio code that calls the raw read/write
+iter methods instead.  Note that despite the comments there is no need
+for block drivers to ever call flush_dcache_page themselves, and the
+call is a left-over from prehistoric times.
 
-Cc: stable@vger.kernel.org
-Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
-Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ab1cb278bc70 ("block: loop: introduce ioctl command of LOOP_SET_DIRECT_IO")
+Reported-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Darrick J. Wong <djwong@kernel.org>
+Link: https://lore.kernel.org/r/20250409130940.3685677-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/block/loop.c | 112 +++++++------------------------------------
+ 1 file changed, 17 insertions(+), 95 deletions(-)
 
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -162,6 +162,16 @@ static int imx8_pcie_phy_power_on(struct
- 	return ret;
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 1a4dbd4116069..08ba8f0c5ba12 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -235,72 +235,6 @@ static void loop_set_size(struct loop_device *lo, loff_t size)
+ 		kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
  }
  
-+static int imx8_pcie_phy_power_off(struct phy *phy)
-+{
-+	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-+
-+	reset_control_assert(imx8_phy->reset);
-+	reset_control_assert(imx8_phy->perst);
-+
-+	return 0;
-+}
-+
- static int imx8_pcie_phy_init(struct phy *phy)
+-static int lo_write_bvec(struct file *file, struct bio_vec *bvec, loff_t *ppos)
+-{
+-	struct iov_iter i;
+-	ssize_t bw;
+-
+-	iov_iter_bvec(&i, ITER_SOURCE, bvec, 1, bvec->bv_len);
+-
+-	bw = vfs_iter_write(file, &i, ppos, 0);
+-
+-	if (likely(bw ==  bvec->bv_len))
+-		return 0;
+-
+-	printk_ratelimited(KERN_ERR
+-		"loop: Write error at byte offset %llu, length %i.\n",
+-		(unsigned long long)*ppos, bvec->bv_len);
+-	if (bw >= 0)
+-		bw = -EIO;
+-	return bw;
+-}
+-
+-static int lo_write_simple(struct loop_device *lo, struct request *rq,
+-		loff_t pos)
+-{
+-	struct bio_vec bvec;
+-	struct req_iterator iter;
+-	int ret = 0;
+-
+-	rq_for_each_segment(bvec, rq, iter) {
+-		ret = lo_write_bvec(lo->lo_backing_file, &bvec, &pos);
+-		if (ret < 0)
+-			break;
+-		cond_resched();
+-	}
+-
+-	return ret;
+-}
+-
+-static int lo_read_simple(struct loop_device *lo, struct request *rq,
+-		loff_t pos)
+-{
+-	struct bio_vec bvec;
+-	struct req_iterator iter;
+-	struct iov_iter i;
+-	ssize_t len;
+-
+-	rq_for_each_segment(bvec, rq, iter) {
+-		iov_iter_bvec(&i, ITER_DEST, &bvec, 1, bvec.bv_len);
+-		len = vfs_iter_read(lo->lo_backing_file, &i, &pos, 0);
+-		if (len < 0)
+-			return len;
+-
+-		flush_dcache_page(bvec.bv_page);
+-
+-		if (len != bvec.bv_len) {
+-			struct bio *bio;
+-
+-			__rq_for_each_bio(bio, rq)
+-				zero_fill_bio(bio);
+-			break;
+-		}
+-		cond_resched();
+-	}
+-
+-	return 0;
+-}
+-
+ static void loop_clear_limits(struct loop_device *lo, int mode)
  {
- 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
-@@ -182,6 +192,7 @@ static const struct phy_ops imx8_pcie_ph
- 	.init		= imx8_pcie_phy_init,
- 	.exit		= imx8_pcie_phy_exit,
- 	.power_on	= imx8_pcie_phy_power_on,
-+	.power_off	= imx8_pcie_phy_power_off,
- 	.owner		= THIS_MODULE,
- };
+ 	struct queue_limits lim = queue_limits_start_update(lo->lo_queue);
+@@ -366,7 +300,7 @@ static void lo_complete_rq(struct request *rq)
+ 	struct loop_cmd *cmd = blk_mq_rq_to_pdu(rq);
+ 	blk_status_t ret = BLK_STS_OK;
  
+-	if (!cmd->use_aio || cmd->ret < 0 || cmd->ret == blk_rq_bytes(rq) ||
++	if (cmd->ret < 0 || cmd->ret == blk_rq_bytes(rq) ||
+ 	    req_op(rq) != REQ_OP_READ) {
+ 		if (cmd->ret < 0)
+ 			ret = errno_to_blk_status(cmd->ret);
+@@ -382,14 +316,13 @@ static void lo_complete_rq(struct request *rq)
+ 		cmd->ret = 0;
+ 		blk_mq_requeue_request(rq, true);
+ 	} else {
+-		if (cmd->use_aio) {
+-			struct bio *bio = rq->bio;
++		struct bio *bio = rq->bio;
+ 
+-			while (bio) {
+-				zero_fill_bio(bio);
+-				bio = bio->bi_next;
+-			}
++		while (bio) {
++			zero_fill_bio(bio);
++			bio = bio->bi_next;
+ 		}
++
+ 		ret = BLK_STS_IOERR;
+ end_io:
+ 		blk_mq_end_request(rq, ret);
+@@ -469,9 +402,14 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
+ 
+ 	cmd->iocb.ki_pos = pos;
+ 	cmd->iocb.ki_filp = file;
+-	cmd->iocb.ki_complete = lo_rw_aio_complete;
+-	cmd->iocb.ki_flags = IOCB_DIRECT;
+ 	cmd->iocb.ki_ioprio = req_get_ioprio(rq);
++	if (cmd->use_aio) {
++		cmd->iocb.ki_complete = lo_rw_aio_complete;
++		cmd->iocb.ki_flags = IOCB_DIRECT;
++	} else {
++		cmd->iocb.ki_complete = NULL;
++		cmd->iocb.ki_flags = 0;
++	}
+ 
+ 	if (rw == ITER_SOURCE)
+ 		ret = file->f_op->write_iter(&cmd->iocb, &iter);
+@@ -482,7 +420,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
+ 
+ 	if (ret != -EIOCBQUEUED)
+ 		lo_rw_aio_complete(&cmd->iocb, ret);
+-	return 0;
++	return -EIOCBQUEUED;
+ }
+ 
+ static int do_req_filebacked(struct loop_device *lo, struct request *rq)
+@@ -490,15 +428,6 @@ static int do_req_filebacked(struct loop_device *lo, struct request *rq)
+ 	struct loop_cmd *cmd = blk_mq_rq_to_pdu(rq);
+ 	loff_t pos = ((loff_t) blk_rq_pos(rq) << 9) + lo->lo_offset;
+ 
+-	/*
+-	 * lo_write_simple and lo_read_simple should have been covered
+-	 * by io submit style function like lo_rw_aio(), one blocker
+-	 * is that lo_read_simple() need to call flush_dcache_page after
+-	 * the page is written from kernel, and it isn't easy to handle
+-	 * this in io submit style function which submits all segments
+-	 * of the req at one time. And direct read IO doesn't need to
+-	 * run flush_dcache_page().
+-	 */
+ 	switch (req_op(rq)) {
+ 	case REQ_OP_FLUSH:
+ 		return lo_req_flush(lo, rq);
+@@ -514,15 +443,9 @@ static int do_req_filebacked(struct loop_device *lo, struct request *rq)
+ 	case REQ_OP_DISCARD:
+ 		return lo_fallocate(lo, rq, pos, FALLOC_FL_PUNCH_HOLE);
+ 	case REQ_OP_WRITE:
+-		if (cmd->use_aio)
+-			return lo_rw_aio(lo, cmd, pos, ITER_SOURCE);
+-		else
+-			return lo_write_simple(lo, rq, pos);
++		return lo_rw_aio(lo, cmd, pos, ITER_SOURCE);
+ 	case REQ_OP_READ:
+-		if (cmd->use_aio)
+-			return lo_rw_aio(lo, cmd, pos, ITER_DEST);
+-		else
+-			return lo_read_simple(lo, rq, pos);
++		return lo_rw_aio(lo, cmd, pos, ITER_DEST);
+ 	default:
+ 		WARN_ON_ONCE(1);
+ 		return -EIO;
+@@ -1907,7 +1830,6 @@ static void loop_handle_cmd(struct loop_cmd *cmd)
+ 	struct loop_device *lo = rq->q->queuedata;
+ 	int ret = 0;
+ 	struct mem_cgroup *old_memcg = NULL;
+-	const bool use_aio = cmd->use_aio;
+ 
+ 	if (write && (lo->lo_flags & LO_FLAGS_READ_ONLY)) {
+ 		ret = -EIO;
+@@ -1937,7 +1859,7 @@ static void loop_handle_cmd(struct loop_cmd *cmd)
+ 	}
+  failed:
+ 	/* complete non-aio request */
+-	if (!use_aio || ret) {
++	if (ret != -EIOCBQUEUED) {
+ 		if (ret == -EOPNOTSUPP)
+ 			cmd->ret = ret;
+ 		else
+-- 
+2.39.5
+
 
 
 
