@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-136435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC39A993D0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B13A991C6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52B894A584D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A201B80CF1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 871E82BF3D8;
-	Wed, 23 Apr 2025 15:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D97E28DEED;
+	Wed, 23 Apr 2025 15:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeDNgFHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9P4jzLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E5528F933;
-	Wed, 23 Apr 2025 15:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09484284685;
+	Wed, 23 Apr 2025 15:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422538; cv=none; b=n0wX4wJ1XK/8etQs5I6xfMHRl4T8HwMaoncYvsSVfDYR694+WUrAs9OSS4E6oA2sy4lmqfUfLibxesInlHRqiT1XZuiGvZbtsygfOGBVA3BJCOSHUtZ4U/UqQlXW90mqdNrr20LaDrlEf6wqnwuYzv3PST4KuYBe5H3bDISI9nc=
+	t=1745421445; cv=none; b=cDIH9IHDVlgWjp+oLFnUn4cfi97Mlrw+1xAo0Jo+j6m0vi+WjXflBd+dNOdCn9OiZ2+5Qa0EngnFisiNSv+jBVFzZ6C4JKTvYxxp2zUhzCpVPDHKZNK+h2f23iw1W089hVDCis2VfUieJrLeKcL3uF1ZCklwmjVo61iBMjJuoVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422538; c=relaxed/simple;
-	bh=oNpnBbM9V3bCOb15p7DdmMaWOVcSAwBWxkQUNSar+tU=;
+	s=arc-20240116; t=1745421445; c=relaxed/simple;
+	bh=UQUZPLrUjYAs+9jsOiuhdPyE0fXi6gAZAlWAC6pCKO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qmd0QOk8c9b1wKc9GDp76eqdZVJdedVwfZIXE5ox8hD6UY+PqekSrVN8qNJAxz9JwJ66/W1EGRbCXbX0hlLxSvj2cnYDqkzO46CmQgn7gyDTBuNZDDEr6aA+vez5yc3QmZcS+0A72/aZQsDurgLBJ2MdWOAqfVfPxSLTLWNTkIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeDNgFHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0F7C4CEE2;
-	Wed, 23 Apr 2025 15:35:37 +0000 (UTC)
+	 MIME-Version; b=WFDFfrZYyia2YU84VPOggx4muX1+ZYlPbQAEtoPAFeAaktZ9DjPVOeTGkXxPRY54KRnfWRF+rmBdbv7q+b9DyYQihNGBi5tHK/uOR3iN0aP2bJvsbP/6xNRn+tIjLSnJmTWhoSJCQwgsiVgakEWZexlZGOfusJQMBc6i3u5bhMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9P4jzLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAE3C4CEE2;
+	Wed, 23 Apr 2025 15:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422538;
-	bh=oNpnBbM9V3bCOb15p7DdmMaWOVcSAwBWxkQUNSar+tU=;
+	s=korg; t=1745421444;
+	bh=UQUZPLrUjYAs+9jsOiuhdPyE0fXi6gAZAlWAC6pCKO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eeDNgFHEOUeST3nbH1s9fXjXcoQcdoBRHNPfnRwCtq3FsKJ6BVs4IAqFZcEWPLUe1
-	 JkERQlFYji3O/KE6okAHndEvJS2tapiEOdLf/Xm1CfzPEUgJqQolZmGvF8IFXvZ1Qe
-	 ZDalI/AlIUE2GHM4rqJJlxYPdpUmKqVpICtU0x68=
+	b=V9P4jzLEvwXzjvVha7ODctAv6nFeMvGA7kZHQGzdS6PFnxUiFISiliy6EJwX5Wiei
+	 GDg55oC7Bd9M5Gs0dlGvLK7JPkz80CxptaHDroiZPUrxnzD5LbOYdSL+AZzNf0fnG4
+	 hSsmwHBWXz749w9+wsyArLWosvKUtbDO9924VmII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 358/393] drm/i915/gvt: fix unterminated-string-initialization warning
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.14 190/241] drm/xe: Use local fence in error path of xe_migrate_clear
 Date: Wed, 23 Apr 2025 16:44:14 +0200
-Message-ID: <20250423142658.123030115@linuxfoundation.org>
+Message-ID: <20250423142628.281846951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+commit 20659d3150f1a2a258a173fe011013178ff2a197 upstream.
 
-Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-(which is "IntelGraphicsMem") drops the NUL termination of the
-string. This is intentional, but the compiler doesn't know this.
+The intent of the error path in xe_migrate_clear is to wait on locally
+generated fence and then return. The code is waiting on m->fence which
+could be the local fence but this is only stable under the job mutex
+leading to a possible UAF. Fix code to wait on local fence.
 
-Switch to initializing header->signature directly from the string
-litaral, with sizeof destination rather than source. We don't treat the
-signature as a string other than for initialization; it's really just a
-blob of binary data.
-
-Add a static assert for good measure to cross-check the sizes.
-
-Reported-by: Kees Cook <kees@kernel.org>
-Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
 Cc: stable@vger.kernel.org
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
-Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://lore.kernel.org/r/20250311182915.3606291-1-matthew.brost@intel.com
+(cherry picked from commit 762b7e95362170b3e13a8704f38d5e47eca4ba74)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gvt/opregion.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_migrate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gvt/opregion.c
-+++ b/drivers/gpu/drm/i915/gvt/opregion.c
-@@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct inte
- 	u8 *buf;
- 	struct opregion_header *header;
- 	struct vbt v;
--	const char opregion_signature[16] = OPREGION_SIGNATURE;
+--- a/drivers/gpu/drm/xe/xe_migrate.c
++++ b/drivers/gpu/drm/xe/xe_migrate.c
+@@ -1177,7 +1177,7 @@ err:
+ err_sync:
+ 		/* Sync partial copies if any. FIXME: job_mutex? */
+ 		if (fence) {
+-			dma_fence_wait(m->fence, false);
++			dma_fence_wait(fence, false);
+ 			dma_fence_put(fence);
+ 		}
  
- 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
- 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-@@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct inte
- 	/* emulated opregion with VBT mailbox only */
- 	buf = (u8 *)vgpu_opregion(vgpu)->va;
- 	header = (struct opregion_header *)buf;
--	memcpy(header->signature, opregion_signature,
--	       sizeof(opregion_signature));
-+
-+	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
-+	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
-+
- 	header->size = 0x8;
- 	header->opregion_ver = 0x02000000;
- 	header->mboxes = MBOX_VBT;
 
 
 
