@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-135721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F917A98FAC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B32EA98E3C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0262176F1A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377A5171887
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FEF28B503;
-	Wed, 23 Apr 2025 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF52279345;
+	Wed, 23 Apr 2025 14:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ+xQh/k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaC6vKNg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA9228B504;
-	Wed, 23 Apr 2025 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8775DC8EB;
+	Wed, 23 Apr 2025 14:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420669; cv=none; b=fWSob0it8yr79zWfTCW7bz2aJ9j1TVTi8bKR3kb9O/E4Xop2GT4IRwq9qzEhUXV+rcmIR6zhBMLHbAXSTNlRjVioOrJ6mb8QrFsBF3EhZU5xQl0FCx7Rxfawb5EqpyYDpQhBdTnnNMfkUUxDCbYEwdLToKKmDhEFt7Qyh3xZpUY=
+	t=1745419963; cv=none; b=MExvquHD6al9bP9LxRMGa9FdqITTLub+FW5/bcX+CHoc3GjVbhFlhVdabl3tmCww40rgSm3nHipThNS0ebOyAilPLyasIIFSgaKMwC446xSpov2q0oguXLc85nyaek+oLOcGYhUKlelKIw2bHFVsOMdw8azaX5WY4fEek0sDJew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420669; c=relaxed/simple;
-	bh=m+toeViBsQoQM6LuJvFk4w8kk7eVCNrHT9+jgJumEyg=;
+	s=arc-20240116; t=1745419963; c=relaxed/simple;
+	bh=q0iwB5cqfCLeUpTlBgn/Ashx6yJOgnIRPVZJbDW0MYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XI33GZSPc+dR1Fo4BdsviwomNRWO5VyGx+wZNGOlZpF6VHfpQTxXiCrbBRS0S8J24DX4IGnT27UvrbFdQ3MFRu2SvGXPaIe5g+77EM5lZxA4FS9lV3hsv6oVKFGQqytBsF+66nxL0UtVhk+r3YeKTtwPRG1TqvIWcN3oHiRLMa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ+xQh/k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A33C4CEE2;
-	Wed, 23 Apr 2025 15:04:28 +0000 (UTC)
+	 MIME-Version; b=mAzE6xS8IdVvpDuRm8TeSFEnl/24ipfMh5M8uWf5p7ElnzfukSCaEtAqJI9CT57gilDHBGk08/3xKGpmTxLgFdCAqKY3t67PLIQGMQ7HJllLhlD5SuCC46Yl6JdZpyhnZjSAWXadn7lrq0qYlD2lPZrnoxYKfMLCddE5/+Evmro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaC6vKNg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13138C4CEE3;
+	Wed, 23 Apr 2025 14:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420669;
-	bh=m+toeViBsQoQM6LuJvFk4w8kk7eVCNrHT9+jgJumEyg=;
+	s=korg; t=1745419963;
+	bh=q0iwB5cqfCLeUpTlBgn/Ashx6yJOgnIRPVZJbDW0MYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ+xQh/kxXwb/RjMeHOeQMT67eXwq410CdeqVf2jvRJJ+vmUWYZYQmsjwlVsvZep2
-	 5y24v2t4QDZ2gGKNmigs/1zn4wmHYmDW/luZx8HDgizhFubONuKS11sFg3OLv46bck
-	 foVr9koxWcxyTutizLa5e4y4jUm0h3UxfECDO8lM=
+	b=uaC6vKNgdgoIrzWhjspu155xRtmtSWG4p72ppEo41IFxiZpNINMBV68YZOtCV73Yj
+	 B05vXhlaU1TOHhx5W5qh25Fx1KLXAh0cQ1gF7OIV8kwmMs2LLBdK9klwTcIIYpvPEI
+	 s+OD7Objyg2B3cYGATxzUu+EhfH7OEVWjxGOnBQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	=?UTF-8?q?Jo=C3=A3o=20Pedro=20Kurtz?= <joexkurtz@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 098/393] drm: panel-orientation-quirks: Add quirk for OneXPlayer Mini (Intel)
+Subject: [PATCH 6.1 005/291] net: tls: explicitly disallow disconnect
 Date: Wed, 23 Apr 2025 16:39:54 +0200
-Message-ID: <20250423142647.335112464@linuxfoundation.org>
+Message-ID: <20250423142624.634306940@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit b24dcc183583fc360ae0f0899e286a68f46abbd0 ]
+[ Upstream commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 ]
 
-The Intel model of the OneXPlayer Mini uses a 1200x1920 portrait LCD panel.
-The DMI strings are the same as the OneXPlayer, which already has a DMI
-quirk, but the panel is different.
+syzbot discovered that it can disconnect a TLS socket and then
+run into all sort of unexpected corner cases. I have a vague
+recollection of Eric pointing this out to us a long time ago.
+Supporting disconnect is really hard, for one thing if offload
+is enabled we'd need to wait for all packets to be _acked_.
+Disconnect is not commonly used, disallow it.
 
-Add a DMI match to correctly rotate this panel.
+The immediate problem syzbot run into is the warning in the strp,
+but that's just the easiest bug to trigger:
 
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Co-developed-by: John Edwards <uejji@uejji.net>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: João Pedro Kurtz <joexkurtz@gmail.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-6-uejji@uejji.net
+  WARNING: CPU: 0 PID: 5834 at net/tls/tls_strp.c:486 tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
+  RIP: 0010:tls_strp_msg_load+0x72e/0xa80 net/tls/tls_strp.c:486
+  Call Trace:
+   <TASK>
+   tls_rx_rec_wait+0x280/0xa60 net/tls/tls_sw.c:1363
+   tls_sw_recvmsg+0x85c/0x1c30 net/tls/tls_sw.c:2043
+   inet6_recvmsg+0x2c9/0x730 net/ipv6/af_inet6.c:678
+   sock_recvmsg_nosec net/socket.c:1023 [inline]
+   sock_recvmsg+0x109/0x280 net/socket.c:1045
+   __sys_recvfrom+0x202/0x380 net/socket.c:2237
+
+Fixes: 3c4d7559159b ("tls: kernel TLS support")
+Reported-by: syzbot+b4cd76826045a1eb93c1@syzkaller.appspotmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/20250404180334.3224206-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/tls/tls_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 12d547f093bd2..036b095c98882 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -129,6 +129,12 @@ static const struct drm_dmi_panel_orientation_data lcd1080x1920_rightside_up = {
- 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
- };
+diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
+index 75cd20c0e3fdb..14d01558311d2 100644
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -900,6 +900,11 @@ static int tls_setsockopt(struct sock *sk, int level, int optname,
+ 	return do_tls_setsockopt(sk, optname, optval, optlen);
+ }
  
-+static const struct drm_dmi_panel_orientation_data lcd1200x1920_leftside_up = {
-+	.width = 1200,
-+	.height = 1920,
-+	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
-+};
++static int tls_disconnect(struct sock *sk, int flags)
++{
++	return -EOPNOTSUPP;
++}
 +
- static const struct drm_dmi_panel_orientation_data lcd1200x1920_rightside_up = {
- 	.width = 1200,
- 	.height = 1920,
-@@ -473,6 +479,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_leftside_up,
-+	}, {	/* OneXPlayer Mini (Intel) */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ONE-NETBOOK TECHNOLOGY CO., LTD."),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "ONE XPLAYER"),
-+		},
-+		.driver_data = (void *)&lcd1200x1920_leftside_up,
- 	}, {	/* OrangePi Neo */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "OrangePi"),
+ struct tls_context *tls_ctx_create(struct sock *sk)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+@@ -995,6 +1000,7 @@ static void build_protos(struct proto prot[TLS_NUM_CONFIG][TLS_NUM_CONFIG],
+ 	prot[TLS_BASE][TLS_BASE] = *base;
+ 	prot[TLS_BASE][TLS_BASE].setsockopt	= tls_setsockopt;
+ 	prot[TLS_BASE][TLS_BASE].getsockopt	= tls_getsockopt;
++	prot[TLS_BASE][TLS_BASE].disconnect	= tls_disconnect;
+ 	prot[TLS_BASE][TLS_BASE].close		= tls_sk_proto_close;
+ 
+ 	prot[TLS_SW][TLS_BASE] = prot[TLS_BASE][TLS_BASE];
 -- 
 2.39.5
 
