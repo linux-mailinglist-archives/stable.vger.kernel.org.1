@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5519CA992AC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E9BA98DBB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783D15A74C8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D99D7A52AB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F096C2BE7B1;
-	Wed, 23 Apr 2025 15:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF916280A33;
+	Wed, 23 Apr 2025 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l133+ulF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtHXZbGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B001C2BE7A8;
-	Wed, 23 Apr 2025 15:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C336280A27;
+	Wed, 23 Apr 2025 14:47:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421721; cv=none; b=fgDkhFQNE4xn8Twwy9QZiJKcroxy9AyALlhLHcRufk9Sin05jfNMAERo2AHa1D4Auu4PW3BLVp/hTTjtCl3IQ16r6QB2GKqrN9D8D3uroHHMsnW+/yf4kwcCBNa8aMN3BccL36baXibKWbiaeTABomEjrkZ10ZRZg34ZdKNJ+Wg=
+	t=1745419679; cv=none; b=iU+0MX28NujC26vkeW7KHlKWczESascXnyaBFNk6sst7u+K0aNmOcH3uQgzyGutayW7DdChkC4Gj+vilJr3Pw8JDMO3VwN+Wb5EkXWG7JnKRv6L8hyXrpxCVqNuG4dqi7D9V2ROAXSuXsga1UU8hL9s7Klc7X1MZRytBKn5bstU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421721; c=relaxed/simple;
-	bh=lEg3w+OwJ7iE/E49YbjrdACZjDFDCJPYNIf7bTvR7nI=;
+	s=arc-20240116; t=1745419679; c=relaxed/simple;
+	bh=dxQiIESHnhL8kZAfu4wGiwp5cYBiyE4oMi7W0M/JUQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4aVl/+YOP0cN0OcBo6tmLJWylk/gAgTyNEK702ZF1HX7Ag3jZeKwYTicaM7ayNxm7Ml90mReoENsC5exYqDEdbYJey+YP1m+ecoHFVdOwNkj+ZrE6P/h+tNVw/GixrtsEjktOIcEWH+Y9bMd4UhFo587+yb3qNvj0ZXWtEWZq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l133+ulF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA16C4CEE2;
-	Wed, 23 Apr 2025 15:22:00 +0000 (UTC)
+	 MIME-Version; b=K3WxHElU1D1XMsK1fU0s10Mi6Zoh+Tcp7X61yJshiVRFhSZ4XuuTNVEbBoX/+VJeM0pNgWRRsHJUl8gwUpo5CDJWCEgvYRJxGT7DqWb5bpbjcFKmfF4u5Pl4FYJhj9PFZGF8t1pVNYTA1aARDYKRN4Qvs47znPbcn2G5mTYU5Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtHXZbGL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEAAC4CEE2;
+	Wed, 23 Apr 2025 14:47:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421721;
-	bh=lEg3w+OwJ7iE/E49YbjrdACZjDFDCJPYNIf7bTvR7nI=;
+	s=korg; t=1745419678;
+	bh=dxQiIESHnhL8kZAfu4wGiwp5cYBiyE4oMi7W0M/JUQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l133+ulFnR51pEimhcFdm4Gq1ZXILie7LOpkqlCuA2iO9QLZWsssZDMcZ3uAQOA6C
-	 ncf5a9dx9DtqJIUpbbwZKlzT7bl8W5Vri4BLR0+mlaut1nNfkHGXKc0CLHgPnLqyzg
-	 hy15da/5yv4txmRT8QOfTKRCv2HG905uLbdyJNA4=
+	b=BtHXZbGLezkAae+3eisIfiYe6srg1cVgEBCdxdw2vtXYob188Nf/BuM+qH+XSlv6W
+	 73TrxfRIc4uysY7oAUi5VGkYUsccXhJr4A5pmm8yk9zA4FQ1ydVd7S7+fCvoHU5y1O
+	 l+OkqcYpulctvZTPTS7L/bUtrxvOicVQLb1zJDZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.6 216/393] gpio: zynq: Fix wakeup source leaks on device unbind
-Date: Wed, 23 Apr 2025 16:41:52 +0200
-Message-ID: <20250423142652.302159070@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 041/223] test suite: use %zu to print size_t
+Date: Wed, 23 Apr 2025 16:41:53 +0200
+Message-ID: <20250423142618.801300012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
+[ Upstream commit a30951d09c33c899f0e4aca80eb87fad5f10ecfa ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+On 32-bit, we can't use %lu to print a size_t variable and gcc warns us
+about it.  Shame it doesn't warn about it on 64-bit.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20250403003311.359917-1-Liam.Howlett@oracle.com
+Fixes: cc86e0c2f306 ("radix tree test suite: add support for slab bulk APIs")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-zynq.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/shared/linux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpio-zynq.c
-+++ b/drivers/gpio/gpio-zynq.c
-@@ -1018,6 +1018,7 @@ static int zynq_gpio_remove(struct platf
- 	ret = pm_runtime_get_sync(&pdev->dev);
- 	if (ret < 0)
- 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
-+	device_init_wakeup(&pdev->dev, 0);
- 	gpiochip_remove(&gpio->chip);
- 	clk_disable_unprepare(gpio->clk);
- 	device_set_wakeup_capable(&pdev->dev, 0);
+diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
+index 17263696b5d88..61b3f571f7a70 100644
+--- a/tools/testing/shared/linux.c
++++ b/tools/testing/shared/linux.c
+@@ -147,7 +147,7 @@ void kmem_cache_free(struct kmem_cache *cachep, void *objp)
+ void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list)
+ {
+ 	if (kmalloc_verbose)
+-		pr_debug("Bulk free %p[0-%lu]\n", list, size - 1);
++		pr_debug("Bulk free %p[0-%zu]\n", list, size - 1);
+ 
+ 	pthread_mutex_lock(&cachep->lock);
+ 	for (int i = 0; i < size; i++)
+@@ -165,7 +165,7 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
+ 	size_t i;
+ 
+ 	if (kmalloc_verbose)
+-		pr_debug("Bulk alloc %lu\n", size);
++		pr_debug("Bulk alloc %zu\n", size);
+ 
+ 	pthread_mutex_lock(&cachep->lock);
+ 	if (cachep->nr_objs >= size) {
+-- 
+2.39.5
+
 
 
 
