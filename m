@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAC06A98EB6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9B0BA9924E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35EF83BAE2B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1BA04A2CDB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E2B27FD56;
-	Wed, 23 Apr 2025 14:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB8B28B503;
+	Wed, 23 Apr 2025 15:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7RFIEWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOTyvRVW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511511EFFB9;
-	Wed, 23 Apr 2025 14:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0B428B4F4;
+	Wed, 23 Apr 2025 15:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420134; cv=none; b=TaDKlk3O3hi0kGA9fEHSWabxHIcRhWQLfc65i4ZjVWG4yGyDlFxMH1pw+cNeWJZvUQ77t+3HXa0W94Fl75LPx4Cpw7IsiiiS4U1u5gRDuxynp1NGp6fh3wx3KimPdiFqgUIDPMPfTIFC2TzpqmiXKBF+uHRTz1yxkqCRlYfSfGc=
+	t=1745421845; cv=none; b=ff+62wd+fefCPBZ4U68dM/1pTnbdwlxB4CUuDjx+I0zLzDte0DQStg9NVJ0Rb9ITBXL0TMnBw8XQOF32C+TN67h1XD2dTMyKY5kGUJV4rIP0GZ3lJoeEyGAyRrSg410mDN4rjE+R1WDnTKcR19Selxgtv/gb30KfBKuGWiWBNaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420134; c=relaxed/simple;
-	bh=cIkcF+ojwo4E26zzmlKasrbUXfAfvuMdMQ8vmFt1Fpw=;
+	s=arc-20240116; t=1745421845; c=relaxed/simple;
+	bh=Q4nfhE3pZiU60b694QZFae1dGZPlCIJHkvhJBHUCedE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auewsykQ/WT7/qxKRInIs6MO2ndTFH6tFyZJuMuaUZLQ8YKIwSHD8+fSF/lMnZC4UiJJNpQGuYIpccTHKZ9vBM8FiA0vJU7kPwkE/ZeoEHf+F1kW0xUyvUby+Mhq6SdJ40e2tnc+4CMfHx3t7q2ZxsyiHU9VZI8tCMeHIAq5FKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7RFIEWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0284C4CEE2;
-	Wed, 23 Apr 2025 14:55:33 +0000 (UTC)
+	 MIME-Version; b=tIjhvnceCnHWhQ2prCma6AaUOFItNRU6Ar6Y1QN0ZhNQ4QUBAQAqLn0olX59gNBRcUnjmv5F/3xw+V3d7qIPhg41f5pWCVo7TJuczEkbYaRd/k8ordpETKKWxe7ovL9WM/wMmEm4UL437fAdUwS4Sb8RV2LKU78dlw+tszFMcWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOTyvRVW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74487C4CEE2;
+	Wed, 23 Apr 2025 15:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420134;
-	bh=cIkcF+ojwo4E26zzmlKasrbUXfAfvuMdMQ8vmFt1Fpw=;
+	s=korg; t=1745421844;
+	bh=Q4nfhE3pZiU60b694QZFae1dGZPlCIJHkvhJBHUCedE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7RFIEWKK/lIj4k5Cp1t4s+uOdDtIl2WckgdrBz49lpvYyvOFtFH/9m8GPegOjjZV
-	 rlUsJn3cV5oguw/SXqXRkdWnbMuv/Y3M+LRipiz+dMyayteP1hkqMR24V2HB0GJ6Rl
-	 TrrmLq8s+PN45D1QMW5iMIw5D8gP0DVGXAre2mU8=
+	b=iOTyvRVWYqqA63iA/lKdkUkjsUJQeuvIArZdsvvTtKsT8NXoUTFNxgR0grl7Z4kC4
+	 g1pW/NQ1cil/HK8dKGVQEO8mYhGpYbF1zFlUxawLsUjQjqph8U1xbxU58tg0krANxg
+	 wv1JsAFCqrx9wkL0KOeu8LpiYcogRtP7CjzQbQlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 062/241] nvmet: pci-epf: clear CC and CSTS when disabling the controller
+	Cong Liu <liucong2@kylinos.cn>,
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 230/393] selftests: mptcp: close fd_in before returning in main_loop
 Date: Wed, 23 Apr 2025 16:42:06 +0200
-Message-ID: <20250423142623.135812274@linuxfoundation.org>
+Message-ID: <20250423142652.891545407@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit f8e01fa93f3e4fc255d240cfa0c045ce0b5c97ea ]
+commit c183165f87a486d5879f782c05a23c179c3794ab upstream.
 
-When a host shuts down the controller when shutting down but does so
-without first disabling the controller, the enable bit remains set in
-the controller configuration register. When the host restarts and
-attempts to enable the controller again, the
-nvmet_pci_epf_poll_cc_work() function is unable to detect the change
-from 0 to 1 of the enable bit, and thus the controller is not enabled
-again, which result in a device scan timeout on the host. This problem
-also occurs if the host shuts down uncleanly or if the PCIe link goes
-down: as the CC.EN value is not reset, the controller is not enabled
-again when the host restarts.
+The file descriptor 'fd_in' is opened when cfg_input is configured, but
+not closed in main_loop(), this patch fixes it.
 
-Fix this by introducing the function nvmet_pci_epf_clear_ctrl_config()
-to clear the CC and CSTS registers of the controller when the PCIe link
-is lost (nvmet_pci_epf_stop_ctrl() function), or when starting the
-controller fails (nvmet_pci_epf_enable_ctrl() fails). Also use this
-function in nvmet_pci_epf_init_bar() to simplify the initialization of
-the CC and CSTS registers.
-
-Furthermore, modify the function nvmet_pci_epf_disable_ctrl() to clear
-the CC.EN bit and write this updated value to the BAR register when the
-controller is shutdown by the host, to ensure that upon restart, we can
-detect the host setting CC.EN.
-
-Fixes: 0faa0fe6f90e ("nvmet: New NVMe PCI endpoint function target driver")
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
+Cc: stable@vger.kernel.org
+Co-developed-by: Cong Liu <liucong2@kylinos.cn>
+Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-3-34161a482a7f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/pci-epf.c | 49 +++++++++++++++++++++++------------
- 1 file changed, 32 insertions(+), 17 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
-index 70855bb9823af..5c4c4c1f535d4 100644
---- a/drivers/nvme/target/pci-epf.c
-+++ b/drivers/nvme/target/pci-epf.c
-@@ -1825,6 +1825,21 @@ static void nvmet_pci_epf_cq_work(struct work_struct *work)
- 				   NVMET_PCI_EPF_CQ_RETRY_INTERVAL);
- }
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
+@@ -1299,7 +1299,7 @@ again:
  
-+static void nvmet_pci_epf_clear_ctrl_config(struct nvmet_pci_epf_ctrl *ctrl)
-+{
-+	struct nvmet_ctrl *tctrl = ctrl->tctrl;
-+
-+	/* Initialize controller status. */
-+	tctrl->csts = 0;
-+	ctrl->csts = 0;
-+	nvmet_pci_epf_bar_write32(ctrl, NVME_REG_CSTS, ctrl->csts);
-+
-+	/* Initialize controller configuration and start polling. */
-+	tctrl->cc = 0;
-+	ctrl->cc = 0;
-+	nvmet_pci_epf_bar_write32(ctrl, NVME_REG_CC, ctrl->cc);
-+}
-+
- static int nvmet_pci_epf_enable_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- {
- 	u64 pci_addr, asq, acq;
-@@ -1890,18 +1905,20 @@ static int nvmet_pci_epf_enable_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- 	return 0;
+ 	ret = copyfd_io(fd_in, fd, 1, 0, &winfo);
+ 	if (ret)
+-		return ret;
++		goto out;
  
- err:
--	ctrl->csts = 0;
-+	nvmet_pci_epf_clear_ctrl_config(ctrl);
- 	return -EINVAL;
- }
- 
--static void nvmet_pci_epf_disable_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
-+static void nvmet_pci_epf_disable_ctrl(struct nvmet_pci_epf_ctrl *ctrl,
-+				       bool shutdown)
- {
- 	int qid;
- 
- 	if (!ctrl->enabled)
- 		return;
- 
--	dev_info(ctrl->dev, "Disabling controller\n");
-+	dev_info(ctrl->dev, "%s controller\n",
-+		 shutdown ? "Shutting down" : "Disabling");
- 
- 	ctrl->enabled = false;
- 	cancel_delayed_work_sync(&ctrl->poll_sqs);
-@@ -1918,6 +1935,11 @@ static void nvmet_pci_epf_disable_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- 	nvmet_pci_epf_delete_cq(ctrl->tctrl, 0);
- 
- 	ctrl->csts &= ~NVME_CSTS_RDY;
-+	if (shutdown) {
-+		ctrl->csts |= NVME_CSTS_SHST_CMPLT;
-+		ctrl->cc &= ~NVME_CC_ENABLE;
-+		nvmet_pci_epf_bar_write32(ctrl, NVME_REG_CC, ctrl->cc);
-+	}
- }
- 
- static void nvmet_pci_epf_poll_cc_work(struct work_struct *work)
-@@ -1944,12 +1966,10 @@ static void nvmet_pci_epf_poll_cc_work(struct work_struct *work)
+ 	if (cfg_truncate > 0) {
+ 		shutdown(fd, SHUT_WR);
+@@ -1320,7 +1320,10 @@ again:
+ 		close(fd);
  	}
  
- 	if (!nvmet_cc_en(new_cc) && nvmet_cc_en(old_cc))
--		nvmet_pci_epf_disable_ctrl(ctrl);
-+		nvmet_pci_epf_disable_ctrl(ctrl, false);
- 
--	if (nvmet_cc_shn(new_cc) && !nvmet_cc_shn(old_cc)) {
--		nvmet_pci_epf_disable_ctrl(ctrl);
--		ctrl->csts |= NVME_CSTS_SHST_CMPLT;
--	}
-+	if (nvmet_cc_shn(new_cc) && !nvmet_cc_shn(old_cc))
-+		nvmet_pci_epf_disable_ctrl(ctrl, true);
- 
- 	if (!nvmet_cc_shn(new_cc) && nvmet_cc_shn(old_cc))
- 		ctrl->csts &= ~NVME_CSTS_SHST_CMPLT;
-@@ -1988,16 +2008,10 @@ static void nvmet_pci_epf_init_bar(struct nvmet_pci_epf_ctrl *ctrl)
- 	/* Clear Controller Memory Buffer Supported (CMBS). */
- 	ctrl->cap &= ~(0x1ULL << 57);
- 
--	/* Controller configuration. */
--	ctrl->cc = tctrl->cc & (~NVME_CC_ENABLE);
--
--	/* Controller status. */
--	ctrl->csts = ctrl->tctrl->csts;
--
- 	nvmet_pci_epf_bar_write64(ctrl, NVME_REG_CAP, ctrl->cap);
- 	nvmet_pci_epf_bar_write32(ctrl, NVME_REG_VS, tctrl->subsys->ver);
--	nvmet_pci_epf_bar_write32(ctrl, NVME_REG_CSTS, ctrl->csts);
--	nvmet_pci_epf_bar_write32(ctrl, NVME_REG_CC, ctrl->cc);
-+
-+	nvmet_pci_epf_clear_ctrl_config(ctrl);
+-	return 0;
++out:
++	if (cfg_input)
++		close(fd_in);
++	return ret;
  }
  
- static int nvmet_pci_epf_create_ctrl(struct nvmet_pci_epf *nvme_epf,
-@@ -2102,7 +2116,8 @@ static void nvmet_pci_epf_stop_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- {
- 	cancel_delayed_work_sync(&ctrl->poll_cc);
- 
--	nvmet_pci_epf_disable_ctrl(ctrl);
-+	nvmet_pci_epf_disable_ctrl(ctrl, false);
-+	nvmet_pci_epf_clear_ctrl_config(ctrl);
- }
- 
- static void nvmet_pci_epf_destroy_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
--- 
-2.39.5
-
+ int parse_proto(const char *proto)
 
 
 
