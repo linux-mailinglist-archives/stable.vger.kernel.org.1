@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB97A98E0B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96AB5A98DAD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6533A958B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC44D1889C5E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0311A9B39;
-	Wed, 23 Apr 2025 14:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8795280A5F;
+	Wed, 23 Apr 2025 14:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inKMKsGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN87owDQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBEB727FD7A;
-	Wed, 23 Apr 2025 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6A21A9B39;
+	Wed, 23 Apr 2025 14:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419819; cv=none; b=XkpfpVDxcIfG50/dRplSksS7EzCaLisDjdsO5LtP8ELOoqxB3Wt+rCgKzdQ77lA5wMKKuHSueq1eSyQmnsRjXpBr7u95P+T386rHpLh2iRPbc0SDc/sHDx26qbdpno25WhHLqyVUfghoJvMEgZyk5ExuqsHTvFTJVMjsSYRACA8=
+	t=1745419623; cv=none; b=FYPA/ZGjuAYGwkt+GrsFVE8uLh34s8VpPJppMVrnWNNntMEMIW92UDiRkuXT8Uy+eN6GPnHd7yiJrDlHp4gNmZaz2CVyBSyshT9j6n7NO6Aa+7E13M6NniWRYc3X1gLHG7R240z+7NqCk1Z9pyT/9UupIkmUPzObtH0ZVVDxrj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419819; c=relaxed/simple;
-	bh=ZpwS87rFwsTAG+2fn+5/tGaa9DK3m37uTl9uP3kEUTY=;
+	s=arc-20240116; t=1745419623; c=relaxed/simple;
+	bh=DrVNhr77YpxdqZSu3bmJzyuy0wfyZlTslwRq4YE3dZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ijfL/PFRDSJcfM89sg5Z57vRvzpSHmfn/pU7bJkDsbNgeHL2WvF/0k6OQm0/CWWl+U5zDOOpz+w7dzcGMpTCkta1chwiUVhBYYnP5TUCZcufRVN7JtNqVQAJdec/vrIl8PJS3nGdNIFVI+T0tFuaCze+uuypCI60CWiSItBxYfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inKMKsGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7005CC4CEE2;
-	Wed, 23 Apr 2025 14:50:18 +0000 (UTC)
+	 MIME-Version; b=qtG2QI1HjngXpM95G+fs4RVsr/1xvWT6ddXfDFIMWKeFAFGUew50jFrl1eQa6X7b7ZR0kgJFypFgpa1s1iNDilxQUAD9WWPHAAOCpxiGnwJ8c5GPeMg1Tozh/t71h3M+aUobKjvePX8AdIJ0BDE7FxbFtcfUTlKqjuJBcwJG2UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN87owDQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E22C4CEE2;
+	Wed, 23 Apr 2025 14:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419818;
-	bh=ZpwS87rFwsTAG+2fn+5/tGaa9DK3m37uTl9uP3kEUTY=;
+	s=korg; t=1745419623;
+	bh=DrVNhr77YpxdqZSu3bmJzyuy0wfyZlTslwRq4YE3dZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inKMKsGneVCSIGhDgw8flpNBraTKCV2t71hW1cU05mMWkDNWm6a4FYenaXQaImjvy
-	 Z0pCaNx3/u/7fzkjbB1gS8862CxpqTn+9HtZeTAFWP7vsLATAx4KlNAJXiw6vNvgd5
-	 4XpvJVyl86wvN/Lpm6UJoCcKCZXMLhuRu96bSXU0=
+	b=cN87owDQ7z83HVMuO4TTJU5ZZOwIfX+dhfFFtmJ768abue1KESdSzO41q+P0lvm4G
+	 kvOMVQtOAshYh0V5tu5P9J5uxToN2GvAkPbPCAxeP5d7k2xAVNu3YiTmwf6pmqFacg
+	 eBZ8kD6jOngKf+iC5K7ieg7E8xqohDJoMao1K3Ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 031/241] wifi: iwlwifi: pcie: set state to no-FW before reset handshake
-Date: Wed, 23 Apr 2025 16:41:35 +0200
-Message-ID: <20250423142621.790032153@linuxfoundation.org>
+Subject: [PATCH 6.12 024/223] ALSA: hda/realtek - Fixed ASUS platform headset Mic issue
+Date: Wed, 23 Apr 2025 16:41:36 +0200
+Message-ID: <20250423142618.101175233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 5f05c14e7c198415abe936514a6905f8b545b63b ]
+[ Upstream commit b5458fcabd96ce29adbf7225c1741ecdfff70a91 ]
 
-The reset handshake attempts to kill the firmware, and it'll go
-into a pretty much dead state once we do that. However, if it
-times out, then we'll attempt to dump the firmware to be able
-to see why it didn't respond. During this dump, we cannot treat
-it as if it was still running, since we just tried to kill it,
-otherwise dumping will attempt to send a DBGC stop command. As
-this command will time out, we'll go into a reset loop.
+ASUS platform Headset Mic was disable by default.
+Assigned verb table for Mic pin will enable it.
 
-For now, fix this by setting the trans->state to say firmware
-isn't running before doing the reset handshake. In the longer
-term, we should clean up the way this state is handled.
-
-It's not entirely clear but it seems likely that this issue was
-introduced by my rework of the error handling, prior to that it
-would've been synchronous at that point and (I think) not have
-attempted to reset since it was already doing down.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219967
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219968
-Fixes: 7391b2a4f7db ("wifi: iwlwifi: rework firmware error handling")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250411104054.63aa4f56894d.Ife70cfe997db03f0d07fdef2b164695739a05a63@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 7ab61d0a9a35 ("ALSA: hda/realtek: Add support for ASUS B3405 and B3605 Laptops using CS35L41 HDA")
+Fixes: c86dd79a7c33 ("ALSA: hda/realtek: Add support for ASUS B5405 and B5605 Laptops using CS35L41 HDA")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0fe3421a6850461fb0b7012cb28ef71d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-index 793514a1852a3..e37fa5ae97f64 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
-@@ -147,8 +147,14 @@ static void _iwl_trans_pcie_gen2_stop_device(struct iwl_trans *trans)
- 		return;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index b660bbfc6b0cc..4171aa22747c3 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7910,6 +7910,7 @@ enum {
+ 	ALC233_FIXUP_MEDION_MTL_SPK,
+ 	ALC294_FIXUP_BASS_SPEAKER_15,
+ 	ALC283_FIXUP_DELL_HP_RESUME,
++	ALC294_FIXUP_ASUS_CS35L41_SPI_2,
+ };
  
- 	if (trans->state >= IWL_TRANS_FW_STARTED &&
--	    trans_pcie->fw_reset_handshake)
-+	    trans_pcie->fw_reset_handshake) {
-+		/*
-+		 * Reset handshake can dump firmware on timeout, but that
-+		 * should assume that the firmware is already dead.
-+		 */
-+		trans->state = IWL_TRANS_NO_FW;
- 		iwl_trans_pcie_fw_reset_handshake(trans);
-+	}
+ /* A special fixup for Lenovo C940 and Yoga Duet 7;
+@@ -10252,6 +10253,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc283_fixup_dell_hp_resume,
+ 	},
++	[ALC294_FIXUP_ASUS_CS35L41_SPI_2] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cs35l41_fixup_spi_two,
++		.chained = true,
++		.chain_id = ALC294_FIXUP_ASUS_HEADSET_MIC,
++	},
+ };
  
- 	trans_pcie->is_down = true;
- 
+ static const struct hda_quirk alc269_fixup_tbl[] = {
+@@ -10715,7 +10722,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
+ 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+@@ -10804,14 +10811,14 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+-	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
+-	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
 -- 
 2.39.5
 
