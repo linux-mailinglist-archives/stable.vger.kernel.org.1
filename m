@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D009A98F6E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407B7A99059
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93FF53ABE52
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62DA4164D6D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C586280A20;
-	Wed, 23 Apr 2025 15:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4818C28A408;
+	Wed, 23 Apr 2025 15:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhL5RIYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zjT02/y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7BE2F2E;
-	Wed, 23 Apr 2025 15:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F367A28A400;
+	Wed, 23 Apr 2025 15:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420445; cv=none; b=L+OmbADbOKkmcbTiaue6PT8xbblODQuwvcRVGHJWcMZrhSQ8ivl1JHGZQXj+cayrIp1+6zRzxV49J1LulAMef++XTP18CqFBu9WPkaQAqwp64hyD4Lhil6jZUDFQYVzDey+h/UUmU7SHpJ01/NulovTZDWc/B4x8FWXxfXWvx1A=
+	t=1745420971; cv=none; b=FC0v3Ci0ZJ0y77JB3Zthn35LOcRgy9ODCfZx8r7rHefQsSM4b5JRPcJp5N6NqcbWO/o2yny6XTd0JIM0nvDnnFR4azJFNctaEiXJCE6YpbXtAgslMjLSKVe1OTVgscaxmUSE9mAv/6BEkhUnrBaujW4zQA0MMgDWyRBZgrulugw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420445; c=relaxed/simple;
-	bh=zJam47IZXdD1LlLyIiAd1raicCt/BNMFp6WjP5qEMYk=;
+	s=arc-20240116; t=1745420971; c=relaxed/simple;
+	bh=MorKZ+OHPTrbe3pV2FWNpQn3TgYQbsWHDN7WIfank2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4eV1/iUQtTcQuIQGPxItzo6ZXQzrxXGs78UAetct2YmB6wy6Mto09lO3ovKfT/6n+n6i1soeVgrDN/ubZDqpIuRVG8F5gJqMMjUZMIf8CvIIjenau2mb2wtuB2RjiaT0Hk+Vn1OMqK/kUJaB3H73U+JtEDKWCmFw9zNqoHpG3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhL5RIYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC89C4CEED;
-	Wed, 23 Apr 2025 15:00:44 +0000 (UTC)
+	 MIME-Version; b=ecTkh7aAKrRpZMyno5wEICuKrywATb3ZcEIP8ig8XghuiO948EUmkbN3loR02BLwm8lBotcUIqQBWJswtGz93ORz6g5EkQ8EuIc3rNQAb0DIEKI38pcNi4G+HQclr1y45D9QPqFF3qQ/SUTj32PFCh6nD8aNGL4N/g9IigXr28Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zjT02/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831C2C4CEE2;
+	Wed, 23 Apr 2025 15:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420445;
-	bh=zJam47IZXdD1LlLyIiAd1raicCt/BNMFp6WjP5qEMYk=;
+	s=korg; t=1745420970;
+	bh=MorKZ+OHPTrbe3pV2FWNpQn3TgYQbsWHDN7WIfank2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XhL5RIYYcfQSYP0Rtpt7BReV+3WyCnsIcUEvEH/C3QvjVArTZtJoh2Px5/F0P1MWT
-	 kvp6ObMjyH5PnQ9MLPayE8U0zUYdFF+zUZTFF2a2CRme47grAIef95zjyC2oYZ/Aw1
-	 j4Ip3VceW3Cg/ODY4FqDR2umVgx4XNGW/YhmdYpU=
+	b=0zjT02/yifkRUQR9DdeKGX6rIQrq35lANG6AefA+wB+TjPFV51ox/vroDNDCeZirK
+	 kIrLJNR64k2Q4d8MzJCtxsBWykxn+zkWDj1G75eXDIvCYmtyTBHpOjcvrYet3T15nx
+	 zC+I9WEuqSZh80p+ipgMOqdKeQmsmNQAM7X6TBFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.12 132/223] string: Add load_unaligned_zeropad() code path to sized_strscpy()
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Qu Wenruo <quwenruo.btrfs@gmx.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14 140/241] mm: fix filemap_get_folios_contig returning batches of identical folios
 Date: Wed, 23 Apr 2025 16:43:24 +0200
-Message-ID: <20250423142622.469328139@linuxfoundation.org>
+Message-ID: <20250423142626.279595816@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-commit d94c12bd97d567de342fd32599e7cd9e50bfa140 upstream.
+commit 8ab1b16023961dc640023b10436d282f905835ad upstream.
 
-The call to read_word_at_a_time() in sized_strscpy() is problematic
-with MTE because it may trigger a tag check fault when reading
-across a tag granule (16 bytes) boundary. To make this code
-MTE compatible, let's start using load_unaligned_zeropad()
-on architectures where it is available (i.e. architectures that
-define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
-takes care of page boundaries as well as tag granule boundaries,
-also disable the code preventing crossing page boundaries when using
-load_unaligned_zeropad().
+filemap_get_folios_contig() is supposed to return distinct folios found
+within [start, end].  Large folios in the Xarray become multi-index
+entries.  xas_next() can iterate through the sub-indexes before finding a
+sibling entry and breaking out of the loop.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20250403000703.2584581-2-pcc@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+This can result in a returned folio_batch containing an indeterminate
+number of duplicate folios, which forces the callers to skeptically handle
+the returned batch.  This is inefficient and incurs a large maintenance
+overhead.
+
+We can fix this by calling xas_advance() after we have successfully adding
+a folio to the batch to ensure our Xarray is positioned such that it will
+correctly find the next folio - similar to filemap_get_read_batch().
+
+Link: https://lkml.kernel.org/r/Z-8s1-kiIDkzgRbc@fedora
+Fixes: 35b471467f88 ("filemap: add filemap_get_folios_contig()")
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Reported-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Closes: https://lkml.kernel.org/r/b714e4de-2583-4035-b829-72cfb5eb6fc6@gmx.com
+Tested-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/string.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ mm/filemap.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -113,6 +113,7 @@ ssize_t sized_strscpy(char *dest, const
- 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
- 		return -E2BIG;
- 
-+#ifndef CONFIG_DCACHE_WORD_ACCESS
- #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	/*
- 	 * If src is unaligned, don't cross a page boundary,
-@@ -128,11 +129,13 @@ ssize_t sized_strscpy(char *dest, const
- 	if (((long) dest | (long) src) & (sizeof(long) - 1))
- 		max = 0;
- #endif
-+#endif
- 
- 	/*
--	 * read_word_at_a_time() below may read uninitialized bytes after the
--	 * trailing zero and use them in comparisons. Disable this optimization
--	 * under KMSAN to prevent false positive reports.
-+	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
-+	 * uninitialized bytes after the trailing zero and use them in
-+	 * comparisons. Disable this optimization under KMSAN to prevent
-+	 * false positive reports.
- 	 */
- 	if (IS_ENABLED(CONFIG_KMSAN))
- 		max = 0;
-@@ -140,7 +143,11 @@ ssize_t sized_strscpy(char *dest, const
- 	while (max >= sizeof(unsigned long)) {
- 		unsigned long c, data;
- 
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+		c = load_unaligned_zeropad(src+res);
-+#else
- 		c = read_word_at_a_time(src+res);
-+#endif
- 		if (has_zero(c, &data, &constants)) {
- 			data = prep_zero_mask(c, data, &constants);
- 			data = create_zero_mask(data);
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -2244,6 +2244,7 @@ unsigned filemap_get_folios_contig(struc
+ 			*start = folio->index + nr;
+ 			goto out;
+ 		}
++		xas_advance(&xas, folio_next_index(folio) - 1);
+ 		continue;
+ put_folio:
+ 		folio_put(folio);
 
 
 
