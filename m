@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-136153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD55A992E2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E950A99259
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B10F9237AD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBA98167ADC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02EC2989B3;
-	Wed, 23 Apr 2025 15:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3752A29AB06;
+	Wed, 23 Apr 2025 15:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBY8USD/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oh3hdGsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD2C28A409;
-	Wed, 23 Apr 2025 15:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E881728B515;
+	Wed, 23 Apr 2025 15:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421794; cv=none; b=NVA0vKM2Q1zStN8lC7Ejjc3T9qg2KKwhNlkHbW0UZcgY0Q+K7b3X2W38hnzsIMdpsDEu5V/BKGg6vgcJoeMtFnapCrV3hZX5LAp9/WalA/uaB11AWSTaW6tay1gwVt/KX6X/tUPHVvk9Ja34D2Zc9AupmwxA2fp9jz+GbPouYuU=
+	t=1745421805; cv=none; b=IVicDP/LL8KkOezw7eQH61rWx10FRNskd0sgBr4NjK0jFLcVD1C0ry3VhRAVIAtKCeFpHAMIYgurVHwO+i+SsUJvLVFUQVs7s9Q3AjPU0b6D4l2hjzVOBABcw1VkJ2oqfUEceTclbfHYDMZiqMezPpwjT2siS+lyVANhsibzO18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421794; c=relaxed/simple;
-	bh=DxNiVcN8TjDlveRUccQXEwI4FRcfdDH+oojsLHRpsA0=;
+	s=arc-20240116; t=1745421805; c=relaxed/simple;
+	bh=9KUpAwqfY5Ai/8M9L9wr86ekg5+Wo85HXA7zpYgk5Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMGNCTI1XqNr+pdHMiRh/k1xahzG9NAD0uLC7xENy04RE3FcrGikMQqouKRoa6pGLQIrR0n7SPj2zyDhzra4wXKWZ99PET45bGtAu6cwptBA7QfpTLjI/RWLowvbWYQezkKM8Zg1xUxFCIsiFMlLtAuAWsHEk3R2VKDvIA+LMFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBY8USD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF17C4CEE2;
-	Wed, 23 Apr 2025 15:23:13 +0000 (UTC)
+	 MIME-Version; b=b09newZ8l5z8m9o6G4zY5OW7N4sFIplCqk1OFvhj72IRuGbiKjlJ5xK1LvNcD0NAbDXvtFi7f3n3AX1ZATDTVAiPtDexKClRTdFP5GF1NVsg6Mb9BY++/7cNFcNfJ/pTAHZ2iCxOGxKcuZdqToA24sWQmroxt2NADV8/xXXd54g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oh3hdGsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F9FC4CEE2;
+	Wed, 23 Apr 2025 15:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421794;
-	bh=DxNiVcN8TjDlveRUccQXEwI4FRcfdDH+oojsLHRpsA0=;
+	s=korg; t=1745421804;
+	bh=9KUpAwqfY5Ai/8M9L9wr86ekg5+Wo85HXA7zpYgk5Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBY8USD/Xc0DM0ZY+NLIF8xzkhnwB2uA+1YL7AytUxDkt4sL0Vl739eaWswiQQqpX
-	 yqoZjymEWKTGBW+wkAUNQ12EZ3JTnQGqbgxX9IlJl94uSTE5l/XfA1OknNuKR8C7wz
-	 JknWAMiZeIMykj3/sVJwvzZrvzmhNK1p7HLmxb80=
+	b=Oh3hdGsUDGO7o8uWCphF2fpweLk9pa6lkdS0oKnTfDDB//+upWSsGuExg8VmY1vSq
+	 jXFbAEZCzfsHvjVkjr8R0X3S60QGRPBKOX3MTsyBxM0DTTH2f9kskSwA0xbQ5YmqlI
+	 AuVzcJpYn7rirnCbqWbr7TmaniWi3csIef9DPQCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 234/241] drm/amd/display: Temporarily disable hostvm on DCN31
-Date: Wed, 23 Apr 2025 16:44:58 +0200
-Message-ID: <20250423142630.132082876@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.14 235/241] nvmet-fc: Remove unused functions
+Date: Wed, 23 Apr 2025 16:44:59 +0200
+Message-ID: <20250423142630.172663260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -68,36 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit ba93dddfc92084a1e28ea447ec4f8315f3d8d3fd upstream.
+commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c upstream.
 
-With HostVM enabled, DCN31 fails to pass validation for 3x4k60. Some Linux
-userspace does not downgrade one of the monitors to 4k30, and the result
-is that the monitor does not light up. Disable it until the bandwidth
-calculation failure is resolved.
+The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
+unutilized.
 
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
+transport"), which introduced these two functions, they have not been
+used at all in practice.
+
+Remove them to resolve the compiler warnings.
+
+Fix follow errors with clang-19 when W=1e:
+  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
+    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+        | ^~~~~~~~~~~~~~~
+  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
+    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+        | ^~~~~~~~~~~~~~~
+  2 errors generated.
+  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
+  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
+  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
+  make[6]: *** Waiting for unfinished jobs....
+
+Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/fc.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn31/dcn31_resource.c
-@@ -890,7 +890,7 @@ static const struct dc_debug_options deb
- 	.disable_z10 = true,
- 	.enable_legacy_fast_update = true,
- 	.enable_z9_disable_interface = true, /* Allow support for the PMFW interface for disable Z9*/
--	.dml_hostvm_override = DML_HOSTVM_NO_OVERRIDE,
-+	.dml_hostvm_override = DML_HOSTVM_OVERRIDE_FALSE,
- 	.using_dml2 = false,
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -172,20 +172,6 @@ struct nvmet_fc_tgt_assoc {
+ 	struct work_struct		del_work;
  };
  
+-
+-static inline int
+-nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+-{
+-	return (iodptr - iodptr->tgtport->iod);
+-}
+-
+-static inline int
+-nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+-{
+-	return (fodptr - fodptr->queue->fod);
+-}
+-
+-
+ /*
+  * Association and Connection IDs:
+  *
 
 
 
