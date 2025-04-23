@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-136068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37034A99268
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0EA0A98E06
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9D81BA2E01
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25B93179385
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F67296D0A;
-	Wed, 23 Apr 2025 15:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8971A0711;
+	Wed, 23 Apr 2025 14:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/qGN7b+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lm6Q/hWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241C01EEA3E;
-	Wed, 23 Apr 2025 15:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC65D5674E;
+	Wed, 23 Apr 2025 14:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421571; cv=none; b=S5ssPPDtY2ClFobOz2OWvF1A/4NrYp8VieUBYtrLRhfgldS6Hs6KGsZ9CwT1h9f0kSfjLMmJiEnHHW8LThCQiDmmyUIBuT0mKfWIeiw4LoMlDyHDPBNLYWAUa9af/dZjPAoiqIYhuBcc5GKep3PS7Y1J+MgqJP4keljGmtV2Wsk=
+	t=1745419839; cv=none; b=t9dg/6AdbtedeqUs0z8gGXh/84bm0vnXEr4EIv8zLrgMld+uiuAbs8Y006eY4pz3Qn/tY7E0dTf1Z5ahjuhBsIGdgCyClUnePel47N7rEJmtcmEjhxjVelUIKwcUMxZejIGjDY2pvCRZT99ku5184P6LuFxgsij+HC1gacuQQYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421571; c=relaxed/simple;
-	bh=LQ+58w9d3+EVMBXIskyvrf0SlHDp9/k82pGtZKFOqrk=;
+	s=arc-20240116; t=1745419839; c=relaxed/simple;
+	bh=RA+6zisigi7Uaw0h3YC+D5a3JtMtdHPWm5yejnfX6Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRPUcIeC6iqlAWwE0EAJeMyEpCpRDbvE6SeUvApt2NWvQHZxji1UOSNyAyfKiHAO58sY37ivbblIRVteOqYdUU6mkGB3g5K0nhju5eFXhLMolqAXWd27g+eVrrOnvbSuLV3ZtTYDSXeCC4RIP1jXF3FK8ttIXE93WI7JLa9opoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/qGN7b+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A314EC4CEE2;
-	Wed, 23 Apr 2025 15:19:30 +0000 (UTC)
+	 MIME-Version; b=uuv1b0cgB04rAr3KmAfMSZ9iayZgnIL4Iw47Lvf86eQGrjGyunSmn2Q5yKK+vJ0u0AvPydV4nVPTHDWGA3G4GXcHfO2SLmn09e3QA/t6zuUNokHgUvXLxaOCK6osU1CGiQBl9apBoNPgAsHxlO2JwAsUV5HpvWDcgRFSXjPknSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lm6Q/hWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598DCC4CEE2;
+	Wed, 23 Apr 2025 14:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421571;
-	bh=LQ+58w9d3+EVMBXIskyvrf0SlHDp9/k82pGtZKFOqrk=;
+	s=korg; t=1745419839;
+	bh=RA+6zisigi7Uaw0h3YC+D5a3JtMtdHPWm5yejnfX6Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/qGN7b+QGb7mHyzC9xNAGFr5LyA8Z+ExnsEnMbzW28wiRv6C+hqy4m2BEz19BeD4
-	 sdG91SNe/3IWoKaAOhwFu80ncNMoNI4XpWgzRK8UgrTNcYeaOaZ8bb0WsOW0I8z/jA
-	 7F5LazwH2dXUpE5uZZFynzYwKqxHkwWUndC3MHdY=
+	b=Lm6Q/hWdpapkl8uTLYKrnMcfRWNmpktPu33MVRfvnxwWPBsdtcmfnQVwF1xiygXQs
+	 nnpVuVHdEFIme+QIieZUJbBjO1jrmAIUXKJDlM7vYJ2Z/c632dN70/sezJTy7HL9jL
+	 aiuUm6C3KQjv/+DQp5LfU9xd40v1x52mD2D9IYac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.1 153/291] of/irq: Fix device node refcount leakages in of_irq_count()
+	Meghana Malladi <m-malladi@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 070/223] net: ti: icss-iep: Add phase offset configuration for perout signal
 Date: Wed, 23 Apr 2025 16:42:22 +0200
-Message-ID: <20250423142630.645719125@linuxfoundation.org>
+Message-ID: <20250423142619.981476006@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
+[ Upstream commit 220cb1be647a7ca4e60241405c66f8f612c9b046 ]
 
-of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
-invocation of the later will get device node @irq.np refcount, but the
-former does not put the refcount before next iteration invocation, hence
-causes device node refcount leakages.
+icss_iep_perout_enable_hw() is a common function for generating
+both pps and perout signals. When enabling pps, the application needs
+to only pass enable/disable argument, whereas for perout it supports
+different flags to configure the signal.
 
-Fix by putting @irq.np refcount before the next iteration invocation.
+In case the app passes a valid phase offset value, the signal should
+start toggling after that phase offset, else start immediately or
+as soon as possible. ICSS_IEP_SYNC_START_REG register take number of
+clock cycles to wait before starting the signal after activation time.
+Set appropriate value to this register to support phase offset.
 
-Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20250304105753.1552159-3-m-malladi@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7349c9e99793 ("net: ti: icss-iep: Fix possible NULL pointer dereference for perout request")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -503,8 +503,10 @@ int of_irq_count(struct device_node *dev
- 	struct of_phandle_args irq;
- 	int nr = 0;
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 2981c19c48b18..b4a34c57b7b48 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -407,6 +407,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				     struct ptp_perout_request *req, int on)
+ {
+ 	struct timespec64 ts;
++	u64 ns_start;
+ 	u64 ns_width;
+ 	int ret;
+ 	u64 cmp;
+@@ -416,6 +417,14 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 	ts.tv_nsec = req->on.nsec;
+ 	ns_width = timespec64_to_ns(&ts);
  
--	while (of_irq_parse_one(dev, nr, &irq) == 0)
-+	while (of_irq_parse_one(dev, nr, &irq) == 0) {
-+		of_node_put(irq.np);
- 		nr++;
++	if (req->flags & PTP_PEROUT_PHASE) {
++		ts.tv_sec = req->phase.sec;
++		ts.tv_nsec = req->phase.nsec;
++		ns_start = timespec64_to_ns(&ts);
++	} else {
++		ns_start = 0;
 +	}
++
+ 	if (iep->ops && iep->ops->perout_enable) {
+ 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
+ 		if (ret)
+@@ -430,7 +439,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+ 				     div_u64(ns_width, iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
+-			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
++			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++				     div_u64(ns_start, iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
+ 			/* Enable CMP 1 */
+ 			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+@@ -457,6 +467,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
  
- 	return nr;
- }
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+ 				     div_u64(ns_width, iep->def_inc));
++			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++				     div_u64(ns_start, iep->def_inc));
+ 			/* Enable Sync in single shot mode  */
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
+ 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
+@@ -487,7 +499,8 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 	int ret = 0;
+ 
+ 	/* Reject requests with unsupported flags */
+-	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE)
++	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
++			  PTP_PEROUT_PHASE))
+ 		return -EOPNOTSUPP;
+ 
+ 	mutex_lock(&iep->ptp_clk_mutex);
+@@ -588,6 +601,7 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+ 	if (on) {
+ 		ns = icss_iep_gettime(iep, NULL);
+ 		ts = ns_to_timespec64(ns);
++		rq.perout.flags = 0;
+ 		rq.perout.period.sec = 1;
+ 		rq.perout.period.nsec = 0;
+ 		rq.perout.start.sec = ts.tv_sec + 2;
+-- 
+2.39.5
+
 
 
 
