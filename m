@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-136297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3FA2A992FD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F95A9915D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385449A36DB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE9C1B81598
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA0C2820DC;
-	Wed, 23 Apr 2025 15:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9E328B507;
+	Wed, 23 Apr 2025 15:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZrKLBCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGCKB6GG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3D128152D;
-	Wed, 23 Apr 2025 15:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF7928BA81;
+	Wed, 23 Apr 2025 15:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422175; cv=none; b=Ptb5mJIejI8bzxkMoJpGv8cRyPCOEKPbzeJyvZUhJXySDio9NO0Xqqg0IyrMxS2XGENxvXaIIwhBsLPMXgMSAGz0vZ/ZCtO0M+y716V+19ZOpNHh1xp/rSFW1WttxT+Bs91d/jAMfnMwAD1QplGTJPrZNG5tgRr6mEeKtt5Kv3E=
+	t=1745421325; cv=none; b=gNkgdPiww7bhe+Vp+Q7UZqh2dDdCegsIe3UH6wwhyqfmMxvoGWAWoFsHVqdXHCGO03AD3fwgTyJTULN0xTxtd4m5L/t3aGLIuFUokhFEpg4FTfmYFs0Wv0vZ9QtBknCFglDzruxsqSEEHgipB4OrYVoxVwItFIX0OOveg4sO+mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422175; c=relaxed/simple;
-	bh=KzS8Suj0ApsMWf6eQZ+dD7NmKNotmYkubPF4grzKEus=;
+	s=arc-20240116; t=1745421325; c=relaxed/simple;
+	bh=cZ0/QOGEFnSthNfnTgq9Fu6mXmE32WXE5RmGGKZFJ/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DE9xt65diCb4se4IRJWvjKRjTAVBwB9wiLPTtuwDoB6hmcZb8NFVwJCX4iayvIK2sT79BNiJhacbVA6T0V1UZKnYd0IcunqDq/2JFDXBW4PbG6yNNZsxTMHy89n3NQg0ixiC+ZFOrDy/gdJzdLovo21jm4ZHUMVXGOPvR5fvWKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZrKLBCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F8DC4CEE2;
-	Wed, 23 Apr 2025 15:29:34 +0000 (UTC)
+	 MIME-Version; b=VlOAnHsl1r7nfyOOb6BLmcx8FtvnTM8rp76j3wgrH1GlC8IfG5q7QHavTyqASJAIwpiXiiR2LB5E52yYElz7w7z2i7Mlmw+aujm1EJ09f7Eu50Lnn4vhi8lXBhyvCpZ1TSvmBS6AhHSH9WuoVI1HktPIWNuxSbGY99M3o2GhYwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGCKB6GG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63667C4CEE2;
+	Wed, 23 Apr 2025 15:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422175;
-	bh=KzS8Suj0ApsMWf6eQZ+dD7NmKNotmYkubPF4grzKEus=;
+	s=korg; t=1745421324;
+	bh=cZ0/QOGEFnSthNfnTgq9Fu6mXmE32WXE5RmGGKZFJ/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZrKLBCaR/hlRPp0jigj4yGW4e9PoMkRP+CvycT+4CcbrqiHEhOZtrwbsWTxczZ4M
-	 WoXtRsJvvazfIqLJO2RhINJsRqz4NJoRIltithsRvCrxtaL+09RbDWC179pNd5klte
-	 1jDBX3OiTU17taS64Gb6JxGykHhD+tcd3jLxQFB4=
+	b=aGCKB6GGnyRH63fLuc8U6HKgrA0swZqCCgARuRyzX3nmyz3p+XCIap20OCwTyw9br
+	 yFssVF3ZbtVS3VzRxXw8Ekfk2vGqiLoDSdodBKtXL151azSPw/vCKOlhHiWslM5hSl
+	 cSgKm2uT7jVateuX9i6gr15zska6H/FHbpZwT24o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.1 250/291] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.14 175/241] drm/msm/a6xx: Fix stale rpmh votes from GPU
 Date: Wed, 23 Apr 2025 16:43:59 +0200
-Message-ID: <20250423142634.642902378@linuxfoundation.org>
+Message-ID: <20250423142627.680506318@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +61,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
 
-[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
+commit f561db72a663f8a73c2250bf3244ce1ce221bed7 upstream.
 
-Now that the host eagerly saves its own FPSIMD/SVE/SME state,
-non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
-and the code to do this is never used. Protected KVM still needs to
-save/restore the host FPSIMD/SVE state to avoid leaking guest state to
-the host (and to avoid revealing to the host whether the guest used
-FPSIMD/SVE/SME), and that code needs to be retained.
+It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
+BCM nodes were not removed after GPU suspend. This was because we
+skipped sending 'prepare-slumber' request to gmu during suspend sequence
+in some cases. So, make sure we always call prepare-slumber hfi during
+suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
+messes up gmu firmware's internal state. So, do that when required.
 
-Remove the unused code and data structures.
-
-To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
-VHE hyp code, the nVHE/hVHE version is moved into the shared switch
-header, where it is only invoked when KVM is in protected mode.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/639569/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kvm_host.h       |    1 -
- arch/arm64/kvm/fpsimd.c                 |    2 --
- arch/arm64/kvm/hyp/include/hyp/switch.h |    4 ----
- 3 files changed, 7 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c |   82 ++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 38 deletions(-)
 
---- a/arch/arm64/include/asm/kvm_host.h
-+++ b/arch/arm64/include/asm/kvm_host.h
-@@ -380,7 +380,6 @@ struct kvm_vcpu_arch {
- 	struct kvm_guest_debug_arch vcpu_debug_state;
- 	struct kvm_guest_debug_arch external_debug_state;
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1169,50 +1169,51 @@ static void a6xx_gmu_shutdown(struct a6x
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+ 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+ 	u32 val;
++	int ret;
  
--	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
- 	struct task_struct *parent_task;
- 
- 	struct {
---- a/arch/arm64/kvm/fpsimd.c
-+++ b/arch/arm64/kvm/fpsimd.c
-@@ -49,8 +49,6 @@ int kvm_arch_vcpu_run_map_fp(struct kvm_
- 	if (ret)
- 		return ret;
- 
--	vcpu->arch.host_fpsimd_state = kern_hyp_va(fpsimd);
--
  	/*
- 	 * We need to keep current's task_struct pinned until its data has been
- 	 * unshared with the hypervisor to make sure it is not re-used by the
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -207,10 +207,6 @@ static bool kvm_hyp_handle_fpsimd(struct
- 	}
- 	isb();
+-	 * The GMU may still be in slumber unless the GPU started so check and
+-	 * skip putting it back into slumber if so
++	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
++	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
++	 * required
+ 	 */
+-	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
++	if (adreno_gpu->base.needs_hw_init) {
++		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
++			goto force_off;
  
--	/* Write out the host state if it's in the registers */
--	if (vcpu->arch.fp_state == FP_STATE_HOST_OWNED)
--		__fpsimd_save_state(vcpu->arch.host_fpsimd_state);
+-	if (val != 0xf) {
+-		int ret = a6xx_gmu_wait_for_idle(gmu);
 -
- 	/* Restore the guest state */
- 	if (sve_guest)
- 		__hyp_sve_restore_guest(vcpu);
+-		/* If the GMU isn't responding assume it is hung */
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
+-
+-		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
+-
+-		/* tell the GMU we want to slumber */
+-		ret = a6xx_gmu_notify_slumber(gmu);
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
+-
+-		ret = gmu_poll_timeout(gmu,
+-			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
+-			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
+-			100, 10000);
+-
+-		/*
+-		 * Let the user know we failed to slumber but don't worry too
+-		 * much because we are powering down anyway
+-		 */
+-
+-		if (ret)
+-			DRM_DEV_ERROR(gmu->dev,
+-				"Unable to slumber GMU: status = 0%x/0%x\n",
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
++		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
+ 	}
+ 
++	ret = a6xx_gmu_wait_for_idle(gmu);
++
++	/* If the GMU isn't responding assume it is hung */
++	if (ret)
++		goto force_off;
++
++	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
++
++	/* tell the GMU we want to slumber */
++	ret = a6xx_gmu_notify_slumber(gmu);
++	if (ret)
++		goto force_off;
++
++	ret = gmu_poll_timeout(gmu,
++		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
++		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
++		100, 10000);
++
++	/*
++	 * Let the user know we failed to slumber but don't worry too
++	 * much because we are powering down anyway
++	 */
++
++	if (ret)
++		DRM_DEV_ERROR(gmu->dev,
++			"Unable to slumber GMU: status = 0%x/0%x\n",
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
++
+ 	/* Turn off HFI */
+ 	a6xx_hfi_stop(gmu);
+ 
+@@ -1221,6 +1222,11 @@ static void a6xx_gmu_shutdown(struct a6x
+ 
+ 	/* Tell RPMh to power off the GPU */
+ 	a6xx_rpmh_stop(gmu);
++
++	return;
++
++force_off:
++	a6xx_gmu_force_off(gmu);
+ }
+ 
+ 
 
 
 
