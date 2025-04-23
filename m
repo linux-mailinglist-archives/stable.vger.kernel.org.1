@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED71FA99406
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:07:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A840AA99413
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2858092177D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8239D1884C6F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22F528A1EB;
-	Wed, 23 Apr 2025 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592AA28B4FA;
+	Wed, 23 Apr 2025 15:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pd7beKwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTC/HmN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF8028A1D8;
-	Wed, 23 Apr 2025 15:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FFA28A415;
+	Wed, 23 Apr 2025 15:33:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422370; cv=none; b=QS3RQktMLAe6b8xfbRTLSbDTihMlsT8uTw3A572nvQV5bpayEve7LCp+itUJd5hmG/4xM3DUuYwiIfwzVMPObXyQSNDLYXBjITqtzRGOwKWjJNwGG5j/pitlK938ztNBNpAlAsgBhVmJYz9ZFg/rUlp5q/ECprHdS71WK1J7EuY=
+	t=1745422428; cv=none; b=YnEX0LTuOMLlgwnVfMLev+xtQs3vVHKnPdsR5v17IqZRvnkre9t7gDwKolnfBxtGxVZn+snRIlG1bBmrXwO0uL1n9RBXK/0YKs7VcLZul5AA7SXAFp5bO3lGBTAfgh0J0Zj1I7E5BIPy+2kz5sq15C6oH/qHMvImWWh4dr+sTZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422370; c=relaxed/simple;
-	bh=jhHp+ArDSf//S8vEXHkYuR/EKeQujT3/q9yOgVbEHoY=;
+	s=arc-20240116; t=1745422428; c=relaxed/simple;
+	bh=/1f0iCgRqlfcL8ka7PbIUvOnFOkFBUVVEIciuh1uC2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcLN7JJBqr1x2vkgO6F51MTyew056gO4+oDB4f0NUkTv8R0tjg68i8yb44GvcLRQqD9J2YDhfsAcucluoyPC8bhwFKkJNPy1dSQ+AQvaG7/KocXLVoc+cIqU+VQHBSmLdztVlitxvqVNahKKDcQnWvp/CXf+48FTiMb5dYgmjK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pd7beKwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5ACFC4CEE2;
-	Wed, 23 Apr 2025 15:32:49 +0000 (UTC)
+	 MIME-Version; b=ATHCxE8cbpOI6TtlXRGWYSebBSxzav2AKcQlA+zVB/KWm7Ft7b1M3jtof5kvgTLNXcQwn4unU6uUj0nx6SnaUOivyzxDMXk2Ol4Rt9VvpHZgp5IwRaffH5/uoPLcOAHznsKw/2RpsvPYLnmoGfLqxxA1HnaPeAcf4brmwTlrEl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTC/HmN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E74EC4CEE2;
+	Wed, 23 Apr 2025 15:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422370;
-	bh=jhHp+ArDSf//S8vEXHkYuR/EKeQujT3/q9yOgVbEHoY=;
+	s=korg; t=1745422428;
+	bh=/1f0iCgRqlfcL8ka7PbIUvOnFOkFBUVVEIciuh1uC2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pd7beKwm6GFQNZZ2d04ZDlNE99BDHsqyztYEXx9cttBu0fmkTo4tXP/EX4Ub+L59s
-	 vCjATC3kJQMzILZjWgpGW3xXK3Lm8/mguYfegmDtgSqNp1XNf+Q0QG7wWLWllJMpp3
-	 pmmpXy2YgerWi46K3ftj8N+JjU/25yOzJlJyefI8=
+	b=pTC/HmN9ra8DT11DWyH9tVQEv0jaTS8gy6N5Ak/heN2k1tw4Ghh/BhqaivscdUF52
+	 C+ItkXwoChVM7m8i3ejw5Eekgcwe1iP0w3YVp3eBWGJgYoKNwnkqHfb6ke2ak0XoFX
+	 xTgvAxJua0asOB79OoDZzIsSomkR71MQsFmXoqIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Li Nan <linan122@huawei.com>,
 	Yu Kuai <yukuai3@huawei.com>,
 	Tejun Heo <tj@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
 	Jens Axboe <axboe@kernel.dk>,
 	Bin Lan <bin.lan.cn@windriver.com>,
 	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 283/291] blk-cgroup: support to track if policy is online
-Date: Wed, 23 Apr 2025 16:44:32 +0200
-Message-ID: <20250423142635.988029443@linuxfoundation.org>
+Subject: [PATCH 6.1 284/291] blk-iocost: do not WARN if iocg was already offlined
+Date: Wed, 23 Apr 2025 16:44:33 +0200
+Message-ID: <20250423142636.026790100@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -69,121 +69,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Li Nan <linan122@huawei.com>
 
-commit dfd6200a095440b663099d8d42f1efb0175a1ce3 upstream.
+commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 upstream.
 
-A new field 'online' is added to blkg_policy_data to fix following
-2 problem:
+In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
+is intended to confirm iocg is active when it has debt. However, warn
+can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
+is run at that time:
 
-1) In blkcg_activate_policy(), if pd_alloc_fn() with 'GFP_NOWAIT'
-   failed, 'queue_lock' will be dropped and pd_alloc_fn() will try again
-   without 'GFP_NOWAIT'. In the meantime, remove cgroup can race with
-   it, and pd_offline_fn() will be called without pd_init_fn() and
-   pd_online_fn(). This way null-ptr-deference can be triggered.
+  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
+  Call trace:
+  iocg_pay_debt+0x14c/0x190
+  iocg_kick_waitq+0x438/0x4c0
+  iocg_waitq_timer_fn+0xd8/0x130
+  __run_hrtimer+0x144/0x45c
+  __hrtimer_run_queues+0x16c/0x244
+  hrtimer_interrupt+0x2cc/0x7b0
 
-2) In order to synchronize pd_free_fn() from blkg_free_workfn() and
-   blkcg_deactivate_policy(), 'list_del_init(&blkg->q_node)' will be
-   delayed to blkg_free_workfn(), hence pd_offline_fn() can be called
-   first in blkg_destroy(), and then blkcg_deactivate_policy() will
-   call it again, we must prevent it.
+The warn in this situation is meaningless. Since this iocg is being
+removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
+is canceled after removing 'active_list' in ioc_pd_free(), which ensures
+iocg is freed after iocg_waitq_timer_fn() returns.
 
-The new field 'online' will be set after pd_online_fn() and will be
-cleared after pd_offline_fn(), in the meantime pd_offline_fn() will only
-be called if 'online' is set.
+Therefore, add the check if iocg was already offlined to avoid warn
+when removing a blkcg or disk.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
 Acked-by: Tejun Heo <tj@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230119110350.2287325-3-yukuai1@huaweicloud.com
+Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c |   24 +++++++++++++++++-------
- block/blk-cgroup.h |    1 +
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ block/blk-iocost.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -255,6 +255,7 @@ static struct blkcg_gq *blkg_alloc(struc
- 		blkg->pd[i] = pd;
- 		pd->blkg = blkg;
- 		pd->plid = i;
-+		pd->online = false;
- 	}
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1430,8 +1430,11 @@ static void iocg_pay_debt(struct ioc_gq
+ 	lockdep_assert_held(&iocg->ioc->lock);
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
- 	return blkg;
-@@ -326,8 +327,11 @@ static struct blkcg_gq *blkg_create(stru
- 		for (i = 0; i < BLKCG_MAX_POLS; i++) {
- 			struct blkcg_policy *pol = blkcg_policy[i];
+-	/* make sure that nobody messed with @iocg */
+-	WARN_ON_ONCE(list_empty(&iocg->active_list));
++	/*
++	 * make sure that nobody messed with @iocg. Check iocg->pd.online
++	 * to avoid warn when removing blkcg or disk.
++	 */
++	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
+ 	WARN_ON_ONCE(iocg->inuse > 1);
  
--			if (blkg->pd[i] && pol->pd_online_fn)
--				pol->pd_online_fn(blkg->pd[i]);
-+			if (blkg->pd[i]) {
-+				if (pol->pd_online_fn)
-+					pol->pd_online_fn(blkg->pd[i]);
-+				blkg->pd[i]->online = true;
-+			}
- 		}
- 	}
- 	blkg->online = true;
-@@ -432,8 +436,11 @@ static void blkg_destroy(struct blkcg_gq
- 	for (i = 0; i < BLKCG_MAX_POLS; i++) {
- 		struct blkcg_policy *pol = blkcg_policy[i];
- 
--		if (blkg->pd[i] && pol->pd_offline_fn)
--			pol->pd_offline_fn(blkg->pd[i]);
-+		if (blkg->pd[i] && blkg->pd[i]->online) {
-+			if (pol->pd_offline_fn)
-+				pol->pd_offline_fn(blkg->pd[i]);
-+			blkg->pd[i]->online = false;
-+		}
- 	}
- 
- 	blkg->online = false;
-@@ -1422,6 +1429,7 @@ retry:
- 		blkg->pd[pol->plid] = pd;
- 		pd->blkg = blkg;
- 		pd->plid = pol->plid;
-+		pd->online = false;
- 	}
- 
- 	/* all allocated, init in the same order */
-@@ -1429,9 +1437,11 @@ retry:
- 		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
- 			pol->pd_init_fn(blkg->pd[pol->plid]);
- 
--	if (pol->pd_online_fn)
--		list_for_each_entry_reverse(blkg, &q->blkg_list, q_node)
-+	list_for_each_entry_reverse(blkg, &q->blkg_list, q_node) {
-+		if (pol->pd_online_fn)
- 			pol->pd_online_fn(blkg->pd[pol->plid]);
-+		blkg->pd[pol->plid]->online = true;
-+	}
- 
- 	__set_bit(pol->plid, q->blkcg_pols);
- 	ret = 0;
-@@ -1493,7 +1503,7 @@ void blkcg_deactivate_policy(struct requ
- 
- 		spin_lock(&blkcg->lock);
- 		if (blkg->pd[pol->plid]) {
--			if (pol->pd_offline_fn)
-+			if (blkg->pd[pol->plid]->online && pol->pd_offline_fn)
- 				pol->pd_offline_fn(blkg->pd[pol->plid]);
- 			pol->pd_free_fn(blkg->pd[pol->plid]);
- 			blkg->pd[pol->plid] = NULL;
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -125,6 +125,7 @@ struct blkg_policy_data {
- 	/* the blkg and policy id this per-policy data belongs to */
- 	struct blkcg_gq			*blkg;
- 	int				plid;
-+	bool				online;
- };
- 
- /*
+ 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
 
 
 
