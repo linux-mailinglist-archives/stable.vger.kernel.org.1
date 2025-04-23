@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC77A99156
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863C4A98E5F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D44C7AAC40
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FBA21B81C6D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10153288CB2;
-	Wed, 23 Apr 2025 15:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59152280A5B;
+	Wed, 23 Apr 2025 14:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNBtKBvq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF9YO4TI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C055C283689;
-	Wed, 23 Apr 2025 15:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14342280A50;
+	Wed, 23 Apr 2025 14:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421615; cv=none; b=OqJNLQg/Eg2YlXaSdzTe8RlfjVcfcpseVgmJvgDAbXBPm7F+7ZqZBmQP6rvV21B2BP4bQAm8U9/vohJWzKZG5+x3Ifh47iaLWBn2qDxhiimWwe//WZ+DXZJrYxwKIOkCWrLs9+kUVBbFXE86hBhzqoEqxknpnM3oHQpJs6EesLc=
+	t=1745419953; cv=none; b=AOThzTwGyANNCXLf4n4GZfzCQQuAKCviLggwreMcWdA0K0SQ9xFtKq810/bvWYa8kgrTkU4c51m6UvyGueikNlIhJ0Q3KYkYm1wbfQCxUSlpXWMZcoSVCPSGH/cDgtDZ/hmJn6upsm4Sqr5kKiRIl7eqPy4JesrzduYGfwQit2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421615; c=relaxed/simple;
-	bh=PR2h3D9DAsGG6BMWqO/a2WUrgMZiOiPQhcMLA4MuH/M=;
+	s=arc-20240116; t=1745419953; c=relaxed/simple;
+	bh=AJMsAC3Fi1is7CAeLsD9pCKPi30HTV6uOQu0bTNkAGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLdQVuiwieMqjlspOxKBvOAFriyh+Rrn+iZGSYdrMEFXZQMo83eC3cHvkbBwRNCfrHjigFF6xg+zj9FII9dTM/txbQ6MXCqbwJKgATK7jdBmqqghNf5wCLnxL4ry5BAruLGaiSOijVarBLSpWNMCcfVOLBwB9iSCi5C27hemEFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNBtKBvq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53349C4CEE3;
-	Wed, 23 Apr 2025 15:20:15 +0000 (UTC)
+	 MIME-Version; b=a5FoDoimnULpvoc4PTm2aF/uy8oT/qMXxeHCDK1GZYkWtwZ1ymnolOdrzZHkR2x9XpkNFeLRuTl7DhAO+qyN2K5DoU6DwnzGiBUu4kzvkjJrNGxhWItJlu0dZLLjIxCRtJIG4kO05z4wMNAzbbLelQUWRRuCHgENZyAOwR8NUWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF9YO4TI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999C5C4CEEB;
+	Wed, 23 Apr 2025 14:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421615;
-	bh=PR2h3D9DAsGG6BMWqO/a2WUrgMZiOiPQhcMLA4MuH/M=;
+	s=korg; t=1745419952;
+	bh=AJMsAC3Fi1is7CAeLsD9pCKPi30HTV6uOQu0bTNkAGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNBtKBvq+4NmtOgoicWYCCrZKiEMvW719a8np4hmweDUmHWBHUzULms9iE5i6//rx
-	 t+2XuztEZM6FS63QpzofvDfXoNZdgrsAG3MY92X36ETYEQ0JZZqgsQHAjxBFW7oXmA
-	 diuRKMbvvXkWLsUYXCsx37UGJwcdCD4pw+NSgmpU=
+	b=NF9YO4TIYVb6Capw79zE8cu0CEFffSUNWgHhi92KD8aK0TyGCYAHeOMuhIvkVCuNC
+	 +Q8TLvlOxfxtTk4mC2mCWJTWjlUW5cBQFn7RMGglf9boJp6I/Hul+tK44gFbgIW7gq
+	 /NU/maWoE8xmQH3D0qTy2K2mmAIssDSfJT0cM8EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Woerner <twoerner@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.6 200/393] thermal/drivers/rockchip: Add missing rk3328 mapping entry
+	Bert Karwatzki <spasswolf@web.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 032/241] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Wed, 23 Apr 2025 16:41:36 +0200
-Message-ID: <20250423142651.651320994@linuxfoundation.org>
+Message-ID: <20250423142621.830594268@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Woerner <twoerner@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
+[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
 
-The mapping table for the rk3328 is missing the entry for -25C which is
-found in the TRM section 9.5.2 "Temperature-to-code mapping".
+This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
 
-NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
-      4096-<code in table>. Whereas the table in the TRM gives the code
-      "3774" for -25C, the kernel uses 4096-3774=322.
+Since the original bug seems to have been around for years,
+but a new issue was report with the fix, revert the fix for
+now. We have a couple of weeks to figure it out for this
+release, if needed.
 
-[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
-  well as through the downstream kernel code, it seems we may have
-  some troubles at our hands.  Let me explain, please.
-
-  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
-  the equation for the output when tsadc_q_sel equals 1 is (4096 -
-  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
-  equation is (1024 - tsadc_q) in that case.
-
-  The downstream kernel code, however, treats the RK3308 and RK3328
-  tables and their values as being the same.  It even mentions 1024 as
-  the "offset" value in a comment block for the rk_tsadcv3_control()
-  function, just like the upstream code does, which is obviously wrong
-  "offset" value when correlated with the table on page 544 of part 1
-  of the RK3308 TRM v1.1.
-
-  With all this in mind, it's obvious that more work is needed to make
-  it clear where's the actual mistake (it could be that the TRM is
-  wrong), which I'll volunteer for as part of the SoC binning project.
-  In the meantime, this patch looks fine as-is to me, by offering
-  what's a clear improvement to the current state of the upstream
-  code"
-
-Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
-Cc: stable@vger.kernel.org
-Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/rockchip_thermal.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/thermal/rockchip_thermal.c
-+++ b/drivers/thermal/rockchip_thermal.c
-@@ -386,6 +386,7 @@ static const struct tsadc_table rk3328_c
- 	{296, -40000},
- 	{304, -35000},
- 	{313, -30000},
-+	{322, -25000},
- 	{331, -20000},
- 	{340, -15000},
- 	{349, -10000},
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 0c6214f12ea39..a24636bda6793 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3893,7 +3893,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
+-	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
+-- 
+2.39.5
+
 
 
 
