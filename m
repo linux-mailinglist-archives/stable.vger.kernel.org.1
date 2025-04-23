@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-135444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B952A98E4F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E0DA98DCC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CCE35A708B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD3B91B811B0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A2E27FD62;
-	Wed, 23 Apr 2025 14:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63996279790;
+	Wed, 23 Apr 2025 14:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH95EN9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FD+zyuI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A11263F54;
-	Wed, 23 Apr 2025 14:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBD42D613;
+	Wed, 23 Apr 2025 14:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419940; cv=none; b=PorqEG389RJP0Wx/jBasAUy6UlPNEhjpmomeGlKSjktYWzX5acqjOVEXqoOrYSzE5tdjnV37++diFEL/1KBmRh8yBLfaW9H6UlUDU50hFHw4ENkxg2QZ72uKyD/LXGcicoiUk3P+k7i2DqIjp6ZwXxnmbCD3ktoTy9kppnMr11E=
+	t=1745419661; cv=none; b=lNpTpB+s3pRD+2rJcAUhez8Nru1/9toE883s4JzGSJXainY2NAe9+zWzCO3H1IZsBu01d6W7nvML6qPLqrSEY5HwxrSNFfCbbEWT6Rv/RBT5Z5TbmCND+mVQDBbGvG5VifS9/EezANjQU81Zek2gDf/AgpFfpIJ/XGW13R4BOMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419940; c=relaxed/simple;
-	bh=hgnEN94KL20AbiXYedQICSJT/cfjPOO5Y87tBo7VhmE=;
+	s=arc-20240116; t=1745419661; c=relaxed/simple;
+	bh=fWkyQkeY7dlNfk7UCYVTXRr/4ULwnKeMmTb14WoKvHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H2QCmhJAWU0t+0b9VORjlulUW8WAvzyzNsd0DPF8ugg9XF/aDjVlb+sar87+s++1ndra4u9I8HVO2DARSfGRpodcqS+/NPh6MgpDHTgSvt/Vj5HJBDvz7sXpAgaERiDfOcOTpTjbW3VFqlmZbCbJ8zNG5Hn4+tZIctgQkmoBV7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH95EN9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7800DC4CEE2;
-	Wed, 23 Apr 2025 14:52:19 +0000 (UTC)
+	 MIME-Version; b=aJN5stZrtFHqH+Fh++bC3Sy2E2FcwPc0uzs5iearGdBei+iicgxTBvvlGmzxaVXKz/a743WNpLtgD5kyoHUZCAYx+0G6dPNZYpL6LPJQkkgEZNxr9EM2FzMCJsj+DO/HcxqG6fPwWVLcd6AGxTQL9lTXDjHnmrJ6FKp4qCpK8Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FD+zyuI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4C6C4CEE2;
+	Wed, 23 Apr 2025 14:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419939;
-	bh=hgnEN94KL20AbiXYedQICSJT/cfjPOO5Y87tBo7VhmE=;
+	s=korg; t=1745419660;
+	bh=fWkyQkeY7dlNfk7UCYVTXRr/4ULwnKeMmTb14WoKvHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WH95EN9zkQhCsZVN0dtFv5nBgVcyfMsYX9Fmpnwfo8P6QkrYhrC1u2/EkOw6ffTT3
-	 v4RxTik8CsvpPrCmXG81mdlB8HFoTQwdUWh2kP1+BdfyrcwTJxyzgbm4/NvWJouLg1
-	 RxUVEbFx1k0VdYqZTidkVPXSf9UQESGk4p2y6T+o=
+	b=FD+zyuI5Nv60K+b1iPShsGjmVMT/O7xSRY/ubdefvP7CyIIkpQk4Nzi767RWh+hxA
+	 bToE8j03nkI/fZ84tw5SYSJgkILlT+mcEBHj79eQzNnWPt1iruC3dIxuNBrEr74RP1
+	 Q/esrUi2r7ZkcVaFfC7YpIlYF/Qd+GWpS4qWRxSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 045/241] ethtool: cmis_cdb: use correct rpl size in ethtool_cmis_module_poll()
+Subject: [PATCH 6.12 037/223] igc: cleanup PTP module if probe fails
 Date: Wed, 23 Apr 2025 16:41:49 +0200
-Message-ID: <20250423142622.348724026@linuxfoundation.org>
+Message-ID: <20250423142618.640703381@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +66,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-[ Upstream commit f3fdd4fba16c74697d8bc730b82fb7c1eff7fab3 ]
+[ Upstream commit 1f025759ba394dd53e434d2668cb0597886d9b69 ]
 
-rpl is passed as a pointer to ethtool_cmis_module_poll(), so the correct
-size of rpl is sizeof(*rpl) which should be just 1 byte.  Using the
-pointer size instead can cause stack corruption:
+Make sure that the PTP module is cleaned up if the igc_probe() fails by
+calling igc_ptp_stop() on exit.
 
-Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: ethtool_cmis_wait_for_cond+0xf4/0x100
-CPU: 72 UID: 0 PID: 4440 Comm: kworker/72:2 Kdump: loaded Tainted: G           OE      6.11.0 #24
-Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: Dell Inc. PowerEdge R760/04GWWM, BIOS 1.6.6 09/20/2023
-Workqueue: events module_flash_fw_work
-Call Trace:
- <TASK>
- panic+0x339/0x360
- ? ethtool_cmis_wait_for_cond+0xf4/0x100
- ? __pfx_status_success+0x10/0x10
- ? __pfx_status_fail+0x10/0x10
- __stack_chk_fail+0x10/0x10
- ethtool_cmis_wait_for_cond+0xf4/0x100
- ethtool_cmis_cdb_execute_cmd+0x1fc/0x330
- ? __pfx_status_fail+0x10/0x10
- cmis_cdb_module_features_get+0x6d/0xd0
- ethtool_cmis_cdb_init+0x8a/0xd0
- ethtool_cmis_fw_update+0x46/0x1d0
- module_flash_fw_work+0x17/0xa0
- process_one_work+0x179/0x390
- worker_thread+0x239/0x340
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xcc/0x100
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2d/0x50
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands")
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20250409173312.733012-1-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d89f88419f99 ("igc: Add skeletal frame for Intel(R) 2.5G Ethernet Controller support")
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/cmis_cdb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
-index 0e2691ccb0df3..3057576bc81e3 100644
---- a/net/ethtool/cmis_cdb.c
-+++ b/net/ethtool/cmis_cdb.c
-@@ -351,7 +351,7 @@ ethtool_cmis_module_poll(struct net_device *dev,
- 	struct netlink_ext_ack extack = {};
- 	int err;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 1ec9e8cc99d94..082b0baf5d37c 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -7173,6 +7173,7 @@ static int igc_probe(struct pci_dev *pdev,
  
--	ethtool_cmis_page_init(&page_data, 0, offset, sizeof(rpl));
-+	ethtool_cmis_page_init(&page_data, 0, offset, sizeof(*rpl));
- 	page_data.data = (u8 *)rpl;
- 
- 	err = ops->get_module_eeprom_by_page(dev, &page_data, &extack);
+ err_register:
+ 	igc_release_hw_control(adapter);
++	igc_ptp_stop(adapter);
+ err_eeprom:
+ 	if (!igc_check_reset_block(hw))
+ 		igc_reset_phy(hw);
 -- 
 2.39.5
 
