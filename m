@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A037A98FA4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3BEA98E9E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE9557AFD96
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0302744556E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BF2280A5C;
-	Wed, 23 Apr 2025 15:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308B9280CCD;
+	Wed, 23 Apr 2025 14:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G98du77H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFnc2Fje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034FF1EEA3E;
-	Wed, 23 Apr 2025 15:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD04A143736;
+	Wed, 23 Apr 2025 14:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420809; cv=none; b=COAvN9OfsFNb98WevX8t08JVky5cn6TJegPtoRCiyyhTlyURIRc3BnAisWaCq4OmuGT3lRtii3BWmxE4Jr41OLrZ6QT58vgGhiOxdc9QmD/Oaa9tilqDCViL4+psYs4e/LwoYJ8XIKChPkpIKpqTH69xgnHbKDg13vw8hYTumnI=
+	t=1745420161; cv=none; b=i7YWV1w5dIlPBqc4cR2NjFya1dTUJqzoylJg90s5e+sGNr8GQ4G4hqNm3lD9NDQxENfAmrsx85e5cUtJ41xaWj6uZZu7HS7tiDGNL3DcJ+8xE+HxzP1d93BzvKe9uyPSDtERdb8kArWQm5X51SR0uh4ODPHqqJy4anl9y+bAPBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420809; c=relaxed/simple;
-	bh=hrW6CAUqQo3rtZkKrvPRQIdNOZItVeJl1wyKCff8YE4=;
+	s=arc-20240116; t=1745420161; c=relaxed/simple;
+	bh=pThfYhQRdELTTxQkZsf2/KFpLPo7A8043wxi+GTobAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rIPwWmCvjpcpGTorpLTAvPrn4+2/8S9EAlFIBHmTsD5de3qrFlA+kR+1IaGARjzupVQFb1olNv5nC8oCypxB9KgLrqMXSQA1nCEHprnFugs4dgfrOWJnI0zfGmvuahb5w44ckyN4Ygg2Wa+WLaBiA7LX1k3ikRjVYLW+yV6m0/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G98du77H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8921AC4CEE2;
-	Wed, 23 Apr 2025 15:06:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OGSh8YVbT4gX29Qvgebj+5kXoNf/uHz4npNWQ7988RuH2WHzJ+C2Xh5Wv0IQiUw/w0Nz4GpWkgnVf9VD8X3Z1Fqc2TZc1gpTMXXvocBPHbpnRsVuJjKah1FdoiJzRyGEhFjQBwTyOrGj7iislHyQS3z2BB6gq6J+AX0450E4Fe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFnc2Fje; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D116C4CEE2;
+	Wed, 23 Apr 2025 14:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420808;
-	bh=hrW6CAUqQo3rtZkKrvPRQIdNOZItVeJl1wyKCff8YE4=;
+	s=korg; t=1745420160;
+	bh=pThfYhQRdELTTxQkZsf2/KFpLPo7A8043wxi+GTobAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G98du77HHRFJ3QUiNyv9uCmGzNoPH8SHBVMUhIuBWage1w+MKFxFp+Nb15iJ94aib
-	 gWCY/peRcf9hmf2NwtG70+Vpd40auZwE172tiallt092jtCp6d1roJP6JeeJbGpfo9
-	 lPt6uHudaxVpGchkRAM003FxoiaRv9SrwgSMkOCk=
+	b=bFnc2FjeSNMF+3LBhDDRzy9UCmO3fLTBgPz6MWb1yiiyYgzHotIvLMl8HZIfTXX8U
+	 X086Y1NXMcCKfTOdITAVm6DJcwAKG6BvTXjlAqFElzrNBLMU/Ud3t4yC9MZIjrzyi2
+	 Gcr/FGdO4bjTwup6o2TWd3+UgpgOpLjvH6/Eup/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Max Grobecker <max@grobecker.info>,
+	Ingo Molnar <mingo@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/393] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
-Date: Wed, 23 Apr 2025 16:40:10 +0200
-Message-ID: <20250423142648.072803578@linuxfoundation.org>
+Subject: [PATCH 6.1 022/291] x86/cpu: Dont clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when running in a virtual machine
+Date: Wed, 23 Apr 2025 16:40:11 +0200
+Message-ID: <20250423142625.311555140@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +65,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Max Grobecker <max@grobecker.info>
 
-[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
+[ Upstream commit a4248ee16f411ac1ea7dfab228a6659b111e3d65 ]
 
-With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
-divide-by-zero in the following line:
+When running in a virtual machine, we might see the original hardware CPU
+vendor string (i.e. "AuthenticAMD"), but a model and family ID set by the
+hypervisor. In case we run on AMD hardware and the hypervisor sets a model
+ID < 0x14, the LAHF cpu feature is eliminated from the the list of CPU
+capabilities present to circumvent a bug with some BIOSes in conjunction with
+AMD K8 processors.
 
-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
+Parsing the flags list from /proc/cpuinfo seems to be happening mostly in
+bash scripts and prebuilt Docker containers, as it does not need to have
+additionals tools present – even though more reliable ways like using "kcpuid",
+which calls the CPUID instruction instead of parsing a list, should be preferred.
+Scripts, that use /proc/cpuinfo to determine if the current CPU is
+"compliant" with defined microarchitecture levels like x86-64-v2 will falsely
+claim the CPU is incapable of modern CPU instructions when "lahf_lm" is missing
+in that flags list.
 
-due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
-returns zero.
+This can prevent some docker containers from starting or build scripts to create
+unoptimized binaries.
 
-This is presumably just a theoretical problem: COMPILE_TEST overrides
-the dependency on RALINK which would select COMMON_CLK.  Regardless it's
-a good idea to check for the error explicitly to avoid divide-by-zero.
+Admittably, this is more a small inconvenience than a severe bug in the kernel
+and the shoddy scripts that rely on parsing /proc/cpuinfo
+should be fixed instead.
 
-Fixes the following warning:
+This patch adds an additional check to see if we're running inside a
+virtual machine (X86_FEATURE_HYPERVISOR is present), which, to my
+understanding, can't be present on a real K8 processor as it was introduced
+only with the later/other Athlon64 models.
 
-  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
+Example output with the "lahf_lm" flag missing in the flags list
+(should be shown between "hypervisor" and "abm"):
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
-[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
-Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+    $ cat /proc/cpuinfo
+    processor       : 0
+    vendor_id       : AuthenticAMD
+    cpu family      : 15
+    model           : 6
+    model name      : Common KVM processor
+    stepping        : 1
+    microcode       : 0x1000065
+    cpu MHz         : 2599.998
+    cache size      : 512 KB
+    physical id     : 0
+    siblings        : 1
+    core id         : 0
+    cpu cores       : 1
+    apicid          : 0
+    initial apicid  : 0
+    fpu             : yes
+    fpu_exception   : yes
+    cpuid level     : 13
+    wp              : yes
+    flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca
+                      cmov pat pse36 clflush mmx fxsr sse sse2 syscall nx rdtscp
+                      lm rep_good nopl cpuid extd_apicid tsc_known_freq pni
+                      pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 x2apic movbe popcnt
+                      tsc_deadline_timer aes xsave avx f16c hypervisor abm
+                      3dnowprefetch vmmcall bmi1 avx2 bmi2 xsaveopt
+
+... while kcpuid shows the feature to be present in the CPU:
+
+    # kcpuid -d | grep lahf
+         lahf_lm             - LAHF/SAHF available in 64-bit mode
+
+[ mingo: Updated the comment a bit, incorporated Boris's review feedback. ]
+
+Signed-off-by: Max Grobecker <max@grobecker.info>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: Borislav Petkov <bp@alien8.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-mediatek.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
-index 6adb0ed019066..6b1a75b6bd12f 100644
---- a/drivers/pwm/pwm-mediatek.c
-+++ b/drivers/pwm/pwm-mediatek.c
-@@ -124,21 +124,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
- 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
- 	    reg_thres = PWMTHRES;
-+	unsigned long clk_rate;
- 	u64 resolution;
- 	int ret;
- 
- 	ret = pwm_mediatek_clk_enable(chip, pwm);
--
- 	if (ret < 0)
- 		return ret;
- 
-+	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
-+	if (!clk_rate)
-+		return -EINVAL;
-+
- 	/* Make sure we use the bus clock and not the 26MHz clock */
- 	if (pc->soc->has_ck_26m_sel)
- 		writel(0, pc->regs + PWM_CK_26M_SEL);
- 
- 	/* Using resolution in picosecond gets accuracy higher */
- 	resolution = (u64)NSEC_PER_SEC * 1000;
--	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
-+	do_div(resolution, clk_rate);
- 
- 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
- 	while (cnt_period > 8191) {
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 37796a1d0715f..9ac93b4ba67b4 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -787,7 +787,7 @@ static void init_amd_k8(struct cpuinfo_x86 *c)
+ 	 * (model = 0x14) and later actually support it.
+ 	 * (AMD Erratum #110, docId: 25759).
+ 	 */
+-	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM)) {
++	if (c->x86_model < 0x14 && cpu_has(c, X86_FEATURE_LAHF_LM) && !cpu_has(c, X86_FEATURE_HYPERVISOR)) {
+ 		clear_cpu_cap(c, X86_FEATURE_LAHF_LM);
+ 		if (!rdmsrl_amd_safe(0xc001100d, &value)) {
+ 			value &= ~BIT_64(32);
 -- 
 2.39.5
 
