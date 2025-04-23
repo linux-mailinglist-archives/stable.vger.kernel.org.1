@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C009A9935A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:57:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28642A98F29
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86A281BA162C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734E7175646
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F0E29C357;
-	Wed, 23 Apr 2025 15:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F306F281505;
+	Wed, 23 Apr 2025 15:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3TzTVG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGE3hDOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DA62957DA;
-	Wed, 23 Apr 2025 15:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4DD1F193C;
+	Wed, 23 Apr 2025 15:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422008; cv=none; b=TM9++tB5RFbuytlopkQrZ1qxXQ/Lp3wzrwEZflKuWbstlfAwpXoJukbieyQTkGMcZfiTPdNc/etN2XY9OYB5G4I3R+7Md/xCb2UOj5KBdGAaD9gCkTMCCoiHLaqYf4NEkzYG/HXJmvfy7pemorXiw649Vjf4rSh/GMabGpzEF5A=
+	t=1745420466; cv=none; b=BDGdcIi7H07BVozBTQcPDqUxw2fvKcWjJAdBmHQp/DVdhyR4QkRdRi1upuYWkfQ+dZY0LcLMoZ36/IiZSv8jzL+7FG00+4dOkWeJ1cA9llD5OMuMaJK6AGtGUs4pQ+fpLlhI+Cp+uBxpF9spAQ4t+djn6V52KIUYiy6oeLTGBHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422008; c=relaxed/simple;
-	bh=GddF6ptcG98HOuCwqocGgxFcSd7d7aklD1NAqUyB75o=;
+	s=arc-20240116; t=1745420466; c=relaxed/simple;
+	bh=DZzMKOD+Adys665PKV175Zi8jxMKGgCr5tcmLvVnY9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gwwZj7AgNtkpHf01nsGeKJtlufpcryyEv2Lkw4UPZAPjy76gMVf+k1ucXIGtyE3awWwV5pZF1bF6prqUS0Vpukumuu4OKExuTE8loGJ+d2gLBjiO1i8pcLP1q15VQkPWIRl0ro09MLicWtBNT5iB3SD+MJ973UM+VHQW5Cu64h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3TzTVG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728E5C4CEE8;
-	Wed, 23 Apr 2025 15:26:47 +0000 (UTC)
+	 MIME-Version; b=h1cNyBMnVCK/Ck9ISCv9uuj4iIvMw/2RcmpypCS6fV3CbFlS/PYHYMzuoxA+BkWnvzm/papizGRhnumUYwlcz0PTteU2BUVNpJqklpgAoaf2MLJrnYfTw3ReG7/devyOQuUJB0IJyYCBU+YMeEkkgee8e2exVcx5sj1y4pUko9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGE3hDOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4216EC4CEE2;
+	Wed, 23 Apr 2025 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422007;
-	bh=GddF6ptcG98HOuCwqocGgxFcSd7d7aklD1NAqUyB75o=;
+	s=korg; t=1745420466;
+	bh=DZzMKOD+Adys665PKV175Zi8jxMKGgCr5tcmLvVnY9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3TzTVG48+oApilwugFwN9xoPZhJIbkDXcMZiWMgWp7EI8K0Vk/JLcMJUdTZ1xieZ
-	 R1wLSEi3IdDaDvm2u2FESiFrjWO9ZKJihivdu9AA2gbIh8kqZ48/lGXtbAjVdJ2d9L
-	 JQr0sgtdiMdtem/xH/Mh1rGCepR3C6Sx99X+QJCs=
+	b=CGE3hDOMTx1bKQ8dvFofAptqiKetXpXGDUl5r1Bxstzma1ToK08kbkO7XkumtDq8c
+	 BZp7zHAhg6S5QIGxEyZ+XQI8glvvKkmWwtaKqNQttJ5OipWUNUwskADzB1kFwCwRbU
+	 U0d0RmZfceIutYtgZh9VYjkqbU7SjwwHpKtaVCT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 217/291] ksmbd: Prevent integer overflow in calculation of deadtime
+	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 134/223] virtiofs: add filesystem context source name check
 Date: Wed, 23 Apr 2025 16:43:26 +0200
-Message-ID: <20250423142633.270981302@linuxfoundation.org>
+Message-ID: <20250423142622.550126221@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
 
-commit a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 upstream.
+commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
 
-The user can set any value for 'deadtime'. This affects the arithmetic
-expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
-overflow. The added check makes the server behavior more predictable.
+In certain scenarios, for example, during fuzz testing, the source
+name may be NULL, which could lead to a kernel panic. Therefore, an
+extra check for the source name should be added.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
+Cc: <stable@vger.kernel.org> # all LTS kernels
+Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_ipc.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/fuse/virtio_fs.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -296,7 +296,11 @@ static int ipc_server_config_on_startup(
- 	server_conf.signing = req->signing;
- 	server_conf.tcp_port = req->tcp_port;
- 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
--	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
-+	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
-+					&server_conf.deadtime)) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
- 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
- 	ksmbd_init_domain(req->sub_auth);
+--- a/fs/fuse/virtio_fs.c
++++ b/fs/fuse/virtio_fs.c
+@@ -1663,6 +1663,9 @@ static int virtio_fs_get_tree(struct fs_
+ 	unsigned int virtqueue_size;
+ 	int err = -EIO;
  
-@@ -319,6 +323,7 @@ static int ipc_server_config_on_startup(
- 	ret |= ksmbd_set_work_group(req->work_group);
- 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
- 					req->ifc_list_sz);
-+out:
- 	if (ret) {
- 		pr_err("Server configuration error: %s %s %s\n",
- 		       req->netbios_name, req->server_string,
++	if (!fsc->source)
++		return invalf(fsc, "No source specified");
++
+ 	/* This gets a reference on virtio_fs object. This ptr gets installed
+ 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
+ 	 * to drop the reference to this object.
 
 
 
