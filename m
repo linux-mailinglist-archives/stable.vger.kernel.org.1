@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753B3A98FF0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6109A99282
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68DED17350C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7364A113A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111272918F3;
-	Wed, 23 Apr 2025 15:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CEF28D850;
+	Wed, 23 Apr 2025 15:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lG3uIIg/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oARUnxBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5142820AC;
-	Wed, 23 Apr 2025 15:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6850A27F4D9;
+	Wed, 23 Apr 2025 15:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420824; cv=none; b=RO+NoTtZZsYnPKfTX5WYxBwIrr8yQxKmg2xRe2yjtRtshfhVcNx1o4V741QuEbFfRg8Px/ZDhSiBLWXfPQwxgbF6k2Ksqz3tBDAHnMEpCvIhuJK2SeRDKIcMDFCSsJReFMsr49tkycySgWYhdgTbaDQpyc5Hc3sEBn4l7avyD7w=
+	t=1745421926; cv=none; b=Q9ViKkK6C8MpQUKqUVfJhNfFv8S6yWsmkndKaxrPHYZzmFa3agSzaOSvj+h1yMMbvhO2TTeAYeluAxvjm5eR7jCotbDjmPnGR1NlOm6uHyvCgOJnN5U4c/5zAAJSnI4NDyJYZMw09kUE8pnzAxSbRClD0zcNsA2cEk0cmj8AM2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420824; c=relaxed/simple;
-	bh=W8UKKBB1p5BrN+6ucTVl9odEzue0RfWF6FzQzLS2Va8=;
+	s=arc-20240116; t=1745421926; c=relaxed/simple;
+	bh=tYp+/KkMazwOiwZFyx5LX8CRgjb12Zn+IDttxA6W2w0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EjoDVSyWRyg0SOuwe8C9RxMFuFkbRyEkcFkK9msiwAfS/lyRSeauEdP88NAVdUMvjrDH+3xDfPLd1Y/SdiP6dB1Pis9vcONzYlNR5Y2mM6B2AHQvnHPS5FT8xYiPTQipLKHXUj7/CtbAUaziW2Kfzh6RGamPaljpUC1ODFoNb/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lG3uIIg/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF5AC4CEEB;
-	Wed, 23 Apr 2025 15:07:04 +0000 (UTC)
+	 MIME-Version; b=i38JuM2qs7UOc7K6Tp57vdHqqWew2rqAMMbY1zAOxd45QpdE208m1dt9RDhMlz6qQDUNUFWsGsBj+U4nwTY5jFE5qm24qDkxjfc2F1xpaytw2sRU1QLd2CvckrHSNdnX41NC0uH0lrhKwO0uVswGXoJH+HosRxfLoR3VeYxHQ2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oARUnxBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2134C4CEE2;
+	Wed, 23 Apr 2025 15:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420824;
-	bh=W8UKKBB1p5BrN+6ucTVl9odEzue0RfWF6FzQzLS2Va8=;
+	s=korg; t=1745421926;
+	bh=tYp+/KkMazwOiwZFyx5LX8CRgjb12Zn+IDttxA6W2w0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lG3uIIg/jbd1RMymemJzeU1+y5NT7tx+Rw8SQyBDaXrD8JvTwWXt13u9hkyqem7hw
-	 IEwR21gPUEP5+w/Z1Xee365YJjKcvE8wncpUdh7Z6BPMjQU4s726hsNJAmQUBHj+V1
-	 3XbVoFWiDcaTXqefMxlEWCPbJG8WF+wjgfrfigTw=
+	b=oARUnxBeEZtplmcSWnWDGKCjH4y78U2Y3Kw8a3zbbt+v3tx72PqbOSMn2ZhmWfst1
+	 P+O1W1jD19WfWNNS9eoSoibHcO1BEofvwgq3Aw/F2WJ8lDTqndY0bFO4ROpkUxue/M
+	 LU5cg7m2g1EP33JQaWGE6+qMVISWN7aqGemclzAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.14 125/241] Bluetooth: l2cap: Process valid commands in too long frame
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 200/291] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
 Date: Wed, 23 Apr 2025 16:43:09 +0200
-Message-ID: <20250423142625.679659192@linuxfoundation.org>
+Message-ID: <20250423142632.554966475@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,111 +60,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit e2e49e214145a8f6ece6ecd52fec63ebc2b27ce9 upstream.
+commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
 
-This is required for passing PTS test cases:
-- L2CAP/COS/CED/BI-14-C
-  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
-  Connection Request
-- L2CAP/COS/CED/BI-15-C
-  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
-  Disconnection Request
+Currently the VI feedback rate is set to fixed 8K, fix this by getting
+the correct rate from params_rate.
 
-The test procedure defined in L2CAP.TS.p39 for both tests is:
-1. The Lower Tester sends a C-frame to the IUT with PDU Length set
-   to 8 and Channel ID set to the correct signaling channel for the
-   logical link. The Information payload contains one L2CAP_ECHO_REQ
-   packet with Data Length set to 0 with 0 octets of echo data and
-   one command packet and Data Length set as specified in Table 4.6
-   and the correct command data.
-2. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
-3. Perform alternative 3A, 3B, 3C, or 3D depending on the IUT’s
-   response.
-   Alternative 3A (IUT terminates the link):
-     3A.1 The IUT terminates the link.
-     3A.2 The test ends with a Pass verdict.
-   Alternative 3B (IUT discards the frame):
-     3B.1 The IUT does not send a reply to the Lower Tester.
-   Alternative 3C (IUT rejects PDU):
-     3C.1 The IUT sends an L2CAP_COMMAND_REJECT_RSP PDU to the
-          Lower Tester.
-   Alternative 3D (Any other IUT response):
-     3D.1 The Upper Tester issues a warning and the test ends.
-4. The Lower Tester sends a C-frame to the IUT with PDU Length set
-   to 4 and Channel ID set to the correct signaling channel for the
-   logical link. The Information payload contains Data Length set to
-   0 with an L2CAP_ECHO_REQ packet with 0 octets of echo data.
-5. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
+Without this patch incorrect rate will be set on the VI feedback
+recording resulting in rate miss match and audio artifacts.
 
-With expected outcome:
-  In Steps 2 and 5, the IUT responds with an L2CAP_ECHO_RSP.
-  In Step 3A.1, the IUT terminates the link.
-  In Step 3B.1, the IUT does not send a reply to the Lower Tester.
-  In Step 3C.1, the IUT rejects the PDU.
-  In Step 3D.1, the IUT sends any valid response.
-
-Currently PTS fails with the following logs:
-  Failed to receive ECHO RESPONSE.
-
-And HCI logs:
-> ACL Data RX: Handle 11 flags 0x02 dlen 20
-      L2CAP: Information Response (0x0b) ident 2 len 12
-        Type: Fixed channels supported (0x0003)
-        Result: Success (0x0000)
-        Channels: 0x000000000000002e
-          L2CAP Signaling (BR/EDR)
-          Connectionless reception
-          AMP Manager Protocol
-          L2CAP Signaling (LE)
-> ACL Data RX: Handle 11 flags 0x02 dlen 13
-        frame too long
-        08 01 00 00 08 02 01 00 aa                       .........
-
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
 Cc: stable@vger.kernel.org
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7504,8 +7504,24 @@ void l2cap_recv_acldata(struct hci_conn
- 		if (skb->len > len) {
- 			BT_ERR("Frame is too long (len %u, expected len %d)",
- 			       skb->len, len);
-+			/* PTS test cases L2CAP/COS/CED/BI-14-C and BI-15-C
-+			 * (Multiple Signaling Command in one PDU, Data
-+			 * Truncated, BR/EDR) send a C-frame to the IUT with
-+			 * PDU Length set to 8 and Channel ID set to the
-+			 * correct signaling channel for the logical link.
-+			 * The Information payload contains one L2CAP_ECHO_REQ
-+			 * packet with Data Length set to 0 with 0 octets of
-+			 * echo data and one invalid command packet due to
-+			 * data truncated in PDU but present in HCI packet.
-+			 *
-+			 * Shorter the socket buffer to the PDU length to
-+			 * allow to process valid commands from the PDU before
-+			 * setting the socket unreliable.
-+			 */
-+			skb->len = len;
-+			l2cap_recv_frame(conn, skb);
- 			l2cap_conn_unreliable(conn, ECOMM);
--			goto drop;
-+			goto unlock;
- 		}
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -63,6 +63,10 @@
+ #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
+ #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
++#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
+ #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
+ #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
+@@ -344,6 +348,7 @@ struct wsa_macro {
+ 	int ear_spkr_gain;
+ 	int spkr_gain_offset;
+ 	int spkr_mode;
++	u32 pcm_rate_vi;
+ 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
+ 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
+ 	struct regmap *regmap;
+@@ -971,6 +976,7 @@ static int wsa_macro_hw_params(struct sn
+ 			       struct snd_soc_dai *dai)
+ {
+ 	struct snd_soc_component *component = dai->component;
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	int ret;
  
- 		/* Append fragment into frame (with header) */
+ 	switch (substream->stream) {
+@@ -983,6 +989,11 @@ static int wsa_macro_hw_params(struct sn
+ 			return ret;
+ 		}
+ 		break;
++	case SNDRV_PCM_STREAM_CAPTURE:
++		if (dai->id == WSA_MACRO_AIF_VI)
++			wsa->pcm_rate_vi = params_rate(params);
++
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -1156,6 +1167,28 @@ static int wsa_macro_enable_vi_feedback(
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
+ 	u32 tx_reg0, tx_reg1;
++	u32 rate_val;
++
++	switch (wsa->pcm_rate_vi) {
++	case 8000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	case 16000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
++		break;
++	case 24000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
++		break;
++	case 32000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
++		break;
++	case 48000:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
++		break;
++	default:
++		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
++		break;
++	}
+ 
+ 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+ 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+@@ -1167,7 +1200,7 @@ static int wsa_macro_enable_vi_feedback(
+ 
+ 	switch (event) {
+ 	case SND_SOC_DAPM_POST_PMU:
+-			/* Enable V&I sensing */
++		/* Enable V&I sensing */
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+@@ -1176,10 +1209,10 @@ static int wsa_macro_enable_vi_feedback(
+ 					      CDC_WSA_TX_SPKR_PROT_RESET);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg1,
+ 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
++					      rate_val);
+ 		snd_soc_component_update_bits(component, tx_reg0,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+ 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
 
 
 
