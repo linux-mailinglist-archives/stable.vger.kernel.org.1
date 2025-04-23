@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B811A9919E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC71A9939B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50820923AE3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC6DA1BA4A68
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041CF28CF7E;
-	Wed, 23 Apr 2025 15:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E251280A51;
+	Wed, 23 Apr 2025 15:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7eDttMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8wh6mRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60F727CCD7;
-	Wed, 23 Apr 2025 15:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1339027D763;
+	Wed, 23 Apr 2025 15:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421397; cv=none; b=rEp4oz+Z4mTXf9uGVLA8bEamOs81rI0Lm6JIr2C9C+RDqKWaT7YBiSjgy133MbgMyzlwBEXsPHpfFc+vszRGcn8/C11LoxYFclc0SLyv3+LxxhkMXVttP2z/WYvazgjzF7+dQ3o2H4Y5UCyl0ReFF3z9/RP11hcQic9ssCexs8w=
+	t=1745422127; cv=none; b=amLque8fPi4Kf4uIzup6VI0Br1pMjEDjd02l2gRKB+c8TSVyMcft/++zAqi5n2ZJUkuaJ/8A0k3NpBIi/5fItpwlujeJtw40/n4CRRuNp7iAYH/3o4uyXIK5cRAU/SoNmxSwfigJ/3kDZIyZRQeLb9QhIblZ/Lq3zCM0p264QD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421397; c=relaxed/simple;
-	bh=URHFYbZAYtBX43KYmLCYSLaR8yWjyDDSPmSdATV3A/8=;
+	s=arc-20240116; t=1745422127; c=relaxed/simple;
+	bh=XCfL0J3FCYPY8cCeEQPP6DlRx1QuIJDBEaKkyJR4VN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ni5BtBydFSXyYe+qUgGre2x8O/7Q3sByP0H7isBIrXUB6yCSbH2w6LmHj1CZwcEIrSE34doQh2TZ2+DXYKrL8UsXddQTG1YZMNRed8PurCnOQDNSE+C5RkCoKoOpA+E/IeOAlZS/9DMhyHjIpSbTE6NW3ovJHqbJaKObdCaAyrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7eDttMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D583FC4CEE2;
-	Wed, 23 Apr 2025 15:16:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u0xZfVbm6boE4mw55lN7PuHvtpuHRYlQQLM0SZMtmYkmhOTTkfEwxCt6yqOy5e4AuLL7Kx0Ns2ojpD7HrqPdNWagUDNgWCaSQKstLwY/ycqmAWIdIokEQ0cWT4relXia3Nao9ml16ksGfXiQ78QLDRNSQLX1GPIfBJuFVFiSTkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8wh6mRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342B6C4CEE2;
+	Wed, 23 Apr 2025 15:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421397;
-	bh=URHFYbZAYtBX43KYmLCYSLaR8yWjyDDSPmSdATV3A/8=;
+	s=korg; t=1745422125;
+	bh=XCfL0J3FCYPY8cCeEQPP6DlRx1QuIJDBEaKkyJR4VN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7eDttMo6e2xDJw2lST9aiFV+cxqG8hrUsnhd8bQkEIXcLyASfKDBraKgiM/WmmcZ
-	 Hp+OHmkScF2f3/KXztqUs/ugaCASg62HJi0Li+x9XttcnNJQNH1/gcPUKICefLrmgb
-	 pY3+SEQ7US+4aSUbNVSyPNVmoAf4b4R5BHXU+kEA=
+	b=z8wh6mRmcE71mQEzFEPu/ZxpX52VK7ffoYlggBGriruLhIPZop+1c+MAhVP8tDAMA
+	 4wXH6ameNR9rsoaF02NOzXNtdm3PXH3ac5Y+J7CTlwghPPZ1Y4uLEM/nHhP5u8Gozo
+	 xQwcLymd570qI0/njXkOzTdpdxMGSHM3Ah0PSBJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.14 166/241] RAS/AMD/FMPM: Get masked address
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Stable@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.1 241/291] drm/nouveau: prime: fix ttm_bo_delayed_delete oops
 Date: Wed, 23 Apr 2025 16:43:50 +0200
-Message-ID: <20250423142627.314153574@linuxfoundation.org>
+Message-ID: <20250423142634.266550834@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,92 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yazen Ghannam <yazen.ghannam@amd.com>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
 
-commit 58029c39cdc54ac4f4dc40b4a9c05eed9f9b808a upstream.
+commit 8ec0fbb28d049273bfd4f1e7a5ae4c74884beed3 upstream.
 
-Some operations require checking, or ignoring, specific bits in an address
-value. For example, this can be comparing address values to identify unique
-structures.
+Fix an oops in ttm_bo_delayed_delete which results from dererencing a
+dangling pointer:
 
-Currently, the full address value is compared when filtering for duplicates.
-This results in over counting and creation of extra records.  This gives the
-impression that more unique events occurred than did in reality.
+Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b7b: 0000 [#1] PREEMPT SMP
+CPU: 4 UID: 0 PID: 1082 Comm: kworker/u65:2 Not tainted 6.14.0-rc4-00267-g505460b44513-dirty #216
+Hardware name: LENOVO 82N6/LNVNB161216, BIOS GKCN65WW 01/16/2024
+Workqueue: ttm ttm_bo_delayed_delete [ttm]
+RIP: 0010:dma_resv_iter_first_unlocked+0x55/0x290
+Code: 31 f6 48 c7 c7 00 2b fa aa e8 97 bd 52 ff e8 a2 c1 53 00 5a 85 c0 74 48 e9 88 01 00 00 4c 89 63 20 4d 85 e4 0f 84 30 01 00 00 <41> 8b 44 24 10 c6 43 2c 01 48 89 df 89 43 28 e8 97 fd ff ff 4c 8b
+RSP: 0018:ffffbf9383473d60 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: ffffbf9383473d88 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffbf9383473d78 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 6b6b6b6b6b6b6b6b
+R13: ffffa003bbf78580 R14: ffffa003a6728040 R15: 00000000000383cc
+FS:  0000000000000000(0000) GS:ffffa00991c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000758348024dd0 CR3: 000000012c259000 CR4: 0000000000f50ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body.cold+0x19/0x26
+ ? die_addr+0x3d/0x70
+ ? exc_general_protection+0x159/0x460
+ ? asm_exc_general_protection+0x27/0x30
+ ? dma_resv_iter_first_unlocked+0x55/0x290
+ dma_resv_wait_timeout+0x56/0x100
+ ttm_bo_delayed_delete+0x69/0xb0 [ttm]
+ process_one_work+0x217/0x5c0
+ worker_thread+0x1c8/0x3d0
+ ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
+ kthread+0x10b/0x240
+ ? kthreads_online_cpu+0x140/0x140
+ ret_from_fork+0x40/0x70
+ ? kthreads_online_cpu+0x140/0x140
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
 
-Mask the address for physical rows on MI300.
+The cause of this is:
 
-  [ bp: Simplify. ]
+- drm_prime_gem_destroy calls dma_buf_put(dma_buf) which releases the
+  reference to the shared dma_buf. The reference count is 0, so the
+  dma_buf is destroyed, which in turn decrements the corresponding
+  amdgpu_bo reference count to 0, and the amdgpu_bo is destroyed -
+  calling drm_gem_object_release then dma_resv_fini (which destroys the
+  reservation object), then finally freeing the amdgpu_bo.
 
-Fixes: 6f15e617cc99 ("RAS: Introduce a FRU memory poison manager")
-Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@vger.kernel.org
+- nouveau_bo obj->bo.base.resv is now a dangling pointer to the memory
+  formerly allocated to the amdgpu_bo.
+
+- nouveau_gem_object_del calls ttm_bo_put(&nvbo->bo) which calls
+  ttm_bo_release, which schedules ttm_bo_delayed_delete.
+
+- ttm_bo_delayed_delete runs and dereferences the dangling resv pointer,
+  resulting in a general protection fault.
+
+Fix this by moving the drm_prime_gem_destroy call from
+nouveau_gem_object_del to nouveau_bo_del_ttm. This ensures that it will
+be run after ttm_bo_delayed_delete.
+
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Fixes: 22b33e8ed0e3 ("nouveau: add PRIME support")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3937
+Cc: Stable@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/Z-P4epVK8k7tFZ7C@debian.local
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ras/amd/atl/internal.h |    3 +++
- drivers/ras/amd/atl/umc.c      |    2 --
- drivers/ras/amd/fmpm.c         |    9 ++++++++-
- 3 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bo.c  |    3 +++
+ drivers/gpu/drm/nouveau/nouveau_gem.c |    3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/ras/amd/atl/internal.h
-+++ b/drivers/ras/amd/atl/internal.h
-@@ -362,4 +362,7 @@ static inline void atl_debug_on_bad_intl
- 	atl_debug(ctx, "Unrecognized interleave mode: %u", ctx->map.intlv_mode);
- }
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -143,6 +143,9 @@ nouveau_bo_del_ttm(struct ttm_buffer_obj
+ 	nouveau_bo_del_io_reserve_lru(bo);
+ 	nv10_bo_put_tile_region(dev, nvbo->tile, NULL);
  
-+#define MI300_UMC_MCA_COL	GENMASK(5, 1)
-+#define MI300_UMC_MCA_ROW13	BIT(23)
++	if (bo->base.import_attach)
++		drm_prime_gem_destroy(&bo->base, bo->sg);
 +
- #endif /* __AMD_ATL_INTERNAL_H__ */
---- a/drivers/ras/amd/atl/umc.c
-+++ b/drivers/ras/amd/atl/umc.c
-@@ -229,7 +229,6 @@ int get_umc_info_mi300(void)
-  * Additionally, the PC and Bank bits may be hashed. This must be accounted for before
-  * reconstructing the normalized address.
-  */
--#define MI300_UMC_MCA_COL	GENMASK(5, 1)
- #define MI300_UMC_MCA_BANK	GENMASK(9, 6)
- #define MI300_UMC_MCA_ROW	GENMASK(24, 10)
- #define MI300_UMC_MCA_PC	BIT(25)
-@@ -360,7 +359,6 @@ static void _retire_row_mi300(struct atl
-  *
-  * See MI300_UMC_MCA_ROW for the row bits in MCA_ADDR_UMC value.
-  */
--#define MI300_UMC_MCA_ROW13	BIT(23)
- static void retire_row_mi300(struct atl_err *a_err)
- {
- 	_retire_row_mi300(a_err);
---- a/drivers/ras/amd/fmpm.c
-+++ b/drivers/ras/amd/fmpm.c
-@@ -250,6 +250,13 @@ static bool rec_has_valid_entries(struct
- 	return true;
- }
- 
-+/*
-+ * Row retirement is done on MI300 systems, and some bits are 'don't
-+ * care' for comparing addresses with unique physical rows.  This
-+ * includes all column bits and the row[13] bit.
-+ */
-+#define MASK_ADDR(addr)	((addr) & ~(MI300_UMC_MCA_ROW13 | MI300_UMC_MCA_COL))
-+
- static bool fpds_equal(struct cper_fru_poison_desc *old, struct cper_fru_poison_desc *new)
- {
  	/*
-@@ -258,7 +265,7 @@ static bool fpds_equal(struct cper_fru_p
- 	 *
- 	 * Also, order the checks from most->least likely to fail to shortcut the code.
- 	 */
--	if (old->addr != new->addr)
-+	if (MASK_ADDR(old->addr) != MASK_ADDR(new->addr))
- 		return false;
+ 	 * If nouveau_bo_new() allocated this buffer, the GEM object was never
+ 	 * initialized, so don't attempt to release it.
+--- a/drivers/gpu/drm/nouveau/nouveau_gem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
+@@ -87,9 +87,6 @@ nouveau_gem_object_del(struct drm_gem_ob
+ 		return;
+ 	}
  
- 	if (old->hw_id != new->hw_id)
+-	if (gem->import_attach)
+-		drm_prime_gem_destroy(gem, nvbo->bo.sg);
+-
+ 	ttm_bo_put(&nvbo->bo);
+ 
+ 	pm_runtime_mark_last_busy(dev);
 
 
 
