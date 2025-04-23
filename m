@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-135831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729BEA990BE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D092BA99239
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59533922399
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 438207AC956
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372B328A1F8;
-	Wed, 23 Apr 2025 15:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB0A28E5FC;
+	Wed, 23 Apr 2025 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYxDf+RF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRS2Ao9J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90AF28A1F1;
-	Wed, 23 Apr 2025 15:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB67E1A23B0;
+	Wed, 23 Apr 2025 15:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420958; cv=none; b=NTiPL7DMwu5XfPhSqRom/5nQ89G/drs0PtU9Rqiuk+nu8ptIK2E0ctJUhEUP+uZFi7NTNSieIe41/6aIVJ7IVdUCkKDn1ZBsNAf7ve2Y5qFc83sW40QYmcuOeFssLrX2VGNU3U61ELl4goiS1ruZ1kXyip+nYAVffz6KVlLP0m8=
+	t=1745422112; cv=none; b=YNd5bPRaULGXrOaQ9Td95ERFNHJQc5XXW06/6LXGXfCwU6+/v3KcsSTvvxDs20eNiglcjC0ZMnH12JW9LMYu9bOB8XBpw3wSU5TO8wMeOkEIDOKNG6GTdTOhduLT8wVf64cjBQbYMKQve6W/J+9AGB5rRwe80mGciMkKM2DG/3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420958; c=relaxed/simple;
-	bh=0KSJMyjxZrbq1DpLzPTzhyr5Jh+TvUKKDx09ekXXkyg=;
+	s=arc-20240116; t=1745422112; c=relaxed/simple;
+	bh=H2jOTV2f2pjWpO+84FpwV5FqaiuDu2/pHecGkc/U2OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qL6aIGWTkDHKcoCyOzlu7JSG/DBcO7agosRYYO7aPJnWE4V19oPaVxo4wsftddQUxLbfhrgPnYfdN23NYgfgaqtz7U9Lf7LKvZVkZxpoNK7g/IJwe5jDNpU3lNhfyVLPi/nM2+LWuSmRIonlokEWsP9vkPd6T4B8FBZ28FleDFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYxDf+RF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4F1C4CEE2;
-	Wed, 23 Apr 2025 15:09:17 +0000 (UTC)
+	 MIME-Version; b=h00MLVdoD4cOXn5iVxFt852YxJ4pTENF15t0hjjdzdXaFIKlgJpBDH/pu66JhA86wQjSB3UCrzeazA+f8sIzlwFuKEt6oZ3+fjn5FnoiCSgU+7nr8uYBrY63Gs5Qi9wTJv6rb9Lt2jOW1YeHc1K26T3lyVHjtH9L+PlC05esQC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRS2Ao9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F866C4CEE2;
+	Wed, 23 Apr 2025 15:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420957;
-	bh=0KSJMyjxZrbq1DpLzPTzhyr5Jh+TvUKKDx09ekXXkyg=;
+	s=korg; t=1745422112;
+	bh=H2jOTV2f2pjWpO+84FpwV5FqaiuDu2/pHecGkc/U2OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYxDf+RF2DhPpfbmME7SBDvhPxF9EmcQxv69RXRNle3oHepbjKyY8mJizRlYLb3ib
-	 swFIHNZr/bBUJ5zNh9DJgC47J/A3cuqh/w0LiGROHMA3+U4vpsTrHRO/U7Y0e/JwEp
-	 L9WTlWg2hy+9yXGVQHrC3aACFV2W6t4WofwItvAk=
+	b=NRS2Ao9JrWPURmdl5R+3I1eKqa/cBqPa//+rXuncgt2vjQeK2j09BwNcHufMSGksg
+	 7BREFNXtcL+ZrPEAylI3uX4X2d2sJDVr4pGsNb8fWBlLyCv8h4erfz62yl35f3txFf
+	 4UJ5UBfvH5fY9Uf3zL+voSaHE3mkvil0wx084KKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 139/241] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
+Subject: [PATCH 6.1 214/291] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
 Date: Wed, 23 Apr 2025 16:43:23 +0200
-Message-ID: <20250423142626.237969108@linuxfoundation.org>
+Message-ID: <20250423142633.131310644@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +65,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -104,7 +104,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/gup.c
 +++ b/mm/gup.c
-@@ -2210,8 +2210,8 @@ size_t fault_in_safe_writeable(const cha
+@@ -1881,8 +1881,8 @@ size_t fault_in_safe_writeable(const cha
  	} while (start != end);
  	mmap_read_unlock(mm);
  
