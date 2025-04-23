@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-136411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F94A99420
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017F6A9940D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B60EA9A525A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 680061BA18BE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D553328A3F9;
-	Wed, 23 Apr 2025 15:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A393D29AB18;
+	Wed, 23 Apr 2025 15:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqAERMRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVoRaEFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E3C25EF8E;
-	Wed, 23 Apr 2025 15:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEF128935C;
+	Wed, 23 Apr 2025 15:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422476; cv=none; b=CX8uJ4vHmGEtLaPKW3+CdzFk4lQeIT8IzcGXWjPYeDcu3jc4zATY3Akqbgj0zlCsq8QghID6PM7Np6aY3WjrhezxYZkzDGSGM6m42FDa/BRaspUKSJ/QWSaNfFd2d3MUivNX9GiY9+uhEhKp0RYkI2SryW44ltGyYwfMp+FWQSY=
+	t=1745422480; cv=none; b=KDRjkTvexG5+U+wcOr35RxyxJZfdm1WlLyxY0jZGM/lhNvMUfJxTqNhMtivHFwJw5vQ5hJYQoB8ZvqczM8PUwbzsWYLyylgEmy9xVagUwOpRZQWoR5OhnkIYYpccIl3LINr9Ja/ejTomWa6n5ppdKDkiV+2Jnsisx1KSWh1JfuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422476; c=relaxed/simple;
-	bh=lA07FVEc0Gz2OQSgfwhUHDTynY2T0srbjuPCD8ZAvOc=;
+	s=arc-20240116; t=1745422480; c=relaxed/simple;
+	bh=naX5RoI9zupu7UzJMEBsvXfDyp21nytj+DIazYbZ3fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IPwIoCG2EL9SuL8e4YDvDI8ouxIoMIPQ6hx02pR7QK6N6eYN2D2a7gyrHq+9MYnxh0S3edk8oE61mbwq1sBmR4fcrvSIa92VJFXbeoJ1oTClyG0+1BAv6kb1QxqiV5XrqkHyVp9Wtodu+FnZqKgnK5UGuSjR+cLvUXG49YBtXE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqAERMRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03A7C4CEE2;
-	Wed, 23 Apr 2025 15:34:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dChuv9b3AKhHlh2PA9MyknTRinjHQI/SdAOxA+wOkrxY4Qne+bebdja2uRv+9DsuPlevPuN5vy5jqxVKT94jAo/pZneML7tRhY4ksuk8WzMGnu5CxEEKJttNOTSS6OH/V+mDfyYt4kXaGsKeTkr/EpNVUpxToqCogC8DVolN7mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVoRaEFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F2AC4CEE2;
+	Wed, 23 Apr 2025 15:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422475;
-	bh=lA07FVEc0Gz2OQSgfwhUHDTynY2T0srbjuPCD8ZAvOc=;
+	s=korg; t=1745422480;
+	bh=naX5RoI9zupu7UzJMEBsvXfDyp21nytj+DIazYbZ3fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqAERMRwScfKDJPsoum9DUaulp6fhlrjo4zwkn+gTsecIPkO/3+aMTQ61gJocshbz
-	 XrfhRRvSzcM4876abW7f4w93s56v0gWe4azGcy+x5kKSYAjEL/to6+Bl536iAcmtOW
-	 nbBRf+xHdtF2gOG8Xipd9KM++IGTcmvaoeLqqwq0=
+	b=YVoRaEFPx2yX6Muw5gA8yCh02tSkNT0TNAXZOxgEyU/98BIggzUkvR2Ebr1rJ5Jh3
+	 ijuCeab1gMZW5JCE65J8EwZrYAXb/81tpCvmTcl9H794J1XwSQCxeSGU9JYZWcRHhN
+	 XHHgFOAnEs3nIsCV8s/+gVaTsV3dVYYobU7qwL+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.6 365/393] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
-Date: Wed, 23 Apr 2025 16:44:21 +0200
-Message-ID: <20250423142658.414795824@linuxfoundation.org>
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.6 367/393] misc: pci_endpoint_test: Fix irq_type to convey the correct type
+Date: Wed, 23 Apr 2025 16:44:23 +0200
+Message-ID: <20250423142658.499399619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -69,47 +70,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
+commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
 
-After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
-the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
-have been released.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-However, some requested IRQs remain unreleased, so there are still
-/proc/irq/* entries remaining, and this results in WARN() with the
-following message:
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
-  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
 
-To solve this issue, set the number of remaining IRQs to test->num_irqs,
-and release IRQs in advance by calling pci_endpoint_test_release_irq().
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
 
-Cc: stable@vger.kernel.org
-Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
 Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
 [kwilczynski: commit log]
 Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
 Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/misc/pci_endpoint_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
 --- a/drivers/misc/pci_endpoint_test.c
 +++ b/drivers/misc/pci_endpoint_test.c
-@@ -260,6 +260,9 @@ fail:
- 		break;
- 	}
+@@ -711,6 +711,7 @@ static bool pci_endpoint_test_set_irq(st
+ 	if (!pci_endpoint_test_request_irq(test))
+ 		goto err;
  
-+	test->num_irqs = i;
-+	pci_endpoint_test_release_irq(test);
-+
- 	return false;
- }
++	irq_type = test->irq_type;
+ 	return true;
  
+ err:
 
 
 
