@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27C0A99369
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:58:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2484A98FAA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122059A0FD6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 944E3168BFF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898D328F509;
-	Wed, 23 Apr 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564E128FFF9;
+	Wed, 23 Apr 2025 15:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ix6/bei2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEbs5Oug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A3C27FD75;
-	Wed, 23 Apr 2025 15:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EBE28A408;
+	Wed, 23 Apr 2025 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422233; cv=none; b=F8tCLes4Gy6E4x3TGNQDO9OU69u3PXM/n10daBJb7jjcmm2109bZd7hFfBtKJC5AzjhgCTjzcYbxsfTyJG18+11sAp0Ypsbxck4ZKJ7fL3mawy7dLW+z31ASS6Bfth78vBn3nyDDP3TFaDlmtWeSe6vd8HRCiaAIYUCZJlfNxTo=
+	t=1745420667; cv=none; b=oq3lTPHLfIOqZLO2y4usibZY07JXTWQQ6VAEQ/GmYT+jIhOY6v/HGb1izhSxjohNbeS0y6OIONDhxxrLSTyCCK/kTHQdOsVL8/xKpGAekbKC9bTQ3Sh+ZSKdUiS89wJU++Nhos8UEiDi+HWKjX4sA7BhaQEgofpPt99U4LDJ42M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422233; c=relaxed/simple;
-	bh=8bi19nHHi7RMaXH95huB6OuC0pCvrGJBjb05pJVGC44=;
+	s=arc-20240116; t=1745420667; c=relaxed/simple;
+	bh=fPI+XquWNzTsCzEZUGQWYPZy2e8oVJ7mg9mw4Jc62Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7szCo6qMzWH2TOnEoN37waUklrGKL/SxkwREGSBh1AJaydIYyv/jFDwEo6GszJOWhkLcLhiqG6od5J7hAKt3SHy6jNM+zjNvrY8D9vo5s0bRIMM4VuXqrw1NwDkvkRveVsyNuJLucRRzuI3Yt1H1XGAEkH86YhhyeCV2QZ5IIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ix6/bei2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA32C4CEE2;
-	Wed, 23 Apr 2025 15:30:32 +0000 (UTC)
+	 MIME-Version; b=FehEEJ/sQVooF6MIyQl5cUC3M8kHlP3yAzxyXt4CXTyzhc2ZTz62CLZB2CICPp0v4CtrJ94kjEX2uTtg1IHKiNnKDVJqWk5Zd+cL2kElOSGIV5GZ99HJaKXzUEzu1t7cxUT2W167KwPAACzg8psCwOJbTJGC3dLTlzSh9yDIYq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEbs5Oug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E13C4CEE2;
+	Wed, 23 Apr 2025 15:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422233;
-	bh=8bi19nHHi7RMaXH95huB6OuC0pCvrGJBjb05pJVGC44=;
+	s=korg; t=1745420666;
+	bh=fPI+XquWNzTsCzEZUGQWYPZy2e8oVJ7mg9mw4Jc62Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ix6/bei2zUZKw8vtv2IK5aqfyfUHspVikelI80H0h8vTSTMprGbIqVpsX6/YevAsx
-	 TNfSB46Cs2bGOP+Qm5hToRcXb1MVc4Te8Nnts0EtEMtA2TLiqbgozVi2P3wVF9/Lz8
-	 XO/c7+fKenHB2ErSSNdK4gwD76WvjYz0Kn/N2an4=
+	b=HEbs5OugRKcZVwp7P7nrCbrfkYZsjlJXrXzkYgZmFxMgEhy1c16xUpl3wOscYrxaa
+	 v5hVg2UrCMyUEA3t1p4rYta8IBDx5NCZdfhJ2MBcetQ/4/yfQCIiokxjo0IpgrzVrS
+	 xuTck4KZdW3TWwI4MyhpAl1RsCs3+MSX7LO+7WRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/393] netlink: specs: rt-link: add an attr layer around alt-ifname
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 112/241] block: integrity: Do not call set_page_dirty_lock()
 Date: Wed, 23 Apr 2025 16:42:56 +0200
-Message-ID: <20250423142654.912950959@linuxfoundation.org>
+Message-ID: <20250423142625.153518371@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-[ Upstream commit acf4da17deada7f8b120e051aa6c9cac40dbd83b ]
+commit 39e160505198ff8c158f11bce2ba19809a756e8b upstream.
 
-alt-ifname attr is directly placed in requests (as an alternative
-to ifname) but in responses its wrapped up in IFLA_PROP_LIST
-and only there is may be multi-attr. See rtnl_fill_prop_list().
+Placing multiple protection information buffers inside the same page
+can lead to oopses because set_page_dirty_lock() can't be called from
+interrupt context.
 
-Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-6-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since a protection information buffer is not backed by a file there is
+no point in setting its page dirty, there is nothing to synchronize.
+Drop the call to set_page_dirty_lock() and remove the last argument to
+bio_integrity_unpin_bvec().
+
+Cc: stable@vger.kernel.org
+Fixes: 492c5d455969 ("block: bio-integrity: directly map user buffers")
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/yq1v7r3ev9g.fsf@ca-mkp.ca.oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/netlink/specs/rt_link.yaml | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ block/bio-integrity.c |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index d86a68f8475ca..34f74c451dcdb 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -892,11 +892,10 @@ attribute-sets:
-       -
-         name: prop-list
-         type: nest
--        nested-attributes: link-attrs
-+        nested-attributes: prop-list-link-attrs
-       -
-         name: alt-ifname
-         type: string
--        multi-attr: true
-       -
-         name: perm-address
-         type: binary
-@@ -931,6 +930,13 @@ attribute-sets:
-       -
-         name: gro-ipv4-max-size
-         type: u32
-+  -
-+    name: prop-list-link-attrs
-+    subset-of: link-attrs
-+    attributes:
-+      -
-+        name: alt-ifname
-+        multi-attr: true
-   -
-     name: af-spec-attrs
-     attributes:
-@@ -1362,7 +1368,6 @@ operations:
-             - min-mtu
-             - max-mtu
-             - prop-list
--            - alt-ifname
-             - perm-address
-             - proto-down-reason
-             - parent-dev-name
--- 
-2.39.5
-
+--- a/block/bio-integrity.c
++++ b/block/bio-integrity.c
+@@ -104,16 +104,12 @@ err:
+ }
+ EXPORT_SYMBOL(bio_integrity_alloc);
+ 
+-static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs,
+-				     bool dirty)
++static void bio_integrity_unpin_bvec(struct bio_vec *bv, int nr_vecs)
+ {
+ 	int i;
+ 
+-	for (i = 0; i < nr_vecs; i++) {
+-		if (dirty && !PageCompound(bv[i].bv_page))
+-			set_page_dirty_lock(bv[i].bv_page);
++	for (i = 0; i < nr_vecs; i++)
+ 		unpin_user_page(bv[i].bv_page);
+-	}
+ }
+ 
+ static void bio_integrity_uncopy_user(struct bio_integrity_payload *bip)
+@@ -129,7 +125,7 @@ static void bio_integrity_uncopy_user(st
+ 	ret = copy_to_iter(bvec_virt(bounce_bvec), bytes, &orig_iter);
+ 	WARN_ON_ONCE(ret != bytes);
+ 
+-	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs, true);
++	bio_integrity_unpin_bvec(orig_bvecs, orig_nr_vecs);
+ }
+ 
+ /**
+@@ -149,8 +145,7 @@ void bio_integrity_unmap_user(struct bio
+ 		return;
+ 	}
+ 
+-	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt,
+-			bio_data_dir(bio) == READ);
++	bio_integrity_unpin_bvec(bip->bip_vec, bip->bip_max_vcnt);
+ }
+ 
+ /**
+@@ -236,7 +231,7 @@ static int bio_integrity_copy_user(struc
+ 	}
+ 
+ 	if (write)
+-		bio_integrity_unpin_bvec(bvec, nr_vecs, false);
++		bio_integrity_unpin_bvec(bvec, nr_vecs);
+ 	else
+ 		memcpy(&bip->bip_vec[1], bvec, nr_vecs * sizeof(*bvec));
+ 
+@@ -357,7 +352,7 @@ int bio_integrity_map_user(struct bio *b
+ 	return 0;
+ 
+ release_pages:
+-	bio_integrity_unpin_bvec(bvec, nr_bvecs, false);
++	bio_integrity_unpin_bvec(bvec, nr_bvecs);
+ free_bvec:
+ 	if (bvec != stack_vec)
+ 		kfree(bvec);
 
 
 
