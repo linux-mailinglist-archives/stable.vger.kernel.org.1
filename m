@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF4DA99293
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C289A99054
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31BD94679D2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 694E41798EF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D7028DEEF;
-	Wed, 23 Apr 2025 15:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F88427CB12;
+	Wed, 23 Apr 2025 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo+WjbZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5gdkBZG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DFA28DEE8;
-	Wed, 23 Apr 2025 15:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DA228A1F7;
+	Wed, 23 Apr 2025 15:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421955; cv=none; b=PS9jvKYkcu0Vszioq+iRBVCsPohMs38mXPvEyOkobj49Z/GKtxL/O2oyTkqffVNeroraLFWaCz3puQud55WGePVfg6UdduoxJygE6C7uZ/3Tm6IXtc9LR6aCuWRS1W9vfSJjizvtzwvqIT9/JJ43lCcgliRaTJ3buCOJkO06i2Y=
+	t=1745420963; cv=none; b=hLNWcy/Kv340qZ/Snzraj02jMtF4EuosmI6Fe9YIOyr/biTU8/NLZrnC0jWocajLW6bQd6lr1Da9pYe2zG9CehhbRs4CZmZL0zvIj7eZLSL+OKIgt+z4hVE37WkEc19cLDWW5q9QtL/ijjRG/B8dr8NVMSELrOhNfQnDsJTq8SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421955; c=relaxed/simple;
-	bh=WQAe7SFxmWLY3B5h2hfUDJgknzf4GAhKt6QlM0BrKHs=;
+	s=arc-20240116; t=1745420963; c=relaxed/simple;
+	bh=xRKc71TJ6jvXwgJZHlEE47sjfe5laQPf/SkJFU6OL8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmbEKQDcm3QdhPHY2RU+AP9KbIDi0uqa7L4KwngGlUzZfj/Hcn9IGOH+YQvYfmSG88tWZ9MJZsV949Bndn1DO3paKXXPs7PLHwtCWM+uQ6WoQkEstkwXdh75CNRFkhxtTDTCZT6ru7odyRRsBvLKgWqFMTiOOebOM+2DeyFpXjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo+WjbZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D56CC4CEE8;
-	Wed, 23 Apr 2025 15:25:54 +0000 (UTC)
+	 MIME-Version; b=ffhGkawA7tkQBW4yh0AylsddpBViG1u/tV/fXzxqQEIWPcpODjtlQ8bFS+3KVBLvsrryTyhqZGxSvRPgjavvdfVUoe756OK9PCRZ3lbw1/Hik2KlUT95NSkrAzVhnWukvqCJh4q8ywwEKgTj3EjNO27+t9Bo+f7KjgfKjSe45qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5gdkBZG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03D8C4CEE2;
+	Wed, 23 Apr 2025 15:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421955;
-	bh=WQAe7SFxmWLY3B5h2hfUDJgknzf4GAhKt6QlM0BrKHs=;
+	s=korg; t=1745420963;
+	bh=xRKc71TJ6jvXwgJZHlEE47sjfe5laQPf/SkJFU6OL8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xo+WjbZPZuxEO93vYpUtT+1w9UIA2ajhNTCwAprJj+eMhgcGbIEUMP6Dp8ynmddf3
-	 u7c+x4SpkKmrOHpSa6ODHet0nEE/6fFEIfGSkUkzLc+MH+zIY5YEw+zLI59dZqpEiv
-	 SJ9jXW1yxFmfvcYN8arjnhfdH/YP5jrjTmKN87Kc=
+	b=f5gdkBZGI0G346pVQO32nniu3d7kynCeuW25PO5ukAzTQAm0ufgpfYZ5tqDm1JVpb
+	 owHUSfwpP3GVg9I+a31Ta4ZHy7M6dp59KMPUCpg7Hvt96EaYVN+rTvovYNfzR7hjfQ
+	 +/ZXc+V51HwUK6APj4DxFq142HdWLb3SMQMixRrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/291] nfsd: decrease sc_count directly if fail to queue dl_recall
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.14 130/241] cpufreq: Avoid using inconsistent policy->min and policy->max
 Date: Wed, 23 Apr 2025 16:43:14 +0200
-Message-ID: <20250423142632.759431278@linuxfoundation.org>
+Message-ID: <20250423142625.881627603@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
+commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
 
-A deadlock warning occurred when invoking nfs4_put_stid following a failed
-dl_recall queue operation:
-            T1                            T2
-                                nfs4_laundromat
-                                 nfs4_get_client_reaplist
-                                  nfs4_anylock_blockers
-__break_lease
- spin_lock // ctx->flc_lock
-                                   spin_lock // clp->cl_lock
-                                   nfs4_lockowner_has_blockers
-                                    locks_owner_has_blockers
-                                     spin_lock // flctx->flc_lock
- nfsd_break_deleg_cb
-  nfsd_break_one_deleg
-   nfs4_put_stid
-    refcount_dec_and_lock
-     spin_lock // clp->cl_lock
+Since cpufreq_driver_resolve_freq() can run in parallel with
+cpufreq_set_policy() and there is no synchronization between them,
+the former may access policy->min and policy->max while the latter
+is updating them and it may see intermediate values of them due
+to the way the update is carried out.  Also the compiler is free
+to apply any optimizations it wants both to the stores in
+cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
+which may result in additional inconsistencies.
 
-When a file is opened, an nfs4_delegation is allocated with sc_count
-initialized to 1, and the file_lease holds a reference to the delegation.
-The file_lease is then associated with the file through kernel_setlease.
+To address this, use WRITE_ONCE() when updating policy->min and
+policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
+them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
+in cpufreq_set_policy() to avoid storing intermediate values in
+policy->min and policy->max with the help of the observation that
+their new values are expected to be properly ordered upfront.
 
-The disassociation is performed in nfsd4_delegreturn via the following
-call chain:
-nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
-nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
-The corresponding sc_count reference will be released after this
-disassociation.
+Also modify cpufreq_driver_resolve_freq() to take the possible reverse
+ordering of policy->min and policy->max, which may happen depending on
+the ordering of operations when this function and cpufreq_set_policy()
+run concurrently, into account by always honoring the max when it
+turns out to be less than the min (in case it comes from thermal
+throttling or similar).
 
-Since nfsd_break_one_deleg executes while holding the flc_lock, the
-disassociation process becomes blocked when attempting to acquire flc_lock
-in generic_delete_lease. This means:
-1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
-2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
-acquire cl_lock;
-3) Consequently, no deadlock condition is created.
-
-Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
-safely perform refcount_dec on sc_count directly. This approach
-effectively avoids triggering deadlock warnings.
-
-Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 628d20574a919..bdee95d714d0e 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4941,7 +4941,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- 	queued = nfsd4_run_cb(&dp->dl_recall);
- 	WARN_ON_ONCE(!queued);
- 	if (!queued)
--		nfs4_put_stid(&dp->dl_stid);
-+		refcount_dec(&dp->dl_stid.sc_count);
- }
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -539,8 +539,6 @@ static unsigned int __resolve_freq(struc
+ {
+ 	unsigned int idx;
  
- /* Called from break_lease() with flc_lock held. */
--- 
-2.39.5
-
+-	target_freq = clamp_val(target_freq, policy->min, policy->max);
+-
+ 	if (!policy->freq_table)
+ 		return target_freq;
+ 
+@@ -564,7 +562,22 @@ static unsigned int __resolve_freq(struc
+ unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
+ 					 unsigned int target_freq)
+ {
+-	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
++	unsigned int min = READ_ONCE(policy->min);
++	unsigned int max = READ_ONCE(policy->max);
++
++	/*
++	 * If this function runs in parallel with cpufreq_set_policy(), it may
++	 * read policy->min before the update and policy->max after the update
++	 * or the other way around, so there is no ordering guarantee.
++	 *
++	 * Resolve this by always honoring the max (in case it comes from
++	 * thermal throttling or similar).
++	 */
++	if (unlikely(min > max))
++		min = max;
++
++	return __resolve_freq(policy, clamp_val(target_freq, min, max),
++			      CPUFREQ_RELATION_LE);
+ }
+ EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
+ 
+@@ -2337,6 +2350,7 @@ int __cpufreq_driver_target(struct cpufr
+ 	if (cpufreq_disabled())
+ 		return -ENODEV;
+ 
++	target_freq = clamp_val(target_freq, policy->min, policy->max);
+ 	target_freq = __resolve_freq(policy, target_freq, relation);
+ 
+ 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
+@@ -2661,11 +2675,15 @@ static int cpufreq_set_policy(struct cpu
+ 	 * Resolve policy min/max to available frequencies. It ensures
+ 	 * no frequency resolution will neither overshoot the requested maximum
+ 	 * nor undershoot the requested minimum.
++	 *
++	 * Avoid storing intermediate values in policy->max or policy->min and
++	 * compiler optimizations around them because they may be accessed
++	 * concurrently by cpufreq_driver_resolve_freq() during the update.
+ 	 */
+-	policy->min = new_data.min;
+-	policy->max = new_data.max;
+-	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
+-	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
++	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
++	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
++	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
++
+ 	trace_cpu_frequency_limits(policy);
+ 
+ 	cpufreq_update_pressure(policy);
 
 
 
