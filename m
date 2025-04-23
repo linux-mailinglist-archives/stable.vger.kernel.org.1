@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4429EA99393
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7FFBA990B2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B07F925B58
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2D0F5A689F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B122C1E2D;
-	Wed, 23 Apr 2025 15:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF3928937F;
+	Wed, 23 Apr 2025 15:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2HQ3Naq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsqUGgDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BCE29CB3D;
-	Wed, 23 Apr 2025 15:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B2128937D;
+	Wed, 23 Apr 2025 15:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422023; cv=none; b=DDuwJvSlIHSPN0SuiWRHNTRM/GiKtdMg/rOPEsJoeb41MGC5lU6VG6R8BLUwg6IUjXCHTD3Lshd/THm/XQpDYA7sGcpiywr6QiDK2sd0km2p8yjEXhfqSTttLpZke3H5cHkwCpcV2RdBue+sbaarBQVFp4eJzDBq+ixJrrUWpzo=
+	t=1745420924; cv=none; b=h28Ye7gLTLNO6BO3fCi4Cb/K7+8IdFuaP2T2ss4kTYy6C41NlM8kn+OlxEXDvq+0xVNQGy43Z0znJ2yKEMGe0RbYyyrVtoR7tLdROqk1AHH2I0Vj6KmHGJ8STytQzm5yfr/JeKy3Zj6QtWn9SN8i45LgGgeskuCLdKVZ4yNy2UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422023; c=relaxed/simple;
-	bh=Aqbi9QN5w1isQ6dFpTYC0XeezC4qh69VbdKuGVX58SA=;
+	s=arc-20240116; t=1745420924; c=relaxed/simple;
+	bh=yQwoB6/5/rnj5FneJ/a/COmFI7GmdUSbh2UupQxD00g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWHBC6PCIdzJVsjVF1ui5SE0yafTcHEx89SJiuqLRg2aubUfOeR2aSpY6nkET7Vn1kH6q7GG6MePN4VMjKGgRrkyz2TVXBsVJ/vLvdLhq9Mpid+8hKg7NFQ8N2apdUzDNavrUYypYv4Th76JUmFi6tRrAh0mfgqWnEi9k5yInL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2HQ3Naq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B83BC4CEE8;
-	Wed, 23 Apr 2025 15:27:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bU5Mw4jIOte8FgirwfOnncfq6VfReYKmOJFUYFn0iqeGM+2ZO99zaBdTY+bWIo1IYcasv4OzvPA19XZmoDSediz4z7SmsWk1DVFVTXUJtINW0obym42EzyF/g2xwdHDH53z85AoPYis0LS3OXYgtQzPprKFrpiTXZDPRpNhT614=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsqUGgDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B847C4CEE2;
+	Wed, 23 Apr 2025 15:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422023;
-	bh=Aqbi9QN5w1isQ6dFpTYC0XeezC4qh69VbdKuGVX58SA=;
+	s=korg; t=1745420923;
+	bh=yQwoB6/5/rnj5FneJ/a/COmFI7GmdUSbh2UupQxD00g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2HQ3NaqCOx/LctkwEsfitzKnXRasPvNP6zX6jwfnFt+Vjai4khnU2JFu24Q2+VjJ
-	 jaiESclC8UuKlPwCCKJ0H0khonqpk5NgBCZcFK3F0zTNhcjwWbX+j1lVokqy5PxCi1
-	 1A6mhXP2KNNtqW4Sfcojf8mIYIZ6zPo1cVD4HAQw=
+	b=QsqUGgDReBW7ybmvoDhsm6wOZvJU3D+Lu347uMwucPqyU3kAoF8ian/VPVKdBI0ww
+	 3sugAQuGaCUEbbYEUxi42LhlZEcmVnsX8fiKY+oqt8+O81W8gkhYE8W2MY7VfX/fcR
+	 ezKJCXui403Fc/fv6p259/edg5NH37ah/5NPai+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.1 211/291] isofs: Prevent the use of too small fid
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.14 136/241] loop: properly send KOBJ_CHANGED uevent for disk device
 Date: Wed, 23 Apr 2025 16:43:20 +0200
-Message-ID: <20250423142633.009390371@linuxfoundation.org>
+Message-ID: <20250423142626.119840318@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 0405d4b63d082861f4eaff9d39c78ee9dc34f845 upstream.
+commit e7bc0010ceb403d025100698586c8e760921d471 upstream.
 
-syzbot reported a slab-out-of-bounds Read in isofs_fh_to_parent. [1]
+The original commit message and the wording "uncork" in the code comment
+indicate that it is expected that the suppressed event instances are
+automatically sent after unsuppressing.
+This is not the case, instead they are discarded.
+In effect this means that no "changed" events are emitted on the device
+itself by default.
+While each discovered partition does trigger a changed event on the
+device, devices without partitions don't have any event emitted.
 
-The handle_bytes value passed in by the reproducing program is equal to 12.
-In handle_to_path(), only 12 bytes of memory are allocated for the structure
-file_handle->f_handle member, which causes an out-of-bounds access when
-accessing the member parent_block of the structure isofs_fid in isofs,
-because accessing parent_block requires at least 16 bytes of f_handle.
-Here, fh_len is used to indirectly confirm that the value of handle_bytes
-is greater than 3 before accessing parent_block.
+This makes udev miss the device creation and prompted workarounds in
+userspace. See the linked util-linux/losetup bug.
 
-[1]
-BUG: KASAN: slab-out-of-bounds in isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
-Read of size 4 at addr ffff0000cc030d94 by task syz-executor215/6466
-CPU: 1 UID: 0 PID: 6466 Comm: syz-executor215 Not tainted 6.14.0-rc7-syzkaller-ga2392f333575 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call trace:
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0x198/0x550 mm/kasan/report.c:521
- kasan_report+0xd8/0x138 mm/kasan/report.c:634
- __asan_report_load4_noabort+0x20/0x2c mm/kasan/report_generic.c:380
- isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
- exportfs_decode_fh_raw+0x2dc/0x608 fs/exportfs/expfs.c:523
- do_handle_to_path+0xa0/0x198 fs/fhandle.c:257
- handle_to_path fs/fhandle.c:385 [inline]
- do_handle_open+0x8cc/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+Explicitly emit the events and drop the confusingly worded comments.
 
-Allocated by task 6466:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:562
- poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
- __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:394
- kasan_kmalloc include/linux/kasan.h:260 [inline]
- __do_kmalloc_node mm/slub.c:4294 [inline]
- __kmalloc_noprof+0x32c/0x54c mm/slub.c:4306
- kmalloc_noprof include/linux/slab.h:905 [inline]
- handle_to_path fs/fhandle.c:357 [inline]
- do_handle_open+0x5a4/0xb8c fs/fhandle.c:403
- __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
- __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
- __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
- __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
- el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
- el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
-
-Reported-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4d7cd7dd0ce1aa8d5c65
-Tested-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
-CC: stable@vger.kernel.org
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/tencent_9C8CB8A7E7C6C512C7065DC98B6EDF6EC606@qq.com
+Link: https://github.com/util-linux/util-linux/issues/2434
+Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/isofs/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/loop.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -180,7 +180,7 @@ static struct dentry *isofs_fh_to_parent
- 		return NULL;
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -577,8 +577,8 @@ static int loop_change_fd(struct loop_de
  
- 	return isofs_export_iget(sb,
--			fh_len > 2 ? ifid->parent_block : 0,
-+			fh_len > 3 ? ifid->parent_block : 0,
- 			ifid->parent_offset,
- 			fh_len > 4 ? ifid->parent_generation : 0);
- }
+ 	error = 0;
+ done:
+-	/* enable and uncork uevent now that we are done */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
++	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 	return error;
+ 
+ out_err:
+@@ -1038,8 +1038,8 @@ static int loop_configure(struct loop_de
+ 	if (partscan)
+ 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
+ 
+-	/* enable and uncork uevent now that we are done */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
++	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 
+ 	loop_global_unlock(lo, is_loop);
+ 	if (partscan)
 
 
 
