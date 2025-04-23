@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-136020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B13A991C6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C41A9918E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53A201B80CF1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6771B6666C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D97E28DEED;
-	Wed, 23 Apr 2025 15:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B4A29114E;
+	Wed, 23 Apr 2025 15:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9P4jzLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EC0YlDKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09484284685;
-	Wed, 23 Apr 2025 15:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7115029114A;
+	Wed, 23 Apr 2025 15:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421445; cv=none; b=cDIH9IHDVlgWjp+oLFnUn4cfi97Mlrw+1xAo0Jo+j6m0vi+WjXflBd+dNOdCn9OiZ2+5Qa0EngnFisiNSv+jBVFzZ6C4JKTvYxxp2zUhzCpVPDHKZNK+h2f23iw1W089hVDCis2VfUieJrLeKcL3uF1ZCklwmjVo61iBMjJuoVY=
+	t=1745421455; cv=none; b=nWj6rPyasoLNzm+L06QbZGnj+owpS/aZmDdOqyXzNkQs+6FHgrq8wEC5fVKZdXMiCtqB+h28O9iS+sJwO56ilJez8fSTQkH795Q/ek9eui6PfcWgJTMUgo4focWm7k7z96+2E4AQNnsibMVi8FQ8qKAYZmUlp4gKp6pmUKWw1a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421445; c=relaxed/simple;
-	bh=UQUZPLrUjYAs+9jsOiuhdPyE0fXi6gAZAlWAC6pCKO0=;
+	s=arc-20240116; t=1745421455; c=relaxed/simple;
+	bh=YfINHVez/PryaHaNSBaxfb6HTkf43eMFWIf4f2JmgaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFDFfrZYyia2YU84VPOggx4muX1+ZYlPbQAEtoPAFeAaktZ9DjPVOeTGkXxPRY54KRnfWRF+rmBdbv7q+b9DyYQihNGBi5tHK/uOR3iN0aP2bJvsbP/6xNRn+tIjLSnJmTWhoSJCQwgsiVgakEWZexlZGOfusJQMBc6i3u5bhMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9P4jzLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAE3C4CEE2;
-	Wed, 23 Apr 2025 15:17:24 +0000 (UTC)
+	 MIME-Version; b=LQsQ3JPJt0oaiDfH8peLs8ioQEkyOYixmv3lhBzQL1pSooXuOVgidyqQjEAOoA2rpYYSyn7c6OFigDfmfmXMHDog1PdSw8YaaxKwFaK7tkihSVo4fajCfV8sEwXNNXu3dG5/PRUQuLjI6+x/aqFOYCT4DuNdCe5q4+DXoqqg5tY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EC0YlDKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02295C4CEE2;
+	Wed, 23 Apr 2025 15:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421444;
-	bh=UQUZPLrUjYAs+9jsOiuhdPyE0fXi6gAZAlWAC6pCKO0=;
+	s=korg; t=1745421455;
+	bh=YfINHVez/PryaHaNSBaxfb6HTkf43eMFWIf4f2JmgaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9P4jzLEvwXzjvVha7ODctAv6nFeMvGA7kZHQGzdS6PFnxUiFISiliy6EJwX5Wiei
-	 GDg55oC7Bd9M5Gs0dlGvLK7JPkz80CxptaHDroiZPUrxnzD5LbOYdSL+AZzNf0fnG4
-	 hSsmwHBWXz749w9+wsyArLWosvKUtbDO9924VmII=
+	b=EC0YlDKIyuD+if8QXw0ZgI7BWb+aJpEiar5B9vkJ9NZlsD5JpL2LutuI6EMDBf2QC
+	 7Pqn4HPnhG5U4N8pBXel5b5IC7dhgnppuoYbPwgPYrIL68U6hp2WrZLlAJufedGemA
+	 hpIdqHMTd20mD2a5sY4jE6aCv9CntVxYzoCpUDF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Matthew Auld <matthew.auld@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.14 190/241] drm/xe: Use local fence in error path of xe_migrate_clear
-Date: Wed, 23 Apr 2025 16:44:14 +0200
-Message-ID: <20250423142628.281846951@linuxfoundation.org>
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Rob Clark <robdclark@gmail.com>
+Subject: [PATCH 6.14 191/241] drm/virtio: Dont attach GEM to a non-created context in gem_object_open()
+Date: Wed, 23 Apr 2025 16:44:15 +0200
+Message-ID: <20250423142628.320664688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -66,38 +65,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 
-commit 20659d3150f1a2a258a173fe011013178ff2a197 upstream.
+commit 7cf6dd467e87664f5b3f4ca7be324569464edf0b upstream.
 
-The intent of the error path in xe_migrate_clear is to wait on locally
-generated fence and then return. The code is waiting on m->fence which
-could be the local fence but this is only stable under the job mutex
-leading to a possible UAF. Fix code to wait on local fence.
+The vfpriv->ctx_id is always initialized to a non-zero value. Check whether
+context was created before attaching GEM to this context ID. This left
+unnoticed previously because host silently skips attachment if context
+doesn't exist, still we shouldn't do that for consistency.
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Link: https://lore.kernel.org/r/20250311182915.3606291-1-matthew.brost@intel.com
-(cherry picked from commit 762b7e95362170b3e13a8704f38d5e47eca4ba74)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: 086b9f27f0ab ("drm/virtio: Don't create a context with default param if context_init is supported")
+Cc: <stable@vger.kernel.org> # v6.14+
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Reviewed-by: Rob Clark <robdclark@gmail.com>
+Link: https://lore.kernel.org/r/20250401123842.2232205-1-dmitry.osipenko@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_migrate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/virtio/virtgpu_gem.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_migrate.c
-+++ b/drivers/gpu/drm/xe/xe_migrate.c
-@@ -1177,7 +1177,7 @@ err:
- err_sync:
- 		/* Sync partial copies if any. FIXME: job_mutex? */
- 		if (fence) {
--			dma_fence_wait(m->fence, false);
-+			dma_fence_wait(fence, false);
- 			dma_fence_put(fence);
- 		}
+diff --git a/drivers/gpu/drm/virtio/virtgpu_gem.c b/drivers/gpu/drm/virtio/virtgpu_gem.c
+index 5aab588fc400..3d6aa26fdb53 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_gem.c
++++ b/drivers/gpu/drm/virtio/virtgpu_gem.c
+@@ -115,13 +115,14 @@ int virtio_gpu_gem_object_open(struct drm_gem_object *obj,
+ 	if (!vgdev->has_context_init)
+ 		virtio_gpu_create_context(obj->dev, file);
  
+-	objs = virtio_gpu_array_alloc(1);
+-	if (!objs)
+-		return -ENOMEM;
+-	virtio_gpu_array_add_obj(objs, obj);
++	if (vfpriv->context_created) {
++		objs = virtio_gpu_array_alloc(1);
++		if (!objs)
++			return -ENOMEM;
++		virtio_gpu_array_add_obj(objs, obj);
+ 
+-	if (vfpriv->ctx_id)
+ 		virtio_gpu_cmd_context_attach_resource(vgdev, vfpriv->ctx_id, objs);
++	}
+ 
+ out_notify:
+ 	virtio_gpu_notify(vgdev);
+-- 
+2.49.0
+
 
 
 
