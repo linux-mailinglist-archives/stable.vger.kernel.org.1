@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A84A9926C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D23CA98EA3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FFC64A2F19
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C7484479CD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8141C28C5B2;
-	Wed, 23 Apr 2025 15:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7AF481CD;
+	Wed, 23 Apr 2025 14:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lC4emoRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPqaE7QU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6F023D298;
-	Wed, 23 Apr 2025 15:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDC7280A2C;
+	Wed, 23 Apr 2025 14:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421875; cv=none; b=nmJWauuKnkxFlajbdPzdKGcqBd7asuQd1nyiyy8SKyKd1g3qlkxIZIMLtjrqsaV6co55xmowoGPFnVhmKqa3wnGBGGE3Uj2WcvAKqFQww7yB36WfcFPijdevyjkDUKXt2RYXQsI8adqIc1i8P67To3Lph8iqvVIe4UjHGsFy4xw=
+	t=1745420184; cv=none; b=FGAzqU+D572G/3qb0w4qHKsPKRg8rXmGftdl+uF+w67NSCe1dlREaS3SnNDY7g1q6v+ki9CCZez6ZBBy1He7ov5UixN6m9jwpBwU+h6BLURlKvLYVvP5iM5UyOoWUKxZ/rEtPqbEzoeFgwNCnKApD5xCLSZyE/3jrp497Uyyy2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421875; c=relaxed/simple;
-	bh=8oWu/Q2TTdjlM5t+pQROAq+nF/eQGvwoRx2cuAT/dZ8=;
+	s=arc-20240116; t=1745420184; c=relaxed/simple;
+	bh=l4VI4LuuokTOXOCexe95w/l/6Ky6RCkesZUKsW/Dp3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrKeUPQ04m6f7wIr4icM3XgaFK3q/oKgMrm36VXhnZs1r0CoYGh6Ye+5t9e/WOOMzBMJb2VVVanPOKVuccU1fqvqAeOs3BJLWNzEAb7CK8fULjSHnzXsCKpLzZ3C1w9Au84QrFwEomwJLfAyISv9Kl5dR/7/ktTnZP4j6dWlhXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lC4emoRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55EE9C4CEE2;
-	Wed, 23 Apr 2025 15:24:33 +0000 (UTC)
+	 MIME-Version; b=n9NePJt+pXasGFqYwR+NGRb4N74QVA9Yzr6KOdY7wyWQNxpMY8PY4hlvEA+VLDALp12DP7Ob4NJMpSXHK8SEvQcsptfpFVD8OaCKk/NAKLCl7gSOH6Q6KV2Ei1ZCTfh5ZJDt3e08P9tmmjSPMVwa4ytOGmduxLmqqH3kg3zuc1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPqaE7QU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDF4C4CEE2;
+	Wed, 23 Apr 2025 14:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421873;
-	bh=8oWu/Q2TTdjlM5t+pQROAq+nF/eQGvwoRx2cuAT/dZ8=;
+	s=korg; t=1745420184;
+	bh=l4VI4LuuokTOXOCexe95w/l/6Ky6RCkesZUKsW/Dp3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lC4emoRk6Tb1aAjlDYvVgGkTi99X6IuM6Qw4vmZ7vZqr7wMJwma7mFKMXe0PCeg2R
-	 gZQUiY6o/NJsSNC0c37Dhy3Nacwd2Sx/hybqdo08RcUYp6DOTLmoKcccuBbXig+nsG
-	 neGtQ0bq303U8ajWfhC7Ja66UnZ2RI3dEUTSGOdc=
+	b=zPqaE7QUv/gHuhDVyU7Ob1cen8jL+lS+DZOFGSJqSho5hNwwUXMqWXv9gyQMQb7Fd
+	 pmPBbQHFLuIM9YGyqTU2edZvk/XjC15xfbLpge2Ci27GwY6VndhEdwjiPQBkDMHAVr
+	 kEAWVjQQBh+VWeXHTvuckmiMlVI9j0Nu/RwsJzAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 237/393] media: mediatek: vcodec: mark vdec_vp9_slice_map_counts_eob_coef noinline
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 069/241] netlink: specs: rt-link: adjust mctp attribute naming
 Date: Wed, 23 Apr 2025 16:42:13 +0200
-Message-ID: <20250423142653.176692753@linuxfoundation.org>
+Message-ID: <20250423142623.416765269@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 8b55f8818900c99dd4f55a59a103f5b29e41eb2c upstream.
+[ Upstream commit beb3c5ad8829b52057f48a776a9d9558b98c157f ]
 
-With KASAN enabled, clang fails to optimize the inline version of
-vdec_vp9_slice_map_counts_eob_coef() properly, leading to kilobytes
-of temporary values spilled to the stack:
+MCTP attribute naming is inconsistent. In C we have:
+    IFLA_MCTP_NET,
+    IFLA_MCTP_PHYS_BINDING,
+         ^^^^
 
-drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c:1526:12: error: stack frame size (2160) exceeds limit (2048) in 'vdec_vp9_slice_update_prob' [-Werror,-Wframe-larger-than]
+but in YAML:
+    - mctp-net
+    - phys-binding
+      ^
+       no "mctp"
 
-This seems to affect all versions of clang including the latest (clang-20),
-but the degree of stack overhead is different per release.
+It's unclear whether the "mctp" part of the name is supposed
+to be a prefix or part of attribute name. Make it a prefix,
+seems cleaner, even tho technically phys-binding was added later.
 
-Marking the function as noinline_for_stack is harmless here and avoids
-the problem completely.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250414211851.602096-8-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c |    3 ++-
+ Documentation/netlink/specs/rt_link.yaml | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c
-@@ -1189,7 +1189,8 @@ err:
- 	return ret;
- }
- 
--static
-+/* clang stack usage explodes if this is inlined */
-+static noinline_for_stack
- void vdec_vp9_slice_map_counts_eob_coef(unsigned int i, unsigned int j, unsigned int k,
- 					struct vdec_vp9_slice_frame_counts *counts,
- 					struct v4l2_vp9_frame_symbol_counts *counts_helper)
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index 9f0ca05df0b98..78d3bec72f0e7 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -2166,9 +2166,10 @@ attribute-sets:
+         type: u32
+   -
+     name: mctp-attrs
++    name-prefix: ifla-mctp-
+     attributes:
+       -
+-        name: mctp-net
++        name: net
+         type: u32
+       -
+         name: phys-binding
+-- 
+2.39.5
+
 
 
 
