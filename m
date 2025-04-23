@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40023A990E6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C3EA993A4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF0D01BA232B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE1D1BA4146
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB0928FFD1;
-	Wed, 23 Apr 2025 15:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C92E2BF3DC;
+	Wed, 23 Apr 2025 15:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIP6ptPT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tchPv7yu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5925128C5AD;
-	Wed, 23 Apr 2025 15:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096C828BAA0;
+	Wed, 23 Apr 2025 15:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421002; cv=none; b=mfxJ6TfTC9OAYBiLd4MTlRSjqobEXInOMqpqXMw76WTgPRUrtqjFKKXRXOnNHmGxEBPfakOyk82zyY4+2K7bhLke47Zh4IttIJqxgCiNZyA9ZRylhcfS3zHAuR0w4VZD0ND16LSHwW3oDEPsXdpr3D8OhpgEXgE6XsZi0Evj1rE=
+	t=1745422536; cv=none; b=BqAMdvZGIXZctbfgPmU10cZUq6pfEvbinWPCzZY/znmBQ/8tqcp393kW1BVe2OpkYzEZqGV6siTOyFVCqNUySUGptOhkSz2Kwp+oN9zAtSAtXKZFcFZEe9k9hXBrCbMxa9/urBUAQJnI6nw/h6a+y1T/m/EcXWVgScqSFxa9t+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421002; c=relaxed/simple;
-	bh=C/lw9BVtB5AN/DC/UbWm9g0u+obHbCK+IQuDanwVebo=;
+	s=arc-20240116; t=1745422536; c=relaxed/simple;
+	bh=R1DkDkT6iYiNHgFeqG7muc77pMyfqoEDJPrSwxfqw58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e/NADmLxRR6xTMfq48pXmq8FnTHmop6DForJeIOKPICdqMuC1dFJK9QhhsqC87JtXtZHGQpsXaiBmT327A+1FVzmogIwc7/+qVvPE9WyAE82mBJxxgZxkxQ6iFVXAX4Cyl4Ny1HrWTbrX16A4nX/qRNFuYyh/INLowzh+8WRbUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIP6ptPT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78CDC4CEE2;
-	Wed, 23 Apr 2025 15:10:01 +0000 (UTC)
+	 MIME-Version; b=ErByIrcbglOc75LM3aG5Y8dmhQSxmeVHZO5U+u6T+XehDNXmsxNR2iI9keUW2G2yvfe7WIgaprra6smBtSS7YL/Fu96rW0u20Ew81tenSIO5EZdgT1kgrR2cZghPHi8CGyZLRq0B9e7VfcPCM5xBxMM6WkEdqWntFnBS3b02adw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tchPv7yu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087B3C4CEE2;
+	Wed, 23 Apr 2025 15:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421002;
-	bh=C/lw9BVtB5AN/DC/UbWm9g0u+obHbCK+IQuDanwVebo=;
+	s=korg; t=1745422535;
+	bh=R1DkDkT6iYiNHgFeqG7muc77pMyfqoEDJPrSwxfqw58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIP6ptPT6LqAg8LAWJ8CpnCwSoaRXlEm9LK/7jXuJJJkPcN9zPcAL5eqoS4L4Dt9V
-	 QI7VQ2SBV4oKeIsclxe2XqZnI9BZiq/sy/2pfTYzDUy8AgpihhD1Y/qmAWHIDEfX5x
-	 63vvH8ljQ51e0Cbfi+1e5lRq5maijaCV42tlEFKo=
+	b=tchPv7yuCfRYNzoR3UHWEVkCT2OeS32pDFKUrzt98qrKNFGZF3fzdP/Kr2NSoRFvK
+	 7fe+3WaZvk4W8dN/sC9FzKFLR40Uor0EMjPJRhjjyUzSwhSUVlxPHW7qV8/g36kutJ
+	 1+sFat8AHj09TjtCyAES3FXBAHf9ZlKgvFYqh/Fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.12 181/223] drm/xe/dma_buf: stop relying on placement in unmap
+	stable@kernel.org,
+	Rolf Eike Beer <eb@emlix.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 6.6 357/393] drm/sti: remove duplicate object names
 Date: Wed, 23 Apr 2025 16:44:13 +0200
-Message-ID: <20250423142624.542625735@linuxfoundation.org>
+Message-ID: <20250423142658.082763298@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Rolf Eike Beer <eb@emlix.com>
 
-commit 25583ad42d091819157832e894179200ba8b54ee upstream.
+commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
 
-The is_vram() is checking the current placement, however if we consider
-exported VRAM with dynamic dma-buf, it looks possible for the xe driver
-to async evict the memory, notifying the importer, however importer does
-not have to call unmap_attachment() immediately, but rather just as
-"soon as possible", like when the dma-resv idles. Following from this we
-would then pipeline the move, attaching the fence to the manager, and
-then update the current placement. But when the unmap_attachment() runs
-at some later point we might see that is_vram() is now false, and take
-the complete wrong path when dma-unmapping the sg, leading to
-explosions.
+When merging 2 drivers common object files were not deduplicated.
 
-To fix this check if the sgl was mapping a struct page.
-
-v2:
-  - The attachment can be mapped multiple times it seems, so we can't
-    really rely on encoding something in the attachment->priv. Instead
-    see if the page_link has an encoded struct page. For vram we expect
-    this to be NULL.
-
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4563
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Acked-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250410162716.159403-2-matthew.auld@intel.com
-(cherry picked from commit d755887f8e5a2a18e15e6632a5193e5feea18499)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
+Cc: stable@kernel.org
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_dma_buf.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/sti/Makefile |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_dma_buf.c
-+++ b/drivers/gpu/drm/xe/xe_dma_buf.c
-@@ -145,10 +145,7 @@ static void xe_dma_buf_unmap(struct dma_
- 			     struct sg_table *sgt,
- 			     enum dma_data_direction dir)
- {
--	struct dma_buf *dma_buf = attach->dmabuf;
--	struct xe_bo *bo = gem_to_xe_bo(dma_buf->priv);
--
--	if (!xe_bo_is_vram(bo)) {
-+	if (sg_page(sgt->sgl)) {
- 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
- 		sg_free_table(sgt);
- 		kfree(sgt);
+--- a/drivers/gpu/drm/sti/Makefile
++++ b/drivers/gpu/drm/sti/Makefile
+@@ -7,8 +7,6 @@ sti-drm-y := \
+ 	sti_compositor.o \
+ 	sti_crtc.o \
+ 	sti_plane.o \
+-	sti_crtc.o \
+-	sti_plane.o \
+ 	sti_hdmi.o \
+ 	sti_hdmi_tx3g4c28phy.o \
+ 	sti_dvo.o \
 
 
 
