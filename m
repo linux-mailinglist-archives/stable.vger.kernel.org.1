@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AC9A98DEE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A187A99197
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DBA35A1ACE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F06016EA00
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA85281357;
-	Wed, 23 Apr 2025 14:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F5329DB81;
+	Wed, 23 Apr 2025 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OMwUI1n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIhB+bME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA9C28136E;
-	Wed, 23 Apr 2025 14:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766429DB6F;
+	Wed, 23 Apr 2025 15:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419769; cv=none; b=bXSFYqfD6zpuz04CNV8S7cAIjJ7Y9C2ndBjPZYIbbr2/SuoDdbmGVkyPZPRqEsfU4RlVCE0h5XWsFEenk5c6DaaG+SvAlQlkmnHAtx8/gAcLTgtxAfgmIHb0xuZJWiArpHOwzheFAJdLcSSXrHLekngMFxzvQm2HM5LFH4aRjVE=
+	t=1745421479; cv=none; b=A7AG+g076t5o+BZC4Ant9xcii2DRkU5hJTum5YmT58MB6tc8N5tCcsJ4bjl7fBMeHW++/bVzgDNOFDWcFN9LuGeGXxDibuYgP3LF6pjzvQi5pD8TTFEHKtO9yQPTdYSxhi4wEOS0r04cRim0i6CMGRbcPyzj6J4JZX5LzKxHY5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419769; c=relaxed/simple;
-	bh=4KwlD3bRbAZs7/TM+BkvB3yKCzfnQAxebl2yGvssH84=;
+	s=arc-20240116; t=1745421479; c=relaxed/simple;
+	bh=0quMg7AeQWiTLYW0gxMN1ZED8MgzzIBSwpSbTKGmhgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JpcYOiMlWsMoFPsTDsV7JxdHrBsf/VuzlrwlsGNt2ueB20OIX4j8AeKIxI7Vgesb5pRG4Smy+OIShxV611C+kmXssClPIgckacOsPqozDXUzDM/Kbyi5ZlfBbS0GwA+MJCxobts+RIjr9LCdq7JOGlg8fHVLHlFbbSGXS1n+Z6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OMwUI1n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C48AC4CEE2;
-	Wed, 23 Apr 2025 14:49:28 +0000 (UTC)
+	 MIME-Version; b=GnHeR+K4TtT7k+XGDMkG2WfdLEnP22tBSWxu6h9D2bkXf89d690jbYy/g2198wQpIrUJ8+C7WD8VX3zNQmMZMwtMzwhacTUuJUVa0FSXD/p/yMA9T67hMqS+E+KIvTP4CUAXvVW7ruCZkNfk+CpmIwU2g61VWgSp7ws+2p8Oe9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIhB+bME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB40C4CEE2;
+	Wed, 23 Apr 2025 15:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419768;
-	bh=4KwlD3bRbAZs7/TM+BkvB3yKCzfnQAxebl2yGvssH84=;
+	s=korg; t=1745421479;
+	bh=0quMg7AeQWiTLYW0gxMN1ZED8MgzzIBSwpSbTKGmhgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OMwUI1nrt33enBNpngqeNSJl7aqu6RZXBeZxy/SYCB+jzKP3grsd8IWHYENMLVX6
-	 2dEviKXbCiYHIh1BjUk3v7kxpH7nDs16VAKOSA5gLltkIu/mPbZsTH3fG15LmKzn8s
-	 cnlclJQBNSuMd1LD/xRxe7d4QJajKUOnsWlM7iWs=
+	b=iIhB+bMEBXjo4xkk4AXssEny4407vSfeWbANDMKxEpQXe//s1AOcDC+H9OhKghoZB
+	 P/EznrJJ3HcZALI49yvVuf/F6SlwwZw2tr7i+vByReadb/iVxvqACUF+Llhgp9FcjW
+	 v1S0A3kon/rYCSta+1JVy9WpbAsLDgcxluOniseQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/223] netlink: specs: rt-link: add an attr layer around alt-ifname
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 141/291] crypto: ccp - Fix check for the primary ASP device
 Date: Wed, 23 Apr 2025 16:42:10 +0200
-Message-ID: <20250423142619.491288442@linuxfoundation.org>
+Message-ID: <20250423142630.171418699@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit acf4da17deada7f8b120e051aa6c9cac40dbd83b ]
+commit 07bb097b92b987db518e72525b515d77904e966e upstream.
 
-alt-ifname attr is directly placed in requests (as an alternative
-to ifname) but in responses its wrapped up in IFLA_PROP_LIST
-and only there is may be multi-attr. See rtnl_fill_prop_list().
+Currently, the ASP primary device check does not have support for PCI
+domains, and, as a result, when the system is configured with PCI domains
+(PCI segments) the wrong device can be selected as primary. This results
+in commands submitted to the device timing out and failing. The device
+check also relies on specific device and function assignments that may
+not hold in the future.
 
-Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-6-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the primary ASP device check to include support for PCI domains and
+to perform proper checking of the Bus/Device/Function positions.
+
+Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/netlink/specs/rt_link.yaml | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index 0c4d5d40cae90..11d9abec99bc0 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -1094,11 +1094,10 @@ attribute-sets:
-       -
-         name: prop-list
-         type: nest
--        nested-attributes: link-attrs
-+        nested-attributes: prop-list-link-attrs
-       -
-         name: alt-ifname
-         type: string
--        multi-attr: true
-       -
-         name: perm-address
-         type: binary
-@@ -1137,6 +1136,13 @@ attribute-sets:
-         name: dpll-pin
-         type: nest
-         nested-attributes: link-dpll-pin-attrs
-+  -
-+    name: prop-list-link-attrs
-+    subset-of: link-attrs
-+    attributes:
-+      -
-+        name: alt-ifname
-+        multi-attr: true
-   -
-     name: af-spec-attrs
-     attributes:
-@@ -2319,7 +2325,6 @@ operations:
-             - min-mtu
-             - max-mtu
-             - prop-list
--            - alt-ifname
-             - perm-address
-             - proto-down-reason
-             - parent-dev-name
--- 
-2.39.5
-
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -179,14 +179,17 @@ static bool sp_pci_is_master(struct sp_d
+ 	pdev_new = to_pci_dev(dev_new);
+ 	pdev_cur = to_pci_dev(dev_cur);
+ 
+-	if (pdev_new->bus->number < pdev_cur->bus->number)
+-		return true;
++	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
++		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
+ 
+-	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
+-		return true;
++	if (pdev_new->bus->number != pdev_cur->bus->number)
++		return pdev_new->bus->number < pdev_cur->bus->number;
+ 
+-	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
+-		return true;
++	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
++		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
++
++	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
++		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
+ 
+ 	return false;
+ }
 
 
 
