@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B496CA98FEC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D756DA99136
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F64716F2F5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948A518850B4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C40281357;
-	Wed, 23 Apr 2025 15:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0E62857FD;
+	Wed, 23 Apr 2025 15:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsBXqiT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nl6fKNlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5F228152D;
-	Wed, 23 Apr 2025 15:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DC9288C9E;
+	Wed, 23 Apr 2025 15:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420819; cv=none; b=PbQKt6NGdV1nk/mRkLipjh09mJF2SmcHNxxNM9UgFci/iK3rhWudllgZXuX+GEEn1RjcqnHLCJ+EGJtm+YuL8Gixn2IQylcUZeyrqcxt4E24dBLKms2eyEpTuCeMuPS0GJgWU4WKsx1kKQhD7GiKOD6aGany9EqeMvl9JxDQCxY=
+	t=1745421283; cv=none; b=adtexMA9cqtyFEhqLB5shVRQI/vzY8PPm1DuK/b7hJ8Mf5q1L+CPBWyJEDpzoXLvvutc0dZdhus0dFPoXkws4KP3/8fQ6m/ykC8fWGiWjfjxUvW7BsBsXI55IpbkcFViGl2RW8z29Qv2nshOWXa5zDCca+ReyMX7Kp7gUW171SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420819; c=relaxed/simple;
-	bh=anVyIcMoCMy//efGweG1bep2zn0moQtcTBtVd8NXJUY=;
+	s=arc-20240116; t=1745421283; c=relaxed/simple;
+	bh=OTDMyaOVWOkTZ7QdDyxCPDXbMLqusy1N3le4pHrhlp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZBadwPZNw/eckcWEyZW+QKfiR8g/tt4Rg/F/jcBuz5cVUF8z7wyjDsuMBNb9A3ThUT5BKpTsDvVgJHKHNcJP1EfyD2w9sTdwEvgw7wIchTz++vC+k0MEi3t4w73h+36b2WIc1NCiPXllaPVvLvi8+k07l8oda4AeWydQ7hcOR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsBXqiT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3CDC4CEE2;
-	Wed, 23 Apr 2025 15:06:58 +0000 (UTC)
+	 MIME-Version; b=Jv3y1TnBpfHlkSX5Ng1ipDUDJn/HweyQSZkq92biY2Fp1FMMAiLlMH2T6tS2u3xm/XZTjrniVnOtADPWI1lrSl6LmYvkzBhjN3Ep7dF5x9gfLmyBXpfGsKG0UbyuzIS9yk+xfuHEFNXMIFYw3uczN74IdguWVR4YU/JZcIBwuV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nl6fKNlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BB7C4CEE2;
+	Wed, 23 Apr 2025 15:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420819;
-	bh=anVyIcMoCMy//efGweG1bep2zn0moQtcTBtVd8NXJUY=;
+	s=korg; t=1745421282;
+	bh=OTDMyaOVWOkTZ7QdDyxCPDXbMLqusy1N3le4pHrhlp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsBXqiT9KMKsehVnnfVzx/zzNJG8+z166vK4RAnup0+KRRGmK/6MR4dhhyqA1IdXz
-	 fLOfFJ82Fr6gnqKipHTWmwjtr2wNNprSAc+NuFD1Gthexwx+tSTQfazQ7HSGCUFIfs
-	 Q9UPbI80ahPR5zNt1pUIZONrtYMdVRDPxsYujyBY=
+	b=Nl6fKNlbIa36QSx2wGiqXhiFU0SZoB7FTHmPXm0m7VfZugNWK/bdA/BsPchSyD76q
+	 mgko/FBITnLFgdihYIvmofe+ruBM1/5b1m+fQSKni1SqyoCdOWYOhZmWjox8zwTOVb
+	 EjIHD89MO0RqtkzdVTlZrie7HYTmPyeU7jtqlaS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/291] tpm, tpm_tis: Workaround failed command reception on Infineon devices
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.6 165/393] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
 Date: Wed, 23 Apr 2025 16:41:01 +0200
-Message-ID: <20250423142627.315849932@linuxfoundation.org>
+Message-ID: <20250423142650.186910308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,120 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit de9e33df7762abbfc2a1568291f2c3a3154c6a9d ]
+commit c8222ef6cf29dd7cad21643228f96535cc02b327 upstream.
 
-Some Infineon devices have a issue where the status register will get
-stuck with a quick REQUEST_USE / COMMAND_READY sequence. This is not
-simply a matter of requiring a longer timeout; the work around is to
-retry the command submission. Add appropriate logic to do this in the
-send path.
+soc_dev_attr->revision could be NULL, thus,
+a pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-This is fixed in later firmware revisions, but those are not always
-available, and cannot generally be easily updated from outside a
-firmware environment.
+This issue is found by our static analysis tool.
 
-Testing has been performed with a simple repeated loop of doing a
-TPM2_CC_GET_CAPABILITY for TPM_CAP_PROP_MANUFACTURER using the Go code
-at:
-
-  https://the.earth.li/~noodles/tpm-stuff/timeout-reproducer-simple.go
-
-It can take several hours to reproduce, and several million operations.
-
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
+Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_tis_core.c | 17 ++++++++++++++---
- drivers/char/tpm/tpm_tis_core.h |  1 +
- include/linux/tpm.h             |  1 +
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ drivers/soc/samsung/exynos-chipid.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_core.c
-index 5889d9edaf940..4e294a915925b 100644
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -433,7 +433,10 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -130,6 +130,8 @@ static int exynos_chipid_probe(struct pl
  
- 		if (wait_for_tpm_stat(chip, TPM_STS_VALID, chip->timeout_c,
- 					&priv->int_queue, false) < 0) {
--			rc = -ETIME;
-+			if (test_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags))
-+				rc = -EAGAIN;
-+			else
-+				rc = -ETIME;
- 			goto out_err;
- 		}
- 		status = tpm_tis_status(chip);
-@@ -450,7 +453,10 @@ static int tpm_tis_send_data(struct tpm_chip *chip, const u8 *buf, size_t len)
- 
- 	if (wait_for_tpm_stat(chip, TPM_STS_VALID, chip->timeout_c,
- 				&priv->int_queue, false) < 0) {
--		rc = -ETIME;
-+		if (test_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags))
-+			rc = -EAGAIN;
-+		else
-+			rc = -ETIME;
- 		goto out_err;
- 	}
- 	status = tpm_tis_status(chip);
-@@ -505,9 +511,11 @@ static int tpm_tis_send_main(struct tpm_chip *chip, const u8 *buf, size_t len)
- 		if (rc >= 0)
- 			/* Data transfer done successfully */
- 			break;
--		else if (rc != -EIO)
-+		else if (rc != -EAGAIN && rc != -EIO)
- 			/* Data transfer failed, not recoverable */
- 			return rc;
-+
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 	}
- 
- 	rc = tpm_tis_verify_crc(priv, len, buf);
-@@ -1044,6 +1052,9 @@ int tpm_tis_core_init(struct device *dev, struct tpm_tis_data *priv, int irq,
- 		priv->timeout_max = TIS_TIMEOUT_MAX_ATML;
- 	}
- 
-+	if (priv->manufacturer_id == TPM_VID_IFX)
-+		set_bit(TPM_TIS_STATUS_VALID_RETRY, &priv->flags);
-+
- 	if (is_bsw()) {
- 		priv->ilb_base_addr = ioremap(INTEL_LEGACY_BLK_BASE_ADDR,
- 					ILB_REMAP_SIZE);
-diff --git a/drivers/char/tpm/tpm_tis_core.h b/drivers/char/tpm/tpm_tis_core.h
-index 610bfadb6acf1..be72681ab8ea2 100644
---- a/drivers/char/tpm/tpm_tis_core.h
-+++ b/drivers/char/tpm/tpm_tis_core.h
-@@ -88,6 +88,7 @@ enum tpm_tis_flags {
- 	TPM_TIS_INVALID_STATUS		= 1,
- 	TPM_TIS_DEFAULT_CANCELLATION	= 2,
- 	TPM_TIS_IRQ_TESTED		= 3,
-+	TPM_TIS_STATUS_VALID_RETRY	= 4,
- };
- 
- struct tpm_tis_data {
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index df5cd4245f299..dd0784a6e07d9 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -271,6 +271,7 @@ enum tpm2_cc_attrs {
- #define TPM_VID_WINBOND  0x1050
- #define TPM_VID_STM      0x104A
- #define TPM_VID_ATML     0x1114
-+#define TPM_VID_IFX      0x15D1
- 
- enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_BOOTSTRAPPED		= BIT(0),
--- 
-2.39.5
-
+ 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%x", soc_info.revision);
++	if (!soc_dev_attr->revision)
++		return -ENOMEM;
+ 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
+ 	if (!soc_dev_attr->soc_id) {
+ 		pr_err("Unknown SoC\n");
 
 
 
