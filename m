@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADD1A992AD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB92DA9901F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D0B926E94
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38EC8E4613
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B2E28BAA5;
-	Wed, 23 Apr 2025 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3273F28A3F2;
+	Wed, 23 Apr 2025 15:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hXPNFyt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksJAKqxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CAB28BA82;
-	Wed, 23 Apr 2025 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D8C27FD42;
+	Wed, 23 Apr 2025 15:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421847; cv=none; b=GWulu+hqj+8Uu/Qrh2ystr4uObWYsWW02hqmM4MrEG2497jb7rcRlj/yzwEu55cTYnald021sZQgK0BkIla1C0n840NPpoSWA2A8F6tClVu+eyhS8FcPnUWCCXRRhwMfKke1Ay4wJtqIrnkyyZeKuHT19ve3I9MTPyCPMPaPspo=
+	t=1745420646; cv=none; b=RmHAXDIY2rlsGpasNK7Pyed++PVs4PCcXVKtSrmTeYrQ7N7iGs2/ldamozYyB2veGdzJ0sLuH2xNGYsihceHly9k/m0e8yd2KcEefLujtuKp+LTMkbAH0Wr0peQqCtX37URsP+gFBls70S1j8n5EM44Oz2f/5LWj9NsU6BPMopk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421847; c=relaxed/simple;
-	bh=mHhTKma7nyxSk1Lv/V6p4/6odAWEQ/8wN9ams2VrMmM=;
+	s=arc-20240116; t=1745420646; c=relaxed/simple;
+	bh=HPn6nQYW4Lc77o/HQlizEoKClyGAdvusAZZNXmYG7Yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srKGvQYso9wvz9/kqCU5Z0zbDGZ6Eaq9L4nLiR3y5ZIskeqr3fuVJ7uDSXyIwc9YDv3DWvG6quICIyFmSWPY4NovVFu7eztRmvkiq2vUksH+kydG4Demgs2UYGojY6gEh06siQDax/3hOXhbNrByJWGJILZQ6kjAOpK9FpKNq08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hXPNFyt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F400C4CEE2;
-	Wed, 23 Apr 2025 15:24:06 +0000 (UTC)
+	 MIME-Version; b=MQR8h0vxs3xhr3zn7r6CapOzdB6prsOMhQ/CCfK1HRgXzkqoi33jt1zABcCP07sL9BUIJm2CfZSoLa3yl63GRGUpC1OPS+wNgMLULavAwVloBg3sJ5BS6tcn6hA7+GfD61SjYSichFXv/KQPhSMHYzpYKazPDNg8KOF+NTFa8o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksJAKqxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F71C4CEE2;
+	Wed, 23 Apr 2025 15:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421847;
-	bh=mHhTKma7nyxSk1Lv/V6p4/6odAWEQ/8wN9ams2VrMmM=;
+	s=korg; t=1745420645;
+	bh=HPn6nQYW4Lc77o/HQlizEoKClyGAdvusAZZNXmYG7Yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hXPNFyt5eY9vsokyU/xuToCqZgcvKFUmit7bAaH7hTP3sHDELuIrADBQmAYTbq5N
-	 aSyBw+tCB4U94B1XKV7s32GWtVXxyK1pd7HP+m8RU2fqoVRbLir1tCt5ZwxJo+c558
-	 tpUtAP5i3TtEhGWc2xgLd3eoSvQsNywdh7QFkTxY=
+	b=ksJAKqxWB4gH998ezEyICKJ1GAlbDorD3X7S/oZSWlFYqKrOCvAXLvLEMAi5unf8n
+	 QS4yP4UF9rPTx2tXGb6HMd9hYKfeVoOzPLJpcfFeAcvAfk/B1HPO77ENBjSyC/UTEx
+	 e1LzaW0kdnxIHjRSfNnni+IhMC/43IeeUA3s8y+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/291] net: mctp: Set SOCK_RCU_FREE
+	"T.J. Mercier" <tjmercier@google.com>,
+	Janghyuck Kim <janghyuck.kim@samsung.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.14 110/241] alloc_tag: handle incomplete bulk allocations in vm_module_tags_populate
 Date: Wed, 23 Apr 2025 16:42:54 +0200
-Message-ID: <20250423142631.937092908@linuxfoundation.org>
+Message-ID: <20250423142625.074999173@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: T.J. Mercier <tjmercier@google.com>
 
-[ Upstream commit 52024cd6ec71a6ca934d0cc12452bd8d49850679 ]
+commit e6e07b696da529e85d1ba880555b5df5c80a46bd upstream.
 
-Bind lookup runs under RCU, so ensure that a socket doesn't go away in
-the middle of a lookup.
+alloc_pages_bulk_node() may partially succeed and allocate fewer than the
+requested nr_pages.  There are several conditions under which this can
+occur, but we have encountered the case where CONFIG_PAGE_OWNER is enabled
+causing all bulk allocations to always fallback to single page allocations
+due to commit 187ad460b841 ("mm/page_alloc: avoid page allocator recursion
+with pagesets.lock held").
 
-Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250410-mctp-rcu-sock-v1-1-872de9fdc877@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently vm_module_tags_populate() immediately fails when
+alloc_pages_bulk_node() returns fewer than the requested number of pages.
+When this happens memory allocation profiling gets disabled, for example
+
+[   14.297583] [9:       modprobe:  465] Failed to allocate memory for allocation tags in the module scsc_wlan. Memory allocation profiling is disabled!
+[   14.299339] [9:       modprobe:  465] modprobe: Failed to insmod '/vendor/lib/modules/scsc_wlan.ko' with args '': Out of memory
+
+This patch causes vm_module_tags_populate() to retry bulk allocations for
+the remaining memory instead of failing immediately which will avoid the
+disablement of memory allocation profiling.
+
+Link: https://lkml.kernel.org/r/20250409225111.3770347-1-tjmercier@google.com
+Fixes: 0f9b685626da ("alloc_tag: populate memory for module tags as needed")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Reported-by: Janghyuck Kim <janghyuck.kim@samsung.com>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mctp/af_mctp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/alloc_tag.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
-index 2316e7772b785..6a963eac1cc2f 100644
---- a/net/mctp/af_mctp.c
-+++ b/net/mctp/af_mctp.c
-@@ -551,6 +551,9 @@ static int mctp_sk_hash(struct sock *sk)
- {
- 	struct net *net = sock_net(sk);
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -422,11 +422,20 @@ static int vm_module_tags_populate(void)
+ 		unsigned long old_shadow_end = ALIGN(phys_end, MODULE_ALIGN);
+ 		unsigned long new_shadow_end = ALIGN(new_end, MODULE_ALIGN);
+ 		unsigned long more_pages;
+-		unsigned long nr;
++		unsigned long nr = 0;
  
-+	/* Bind lookup runs under RCU, remain live during that. */
-+	sock_set_flag(sk, SOCK_RCU_FREE);
+ 		more_pages = ALIGN(new_end - phys_end, PAGE_SIZE) >> PAGE_SHIFT;
+-		nr = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
+-					   NUMA_NO_NODE, more_pages, next_page);
++		while (nr < more_pages) {
++			unsigned long allocated;
 +
- 	mutex_lock(&net->mctp.bind_lock);
- 	sk_add_node_rcu(sk, &net->mctp.binds);
- 	mutex_unlock(&net->mctp.bind_lock);
--- 
-2.39.5
-
++			allocated = alloc_pages_bulk_node(GFP_KERNEL | __GFP_NOWARN,
++				NUMA_NO_NODE, more_pages - nr, next_page + nr);
++
++			if (!allocated)
++				break;
++			nr += allocated;
++		}
++
+ 		if (nr < more_pages ||
+ 		    vmap_pages_range(phys_end, phys_end + (nr << PAGE_SHIFT), PAGE_KERNEL,
+ 				     next_page, PAGE_SHIFT) < 0) {
 
 
 
