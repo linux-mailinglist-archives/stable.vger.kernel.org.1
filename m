@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AE1AA98EEE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F9BA99316
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75F3B189761E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A74BD1BA7070
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5D827F755;
-	Wed, 23 Apr 2025 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C802C10BA;
+	Wed, 23 Apr 2025 15:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKPM2GVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxb5AVKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B66023D298;
-	Wed, 23 Apr 2025 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556BC2C10B9;
+	Wed, 23 Apr 2025 15:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420200; cv=none; b=qUKWhshcPi1cyv6NcJyIcKaCFiuEN5yc+9lqoFSxfL1iL2FM7WMR0BvK1GDKp4h87xqpwEX/SpNqu0y6Jibx2tcdWSXsiaag+mHN9QfObtdlGyaaQXsEcaPYPSs6z2E2WecGYLh8UDdGp6/XZ2K7y8Thv7vFMvVTPQFKS+fVdW8=
+	t=1745421884; cv=none; b=bXaii702GgFYAj7lGfo/9mB4n1pI3ZAP+3wYghTL8rkWgjo4o3zE+tM88DalD+TDfHYwG5yIB52wLIpZq/kZDzamt5vlIr1wFoNlYFwBNkubg6o5232NwhUzh3UvdIcu7TdBcaYac8AN2mkdCTWX9+1OSDfmMVtC4LYD0zIpNPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420200; c=relaxed/simple;
-	bh=xT78nCPnXjfGaok6iydY6I+PpDNunJBayZAe9fQMVgY=;
+	s=arc-20240116; t=1745421884; c=relaxed/simple;
+	bh=WQfWNi1r7Ec+RL5+WmMhR3+DsW3OlOhDQGBuKMoRQpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udK+qXd5z4Q9lDwm8KNa8fTYBQ+Btw6UHYX5OwlmxLkAIDoLTdJYTbKgbNXLQS3/cGvlE3AA7aixT/f+WS6ga37WLpuAk4Msc/xficfvMlJ+JjAfiIHbDVYMEHfr+HJ0NIpKe3n84x2wKfplfViTmGRTp5tFta3yllbPpknw+VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vKPM2GVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F58C4CEE2;
-	Wed, 23 Apr 2025 14:56:39 +0000 (UTC)
+	 MIME-Version; b=mzVgqpPWgybXcqWZg0mJi5aNi0Zp18G4EYCuf4e1vyr9xE4V509KfG/a0rDPE29Kgp3FZA5z8TUXM3WQRzCr5uxUZEHWdr4cNC+PNkmoJzb+BLj4U6x83WpNwAWjawrKQnNXnfX8XQ7dZwVV33p+c5D2t3GEISb0wlAe2k9P+Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxb5AVKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD50C4CEE2;
+	Wed, 23 Apr 2025 15:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420200;
-	bh=xT78nCPnXjfGaok6iydY6I+PpDNunJBayZAe9fQMVgY=;
+	s=korg; t=1745421884;
+	bh=WQfWNi1r7Ec+RL5+WmMhR3+DsW3OlOhDQGBuKMoRQpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKPM2GVaZsTfjYOKgvPyfEFsvRHTKryYFyLmtwrOTQ2gWS3PAAUSaMp4r/rGO5cTP
-	 Rwz6tGu6JCLWG6FjOgFmACZEae3R7MNRfjfmRrfOT+BpVtnb1VgUVndgOKqcsDHK3x
-	 vbbC1DO951LPXXRdc6j5vYoWAdcTbxdijZ3h6S68=
+	b=uxb5AVKiNrwT8lc2nk10KF4e9mEMfsEllSwIaWAeYEkP+HyRBYFI9+cn2NULOfkGj
+	 2bMCb5kDUdBnCWDtyB4WfiD3toN/2o/yWOaXw2WXtwQ7qnZPxA0E7MuW6GIC5NPwvh
+	 NfgERvNaDhiXQCKq7tL21Tgzxd7mGuPjqCqY2GOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 071/241] net: b53: enable BPDU reception for management port
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 6.6 239/393] HSI: ssi_protocol: Fix use after free vulnerability in ssi_protocol Driver Due to Race Condition
 Date: Wed, 23 Apr 2025 16:42:15 +0200
-Message-ID: <20250423142623.496309789@linuxfoundation.org>
+Message-ID: <20250423142653.257989712@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
 
-[ Upstream commit 36355ddfe8955f226a88a543ed354b9f6b84cd70 ]
+commit e3f88665a78045fe35c7669d2926b8d97b892c11 upstream.
 
-For STP to work, receiving BPDUs is essential, but the appropriate bit
-was never set. Without GC_RX_BPDU_EN, the switch chip will filter all
-BPDUs, even if an appropriate PVID VLAN was setup.
+In the ssi_protocol_probe() function, &ssi->work is bound with
+ssip_xmit_work(), In ssip_pn_setup(), the ssip_pn_xmit() function
+within the ssip_pn_ops structure is capable of starting the
+work.
 
-Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Link: https://patch.msgid.link/20250414200434.194422-1-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If we remove the module which will call ssi_protocol_remove()
+to make a cleanup, it will free ssi through kfree(ssi),
+while the work mentioned above will be used. The sequence
+of operations that may lead to a UAF bug is as follows:
+
+CPU0                                    CPU1
+
+                        | ssip_xmit_work
+ssi_protocol_remove     |
+kfree(ssi);             |
+                        | struct hsi_client *cl = ssi->cl;
+                        | // use ssi
+
+Fix it by ensuring that the work is canceled before proceeding
+with the cleanup in ssi_protocol_remove().
+
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240918120749.1730-1-kxwang23@m.fudan.edu.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/hsi/clients/ssi_protocol.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 79dc77835681c..3b49e87e8ef72 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -737,6 +737,15 @@ static void b53_enable_mib(struct b53_device *dev)
- 	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
- }
- 
-+static void b53_enable_stp(struct b53_device *dev)
-+{
-+	u8 gc;
-+
-+	b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &gc);
-+	gc |= GC_RX_BPDU_EN;
-+	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
-+}
-+
- static u16 b53_default_pvid(struct b53_device *dev)
- {
- 	if (is5325(dev) || is5365(dev))
-@@ -876,6 +885,7 @@ static int b53_switch_reset(struct b53_device *dev)
- 	}
- 
- 	b53_enable_mib(dev);
-+	b53_enable_stp(dev);
- 
- 	return b53_flush_arl(dev, FAST_AGE_STATIC);
- }
--- 
-2.39.5
-
+--- a/drivers/hsi/clients/ssi_protocol.c
++++ b/drivers/hsi/clients/ssi_protocol.c
+@@ -401,6 +401,7 @@ static void ssip_reset(struct hsi_client
+ 	del_timer(&ssi->rx_wd);
+ 	del_timer(&ssi->tx_wd);
+ 	del_timer(&ssi->keep_alive);
++	cancel_work_sync(&ssi->work);
+ 	ssi->main_state = 0;
+ 	ssi->send_state = 0;
+ 	ssi->recv_state = 0;
 
 
 
