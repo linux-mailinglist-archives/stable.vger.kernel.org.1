@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 100C4A99337
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F1CA99086
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E7DB4A18FD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6EB441BF8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68AA279340;
-	Wed, 23 Apr 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C517290BB7;
+	Wed, 23 Apr 2025 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWsuBswD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRd4ptTT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725B8176242;
-	Wed, 23 Apr 2025 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE8028D822;
+	Wed, 23 Apr 2025 15:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422425; cv=none; b=LdZHWwKBVyLDdvwZ8+rUT9WJMngYw3OjAofARkifldxSG/WGyvHQ6IkXN/AoOrmT7rRAhd23iA6gDJVLRg4b7s4MLx6L26NoFKlZAvj1F6XcuYfB8/WbdACJLVBX3FhRVHW3qpZNV8CTE4s8203okN0631CHfR1gpTnvC73aJbo=
+	t=1745421047; cv=none; b=iEDJR2CoUtrIuYhvtN1SSUVULv42NJ34AesiBfc81oIEM7FJ62keWr2hp1kUZrLdX6x24cdCxJ4vo1qQ4DMzKwwwaBnaFLQmVSsWiM4L3ZTUT50UJV/77t69gW3ksTGoo89lA8VAtfgwGTocRnKMyyqifeQUxPRMYolKrunzA94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422425; c=relaxed/simple;
-	bh=KCKEX7u/4gornimO5vXQsV6l6YTrxGqMA68dc8+WcHU=;
+	s=arc-20240116; t=1745421047; c=relaxed/simple;
+	bh=jQls2b7GK1yBlkkRMHVaauZJzBOaegY+AeYLXQwlMaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8EYbsIgdvjZ+Qym0rdKlbX39FPFBfP05pGedLUwTbzBpvyz7sWR0ld0Qno8tSo32HkEwAVwa4CdawUU+Ad6H5eiC+0cXJSotpjbliCws1WDCoSqaO3Zih8WO2rXblMa8Fnr7rORuecJKX6FkS+VJ0nu2gemfsC11R/pkK3U/LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWsuBswD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09C8C4CEE2;
-	Wed, 23 Apr 2025 15:33:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PblhXpKv1BYfZ/Q2hbgADuguB+x66JkxVDVHPQ83x3u/K1dutel+e8NRUyUFMMXO33x3iKhgzCO6+/B/7V7HCtOR6QfbcfcqPVDn4+t9QfxMjzUc+QIHo8HZiW4FEdtakmDW8TE3PBh1cWdhGSKS824n9gRPUjNdCskoRjJBEIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRd4ptTT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717B0C4CEE2;
+	Wed, 23 Apr 2025 15:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422425;
-	bh=KCKEX7u/4gornimO5vXQsV6l6YTrxGqMA68dc8+WcHU=;
+	s=korg; t=1745421046;
+	bh=jQls2b7GK1yBlkkRMHVaauZJzBOaegY+AeYLXQwlMaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cWsuBswDQb+MGxo193jUoZuDrAWrY01Iewbz9VYSFiyKSCTiViXcvhHGJ8WunCKIC
-	 ySn8aArTIFvcRhSW3F0LWbSLZ84ImNTKEDBfsRZBmbrYlkvWZE/dhryrZ0g71SJNAM
-	 FAi3Mt/DANSwH+mpCX7XeURx4CKp2W5prZOmhpFY=
+	b=aRd4ptTTI+vW89Ip4EfbgSQr47shfcwcs8eiEtxSloII5nnRaLyuKvvdksRsmKbkn
+	 RRCUzy7DrOuA+9MGuLSp7OzBalc7Xpdtw6LkHS39T0Fq/HJ32+AgrTaNuTvT/Z4tVr
+	 OcWwph1bohhZ+NHOyQmSpqBMcPyLEAhRS5ABZAmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tang Jun <dukang.tj@alibaba-inc.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 6.6 345/393] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SPR
-Date: Wed, 23 Apr 2025 16:44:01 +0200
-Message-ID: <20250423142657.590782227@linuxfoundation.org>
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 170/223] drm/amdgpu/dma_buf: fix page_link check
+Date: Wed, 23 Apr 2025 16:44:02 +0200
+Message-ID: <20250423142624.088310148@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 506f981ab40f0b03a11a640cfd77f48b09aff330 upstream.
+commit c0dd8a9253fadfb8e5357217d085f1989da4ef0a upstream.
 
-The scale of IIO bandwidth in free running counters is inherited from
-the ICX. The counter increments for every 32 bytes rather than 4 bytes.
+The page_link lower bits of the first sg could contain something like
+SG_END, if we are mapping a single VRAM page or contiguous blob which
+fits into one sg entry. Rather pull out the struct page, and use that in
+our check to know if we mapped struct pages vs VRAM.
 
-The IIO bandwidth out free running counters don't increment with a
-consistent size. The increment depends on the requested size. It's
-impossible to find a fixed increment. Remove it from the event_descs.
-
-Fixes: 0378c93a92e2 ("perf/x86/intel/uncore: Support IIO free-running counters on Sapphire Rapids server")
-Reported-by: Tang Jun <dukang.tj@alibaba-inc.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-3-kan.liang@linux.intel.com
+Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: amd-gfx@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   58 -----------------------------------
- 1 file changed, 1 insertion(+), 57 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6210,69 +6210,13 @@ static struct freerunning_counters spr_i
- 	[SPR_IIO_MSR_BW_OUT]	= { 0x3808, 0x1, 0x10, 8, 48 },
- };
- 
--static struct uncore_event_desc spr_uncore_iio_freerunning_events[] = {
--	/* Free-Running IIO CLOCKS Counter */
--	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
--	/* Free-Running IIO BANDWIDTH IN Counters */
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
--	/* Free-Running IIO BANDWIDTH OUT Counters */
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0,		"event=0xff,umask=0x30"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port0.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1,		"event=0xff,umask=0x31"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port1.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2,		"event=0xff,umask=0x32"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port2.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3,		"event=0xff,umask=0x33"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port3.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4,		"event=0xff,umask=0x34"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port4.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5,		"event=0xff,umask=0x35"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port5.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6,		"event=0xff,umask=0x36"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port6.unit,	"MiB"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7,		"event=0xff,umask=0x37"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7.scale,	"3.814697266e-6"),
--	INTEL_UNCORE_EVENT_DESC(bw_out_port7.unit,	"MiB"),
--	{ /* end: all zeroes */ },
--};
--
- static struct intel_uncore_type spr_uncore_iio_free_running = {
- 	.name			= "iio_free_running",
- 	.num_counters		= 17,
- 	.num_freerunning_types	= SPR_IIO_FREERUNNING_TYPE_MAX,
- 	.freerunning		= spr_iio_freerunning,
- 	.ops			= &skx_uncore_iio_freerunning_ops,
--	.event_descs		= spr_uncore_iio_freerunning_events,
-+	.event_descs		= snr_uncore_iio_freerunning_events,
- 	.format_group		= &skx_uncore_iio_freerunning_format_group,
- };
- 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -181,7 +181,7 @@ static void amdgpu_dma_buf_unmap(struct
+ 				 struct sg_table *sgt,
+ 				 enum dma_data_direction dir)
+ {
+-	if (sgt->sgl->page_link) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
 
 
 
