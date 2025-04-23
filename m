@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48069A98F62
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1488A990E0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76A865A4ECD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B123F1BA0AB4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A058280CFC;
-	Wed, 23 Apr 2025 15:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484C128D82B;
+	Wed, 23 Apr 2025 15:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yRto8npc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5T3lpuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA506156F28;
-	Wed, 23 Apr 2025 15:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045C628CF52;
+	Wed, 23 Apr 2025 15:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420417; cv=none; b=VybjaGZJuisa+jod43sgP1GOofQftLbo2yemcYNz/gCdcVZhuuog4eF08zP9yzN4R/w8lYrvWyA/hcUUKwbefYRZ7yafSvaERPJejuGbuaLcUDoKuE5NbvgugfIbEC41QVPEryRYUnwT8d193+Mhl2upng43zmGx4KOUzWzgq3o=
+	t=1745421055; cv=none; b=klbb6Gl1GTm/bzIFGCQCSUhp6llmePGOnnYQucB7/Ykr/nFtjGouq4L8ZdKJeD1PedXHsvniTHAeq6CAuC/NJ4wXkjLJCyiDjxRVnWPyDBr2bVZVoj8dtESvLG+VljMAz68vpnRZPoiE5vMpAbDCckVH6aF7TdtPrcOJVq0ozQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420417; c=relaxed/simple;
-	bh=MYgb5bOK07Q8be09KptTXFhDv1JtxbVrtDmSQeAo5Eo=;
+	s=arc-20240116; t=1745421055; c=relaxed/simple;
+	bh=x0DsJjQNNVxmKHlqxAHvoFODrigvJXc75dAsGvJD8iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvFBuHgj5d5RIuKn3Rca95EUCnfyqFl0SWnamUhey7WrL+9wfsHWFsHhJhosWBCEuzZBNC3SGz8toRTvXY8uZP3WMHDqrx3jUWncFG3f9ExLGWrHHRwc9gclVB7MO1Ybd99MlRRqkrIWNNdgaT+3tJ07lFHc8yJIjf9GClD/qcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yRto8npc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C65C4CEE2;
-	Wed, 23 Apr 2025 15:00:15 +0000 (UTC)
+	 MIME-Version; b=KYDgFbX3QiI/ZrETAioHJCY1NmhfZaBaM/SyZrIGdNutzB5haZ9e1K0ryFOrOhradjfYgTd236xxhWW6oBBFCH7QGQfd4WQVNAcocIv1GFSxD30WsKOcz04oYz3NX6ZbrS6Q0m2Pza8dL0cRMujfAy/KVsJ7beIZsfmobKUzfHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5T3lpuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CD0C4CEE2;
+	Wed, 23 Apr 2025 15:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420416;
-	bh=MYgb5bOK07Q8be09KptTXFhDv1JtxbVrtDmSQeAo5Eo=;
+	s=korg; t=1745421054;
+	bh=x0DsJjQNNVxmKHlqxAHvoFODrigvJXc75dAsGvJD8iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yRto8npckS5K4MTB5M3sCU5OcXPcBvTcekYZqGlmzw0b3+/pZf8CBMCPjYYEah1rS
-	 oYA8TvQ3Z8JB1tlTNNaQmNxrhsIGRfnDfRWJnfpz3n7gubMvSUrwvPJ6SKWqTqM3Zg
-	 KpUuw1rd3nSVg+UHNkJuZ/qBoOYhYwcQ0SE4ltDY=
+	b=U5T3lpuoUF+XgZ2RvPXsFhmj6IQ7lNIsjQfBsk4vLf5lJtqDO46cinXjPqOokKSIZ
+	 ui54onebSvyHxqQLevYkoNzJ74hucve+4H1mYWN5kDdFbvtn4npF3LnJ4geuRfFR98
+	 ygzaBpMNv0W9uo654bm5z0FhjjzJHcKFpYKdPDQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/291] ext4: protect ext4_release_dquot against freezing
-Date: Wed, 23 Apr 2025 16:40:34 +0200
-Message-ID: <20250423142626.236052082@linuxfoundation.org>
+	Karina Yankevich <k.yankevich@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 139/393] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
+Date: Wed, 23 Apr 2025 16:40:35 +0200
+Message-ID: <20250423142649.116416273@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Karina Yankevich <k.yankevich@omp.ru>
 
-[ Upstream commit 530fea29ef82e169cd7fe048c2b7baaeb85a0028 ]
+commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
 
-Protect ext4_release_dquot against freezing so that we
-don't try to start a transaction when FS is frozen, leading
-to warnings.
+In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
+variable to the 64-bit type u64 before multiplying to avoid
+a possible overflow. The resulting object code even seems to
+look better, at least on x86_64.
 
-Further, avoid taking the freeze protection if a transaction
-is already running so that we don't need end up in a deadlock
-as described in
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-  46e294efc355 ext4: fix deadlock with fs freezing and EA inodes
+[Sergey: rewrote the patch subject/descripition]
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241121123855.645335-3-ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 1568baedab077..7f0231b349057 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -6810,12 +6810,25 @@ static int ext4_release_dquot(struct dquot *dquot)
- {
- 	int ret, err;
- 	handle_t *handle;
-+	bool freeze_protected = false;
-+
-+	/*
-+	 * Trying to sb_start_intwrite() in a running transaction
-+	 * can result in a deadlock. Further, running transactions
-+	 * are already protected from freezing.
-+	 */
-+	if (!ext4_journal_current_handle()) {
-+		sb_start_intwrite(dquot->dq_sb);
-+		freeze_protected = true;
-+	}
+--- a/drivers/media/v4l2-core/v4l2-dv-timings.c
++++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
+@@ -764,7 +764,7 @@ bool v4l2_detect_gtf(unsigned int frame_
+ 		u64 num;
+ 		u32 den;
  
- 	handle = ext4_journal_start(dquot_to_inode(dquot), EXT4_HT_QUOTA,
- 				    EXT4_QUOTA_DEL_BLOCKS(dquot->dq_sb));
- 	if (IS_ERR(handle)) {
- 		/* Release dquot anyway to avoid endless cycle in dqput() */
- 		dquot_release(dquot);
-+		if (freeze_protected)
-+			sb_end_intwrite(dquot->dq_sb);
- 		return PTR_ERR(handle);
- 	}
- 	ret = dquot_release(dquot);
-@@ -6826,6 +6839,10 @@ static int ext4_release_dquot(struct dquot *dquot)
- 	err = ext4_journal_stop(handle);
- 	if (!ret)
- 		ret = err;
-+
-+	if (freeze_protected)
-+		sb_end_intwrite(dquot->dq_sb);
-+
- 	return ret;
- }
+-		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
++		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
+ 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
+ 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
+ 		      (2 * GTF_CELL_GRAN);
+@@ -774,7 +774,7 @@ bool v4l2_detect_gtf(unsigned int frame_
+ 		u64 num;
+ 		u32 den;
  
--- 
-2.39.5
-
+-		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
++		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
+ 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
+ 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
+ 		      (2 * GTF_CELL_GRAN);
 
 
 
