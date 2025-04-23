@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-135687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11526A98FC6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:13:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE42FA9935F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 782B93ADF3F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A15217842E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90042284681;
-	Wed, 23 Apr 2025 15:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C59E288C8D;
+	Wed, 23 Apr 2025 15:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhdsjbnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPSUULTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0F020D4F8;
-	Wed, 23 Apr 2025 15:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0FF279345;
+	Wed, 23 Apr 2025 15:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420580; cv=none; b=tlPPlXpHoL1tH3o73GATDznESh+nKiCwEFMu+fyRi3W5Digp5F9soOnT66vcG47LH3smXD0mpwhi5xd4fHcvPUAChwAT+D2NOLAycOS/eySiD1qDlKOMoKv3or06aMkyFtB1aP1vVuwxFrD+Mjh9ygTUxBm7w53y2T6i8Pn4zlE=
+	t=1745422323; cv=none; b=JdzmE6xbK9SiNbSBfUTijF3FkqUzF3608wH3vdvjgRKyugPl+fv/cNyqgPb/QSMtp3hYq0nEYLk1OJgKJ+LvISrwALNWSz3X/0/JFLpEQUfANXWOqpV5SrgiHQ006ax2eT8dFdSi4Y5rH4GZSDOEAJz0PFNC18nANRVwMcRtif0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420580; c=relaxed/simple;
-	bh=LPtVh8LKwkY+DThY7fvW7Ue/yAtuMdLnjnL0STEtjiQ=;
+	s=arc-20240116; t=1745422323; c=relaxed/simple;
+	bh=hKL2cpoJQq5do5Y1DVzKZ0MRnT2ptu7JoGZ9XvNaFwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iwJS1usaRO/j/SBDTGcdrfFQbiYC+C/PEpaQnpO+hD+NDUD9/ncqv6fKemk8dSZwqrdiiEYl6IYqKTOGFdW9l64CaljIyzH/StBEebhMowkzq6n/hJvQmw3+hyzSAd0ziovtmPP2eBH2roBwU9JKo0m4EONTPQRUIeFiZPiMyBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhdsjbnP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE4EC4CEE2;
-	Wed, 23 Apr 2025 15:02:59 +0000 (UTC)
+	 MIME-Version; b=gele+x1LYuW2ivbPqhKqn0LaOZ4kSMUZlwW/xV0RrFvZcVKXuuJqYP7DcRjDt2NYrfKTiVHDz9jZXPRhCLBKV/2r0aGFCxJnEx85AfyGXGSnbeBIa+P0BoE2EQLRZO3zrRrwAECVjj7f0+B01Ed4NmQ2Y5Ir1qkkPYqUw6H5XpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPSUULTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F338C4CEE2;
+	Wed, 23 Apr 2025 15:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420579;
-	bh=LPtVh8LKwkY+DThY7fvW7Ue/yAtuMdLnjnL0STEtjiQ=;
+	s=korg; t=1745422322;
+	bh=hKL2cpoJQq5do5Y1DVzKZ0MRnT2ptu7JoGZ9XvNaFwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhdsjbnPVe4BExkrDDkkHqFUh3A+qm5w1qQYR+1FXX6zHCKFIFayHBVALxQTb9ZSY
-	 3lYJZKIVHcBsgjsNIqu/X4yP5EXFMgYB4Vj6OC/XSvruc3zkJ8jfJu9ePxD4B9X42I
-	 klYNi/CWQLYmu6K/UHuYZOSS5doL5kPUu4AG7pOQ=
+	b=PPSUULTps56Jd5fGLhjMY05l40/iP8rEjbZMCkLj7wXlb37YWL3OmE0TfDiQiKrgC
+	 xmuYOAKhdPiYNlUglWSIC7v2SJE5ScF39q+sau3gLSWQw4oxLafcuU9aDcAPOfo8Ak
+	 sHpoqu8gh9Dg4Lix6hxhn5DoVntqsvgFWyVolqYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yijun Shen <Yijun.Shen@dell.com>,
-	Yijun Shen <Yijun_Shen@Dell.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 143/223] platform/x86: amd: pmf: Fix STT limits
-Date: Wed, 23 Apr 2025 16:43:35 +0200
-Message-ID: <20250423142623.010978071@linuxfoundation.org>
+	Baoquan He <bhe@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 320/393] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
+Date: Wed, 23 Apr 2025 16:43:36 +0200
+Message-ID: <20250423142656.558126305@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +63,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Baoquan He <bhe@redhat.com>
 
-commit fcf27a6a926fd9eeba39e9c3fde43c9298fe284e upstream.
+commit 8c03ebd7cdc06bd0d2fecb4d1a609ef1dbb7d0aa upstream.
 
-On some platforms it has been observed that STT limits are not being
-applied properly causing poor performance as power limits are set too low.
+Not like fault_in_readable() or fault_in_writeable(), in
+fault_in_safe_writeable() local variable 'start' is increased page by page
+to loop till the whole address range is handled.  However, it mistakenly
+calculates the size of the handled range with 'uaddr - start'.
 
-STT limits that are sent to the platform are supposed to be in Q8.8
-format.  Convert them before sending.
+Fix it here.
 
-Reported-by: Yijun Shen <Yijun.Shen@dell.com>
-Fixes: 7c45534afa443 ("platform/x86/amd/pmf: Add support for PMF Policy Binary")
-Cc: stable@vger.kernel.org
-Tested-by: Yijun Shen <Yijun_Shen@Dell.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20250407181915.1482450-1-superm1@kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Andreas said:
+
+: In gfs2, fault_in_iov_iter_writeable() is used in
+: gfs2_file_direct_read() and gfs2_file_read_iter(), so this potentially
+: affects buffered as well as direct reads.  This bug could cause those
+: gfs2 functions to spin in a loop.
+
+Link: https://lkml.kernel.org/r/20250410035717.473207-1-bhe@redhat.com
+Link: https://lkml.kernel.org/r/20250410035717.473207-2-bhe@redhat.com
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Fixes: fe673d3f5bf1 ("mm: gup: make fault_in_safe_writeable() use fixup_user_fault()")
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmf/auto-mode.c |    4 ++--
- drivers/platform/x86/amd/pmf/cnqf.c      |    8 ++++----
- drivers/platform/x86/amd/pmf/core.c      |   14 ++++++++++++++
- drivers/platform/x86/amd/pmf/pmf.h       |    1 +
- drivers/platform/x86/amd/pmf/sps.c       |   12 ++++++++----
- drivers/platform/x86/amd/pmf/tee-if.c    |    6 ++++--
- 6 files changed, 33 insertions(+), 12 deletions(-)
+ mm/gup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/x86/amd/pmf/auto-mode.c
-+++ b/drivers/platform/x86/amd/pmf/auto-mode.c
-@@ -120,9 +120,9 @@ static void amd_pmf_set_automode(struct
- 	amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pwr_ctrl->sppt_apu_only, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pwr_ctrl->stt_min, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
--			 pwr_ctrl->stt_skin_temp[STT_TEMP_APU], NULL);
-+			 fixp_q88_fromint(pwr_ctrl->stt_skin_temp[STT_TEMP_APU]), NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
--			 pwr_ctrl->stt_skin_temp[STT_TEMP_HS2], NULL);
-+			 fixp_q88_fromint(pwr_ctrl->stt_skin_temp[STT_TEMP_HS2]), NULL);
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1871,8 +1871,8 @@ size_t fault_in_safe_writeable(const cha
+ 	} while (start != end);
+ 	mmap_read_unlock(mm);
  
- 	if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
- 		apmf_update_fan_idx(dev, config_store.mode_set[idx].fan_control.manual,
---- a/drivers/platform/x86/amd/pmf/cnqf.c
-+++ b/drivers/platform/x86/amd/pmf/cnqf.c
-@@ -81,10 +81,10 @@ static int amd_pmf_set_cnqf(struct amd_p
- 	amd_pmf_send_cmd(dev, SET_SPPT, false, pc->sppt, NULL);
- 	amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pc->sppt_apu_only, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pc->stt_min, NULL);
--	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, pc->stt_skin_temp[STT_TEMP_APU],
--			 NULL);
--	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, pc->stt_skin_temp[STT_TEMP_HS2],
--			 NULL);
-+	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
-+			 fixp_q88_fromint(pc->stt_skin_temp[STT_TEMP_APU]), NULL);
-+	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
-+			 fixp_q88_fromint(pc->stt_skin_temp[STT_TEMP_HS2]), NULL);
- 
- 	if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
- 		apmf_update_fan_idx(dev,
---- a/drivers/platform/x86/amd/pmf/core.c
-+++ b/drivers/platform/x86/amd/pmf/core.c
-@@ -176,6 +176,20 @@ static void __maybe_unused amd_pmf_dump_
- 	dev_dbg(dev->dev, "AMD_PMF_REGISTER_MESSAGE:%x\n", value);
+-	if (size > (unsigned long)uaddr - start)
+-		return size - ((unsigned long)uaddr - start);
++	if (size > start - (unsigned long)uaddr)
++		return size - (start - (unsigned long)uaddr);
+ 	return 0;
  }
- 
-+/**
-+ * fixp_q88_fromint: Convert integer to Q8.8
-+ * @val: input value
-+ *
-+ * Converts an integer into binary fixed point format where 8 bits
-+ * are used for integer and 8 bits are used for the decimal.
-+ *
-+ * Return: unsigned integer converted to Q8.8 format
-+ */
-+u32 fixp_q88_fromint(u32 val)
-+{
-+	return val << 8;
-+}
-+
- int amd_pmf_send_cmd(struct amd_pmf_dev *dev, u8 message, bool get, u32 arg, u32 *data)
- {
- 	int rc;
---- a/drivers/platform/x86/amd/pmf/pmf.h
-+++ b/drivers/platform/x86/amd/pmf/pmf.h
-@@ -746,6 +746,7 @@ int apmf_install_handler(struct amd_pmf_
- int apmf_os_power_slider_update(struct amd_pmf_dev *dev, u8 flag);
- int amd_pmf_set_dram_addr(struct amd_pmf_dev *dev, bool alloc_buffer);
- int amd_pmf_notify_sbios_heartbeat_event_v2(struct amd_pmf_dev *dev, u8 flag);
-+u32 fixp_q88_fromint(u32 val);
- 
- /* SPS Layer */
- int amd_pmf_get_pprof_modes(struct amd_pmf_dev *pmf);
---- a/drivers/platform/x86/amd/pmf/sps.c
-+++ b/drivers/platform/x86/amd/pmf/sps.c
-@@ -198,9 +198,11 @@ static void amd_pmf_update_slider_v2(str
- 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
- 			 apts_config_store.val[idx].stt_min_limit, NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
--			 apts_config_store.val[idx].stt_skin_temp_limit_apu, NULL);
-+			 fixp_q88_fromint(apts_config_store.val[idx].stt_skin_temp_limit_apu),
-+			 NULL);
- 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
--			 apts_config_store.val[idx].stt_skin_temp_limit_hs2, NULL);
-+			 fixp_q88_fromint(apts_config_store.val[idx].stt_skin_temp_limit_hs2),
-+			 NULL);
- }
- 
- void amd_pmf_update_slider(struct amd_pmf_dev *dev, bool op, int idx,
-@@ -217,9 +219,11 @@ void amd_pmf_update_slider(struct amd_pm
- 		amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
- 				 config_store.prop[src][idx].stt_min, NULL);
- 		amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
--				 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU], NULL);
-+				 fixp_q88_fromint(config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU]),
-+				 NULL);
- 		amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
--				 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2], NULL);
-+				 fixp_q88_fromint(config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2]),
-+				 NULL);
- 	} else if (op == SLIDER_OP_GET) {
- 		amd_pmf_send_cmd(dev, GET_SPL, true, ARG_NONE, &table->prop[src][idx].spl);
- 		amd_pmf_send_cmd(dev, GET_FPPT, true, ARG_NONE, &table->prop[src][idx].fppt);
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -123,7 +123,8 @@ static void amd_pmf_apply_policies(struc
- 
- 		case PMF_POLICY_STT_SKINTEMP_APU:
- 			if (dev->prev_data->stt_skintemp_apu != val) {
--				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, val, NULL);
-+				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
-+						 fixp_q88_fromint(val), NULL);
- 				dev_dbg(dev->dev, "update STT_SKINTEMP_APU: %u\n", val);
- 				dev->prev_data->stt_skintemp_apu = val;
- 			}
-@@ -131,7 +132,8 @@ static void amd_pmf_apply_policies(struc
- 
- 		case PMF_POLICY_STT_SKINTEMP_HS2:
- 			if (dev->prev_data->stt_skintemp_hs2 != val) {
--				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, val, NULL);
-+				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
-+						 fixp_q88_fromint(val), NULL);
- 				dev_dbg(dev->dev, "update STT_SKINTEMP_HS2: %u\n", val);
- 				dev->prev_data->stt_skintemp_hs2 = val;
- 			}
+ EXPORT_SYMBOL(fault_in_safe_writeable);
 
 
 
