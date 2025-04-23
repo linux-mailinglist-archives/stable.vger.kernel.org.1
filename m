@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC533A98FDB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12A0A992C8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C1611BA060F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDDE24A1897
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE354280CF1;
-	Wed, 23 Apr 2025 15:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C468629CB58;
+	Wed, 23 Apr 2025 15:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ovJ0C17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7npAKPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A2C17B421;
-	Wed, 23 Apr 2025 15:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76ED029CB4F;
+	Wed, 23 Apr 2025 15:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420536; cv=none; b=MQxb4BnkU6YEcppeJ6Qs1CHPNm3n/L5AyhDEKEF0d44R6F3mKB8mKXTMdNmsJkglMw0Mg2512ad6ekOuyyabhjmmPhTxx+ZMY9fsIqPb1kB7JLeN084g2EmnMe7o7ONIHmN/MOQ4InNgw5OjpuggZdKWdtRZbOJe6lViT0wdjTA=
+	t=1745422040; cv=none; b=iC7DgxlATJvdXBJIeLKpVwSC+yoMP0zGO/MnoVh2/+rUqNZsY/2omJ8coxhj4SCRKYID3zn/IXP1g26lXEIfUL/rwhpKlGRZYiR+13Yj/DWncXssRppteHjAEd15xjP29PfCnas53Enzlp7E+ec6oSG7uXBuWZ/kmo/f1bdo7Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420536; c=relaxed/simple;
-	bh=c8uG7p5SV3Q/1JPmUf9LDtTmDgw5vnY8vBuP8GnYdV4=;
+	s=arc-20240116; t=1745422040; c=relaxed/simple;
+	bh=PYRy9mSNd45eh0W0dLK6quNm/HVGA98UeIx+nBHmRGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jFUgk7RiJj5DaIXnLR2ESmkitFI9QFkvu93ZmNSRkQ+2cjaDGjkW4zzze68c1Au+cZitx9Q3YRnDuUVol99sh/aHPcmbFmODbBIYX9JifU4e7kpM228jDvMx2tew/jg8AGrgAbYIIgizcd5BGipJhWmAWy2SrWd9QCpsRPYV3+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ovJ0C17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B29F4C4CEE2;
-	Wed, 23 Apr 2025 15:02:14 +0000 (UTC)
+	 MIME-Version; b=eLAui7O2kQUWB5MJ8AwX5DRX42iZl+vIWgEoi2H/v3e4V3vGxkSdsPGtOcubVO1GROnSjeuQbXna6XHmaW/m0JXY0zhgqtZZwDGnAQZbwysDHvAKcCvxpeNcpFEuqhUXRqcLcNcd/QciFpxCH9oQoRnn7sEIluwKKu+AVs7um2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7npAKPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77226C4CEE2;
+	Wed, 23 Apr 2025 15:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420535;
-	bh=c8uG7p5SV3Q/1JPmUf9LDtTmDgw5vnY8vBuP8GnYdV4=;
+	s=korg; t=1745422037;
+	bh=PYRy9mSNd45eh0W0dLK6quNm/HVGA98UeIx+nBHmRGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ovJ0C17c9te2OKEfgstPNOVhl+f4N+Pea9shoTaHlH534HdRH8Ookt4NHqk2UJZK
-	 u94S4kq4YbEBVPgkl8qOIHxNE6kqxcDrlgiGf7uPDlkLDwhrcHzbehNPe+qxqR5Doo
-	 JxdqsciyHKyXMIWZuqOE/o3c3K7Y33WJd2pD/2VE=
+	b=J7npAKPlp8WUrwej+r/frXXvgd6f4jUNkjTaKlVgHhDKv5TZcsOBXNakiZoI8BFi7
+	 R6p3Ky6kRxHRp8Iq1v1fE9/AxyKQ6XTvyj4+R5X/M/PMZIBYKcF5O6q8yh6CuvLeVk
+	 EI4PkUa8FDpRBdl9SDDRi1e3+ZZBzZ3+Fli248k4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 139/223] scsi: ufs: exynos: Ensure consistent phy reference counts
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 222/291] tracing: Fix filter string testing
 Date: Wed, 23 Apr 2025 16:43:31 +0200
-Message-ID: <20250423142622.750307904@linuxfoundation.org>
+Message-ID: <20250423142633.493532678@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 7f05fd9a3b6fb3a9abc5a748307d11831c03175f upstream.
+commit a8c5b0ed89a3f2c81c6ae0b041394e6eea0e7024 upstream.
 
-ufshcd_link_startup() can call ufshcd_vops_link_startup_notify()
-multiple times when retrying. This causes the phy reference count to
-keep increasing and the phy to not properly re-initialize.
+The filter string testing uses strncpy_from_kernel/user_nofault() to
+retrieve the string to test the filter against. The if() statement was
+incorrect as it considered 0 as a fault, when it is only negative that it
+faulted.
 
-If the phy has already been previously powered on, first issue a
-phy_power_off() and phy_exit(), before re-initializing and powering on
-again.
+Running the following commands:
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-4-96722cc2ba1b@linaro.org
-Fixes: 3d73b200f989 ("scsi: ufs: ufs-exynos: Change ufs phy control sequence")
+  # cd /sys/kernel/tracing
+  # echo "filename.ustring ~ \"/proc*\"" > events/syscalls/sys_enter_openat/filter
+  # echo 1 > events/syscalls/sys_enter_openat/enable
+  # ls /proc/$$/maps
+  # cat trace
+
+Would produce nothing, but with the fix it will produce something like:
+
+      ls-1192    [007] .....  8169.828333: sys_openat(dfd: ffffffffffffff9c, filename: 7efc18359904, flags: 80000, mode: 0)
+
+Link: https://lore.kernel.org/all/CAEf4BzbVPQ=BjWztmEwBPRKHUwNfKBkS3kce-Rzka6zvbQeVpg@mail.gmail.com/
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250417183003.505835fb@gandalf.local.home
+Fixes: 77360f9bbc7e5 ("tracing: Add test for user space strings when filtering on string pointers")
+Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Reported-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/trace/trace_events_filter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -915,6 +915,12 @@ static int exynos_ufs_phy_init(struct ex
- 	}
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -716,7 +716,7 @@ static __always_inline char *test_string
+ 	kstr = ubuf->buffer;
  
- 	phy_set_bus_width(generic_phy, ufs->avail_ln_rx);
-+
-+	if (generic_phy->power_count) {
-+		phy_power_off(generic_phy);
-+		phy_exit(generic_phy);
-+	}
-+
- 	ret = phy_init(generic_phy);
- 	if (ret) {
- 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
+ 	/* For safety, do not trust the string pointer */
+-	if (!strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE))
++	if (strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE) < 0)
+ 		return NULL;
+ 	return kstr;
+ }
+@@ -735,7 +735,7 @@ static __always_inline char *test_ustrin
+ 
+ 	/* user space address? */
+ 	ustr = (char __user *)str;
+-	if (!strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE))
++	if (strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE) < 0)
+ 		return NULL;
+ 
+ 	return kstr;
 
 
 
