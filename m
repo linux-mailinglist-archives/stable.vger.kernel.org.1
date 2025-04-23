@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AE8A98E4A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E1BAA992AE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54B867AD643
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BB82466165
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC3B127FD56;
-	Wed, 23 Apr 2025 14:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F182E29DB8E;
+	Wed, 23 Apr 2025 15:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXiPmJck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htB971Cj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76DC481CD;
-	Wed, 23 Apr 2025 14:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A632228D83D;
+	Wed, 23 Apr 2025 15:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420060; cv=none; b=t8aBfIfB6IMhooTV/QSw3Vh3CnlPuoSqTyX6v/hUAuvmIwYvtdi9d62VBhL+ct/0KUKMb3t845t5i6uRKIxkDTZx4+w61uskeQlZWSfcpURptEHKuhlICDG3Ppc5bnaaZKEabo4UTZchzxL1H4MUxqtf1RBeZ2nY6MnHPfOGIAo=
+	t=1745422073; cv=none; b=KFclD94D38eCKU7JLL7LE/HZqe5V2sr2lBSteHw6lNrUImOFJP/Nc6eDZCQ+5L48MjEXL1ypNSzYz8Tt7QHGKaPjsoS+PJ8fNfZ/UQqQhqW6QFEt/h9JXYK69Gc/5cBA0fL2GhltqH6KT96nTKFawzL8zgkAxBi2bvUCqjq+WQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420060; c=relaxed/simple;
-	bh=2nfp0xTt3kMgyRHQxEOYV5jkOU7nPdZ2xnsC4zGBJmI=;
+	s=arc-20240116; t=1745422073; c=relaxed/simple;
+	bh=sSZFYT9KDWJeETVC3axn7hQ142uyp3NE9bR0ZGAP3io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qw5mjYLCku8RAk7ufcVorxZy5SO0ASqrdEn4KyNFIKQv8XzhcSTciQVnWoDwpuBWaxpxpSaQNo2+gnQaS237gXeIi3N33pD0zocJipgSuiPDyvuhsZ9tBSfKe0xIsJAkJVH6Q+Onj2qFq1H4tuHDQYYUOecNFJXGblwndVW0s7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXiPmJck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A60EC4CEE2;
-	Wed, 23 Apr 2025 14:54:20 +0000 (UTC)
+	 MIME-Version; b=k6oCvXjJrbkVPaq2P8DgRq4QcqayBhE08aMnjaB71vjhKHa4o55gEgBNxDRCsf4pXrpa0d4bj9Hg3UXhMQKsPhzh/yUJxLB+dYjW3Zeg2vEwW1Dd9XgF1He2qVhKt9vRbnFG/QlSczRVjTmRXSVk44Oc0gyeI00dqgJMi+WiEBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htB971Cj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4579C4CEE2;
+	Wed, 23 Apr 2025 15:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420060;
-	bh=2nfp0xTt3kMgyRHQxEOYV5jkOU7nPdZ2xnsC4zGBJmI=;
+	s=korg; t=1745422073;
+	bh=sSZFYT9KDWJeETVC3axn7hQ142uyp3NE9bR0ZGAP3io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXiPmJckU9ezc+GeaIBUZEeclgv/e1Vr16nedTAhGeAlIAhdU2Hz2XZkT63HqoUu+
-	 vZTw99BlzTH69siresQQBJsINUK3Po5HVuRDt6XURJIVWC0cNmr85q0xDiLlLaYS0N
-	 7YNpNKf5BUrQ5ImcWlIHd+ZExMYDBjEMtfiIm6zc=
+	b=htB971Cj9eNXE+I0jRjQbJj+1j8skC69BsZwI02A7m6tvho/HbeamhppMhDNtGAvP
+	 qx3f+Ep9FwOAmmLnc9h1OAY8dTL6FE9AuNzMMjlL6r+h0uU6LwDHgiui2E5OvrG+X/
+	 fTnrvO0CAVXs4Vgw060bnB76yLANo10PR1/39xzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 096/223] drm/v3d: Fix Indirect Dispatch configuration for V3D 7.1.6 and later
-Date: Wed, 23 Apr 2025 16:42:48 +0200
-Message-ID: <20250423142621.028354317@linuxfoundation.org>
+Subject: [PATCH 6.6 273/393] ata: libata-sata: Save all fields from sense data descriptor
+Date: Wed, 23 Apr 2025 16:42:49 +0200
+Message-ID: <20250423142654.631465847@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit dcdae6e92d4e062da29235fe88980604595e3f0f ]
+[ Upstream commit 399eab7f92fb73ffe621294a2d6bec8fc9f3b36b ]
 
-This commit is a resubmission of commit 1fe1c66274fb ("drm/v3d: Fix
-Indirect Dispatch configuration for V3D 7.1.6 and later"), which was
-accidentally reverted by commit 91dae758bdb8 ("Merge tag
-'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel
-into drm-next"), likely due to an unfortunate conflict resolution.
+When filling the taskfile result for a successful NCQ command, we use
+the SDB FIS from the FIS Receive Area, see e.g. ahci_qc_ncq_fill_rtf().
 
->From the original commit message:
+However, the SDB FIS only has fields STATUS and ERROR.
 
-```
-`args->cfg[4]` is configured in Indirect Dispatch using the number of
-batches. Currently, for all V3D tech versions, `args->cfg[4]` equals the
-number of batches subtracted by 1. But, for V3D 7.1.6 and later, we must not
-subtract 1 from the number of batches.
+For a successful NCQ command that has sense data, we will have a
+successful sense data descriptor, in the Sense Data for Successful NCQ
+Commands log.
 
-Implement the fix by checking the V3D tech version and revision.
+Since we have access to additional taskfile result fields, fill in these
+additional fields in qc->result_tf.
 
-Fixes several `dEQP-VK.synchronization*` CTS tests related to Indirect Dispatch.
-```
+This matches how for failing/aborted NCQ commands, we will use e.g.
+ahci_qc_fill_rtf() to fill in some fields, but then for the command that
+actually caused the NCQ error, we will use ata_eh_read_log_10h(), which
+provides additional fields, saving additional fields/overriding the
+qc->result_tf that was fetched using ahci_qc_fill_rtf().
 
-Fixes: 91dae758bdb8 ("Merge tag 'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-next")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://lore.kernel.org/r/20250409205051.9639-1-mcanal@igalia.com
+Fixes: 18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/ata/libata-sata.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 3066cfdb054cc..4a6aa36619fe3 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -410,7 +410,8 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
- 	struct v3d_bo *bo = to_v3d_bo(job->base.bo[0]);
- 	struct v3d_bo *indirect = to_v3d_bo(indirect_csd->indirect);
- 	struct drm_v3d_submit_csd *args = &indirect_csd->job->args;
--	u32 *wg_counts;
-+	struct v3d_dev *v3d = job->base.v3d;
-+	u32 num_batches, *wg_counts;
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index a701e1538482f..be72030a500d4 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -1365,6 +1365,8 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
+ 	unsigned int err_mask, tag;
+ 	u8 *sense, sk = 0, asc = 0, ascq = 0;
+ 	u64 sense_valid, val;
++	u16 extended_sense;
++	bool aux_icc_valid;
+ 	int ret = 0;
  
- 	v3d_get_bo_vaddr(bo);
- 	v3d_get_bo_vaddr(indirect);
-@@ -423,8 +424,17 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
- 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
--	args->cfg[4] = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
--		       (wg_counts[0] * wg_counts[1] * wg_counts[2]) - 1;
-+
-+	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
-+		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
-+
-+	/* V3D 7.1.6 and later don't subtract 1 from the number of batches */
-+	if (v3d->ver < 71 || (v3d->ver == 71 && v3d->rev < 6))
-+		args->cfg[4] = num_batches - 1;
-+	else
-+		args->cfg[4] = num_batches;
-+
-+	WARN_ON(args->cfg[4] == ~0);
+ 	err_mask = ata_read_log_page(dev, ATA_LOG_SENSE_NCQ, 0, buf, 2);
+@@ -1384,6 +1386,8 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
  
- 	for (int i = 0; i < 3; i++) {
- 		/* 0xffffffff indicates that the uniform rewrite is not needed */
+ 	sense_valid = (u64)buf[8] | ((u64)buf[9] << 8) |
+ 		((u64)buf[10] << 16) | ((u64)buf[11] << 24);
++	extended_sense = get_unaligned_le16(&buf[14]);
++	aux_icc_valid = extended_sense & BIT(15);
+ 
+ 	ata_qc_for_each_raw(ap, qc, tag) {
+ 		if (!(qc->flags & ATA_QCFLAG_EH) ||
+@@ -1411,6 +1415,17 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
+ 			continue;
+ 		}
+ 
++		qc->result_tf.nsect = sense[6];
++		qc->result_tf.hob_nsect = sense[7];
++		qc->result_tf.lbal = sense[8];
++		qc->result_tf.lbam = sense[9];
++		qc->result_tf.lbah = sense[10];
++		qc->result_tf.hob_lbal = sense[11];
++		qc->result_tf.hob_lbam = sense[12];
++		qc->result_tf.hob_lbah = sense[13];
++		if (aux_icc_valid)
++			qc->result_tf.auxiliary = get_unaligned_le32(&sense[16]);
++
+ 		/* Set sense without also setting scsicmd->result */
+ 		scsi_build_sense_buffer(dev->flags & ATA_DFLAG_D_SENSE,
+ 					qc->scsicmd->sense_buffer, sk,
 -- 
 2.39.5
 
