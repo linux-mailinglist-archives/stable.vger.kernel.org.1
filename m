@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7CFA991E1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E603DA9919A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C25641B85A85
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 283D71B81590
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092D228EA76;
-	Wed, 23 Apr 2025 15:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CA62853E1;
+	Wed, 23 Apr 2025 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxoW738v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWWHvDdL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BF42641EA;
-	Wed, 23 Apr 2025 15:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF604284B4B;
+	Wed, 23 Apr 2025 15:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421628; cv=none; b=aIlnfIDMChTjJ5R67Crj1+o+0DKtttHwDsucmvkw0ZIurLI6FsdZWiBYXr0Ve98zYtwI/sRA+s3GNFKdqVD3HC+rsdZ/QRL/MHhzZnBSWI7vNFLkT8fr7Pn4dYQF76BjaO7aZGJIYZZuURB4NsVaD+ahzbxQosBSA9VSjC9gZJk=
+	t=1745421251; cv=none; b=hLbs8GL+aFrLr7SkDXBSQhO5myP3V1T6iBjH5LQKNW7n60OogSLcn3V1wq//qqsvSECrq3qu/hIJWyHCUt+RqlSdAzMTeOliDo4r+AvcH6M+TCeI9mBB3mCbqCikB+PYtkad73EtGMXLMg7HBdu7fzyjues9AzX3uh804NaZHPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421628; c=relaxed/simple;
-	bh=xoP1KCN4ZY7R692igvLNk0CaOlS692Qy1NeEeH5Xz1s=;
+	s=arc-20240116; t=1745421251; c=relaxed/simple;
+	bh=+LYxqF1CO+/ywOk2AAFtdc/0EgRMhF47fJFgeJ4zW1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PB/I0EdgSYn0r+hY6jfG7Ip7YJeGwdT8dKmlIolLnYvoUHsCY6VItRp0ffbY99LBDogQBFvUEVAxmmDvoEDhk4ZjyCHam+Nns18MzbnHN9ZqWqGTorwfrJQttImtrOujBAh9FCXvOmFTd0H3+GSjqNjxz9RuErC9zYDyD2MYIlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxoW738v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A594C4CEE2;
-	Wed, 23 Apr 2025 15:20:28 +0000 (UTC)
+	 MIME-Version; b=VIRFAVkq8oqQ/4bVoZK1UebkiOhdaQVyDYgsnFnMDRmD+4ayf/6wS+5/XrGiMbYBOz1TmHWEUHpTSEqJpQL34wcnV9cBehtojivBgjaZpet+EyWEXwJK1Ga9ENlCVV4835UCmJ24Qvhk6U/G07AY128Q65Z7YFzjVlwTC7ZILJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWWHvDdL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B47C4CEE2;
+	Wed, 23 Apr 2025 15:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421628;
-	bh=xoP1KCN4ZY7R692igvLNk0CaOlS692Qy1NeEeH5Xz1s=;
+	s=korg; t=1745421251;
+	bh=+LYxqF1CO+/ywOk2AAFtdc/0EgRMhF47fJFgeJ4zW1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxoW738vAU+DvifspDJIIaHYrZGdngOgHlSoRboFgjxmXhqMnj5ijwdbh1lucMtLu
-	 hzMowFv/OAttQrOPA3SXDmoeheibV6zWTf4unatSkE2HYBDqoirJHUDijsAjF1u069
-	 FCCP3cjs/UxT4xeJqPJg/T1zp7CuHcJtUUJfn3a4=
+	b=lWWHvDdLcWWl+hMmo/e6db1TfucDRdr9gIDpLvg6xdiijXZXFMeSb5/6PDPilmfS4
+	 1sEbbQpdcsE1fs8PbDWzc6PiHDbsIJk5H1e0PHk6s96x/BAOh+UmpW9SW1c+0M9Gzc
+	 0umaHQZTF5KJM8Va8A6PrsPP0KvDNzo6n7BHIOlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.14 213/241] drm/xe/userptr: fix notifier vs folio deadlock
+	WangYuli <wangyuli@uniontech.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.12 205/223] nvmet-fc: Remove unused functions
 Date: Wed, 23 Apr 2025 16:44:37 +0200
-Message-ID: <20250423142629.261025398@linuxfoundation.org>
+Message-ID: <20250423142625.516547759@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 2577b202458cddff85cc154b1fe7f313e0d1f418 upstream.
+commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c upstream.
 
-User is reporting what smells like notifier vs folio deadlock, where
-migrate_pages_batch() on core kernel side is holding folio lock(s) and
-then interacting with the mappings of it, however those mappings are
-tied to some userptr, which means calling into the notifier callback and
-grabbing the notifier lock. With perfect timing it looks possible that
-the pages we pulled from the hmm fault can get sniped by
-migrate_pages_batch() at the same time that we are holding the notifier
-lock to mark the pages as accessed/dirty, but at this point we also want
-to grab the folio locks(s) to mark them as dirty, but if they are
-contended from notifier/migrate_pages_batch side then we deadlock since
-folio lock won't be dropped until we drop the notifier lock.
+The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
+unutilized.
 
-Fortunately the mark_page_accessed/dirty is not really needed in the
-first place it seems and should have already been done by hmm fault, so
-just remove it.
+Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
+transport"), which introduced these two functions, they have not been
+used at all in practice.
 
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4765
-Fixes: 0a98219bcc96 ("drm/xe/hmm: Don't dereference struct page pointers without notifier lock")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://lore.kernel.org/r/20250414132539.26654-2-matthew.auld@intel.com
-(cherry picked from commit bd7c0cb695e87c0e43247be8196b4919edbe0e85)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Remove them to resolve the compiler warnings.
+
+Fix follow errors with clang-19 when W=1e:
+  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
+    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+        | ^~~~~~~~~~~~~~~
+  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
+    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+        | ^~~~~~~~~~~~~~~
+  2 errors generated.
+  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
+  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
+  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
+  make[6]: *** Waiting for unfinished jobs....
+
+Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_hmm.c |   24 ------------------------
- 1 file changed, 24 deletions(-)
+ drivers/nvme/target/fc.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_hmm.c
-+++ b/drivers/gpu/drm/xe/xe_hmm.c
-@@ -19,29 +19,6 @@ static u64 xe_npages_in_range(unsigned l
- 	return (end - start) >> PAGE_SHIFT;
- }
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -172,20 +172,6 @@ struct nvmet_fc_tgt_assoc {
+ 	struct work_struct		del_work;
+ };
  
--/**
-- * xe_mark_range_accessed() - mark a range is accessed, so core mm
-- * have such information for memory eviction or write back to
-- * hard disk
-- * @range: the range to mark
-- * @write: if write to this range, we mark pages in this range
-- * as dirty
-- */
--static void xe_mark_range_accessed(struct hmm_range *range, bool write)
+-
+-static inline int
+-nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
 -{
--	struct page *page;
--	u64 i, npages;
--
--	npages = xe_npages_in_range(range->start, range->end);
--	for (i = 0; i < npages; i++) {
--		page = hmm_pfn_to_page(range->hmm_pfns[i]);
--		if (write)
--			set_page_dirty_lock(page);
--
--		mark_page_accessed(page);
--	}
+-	return (iodptr - iodptr->tgtport->iod);
 -}
 -
- static int xe_alloc_sg(struct xe_device *xe, struct sg_table *st,
- 		       struct hmm_range *range, struct rw_semaphore *notifier_sem)
- {
-@@ -331,7 +308,6 @@ int xe_hmm_userptr_populate_range(struct
- 	if (ret)
- 		goto out_unlock;
- 
--	xe_mark_range_accessed(&hmm_range, write);
- 	userptr->sg = &userptr->sgt;
- 	xe_hmm_userptr_set_mapped(uvma);
- 	userptr->notifier_seq = hmm_range.notifier_seq;
+-static inline int
+-nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+-{
+-	return (fodptr - fodptr->queue->fod);
+-}
+-
+-
+ /*
+  * Association and Connection IDs:
+  *
 
 
 
