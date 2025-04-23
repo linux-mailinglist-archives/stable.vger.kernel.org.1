@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EBD2A991F5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3915AA98E38
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68AA2445499
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C8905A5EC1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80922BD5AC;
-	Wed, 23 Apr 2025 15:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5971727F4F3;
+	Wed, 23 Apr 2025 14:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqa3HDB8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQB5PVjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D75457C9F;
-	Wed, 23 Apr 2025 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C1719DF4C;
+	Wed, 23 Apr 2025 14:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421679; cv=none; b=dwH11gQxU+xANn4yVRsee8FaLAAETL1MhsPtSeqZh5LCBVm1seJn7ZqJxERFEJUa3yCcSMJ8UXQie/VAdddF8Ou6YUPD75DB9PiR5fO96mMY8JiL3FMUKCkGR7r7WzzagMsbbR7gC3VCeAD+xupb0ia3+uuoBQKkmcrClkX2hzg=
+	t=1745419887; cv=none; b=ApXOUudEetpY7YFeGvraBR+QxpqRm9NNviVIa1txUubhwt4U5KGVHpDQdFA75szDwXzySF3OWVqQJh43w5zoNvqd0zRKbo0quP6gqZU2I+CgfsuSc1PHChcjfdpvE2ToV0Zu9jiju78tsp6X9IS/IHYAgsuhIpMOdcXawHlMY1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421679; c=relaxed/simple;
-	bh=FJyfqF81T6FmGn5xSl2kjR5LHeJTAOfiEpSLjRe+LnU=;
+	s=arc-20240116; t=1745419887; c=relaxed/simple;
+	bh=WLoMfyowHOjZYcNh7ABO1tdAtw34kpfvCtg2y2VWHYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8ferVlF07ZIb7yfAYQ4+jTFkLl1BJiDo4XVzshhJd7Hr4GK8sA/qmE6aNtSfqgVW5ngDQXmcXRoRc0Z47pkaeIzct8bNssB4pqKulRoGdABO2hL8D5qBLl1yCoGRFj0bCDkGS2TcYaW3waUkgvJyasCA45PiVv1miqzOcy8Joo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqa3HDB8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63162C4CEE3;
-	Wed, 23 Apr 2025 15:21:16 +0000 (UTC)
+	 MIME-Version; b=eKOU/ZUv06AWDkY6PGn+HhgMNxh3zK7FI6nLa39jau6fgq1vnq0QYaRNojVqRFZDItyQCyVbhZuz0lHvKt/tNJOkTV3adBfA3J02eGl6MqgiB0FpBeAV1Du/Z7xDtkp6MCWQVQ0k5a2XUn6TnD0ocnjPx+uddKoTt/4NHomKLuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQB5PVjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F07C4CEE2;
+	Wed, 23 Apr 2025 14:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421676;
-	bh=FJyfqF81T6FmGn5xSl2kjR5LHeJTAOfiEpSLjRe+LnU=;
+	s=korg; t=1745419887;
+	bh=WLoMfyowHOjZYcNh7ABO1tdAtw34kpfvCtg2y2VWHYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqa3HDB8N6+NMkxwsjfeQ9qtLt52Eo0VwjKAzZvxaJL3aMBeYM7+BW+1Yoi82WqS9
-	 vIv32fsWW/amEHOlaHXQkfhH3wigqpiR72zQTNsdUJHVC9bFTsckUy0cxq+PXLULGc
-	 kxD2Hw7XqxCoWB1qzbljxxdgjrgiVloyQY9NG2eo=
+	b=oQB5PVjSGLuuu+mb7Hb9q+5UiALHN6kL7QljKtPVqWCGnpa7Qhfz2FoOMDPii4nHQ
+	 LN908rHkWH8TX4v1qa6qaP1kKv3vVHOsFoc3lSvIyAWvizdXwu3yBHITGMnVTToqGw
+	 s/S1+UtqEStqMkrVlXgRSxjKVHcWcN4HI0ZRZWv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 207/393] clk: qcom: gdsc: Set retain_ff before moving to HW CTRL
+	Chun-Tse Shao <ctshao@google.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 039/241] perf tools: Remove evsel__handle_error_quirks()
 Date: Wed, 23 Apr 2025 16:41:43 +0200
-Message-ID: <20250423142651.935704146@linuxfoundation.org>
+Message-ID: <20250423142622.110255163@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 25708f73ff171bb4171950c9f4be5aa8504b8459 upstream.
+[ Upstream commit 2b70702917337a8d6d07f03eed961e0119091647 ]
 
-Enable the retain_ff_enable bit of GDSCR only if the GDSC is already ON.
-Once the GDSCR moves to HW control, SW no longer can determine the state
-of the GDSCR and setting the retain_ff bit could destroy all the register
-contents we intended to save.
-Therefore, move the retain_ff configuration before switching the GDSC to
-HW trigger mode.
+The evsel__handle_error_quirks() is to fixup invalid event attributes on
+some architecture based on the error code.  Currently it's only used for
+AMD to disable precise_ip not to use IBS which has more restrictions.
 
-Cc: stable@vger.kernel.org
-Fixes: 173722995cdb ("clk: qcom: gdsc: Add support to enable retention of GSDCR")
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Tested-by: Imran Shaik <quic_imrashai@quicinc.com> # on QCS8300
-Link: https://lore.kernel.org/r/20250214-gdsc_fixes-v1-1-73e56d68a80f@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But the commit c33aea446bf555ab changed call evsel__precise_ip_fallback
+for any errors so there's no difference with the above function.  To
+make matter worse, it caused a problem with branch stack on Zen3.
+
+The IBS doesn't support branch stack so it should use a regular core
+PMU event.  The default event is set precise_max and it starts with 3.
+And evsel__precise_ip_fallback() tries with it and reduces the level one
+by one.  At last it tries with 0 but it also failed on Zen3 since the
+branch stack is not supported for the cycles event.
+
+At this point, evsel__precise_ip_fallback() restores the original
+precise_ip value (3) in the hope that it can succeed with other modifier
+(like exclude_kernel).  Then evsel__handle_error_quirks() see it has
+precise_ip != 0 and make it retry with 0.  This created an infinite
+loop.
+
+Before:
+
+  $ perf record -b -vv |& grep removing
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  removing precise_ip on AMD
+  ...
+
+After:
+
+  $ perf record -b true
+  Error:
+  Failure to open event 'cycles:P' on PMU 'cpu' which will be removed.
+  Invalid event (cycles:P) in per-thread mode, enable system wide with '-a'.
+  Error:
+  Failure to open any events for recording.
+
+Fixes: c33aea446bf555ab ("perf tools: Fix precise_ip fallback logic")
+Tested-by: Chun-Tse Shao <ctshao@google.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250410010252.402221-1-namhyung@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gdsc.c |   21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ tools/perf/util/evsel.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
 
---- a/drivers/clk/qcom/gdsc.c
-+++ b/drivers/clk/qcom/gdsc.c
-@@ -292,6 +292,9 @@ static int gdsc_enable(struct generic_pm
- 	 */
- 	udelay(1);
- 
-+	if (sc->flags & RETAIN_FF_ENABLE)
-+		gdsc_retain_ff_on(sc);
-+
- 	/* Turn on HW trigger mode if supported */
- 	if (sc->flags & HW_CTRL) {
- 		ret = gdsc_hwctrl(sc, true);
-@@ -308,9 +311,6 @@ static int gdsc_enable(struct generic_pm
- 		udelay(1);
- 	}
- 
--	if (sc->flags & RETAIN_FF_ENABLE)
--		gdsc_retain_ff_on(sc);
--
- 	return 0;
+diff --git a/tools/perf/util/evsel.c b/tools/perf/util/evsel.c
+index 9cd78cdee6282..c99eb9ff17ed6 100644
+--- a/tools/perf/util/evsel.c
++++ b/tools/perf/util/evsel.c
+@@ -2556,25 +2556,6 @@ static bool evsel__detect_missing_features(struct evsel *evsel, struct perf_cpu
+ 	return false;
  }
  
-@@ -420,13 +420,6 @@ static int gdsc_init(struct gdsc *sc)
- 				goto err_disable_supply;
- 		}
- 
--		/* Turn on HW trigger mode if supported */
--		if (sc->flags & HW_CTRL) {
--			ret = gdsc_hwctrl(sc, true);
--			if (ret < 0)
--				goto err_disable_supply;
--		}
+-static bool evsel__handle_error_quirks(struct evsel *evsel, int error)
+-{
+-	/*
+-	 * AMD core PMU tries to forward events with precise_ip to IBS PMU
+-	 * implicitly.  But IBS PMU has more restrictions so it can fail with
+-	 * supported event attributes.  Let's forward it back to the core PMU
+-	 * by clearing precise_ip only if it's from precise_max (:P).
+-	 */
+-	if ((error == -EINVAL || error == -ENOENT) && x86__is_amd_cpu() &&
+-	    evsel->core.attr.precise_ip && evsel->precise_max) {
+-		evsel->core.attr.precise_ip = 0;
+-		pr_debug2_peo("removing precise_ip on AMD\n");
+-		display_attr(&evsel->core.attr);
+-		return true;
+-	}
 -
- 		/*
- 		 * Make sure the retain bit is set if the GDSC is already on,
- 		 * otherwise we end up turning off the GDSC and destroying all
-@@ -434,6 +427,14 @@ static int gdsc_init(struct gdsc *sc)
- 		 */
- 		if (sc->flags & RETAIN_FF_ENABLE)
- 			gdsc_retain_ff_on(sc);
-+
-+		/* Turn on HW trigger mode if supported */
-+		if (sc->flags & HW_CTRL) {
-+			ret = gdsc_hwctrl(sc, true);
-+			if (ret < 0)
-+				goto err_disable_supply;
-+		}
-+
- 	} else if (sc->flags & ALWAYS_ON) {
- 		/* If ALWAYS_ON GDSCs are not ON, turn them ON */
- 		gdsc_enable(&sc->pd);
+-	return false;
+-}
+-
+ static int evsel__open_cpu(struct evsel *evsel, struct perf_cpu_map *cpus,
+ 		struct perf_thread_map *threads,
+ 		int start_cpu_map_idx, int end_cpu_map_idx)
+@@ -2720,9 +2701,6 @@ static int evsel__open_cpu(struct evsel *evsel, struct perf_cpu_map *cpus,
+ 	if (evsel__precise_ip_fallback(evsel))
+ 		goto retry_open;
+ 
+-	if (evsel__handle_error_quirks(evsel, err))
+-		goto retry_open;
+-
+ out_close:
+ 	if (err)
+ 		threads->err_thread = thread;
+-- 
+2.39.5
+
 
 
 
