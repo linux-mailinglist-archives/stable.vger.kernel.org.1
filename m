@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-136301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4E7A9938E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E362DA98F1A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D588B1BA547D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD0C9204D0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363A328EA43;
-	Wed, 23 Apr 2025 15:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4A927FD73;
+	Wed, 23 Apr 2025 14:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssM1IVtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8sJuLEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94FB261573;
-	Wed, 23 Apr 2025 15:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B79C27FD5B;
+	Wed, 23 Apr 2025 14:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422186; cv=none; b=BmQ/ww6RAweiB78bilP/dkM9FuGa/TNW0bfvAiS4YZhGhPxga3Xmi/y4SqC0lHEeMKnHw9NJ1lJVuvrgyilzjqA7G1prNqm6xUdtOb60Jxh+Yg8e2eMq3ItKaZbIXnGP2ndTw9IPCjfrGyvzGAyweg0g6UNukq610VE4Dmc+sP0=
+	t=1745420300; cv=none; b=MpdfV8BlLKc7LBWKhmxTQiYvrowYI1dTGt8yIu/DvplJiDCMGSAntdvdPjpabEzzpGrhXA029u8kiQ4tBKvqWAzWTWBefGAwMcMRFz5t7qLxfi7Xxf6MZGdIVeKd1JqOW/h0ySsNPQ6IhjN4rxF7OMMBcfTPstowpJ4Q/9bYG90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422186; c=relaxed/simple;
-	bh=8PZ5T85UIjubX7osB0/WXpP/PrQH+ym6kTYt33YFw/4=;
+	s=arc-20240116; t=1745420300; c=relaxed/simple;
+	bh=VZWEy9zB+zJ1BiPxeVr4LOkfCPGpbIQGEhk6JmBelPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=og6ZC71JbG6XAwSN1YyXKhudNgHAY8D72OYDd1JfQfMSuWpShvGAHUcHlagl9L8oWhWMevY+GWBp1YjwbIu/qQIZxzyYbuYZiP+HhxnxQXL+DryXM/ooWuhylstifRgJf09FJKrvDzqstl0eWph1VuCpjXcKLgK6xw5Z5iDd7q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssM1IVtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E10C4CEE2;
-	Wed, 23 Apr 2025 15:29:45 +0000 (UTC)
+	 MIME-Version; b=Ra2RgtVAwYQg2HtkVBHt9CXzCK8TUQ2Y1w3T039oxNin9L4YCXRq6yqXg5k5uPC65PZNRUytg69JzzJOuCf5bXwaEo++Kpu9iwEtO7kN1+6Vrn438CYQ2aNUJojhNooPpiG1pohapXb/1ruM3AQfv0GCRiI5Q0Vt7U38TDXeyAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8sJuLEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12BFC4CEE2;
+	Wed, 23 Apr 2025 14:58:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422185;
-	bh=8PZ5T85UIjubX7osB0/WXpP/PrQH+ym6kTYt33YFw/4=;
+	s=korg; t=1745420300;
+	bh=VZWEy9zB+zJ1BiPxeVr4LOkfCPGpbIQGEhk6JmBelPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ssM1IVtVwFXAuu1yZmPz5oiVErPlZfODijfZ8/d76oFEZZoCA/I8wSguyIyZSHJ7P
-	 O1zDaLANHu8lnD5UDT9rbCTjTkOJIIRwePoDEFGn97UrjyOUcFXhEkv78bslmuy57z
-	 NkoAi2853/b+h4PU1yD9z9/1gO+/ZhsZKYUccKt4=
+	b=a8sJuLEaBbg4Si5RdBttHwA620nKjG32t0ifhTT2qSkUA1rc+8EqSu5x0iWWXJaSr
+	 PRBcC3HAnxKFypwvpO8qd1830TC5Vey4+NLCZcODKp3OIdogIod5u0w3RaHqAc0A2G
+	 ebwAqncExJfG8rrSyyp4nlmVJ1vqWT241lAxeP3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 293/393] net: ethernet: mtk_eth_soc: correct the max weight of the queue limit for 100Mbps
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Zi Yan <ziy@nvidia.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 117/223] mm/compaction: fix bug in hugetlb handling pathway
 Date: Wed, 23 Apr 2025 16:43:09 +0200
-Message-ID: <20250423142655.442246408@linuxfoundation.org>
+Message-ID: <20250423142621.877247451@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
-[ Upstream commit 6b02eb372c6776c9abb8bc81cf63f96039c24664 ]
+commit a84edd52f0a0fa193f0f685769939cf84510755b upstream.
 
-Without this patch, the maximum weight of the queue limit will be
-incorrect when linked at 100Mbps due to an apparent typo.
+The compaction code doesn't take references on pages until we're certain
+we should attempt to handle it.
 
-Fixes: f63959c7eec31 ("net: ethernet: mtk_eth_soc: implement multi-queue support for per-port queues")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/74111ba0bdb13743313999ed467ce564e8189006.1744764277.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the hugetlb case, isolate_or_dissolve_huge_page() may return -EBUSY
+without taking a reference to the folio associated with our pfn.  If our
+folio's refcount drops to 0, compound_nr() becomes unpredictable, making
+low_pfn and nr_scanned unreliable.  The user-visible effect is minimal -
+this should rarely happen (if ever).
+
+Fix this by storing the folio statistics earlier on the stack (just like
+the THP and Buddy cases).
+
+Also revert commit 66fe1cf7f581 ("mm: compaction: use helper compound_nr
+in isolate_migratepages_block") to make backporting easier.
+
+Link: https://lkml.kernel.org/r/20250401021025.637333-1-vishal.moola@gmail.com
+Fixes: 369fa227c219 ("mm: make alloc_contig_range handle free hugetlb pages")
+Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/compaction.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index bdc424123ee6c..a22a5bdc7ce62 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -724,7 +724,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 		case SPEED_100:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 103) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3);
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
- 			break;
- 		case SPEED_1000:
-@@ -747,7 +747,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 		case SPEED_100:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5);
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
- 			break;
- 		case SPEED_1000:
--- 
-2.39.5
-
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -980,13 +980,13 @@ isolate_migratepages_block(struct compac
+ 		}
+ 
+ 		if (PageHuge(page)) {
++			const unsigned int order = compound_order(page);
+ 			/*
+ 			 * skip hugetlbfs if we are not compacting for pages
+ 			 * bigger than its order. THPs and other compound pages
+ 			 * are handled below.
+ 			 */
+ 			if (!cc->alloc_contig) {
+-				const unsigned int order = compound_order(page);
+ 
+ 				if (order <= MAX_PAGE_ORDER) {
+ 					low_pfn += (1UL << order) - 1;
+@@ -1010,8 +1010,8 @@ isolate_migratepages_block(struct compac
+ 				 /* Do not report -EBUSY down the chain */
+ 				if (ret == -EBUSY)
+ 					ret = 0;
+-				low_pfn += compound_nr(page) - 1;
+-				nr_scanned += compound_nr(page) - 1;
++				low_pfn += (1UL << order) - 1;
++				nr_scanned += (1UL << order) - 1;
+ 				goto isolate_fail;
+ 			}
+ 
 
 
 
