@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4DBA99053
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBF3DA991CD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6C417871B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCC76924E0D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9737C28A1F3;
-	Wed, 23 Apr 2025 15:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836042820A3;
+	Wed, 23 Apr 2025 15:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJkdcwSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcCaxTgB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5412527055F;
-	Wed, 23 Apr 2025 15:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAA71EEA3E;
+	Wed, 23 Apr 2025 15:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420955; cv=none; b=n1AS024EraBgga2QuelMNpsZ9XvIhrTosQJPzaoG91698oPyP08Si6V2xgbcOP6VNW17Kg+TP2B3lXb8bDJ2ETjdaFamvhdef5QBKfZA+joBG82a1mnXofgCdV2x+ojFuV6VHincla8/puXanDhBlvlpZNvdDUFiT5SERm5RhCQ=
+	t=1745421553; cv=none; b=Y/vGxKQeqsfcBaXvCwgtq/FWRcxJUBlkjEEjX2fKwH3f8OaLBA3//tmu1xLt+lADdfEFMjTNY7a/v3VWUzReSKzXyT5VV7/CFB9LN53POYIjyyYkw236hGAxbmBeMHrnqZDbZHUySd3aUtvCWABjn8VkM8UQcS8hu6l/3gjPjfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420955; c=relaxed/simple;
-	bh=F5t2kHw44PmkjDfPgBRfQRwiIaXP+NE5AP6B4I22Uyg=;
+	s=arc-20240116; t=1745421553; c=relaxed/simple;
+	bh=eFEnU+Kkkq6tzuYDBCLREcTe7om7U/XaldYBCCG+dxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PbYBD1MUOfNWAqwtlYGJNP4J6krUX0oYD/yx0aGXwI2DxFtVwT7JmGX0H+1GvsXyy8r7yPndlJmK6XR8elGauX8Kw3jPgZyUJIrt2aHGyxC7wThsdcgd/uwx7pJRhBTA9ylsI7wRtFx9DRGjzrbPeoVbBMuB5ebrXXWU6wOE8/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJkdcwSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A78C4CEE2;
-	Wed, 23 Apr 2025 15:09:14 +0000 (UTC)
+	 MIME-Version; b=YsG9acInDwzip72fgTT+m6m6JY7Z3dn1XDII9WqIk+2ALhEvlRMevvy7JKZ5LXG3J7XKL4m5zTUksjXLZUWRMAZKiPyE5R/RsPHPSf7GLP5h6bXWoSmsYBTG/DXsvqKWVSOui+v9/VbQK05PYrzBITOen09f+QMMeDK84rn3QIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcCaxTgB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D6DC4CEE2;
+	Wed, 23 Apr 2025 15:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420955;
-	bh=F5t2kHw44PmkjDfPgBRfQRwiIaXP+NE5AP6B4I22Uyg=;
+	s=korg; t=1745421552;
+	bh=eFEnU+Kkkq6tzuYDBCLREcTe7om7U/XaldYBCCG+dxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJkdcwSnUHZjka1UYGf6LWhvG/n6k0BxBHo/v32tLvxdgwiIxX7whVcSbeA3U8CKc
-	 Su1nQUJ9CAC4mo6V+EuB/ey3r0+dOmI9S4VC1mFCBbX8bADycXgn1gGbIyecyF/RPN
-	 fSyS3emrTaFamnW5IqXSDrgZ/5HbTV3nQiwPc78Y=
+	b=bcCaxTgB3x/AMK+04oWA2AVVzrexWVMt+SmuzXHass4FOkWQasIPhrBJY3vQT+yMv
+	 WLDkPg44neY5hpL8pcokeKy5ANzMd6PIOQ324Xm3GEch7Gdgm9TlMBMLS9nocsET3v
+	 zC9Le78RczgOjfYl9BxjcUUn/c8K2pvH0fR68+1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Denis Arefev <arefev@swemel.ru>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 177/223] drm/amdgpu: immediately use GTT for new allocations
-Date: Wed, 23 Apr 2025 16:44:09 +0200
-Message-ID: <20250423142624.381396878@linuxfoundation.org>
+Subject: [PATCH 6.14 186/241] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
+Date: Wed, 23 Apr 2025 16:44:10 +0200
+Message-ID: <20250423142628.114797795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit a755906fb2b8370c43e91ba437ae1b3e228e8b02 upstream.
+commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
 
-Only use GTT as a fallback if we already have a backing store. This
-prevents evictions when an application constantly allocates and frees new
-memory.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-Partially fixes
-https://gitlab.freedesktop.org/drm/amd/-/issues/3844#note_2833985.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 216c1282dde3 ("drm/amdgpu: use GTT only as fallback for VRAM|GTT")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -161,8 +161,8 @@ void amdgpu_bo_placement_from_domain(str
- 		 * When GTT is just an alternative to VRAM make sure that we
- 		 * only use it as fallback and still try to fill up VRAM first.
- 		 */
--		if (domain & abo->preferred_domains & AMDGPU_GEM_DOMAIN_VRAM &&
--		    !(adev->flags & AMD_IS_APU))
-+		if (abo->tbo.resource && !(adev->flags & AMD_IS_APU) &&
-+		    domain & abo->preferred_domains & AMDGPU_GEM_DOMAIN_VRAM)
- 			places[c].flags |= TTM_PL_FLAG_FALLBACK;
- 		c++;
- 	}
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -1229,7 +1229,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
+ 	uint32_t tach_period;
+ 	int ret;
+ 
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
+ 
+ 	ret = smu_v13_0_auto_fan_control(smu, 0);
 
 
 
