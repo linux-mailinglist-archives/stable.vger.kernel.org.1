@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F0DA98F05
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 430F1A98E48
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45A35A7D62
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 352A25A6CEB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECC727CCD7;
-	Wed, 23 Apr 2025 14:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828BB27CCC7;
+	Wed, 23 Apr 2025 14:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GF60yHP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NVYU+r8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A47827CB12;
-	Wed, 23 Apr 2025 14:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3596B19E966;
+	Wed, 23 Apr 2025 14:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420258; cv=none; b=o7yVP3ItlvycRO4p0ly6DO8lojTMwpoS4SppzfLtSa5AthFJlWgHZRz6jYRfSb6LBQv7i/B+axKFuhDrIRhRDVXW0Sy8gTKfMHQ46rDkvYEf4L0vlBUGakd6OqQEnIHiUU7QS3tofsl8sFtBta9GAzvCkdYNMt+0W+pWidDyG7k=
+	t=1745419924; cv=none; b=PnnMmdqLzCkrPMiqSV3h3h8OUnW24xZ+7V/ZBTy3/mEyGqmW4RSPWaHfQJzCBfoXlsmL/P3V/5LPf52SQqWKb50xGZps1sy0IHKWdDE74NkZsOifsj2j099V8FoRc9Cz4ne9ZWztFaAfAUa3YlDQRXOBXjxj/vdXvATR27WIXBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420258; c=relaxed/simple;
-	bh=6HY00/j53BOMdNupQyo0+debJaQuoqdYtQYpg/u9aLo=;
+	s=arc-20240116; t=1745419924; c=relaxed/simple;
+	bh=3Du0uXyVQ2kMQpUOEp6aWNpNUvXZPwHt6LB3clRDzAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t79NJlEjEk3fAHNepExB/pYyTwyiOjRsBsTSccuvsy7Gj2wce3NbYMox4hx/t+q1DGSngGffdAy9BgTyUDdzMbrbzevlQUlammMY5bTZ/DNi9u9RYfibzGMj8vd7WKAkKmeARmXMRq0GJeM/TexSbcIHfcBz2MpYDxScbstoCrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GF60yHP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF067C4CEE2;
-	Wed, 23 Apr 2025 14:57:37 +0000 (UTC)
+	 MIME-Version; b=BK5VJ7rLru+AUHigYmSu3BmtBWigQKze5Sh2x6/CjSBtxKYQEPXB+yfzc6Fo66RVFLt1Z+hv5/TXWXv28lVbDxIwROTu0aoPROaEKklkOe8zyu6+IIKqR92gxGskpsS1NXrIIJX+DYQuaqu1hvvmFmkxv4S4Q3Y9SKMkT4lbl3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NVYU+r8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BD3C4CEE2;
+	Wed, 23 Apr 2025 14:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420258;
-	bh=6HY00/j53BOMdNupQyo0+debJaQuoqdYtQYpg/u9aLo=;
+	s=korg; t=1745419924;
+	bh=3Du0uXyVQ2kMQpUOEp6aWNpNUvXZPwHt6LB3clRDzAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GF60yHP8WyLbcNcJR+lut9zsOw9oODfv6g6QRZ2x2b/OyezgGzkioNJo8qKARn/Vo
-	 rJS72m+cD9KV4dKwXeczR6+qXpTYH5cLcIt1UBgx3swtuzRK5v+v2srKQJGD8MMD4U
-	 RwL+KE7cXK2NcywrOQUlh3YBqL0sQyfD9J2BShyU=
+	b=NVYU+r8E2iGEuR0y5ux5xhDFDXo2npySHAmczmuzorQAnXQirwzyZhIaFRXvZ8B62
+	 6Q/nu/5pL/liFlDcMrEb6VKl5wdYXNzXR/xHCAZbNLDCYx6MBs5I02nufAfVuH8LcY
+	 H4z/Htgk56HhWy4pxLbOr+UfCPQcr/eM/ATqjlYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Sagi Maimon <maimon.sagi@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 076/241] net: dsa: clean up FDB, MDB, VLAN entries on unbind
+Subject: [PATCH 6.12 068/223] ptp: ocp: fix start time alignment in ptp_ocp_signal_set
 Date: Wed, 23 Apr 2025 16:42:20 +0200
-Message-ID: <20250423142623.699714280@linuxfoundation.org>
+Message-ID: <20250423142619.902623100@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Sagi Maimon <maimon.sagi@gmail.com>
 
-[ Upstream commit 7afb5fb42d4950f33af2732b8147c552659f79b7 ]
+[ Upstream commit 2a5970d5aaff8f3e33ce3bfaa403ae88c40de40d ]
 
-As explained in many places such as commit b117e1e8a86d ("net: dsa:
-delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
-the assumption that higher layers have balanced additions/deletions.
-As such, it only makes sense to be extremely vocal when those
-assumptions are violated and the driver unbinds with entries still
-present.
+In ptp_ocp_signal_set, the start time for periodic signals is not
+aligned to the next period boundary. The current code rounds up the
+start time and divides by the period but fails to multiply back by
+the period, causing misaligned signal starts. Fix this by multiplying
+the rounded-up value by the period to ensure the start time is the
+closest next period.
 
-But Ido Schimmel points out a very simple situation where that is wrong:
-https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
-(also briefly discussed by me in the aforementioned commit).
-
-Basically, while the bridge bypass operations are not something that DSA
-explicitly documents, and for the majority of DSA drivers this API
-simply causes them to go to promiscuous mode, that isn't the case for
-all drivers. Some have the necessary requirements for bridge bypass
-operations to do something useful - see dsa_switch_supports_uc_filtering().
-
-Although in tools/testing/selftests/net/forwarding/local_termination.sh,
-we made an effort to popularize better mechanisms to manage address
-filters on DSA interfaces from user space - namely macvlan for unicast,
-and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
-fact is that 'bridge fdb add ... self static local' also exists as
-kernel UAPI, and might be useful to someone, even if only for a quick
-hack.
-
-It seems counter-productive to block that path by implementing shim
-.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
-in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
-running, although we could do that.
-
-Accepting that cleanup is necessary seems to be the only option.
-Especially since we appear to be coming back at this from a different
-angle as well. Russell King is noticing that the WARN_ON() triggers even
-for VLANs:
-https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
-
-What happens in the bug report above is that dsa_port_do_vlan_del() fails,
-then the VLAN entry lingers on, and then we warn on unbind and leak it.
-
-This is not a straight revert of the blamed commit, but we now add an
-informational print to the kernel log (to still have a way to see
-that bugs exist), and some extra comments gathered from past years'
-experience, to justify the logic.
-
-Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212930.2956310-1-vladimir.oltean@nxp.com
+Fixes: 4bd46bb037f8e ("ptp: ocp: Use DIV64_U64_ROUND_UP for rounding.")
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250415053131.129413-1-maimon.sagi@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/dsa.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/ptp/ptp_ocp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index e827775baf2ee..e7e32956070aa 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -1478,12 +1478,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
- 
- static void dsa_switch_release_ports(struct dsa_switch *ds)
- {
-+	struct dsa_mac_addr *a, *tmp;
- 	struct dsa_port *dp, *next;
-+	struct dsa_vlan *v, *n;
- 
- 	dsa_switch_for_each_port_safe(dp, next, ds) {
--		WARN_ON(!list_empty(&dp->fdbs));
--		WARN_ON(!list_empty(&dp->mdbs));
--		WARN_ON(!list_empty(&dp->vlans));
-+		/* These are either entries that upper layers lost track of
-+		 * (probably due to bugs), or installed through interfaces
-+		 * where one does not necessarily have to remove them, like
-+		 * ndo_dflt_fdb_add().
-+		 */
-+		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up unicast address %pM vid %u from port %d\n",
-+				 a->addr, a->vid, dp->index);
-+			list_del(&a->list);
-+			kfree(a);
-+		}
-+
-+		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up multicast address %pM vid %u from port %d\n",
-+				 a->addr, a->vid, dp->index);
-+			list_del(&a->list);
-+			kfree(a);
-+		}
-+
-+		/* These are entries that upper layers have lost track of,
-+		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
-+		 * having failed and the VLAN entry still lingering on.
-+		 */
-+		list_for_each_entry_safe(v, n, &dp->vlans, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up vid %u from port %d\n",
-+				 v->vid, dp->index);
-+			list_del(&v->list);
-+			kfree(v);
-+		}
-+
- 		list_del(&dp->list);
- 		kfree(dp);
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 120db96d9e95d..0eeb503e06c23 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -2067,6 +2067,7 @@ ptp_ocp_signal_set(struct ptp_ocp *bp, int gen, struct ptp_ocp_signal *s)
+ 	if (!s->start) {
+ 		/* roundup() does not work on 32-bit systems */
+ 		s->start = DIV64_U64_ROUND_UP(start_ns, s->period);
++		s->start *= s->period;
+ 		s->start = ktime_add(s->start, s->phase);
  	}
+ 
 -- 
 2.39.5
 
