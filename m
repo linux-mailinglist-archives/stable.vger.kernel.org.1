@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ADEA99322
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461A8A98ECE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E23859225B8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6083B33D3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83CF27FD74;
-	Wed, 23 Apr 2025 15:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76287280CE0;
+	Wed, 23 Apr 2025 14:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilS9bzRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxocelUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9164517B421;
-	Wed, 23 Apr 2025 15:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34996280A53;
+	Wed, 23 Apr 2025 14:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421872; cv=none; b=XtOqeoBg6gzWoi8+7HdOcidjpclYB+4tzDf5YCDUtZ+EHwX1rZK0R6FpE2V2T7Gdn03CvuaCa9UyTESRSoQu8W5g/A6RuNGjpctUPmYy9d82dBNqRvCewY0yvV+Lj1yZuUSr+2QQSEH4VJQ+khvXI29WDFtNxIg4QwvQ1rxIj64=
+	t=1745420158; cv=none; b=llkotrV5naHSRAq8P/7fu/vGmNemVPAuQZ1EoXhe7whpKUGK236z/nRrxidbPZvrNE4e9KSGXFQAujZd/1kB3/F9xnVyKxxGdwg55krvxwvEjV91ZNiiIy62Cx3+ttymJ0jaVeD3nHG3yMs9JTtSRsJRlSXqZXEYuYXCGGh4y5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421872; c=relaxed/simple;
-	bh=nXg2PM9SySyVz5h3ny3BjpyQJdqiwHr4v21wWFt97Bc=;
+	s=arc-20240116; t=1745420158; c=relaxed/simple;
+	bh=2taQ/I/AWxpW1sgB8BsDpbRm+1is2bJyouvm3qQlFnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ah8BtVF/c4owCEwKbCrp+KAQj+Eye5IPX4MrmEGp37fqDOQcgO9atY5j1ETeHv2K9JAOtecUcyQn1eZf6o+uDcyZOSv2GFPNCEJYagZZVryy0rqIcd7RNXcbEIEqabZ2pGpkzFO3mYqRCrADSXHi/boK4Xk2FieP8gp4ZPS6gr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilS9bzRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0FFEC4CEE2;
-	Wed, 23 Apr 2025 15:24:30 +0000 (UTC)
+	 MIME-Version; b=NqkJVNmVYJTEIwvvhot7smcj3Aa32ILFfIAod9gjHc1NB/axbID+5SsbefGUYG0NxB4p5CXwOZQ8v5bKdbKoM4I8BtUAAJ2d6EL1sXInK3iAl9YP1YV+G8dMIGiJMFXULeZKGFSdGhdZ5btSW8D9IDByEkgWOFtGeTW3yr8NJmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxocelUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB08DC4CEEB;
+	Wed, 23 Apr 2025 14:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421871;
-	bh=nXg2PM9SySyVz5h3ny3BjpyQJdqiwHr4v21wWFt97Bc=;
+	s=korg; t=1745420158;
+	bh=2taQ/I/AWxpW1sgB8BsDpbRm+1is2bJyouvm3qQlFnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilS9bzRsYwSFubDr/HHwN2C7ZOa704CzXERonRIemHxwYGQw5mS/eDNpzjFB6kSCQ
-	 +d8LsjnxJG/Ijy7A9qIrNaoEfhfk5/pMHcw0wB/2/uP6l22wGyhmP98rsOXHbn7HZb
-	 vUIl4abScyry3tHJRuBcAAd2Z61XVxpeRz/ytfh0=
+	b=hxocelUtLMPzmF+sy/0hgI+tICtNsLPEcOG0RSgjNl7bOkiLG2jsuFjYlBtABR3g8
+	 bmInGAeF4PgaJOewXGuu/6rs/0WV6w5LXKpc3igHgW4LO1OASfoCBW+eLMB7r/9aDc
+	 VA7HQ4Do9reiToDfsbgc4ykvU9RazoX1+xicNUXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 232/393] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 064/241] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
 Date: Wed, 23 Apr 2025 16:42:08 +0200
-Message-ID: <20250423142652.975262328@linuxfoundation.org>
+Message-ID: <20250423142623.218154905@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit a5951389e58d2e816eed3dbec5877de9327fd881 upstream.
+[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
 
-When comparing to the ARM list [1], it appears that several ARM cores
-were missing from the lists in spectre_bhb_loop_affected(). Add them.
+In the for loop used to allocate the loc_array and bmap for each port, a
+memory leak is possible when the allocation for loc_array succeeds,
+but the allocation for bmap fails. This is because when the control flow
+goes to the label free_eth_finfo, only the allocations starting from
+(i-1)th iteration are freed.
 
-NOTE: for some of these cores it may not matter since other ways of
-clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
-but it still seems good to have all the info from ARM's whitepaper
-included.
+Fix that by freeing the loc_array in the bmap allocation error path.
 
-[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
-
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -876,6 +876,14 @@ static u8 spectre_bhb_loop_affected(void
- {
- 	u8 k = 0;
- 
-+	static const struct midr_range spectre_bhb_k132_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
-+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+	};
-+	static const struct midr_range spectre_bhb_k38_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
-+	};
- 	static const struct midr_range spectre_bhb_k32_list[] = {
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-@@ -889,6 +897,7 @@ static u8 spectre_bhb_loop_affected(void
- 	};
- 	static const struct midr_range spectre_bhb_k24_list[] = {
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-@@ -904,7 +913,11 @@ static u8 spectre_bhb_loop_affected(void
- 		{},
- 	};
- 
--	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
-+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
-+		k = 132;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
-+		k = 38;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
- 		k = 32;
- 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
- 		k = 24;
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+index 7f3f5afa864f4..1546c3db08f09 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
+@@ -2270,6 +2270,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
+ 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
+ 		if (!eth_filter->port[i].bmap) {
+ 			ret = -ENOMEM;
++			kvfree(eth_filter->port[i].loc_array);
+ 			goto free_eth_finfo;
+ 		}
+ 	}
+-- 
+2.39.5
+
 
 
 
