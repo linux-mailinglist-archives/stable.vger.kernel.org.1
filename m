@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D7AA99263
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FBBA98DD9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508334A05B6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E16616D97C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2FD29B232;
-	Wed, 23 Apr 2025 15:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD882820C8;
+	Wed, 23 Apr 2025 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="De6sj7sX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olk1saQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB73F289346;
-	Wed, 23 Apr 2025 15:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD3C2820B4;
+	Wed, 23 Apr 2025 14:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421815; cv=none; b=BDKxH/tneLlOLXhGsRhvNEhzqGr/6Qoy5kn2yVUF7aYObwswUSMn5cv+WBJC9fL+hLGoJcMVPHTfvmQYT2KysLmAzr+7UxCBQGsB6cbn8BejlQcDDBwHD8rwmKohbsoHdm858k5UQsGoCviZ/fw3AghQVXCOO/hCooEAR3Y1qCY=
+	t=1745419728; cv=none; b=EDu5Rv37Q9nWSaWHQybYmZwDV5LR2jQwlcD0PWW0/x2gx68KpNgxQDAnCZ1Etv57x860sJ+l1Q2pJBnw9w5lQ3FTLXP6CzxwjfEo7hgEFEc3YIBB//jgcJ54gk/JWXd6R5U52NyKSgtM9WSdX0vKsdBdBXYpn2lLWm/QvdQO5M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421815; c=relaxed/simple;
-	bh=AuRUvJiP+ctAWUVwwVea6LAlrXm6kQiNKpC7vswMG64=;
+	s=arc-20240116; t=1745419728; c=relaxed/simple;
+	bh=F1BuUm+W59FuG010QQpKVt0+t4AG8t+Z4uF7mApuMQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aG2FPY3ix61b17/1LZQYmQm+O7uI1ns1tJX4OlfEOwcE2T8zKtA1Rrf4Nw7M1HWFAegZTCS1JPuv3DVyWdQ9lKb2IPe1ahRTCt9J1aafZxnhle5pN6XmDIEe7ygv+36HxUnisbobHE4ki97c+0nGmlUFFEd/HKl+XFuGmwHHEBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=De6sj7sX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAABC4CEE3;
-	Wed, 23 Apr 2025 15:23:35 +0000 (UTC)
+	 MIME-Version; b=XQGJbCYyPaM2f2PEHYZYXBpl/tQOxc2enIiTZDGmaUFRT/awFJcbnDxN8FWW27lSM08wRXHnRrwbkWlkAUgmIkJN6/bF6bWsNLd1jZiP4SzvrLAtFqANjs5C+VQY6kue2qDA61DWMofxGicm4WL88nVCTDxIV6oPjA8/IA7AX2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olk1saQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81E6C4CEE2;
+	Wed, 23 Apr 2025 14:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421815;
-	bh=AuRUvJiP+ctAWUVwwVea6LAlrXm6kQiNKpC7vswMG64=;
+	s=korg; t=1745419726;
+	bh=F1BuUm+W59FuG010QQpKVt0+t4AG8t+Z4uF7mApuMQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=De6sj7sX05MDrHzxEkRsyikhi4Hfg7P8KMi8YpfCcO/BVr09m1PJ9R1AnMhbtmLEy
-	 bpObD94maiWLuI1E75Kulu4fNDlbPL+9o8KohF2auqQkdrRmgyR3JirRpxAc5brvqy
-	 lpqyxDbq1wHv3+P6hMc/+3nGNnkTkd3anoFxS/nU=
+	b=olk1saQ5B8mHyGmlDGjqwAtqsH/jY9VlpDydM7pDiWYLk09i2L7jzKeKzsIJ9ewfF
+	 JllrkNYUiDwd0XlXT9uX291kQ3HOAhDD93UHeBuTQXiZeBvn4Nd/NGcJ/Z6pse81KO
+	 7efnMrEx257DRfyTQho9rKZK+t87WuUmZOFI8+0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 227/393] PCI: Fix reference leak in pci_alloc_child_bus()
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 051/223] eth: bnxt: fix missing ring index trim on error path
 Date: Wed, 23 Apr 2025 16:42:03 +0200
-Message-ID: <20250423142652.766726275@linuxfoundation.org>
+Message-ID: <20250423142619.212984078@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 1f2768b6a3ee77a295106e3a5d68458064923ede upstream.
+[ Upstream commit 12f2d033fae957d84c2c0ce604d2a077e61fa2c0 ]
 
-If device_register(&child->dev) fails, call put_device() to explicitly
-release child->dev, per the comment at device_register().
+Commit under Fixes converted tx_prod to be free running but missed
+masking it on the Tx error path. This crashes on error conditions,
+for example when DMA mapping fails.
 
-Found by code review.
-
-Link: https://lore.kernel.org/r/20250202062357.872971-1-make24@iscas.ac.cn
-Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d1add95536b ("bnxt_en: Modify TX ring indexing logic.")
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250414143210.458625-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1145,7 +1145,10 @@ static struct pci_bus *pci_alloc_child_b
- add_dev:
- 	pci_set_bus_msi_domain(child);
- 	ret = device_register(&child->dev);
--	WARN_ON(ret < 0);
-+	if (WARN_ON(ret < 0)) {
-+		put_device(&child->dev);
-+		return NULL;
-+	}
- 
- 	pcibios_add_bus(child);
- 
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index e7580df13229a..016dcfec8d496 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -758,7 +758,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	dev_kfree_skb_any(skb);
+ tx_kick_pending:
+ 	if (BNXT_TX_PTP_IS_SET(lflags)) {
+-		txr->tx_buf_ring[txr->tx_prod].is_ts_pkt = 0;
++		txr->tx_buf_ring[RING_TX(bp, txr->tx_prod)].is_ts_pkt = 0;
+ 		atomic64_inc(&bp->ptp_cfg->stats.ts_err);
+ 		if (!(bp->fw_cap & BNXT_FW_CAP_TX_TS_CMP))
+ 			/* set SKB to err so PTP worker will clean up */
+@@ -766,7 +766,7 @@ static netdev_tx_t bnxt_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 	if (txr->kick_pending)
+ 		bnxt_txr_db_kick(bp, txr, txr->tx_prod);
+-	txr->tx_buf_ring[txr->tx_prod].skb = NULL;
++	txr->tx_buf_ring[RING_TX(bp, txr->tx_prod)].skb = NULL;
+ 	dev_core_stats_tx_dropped_inc(dev);
+ 	return NETDEV_TX_OK;
+ }
+-- 
+2.39.5
+
 
 
 
