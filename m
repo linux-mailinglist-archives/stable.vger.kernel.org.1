@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-136428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32AAAA992EC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59ACCA99394
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 985787AD6F2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A59331B8725C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539292BF3C5;
-	Wed, 23 Apr 2025 15:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F05628A1F9;
+	Wed, 23 Apr 2025 15:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaDc85SB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCtTS5Sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F956289364;
-	Wed, 23 Apr 2025 15:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF95428EA7D;
+	Wed, 23 Apr 2025 15:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422520; cv=none; b=IC/vEHAtqG0P7QI1cYXMs/IDStdyVR6GaWFy1i68sl8mIQswHdKPPycAMOMqrFk60rSBiAdy/WKiQ8Qe4P7OQh2cmQ/PhAdAHfWDied1gYAJ6nFnngJNeeYU0qgUB9zGv0Nlg1VmO2gpzFwxmXdQe7sybb8wseru1NbKSP47xbo=
+	t=1745422375; cv=none; b=f3JdCNOMeQ4+/8YHmPhvLUR5TpMI7rz0Gk7qF0xkI2CagsjU2wC402iA0ANu5xhxBezzjOQXh6wqnY2g6uUJLIcCmBHheWu45nC+iGJDpfjrnwAoxD2lT62h3HyWLrqY2e+tVbfumNJDcPXPL/IYv1EI+ILTfQca9mBlNi2Z2ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422520; c=relaxed/simple;
-	bh=5+U61jj1cbr4l3fyLTDPUrErAf3o/Ieqhs8/5hDhAdY=;
+	s=arc-20240116; t=1745422375; c=relaxed/simple;
+	bh=IKE/5T6/68aZZ/UpCrMvpcLkeY5PkaEIev+MY0adRy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBpBcXZ2ssi2g+v8R5ezSFRgaHUP5zHtVvwOkAIitVTYJOywyG2bjwmdzK7VjYKd3z2/CgZbsTBolQWl3zvBvN3zmmRLyMzgMOINFBbQ3ZsBAMQ+1Xs+n6I9JZB4VU7Z9IO5u40/a0Mvh/NfJ8K4GMyPmUZ1AYhhfqwILTqEdMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaDc85SB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318FFC4CEE2;
-	Wed, 23 Apr 2025 15:35:19 +0000 (UTC)
+	 MIME-Version; b=aDfKuiU+FqprBY3R5IVG8cVkmzwIBQSG+LLJDwvwT7ddPN5JICdNxqxv7g6WL4ZbR1H4mqVUNIxCyWzM0cAg9OE0+Tx475bBPnm+9vrN8X+7xUA2RLyg/yEYEcpyVc6OJldGmPXxjQ4vjyQxREmH0DECtFbbtCBhOm6wlMWjDuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCtTS5Sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32577C4CEE2;
+	Wed, 23 Apr 2025 15:32:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422519;
-	bh=5+U61jj1cbr4l3fyLTDPUrErAf3o/Ieqhs8/5hDhAdY=;
+	s=korg; t=1745422375;
+	bh=IKE/5T6/68aZZ/UpCrMvpcLkeY5PkaEIev+MY0adRy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uaDc85SBxwRM7dE7wH6SphIMXpUdtl2/isPbZXFaiN2hfjbA5hgFZYr1D29iAQOD7
-	 NNXZOCdfi5zONEyiF3vLQrotj4B1ib1v0XgcBvjO2xepJkrD/kN8HqCejD3QKWgbBa
-	 /1zFwtXcyYJdCzymbnM2I4dzD7aPdED7V14eF2tM=
+	b=uCtTS5SkST09JpgH3/qFD8wj/MBmLWriorWJ5qW34+HxJeGQY4XWt3tc31wqPz2sO
+	 nM9JdRqBOB2Zgy8su9VvqDMTnfTIKR1EJJJtXIjzYYD/JxIbf9G7/DHQWnLS+KJj+/
+	 AA1mKU4fhH98VuKRSM3pXjrjsXn8f6ozymOjkf0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Zenm Chen <zenmchen@gmail.com>
-Subject: [PATCH 6.6 381/393] wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	R Nageswara Sastry <rnsastry@linux.ibm.com>,
+	Neal Gompa <neal@gompa.dev>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 288/291] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
 Date: Wed, 23 Apr 2025 16:44:37 +0200
-Message-ID: <20250423142659.063611343@linuxfoundation.org>
+Message-ID: <20250423142636.200533050@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,292 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Jan Stancek <jstancek@redhat.com>
 
-commit 9c1df813e08832c3836c254bc8a2f83ff22dbc06 upstream.
+commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
 
-The PCIE wake bit is to control PCIE wake signal to host. When PCIE is
-going down, clear this bit to prevent waking up host unexpectedly.
+ENGINE API has been deprecated since OpenSSL version 3.0 [1].
+Distros have started dropping support from headers and in future
+it will likely disappear also from library.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20241111063835.15454-1-pkshih@realtek.com
-[ Zenm: The rtw89 driver in recent kernel versions supports both Wi-Fi 6/6E
-        and Wi-Fi 7, however the rtw89 driver in kernel 6.6 supports
-        Wi-Fi 6/6E only, so remove the unnecessary code for Wi-Fi 7 from
-        the upstream patch to make it apply on 6.6.y. ]
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+It has been superseded by the PROVIDER API, so use it instead
+for OPENSSL MAJOR >= 3.
+
+[1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
+
+[jarkko: fixed up alignment issues reported by checkpatch.pl --strict]
+
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ certs/extract-cert.c |  103 ++++++++++++++++++++++++++++++++++++---------------
+ scripts/sign-file.c  |   95 ++++++++++++++++++++++++++++++++---------------
+ 2 files changed, 139 insertions(+), 59 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -2482,6 +2482,8 @@ static int rtw89_pci_ops_deinit(struct r
- {
- 	const struct rtw89_pci_info *info = rtwdev->pci_info;
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -21,17 +21,18 @@
+ #include <openssl/bio.h>
+ #include <openssl/pem.h>
+ #include <openssl/err.h>
+-#include <openssl/engine.h>
+-
++#if OPENSSL_VERSION_MAJOR >= 3
++# define USE_PKCS11_PROVIDER
++# include <openssl/provider.h>
++# include <openssl/store.h>
++#else
++# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
++#  define USE_PKCS11_ENGINE
++#  include <openssl/engine.h>
++# endif
++#endif
+ #include "ssl-common.h"
  
-+	rtw89_pci_power_wake(rtwdev, false);
+-/*
+- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
+- *
+- * Remove this if/when that API is no longer used
+- */
+-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+-
+ #define PKEY_ID_PKCS7 2
+ 
+ static __attribute__((noreturn))
+@@ -61,6 +62,66 @@ static void write_cert(X509 *x509)
+ 		fprintf(stderr, "Extracted cert: %s\n", buf);
+ }
+ 
++static X509 *load_cert_pkcs11(const char *cert_src)
++{
++	X509 *cert = NULL;
++#ifdef USE_PKCS11_PROVIDER
++	OSSL_STORE_CTX *store;
 +
- 	if (rtwdev->chip->chip_id == RTL8852A) {
- 		/* ltr sw trigger */
- 		rtw89_write32_set(rtwdev, R_AX_LTR_CTRL_0, B_AX_APP_LTR_IDLE);
++	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
++		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
++	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
++		ERR(1, "OSSL_PROVIDER_try_load(default)");
++
++	store = OSSL_STORE_open(cert_src, NULL, NULL, NULL, NULL);
++	ERR(!store, "OSSL_STORE_open");
++
++	while (!OSSL_STORE_eof(store)) {
++		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
++
++		if (!info) {
++			drain_openssl_errors(__LINE__, 0);
++			continue;
++		}
++		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_CERT) {
++			cert = OSSL_STORE_INFO_get1_CERT(info);
++			ERR(!cert, "OSSL_STORE_INFO_get1_CERT");
++		}
++		OSSL_STORE_INFO_free(info);
++		if (cert)
++			break;
++	}
++	OSSL_STORE_close(store);
++#elif defined(USE_PKCS11_ENGINE)
++		ENGINE *e;
++		struct {
++			const char *cert_id;
++			X509 *cert;
++		} parms;
++
++		parms.cert_id = cert_src;
++		parms.cert = NULL;
++
++		ENGINE_load_builtin_engines();
++		drain_openssl_errors(__LINE__, 1);
++		e = ENGINE_by_id("pkcs11");
++		ERR(!e, "Load PKCS#11 ENGINE");
++		if (ENGINE_init(e))
++			drain_openssl_errors(__LINE__, 1);
++		else
++			ERR(1, "ENGINE_init");
++		if (key_pass)
++			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
++		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
++		ERR(!parms.cert, "Get X.509 from PKCS#11");
++		cert = parms.cert;
++#else
++		fprintf(stderr, "no pkcs11 engine/provider available\n");
++		exit(1);
++#endif
++	return cert;
++}
++
+ int main(int argc, char **argv)
+ {
+ 	char *cert_src;
+@@ -86,28 +147,10 @@ int main(int argc, char **argv)
+ 		fclose(f);
+ 		exit(0);
+ 	} else if (!strncmp(cert_src, "pkcs11:", 7)) {
+-		ENGINE *e;
+-		struct {
+-			const char *cert_id;
+-			X509 *cert;
+-		} parms;
+-
+-		parms.cert_id = cert_src;
+-		parms.cert = NULL;
++		X509 *cert = load_cert_pkcs11(cert_src);
+ 
+-		ENGINE_load_builtin_engines();
+-		drain_openssl_errors(__LINE__, 1);
+-		e = ENGINE_by_id("pkcs11");
+-		ERR(!e, "Load PKCS#11 ENGINE");
+-		if (ENGINE_init(e))
+-			drain_openssl_errors(__LINE__, 1);
+-		else
+-			ERR(1, "ENGINE_init");
+-		if (key_pass)
+-			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
+-		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
+-		ERR(!parms.cert, "Get X.509 from PKCS#11");
+-		write_cert(parms.cert);
++		ERR(!cert, "load_cert_pkcs11 failed");
++		write_cert(cert);
+ 	} else {
+ 		BIO *b;
+ 		X509 *x509;
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -27,18 +27,19 @@
+ #include <openssl/evp.h>
+ #include <openssl/pem.h>
+ #include <openssl/err.h>
+-#include <openssl/engine.h>
+-
++#if OPENSSL_VERSION_MAJOR >= 3
++# define USE_PKCS11_PROVIDER
++# include <openssl/provider.h>
++# include <openssl/store.h>
++#else
++# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
++#  define USE_PKCS11_ENGINE
++#  include <openssl/engine.h>
++# endif
++#endif
+ #include "ssl-common.h"
+ 
+ /*
+- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
+- *
+- * Remove this if/when that API is no longer used
+- */
+-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+-
+-/*
+  * Use CMS if we have openssl-1.0.0 or newer available - otherwise we have to
+  * assume that it's not available and its header file is missing and that we
+  * should use PKCS#7 instead.  Switching to the older PKCS#7 format restricts
+@@ -106,28 +107,64 @@ static int pem_pw_cb(char *buf, int len,
+ 	return pwlen;
+ }
+ 
+-static EVP_PKEY *read_private_key(const char *private_key_name)
++static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
+ {
+-	EVP_PKEY *private_key;
++	EVP_PKEY *private_key = NULL;
++#ifdef USE_PKCS11_PROVIDER
++	OSSL_STORE_CTX *store;
++
++	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
++		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
++	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
++		ERR(1, "OSSL_PROVIDER_try_load(default)");
++
++	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
++	ERR(!store, "OSSL_STORE_open");
++
++	while (!OSSL_STORE_eof(store)) {
++		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
++
++		if (!info) {
++			drain_openssl_errors(__LINE__, 0);
++			continue;
++		}
++		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_PKEY) {
++			private_key = OSSL_STORE_INFO_get1_PKEY(info);
++			ERR(!private_key, "OSSL_STORE_INFO_get1_PKEY");
++		}
++		OSSL_STORE_INFO_free(info);
++		if (private_key)
++			break;
++	}
++	OSSL_STORE_close(store);
++#elif defined(USE_PKCS11_ENGINE)
++	ENGINE *e;
++
++	ENGINE_load_builtin_engines();
++	drain_openssl_errors(__LINE__, 1);
++	e = ENGINE_by_id("pkcs11");
++	ERR(!e, "Load PKCS#11 ENGINE");
++	if (ENGINE_init(e))
++		drain_openssl_errors(__LINE__, 1);
++	else
++		ERR(1, "ENGINE_init");
++	if (key_pass)
++		ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
++	private_key = ENGINE_load_private_key(e, private_key_name, NULL, NULL);
++	ERR(!private_key, "%s", private_key_name);
++#else
++	fprintf(stderr, "no pkcs11 engine/provider available\n");
++	exit(1);
++#endif
++	return private_key;
++}
+ 
++static EVP_PKEY *read_private_key(const char *private_key_name)
++{
+ 	if (!strncmp(private_key_name, "pkcs11:", 7)) {
+-		ENGINE *e;
+-
+-		ENGINE_load_builtin_engines();
+-		drain_openssl_errors(__LINE__, 1);
+-		e = ENGINE_by_id("pkcs11");
+-		ERR(!e, "Load PKCS#11 ENGINE");
+-		if (ENGINE_init(e))
+-			drain_openssl_errors(__LINE__, 1);
+-		else
+-			ERR(1, "ENGINE_init");
+-		if (key_pass)
+-			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
+-			    "Set PKCS#11 PIN");
+-		private_key = ENGINE_load_private_key(e, private_key_name,
+-						      NULL, NULL);
+-		ERR(!private_key, "%s", private_key_name);
++		return read_private_key_pkcs11(private_key_name);
+ 	} else {
++		EVP_PKEY *private_key;
+ 		BIO *b;
+ 
+ 		b = BIO_new_file(private_key_name, "rb");
+@@ -136,9 +173,9 @@ static EVP_PKEY *read_private_key(const
+ 						      NULL);
+ 		ERR(!private_key, "%s", private_key_name);
+ 		BIO_free(b);
+-	}
+ 
+-	return private_key;
++		return private_key;
++	}
+ }
+ 
+ static X509 *read_x509(const char *x509_name)
 
 
 
