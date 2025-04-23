@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0304A990EA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB16A98F6F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D46892398E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 141881B870AC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A967F28DEF0;
-	Wed, 23 Apr 2025 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BA1281357;
+	Wed, 23 Apr 2025 15:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tb5to3ED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5Evogg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659A22957B7;
-	Wed, 23 Apr 2025 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52141F193C;
+	Wed, 23 Apr 2025 15:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421084; cv=none; b=Q5lyTnjOx4haG3mhLwdkTPtsA6jsTP+msumx18ZFDWV9XoxYUqKd+om7HHoiPEnqugf1FL6BV81hOfQOnJhkjZbydyOpAMjC6ekoo9GeD9N3h4zJCbyXsPRVjCw8z133B5HSyjTuyTkbbAT3cBR0DjF89x07Hu1w7z+ROOJRpVc=
+	t=1745420450; cv=none; b=EVzSKAmThlOsW42e8sEydQHyr2hVHq6GSxa0mB7mt5+QnY21tpBznDWiwrDX52Hg3hqx4HB7YzXf2GmGeWhGnN7IxpVQ5XzvhXw/hdKCRty1+2P85fzWAachSPT0/JCWnpdECYnncyrTUTzpfl+RPXX7bM0Kv+LSti8VLCPr5Zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421084; c=relaxed/simple;
-	bh=mmHOh+a5p6uu7SCPZCEsOL92khD2sg82IUMj0UWqt1s=;
+	s=arc-20240116; t=1745420450; c=relaxed/simple;
+	bh=lV0y9pm8wr5PR7NJQ983DB/sz/2Hk32NaBxKb47NsD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkP6iVPTbSuqOmny+MAD6Qomk1Lj0DRvEd9RChADZhPKYkVrghepzqWhOoU/UsBIDdv9v5uvR4hJKoaeBlLPDum+Jd52OoM587ZUoC6uyYlrEZyj9/GxT9ksapwO5dOP+OY+Ldcv3yt452St/XaRWnZkl4ITkhxdOe9hA7bKILw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tb5to3ED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91937C4CEE2;
-	Wed, 23 Apr 2025 15:11:23 +0000 (UTC)
+	 MIME-Version; b=Jg+9ZvUEACSyjQiJ6cMLWeRDA6yedEPRYaXlt1LHh66CzHPKPzTLVQA9OaXtk3oW3/ogQo+8s4DVNxSOgrpkzKhyqUhezQSlQFrbPl5WE/sZBUuYVNHcftbP4p7tFGePs0tfdwOUZzm+eoVFK8JUhi6MAnumtBSPtDX1AREsry4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5Evogg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD79C4CEE2;
+	Wed, 23 Apr 2025 15:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421083;
-	bh=mmHOh+a5p6uu7SCPZCEsOL92khD2sg82IUMj0UWqt1s=;
+	s=korg; t=1745420450;
+	bh=lV0y9pm8wr5PR7NJQ983DB/sz/2Hk32NaBxKb47NsD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tb5to3EDTeku9tx9koQigpiz/54ldTvHQNeBxsujhGOFK1+2CHFjxp2VZMVaoG0+8
-	 WBNF7clO8bRf7TDZ2x9/T6plp0x9cPIME9eTYNKX+D2xVDL2gnEZWjYPV0vtnF7cON
-	 gJZZf6gUdqcKCddA3Qtk4M3SXy28IlU5HCUpefvs=
+	b=w5Evogg+cqUcnDOvfvIF1ogL4JY8g0DT9Xoo6EwKTGgoXGNJwMk+1pYEVhffHhjDt
+	 quy2q14dzb8co3aOaBICrrKqJewb9JnGL1LOi9grvoDd/pG9rr+KQyPbIWy7FDYJ/i
+	 0iQz/aHF/uaCxtZbsJzAs16lEXGEyE73UrwQiMec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 140/393] media: i2c: ccs: Set the devices runtime PM status correctly in remove
-Date: Wed, 23 Apr 2025 16:40:36 +0200
-Message-ID: <20250423142649.159112962@linuxfoundation.org>
+	Icenowy Zheng <uwu@icenowy.me>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/291] wifi: mt76: mt76x2u: add TP-Link TL-WDN6200 ID to device table
+Date: Wed, 23 Apr 2025 16:40:37 +0200
+Message-ID: <20250423142626.354985165@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-commit e04604583095faf455b3490b004254a225fd60d4 upstream.
+[ Upstream commit 06cccc2ebbe6c8a20f714f3a0ff3ff489d3004bb ]
 
-Set the device's runtime PM status to suspended in device removal only if
-it wasn't suspended already.
+The TP-Link TL-WDN6200 "Driverless" version cards use a MT7612U chipset.
 
-Fixes: 9447082ae666 ("[media] smiapp: Implement power-on and power-off sequences without runtime PM")
-Cc: stable@vger.kernel.org # for >= v5.15
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add the USB ID to mt76x2u driver.
+
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Link: https://patch.msgid.link/20250317102235.1421726-1-uwu@icenowy.me
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3683,9 +3683,10 @@ static void ccs_remove(struct i2c_client
- 	v4l2_async_unregister_subdev(subdev);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 55068f3252ef3..d804309992196 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -21,6 +21,7 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+ 	{ USB_DEVICE(0x045e, 0x02fe) },	/* XBox One Wireless Adapter */
++	{ USB_DEVICE(0x2357, 0x0137) },	/* TP-Link TL-WDN6200 */
+ 	{ },
+ };
  
- 	pm_runtime_disable(&client->dev);
--	if (!pm_runtime_status_suspended(&client->dev))
-+	if (!pm_runtime_status_suspended(&client->dev)) {
- 		ccs_power_off(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
- 
- 	for (i = 0; i < sensor->ssds_used; i++) {
- 		v4l2_device_unregister_subdev(&sensor->ssds[i].sd);
+-- 
+2.39.5
+
 
 
 
