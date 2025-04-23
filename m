@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07504A98E08
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10972A99007
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 541861B823CD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 970F87AEE9D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B77027FD4F;
-	Wed, 23 Apr 2025 14:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09C7283C87;
+	Wed, 23 Apr 2025 15:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2a3Apt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plL+RwqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4933D19DF4C;
-	Wed, 23 Apr 2025 14:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7856D27CCD7;
+	Wed, 23 Apr 2025 15:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419795; cv=none; b=Y/TV8C1SBmG414IY1y0mRUmht8rt2hiBpEhS4hq8trgBOjwMLDRFFeQ+2X1j5/b3Vpo4rkY7FX5cY0MXeoZgHtZTH6VQAB+hyRcQfcgtV20ow92KhYSchiGDCxQZO4wVwxkiemsVDMtontdx2aMYynkY8GUnCQhPRorJVZTJG/U=
+	t=1745421041; cv=none; b=tSOth+nE89bqpPUbxLzhWDSpJVE2yf5NJH0Up85TeTHiGeSjvpAKLU7RKAFRnA7pJWbvYu8+iDipnXYJ8LQPJCQdEVNiGFeRmRGxjiADjpzCvqcPvct9P8Dv0MWnamNZ7t5GZNKbEozmA0PL2g1snbT189mEvYkY3VFjHhAgE3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419795; c=relaxed/simple;
-	bh=ff9ccShpa+kvHkbHOQHpbHoG0y9cDcypt3/SrxH67FQ=;
+	s=arc-20240116; t=1745421041; c=relaxed/simple;
+	bh=hLOeI5Ew1FpOcutXamgECI/jz3MT/r2uxldVII5wEOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s8OqfJQHnjpJ8RtW4pVH5/2jxf2lsbdtEuR32Rn55bXEGgLV/Vs9iS4peBJDXtvrFFzT/0RCmBT4pj0OLR95WXaH29eIl7PHE/Q3mJD4B6iUPar3y6Sy9NTY/QrQkoNh6Okeay+Y7VWafgnB5qj4I/C+pAj1vba/L8ewLHnVR7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2a3Apt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF72C4CEE2;
-	Wed, 23 Apr 2025 14:49:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HwODXd1ACApBBOcRwOlWIAXgYaiu7h9CukK2TqISBo+JDNrsS40e6u8C3217NzGh1sdp4rY0SUVoWzHwJaq3nAtCernPEHFCf8urG8Xvk82R3CAjedA1DDf7b6P1kyqL5Wn2h/GtGvhgoAaWt3L64L4fYreolyltUMhsUAPvpBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plL+RwqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AAD1C4CEE2;
+	Wed, 23 Apr 2025 15:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419795;
-	bh=ff9ccShpa+kvHkbHOQHpbHoG0y9cDcypt3/SrxH67FQ=;
+	s=korg; t=1745421041;
+	bh=hLOeI5Ew1FpOcutXamgECI/jz3MT/r2uxldVII5wEOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2a3Apt6qFN/dHVJ/dedXxrFx7HxatgCgWcgMpAgCmVRZj1eKQoEt8R1WQ4WBGXqb
-	 D7yNktvvEoYo6fnaxPIiL+G5E57BZY9pMYrsjCt/nTNkws6bpFBfbcDPFErwVzZxQv
-	 E4f5n57oaBF3JsQokSyV2E9r+mgAVoKmDrMPg2EY=
+	b=plL+RwqPsRv16JLhvCYqWj8+IjdKixE2ASulp1a6oF5Jw3NaEKDqermN6ZeYn6Nby
+	 AgQO+ByKtsTjeou0bgaIiW4+fgHxGasipy7CwFHpDM/DeWKRtV+HSnTusXXcZ3s5vQ
+	 wruKPluVPM2oh2UFPIKzOg1vZJwUMBorNiAC3GSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianlin Shi <jishi@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 028/241] ipv6: add exception routes to GC list in rt6_insert_exception
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 103/291] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
 Date: Wed, 23 Apr 2025 16:41:32 +0200
-Message-ID: <20250423142621.667120678@linuxfoundation.org>
+Message-ID: <20250423142628.558946783@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit cfe82469a00f0c0983bf4652de3a2972637dfc56 ]
+commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
 
-Commit 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list
-of routes.") introduced a separated list for managing route expiration via
-the GC timer.
+Implement the workaround for erratum
+  3.3 RGMII timing may be out of spec when transmit delay is enabled
+for the 6320 family, which says:
 
-However, it missed adding exception routes (created by ip6_rt_update_pmtu()
-and rt6_do_redirect()) to this GC list. As a result, these exceptions were
-never considered for expiration and removal, leading to stale entries
-persisting in the routing table.
+  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
+  cycle may be out of spec. Under very rare conditions this may cause
+  the attached device receive CRC errors.
 
-This patch fixes the issue by calling fib6_add_gc_list() in
-rt6_insert_exception(), ensuring that exception routes are properly tracked
-and garbage collected when expired.
-
-Fixes: 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list of routes.")
-Reported-by: Jianlin Shi <jishi@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/837e7506ffb63f47faa2b05d9b85481aad28e1a4.1744134377.git.lucien.xin@gmail.com
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.4.x
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 08cee62e789e1..21eca985a1fd1 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1771,6 +1771,7 @@ static int rt6_insert_exception(struct rt6_info *nrt,
- 	if (!err) {
- 		spin_lock_bh(&f6i->fib6_table->tb6_lock);
- 		fib6_update_sernum(net, f6i);
-+		fib6_add_gc_list(f6i);
- 		spin_unlock_bh(&f6i->fib6_table->tb6_lock);
- 		fib6_force_start_gc(net);
- 	}
--- 
-2.39.5
-
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -3694,6 +3694,21 @@ static int mv88e6xxx_stats_setup(struct
+ 	return mv88e6xxx_g1_stats_clear(chip);
+ }
+ 
++static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
++{
++	u16 dummy;
++	int err;
++
++	/* Workaround for erratum
++	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
++	 */
++	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
++	if (err)
++		return err;
++
++	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
++}
++
+ /* Check if the errata has already been applied. */
+ static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
+ {
+@@ -5110,6 +5125,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 
+ static const struct mv88e6xxx_ops mv88e6320_ops = {
+ 	/* MV88E6XXX_FAMILY_6320 */
++	.setup_errata = mv88e6320_setup_errata,
+ 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
+ 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
+ 	.irl_init_all = mv88e6352_g2_irl_init_all,
+@@ -5157,6 +5173,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 
+ static const struct mv88e6xxx_ops mv88e6321_ops = {
+ 	/* MV88E6XXX_FAMILY_6320 */
++	.setup_errata = mv88e6320_setup_errata,
+ 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
+ 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
+ 	.irl_init_all = mv88e6352_g2_irl_init_all,
 
 
 
