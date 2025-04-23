@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62153A98F11
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC2BA9933A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B441B67000
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69FD61BA754C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C73280A3A;
-	Wed, 23 Apr 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FBC28D840;
+	Wed, 23 Apr 2025 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQuMJQZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6p+86jF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75080269B07;
-	Wed, 23 Apr 2025 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1422928D836;
+	Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420271; cv=none; b=XlsL9lzfgUDsLUXvsm3fEe1HSEXjjRbie0R6UYUkZ/CcWjhv629DNGgMMdoGsJprquCcLEKivUXlcN+4za+FUYD1LllwUFjbEyim37vm63I/uPi39+wJ7sTsUJs/bprWouGsI3ZqMlAxfbXVmIxb9amlvZoDhSC4w3uJazus/bs=
+	t=1745421921; cv=none; b=CidrSWEHNR4gKeIrsxPir3kobIA3Pnt0cz0i9ahzoZlkLEvZt//dd63gVlHyLKUD9egSeLbM5qRVqT972NScEBxEHhmTUGsogJE4b+DvLxhVdGD81caFLJKVYBZuIuRpB6nD76v1CcLZffyL2iHWJAlwY1oButYTjVcFLdpyb+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420271; c=relaxed/simple;
-	bh=eyd/0uWLB2J0fL1aw+6g6UshsJY1QWAZZdYfIP3KFYk=;
+	s=arc-20240116; t=1745421921; c=relaxed/simple;
+	bh=sgd6GNaVjcm4Jk9f7st5Vly7X48fRaIBxZcchqpdJ8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YrkUYl+iV5QzyjzMzQgANNyFL6BgOz//h90PG7G/b3T9xCA9GXslW0Mqi730wjokxfQ0fPwzaWa56gFeXmymuKt0VQovQypXD7v0vWPoEKMWvUArcLvco/sGS9XQDQEcWRh++gsA/M1hx15IxRqLWBQHEO/QfhiIFnlE3neGf38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQuMJQZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07375C4CEE2;
-	Wed, 23 Apr 2025 14:57:50 +0000 (UTC)
+	 MIME-Version; b=Yv8M57rCBz52elNEyCIf3xQ1oSUG+2y0mVwoZt+2grvO9L/RTLkt3hkto4r+bNmpOUs+L41ys3rZTWWTwYopYJlXzwMR+ouHjR1/J6u9sE3effkIEbpjLIiQ9zLdgMZzB3R7Cro8sPZJ8KynVvWGbYOvgsLQPEV45fGU3/gW4jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6p+86jF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3513AC4CEE3;
+	Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420271;
-	bh=eyd/0uWLB2J0fL1aw+6g6UshsJY1QWAZZdYfIP3KFYk=;
+	s=korg; t=1745421918;
+	bh=sgd6GNaVjcm4Jk9f7st5Vly7X48fRaIBxZcchqpdJ8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQuMJQZB6BZ9/z0Tbh4aj8I0xbS08G2GHoiG2z93AEBaMJz93DhQb3xJd/V0terpf
-	 BoB3KPnac+s6x5V5Zn0HUzJf7VsEKEsEE/FPxPyKLodrVFzxk6Bjy0rEpN5C72OPoq
-	 nbJ7fmUcWuCwqu4MGnNP73ZpbhIio9UO8tXWl9HU=
+	b=r6p+86jFtKjzDOx7TjiMXD43Jk59outcskD55kg+ceQ2nqyuF50EkI3AYyAxlLGG6
+	 T1Wz7sknuVaJLecDmKQ8+ANsTwR7cyaFQv9g23y/l+AVB1NywVPfSJu5QPqLkoFK6H
+	 ZdhjD8tNxOUUZzz2eLqCNfWOimlWW73xLEYs7ZDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 077/241] net: dsa: free routing table on probe failure
+Subject: [PATCH 6.6 245/393] scsi: iscsi: Fix missing scsi_host_put() in error path
 Date: Wed, 23 Apr 2025 16:42:21 +0200
-Message-ID: <20250423142623.738393788@linuxfoundation.org>
+Message-ID: <20250423142653.502319334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,159 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 8bf108d7161ffc6880ad13a0cc109de3cf631727 ]
+[ Upstream commit 72eea84a1092b50a10eeecfeba4b28ac9f1312ab ]
 
-If complete = true in dsa_tree_setup(), it means that we are the last
-switch of the tree which is successfully probing, and we should be
-setting up all switches from our probe path.
+Add goto to ensure scsi_host_put() is called in all error paths of
+iscsi_set_host_param() function. This fixes a potential memory leak when
+strlen() check fails.
 
-After "complete" becomes true, dsa_tree_setup_cpu_ports() or any
-subsequent function may fail. If that happens, the entire tree setup is
-in limbo: the first N-1 switches have successfully finished probing
-(doing nothing but having allocated persistent memory in the tree's
-dst->ports, and maybe dst->rtable), and switch N failed to probe, ending
-the tree setup process before anything is tangible from the user's PoV.
-
-If switch N fails to probe, its memory (ports) will be freed and removed
-from dst->ports. However, the dst->rtable elements pointing to its ports,
-as created by dsa_link_touch(), will remain there, and will lead to
-use-after-free if dereferenced.
-
-If dsa_tree_setup_switches() returns -EPROBE_DEFER, which is entirely
-possible because that is where ds->ops->setup() is, we get a kasan
-report like this:
-
-==================================================================
-BUG: KASAN: slab-use-after-free in mv88e6xxx_setup_upstream_port+0x240/0x568
-Read of size 8 at addr ffff000004f56020 by task kworker/u8:3/42
-
-Call trace:
- __asan_report_load8_noabort+0x20/0x30
- mv88e6xxx_setup_upstream_port+0x240/0x568
- mv88e6xxx_setup+0xebc/0x1eb0
- dsa_register_switch+0x1af4/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-Allocated by task 42:
- __kasan_kmalloc+0x84/0xa0
- __kmalloc_cache_noprof+0x298/0x490
- dsa_switch_touch_ports+0x174/0x3d8
- dsa_register_switch+0x800/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-Freed by task 42:
- __kasan_slab_free+0x48/0x68
- kfree+0x138/0x418
- dsa_register_switch+0x2694/0x2ae0
- mv88e6xxx_register_switch+0x1b8/0x2a8
- mv88e6xxx_probe+0xc4c/0xf60
- mdio_probe+0x78/0xb8
- really_probe+0x2b8/0x5a8
- __driver_probe_device+0x164/0x298
- driver_probe_device+0x78/0x258
- __device_attach_driver+0x274/0x350
-
-The simplest way to fix the bug is to delete the routing table in its
-entirety. dsa_tree_setup_routing_table() has no problem in regenerating
-it even if we deleted links between ports other than those of switch N,
-because dsa_link_touch() first checks whether the port pair already
-exists in dst->rtable, allocating if not.
-
-The deletion of the routing table in its entirety already exists in
-dsa_tree_teardown(), so refactor that into a function that can also be
-called from the tree setup error path.
-
-In my analysis of the commit to blame, it is the one which added
-dsa_link elements to dst->rtable. Prior to that, each switch had its own
-ds->rtable which is freed when the switch fails to probe. But the tree
-is potentially persistent memory.
-
-Fixes: c5f51765a1f6 ("net: dsa: list DSA links in the fabric")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414213001.2957964-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ce51c8170084 ("scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250318094344.91776-1-linmq006@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dsa/dsa.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/scsi/scsi_transport_iscsi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index e7e32956070aa..436a7e1b412ad 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -862,6 +862,16 @@ static void dsa_tree_teardown_lags(struct dsa_switch_tree *dst)
- 	kfree(dst->lags);
- }
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index deeb657981a69..0c30fec555475 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3208,11 +3208,14 @@ iscsi_set_host_param(struct iscsi_transport *transport,
+ 	}
  
-+static void dsa_tree_teardown_routing_table(struct dsa_switch_tree *dst)
-+{
-+	struct dsa_link *dl, *next;
-+
-+	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
-+		list_del(&dl->list);
-+		kfree(dl);
+ 	/* see similar check in iscsi_if_set_param() */
+-	if (strlen(data) > ev->u.set_host_param.len)
+-		return -EINVAL;
++	if (strlen(data) > ev->u.set_host_param.len) {
++		err = -EINVAL;
++		goto out;
 +	}
-+}
-+
- static int dsa_tree_setup(struct dsa_switch_tree *dst)
- {
- 	bool complete;
-@@ -879,7 +889,7 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
  
- 	err = dsa_tree_setup_cpu_ports(dst);
- 	if (err)
--		return err;
-+		goto teardown_rtable;
- 
- 	err = dsa_tree_setup_switches(dst);
- 	if (err)
-@@ -911,14 +921,14 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
- 	dsa_tree_teardown_switches(dst);
- teardown_cpu_ports:
- 	dsa_tree_teardown_cpu_ports(dst);
-+teardown_rtable:
-+	dsa_tree_teardown_routing_table(dst);
- 
+ 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
+ 					data, ev->u.set_host_param.len);
++out:
+ 	scsi_host_put(shost);
  	return err;
  }
- 
- static void dsa_tree_teardown(struct dsa_switch_tree *dst)
- {
--	struct dsa_link *dl, *next;
--
- 	if (!dst->setup)
- 		return;
- 
-@@ -932,10 +942,7 @@ static void dsa_tree_teardown(struct dsa_switch_tree *dst)
- 
- 	dsa_tree_teardown_cpu_ports(dst);
- 
--	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
--		list_del(&dl->list);
--		kfree(dl);
--	}
-+	dsa_tree_teardown_routing_table(dst);
- 
- 	pr_info("DSA: tree %d torn down\n", dst->index);
- 
 -- 
 2.39.5
 
