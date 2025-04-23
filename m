@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-136223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACBEA99286
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407C1A991A2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D664467E90
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F98F16577C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319302957D3;
-	Wed, 23 Apr 2025 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1F22BCF60;
+	Wed, 23 Apr 2025 15:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1d7vaHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYPkOk2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EBB2957B6;
-	Wed, 23 Apr 2025 15:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB3392BCF57;
+	Wed, 23 Apr 2025 15:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421981; cv=none; b=HJeqj7o6a1DYBfqw76eQ8iLGRoIz87DtPjz0kriUnaXT9dx3ESKk5gIylkD6zo5sqbQBxWrakfQt0UBA4vySrgLVSDfbK+OojC8v9Z2uROOKUr0tgumPP7QtGg/gw9ELotQ0sIF8gSRA89SeHy5mryB76ryOC9JMSsY28QPzebQ=
+	t=1745421487; cv=none; b=gX2eXRZq1cR1/I/5gH54vfLP0AsAwjfBuZEE6v0K8e7P8SLCOf9NtKJQf0ps8meHrsrxn660GUyiFZOTNtkPyfCH3Ul3YudjViE+kwQ2EUSOFcK9Y0WwlblJPliLKcO1mGooLXxu18U3oVGO16yZckL2wTIuH9NJbejNImpvcug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421981; c=relaxed/simple;
-	bh=LPDkn8s2EHSpX2fOGMSVNcEOK0ESIyNtrmMkZCJJlVs=;
+	s=arc-20240116; t=1745421487; c=relaxed/simple;
+	bh=K4+SROoZcWpXPl8XrC8R+xwAD/Yl8i8DgV4uWc2Gvys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMtwClrZNt4O6CqyNarAdAaMq+6dNzznjkPaBBNdX2BBohBVZnptqKcu+3K3VXL+j54ilw3+r4+FIFKzjpeBkMne3t3zt9C1YryKsWVxPDMP6mkVBZElqkLsI/7BmnlwBobHDRl9X73kdTiU3VmRspAHJUo84NIvx0eidSRzE3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1d7vaHa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548BAC4CEE2;
-	Wed, 23 Apr 2025 15:26:21 +0000 (UTC)
+	 MIME-Version; b=WgsKmXJ4MW07iAAErApp/ZyWVHBXm3lhw3MUkV/QxSs4PfmJOsol0CVKwKdNLPiMkwxh2N5lhCZvF9G4DA04/4jc/psJHcEWQsNQ2p7MrhlfbCycsFWCFmljBhF8KPfh6oq/5POp/Ef+jI7qxf3klnaoKl3legV2K5V8QQIKwIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYPkOk2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D537C4CEE2;
+	Wed, 23 Apr 2025 15:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421981;
-	bh=LPDkn8s2EHSpX2fOGMSVNcEOK0ESIyNtrmMkZCJJlVs=;
+	s=korg; t=1745421486;
+	bh=K4+SROoZcWpXPl8XrC8R+xwAD/Yl8i8DgV4uWc2Gvys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1d7vaHaKPrg+SQM97cX2e8Sbf9pnfLho7FPgp7QEMDgWNTq2YjzD3gvuCFa7PJLS
-	 /CEOIRGlmh/Wz8VFbTk2uMxI3Teoh6VGyoZFYynyfd+KbVK111CUGNw8jPUd21rYyC
-	 AiS1cA1HywbNZRvy3qigV+Lmowbx2TO3ef6glnfg=
+	b=JYPkOk2Co9x4uRz856YO7GwojqGZcTqfk6zG7kw9xZ0M9wtYZLYneDXevdnBDKWj9
+	 VW/SgQoihTIRM/B9xUBpVXBZB9vDn8yt/RB435KC5HNkxA5M6jRD0SMIG9jhwH63ZH
+	 dGauz+M0emnMYIeDNRSBEF1mAr6ndArLgfIqU4R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.6 235/393] iommufd: Fail replace if device has not been attached
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 142/291] dm-ebs: fix prefetch-vs-suspend race
 Date: Wed, 23 Apr 2025 16:42:11 +0200
-Message-ID: <20250423142653.095384134@linuxfoundation.org>
+Message-ID: <20250423142630.211696876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 55c85fa7579dc2e3f5399ef5bad67a44257c1a48 upstream.
+commit 9c565428788fb9b49066f94ab7b10efc686a0a4c upstream.
 
-The current implementation of iommufd_device_do_replace() implicitly
-assumes that the input device has already been attached. However, there
-is no explicit check to verify this assumption. If another device within
-the same group has been attached, the replace operation might succeed,
-but the input device itself may not have been attached yet.
+There's a possible race condition in dm-ebs - dm bufio prefetch may be in
+progress while the device is suspended. Fix this by calling
+dm_bufio_client_reset in the postsuspend hook.
 
-As a result, the input device might not be tracked in the
-igroup->device_list, and its reserved IOVA might not be added. Despite
-this, the caller might incorrectly assume that the device has been
-successfully replaced, which could lead to unexpected behavior or errors.
-
-To address this issue, add a check to ensure that the input device has
-been attached before proceeding with the replace operation. This check
-will help maintain the integrity of the device tracking system and prevent
-potential issues arising from incorrect assumptions about the device's
-attachment status.
-
-Fixes: e88d4ec154a8 ("iommufd: Add iommufd_device_replace()")
-Link: https://patch.msgid.link/r/20250306034842.5950-1-yi.l.liu@intel.com
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/iommufd/device.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/md/dm-ebs-target.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -407,6 +407,17 @@ iommufd_device_do_attach(struct iommufd_
- 	return NULL;
+--- a/drivers/md/dm-ebs-target.c
++++ b/drivers/md/dm-ebs-target.c
+@@ -389,6 +389,12 @@ static int ebs_map(struct dm_target *ti,
+ 	return DM_MAPIO_REMAPPED;
  }
  
-+/* Check if idev is attached to igroup->hwpt */
-+static bool iommufd_device_is_attached(struct iommufd_device *idev)
++static void ebs_postsuspend(struct dm_target *ti)
 +{
-+	struct iommufd_device *cur;
-+
-+	list_for_each_entry(cur, &idev->igroup->device_list, group_item)
-+		if (cur == idev)
-+			return true;
-+	return false;
++	struct ebs_c *ec = ti->private;
++	dm_bufio_client_reset(ec->bufio);
 +}
 +
- static struct iommufd_hw_pagetable *
- iommufd_device_do_replace(struct iommufd_device *idev,
- 			  struct iommufd_hw_pagetable *hwpt)
-@@ -423,6 +434,11 @@ iommufd_device_do_replace(struct iommufd
- 		rc = -EINVAL;
- 		goto err_unlock;
- 	}
-+
-+	if (!iommufd_device_is_attached(idev)) {
-+		rc = -EINVAL;
-+		goto err_unlock;
-+	}
- 
- 	if (hwpt == igroup->hwpt) {
- 		mutex_unlock(&idev->igroup->lock);
+ static void ebs_status(struct dm_target *ti, status_type_t type,
+ 		       unsigned int status_flags, char *result, unsigned int maxlen)
+ {
+@@ -446,6 +452,7 @@ static struct target_type ebs_target = {
+ 	.ctr		 = ebs_ctr,
+ 	.dtr		 = ebs_dtr,
+ 	.map		 = ebs_map,
++	.postsuspend	 = ebs_postsuspend,
+ 	.status		 = ebs_status,
+ 	.io_hints	 = ebs_io_hints,
+ 	.prepare_ioctl	 = ebs_prepare_ioctl,
 
 
 
