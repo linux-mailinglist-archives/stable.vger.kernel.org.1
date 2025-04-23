@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680E1A990FF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A060A991A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C05D518930E3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:16:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1AB01BA2EE9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735D828CF4F;
-	Wed, 23 Apr 2025 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5469328469B;
+	Wed, 23 Apr 2025 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha6LeBsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOJwdhgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9EB28CF6C;
-	Wed, 23 Apr 2025 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1403B28DEF0;
+	Wed, 23 Apr 2025 15:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421044; cv=none; b=r9MDQVs9gbkiFJu4ARwXB7TQ45QIfYOi2mKWHWLp4vQ2OkBVbDzdc3+nUHqgLm5XqrDO5+fNgoFpVyD5ybQouArhoSAC01WDylkFf+rdPkB9Txaw/A7yKHmOV1znm8jAuZqSqwJRzVoHxYDL8p6bXB/llnTlIUfqYUNfvlE2tCQ=
+	t=1745421466; cv=none; b=mTzN33mbPOH54pFZFa2rhmOn7N3PrMr+4vDECzcgKLyIUmOqWapl7XO8pML/ytiWrG0sGeCLc6HyrxtThLIYD65tK2/4ei25H3fyKZgUtk1aa4jrUS7eOeZzg4VeYSmrJeG03YrhCfgufp6v48fG78oeRAbZ7rwQKupHOt+AoHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421044; c=relaxed/simple;
-	bh=P15eP17d98fbJ7o2DmPT+Mkxx6u5uPLbSsb3j+p2sE0=;
+	s=arc-20240116; t=1745421466; c=relaxed/simple;
+	bh=awHRWfMgpexxqmMsK8k9pz0sVaeQ+aiKTQRvIR9n+ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4zQBcE59sJexFah3dmphLZzKQV6fp0F+EJ1RiKPP5R6w1PXEE9+2/mKX9YOXRAndOh3O1B/8zUrAi3p6T6SfIrP+56xv8/LUTOc03JdYR8DM8mZqB/ET9Yx9Me1qlvX9Yj3oJ/hn4soT0Tz1gzrcPPwRJt2O5sb2wWgwgW3bmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha6LeBsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE22C4CEE2;
-	Wed, 23 Apr 2025 15:10:43 +0000 (UTC)
+	 MIME-Version; b=EZQnUZC0TsXq1+MS+aCok4EFa4CN3j2Qw1j3uw+iiJgKwrIuF0glGZOUlU+U9epD85F2N84/K53yFSdMUAegzY+gDDpx6vR8iooCl6OAZ+9rUpOAsHkvnPZmJGYjBl2GyJg1KAkSZXp973itetiO2jhNRn8W+4Tg6/fMU64yXu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOJwdhgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95546C4CEE2;
+	Wed, 23 Apr 2025 15:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421044;
-	bh=P15eP17d98fbJ7o2DmPT+Mkxx6u5uPLbSsb3j+p2sE0=;
+	s=korg; t=1745421465;
+	bh=awHRWfMgpexxqmMsK8k9pz0sVaeQ+aiKTQRvIR9n+ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ha6LeBsMlk4YikJmtskq2pL1OYWve1qChJldpktV8MKxrZxd0fEvUUMbqBj2mGWO0
-	 zuorMvoe0YMVoTTjzMfJBWC3HvOkMyM7xmJBMhyt4TGmomHUDq2P+Whl3rPZ937dBy
-	 9q0W4HlehcNjotfXsyAUk6fM/P6LkK7/HvJ5RQzM=
+	b=UOJwdhgFa4Da+4wWSWtcsS1/SUAN/R8kwI46hOPArqHCxlX4DoeVn+dqH0byZeBTq
+	 V30klV8kDC3T3TEdlZ886teqylg3ep7SnVK92wvRIHwwjdPppjEDGSG5znY/88xv5O
+	 FWlG66S9AgeDcla57eisOVjd/8I7g3h9yE0BfSmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Quentin Perret <qperret@google.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 088/291] KVM: arm64: Tear down vGIC on failed vCPU creation
+	YH Huang <yh.huang@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 181/393] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
 Date: Wed, 23 Apr 2025 16:41:17 +0200
-Message-ID: <20250423142627.957196114@linuxfoundation.org>
+Message-ID: <20250423142650.853427863@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-commit 250f25367b58d8c65a1b060a2dda037eea09a672 upstream.
+commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
 
-If kvm_arch_vcpu_create() fails to share the vCPU page with the
-hypervisor, we propagate the error back to the ioctl but leave the
-vGIC vCPU data initialised. Note only does this leak the corresponding
-memory when the vCPU is destroyed but it can also lead to use-after-free
-if the redistributor device handling tries to walk into the vCPU.
+The MT8173 disp-pwm device should have only one compatible string, based
+on the following DT validation error:
 
-Add the missing cleanup to kvm_arch_vcpu_create(), ensuring that the
-vGIC vCPU structures are destroyed on error.
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
 
-Cc: <stable@vger.kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Quentin Perret <qperret@google.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20250314133409.9123-1-will@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
+
+Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
+Cc: YH Huang <yh.huang@mediatek.com>
+Cc: stable@vger.kernel.org # v4.5+
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/arm.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -371,7 +371,11 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
- 	if (err)
- 		return err;
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -1246,8 +1246,7 @@
+ 		};
  
--	return kvm_share_hyp(vcpu, vcpu + 1);
-+	err = kvm_share_hyp(vcpu, vcpu + 1);
-+	if (err)
-+		kvm_vgic_vcpu_destroy(vcpu);
-+
-+	return err;
- }
+ 		pwm0: pwm@1401e000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401e000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
+@@ -1257,8 +1256,7 @@
+ 		};
  
- void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
+ 		pwm1: pwm@1401f000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401f000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
 
 
 
