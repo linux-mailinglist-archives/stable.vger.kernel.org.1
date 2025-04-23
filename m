@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CACA98EAF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7CEA98EB5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 835EC3BA463
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 045285A751D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2596B27D76E;
-	Wed, 23 Apr 2025 14:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E695427A12D;
+	Wed, 23 Apr 2025 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRBXwfKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPDXQP1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F3E18DB17;
-	Wed, 23 Apr 2025 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27C219DF4C;
+	Wed, 23 Apr 2025 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420123; cv=none; b=JE0diAD3Zm05EsBtZigWnzrVOhLmTXpfe8AUmToJBcEBJg1XEyLRnWtc3UtDezcOw9aC5P/yMdFxyBkTPe3dkr6sLyL2HLBssTJJhwlPvIegmlkSum9o5BbplIKoBG4b+xsVRFa3nL1GEgeLqNgO+YeAS1u432HCpBQhCAlIIhU=
+	t=1745420131; cv=none; b=bwip+P9EJSn1G2HWeFSe3OSD6IxtdY7x5L09FMvTpUSfMn5ZQtukwRdhBO4w5Ebo1VKSYo7qvIfiC4/AhdazMy60hrGl3tPlyxk/7SbdWVfyhtQHE71JQcO8KP11j5lOlhulrnXTOLl3S9XVxzXt6diJSBj2tSZYRiUZpP3GbkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420123; c=relaxed/simple;
-	bh=mPe1EJBcWzcp15OSicOrLMvdgJVQhsBf7QcLik08mzM=;
+	s=arc-20240116; t=1745420131; c=relaxed/simple;
+	bh=THxIKIkrWGatwRPyojoytLmNtZOvZRyENL+l6D/Vbug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKffdsvtd9wOLaGb1J0GppRXWk9VwJGyzWJenLjUhJs2k5qshUaERDbqP4kOXQrKK9VcbZFrYyxmnMgt1eJHvaD640PRumvsT2p52GJtHkhyzMpKcCKC2lBThkjp8MrBbwIoTP3Jzho7C+Hn8Pn5R4qwYX+mT+uVJw6N/R0SzHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRBXwfKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A951C4CEE2;
-	Wed, 23 Apr 2025 14:55:23 +0000 (UTC)
+	 MIME-Version; b=iPSD6lPbYFNbYk6Tunr5+SunX/n2r3m+LXutttppyMuWwmFaIiCbKSW8Cgv/iVNO12AhMbl8RBkbU6uH1T4xnx25zFlD66JeYMP+nWju1HN6210vRmOSuKkpaeecXWFD1bIuj7ZfAZXtAx29IzR/BQ2+/5qHNv0FIZhYeAhB1z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPDXQP1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34399C4CEE2;
+	Wed, 23 Apr 2025 14:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420123;
-	bh=mPe1EJBcWzcp15OSicOrLMvdgJVQhsBf7QcLik08mzM=;
+	s=korg; t=1745420131;
+	bh=THxIKIkrWGatwRPyojoytLmNtZOvZRyENL+l6D/Vbug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRBXwfKQhnq/xUvwa9uOMnKIUkDHfuoeSr+29j53uqYEk9l72Qa5BhrcHfwrW4UlA
-	 Q1dg/0Tfcu15cyx+XMTVP2CHcOkf87qIxGjjpsT8oenoXydfLWcsU7o77trbZ1OuTE
-	 NeuT2VUpYsRaPohAbqTxo0PqncmIN5geeNX3eDKE=
+	b=JPDXQP1ZghZUXNEUfe3pq1+okZhRF2HNahwd+W7AAFVwbCFb0Rbsq9o9JJYvD+iRg
+	 jZEVTXZGJiNNQrpoz1TpGJ01EP92mxG6nuxwirWqhPUaRkbpzYsP0uRpVdPGfVzCk6
+	 WGLO1TkmiVo/1XhRvjLIiiTKYz/yfoZsWpedFNKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Xin Li (Intel)" <xin@zytor.com>,
 	Ingo Molnar <mingo@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
+	Andy Lutomirski <luto@kernel.org>,
+	Brian Gerst <brgerst@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/393] x86/mm: Clear _PAGE_DIRTY for kernel mappings when we clear _PAGE_RW
-Date: Wed, 23 Apr 2025 16:38:56 +0200
-Message-ID: <20250423142644.949341713@linuxfoundation.org>
+Subject: [PATCH 6.6 041/393] x86/ia32: Leave NULL selector values 0~3 unchanged
+Date: Wed, 23 Apr 2025 16:38:57 +0200
+Message-ID: <20250423142644.988193420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -68,78 +71,139 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit c1fcf41cf37f7a3fd3bbf6f0c04aba3ea4258888 ]
+[ Upstream commit ad546940b5991d3e141238cd80a6d1894b767184 ]
 
-The bit pattern of _PAGE_DIRTY set and _PAGE_RW clear is used to mark
-shadow stacks.  This is currently checked for in mk_pte() but not
-pfn_pte().  If we add the check to pfn_pte(), it catches vfree()
-calling set_direct_map_invalid_noflush() which calls
-__change_page_attr() which loads the old protection bits from the
-PTE, clears the specified bits and uses pfn_pte() to construct the
-new PTE.
+The first GDT descriptor is reserved as 'NULL descriptor'.  As bits 0
+and 1 of a segment selector, i.e., the RPL bits, are NOT used to index
+GDT, selector values 0~3 all point to the NULL descriptor, thus values
+0, 1, 2 and 3 are all valid NULL selector values.
 
-We should, therefore, for kernel mappings, clear the _PAGE_DIRTY bit
-consistently whenever we clear _PAGE_RW.  I opted to do it in the
-callers in case we want to use __change_page_attr() to create shadow
-stacks inside the kernel at some point in the future.  Arguably, we
-might also want to clear _PAGE_ACCESSED here.
+When a NULL selector value is to be loaded into a segment register,
+reload_segments() sets its RPL bits.  Later IRET zeros ES, FS, GS, and
+DS segment registers if any of them is found to have any nonzero NULL
+selector value.  The two operations offset each other to actually effect
+a nop.
 
-Note that the 3 functions involved:
+Besides, zeroing of RPL in NULL selector values is an information leak
+in pre-FRED systems as userspace can spot any interrupt/exception by
+loading a nonzero NULL selector, and waiting for it to become zero.
+But there is nothing software can do to prevent it before FRED.
 
-  __set_pages_np()
-  kernel_map_pages_in_pgd()
-  kernel_unmap_pages_in_pgd()
+ERETU, the only legit instruction to return to userspace from kernel
+under FRED, by design does NOT zero any segment register to avoid this
+problem behavior.
 
-Only ever manipulate non-swappable kernel mappings, so maintaining
-the DIRTY:1|RW:0 special pattern for shadow stacks and DIRTY:0
-pattern for non-shadow-stack entries can be maintained consistently
-and doesn't result in the unintended clearing of a live dirty bit
-that could corrupt (destroy) dirty bit information for user mappings.
+As such, leave NULL selector values 0~3 unchanged and close the leak.
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Do the same on 32-bit kernel as well.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/174051422675.10177.13226545170101706336.tip-bot2@tip-bot2
-Closes: https://lore.kernel.org/oe-lkp/202502241646.719f4651-lkp@intel.com
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Brian Gerst <brgerst@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20241126184529.1607334-1-xin@zytor.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/signal_32.c | 62 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 19 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 2d850f6bae701..525794f1eefb3 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -2374,7 +2374,7 @@ static int __set_pages_np(struct page *page, int numpages)
- 				.pgd = NULL,
- 				.numpages = numpages,
- 				.mask_set = __pgprot(0),
--				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW),
-+				.mask_clr = __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
- 				.flags = CPA_NO_CHECK_ALIAS };
+diff --git a/arch/x86/kernel/signal_32.c b/arch/x86/kernel/signal_32.c
+index c12624bc82a31..983f8f5893a48 100644
+--- a/arch/x86/kernel/signal_32.c
++++ b/arch/x86/kernel/signal_32.c
+@@ -33,25 +33,55 @@
+ #include <asm/smap.h>
+ #include <asm/gsseg.h>
  
- 	/*
-@@ -2453,7 +2453,7 @@ int __init kernel_map_pages_in_pgd(pgd_t *pgd, u64 pfn, unsigned long address,
- 		.pgd = pgd,
- 		.numpages = numpages,
- 		.mask_set = __pgprot(0),
--		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW)),
-+		.mask_clr = __pgprot(~page_flags & (_PAGE_NX|_PAGE_RW|_PAGE_DIRTY)),
- 		.flags = CPA_NO_CHECK_ALIAS,
- 	};
++/*
++ * The first GDT descriptor is reserved as 'NULL descriptor'.  As bits 0
++ * and 1 of a segment selector, i.e., the RPL bits, are NOT used to index
++ * GDT, selector values 0~3 all point to the NULL descriptor, thus values
++ * 0, 1, 2 and 3 are all valid NULL selector values.
++ *
++ * However IRET zeros ES, FS, GS, and DS segment registers if any of them
++ * is found to have any nonzero NULL selector value, which can be used by
++ * userspace in pre-FRED systems to spot any interrupt/exception by loading
++ * a nonzero NULL selector and waiting for it to become zero.  Before FRED
++ * there was nothing software could do to prevent such an information leak.
++ *
++ * ERETU, the only legit instruction to return to userspace from kernel
++ * under FRED, by design does NOT zero any segment register to avoid this
++ * problem behavior.
++ *
++ * As such, leave NULL selector values 0~3 unchanged.
++ */
++static inline u16 fixup_rpl(u16 sel)
++{
++	return sel <= 3 ? sel : sel | 3;
++}
++
+ #ifdef CONFIG_IA32_EMULATION
+ #include <asm/ia32_unistd.h>
  
-@@ -2496,7 +2496,7 @@ int __init kernel_unmap_pages_in_pgd(pgd_t *pgd, unsigned long address,
- 		.pgd		= pgd,
- 		.numpages	= numpages,
- 		.mask_set	= __pgprot(0),
--		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW),
-+		.mask_clr	= __pgprot(_PAGE_PRESENT | _PAGE_RW | _PAGE_DIRTY),
- 		.flags		= CPA_NO_CHECK_ALIAS,
- 	};
+ static inline void reload_segments(struct sigcontext_32 *sc)
+ {
+-	unsigned int cur;
++	u16 cur;
  
++	/*
++	 * Reload fs and gs if they have changed in the signal
++	 * handler.  This does not handle long fs/gs base changes in
++	 * the handler, but does not clobber them at least in the
++	 * normal case.
++	 */
+ 	savesegment(gs, cur);
+-	if ((sc->gs | 0x03) != cur)
+-		load_gs_index(sc->gs | 0x03);
++	if (fixup_rpl(sc->gs) != cur)
++		load_gs_index(fixup_rpl(sc->gs));
+ 	savesegment(fs, cur);
+-	if ((sc->fs | 0x03) != cur)
+-		loadsegment(fs, sc->fs | 0x03);
++	if (fixup_rpl(sc->fs) != cur)
++		loadsegment(fs, fixup_rpl(sc->fs));
++
+ 	savesegment(ds, cur);
+-	if ((sc->ds | 0x03) != cur)
+-		loadsegment(ds, sc->ds | 0x03);
++	if (fixup_rpl(sc->ds) != cur)
++		loadsegment(ds, fixup_rpl(sc->ds));
+ 	savesegment(es, cur);
+-	if ((sc->es | 0x03) != cur)
+-		loadsegment(es, sc->es | 0x03);
++	if (fixup_rpl(sc->es) != cur)
++		loadsegment(es, fixup_rpl(sc->es));
+ }
+ 
+ #define sigset32_t			compat_sigset_t
+@@ -105,18 +135,12 @@ static bool ia32_restore_sigcontext(struct pt_regs *regs,
+ 	regs->orig_ax = -1;
+ 
+ #ifdef CONFIG_IA32_EMULATION
+-	/*
+-	 * Reload fs and gs if they have changed in the signal
+-	 * handler.  This does not handle long fs/gs base changes in
+-	 * the handler, but does not clobber them at least in the
+-	 * normal case.
+-	 */
+ 	reload_segments(&sc);
+ #else
+-	loadsegment(gs, sc.gs);
+-	regs->fs = sc.fs;
+-	regs->es = sc.es;
+-	regs->ds = sc.ds;
++	loadsegment(gs, fixup_rpl(sc.gs));
++	regs->fs = fixup_rpl(sc.fs);
++	regs->es = fixup_rpl(sc.es);
++	regs->ds = fixup_rpl(sc.ds);
+ #endif
+ 
+ 	return fpu__restore_sig(compat_ptr(sc.fpstate), 1);
 -- 
 2.39.5
 
