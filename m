@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55558A99313
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8B6A99154
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C87E1BA5527
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3ABE1B87F55
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A8426A08C;
-	Wed, 23 Apr 2025 15:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CC9D280CC8;
+	Wed, 23 Apr 2025 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrQj9t9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKot9o8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F2A28F50A;
-	Wed, 23 Apr 2025 15:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F0827F73E;
+	Wed, 23 Apr 2025 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422230; cv=none; b=p+IzhZ6RWIYSDVTtyaySUN3VZOxTtRbAKPPHC5Wfh4pGuNIyIbFZn35t4fdoqeInMnOlMR1R5HBaAQIKvNWY4sQAu5BBYZ7dWgcCs/G51lHDEdUV4iR8bMuGSEx5t01DPhVYc18wABTETV1gFTZeG8AK+LhVFVjGBo4TlZAqZHU=
+	t=1745421228; cv=none; b=fhbxqV0OoyLbHjmSSOeuixzv55BOzbmECF3sYX45NCOh0E4FQIe+THOuShi05MeExD7RpwFaJh1QyXqmD0YRnw9ReE3c5aFXn7rISj7rwFcj667fGi3TT6/aZ6VbQh6kvcaUwGj+Q7UvqddwJbRI89uU2FvcsVkUtZ1RmaVyQOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422230; c=relaxed/simple;
-	bh=Kss84yfNbzjeh8Z2CKGhsSRdYXGTCR7WGWYKQS+h33o=;
+	s=arc-20240116; t=1745421228; c=relaxed/simple;
+	bh=H0Yl36HCkeCvlBuKQKUlwf4xV7WLa5Y9PdHuD9U6gCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PgkgEOGSwgZfY1uNp3wPt70SsVz1XKaKTFDsMJzJ5hvp++ss0LMB5DH6MNzK5CyLOX0l97QHzM/xJWR3ErElcKcv6ih28bckDzjzvbiZehUjjq9dJVwqo9Tytm3/J1X2QyWIctqVlkfEqNw3qK9aBuJMHrYiQ9IJUamxIePpsxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrQj9t9P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6D9C4CEE8;
-	Wed, 23 Apr 2025 15:30:30 +0000 (UTC)
+	 MIME-Version; b=GBFjXuSs/hpjk1RKu7iaUVKdP8LNAdv120J5fQWGgDlAi2C3Vxy23dFzqPa8/RtDFaju87CyMEQffIGuiVGatgxOkNH/3sgSrl6Pr79Nl4ugqZzuAAUiCW5pJuB++7vSiAOBYQKUF3+yAh4VAojUlgw8V1Wy50EQwHrzRxXND1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKot9o8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E09C4CEE2;
+	Wed, 23 Apr 2025 15:13:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422230;
-	bh=Kss84yfNbzjeh8Z2CKGhsSRdYXGTCR7WGWYKQS+h33o=;
+	s=korg; t=1745421228;
+	bh=H0Yl36HCkeCvlBuKQKUlwf4xV7WLa5Y9PdHuD9U6gCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrQj9t9PJtD5sD++/3CLNNkPG+KhNJCbXq24tnarcVJ20Z+l6PRwPaoPse+9PwIIk
-	 en3TYC/9Zuzrc6VlP8SjsvI5Xi/1wkaHRdY1jSpOwfgYS0qjhbtF7MJaP40zhDL/mz
-	 4P8XquqFtENe/D1qMy/NXNVYKE8Xr3/IaSJj2v3Q=
+	b=UKot9o8ZGtN5TgZIRYOiPXgGi0bZWYNDnqFs8uCP4hIwdnMKFku+jl4tGRUYi3euY
+	 k6YyB/oX3HonoLeCWxUtWCww+lL7Ukup2O/HyoriPOxpsXZ2V+QAJ6e4P1KGqWhvtQ
+	 hUdib1qt1qHfymDFvbe++pJApYeXB9L3V5erma94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 238/291] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.14 163/241] scsi: ufs: exynos: Ensure consistent phy reference counts
 Date: Wed, 23 Apr 2025 16:43:47 +0200
-Message-ID: <20250423142634.141814951@linuxfoundation.org>
+Message-ID: <20250423142627.193950649@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
+commit 7f05fd9a3b6fb3a9abc5a748307d11831c03175f upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+ufshcd_link_startup() can call ufshcd_vops_link_startup_notify()
+multiple times when retrying. This causes the phy reference count to
+keep increasing and the phy to not properly re-initialize.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+If the phy has already been previously powered on, first issue a
+phy_power_off() and phy_exit(), before re-initializing and powering on
+again.
 
-Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-4-96722cc2ba1b@linaro.org
+Fixes: 3d73b200f989 ("scsi: ufs: ufs-exynos: Change ufs phy control sequence")
 Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/host/ufs-exynos.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -1265,7 +1265,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
- 	uint32_t tach_period;
- 	int ret;
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -962,6 +962,12 @@ static int exynos_ufs_phy_init(struct ex
+ 	}
  
--	if (!speed)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
- 
- 	ret = smu_v13_0_auto_fan_control(smu, 0);
+ 	phy_set_bus_width(generic_phy, ufs->avail_ln_rx);
++
++	if (generic_phy->power_count) {
++		phy_power_off(generic_phy);
++		phy_exit(generic_phy);
++	}
++
+ 	ret = phy_init(generic_phy);
+ 	if (ret) {
+ 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
 
 
 
