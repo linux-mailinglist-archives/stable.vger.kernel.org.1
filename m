@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-135421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35DFA98E22
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 625BEA990DD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86AB175B35
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E77F178644
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838D42820CC;
-	Wed, 23 Apr 2025 14:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C85B29293C;
+	Wed, 23 Apr 2025 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhPbemwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+Ihi0Xy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409072820BC;
-	Wed, 23 Apr 2025 14:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4919F28152D;
+	Wed, 23 Apr 2025 15:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419879; cv=none; b=dN2ob+MdeqBtuCQvLxUDvC9ym8cuJbMOG4d0PYuJCnR/rQ6ABwQSU73wamdJpwKM7nyX2VhAfSG3mXr/qsh4UgVw5hDixve5VZ9DoAgHVC47Ht/IiyHIcLoya8eZQXsbj+u5Bs9/ZkPPp3oTLjdgY5G8Gx5S/oyvrklus92Tm3o=
+	t=1745421158; cv=none; b=BpFi5EadGvSbTJsPrmGrPAkTdR2q2Z74Civ2lmXd72YZfw+5ce4rVvgpniVxLuHYEfXiGSOXsKL2nLbYLn3WYbMm+QlfJqTTJtw1MG57bWbV5AXx8tr3pBjlVd0a8oz1hDNcbW6OwGjzE4otQW9ahCoJTqNuo6I+rg5md7lnW4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419879; c=relaxed/simple;
-	bh=JVR2TB3tFpsZBrIht9Lb8Vaz/OLVH8x+sDTnl0prEXw=;
+	s=arc-20240116; t=1745421158; c=relaxed/simple;
+	bh=6MHOHScinRARKFVntfatXqsHC172GgZwMVINWbYE1RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QT9VKjpLm4A6bvADhUh8wDETR8c2WI+9PMlBk0Mgp6I+I3r0ofz7NEmBpn/CUCNxJp43z0EKSzMl1n5pbUnfLvvXQeKm8xxQDNv3qeuSBnEshQwqZYalHYggBmBPIO6v8TzKqZ+tKICTcC7pmO/tsAfcaSYsZ9QmiWBagIAvFMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhPbemwG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61AEC4CEE2;
-	Wed, 23 Apr 2025 14:51:18 +0000 (UTC)
+	 MIME-Version; b=MhmZa2HhoFPN2Iq33j85v/cAN4lZ7mxIOacSbepmvTdYh8IuR2eK7NlGHN2k2oEpE5SGMOlFPSvRc8TND5GImriMA507yQ2p4Fnu3r1DnrqVtY3MXrne09PC3gP2/7gz5X22TiSDT5UOSaKjDnmv0z+j5j9PWlUsMFfHVwuj+o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+Ihi0Xy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3BBC4CEE2;
+	Wed, 23 Apr 2025 15:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419879;
-	bh=JVR2TB3tFpsZBrIht9Lb8Vaz/OLVH8x+sDTnl0prEXw=;
+	s=korg; t=1745421157;
+	bh=6MHOHScinRARKFVntfatXqsHC172GgZwMVINWbYE1RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhPbemwGRb5tabEVyxKeMvgIcswnGJf/KAmofl6njYv+9/GUBRnxJhjAhoEQ84Srf
-	 HLC4lQniYWeQGIhz/ZjXclz4/F9BwHCOVAwGOy6JfoLWDPD6NDwwGpSBBUxYFEFF5r
-	 FGG+GRT7fVjoxbrO+cDoTBUkh1xPC61aEEX71+KE=
+	b=m+Ihi0XyFc1vddo6142iRxmplLNN+LYI71Fd5jRLTNwWvzi6DjT8dQikTh/jAbvE/
+	 ntoiMjuuLR20ar9eIcD5wIe6zXDU3huKFXGOqmU42tlAdaex+n4xWjKDub08MCs1kp
+	 stM3fOm5OnOOcvNn64f/3BTAvJJYcQGYz8X5rkl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 038/241] igc: add lock preventing multiple simultaneous PTM transactions
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 113/291] ext4: fix off-by-one error in do_split
 Date: Wed, 23 Apr 2025 16:41:42 +0200
-Message-ID: <20250423142622.067909270@linuxfoundation.org>
+Message-ID: <20250423142628.992168468@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,150 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit 1a931c4f5e6862e61a4b130cb76b422e1415f644 ]
+commit 94824ac9a8aaf2fb3c54b4bdde842db80ffa555d upstream.
 
-Add a mutex around the PTM transaction to prevent multiple transactors
+Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
+caused by out-of-bounds access due to incorrect splitting in do_split.
 
-Multiple processes try to initiate a PTM transaction, one or all may
-fail. This can be reproduced by running two instances of the
-following:
+BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
 
-$ sudo phc2sys -O 0 -i tsn0 -m
+CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
+ add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
+ make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
+ ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
+ ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
+ ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
+ vfs_symlink+0x137/0x2e0 fs/namei.c:4615
+ do_symlinkat+0x222/0x3a0 fs/namei.c:4641
+ __do_sys_symlink fs/namei.c:4662 [inline]
+ __se_sys_symlink fs/namei.c:4660 [inline]
+ __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
 
-PHC2SYS exits with:
+The following loop is located right above 'if' statement.
 
-"ioctl PTP_OFFSET_PRECISE: Connection timed out" when the PTM transaction
- fails
+for (i = count-1; i >= 0; i--) {
+	/* is more than half of this entry in 2nd half of the block? */
+	if (size + map[i].size/2 > blocksize/2)
+		break;
+	size += map[i].size;
+	move++;
+}
 
-Note: Normally two instance of PHC2SYS will not run, but one process
- should not break another.
+'i' in this case could go down to -1, in which case sum of active entries
+wouldn't exceed half the block size, but previous behaviour would also do
+split in half if sum would exceed at the very last block, which in case of
+having too many long name files in a single block could lead to
+out-of-bounds access and following use-after-free.
 
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250404082804.2567-3-a.sadovnikov@ispras.ru
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc.h     |  1 +
- drivers/net/ethernet/intel/igc/igc_ptp.c | 20 ++++++++++++++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ fs/ext4/namei.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index c35cc5cb11856..2f265c0959c7a 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -319,6 +319,7 @@ struct igc_adapter {
- 	struct timespec64 prev_ptp_time; /* Pre-reset PTP clock */
- 	ktime_t ptp_reset_start; /* Reset time in clock mono */
- 	struct system_time_snapshot snapshot;
-+	struct mutex ptm_lock; /* Only allow one PTM transaction at a time */
- 
- 	char fw_version[32];
- 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 343205bffc355..612ed26a29c5d 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -974,6 +974,7 @@ static void igc_ptm_log_error(struct igc_adapter *adapter, u32 ptm_stat)
- 	}
- }
- 
-+/* The PTM lock: adapter->ptm_lock must be held when calling igc_ptm_trigger() */
- static void igc_ptm_trigger(struct igc_hw *hw)
- {
- 	u32 ctrl;
-@@ -990,6 +991,7 @@ static void igc_ptm_trigger(struct igc_hw *hw)
- 	wrfl();
- }
- 
-+/* The PTM lock: adapter->ptm_lock must be held when calling igc_ptm_reset() */
- static void igc_ptm_reset(struct igc_hw *hw)
- {
- 	u32 ctrl;
-@@ -1068,9 +1070,16 @@ static int igc_ptp_getcrosststamp(struct ptp_clock_info *ptp,
- {
- 	struct igc_adapter *adapter = container_of(ptp, struct igc_adapter,
- 						   ptp_caps);
-+	int ret;
- 
--	return get_device_system_crosststamp(igc_phc_get_syncdevicetime,
--					     adapter, &adapter->snapshot, cts);
-+	/* This blocks until any in progress PTM transactions complete */
-+	mutex_lock(&adapter->ptm_lock);
-+
-+	ret = get_device_system_crosststamp(igc_phc_get_syncdevicetime,
-+					    adapter, &adapter->snapshot, cts);
-+	mutex_unlock(&adapter->ptm_lock);
-+
-+	return ret;
- }
- 
- static int igc_ptp_getcyclesx64(struct ptp_clock_info *ptp,
-@@ -1169,6 +1178,7 @@ void igc_ptp_init(struct igc_adapter *adapter)
- 	spin_lock_init(&adapter->ptp_tx_lock);
- 	spin_lock_init(&adapter->free_timer_lock);
- 	spin_lock_init(&adapter->tmreg_lock);
-+	mutex_init(&adapter->ptm_lock);
- 
- 	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
- 	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
-@@ -1181,6 +1191,7 @@ void igc_ptp_init(struct igc_adapter *adapter)
- 	if (IS_ERR(adapter->ptp_clock)) {
- 		adapter->ptp_clock = NULL;
- 		netdev_err(netdev, "ptp_clock_register failed\n");
-+		mutex_destroy(&adapter->ptm_lock);
- 	} else if (adapter->ptp_clock) {
- 		netdev_info(netdev, "PHC added\n");
- 		adapter->ptp_flags |= IGC_PTP_ENABLED;
-@@ -1210,10 +1221,12 @@ static void igc_ptm_stop(struct igc_adapter *adapter)
- 	struct igc_hw *hw = &adapter->hw;
- 	u32 ctrl;
- 
-+	mutex_lock(&adapter->ptm_lock);
- 	ctrl = rd32(IGC_PTM_CTRL);
- 	ctrl &= ~IGC_PTM_CTRL_EN;
- 
- 	wr32(IGC_PTM_CTRL, ctrl);
-+	mutex_unlock(&adapter->ptm_lock);
- }
- 
- /**
-@@ -1255,6 +1268,7 @@ void igc_ptp_stop(struct igc_adapter *adapter)
- 		netdev_info(adapter->netdev, "PHC removed\n");
- 		adapter->ptp_flags &= ~IGC_PTP_ENABLED;
- 	}
-+	mutex_destroy(&adapter->ptm_lock);
- }
- 
- /**
-@@ -1294,6 +1308,7 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 		if (!igc_is_crosststamp_supported(adapter))
- 			break;
- 
-+		mutex_lock(&adapter->ptm_lock);
- 		wr32(IGC_PCIE_DIG_DELAY, IGC_PCIE_DIG_DELAY_DEFAULT);
- 		wr32(IGC_PCIE_PHY_DELAY, IGC_PCIE_PHY_DELAY_DEFAULT);
- 
-@@ -1317,6 +1332,7 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
- 
- 		igc_ptm_reset(hw);
-+		mutex_unlock(&adapter->ptm_lock);
- 		break;
- 	default:
- 		/* No work to do. */
--- 
-2.39.5
-
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -2041,7 +2041,7 @@ static struct ext4_dir_entry_2 *do_split
+ 	 * split it in half by count; each resulting block will have at least
+ 	 * half the space free.
+ 	 */
+-	if (i > 0)
++	if (i >= 0)
+ 		split = count - move;
+ 	else
+ 		split = count/2;
 
 
 
