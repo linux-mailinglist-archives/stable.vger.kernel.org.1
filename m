@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA25A98E9B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1350EA9900E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AC93A6BD3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2AF63B691F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173B323D298;
-	Wed, 23 Apr 2025 14:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44059288C95;
+	Wed, 23 Apr 2025 15:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kX5GNOTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELYqS5F+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65BB175BF;
-	Wed, 23 Apr 2025 14:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0140D280A22;
+	Wed, 23 Apr 2025 15:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420094; cv=none; b=NFoJ3kwfEAIjUQ+NtzX3Ud/82MxFSTbCNj/wFdKqspm1wk5jk4dUHfTCmJr63xFz0oaK4E7PFJkRt6BXPAU9Pj9AkCVImU+IrhOaBfjxppdW0W0A+Sygx7aO6ZrhTWeoUh3r5EnrXMntj6+/VCuOp6NFsxQR2UtJYBX/BIOpO6w=
+	t=1745420609; cv=none; b=ohu+2CG0hAotr9N2FkIcrVbkJA6jXUPS2rDHJHYCjlhHBNU95sstb0HcPUUBLGDmIPNCUGZZKmlZ+7m/raFSgAkw4v5MkuMHG3+3UK26cI0gw++Z2BXD6+Q+NAob335HwLWczmOwjpIeYCkS1DsxobSpd0G4IdOcvpkV1aoXMMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420094; c=relaxed/simple;
-	bh=Bd3XZmNilA0UXR96QzzM9G5V5VT5p2t8hrHzcuSwiXg=;
+	s=arc-20240116; t=1745420609; c=relaxed/simple;
+	bh=I1st/aNNUKMYE7yT1wVv5CNVrvpDX0ppQJ1Iwj1G2k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQIXw8WtDhZf9yBlAy9svYazJo3QqoeXZ25mYq7I8EFHd2sNmgguQse9WJUNwBtGn60f3NdoZhY6+qlujnQKXF/qAkViCSiOG/RIbI4tqvH3AtIk+pWB3XcKSHSyxkeTnic+LUlSbYH70muJY3imY7bWeJal38vewwZypRJZeKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kX5GNOTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56172C4CEE2;
-	Wed, 23 Apr 2025 14:54:54 +0000 (UTC)
+	 MIME-Version; b=nQiRdyvJheTQzCqPvrZPUPA/7GbjI4JrOMluRMZSI7Xi/12xXZBsMKj94+fN7z+4gV0bzs+i22NnETu1rWs2py341daMS5LzbuC4BalURlVjV+FUNrXzB2N8PRC8Ovx/v0RVlp8rBY7zOfo5OGBL2iQduMF/XlscZS1D0c+9oJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELYqS5F+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BECC4CEE2;
+	Wed, 23 Apr 2025 15:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420094;
-	bh=Bd3XZmNilA0UXR96QzzM9G5V5VT5p2t8hrHzcuSwiXg=;
+	s=korg; t=1745420608;
+	bh=I1st/aNNUKMYE7yT1wVv5CNVrvpDX0ppQJ1Iwj1G2k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kX5GNOTIpJcBsUK7beuwD8UE6rbiF3bmXwA35EF4a+Y4M1mqyhdGATLBTG443rx7q
-	 DhK4KoskJ7UU6yJhHOITRFOXtajaBuB5XGWTyxpqJel2v3fD+kBDiyK0D1RO+OHXO6
-	 8Gerg3eTdV/2egJKH9CNcs5IcOy6crkyJ5lfIA9k=
+	b=ELYqS5F+eQ9ruqdlwpiqf6KKwzZSosy0RyHX8OeIC+ExgUedapQqfojOrn8sgth1V
+	 beM0zMgIhcYDMJsfJvSXJppZQlrFOalHVVOHWmqDyZeZG5UY0gj1aFs1+hXp+VBSoX
+	 PnYOC1xP4a9AbDJ1PBFS605Na+P/nbrDw6omNW5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/223] nfsd: decrease sc_count directly if fail to queue dl_recall
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.14 107/241] ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S16
 Date: Wed, 23 Apr 2025 16:42:51 +0200
-Message-ID: <20250423142621.147776478@linuxfoundation.org>
+Message-ID: <20250423142624.955852300@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
+commit dfcf3dde45df383f2695c3d3475fec153d2c7dbe upstream.
 
-A deadlock warning occurred when invoking nfs4_put_stid following a failed
-dl_recall queue operation:
-            T1                            T2
-                                nfs4_laundromat
-                                 nfs4_get_client_reaplist
-                                  nfs4_anylock_blockers
-__break_lease
- spin_lock // ctx->flc_lock
-                                   spin_lock // clp->cl_lock
-                                   nfs4_lockowner_has_blockers
-                                    locks_owner_has_blockers
-                                     spin_lock // flctx->flc_lock
- nfsd_break_deleg_cb
-  nfsd_break_one_deleg
-   nfs4_put_stid
-    refcount_dec_and_lock
-     spin_lock // clp->cl_lock
+Asus laptops with sound PCI subsystem ID 1043:1f43 have the DMICs
+connected to the host instead of the CS42L43 so need the
+SOC_SDW_CODEC_MIC quirk.
 
-When a file is opened, an nfs4_delegation is allocated with sc_count
-initialized to 1, and the file_lease holds a reference to the delegation.
-The file_lease is then associated with the file through kernel_setlease.
-
-The disassociation is performed in nfsd4_delegreturn via the following
-call chain:
-nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
-nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
-The corresponding sc_count reference will be released after this
-disassociation.
-
-Since nfsd_break_one_deleg executes while holding the flc_lock, the
-disassociation process becomes blocked when attempting to acquire flc_lock
-in generic_delete_lease. This means:
-1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
-2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
-acquire cl_lock;
-3) Consequently, no deadlock condition is created.
-
-Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
-safely perform refcount_dec on sc_count directly. This approach
-effectively avoids triggering deadlock warnings.
-
-Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/thesofproject/sof/issues/9930
+Fixes: 084344970808 ("ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S14")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250404133213.4658-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/boards/sof_sdw.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 5e81c819c3846..c50839a015e94 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5287,7 +5287,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- 	queued = nfsd4_run_cb(&dp->dl_recall);
- 	WARN_ON_ONCE(!queued);
- 	if (!queued)
--		nfs4_put_stid(&dp->dl_stid);
-+		refcount_dec(&dp->dl_stid.sc_count);
- }
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -764,6 +764,7 @@ static const struct dmi_system_id sof_sd
  
- /* Called from break_lease() with flc_lock held. */
--- 
-2.39.5
-
+ static const struct snd_pci_quirk sof_sdw_ssid_quirk_table[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1e13, "ASUS Zenbook S14", SOC_SDW_CODEC_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1f43, "ASUS Zenbook S16", SOC_SDW_CODEC_MIC),
+ 	{}
+ };
+ 
 
 
 
