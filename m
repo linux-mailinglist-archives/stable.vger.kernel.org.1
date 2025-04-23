@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86422A98E7E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CD1A9913D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 929A6189063E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2542E16ACA4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7288527CCFA;
-	Wed, 23 Apr 2025 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E24228BAB2;
+	Wed, 23 Apr 2025 15:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ONmqbAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0O7jA78J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAF1175BF;
-	Wed, 23 Apr 2025 14:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DFA2367A0;
+	Wed, 23 Apr 2025 15:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420016; cv=none; b=VjTTZe7LT4kP4MITQr2WPKEvPbSUsajHcXLzR7Xi0q5bcbXjiJ/wg379qvXStLukoxIE5gYEqvbsvVTbN1MseVcz5jJ/7CjC96DSfISdQwHWtTX6fjhuvBGTd3aUqimHgCE5ybQcOPyBHEvvXkggI58j+S9UzaV5LqtTvK3L/p8=
+	t=1745421338; cv=none; b=McSnNEvij+ywo03LkFGsYn4O/nFjOaSAAMMsyq7wDeIIwejtMsglJ5NssPmRBRVYtK9d0tNAoUyyVcpKzSfLq2O0kW0cWpUQ8hteeL6E+JC9ZmNfuAWzV+Vd2yfQOXTGeMGzKhnwFDZNhCWJSUP9u7sTfdd+sPZ5ryXvW7kIuPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420016; c=relaxed/simple;
-	bh=Ac0NspLDLPtRRtZaA4c+j/b5WbeyF1YQTfK7aXtCx48=;
+	s=arc-20240116; t=1745421338; c=relaxed/simple;
+	bh=pf0FhH6ltE9CPEMP55zCgwfGPHQ7Qgx6SqVSTt/YbCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MsOP+ZrtnamSlRV94tFIPAxdFXwYZp06q4nMXZ0RaHA/iziJ0HErfEPZwAQekwny0v+tO8ERipv7Axj9iWp6Sgl9EoJ8VLv2y87n9zX5q32tDrceN3bLtfrR1IVhkvHNo4OaYp3Z80SgUsXUwd728HiEGl4VMDaVuACoDptvt88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ONmqbAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5524DC4CEE2;
-	Wed, 23 Apr 2025 14:53:35 +0000 (UTC)
+	 MIME-Version; b=Rg5BcuvKg08IjRXTkdtmCSqXIzAVn7dlSVxTyEhUtJfPR1J9k61Xh7fK4pN21lgz6GNm38Mhvei8pbnM+UTWN4GgeVTKyiRaGyhIRF2CbQftyx4+K98unhN0HiFitlskgpJybu9fawofZAqiP0HX7BgFLoAyCaXBO5r+qXdjY/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0O7jA78J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819A7C4CEE2;
+	Wed, 23 Apr 2025 15:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420015;
-	bh=Ac0NspLDLPtRRtZaA4c+j/b5WbeyF1YQTfK7aXtCx48=;
+	s=korg; t=1745421337;
+	bh=pf0FhH6ltE9CPEMP55zCgwfGPHQ7Qgx6SqVSTt/YbCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ONmqbAlHJ4ZoqOKIJKDDBo5izb9eHM2p0Hyo94yQbnzNvpdQM3EHxqpj/cmLxQPk
-	 YULWuDK0mFAd3YDR45UjoW/vy66IyGwqfbKt9BXTG8fM5PEp0iBeTFgFDRYN31GOEB
-	 NWcN4i42vsEy2jsI8iZ/j5IT768K5N6w11QoDmeU=
+	b=0O7jA78Jn68UbtRjsgLBrGOSbZuWC9Obpz+f3XGeX1YshKYyVCH9o96NN7v5bE2kF
+	 BwszlVARm0R2OnumNdSF1Q7qIxSOgg+Pq98i98rnfNwWISFMmXaWWtnnAqCVVaVuPj
+	 zoH7NsvmALMwz4ytgGZ1SbRJUyM4eggGhp3novlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 052/241] netlink: specs: ovs_vport: align with C codegen capabilities
-Date: Wed, 23 Apr 2025 16:41:56 +0200
-Message-ID: <20250423142622.633013128@linuxfoundation.org>
+	YH Huang <yh.huang@mediatek.com>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.1 128/291] arm64: dts: mediatek: mt8173: Fix disp-pwm compatible string
+Date: Wed, 23 Apr 2025 16:41:57 +0200
+Message-ID: <20250423142629.629716917@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 747fb8413aaa36e4c988d45c4fe20d4c2b0778cd ]
+commit 46ad36002088eff8fc5cae200aa42ae9f9310ddd upstream.
 
-We started generating C code for OvS a while back, but actually
-C codegen only supports fixed headers specified at the family
-level right now (schema also allows specifying them per op).
-ovs_flow and ovs_datapath already specify the fixed header
-at the family level but ovs_vport does it per op.
-Move the property, all ops use the same header.
+The MT8173 disp-pwm device should have only one compatible string, based
+on the following DT validation error:
 
-This ensures YNL C sees the correct hdr_len:
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401e000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
+    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pwm@1401f000: compatible: 'oneOf' conditional failed, one must be fixed:
+	    ['mediatek,mt8173-disp-pwm', 'mediatek,mt6595-disp-pwm'] is too long
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt6795-disp-pwm', 'mediatek,mt8167-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' is not one of ['mediatek,mt8186-disp-pwm', 'mediatek,mt8188-disp-pwm', 'mediatek,mt8192-disp-pwm', 'mediatek,mt8195-disp-pwm', 'mediatek,mt8365-disp-pwm']
+	    'mediatek,mt8173-disp-pwm' was expected
+	    'mediatek,mt8183-disp-pwm' was expected
+	    from schema $id: http://devicetree.org/schemas/pwm/mediatek,pwm-disp.yaml#
 
-   const struct ynl_family ynl_ovs_vport_family =  {
-          .name           = "ovs_vport",
-  -       .hdr_len        = sizeof(struct genlmsghdr),
-  +       .hdr_len        = sizeof(struct genlmsghdr) + sizeof(struct ovs_header),
-   };
+Drop the extra "mediatek,mt6595-disp-pwm" compatible string.
 
-Fixes: 7c59c9c8f202 ("tools: ynl: generate code for ovs families")
-Link: https://patch.msgid.link/20250409145541.580674-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61aee9342514 ("arm64: dts: mt8173: add MT8173 display PWM driver support node")
+Cc: YH Huang <yh.huang@mediatek.com>
+Cc: stable@vger.kernel.org # v4.5+
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250108083424.2732375-2-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/netlink/specs/ovs_vport.yaml | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8173.dtsi |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/netlink/specs/ovs_vport.yaml b/Documentation/netlink/specs/ovs_vport.yaml
-index 86ba9ac2a5210..b538bb99ee9b5 100644
---- a/Documentation/netlink/specs/ovs_vport.yaml
-+++ b/Documentation/netlink/specs/ovs_vport.yaml
-@@ -123,12 +123,12 @@ attribute-sets:
+--- a/arch/arm64/boot/dts/mediatek/mt8173.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8173.dtsi
+@@ -1247,8 +1247,7 @@
+ 		};
  
- operations:
-   name-prefix: ovs-vport-cmd-
-+  fixed-header: ovs-header
-   list:
-     -
-       name: new
-       doc: Create a new OVS vport
-       attribute-set: vport
--      fixed-header: ovs-header
-       do:
-         request:
-           attributes:
-@@ -141,7 +141,6 @@ operations:
-       name: del
-       doc: Delete existing OVS vport from a data path
-       attribute-set: vport
--      fixed-header: ovs-header
-       do:
-         request:
-           attributes:
-@@ -152,7 +151,6 @@ operations:
-       name: get
-       doc: Get / dump OVS vport configuration and state
-       attribute-set: vport
--      fixed-header: ovs-header
-       do: &vport-get-op
-         request:
-           attributes:
--- 
-2.39.5
-
+ 		pwm0: pwm@1401e000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401e000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM026M>,
+@@ -1258,8 +1257,7 @@
+ 		};
+ 
+ 		pwm1: pwm@1401f000 {
+-			compatible = "mediatek,mt8173-disp-pwm",
+-				     "mediatek,mt6595-disp-pwm";
++			compatible = "mediatek,mt8173-disp-pwm";
+ 			reg = <0 0x1401f000 0 0x1000>;
+ 			#pwm-cells = <2>;
+ 			clocks = <&mmsys CLK_MM_DISP_PWM126M>,
 
 
 
