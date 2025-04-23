@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78EB1A9913A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DA3A98FB0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 900BB922365
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6AB517BAC8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94D02857EF;
-	Wed, 23 Apr 2025 15:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CEB828BA9F;
+	Wed, 23 Apr 2025 15:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEu2hk43"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPHqM3SJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76A92853F3;
-	Wed, 23 Apr 2025 15:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1A828BA9C;
+	Wed, 23 Apr 2025 15:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421272; cv=none; b=LysjeMWuvSN47xYrslNOGnfFrfAGK6xir2QGY396LYOmr7mFpZbzDuSPGVdxg+6ECynDc6PCMua81Vf25yDRQprptFMOMbGwo9VfMDD1a9/mWPLilOJXcWMyuvgVvF5G/5NQ+sF21Mlsln4VdlSplACoNK+h/YNNGPNpss3akmE=
+	t=1745420688; cv=none; b=H87hQeEl3u+TD4gA6NHV1tg9bXnRlk9APCV4uyOwHjm5gS177zzAzbt+ODEPvekyvH5FcHJrmE6ZP8zASjsxmitfWM88wDY2fN6Ba7nZIYqkkrHeoleeaOAAg7m0BDf1SsyZCPgayvfFbDbVgkm2lY3Jl5DVNl9ji1yz05GMAZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421272; c=relaxed/simple;
-	bh=xao9+SwzH1vTOZL78nK9FCYWqpwq0oOVAi+6JWdKCRE=;
+	s=arc-20240116; t=1745420688; c=relaxed/simple;
+	bh=z8ucmXlZdXNeToTrdFqxMLd0284wTNrqVjcppoF3Pgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3NAzDhlY1IRca/e1zvTY/QNbCsBrxODhPMcVYEgc9cThPCSAMj6NxQ6LObDD93+w8dg1R8Odm5CmMpTuqrP52rVZnku6ilxjt71+iyot/Y7wbBrsEPt52oSpYFjGISss1ULanOTBcjGYN36qlXFGbQ8t1WXCyYffIJY8dnmNis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEu2hk43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C13C4CEE2;
-	Wed, 23 Apr 2025 15:14:32 +0000 (UTC)
+	 MIME-Version; b=Z6CLt9FPW3yx7aMINMDZy2lsuSeVAIhaS6RqYyh7uecQLP9Ti+nQKQmOORpZ/3IYCLR5A6unDG9sLK2QDAbZMjoMUFYLJ1vnJwZNYVG/1Mdqe3XMS1Ey3OohUQKKmdCyKzXwQqUY845AdccMDQ1S/AckNrP4Gw8axKMt98wMRkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPHqM3SJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDFCC4CEE2;
+	Wed, 23 Apr 2025 15:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421272;
-	bh=xao9+SwzH1vTOZL78nK9FCYWqpwq0oOVAi+6JWdKCRE=;
+	s=korg; t=1745420687;
+	bh=z8ucmXlZdXNeToTrdFqxMLd0284wTNrqVjcppoF3Pgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEu2hk43CfBV1R80UINS9ZKXfGHYHeI3L4gUBjbGN3O463jzJlhyQoQIHSyjH4LBO
-	 Q0apfrboCEheHUHF1twlkgBltiIlnShgK9JbFA5dlvAZbPbLuUxbivOU12Y38PAIax
-	 5JP6TudU6jMY9E8t248ae+G0IjeKt8wUIbqvWp/U=
+	b=LPHqM3SJ7H1oZCj9Afuk4Yz8poetx+eKEeeqKbMcuncvX+Cap2v69ybvXxEkqhsTo
+	 38Vzl1BfIUw9Nyz//ikPuPAnt11bm6KHc4Yw/olT7wOIsOj0Gck2iOum+T0nORJ9my
+	 gsQYQ01PZ0wfJmuFYm7pQYHf6BXbHv6Tld5EYp/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	Jerry Snitselaar <jsnitsel@redhat.com>,
-	Mike Seo <mikeseohyungjin@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.6 164/393] tpm: do not start chip while suspended
+	warthog9@eaglescrag.net,
+	Ayush Jain <Ayush.jain3@amd.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 071/291] ktest: Fix Test Failures Due to Missing LOG_FILE Directories
 Date: Wed, 23 Apr 2025 16:41:00 +0200
-Message-ID: <20250423142650.146609121@linuxfoundation.org>
+Message-ID: <20250423142627.274242294@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+From: Ayush Jain <Ayush.jain3@amd.com>
 
-commit 17d253af4c2c8a2acf84bb55a0c2045f150b7dfd upstream.
+[ Upstream commit 5a1bed232781d356f842576daacc260f0d0c8d2e ]
 
-Checking TPM_CHIP_FLAG_SUSPENDED after the call to tpm_find_get_ops() can
-lead to a spurious tpm_chip_start() call:
+Handle missing parent directories for LOG_FILE path to prevent test
+failures. If the parent directories don't exist, create them to ensure
+the tests proceed successfully.
 
-[35985.503771] i2c i2c-1: Transfer while suspended
-[35985.503796] WARNING: CPU: 0 PID: 74 at drivers/i2c/i2c-core.h:56 __i2c_transfer+0xbe/0x810
-[35985.503802] Modules linked in:
-[35985.503808] CPU: 0 UID: 0 PID: 74 Comm: hwrng Tainted: G        W          6.13.0-next-20250203-00005-gfa0cb5642941 #19 9c3d7f78192f2d38e32010ac9c90fdc71109ef6f
-[35985.503814] Tainted: [W]=WARN
-[35985.503817] Hardware name: Google Morphius/Morphius, BIOS Google_Morphius.13434.858.0 10/26/2023
-[35985.503819] RIP: 0010:__i2c_transfer+0xbe/0x810
-[35985.503825] Code: 30 01 00 00 4c 89 f7 e8 40 fe d8 ff 48 8b 93 80 01 00 00 48 85 d2 75 03 49 8b 16 48 c7 c7 0a fb 7c a7 48 89 c6 e8 32 ad b0 fe <0f> 0b b8 94 ff ff ff e9 33 04 00 00 be 02 00 00 00 83 fd 02 0f 5
-[35985.503828] RSP: 0018:ffffa106c0333d30 EFLAGS: 00010246
-[35985.503833] RAX: 074ba64aa20f7000 RBX: ffff8aa4c1167120 RCX: 0000000000000000
-[35985.503836] RDX: 0000000000000000 RSI: ffffffffa77ab0e4 RDI: 0000000000000001
-[35985.503838] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-[35985.503841] R10: 0000000000000004 R11: 00000001000313d5 R12: ffff8aa4c10f1820
-[35985.503843] R13: ffff8aa4c0e243c0 R14: ffff8aa4c1167250 R15: ffff8aa4c1167120
-[35985.503846] FS:  0000000000000000(0000) GS:ffff8aa4eae00000(0000) knlGS:0000000000000000
-[35985.503849] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[35985.503852] CR2: 00007fab0aaf1000 CR3: 0000000105328000 CR4: 00000000003506f0
-[35985.503855] Call Trace:
-[35985.503859]  <TASK>
-[35985.503863]  ? __warn+0xd4/0x260
-[35985.503868]  ? __i2c_transfer+0xbe/0x810
-[35985.503874]  ? report_bug+0xf3/0x210
-[35985.503882]  ? handle_bug+0x63/0xb0
-[35985.503887]  ? exc_invalid_op+0x16/0x50
-[35985.503892]  ? asm_exc_invalid_op+0x16/0x20
-[35985.503904]  ? __i2c_transfer+0xbe/0x810
-[35985.503913]  tpm_cr50_i2c_transfer_message+0x24/0xf0
-[35985.503920]  tpm_cr50_i2c_read+0x8e/0x120
-[35985.503928]  tpm_cr50_request_locality+0x75/0x170
-[35985.503935]  tpm_chip_start+0x116/0x160
-[35985.503942]  tpm_try_get_ops+0x57/0x90
-[35985.503948]  tpm_find_get_ops+0x26/0xd0
-[35985.503955]  tpm_get_random+0x2d/0x80
-
-Don't move forward with tpm_chip_start() inside tpm_try_get_ops(), unless
-TPM_CHIP_FLAG_SUSPENDED is not set. tpm_find_get_ops() will return NULL in
-such a failure case.
-
-Fixes: 9265fed6db60 ("tpm: Lock TPM chip in tpm_pm_suspend() first")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: stable@vger.kernel.org
-Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-Cc: Mike Seo <mikeseohyungjin@gmail.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: <warthog9@eaglescrag.net>
+Link: https://lore.kernel.org/20250307043854.2518539-1-Ayush.jain3@amd.com
+Signed-off-by: Ayush Jain <Ayush.jain3@amd.com>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm-chip.c      |    5 +++++
- drivers/char/tpm/tpm-interface.c |    7 -------
- 2 files changed, 5 insertions(+), 7 deletions(-)
+ tools/testing/ktest/ktest.pl | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -165,6 +165,11 @@ int tpm_try_get_ops(struct tpm_chip *chi
- 		goto out_ops;
- 
- 	mutex_lock(&chip->tpm_mutex);
+diff --git a/tools/testing/ktest/ktest.pl b/tools/testing/ktest/ktest.pl
+index aecea16cbd02f..2109bd42c144a 100755
+--- a/tools/testing/ktest/ktest.pl
++++ b/tools/testing/ktest/ktest.pl
+@@ -4282,6 +4282,14 @@ if (defined($opt{"LOG_FILE"})) {
+     if ($opt{"CLEAR_LOG"}) {
+ 	unlink $opt{"LOG_FILE"};
+     }
 +
-+	/* tmp_chip_start may issue IO that is denied while suspended */
-+	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED)
-+		goto out_lock;
-+
- 	rc = tpm_chip_start(chip);
- 	if (rc)
- 		goto out_lock;
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -468,18 +468,11 @@ int tpm_get_random(struct tpm_chip *chip
- 	if (!chip)
- 		return -ENODEV;
- 
--	/* Give back zero bytes, as TPM chip has not yet fully resumed: */
--	if (chip->flags & TPM_CHIP_FLAG_SUSPENDED) {
--		rc = 0;
--		goto out;
--	}
--
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2)
- 		rc = tpm2_get_random(chip, out, max);
- 	else
- 		rc = tpm1_get_random(chip, out, max);
- 
--out:
- 	tpm_put_ops(chip);
- 	return rc;
++    if (! -e $opt{"LOG_FILE"} && $opt{"LOG_FILE"} =~ m,^(.*/),) {
++        my $dir = $1;
++        if (! -d $dir) {
++            mkpath($dir) or die "Failed to create directories '$dir': $!";
++            print "\nThe log directory $dir did not exist, so it was created.\n";
++        }
++    }
+     open(LOG, ">> $opt{LOG_FILE}") or die "Can't write to $opt{LOG_FILE}";
+     LOG->autoflush(1);
  }
+-- 
+2.39.5
+
 
 
 
