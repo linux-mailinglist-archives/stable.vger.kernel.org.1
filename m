@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9210EA990B1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81DC2A99324
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A3D51B87227
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A31F4A297D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2608C28C5AF;
-	Wed, 23 Apr 2025 15:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F682980B7;
+	Wed, 23 Apr 2025 15:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcCWRRUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkc2V4vF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77BF28C5AB;
-	Wed, 23 Apr 2025 15:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F07C283C81;
+	Wed, 23 Apr 2025 15:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421004; cv=none; b=VvyXUKT1He4TbV/lW9r9pSspH931h/HjlRsdIhi5Tmbehb8w1NCdi+zbinwN6n1/VsQ/u5I0O204dw/VfDSOeBPX3/izHy+chP9RB+vW5NU+1CLVqdA3fZsUIYbQa0e/2z3Z5FSTijDJHuUdp48s/1nYgJrOlTdKKveyKa6m8mU=
+	t=1745422270; cv=none; b=CSS9h40eN3iXN6S+eSYDON83je1mnyTQA8vJfVyouR5rZDPeXm4q3bnVz7lj2xL3xWSushVhFpr5FOj//f+wLvuFAPcWKhIhl7AuEhsN0PkJQdRjxlxmZPofuLYwKJ0TWk+Ws4H5yrOUwCcW+KEi1+th7QJ5GR08mMAFTDE5dhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421004; c=relaxed/simple;
-	bh=mU4fDwBCYIxyUzqnU5mVEz+RBqOFbko7fJ58i4wjfbA=;
+	s=arc-20240116; t=1745422270; c=relaxed/simple;
+	bh=s+VlBeonnlrfrhrR83GXZ4Q244BSPZAInk+nvvto/Bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGoUU85cExYpjFIjQspRryK0Z04h2Ks/x3gTe9Az0+7dc+GJdsiwhdw1a3MtNNXBrWWq1pcgKyALAEvzCIHlY+0r9EMjgzWD3HzBBJSc2NIqs6jHNy5w29I/UajwqQCZLoZ+2P/QbmZuuy4LM9yyl46RReC/aIgdypra0+oEXDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcCWRRUB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C2EC4CEE2;
-	Wed, 23 Apr 2025 15:10:04 +0000 (UTC)
+	 MIME-Version; b=SChO9jECJOAyNqlwiBgPpMkhM4uxyzcuPKQ7dIH07T6qKG5hkqTmIsubgtEcZyfkNO8HktxrZVTMLSzIOrhiJbS2m7st7NBebIqHOVyEb/IAEVlXTixKp0ONWGfGJyAQNyQfPhpB92CTWUCnLNQwBW5e7la0RJrcmW3vcUq2/SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkc2V4vF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BC1C4CEE2;
+	Wed, 23 Apr 2025 15:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421004;
-	bh=mU4fDwBCYIxyUzqnU5mVEz+RBqOFbko7fJ58i4wjfbA=;
+	s=korg; t=1745422270;
+	bh=s+VlBeonnlrfrhrR83GXZ4Q244BSPZAInk+nvvto/Bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcCWRRUB5A/OIWF0sWNKyFk3NWf8/jh+3qr81tlCN/60yCtn3vpjS9uMz/GYGESVM
-	 s7pFK5JDctrIT8QJlkMUl8KwGv5EyyMwTRW2gxpt1OWdCkKcTd4v3QQzvPNsG8SWrV
-	 qF1e/BuQAeMhs56cstO6EFCEVItaXgpA1W3iwL/4=
+	b=qkc2V4vF0MWnHQd0+PYGKI9jmELXwYl9+tqfs+EktVpdzNQ3s4KVP1GCe74k7Sg8t
+	 2TxyCEgfpvZQ1UdrGSUe5xBoxPhjGQTBqraT7ZqvPa8jYI+hZi8sUMxnukjlw5Ghr4
+	 qz8J6W4KOwDa/R5reQu7WW6PsduYFRJbsUeHGpNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.14 143/241] ksmbd: Fix dangling pointer in krb_authenticate
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 311/393] Bluetooth: vhci: Avoid needless snprintf() calls
 Date: Wed, 23 Apr 2025 16:43:27 +0200
-Message-ID: <20250423142626.399808290@linuxfoundation.org>
+Message-ID: <20250423142656.173322289@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Heelan <seanheelan@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 1e440d5b25b7efccb3defe542a73c51005799a5f upstream.
+commit 875db86e1ec75fe633f1e85ed2f92c731cdbf760 upstream.
 
-krb_authenticate frees sess->user and does not set the pointer
-to NULL. It calls ksmbd_krb5_authenticate to reinitialise
-sess->user but that function may return without doing so. If
-that happens then smb2_sess_setup, which calls krb_authenticate,
-will be accessing free'd memory when it later uses sess->user.
+Avoid double-copying of string literals. Use a "const char *" for each
+string instead of copying from .rodata into stack and then into the skb.
+We can go directly from .rodata to the skb.
 
+This also works around a Clang bug (that has since been fixed[1]).
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401250927.1poZERd6-lkp@intel.com/
+Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
+Link: https://github.com/llvm/llvm-project/commit/ea2e66aa8b6e363b89df66dc44275a0d7ecd70ce [1]
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Heelan <seanheelan@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/hci_vhci.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1602,8 +1602,10 @@ static int krb5_authenticate(struct ksmb
- 	if (prev_sess_id && prev_sess_id != sess->id)
- 		destroy_previous_session(conn, sess->user, prev_sess_id);
+--- a/drivers/bluetooth/hci_vhci.c
++++ b/drivers/bluetooth/hci_vhci.c
+@@ -289,18 +289,18 @@ static void vhci_coredump(struct hci_dev
  
--	if (sess->state == SMB2_SESSION_VALID)
-+	if (sess->state == SMB2_SESSION_VALID) {
- 		ksmbd_free_user(sess->user);
-+		sess->user = NULL;
-+	}
+ static void vhci_coredump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	char buf[80];
++	const char *buf;
  
- 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
- 					 out_blob, &out_len);
+-	snprintf(buf, sizeof(buf), "Controller Name: vhci_ctrl\n");
++	buf = "Controller Name: vhci_ctrl\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Firmware Version: vhci_fw\n");
++	buf = "Firmware Version: vhci_fw\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Driver: vhci_drv\n");
++	buf = "Driver: vhci_drv\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Vendor: vhci\n");
++	buf = "Vendor: vhci\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ }
+ 
 
 
 
