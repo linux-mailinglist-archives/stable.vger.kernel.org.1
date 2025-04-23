@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B15F5A991C8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D6B0A990BF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7EA21B805F4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E14E3A247D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA09C28DEE6;
-	Wed, 23 Apr 2025 15:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E6227CCD3;
+	Wed, 23 Apr 2025 15:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gxHkpNqw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/9GxXW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6668A284685;
-	Wed, 23 Apr 2025 15:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF38262FD6;
+	Wed, 23 Apr 2025 15:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421442; cv=none; b=SkooAVUCdRS4ebC0jJuBDlVuaraYEwUwsnk90F/hOyRGXXzopFcAiMpyJAuNNCCcaVE2vWwzQf0TpY3bymqdfJH9kAa5gsMhd0XFlIVufmMSHDj1aWoLbWjyXrA87TiO31+cdNWSPFXDdXRo0F2k2Ky4VeZi41rg1PCL3pgRfG4=
+	t=1745420861; cv=none; b=V+4jeyDjajGF98Pz9+wOCDljxyGKClYgaJ7WeOKWdm3V/HDQNC4jczvOJjia3EOADuYK3SK8YEkRszzHK/QXIbgTDZAogJttdYHNTuCWjIy/vH+LnR4YiIEgwd7XyUAc66RSLJ6dHFzSrjUJAsmY2HTU1oEYxpMSkM/2b5YjOsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421442; c=relaxed/simple;
-	bh=0/S/I3+BYjhFjom26XzvyfoFRAJvbk61xP/erQWO454=;
+	s=arc-20240116; t=1745420861; c=relaxed/simple;
+	bh=oanoVeHRj27foJoxQalX3r6EF9F44KhrxcKMfSfIAEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L/K+UI6+raE1qyF1+HKVFU30kEj4QukfUmm6m6/NV97eukz+hi1qMenC1ghrcuDektRpcHGNZub9m7a4659aOGpgohr2eQqSvHqd4gOxQf6g06YIa/IH3Af5Lf2fFaOdGP5SW3ilD8+7wMHxKs4PKyzFHfSjNY4mwc6cwaNcuIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gxHkpNqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC13C4CEE2;
-	Wed, 23 Apr 2025 15:17:21 +0000 (UTC)
+	 MIME-Version; b=AOwPSIdjtMo8yiG2OfUgEAImAhxAMHO5eD9K3an3n/QhpJDiXLNI5irCKOK+O4UVqI8I9EyCHAhtwxF3MP1ENgTgU0U4qP0WTOp/llWCFqot3vxqO07XYaYdyZfKsy/jQ1xZOgo36bOYynmMCKHwvICY2LsqPoSh+HyCyT4Y2TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/9GxXW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1149C4CEE2;
+	Wed, 23 Apr 2025 15:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421442;
-	bh=0/S/I3+BYjhFjom26XzvyfoFRAJvbk61xP/erQWO454=;
+	s=korg; t=1745420861;
+	bh=oanoVeHRj27foJoxQalX3r6EF9F44KhrxcKMfSfIAEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gxHkpNqwxYF5fZBBi+qQuhrUtyCj+3oCZ2Nup9sPYI6g83/pkGA3dCsbCYaokA+pF
-	 0hA94nBPiwFvAqlbAO7ZhWsnel4NINO8Z8uug4ESTv9vf6JY2pEZpmOQFfjhfMc97R
-	 cPtpK+ihuaAqqe8V5nIn1FDIAU61+dSvV3QIOUXI=
+	b=t/9GxXW/B9J98xe53makTtAsfK+niXa8dIeN3oJ0Zmx7a8SwFMITAbOxP56vUXkjf
+	 lFhWMGVXagRujNMgqWulBANYhGro1rj8nxtgXYNHk2LteunIqJ80UQjILb1dDJhtJF
+	 kXhGKU0DxcPRSYf5q+w05hcfujpfrg4WcbrGxwik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 179/393] mtd: rawnand: Add status chack in r852_ready()
-Date: Wed, 23 Apr 2025 16:41:15 +0200
-Message-ID: <20250423142650.769634382@linuxfoundation.org>
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.1 087/291] arm64: errata: Add KRYO 2XX/3XX/4XX silver cores to Spectre BHB safe list
+Date: Wed, 23 Apr 2025 16:41:16 +0200
+Message-ID: <20250423142627.917619382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit b79fe1829975556854665258cf4d2476784a89db upstream.
+commit 0c9fc6e652cd5aed48c5f700c32b7642bea7f453 upstream.
 
-In r852_ready(), the dev get from r852_get_dev() need to be checked.
-An unstable device should not be ready. A proper implementation can
-be found in r852_read_byte(). Add a status check and return 0 when it is
-unstable.
+Qualcomm has confirmed that, much like Cortex A53 and A55, KRYO
+2XX/3XX/4XX silver cores are unaffected by Spectre BHB. Add them to
+the safe list.
 
-Fixes: 50a487e7719c ("mtd: rawnand: Pass a nand_chip object to chip->dev_ready()")
-Cc: stable@vger.kernel.org # v4.20+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.3.Iab8dbfb5c9b1e143e7a29f410bce5f9525a0ba32@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/r852.c |    3 +++
+ arch/arm64/kernel/proton-pack.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/raw/r852.c
-+++ b/drivers/mtd/nand/raw/r852.c
-@@ -387,6 +387,9 @@ static int r852_wait(struct nand_chip *c
- static int r852_ready(struct nand_chip *chip)
- {
- 	struct r852_device *dev = r852_get_dev(nand_to_mtd(chip));
-+	if (dev->card_unstable)
-+		return 0;
-+
- 	return !(r852_read_reg(dev, R852_CARD_STA) & R852_CARD_STA_BUSY);
- }
- 
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -866,6 +866,9 @@ static bool is_spectre_bhb_safe(int scop
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
+ 		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_SILVER),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_3XX_SILVER),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_SILVER),
+ 		{},
+ 	};
+ 	static bool all_safe = true;
 
 
 
