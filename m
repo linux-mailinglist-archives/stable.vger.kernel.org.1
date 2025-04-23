@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F77A99404
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:07:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7061CA99441
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE2C1B86150
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E0A59A0CCA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B13F2367DF;
-	Wed, 23 Apr 2025 15:32:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2948D29B23E;
+	Wed, 23 Apr 2025 15:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWNzJ9lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKpsI3yo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF39374F1;
-	Wed, 23 Apr 2025 15:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC6129B21F;
+	Wed, 23 Apr 2025 15:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422360; cv=none; b=l6OOp+vBkRTtWcOwHMIRgpfu5jprmwim60ZtShRPUlJRdDVpQcDGwgqI9etuCtJO5il18IWYf2AOmh/ZYEZU4htAtdX8w6FLJ0t3Bk1t2fu6bhuMoKC9qMk0jpW8m7NYkVwdEvKMBy0bkyMP1daSZ3qGyphqSXaU3pGnnfiohVQ=
+	t=1745422532; cv=none; b=nLa2vRwSLVFpLSUoSpnhCKiMKjr3oPiL3GZttESdnxFPNHjVrzhY0JPYo+thPZT86BEBRv/w0VtudeEXtQij1LsV9x9TAEf2NJ82xhZEYxC8/qQfBRQpPJzstjy2iK/auJ3nOQJ29etkhfOfZPzZkLbPW83Qcr0wq/bnVCKCBck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422360; c=relaxed/simple;
-	bh=Tsi2uHyhsI8a/owt45NN3zNc2yeedYnN93x2krk7AOQ=;
+	s=arc-20240116; t=1745422532; c=relaxed/simple;
+	bh=zr2KOjVCQkW2o52Mb/CeP9CdEb5VHurptIh0O6EDrE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eW+z4fOTNnkUA3RGE81+8B+FX3ExHFnq/KE0z+ShoY/STynkvnE5UVIgnRCrK8NLRyDM/PJ5qcKvRP50W99I6CtI9re0MBf7kd0U2Sbe/XXpVZkY9HQBvBhvaBwOa02RfE7QcQP90YWRPJYeym+g1G9YBD9QFQEp4rhP4biNL48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWNzJ9lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3CAC4CEE2;
-	Wed, 23 Apr 2025 15:32:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cKf12BH7ZQnH+6iBCIaP1TuagVDtIvuDwtBg5j2o9VUfj4UUEcr1vOIiiX2hKyfEoYfyqA1AZ1hqNXBGpHaH40n7+3DH+p7mQc1d8fhcs0GlT2lWiaRQx9bBvlY/TXmK5IL5C60IEOAeIXyvYbb49hs7tiUvG/itj6IDKDFd1vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKpsI3yo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E36DC4CEE2;
+	Wed, 23 Apr 2025 15:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422359;
-	bh=Tsi2uHyhsI8a/owt45NN3zNc2yeedYnN93x2krk7AOQ=;
+	s=korg; t=1745422532;
+	bh=zr2KOjVCQkW2o52Mb/CeP9CdEb5VHurptIh0O6EDrE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWNzJ9lofJhONW6QZpSDwzj6gAgJOxmr2ntiEZeBVapSTcNSgxQ5rZryD/Cupmmfm
-	 IOgUi2gy0S9hD90OA7z5C4ILYQPFc6f6bxRQh4M+bBNfKnhFUU9wkBVUKdFGPqHVp0
-	 wd/XeM0V7NtIFwa85EFpKdicsFa1o42QRNBRiSJs=
+	b=KKpsI3yo7zZLWE/UhhoYt6c3Erc7ZM/ckGA9LsUhwUKOQNGMrhjaZlBZL+3uxN3VI
+	 o+d3jALfw/qMFQeZbryLL7ujbnXdWkPAIMPiS6BkpSqEQUc+1K3d76d6Q14I0fm1yP
+	 fTIRRbX4YkP0cpGNMEim7hrMHrVGD2TuPaolcOf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.1 262/291] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
-Date: Wed, 23 Apr 2025 16:44:11 +0200
-Message-ID: <20250423142635.132499907@linuxfoundation.org>
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Stable@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 356/393] drm/nouveau: prime: fix ttm_bo_delayed_delete oops
+Date: Wed, 23 Apr 2025 16:44:12 +0200
+Message-ID: <20250423142658.042350222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
 
-commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 upstream.
+commit 8ec0fbb28d049273bfd4f1e7a5ae4c74884beed3 upstream.
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, global "irq_type" and "test->irq_type".
+Fix an oops in ttm_bo_delayed_delete which results from dererencing a
+dangling pointer:
 
-The former is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b7b: 0000 [#1] PREEMPT SMP
+CPU: 4 UID: 0 PID: 1082 Comm: kworker/u65:2 Not tainted 6.14.0-rc4-00267-g505460b44513-dirty #216
+Hardware name: LENOVO 82N6/LNVNB161216, BIOS GKCN65WW 01/16/2024
+Workqueue: ttm ttm_bo_delayed_delete [ttm]
+RIP: 0010:dma_resv_iter_first_unlocked+0x55/0x290
+Code: 31 f6 48 c7 c7 00 2b fa aa e8 97 bd 52 ff e8 a2 c1 53 00 5a 85 c0 74 48 e9 88 01 00 00 4c 89 63 20 4d 85 e4 0f 84 30 01 00 00 <41> 8b 44 24 10 c6 43 2c 01 48 89 df 89 43 28 e8 97 fd ff ff 4c 8b
+RSP: 0018:ffffbf9383473d60 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: ffffbf9383473d88 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffbf9383473d78 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 6b6b6b6b6b6b6b6b
+R13: ffffa003bbf78580 R14: ffffa003a6728040 R15: 00000000000383cc
+FS:  0000000000000000(0000) GS:ffffa00991c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000758348024dd0 CR3: 000000012c259000 CR4: 0000000000f50ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body.cold+0x19/0x26
+ ? die_addr+0x3d/0x70
+ ? exc_general_protection+0x159/0x460
+ ? asm_exc_general_protection+0x27/0x30
+ ? dma_resv_iter_first_unlocked+0x55/0x290
+ dma_resv_wait_timeout+0x56/0x100
+ ttm_bo_delayed_delete+0x69/0xb0 [ttm]
+ process_one_work+0x217/0x5c0
+ worker_thread+0x1c8/0x3d0
+ ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
+ kthread+0x10b/0x240
+ ? kthreads_online_cpu+0x140/0x140
+ ret_from_fork+0x40/0x70
+ ? kthreads_online_cpu+0x140/0x140
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
 
-In the pci_endpoint_test_request_irq(), since this global variable
-is referenced when an error occurs, the unintended error message is
-displayed.
+The cause of this is:
 
-For example, after running "pcitest -i 2", the following message
-shows "MSI 3" even if the current IRQ type becomes "MSI-X":
+- drm_prime_gem_destroy calls dma_buf_put(dma_buf) which releases the
+  reference to the shared dma_buf. The reference count is 0, so the
+  dma_buf is destroyed, which in turn decrements the corresponding
+  amdgpu_bo reference count to 0, and the amdgpu_bo is destroyed -
+  calling drm_gem_object_release then dma_resv_fini (which destroys the
+  reservation object), then finally freeing the amdgpu_bo.
 
-  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
-  SET IRQ TYPE TO MSI-X:          NOT OKAY
+- nouveau_bo obj->bo.base.resv is now a dangling pointer to the memory
+  formerly allocated to the amdgpu_bo.
 
-Fix this issue by using "test->irq_type" instead of global "irq_type".
+- nouveau_gem_object_del calls ttm_bo_put(&nvbo->bo) which calls
+  ttm_bo_release, which schedules ttm_bo_delayed_delete.
 
-Cc: stable@vger.kernel.org
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+- ttm_bo_delayed_delete runs and dereferences the dangling resv pointer,
+  resulting in a general protection fault.
+
+Fix this by moving the drm_prime_gem_destroy call from
+nouveau_gem_object_del to nouveau_bo_del_ttm. This ensures that it will
+be run after ttm_bo_delayed_delete.
+
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Fixes: 22b33e8ed0e3 ("nouveau: add PRIME support")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3937
+Cc: Stable@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/Z-P4epVK8k7tFZ7C@debian.local
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_bo.c  |    3 +++
+ drivers/gpu/drm/nouveau/nouveau_gem.c |    3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -245,7 +245,7 @@ static bool pci_endpoint_test_request_ir
- 	return true;
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -144,6 +144,9 @@ nouveau_bo_del_ttm(struct ttm_buffer_obj
+ 	nouveau_bo_del_io_reserve_lru(bo);
+ 	nv10_bo_put_tile_region(dev, nvbo->tile, NULL);
  
- fail:
--	switch (irq_type) {
-+	switch (test->irq_type) {
- 	case IRQ_TYPE_LEGACY:
- 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
- 			pci_irq_vector(pdev, i));
++	if (bo->base.import_attach)
++		drm_prime_gem_destroy(&bo->base, bo->sg);
++
+ 	/*
+ 	 * If nouveau_bo_new() allocated this buffer, the GEM object was never
+ 	 * initialized, so don't attempt to release it.
+--- a/drivers/gpu/drm/nouveau/nouveau_gem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
+@@ -87,9 +87,6 @@ nouveau_gem_object_del(struct drm_gem_ob
+ 		return;
+ 	}
+ 
+-	if (gem->import_attach)
+-		drm_prime_gem_destroy(gem, nvbo->bo.sg);
+-
+ 	ttm_bo_put(&nvbo->bo);
+ 
+ 	pm_runtime_mark_last_busy(dev);
 
 
 
