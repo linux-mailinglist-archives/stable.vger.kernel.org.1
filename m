@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300B7A98E97
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A037A98FA4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB0B717D90C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE9557AFD96
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C47F27D763;
-	Wed, 23 Apr 2025 14:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BF2280A5C;
+	Wed, 23 Apr 2025 15:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xu/eRtJO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G98du77H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CA219DF4C;
-	Wed, 23 Apr 2025 14:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034FF1EEA3E;
+	Wed, 23 Apr 2025 15:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420150; cv=none; b=RbFybxucr5hGDrnWz/rBQ/FT7QR94RaG6FeBn5UbeT2VuoZsC83R5Ce9KCusnRpUPP4iNks7fR+V5eeDEMOMlD696o8CchjX2/sDmRxZ0rkAGN+YW5pgPl6HOWLmtefRfoScnKQihyRHt1WETllrnEPunlg9a3bLFbsvvPO4H/w=
+	t=1745420809; cv=none; b=COAvN9OfsFNb98WevX8t08JVky5cn6TJegPtoRCiyyhTlyURIRc3BnAisWaCq4OmuGT3lRtii3BWmxE4Jr41OLrZ6QT58vgGhiOxdc9QmD/Oaa9tilqDCViL4+psYs4e/LwoYJ8XIKChPkpIKpqTH69xgnHbKDg13vw8hYTumnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420150; c=relaxed/simple;
-	bh=hhP14TKCZ8V8oi8nwDl66JIAMfKJLqalxIuQoMEV5yg=;
+	s=arc-20240116; t=1745420809; c=relaxed/simple;
+	bh=hrW6CAUqQo3rtZkKrvPRQIdNOZItVeJl1wyKCff8YE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUn87HphbBcuUmvqUoVPqJW4/l2HM+j984muusceOWtO0s6glycDXQjn3fvJcbrvb58YMRuorS+gvAV+XH8/V2cfcv6ulsxb0NpJKzBANMMiAMivYvglKzqpOfEatWY6VNuLEvRg+KIDkjuVP5IpqdzX0zD6WH54LjsKup3UOSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xu/eRtJO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0109C4CEE2;
-	Wed, 23 Apr 2025 14:55:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rIPwWmCvjpcpGTorpLTAvPrn4+2/8S9EAlFIBHmTsD5de3qrFlA+kR+1IaGARjzupVQFb1olNv5nC8oCypxB9KgLrqMXSQA1nCEHprnFugs4dgfrOWJnI0zfGmvuahb5w44ckyN4Ygg2Wa+WLaBiA7LX1k3ikRjVYLW+yV6m0/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G98du77H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8921AC4CEE2;
+	Wed, 23 Apr 2025 15:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420150;
-	bh=hhP14TKCZ8V8oi8nwDl66JIAMfKJLqalxIuQoMEV5yg=;
+	s=korg; t=1745420808;
+	bh=hrW6CAUqQo3rtZkKrvPRQIdNOZItVeJl1wyKCff8YE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xu/eRtJOfcW1jnF3ECvMuWlgaVxpN0MWnMseobqivlRY8XTfD2tHcUDAwzQDiSvwR
-	 RyZWUGEm03aK+FgBwXvhFW6CziTMMcRgZg6/gTKwke5cvebezaQPPk8umgfbKAnWLt
-	 uEgfd9+zsQMgUoWCtqEqHHvsZzsUVvsSgeGzgcmM=
+	b=G98du77HHRFJ3QUiNyv9uCmGzNoPH8SHBVMUhIuBWage1w+MKFxFp+Nb15iJ94aib
+	 gWCY/peRcf9hmf2NwtG70+Vpd40auZwE172tiallt092jtCp6d1roJP6JeeJbGpfo9
+	 lPt6uHudaxVpGchkRAM003FxoiaRv9SrwgSMkOCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Han <quic_zhonhan@quicinc.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/291] pm: cpupower: bench: Prevent NULL dereference on malloc failure
+Subject: [PATCH 6.6 114/393] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
 Date: Wed, 23 Apr 2025 16:40:10 +0200
-Message-ID: <20250423142625.268700991@linuxfoundation.org>
+Message-ID: <20250423142648.072803578@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Han <quic_zhonhan@quicinc.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 208baa3ec9043a664d9acfb8174b332e6b17fb69 ]
+[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
 
-If malloc returns NULL due to low memory, 'config' pointer can be NULL.
-Add a check to prevent NULL dereference.
+With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
+divide-by-zero in the following line:
 
-Link: https://lore.kernel.org/r/20250219122715.3892223-1-quic_zhonhan@quicinc.com
-Signed-off-by: Zhongqiu Han <quic_zhonhan@quicinc.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
+
+due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
+returns zero.
+
+This is presumably just a theoretical problem: COMPILE_TEST overrides
+the dependency on RALINK which would select COMMON_CLK.  Regardless it's
+a good idea to check for the error explicitly to avoid divide-by-zero.
+
+Fixes the following warning:
+
+  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
+[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/cpupower/bench/parse.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pwm/pwm-mediatek.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/cpupower/bench/parse.c b/tools/power/cpupower/bench/parse.c
-index e63dc11fa3a53..48e25be6e1635 100644
---- a/tools/power/cpupower/bench/parse.c
-+++ b/tools/power/cpupower/bench/parse.c
-@@ -120,6 +120,10 @@ FILE *prepare_output(const char *dirname)
- struct config *prepare_default_config()
- {
- 	struct config *config = malloc(sizeof(struct config));
-+	if (!config) {
-+		perror("malloc");
-+		return NULL;
-+	}
+diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
+index 6adb0ed019066..6b1a75b6bd12f 100644
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -124,21 +124,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+ 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
+ 	    reg_thres = PWMTHRES;
++	unsigned long clk_rate;
+ 	u64 resolution;
+ 	int ret;
  
- 	dprintf("loading defaults\n");
+ 	ret = pwm_mediatek_clk_enable(chip, pwm);
+-
+ 	if (ret < 0)
+ 		return ret;
  
++	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
++	if (!clk_rate)
++		return -EINVAL;
++
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+ 		writel(0, pc->regs + PWM_CK_26M_SEL);
+ 
+ 	/* Using resolution in picosecond gets accuracy higher */
+ 	resolution = (u64)NSEC_PER_SEC * 1000;
+-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
++	do_div(resolution, clk_rate);
+ 
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+ 	while (cnt_period > 8191) {
 -- 
 2.39.5
 
