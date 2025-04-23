@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6290A992FB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0ECA9936A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46D697ADBBD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579769A4006
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D1E29B765;
-	Wed, 23 Apr 2025 15:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112E0284695;
+	Wed, 23 Apr 2025 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhuZbGwx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiCrsOi9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46482853ED;
-	Wed, 23 Apr 2025 15:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13E7242D64;
+	Wed, 23 Apr 2025 15:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422548; cv=none; b=gzlJB0V/feekioOMVfdPbrOuXbqC6G7DlB6OGN3B1PlrsCFN004sCFBpxvy7qSkkMWv4LOUILg9n2KkEd/lauLYJsmI8WICcmwV3h7k16htE+k9kvyv+bZIvH+KbOO0oeVCvKqwsLWdLuVMGw+aMJR4JXovEuvtzxw46iE413Yg=
+	t=1745422272; cv=none; b=Ln5tx29gqgczTfFjllZO6txUU0fqJMVFQ9VoYp1ll2ENrG0O0h9uBkZhFjQg0sfDmZ7DI6vQReNU7ba9iHjEr7ZHtsRNl71HDQCtBMoooagHsPUeQ5V+pGbR6VAzwmlxs6AEFpKwT4Lc9JyDtsn+8J/Zj1LBN9nMMkivJp0/eR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422548; c=relaxed/simple;
-	bh=TerNogXoomZ7A/9kUarVOD+VstC9Tjf2+5QB7mUtecA=;
+	s=arc-20240116; t=1745422272; c=relaxed/simple;
+	bh=2x1VzHGf96rEkAFA1ltrdRnSAGzjQs6mbI1h/EL+FMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHSF4Z9vJUIvf3wm0JGnBpol1DfpL556HK88ApSQN2kpB57QOnDhbhC3Bbl0PqgUNlq0dbCopc86AhcapGFdBYkUT4qQZWvnnIhg4DuKRLn3KHc87zoaL0CjlDr5zi5fZgThjbTlWPw/yT+hJM395dD6yegekTs3hUkRBkUdOsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhuZbGwx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8030C4CEE3;
-	Wed, 23 Apr 2025 15:35:47 +0000 (UTC)
+	 MIME-Version; b=TcFTciT07aGpTWn11kGaK/ryId67HU0drdJnK1lLptmRXsCpUw3CWyPs1JYhWyxIWV347yCZXpN/1UBwd7T9hSsfNsVJ3+mUbpEPJ/dskBwpWB6qhoPWdvIetEkk546UV/a70IVdIN7TrUAUXguIhADBWyTYb3VDFZn5PKANk5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiCrsOi9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53DE6C4CEE2;
+	Wed, 23 Apr 2025 15:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422548;
-	bh=TerNogXoomZ7A/9kUarVOD+VstC9Tjf2+5QB7mUtecA=;
+	s=korg; t=1745422272;
+	bh=2x1VzHGf96rEkAFA1ltrdRnSAGzjQs6mbI1h/EL+FMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JhuZbGwx+SsG3MGtWJaXaMYPoLtNJS1JrzhXVIbDL4a1LcJzkBYqVfH37lumqD93V
-	 ZUnszIEXIT6aCcOelV3+hBJSvvwvqwaGQFFY56VWVZuoVNPvR9U8eK/imX3BSzKxbh
-	 kQFxO1A/mU1iJBmkiCPKNe7wlJtxq5yV/fkVaSVQ=
+	b=BiCrsOi9OQ2+FWT0EaNLCK9STy+i7jl7sIoLrBAwMhjiB4uN2rQjyxHlJIiC3PqQW
+	 mrXvC0ZrpZrY8kwSaOJCtRr3puj+CU3H/GISIBqJjZLO3yQUflCK2uesh9fC+pFwTf
+	 uAyYTm4Y5bG37ei2CqPnh4EVf93ND/8aeEy8uhsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 361/393] kbuild: Add -fno-builtin-wcslen
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 268/291] LoongArch: Eliminate superfluous get_numa_distances_cnt()
 Date: Wed, 23 Apr 2025 16:44:17 +0200
-Message-ID: <20250423142658.251329963@linuxfoundation.org>
+Message-ID: <20250423142635.372704409@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+commit a0d3c8bcb9206ac207c7ad3182027c6b0a1319bb upstream.
 
-A recent optimization change in LLVM [1] aims to transform certain loop
-idioms into calls to strlen() or wcslen(). This change transforms the
-first while loop in UniStrcat() into a call to wcslen(), breaking the
-build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+In LoongArch, get_numa_distances_cnt() isn't in use, resulting in a
+compiler warning.
 
-  ld.lld: error: undefined symbol: wcslen
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+Fix follow errors with clang-18 when W=1e:
 
-Disable this optimization with '-fno-builtin-wcslen', which prevents the
-compiler from assuming that wcslen() is available in the kernel's C
-library.
+arch/loongarch/kernel/acpi.c:259:28: error: unused function 'get_numa_distances_cnt' [-Werror,-Wunused-function]
+  259 | static inline unsigned int get_numa_distances_cnt(struct acpi_table_slit *slit)
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
 
-[ More to the point - it's not that we couldn't implement wcslen(), it's
-  that this isn't an optimization at all in the context of the kernel.
-
-  Replacing a simple inlined loop with a function call to the same loop
-  is just stupid and pointless if you don't have long strings and fancy
-  libraries with vectorization support etc.
-
-  For the regular 'strlen()' cases, we want the compiler to do this in
-  order to handle the trivial case of constant strings. And we do have
-  optimized versions of 'strlen()' on some architectures. But for
-  wcslen? Just no.    - Linus ]
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[nathan: Resolve small conflict in older trees]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/all/Z7bHPVUH4lAezk0E@kernel.org/
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/kernel/acpi.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1004,6 +1004,9 @@ ifdef CONFIG_CC_IS_GCC
- KBUILD_CFLAGS   += -fconserve-stack
- endif
+--- a/arch/loongarch/kernel/acpi.c
++++ b/arch/loongarch/kernel/acpi.c
+@@ -173,18 +173,6 @@ static __init int setup_node(int pxm)
+ 	return acpi_map_pxm_to_node(pxm);
+ }
  
-+# Ensure compilers do not transform certain loops into calls to wcslen()
-+KBUILD_CFLAGS += -fno-builtin-wcslen
-+
- # change __FILE__ to the relative path from the srctree
- KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
- 
+-/*
+- * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
+- * I/O localities since SRAT does not list them.  I/O localities are
+- * not supported at this point.
+- */
+-unsigned int numa_distance_cnt;
+-
+-static inline unsigned int get_numa_distances_cnt(struct acpi_table_slit *slit)
+-{
+-	return slit->locality_count;
+-}
+-
+ void __init numa_set_distance(int from, int to, int distance)
+ {
+ 	if ((u8)distance != distance || (from == to && distance != LOCAL_DISTANCE)) {
 
 
 
