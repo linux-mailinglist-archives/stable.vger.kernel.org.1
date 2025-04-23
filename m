@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5E3A98E49
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B45A98F55
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DF175A6D78
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 834EA1B869D2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BEB280CFC;
-	Wed, 23 Apr 2025 14:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DA5284696;
+	Wed, 23 Apr 2025 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwNTgAmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xF98fxNc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D644427F4CA;
-	Wed, 23 Apr 2025 14:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CF828468E;
+	Wed, 23 Apr 2025 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419926; cv=none; b=HbnFirFnynFahA2/JXRG+WwnuER8WO6jWJ33iv37w1oSa2YDKjkitalK739569Y5MMpQp0IJkTGTvZbZf4kd6EbSY1UMJo285AmY5Ce+VTefFNDQZAihqUaGP9eunV7+h59cHHUS+GFcfAf1FvPh31GBbL3vdWQkSM4GXS/2njw=
+	t=1745420395; cv=none; b=e0S9WWDOBanSzv6dfbL3/UbrAFKSjU0xZOQai+BVhU6V4C4MGbX1H/iY3Uvro4QgLbMOzbxMcExXIiUtiJF/PLqFHDgZEsVINiiXWO0r7Gq+MdzEEe4S5185IabJRvJSqHY1w2hbvo1NnAVwVsVKzzIZSGKis2GnyvkwFllvt8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419926; c=relaxed/simple;
-	bh=arHg+RNvgwdynUqfpv6dWMEB+pR/6rgy6MZKDZDBsC8=;
+	s=arc-20240116; t=1745420395; c=relaxed/simple;
+	bh=0RHgjRXovHduyPYU5KCqch+V3nU4v7Rbarx3NiCEFP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ny6QnnBVolhNWDrky+w7nJgA0gSGQTgumRK4P2Pb6HFbkoieY0dS0I2asB3zaexVhjXGyd8mXW8H6wQc037U0yQqVDwZNxdZWY30wa9daBTF+Tam3fZmPBa62qKI+1sKea5xeMF0PTLZP1gikOlQ40D84rnw4NnLRBfdUKtC7yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwNTgAmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C58C4CEE2;
-	Wed, 23 Apr 2025 14:52:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JgGy7SdCQeVmR4BzbNf9eFMVCRF1efxku9QJNu9r+TlKFG9ouCQLjy4A0wJcPDVFfrUWf/NLygGIWpx4r+aABOBqZlllf2B6E5hhJNlBxAffs5VLY12SKGHtpGJ6o/eFM0OCGNmgW530HRTTxAeB9aaMl9ySi3uA2t1tA9YPtiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xF98fxNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC4FC4CEE2;
+	Wed, 23 Apr 2025 14:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419926;
-	bh=arHg+RNvgwdynUqfpv6dWMEB+pR/6rgy6MZKDZDBsC8=;
+	s=korg; t=1745420395;
+	bh=0RHgjRXovHduyPYU5KCqch+V3nU4v7Rbarx3NiCEFP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pwNTgAmV6s5nnq1nASzQILt6LHR2vqzMBfudVy6WunsB9u/qbJY1xVTew7OPeYp+G
-	 ejs9IDsk2fw3Ja51cOh5ZNEZkd2cx2HBTIAMKyhlbgDXKJUupMJropA+k1BQitSLcR
-	 9OpdufnqHaaXMpPKfACX946iWbso8VrjW3SDIePU=
+	b=xF98fxNcH478/pkov6BDO13TSe+u9P44FNwkACwoZJ8641RaIK1svZNr1wJbbDHO0
+	 kTwBP8Ps9qxOeOrMxnubacNW+8+1LxWwik6ofacn+Ny8zYMwfilPvrSJkSMR2xq+8w
+	 b9fzF5A1I9L/dlbV/RFxvm6meE4PUV5ARjJRCYFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/223] riscv: KGDB: Do not inline arch_kgdb_breakpoint()
+Subject: [PATCH 6.14 088/241] riscv: Properly export reserved regions in /proc/iomem
 Date: Wed, 23 Apr 2025 16:42:32 +0200
-Message-ID: <20250423142620.383817838@linuxfoundation.org>
+Message-ID: <20250423142624.177116964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +60,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 3af4bec9c1db3f003be4d5ae09b6a737e4be1612 ]
+[ Upstream commit e94eb7ea6f206e229791761a5fdf9389f8dbd183 ]
 
-The arch_kgdb_breakpoint() function defines the kgdb_compiled_break
-symbol using inline assembly.
+The /proc/iomem represents the kernel's memory map. Regions marked
+with "Reserved" tells the user that the range should not be tampered
+with. Kexec-tools, when using the older kexec_load syscall relies on
+the "Reserved" regions to build the memory segments, that will be the
+target of the new kexec'd kernel.
 
-There's a potential issue where the compiler might inline
-arch_kgdb_breakpoint(), which would then define the kgdb_compiled_break
-symbol multiple times, leading to fail to link vmlinux.o.
+The RISC-V port tries to expose all reserved regions to userland, but
+some regions were not properly exposed: Regions that resided in both
+the "regular" and reserved memory block, e.g. the EFI Memory Map. A
+missing entry could result in reserved memory being overwritten.
 
-This isn't merely a potential compilation problem. The intent here
-is to determine the global symbol address of kgdb_compiled_break,
-and if this function is inlined multiple times, it would logically
-be a grave error.
+It turns out, that arm64, and loongarch had a similar issue a while
+back:
 
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/5b0adf9b-2b22-43fe-ab74-68df94115b9a@ghiti.fr/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Co-developed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/F22359AFB6FF9FD8+20250411073222.56820-1-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+  commit d91680e687f4 ("arm64: Fix /proc/iomem for reserved but not memory regions")
+  commit 50d7ba36b916 ("arm64: export memblock_reserve()d regions via /proc/iomem")
+
+Similar to the other ports, resolve the issue by splitting the regions
+in an arch initcall, since we need a working allocator.
+
+Fixes: ffe0e5261268 ("RISC-V: Improve init_resources()")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250409182129.634415-1-bjorn@kernel.org
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/kgdb.h | 9 +--------
- arch/riscv/kernel/kgdb.c      | 8 ++++++++
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ arch/riscv/kernel/setup.c | 36 +++++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/kgdb.h b/arch/riscv/include/asm/kgdb.h
-index 46677daf708bd..cc11c4544cffd 100644
---- a/arch/riscv/include/asm/kgdb.h
-+++ b/arch/riscv/include/asm/kgdb.h
-@@ -19,16 +19,9 @@
+diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
+index 4fe45daa6281e..b7d0bd4c0a81a 100644
+--- a/arch/riscv/kernel/setup.c
++++ b/arch/riscv/kernel/setup.c
+@@ -66,6 +66,9 @@ static struct resource bss_res = { .name = "Kernel bss", };
+ static struct resource elfcorehdr_res = { .name = "ELF Core hdr", };
+ #endif
  
- #ifndef	__ASSEMBLY__
++static int num_standard_resources;
++static struct resource *standard_resources;
++
+ static int __init add_resource(struct resource *parent,
+ 				struct resource *res)
+ {
+@@ -139,7 +142,7 @@ static void __init init_resources(void)
+ 	struct resource *res = NULL;
+ 	struct resource *mem_res = NULL;
+ 	size_t mem_res_sz = 0;
+-	int num_resources = 0, res_idx = 0;
++	int num_resources = 0, res_idx = 0, non_resv_res = 0;
+ 	int ret = 0;
  
-+void arch_kgdb_breakpoint(void);
- extern unsigned long kgdb_compiled_break;
+ 	/* + 1 as memblock_alloc() might increase memblock.reserved.cnt */
+@@ -193,6 +196,7 @@ static void __init init_resources(void)
+ 	/* Add /memory regions to the resource tree */
+ 	for_each_mem_region(region) {
+ 		res = &mem_res[res_idx--];
++		non_resv_res++;
  
--static inline void arch_kgdb_breakpoint(void)
--{
--	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
--}
--
- #endif /* !__ASSEMBLY__ */
+ 		if (unlikely(memblock_is_nomap(region))) {
+ 			res->name = "Reserved";
+@@ -210,6 +214,9 @@ static void __init init_resources(void)
+ 			goto error;
+ 	}
  
- #define DBG_REG_ZERO "zero"
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index 2e0266ae6bd72..5d1ce8dacaf58 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -254,6 +254,14 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- 	regs->epc = pc;
++	num_standard_resources = non_resv_res;
++	standard_resources = &mem_res[res_idx + 1];
++
+ 	/* Clean-up any unused pre-allocated resources */
+ 	if (res_idx >= 0)
+ 		memblock_free(mem_res, (res_idx + 1) * sizeof(*mem_res));
+@@ -221,6 +228,33 @@ static void __init init_resources(void)
+ 	memblock_free(mem_res, mem_res_sz);
  }
  
-+noinline void arch_kgdb_breakpoint(void)
++static int __init reserve_memblock_reserved_regions(void)
 +{
-+	asm(".global kgdb_compiled_break\n"
-+	    ".option norvc\n"
-+	    "kgdb_compiled_break: ebreak\n"
-+	    ".option rvc\n");
-+}
++	u64 i, j;
 +
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
- 				char *remcom_out_buffer)
++	for (i = 0; i < num_standard_resources; i++) {
++		struct resource *mem = &standard_resources[i];
++		phys_addr_t r_start, r_end, mem_size = resource_size(mem);
++
++		if (!memblock_is_region_reserved(mem->start, mem_size))
++			continue;
++
++		for_each_reserved_mem_range(j, &r_start, &r_end) {
++			resource_size_t start, end;
++
++			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
++			end = min(PFN_PHYS(PFN_UP(r_end)) - 1, mem->end);
++
++			if (start > mem->end || end < mem->start)
++				continue;
++
++			reserve_region_with_split(mem, start, end, "Reserved");
++		}
++	}
++
++	return 0;
++}
++arch_initcall(reserve_memblock_reserved_regions);
+ 
+ static void __init parse_dtb(void)
  {
 -- 
 2.39.5
