@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-135585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC48AA98EE3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:01:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C07CA99003
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D4A416C143
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7560117D3A1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0E3281372;
-	Wed, 23 Apr 2025 14:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D05293B5F;
+	Wed, 23 Apr 2025 15:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVqGI0zz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aufDaAvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB915266B4B;
-	Wed, 23 Apr 2025 14:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7F7293B56;
+	Wed, 23 Apr 2025 15:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420310; cv=none; b=hmbtaaR8TBDV9bEKBTbe1gVnezliMjtH0GPe36bjPkqPnps9ny9q41CyT12YyX5LyVro1xP/6gxORP6yUaZw2sPMUXkXoAVBVojseKQ5cD3Dkw0tUTHMPnZPZwKE620zCIiDZsIgCLuSUk98BYwmMCh/El/ja+mVyQwR6sO2Ah4=
+	t=1745420835; cv=none; b=O1vDKCJcBhltMr7o4GDiHZIghtJQSipwqFQgewllHsJv+JoUSrPRTB60u9/7nBC4tT1/m3HwRsylNcOn5xtdeAQXuiUZXVGj5iRfVVMlIiWglCP5lncA7HWjHhESNHV+qCmchthq7Gmqr06o4HKNWmwalJaA5I8ifbRHjy11kWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420310; c=relaxed/simple;
-	bh=x5PRVn07n64MUNLdznUj5gQc8nUWubvmC2QuHsYjU4E=;
+	s=arc-20240116; t=1745420835; c=relaxed/simple;
+	bh=JjCV5CDo1B1PAc1LYJYaSXXLKLU9ichSN3WupyTSvjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sZaI01eE2S3ClSjrbzyDxtTPj0g4A286cevuRGWv6YaDC2aV1L7PjWSFvnedd3KCQDzhr3ZGIFNXdBVhsIlUU0u0Dnd6XOiNznQNzgyuJm9cIA9FFpMffpxkYQE0162yQL124qRnctDHqrZ7s5pi7iUDGrkhd2NW8DTUaEOC8yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DVqGI0zz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7CDC4CEE2;
-	Wed, 23 Apr 2025 14:58:30 +0000 (UTC)
+	 MIME-Version; b=EXtois169jtopgSmG3v1yqCSsY1HfkdaXZMqjhANMFjCjIN3pFmeaz+XV0HpnM2cmOwa0bLWVh5Ur3bvRRUeU+5z96B9iXkX+miXU2tbgAO1AwGljTuk9Mcj6ppDXCxaxs7w6y2pN6TlcqhedReURSSOwt8rZ8IZfVPpUuBOYa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aufDaAvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CB3C4CEE3;
+	Wed, 23 Apr 2025 15:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420310;
-	bh=x5PRVn07n64MUNLdznUj5gQc8nUWubvmC2QuHsYjU4E=;
+	s=korg; t=1745420835;
+	bh=JjCV5CDo1B1PAc1LYJYaSXXLKLU9ichSN3WupyTSvjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVqGI0zzLVzwxz1qlqsPPKK/SJG7C7UjQB9PFplCMY4DME3UAeR+UbkJObBpvGZsk
-	 6RPkX2v/23hU5iciNszCrK79bdMX4IPVdtx0bpJIHVDYrM/wJ2u4PtsqASfW/0Jl8p
-	 mjVQncazK6xb1lJOGQMxCWTOpSEekIawalPKrIp0=
+	b=aufDaAvBNs0KUQBDY9slb7YZAxBPbtB5o+NO9tzGQpcXH0RtOm2rVbfYZ08lGAWWo
+	 K+x++BPO+mvKqS+XxMyxayijzEeS9EFYK4IG5u4HphTqzAOGcUebI+3ENclKKFvX0z
+	 2BkBJbBugXEzwAJe/U8sWyC2w+Tk3KmSuv011CAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baoquan He <bhe@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 118/223] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.14 126/241] Bluetooth: vhci: Avoid needless snprintf() calls
 Date: Wed, 23 Apr 2025 16:43:10 +0200
-Message-ID: <20250423142621.918473291@linuxfoundation.org>
+Message-ID: <20250423142625.717732865@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baoquan He <bhe@redhat.com>
+From: Kees Cook <kees@kernel.org>
 
-commit 8c03ebd7cdc06bd0d2fecb4d1a609ef1dbb7d0aa upstream.
+commit 875db86e1ec75fe633f1e85ed2f92c731cdbf760 upstream.
 
-Not like fault_in_readable() or fault_in_writeable(), in
-fault_in_safe_writeable() local variable 'start' is increased page by page
-to loop till the whole address range is handled.  However, it mistakenly
-calculates the size of the handled range with 'uaddr - start'.
+Avoid double-copying of string literals. Use a "const char *" for each
+string instead of copying from .rodata into stack and then into the skb.
+We can go directly from .rodata to the skb.
 
-Fix it here.
+This also works around a Clang bug (that has since been fixed[1]).
 
-Andreas said:
-
-: In gfs2, fault_in_iov_iter_writeable() is used in
-: gfs2_file_direct_read() and gfs2_file_read_iter(), so this potentially
-: affects buffered as well as direct reads.  This bug could cause those
-: gfs2 functions to spin in a loop.
-
-Link: https://lkml.kernel.org/r/20250410035717.473207-1-bhe@redhat.com
-Link: https://lkml.kernel.org/r/20250410035717.473207-2-bhe@redhat.com
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Fixes: fe673d3f5bf1 ("mm: gup: make fault_in_safe_writeable() use fixup_user_fault()")
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Yanjun.Zhu <yanjun.zhu@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401250927.1poZERd6-lkp@intel.com/
+Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
+Link: https://github.com/llvm/llvm-project/commit/ea2e66aa8b6e363b89df66dc44275a0d7ecd70ce [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/gup.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/hci_vhci.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -2213,8 +2213,8 @@ size_t fault_in_safe_writeable(const cha
- 	} while (start != end);
- 	mmap_read_unlock(mm);
+--- a/drivers/bluetooth/hci_vhci.c
++++ b/drivers/bluetooth/hci_vhci.c
+@@ -289,18 +289,18 @@ static void vhci_coredump(struct hci_dev
  
--	if (size > (unsigned long)uaddr - start)
--		return size - ((unsigned long)uaddr - start);
-+	if (size > start - (unsigned long)uaddr)
-+		return size - (start - (unsigned long)uaddr);
- 	return 0;
+ static void vhci_coredump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	char buf[80];
++	const char *buf;
+ 
+-	snprintf(buf, sizeof(buf), "Controller Name: vhci_ctrl\n");
++	buf = "Controller Name: vhci_ctrl\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Firmware Version: vhci_fw\n");
++	buf = "Firmware Version: vhci_fw\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Driver: vhci_drv\n");
++	buf = "Driver: vhci_drv\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Vendor: vhci\n");
++	buf = "Vendor: vhci\n";
+ 	skb_put_data(skb, buf, strlen(buf));
  }
- EXPORT_SYMBOL(fault_in_safe_writeable);
+ 
 
 
 
