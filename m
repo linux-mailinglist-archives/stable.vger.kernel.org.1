@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63EDA98E1F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B96A9924B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 085333B492B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A7661BA35CA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6555D27FD5C;
-	Wed, 23 Apr 2025 14:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9666A292927;
+	Wed, 23 Apr 2025 15:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EG2kD9bQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxc3ujUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2290927FD56;
-	Wed, 23 Apr 2025 14:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5393F17B421;
+	Wed, 23 Apr 2025 15:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419856; cv=none; b=Oa7zdYu1EkeAuS8ys3PYQ3x0gJoOdPbkcy1FsVuGNmcuqlsP3xtamTdyrbWv9U/t6I65LM0Nh4KMGoneCrvVGnpCoyDX/E2V7Eb0DSaoT3kTs9sl7jSB1utem+oFpJyH9c7DqcgMOfolUgOmQh38STTWDAq2byDRLdF8on5Qxd4=
+	t=1745421597; cv=none; b=WNqbkiUtoxiYNFdXxfIyjXA/wUDUezEzTx/nG6Lrs8hbQxVPHHDhBDgD81bduyzSj2mI7fXV2Gh1SuGtyGhBAqTnS8YO2avmeF84NuLDuINKI12/JLqgw86Jp8k/FMWQAhihQRkNJPegEdiw/4ZU4zx23BsvJHRSiSdoPUkhFlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419856; c=relaxed/simple;
-	bh=nkzsCgZSuGwCrZ9er7Ytp5sly+K4UcBqoQG86mLf4FY=;
+	s=arc-20240116; t=1745421597; c=relaxed/simple;
+	bh=0GZXIhZNBoZ2LtgfzN76jZ2hamwEZDFvtN/AmUKRce4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nui6Sa/FsThn48lpLheMELrycU/5GcrmRwIkXoES4NBtMFXpok32J0XAv7D2bdG0FtaVQeAWtvUo6Iph/xCZDy2z6lX7dSzYjJ1Cu2QGKU8rrPfgVCyk7gmWUoSED85F77KAa18bvZOrJsL7t76nr6tA8H1XcX6S1Z1x33r+mcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EG2kD9bQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48481C4CEE2;
-	Wed, 23 Apr 2025 14:50:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XFSEDgYXY86jFHR9H7iWxEF3WDMBJKLJlIx24IzlF1bU70UUVEOP4KzNiZYKcvN8kOypaYMrZJan29b9j6r1RoNHKu5T6u7Y6ds6OyqmGked3mG33be0zCSAFHBwJpDVmFAZm8Ydj5QlCb0T8ws77LPNVh3B9Krc8YSbT6jvEEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxc3ujUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22C3C4CEE2;
+	Wed, 23 Apr 2025 15:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419855;
-	bh=nkzsCgZSuGwCrZ9er7Ytp5sly+K4UcBqoQG86mLf4FY=;
+	s=korg; t=1745421597;
+	bh=0GZXIhZNBoZ2LtgfzN76jZ2hamwEZDFvtN/AmUKRce4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EG2kD9bQ10aD4mGDD4Zehfpq8cbE3JdifmZq/rja/0nhaKG3U0C4n4DS4fbTyXn7t
-	 X7zjQry5vkYdOkvT6TlblbcGPu13bPX6IHoT3ZKmFr0yzIyAYmiAj8bQzL0bdSGt/A
-	 t9Czlzrf1s0CY9wFZJmzlrFx9RgPP0r0a66ctbGw=
+	b=rxc3ujUBatL5RWSVw3nrx9qlfmNVsQ2FqKm/TAt5czhxwoEUe4rcr4ktHcogRqnty
+	 DMXsP6Pf58l6lTMg3Uuhh+vO/EG6i58zU4g/qm4gQWSdF1r1GWcXxL7vD9H0zTBcrt
+	 g149aYsiJO22qOAwEC2xUWDO7kf5GMeFApTmkgyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/223] net: ethernet: mtk_eth_soc: reapply mdc divider on reset
-Date: Wed, 23 Apr 2025 16:42:24 +0200
-Message-ID: <20250423142620.062078650@linuxfoundation.org>
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.1 156/291] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
+Date: Wed, 23 Apr 2025 16:42:25 +0200
+Message-ID: <20250423142630.764177302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit 6bc2b6c6f16d8e60de518d26da1bc6bc436cf71d ]
+commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
 
-In the current method, the MDC divider was reset to the default setting
-of 2.5MHz after the NETSYS SER. Therefore, we need to reapply the MDC
-divider configuration function in mtk_hw_init() after reset.
+A call to of_parse_phandle() is incrementing the refcount, and as such,
+the of_node_put() must be called when the reference is no longer needed.
 
-Fixes: c0a440031d431 ("net: ethernet: mtk_eth_soc: set MDIO bus clock frequency")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/8ab7381447e6cdcb317d5b5a6ddd90a1734efcb0.1744764277.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thus, refactor the existing code and add a missing of_node_put() call
+following the check to ensure that "msi_np" matches "pcie->np" and after
+MSI initialization, but only if the MSI support is enabled system-wide.
+
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 39 +++++++++++++--------
- drivers/net/ethernet/mediatek/mtk_eth_soc.h |  1 +
- 2 files changed, 25 insertions(+), 15 deletions(-)
+ drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index ed7313c10a052..82af9bddc12fb 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -823,9 +823,25 @@ static const struct phylink_mac_ops mtk_phylink_ops = {
- 	.mac_link_up = mtk_mac_link_up,
- };
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1488,7 +1488,7 @@ static struct pci_ops brcm7425_pcie_ops
  
-+static void mtk_mdio_config(struct mtk_eth *eth)
-+{
-+	u32 val;
-+
-+	/* Configure MDC Divider */
-+	val = FIELD_PREP(PPSC_MDC_CFG, eth->mdc_divider);
-+
-+	/* Configure MDC Turbo Mode */
-+	if (mtk_is_netsys_v3_or_greater(eth))
-+		mtk_m32(eth, 0, MISC_MDC_TURBO, MTK_MAC_MISC_V3);
-+	else
-+		val |= PPSC_MDC_TURBO;
-+
-+	mtk_m32(eth, PPSC_MDC_CFG, val, MTK_PPSC);
-+}
-+
- static int mtk_mdio_init(struct mtk_eth *eth)
+ static int brcm_pcie_probe(struct platform_device *pdev)
  {
--	unsigned int max_clk = 2500000, divider;
-+	unsigned int max_clk = 2500000;
- 	struct device_node *mii_np;
- 	int ret;
- 	u32 val;
-@@ -865,20 +881,9 @@ static int mtk_mdio_init(struct mtk_eth *eth)
- 		}
- 		max_clk = val;
+-	struct device_node *np = pdev->dev.of_node, *msi_np;
++	struct device_node *np = pdev->dev.of_node;
+ 	struct pci_host_bridge *bridge;
+ 	const struct pcie_cfg_data *data;
+ 	struct brcm_pcie *pcie;
+@@ -1563,9 +1563,14 @@ static int brcm_pcie_probe(struct platfo
+ 		goto fail;
  	}
--	divider = min_t(unsigned int, DIV_ROUND_UP(MDC_MAX_FREQ, max_clk), 63);
--
--	/* Configure MDC Turbo Mode */
--	if (mtk_is_netsys_v3_or_greater(eth))
--		mtk_m32(eth, 0, MISC_MDC_TURBO, MTK_MAC_MISC_V3);
--
--	/* Configure MDC Divider */
--	val = FIELD_PREP(PPSC_MDC_CFG, divider);
--	if (!mtk_is_netsys_v3_or_greater(eth))
--		val |= PPSC_MDC_TURBO;
--	mtk_m32(eth, PPSC_MDC_CFG, val, MTK_PPSC);
--
--	dev_dbg(eth->dev, "MDC is running on %d Hz\n", MDC_MAX_FREQ / divider);
--
-+	eth->mdc_divider = min_t(unsigned int, DIV_ROUND_UP(MDC_MAX_FREQ, max_clk), 63);
-+	mtk_mdio_config(eth);
-+	dev_dbg(eth->dev, "MDC is running on %d Hz\n", MDC_MAX_FREQ / eth->mdc_divider);
- 	ret = of_mdiobus_register(eth->mii_bus, mii_np);
  
- err_put_node:
-@@ -3928,6 +3933,10 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
- 	else
- 		mtk_hw_reset(eth);
- 
-+	/* No MT7628/88 support yet */
-+	if (reset && !MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
-+		mtk_mdio_config(eth);
+-	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
+-	if (pci_msi_enabled() && msi_np == pcie->np) {
+-		ret = brcm_pcie_enable_msi(pcie);
++	if (pci_msi_enabled()) {
++		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
 +
- 	if (mtk_is_netsys_v3_or_greater(eth)) {
- 		/* Set FE to PDMAv2 if necessary */
- 		val = mtk_r32(eth, MTK_FE_GLO_MISC);
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-index 0d5225f1d3eef..8d7b6818d8601 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-@@ -1260,6 +1260,7 @@ struct mtk_eth {
- 	struct clk			*clks[MTK_CLK_MAX];
- 
- 	struct mii_bus			*mii_bus;
-+	unsigned int			mdc_divider;
- 	struct work_struct		pending_work;
- 	unsigned long			state;
- 
--- 
-2.39.5
-
++		if (msi_np == pcie->np)
++			ret = brcm_pcie_enable_msi(pcie);
++
++		of_node_put(msi_np);
++
+ 		if (ret) {
+ 			dev_err(pcie->dev, "probe of internal MSI failed");
+ 			goto fail;
 
 
 
