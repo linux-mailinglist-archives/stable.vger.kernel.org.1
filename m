@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F45A98DCB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3576CA99005
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FD033BFC31
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4DBA7AE7C5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB30281505;
-	Wed, 23 Apr 2025 14:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9904C28CF44;
+	Wed, 23 Apr 2025 15:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6u/vmu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geb/xcb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC0A28134C;
-	Wed, 23 Apr 2025 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5351827F4D9;
+	Wed, 23 Apr 2025 15:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419701; cv=none; b=RFqwuG4b2LF1yNUxInHkO5j4JyK35TR41Q6UjxfZCvqsGZpECsC5eTU+PJyKV+IBeedDgIwOOlGvCPHLrqNi8AJ/rqFKZG5UA7N2k0IYs7uC0X2V+v2euzW2R5Upp/2fUEfmO1Rjf2d5xuoCVvh6lMoA99NISi0Iqjc8mhpE4iA=
+	t=1745421032; cv=none; b=R3+HLBSntr8Hwa5V+SWgbzI1gAqHt022Y19lqGJSeKizT4ixg6lfCdh/b6a1AGIVvuFqySl0kIoyYUw3RQTGg6pLNCD2LWcjTh8R6xN0mBY1KwTKAvsk3ZVPrj1pfK6ADzHqBsbOmJqPGU4khzthcufU2Y+e8TTXcK6Ez5WEn58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419701; c=relaxed/simple;
-	bh=i0qBAteUto6QpFzZvDK6pCEZKWst6tw2OLOhCEHaW4s=;
+	s=arc-20240116; t=1745421032; c=relaxed/simple;
+	bh=qcugQ59Gf5hyA0swEso0Vq90cFVJCgFGT7BzcYIhAcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JaYKF2IUdR/hYc6Y8TpvZhB9AvRA6JObnHQ51fYRt/kyPa5mB/sdiO6tf3uwoiIo58shb5fJMlNtK3cJ3Sj6s77fDOXl+CFE+cOTo0dDw/XRHVCEAcbj6K7HWVwVM0TUDZgVK5yh8d0rOLtmpR+Q/d9kBXuDRvj5Kd8Fzqs5rS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6u/vmu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF178C4CEE2;
-	Wed, 23 Apr 2025 14:48:19 +0000 (UTC)
+	 MIME-Version; b=SLn2oCbAiyEeU5Tk1/j2e+nqWoBICcUhjKE17rvLVel0F4O4fJbc7APMxuffvkM2pDLYqB4WNhAkE/pjlR6WitwBmtkSDcIMChGw8dceg4teEZ6ovZcWHU6P3fNpE5AD9URJFVvPmAw10JPBwB6f01xtb+uW8RYOuzuNo3+i6ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geb/xcb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFC1C4CEE2;
+	Wed, 23 Apr 2025 15:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419700;
-	bh=i0qBAteUto6QpFzZvDK6pCEZKWst6tw2OLOhCEHaW4s=;
+	s=korg; t=1745421030;
+	bh=qcugQ59Gf5hyA0swEso0Vq90cFVJCgFGT7BzcYIhAcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A6u/vmu7lgIfnUK1X6+rAZ6YlMhiycKvgjfrW9FghQtElX36YI7fF3RNWJlGn0+Ey
-	 THSxFWugC0PgkkUSXYgc+o0cdtpSULSRwk6VaCiG2hcSQGg3pnFV3jww3GhP5Flt1V
-	 JXLmHtYr4VaeyZhIoNogMBQm1e8/b33wdFRdjF40=
+	b=geb/xcb81U/Eks42MlmVRTzcLiULPfRStNKVtvjqiJP+9LEDL1Qe+vafIS5Ndc5dL
+	 bKOGFrwkmUIvMKn8jxIfsMyvNYCiKM/tyIZ1Y2LmVXSVW2eVdHsE6stl/POLIHIn/n
+	 GtS9vOu02P14vJUTBuhlSa4AJNpetwOP6HRlt8qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 019/223] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 102/291] mtd: Add check for devm_kcalloc()
 Date: Wed, 23 Apr 2025 16:41:31 +0200
-Message-ID: <20250423142617.901405427@linuxfoundation.org>
+Message-ID: <20250423142628.519755619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
+commit 2aee30bb10d7bad0a60255059c9ce1b84cf0130e upstream.
 
-drivers/infiniband/hw/usnic/usnic_ib_main.c:590
- usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
+Add a check for devm_kcalloc() to ensure successful allocation.
 
-Make usnic_ib_device_add() return NULL on fail path, also remove
-useless NULL check for usnic_ib_discover_pf()
-
-Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
-Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/mtd/mtdpstore.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-index 13b654ddd3cc8..bcf7d8607d56e 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
- 	if (!us_ibdev) {
- 		usnic_err("Device %s context alloc failed\n",
- 				netdev_name(pci_get_drvdata(dev)));
--		return ERR_PTR(-EFAULT);
-+		return NULL;
- 	}
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -423,6 +423,9 @@ static void mtdpstore_notify_add(struct
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+ 	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
  
- 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
-@@ -500,8 +500,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
- 	}
- 
- 	us_ibdev = usnic_ib_device_add(parent_pci);
--	if (IS_ERR_OR_NULL(us_ibdev)) {
--		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
-+	if (!us_ibdev) {
-+		us_ibdev = ERR_PTR(-EFAULT);
- 		goto out;
- 	}
- 
-@@ -569,10 +569,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
- 	}
- 
- 	pf = usnic_ib_discover_pf(vf->vnic);
--	if (IS_ERR_OR_NULL(pf)) {
--		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
--				pci_name(pdev), PTR_ERR(pf));
--		err = pf ? PTR_ERR(pf) : -EFAULT;
-+	if (IS_ERR(pf)) {
-+		err = PTR_ERR(pf);
-+		usnic_err("Failed to discover pf of vnic %s with err%d\n",
-+				pci_name(pdev), err);
- 		goto out_clean_vnic;
- 	}
- 
--- 
-2.39.5
-
++	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
++		return;
++
+ 	/* just support dmesg right now */
+ 	cxt->dev.flags = PSTORE_FLAGS_DMESG;
+ 	cxt->dev.zone.read = mtdpstore_read;
 
 
 
