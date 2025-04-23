@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC882A9915C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABF3EA991E9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C32F189095E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB63445956
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F930288C9E;
-	Wed, 23 Apr 2025 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3502F2949E5;
+	Wed, 23 Apr 2025 15:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+/o+9CL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFEBmJCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E8B27FD42;
-	Wed, 23 Apr 2025 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE197284693;
+	Wed, 23 Apr 2025 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421288; cv=none; b=cYO6lsthkwijJ7YjRD0KstltdBi2LQEUssqUz05zirGkzkX/YLSxB374YN37v/7LB5owqJPeNOPny8lrrG3dnIbf1/nTP3dvdRJKStR8afjWgKrhnbqOxOUJu4ioe4SckrpfpY6wbkxOIHa+d1qLLHMbzqVnDrCfi2Bc8AAc9JU=
+	t=1745421656; cv=none; b=IuzaGyK/IH97XyQSawX/3suKTZ3l4h8PU+ZJAoyNAgJrMH9/fGFjdPbijjjSU6ENrC8aXG2tbxDJxWs644ZoIcEd4SlMMhJst7Kpo5PD25rHt+7EZh05eC7ZCyGdyf+bSf1iNaBmqfuwEvrd7rwr6llOiBQO86BfZyZ8o2Y/DJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421288; c=relaxed/simple;
-	bh=NXqQux3KbU2z1cFrHM20mCu9trQGSCPnivbUFF3mruQ=;
+	s=arc-20240116; t=1745421656; c=relaxed/simple;
+	bh=wGPd+3cV6mWVsVnmAtbyatKzw0uz+6n9PbHT7c/mAlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZRuMACNfQqGRY2R6a+gpzInPKHFZ0DQDXnBBQ4prSmwrMIuB6mstfc5teANxyf2+YMO1LNnNLu/xBDVykXW0+apeYI9KH6WlL0Lto7TD5YpiSnTWziO5EhYklK9OVLNr4fi4tu9CMsjkXCFDY9HUtwU5hXRH25+YNZG+ojFqk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+/o+9CL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9719C4CEE2;
-	Wed, 23 Apr 2025 15:14:47 +0000 (UTC)
+	 MIME-Version; b=NKX/29VFnD0DwDn/RgF9h5NS2jdICsqqlqMSJGKyDuToOmhb58Nljl+utvNNjR3ynU+wk03Ih6kDbTN3dBRJZbKog8qYt+59IQnTJiXSp9usNKGWGI0ZkxgvK9HF/Jo79t0XsMsgjIhVOORi9XYeykG52U56RBPPuTEJGln/DaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFEBmJCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723AFC4CEE2;
+	Wed, 23 Apr 2025 15:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421288;
-	bh=NXqQux3KbU2z1cFrHM20mCu9trQGSCPnivbUFF3mruQ=;
+	s=korg; t=1745421655;
+	bh=wGPd+3cV6mWVsVnmAtbyatKzw0uz+6n9PbHT7c/mAlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+/o+9CLOeEMnHxY05y2CShV+sBjD9E1FX0TXTl+VNGMze4YDwgI698juluQGia42
-	 W8twWQHAA2JHMTA5lIhlR43Uj+Qwi2Wc7X5uTLl5pCc03T0pT0PCSCYCzMXdtdAIXP
-	 PboUmI2uZ+WuOAdSxZjEhwRHup+znH/ODLxHpn6A=
+	b=gFEBmJCmDjRQ/nGB6I6jglWIoLBPWf7n9yyVbe3pKzAIi132Z6LGebsJED7lClgJh
+	 fhHbNaJsuy8RRG+OQHX5t/0N6rBaxjEKNxxm+mBlQIY1wmHJrOrgArSX0K2slj/SYk
+	 +Kw8LqMfn94YUAnpSCpqozCbEvh9714alSIqCS3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 6.12 208/223] block: dont reorder requests in blk_add_rq_to_plug
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.14 216/241] drm/i915/dp: Check for HAS_DSC_3ENGINES while configuring DSC slices
 Date: Wed, 23 Apr 2025 16:44:40 +0200
-Message-ID: <20250423142625.637975185@linuxfoundation.org>
+Message-ID: <20250423142629.386620426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-commit e70c301faece15b618e54b613b1fd6ece3dd05b4 upstream.
+commit 3a47280b768748992ee34bd52c394c60b2845af3 upstream.
 
-Add requests to the tail of the list instead of the front so that they
-are queued up in submission order.
+DSC 12 slices configuration is used for some specific cases with
+Ultrajoiner. This can be supported only when each of the 4 joined pipes
+have 3 DSC engines each.
 
-Remove the re-reordering in blk_mq_dispatch_plug_list, virtio_queue_rqs
-and nvme_queue_rqs now that the list is ordered as expected.
+Add the missing check for 3 DSC engines support before using 3 DSC
+slices per pipe.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20241113152050.157179-6-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Fixes: be7f5fcdf4a0 ("drm/i915/dp: Enable 3 DSC engines for 12 slices")
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Suraj Kandpal <suraj.kandpal@intel.com>
+Cc: <stable@vger.kernel.org> # v6.14+
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://lore.kernel.org/r/20250414024256.2782702-3-ankit.k.nautiyal@intel.com
+(cherry picked from commit da9b1c61e7f7b327dd70c5f073ba04d419a55ef8)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c             |    4 ++--
- drivers/block/virtio_blk.c |    2 +-
- drivers/nvme/host/pci.c    |    2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1386,7 +1386,7 @@ static void blk_add_rq_to_plug(struct bl
- 	 */
- 	if (!plug->has_elevator && (rq->rq_flags & RQF_SCHED_TAGS))
- 		plug->has_elevator = true;
--	rq_list_add_head(&plug->mq_list, rq);
-+	rq_list_add_tail(&plug->mq_list, rq);
- 	plug->rq_count++;
- }
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -1050,10 +1050,11 @@ u8 intel_dp_dsc_get_slice_count(const st
+ 		u8 test_slice_count = valid_dsc_slicecount[i] * num_joined_pipes;
  
-@@ -2840,7 +2840,7 @@ static void blk_mq_dispatch_plug_list(st
- 			rq_list_add_tail(&requeue_list, rq);
+ 		/*
+-		 * 3 DSC Slices per pipe need 3 DSC engines,
+-		 * which is supported only with Ultrajoiner.
++		 * 3 DSC Slices per pipe need 3 DSC engines, which is supported only
++		 * with Ultrajoiner only for some platforms.
+ 		 */
+-		if (valid_dsc_slicecount[i] == 3 && num_joined_pipes != 4)
++		if (valid_dsc_slicecount[i] == 3 &&
++		    (!HAS_DSC_3ENGINES(display) || num_joined_pipes != 4))
  			continue;
- 		}
--		list_add(&rq->queuelist, &list);
-+		list_add_tail(&rq->queuelist, &list);
- 		depth++;
- 	} while (!rq_list_empty(&plug->mq_list));
  
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -514,7 +514,7 @@ static void virtio_queue_rqs(struct rq_l
- 		vq = this_vq;
- 
- 		if (virtblk_prep_rq_batch(req))
--			rq_list_add_head(&submit_list, req); /* reverse order */
-+			rq_list_add_tail(&submit_list, req);
- 		else
- 			rq_list_add_tail(&requeue_list, req);
- 	}
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1026,7 +1026,7 @@ static void nvme_queue_rqs(struct rq_lis
- 		nvmeq = req->mq_hctx->driver_data;
- 
- 		if (nvme_prep_rq_batch(nvmeq, req))
--			rq_list_add_head(&submit_list, req); /* reverse order */
-+			rq_list_add_tail(&submit_list, req);
- 		else
- 			rq_list_add_tail(&requeue_list, req);
- 	}
+ 		if (test_slice_count >
 
 
 
