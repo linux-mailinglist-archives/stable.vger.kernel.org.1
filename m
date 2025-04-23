@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-135408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8089A98E12
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A191EA98E24
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 100333AF2E6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 419861B81F2E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7896D269B07;
-	Wed, 23 Apr 2025 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D8427D76A;
+	Wed, 23 Apr 2025 14:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bp0p7nUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeyIaEh4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352A25674E;
-	Wed, 23 Apr 2025 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D866818DB17;
+	Wed, 23 Apr 2025 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419845; cv=none; b=TuBnvLOVuAwxMVhSeJ4MEhXH4LkT6uaGlILXRYd8+eXmUztRcTK+W5qITzeBlEvIBWwKOj1wr1o2A4D86zBz3HMYvuAglEFcrZQ6GawOuyMlTyeggRPJYNJW8rRl/IE+viOwsuu2yEHMKVHITb1Bt1Wq3yz8rJHY3BTI01cKNzs=
+	t=1745419850; cv=none; b=pRWDmgIl6uV1m8xQPMXlTm5Ai9vlDhye7+U38g551JS/1RKyBabk8ehxxZEzUdhyaQ7BhZEzSAFj94ci0sS+mOHoyNCCtr/Mw5HrertiJwaotF+IgmTiEGIrQPyfdCPRFN3ceP0c5I7n3smkvGuliv/n4YGjzk9wMGJ3b8iRBtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419845; c=relaxed/simple;
-	bh=S6VBzRTDWG3OtqZdyFTWsKambqYReE1t9iULWxLExl4=;
+	s=arc-20240116; t=1745419850; c=relaxed/simple;
+	bh=pdrQs++KqYIBUIPBvu+si3RSKKsZybue9jGJaVg75rU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4c4CkKmiPwwX1PxO5pBK2agSJJM8ZJakI5LLhNIM9uislpi3IfSXzoCSnZBy2AiECpipfhANipRD4VkseUU021YCUqC/5M026jftomTopvpAs3r0SD/cPqdQQBfwxwXPF5ZsLwszqno1LPgZWJ5NQ/S1+uOKrSiRSM0GGL3XgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bp0p7nUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF5E9C4CEE2;
-	Wed, 23 Apr 2025 14:50:44 +0000 (UTC)
+	 MIME-Version; b=UejQdHQ6OVz1LxRUcsblKK1zcknBPevBV1IY+RnCdnMzmTl6iV9uXkeZ/CRCB8i7vb9vD/+L/v98eXsM3T3q2jrXokSx1S8m8UqncNEZfONwchAmMz/yt/xz4CoaOVEuTZ6Tukv7QoxwnQEPJKTrAQfGYZEcxv1krr28FErBmVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeyIaEh4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C10C4CEE2;
+	Wed, 23 Apr 2025 14:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419845;
-	bh=S6VBzRTDWG3OtqZdyFTWsKambqYReE1t9iULWxLExl4=;
+	s=korg; t=1745419850;
+	bh=pdrQs++KqYIBUIPBvu+si3RSKKsZybue9jGJaVg75rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bp0p7nUsP3PbPgnPJ6x32fZhTT2cEylhBRNeyz3L8ejyaSO4IpaJ41ZyTEhBl9Cyk
-	 TWZjofUrhvEGUDiZTv9MFRy1OI5o7ShVVfkAaHTAoLO2HYa+Wln8aBhAwi0D2Bmlm/
-	 7tBIFTPbVzMnNa0oV5ho+puHjOuXWeJnFRbM7Vuc=
+	b=EeyIaEh4BUyRM1Vcsto+uk/cCoZZjwh5KEWF+1yiVB4wmLhZZn+iU8FVitFmRPImD
+	 g7F743uOqv/16IW0s3S3DfA+cqlmdWM++P5Gs6hPRj9E9MHqlFrZlYeSlifEDSnmG3
+	 OJO/Stf9TlghkGg/1PInK/B2/RlR40iWVjFH95Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Pedro Tammela <pctammela@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/393] octeontx2-pf: qos: fix VF root node parent queue index
-Date: Wed, 23 Apr 2025 16:38:27 +0200
-Message-ID: <20250423142643.739226029@linuxfoundation.org>
+Subject: [PATCH 6.6 012/393] rtnl: add helper to check if rtnl group has listeners
+Date: Wed, 23 Apr 2025 16:38:28 +0200
+Message-ID: <20250423142643.780745247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -67,55 +70,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit b7db94734e785e380b0db0f9295e07024f4d42a0 ]
+[ Upstream commit c5e2a973448d958feb7881e4d875eac59fdeff3d ]
 
-The current code configures the Physical Function (PF) root node at TL1
-and the Virtual Function (VF) root node at TL2.
+As of today, rtnl code creates a new skb and unconditionally fills and
+broadcasts it to the relevant group. For most operations this is okay
+and doesn't waste resources in general.
 
-This ensure at any given point of time PF traffic gets more priority.
+When operations are done without the rtnl_lock, as in tc-flower, such
+skb allocation, message fill and no-op broadcasting can happen in all
+cores of the system, which contributes to system pressure and wastes
+precious cpu cycles when no one will receive the built message.
 
-                    PF root node
-                      TL1
-                     /  \
-                    TL2  TL2 VF root node
-                    /     \
-                   TL3    TL3
-                   /       \
-                  TL4      TL4
-                  /         \
-                 SMQ        SMQ
+Introduce this helper so rtnetlink operations can simply check if someone
+is listening and then proceed if necessary.
 
-Due to a bug in the current code, the TL2 parent queue index on the
-VF interface is not being configured, leading to 'SMQ Flush' errors
-
-Fixes: 5e6808b4c68d ("octeontx2-pf: Add support for HTB offload")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250407070341.2765426-1-hkelam@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Link: https://lore.kernel.org/r/20231208192847.714940-2-pctammela@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 369609fc6272 ("tc: Ensure we have enough buffer space when sending filter netlink notifications")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/qos.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/rtnetlink.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-index 4995a2d54d7d0..37db19584c143 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
-@@ -165,6 +165,11 @@ static void __otx2_qos_txschq_cfg(struct otx2_nic *pfvf,
+diff --git a/include/linux/rtnetlink.h b/include/linux/rtnetlink.h
+index 3d6cf306cd55e..a7d757e96c55f 100644
+--- a/include/linux/rtnetlink.h
++++ b/include/linux/rtnetlink.h
+@@ -130,4 +130,11 @@ extern int ndo_dflt_bridge_getlink(struct sk_buff *skb, u32 pid, u32 seq,
  
- 		otx2_config_sched_shaping(pfvf, node, cfg, &num_regs);
- 	} else if (level == NIX_TXSCH_LVL_TL2) {
-+		/* configure parent txschq */
-+		cfg->reg[num_regs] = NIX_AF_TL2X_PARENT(node->schq);
-+		cfg->regval[num_regs] = (u64)hw->tx_link << 16;
-+		num_regs++;
+ extern void rtnl_offload_xstats_notify(struct net_device *dev);
+ 
++static inline int rtnl_has_listeners(const struct net *net, u32 group)
++{
++	struct sock *rtnl = net->rtnl;
 +
- 		/* configure link cfg */
- 		if (level == pfvf->qos.link_cfg_lvl) {
- 			cfg->reg[num_regs] = NIX_AF_TL3_TL2X_LINKX_CFG(node->schq, hw->tx_link);
++	return netlink_has_listeners(rtnl, group);
++}
++
+ #endif	/* __LINUX_RTNETLINK_H */
 -- 
 2.39.5
 
