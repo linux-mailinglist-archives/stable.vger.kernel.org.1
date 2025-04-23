@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-135647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500C1A98F32
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170E8A98F82
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C04462E1A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A678188814E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01FB283C98;
-	Wed, 23 Apr 2025 15:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC98B284677;
+	Wed, 23 Apr 2025 15:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGf7JiIq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5Q55rfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAA5283C81;
-	Wed, 23 Apr 2025 15:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C0F284681;
+	Wed, 23 Apr 2025 15:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420474; cv=none; b=UNUk9X2X8CiMxyUhFmQE10gEmB76h+7IMWWIlGhvavZ3qqDPTDsugeVKpvEpZ+6Q36pNaAb8DpSKZ7/S7IxCqoiWJS3BBpEYIDy5t1OxeFINm6t98V7jAfRL5hli9G038jCpLODM/CY20UpQQ60vt/RFKpG0zOt+FEmK70V6hEY=
+	t=1745420485; cv=none; b=YN9Xjrw+ucZgnyiwkGfOFf9M+KLhgwkTfBLD+/44f5i2n3jGszMdSEnuOmfi5Z2cqUncxlpLEC3kjwaPJTWMgRY12YAiXGoYFxIcs9y8ty+5S7CNyvc/s9YJHYMShv6X7n9jTBPINhj7dv8Tjks6pblF0E5X2SwQVjKqksrz7ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420474; c=relaxed/simple;
-	bh=KSIbZKPc3SCj9Kni3nqpTZ7j/oixb7MFxA6sFWqR4WY=;
+	s=arc-20240116; t=1745420485; c=relaxed/simple;
+	bh=g5FY809qNbb99edIMBewA5+RvjYshpPNBsJGzGLrtAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y028t0z5X0hb9dQaaM48Y4EzkU+b9JhSnNsE4oWMkDl1QQFlSqxhCERDL0DAdFRFXPf9c6Kuryjn711fyFmFe3As+ndJP1uOwgCr/pMNVVU2JWoRqYdcLpUp4ZFW5gquZsoJ1FvHczQi6Gekj62hiZArNybvRBQ85U/RsDz2dbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGf7JiIq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5FEC4CEE3;
-	Wed, 23 Apr 2025 15:01:13 +0000 (UTC)
+	 MIME-Version; b=cn5uyaC8/ABVPl2fiwm/tPtGO/v8AKqAs6RUw/2ogxC2o1s/c49uJtpFHfXlrBIdkma7FrmxSjvV4Dl0D9udRVVrehO4l1qKBtUhJBc3NaSlgurqLucwP01ux2xbhuVrFIjh31pDPo07vdoKOFOTh5isxqCKUscnh/rPOh9WPeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5Q55rfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D529C4CEE2;
+	Wed, 23 Apr 2025 15:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420474;
-	bh=KSIbZKPc3SCj9Kni3nqpTZ7j/oixb7MFxA6sFWqR4WY=;
+	s=korg; t=1745420485;
+	bh=g5FY809qNbb99edIMBewA5+RvjYshpPNBsJGzGLrtAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mGf7JiIq8o54Qpi/1TDVbiy+l9WXsoKeG9bkzH0esciVnL0ayLC5uNQJzFlzgpH1X
-	 LwESW+8vp78RkSJ+huMXSjAhVHAi25vCxrwET1HLeGrPqGtMdnYxU+B8Ynx214gIFK
-	 YNbJ6Kix7Tt0Qp4IIq9QGb/sJGrpNLfnkrkWf4WY=
+	b=X5Q55rfUWFiVK8NSlmNEV1O6BTByEMDD+aUaqzVv9nqHLSNhgS39fGQspZm4qvn+2
+	 oI3GXvQD3Wl2FP+xnPLbIE06wnPbZLgjmoUjyrOuUHx2zgFhOysASdDnLSLENZbrn8
+	 FT2LHyWIf0g8C/m943I/W2FkQJuY/HF+/i5+3RLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriele Paoloni <gpaoloni@redhat.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/291] tracing: fix return value in __ftrace_event_enable_disable for TRACE_REG_UNREGISTER
-Date: Wed, 23 Apr 2025 16:40:39 +0200
-Message-ID: <20250423142626.433965070@linuxfoundation.org>
+Subject: [PATCH 6.1 051/291] Bluetooth: hci_uart: fix race during initialization
+Date: Wed, 23 Apr 2025 16:40:40 +0200
+Message-ID: <20250423142626.473366603@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -66,43 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriele Paoloni <gpaoloni@redhat.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit 0c588ac0ca6c22b774d9ad4a6594681fdfa57d9d ]
+[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
 
-When __ftrace_event_enable_disable invokes the class callback to
-unregister the event, the return value is not reported up to the
-caller, hence leading to event unregister failures being silently
-ignored.
+'hci_register_dev()' calls power up function, which is executed by
+kworker - 'hci_power_on()'. This function does access to bluetooth chip
+using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
+Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
+if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
+'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
+be executed before setting this bit. In that case HCI init logic fails.
 
-This patch assigns the ret variable to the invocation of the
-event unregister callback, so that its return value is stored
-and reported to the caller, and it raises a warning in case
-of error.
+Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
+'hci_uart_register_dev()'.
 
-Link: https://lore.kernel.org/20250321170821.101403-1-gpaoloni@redhat.com
-Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/hci_ldisc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 94bb5f9251b13..ed0d0c8a2b4bb 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -776,7 +776,9 @@ static int __ftrace_event_enable_disable(struct trace_event_file *file,
- 				clear_bit(EVENT_FILE_FL_RECORDED_TGID_BIT, &file->flags);
- 			}
+diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
+index c1feebd9e3a03..5dc2f38c7b9a7 100644
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -709,12 +709,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
  
--			call->class->reg(call, TRACE_REG_UNREGISTER, file);
-+			ret = call->class->reg(call, TRACE_REG_UNREGISTER, file);
+ 	hu->proto = p;
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
 +
-+			WARN_ON_ONCE(ret);
- 		}
- 		/* If in SOFT_MODE, just set the SOFT_DISABLE_BIT, else clear it */
- 		if (file->flags & EVENT_FILE_FL_SOFT_MODE)
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
+ 	}
+ 
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
