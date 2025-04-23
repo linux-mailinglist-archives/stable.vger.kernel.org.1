@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DE9A992F8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65657A992CB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE1184A30DE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2F1171206
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567762980C9;
-	Wed, 23 Apr 2025 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172DC29CB4A;
+	Wed, 23 Apr 2025 15:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxC/btoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJS/7sQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9B279345;
-	Wed, 23 Apr 2025 15:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E8029CB3D;
+	Wed, 23 Apr 2025 15:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422278; cv=none; b=d9tyk9u7PF+l2oNgvHdG50KSyxQ9L9dYU8CebVCk3uix+kh8apLYNmHXeqhx4SpaW6zCFYU16L5cg2n31pX97qLI2myijSdp8r14z8WrZby/FWTx4Y/0idtUxwQsn9rrEiLmuN7yeLZZBUZUuYJLKksItpFZsTvhtEkeYXkQCYs=
+	t=1745422026; cv=none; b=YwGIos3ZNvFc4kDEN6ZXnTjEYDwwzaW+uuOKIAOZzHeiC1VLO5thjkzh7OzE7fU+8qStVXKGH73y8lJ+1S6H1VKn4opAKZDVDMMRrsjmB0U/hXEZmNH1Ge1Fzl2tTiSpR4SmG5SHourSyDXHyOegtQlBCKy097YGztM6d81hQOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422278; c=relaxed/simple;
-	bh=BwhxDdKebDzI4zqT1zOL0ubjsbZsz0ttEaof8Cq3q1s=;
+	s=arc-20240116; t=1745422026; c=relaxed/simple;
+	bh=zjV5rZ0C6gr86CiJrRJq2mzkmoF63x3XDgrREQHw9Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbaXkVR/6QnpTU9eR7zIc3l2zuf4fxk9nPhSCNNMgU/2xhDN6BVaXcZXiF2xTujFSXWH2g/uEI2jRdkdyJQg7TiNbr/mtDdFckXNfnoIIz9RE2/wW7fiySJ0Vy/EP5FZlB5BLJma313tztZMMhCURUg/nLjIr3t0kSKxKQfYlCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxC/btoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991DBC4CEE2;
-	Wed, 23 Apr 2025 15:31:17 +0000 (UTC)
+	 MIME-Version; b=kP6CeBdF0tgFAOACH3QCfmH0EMAtymZ6Q+q7vVZ97cbn7TvK+0NfcapYRgIpeEQr+rHoANBW8Nz7H0yQIAbZwh08f4tDq2hNmoEt11YdyNv3hdVhm4vIohUyM/UToF+gHIQLdGDfI1p8CFHM7NuTZjkB1Scp13UASMonbJ4FUeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJS/7sQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2B7C4CEEB;
+	Wed, 23 Apr 2025 15:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422278;
-	bh=BwhxDdKebDzI4zqT1zOL0ubjsbZsz0ttEaof8Cq3q1s=;
+	s=korg; t=1745422026;
+	bh=zjV5rZ0C6gr86CiJrRJq2mzkmoF63x3XDgrREQHw9Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxC/btoLW4YVeS/By4HKWOy/9+6a5J2bDVeiuR3nlt8HE064QIk90PuV0az8h07tB
-	 VNjT2azzBBfmwpwCVitV6Wi0Xm6shEPmMns+NqwyyR+Kr8gfVSuV0REhRK+yjhkJBx
-	 T4GwJF0MH7LuC8gBpbJu7iSGL3MHy/zHjGrYDYjw=
+	b=CJS/7sQyiky7wm/afHQ+kb5Y/37i3I09xx8kLvBb+C1WGQARF+c/ExzZCej/qK8n3
+	 u8INqdoek54e/UO5Ju6ZrAHkL3wb2xCV2/auOpS07HPF6ZxKIIBuYJAc4i3XsD3QMu
+	 KPGpDkliP5UE7NtY5Hz3UNBVjESFHfdW00Lzg2IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Walton <calvin.walton@kepstin.ca>,
-	Johannes Kimmel <kernel@bareminimum.eu>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 312/393] btrfs: correctly escape subvol in btrfs_show_options()
-Date: Wed, 23 Apr 2025 16:43:28 +0200
-Message-ID: <20250423142656.214891247@linuxfoundation.org>
+	Chunjie Zhu <chunjie.zhu@cloud.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 220/291] smb3 client: fix open hardlink on deferred close file error
+Date: Wed, 23 Apr 2025 16:43:29 +0200
+Message-ID: <20250423142633.394280386@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Kimmel <kernel@bareminimum.eu>
+From: Chunjie Zhu <chunjie.zhu@cloud.com>
 
-commit dc08c58696f8555e4a802f1f23c894a330d80ab7 upstream.
+commit 262b73ef442e68e53220b9d6fc5a0d08b557fa42 upstream.
 
-Currently, displaying the btrfs subvol mount option doesn't escape ','.
-This makes parsing /proc/self/mounts and /proc/self/mountinfo
-ambiguous for subvolume names that contain commas. The text after the
-comma could be mistaken for another option (think "subvol=foo,ro", where
-ro is actually part of the subvolumes name).
+The following Python script results in unexpected behaviour when run on
+a CIFS filesystem against a Windows Server:
 
-Replace the manual escape characters list with a call to
-seq_show_option(). Thanks to Calvin Walton for suggesting this approach.
+    # Create file
+    fd = os.open('test', os.O_WRONLY|os.O_CREAT)
+    os.write(fd, b'foo')
+    os.close(fd)
 
-Fixes: c8d3fe028f64 ("Btrfs: show subvol= and subvolid= in /proc/mounts")
-CC: stable@vger.kernel.org # 5.4+
-Suggested-by: Calvin Walton <calvin.walton@kepstin.ca>
-Signed-off-by: Johannes Kimmel <kernel@bareminimum.eu>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+    # Open and close the file to leave a pending deferred close
+    fd = os.open('test', os.O_RDONLY|os.O_DIRECT)
+    os.close(fd)
+
+    # Try to open the file via a hard link
+    os.link('test', 'new')
+    newfd = os.open('new', os.O_RDONLY|os.O_DIRECT)
+
+The final open returns EINVAL due to the server returning
+STATUS_INVALID_PARAMETER. The root cause of this is that the client
+caches lease keys per inode, but the spec requires them to be related to
+the filename which causes problems when hard links are involved:
+
+>From MS-SMB2 section 3.3.5.9.11:
+
+"The server MUST attempt to locate a Lease by performing a lookup in the
+LeaseTable.LeaseList using the LeaseKey in the
+SMB2_CREATE_REQUEST_LEASE_V2 as the lookup key. If a lease is found,
+Lease.FileDeleteOnClose is FALSE, and Lease.Filename does not match the
+file name for the incoming request, the request MUST be failed with
+STATUS_INVALID_PARAMETER"
+
+On client side, we first check the context of file open, if it hits above
+conditions, we first close all opening files which are belong to the same
+inode, then we do open the hard link file.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chunjie Zhu <chunjie.zhu@cloud.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/super.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/smb/client/cifsproto.h |    2 ++
+ fs/smb/client/file.c      |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -1336,8 +1336,7 @@ static int btrfs_show_options(struct seq
- 	subvol_name = btrfs_get_subvol_name_from_objectid(info,
- 			BTRFS_I(d_inode(dentry))->root->root_key.objectid);
- 	if (!IS_ERR(subvol_name)) {
--		seq_puts(seq, ",subvol=");
--		seq_escape(seq, subvol_name, " \t\n\\");
-+		seq_show_option(seq, "subvol", subvol_name);
- 		kfree(subvol_name);
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -152,6 +152,8 @@ extern int cifs_get_writable_path(struct
+ extern struct cifsFileInfo *find_readable_file(struct cifsInodeInfo *, bool);
+ extern int cifs_get_readable_path(struct cifs_tcon *tcon, const char *name,
+ 				  struct cifsFileInfo **ret_file);
++extern int cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				  struct file *file);
+ extern unsigned int smbCalcSize(void *buf);
+ extern int decode_negTokenInit(unsigned char *security_blob, int length,
+ 			struct TCP_Server_Info *server);
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -687,6 +687,11 @@ int cifs_open(struct inode *inode, struc
+ 		} else {
+ 			_cifsFileInfo_put(cfile, true, false);
+ 		}
++	} else {
++		/* hard link on the defeered close file */
++		rc = cifs_get_hardlink_path(tcon, inode, file);
++		if (rc)
++			cifs_close_deferred_file(CIFS_I(inode));
  	}
- 	return 0;
+ 
+ 	if (server->oplocks)
+@@ -1735,6 +1740,29 @@ cifs_move_llist(struct list_head *source
+ 		list_move(li, dest);
+ }
+ 
++int
++cifs_get_hardlink_path(struct cifs_tcon *tcon, struct inode *inode,
++				struct file *file)
++{
++	struct cifsFileInfo *open_file = NULL;
++	struct cifsInodeInfo *cinode = CIFS_I(inode);
++	int rc = 0;
++
++	spin_lock(&tcon->open_file_lock);
++	spin_lock(&cinode->open_file_lock);
++
++	list_for_each_entry(open_file, &cinode->openFileList, flist) {
++		if (file->f_flags == open_file->f_flags) {
++			rc = -EINVAL;
++			break;
++		}
++	}
++
++	spin_unlock(&cinode->open_file_lock);
++	spin_unlock(&tcon->open_file_lock);
++	return rc;
++}
++
+ void
+ cifs_free_llist(struct list_head *llist)
+ {
 
 
 
