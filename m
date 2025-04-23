@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-135926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AC2A99158
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F37A9921C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD39792521D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77F2592318C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 048C228EA76;
-	Wed, 23 Apr 2025 15:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5740A27F755;
+	Wed, 23 Apr 2025 15:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVXgQVsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvAJK4Kb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB47E283CBE;
-	Wed, 23 Apr 2025 15:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1376354670;
+	Wed, 23 Apr 2025 15:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421204; cv=none; b=uENXWrAc70KYfshwsYigKpPk47koYfaG4FxXB8ZK8t0EK3H+R8x9BbH8Xcjln9/ry5p0SSHS9IS8Y111uO7oao01IqNJLaWb+4DUWRx8bQ3yOoV/0DUn0UE5GNz9iKGd8xxFg5bv4RUm9+wZJw5c58wpyRCfoqi96csgq2/Fcko=
+	t=1745421716; cv=none; b=pcLWw48WWz38dldQejo8/6bP88T+e94OhpxmHyNalhOlRRd0kLOL25JwJA08hJkES/REqzHAR7xFp5bqNZG1NMA7l/yiEWRTztslj0zQQ0zPKDOa/ue8JmebK3YVy3d/vszWGR8cJ98gRDRD6zHzyrOWk2Z7MU/P8FnhVl/NxDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421204; c=relaxed/simple;
-	bh=2Xt6SHWXWL7JEl1tfSH6pwsJwjSaH9XbvSU0c4f2Nh4=;
+	s=arc-20240116; t=1745421716; c=relaxed/simple;
+	bh=N0fspCMpZSHZihjY2whUSfny333Kv7rePkE+dJNHskI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7LKNH/cxpKRUwAUycjyUJ5sJB1/ewrprL5vuBFa3AvdxzfG2t/+JLXYfq0qZch8ENLTZislkEt8oEH7y58dCa2YqgfFJ7p01bcRokvqaEUs+B1PcTNNSrZ5r9t9jPbEJxnYEmeH/zyd2VnAz4NKVhRqlHA/G+fbcNUwyrYNDwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVXgQVsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D643C4CEE2;
-	Wed, 23 Apr 2025 15:13:24 +0000 (UTC)
+	 MIME-Version; b=rNkNM3hSbiKJZVThJzkgadlZQ66CjARPhidJu/V4tLEi1cSed4014mmsa88xJ3MfOeqToxet8VHaeVop2ymGvmp8YxgYvnhqH3azO9A+3XXIUPj9+//IxIC4Dqe+LW6RNhhEa2DG37dcRfK0+74VldQ9zTYbAlxPPlTHWyFCMfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvAJK4Kb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A162C4CEE2;
+	Wed, 23 Apr 2025 15:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421204;
-	bh=2Xt6SHWXWL7JEl1tfSH6pwsJwjSaH9XbvSU0c4f2Nh4=;
+	s=korg; t=1745421716;
+	bh=N0fspCMpZSHZihjY2whUSfny333Kv7rePkE+dJNHskI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iVXgQVsPhMOV+jjlOl8sU9afNDpUl9kChM+dJPncFSAQ0ghVpXQeX7zT+Xq0R52Iv
-	 FFlJUqjWaWLcwd7D9Ov0fJ1+36RjW6tUTwfL+dUM4eHpyokbHYQ1BTNNtuAO0vOKEk
-	 XDzZasi05paQ8JXPEDECA8xMYzAALd0JcZFOHVbE=
+	b=wvAJK4KbxFQGwb8XSxY+7Ya6ywfLVMKRXHpSFklqBmHKKwO0wc/gpgrgRSxJXLjU/
+	 QbqfofzpOkwb0OH9rM66RZeCV9al6kxfWkbihdiLbJZmrHwnI6ROxCcQ0jCPhl2Lcr
+	 wqS3P5sS/6b/OpRQDLk4E7PVUbSkQWkAI6ac6j/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 117/291] i3c: master: svc: Use readsb helper for reading MDB
-Date: Wed, 23 Apr 2025 16:41:46 +0200
-Message-ID: <20250423142629.166352604@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 211/393] dm-verity: fix prefetch-vs-suspend race
+Date: Wed, 23 Apr 2025 16:41:47 +0200
+Message-ID: <20250423142652.099171366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit c06acf7143bddaa3c0f7bedd8b99e48f6acb85c3 upstream.
+commit 2de510fccbca3d1906b55f4be5f1de83fa2424ef upstream.
 
-The target can send the MDB byte followed by additional data bytes.
-The readl on MRDATAB reads one actual byte, but the readsl advances
-the destination pointer by 4 bytes. This causes the subsequent payload
-to be copied to wrong position in the destination buffer.
+There's a possible race condition in dm-verity - the prefetch work item
+may race with suspend and it is possible that prefetch continues to run
+while the device is suspended. Fix this by calling flush_workqueue and
+dm_bufio_client_reset in the postsuspend hook.
 
-Cc: stable@kernel.org
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250318053606.3087121-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-verity-target.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -368,7 +368,7 @@ static int svc_i3c_master_handle_ibi(str
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
- 		count = SVC_I3C_MDATACTRL_RXCOUNT(mdatactrl);
--		readsl(master->regs + SVC_I3C_MRDATAB, buf, count);
-+		readsb(master->regs + SVC_I3C_MRDATAB, buf, count);
- 		slot->len += count;
- 		buf += count;
- 	}
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -836,6 +836,13 @@ static int verity_map(struct dm_target *
+ 	return DM_MAPIO_SUBMITTED;
+ }
+ 
++static void verity_postsuspend(struct dm_target *ti)
++{
++	struct dm_verity *v = ti->private;
++	flush_workqueue(v->verify_wq);
++	dm_bufio_client_reset(v->bufio);
++}
++
+ /*
+  * Status: V (valid) or C (corruption found)
+  */
+@@ -1557,6 +1564,7 @@ static struct target_type verity_target
+ 	.ctr		= verity_ctr,
+ 	.dtr		= verity_dtr,
+ 	.map		= verity_map,
++	.postsuspend	= verity_postsuspend,
+ 	.status		= verity_status,
+ 	.prepare_ioctl	= verity_prepare_ioctl,
+ 	.iterate_devices = verity_iterate_devices,
 
 
 
