@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F6DA99211
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DFDA98F79
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5442A4A1D86
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2AA73B5048
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5309928F523;
-	Wed, 23 Apr 2025 15:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E825C284692;
+	Wed, 23 Apr 2025 15:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azwJ+VBF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wz9Se6Z5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8AD28B500;
-	Wed, 23 Apr 2025 15:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3E27EC73;
+	Wed, 23 Apr 2025 15:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421724; cv=none; b=dI5fjppsctszu51w6og7ERRcp2IJs+vnm3PqCyohHhVmV3jCjazSFS0kW1jvy8NjQLrYhPZLisTwIT4odFC9J77pPle+EwymZalFmJQoIoBTJplqKptpHPEnlEFRXp8lGW7fxBKrMahJTrGeCxqP+x2xYtariEGiTfyEdQLGrj0=
+	t=1745420487; cv=none; b=YzlF3uhsWeHMz0NbxMU4tBZKv8aLi7X92HaocmhMfG8B6APgnSpu8SvJdVs3fdhP9EON7VN38GQ8q9InV4k2FF2aMiHmCntqMD/RdaZvBhCeTs/1VOZG11nVFX+Kl0Whj3fyp40O8gk3okUiTtzbh7uEN+XvK08QbLQ64zke8FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421724; c=relaxed/simple;
-	bh=B/+RI7UQcvTyJe1ikhISTQ4pssbx/vLuLeSajZ2JJEQ=;
+	s=arc-20240116; t=1745420487; c=relaxed/simple;
+	bh=BwJBH+tSds1vhSiRQ/i/jQ64sQPJPJ83i1wWSMSykhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBBx1T2X3EAYLdPiYp8Rp6+x0J9lNbVfXiMZzn1Rwjmxa4lTnACkMRgPouQm0ma2nl5sIDPrfYwR3fc65YFUve2cd2BIvHhAjlcF3sPVQabbopoG/yMk45UIWVgQ/OEKGqscPpBm4FB6g2tU7MMiYK/V7lYfhtHCm1VHzdrEQp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azwJ+VBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E15BC4CEE2;
-	Wed, 23 Apr 2025 15:22:03 +0000 (UTC)
+	 MIME-Version; b=Dv+dI9uCoZ+g4d/9kQg+1x2EBxbEDkuXLbd0Q1JAsiyyNK5Pp8C0eZ0eWPAlssDmnhf/UJo3MB9lflWxlPlR2sgjfsYg7CYyIqmtCQ3a8CtqC2SDGqlGsX1u/Hc0WsVtAukJL6Oh/XqJZPCcCTSUoTOIGPPME7uXcR2r/fTnimo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wz9Se6Z5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3910DC4CEE2;
+	Wed, 23 Apr 2025 15:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421723;
-	bh=B/+RI7UQcvTyJe1ikhISTQ4pssbx/vLuLeSajZ2JJEQ=;
+	s=korg; t=1745420487;
+	bh=BwJBH+tSds1vhSiRQ/i/jQ64sQPJPJ83i1wWSMSykhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azwJ+VBFmkbQSu5ycnfvb/7EiOxGDuCoS8XG9oZOkMvpe05aetHz4qSiveiiSmziA
-	 yHW+jN7Pfuv8pZrKqKA2G9GEDBGM47lZhIEdpHnWQ8sVUTpm1FXe3hm86F5j4E7YQV
-	 aO/08VJuxlMZFCIFxc27zwqQX1mu9mgB9Pzhyn1w=
+	b=Wz9Se6Z5YPuL6OQJ4IdIvXYzQ99ejZK9t4ibHp7DaBh9lHEe5JFXZsdlBphR+lI7J
+	 PwoNKe2Ud7+vtUbVhldKs2Xi0nGEPfAgMlAXD7zwm/srJPxBD/og7JIJxRsp0n9ZMq
+	 psGxnZVghTnqkuef1nixZsBKp5sBjiEox+1h8nM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Coly Li <colyli@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/291] md/raid10: fix missing discard IO accounting
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.14 096/241] objtool/rust: add one more `noreturn` Rust function for Rust 1.86.0
 Date: Wed, 23 Apr 2025 16:42:40 +0200
-Message-ID: <20250423142631.371533244@linuxfoundation.org>
+Message-ID: <20250423142624.501434674@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit d05af90d6218e9c8f1c2026990c3f53c1b41bfb0 ]
+commit a3cd5f507b72c0532c3345b6913557efab34f405 upstream.
 
-md_account_bio() is not called from raid10_handle_discard(), now that we
-handle bitmap inside md_account_bio(), also fix missing
-bitmap_startwrite for discard.
+Starting with Rust 1.86.0 (see upstream commit b151b513ba2b ("Insert null
+checks for pointer dereferences when debug assertions are enabled") [1]),
+under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
+one may trigger a new `objtool` warning:
 
-Test whole disk discard for 20G raid10:
+    rust/kernel.o: warning: objtool: _R..._6kernel9workqueue6system()
+    falls through to next function _R...9workqueue14system_highpri()
 
-Before:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    48.00     16.00     0.00   0.00    5.42   341.33
+due to a call to the `noreturn` symbol:
 
-After:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    68.00  20462.00     0.00   0.00    2.65 308133.65
+    core::panicking::panic_null_pointer_dereference
 
-Link: https://lore.kernel.org/linux-raid/20250325015746.3195035-1-yukuai1@huaweicloud.com
-Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Coly Li <colyli@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thus add it to the list so that `objtool` knows it is actually `noreturn`.
+
+See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+for more details.
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+Link: https://github.com/rust-lang/rust/commit/b151b513ba2b65c7506ec1a80f2712bbd09154d1 [1]
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250413002338.1741593-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/raid10.c | 1 +
+ tools/objtool/check.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index f608f30c7d6a6..24427eddf61bc 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1772,6 +1772,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	 * The discard bio returns only first r10bio finishes
- 	 */
- 	if (first_copy) {
-+		md_account_bio(mddev, &bio);
- 		r10_bio->master_bio = bio;
- 		set_bit(R10BIO_Discard, &r10_bio->state);
- 		first_copy = false;
--- 
-2.39.5
-
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -226,6 +226,7 @@ static bool is_rust_noreturn(const struc
+ 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
+ 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
+ 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
++	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
+ 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
+ 	       strstr(func->name, "_4core9panicking13assert_failed")					||
+ 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
 
 
 
