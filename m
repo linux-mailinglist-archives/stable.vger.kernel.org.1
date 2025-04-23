@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C289A99054
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F81A99354
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 694E41798EF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86893926699
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F88427CB12;
-	Wed, 23 Apr 2025 15:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6B0283684;
+	Wed, 23 Apr 2025 15:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5gdkBZG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqmu6fhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DA228A1F7;
-	Wed, 23 Apr 2025 15:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69473266F1E;
+	Wed, 23 Apr 2025 15:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420963; cv=none; b=hLNWcy/Kv340qZ/Snzraj02jMtF4EuosmI6Fe9YIOyr/biTU8/NLZrnC0jWocajLW6bQd6lr1Da9pYe2zG9CehhbRs4CZmZL0zvIj7eZLSL+OKIgt+z4hVE37WkEc19cLDWW5q9QtL/ijjRG/B8dr8NVMSELrOhNfQnDsJTq8SU=
+	t=1745422216; cv=none; b=cqYELvPO5+posqB7tMzurEBHqsbd7uoa9UZaR1a8FcXSzBMVz2fSoCuP+qF1mJuX3a4zU3b/exnGGlTREoynXTUyzWutsU78zGiHuqxvgBuOa2qM8ffELW5K+IxNLhMAk5sE3ZGbECxyAMZjVD4JQ5w04ERXvF7ZqNmAQTx4TRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420963; c=relaxed/simple;
-	bh=xRKc71TJ6jvXwgJZHlEE47sjfe5laQPf/SkJFU6OL8k=;
+	s=arc-20240116; t=1745422216; c=relaxed/simple;
+	bh=otv3cBRSA/znqyOXFOxDBG5W1Gq7+0XN9eG3yvpOrqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffhGkawA7tkQBW4yh0AylsddpBViG1u/tV/fXzxqQEIWPcpODjtlQ8bFS+3KVBLvsrryTyhqZGxSvRPgjavvdfVUoe756OK9PCRZ3lbw1/Hik2KlUT95NSkrAzVhnWukvqCJh4q8ywwEKgTj3EjNO27+t9Bo+f7KjgfKjSe45qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5gdkBZG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03D8C4CEE2;
-	Wed, 23 Apr 2025 15:09:22 +0000 (UTC)
+	 MIME-Version; b=ijSWz+BcqoFJoSj5i4Erph3fzl4lrFFgtPXb0R43xNew5cdIsbg33JogJ5pCj3ybI9fE7KrAA4iWGSg372uVH3FCGeXyQCprm8itEvVRQqyK2+p9bCH4vNG0FuKwdRUYZ8sOfhR/pb9lN9gUjn2GJS+b2EGzIev/fUoNvVyXx7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqmu6fhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEBFC4CEE2;
+	Wed, 23 Apr 2025 15:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420963;
-	bh=xRKc71TJ6jvXwgJZHlEE47sjfe5laQPf/SkJFU6OL8k=;
+	s=korg; t=1745422214;
+	bh=otv3cBRSA/znqyOXFOxDBG5W1Gq7+0XN9eG3yvpOrqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5gdkBZGI0G346pVQO32nniu3d7kynCeuW25PO5ukAzTQAm0ufgpfYZ5tqDm1JVpb
-	 owHUSfwpP3GVg9I+a31Ta4ZHy7M6dp59KMPUCpg7Hvt96EaYVN+rTvovYNfzR7hjfQ
-	 +/ZXc+V51HwUK6APj4DxFq142HdWLb3SMQMixRrU=
+	b=nqmu6fhDUSyVuxv04/1dEwSK8wbKNhuLmS9kKUt3Lo5jSW2vAOaKDCgtFDGNtoKbH
+	 PzZQm5Yf9CI0iz+bRU95/Bt+dFFFTUYIx+yQg6FBBxevyLnq7Gi2h2LcC20wAlLx/j
+	 tH+aBZfqrFLX5Ljax2OSFfLdKGqfucbXkeYsoVzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.14 130/241] cpufreq: Avoid using inconsistent policy->min and policy->max
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 298/393] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
 Date: Wed, 23 Apr 2025 16:43:14 +0200
-Message-ID: <20250423142625.881627603@linuxfoundation.org>
+Message-ID: <20250423142655.650319876@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
+[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
 
-Since cpufreq_driver_resolve_freq() can run in parallel with
-cpufreq_set_policy() and there is no synchronization between them,
-the former may access policy->min and policy->max while the latter
-is updating them and it may see intermediate values of them due
-to the way the update is carried out.  Also the compiler is free
-to apply any optimizations it wants both to the stores in
-cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
-which may result in additional inconsistencies.
+[ Quoting Samuel Holland: ]
 
-To address this, use WRITE_ONCE() when updating policy->min and
-policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
-them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
-in cpufreq_set_policy() to avoid storing intermediate values in
-policy->min and policy->max with the help of the observation that
-their new values are expected to be properly ordered upfront.
+  This is a separate issue, but using ".option rvc" here is a bug.
+  It will unconditionally enable the C extension for the rest of
+  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
 
-Also modify cpufreq_driver_resolve_freq() to take the possible reverse
-ordering of policy->min and policy->max, which may happen depending on
-the ordering of operations when this function and cpufreq_set_policy()
-run concurrently, into account by always honoring the max when it
-turns out to be less than the min (in case it comes from thermal
-throttling or similar).
+[ Quoting Palmer Dabbelt: ]
 
-Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  We're just looking at the address of kgdb_compiled_break, so it's
+  fine if it ends up as a c.ebreak.
+
+[ Quoting Alexandre Ghiti: ]
+
+  .option norvc is used to prevent the assembler from using compressed
+  instructions, but it's generally used when we need to ensure the
+  size of the instructions that are used, which is not the case here
+  as noted by Palmer since we only care about the address. So yes
+  it will work fine with C enabled :)
+
+So let's just remove them all.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ arch/riscv/kernel/kgdb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -539,8 +539,6 @@ static unsigned int __resolve_freq(struc
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 5d1ce8dacaf58..9f3db3503dabd 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -257,9 +257,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ noinline void arch_kgdb_breakpoint(void)
  {
- 	unsigned int idx;
- 
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
--
- 	if (!policy->freq_table)
- 		return target_freq;
- 
-@@ -564,7 +562,22 @@ static unsigned int __resolve_freq(struc
- unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
- 					 unsigned int target_freq)
- {
--	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
-+	unsigned int min = READ_ONCE(policy->min);
-+	unsigned int max = READ_ONCE(policy->max);
-+
-+	/*
-+	 * If this function runs in parallel with cpufreq_set_policy(), it may
-+	 * read policy->min before the update and policy->max after the update
-+	 * or the other way around, so there is no ordering guarantee.
-+	 *
-+	 * Resolve this by always honoring the max (in case it comes from
-+	 * thermal throttling or similar).
-+	 */
-+	if (unlikely(min > max))
-+		min = max;
-+
-+	return __resolve_freq(policy, clamp_val(target_freq, min, max),
-+			      CPUFREQ_RELATION_LE);
+ 	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
++	    "kgdb_compiled_break: ebreak\n");
  }
- EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
  
-@@ -2337,6 +2350,7 @@ int __cpufreq_driver_target(struct cpufr
- 	if (cpufreq_disabled())
- 		return -ENODEV;
- 
-+	target_freq = clamp_val(target_freq, policy->min, policy->max);
- 	target_freq = __resolve_freq(policy, target_freq, relation);
- 
- 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
-@@ -2661,11 +2675,15 @@ static int cpufreq_set_policy(struct cpu
- 	 * Resolve policy min/max to available frequencies. It ensures
- 	 * no frequency resolution will neither overshoot the requested maximum
- 	 * nor undershoot the requested minimum.
-+	 *
-+	 * Avoid storing intermediate values in policy->max or policy->min and
-+	 * compiler optimizations around them because they may be accessed
-+	 * concurrently by cpufreq_driver_resolve_freq() during the update.
- 	 */
--	policy->min = new_data.min;
--	policy->max = new_data.max;
--	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
--	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
-+	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
-+	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
-+	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
-+
- 	trace_cpu_frequency_limits(policy);
- 
- 	cpufreq_update_pressure(policy);
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+-- 
+2.39.5
+
 
 
 
