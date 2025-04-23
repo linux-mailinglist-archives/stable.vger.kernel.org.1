@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-136422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF972A993A6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756A3A9911B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77895924B26
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750651B84264
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411C7F9CB;
-	Wed, 23 Apr 2025 15:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726AC293B58;
+	Wed, 23 Apr 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="As01AszD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6luzvjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22EF2BEC57;
-	Wed, 23 Apr 2025 15:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374C293B42;
+	Wed, 23 Apr 2025 15:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422504; cv=none; b=hmO+SIE5QQ72Bk6nY2a+0zSmKYfc3BmTD4mb600+HAzT9QjOAT/X+FyyDr1ecitqY7gPwDyRsB02KxH+IaDVmAJgVXlArWYT4W5UbZnzcXk45ehEQp4AWNi1pqOR9qcux3UcUU6pqA8koRzVsWmH+S6SuzmTD9LyYQBTP4emnEc=
+	t=1745421189; cv=none; b=DkAt/oB8Wqp52CtKjhXQC3K84juPIRMfVFAr4V+KIdOYdjcDDv54DmJkwQKlEQtKpjI2ofR+BsMolBeXZ52fSba/6wk+dBbLOaA2ryqo85pal25PvZEzxyKQ4kdjE1lIKlr3vVzupTa1aYK8fgavWX8JRNC3zIE1pnDg+8kSKaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422504; c=relaxed/simple;
-	bh=1PNNUbFx2wXciHDJ5F4LNqqn7iNP9l8GbN8FbQ9KJpg=;
+	s=arc-20240116; t=1745421189; c=relaxed/simple;
+	bh=Ahu1KzaGytbxBss0fNyFckjfo8NKkXI/KHcmaFkfiB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z8ZwzCcpWC8GzoMJHq+U7ncHTewpRJmPR2jqq+AGq9jeH2t3mtD3o6xl1QcwzJWoMtY3mdfl6qB75YU6LKJ1Gk+NIphvhzNfqqeBS57A9xTfxyIJtLxrOXm/K4L0A05lcc/npVdVnJWc4Pag03FLW/D1jhtoW+U7MP4oqOgiBCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=As01AszD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8223BC4CEE3;
-	Wed, 23 Apr 2025 15:35:03 +0000 (UTC)
+	 MIME-Version; b=RnBTbCd1hQRMw2rsjag+XeH9tfgrDmbDP6i3ZyGyHLqp43DIlHwJkey1cUOr61qhS+TiUAllTCpca6QGUcsFyalOt7mUtpnDVpdXu1pYBHsNVHjLRKrSHS+9grpSNyhvVYtKJi+Psr0xDF3u/LCwmNa4pCWmyxrjzC715cR5xjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6luzvjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA961C4CEE2;
+	Wed, 23 Apr 2025 15:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422503;
-	bh=1PNNUbFx2wXciHDJ5F4LNqqn7iNP9l8GbN8FbQ9KJpg=;
+	s=korg; t=1745421189;
+	bh=Ahu1KzaGytbxBss0fNyFckjfo8NKkXI/KHcmaFkfiB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=As01AszDmxaTUap1aKF3hbzbfwl2WLmzYjbJcwQyU+kmrL+iAvrxfDd5/P8tg1Ef3
-	 E9lz7mBPAfWDuzVu7/vE97+QocFrQTxMcVH7ktV8oZfUJGOewOkN93MH1SY3JwjMY9
-	 4XiAZUvDAUgrCvnnb+Dc1ako/3JfU6iBeqNMoUUc=
+	b=e6luzvjO3ZxuxIQfiB+B0CwCP77gx/64RXYa4W5QoZNXsVQlLDJIMit4p5YEBlbko
+	 FCz7VfE/Cmm4HR1TtX4DJMvuXS428bfWC9+hpxSQ0QqdeocKqFHZ/+XLabhuKJ2YBu
+	 8FD0ndja9LmxE+lgYT3sGkfQSMq2wFZlMtDoLQV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Breno Leitao <leitao@debian.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Cliff Liu <donghua.liu@windriver.com>,
-	He Zhe <Zhe.He@windriver.com>
-Subject: [PATCH 6.6 375/393] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 199/223] selftests/bpf: Fix raw_tp null handling test
 Date: Wed, 23 Apr 2025 16:44:31 +0200
-Message-ID: <20250423142658.821992892@linuxfoundation.org>
+Message-ID: <20250423142625.276327128@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
+Commit b2fc4b17fc13, backport of upstream commit 838a10bd2ebf ("bpf:
+Augment raw_tp arguments with PTR_MAYBE_NULL"), was missing the changes
+to tools/testing/selftests/bpf/progs/raw_tp_null.c, and cause the test
+to fail with the following error (see link below for the complete log)
 
-Smatch warns:
+  Error: #205 raw_tp_null
+  libbpf: prog 'test_raw_tp_null': BPF program load failed: Permission denied
+  libbpf: prog 'test_raw_tp_null': -- BEGIN PROG LOAD LOG --
+  0: R1=ctx() R10=fp0
+  ; int BPF_PROG(test_raw_tp_null, struct sk_buff *skb) @ raw_tp_null.c:13
+  0: (79) r6 = *(u64 *)(r1 +0)
+  func 'bpf_testmod_test_raw_tp_null' arg0 has btf_id 2081 type STRUCT 'sk_buff'
+  1: R1=ctx() R6_w=trusted_ptr_or_null_sk_buff(id=1)
+  ; struct task_struct *task = bpf_get_current_task_btf(); @ raw_tp_null.c:15
+  1: (85) call bpf_get_current_task_btf#158     ; R0_w=trusted_ptr_task_struct()
+  ; if (task->pid != tid) @ raw_tp_null.c:17
+  2: (61) r1 = *(u32 *)(r0 +1416)       ; R0_w=trusted_ptr_task_struct() R1_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
+  3: (18) r2 = 0xffffa3bb801c6000       ; R2_w=map_value(map=raw_tp_n.bss,ks=4,vs=8)
+  5: (61) r2 = *(u32 *)(r2 +0)          ; R2_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
+  6: (5e) if w1 != w2 goto pc+11        ; R1_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff)) R2_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
+  ; i = i + skb->mark + 1; @ raw_tp_null.c:20
+  7: (61) r2 = *(u32 *)(r6 +164)
+  R6 invalid mem access 'trusted_ptr_or_null_'
+  processed 7 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
+  -- END PROG LOAD LOG --
+  libbpf: prog 'test_raw_tp_null': failed to load: -13
+  libbpf: failed to load object 'raw_tp_null'
+  libbpf: failed to load BPF skeleton 'raw_tp_null': -13
+  test_raw_tp_null:FAIL:raw_tp_null__open_and_load unexpected error: -13
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
+Bring the missing changes in to fix the test failure.
 
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
-
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
-[Minor context change fixed]
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
+Link: https://github.com/shunghsiyu/libbpf/actions/runs/14522396622/job/40766998873
+Fixes: b2fc4b17fc13 ("bpf: Augment raw_tp arguments with PTR_MAYBE_NULL")
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/rtas.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/bpf/progs/raw_tp_null.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -18,6 +18,7 @@
- #include <linux/kernel.h>
- #include <linux/lockdep.h>
- #include <linux/memblock.h>
-+#include <linux/nospec.h>
- #include <linux/of.h>
- #include <linux/of_fdt.h>
- #include <linux/reboot.h>
-@@ -1839,6 +1840,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
+--- a/tools/testing/selftests/bpf/progs/raw_tp_null.c
++++ b/tools/testing/selftests/bpf/progs/raw_tp_null.c
+@@ -3,6 +3,7 @@
  
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
-+
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+ #include <vmlinux.h>
+ #include <bpf/bpf_tracing.h>
++#include "bpf_misc.h"
+ 
+ char _license[] SEC("license") = "GPL";
+ 
+@@ -17,16 +18,14 @@ int BPF_PROG(test_raw_tp_null, struct sk
+ 	if (task->pid != tid)
+ 		return 0;
+ 
+-	i = i + skb->mark + 1;
+-	/* The compiler may move the NULL check before this deref, which causes
+-	 * the load to fail as deref of scalar. Prevent that by using a barrier.
++	/* If dead code elimination kicks in, the increment +=2 will be
++	 * removed. For raw_tp programs attaching to tracepoints in kernel
++	 * modules, we mark input arguments as PTR_MAYBE_NULL, so branch
++	 * prediction should never kick in.
+ 	 */
+-	barrier();
+-	/* If dead code elimination kicks in, the increment below will
+-	 * be removed. For raw_tp programs, we mark input arguments as
+-	 * PTR_MAYBE_NULL, so branch prediction should never kick in.
+-	 */
+-	if (!skb)
+-		i += 2;
++	asm volatile ("%[i] += 1; if %[ctx] != 0 goto +1; %[i] += 2;"
++			: [i]"+r"(i)
++			: [ctx]"r"(skb)
++			: "memory");
+ 	return 0;
+ }
 
 
 
