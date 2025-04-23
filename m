@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-135840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C6E5A98FEB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D6CA98F6A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88E8B7AB2DE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA235A6995
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01C728A3F3;
-	Wed, 23 Apr 2025 15:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2B0280A51;
+	Wed, 23 Apr 2025 15:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chINjexJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEsRyPaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793FD28A1FD;
-	Wed, 23 Apr 2025 15:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1732127FD7A;
+	Wed, 23 Apr 2025 15:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420981; cv=none; b=MX803fbdISbZqQXaqNfQqHyBAkdLEIk0S5MMSpt+sxPU3ZsyiBOofiwiD4MEvH31UxjzCTdD1ROwLgXB56D4Mu8AZmOOM/cZupQppPOivTdmmkXRqLjcJ5RjIWBu1wyZLb0kYZu7x1n5gS20Wa6TGs8XwyfEd0x7MA9ZkdSF8BM=
+	t=1745420456; cv=none; b=uQJC7SmwQJK6wvlZ5ZOTuF8MNOdPz58mzV/wu5JB2lnPS/hJM/Ccd80Jo+1HwtcopNjUghPXcY4QMf1w/IbQ/2BMt1MNGg1uhi91LD/MkRYspILjSWBpcY2TZLzhqkE7lBjm8dKpUWCF359Qc69+NQQSQ0u/kqLMBzZFPfj0cL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420981; c=relaxed/simple;
-	bh=kFF5Vlv7srnylU0Fy3fhpXl4YiEgka0ZyODbhWcuOjs=;
+	s=arc-20240116; t=1745420456; c=relaxed/simple;
+	bh=18xYFtwhXwqYSje0wMT4he8NIMPtPWldlsJh0E+U3wI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXjMpYw3f6063NoBjt4rJK/3wi5J16apmzREs2yqYnPZAmc5rBUun+rAYZ4+bNr2F2ZlCTgDp3K+OgZi5fEwMY5f8v7zVfkNn3Th57wtWsuS92pI3jTOlhH0tyfSqc8wwwxricUCtINAyLxqxAw1hghVaN90WGcQjrMrYlyN2ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chINjexJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00679C4CEE2;
-	Wed, 23 Apr 2025 15:09:40 +0000 (UTC)
+	 MIME-Version; b=dg4nIGcsX1nkQi4A0od88yH/+5oArD8F5wCaLZQpY2QxLE9A9uXu2V469aatoafP1Alp3glOI+t2BF5U9WNgBHWzEINPGg6vkobIYeymEYcwWHscHkxEmejTDiXJYsYHr7SLCr+Q/d6qEpc2QanEdLWQt77wlXnzG2MQI+V41kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEsRyPaW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9788FC4CEE2;
+	Wed, 23 Apr 2025 15:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420981;
-	bh=kFF5Vlv7srnylU0Fy3fhpXl4YiEgka0ZyODbhWcuOjs=;
+	s=korg; t=1745420455;
+	bh=18xYFtwhXwqYSje0wMT4he8NIMPtPWldlsJh0E+U3wI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chINjexJ+1Eh8v6PTaaUbRh6ckEyvp+DFO0ZJAWTIjTXX3W0sWQKM//SlHj5ssQtb
-	 rV4YmJ8eCuUW46zIX4Im/UKojq+dyjJAjEuoNAbio9pJXgkJ9WEszagsLn9vV6lc9Y
-	 2OstA4Z5pGwct0HI2sfou585QVG3/mtnBnehm+l8=
+	b=kEsRyPaW+eGPkSU/RFZIcWIUcaLMWcXLuTEi0ZeYm7uQYduDd4+SaTXfjy2sM0JBF
+	 wN75Dn/DkU99iKxdPs8QmK/gJauVZz2pGGlzJhnjF+k43PO6O6G93jGsw4jSAKSS/N
+	 GCaXA2+niu5qSqIbsKd0+5jFq+y5btJLyi0QXcis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Daniel Axtens <dja@axtens.net>,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 141/241] mm: fix apply_to_existing_page_range()
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 133/223] tracing: Fix filter string testing
 Date: Wed, 23 Apr 2025 16:43:25 +0200
-Message-ID: <20250423142626.319426616@linuxfoundation.org>
+Message-ID: <20250423142622.509138169@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit a995199384347261bb3f21b2e171fa7f988bd2f8 upstream.
+commit a8c5b0ed89a3f2c81c6ae0b041394e6eea0e7024 upstream.
 
-In the case of apply_to_existing_page_range(), apply_to_pte_range() is
-reached with 'create' set to false.  When !create, the loop over the PTE
-page table is broken.
+The filter string testing uses strncpy_from_kernel/user_nofault() to
+retrieve the string to test the filter against. The if() statement was
+incorrect as it considered 0 as a fault, when it is only negative that it
+faulted.
 
-apply_to_pte_range() will only move to the next PTE entry if 'create' is
-true or if the current entry is not pte_none().
+Running the following commands:
 
-This means that the user of apply_to_existing_page_range() will not have
-'fn' called for any entries after the first pte_none() in the PTE page
-table.
+  # cd /sys/kernel/tracing
+  # echo "filename.ustring ~ \"/proc*\"" > events/syscalls/sys_enter_openat/filter
+  # echo 1 > events/syscalls/sys_enter_openat/enable
+  # ls /proc/$$/maps
+  # cat trace
 
-Fix the loop logic in apply_to_pte_range().
+Would produce nothing, but with the fix it will produce something like:
 
-There are no known runtime issues from this, but the fix is trivial enough
-for stable@ even without a known buggy user.
+      ls-1192    [007] .....  8169.828333: sys_openat(dfd: ffffffffffffff9c, filename: 7efc18359904, flags: 80000, mode: 0)
 
-Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
-Cc: Daniel Axtens <dja@axtens.net>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/all/CAEf4BzbVPQ=BjWztmEwBPRKHUwNfKBkS3kce-Rzka6zvbQeVpg@mail.gmail.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250417183003.505835fb@gandalf.local.home
+Fixes: 77360f9bbc7e5 ("tracing: Add test for user space strings when filtering on string pointers")
+Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Reported-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |    4 ++--
+ kernel/trace/trace_events_filter.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2904,11 +2904,11 @@ static int apply_to_pte_range(struct mm_
- 	if (fn) {
- 		do {
- 			if (create || !pte_none(ptep_get(pte))) {
--				err = fn(pte++, addr, data);
-+				err = fn(pte, addr, data);
- 				if (err)
- 					break;
- 			}
--		} while (addr += PAGE_SIZE, addr != end);
-+		} while (pte++, addr += PAGE_SIZE, addr != end);
- 	}
- 	*mask |= PGTBL_PTE_MODIFIED;
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -808,7 +808,7 @@ static __always_inline char *test_string
+ 	kstr = ubuf->buffer;
  
+ 	/* For safety, do not trust the string pointer */
+-	if (!strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE))
++	if (strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE) < 0)
+ 		return NULL;
+ 	return kstr;
+ }
+@@ -827,7 +827,7 @@ static __always_inline char *test_ustrin
+ 
+ 	/* user space address? */
+ 	ustr = (char __user *)str;
+-	if (!strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE))
++	if (strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE) < 0)
+ 		return NULL;
+ 
+ 	return kstr;
 
 
 
