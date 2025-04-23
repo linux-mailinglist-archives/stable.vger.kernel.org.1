@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D4AA98E04
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC10A9918D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:32:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5903D446F54
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6A931B81D2E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F94280CDC;
-	Wed, 23 Apr 2025 14:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DA728D85D;
+	Wed, 23 Apr 2025 15:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQV7V+ci"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi1XxgCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760C8280CE0;
-	Wed, 23 Apr 2025 14:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA3F27B4EE;
+	Wed, 23 Apr 2025 15:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419829; cv=none; b=BfloI8/VOVgV2JhBylPWTVOImyzvr0wflRkO8RI7asGa8ajvv6k98+8R6L0KOTAiuPmB30J1iURKMcG3ahUYbwIxz1wS1KZAMMaZeilLa6vsnbg/Rx8ykwiujsoI7naNY7EQ2h/+wUg1+Lej66wUk09OR4bNr5Q4rRvCAER7NB8=
+	t=1745421452; cv=none; b=tj/+ixDJexRrK3Z1GGq/ur4jbrXhaENjN0ixK2HA5Sp6djRjuiqItnlc/7KzPE7b/TXO/JVPZmnX9Ads6+vzRbggo0f17kBMhxboxGBADaeEsE0xJn6CnGY5K5hyt5To/zBGS0z+cJAyeC21RUW2IispVyyDHI6UBLHfx4GhSVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419829; c=relaxed/simple;
-	bh=KAR+DyQbVlZ4ipOs8idwH/vENfu+12D1xxnNheKMwLs=;
+	s=arc-20240116; t=1745421452; c=relaxed/simple;
+	bh=kCOqSOEofe5kKVeeop2duzrQC9iM67Rh/90otnB0xjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVCWIRHJ3NK2NHtwUYxLp8ZjStyXzJjWKs7ReyoQhZx26fyyKQbZi8X62uJGKQ+owuHQictQJE/81nZ1AsxT9Z2ozxGjuexhpfcemGvXD1RxlRC4gRlJ1Om8dhSpXUdgO7CG2eCqYK9gkVD4ZmkA4xTh8io3Ghw15bUm0m4BHi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQV7V+ci; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA65DC4CEE2;
-	Wed, 23 Apr 2025 14:50:28 +0000 (UTC)
+	 MIME-Version; b=aRf0HhhJK1QrpYHq512Zdqc8gs7KIjOBjljkkUh/4wyr+/vUBJ2uzAMtDB43fv28bUzp/VkvlnziNlOlkVVBWDtiGdCz2n2sECGFiACR4Zx7Ebg7utZ8sF96q87ZF6qW8w8MSHDeRrgnOjeYOQxPa0HOEfq+UQTO03ATbjU94x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi1XxgCk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DA9C4CEE2;
+	Wed, 23 Apr 2025 15:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419829;
-	bh=KAR+DyQbVlZ4ipOs8idwH/vENfu+12D1xxnNheKMwLs=;
+	s=korg; t=1745421452;
+	bh=kCOqSOEofe5kKVeeop2duzrQC9iM67Rh/90otnB0xjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQV7V+cik5hX5QXwl2fJpBKr5z8UUE49SDQxgbXuu/sRuBnGKLTzC9dU/6hIOar0Y
-	 SavkBSwo91PVqnjrQHR2KIQd5iuH3TLzOPv4dVycQgEwaThIdG7cb5G4BxzaVL2HLO
-	 sD7KeSfTjCuTRWZ5LY5x7MILimqSzc6wXXwbCO1I=
+	b=fi1XxgCkJWIgLKSiinDEL0Kox7/kOrTYrs/VKfQ6pg04qlg5BgfPwUgivifjZCNgd
+	 ycZtgZV53oVD3VYRCjB3oZvJNuVw9Kn+/jILZFdBiQ+31exXRaOmzqQc41VkZEkqvm
+	 Kt8e1aIgSKeFf8x/0S2rNzE/9V98mAbuCbyZmePw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Ethan Carter Edwards <ethan@ethancedwards.com>,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 012/241] ASoC: Intel: avs: Fix null-ptr-deref in avs_component_probe()
+	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	David Hildenbrand <david@redhat.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 180/393] arm64: mm: Correct the update of max_pfn
 Date: Wed, 23 Apr 2025 16:41:16 +0200
-Message-ID: <20250423142621.023774380@linuxfoundation.org>
+Message-ID: <20250423142650.811582727@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
 
-[ Upstream commit 95f723cf141b95e3b3a5b92cf2ea98a863fe7275 ]
+commit 89f43e1ce6f60d4f44399059595ac47f7a90a393 upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-avs_component_probe() does not check for this case, which results in a
-NULL pointer dereference.
+Hotplugged memory can be smaller than the original memory. For example,
+on my target:
 
-Fixes: 739c031110da ("ASoC: Intel: avs: Provide support for fallback topology")
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Ethan Carter Edwards <ethan@ethancedwards.com>
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250402141411.44972-1-bsdhenrymartin@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+root@genericarmv8:~# cat /sys/kernel/debug/memblock/memory
+   0: 0x0000000064005000..0x0000000064023fff    0 NOMAP
+   1: 0x0000000064400000..0x00000000647fffff    0 NOMAP
+   2: 0x0000000068000000..0x000000006fffffff    0 DRV_MNG
+   3: 0x0000000088800000..0x0000000094ffefff    0 NONE
+   4: 0x0000000094fff000..0x0000000094ffffff    0 NOMAP
+max_pfn will affect read_page_owner. Therefore, it should first compare and
+then select the larger value for max_pfn.
+
+Fixes: 8fac67ca236b ("arm64: mm: update max_pfn after memory hotplug")
+Cc: <stable@vger.kernel.org> # 6.1.x
+Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250321070019.1271859-1-quic_zhenhuah@quicinc.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/avs/pcm.c | 3 ++-
+ arch/arm64/mm/mmu.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/avs/pcm.c b/sound/soc/intel/avs/pcm.c
-index 4bfbcb5a5ae8a..f7dd17849e97b 100644
---- a/sound/soc/intel/avs/pcm.c
-+++ b/sound/soc/intel/avs/pcm.c
-@@ -927,7 +927,8 @@ static int avs_component_probe(struct snd_soc_component *component)
- 		else
- 			mach->tplg_filename = devm_kasprintf(adev->dev, GFP_KERNEL,
- 							     "hda-generic-tplg.bin");
--
-+		if (!mach->tplg_filename)
-+			return -ENOMEM;
- 		filename = kasprintf(GFP_KERNEL, "%s/%s", component->driver->topology_name_prefix,
- 				     mach->tplg_filename);
- 		if (!filename)
--- 
-2.39.5
-
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1328,7 +1328,8 @@ int arch_add_memory(int nid, u64 start,
+ 		__remove_pgd_mapping(swapper_pg_dir,
+ 				     __phys_to_virt(start), size);
+ 	else {
+-		max_pfn = PFN_UP(start + size);
++		/* Address of hotplugged memory can be smaller */
++		max_pfn = max(max_pfn, PFN_UP(start + size));
+ 		max_low_pfn = max_pfn;
+ 	}
+ 
 
 
 
