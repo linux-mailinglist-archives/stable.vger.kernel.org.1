@@ -1,150 +1,144 @@
-Return-Path: <stable+bounces-135282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17672A98A34
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1961BA98A4B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A20444346A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 12:59:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE64E4435D3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 13:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B10C2FD;
-	Wed, 23 Apr 2025 12:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A04D78F36;
+	Wed, 23 Apr 2025 13:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IqQag7lU"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CvHBibE0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D61DBE4A
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 12:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E55D8F0
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:02:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745413145; cv=none; b=gaxw3N1kO9lvWHdv/Aoc8Gtfqh1RKH1+UKXfzMu4zPUVl83ePObstgYW1ltVgf0eqyRmmuSn+5F0hA8Nb/jEzohRHXEOXSJQfA+mvD/NyjLbcH6LlaiW6eQ7+ruRrNxMqg4gefZ++OYJCenLllGV+RUQMoeHmQKy+Xvcv8vO6+8=
+	t=1745413374; cv=none; b=gcUDqWYbzGWfylFC4C4JW9aM+3V0h4fu7OGcJ2NF7LkJ4P8s556LDVtxbLE/+ybTQVJvEcM3BGSP9vAsIBRseugKghUo4US9orcNKVyCvsfXkLcdjpa4+6rJbtVcOLijYpN34PtWpib4iBYa5m4tOwphUt5Pq5F8Ay33HnTiiqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745413145; c=relaxed/simple;
-	bh=TyEJqV+iPI49wYRxxheS7AY0Oo5A/AIP7GetFD9olro=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NP13jXVjhfyOSPQK1lWFaAO6fRfDjn6sAztB4tNCdcwo2+gZ+q+5PauAWpduMAK6WPBBzVvX6kVj+MU+rih1ISvNf5GBSqyYxxwlP7wL34OAflMkpjaLw4YVR2B4/GwYI8ggndEpwgmqgk/SZWAbIKWP9i58vfKyTpGih2qT8DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IqQag7lU; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ace333d5f7bso259915466b.3
-        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 05:59:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745413142; x=1746017942; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dWSgYU4Bs/P+4N0/0yj45j2zwuuB7lOSEXG+V6K+MOE=;
-        b=IqQag7lU35JYDzug7NsQHo0KBA2LA1ZA3GNWFFO4RPQ4w+KOcYBCK28u7qMaJd3PSz
-         flNb+6CtW/ZW+NXr1FkmjEX2U8YPqiCZ9Xb93lcaGwy1IIFpbtkVypny6EIPWW/C9hQv
-         b/Dhmg2ysslUUcCGKfDk2TC2KaebgezPXUNs0u7YL4dHQA/+wy2Wm7H/Hu02uZ3RkgFt
-         9VlOOJ9kan/9ORfkTaIiR7qX177EP01X5Sqtqznk056XWn4xblE+0aDDFdWjOXX6o5x/
-         yLljq2vECAYD9x8+4ZibEpmALOY9E5r8W0/zTV9UflfGl5g2MxNa5GXa92TLgGZOqm07
-         OHbQ==
+	s=arc-20240116; t=1745413374; c=relaxed/simple;
+	bh=BnvOXO+boD8aoX/yVyEiclGZPfk5b7M+Q3WLNEqtKXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h2PRt02wleq8i7JMD8kjs9r8gakzBzRmpqTHmjzljvipF19lrW+l5fuxJ+SX3wdYW/o6RPVcOPH3VYwLtMWvJF+c/BGxLpq5SC1LWww8Jnfd2TZzIS0uqbSBv8tAlhB0tHb6klHlP9WPiFzb3aDodJV+o8ktoImCDbECF7gyGSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CvHBibE0; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53NB0YEp024105
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:02:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zfAVF+aMaiSo/7Us8CKrNfv3JkPdUAHjwZh9PyIZpAw=; b=CvHBibE04Ca2Uz9v
+	lsgtR5XjledecTmtOP1xlkizF62cGjd1jH+g7A3Yadj6RK3aVxGiXykOBBWGhaal
+	+oqEAQOv7l7jkwq3+02kMK91m2MxE9dt5XMEjpVTTL6awk9nY7ivOibVfqHwhzFd
+	ygEFR7YcHzzT9/2OxV/G/7/wiyB1Xv5Be2f32ord0ohi6v9Llr682/iodh6WRS5g
+	UN6L2glMhMHXkkEPRIo1vBwfSky54vZ0uj8cN5oI025R6VzUCutVd8LQqIB93d/y
+	bVj7JGyGpHZpF3wkhj5SkmbudItYqmvSFyWEdsQCnE3+R7WaDIggDXZobQv37qJI
+	K2zi5w==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh3a68k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:02:52 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c54788bdf7so28835185a.2
+        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 06:02:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745413142; x=1746017942;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dWSgYU4Bs/P+4N0/0yj45j2zwuuB7lOSEXG+V6K+MOE=;
-        b=bfkWdOyEzcpE5d8yvJPAV7mNNqvo7K3ffvhgPzLxziqXeUVVQNR8KEYBjzQI8tRBG3
-         WehhUXGL79RgEA3xhT4rrN5hqkUjzxstzavOJs4DjbRo/MspDS7yUTk/wIk6VV8LViUP
-         Bdjnx2Mj831Tzmneaa4aLkJSekTu2BpEfH9gBP+vY/tiBDNxozy/OCkBN/seGszwQ4Ak
-         7Bb1lDc6XZTs929EmeoNfhjXxc5/9oQGuFNgqj4jBkdn+0CPYngToirMZcv4V+Py8ofl
-         3uQI6h9GiaFyCkxaRjvvqWKOCr/pYM2Qy0PVFkQNW9TM81i29N2JGNThMQSIw9JQVEXE
-         kNxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVYNCClEceVwcXVC9q2owNPzJ7aCDhEQyuv9vX3ZOOJHjbaMxzfaDxotlpns7LDCM5BSyfbK4c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDvIEWTCbq/xmqqY0R7SwDI6w8CBXnX1URXjRc5uc8Atb9Zd9p
-	cU5hlv50lfIcNs7K7P9WT38hd+sLtuP1IlkhMjdxjpwusaAdctW2ZzIJK7rT3HMFy4ufAKcKCfJ
-	W
-X-Gm-Gg: ASbGncvbNuXCiWq8YlOihx7shzmZJIIcUvr3TZwo3rRRrRcJN3r6wD+ALbted4aavgy
-	nwtAku3XlC2A9wVNZf4Kqi5Vti70+8ATNVszE0Cy6taGypbS/7QfPa3wF/eKBLvdLcOjNE/bADr
-	p9oIGAjFZie2B+U99UIxq603yVwQFE6KAznWA6kALuIYICtwVh6KucOvTs4hB3K11i3t1jJM8UL
-	mCSwNdpz3ArxVV2KzyU7e6PEZS/a4hRRkJm8rItRFhNqmB4e4ygaqa4QguaSKEHiV/lI0PK2tVJ
-	I3xs+7n8RSQUE3Y+PwosfWDh8AAQMK5AZAM7HxM=
-X-Google-Smtp-Source: AGHT+IHOahSmPfO3hs7sUfnCfxpEOAB/NiskqrVfwSdRbErJuG4vZlaOfuNODVHDVcw1+Mk7JEWnnw==
-X-Received: by 2002:a17:907:1c21:b0:ab7:1012:3ccb with SMTP id a640c23a62f3a-acb74b2e84cmr1485463766b.14.1745413141636;
-        Wed, 23 Apr 2025 05:59:01 -0700 (PDT)
-Received: from [127.0.1.1] ([62.231.96.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6ef426c4sm794377966b.131.2025.04.23.05.59.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 05:59:00 -0700 (PDT)
-From: Abel Vesa <abel.vesa@linaro.org>
-Date: Wed, 23 Apr 2025 15:58:52 +0300
-Subject: [PATCH] arm64: dts: qcom: x1e80100: Add GFX power domain to GPU
- clock controller
+        d=1e100.net; s=20230601; t=1745413371; x=1746018171;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zfAVF+aMaiSo/7Us8CKrNfv3JkPdUAHjwZh9PyIZpAw=;
+        b=XPAHx9Xfy0FGyy6VIG9ykUjifuRBEhtiF/VVzG0UccW9FOJBiCSsPhimqI5+Ov6i6g
+         JVlj9FpSO997PqqyB0t4AQWTX+Iamd7zNFOvD1RREKuPzvL2LjdmHfGk6jWjiStRrIE3
+         v+iBFWvIhaycygOCfhh058SoFnIcXnodwZMrlP90tfNDJIdLpC1YcIrFGYfBF5Vl24r2
+         /Vo3951ERVQkwPnG06EnOTFtfX+3L54AsektmaoRHLmT4/MlVscdnf3glOS/t9nE3y0E
+         dL8Z6gU8igJA2QPtOzJ1jsIcGke9ZuT8MTNWWcbTh0ONSblp2MkVfEhWbkKrTvxOWvIC
+         r/7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXq+W+BNRNRoHGLtVkJ1sl/jQZXcF4UwE/pNam+WFGrxPT13yGUeUiupNZkqFGvR1JWzncJNKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHN5fo+qT6kr7t2bkln/BYfn285WKKRn05Le3qWxiV/VcUIrh8
+	lUB40wnQfVk0dmeKFQ/m1XRzjJhRaJxGWeyT1bV44tSu63/Y8+dF55tfRYfwmX0RRLjczETHEH9
+	wwV8BO8OpNFahpPH3gZEIoWvj7tsYVKCpPmRW5EfhOC/xq0tHDXkuxRc=
+X-Gm-Gg: ASbGncsfwvSbSjwoWPLF4Rs1XbHFTA3DnRhwwCVU2I7kKqto9wDcfc1UtUaeLu5lo2d
+	mvgs0bEAYEB4LZISeB+fOfAfNi4oUktn7/uI2qE6LWXjs+mVNhYtLpS47gkoYqZrgzpSUyz4wq6
+	NWC/brUQCAakg8iEQ2qpuAyjCWu6DRLJeNZ3UWq/+HRdMq2hDq+OJ0ylpiHBq2Z+7Zn2WJDCH+w
+	hV4K1iYUGTbSRM1lKNX//h37MKxc4g+4/5TgAYbgmcTTS+dZZDjaurAgT4DaODao80IxRIrIBpJ
+	AxOAbeVDeBAp935ixd6/nIWA2GHTpIc6mR2O8emixduEN5Q7G5luIGJvQgoFHuro/e0=
+X-Received: by 2002:a05:620a:17a1:b0:7c0:c42a:707d with SMTP id af79cd13be357-7c94d32ec56mr169897685a.15.1745413370758;
+        Wed, 23 Apr 2025 06:02:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH/ovwutEM93izQp2u3D8TlzNzpz5TZzJ2ihH4iRdeWJCL9e6H4/DMIlsm5XIOUTBCuAmehFg==
+X-Received: by 2002:a05:620a:17a1:b0:7c0:c42a:707d with SMTP id af79cd13be357-7c94d32ec56mr169895285a.15.1745413370184;
+        Wed, 23 Apr 2025 06:02:50 -0700 (PDT)
+Received: from [192.168.65.183] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6eefcf37sm805661966b.97.2025.04.23.06.02.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Apr 2025 06:02:49 -0700 (PDT)
+Message-ID: <2dae7d88-4b3e-452f-9555-05f10b42dabc@oss.qualcomm.com>
+Date: Wed, 23 Apr 2025 15:02:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: dts: qcom: x1e80100: Add GFX power domain to GPU
+ clock controller
+To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>,
+        Akhil P Oommen <quic_akhilpo@quicinc.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
+        stable@vger.kernel.org
+References: <20250423-x1e80100-add-gpucc-gfx-pd-v1-1-677d97f61963@linaro.org>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20250423-x1e80100-add-gpucc-gfx-pd-v1-1-677d97f61963@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250423-x1e80100-add-gpucc-gfx-pd-v1-1-677d97f61963@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAAvkCGgC/x3MPQrDMAxA4asEzRVIzg+hVykdjCU7WhJj02IIu
- XtMxm9474SqxbTCezih6N+qHXsHvwYIm9+Tokk3OHIzTW7ExroSE6EXwZR/IWCKDbOgn1nHGJ0
- sytD7XDRae96f73XdscwmEGsAAAA=
-X-Change-ID: 20250423-x1e80100-add-gpucc-gfx-pd-a51e3ff2d6e1
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Akhil P Oommen <quic_akhilpo@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>, 
- stable@vger.kernel.org, Abel Vesa <abel.vesa@linaro.org>
-X-Mailer: b4 0.15-dev-dedf8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1206; i=abel.vesa@linaro.org;
- h=from:subject:message-id; bh=TyEJqV+iPI49wYRxxheS7AY0Oo5A/AIP7GetFD9olro=;
- b=owEBbQKS/ZANAwAKARtfRMkAlRVWAcsmYgBoCOQN3ZP4llDd4xTrqoYEBqHvi08og4dAIxlKD
- 0RC5xJ1rEGJAjMEAAEKAB0WIQRO8+4RTnqPKsqn0bgbX0TJAJUVVgUCaAjkDQAKCRAbX0TJAJUV
- VgTbD/0dGPsZw4skZK545sXIXLPy9uRQDXtDk2p36rtTpN1x9m/yIy//KakO+AGrY0jhZ7m82w0
- v7KZkA+ehartHeFVBRnJp39j/OJxk0nRKe6n0E8n+8UX4VTo3Sjvkmtp1Gj15S7XXePHGTsZe/C
- veXybYjS4DJ64K2LZiEak+bZ/2F3gYs7FiddjNFZYtoUSds6Ei7L1NOCWbJN4V1odiQLdrf6gMo
- fhWstp0V3ah4AZgcZVNs8yv/tGcjdtbXxte+u0LLCeGFQLXMHi+lqnAh4LkVX1TqV0ris3lGz4H
- dt1bgOuiLh8NuBUKzDEJpRdTGVzmFmC7enE/hUZHfd8hLWVMdP3ORRSvfPfA/514LPqIWFUqFYM
- mgDLwDnuA3eSwCi+XF7c/j5keiRYBqUgDnxKAy25kUSvSfu4d15+mfvzkNZjBXKN5uU3SJg9Hht
- A6552zu/PIwaKfAHFOL8oQS6Lq17APphEQbacmdzZ4TsTVlXNzqvZxsJqB2/Haslew6iUjwbvgx
- FSWmlPmDJCeEed2K1F2YAb6tDD+CDPbzhdbz3rv4AdIJC5Hzjwq6HbeSMuSFVB93w6ZEXV1kaBK
- wE86cK6Bdxy9qsVI3ur08wzx3rS13c8cmVb2B3OvrnWwTaq06hFvhnxlvLfDk+wSa5zxImn+ey7
- lUK1qHepyy2Kg7Q==
-X-Developer-Key: i=abel.vesa@linaro.org; a=openpgp;
- fpr=6AFF162D57F4223A8770EF5AF7BF214136F41FAE
+X-Proofpoint-ORIG-GUID: VA43e6p1jUcvf4tEpmeYJVtvuehIu6kZ
+X-Proofpoint-GUID: VA43e6p1jUcvf4tEpmeYJVtvuehIu6kZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDIzMDA5MSBTYWx0ZWRfX7E0cV89jA1Cz VzqMCGAPe4EvP1xSBgxr7LjwNczY7D3vZt9gVd3DAJPyZkWgPbNXyeS/JEzVd0hVRuFwMYGzh11 WO1RfQGUbboAcVQIUsMLiOXC3ffyxHBPXoZ156JC6UZ+5WAWQAxMdbehJ1Mc9OHQ9pvcDpyNj1c
+ BNUSXs6UsWdoMy7FmrzAHeM0G6LSvJKCnq4/6PKSLyUaQLKKPScwdmPYwM4vngerZAGtIsQ7f40 mXLPfcmrYopyXkmO068HdlADodX5X+qHDTtIpPpAc+aivaW2PLJIe9G3Hi020UD2PpJBdmEN5Jb QZY3Cge6ngqqK9sDE0n9P0cq+wcNAuH9645boy3oCobXljKWWZk/BpEQEfCu9rZc1q6xm06Q2W2
+ rLmM0UuVS5JhYt1iT9aEYDDpiJVDXVYKZHrCZo9VeFxKC0GqsocxJj4FHPitri0c9v4FYCGB
+X-Authority-Analysis: v=2.4 cv=Mepsu4/f c=1 sm=1 tr=0 ts=6808e4fc cx=c_pps a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=O4X4kKYYB9jgRp4dNnsA:9 a=QEXdDO2ut3YA:10
+ a=IoWCM6iH3mJn3m4BftBB:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
+ definitions=2025-04-23_08,2025-04-22_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ priorityscore=1501 mlxscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=975 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504230091
 
-According to documentation, the VDD_GFX is powering up the whole GPU
-subsystem. The VDD_GFX is routed through the RPMh GFX power domain.
+On 4/23/25 2:58 PM, Abel Vesa wrote:
+> According to documentation, the VDD_GFX is powering up the whole GPU
+> subsystem. The VDD_GFX is routed through the RPMh GFX power domain.
+> 
+> So tie the RPMh GFX power domain to the GPU clock controller.
+> 
+> Cc: stable@vger.kernel.org # 6.11
+> Fixes: 721e38301b79 ("arm64: dts: qcom: x1e80100: Add gpu support")
+> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+> ---
 
-So tie the RPMh GFX power domain to the GPU clock controller.
+You shouldn't be messing with VDD_GFX on platforms with a GMU.
 
-Cc: stable@vger.kernel.org # 6.11
-Fixes: 721e38301b79 ("arm64: dts: qcom: x1e80100: Add gpu support")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
----
- arch/arm64/boot/dts/qcom/x1e80100.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+Parts of the clock controller are backed by one of the MX rails,
+with some logic depending on CX/GFX, but handling of the latter is
+fully deferred to the GMU firmware.
 
-diff --git a/arch/arm64/boot/dts/qcom/x1e80100.dtsi b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-index 46b79fce92c90d969e3de48bc88e27915d1592bb..96d5ab3c426639b0c0af2458d127e3bbbe41c556 100644
---- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-+++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
-@@ -3873,6 +3873,7 @@ gpucc: clock-controller@3d90000 {
- 			clocks = <&bi_tcxo_div2>,
- 				 <&gcc GCC_GPU_GPLL0_CPH_CLK_SRC>,
- 				 <&gcc GCC_GPU_GPLL0_DIV_CPH_CLK_SRC>;
-+			power-domains = <&rpmhpd RPMHPD_GFX>;
- 			#clock-cells = <1>;
- 			#reset-cells = <1>;
- 			#power-domain-cells = <1>;
-
----
-base-commit: 2c9c612abeb38aab0e87d48496de6fd6daafb00b
-change-id: 20250423-x1e80100-add-gpucc-gfx-pd-a51e3ff2d6e1
-
-Best regards,
--- 
-Abel Vesa <abel.vesa@linaro.org>
-
+Konrad
 
