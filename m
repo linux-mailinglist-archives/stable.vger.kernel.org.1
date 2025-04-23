@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 873A7A9908A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F052A99285
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDCDD7AE886
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AEBB1BA61AF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447C3263C9E;
-	Wed, 23 Apr 2025 15:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326182951A2;
+	Wed, 23 Apr 2025 15:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZ0cPS1h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byqssiUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036B71A257D;
-	Wed, 23 Apr 2025 15:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C9F28F53B;
+	Wed, 23 Apr 2025 15:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421236; cv=none; b=SshBfVkCm+df6TSkSmI+l/8Y+m/eMAZKTWU9RRHEuyUkis4jgSPDDHp/SIm91x9/lnrBu9u2gNIdr4Kt7aLHOFHBRIc3Y7HGZCkyLHM52+6qdwq7WPQzoAf8Pm8byZpCWd95m7WwNkfWnB0S/jnb1yCS/JqG2hr9rkfJ+rMucME=
+	t=1745421745; cv=none; b=mlEuno18HXE8NzbBG6J7Ww8neYZRAsUv4F/gciNpGPE61z17sPdebN/BqT+yqu1034ywLyAjsDlwsP35NKKao0OH3f0IAP7ruJwTJKwDr1CuUhlMXhC2NYe2cxUZkrKPhcRKxOk07OFBM8QnoX4TCPmV7t/I3WCHP4Ypz8Mt0Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421236; c=relaxed/simple;
-	bh=5f2w5gUMekhI/iQ4U8c5UuWW2A/b1gxFbcNmPG+mEcY=;
+	s=arc-20240116; t=1745421745; c=relaxed/simple;
+	bh=CuhRrMYb5xJElbxvDRDjpIDqF7fhKMV3PE/+Bbat700=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnvGfNDRC1sxrcS2iXDa8ouTKT9zW92lLA7KYduv5A/DRhpmP2Mf8zNAJKd1LCZvWmZlATta4SNITXklJ0QOwHdPKec6YS4b/HaVSmtlms9ThDrBy/JQRi4lanF62aMzKfozoHOjHAE4v9C8ACwGAm7nUH8vUvRcjghVOT9SiYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZ0cPS1h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF1EC4CEE3;
-	Wed, 23 Apr 2025 15:13:55 +0000 (UTC)
+	 MIME-Version; b=iNoQOOJyYVPncCa10nvGkuONr1ilC0Eo0QvKk4xSOZgRv0v6u1DvYTqhC9d4tBjgyJpeuR6JbKJfSV+CRLafrXpKd9ROKzTim/wVBFFLTe00ZFA9AEsfCOSt3RmW4ycCWiCYBPBcUC0sgPUbyojUNnA4f7M7aJXXCJoWxeDEm/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byqssiUP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC24C4CEE2;
+	Wed, 23 Apr 2025 15:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421235;
-	bh=5f2w5gUMekhI/iQ4U8c5UuWW2A/b1gxFbcNmPG+mEcY=;
+	s=korg; t=1745421744;
+	bh=CuhRrMYb5xJElbxvDRDjpIDqF7fhKMV3PE/+Bbat700=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZ0cPS1hhFsWaRMdokOcxq/cIsYsfmqINyAyf0ROdY+jgKEA9kwpV6FnHoCskU+xz
-	 3sFnnZrYAkYY+cxBUshlXNECKzpGlpd7TakS1VEav5EgjmoJc+lwh37rO5JvXdNReR
-	 VYA5Jh0Unn6dhC8SIlFtcJyxcU7Fkb2TFFMMiHv8=
+	b=byqssiUP3xxDvZTDy6Utjvm/1wCAxOhElM0+sLDHh+nYq239w9idGFDDziJDD9KFJ
+	 XhWHaLLCAYkRWAMSWfTGeKZ+KbHAYBzyGTgDaObFa5tzs19hnrePiG/MuMYj4CIJbj
+	 gOVETXuh5wQhMg8P2PC/67Im/YGzGrCjif0HPdSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 119/291] jbd2: remove wrong sb->s_sequence check
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 6.6 212/393] dt-bindings: coresight: qcom,coresight-tpda: Fix too many reg
 Date: Wed, 23 Apr 2025 16:41:48 +0200
-Message-ID: <20250423142629.263063274@linuxfoundation.org>
+Message-ID: <20250423142652.138539680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit e6eff39dd0fe4190c6146069cc16d160e71d1148 upstream.
+commit d72deaf05ac18e421d7e52a6be8966fd6ee185f4 upstream.
 
-Journal emptiness is not determined by sb->s_sequence == 0 but rather by
-sb->s_start == 0 (which is set a few lines above). Furthermore 0 is a
-valid transaction ID so the check can spuriously trigger. Remove the
-invalid WARN_ON.
+Binding listed variable number of IO addresses without defining them,
+however example DTS code, all in-tree DTS and Linux kernel driver
+mention only one address space, so drop the second to make binding
+precise and correctly describe the hardware.
 
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250206094657.20865-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: a8fbe1442c2b ("dt-bindings: arm: Adds CoreSight TPDA hardware definitions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250226112914.94361-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |    1 -
- 1 file changed, 1 deletion(-)
+ Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1711,7 +1711,6 @@ int jbd2_journal_update_sb_log_tail(jour
+--- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
++++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpda.yaml
+@@ -55,8 +55,7 @@ properties:
+       - const: arm,primecell
  
- 	/* Log is no longer empty */
- 	write_lock(&journal->j_state_lock);
--	WARN_ON(!sb->s_sequence);
- 	journal->j_flags &= ~JBD2_FLUSHED;
- 	write_unlock(&journal->j_state_lock);
+   reg:
+-    minItems: 1
+-    maxItems: 2
++    maxItems: 1
  
+   clocks:
+     maxItems: 1
 
 
 
