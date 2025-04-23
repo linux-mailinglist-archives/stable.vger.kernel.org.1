@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A187A99197
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACBEA99286
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F06016EA00
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:27:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D664467E90
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F5329DB81;
-	Wed, 23 Apr 2025 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319302957D3;
+	Wed, 23 Apr 2025 15:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iIhB+bME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1d7vaHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2766429DB6F;
-	Wed, 23 Apr 2025 15:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EBB2957B6;
+	Wed, 23 Apr 2025 15:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421479; cv=none; b=A7AG+g076t5o+BZC4Ant9xcii2DRkU5hJTum5YmT58MB6tc8N5tCcsJ4bjl7fBMeHW++/bVzgDNOFDWcFN9LuGeGXxDibuYgP3LF6pjzvQi5pD8TTFEHKtO9yQPTdYSxhi4wEOS0r04cRim0i6CMGRbcPyzj6J4JZX5LzKxHY5A=
+	t=1745421981; cv=none; b=HJeqj7o6a1DYBfqw76eQ8iLGRoIz87DtPjz0kriUnaXT9dx3ESKk5gIylkD6zo5sqbQBxWrakfQt0UBA4vySrgLVSDfbK+OojC8v9Z2uROOKUr0tgumPP7QtGg/gw9ELotQ0sIF8gSRA89SeHy5mryB76ryOC9JMSsY28QPzebQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421479; c=relaxed/simple;
-	bh=0quMg7AeQWiTLYW0gxMN1ZED8MgzzIBSwpSbTKGmhgQ=;
+	s=arc-20240116; t=1745421981; c=relaxed/simple;
+	bh=LPDkn8s2EHSpX2fOGMSVNcEOK0ESIyNtrmMkZCJJlVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnHeR+K4TtT7k+XGDMkG2WfdLEnP22tBSWxu6h9D2bkXf89d690jbYy/g2198wQpIrUJ8+C7WD8VX3zNQmMZMwtMzwhacTUuJUVa0FSXD/p/yMA9T67hMqS+E+KIvTP4CUAXvVW7ruCZkNfk+CpmIwU2g61VWgSp7ws+2p8Oe9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iIhB+bME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB40C4CEE2;
-	Wed, 23 Apr 2025 15:17:58 +0000 (UTC)
+	 MIME-Version; b=WMtwClrZNt4O6CqyNarAdAaMq+6dNzznjkPaBBNdX2BBohBVZnptqKcu+3K3VXL+j54ilw3+r4+FIFKzjpeBkMne3t3zt9C1YryKsWVxPDMP6mkVBZElqkLsI/7BmnlwBobHDRl9X73kdTiU3VmRspAHJUo84NIvx0eidSRzE3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1d7vaHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548BAC4CEE2;
+	Wed, 23 Apr 2025 15:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421479;
-	bh=0quMg7AeQWiTLYW0gxMN1ZED8MgzzIBSwpSbTKGmhgQ=;
+	s=korg; t=1745421981;
+	bh=LPDkn8s2EHSpX2fOGMSVNcEOK0ESIyNtrmMkZCJJlVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIhB+bMEBXjo4xkk4AXssEny4407vSfeWbANDMKxEpQXe//s1AOcDC+H9OhKghoZB
-	 P/EznrJJ3HcZALI49yvVuf/F6SlwwZw2tr7i+vByReadb/iVxvqACUF+Llhgp9FcjW
-	 v1S0A3kon/rYCSta+1JVy9WpbAsLDgcxluOniseQ=
+	b=o1d7vaHaKPrg+SQM97cX2e8Sbf9pnfLho7FPgp7QEMDgWNTq2YjzD3gvuCFa7PJLS
+	 /CEOIRGlmh/Wz8VFbTk2uMxI3Teoh6VGyoZFYynyfd+KbVK111CUGNw8jPUd21rYyC
+	 AiS1cA1HywbNZRvy3qigV+Lmowbx2TO3ef6glnfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 141/291] crypto: ccp - Fix check for the primary ASP device
-Date: Wed, 23 Apr 2025 16:42:10 +0200
-Message-ID: <20250423142630.171418699@linuxfoundation.org>
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 6.6 235/393] iommufd: Fail replace if device has not been attached
+Date: Wed, 23 Apr 2025 16:42:11 +0200
+Message-ID: <20250423142653.095384134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Yi Liu <yi.l.liu@intel.com>
 
-commit 07bb097b92b987db518e72525b515d77904e966e upstream.
+commit 55c85fa7579dc2e3f5399ef5bad67a44257c1a48 upstream.
 
-Currently, the ASP primary device check does not have support for PCI
-domains, and, as a result, when the system is configured with PCI domains
-(PCI segments) the wrong device can be selected as primary. This results
-in commands submitted to the device timing out and failing. The device
-check also relies on specific device and function assignments that may
-not hold in the future.
+The current implementation of iommufd_device_do_replace() implicitly
+assumes that the input device has already been attached. However, there
+is no explicit check to verify this assumption. If another device within
+the same group has been attached, the replace operation might succeed,
+but the input device itself may not have been attached yet.
 
-Fix the primary ASP device check to include support for PCI domains and
-to perform proper checking of the Bus/Device/Function positions.
+As a result, the input device might not be tracked in the
+igroup->device_list, and its reserved IOVA might not be added. Despite
+this, the caller might incorrectly assume that the device has been
+successfully replaced, which could lead to unexpected behavior or errors.
 
-Fixes: 2a6170dfe755 ("crypto: ccp: Add Platform Security Processor (PSP) device support")
+To address this issue, add a check to ensure that the input device has
+been attached before proceeding with the replace operation. This check
+will help maintain the integrity of the device tracking system and prevent
+potential issues arising from incorrect assumptions about the device's
+attachment status.
+
+Fixes: e88d4ec154a8 ("iommufd: Add iommufd_device_replace()")
+Link: https://patch.msgid.link/r/20250306034842.5950-1-yi.l.liu@intel.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sp-pci.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/iommu/iommufd/device.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/crypto/ccp/sp-pci.c
-+++ b/drivers/crypto/ccp/sp-pci.c
-@@ -179,14 +179,17 @@ static bool sp_pci_is_master(struct sp_d
- 	pdev_new = to_pci_dev(dev_new);
- 	pdev_cur = to_pci_dev(dev_cur);
- 
--	if (pdev_new->bus->number < pdev_cur->bus->number)
--		return true;
-+	if (pci_domain_nr(pdev_new->bus) != pci_domain_nr(pdev_cur->bus))
-+		return pci_domain_nr(pdev_new->bus) < pci_domain_nr(pdev_cur->bus);
- 
--	if (PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn))
--		return true;
-+	if (pdev_new->bus->number != pdev_cur->bus->number)
-+		return pdev_new->bus->number < pdev_cur->bus->number;
- 
--	if (PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn))
--		return true;
-+	if (PCI_SLOT(pdev_new->devfn) != PCI_SLOT(pdev_cur->devfn))
-+		return PCI_SLOT(pdev_new->devfn) < PCI_SLOT(pdev_cur->devfn);
-+
-+	if (PCI_FUNC(pdev_new->devfn) != PCI_FUNC(pdev_cur->devfn))
-+		return PCI_FUNC(pdev_new->devfn) < PCI_FUNC(pdev_cur->devfn);
- 
- 	return false;
+--- a/drivers/iommu/iommufd/device.c
++++ b/drivers/iommu/iommufd/device.c
+@@ -407,6 +407,17 @@ iommufd_device_do_attach(struct iommufd_
+ 	return NULL;
  }
+ 
++/* Check if idev is attached to igroup->hwpt */
++static bool iommufd_device_is_attached(struct iommufd_device *idev)
++{
++	struct iommufd_device *cur;
++
++	list_for_each_entry(cur, &idev->igroup->device_list, group_item)
++		if (cur == idev)
++			return true;
++	return false;
++}
++
+ static struct iommufd_hw_pagetable *
+ iommufd_device_do_replace(struct iommufd_device *idev,
+ 			  struct iommufd_hw_pagetable *hwpt)
+@@ -423,6 +434,11 @@ iommufd_device_do_replace(struct iommufd
+ 		rc = -EINVAL;
+ 		goto err_unlock;
+ 	}
++
++	if (!iommufd_device_is_attached(idev)) {
++		rc = -EINVAL;
++		goto err_unlock;
++	}
+ 
+ 	if (hwpt == igroup->hwpt) {
+ 		mutex_unlock(&idev->igroup->lock);
 
 
 
