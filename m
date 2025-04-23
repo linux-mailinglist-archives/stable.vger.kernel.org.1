@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EFFA990E5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7026BA99321
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8778D17B688
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69E594A428E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED08B293472;
-	Wed, 23 Apr 2025 15:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F62244662;
+	Wed, 23 Apr 2025 15:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k35goK+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mCKXVxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB0E2641EA;
-	Wed, 23 Apr 2025 15:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672BE20D4F8;
+	Wed, 23 Apr 2025 15:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421178; cv=none; b=CpGt8YlQViMMIKD3gJr6qH5klwXZT4V49y/E5alUrn1R0/ZL86QoNqRpqe+57S1jOhDIQhHESmGXRDgkRnRC3BFg9sXeEgIxSuqKYZVnSXTq14D9b0EF/vISp1bPnKkxHbazDtMNV3v/201+N0ia67DKwf+akGnnTbCRxxbLTLg=
+	t=1745422349; cv=none; b=S8gra/4ntrTadtlAG95Qx4rHwuF8sW0OP8aHycALARKiM4wLH72LXT+xogOg19/32IAXXQ8e35yuKlnaxsqaxRYNi/yApjMZPMnh3rqc9VospIpc2Vb6XRkz17250j/ATlsUC5rpF0RHMMCdjfySNqYymz00mV4vsTcEp60II94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421178; c=relaxed/simple;
-	bh=yyR0TdPcFyKmAZqNNwhUr8b/B6V4WAz5pMjQbfC1cbU=;
+	s=arc-20240116; t=1745422349; c=relaxed/simple;
+	bh=bUXVt2Zva48FdNH/LVn6l8bQ4SJPSkGXxXnkYoSLIJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YKjtfY5D2XdBoJVVcGGnrKEHo7MUwBAQec0afphNIOVvxX7y/Z5wxKgTZa/sOf40baxmklifG7zfhdYtOthqaLuhFo+BCgnuSZLVl1DgEy8y3gGCdzR4DNGHwkacQSb8h7PxCdm3HhVkAMToxy6medyx6ZhytxGuAYM8dAd7gHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k35goK+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEE0C4CEE2;
-	Wed, 23 Apr 2025 15:12:58 +0000 (UTC)
+	 MIME-Version; b=hbAd+ut/tU4wOZe9f8QJtbyn078xwv7UaX2W9JnRKTR4RGutDx6GmHGUq2mOEh7Knmiw424gefX7+x5obeCj+fbyFQFjUZa30lvLnRbCg85LQDnwcSM01wHQXXkVJ2EJoy2jhRZsGO9vLMdNjwQ/3XEs36EdRtjS8XrdwZ/8L6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mCKXVxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF71C4CEE2;
+	Wed, 23 Apr 2025 15:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421178;
-	bh=yyR0TdPcFyKmAZqNNwhUr8b/B6V4WAz5pMjQbfC1cbU=;
+	s=korg; t=1745422349;
+	bh=bUXVt2Zva48FdNH/LVn6l8bQ4SJPSkGXxXnkYoSLIJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k35goK+AeaWSo6FEAc7h1WK4TDN1yl5CMRGcTP9/5KvrE57oeO8VeyXyks5hK2acS
-	 ZcaGcpPm64dNoYBgB0QxEE9hXCNZ93xFiWbIkA92SoYdjC1iMgfewsgx27lTeIX01w
-	 f0V7bYRzO23YYSdEfVFfzfBSHnMa/7liaZLKdMCw=
+	b=1mCKXVxu3a2Ka0RdjJEosULVBGG1mWhYjgxUA05D79CX6ha6XW5ZrP+uUgZDlcn3X
+	 1essDO7+aXbbQszi0GPM2r0zMNXdlhy/FMYhrOyFulDwu79jlKgZGicTukuckcGWQa
+	 XHoSc6QgwKpOYMMBvhBDPmNTDRkFDJJ8P0X1yyV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Guillaume Morin <guillaume@morinfr.org>
-Subject: [PATCH 6.12 198/223] md: fix mddev uaf while iterating all_mddevs list
+	syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	David Sauerwein <dssauerw@amazon.de>
+Subject: [PATCH 6.1 281/291] bpf: avoid holding freeze_mutex during mmap operation
 Date: Wed, 23 Apr 2025 16:44:30 +0200
-Message-ID: <20250423142625.237110883@linuxfoundation.org>
+Message-ID: <20250423142635.907894337@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,135 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 8542870237c3a48ff049b6c5df5f50c8728284fa upstream.
+commit bc27c52eea189e8f7492d40739b7746d67b65beb upstream.
 
-While iterating all_mddevs list from md_notify_reboot() and md_exit(),
-list_for_each_entry_safe is used, and this can race with deletint the
-next mddev, causing UAF:
+We use map->freeze_mutex to prevent races between map_freeze() and
+memory mapping BPF map contents with writable permissions. The way we
+naively do this means we'll hold freeze_mutex for entire duration of all
+the mm and VMA manipulations, which is completely unnecessary. This can
+potentially also lead to deadlocks, as reported by syzbot in [0].
 
-t1:
-spin_lock
-//list_for_each_entry_safe(mddev, n, ...)
- mddev_get(mddev1)
- // assume mddev2 is the next entry
- spin_unlock
-            t2:
-            //remove mddev2
-            ...
-            mddev_free
-            spin_lock
-            list_del
-            spin_unlock
-            kfree(mddev2)
- mddev_put(mddev1)
- spin_lock
- //continue dereference mddev2->all_mddevs
+So, instead, hold freeze_mutex only during writeability checks, bump
+(proactively) "write active" count for the map, unlock the mutex and
+proceed with mmap logic. And only if something went wrong during mmap
+logic, then undo that "write active" counter increment.
 
-The old helper for_each_mddev() actually grab the reference of mddev2
-while holding the lock, to prevent from being freed. This problem can be
-fixed the same way, however, the code will be complex.
+  [0] https://lore.kernel.org/bpf/678dcbc9.050a0220.303755.0066.GAE@google.com/
 
-Hence switch to use list_for_each_entry, in this case mddev_put() can free
-the mddev1 and it's not safe as well. Refer to md_seq_show(), also factor
-out a helper mddev_put_locked() to fix this problem.
-
-Cc: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/linux-raid/20250220124348.845222-1-yukuai1@huaweicloud.com
-Fixes: f26514342255 ("md: stop using for_each_mddev in md_notify_reboot")
-Fixes: 16648bac862f ("md: stop using for_each_mddev in md_exit")
-Reported-and-tested-by: Guillaume Morin <guillaume@morinfr.org>
-Closes: https://lore.kernel.org/all/Z7Y0SURoA8xwg7vn@bender.morinfr.org/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
+Fixes: fc9702273e2e ("bpf: Add mmap() support for BPF_MAP_TYPE_ARRAY")
+Reported-by: syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: David Sauerwein <dssauerw@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ kernel/bpf/syscall.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -629,6 +629,12 @@ static void __mddev_put(struct mddev *md
- 	queue_work(md_misc_wq, &mddev->del_work);
- }
- 
-+static void mddev_put_locked(struct mddev *mddev)
-+{
-+	if (atomic_dec_and_test(&mddev->active))
-+		__mddev_put(mddev);
-+}
-+
- void mddev_put(struct mddev *mddev)
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -813,7 +813,7 @@ static const struct vm_operations_struct
+ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
  {
- 	if (!atomic_dec_and_lock(&mddev->active, &all_mddevs_lock))
-@@ -8461,9 +8467,7 @@ static int md_seq_show(struct seq_file *
- 	if (mddev == list_last_entry(&all_mddevs, struct mddev, all_mddevs))
- 		status_unused(seq);
+ 	struct bpf_map *map = filp->private_data;
+-	int err;
++	int err = 0;
  
--	if (atomic_dec_and_test(&mddev->active))
--		__mddev_put(mddev);
--
-+	mddev_put_locked(mddev);
- 	return 0;
- }
- 
-@@ -9886,11 +9890,11 @@ EXPORT_SYMBOL_GPL(rdev_clear_badblocks);
- static int md_notify_reboot(struct notifier_block *this,
- 			    unsigned long code, void *x)
- {
--	struct mddev *mddev, *n;
-+	struct mddev *mddev;
- 	int need_delay = 0;
- 
- 	spin_lock(&all_mddevs_lock);
--	list_for_each_entry_safe(mddev, n, &all_mddevs, all_mddevs) {
-+	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
- 		if (!mddev_get(mddev))
- 			continue;
- 		spin_unlock(&all_mddevs_lock);
-@@ -9902,8 +9906,8 @@ static int md_notify_reboot(struct notif
- 			mddev_unlock(mddev);
+ 	if (!map->ops->map_mmap || map_value_has_spin_lock(map) ||
+ 	    map_value_has_timer(map) || map_value_has_kptrs(map))
+@@ -838,7 +838,12 @@ static int bpf_map_mmap(struct file *fil
+ 			err = -EACCES;
+ 			goto out;
  		}
- 		need_delay = 1;
--		mddev_put(mddev);
- 		spin_lock(&all_mddevs_lock);
-+		mddev_put_locked(mddev);
++		bpf_map_write_active_inc(map);
  	}
- 	spin_unlock(&all_mddevs_lock);
++out:
++	mutex_unlock(&map->freeze_mutex);
++	if (err)
++		return err;
  
-@@ -10236,7 +10240,7 @@ void md_autostart_arrays(int part)
+ 	/* set default open/close callbacks */
+ 	vma->vm_ops = &bpf_map_default_vmops;
+@@ -849,13 +854,11 @@ static int bpf_map_mmap(struct file *fil
+ 		vma->vm_flags &= ~VM_MAYWRITE;
  
- static __exit void md_exit(void)
- {
--	struct mddev *mddev, *n;
-+	struct mddev *mddev;
- 	int delay = 1;
+ 	err = map->ops->map_mmap(map, vma);
+-	if (err)
+-		goto out;
++	if (err) {
++		if (vma->vm_flags & VM_WRITE)
++			bpf_map_write_active_dec(map);
++	}
  
- 	unregister_blkdev(MD_MAJOR,"md");
-@@ -10257,7 +10261,7 @@ static __exit void md_exit(void)
- 	remove_proc_entry("mdstat", NULL);
- 
- 	spin_lock(&all_mddevs_lock);
--	list_for_each_entry_safe(mddev, n, &all_mddevs, all_mddevs) {
-+	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
- 		if (!mddev_get(mddev))
- 			continue;
- 		spin_unlock(&all_mddevs_lock);
-@@ -10269,8 +10273,8 @@ static __exit void md_exit(void)
- 		 * the mddev for destruction by a workqueue, and the
- 		 * destroy_workqueue() below will wait for that to complete.
- 		 */
--		mddev_put(mddev);
- 		spin_lock(&all_mddevs_lock);
-+		mddev_put_locked(mddev);
- 	}
- 	spin_unlock(&all_mddevs_lock);
+-	if (vma->vm_flags & VM_MAYWRITE)
+-		bpf_map_write_active_inc(map);
+-out:
+-	mutex_unlock(&map->freeze_mutex);
+ 	return err;
+ }
  
 
 
