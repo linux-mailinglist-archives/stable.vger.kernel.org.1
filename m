@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92598A99314
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DE9A992F8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CC8F9282FF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE1184A30DE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C383029CB38;
-	Wed, 23 Apr 2025 15:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567762980C9;
+	Wed, 23 Apr 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0q2rhM7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxC/btoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8018829CB2E;
-	Wed, 23 Apr 2025 15:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9B279345;
+	Wed, 23 Apr 2025 15:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422018; cv=none; b=hSH64mwgLxrju6M6lUtXnd3YNupsJPzLjsq5iUBxzH7dPlhHYgH4V2jAMvlYogwmohIb62c4NIZq851Dq04qeYu1/HxGrwWTKL05MgFqJkCSsRESXzDlpt5QfLQe6BmeJx/EhB0c1nWzmGh9o3AQKKf8uOvGT20dTKQI5cCWm9o=
+	t=1745422278; cv=none; b=d9tyk9u7PF+l2oNgvHdG50KSyxQ9L9dYU8CebVCk3uix+kh8apLYNmHXeqhx4SpaW6zCFYU16L5cg2n31pX97qLI2myijSdp8r14z8WrZby/FWTx4Y/0idtUxwQsn9rrEiLmuN7yeLZZBUZUuYJLKksItpFZsTvhtEkeYXkQCYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422018; c=relaxed/simple;
-	bh=TLNuYczO1Jt8VXbEQgkZBOkhlr+tt4mYLbDShI+6J3s=;
+	s=arc-20240116; t=1745422278; c=relaxed/simple;
+	bh=BwhxDdKebDzI4zqT1zOL0ubjsbZsz0ttEaof8Cq3q1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWGq7b04qo8bUooja7BDQkfPzeICMqWssetberaGcYB6pXXqsp2+5TvpAk21DWVk4r1CpQRknlrjTNPjg3pz3vO5yL8t7jaaxrL+gygp9LxlK+nUcKC5yHdNcesSNqmmJCSsByg3al+crDRtXl6pux93EvHgjj1qAMTnh7F5YR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0q2rhM7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFBCC4CEE8;
-	Wed, 23 Apr 2025 15:26:57 +0000 (UTC)
+	 MIME-Version; b=KbaXkVR/6QnpTU9eR7zIc3l2zuf4fxk9nPhSCNNMgU/2xhDN6BVaXcZXiF2xTujFSXWH2g/uEI2jRdkdyJQg7TiNbr/mtDdFckXNfnoIIz9RE2/wW7fiySJ0Vy/EP5FZlB5BLJma313tztZMMhCURUg/nLjIr3t0kSKxKQfYlCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxC/btoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991DBC4CEE2;
+	Wed, 23 Apr 2025 15:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422018;
-	bh=TLNuYczO1Jt8VXbEQgkZBOkhlr+tt4mYLbDShI+6J3s=;
+	s=korg; t=1745422278;
+	bh=BwhxDdKebDzI4zqT1zOL0ubjsbZsz0ttEaof8Cq3q1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0q2rhM7u5ctjpuHMauoJA/jhEmphCH9ipQMiHubKpUtl9wQEuZdRK9x0Atp5t/xj
-	 m1n/BG0LigqiYm1sK2z8jBBlDJKWaSutUsjXH3RUb6Q0OrXVTkHYgbamPC03LMyXgg
-	 bmxD2ilUfpcIT07cIggU0V6z1uHQW6iYw4Wcu59s=
+	b=JxC/btoLW4YVeS/By4HKWOy/9+6a5J2bDVeiuR3nlt8HE064QIk90PuV0az8h07tB
+	 VNjT2azzBBfmwpwCVitV6Wi0Xm6shEPmMns+NqwyyR+Kr8gfVSuV0REhRK+yjhkJBx
+	 T4GwJF0MH7LuC8gBpbJu7iSGL3MHy/zHjGrYDYjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 219/291] riscv: Avoid fortify warning in syscall_get_arguments()
+	Calvin Walton <calvin.walton@kepstin.ca>,
+	Johannes Kimmel <kernel@bareminimum.eu>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 312/393] btrfs: correctly escape subvol in btrfs_show_options()
 Date: Wed, 23 Apr 2025 16:43:28 +0200
-Message-ID: <20250423142633.354828263@linuxfoundation.org>
+Message-ID: <20250423142656.214891247@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Johannes Kimmel <kernel@bareminimum.eu>
 
-commit adf53771a3123df99ca26e38818760fbcf5c05d0 upstream.
+commit dc08c58696f8555e4a802f1f23c894a330d80ab7 upstream.
 
-When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
-because of the memcpy() in syscall_get_arguments():
+Currently, displaying the btrfs subvol mount option doesn't escape ','.
+This makes parsing /proc/self/mounts and /proc/self/mountinfo
+ambiguous for subvolume names that contain commas. The text after the
+comma could be mistaken for another option (think "subvol=foo,ro", where
+ro is actually part of the subvolumes name).
 
-  In file included from include/linux/string.h:392,
-                   from include/linux/bitmap.h:13,
-                   from include/linux/cpumask.h:12,
-                   from arch/riscv/include/asm/processor.h:55,
-                   from include/linux/sched.h:13,
-                   from kernel/ptrace.c:13:
-  In function 'fortify_memcpy_chk',
-      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
-  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-    580 |                         __read_overflow2_field(q_size_field, size);
-        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+Replace the manual escape characters list with a call to
+seq_show_option(). Thanks to Calvin Walton for suggesting this approach.
 
-The fortified memcpy() routine enforces that the source is not overread
-and the destination is not overwritten if the size of either field and
-the size of the copy are known at compile time. The memcpy() in
-syscall_get_arguments() intentionally overreads from a1 to a5 in
-'struct pt_regs' but this is bigger than the size of a1.
-
-Normally, this could be solved by wrapping a1 through a5 with
-struct_group() but there was already a struct_group() applied to these
-members in commit bba547810c66 ("riscv: tracing: Fix
-__write_overflow_field in ftrace_partial_regs()").
-
-Just avoid memcpy() altogether and write the copying of args from regs
-manually, which clears up the warning at the expense of three extra
-lines of code.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dmitry V. Levin <ldv@strace.io>
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: c8d3fe028f64 ("Btrfs: show subvol= and subvolid= in /proc/mounts")
+CC: stable@vger.kernel.org # 5.4+
+Suggested-by: Calvin Walton <calvin.walton@kepstin.ca>
+Signed-off-by: Johannes Kimmel <kernel@bareminimum.eu>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/syscall.h |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/btrfs/super.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -61,8 +61,11 @@ static inline void syscall_get_arguments
- 					 unsigned long *args)
- {
- 	args[0] = regs->orig_a0;
--	args++;
--	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
-+	args[1] = regs->a1;
-+	args[2] = regs->a2;
-+	args[3] = regs->a3;
-+	args[4] = regs->a4;
-+	args[5] = regs->a5;
- }
- 
- static inline int syscall_get_arch(struct task_struct *task)
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1336,8 +1336,7 @@ static int btrfs_show_options(struct seq
+ 	subvol_name = btrfs_get_subvol_name_from_objectid(info,
+ 			BTRFS_I(d_inode(dentry))->root->root_key.objectid);
+ 	if (!IS_ERR(subvol_name)) {
+-		seq_puts(seq, ",subvol=");
+-		seq_escape(seq, subvol_name, " \t\n\\");
++		seq_show_option(seq, "subvol", subvol_name);
+ 		kfree(subvol_name);
+ 	}
+ 	return 0;
 
 
 
