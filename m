@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-136194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B1DA9927B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:45:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 764BBA993A9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD284445675
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BBB9922EA2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE4528FFFE;
-	Wed, 23 Apr 2025 15:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57A328C5C7;
+	Wed, 23 Apr 2025 15:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/g2IgQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbK35Jnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EF228FFF9;
-	Wed, 23 Apr 2025 15:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720B92820AE;
+	Wed, 23 Apr 2025 15:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421905; cv=none; b=ljs1q3HuqQcd9pCaLUfx3alY9pW3gJUOzay/MQb3kjflGK2JAzHC+KGyDOK78b4mveYzXEXF/4cgZZlOTBiPvn6YWTR8CYtnyxsJsuR1szlZ26JYuyts1JYXkzrbW0B0gLgcnUb2/m8H++2m3wsNm32Xf2EHoM54nU4UN5gpLbY=
+	t=1745422162; cv=none; b=g3b/YvfeW0v4MHve2PSaKY4+A8NSPO4ENrCPojd2tylpigvYrSvmFZj1bKJkRt6uMbAmoCKm/8ssrImfCn/XLE67kZehsMD9e3A3yFu22HCqJdkAVVj2s6iN9ldBao/9/Ixo0N9/5PMfxsQtLrUN+hKTt/W15k4RZFuYZidpyjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421905; c=relaxed/simple;
-	bh=H4thESjUmxL3DwYhxJUF7a/fVplorC+ORmBQHnaxYVY=;
+	s=arc-20240116; t=1745422162; c=relaxed/simple;
+	bh=w563MhAKs28ebAe7LBAInPROAJelIXZ5ogRpuGyGFFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5ynIWSg+UvoyK0dzZxSi2X2FeJJ4VuC4eT8MJMqwoSGbE0jKirsbDNtO2L1nvDZU7uWSR6iWECSW8Udy/b7jMsH8Q/7mSy00PKjvySapaXxjrt8jAi6NoZr9LoI19iOc/xy2W7KNgajfEsG1WLchVPRE/6sUL59vgYrRepzGGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/g2IgQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27C6C4CEE8;
-	Wed, 23 Apr 2025 15:25:04 +0000 (UTC)
+	 MIME-Version; b=EmZdFA2mdslFabeeCI1utcLPQzvVhTkGMHpV9wRG6B6BfKBxj/0ZawNT4krgqoVCy0/J4cdraavYbraSoQuEz9D9w7OAWOQIiKRH3p5b3kDyk4jQ8u69JLbEGywML0ig0QnRx4/MgBEIOhCSz69IlMwG0a4LhhNJXjxgxjDtQoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbK35Jnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E87C4CEE2;
+	Wed, 23 Apr 2025 15:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421905;
-	bh=H4thESjUmxL3DwYhxJUF7a/fVplorC+ORmBQHnaxYVY=;
+	s=korg; t=1745422162;
+	bh=w563MhAKs28ebAe7LBAInPROAJelIXZ5ogRpuGyGFFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/g2IgQHG2dsIR4xUTvUDBYwublRo/0MQS6CfbXFtP+RzjWTUN4Xmgtb66+BybaWI
-	 weL4KHq3gslAwQZnNfalEHv93Yfi+BYzHVWz1YIE2FWWOppDrDFHwqgjb6+s9iFnak
-	 s5LxGEHhyDD3+6/hyYNtZDx97VAzDJvx8qn3ic4c=
+	b=KbK35JnlIsvrzrQJIHli/snP63hVKyAEmtc5YZeEfq0UmRHwrn3/K0q2TWErt9TR3
+	 sWNYKn/C2aRz58qIEhGrrg+9/ycfZ5cbhU9KvTrVL1KiVWye1m5+XwP5SJ4jtJ592A
+	 AV0YGcQnjlTjg6YnhDJEVgaPkQ8gU4EcQ2ukGCxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sagi Maimon <maimon.sagi@gmail.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/291] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
+Subject: [PATCH 6.6 289/393] ptp: ocp: fix start time alignment in ptp_ocp_signal_set
 Date: Wed, 23 Apr 2025 16:43:05 +0200
-Message-ID: <20250423142632.389043791@linuxfoundation.org>
+Message-ID: <20250423142655.277779114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Sagi Maimon <maimon.sagi@gmail.com>
 
-[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
+[ Upstream commit 2a5970d5aaff8f3e33ce3bfaa403ae88c40de40d ]
 
-[ Quoting Samuel Holland: ]
+In ptp_ocp_signal_set, the start time for periodic signals is not
+aligned to the next period boundary. The current code rounds up the
+start time and divides by the period but fails to multiply back by
+the period, causing misaligned signal starts. Fix this by multiplying
+the rounded-up value by the period to ensure the start time is the
+closest next period.
 
-  This is a separate issue, but using ".option rvc" here is a bug.
-  It will unconditionally enable the C extension for the rest of
-  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
-
-[ Quoting Palmer Dabbelt: ]
-
-  We're just looking at the address of kgdb_compiled_break, so it's
-  fine if it ends up as a c.ebreak.
-
-[ Quoting Alexandre Ghiti: ]
-
-  .option norvc is used to prevent the assembler from using compressed
-  instructions, but it's generally used when we need to ensure the
-  size of the instructions that are used, which is not the case here
-  as noted by Palmer since we only care about the address. So yes
-  it will work fine with C enabled :)
-
-So let's just remove them all.
-
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 4bd46bb037f8e ("ptp: ocp: Use DIV64_U64_ROUND_UP for rounding.")
+Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20250415053131.129413-1-maimon.sagi@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/kgdb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/ptp/ptp_ocp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index b0db3350d243b..1d83b36967212 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -276,9 +276,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- noinline void arch_kgdb_breakpoint(void)
- {
- 	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
-+	    "kgdb_compiled_break: ebreak\n");
- }
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index 13343c3198770..4899fdf9bdf7a 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -1842,6 +1842,7 @@ ptp_ocp_signal_set(struct ptp_ocp *bp, int gen, struct ptp_ocp_signal *s)
+ 	if (!s->start) {
+ 		/* roundup() does not work on 32-bit systems */
+ 		s->start = DIV64_U64_ROUND_UP(start_ns, s->period);
++		s->start *= s->period;
+ 		s->start = ktime_add(s->start, s->phase);
+ 	}
  
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
 -- 
 2.39.5
 
