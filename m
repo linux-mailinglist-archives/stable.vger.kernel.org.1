@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E6FA98E4C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2591DA98F85
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1544F448092
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D1771B65FBB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE4227FD60;
-	Wed, 23 Apr 2025 14:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6912E28466F;
+	Wed, 23 Apr 2025 15:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5Jof5TR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJQ+meqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DF32269826;
-	Wed, 23 Apr 2025 14:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257D3280CE0;
+	Wed, 23 Apr 2025 15:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420000; cv=none; b=WcAkwUXT+yJ1af1LMgyFJyJdDD8Z1BaEbN3fkuxSLU3WdyUEf1FlmtQW14myZRTDm/ceW5YinGCxbaZHRf9d56tfP4k/KBkApl/3gxGJbB6HIUW07uoxqzh0cx8GLhiy9RBMf28nJQP9OdoVS3XsYIp3RkS4yrzcu/ZCc98kohM=
+	t=1745420477; cv=none; b=F/5v+pvDUjwlqpXK8P15zj3g9VypHtlToymSfEsd485wE2m1D1z1COl/F17rU8+2K+MDpH2Pw9syB+mKqe93mBI1SNlnA3CQPgQxjGy8ZPsYCVKsVoYCZ6kEKFUg/Xca72gDhlIBcXGk6ht1kb2Z89qQ69vR3HZrnCwQa7tP0lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420000; c=relaxed/simple;
-	bh=3CpTZWLtT2RMXozdcOGaMzlPbkNQcredwoNl+0zf3Kc=;
+	s=arc-20240116; t=1745420477; c=relaxed/simple;
+	bh=DgWoxXnZdti9NrIq81PytnCKhkQ6+1oE4OFQwPA5BGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dzov8JqvIfsx5ZvKlEXYtS+1P2xPUA3WnSrpHsAdKueyobqWBtZVOWSihg+8RCfpsJQuIRpMG2NhSTCu5p/ZvKkcwvnvXZ46p+FivoXc2qhg1XGGFtwspe9rTmR1pxfMTL6FAdHaCUQ++aZCUVVtU50JO/gIz8MnJygZd7nIejA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5Jof5TR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C2CC4CEE2;
-	Wed, 23 Apr 2025 14:53:19 +0000 (UTC)
+	 MIME-Version; b=ISFyvwnM5FSElfOec1KdB7kzXO/rgULPsEDZeI5VRKGDm0BFIPVB8nzA4OwSzGgFzN2pSc/yMsqR++XPdLvbnO1yEgYzquQwVtuvveByvDPTkW6yBzmhJPg0ifDHhhAGY5FJcdVepkKZgQOdVlRHccHQBlSh52lx1wMb33nUxIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJQ+meqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBA3C4CEE8;
+	Wed, 23 Apr 2025 15:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420000;
-	bh=3CpTZWLtT2RMXozdcOGaMzlPbkNQcredwoNl+0zf3Kc=;
+	s=korg; t=1745420477;
+	bh=DgWoxXnZdti9NrIq81PytnCKhkQ6+1oE4OFQwPA5BGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5Jof5TRKRrKgsZfabc+Uys/MRcKOAlIPfd2dS06QqZDgx9gvDT6bo85DDkX0Ia1K
-	 WbVjoSZfxxxjvtuzLpBngTBX7jGg0dNJPycYdfY+y5sM3oMj4gs9FQ6NTla4+LAcJ/
-	 otOt01SBE6llOGEMDpTSwvZbTnYOnP5MQ3Ik7Hcg=
+	b=nJQ+meqmy8ueEfp78Bpk4/4nyfCLKayb5IoFBEPwv5CCCCjNMtJvACfPUGsIaSsrS
+	 ArRWce2JxkJhqxNHahp5VyoJcX/JTs2yfovPA7ET/KW1OT9jMaNyLDhBNMmoJJGuSu
+	 V/yLm3QUvw6gJ/gaJCT8OMj6nvIek1hTCjpAWovA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 087/223] writeback: fix false warning in inode_to_wb()
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 095/241] cpufreq/sched: Fix the usage of CPUFREQ_NEED_UPDATE_LIMITS
 Date: Wed, 23 Apr 2025 16:42:39 +0200
-Message-ID: <20250423142620.667197376@linuxfoundation.org>
+Message-ID: <20250423142624.460882439@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
+[ Upstream commit cfde542df7dd51d26cf667f4af497878ddffd85a ]
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+Commit 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused
+by need_freq_update") modified sugov_should_update_freq() to set the
+need_freq_update flag only for drivers with CPUFREQ_NEED_UPDATE_LIMITS
+set, but that flag generally needs to be set when the policy limits
+change because the driver callback may need to be invoked for the new
+limits to take effect.
 
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, if the return value of cpufreq_driver_resolve_freq() after
+applying the new limits is still equal to the previously selected
+frequency, the driver callback needs to be invoked only in the case
+when CPUFREQ_NEED_UPDATE_LIMITS is set (which means that the driver
+specifically wants its callback to be invoked every time the policy
+limits change).
+
+Update the code accordingly to avoid missing policy limits changes for
+drivers without CPUFREQ_NEED_UPDATE_LIMITS.
+
+Fixes: 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused by need_freq_update")
+Closes: https://lore.kernel.org/lkml/Z_Tlc6Qs-tYpxWYb@linaro.org/
+Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3010358.e9J7NaK4W3@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/sched/cpufreq_schedutil.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inod
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 1a19d69b91ed3..b713ce0a57020 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -83,7 +83,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ 
+ 	if (unlikely(sg_policy->limits_changed)) {
+ 		sg_policy->limits_changed = false;
+-		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
++		sg_policy->need_freq_update = true;
+ 		return true;
+ 	}
+ 
+@@ -95,10 +95,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+ static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
+ 				   unsigned int next_freq)
  {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
+-	if (sg_policy->need_freq_update)
++	if (sg_policy->need_freq_update) {
+ 		sg_policy->need_freq_update = false;
+-	else if (sg_policy->next_freq == next_freq)
++		/*
++		 * The policy limits have changed, but if the return value of
++		 * cpufreq_driver_resolve_freq() after applying the new limits
++		 * is still equal to the previously selected frequency, the
++		 * driver callback need not be invoked unless the driver
++		 * specifically wants that to happen on every update of the
++		 * policy limits.
++		 */
++		if (sg_policy->next_freq == next_freq &&
++		    !cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS))
++			return false;
++	} else if (sg_policy->next_freq == next_freq) {
+ 		return false;
++	}
+ 
+ 	sg_policy->next_freq = next_freq;
+ 	sg_policy->last_freq_update_time = time;
+-- 
+2.39.5
+
 
 
 
