@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C0CA9904E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B7CA98F27
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5CC1174505
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721F91B84526
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DC6728A1CC;
-	Wed, 23 Apr 2025 15:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B438327EC9C;
+	Wed, 23 Apr 2025 14:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRoWaCOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXbiE9sm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B36028937D;
-	Wed, 23 Apr 2025 15:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72FE9266B4B;
+	Wed, 23 Apr 2025 14:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420929; cv=none; b=qaj+hBsVD3LZ9q0JNwPmhsKemz3oLw9B04YXPc3tZ2MGNiipGopNCBWzepOGPQUWjmRN/GPchCCqEAJ00gBfT5en9AlraXF6Xg6jabcMT3ghgqOUv9IgLYV7OAvoA1Ju/QmZsyKj8VOE91dPUKcvI4OigwIYnBRCCl+9A2NLmOo=
+	t=1745420313; cv=none; b=WTKojM53xT3sFYwc3pfAmCBOfRqq6j2XSLXVdI+TnsSBxTqEi59e64N8ayXqnANRtIaWJKANvcXiqrYqjmXy0Wj8hdz8dtkm3HwLK3lzV38gzgcoPn0GIyzAc8OJetlM+3q6hLjb4thIaX1IAN27fHnAXTSYxh+8fl1vO/0cMfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420929; c=relaxed/simple;
-	bh=qaR/TKrOuQEfWM96EW5N1hpaRQeQGgXLgCdRQVFf6HE=;
+	s=arc-20240116; t=1745420313; c=relaxed/simple;
+	bh=05alH5ZfJKaprBG4IODjKEugf8qmEdpXQH4tcOOOteo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQMjAmOHDbNP/97NYIJZfcEeQLSThACy+71JFyaZAI+eGTWhcj2aDbLbhXORsI5VsttgYAGri3UqFP4neLpfp/DHS0eHbFHv28l5E0+2nHYC+kD7VlNKImem2tNq3AMFKSF/qEip7ODlCku3bqo2jD11ZuGWOReq3s60Lsy9Vds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRoWaCOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B04C4CEE2;
-	Wed, 23 Apr 2025 15:08:48 +0000 (UTC)
+	 MIME-Version; b=TPlPagCqrVGZKvrRA092mFTq7uZfM8yvpRjM49lIw6uF4OU1lan6W6ubjl9uL4Cp197djdIJROWUGBM6R/lt3KLJAJeR12ifICTKQY+gA+aGOVmjunTVr+E3hw2kNzzIpQw/KX4YAbJdvODJaGMiSaMk81m0jceHk5h3ZsFH0Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXbiE9sm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05640C4CEE2;
+	Wed, 23 Apr 2025 14:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420929;
-	bh=qaR/TKrOuQEfWM96EW5N1hpaRQeQGgXLgCdRQVFf6HE=;
+	s=korg; t=1745420313;
+	bh=05alH5ZfJKaprBG4IODjKEugf8qmEdpXQH4tcOOOteo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hRoWaCOCcVEE1AeUf6Es6dUxmYkFvELEq3yvnHVrTiNupa8wmB84xSNUDURj8Tl9Z
-	 YxhpID5JOhZ+zc6bAbk1SssmSa7WPlCqFOB9lg1ER8vi84MDKBVypiyrtkErKduE0+
-	 Rr/nSz+4FQ+/rFnyqMArzZpMDMKbSYTpnLP0q6kk=
+	b=xXbiE9smTDO8KZsWOwNnb6yIvhkXQ2Ox6mqEQOfWC9G8PZ2Yt6eGmrmPdYlF7oX3Y
+	 PfjTiBzaCqrz87Tu+YGGl4KtlzeJ9uiPL3gECNtu0EXUa70Yzzp3xmx3cGmlfR+20j
+	 qjuqZNUuO1Qvz9hWvoWi/Yda6YcsEDt6fbhn/8f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 128/393] arm64: cputype: Add MIDR_CORTEX_A76AE
-Date: Wed, 23 Apr 2025 16:40:24 +0200
-Message-ID: <20250423142648.645656871@linuxfoundation.org>
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/291] page_pool: avoid infinite loop to schedule delayed worker
+Date: Wed, 23 Apr 2025 16:40:25 +0200
+Message-ID: <20250423142625.870867078@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-commit a9b5bd81b294d30a747edd125e9f6aef2def7c79 upstream.
+[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
 
->From the TRM, MIDR_CORTEX_A76AE has a partnum of 0xDOE and an
-implementor of 0x41 (ARM). Add the values.
+We noticed the kworker in page_pool_release_retry() was waken
+up repeatedly and infinitely in production because of the
+buggy driver causing the inflight less than 0 and warning
+us in page_pool_inflight()[1].
 
-Cc: stable@vger.kernel.org # dependency of the next fix in the series
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250107120555.v4.4.I151f3b7ee323bcc3082179b8c60c3cd03308aa94@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the inflight value goes negative, it means we should
+not expect the whole page_pool to get back to work normally.
+
+This patch mitigates the adverse effect by not rescheduling
+the kworker when detecting the inflight negative in
+page_pool_release_retry().
+
+[1]
+[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
+[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
+...
+[Mon Feb 10 20:36:11 2025] Call Trace:
+[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
+[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
+[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
+[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
+[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
+[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
+[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
+[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
+Note: before this patch, the above calltrace would flood the
+dmesg due to repeated reschedule of release_dw kworker.
+
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- 1 file changed, 2 insertions(+)
+ net/core/page_pool.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -75,6 +75,7 @@
- #define ARM_CPU_PART_CORTEX_A76		0xD0B
- #define ARM_CPU_PART_NEOVERSE_N1	0xD0C
- #define ARM_CPU_PART_CORTEX_A77		0xD0D
-+#define ARM_CPU_PART_CORTEX_A76AE	0xD0E
- #define ARM_CPU_PART_NEOVERSE_V1	0xD40
- #define ARM_CPU_PART_CORTEX_A78		0xD41
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
-@@ -159,6 +160,7 @@
- #define MIDR_CORTEX_A76	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76)
- #define MIDR_NEOVERSE_N1 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N1)
- #define MIDR_CORTEX_A77	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A77)
-+#define MIDR_CORTEX_A76AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A76AE)
- #define MIDR_NEOVERSE_V1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V1)
- #define MIDR_CORTEX_A78	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78)
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index caf6d950d54ad..acc1d0d055cdd 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -841,7 +841,13 @@ static void page_pool_release_retry(struct work_struct *wq)
+ 	int inflight;
+ 
+ 	inflight = page_pool_release(pool);
+-	if (!inflight)
++	/* In rare cases, a driver bug may cause inflight to go negative.
++	 * Don't reschedule release if inflight is 0 or negative.
++	 * - If 0, the page_pool has been destroyed
++	 * - if negative, we will never recover
++	 * in both cases no reschedule is necessary.
++	 */
++	if (inflight <= 0)
+ 		return;
+ 
+ 	/* Periodic warning */
+-- 
+2.39.5
+
 
 
 
