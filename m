@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F49DA99013
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6EAA98ED8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A808C5A7CC6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B7FC3BB889
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F5728BA93;
-	Wed, 23 Apr 2025 15:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B19280A20;
+	Wed, 23 Apr 2025 14:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkCms9wj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDGxGfm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B8127FD4F;
-	Wed, 23 Apr 2025 15:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445A127FD56;
+	Wed, 23 Apr 2025 14:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420680; cv=none; b=WHt6wASAIXTIDlH4GYWHhpQSQQgWiH+jd0b6Z07tbHHTAaYT3vMCqnq23HRd6km5nPZkSi6qnrgnufoTbqK1X5NdosXYH0ubHylPYoFIHEe2xvp3/kK/mIy6DLuB+9AoLXJKOHeLhJ71euE4lv5OzNSKo7KkTBH8wWpDZLdWwd0=
+	t=1745420179; cv=none; b=ssW8hSHfrS4+HVrncUSWZSFHwoRQV1MwTuLnSPdgj56/I65BXk0t9uYhnaL7l9SbqzdnY7IulltI1RMWEui2VdtvKnbzflEgxoOlGHVNBB3yZdMPWlGOKk9hrqYKmEqPXo3p84ew2hzL0QIajoIWASqxMs7KlQnZM1qJbGAwBp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420680; c=relaxed/simple;
-	bh=RoICGuCjCBcJnSLtZccIKa7Sn/APJSb3DRGPA3hEI7s=;
+	s=arc-20240116; t=1745420179; c=relaxed/simple;
+	bh=Py2qbHfIBDcMPZdG9IhDTpUaxjqKeXgfUkU8BeALf2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/CkHBl0+LXbPvalf2DsBGHXvQqpnuClX5R+2kDAvy38isylHGnTQCQ/6kaoy72MNmYadEluZ5NShTEIzDUUfLOMhGfDQrV5gmPW+upfAGAieCXLDt3vigRpgNojoSZLMV6hBt6ZvKnVgFfwYzBOZAy1sXhm6TNQuC6mYXo7HBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkCms9wj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5353DC4CEE2;
-	Wed, 23 Apr 2025 15:04:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EzgfiN5FkwoxXjmtkX9GQe0TnMJ97Mbg2XHPrKdemtl+3vklW/AlSJVRh1V61fucYhiguAYLPsnzLcEhDVtnsP3SfhQHE5zsRGx38HBc2SsHJeMj05oWB8cXKhGUarVkwW+0P9xx2IzDVMuLqUUp7gkYVA59pxlvg+zcnuFHK+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDGxGfm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96A0C4CEE2;
+	Wed, 23 Apr 2025 14:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420679;
-	bh=RoICGuCjCBcJnSLtZccIKa7Sn/APJSb3DRGPA3hEI7s=;
+	s=korg; t=1745420179;
+	bh=Py2qbHfIBDcMPZdG9IhDTpUaxjqKeXgfUkU8BeALf2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkCms9wjOCVpqY0bS3qmTauSsQ/7K3QKDYT++oKunWGNMVELd8s7sPEneKXBJx8Ey
-	 5K83nibEy7R4QM7EbrYsqD9Q2BJ4ZCO6Dm2yiyElCrr/pIP86xO3ZGMlHIRqO8OtFf
-	 GtpfAd/WR1EQXG4EysHLxjgMjy2mhgL/Y/deggJk=
+	b=zDGxGfm2fJhjFUbzcULlzbFHnt+HTv+FdQEa9fg3CyoGoW/Eqxsq/A1pD9Lz6wRpW
+	 AmPdPMtuRHWKrNTAZl7QTWN48+htizHutc44Dv8RCc/EJA6cVN1YCL64M9phjCd3lU
+	 G8+ZauBqK0m7RZvMqe4VoC8VrWISDgA7tkZJ4FOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 113/241] drm/v3d: Fix Indirect Dispatch configuration for V3D 7.1.6 and later
-Date: Wed, 23 Apr 2025 16:42:57 +0200
-Message-ID: <20250423142625.192185789@linuxfoundation.org>
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 106/223] Bluetooth: l2cap: Process valid commands in too long frame
+Date: Wed, 23 Apr 2025 16:42:58 +0200
+Message-ID: <20250423142621.430803308@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,108 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit dcdae6e92d4e062da29235fe88980604595e3f0f ]
+commit e2e49e214145a8f6ece6ecd52fec63ebc2b27ce9 upstream.
 
-This commit is a resubmission of commit 1fe1c66274fb ("drm/v3d: Fix
-Indirect Dispatch configuration for V3D 7.1.6 and later"), which was
-accidentally reverted by commit 91dae758bdb8 ("Merge tag
-'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel
-into drm-next"), likely due to an unfortunate conflict resolution.
+This is required for passing PTS test cases:
+- L2CAP/COS/CED/BI-14-C
+  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
+  Connection Request
+- L2CAP/COS/CED/BI-15-C
+  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
+  Disconnection Request
 
->From the original commit message:
+The test procedure defined in L2CAP.TS.p39 for both tests is:
+1. The Lower Tester sends a C-frame to the IUT with PDU Length set
+   to 8 and Channel ID set to the correct signaling channel for the
+   logical link. The Information payload contains one L2CAP_ECHO_REQ
+   packet with Data Length set to 0 with 0 octets of echo data and
+   one command packet and Data Length set as specified in Table 4.6
+   and the correct command data.
+2. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
+3. Perform alternative 3A, 3B, 3C, or 3D depending on the IUT’s
+   response.
+   Alternative 3A (IUT terminates the link):
+     3A.1 The IUT terminates the link.
+     3A.2 The test ends with a Pass verdict.
+   Alternative 3B (IUT discards the frame):
+     3B.1 The IUT does not send a reply to the Lower Tester.
+   Alternative 3C (IUT rejects PDU):
+     3C.1 The IUT sends an L2CAP_COMMAND_REJECT_RSP PDU to the
+          Lower Tester.
+   Alternative 3D (Any other IUT response):
+     3D.1 The Upper Tester issues a warning and the test ends.
+4. The Lower Tester sends a C-frame to the IUT with PDU Length set
+   to 4 and Channel ID set to the correct signaling channel for the
+   logical link. The Information payload contains Data Length set to
+   0 with an L2CAP_ECHO_REQ packet with 0 octets of echo data.
+5. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
 
-```
-`args->cfg[4]` is configured in Indirect Dispatch using the number of
-batches. Currently, for all V3D tech versions, `args->cfg[4]` equals the
-number of batches subtracted by 1. But, for V3D 7.1.6 and later, we must not
-subtract 1 from the number of batches.
+With expected outcome:
+  In Steps 2 and 5, the IUT responds with an L2CAP_ECHO_RSP.
+  In Step 3A.1, the IUT terminates the link.
+  In Step 3B.1, the IUT does not send a reply to the Lower Tester.
+  In Step 3C.1, the IUT rejects the PDU.
+  In Step 3D.1, the IUT sends any valid response.
 
-Implement the fix by checking the V3D tech version and revision.
+Currently PTS fails with the following logs:
+  Failed to receive ECHO RESPONSE.
 
-Fixes several `dEQP-VK.synchronization*` CTS tests related to Indirect Dispatch.
-```
+And HCI logs:
+> ACL Data RX: Handle 11 flags 0x02 dlen 20
+      L2CAP: Information Response (0x0b) ident 2 len 12
+        Type: Fixed channels supported (0x0003)
+        Result: Success (0x0000)
+        Channels: 0x000000000000002e
+          L2CAP Signaling (BR/EDR)
+          Connectionless reception
+          AMP Manager Protocol
+          L2CAP Signaling (LE)
+> ACL Data RX: Handle 11 flags 0x02 dlen 13
+        frame too long
+        08 01 00 00 08 02 01 00 aa                       .........
 
-Fixes: 91dae758bdb8 ("Merge tag 'drm-misc-next-2024-08-01' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-next")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Link: https://lore.kernel.org/r/20250409205051.9639-1-mcanal@igalia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-index 05608c894ed93..6db503a569180 100644
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -428,7 +428,8 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
- 	struct v3d_bo *bo = to_v3d_bo(job->base.bo[0]);
- 	struct v3d_bo *indirect = to_v3d_bo(indirect_csd->indirect);
- 	struct drm_v3d_submit_csd *args = &indirect_csd->job->args;
--	u32 *wg_counts;
-+	struct v3d_dev *v3d = job->base.v3d;
-+	u32 num_batches, *wg_counts;
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7504,8 +7504,24 @@ void l2cap_recv_acldata(struct hci_conn
+ 		if (skb->len > len) {
+ 			BT_ERR("Frame is too long (len %u, expected len %d)",
+ 			       skb->len, len);
++			/* PTS test cases L2CAP/COS/CED/BI-14-C and BI-15-C
++			 * (Multiple Signaling Command in one PDU, Data
++			 * Truncated, BR/EDR) send a C-frame to the IUT with
++			 * PDU Length set to 8 and Channel ID set to the
++			 * correct signaling channel for the logical link.
++			 * The Information payload contains one L2CAP_ECHO_REQ
++			 * packet with Data Length set to 0 with 0 octets of
++			 * echo data and one invalid command packet due to
++			 * data truncated in PDU but present in HCI packet.
++			 *
++			 * Shorter the socket buffer to the PDU length to
++			 * allow to process valid commands from the PDU before
++			 * setting the socket unreliable.
++			 */
++			skb->len = len;
++			l2cap_recv_frame(conn, skb);
+ 			l2cap_conn_unreliable(conn, ECOMM);
+-			goto drop;
++			goto unlock;
+ 		}
  
- 	v3d_get_bo_vaddr(bo);
- 	v3d_get_bo_vaddr(indirect);
-@@ -441,8 +442,17 @@ v3d_rewrite_csd_job_wg_counts_from_indirect(struct v3d_cpu_job *job)
- 	args->cfg[0] = wg_counts[0] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[1] = wg_counts[1] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
- 	args->cfg[2] = wg_counts[2] << V3D_CSD_CFG012_WG_COUNT_SHIFT;
--	args->cfg[4] = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
--		       (wg_counts[0] * wg_counts[1] * wg_counts[2]) - 1;
-+
-+	num_batches = DIV_ROUND_UP(indirect_csd->wg_size, 16) *
-+		      (wg_counts[0] * wg_counts[1] * wg_counts[2]);
-+
-+	/* V3D 7.1.6 and later don't subtract 1 from the number of batches */
-+	if (v3d->ver < 71 || (v3d->ver == 71 && v3d->rev < 6))
-+		args->cfg[4] = num_batches - 1;
-+	else
-+		args->cfg[4] = num_batches;
-+
-+	WARN_ON(args->cfg[4] == ~0);
- 
- 	for (int i = 0; i < 3; i++) {
- 		/* 0xffffffff indicates that the uniform rewrite is not needed */
--- 
-2.39.5
-
+ 		/* Append fragment into frame (with header) */
 
 
 
