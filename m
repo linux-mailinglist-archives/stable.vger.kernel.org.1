@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-135753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B844FA99079
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FBEA98EC4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD0C8E122E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68DA8445352
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA4728D849;
-	Wed, 23 Apr 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF8E2820B1;
+	Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RW6QySFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F96UMUX6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3652428D843;
-	Wed, 23 Apr 2025 15:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABEA2820A7;
+	Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420754; cv=none; b=hZ1Ll9ejPTTw8xKy9FCsG/urhomV17ZaBF1Zh1T6OyHQlVmsLGFgqtY9N/hQzT0NLYK7+DiIYmytdpzdopWDiD4gekquIcj1RfMrDD+pgktHTyjrZtGpHP+FF3w78eBRPKqDGrTV5saof+Fd4OcI/qqo89+VW7ktf9LzCFD5Q1U=
+	t=1745420244; cv=none; b=Fpo+9rLbd1HGt2PKCHYyfiA5pHyOcPEeIQ1mkFq1g4zsLw4+hVW7aos/oigL7SaeEO3zqM0napluePM8hVgAKSyW0W/tyvLj/Bc4p1lWDI2qECNb99adp1GyHr7vQC+gTowHZcMyzSuk+KBj4wKUJznTheZcdgR2743ikI6fNXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420754; c=relaxed/simple;
-	bh=37JvIAMG/SgyPfZ1WXs7EC9JJphPjQpsTgJgJ+/WhHQ=;
+	s=arc-20240116; t=1745420244; c=relaxed/simple;
+	bh=rOq8RU/qySFhzEnGPQC9u/SwbO2giNbUaJeYFOjDx+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtFMBhVocQ/nan6Hpy6MhYp7nRphBmoeOghYa1JAPrGWrBtKDwMjaYjctUPFiw6ETtNtRYJR9aVLV+sRwG+lJ0JYtUntIDP43OcFMT3eC94U4eVZsbNZpvTKkVJrQ1cFWyYJefe16oj0PLFS5ALhFT9qA5LDxdy90SLQxkuYpt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RW6QySFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9B3C4CEF4;
-	Wed, 23 Apr 2025 15:05:53 +0000 (UTC)
+	 MIME-Version; b=RUO1nGhoqADziPIj/2wfyFGvVuUOswyzXSRUx67eoAJCdIaMeH1Re1vQK5MgYxc26BH4WqA1+QCMT3qla0Asz4hDG8mlesP2OrN/Vjle8cpUnPspmYMsoKQdRkv5SLuS5a+IuHWOh8o/PaIiwnvSUQTFm/2lAS41n6nC72r6g0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F96UMUX6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9CCC4CEE2;
+	Wed, 23 Apr 2025 14:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420754;
-	bh=37JvIAMG/SgyPfZ1WXs7EC9JJphPjQpsTgJgJ+/WhHQ=;
+	s=korg; t=1745420244;
+	bh=rOq8RU/qySFhzEnGPQC9u/SwbO2giNbUaJeYFOjDx+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RW6QySFb7o+YafN97vCJZ/S0SZ66aCp3QRL9mk8I6Gf0977eTtWlGJJvkSS92RhDy
-	 NTuYw+KmzTMwJ/4svezO3nUxlUFMI202KeRO25mB1+fRiy2GCgJdvVORcc8R2oZx/a
-	 10u+VV9/82b41Dda2Vvm/Az0HgIWRJ3keFl2fLtM=
+	b=F96UMUX6ehvl/2fET/Y02KZSp9Rl1yaHLgHAN/iOHA4NOGl0xWjq/kmyTs4xzmkBe
+	 ZomJP0GIQGxgF2g+70EL5xtRMGqTXF9snlzHv6tMCAon2Xt9qUg73xwzcX/eueZhp5
+	 u1W142A4B6UM5Q4cuf6qj/x3nAiHXup7GxfQV4mM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 119/241] i2c: atr: Fix wrong include
-Date: Wed, 23 Apr 2025 16:43:03 +0200
-Message-ID: <20250423142625.446342462@linuxfoundation.org>
+	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 112/223] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
+Date: Wed, 23 Apr 2025 16:43:04 +0200
+Message-ID: <20250423142621.671111499@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 75caec0c2aa3a7ec84348d438c74cb8a2eb4de97 ]
+commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
 
-The fwnode.h is not supposed to be used by the drivers as it
-has the definitions for the core parts for different device
-property provider implementations. Drop it.
+Syzbot reported an issue in hfs subsystem:
 
-Note, that fwnode API for drivers is provided in property.h
-which is included here.
+BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
 
-Fixes: a076a860acae ("media: i2c: add I2C Address Translator (ATR) support")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-[wsa: reworded subject]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ memcpy_from_page include/linux/highmem.h:423 [inline]
+ hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+ hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+ hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+ hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+ hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+ vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+ __do_sys_mkdir fs/namei.c:4300 [inline]
+ __se_sys_mkdir fs/namei.c:4298 [inline]
+ __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbdd6057a99
+
+Add a check for key length in hfs_bnode_read_key to prevent
+out-of-bounds memory access. If the key length is invalid, the
+key buffer is cleared, improving stability and reliability.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-atr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfs/bnode.c     |    6 ++++++
+ fs/hfsplus/bnode.c |    6 ++++++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/drivers/i2c/i2c-atr.c b/drivers/i2c/i2c-atr.c
-index 8fe9ddff8e96f..783fb8df2ebee 100644
---- a/drivers/i2c/i2c-atr.c
-+++ b/drivers/i2c/i2c-atr.c
-@@ -8,12 +8,12 @@
-  * Originally based on i2c-mux.c
-  */
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 1;
  
--#include <linux/fwnode.h>
- #include <linux/i2c-atr.h>
- #include <linux/i2c.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-+#include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
++	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfs_btree_key));
++		pr_err("hfs: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
  
--- 
-2.39.5
-
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 2;
+ 
++	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfsplus_btree_key));
++		pr_err("hfsplus: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
 
 
 
