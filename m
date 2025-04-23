@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-135656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17660A98EFE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:02:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC609A98F08
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 756187A5CC3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5613644550A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4931284694;
-	Wed, 23 Apr 2025 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EDF827F755;
+	Wed, 23 Apr 2025 14:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZuxYFSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyxXWsXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7726F442;
-	Wed, 23 Apr 2025 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D571A23B0;
+	Wed, 23 Apr 2025 14:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420498; cv=none; b=aGtVx7/rT1/l7ZyYf7Nyjip85ui03gE6iTlhWaeroOaNZM+HwyUHYdLEUALibht8QCOzXV6gMHcE5TcCe2yrfnQcUCFEEGNvh83V8Bfq4j9T2BjyFkHar6cb2QW/UtO3OdM3xkvJe7lWbIVft1WqCa4MZ/5gAyE4/hB6Z2i2xsg=
+	t=1745420356; cv=none; b=KGaMooc91YFurh8uH2yoAjHLxof16I8DgTPEiFVnpWzqUqskIk51NxKxy18MEfs81TU3B0B1+0q0jko3R5X2o/9CBTrXvXz0ZZ9HTEcstF94LzewRNvkGzTBbKxonNqK9STriaO5Q/O/QREIJcSz0R4az+um1Sea11XG6GakgKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420498; c=relaxed/simple;
-	bh=AD3bxZx1ClOaZB5AlzE3n7H2zGIfpO9n862h0u7Fhic=;
+	s=arc-20240116; t=1745420356; c=relaxed/simple;
+	bh=gYPG5RGYUkgjJwQTStwUB4CL0UE/z6Rje/abf0dG7js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DdlGMvjhzfbE/xUaFEPJFnAFE+DmkBGLn5pwScqGr//NH3bkPsCi2EUUMOSmNxOwfnx1h+V4tSlDRliuV7MSMnQNQeMp5528inVpBeRLr8pbghwQmcLCirIyeSnHOTVIHU/wRdTF7UVuLNEkq56464XcITs7eqFAawSSCTXQrLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZuxYFSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CCDC4CEE2;
-	Wed, 23 Apr 2025 15:01:37 +0000 (UTC)
+	 MIME-Version; b=UiVY2BfYFG0XECDTkZUdHQd6SxNVLWK3FzK/bGLD+zOqGvvbETlmKPKrbbHr9m2jWDgks4rsjBaT+efcBoQ/tjNpMfMqwRWdCaYLdOWyXIf0ma5t6hprzzwR8JxZ85BBXsQcD/4ZQsXakeJ14BfNLNtNdMYsUjg8p9AWnZVowDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyxXWsXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A27C4CEE2;
+	Wed, 23 Apr 2025 14:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420498;
-	bh=AD3bxZx1ClOaZB5AlzE3n7H2zGIfpO9n862h0u7Fhic=;
+	s=korg; t=1745420355;
+	bh=gYPG5RGYUkgjJwQTStwUB4CL0UE/z6Rje/abf0dG7js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZuxYFSbeodyAeGK/Hic7aghpf0/AT0Q9kzjUWFiQen5SlboYlbBzVu0YVNnzAtD0
-	 DT/K2TaagffXv53CJYu+A11XMzKeqGZz3SkYoqzk7QCmTBafUVTfeG/+mPG54gprDD
-	 De4N1zSBBV/nYonH6Lg4w6oQhrozgXf0adUnmU6o=
+	b=YyxXWsXv8+eHvsTcv0ePkk7dcsuWQxfXDaWwEXTKJuN1VMJ+imnwHMUV6DtTPn6Ai
+	 55N9xBencgTXUTUU8ihdp/nE82kDa5l8Afy7Fr8vUaodC/1WEUHLQpcfU2K2j/CWi5
+	 sKQhCigzXuCxP5pUPT3b/52JwIfFJopAi1/W/J3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	P Praneesh <quic_ppranees@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/393] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
-Date: Wed, 23 Apr 2025 16:39:22 +0200
-Message-ID: <20250423142646.031168129@linuxfoundation.org>
+Subject: [PATCH 6.6 067/393] f2fs: dont retry IO for corrupted data scenario
+Date: Wed, 23 Apr 2025 16:39:23 +0200
+Message-ID: <20250423142646.071823143@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,47 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 ]
+[ Upstream commit 1534747d3170646ddeb9ea5f7caaac90359707cf ]
 
-Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
-to fetch the next entry from the destination ring. This is incorrect because
-ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
-rings. This leads to invalid entry fetches, causing potential data corruption or
-crashes due to accessing incorrect memory locations. This happens because the
-source ring and destination ring have different handling mechanisms and using
-the wrong function results in incorrect pointer arithmetic and ring management.
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
+F2FS-fs (dm-105): inconsistent node block, nid:430, node_footer[nid:2198964142,ino:598252782,ofs:118300154,cpver:5409237455940746069,blkaddr:2125070942]
 
-To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
-ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
-that the correct function is used for fetching entries from the destination
-ring, preventing invalid memory accesses.
+If node block is loaded successfully, but its content is inconsistent, it
+doesn't need to retry IO.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/inode.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index f1e57e98bdc60..35f22a4a16cf2 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2571,7 +2571,7 @@ int ath12k_dp_mon_rx_process_stats(struct ath12k *ar, int mac_id,
- 		dest_idx = 0;
- move_next:
- 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
--		ath12k_hal_srng_src_get_next_entry(ab, srng);
-+		ath12k_hal_srng_dst_get_next_entry(ab, srng);
- 		num_buffs_reaped++;
- 	}
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 7ad4a92417591..173832fd0168e 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -764,8 +764,12 @@ void f2fs_update_inode_page(struct inode *inode)
+ 		if (err == -ENOENT)
+ 			return;
  
++		if (err == -EFSCORRUPTED)
++			goto stop_checkpoint;
++
+ 		if (err == -ENOMEM || ++count <= DEFAULT_RETRY_IO_COUNT)
+ 			goto retry;
++stop_checkpoint:
+ 		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_UPDATE_INODE);
+ 		return;
+ 	}
 -- 
 2.39.5
 
