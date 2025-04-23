@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-136166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EB0A992DB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B4EA991CA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E692F924BE9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EF1F7AC5A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB552949F6;
-	Wed, 23 Apr 2025 15:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0172329B777;
+	Wed, 23 Apr 2025 15:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J42skv6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1x4Q/3/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F9F28EB;
-	Wed, 23 Apr 2025 15:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C1B28B4F4;
+	Wed, 23 Apr 2025 15:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421832; cv=none; b=rQAANm/Emh8bzNPKYiT8VXeAWZpJ+WRFT4783hFw4MH+MZy8knQPFGWaTheX2FPHHw0ZKnwgnaQ4/4fi/FcZ7PVHRYjg/8B4z32dEy0hBgDx2IFjbPt2xzffUMawuYCOONVuaSt8HdNKNBkJ7XW7rYaUKQo1Y+0ch+cHvuFu7Ww=
+	t=1745421842; cv=none; b=fu2S6zq1+VyumNhVBvTvLHEnzreuEPI+wszjIp6RgcqZ6WarqfaArBt83Si9LWEe79Ctghi7At+WuFAi1QxUVhar4wFOBEiIoyb0bK5/4RCUOuriXiG84q3djZG35fAwDmGh/ChD+QEbwiRpExwqEaiDguK33kKkBKs0vb3/MV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421832; c=relaxed/simple;
-	bh=CK+Hhj0cwlAsf8AbLbFfrDWK2eIVDuVDD0xo4r2chuM=;
+	s=arc-20240116; t=1745421842; c=relaxed/simple;
+	bh=vp0WZVQdHq+9o8vFCDtP8GoSLb4jaJU/UFaypugaswY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DB2uu8YCLIw2khaT+tAhIaJlAM5W/u2HRIciNWD23lIXCG6NBKgVWU0N8/PQqMvYKEev987z9K0FYpFxE/mEQfGGvouRF+s+ZqDbkMAEigrZpwtyWnaGWUtKNsdwk6KYGELHzo66fPXhbDDHfO0zURVxLGq5zwqNkTn2Vjr4KIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J42skv6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DCBC4CEEC;
-	Wed, 23 Apr 2025 15:23:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AF4tOxXDpKqKVrl8XO8UfZuXQh7zlgp9x9wMDfmptsbUyUz6k+zMzImHZxa5SSph7B57r/q4IHKxOwk82Y6OBGMgeUBe83uoOl0YhiUHbeAMITRmAScX7bom0VEZgqVxeInsEbaKWpqutb7V4jXlLzsR9AhJOh8HpIL9Mup+vrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1x4Q/3/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3AAC4CEE2;
+	Wed, 23 Apr 2025 15:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421831;
-	bh=CK+Hhj0cwlAsf8AbLbFfrDWK2eIVDuVDD0xo4r2chuM=;
+	s=korg; t=1745421842;
+	bh=vp0WZVQdHq+9o8vFCDtP8GoSLb4jaJU/UFaypugaswY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J42skv6RxUo5Pvab0cYBRFSqcEZroUyirxk2bdm2mUTPWpkpEZPnpDLfNq1HiWn7+
-	 mJUAqmzcKEU+oeAQlkSqgH3RSJh0glC98RPeJBW4kaFIdUmc9nJKMdtEpGFp93qvZY
-	 BtaW/Akjf5JbBwOpKJ0tCBV/jjAeqbMEqYsTq7s4=
+	b=1x4Q/3/ak47PQTNq7WsrcCkNtjj//RHqLkWEjuU8jLh9ZEAB99jPkXYArytCX+TzD
+	 J8IK+rlYpj6O7lN2WWmzmxsvDwLQ8hEebCvypoTTmLi+5uNY+DBNDiWW9lr4qAF1nD
+	 Yi83ugycPTGbsar8DinBOHUx1TRJPfcbdB+IPaBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	WangYuli <wangyuli@uniontech.com>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.14 238/241] MIPS: dec: Declare which_prom() as static
-Date: Wed, 23 Apr 2025 16:45:02 +0200
-Message-ID: <20250423142630.295271079@linuxfoundation.org>
+Subject: [PATCH 6.14 239/241] MIPS: cevt-ds1287: Add missing ds1287.h include
+Date: Wed, 23 Apr 2025 16:45:03 +0200
+Message-ID: <20250423142630.333703149@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -68,40 +68,45 @@ Content-Transfer-Encoding: 8bit
 
 From: WangYuli <wangyuli@uniontech.com>
 
-commit 55fa5868519bc48a7344a4c070efa2f4468f2167 upstream.
+commit f3be225f338a578851a7b607a409f476354a8deb upstream.
 
-Declare which_prom() as static to suppress gcc compiler warning that
-'missing-prototypes'. This function is not intended to be called
-from other parts.
+Address the issue of cevt-ds1287.c not including the ds1287.h header
+file.
 
-Fix follow error with gcc-14 when -Werror:
+Fix follow errors with gcc-14 when -Werror:
 
-arch/mips/dec/prom/init.c:45:13: error: no previous prototype for ‘which_prom’ [-Werror=missing-prototypes]
-   45 | void __init which_prom(s32 magic, s32 *prom_vec)
-      |             ^~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:15:5: error: no previous prototype for ‘ds1287_timer_state’ [-Werror=missing-prototypes]
+   15 | int ds1287_timer_state(void)
+      |     ^~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:20:5: error: no previous prototype for ‘ds1287_set_base_clock’ [-Werror=missing-prototypes]
+   20 | int ds1287_set_base_clock(unsigned int hz)
+      |     ^~~~~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:103:12: error: no previous prototype for ‘ds1287_clockevent_init’ [-Werror=missing-prototypes]
+  103 | int __init ds1287_clockevent_init(int irq)
+      |            ^~~~~~~~~~~~~~~~~~~~~~
 cc1: all warnings being treated as errors
-make[6]: *** [scripts/Makefile.build:207: arch/mips/dec/prom/init.o] Error 1
-make[5]: *** [scripts/Makefile.build:465: arch/mips/dec/prom] Error 2
-make[5]: *** Waiting for unfinished jobs....
+make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
+make[7]: *** Waiting for unfinished jobs....
+make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
+make[6]: *** Waiting for unfinished jobs....
 
 Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/dec/prom/init.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/kernel/cevt-ds1287.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/mips/dec/prom/init.c
-+++ b/arch/mips/dec/prom/init.c
-@@ -42,7 +42,7 @@ int (*__pmax_close)(int);
-  * Detect which PROM the DECSTATION has, and set the callback vectors
-  * appropriately.
-  */
--void __init which_prom(s32 magic, s32 *prom_vec)
-+static void __init which_prom(s32 magic, s32 *prom_vec)
- {
- 	/*
- 	 * No sign of the REX PROM's magic number means we assume a non-REX
+--- a/arch/mips/kernel/cevt-ds1287.c
++++ b/arch/mips/kernel/cevt-ds1287.c
+@@ -10,6 +10,7 @@
+ #include <linux/mc146818rtc.h>
+ #include <linux/irq.h>
+ 
++#include <asm/ds1287.h>
+ #include <asm/time.h>
+ 
+ int ds1287_timer_state(void)
 
 
 
