@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-135411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DEABA98E19
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71687A98D9C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 193F43B18D3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 028407A8BC0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C822B27F4F3;
-	Wed, 23 Apr 2025 14:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012C227FD63;
+	Wed, 23 Apr 2025 14:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEtblz5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMMCeCcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8437927CB12;
-	Wed, 23 Apr 2025 14:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CED280A5C;
+	Wed, 23 Apr 2025 14:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419853; cv=none; b=q6g1EnxzuNQsuWwAh51kmiTVWU2MF3WF8SFaq8D7ReiOEe87BgHyjBivu9VFDz550pW8eUu6HWLczJb+0gO69iLD9os5p22EWk6+UrMgEfwcUMJX7t8VCBrS9Pt7Bvc3mB72lbS61SETssdsvI5VqYM2jQIMwoqa0up/n+/zdBI=
+	t=1745419631; cv=none; b=X8uQ6rQJSXZdmmLzLE4iopbpVzu2ojCLDRdQQuIGjkHk7SHTgsl3aBszJa6AMR+7bXGbOO7MsygLXGjTkpkIsRi3UeCBz+fLSSdcNjSm7QDJHZvnl0vKkhspDroYF9fuH6KKbiSSFX6LbWQn9WfHaE51ueZNDDlrmivFjXeEWpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419853; c=relaxed/simple;
-	bh=3Z9qNE1DOvmyTUFJAcoocuXHiqM5r5eqf3Z6muIQqiA=;
+	s=arc-20240116; t=1745419631; c=relaxed/simple;
+	bh=qbJ9cXhEe9uj1xOREdA8n+AM5aAzDx8fqFIO4rjOqtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAB9XSj+jPKDdVjPfc3UeCfLYkNlx7/xU/5v21GY3he1F2fnkV2Il5kyU4YfR0uFE9TOQLw41zHQIYnUT9vl7k/UHIO9yHgXeWjbeKiO3kUm1r+8GnN1345Gc5jrOhJKt/focP0VsHsqUiO+IembredMII5Gwy+3yqMT07PUZxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEtblz5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47CFC4CEE2;
-	Wed, 23 Apr 2025 14:50:52 +0000 (UTC)
+	 MIME-Version; b=SiCO1jD8Leg9YXAUOozC9e8M84Q504Qxwycs9q8RtjFS2RijPx1CX4AaDSTwIM+QuYxWl5ZnLyBf7jjNKn4m7andF5y6CdwAXAw639VmVb9R1a2pRJ+WFEEZaLHP0w5zKdsLZ2WKvyz00+RV8iSxd+ndZCAT/b4P6bt/1+6HPlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMMCeCcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38A9C4CEE2;
+	Wed, 23 Apr 2025 14:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419853;
-	bh=3Z9qNE1DOvmyTUFJAcoocuXHiqM5r5eqf3Z6muIQqiA=;
+	s=korg; t=1745419631;
+	bh=qbJ9cXhEe9uj1xOREdA8n+AM5aAzDx8fqFIO4rjOqtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XEtblz5Fl3ECDKHgfdURDZWvhOKjwaBZp70qAUNU4BTkIhXx3NHtaRaqbms49nhRZ
-	 n2DNjuIltMG6COjjaIQHNesL2dUkB+WJ/xv0LdAtZwiL+0UxnAU/r46qpN8QOS22gQ
-	 qDv7S9jNhZOZk9zkOpVwu70QLmGU6CWIJIbBDIi0=
+	b=lMMCeCcLJ9qwEfky7l2Ub/gT6mAwz+wYobSnOJHYVMfe1KMfpY8T5CYBXfU/F/NZj
+	 qmc5roqfPi/eLu9VJPZhp1LSnwRUuJiKsJhtjE20kxnLkRAu7Uuu/7SvGxXnOt6+oZ
+	 P58bXT5pWJjAROiWZdXeuk1p4LGhj7LKVKG2grR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 035/241] igc: move ktime snapshot into PTM retry loop
+Subject: [PATCH 6.12 027/223] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
 Date: Wed, 23 Apr 2025 16:41:39 +0200
-Message-ID: <20250423142621.950662564@linuxfoundation.org>
+Message-ID: <20250423142618.218897106@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,61 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit cd7f7328d691937102732f39f97ead35b15bf803 ]
+[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
 
-Move ktime_get_snapshot() into the loop. If a retry does occur, a more
-recent snapshot will result in a more accurate cross-timestamp.
+This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
+(00:00:00:00:00:00) which is a regression introduced by
+a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+since in the attempt to skip storing data for extended advertisement it
+actually made the code to skip the entire if statement supposed to send
+MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
+is garanteed to be invalid for extended advertisement since we never
+store anything on it.
 
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://github.com/bluez/bluez/issues/1157
+Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
+Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/bluetooth/hci_event.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index c640e346342be..516abe7405dee 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -1011,16 +1011,16 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
- 	int err, count = 100;
- 	ktime_t t1, t2_curr;
- 
--	/* Get a snapshot of system clocks to use as historic value. */
--	ktime_get_snapshot(&adapter->snapshot);
--
-+	/* Doing this in a loop because in the event of a
-+	 * badly timed (ha!) system clock adjustment, we may
-+	 * get PTM errors from the PCI root, but these errors
-+	 * are transitory. Repeating the process returns valid
-+	 * data eventually.
-+	 */
- 	do {
--		/* Doing this in a loop because in the event of a
--		 * badly timed (ha!) system clock adjustment, we may
--		 * get PTM errors from the PCI root, but these errors
--		 * are transitory. Repeating the process returns valid
--		 * data eventually.
--		 */
-+		/* Get a snapshot of system clocks to use as historic value. */
-+		ktime_get_snapshot(&adapter->snapshot);
-+
- 		igc_ptm_trigger(hw);
- 
- 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index d64117be62cc4..96ad1b75d1c4d 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6150,11 +6150,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 	 * event or send an immediate device found event if the data
+ 	 * should not be stored for later.
+ 	 */
+-	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
++	if (!has_pending_adv_report(hdev)) {
+ 		/* If the report will trigger a SCAN_REQ store it for
+ 		 * later merging.
+ 		 */
+-		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
++		if (!ext_adv && (type == LE_ADV_IND ||
++				 type == LE_ADV_SCAN_IND)) {
+ 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
+ 						 rssi, flags, data, len);
+ 			return;
 -- 
 2.39.5
 
