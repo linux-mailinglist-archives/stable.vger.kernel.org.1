@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EBCA98EBA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EE1A9903C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A8093B626A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6FC8E0467
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C087A1EFFB9;
-	Wed, 23 Apr 2025 14:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C129127F755;
+	Wed, 23 Apr 2025 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eM+NsZih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSphAvqe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7475A175BF;
-	Wed, 23 Apr 2025 14:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F61D27CB12;
+	Wed, 23 Apr 2025 15:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420139; cv=none; b=OEzpsO2xRVlbPIsV4iYmuuREmQ9vMh3clc3WKzGsp0X4OndTNzBCXfKfPmXpKmz8xQfo1+pB+mZ9NWK0eBPgyNSc5q6h3uTMO6e8RrBvef/CrzHU/0PQZ0hpx3AkTO7cLI9ID1cN2f0+Ynff6dUpy66+ltf6ZcuSJDJt1VkxbCw=
+	t=1745420657; cv=none; b=lCaFkt2ibxW8iHcZ5bAswyypYsDDRzHwDFEXKxp6EcapNKzpH9WJk5jkeY88vqKhOXeNfMv/9URusAHIVGsQHMGDtszX7LGqlaaLx7jdo/Gvp4j0Y5UVuP8Bwqq496PvKe48OTQIqVvAPHMnK8Jg/y5e8h5SO46+69OXfuS/cPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420139; c=relaxed/simple;
-	bh=RpL8mooEoxNIs4qvwjTD2Z9v++ie9mIlQ2mie0j2C6M=;
+	s=arc-20240116; t=1745420657; c=relaxed/simple;
+	bh=1jDJiwgAo5D/k1M07iANLtFEcCzwOgZHM+c/bclVTuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZV5DOCb5zZ18jWWh+4NqPwyxnW2WFgp9nrB2DzTU1Z1VGjiuulQgbBSITGn/gInHvOMf+rhytKutBCK9k6pjycNCOGI6Rj+UAudxiNoVAG9Fk9FPiew2T3QvgJNnXIyOcNMRAubW89nTwNX2vjxuRafpTgUDbqFPji5e4thVzuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM+NsZih; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072B0C4CEE2;
-	Wed, 23 Apr 2025 14:55:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j/iGm0JfVcyUtPF6F7/gQP57wct/R6W38TodKtwWpVkx56exXQlic2w4B0AFlPFOvhX9VCXNJzh98zYULN6J5DfcXcEpysQry9LfO9QQrmzQ6RjT11ipYNeH3hBZOrFueX/Q3lhWqXuxhhqEW7ld77qLPPcriIM9uQrXHEoVyq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSphAvqe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A915CC4CEE2;
+	Wed, 23 Apr 2025 15:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420139;
-	bh=RpL8mooEoxNIs4qvwjTD2Z9v++ie9mIlQ2mie0j2C6M=;
+	s=korg; t=1745420656;
+	bh=1jDJiwgAo5D/k1M07iANLtFEcCzwOgZHM+c/bclVTuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eM+NsZihq4d5gEsMbNoI0jxfk3tVr2lTA1l8sy/yEQPjJp9Bxk0MOKlFawU4EG69h
-	 YqHBtmNpbcsp+vpZ+/jix+TCxdgcNyj2ZIqKiaF3T32lMfDf/SRjy4k6GP0t8oOnrF
-	 FMjFopx3VTGSkzKFccH9qaTcR5m/PB0mI1/DeEII=
+	b=JSphAvqe3AAb0aTp8bI8eC8ZK0Xi/Ps5JsVki3WBm7OZNsNWEqY1xfEpzkyVZC0nu
+	 XkypGCG04C+/tDrbUjgOqOQBl0SkGznqkHEiOnarFEPS//E3MySBOs1YCGFly3kf2q
+	 DHbeDCfayatEPheG0gbE2n8esiDyINGEt3xcM5V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/223] fs: move the bdex_statx call to vfs_getattr_nosec
+	Denis Arefev <arefev@swemel.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.14 111/241] asus-laptop: Fix an uninitialized variable
 Date: Wed, 23 Apr 2025 16:42:55 +0200
-Message-ID: <20250423142621.311212609@linuxfoundation.org>
+Message-ID: <20250423142625.114291047@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,129 +62,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 777d0961ff95b26d5887fdae69900374364976f3 ]
+commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
 
-Currently bdex_statx is only called from the very high-level
-vfs_statx_path function, and thus bypassing it for in-kernel calls
-to vfs_getattr or vfs_getattr_nosec.
+The value returned by acpi_evaluate_integer() is not checked,
+but the result is not always successful, so it is necessary to
+add a check of the returned value.
 
-This breaks querying the block ѕize of the underlying device in the
-loop driver and also is a pitfall for any other new kernel caller.
+If the result remains negative during three iterations of the loop,
+then the uninitialized variable 'val' will be used in the clamp_val()
+macro, so it must be initialized with the current value of the 'curr'
+variable.
 
-Move the call into the lowest level helper to ensure all callers get
-the right results.
+In this case, the algorithm should be less noisy.
 
-Fixes: 2d985f8c6b91 ("vfs: support STATX_DIOALIGN on block devices")
-Fixes: f4774e92aab8 ("loop: take the file system minimum dio alignment into account")
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/20250417064042.712140-1-hch@lst.de
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bdev.c           |  3 +--
- fs/stat.c              | 32 ++++++++++++++++++--------------
- include/linux/blkdev.h |  6 +++---
- 3 files changed, 22 insertions(+), 19 deletions(-)
+ drivers/platform/x86/asus-laptop.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index 738e3c8457e7f..1f1282a0dc653 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -1269,8 +1269,7 @@ void sync_bdevs(bool wait)
- /*
-  * Handle STATX_{DIOALIGN, WRITE_ATOMIC} for block devices.
-  */
--void bdev_statx(struct path *path, struct kstat *stat,
--		u32 request_mask)
-+void bdev_statx(const struct path *path, struct kstat *stat, u32 request_mask)
- {
- 	struct inode *backing_inode;
- 	struct block_device *bdev;
-diff --git a/fs/stat.c b/fs/stat.c
-index b399b881bbbf9..8ce0fc9cad5d0 100644
---- a/fs/stat.c
-+++ b/fs/stat.c
-@@ -162,12 +162,25 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
- 				  STATX_ATTR_DAX);
+--- a/drivers/platform/x86/asus-laptop.c
++++ b/drivers/platform/x86/asus-laptop.c
+@@ -426,11 +426,14 @@ static int asus_pega_lucid_set(struct as
  
- 	idmap = mnt_idmap(path->mnt);
--	if (inode->i_op->getattr)
--		return inode->i_op->getattr(idmap, path, stat,
--					    request_mask,
--					    query_flags);
-+	if (inode->i_op->getattr) {
-+		int ret;
-+
-+		ret = inode->i_op->getattr(idmap, path, stat, request_mask,
-+				query_flags);
-+		if (ret)
-+			return ret;
-+	} else {
-+		generic_fillattr(idmap, request_mask, inode, stat);
-+	}
-+
-+	/*
-+	 * If this is a block device inode, override the filesystem attributes
-+	 * with the block device specific parameters that need to be obtained
-+	 * from the bdev backing inode.
-+	 */
-+	if (S_ISBLK(stat->mode))
-+		bdev_statx(path, stat, request_mask);
- 
--	generic_fillattr(idmap, request_mask, inode, stat);
- 	return 0;
- }
- EXPORT_SYMBOL(vfs_getattr_nosec);
-@@ -260,15 +273,6 @@ static int vfs_statx_path(struct path *path, int flags, struct kstat *stat,
- 	if (path_mounted(path))
- 		stat->attributes |= STATX_ATTR_MOUNT_ROOT;
- 	stat->attributes_mask |= STATX_ATTR_MOUNT_ROOT;
--
--	/*
--	 * If this is a block device inode, override the filesystem
--	 * attributes with the block device specific parameters that need to be
--	 * obtained from the bdev backing inode.
--	 */
--	if (S_ISBLK(stat->mode))
--		bdev_statx(path, stat, request_mask);
--
- 	return 0;
- }
- 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 8f37c5dd52b21..2aa9cb446c6c8 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1624,7 +1624,7 @@ int sync_blockdev(struct block_device *bdev);
- int sync_blockdev_range(struct block_device *bdev, loff_t lstart, loff_t lend);
- int sync_blockdev_nowait(struct block_device *bdev);
- void sync_bdevs(bool wait);
--void bdev_statx(struct path *, struct kstat *, u32);
-+void bdev_statx(const struct path *path, struct kstat *stat, u32 request_mask);
- void printk_all_partitions(void);
- int __init early_lookup_bdev(const char *pathname, dev_t *dev);
- #else
-@@ -1642,8 +1642,8 @@ static inline int sync_blockdev_nowait(struct block_device *bdev)
- static inline void sync_bdevs(bool wait)
+ static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
  {
- }
--static inline void bdev_statx(struct path *path, struct kstat *stat,
--				u32 request_mask)
-+static inline void bdev_statx(const struct path *path, struct kstat *stat,
-+		u32 request_mask)
- {
- }
- static inline void printk_all_partitions(void)
--- 
-2.39.5
-
++	unsigned long long val = (unsigned long long)curr;
++	acpi_status status;
+ 	int i, delta;
+-	unsigned long long val;
+-	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
+-		acpi_evaluate_integer(asus->handle, method, NULL, &val);
+ 
++	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
++		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
++		if (ACPI_FAILURE(status))
++			continue;
+ 		/* The output is noisy.  From reading the ASL
+ 		 * dissassembly, timeout errors are returned with 1's
+ 		 * in the high word, and the lack of locking around
 
 
 
