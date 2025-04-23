@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-135475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF71A98E6A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0110A98E57
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62C395A2C40
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100CD16C5CA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529FC269826;
-	Wed, 23 Apr 2025 14:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E281027FD73;
+	Wed, 23 Apr 2025 14:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNORmj1+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYSjIh7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB41381BA;
-	Wed, 23 Apr 2025 14:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AA623D298;
+	Wed, 23 Apr 2025 14:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420021; cv=none; b=ZlyNEYHgiJe8w5//9C/jQ92wDoromCT+dygkZXnfLbw1ZjkRHeWIdZFHpFmP2GSF6n4YSZTV29sZyClIcAHrTwC1RMMxA2AftfL+nKVrffDaSPACtgbZLqohlGNebVFluw8DXOSMS+PDZtn4KQ2E1gIz6LKwpoQdZRL8GMy1XCI=
+	t=1745420034; cv=none; b=fTbqfcpHphzxI3ToqcqZAzbr6zhBNniLxN+Ha7Mel8HxXQvjWSwBIJJjKwBWWrdW7EC6pjmmkn18rAxYIRmRszZJePfkJ/VQliJbbXjS6eWsMswGgbg5PK7oskiw2PoBxUtAtxy4u64qn+9jJLDBenTbZqnUxsBYYyHJ3RVz5xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420021; c=relaxed/simple;
-	bh=+6R7jy++AODK32EdpUccDLuD9pjfe0GohYW8BsuCfmg=;
+	s=arc-20240116; t=1745420034; c=relaxed/simple;
+	bh=Ab7j/RIEcm8b03Nsm4bMCRHTzf6wAtow3D3rbari7jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2PAXHoWQpZJMQJw7/Ev7+CpfS9SmCxpsSsN4np4kH0pqKPVPyizBKY2qQa2ILHbCkdDoV1Yymc0H9wrekjNN6+jp2iqTeNNq8uEL+Gh1OUm0SXpvDac0NIFafGV1jHddD5BQliApkQog7eYDqmkIFDYrOrqXDOfkV7P0H7pzJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNORmj1+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91185C4CEE2;
-	Wed, 23 Apr 2025 14:53:40 +0000 (UTC)
+	 MIME-Version; b=blLvwR6AmjYqvwvqlQUWplj5YXq+VBn4jARUUM0ponC4scjAPTnYw1EUOsWJ7gNY2QpyEmIngVMfaH5vAHYLJq97ujry0tmVAeVeFSK9HiqXKkVOucjLZOHz+7+tYpLPj6oyPpY/yhAf1dr0wpkI8ondgfv2DEHA0ER/3hzTVjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYSjIh7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D039FC4CEE3;
+	Wed, 23 Apr 2025 14:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420020;
-	bh=+6R7jy++AODK32EdpUccDLuD9pjfe0GohYW8BsuCfmg=;
+	s=korg; t=1745420034;
+	bh=Ab7j/RIEcm8b03Nsm4bMCRHTzf6wAtow3D3rbari7jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNORmj1+K/8mxzKTUPbcIRpyCOWWToXwKnRv/JhqpuIzDm7uXJmmsI8EJVKCANRNa
-	 kvfcJW5mS9vSyT+8gA9olzbOcuHfO2pa50ljFq6Pxa8F4TbYXIbQ5ca5J3+7UY+zzv
-	 wCVxJfOqYy97wBt/4eijiW4/wQGxY5aVmVRROtLY=
+	b=hYSjIh7za2LDrMQCCalzlA2aC/+vQewjFU5dp6W43g88iXXA951LYvl54xs8wVc/R
+	 XLiVsafw70NUYZCFoCZjcH+RZnKbvbidA/Wp69/jSKb6cXRHF8hIyslwBeqW7+qZYa
+	 vlciIX50FGp9B74/0QHS9B+qCAnCXX9o9CSSftKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Simon Horman <horms@kernel.org>,
-	Michal Kubecek <mkubecek@suse.cz>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/291] net: ethtool: Dont call .cleanup_data when prepare_data fails
-Date: Wed, 23 Apr 2025 16:39:59 +0200
-Message-ID: <20250423142624.829914585@linuxfoundation.org>
+Subject: [PATCH 6.1 011/291] ata: sata_sx4: Add error handling in pdc20621_i2c_read()
+Date: Wed, 23 Apr 2025 16:40:00 +0200
+Message-ID: <20250423142624.871861250@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -69,76 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 4f038a6a02d20859a3479293cbf172b0f14cbdd6 ]
+[ Upstream commit 8d46a27085039158eb5e253ab8a35a0e33b5e864 ]
 
-There's a consistent pattern where the .cleanup_data() callback is
-called when .prepare_data() fails, when it should really be called to
-clean after a successful .prepare_data() as per the documentation.
+The function pdc20621_prog_dimm0() calls the function pdc20621_i2c_read()
+but does not handle the error if the read fails. This could lead to
+process with invalid data. A proper implementation can be found in
+/source/drivers/ata/sata_sx4.c, pdc20621_prog_dimm_global(). As mentioned
+in its commit: bb44e154e25125bef31fa956785e90fccd24610b, the variable spd0
+might be used uninitialized when pdc20621_i2c_read() fails.
 
-Rewrite the error-handling paths to make sure we don't cleanup
-un-prepared data.
+Add error handling to pdc20621_i2c_read(). If a read operation fails,
+an error message is logged via dev_err(), and return a negative error
+code.
 
-Fixes: c781ff12a2f3 ("ethtool: Allow network drivers to dump arbitrary EEPROM data")
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Michal Kubecek <mkubecek@suse.cz>
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250407130511.75621-1-maxime.chevallier@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Add error handling to pdc20621_prog_dimm0() in pdc20621_dimm_init(), and
+return a negative error code if pdc20621_prog_dimm0() fails.
+
+Fixes: 4447d3515616 ("libata: convert the remaining SATA drivers to new init model")
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/netlink.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/ata/sata_sx4.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index e5efdf2817eff..98c0641138825 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -384,7 +384,7 @@ static int ethnl_default_doit(struct sk_buff *skb, struct genl_info *info)
- 	ret = ops->prepare_data(req_info, reply_data, info);
- 	rtnl_unlock();
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_dev;
- 	ret = ops->reply_size(req_info, reply_data);
- 	if (ret < 0)
- 		goto err_cleanup;
-@@ -442,7 +442,7 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
- 	ret = ctx->ops->prepare_data(ctx->req_info, ctx->reply_data, NULL);
- 	rtnl_unlock();
- 	if (ret < 0)
--		goto out;
-+		goto out_cancel;
- 	ret = ethnl_fill_reply_header(skb, dev, ctx->ops->hdr_attr);
- 	if (ret < 0)
- 		goto out;
-@@ -451,6 +451,7 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
- out:
- 	if (ctx->ops->cleanup_data)
- 		ctx->ops->cleanup_data(ctx->reply_data);
-+out_cancel:
- 	ctx->reply_data->dev = NULL;
- 	if (ret < 0)
- 		genlmsg_cancel(skb, ehdr);
-@@ -636,7 +637,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
- 	ethnl_init_reply_data(reply_data, ops, dev);
- 	ret = ops->prepare_data(req_info, reply_data, NULL);
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_rep;
- 	ret = ops->reply_size(req_info, reply_data);
- 	if (ret < 0)
- 		goto err_cleanup;
-@@ -671,6 +672,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
- err_cleanup:
- 	if (ops->cleanup_data)
- 		ops->cleanup_data(reply_data);
-+err_rep:
- 	kfree(reply_data);
- 	kfree(req_info);
- 	return;
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index fa1966638c060..c524634fd9265 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -1118,9 +1118,14 @@ static int pdc20621_prog_dimm0(struct ata_host *host)
+ 	mmio += PDC_CHIP0_OFS;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(pdc_i2c_read_data); i++)
+-		pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
+-				  pdc_i2c_read_data[i].reg,
+-				  &spd0[pdc_i2c_read_data[i].ofs]);
++		if (!pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
++				       pdc_i2c_read_data[i].reg,
++				       &spd0[pdc_i2c_read_data[i].ofs])) {
++			dev_err(host->dev,
++				"Failed in i2c read at index %d: device=%#x, reg=%#x\n",
++				i, PDC_DIMM0_SPD_DEV_ADDRESS, pdc_i2c_read_data[i].reg);
++			return -EIO;
++		}
+ 
+ 	data |= (spd0[4] - 8) | ((spd0[21] != 0) << 3) | ((spd0[3]-11) << 4);
+ 	data |= ((spd0[17] / 4) << 6) | ((spd0[5] / 2) << 7) |
+@@ -1285,6 +1290,8 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 
+ 	/* Programming DIMM0 Module Control Register (index_CID0:80h) */
+ 	size = pdc20621_prog_dimm0(host);
++	if (size < 0)
++		return size;
+ 	dev_dbg(host->dev, "Local DIMM Size = %dMB\n", size);
+ 
+ 	/* Programming DIMM Module Global Control Register (index_CID0:88h) */
 -- 
 2.39.5
 
