@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-136281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 064E4A9937D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE75A98EF3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C80D1B82FBD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41C89189E32D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D24280CD1;
-	Wed, 23 Apr 2025 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B5A27FD7F;
+	Wed, 23 Apr 2025 14:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skoI6Aqf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utN1cGDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8172B26A082;
-	Wed, 23 Apr 2025 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EDC263C9E;
+	Wed, 23 Apr 2025 14:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422133; cv=none; b=hBrnY1G+I6Pi/dpzh2qho194ilH1A5gxVILir1Y1cyuPN6gDQEGJzF81EF04DLeCV86cmMkoVX1dMowsY3GQUM3vOXqAtghse8I9QCWirMkeqS28CdNB2Khqvkp62f4C6L1GTVVltJrAeYHeYH4oPaxAuqgurE+eTzhvgGWPhZI=
+	t=1745420210; cv=none; b=U6AqwYRtiQy0kkFwTezmumEBdQ5DWjpz3ehrfP78U6Ue2XzyOygm7LXZNICA6NzmYbVdtec2opcW+8UNUvOVxRtlo7o7Jc5ptxSMBjaBxKpblxm3g20C/pMA4LkKymETwFrefw/agbZzc992b4pUICrCtm50BJoKFwM05PviDYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422133; c=relaxed/simple;
-	bh=7o2noUH7fVOMAwUY9i2GAPvok+5TNrxvWXu8NzID/9Q=;
+	s=arc-20240116; t=1745420210; c=relaxed/simple;
+	bh=6A5vRu94R1SedrAmTNxxYW+JihBSh6dGTAQfusjXTWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTqrGZI4wwws+A8APCH8YaAhdd7dDb17SwkPoNy1aEw62NbN0yjJFucE9svhEesAF2RKSM1WwVHfsdTHBVCDyTBSYC2RZ69oMA+aBFKqOMIy+sAStPrJBIHA37AeGP5a6JXafCTTBzi2NOhC0+Wm36CXVur/Y1syyavbanTJBj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skoI6Aqf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1408CC4CEED;
-	Wed, 23 Apr 2025 15:28:52 +0000 (UTC)
+	 MIME-Version; b=Rqt8E62hEB66Ou9CEv/LIpufoEJm8RmpJsrvcCwwC+2PTrWSpYCGqTO4aFRsjBN43Knr4QTgpsCiTTGc0Cu5VWQyrLidC/TELXPkGC/u4x5jx7eXbKTH3Bwz+ixEKUG3NNP0r1yVnqfusFCG5BpLDhKfO56oegdoSyJTdi8G8Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utN1cGDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5751AC4CEE2;
+	Wed, 23 Apr 2025 14:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422133;
-	bh=7o2noUH7fVOMAwUY9i2GAPvok+5TNrxvWXu8NzID/9Q=;
+	s=korg; t=1745420210;
+	bh=6A5vRu94R1SedrAmTNxxYW+JihBSh6dGTAQfusjXTWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skoI6Aqf1OgF/2H8otIHVbXLeO6Q7TmB4vTsQbHRtf3266PFOhRTkgtSRs6Bn/Kvy
-	 tV5cZD6w2OjrWBD6akBa1xuTZqtZWeY4KTQDYM6SVh7c09NJLOYrRQaJXPOdvVV9Qd
-	 ffnP0cFcNEsV+pVVoCfLZu5/nV9Pq1dSDVqmX17Q=
+	b=utN1cGDGev45rOkaK3GBwlssmenNCW61qY7tPC/JM9S7dsRxgccU4Ddg6zKEugRAu
+	 1zwelGEKGsHSHl+YRPB/tR0XV700Ji/4JETH5NuUPEatWxtgaR2Oj23uSIauz0rXaD
+	 WjLo+p8Etsa27zBTWeoxlK/arT8hIYyjiT0mMkFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/393] net: dsa: mv88e6xxx: avoid unregistering devlink regions which were never registered
-Date: Wed, 23 Apr 2025 16:43:00 +0200
-Message-ID: <20250423142655.074885010@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>
+Subject: [PATCH 6.12 109/223] cpufreq/sched: Explicitly synchronize limits_changed flag handling
+Date: Wed, 23 Apr 2025 16:43:01 +0200
+Message-ID: <20250423142621.552337794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c84f6ce918a9e6f4996597cbc62536bbf2247c96 ]
+commit 79443a7e9da3c9f68290a8653837e23aba0fa89f upstream.
 
-Russell King reports that a system with mv88e6xxx dereferences a NULL
-pointer when unbinding this driver:
-https://lore.kernel.org/netdev/Z_lRkMlTJ1KQ0kVX@shell.armlinux.org.uk/
+The handling of the limits_changed flag in struct sugov_policy needs to
+be explicitly synchronized to ensure that cpufreq policy limits updates
+will not be missed in some cases.
 
-The crash seems to be in devlink_region_destroy(), which is not NULL
-tolerant but is given a NULL devlink global region pointer.
+Without that synchronization it is theoretically possible that
+the limits_changed update in sugov_should_update_freq() will be
+reordered with respect to the reads of the policy limits in
+cpufreq_driver_resolve_freq() and in that case, if the limits_changed
+update in sugov_limits() clobbers the one in sugov_should_update_freq(),
+the new policy limits may not take effect for a long time.
 
-At least on some chips, some devlink regions are conditionally registered
-since the blamed commit, see mv88e6xxx_setup_devlink_regions_global():
+Likewise, the limits_changed update in sugov_limits() may theoretically
+get reordered with respect to the updates of the policy limits in
+cpufreq_set_policy() and if sugov_should_update_freq() runs between
+them, the policy limits change may be missed.
 
-		if (cond && !cond(chip))
-			continue;
+To ensure that the above situations will not take place, add memory
+barriers preventing the reordering in question from taking place and
+add READ_ONCE() and WRITE_ONCE() annotations around all of the
+limits_changed flag updates to prevent the compiler from messing up
+with that code.
 
-These are MV88E6XXX_REGION_STU and MV88E6XXX_REGION_PVT. If the chip
-does not have an STU or PVT, it should crash like this.
-
-To fix the issue, avoid unregistering those regions which are NULL, i.e.
-were skipped at mv88e6xxx_setup_devlink_regions_global() time.
-
-Fixes: 836021a2d0e0 ("net: dsa: mv88e6xxx: Export cross-chip PVT as devlink region")
-Tested-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212850.2953957-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 600f5badb78c ("cpufreq: schedutil: Don't skip freq update when limits change")
+Cc: 5.3+ <stable@vger.kernel.org> # 5.3+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/3376719.44csPzL39Z@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/devlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/cpufreq_schedutil.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/devlink.c b/drivers/net/dsa/mv88e6xxx/devlink.c
-index a08dab75e0c0c..f57fde02077d2 100644
---- a/drivers/net/dsa/mv88e6xxx/devlink.c
-+++ b/drivers/net/dsa/mv88e6xxx/devlink.c
-@@ -743,7 +743,8 @@ void mv88e6xxx_teardown_devlink_regions_global(struct dsa_switch *ds)
- 	int i;
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -81,9 +81,20 @@ static bool sugov_should_update_freq(str
+ 	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
+ 		return false;
  
- 	for (i = 0; i < ARRAY_SIZE(mv88e6xxx_regions); i++)
--		dsa_devlink_region_destroy(chip->regions[i]);
-+		if (chip->regions[i])
-+			dsa_devlink_region_destroy(chip->regions[i]);
+-	if (unlikely(sg_policy->limits_changed)) {
+-		sg_policy->limits_changed = false;
++	if (unlikely(READ_ONCE(sg_policy->limits_changed))) {
++		WRITE_ONCE(sg_policy->limits_changed, false);
+ 		sg_policy->need_freq_update = true;
++
++		/*
++		 * The above limits_changed update must occur before the reads
++		 * of policy limits in cpufreq_driver_resolve_freq() or a policy
++		 * limits update might be missed, so use a memory barrier to
++		 * ensure it.
++		 *
++		 * This pairs with the write memory barrier in sugov_limits().
++		 */
++		smp_mb();
++
+ 		return true;
+ 	}
+ 
+@@ -377,7 +388,7 @@ static inline bool sugov_hold_freq(struc
+ static inline void ignore_dl_rate_limit(struct sugov_cpu *sg_cpu)
+ {
+ 	if (cpu_bw_dl(cpu_rq(sg_cpu->cpu)) > sg_cpu->bw_min)
+-		sg_cpu->sg_policy->limits_changed = true;
++		WRITE_ONCE(sg_cpu->sg_policy->limits_changed, true);
  }
  
- void mv88e6xxx_teardown_devlink_regions_port(struct dsa_switch *ds, int port)
--- 
-2.39.5
-
+ static inline bool sugov_update_single_common(struct sugov_cpu *sg_cpu,
+@@ -900,7 +911,16 @@ static void sugov_limits(struct cpufreq_
+ 		mutex_unlock(&sg_policy->work_lock);
+ 	}
+ 
+-	sg_policy->limits_changed = true;
++	/*
++	 * The limits_changed update below must take place before the updates
++	 * of policy limits in cpufreq_set_policy() or a policy limits update
++	 * might be missed, so use a memory barrier to ensure it.
++	 *
++	 * This pairs with the memory barrier in sugov_should_update_freq().
++	 */
++	smp_wmb();
++
++	WRITE_ONCE(sg_policy->limits_changed, true);
+ }
+ 
+ struct cpufreq_governor schedutil_gov = {
 
 
 
