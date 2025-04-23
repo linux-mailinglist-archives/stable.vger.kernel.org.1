@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-136199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC2BA9933A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37034A99268
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69FD61BA754C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB9D81BA2E01
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56FBC28D840;
-	Wed, 23 Apr 2025 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F67296D0A;
+	Wed, 23 Apr 2025 15:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6p+86jF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/qGN7b+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1422928D836;
-	Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241C01EEA3E;
+	Wed, 23 Apr 2025 15:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421921; cv=none; b=CidrSWEHNR4gKeIrsxPir3kobIA3Pnt0cz0i9ahzoZlkLEvZt//dd63gVlHyLKUD9egSeLbM5qRVqT972NScEBxEHhmTUGsogJE4b+DvLxhVdGD81caFLJKVYBZuIuRpB6nD76v1CcLZffyL2iHWJAlwY1oButYTjVcFLdpyb+w=
+	t=1745421571; cv=none; b=S5ssPPDtY2ClFobOz2OWvF1A/4NrYp8VieUBYtrLRhfgldS6Hs6KGsZ9CwT1h9f0kSfjLMmJiEnHHW8LThCQiDmmyUIBuT0mKfWIeiw4LoMlDyHDPBNLYWAUa9af/dZjPAoiqIYhuBcc5GKep3PS7Y1J+MgqJP4keljGmtV2Wsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421921; c=relaxed/simple;
-	bh=sgd6GNaVjcm4Jk9f7st5Vly7X48fRaIBxZcchqpdJ8M=;
+	s=arc-20240116; t=1745421571; c=relaxed/simple;
+	bh=LQ+58w9d3+EVMBXIskyvrf0SlHDp9/k82pGtZKFOqrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yv8M57rCBz52elNEyCIf3xQ1oSUG+2y0mVwoZt+2grvO9L/RTLkt3hkto4r+bNmpOUs+L41ys3rZTWWTwYopYJlXzwMR+ouHjR1/J6u9sE3effkIEbpjLIiQ9zLdgMZzB3R7Cro8sPZJ8KynVvWGbYOvgsLQPEV45fGU3/gW4jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6p+86jF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3513AC4CEE3;
-	Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
+	 MIME-Version; b=RRPUcIeC6iqlAWwE0EAJeMyEpCpRDbvE6SeUvApt2NWvQHZxji1UOSNyAyfKiHAO58sY37ivbblIRVteOqYdUU6mkGB3g5K0nhju5eFXhLMolqAXWd27g+eVrrOnvbSuLV3ZtTYDSXeCC4RIP1jXF3FK8ttIXE93WI7JLa9opoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/qGN7b+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A314EC4CEE2;
+	Wed, 23 Apr 2025 15:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421918;
-	bh=sgd6GNaVjcm4Jk9f7st5Vly7X48fRaIBxZcchqpdJ8M=;
+	s=korg; t=1745421571;
+	bh=LQ+58w9d3+EVMBXIskyvrf0SlHDp9/k82pGtZKFOqrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6p+86jFtKjzDOx7TjiMXD43Jk59outcskD55kg+ceQ2nqyuF50EkI3AYyAxlLGG6
-	 T1Wz7sknuVaJLecDmKQ8+ANsTwR7cyaFQv9g23y/l+AVB1NywVPfSJu5QPqLkoFK6H
-	 ZdhjD8tNxOUUZzz2eLqCNfWOimlWW73xLEYs7ZDA=
+	b=u/qGN7b+QGb7mHyzC9xNAGFr5LyA8Z+ExnsEnMbzW28wiRv6C+hqy4m2BEz19BeD4
+	 sdG91SNe/3IWoKaAOhwFu80ncNMoNI4XpWgzRK8UgrTNcYeaOaZ8bb0WsOW0I8z/jA
+	 7F5LazwH2dXUpE5uZZFynzYwKqxHkwWUndC3MHdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/393] scsi: iscsi: Fix missing scsi_host_put() in error path
-Date: Wed, 23 Apr 2025 16:42:21 +0200
-Message-ID: <20250423142653.502319334@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.1 153/291] of/irq: Fix device node refcount leakages in of_irq_count()
+Date: Wed, 23 Apr 2025 16:42:22 +0200
+Message-ID: <20250423142630.645719125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 72eea84a1092b50a10eeecfeba4b28ac9f1312ab ]
+commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
 
-Add goto to ensure scsi_host_put() is called in all error paths of
-iscsi_set_host_param() function. This fixes a potential memory leak when
-strlen() check fails.
+of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
+invocation of the later will get device node @irq.np refcount, but the
+former does not put the refcount before next iteration invocation, hence
+causes device node refcount leakages.
 
-Fixes: ce51c8170084 ("scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20250318094344.91776-1-linmq006@gmail.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by putting @irq.np refcount before the next iteration invocation.
+
+Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/of/irq.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index deeb657981a69..0c30fec555475 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3208,11 +3208,14 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 	}
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -503,8 +503,10 @@ int of_irq_count(struct device_node *dev
+ 	struct of_phandle_args irq;
+ 	int nr = 0;
  
- 	/* see similar check in iscsi_if_set_param() */
--	if (strlen(data) > ev->u.set_host_param.len)
--		return -EINVAL;
-+	if (strlen(data) > ev->u.set_host_param.len) {
-+		err = -EINVAL;
-+		goto out;
+-	while (of_irq_parse_one(dev, nr, &irq) == 0)
++	while (of_irq_parse_one(dev, nr, &irq) == 0) {
++		of_node_put(irq.np);
+ 		nr++;
 +	}
  
- 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
- 					data, ev->u.set_host_param.len);
-+out:
- 	scsi_host_put(shost);
- 	return err;
+ 	return nr;
  }
--- 
-2.39.5
-
 
 
 
