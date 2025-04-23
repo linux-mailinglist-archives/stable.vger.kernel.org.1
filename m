@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-135442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC73A98E58
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C43AEA991FA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD7781B81274
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 417C84A15D2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BB327FD5B;
-	Wed, 23 Apr 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894A02853F2;
+	Wed, 23 Apr 2025 15:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOhbs0kO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0Y0iuJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35DC27F4F3;
-	Wed, 23 Apr 2025 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7A0284B48;
+	Wed, 23 Apr 2025 15:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419934; cv=none; b=KF3f+j4Ny41b0+zISyZmJ268Z3sWaWcxddhzpqJePsDu94IqILdFt6CLYVDa5MDIp9kDNspwL5VandM66D5YMLHAnzxwDnCP1ThvHkAN2A/MPgM0S+07uLjDSHTcoPAfU2dtyv5j0XKaILH8L/lCZ4JTVf7qY8SnS4NJFLoXNVc=
+	t=1745421674; cv=none; b=Rer+j1KkdqFNFUjninGrR8+Ts9Mzdzjed1l71IPCyOOSgtS8sA8NdrP/aHFBm7UeMutADNWvoVhn87oj8P1rnaEqiBaIVMXuDbCz67CyvaW7NaeGh5CzsTXo3AOtKoNJVFyGTlu+VRgUdGMQSEHvDk/MC4oOZCndBj9Y620t8Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419934; c=relaxed/simple;
-	bh=eryBN/NlLSFipR5N1+BhzMUplUDqcRPaZ/6XAhsmOHw=;
+	s=arc-20240116; t=1745421674; c=relaxed/simple;
+	bh=5zQsvFksd49Ocq1CjRJgD7lyEDYlMIOTQSWju5zr4QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlhWg3hfq7+7dHH+zdzQahMTTlBf/wsEiYdq28wjn+k7NEK4ZHctUBmqgtEHetGgzcUdjfGnkxHBZlkhGq5fGs3HjI5Ph3gkGHhKL1JNDWxrbx+r+wXPyMqXiky4r9YPvCR/BVXHKk0Qv5TWgoaBsLaFq8PkQAhLVkKSAljj62E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOhbs0kO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E60C4CEE2;
-	Wed, 23 Apr 2025 14:52:14 +0000 (UTC)
+	 MIME-Version; b=PHPBLnUGeeGphXPt3RLF3fvHp9kz6K7brKotssDvk/jT+2+Nh4RKkH5Xrw/ulVxIjw/j1Lmk3h6sdB7wpOnFLgzn96Pr5DPLm9nU0qrh4QxaJJCuP4Ke71n3gLCAXdnaCfupAZppPGqAvgyka9KNxgNRq7q9lhP4emB5OFZfGAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0Y0iuJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0289C4CEE8;
+	Wed, 23 Apr 2025 15:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419934;
-	bh=eryBN/NlLSFipR5N1+BhzMUplUDqcRPaZ/6XAhsmOHw=;
+	s=korg; t=1745421674;
+	bh=5zQsvFksd49Ocq1CjRJgD7lyEDYlMIOTQSWju5zr4QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOhbs0kOdPUbpgwjtwj2cIbURcNvXCXbIDR/XGXj29EM2x4A2Vn4pKwbYaTOm+KDc
-	 657tTCQaP6aBgbNQeGu3U+ZyeygaHJqSmtgONftIIwG2aOLZ8BlOqh3nD27kU7hQ9f
-	 vVpHyNvu5Z2P34BJfHVNoVp/6+h4rkJ0bUoPDrSE=
+	b=H0Y0iuJyMI5WGMmPEe9T7rhJKEvQE5/A/ew4RFIY+2xwGRHbGkIHmZIes7cM9xKZo
+	 PjyuhvLoQ9BfwiVaUGBTTa7teZHjocACL4Tc/Zj07vFgRzNtJXFxY6ip5OaEDB1sDl
+	 TeXQ/vQQ3bpGvaLJiNAsW3DWuZ9+uEBHuB0+tViY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Xingui Yang <yangxingui@huawei.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/223] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
-Date: Wed, 23 Apr 2025 16:42:33 +0200
-Message-ID: <20250423142620.424497802@linuxfoundation.org>
+Subject: [PATCH 6.1 165/291] scsi: hisi_sas: Enable force phy when SATA disk directly connected
+Date: Wed, 23 Apr 2025 16:42:34 +0200
+Message-ID: <20250423142631.134360550@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
+[ Upstream commit 8aa580cd92843b60d4d6331f3b0a9e8409bb70eb ]
 
-[ Quoting Samuel Holland: ]
+when a SATA disk is directly connected the SAS controller determines the
+disk to which I/Os are delivered based on the port ID in the DQ entry.
 
-  This is a separate issue, but using ".option rvc" here is a bug.
-  It will unconditionally enable the C extension for the rest of
-  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
+When many phys are disconnected and reconnect, the port ID of phys were
+changed and used by other link, resulting in I/O being sent to incorrect
+disk. Data inconsistency on the SATA disk may occur during I/O retries
+using the old port ID. So enable force phy, then force the command to be
+executed in a certain phy, and if the actual phy ID of the port does not
+match the phy configured in the command, the chip will stop delivering the
+I/O to disk.
 
-[ Quoting Palmer Dabbelt: ]
-
-  We're just looking at the address of kgdb_compiled_break, so it's
-  fine if it ends up as a c.ebreak.
-
-[ Quoting Alexandre Ghiti: ]
-
-  .option norvc is used to prevent the assembler from using compressed
-  instructions, but it's generally used when we need to ensure the
-  size of the instructions that are used, which is not the case here
-  as noted by Palmer since we only care about the address. So yes
-  it will work fine with C enabled :)
-
-So let's just remove them all.
-
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Cc: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: ce60689e12dd ("scsi: hisi_sas: add v3 code to send ATA frame")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20250312095135.3048379-2-yangxingui@huawei.com
+Reviewed-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/kgdb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  9 +++++++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 14 ++++++++++++--
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index 5d1ce8dacaf58..9f3db3503dabd 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -257,9 +257,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- noinline void arch_kgdb_breakpoint(void)
- {
- 	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
-+	    "kgdb_compiled_break: ebreak\n");
- }
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+index 50697672146ad..ae39f6b5dc9a8 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+@@ -2502,6 +2502,7 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
+ 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
+ 	struct sas_ata_task *ata_task = &task->ata_task;
+ 	struct sas_tmf_task *tmf = slot->tmf;
++	int phy_id;
+ 	u8 *buf_cmd;
+ 	int has_data = 0, hdr_tag = 0;
+ 	u32 dw0, dw1 = 0, dw2 = 0;
+@@ -2509,10 +2510,14 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
+ 	/* create header */
+ 	/* dw0 */
+ 	dw0 = port->id << CMD_HDR_PORT_OFF;
+-	if (parent_dev && dev_is_expander(parent_dev->dev_type))
++	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
+ 		dw0 |= 3 << CMD_HDR_CMD_OFF;
+-	else
++	} else {
++		phy_id = device->phy->identify.phy_identifier;
++		dw0 |= (1U << phy_id) << CMD_HDR_PHY_ID_OFF;
++		dw0 |= CMD_HDR_FORCE_PHY_MSK;
+ 		dw0 |= 4 << CMD_HDR_CMD_OFF;
++	}
  
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+ 	if (tmf && ata_task->force_phy) {
+ 		dw0 |= CMD_HDR_FORCE_PHY_MSK;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 05dcd925a3fab..20b4d76e07149 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -357,6 +357,10 @@
+ #define CMD_HDR_RESP_REPORT_MSK		(0x1 << CMD_HDR_RESP_REPORT_OFF)
+ #define CMD_HDR_TLR_CTRL_OFF		6
+ #define CMD_HDR_TLR_CTRL_MSK		(0x3 << CMD_HDR_TLR_CTRL_OFF)
++#define CMD_HDR_PHY_ID_OFF		8
++#define CMD_HDR_PHY_ID_MSK		(0x1ff << CMD_HDR_PHY_ID_OFF)
++#define CMD_HDR_FORCE_PHY_OFF		17
++#define CMD_HDR_FORCE_PHY_MSK		(0x1U << CMD_HDR_FORCE_PHY_OFF)
+ #define CMD_HDR_PORT_OFF		18
+ #define CMD_HDR_PORT_MSK		(0xf << CMD_HDR_PORT_OFF)
+ #define CMD_HDR_PRIORITY_OFF		27
+@@ -1385,15 +1389,21 @@ static void prep_ata_v3_hw(struct hisi_hba *hisi_hba,
+ 	struct hisi_sas_cmd_hdr *hdr = slot->cmd_hdr;
+ 	struct asd_sas_port *sas_port = device->port;
+ 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
++	int phy_id;
+ 	u8 *buf_cmd;
+ 	int has_data = 0, hdr_tag = 0;
+ 	u32 dw1 = 0, dw2 = 0;
+ 
+ 	hdr->dw0 = cpu_to_le32(port->id << CMD_HDR_PORT_OFF);
+-	if (parent_dev && dev_is_expander(parent_dev->dev_type))
++	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
+ 		hdr->dw0 |= cpu_to_le32(3 << CMD_HDR_CMD_OFF);
+-	else
++	} else {
++		phy_id = device->phy->identify.phy_identifier;
++		hdr->dw0 |= cpu_to_le32((1U << phy_id)
++				<< CMD_HDR_PHY_ID_OFF);
++		hdr->dw0 |= CMD_HDR_FORCE_PHY_MSK;
+ 		hdr->dw0 |= cpu_to_le32(4U << CMD_HDR_CMD_OFF);
++	}
+ 
+ 	switch (task->data_dir) {
+ 	case DMA_TO_DEVICE:
 -- 
 2.39.5
 
