@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 109F9A98F98
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:11:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2305AA9911A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B34176013
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8260216703F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6843289344;
-	Wed, 23 Apr 2025 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CCF28A414;
+	Wed, 23 Apr 2025 15:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NInUMZ+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuLi3bR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAD428FFD5;
-	Wed, 23 Apr 2025 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0CA28A402;
+	Wed, 23 Apr 2025 15:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420619; cv=none; b=eO3EmCSgvB8yIT4riIWEz7a0Ti7wqO+E7dhbxwgQA8WF6sEueMSHHdlUMXPZnKXXPNUjV+yhVNPiK44eYntAgbVmVvyJyYCq/7zcaLh+Y082ONqVJQI7BCVDeIENM2UJeIq33zaav25b2NG5dwyBF37TangOVAGSVxyoIAYcqZM=
+	t=1745421314; cv=none; b=DoPk8mZJBWs55VNDZkV1qNrN1SLKVpYSgWsSf+eE+iwPqMnbsGJQGgPrYWAmqWtxH2QzEhjCK1W/5ZrSay425p4b/6iofZsxSaoVOolo6976n3/1D9Xq8do5SmZh9f11oWhX+KkkyiOGeogrBT3k/1iM++0Oap1hfTBshKQgRjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420619; c=relaxed/simple;
-	bh=TBzK6Us8KDsailoB5etap1EHBKiobn5H4rQQiVBf4fY=;
+	s=arc-20240116; t=1745421314; c=relaxed/simple;
+	bh=D9Xcz1QGY5wRNUIFj+gyr9oQzI7snaZJa8jjEG5GGXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmnAbZwL+BlFzrm/eYc0fHciEtIXJ+VELXVKo29437uUTdbLgptDtOlQIFyYQ04Uv18DgAoupWKYFSZ5WMJC8dYegegYq8ORi6iX9mcjbLmpFQ6NzJAL8e6cwygJBFmDDqyZ/gLnq89ZkijpvlR1HmcMm7fQ/WgMSEnfMMqKvaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NInUMZ+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B9BC4CEE2;
-	Wed, 23 Apr 2025 15:03:38 +0000 (UTC)
+	 MIME-Version; b=sqMw579Eo6cgipYavav23G6G3SSIb+HsOnjCrjF+Tq86lx8X5SNO+JGUhv0F8YEzPNZEcOr3lf9LQHOD+DuAVfPGFHxebahKzgetmOW0+07MXRU8LvEmDigoajIHCEgBZ+ntABSK6TdvUYx66Uc9LAzwaePgXJfWmkC+gihuYTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuLi3bR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D8CC4CEE2;
+	Wed, 23 Apr 2025 15:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420619;
-	bh=TBzK6Us8KDsailoB5etap1EHBKiobn5H4rQQiVBf4fY=;
+	s=korg; t=1745421314;
+	bh=D9Xcz1QGY5wRNUIFj+gyr9oQzI7snaZJa8jjEG5GGXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NInUMZ+0i/bqPp5odDrOfBPr+hJkYEn/YTsNe2Dyc6TJtn4jBOilr2azXVb5aHRs7
-	 mac1KG1qYmzD835hAFf7w/wSDZYHUeQGtUH5wOMeJUCmbTl41rxoJo/RORZIyHk2KB
-	 E0ONzoyKbIc023GY6m+PSphuL5p3e1REzcmYlsII=
+	b=CuLi3bR5JQWInRH3+PcxJ+1KxWw4raYBMmAw8CkUZqkNCbVfykQH3DvaRa80v4dDq
+	 NtOX/fXsYY4nx7vmgsgpHyMLXHiOlEBa2VPvVj9hnQ7CkjAAv16TxUjg8x2zdpFv40
+	 MeT1yi/RvF7Ukz5XQABchEg41fkWh1Mlq7OWh/Rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/291] drm/mediatek: mtk_dpi: Move the input_2p_en bit to platform data
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 158/393] ASoC: qdsp6: q6asm-dai: fix q6asm_dai_compr_set_params error path
 Date: Wed, 23 Apr 2025 16:40:54 +0200
-Message-ID: <20250423142627.031335261@linuxfoundation.org>
+Message-ID: <20250423142649.903732969@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Alexey Klimov <alexey.klimov@linaro.org>
 
-[ Upstream commit c90876a695dd83e76680b88b40067275a5982811 ]
+commit 7eccc86e90f04a0d758d16c08627a620ac59604d upstream.
 
-In preparation for adding support for MT8195's HDMI reserved DPI
-instance, move the input_2p_en bit for DP_INTF to platform data.
+In case of attempts to compress playback something, for instance,
+when audio routing is not set up correctly, the audio DSP is left in
+inconsistent state because we are not doing the correct things in
+the error path of q6asm_dai_compr_set_params().
 
-While at it, remove the input_2pixel member from platform data as
-having this bit implies that the 2pixel feature must be enabled.
+So, when routing is not set up and compress playback is attempted
+the following errors are present (simplified log):
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-7-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+q6routing routing: Routing not setup for MultiMedia-1 Session
+q6asm-dai dais: Stream reg failed ret:-22
+q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
+on 17300000.remoteproc:glink-edge:apr:service@7:dais
+
+After setting the correct routing the compress playback will always fail:
+
+q6asm-dai dais: cmd = 0x10db3 returned error = 0x9
+q6asm-dai dais: DSP returned error[9]
+q6asm-dai dais: q6asm_open_write failed
+q6asm-dai dais: ASoC error (-22): at snd_soc_component_compr_set_params()
+on 17300000.remoteproc:glink-edge:apr:service@7:dais
+
+0x9 here means "Operation is already processed". The CMD_OPEN here was
+sent the second time hence DSP responds that it was already done.
+
+Turns out the CMD_CLOSE should be sent after the q6asm_open_write()
+succeeded but something failed after that, for instance, routing
+setup.
+
+Fix this by slightly reworking the error path in
+q6asm_dai_compr_set_params().
+
+Tested on QRB5165 RB5 and SDM845 RB3 boards.
+
+Cc: stable@vger.kernel.org
+Fixes: 5b39363e54cc ("ASoC: q6asm-dai: prepare set params to accept profile change")
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Vinod Koul <vkoul@kernel.org>
+Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://patch.msgid.link/20250327154650.337404-1-alexey.klimov@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 1f5d39a4077cd..cab4b3451187d 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -125,14 +125,14 @@ struct mtk_dpi_yc_limit {
-  * @is_ck_de_pol: Support CK/DE polarity.
-  * @swap_input_support: Support input swap function.
-  * @support_direct_pin: IP supports direct connection to dpi panels.
-- * @input_2pixel: Input pixel of dp_intf is 2 pixel per round, so enable this
-- *		  config to enable this feature.
-  * @dimension_mask: Mask used for HWIDTH, HPORCH, VSYNC_WIDTH and VSYNC_PORCH
-  *		    (no shift).
-  * @hvsize_mask: Mask of HSIZE and VSIZE mask (no shift).
-  * @channel_swap_shift: Shift value of channel swap.
-  * @yuv422_en_bit: Enable bit of yuv422.
-  * @csc_enable_bit: Enable bit of CSC.
-+ * @input_2p_en_bit: Enable bit for input two pixel per round feature.
-+ *		     If present, implies that the feature must be enabled.
-  * @pixels_per_iter: Quantity of transferred pixels per iteration.
-  */
- struct mtk_dpi_conf {
-@@ -145,12 +145,12 @@ struct mtk_dpi_conf {
- 	bool is_ck_de_pol;
- 	bool swap_input_support;
- 	bool support_direct_pin;
--	bool input_2pixel;
- 	u32 dimension_mask;
- 	u32 hvsize_mask;
- 	u32 channel_swap_shift;
- 	u32 yuv422_en_bit;
- 	u32 csc_enable_bit;
-+	u32 input_2p_en_bit;
- 	u32 pixels_per_iter;
- };
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -902,9 +902,7 @@ static int q6asm_dai_compr_set_params(st
  
-@@ -602,9 +602,9 @@ static int mtk_dpi_set_display_mode(struct mtk_dpi *dpi,
- 		mtk_dpi_dual_edge(dpi);
- 		mtk_dpi_config_disable_edge(dpi);
+ 		if (ret < 0) {
+ 			dev_err(dev, "q6asm_open_write failed\n");
+-			q6asm_audio_client_free(prtd->audio_client);
+-			prtd->audio_client = NULL;
+-			return ret;
++			goto open_err;
+ 		}
  	}
--	if (dpi->conf->input_2pixel) {
--		mtk_dpi_mask(dpi, DPI_CON, DPINTF_INPUT_2P_EN,
--			     DPINTF_INPUT_2P_EN);
-+	if (dpi->conf->input_2p_en_bit) {
-+		mtk_dpi_mask(dpi, DPI_CON, dpi->conf->input_2p_en_bit,
-+			     dpi->conf->input_2p_en_bit);
+ 
+@@ -913,7 +911,7 @@ static int q6asm_dai_compr_set_params(st
+ 			      prtd->session_id, dir);
+ 	if (ret) {
+ 		dev_err(dev, "Stream reg failed ret:%d\n", ret);
+-		return ret;
++		goto q6_err;
  	}
- 	mtk_dpi_sw_reset(dpi, false);
  
-@@ -952,12 +952,12 @@ static const struct mtk_dpi_conf mt8195_dpintf_conf = {
- 	.output_fmts = mt8195_output_fmts,
- 	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
- 	.pixels_per_iter = 4,
--	.input_2pixel = true,
- 	.dimension_mask = DPINTF_HPW_MASK,
- 	.hvsize_mask = DPINTF_HSIZE_MASK,
- 	.channel_swap_shift = DPINTF_CH_SWAP,
- 	.yuv422_en_bit = DPINTF_YUV422_EN,
- 	.csc_enable_bit = DPINTF_CSC_ENABLE,
-+	.input_2p_en_bit = DPINTF_INPUT_2P_EN,
- };
+ 	ret = __q6asm_dai_compr_set_codec_params(component, stream,
+@@ -921,7 +919,7 @@ static int q6asm_dai_compr_set_params(st
+ 						 prtd->stream_id);
+ 	if (ret) {
+ 		dev_err(dev, "codec param setup failed ret:%d\n", ret);
+-		return ret;
++		goto q6_err;
+ 	}
  
- static int mtk_dpi_probe(struct platform_device *pdev)
--- 
-2.39.5
-
+ 	ret = q6asm_map_memory_regions(dir, prtd->audio_client, prtd->phys,
+@@ -930,12 +928,21 @@ static int q6asm_dai_compr_set_params(st
+ 
+ 	if (ret < 0) {
+ 		dev_err(dev, "Buffer Mapping failed ret:%d\n", ret);
+-		return -ENOMEM;
++		ret = -ENOMEM;
++		goto q6_err;
+ 	}
+ 
+ 	prtd->state = Q6ASM_STREAM_RUNNING;
+ 
+ 	return 0;
++
++q6_err:
++	q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
++
++open_err:
++	q6asm_audio_client_free(prtd->audio_client);
++	prtd->audio_client = NULL;
++	return ret;
+ }
+ 
+ static int q6asm_dai_compr_set_metadata(struct snd_soc_component *component,
 
 
 
