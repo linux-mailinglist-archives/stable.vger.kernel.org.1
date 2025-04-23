@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-136139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8497CA992A9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF12A991AD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1949F9A0861
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E537A5301
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5E7284B57;
-	Wed, 23 Apr 2025 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2675B2BEC37;
+	Wed, 23 Apr 2025 15:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvwZYoce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+u4BNzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056212989AF;
-	Wed, 23 Apr 2025 15:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E75298CC0;
+	Wed, 23 Apr 2025 15:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421758; cv=none; b=i2xrw/jMw0npB/vaxas1uE2Mssg9lg6G4WAdzGk5zd//ZQtTjIHhywdYpNPU5BC63ythI0JKl0bWOHZhlJ74+BQLjVezy8AyA7BAFV1fFW4hLdWG7fORJ0uNo4NArgiRnIgSCXZYcPQLUQFnhWOg0IefjCdZxeLH4aMHVjedAf0=
+	t=1745421765; cv=none; b=VF8j8Q2TL29wBUSBUmeXHJFvN/jO8AFFXqCwjij63mo2JKAY687x609Zy2Xu2OZjohoNNuKk9eu09yvAccsfRcUmEh1DH7wHeDqnoJ7PsXMuKx6/w8RwXuMCKqjQHgkhdfCC+yCIVO4N/GC0VPdtk3xsWYnc0mChvrIsOEfgJb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421758; c=relaxed/simple;
-	bh=ZdnIZ1Z5N+JPDMQwp1gTBvMSnnvoQIQNj7a49WvcVik=;
+	s=arc-20240116; t=1745421765; c=relaxed/simple;
+	bh=4lujKTjKb9iO54phXhr04nqR/msjYvcLF7VMxTub53s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sHhaND87riQdbuqsgZVv67toKaPvAFOasT4xHW0fcqbuMP97kAiQrMOX2TbV24Na37DHrcvrUWLoa43kO953GZSjQA6Fo+czx7vbe41qtr5HpLNzxsllwlno/W5yFE59qUGQatWXFfDFjM5lskZ4pNIQ7oJR0ewcKwtggL/nSAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvwZYoce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875C6C4CEE3;
-	Wed, 23 Apr 2025 15:22:37 +0000 (UTC)
+	 MIME-Version; b=g35nzxScEn8XZ1DP0PO21etswdfNXbfCToQ9z8YM5GhnV0dSL+YPHE4mUjSKroVlGU1EUJTQevMWAfg4UMJS6uN6rus48aR1eHSEd8t5GPjmdsBh0+pJ0ovGv+XfJaiE0Ix+3pQcPsVSi/tlqebKAXjqei55zJsQhSiq6g5hxF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+u4BNzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67571C4CEE2;
+	Wed, 23 Apr 2025 15:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421757;
-	bh=ZdnIZ1Z5N+JPDMQwp1gTBvMSnnvoQIQNj7a49WvcVik=;
+	s=korg; t=1745421765;
+	bh=4lujKTjKb9iO54phXhr04nqR/msjYvcLF7VMxTub53s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvwZYoceyfCDblDGjlHEdBaYUQ9Zp3fTkZHgKkB26a241pdxNkhNUSpwfVUtXa4KH
-	 Bww7BTabca9YcDjfczSAXTz3J+xznagVzf/g+7Os2OI/OW9s/N29bhk3K8LjmIolpJ
-	 oZBzRKrbgNzLYvWkLvdJXyGUx9sYWu8Z6aSFBLIs=
+	b=k+u4BNzcBS2+Kx4tP6Gmw6RzYggOPKZiZx2yl7wdM8YnSHny4EOCBs40VL9L+Xpyt
+	 IKYsgFcxA3ha0J2eX9IPOk6Yi/xwwpITx4uAQ7DYt0bkU3msg2m3BX62EcXhxf1RQY
+	 EXlNlJgrsOCW6Dbb/2F8YsZ4nFeHGgvFxOjGxxOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/291] RDMA/core: Silence oversized kvmalloc() warning
-Date: Wed, 23 Apr 2025 16:42:44 +0200
-Message-ID: <20250423142631.534576257@linuxfoundation.org>
+Subject: [PATCH 6.1 176/291] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
+Date: Wed, 23 Apr 2025 16:42:45 +0200
+Message-ID: <20250423142631.575003073@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -66,71 +65,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 9a0e6f15029e1a8a21e40f06fd05aa52b7f063de ]
+[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
 
-syzkaller triggered an oversized kvmalloc() warning.
-Silence it by adding __GFP_NOWARN.
+This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
+(00:00:00:00:00:00) which is a regression introduced by
+a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+since in the attempt to skip storing data for extended advertisement it
+actually made the code to skip the entire if statement supposed to send
+MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
+is garanteed to be invalid for extended advertisement since we never
+store anything on it.
 
-syzkaller log:
- WARNING: CPU: 7 PID: 518 at mm/util.c:665 __kvmalloc_node_noprof+0x175/0x180
- CPU: 7 UID: 0 PID: 518 Comm: c_repro Not tainted 6.11.0-rc6+ #6
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:__kvmalloc_node_noprof+0x175/0x180
- RSP: 0018:ffffc90001e67c10 EFLAGS: 00010246
- RAX: 0000000000000100 RBX: 0000000000000400 RCX: ffffffff8149d46b
- RDX: 0000000000000000 RSI: ffff8881030fae80 RDI: 0000000000000002
- RBP: 000000712c800000 R08: 0000000000000100 R09: 0000000000000000
- R10: ffffc90001e67c10 R11: 0030ae0601000000 R12: 0000000000000000
- R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000000
- FS:  00007fde79159740(0000) GS:ffff88813bdc0000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 0000000020000180 CR3: 0000000105eb4005 CR4: 00000000003706b0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
- Call Trace:
-  <TASK>
-  ib_umem_odp_get+0x1f6/0x390
-  mlx5_ib_reg_user_mr+0x1e8/0x450
-  ib_uverbs_reg_mr+0x28b/0x440
-  ib_uverbs_write+0x7d3/0xa30
-  vfs_write+0x1ac/0x6c0
-  ksys_write+0x134/0x170
-  ? __sanitizer_cov_trace_pc+0x1c/0x50
-  do_syscall_64+0x50/0x110
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-Fixes: 37824952dc8f ("RDMA/odp: Use kvcalloc for the dma_list and page_list")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Link: https://patch.msgid.link/c6cb92379de668be94894f49c2cfa40e73f94d56.1742388096.git.leonro@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://github.com/bluez/bluez/issues/1157
+Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
+Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem_odp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
-index e9fa22d31c233..c48ef60830205 100644
---- a/drivers/infiniband/core/umem_odp.c
-+++ b/drivers/infiniband/core/umem_odp.c
-@@ -76,12 +76,14 @@ static inline int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
- 
- 		npfns = (end - start) >> PAGE_SHIFT;
- 		umem_odp->pfn_list = kvcalloc(
--			npfns, sizeof(*umem_odp->pfn_list), GFP_KERNEL);
-+			npfns, sizeof(*umem_odp->pfn_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->pfn_list)
- 			return -ENOMEM;
- 
- 		umem_odp->dma_list = kvcalloc(
--			ndmas, sizeof(*umem_odp->dma_list), GFP_KERNEL);
-+			ndmas, sizeof(*umem_odp->dma_list),
-+			GFP_KERNEL | __GFP_NOWARN);
- 		if (!umem_odp->dma_list) {
- 			ret = -ENOMEM;
- 			goto out_pfn_list;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 6cfd61628cd78..8667723d4e969 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6248,11 +6248,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 	 * event or send an immediate device found event if the data
+ 	 * should not be stored for later.
+ 	 */
+-	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
++	if (!has_pending_adv_report(hdev)) {
+ 		/* If the report will trigger a SCAN_REQ store it for
+ 		 * later merging.
+ 		 */
+-		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
++		if (!ext_adv && (type == LE_ADV_IND ||
++				 type == LE_ADV_SCAN_IND)) {
+ 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
+ 						 rssi, flags, data, len);
+ 			return;
 -- 
 2.39.5
 
