@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-135666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8412A98FB7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:13:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702F6A98F0D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46EC61B85179
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB74C441944
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A4927FD67;
-	Wed, 23 Apr 2025 15:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68108281524;
+	Wed, 23 Apr 2025 14:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHhHvyrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdzQSZT2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7685017B421;
-	Wed, 23 Apr 2025 15:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BAF1EFFB9;
+	Wed, 23 Apr 2025 14:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420524; cv=none; b=U78yxUJUhbwrqsSnLJh/k5mDg28sNgfHt2TYS0Zx+B5ljBT/5SfXdUgfDgd6CAHXXR+5J7w/LVAZiD8Ixmjvnz5AtbCDhZZWnNrRuYJMftsuLneh6IfRtwmWLWkPzz9qI8c3hpXdBKD/VPqwVFeVp2ymyomSONCuRDS4XeNSgns=
+	t=1745420382; cv=none; b=LmCGWVP78uWp3rG/JvZ9ciAoAH33IKGcQGaASLhYgXf5MLNcnd6oj6NHGrNR5vUN6/xQeYfywC81izuM3To+VAkVZtWJIbH350DI18Es3SbBP1MIwD1IiVe/H2HFjzHM+C08k33SlSOWwpw7cq2gXiMFVCSwE6AsrAWzjO68dG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420524; c=relaxed/simple;
-	bh=H8Qx7hlgFJoxvn8pqawfwstp7W9zXFCZ5is2nDU/YY0=;
+	s=arc-20240116; t=1745420382; c=relaxed/simple;
+	bh=1BZTpMheOYrUVJc/o0s2PGtoln0RnELjtH9oii2TQgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8RnW0/8g5O0EGQotBqMv/TtGcIXebiV2D9hII8KWOPtWddl4xYCxij+BddPqlkjB8n2uJUPn7y1aqB4gGipMr3vQ0tOeh1SklXBcxGJtwCF8apcmkQXeNZ3zzMAgFddWXZWdU3HnoEUVojmbxpdiEqaNQ1fL7DkdIukzmbXa8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHhHvyrQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02017C4CEE2;
-	Wed, 23 Apr 2025 15:02:03 +0000 (UTC)
+	 MIME-Version; b=bAAFOyl/dIcp0g2ir6gO8hWwcVzFbTnooAwtSxibU0FnNbkFwPO8sTyc5hSvCSLtEzckEcoEKIWiR7PXglOP8Ms3uKq1KSYJifgQ7ajWuBrsbVNJnpij4q06LjyGd1fpR2vaCXMvx23Eonk4FimBvlgtpY49xQeRrlx7jvfTuEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdzQSZT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE90DC4CEE2;
+	Wed, 23 Apr 2025 14:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420524;
-	bh=H8Qx7hlgFJoxvn8pqawfwstp7W9zXFCZ5is2nDU/YY0=;
+	s=korg; t=1745420382;
+	bh=1BZTpMheOYrUVJc/o0s2PGtoln0RnELjtH9oii2TQgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHhHvyrQ7vYtsyKjw/vwsb7jPhX6GIQunhh4l6c/XxGOAz2uZyEDruxHpmNShXIsb
-	 AsRcouwtKWQBl53apMFmS8LAGk10uITvVzpjUG7xFc43Zxb/t+Mw6hwplQZxBP1QaP
-	 +fYwlhmm2mL672PE6ypLypWbz+ch6Bo+Y+Z6QoLA=
+	b=gdzQSZT2YWggn4qJFYKHnKUZyZQUz1s0Vzc8SyoJSrTAflnVpdSVCOVT86AuR8HC+
+	 ZDx7MBCQ4iBo2ITrT/o1I7On0TJmVAo07IgRaZcBLK49lYNzZdMr7+YKLbwrT5oMwG
+	 7nq8HDzBw5qblR8tWCm/duHFKkpeHwW5IyVmjzpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricard Wanderlof <ricard2013@butoba.net>,
-	Takashi Iwai <tiwai@suse.de>,
+	keenplify <keenplify@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/393] ALSA: usb-audio: Fix CME quirk for UF series keyboards
-Date: Wed, 23 Apr 2025 16:39:19 +0200
-Message-ID: <20250423142645.910036640@linuxfoundation.org>
+Subject: [PATCH 6.6 064/393] ASoC: amd: Add DMI quirk for ACP6X mic support
+Date: Wed, 23 Apr 2025 16:39:20 +0200
+Message-ID: <20250423142645.950335287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,121 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricard Wanderlof <ricard2013@butoba.net>
+From: keenplify <keenplify@gmail.com>
 
-[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
+[ Upstream commit 309b367eafc8e162603cd29189da6db770411fea ]
 
-Fix quirk for CME master keyboards so it not only handles
-sysex but also song position pointer, MIDI timing clock, start
-and stop messages, and active sensing. All of these can be
-output by the CME UF series master keyboards.
+Some AMD laptops with ACP6X do not expose the DMIC properly on Linux.
+Adding a DMI quirk enables mic functionality.
 
-Tested with a CME UF6 in a desktop Linux environment as
-well as on the Zynthian Raspberry Pi based platform.
+Similar to Bugzilla #218402, this issue affects multiple users.
 
-Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
-Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219853
+Signed-off-by: keenplify <keenplify@gmail.com>
+Link: https://patch.msgid.link/20250315111617.12194-1-keenplify@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 74 insertions(+), 6 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/sound/usb/midi.c b/sound/usb/midi.c
-index 6d861046b582b..3059f814eb5c2 100644
---- a/sound/usb/midi.c
-+++ b/sound/usb/midi.c
-@@ -489,16 +489,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
- 
- /*
-  * CME protocol: like the standard protocol, but SysEx commands are sent as a
-- * single USB packet preceded by a 0x0F byte.
-+ * single USB packet preceded by a 0x0F byte, as are system realtime
-+ * messages and MIDI Active Sensing.
-+ * Also, multiple messages can be sent in the same packet.
-  */
- static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
- 				  uint8_t *buffer, int buffer_length)
- {
--	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
--		snd_usbmidi_standard_input(ep, buffer, buffer_length);
--	else
--		snd_usbmidi_input_data(ep, buffer[0] >> 4,
--				       &buffer[1], buffer_length - 1);
-+	int remaining = buffer_length;
-+
-+	/*
-+	 * CME send sysex, song position pointer, system realtime
-+	 * and active sensing using CIN 0x0f, which in the standard
-+	 * is only intended for single byte unparsed data.
-+	 * So we need to interpret these here before sending them on.
-+	 * By default, we assume single byte data, which is true
-+	 * for system realtime (midi clock, start, stop and continue)
-+	 * and active sensing, and handle the other (known) cases
-+	 * separately.
-+	 * In contrast to the standard, CME does not split sysex
-+	 * into multiple 4-byte packets, but lumps everything together
-+	 * into one. In addition, CME can string multiple messages
-+	 * together in the same packet; pressing the Record button
-+	 * on an UF6 sends a sysex message directly followed
-+	 * by a song position pointer in the same packet.
-+	 * For it to have any reasonable meaning, a sysex message
-+	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
-+	 * corresponding to a packet size of 4 bytes, and the ones sent
-+	 * by CME devices are 6 or 7 bytes, making the packet fragments
-+	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
-+	 * For the other types, the packet size is always 4 bytes,
-+	 * as per the standard, with the data size being 3 for SPP
-+	 * and 1 for the others.
-+	 * Thus all packet fragments are at least 4 bytes long, so we can
-+	 * skip anything that is shorter; this also conveniantly skips
-+	 * packets with size 0, which CME devices continuously send when
-+	 * they have nothing better to do.
-+	 * Another quirk is that sometimes multiple messages are sent
-+	 * in the same packet. This has been observed for midi clock
-+	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
-+	 * but also multiple note ons/offs, and control change together
-+	 * with MIDI clock. Similarly, some sysex messages are followed by
-+	 * the song position pointer in the same packet, and occasionally
-+	 * additionally by a midi clock or active sensing.
-+	 * We handle this by looping over all data and parsing it along the way.
-+	 */
-+	while (remaining >= 4) {
-+		int source_length = 4; /* default */
-+
-+		if ((buffer[0] & 0x0f) == 0x0f) {
-+			int data_length = 1; /* default */
-+
-+			if (buffer[1] == 0xf0) {
-+				/* Sysex: Find EOX and send on whole message. */
-+				/* To kick off the search, skip the first
-+				 * two bytes (CN+CIN and SYSEX (0xf0).
-+				 */
-+				uint8_t *tmp_buf = buffer + 2;
-+				int tmp_length = remaining - 2;
-+
-+				while (tmp_length > 1 && *tmp_buf != 0xf7) {
-+					tmp_buf++;
-+					tmp_length--;
-+				}
-+				data_length = tmp_buf - buffer;
-+				source_length = data_length + 1;
-+			} else if (buffer[1] == 0xf2) {
-+				/* Three byte song position pointer */
-+				data_length = 3;
-+			}
-+			snd_usbmidi_input_data(ep, buffer[0] >> 4,
-+					       &buffer[1], data_length);
-+		} else {
-+			/* normal channel events */
-+			snd_usbmidi_standard_input(ep, buffer, source_length);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 2981bd1c3530d..2536bd3d59464 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -584,6 +584,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_VERSION, "pang13"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
 +		}
-+		buffer += source_length;
-+		remaining -= source_length;
-+	}
- }
++	},
+ 	{}
+ };
  
- /*
 -- 
 2.39.5
 
