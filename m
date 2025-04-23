@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-136103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2C4A991FF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25836A99098
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4805E926222
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58C577AF33A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0707528468C;
-	Wed, 23 Apr 2025 15:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2FD288CBB;
+	Wed, 23 Apr 2025 15:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTecdKYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOvnmUWJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79CA25F7AD;
-	Wed, 23 Apr 2025 15:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09F027055F;
+	Wed, 23 Apr 2025 15:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421663; cv=none; b=sygfYZNJCXOPj2pkKqJY9PP0lijlFlYbNjNGitmZkvBtPLl6ncKGPYeCE0kZHn/WbUZ/37U7Iy7hOXsIEQNZg3XOquRBfpnprhZ7pjLxU3GDwKA7PlNU+nCHb0e2CNeezuSzvIRZgTSX9RUPdhiRlchrJFzquAEym6QynMCpeTM=
+	t=1745421298; cv=none; b=T7JwukcaqOu4X1IFOLPkAFQfkgRHuXDLN/4FNq/Yo1qjdT7YWr8NKYbvrhfgzkj9tpS48YMExDJB0nj91ARBf4K3QI/IZXYobY0gMjXt24nfHtEOoQoPnHUbmT+PdfCoAgoEc07cgmpMD0Ah/S3te9Cqj9nrWWBDsi2rnpQunLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421663; c=relaxed/simple;
-	bh=1EiJT7MHQbsIdVHsSS+v+N1zuSwrc+ewB0LqRy+pivw=;
+	s=arc-20240116; t=1745421298; c=relaxed/simple;
+	bh=1sgeAukXwMQGYqlWE8t7ZwKkFF3UqUu96Ar45lhhEu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IElp8xuSWNanbbIzhtP4SmpKsDFx2FT2/5f98CzcInleLtaaxvH4JQHrS+AsJuRhk0NMHh1AnsVwycQWWCfXzvN1kGvoGAITEWovwQ0V9w7RhXDChtRYrlCKv7GdFtFh2Myao08Q9c2XFhtoFYWVPuijmOW0bptgM8dyDhMBCl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTecdKYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4289AC4CEE8;
-	Wed, 23 Apr 2025 15:21:03 +0000 (UTC)
+	 MIME-Version; b=cCyBrylEMUiSPMQiCw7GqFuPg43AXFclKyXSq0SUkx+dDt+pdvCU+pZaBCJNILCimT1ww7id1UNgaq1GgAtNtq3kqHAGco5oKGmaANnMa6ZJFZLRL1ROtjByZr2pQyUgRRlJnZdt4HgcbZ/RJ7qfuI2Do+JYkvo+Sqc0gOJJtAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOvnmUWJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6278CC4CEE2;
+	Wed, 23 Apr 2025 15:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421663;
-	bh=1EiJT7MHQbsIdVHsSS+v+N1zuSwrc+ewB0LqRy+pivw=;
+	s=korg; t=1745421298;
+	bh=1sgeAukXwMQGYqlWE8t7ZwKkFF3UqUu96Ar45lhhEu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTecdKYgK0zLI63qP2NMT5tB4bBm/WJLLYHona6hO0ZzHQz9m48SRITBSgjlVX2QO
-	 ytKfYv/c72dtAbIP9Sl12WMft6xlPYtm39K5Zgr6svObOAR9xv6BkjytxROUo79PQe
-	 FPQD7A/5RBqB4mqymOSw4ksBu+XnEKGPcsWmc678=
+	b=lOvnmUWJa9KMD59TDJ3ruDwcMZbYIVOWssRwyt9i3YwpkAgxdnQwQ/0ec6haV8wJz
+	 q4P7jTatBMk4UdaNWebMmtrrwG8NiaEV/Jk/Ps3MWMCrewu8yV0HNUUrgDN1apkOZk
+	 kDp4z/rxEK1FaAXvq4F7CV6l+YXDwXcinHHsg85Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 217/241] drm/amd/display/dml2: use vzalloc rather than kzalloc
+	syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 209/223] mm/vma: add give_up_on_oom option on modify/merge, use in uffd release
 Date: Wed, 23 Apr 2025 16:44:41 +0200
-Message-ID: <20250423142629.426409566@linuxfoundation.org>
+Message-ID: <20250423142625.677479188@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +64,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit cd9e6d6fdd2de60bfb4672387c17d4ee7157cf8e upstream.
+commit 41e6ddcaa0f18dda4c3fadf22533775a30d6f72f upstream.
 
-The structures are large and they do not require contiguous
-memory so use vzalloc.
+Currently, if a VMA merge fails due to an OOM condition arising on commit
+merge or a failure to duplicate anon_vma's, we report this so the caller
+can handle it.
 
-Fixes: 70839da63605 ("drm/amd/display: Add new DCN401 sources")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4126
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 20c50a9a793300a1fc82f3ddd0e3c68f8213fbef)
-Cc: stable@vger.kernel.org
+However there are cases where the caller is only ostensibly trying a
+merge, and doesn't mind if it fails due to this condition.
+
+Since we do not want to introduce an implicit assumption that we only
+actually modify VMAs after OOM conditions might arise, add a 'give up on
+oom' option and make an explicit contract that, should this flag be set, we
+absolutely will not modify any VMAs should OOM arise and just bail out.
+
+Since it'd be very unusual for a user to try to vma_modify() with this flag
+set but be specifying a range within a VMA which ends up being split (which
+can fail due to rlimit issues, not only OOM), we add a debug warning for
+this condition.
+
+The motivating reason for this is uffd release - syzkaller (and Pedro
+Falcato's VERY astute analysis) found a way in which an injected fault on
+allocation, triggering an OOM condition on commit merge, would result in
+uffd code becoming confused and treating an error value as if it were a VMA
+pointer.
+
+To avoid this, we make use of this new VMG flag to ensure that this never
+occurs, utilising the fact that, should we be clearing entire VMAs, we do
+not wish an OOM event to be reported to us.
+
+Many thanks to Pedro Falcato for his excellent analysis and Jann Horn for
+his insightful and intelligent analysis of the situation, both of whom were
+instrumental in this fix.
+
+Link: https://lkml.kernel.org/r/20250321100937.46634-1-lorenzo.stoakes@oracle.com
+Reported-by: syzbot+20ed41006cf9d842c2b5@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67dc67f0.050a0220.25ae54.001e.GAE@google.com/
+Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Suggested-by: Pedro Falcato <pfalcato@suse.de>
+Suggested-by: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c |   11 ++++++-----
- drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c        |    6 ++++--
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ mm/userfaultfd.c |   13 +++++++++++--
+ mm/vma.c         |   38 ++++++++++++++++++++++++++++++++++----
+ mm/vma.h         |    9 ++++++++-
+ 3 files changed, 53 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
-@@ -2,6 +2,7 @@
- //
- // Copyright 2024 Advanced Micro Devices, Inc.
- 
-+#include <linux/vmalloc.h>
- 
- #include "dml2_internal_types.h"
- #include "dml_top.h"
-@@ -13,11 +14,11 @@
- 
- static bool dml21_allocate_memory(struct dml2_context **dml_ctx)
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1873,6 +1873,14 @@ struct vm_area_struct *userfaultfd_clear
+ 					     unsigned long end)
  {
--	*dml_ctx = kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
-+	*dml_ctx = vzalloc(sizeof(struct dml2_context));
- 	if (!(*dml_ctx))
- 		return false;
- 
--	(*dml_ctx)->v21.dml_init.dml2_instance = kzalloc(sizeof(struct dml2_instance), GFP_KERNEL);
-+	(*dml_ctx)->v21.dml_init.dml2_instance = vzalloc(sizeof(struct dml2_instance));
- 	if (!((*dml_ctx)->v21.dml_init.dml2_instance))
- 		return false;
- 
-@@ -27,7 +28,7 @@ static bool dml21_allocate_memory(struct
- 	(*dml_ctx)->v21.mode_support.display_config = &(*dml_ctx)->v21.display_config;
- 	(*dml_ctx)->v21.mode_programming.display_config = (*dml_ctx)->v21.mode_support.display_config;
- 
--	(*dml_ctx)->v21.mode_programming.programming = kzalloc(sizeof(struct dml2_display_cfg_programming), GFP_KERNEL);
-+	(*dml_ctx)->v21.mode_programming.programming = vzalloc(sizeof(struct dml2_display_cfg_programming));
- 	if (!((*dml_ctx)->v21.mode_programming.programming))
- 		return false;
- 
-@@ -115,8 +116,8 @@ bool dml21_create(const struct dc *in_dc
- 
- void dml21_destroy(struct dml2_context *dml2)
- {
--	kfree(dml2->v21.dml_init.dml2_instance);
--	kfree(dml2->v21.mode_programming.programming);
-+	vfree(dml2->v21.dml_init.dml2_instance);
-+	vfree(dml2->v21.mode_programming.programming);
- }
- 
- static void dml21_calculate_rq_and_dlg_params(const struct dc *dc, struct dc_state *context, struct resource_context *out_new_hw_state,
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -24,6 +24,8 @@
-  *
-  */
- 
-+#include <linux/vmalloc.h>
+ 	struct vm_area_struct *ret;
++	bool give_up_on_oom = false;
 +
- #include "display_mode_core.h"
- #include "dml2_internal_types.h"
- #include "dml2_utils.h"
-@@ -747,7 +749,7 @@ bool dml2_validate(const struct dc *in_d
++	/*
++	 * If we are modifying only and not splitting, just give up on the merge
++	 * if OOM prevents us from merging successfully.
++	 */
++	if (start == vma->vm_start && end == vma->vm_end)
++		give_up_on_oom = true;
  
- static inline struct dml2_context *dml2_allocate_memory(void)
+ 	/* Reset ptes for the whole vma range if wr-protected */
+ 	if (userfaultfd_wp(vma))
+@@ -1880,7 +1888,7 @@ struct vm_area_struct *userfaultfd_clear
+ 
+ 	ret = vma_modify_flags_uffd(vmi, prev, vma, start, end,
+ 				    vma->vm_flags & ~__VM_UFFD_FLAGS,
+-				    NULL_VM_UFFD_CTX);
++				    NULL_VM_UFFD_CTX, give_up_on_oom);
+ 
+ 	/*
+ 	 * In the vma_merge() successful mprotect-like case 8:
+@@ -1931,7 +1939,8 @@ int userfaultfd_register_range(struct us
+ 		new_flags = (vma->vm_flags & ~__VM_UFFD_FLAGS) | vm_flags;
+ 		vma = vma_modify_flags_uffd(&vmi, prev, vma, start, vma_end,
+ 					    new_flags,
+-					    (struct vm_userfaultfd_ctx){ctx});
++					    (struct vm_userfaultfd_ctx){ctx},
++					    /* give_up_on_oom = */false);
+ 		if (IS_ERR(vma))
+ 			return PTR_ERR(vma);
+ 
+--- a/mm/vma.c
++++ b/mm/vma.c
+@@ -846,7 +846,13 @@ static struct vm_area_struct *vma_merge_
+ 		if (anon_dup)
+ 			unlink_anon_vmas(anon_dup);
+ 
+-		vmg->state = VMA_MERGE_ERROR_NOMEM;
++		/*
++		 * We've cleaned up any cloned anon_vma's, no VMAs have been
++		 * modified, no harm no foul if the user requests that we not
++		 * report this and just give up, leaving the VMAs unmerged.
++		 */
++		if (!vmg->give_up_on_oom)
++			vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 		return NULL;
+ 	}
+ 
+@@ -859,7 +865,15 @@ static struct vm_area_struct *vma_merge_
+ abort:
+ 	vma_iter_set(vmg->vmi, start);
+ 	vma_iter_load(vmg->vmi);
+-	vmg->state = VMA_MERGE_ERROR_NOMEM;
++
++	/*
++	 * This means we have failed to clone anon_vma's correctly, but no
++	 * actual changes to VMAs have occurred, so no harm no foul - if the
++	 * user doesn't want this reported and instead just wants to give up on
++	 * the merge, allow it.
++	 */
++	if (!vmg->give_up_on_oom)
++		vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 	return NULL;
+ }
+ 
+@@ -1033,9 +1047,15 @@ int vma_expand(struct vma_merge_struct *
+ 	return 0;
+ 
+ nomem:
+-	vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 	if (anon_dup)
+ 		unlink_anon_vmas(anon_dup);
++	/*
++	 * If the user requests that we just give upon OOM, we are safe to do so
++	 * here, as commit merge provides this contract to us. Nothing has been
++	 * changed - no harm no foul, just don't report it.
++	 */
++	if (!vmg->give_up_on_oom)
++		vmg->state = VMA_MERGE_ERROR_NOMEM;
+ 	return -ENOMEM;
+ }
+ 
+@@ -1428,6 +1448,13 @@ static struct vm_area_struct *vma_modify
+ 	if (vmg_nomem(vmg))
+ 		return ERR_PTR(-ENOMEM);
+ 
++	/*
++	 * Split can fail for reasons other than OOM, so if the user requests
++	 * this it's probably a mistake.
++	 */
++	VM_WARN_ON(vmg->give_up_on_oom &&
++		   (vma->vm_start != start || vma->vm_end != end));
++
+ 	/* Split any preceding portion of the VMA. */
+ 	if (vma->vm_start < start) {
+ 		int err = split_vma(vmg->vmi, vma, start, 1);
+@@ -1496,12 +1523,15 @@ struct vm_area_struct
+ 		       struct vm_area_struct *vma,
+ 		       unsigned long start, unsigned long end,
+ 		       unsigned long new_flags,
+-		       struct vm_userfaultfd_ctx new_ctx)
++		       struct vm_userfaultfd_ctx new_ctx,
++		       bool give_up_on_oom)
  {
--	return (struct dml2_context *) kzalloc(sizeof(struct dml2_context), GFP_KERNEL);
-+	return (struct dml2_context *) vzalloc(sizeof(struct dml2_context));
+ 	VMG_VMA_STATE(vmg, vmi, prev, vma, start, end);
+ 
+ 	vmg.flags = new_flags;
+ 	vmg.uffd_ctx = new_ctx;
++	if (give_up_on_oom)
++		vmg.give_up_on_oom = true;
+ 
+ 	return vma_modify(&vmg);
  }
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -87,6 +87,12 @@ struct vma_merge_struct {
+ 	struct anon_vma_name *anon_name;
+ 	enum vma_merge_flags merge_flags;
+ 	enum vma_merge_state state;
++
++	/*
++	 * If a merge is possible, but an OOM error occurs, give up and don't
++	 * execute the merge, returning NULL.
++	 */
++	bool give_up_on_oom :1;
+ };
  
- static void dml2_init(const struct dc *in_dc, const struct dml2_configuration_options *config, struct dml2_context **dml2)
-@@ -815,7 +817,7 @@ void dml2_destroy(struct dml2_context *d
+ static inline bool vmg_nomem(struct vma_merge_struct *vmg)
+@@ -303,7 +309,8 @@ struct vm_area_struct
+ 		       struct vm_area_struct *vma,
+ 		       unsigned long start, unsigned long end,
+ 		       unsigned long new_flags,
+-		       struct vm_userfaultfd_ctx new_ctx);
++		       struct vm_userfaultfd_ctx new_ctx,
++		       bool give_up_on_oom);
  
- 	if (dml2->architecture == dml2_architecture_21)
- 		dml21_destroy(dml2);
--	kfree(dml2);
-+	vfree(dml2);
- }
+ struct vm_area_struct *vma_merge_new_range(struct vma_merge_struct *vmg);
  
- void dml2_extract_dram_and_fclk_change_support(struct dml2_context *dml2,
 
 
 
