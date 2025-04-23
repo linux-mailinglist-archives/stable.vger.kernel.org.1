@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F68DA98E07
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1861FA991B2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C3DB1B67A88
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D89D16C9E1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4952827CB33;
-	Wed, 23 Apr 2025 14:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BB0280A47;
+	Wed, 23 Apr 2025 15:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJp+2jEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ud8ESquO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072FF19DF4C;
-	Wed, 23 Apr 2025 14:49:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EAB26A082;
+	Wed, 23 Apr 2025 15:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419790; cv=none; b=jILfKP5OQnpbkDtoRUiTSwsJAKYiOKgM4UIGzqkQYwpJTBZu+l7kV0bDEc0v1dbB1MCpRAVuzASIiukL613RECeYLFqyyTNamJEpimaudmTwyttIO9BGBXRLRkIDgrlf9RRGvgywSNGDHCsJrRut2VOVvBlX4O61gQ0HmbaxAsQ=
+	t=1745421525; cv=none; b=o7wHXZUHqR53pZ2/oLgn3fRxYAkEg4s1XQC3z/aTZ6E13DSE3KywFXq9yUYBNlfq3Sr/CnuR1LMc/KUWSnmV8TqpTlV870vF1DkWrvMzFuD57fRKIx8mCUPCnoC2E5YN9219XBW3hGccQw11ljUir5BLWsyuIwjbydvzUhJi/4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419790; c=relaxed/simple;
-	bh=jU0yfYPthysSIKBXSBN+W+7SztuLXx0weZtcqj9QMmc=;
+	s=arc-20240116; t=1745421525; c=relaxed/simple;
+	bh=bnE/i8oatafrDrno6rHS3yRWkO/dSW51j2YERNWn/pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=syQZ+PqZD9nWqIx1KpCy5T27c1jjraX/EMeYwH3esIXmHV7SFBT/Kg3BdmC55RJSNEAyVVstJEITZX76o+DETH8qB215BC91dNx3d0uAkh+BTCwkLlIHpQHL20PByP8Wp+ZlBvaE5g50NYDhbIosFYC33VzoascprqyMCVCb5IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJp+2jEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898AFC4CEE3;
-	Wed, 23 Apr 2025 14:49:49 +0000 (UTC)
+	 MIME-Version; b=Wxu274Gau7vxp7PXY16id/Mia4SCskjjBHkoahSDmIFwDV20Gya66Np52EQG2PrNefQvHrjIHvhG/ENki6yDgKYGJTk8ffzA5TCMD/g0eYkgg5P1MWF99rCLICO5Y2rFuz9HD634lflEgZw/2r4QjYtFMzxQeG8jeuGgZ07jQ9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ud8ESquO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C508C4CEE2;
+	Wed, 23 Apr 2025 15:18:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419789;
-	bh=jU0yfYPthysSIKBXSBN+W+7SztuLXx0weZtcqj9QMmc=;
+	s=korg; t=1745421523;
+	bh=bnE/i8oatafrDrno6rHS3yRWkO/dSW51j2YERNWn/pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJp+2jEaOAyEAxNLtdwjeDO2+gw0oL6iACESBzLDTajAfKRu7dCGJwvajoGzKHidy
-	 w+mbYC/sc++aVn/PWFwDqCzDVrUIztdrmKX/uTY4IoBx8i16L731h8zBzm3v485qo+
-	 EEXlbjVU/pXVomH1iA42uFf0+BHNjHFyhaIlrF5g=
+	b=Ud8ESquO0S2iycUe9bHpYRXJs37hCg42BU+BL/rpsvwzLX2Zvm6WnQcaIt08RCgz7
+	 7Fi15d1bkJqb5h44pNkhr1bjQnyxQsR8eX+PAA06E+qIsxTbNHRx9PKEnI4gaaOUJC
+	 PFYc3UHgvbOb3l8IoHLkaK+GZllWJxYAhpohUPSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/223] net: txgbe: fix memory leak in txgbe_probe() error path
-Date: Wed, 23 Apr 2025 16:42:14 +0200
-Message-ID: <20250423142619.662435088@linuxfoundation.org>
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.1 146/291] gpio: tegra186: fix resource handling in ACPI probe path
+Date: Wed, 23 Apr 2025 16:42:15 +0200
+Message-ID: <20250423142630.370792907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit b2727326d0a53709380aa147018085d71a6d4843 ]
+commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 upstream.
 
-When txgbe_sw_init() is called, memory is allocated for wx->rss_key
-in wx_init_rss_key(). However, in txgbe_probe() function, the subsequent
-error paths after txgbe_sw_init() don't free the rss_key. Fix that by
-freeing it in error path along with wx->mac_table.
+When the Tegra186 GPIO controller is probed through ACPI matching,
+the driver emits two error messages during probing:
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
 
-Also change the label to which execution jumps when txgbe_sw_init()
-fails, because otherwise, it could lead to a double free for rss_key,
-when the mac_table allocation fails in wx_sw_init().
+Fix this by getting resource first and then do the ioremap.
 
-Fixes: 937d46ecc5f9 ("net: wangxun: add ethtool_ops for channel number")
-Reported-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250415032910.13139-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-tegra186.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index f774502680364..7e352837184fa 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -559,7 +559,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	/* setup the private structure */
- 	err = txgbe_sw_init(wx);
- 	if (err)
--		goto err_free_mac_table;
-+		goto err_pci_release_regions;
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -753,6 +753,7 @@ static int tegra186_gpio_probe(struct pl
+ 	struct gpio_irq_chip *irq;
+ 	struct tegra_gpio *gpio;
+ 	struct device_node *np;
++	struct resource *res;
+ 	char **names;
+ 	int err;
  
- 	/* check if flash load is done after hw power up */
- 	err = wx_check_flash_load(wx, TXGBE_SPI_ILDR_STATUS_PERST);
-@@ -717,6 +717,7 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	wx_clear_interrupt_scheme(wx);
- 	wx_control_hw(wx, false);
- err_free_mac_table:
-+	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
- err_pci_release_regions:
- 	pci_release_selected_regions(pdev,
--- 
-2.39.5
-
+@@ -772,19 +773,19 @@ static int tegra186_gpio_probe(struct pl
+ 	gpio->num_banks++;
+ 
+ 	/* get register apertures */
+-	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+-	if (IS_ERR(gpio->secure)) {
+-		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(gpio->secure))
+-			return PTR_ERR(gpio->secure);
+-	}
+-
+-	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
+-	if (IS_ERR(gpio->base)) {
+-		gpio->base = devm_platform_ioremap_resource(pdev, 1);
+-		if (IS_ERR(gpio->base))
+-			return PTR_ERR(gpio->base);
+-	}
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->secure))
++		return PTR_ERR(gpio->secure);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	gpio->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->base))
++		return PTR_ERR(gpio->base);
+ 
+ 	err = platform_irq_count(pdev);
+ 	if (err < 0)
 
 
 
