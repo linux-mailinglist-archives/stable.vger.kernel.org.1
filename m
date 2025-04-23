@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF61CA991E5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD3EA98E78
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6807E5A7AF2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E481B83820
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331651EFFB9;
-	Wed, 23 Apr 2025 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2B427FD54;
+	Wed, 23 Apr 2025 14:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2k0TqZk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tJ/BKEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D361EEA3E;
-	Wed, 23 Apr 2025 15:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89356269826;
+	Wed, 23 Apr 2025 14:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421548; cv=none; b=JRQUwZs1gWi32fKuOLHct97M40wLEABZa5XPA1bMo+/idmh94LpZr/2rM0DASNPXx1EC848Up75U0v77t6seHjEbML+715WHuzZe4v972vW4xDI8TISZpq1X3dwyGYKXTvRycwiu0bHVXRPRjV5mQ7rWR/hBkZz0CAxoauhlCHY=
+	t=1745419997; cv=none; b=AXDbM/9gOupjlVfGZBaw/WekHEvsyRArOzP5q20ZFjMaDtixI5YBEPXk2yznBgQDtFpxVV1Lx6kw6klG+8YeguTSZwCvoQOUmiSyM9gejsASmlO7xK+5BfKheUG0fVpFWdlCZRBtEyIuXJDQd7Ytb1BDUb3InFB0Kcskwi/49+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421548; c=relaxed/simple;
-	bh=fcMEmJo+lwuH8w9A8k70p0ZdMHZ5J5AS2fnyfcsIyRI=;
+	s=arc-20240116; t=1745419997; c=relaxed/simple;
+	bh=NFtx2Qbs+iP6GZt72Z+TVrJ7Kt1B7pz69vo1JDJYdMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUJeXb4ZQigkLY1lGfjlqp14v6Z//VFdYVssI2oby3sIDMoFLJiNCzIiGZr/eGnaOmTJfKoPBQe/hWnVf4g37CRcbeh7IgzD9me5h36M9TdcJsHAkOT9/R8FUxRexIlAqq4Rimc86i45T/7+DpNnncbH2VkdQX8SsJH+kRibbjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2k0TqZk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F44C4CEE2;
-	Wed, 23 Apr 2025 15:19:06 +0000 (UTC)
+	 MIME-Version; b=jsjtWXUqhpBMdPj1CCqHH06rKI90rKDOfarqwThzV5g+7s1FIDhaQwL2zD8mQBCKeyoSTY2FAG1uMvqtkb6FloYyuqvgVdKUH0Ex1ovB2x6so2erelPssPcK6e/EJ+IUJ5gL5k+pYTklFBQfqRPV+V8KojzagVJsWkKv/72F5Xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tJ/BKEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196A2C4CEE2;
+	Wed, 23 Apr 2025 14:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421547;
-	bh=fcMEmJo+lwuH8w9A8k70p0ZdMHZ5J5AS2fnyfcsIyRI=;
+	s=korg; t=1745419997;
+	bh=NFtx2Qbs+iP6GZt72Z+TVrJ7Kt1B7pz69vo1JDJYdMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2k0TqZklc8MM7d07tvD3EBVZLlHEEh4qv/IDsNFIE+dQzNE373qMode5IFoATniw
-	 JBTwWuspGqkSkkmbEhGl6cX+JrjfjYdpp8nbbRzH5U0PZlAZ3KUWCz6bmgCxB23pu6
-	 Ew+GGSapEn5mHSzMIpeBc2moZKiEAbaRXLjrDew8=
+	b=2tJ/BKEiVBF30s4IywloEx2VcBZvY3AV5o2w2L5llNhqyT5w60mfAV0zvhQMR2e+C
+	 MDs9eyHL7fuAnroQAN7Vi0MxfRNZRKJZNmPRYmhi45ZgoX69GwE8MOOKxHHYRewCoE
+	 raz34WUxXkF2qWGCog2S0jAGm3L5szsjL3hehj3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 149/291] KVM: x86: Acquire SRCU in KVM_GET_MP_STATE to protect guest memory accesses
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 066/223] net: dsa: free routing table on probe failure
 Date: Wed, 23 Apr 2025 16:42:18 +0200
-Message-ID: <20250423142630.489009217@linuxfoundation.org>
+Message-ID: <20250423142619.822215226@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit ef01cac401f18647d62720cf773d7bb0541827da upstream.
+[ Upstream commit 8bf108d7161ffc6880ad13a0cc109de3cf631727 ]
 
-Acquire a lock on kvm->srcu when userspace is getting MP state to handle a
-rather extreme edge case where "accepting" APIC events, i.e. processing
-pending INIT or SIPI, can trigger accesses to guest memory.  If the vCPU
-is in L2 with INIT *and* a TRIPLE_FAULT request pending, then getting MP
-state will trigger a nested VM-Exit by way of ->check_nested_events(), and
-emuating the nested VM-Exit can access guest memory.
+If complete = true in dsa_tree_setup(), it means that we are the last
+switch of the tree which is successfully probing, and we should be
+setting up all switches from our probe path.
 
-The splat was originally hit by syzkaller on a Google-internal kernel, and
-reproduced on an upstream kernel by hacking the triple_fault_event_test
-selftest to stuff a pending INIT, store an MSR on VM-Exit (to generate a
-memory access on VMX), and do vcpu_mp_state_get() to trigger the scenario.
+After "complete" becomes true, dsa_tree_setup_cpu_ports() or any
+subsequent function may fail. If that happens, the entire tree setup is
+in limbo: the first N-1 switches have successfully finished probing
+(doing nothing but having allocated persistent memory in the tree's
+dst->ports, and maybe dst->rtable), and switch N failed to probe, ending
+the tree setup process before anything is tangible from the user's PoV.
 
-  =============================
-  WARNING: suspicious RCU usage
-  6.14.0-rc3-b112d356288b-vmx/pi_lockdep_false_pos-lock #3 Not tainted
-  -----------------------------
-  include/linux/kvm_host.h:1058 suspicious rcu_dereference_check() usage!
+If switch N fails to probe, its memory (ports) will be freed and removed
+from dst->ports. However, the dst->rtable elements pointing to its ports,
+as created by dsa_link_touch(), will remain there, and will lead to
+use-after-free if dereferenced.
 
-  other info that might help us debug this:
+If dsa_tree_setup_switches() returns -EPROBE_DEFER, which is entirely
+possible because that is where ds->ops->setup() is, we get a kasan
+report like this:
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  1 lock held by triple_fault_ev/1256:
-   #0: ffff88810df5a330 (&vcpu->mutex){+.+.}-{4:4}, at: kvm_vcpu_ioctl+0x8b/0x9a0 [kvm]
+==================================================================
+BUG: KASAN: slab-use-after-free in mv88e6xxx_setup_upstream_port+0x240/0x568
+Read of size 8 at addr ffff000004f56020 by task kworker/u8:3/42
 
-  stack backtrace:
-  CPU: 11 UID: 1000 PID: 1256 Comm: triple_fault_ev Not tainted 6.14.0-rc3-b112d356288b-vmx #3
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x7f/0x90
-   lockdep_rcu_suspicious+0x144/0x190
-   kvm_vcpu_gfn_to_memslot+0x156/0x180 [kvm]
-   kvm_vcpu_read_guest+0x3e/0x90 [kvm]
-   read_and_check_msr_entry+0x2e/0x180 [kvm_intel]
-   __nested_vmx_vmexit+0x550/0xde0 [kvm_intel]
-   kvm_check_nested_events+0x1b/0x30 [kvm]
-   kvm_apic_accept_events+0x33/0x100 [kvm]
-   kvm_arch_vcpu_ioctl_get_mpstate+0x30/0x1d0 [kvm]
-   kvm_vcpu_ioctl+0x33e/0x9a0 [kvm]
-   __x64_sys_ioctl+0x8b/0xb0
-   do_syscall_64+0x6c/0x170
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-   </TASK>
+Call trace:
+ __asan_report_load8_noabort+0x20/0x30
+ mv88e6xxx_setup_upstream_port+0x240/0x568
+ mv88e6xxx_setup+0xebc/0x1eb0
+ dsa_register_switch+0x1af4/0x2ae0
+ mv88e6xxx_register_switch+0x1b8/0x2a8
+ mv88e6xxx_probe+0xc4c/0xf60
+ mdio_probe+0x78/0xb8
+ really_probe+0x2b8/0x5a8
+ __driver_probe_device+0x164/0x298
+ driver_probe_device+0x78/0x258
+ __device_attach_driver+0x274/0x350
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250401150504.829812-1-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allocated by task 42:
+ __kasan_kmalloc+0x84/0xa0
+ __kmalloc_cache_noprof+0x298/0x490
+ dsa_switch_touch_ports+0x174/0x3d8
+ dsa_register_switch+0x800/0x2ae0
+ mv88e6xxx_register_switch+0x1b8/0x2a8
+ mv88e6xxx_probe+0xc4c/0xf60
+ mdio_probe+0x78/0xb8
+ really_probe+0x2b8/0x5a8
+ __driver_probe_device+0x164/0x298
+ driver_probe_device+0x78/0x258
+ __device_attach_driver+0x274/0x350
+
+Freed by task 42:
+ __kasan_slab_free+0x48/0x68
+ kfree+0x138/0x418
+ dsa_register_switch+0x2694/0x2ae0
+ mv88e6xxx_register_switch+0x1b8/0x2a8
+ mv88e6xxx_probe+0xc4c/0xf60
+ mdio_probe+0x78/0xb8
+ really_probe+0x2b8/0x5a8
+ __driver_probe_device+0x164/0x298
+ driver_probe_device+0x78/0x258
+ __device_attach_driver+0x274/0x350
+
+The simplest way to fix the bug is to delete the routing table in its
+entirety. dsa_tree_setup_routing_table() has no problem in regenerating
+it even if we deleted links between ports other than those of switch N,
+because dsa_link_touch() first checks whether the port pair already
+exists in dst->rtable, allocating if not.
+
+The deletion of the routing table in its entirety already exists in
+dsa_tree_teardown(), so refactor that into a function that can also be
+called from the tree setup error path.
+
+In my analysis of the commit to blame, it is the one which added
+dsa_link elements to dst->rtable. Prior to that, each switch had its own
+ds->rtable which is freed when the switch fails to probe. But the tree
+is potentially persistent memory.
+
+Fixes: c5f51765a1f6 ("net: dsa: list DSA links in the fabric")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414213001.2957964-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/dsa/dsa.c | 21 ++++++++++++++-------
+ 1 file changed, 14 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11460,6 +11460,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
- 	if (kvm_mpx_supported())
- 		kvm_load_guest_fpu(vcpu);
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index b20be568b9d3b..ac3a252969cb6 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -862,6 +862,16 @@ static void dsa_tree_teardown_lags(struct dsa_switch_tree *dst)
+ 	kfree(dst->lags);
+ }
  
-+	kvm_vcpu_srcu_read_lock(vcpu);
++static void dsa_tree_teardown_routing_table(struct dsa_switch_tree *dst)
++{
++	struct dsa_link *dl, *next;
 +
- 	r = kvm_apic_accept_events(vcpu);
- 	if (r < 0)
- 		goto out;
-@@ -11473,6 +11475,8 @@ int kvm_arch_vcpu_ioctl_get_mpstate(stru
- 		mp_state->mp_state = vcpu->arch.mp_state;
++	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
++		list_del(&dl->list);
++		kfree(dl);
++	}
++}
++
+ static int dsa_tree_setup(struct dsa_switch_tree *dst)
+ {
+ 	bool complete;
+@@ -879,7 +889,7 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
  
- out:
-+	kvm_vcpu_srcu_read_unlock(vcpu);
-+
- 	if (kvm_mpx_supported())
- 		kvm_put_guest_fpu(vcpu);
- 	vcpu_put(vcpu);
+ 	err = dsa_tree_setup_cpu_ports(dst);
+ 	if (err)
+-		return err;
++		goto teardown_rtable;
+ 
+ 	err = dsa_tree_setup_switches(dst);
+ 	if (err)
+@@ -911,14 +921,14 @@ static int dsa_tree_setup(struct dsa_switch_tree *dst)
+ 	dsa_tree_teardown_switches(dst);
+ teardown_cpu_ports:
+ 	dsa_tree_teardown_cpu_ports(dst);
++teardown_rtable:
++	dsa_tree_teardown_routing_table(dst);
+ 
+ 	return err;
+ }
+ 
+ static void dsa_tree_teardown(struct dsa_switch_tree *dst)
+ {
+-	struct dsa_link *dl, *next;
+-
+ 	if (!dst->setup)
+ 		return;
+ 
+@@ -932,10 +942,7 @@ static void dsa_tree_teardown(struct dsa_switch_tree *dst)
+ 
+ 	dsa_tree_teardown_cpu_ports(dst);
+ 
+-	list_for_each_entry_safe(dl, next, &dst->rtable, list) {
+-		list_del(&dl->list);
+-		kfree(dl);
+-	}
++	dsa_tree_teardown_routing_table(dst);
+ 
+ 	pr_info("DSA: tree %d torn down\n", dst->index);
+ 
+-- 
+2.39.5
+
 
 
 
