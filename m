@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C786A99332
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AADD1A992AD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB99D1BC094C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D0B926E94
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BC529616D;
-	Wed, 23 Apr 2025 15:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B2E28BAA5;
+	Wed, 23 Apr 2025 15:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYMZJkLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hXPNFyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F151528E5EA;
-	Wed, 23 Apr 2025 15:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CAB28BA82;
+	Wed, 23 Apr 2025 15:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422097; cv=none; b=uVp6EHXGQaigZuXP7Cc8ICZrO72WFqxBWqDFGOZ1TfBk+owfSMMWpGGMzVMffT7Ugvg9Xwr+qSWHIMAEkohR3b6o6I4Ip744dz9ebgZY1JmKCNBQdM+R5z0KCrYsdMVgSM9MD16nqrXA6HseOScyz/efuwt/sQvQIRCT/pit2H0=
+	t=1745421847; cv=none; b=GWulu+hqj+8Uu/Qrh2ystr4uObWYsWW02hqmM4MrEG2497jb7rcRlj/yzwEu55cTYnald021sZQgK0BkIla1C0n840NPpoSWA2A8F6tClVu+eyhS8FcPnUWCCXRRhwMfKke1Ay4wJtqIrnkyyZeKuHT19ve3I9MTPyCPMPaPspo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422097; c=relaxed/simple;
-	bh=Tpz9skYqOhXz+Jwx5rxIPcVaZVudSW+BcFQK/lX5Dfs=;
+	s=arc-20240116; t=1745421847; c=relaxed/simple;
+	bh=mHhTKma7nyxSk1Lv/V6p4/6odAWEQ/8wN9ams2VrMmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxqRJYuZttwZHc2E4ZpNJfXE0KeZ2u/D4O00FPbQEMYAeQfpiDotuSRXf85m9tg89n7GXcWrmTeCnNFbo/Xt/wd1P6Zt9ocHVrT+utvIE1/jByZy+TeyHw4OZZg7GeP9pa8U/F+elCEWKTXjWLTfuhlJRIK/p/3ctsj63x6kp1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYMZJkLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D95C4CEE2;
-	Wed, 23 Apr 2025 15:28:16 +0000 (UTC)
+	 MIME-Version; b=srKGvQYso9wvz9/kqCU5Z0zbDGZ6Eaq9L4nLiR3y5ZIskeqr3fuVJ7uDSXyIwc9YDv3DWvG6quICIyFmSWPY4NovVFu7eztRmvkiq2vUksH+kydG4Demgs2UYGojY6gEh06siQDax/3hOXhbNrByJWGJILZQ6kjAOpK9FpKNq08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hXPNFyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F400C4CEE2;
+	Wed, 23 Apr 2025 15:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422096;
-	bh=Tpz9skYqOhXz+Jwx5rxIPcVaZVudSW+BcFQK/lX5Dfs=;
+	s=korg; t=1745421847;
+	bh=mHhTKma7nyxSk1Lv/V6p4/6odAWEQ/8wN9ams2VrMmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYMZJkLn5zhxyZweM0s2q9ncB+y9ROHldnsJGnfZQZBSBwlkpwOC5BfC9tLfFtDSI
-	 tp5XuSrW1xhRRE1Xa9d+nh2RZEkXVP6kF/17ukd7ACiyXl/FNJLTgI1ETpTxBvO7wJ
-	 ct88qe7OT9pGZSbOFc4Dl/FX51ahdxkgImiH0ozU=
+	b=0hXPNFyt5eY9vsokyU/xuToCqZgcvKFUmit7bAaH7hTP3sHDELuIrADBQmAYTbq5N
+	 aSyBw+tCB4U94B1XKV7s32GWtVXxyK1pd7HP+m8RU2fqoVRbLir1tCt5ZwxJo+c558
+	 tpUtAP5i3TtEhGWc2xgLd3eoSvQsNywdh7QFkTxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
+	Matt Johnston <matt@codeconstruct.com.au>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/393] tools: ynl-gen: re-sort ignoring recursive nests
-Date: Wed, 23 Apr 2025 16:42:53 +0200
-Message-ID: <20250423142654.795883611@linuxfoundation.org>
+Subject: [PATCH 6.1 185/291] net: mctp: Set SOCK_RCU_FREE
+Date: Wed, 23 Apr 2025 16:42:54 +0200
+Message-ID: <20250423142631.937092908@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit aa75783b95a1e7fc09129f5364476e6effe47392 ]
+[ Upstream commit 52024cd6ec71a6ca934d0cc12452bd8d49850679 ]
 
-We try to keep the structures and helpers "topologically sorted",
-to avoid forward declarations. When recursive nests are at play
-we need to sort twice, because structs which end up being marked
-as recursive will get a full set of forward declarations, so we
-should ignore them for the purpose of sorting.
+Bind lookup runs under RCU, so ensure that a socket doesn't go away in
+the middle of a lookup.
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Link: https://lore.kernel.org/r/20231213231432.2944749-7-kuba@kernel.org
+Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Link: https://patch.msgid.link/20250410-mctp-rcu-sock-v1-1-872de9fdc877@codeconstruct.com.au
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: ce6cb8113c84 ("tools: ynl-gen: individually free previous values on double set")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/ynl-gen-c.py | 52 +++++++++++++++++++++++---------------
- 1 file changed, 31 insertions(+), 21 deletions(-)
+ net/mctp/af_mctp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/net/ynl/ynl-gen-c.py b/tools/net/ynl/ynl-gen-c.py
-index e5a3e0bb5a39d..502d03b8a758a 100755
---- a/tools/net/ynl/ynl-gen-c.py
-+++ b/tools/net/ynl/ynl-gen-c.py
-@@ -909,6 +909,33 @@ class Family(SpecFamily):
-                 self.root_sets[op['attribute-set']]['request'].update(req_attrs)
-                 self.root_sets[op['attribute-set']]['reply'].update(rsp_attrs)
+diff --git a/net/mctp/af_mctp.c b/net/mctp/af_mctp.c
+index 2316e7772b785..6a963eac1cc2f 100644
+--- a/net/mctp/af_mctp.c
++++ b/net/mctp/af_mctp.c
+@@ -551,6 +551,9 @@ static int mctp_sk_hash(struct sock *sk)
+ {
+ 	struct net *net = sock_net(sk);
  
-+    def _sort_pure_types(self):
-+        # Try to reorder according to dependencies
-+        pns_key_list = list(self.pure_nested_structs.keys())
-+        pns_key_seen = set()
-+        rounds = len(pns_key_list) ** 2  # it's basically bubble sort
-+        for _ in range(rounds):
-+            if len(pns_key_list) == 0:
-+                break
-+            name = pns_key_list.pop(0)
-+            finished = True
-+            for _, spec in self.attr_sets[name].items():
-+                if 'nested-attributes' in spec:
-+                    nested = spec['nested-attributes']
-+                    # If the unknown nest we hit is recursive it's fine, it'll be a pointer
-+                    if self.pure_nested_structs[nested].recursive:
-+                        continue
-+                    if nested not in pns_key_seen:
-+                        # Dicts are sorted, this will make struct last
-+                        struct = self.pure_nested_structs.pop(name)
-+                        self.pure_nested_structs[name] = struct
-+                        finished = False
-+                        break
-+            if finished:
-+                pns_key_seen.add(name)
-+            else:
-+                pns_key_list.append(name)
++	/* Bind lookup runs under RCU, remain live during that. */
++	sock_set_flag(sk, SOCK_RCU_FREE);
 +
-     def _load_nested_sets(self):
-         attr_set_queue = list(self.root_sets.keys())
-         attr_set_seen = set(self.root_sets.keys())
-@@ -948,27 +975,8 @@ class Family(SpecFamily):
-                     if attr in rs_members['reply']:
-                         self.pure_nested_structs[nested].reply = True
- 
--        # Try to reorder according to dependencies
--        pns_key_list = list(self.pure_nested_structs.keys())
--        pns_key_seen = set()
--        rounds = len(pns_key_list)**2  # it's basically bubble sort
--        for _ in range(rounds):
--            if len(pns_key_list) == 0:
--                break
--            name = pns_key_list.pop(0)
--            finished = True
--            for _, spec in self.attr_sets[name].items():
--                if 'nested-attributes' in spec:
--                    if spec['nested-attributes'] not in pns_key_seen:
--                        # Dicts are sorted, this will make struct last
--                        struct = self.pure_nested_structs.pop(name)
--                        self.pure_nested_structs[name] = struct
--                        finished = False
--                        break
--            if finished:
--                pns_key_seen.add(name)
--            else:
--                pns_key_list.append(name)
-+        self._sort_pure_types()
-+
-         # Propagate the request / reply / recursive
-         for attr_set, struct in reversed(self.pure_nested_structs.items()):
-             for _, spec in self.attr_sets[attr_set].items():
-@@ -984,6 +992,8 @@ class Family(SpecFamily):
-                 if attr_set in struct.child_nests:
-                     struct.recursive = True
- 
-+        self._sort_pure_types()
-+
-     def _load_attr_use(self):
-         for _, struct in self.pure_nested_structs.items():
-             if struct.request:
+ 	mutex_lock(&net->mctp.bind_lock);
+ 	sk_add_node_rcu(sk, &net->mctp.binds);
+ 	mutex_unlock(&net->mctp.bind_lock);
 -- 
 2.39.5
 
