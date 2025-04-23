@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A3F9A992C2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90858A9925B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F8BF169876
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01D0B9A0C94
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D729328E5E5;
-	Wed, 23 Apr 2025 15:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4108828A406;
+	Wed, 23 Apr 2025 15:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBSeyH+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4A+zxoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9F229DB8D;
-	Wed, 23 Apr 2025 15:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E1225EF8E;
+	Wed, 23 Apr 2025 15:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422068; cv=none; b=l2jcJQxLUzXwtStMs5U8fro0iN4RVH7Jp664Snc4AJGEiPzUI8wxeeZAZivgYr3+2Mj2dPmvotBSRVv1P7z5URXK8B3uH3sdzyfacjHiR+z3mC5mWFuaeUIH67fSf8U02zVdXyMIoxWH5kuputIxumVwVtKTHw/Ne+Cg7442ndk=
+	t=1745421792; cv=none; b=mEW/dTZRJUN8fGa8xg4CxZkYJI0AYHfgwDx9DmK8mdOuGyYC5qlV5Oq15fSEVGU7W3hfuGBsiLHSBFYERNmFysVccIy/fDjcnVG/29dK7j8IRSShPNsObJSVkemqnrl4AUR57Z7SSB2U9RZmAVxl85k6FMyT5faPcl1y+UdAeSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422068; c=relaxed/simple;
-	bh=PY8gioSIeKewWwBYZcQpXb7Tfi3W1lxlEkU5R09Shwg=;
+	s=arc-20240116; t=1745421792; c=relaxed/simple;
+	bh=b9XPAjsijW72XKXTWqSMAbz0xSgcMZEt0DdhqB/MrxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frclFqttqogh8qnHUsfA8l1qOxJtnJsyUkprIq8GalzN8fLUv0+CbmNX9rBtBH1eMNVv+i1XJE3ZK4jVwb1f+11gxAi+eR9c5g9mIH8V1ouOJswEMVchgKpmFDj+8RhK8JMlF6P3cZAdxvpz3ATofZZAD15XnB73kbQWtIhHepA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBSeyH+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B620BC4CEE2;
-	Wed, 23 Apr 2025 15:27:47 +0000 (UTC)
+	 MIME-Version; b=NvCN+laBpGemqOgmI1Pdnfjox/Z07ygyb7FwhWtlE9CDGCxpfh+5SrgbjvunbVPpB1vzgROftnGBhhpovBV7SQH9N05BDZiH5yjzicMkd/EQKrApv//3VkyDnWXmH87LnrDpaSfTpWMsFgcamAXGvXtEeZDdV3fG/SMbwGo7It0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4A+zxoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C98C4CEE2;
+	Wed, 23 Apr 2025 15:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422068;
-	bh=PY8gioSIeKewWwBYZcQpXb7Tfi3W1lxlEkU5R09Shwg=;
+	s=korg; t=1745421791;
+	bh=b9XPAjsijW72XKXTWqSMAbz0xSgcMZEt0DdhqB/MrxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBSeyH+igYKa52FYEgj+eLsibgnh9QooDEnVvjGtdEdPNIUTZaYpUOy8Fz/OtjCwr
-	 pzLkA3cDt4kbOHrN9iZEMXaD3cLoHqKXDcNlLRpww6t+mjMlajDiK94dLI6EI/VAZB
-	 l3jamInShXqfPtu0VoznLR19fSdJz2cp+9EFSWs8=
+	b=Y4A+zxoQZupjRwC/oO6YZDLx0j+P71pImEKgfCYVnUaG2s+PExiuhIUP8ubn85yss
+	 tNrUwK41lB0UqgYEfTgfWzS/WKsFtGjCzy3k0To5C7820jmSP7fFLNcI+VVdDaibek
+	 9EWqLilq1ZvJVitMprpv2Aw2Rr2pKD9cqXXHOIKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 272/393] net: ethernet: ti: am65-cpsw: fix port_np reference counting
+Subject: [PATCH 6.1 179/291] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Wed, 23 Apr 2025 16:42:48 +0200
-Message-ID: <20250423142654.591016872@linuxfoundation.org>
+Message-ID: <20250423142631.696346090@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 903d2b9f9efc5b3339d74015fcfc0d9fff276c4c ]
+[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
 
-A reference to the device tree node is stored in a private struct, thus
-the reference count has to be incremented. Also, decrement the count on
-device removal and in the error path.
+This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
 
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250414083942.4015060-1-mwalle@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Since the original bug seems to have been around for years,
+but a new issue was report with the fix, revert the fix for
+now. We have a couple of weeks to figure it out for this
+release, if needed.
+
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
+Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index dbca0b2889bc5..9c8376b271891 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2076,7 +2076,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 				of_property_read_bool(port_np, "ti,mac-only");
- 
- 		/* get phy/link info */
--		port->slave.port_np = port_np;
-+		port->slave.port_np = of_node_get(port_np);
- 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
- 		if (ret) {
- 			dev_err(dev, "%pOF read phy-mode err %d\n",
-@@ -2134,6 +2134,17 @@ static void am65_cpsw_nuss_phylink_cleanup(struct am65_cpsw_common *common)
- 	}
- }
- 
-+static void am65_cpsw_remove_dt(struct am65_cpsw_common *common)
-+{
-+	struct am65_cpsw_port *port;
-+	int i;
-+
-+	for (i = 0; i < common->port_num; i++) {
-+		port = &common->ports[i];
-+		of_node_put(port->slave.port_np);
-+	}
-+}
-+
- static int
- am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
- {
-@@ -3009,6 +3020,7 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- err_free_phylink:
- 	am65_cpsw_nuss_phylink_cleanup(common);
- 	am65_cpts_release(common->cpts);
-+	am65_cpsw_remove_dt(common);
- err_of_clear:
- 	if (common->mdio_dev)
- 		of_platform_device_destroy(common->mdio_dev, NULL);
-@@ -3040,6 +3052,7 @@ static int am65_cpsw_nuss_remove(struct platform_device *pdev)
- 	am65_cpsw_nuss_phylink_cleanup(common);
- 	am65_cpts_release(common->cpts);
- 	am65_cpsw_disable_serdes_phy(common);
-+	am65_cpsw_remove_dt(common);
- 
- 	if (common->mdio_dev)
- 		of_platform_device_destroy(common->mdio_dev, NULL);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 7c1e81e15865c..62b2817df2ba9 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3800,7 +3800,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
+-	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
