@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-135426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599C6A98E26
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED148A98E41
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A5A7447441
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0525A6846
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4E7280A47;
-	Wed, 23 Apr 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8E8280CD1;
+	Wed, 23 Apr 2025 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPav4sMf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yd+qY0GI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5978527D76E;
-	Wed, 23 Apr 2025 14:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E272701A0;
+	Wed, 23 Apr 2025 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419892; cv=none; b=rxLQW+Rg1/WN2bu5+h1Bgsj2GPzuorCmXdM8Pl+mVSwifh/65xkWXE8UYJ1V+tds6QKKx6Kt/bSFhK8cC2Py0uMq9I8Ev9yq69jPktc7zulAV7VpF4aERKK5rkpHE40iAvzUEpOwrvmO2BdSAkKEnTQjJk+rDYITKr3EQJWbh0A=
+	t=1745419903; cv=none; b=W0cW5mXZyjB3mwb6zPIU5bcffLKWlZVuYM7eOn5swsTG4U8DHcM/c39vdXnqNsKGjZl9A4UNSpdJ3/0G36rrHdwwWbkjBPvS0Xqz4GRSvMzBkNH8hW+y89iq3T69KlBlLkjQgPMhUnftRiBKt4rEYIYp4IHdbc3XFvW641+J6eQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419892; c=relaxed/simple;
-	bh=PHvSiq/0Bk2A0VHSNe3c+vUIhr09VnW57XidyaCDgr4=;
+	s=arc-20240116; t=1745419903; c=relaxed/simple;
+	bh=5rX/37BfTYHRr469TUATse27fotc7mAyLKDRjbodyPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxUSPaXGWvykEFlQveCN1CuXX+Xrt5RnmvY52mABdCGnvgDkwnaH5PKfBHL3UbubiAiTATnh7fJeyvNSI6vIZthMRtC2z9OnqbqYElNb+4sVn9sBKRNHoQV4XTr4/cUf28Mf+nQekZ+F8h8nEciwLlEVHGpuIWT8UCk8kkavs7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPav4sMf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D30C4CEE2;
-	Wed, 23 Apr 2025 14:51:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WWFko+25MQod4SC/Uer6mNbocxv4P+KUE/HrVkLioZXdtHEmKZDwdWCx8dz1R/AQ9ujOTqIimUMCTj1xuHjnIQWUQb7NiOXyuh5OSBmkyx5dd/Tb6u+yIXQFmltceGzaO/sPNLWvHd4k6bHQwT2AXM5GmtbNdv3D/px8gxcvGDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yd+qY0GI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6DAC4CEE2;
+	Wed, 23 Apr 2025 14:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419892;
-	bh=PHvSiq/0Bk2A0VHSNe3c+vUIhr09VnW57XidyaCDgr4=;
+	s=korg; t=1745419902;
+	bh=5rX/37BfTYHRr469TUATse27fotc7mAyLKDRjbodyPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uPav4sMfpd5hiOE1PzEXZoO3RI1DSTFuCWVMIXaagifmzJVq9jFE/W5qroE1wS0t0
-	 NQQwoUT1ke3huJTbwRN40mZg9KbJ/frNZdvIkfJ1JKcwJPxw/OhpImTSiytiRPp6sl
-	 JywjqZREBp00z9xVzkoatSBcqw/gNrBPLVlJPL/A=
+	b=yd+qY0GIc/ShTpJDjoW0xTMowtVBlGdDheZa0p+DPCTiNzs+Y8iUhF0I/QyY5MgP1
+	 pH6OQNXXZ2umfaW7DXwwsnn5X6fXWfjBgrQD4SZlAUxIhPY4IMAGPbp9wiQKh1WOcN
+	 QUQI0hb/PRU4yMUYP2hQyrmgqSp07jfOzOXMOkfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Stanner <phasta@mailbox.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/393] drm/tests: modeset: Fix drm_display_mode memory leak
-Date: Wed, 23 Apr 2025 16:38:33 +0200
-Message-ID: <20250423142643.979814998@linuxfoundation.org>
+Subject: [PATCH 6.6 018/393] drm/tests: helpers: Add atomic helpers
+Date: Wed, 23 Apr 2025 16:38:34 +0200
+Message-ID: <20250423142644.019377820@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -61,6 +60,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -69,39 +69,43 @@ Content-Transfer-Encoding: 8bit
 
 From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit dacafdcc7789cfeb0f0552716db56f210238225d ]
+[ Upstream commit 66671944e17644804cb0886489e1b8fde924e9b9 ]
 
-drm_mode_find_dmt() returns a drm_display_mode that needs to be
-destroyed later one. The drm_test_pick_cmdline_res_1920_1080_60() test
-never does however, which leads to a memory leak.
+The mock device we were creating was missing any of the driver-wide
+helpers. That was fine before since we weren't testing the atomic state
+path, but we're going to start, so let's use the default
+implementations.
 
-Let's make sure it's freed.
-
-Reported-by: Philipp Stanner <phasta@mailbox.org>
-Closes: https://lore.kernel.org/dri-devel/a7655158a6367ac46194d57f4b7433ef0772a73e.camel@mailbox.org/
-Fixes: 8fc0380f6ba7 ("drm/client: Add some tests for drm_connector_pick_cmdline_mode()")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250408-drm-kunit-drm-display-mode-memleak-v1-2-996305a2e75a@kernel.org
+Reviewed-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240222-kms-hdmi-connector-state-v7-2-8f4af575fce2@kernel.org
+Stable-dep-of: 70f29ca3117a ("drm/tests: cmdline: Fix drm_display_mode memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_client_modeset_test.c | 3 +++
+ drivers/gpu/drm/tests/drm_kunit_helpers.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/tests/drm_client_modeset_test.c b/drivers/gpu/drm/tests/drm_client_modeset_test.c
-index 7516f6cb36e4e..3e9518d7b8b7e 100644
---- a/drivers/gpu/drm/tests/drm_client_modeset_test.c
-+++ b/drivers/gpu/drm/tests/drm_client_modeset_test.c
-@@ -95,6 +95,9 @@ static void drm_test_pick_cmdline_res_1920_1080_60(struct kunit *test)
- 	expected_mode = drm_mode_find_dmt(priv->drm, 1920, 1080, 60, false);
- 	KUNIT_ASSERT_NOT_NULL(test, expected_mode);
+diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
+index bccb33b900f39..272a3ba46d602 100644
+--- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
++++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
  
-+	ret = drm_kunit_add_mode_destroy_action(test, expected_mode);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
- 	KUNIT_ASSERT_TRUE(test,
- 			  drm_mode_parse_command_line_for_connector(cmdline,
- 								    connector,
+ #include <drm/drm_atomic.h>
++#include <drm/drm_atomic_helper.h>
+ #include <drm/drm_drv.h>
+ #include <drm/drm_kunit_helpers.h>
+ #include <drm/drm_managed.h>
+@@ -13,6 +14,8 @@
+ #define KUNIT_DEVICE_NAME	"drm-kunit-mock-device"
+ 
+ static const struct drm_mode_config_funcs drm_mode_config_funcs = {
++	.atomic_check	= drm_atomic_helper_check,
++	.atomic_commit	= drm_atomic_helper_commit,
+ };
+ 
+ static int fake_probe(struct platform_device *pdev)
 -- 
 2.39.5
 
