@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-136406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA59A99351
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AA2A9937C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 560AA1BA1679
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 663D31B86C4C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5EB2949F1;
-	Wed, 23 Apr 2025 15:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3932BEC55;
+	Wed, 23 Apr 2025 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsG58NL4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTjP5F1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340E419CCEC;
-	Wed, 23 Apr 2025 15:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D5C29AAF4;
+	Wed, 23 Apr 2025 15:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422462; cv=none; b=ogSfhtXb94mW7g37uA0eGByyXS3nhkKSkLNCe6bRl/hnN5mHUR7zngaaKz73jq4C9faJaXZy7X+AsyOM/n7tFEHjufBmgmXOExhNFXkqFq6lFOT2h+TuftBDUNmGxo+WbExPP6tLiHy9rW2yacAZQOt2QG/Kl9evSSYRv+BO6oY=
+	t=1745422506; cv=none; b=rr/Fwdfj7ZCCp1HhOANgVT5qX/kxKlkT584FMJahw+kFF8M1msEC2gaXCuA8EktBmrL3R9oYI+7xpAiFYa/liJlXM9t4AtrxQ5OA8DleFlkN1bJpky/UrwRHJOFcwwNeu1pKuQfIEqPb6R1LFot+DOroWN46CJwhVseN0qqxBtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422462; c=relaxed/simple;
-	bh=KOzFCu1RVKBvJMMWBUmQrW79PGckYdeEfpWOwejzBuY=;
+	s=arc-20240116; t=1745422506; c=relaxed/simple;
+	bh=kXHbFb2/pml2ooLQYzmHItbaWcOHlHYzxazYEIWdaNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MNjLdLmnzeS795arMfszAiturXh4rByPpoQcXDOoJozbLo32zYvThJDnX6xiN35RBeWhi9H0Ebt7pyfHs3u14Jfi1F3W2l63TPz4NseGGcJ0149qvIOGrMCcHw9N7hQdnG4gLYXhxupGbxLpEV4etqUslws9EOZ1WDPcc60V8jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsG58NL4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97694C4CEE2;
-	Wed, 23 Apr 2025 15:34:21 +0000 (UTC)
+	 MIME-Version; b=qgWWJ6aSN5YddnwO+wjh2YjsdF0mvX+knWvrVVLce/Sacx6OOtMCBySH6/pBmJORP4bxaYcg30D3s8guOpFhqEro9n6kVQ6TuyH31qQIpNISj4V15RxSU+Y+s2cc1vUQcGG8PkHUB2NZTuT/3xZd1fszxhsv3TI0Img435nwFwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTjP5F1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289ACC4CEE2;
+	Wed, 23 Apr 2025 15:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422461;
-	bh=KOzFCu1RVKBvJMMWBUmQrW79PGckYdeEfpWOwejzBuY=;
+	s=korg; t=1745422506;
+	bh=kXHbFb2/pml2ooLQYzmHItbaWcOHlHYzxazYEIWdaNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SsG58NL49qoty04B5XJfGrq7WdmfmU+u8jGo3gISkx39Ocz2hQ7lEOSWAjis80R5R
-	 ctXJqsQwINP+tHqXWfhfpJ+yqaxjuXz20DoZwnwdKfJ6ra63DMHPUiyOmw2hnD9jS7
-	 IW1RtKpOmYkWI932G7Z1tYbBvkyGoguofBGvzU2s=
+	b=WTjP5F1CxmvPj4DKsV0txZZfnSP6mtIRp68GMPauYt3Bsotn4V/T4BvVttjkqNM/a
+	 QUIIHGEgtm1luSLHlzqAZ0SlLPa5YDe9e98Q11LzCCZhaG5tCnngcupztUKjPbQiz6
+	 XDq7ZTl/qcCifP5WB9/jaORCdh8vdAQdfMuVEqVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Kuohai <xukuohai@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 282/291] bpf: Prevent tail call between progs attached to different hooks
-Date: Wed, 23 Apr 2025 16:44:31 +0200
-Message-ID: <20250423142635.949057828@linuxfoundation.org>
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 376/393] LoongArch: Eliminate superfluous get_numa_distances_cnt()
+Date: Wed, 23 Apr 2025 16:44:32 +0200
+Message-ID: <20250423142658.860967638@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Kuohai <xukuohai@huawei.com>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-commit 28ead3eaabc16ecc907cfb71876da028080f6356 upstream.
+commit a0d3c8bcb9206ac207c7ad3182027c6b0a1319bb upstream.
 
-bpf progs can be attached to kernel functions, and the attached functions
-can take different parameters or return different return values. If
-prog attached to one kernel function tail calls prog attached to another
-kernel function, the ctx access or return value verification could be
-bypassed.
+In LoongArch, get_numa_distances_cnt() isn't in use, resulting in a
+compiler warning.
 
-For example, if prog1 is attached to func1 which takes only 1 parameter
-and prog2 is attached to func2 which takes two parameters. Since verifier
-assumes the bpf ctx passed to prog2 is constructed based on func2's
-prototype, verifier allows prog2 to access the second parameter from
-the bpf ctx passed to it. The problem is that verifier does not prevent
-prog1 from passing its bpf ctx to prog2 via tail call. In this case,
-the bpf ctx passed to prog2 is constructed from func1 instead of func2,
-that is, the assumption for ctx access verification is bypassed.
+Fix follow errors with clang-18 when W=1e:
 
-Another example, if BPF LSM prog1 is attached to hook file_alloc_security,
-and BPF LSM prog2 is attached to hook bpf_lsm_audit_rule_known. Verifier
-knows the return value rules for these two hooks, e.g. it is legal for
-bpf_lsm_audit_rule_known to return positive number 1, and it is illegal
-for file_alloc_security to return positive number. So verifier allows
-prog2 to return positive number 1, but does not allow prog1 to return
-positive number. The problem is that verifier does not prevent prog1
-from calling prog2 via tail call. In this case, prog2's return value 1
-will be used as the return value for prog1's hook file_alloc_security.
-That is, the return value rule is bypassed.
+arch/loongarch/kernel/acpi.c:259:28: error: unused function 'get_numa_distances_cnt' [-Werror,-Wunused-function]
+  259 | static inline unsigned int get_numa_distances_cnt(struct acpi_table_slit *slit)
+      |                            ^~~~~~~~~~~~~~~~~~~~~~
+1 error generated.
 
-This patch adds restriction for tail call to prevent such bypasses.
-
-Signed-off-by: Xu Kuohai <xukuohai@huawei.com>
-Link: https://lore.kernel.org/r/20240719110059.797546-4-xukuohai@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Link: https://lore.kernel.org/all/Z7bHPVUH4lAezk0E@kernel.org/
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf.h |    1 +
- kernel/bpf/core.c   |   19 +++++++++++++++++--
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/acpi.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -250,6 +250,7 @@ struct bpf_map {
- 	 * same prog type, JITed flag and xdp_has_frags flag.
- 	 */
- 	struct {
-+		const struct btf_type *attach_func_proto;
- 		spinlock_t lock;
- 		enum bpf_prog_type type;
- 		bool jited;
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -2121,6 +2121,7 @@ bool bpf_prog_map_compatible(struct bpf_
+--- a/arch/loongarch/kernel/acpi.c
++++ b/arch/loongarch/kernel/acpi.c
+@@ -216,18 +216,6 @@ static __init int setup_node(int pxm)
+ 	return acpi_map_pxm_to_node(pxm);
+ }
+ 
+-/*
+- * Callback for SLIT parsing.  pxm_to_node() returns NUMA_NO_NODE for
+- * I/O localities since SRAT does not list them.  I/O localities are
+- * not supported at this point.
+- */
+-unsigned int numa_distance_cnt;
+-
+-static inline unsigned int get_numa_distances_cnt(struct acpi_table_slit *slit)
+-{
+-	return slit->locality_count;
+-}
+-
+ void __init numa_set_distance(int from, int to, int distance)
  {
- 	enum bpf_prog_type prog_type = resolve_prog_type(fp);
- 	bool ret;
-+	struct bpf_prog_aux *aux = fp->aux;
- 
- 	if (fp->kprobe_override)
- 		return false;
-@@ -2132,12 +2133,26 @@ bool bpf_prog_map_compatible(struct bpf_
- 		 */
- 		map->owner.type  = prog_type;
- 		map->owner.jited = fp->jited;
--		map->owner.xdp_has_frags = fp->aux->xdp_has_frags;
-+		map->owner.xdp_has_frags = aux->xdp_has_frags;
-+		map->owner.attach_func_proto = aux->attach_func_proto;
- 		ret = true;
- 	} else {
- 		ret = map->owner.type  == prog_type &&
- 		      map->owner.jited == fp->jited &&
--		      map->owner.xdp_has_frags == fp->aux->xdp_has_frags;
-+		      map->owner.xdp_has_frags == aux->xdp_has_frags;
-+		if (ret &&
-+		    map->owner.attach_func_proto != aux->attach_func_proto) {
-+			switch (prog_type) {
-+			case BPF_PROG_TYPE_TRACING:
-+			case BPF_PROG_TYPE_LSM:
-+			case BPF_PROG_TYPE_EXT:
-+			case BPF_PROG_TYPE_STRUCT_OPS:
-+				ret = false;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
- 	}
- 	spin_unlock(&map->owner.lock);
- 
+ 	if ((u8)distance != distance || (from == to && distance != LOCAL_DISTANCE)) {
 
 
 
