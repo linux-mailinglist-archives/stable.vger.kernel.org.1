@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FA4A990C4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2130AA992EB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8C775A5E49
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C43E2167CC0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E2128A1E7;
-	Wed, 23 Apr 2025 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F6D79F5;
+	Wed, 23 Apr 2025 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4mIs7gP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZ06pl6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6C027F755;
-	Wed, 23 Apr 2025 15:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C57E26A08C;
+	Wed, 23 Apr 2025 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420944; cv=none; b=aWH4uQX95Ye6xXiDJQErsVEWBm5yokSfUnZF72R0PzlONzGn9LjCid2Fc+gi6o7g0O3Mig9MJp00Q+P1zmEsAJq26q0OsgxF64Tlr9wSyWw23lF1RYvw83v0YW6UbM3EnLSnq8E+srblwDD069zwCC8w9ASIbgJ9kBSWk/qiI/A=
+	t=1745422228; cv=none; b=pRlqXyT4GTgo4m52Z1/unQmo05WlOFUjRpKDvA+G3dqjYvgV9Vyhw7EG/e/SB5c5PSvvuNShkd48kbcRy/Ff9HO8kACfJwXWdS2/y2h0IAAyCeLBDD5g5KwIlhUGtrD7s7RzN+kkUUSXfJGNV3lKplRGl2+S0SIExggLGdt5rQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420944; c=relaxed/simple;
-	bh=PEJBQuGnaJoaxM05psf9xb0icsSJbSCuaOocjAeGbZU=;
+	s=arc-20240116; t=1745422228; c=relaxed/simple;
+	bh=FfJFaiVEPJ/dzHZTHwATBslQEYpvrYj+Sd9NBzU2sy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMLXyaedZ7OBvPQBPjSS8QNPr+OLaNooDG592E7HJ+4Eo64H7phoge/bRmwnFuzlIryoiAaPjAuQhAUkfgio6Hfx8HYUIL5BPPE5BC2FEnNtE3RFDgOXJlG64qp3MXE9PhhY0BcWpFKk9Tq/EvSqxo3dH2KMQFmMYa3NT+wOk9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4mIs7gP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F98DC4CEE2;
-	Wed, 23 Apr 2025 15:09:04 +0000 (UTC)
+	 MIME-Version; b=tRTgAvQGO43N1csH4WTe6M6cYQ/s9wJqXZAh0/SYKc3k7NGT97WuC+5oNNX6DGadCRCeqJjhuxjeLwIc1DBakkLbtCdWlX8f3lFciK8Hck3QKFdlCn1U4I0tV69gtFnTcJ2RqEtKJTBl05ZoBGaTEb/K60yxiZfJivjhV4KgVQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZ06pl6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DE8C4CEE2;
+	Wed, 23 Apr 2025 15:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420944;
-	bh=PEJBQuGnaJoaxM05psf9xb0icsSJbSCuaOocjAeGbZU=;
+	s=korg; t=1745422228;
+	bh=FfJFaiVEPJ/dzHZTHwATBslQEYpvrYj+Sd9NBzU2sy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4mIs7gP1pq5/zAW9X5khS8rZ8p0/hUraNTHAgY1XXLpGdg+5Fzdy5Tud3eau5z12
-	 rMIzk6OXzbnPCH98YCzyM98EjLGhLrjU5NlnVF4UxrZHj2wrxsBJPLL933ejhSS2Fj
-	 8aHw7UpPMM57cu6IXKMPiUCXrKhn2hzFt37vqjMo=
+	b=kZ06pl6vF/btfqZs4z8JkQdX6DFW4+M1yrLE5aWyCLyxGvIzeov5shRJYNehcewOc
+	 3SaGwAvbQJkT/cevL+d1FnJzPAlINOfjb+a46cHw29EOMRntFj7mU/yvO473/gLiJ1
+	 vQN5rkoIUEnbnyXtC5vtS7OmMga/n7XtmU8JTtxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	Nicolas Chauvet <kwizart@gmail.com>,
-	Damian Tometzki <damian@riscv-rocks.de>,
-	Zhenyu Wang <zhenyuw.linux@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 176/223] drm/i915/gvt: fix unterminated-string-initialization warning
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Subject: [PATCH 6.1 259/291] media: mediatek: vcodec: mark vdec_vp9_slice_map_counts_eob_coef noinline
 Date: Wed, 23 Apr 2025 16:44:08 +0200
-Message-ID: <20250423142624.341337929@linuxfoundation.org>
+Message-ID: <20250423142635.012030134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 2e43ae7dd71cd9bb0d1bce1d3306bf77523feb81 upstream.
+commit 8b55f8818900c99dd4f55a59a103f5b29e41eb2c upstream.
 
-Initializing const char opregion_signature[16] = OPREGION_SIGNATURE
-(which is "IntelGraphicsMem") drops the NUL termination of the
-string. This is intentional, but the compiler doesn't know this.
+With KASAN enabled, clang fails to optimize the inline version of
+vdec_vp9_slice_map_counts_eob_coef() properly, leading to kilobytes
+of temporary values spilled to the stack:
 
-Switch to initializing header->signature directly from the string
-litaral, with sizeof destination rather than source. We don't treat the
-signature as a string other than for initialization; it's really just a
-blob of binary data.
+drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c:1526:12: error: stack frame size (2160) exceeds limit (2048) in 'vdec_vp9_slice_update_prob' [-Werror,-Wframe-larger-than]
 
-Add a static assert for good measure to cross-check the sizes.
+This seems to affect all versions of clang including the latest (clang-20),
+but the degree of stack overhead is different per release.
 
-Reported-by: Kees Cook <kees@kernel.org>
-Closes: https://lore.kernel.org/r/20250310222355.work.417-kees@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13934
-Tested-by: Nicolas Chauvet <kwizart@gmail.com>
-Tested-by: Damian Tometzki <damian@riscv-rocks.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Zhenyu Wang <zhenyuw.linux@gmail.com>
-Link: https://lore.kernel.org/r/20250327124739.2609656-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 4f8207469094bd04aad952258ceb9ff4c77b6bfa)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Marking the function as noinline_for_stack is harmless here and avoids
+the problem completely.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+[nathan: Handle file location change in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gvt/opregion.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/gvt/opregion.c
-+++ b/drivers/gpu/drm/i915/gvt/opregion.c
-@@ -222,7 +222,6 @@ int intel_vgpu_init_opregion(struct inte
- 	u8 *buf;
- 	struct opregion_header *header;
- 	struct vbt v;
--	const char opregion_signature[16] = OPREGION_SIGNATURE;
+--- a/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c
++++ b/drivers/media/platform/mediatek/vcodec/vdec/vdec_vp9_req_lat_if.c
+@@ -1192,7 +1192,8 @@ err:
+ 	return ret;
+ }
  
- 	gvt_dbg_core("init vgpu%d opregion\n", vgpu->id);
- 	vgpu_opregion(vgpu)->va = (void *)__get_free_pages(GFP_KERNEL |
-@@ -236,8 +235,10 @@ int intel_vgpu_init_opregion(struct inte
- 	/* emulated opregion with VBT mailbox only */
- 	buf = (u8 *)vgpu_opregion(vgpu)->va;
- 	header = (struct opregion_header *)buf;
--	memcpy(header->signature, opregion_signature,
--	       sizeof(opregion_signature));
-+
-+	static_assert(sizeof(header->signature) == sizeof(OPREGION_SIGNATURE) - 1);
-+	memcpy(header->signature, OPREGION_SIGNATURE, sizeof(header->signature));
-+
- 	header->size = 0x8;
- 	header->opregion_ver = 0x02000000;
- 	header->mboxes = MBOX_VBT;
+-static
++/* clang stack usage explodes if this is inlined */
++static noinline_for_stack
+ void vdec_vp9_slice_map_counts_eob_coef(unsigned int i, unsigned int j, unsigned int k,
+ 					struct vdec_vp9_slice_frame_counts *counts,
+ 					struct v4l2_vp9_frame_symbol_counts *counts_helper)
 
 
 
