@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BEDA98DB7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20900A9907A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAFAD1614A8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 791307A83AE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B834280A2E;
-	Wed, 23 Apr 2025 14:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C7B28368C;
+	Wed, 23 Apr 2025 15:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/VFKRQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM+Zg2bO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4A627CCFA;
-	Wed, 23 Apr 2025 14:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A76293B4D;
+	Wed, 23 Apr 2025 15:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419647; cv=none; b=BEXF33pyU7+KW2aEcqm/vjlatui0JMNrw8khNuTSrr74DwNR2uQswfr4LGx2kaJqbOEu5Iar2PUOGSItGMdF7/TwPNtrDL5aDBui+0NHAwperbHi4PQ0YuIe+pBsMS/tZnX5caxm3xkP+WAaW9oMw/XdDuQdzmRYOX2SUotst0I=
+	t=1745421181; cv=none; b=NxRyyhmioQP/1YDlkqGXxbYae0N6gU4zO/FgAPDPa885VqCBJmifKtw3/+ylg2sHorYv2dm0Kt7HHwrvW9/6dNwrKtieqkSumcx3LFpqIrjvxNucOsS1ACeuBki7shAR+0VcmnXSN/T+Hg74hPCCXSOiFYplvuUdnlL/66WEzmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419647; c=relaxed/simple;
-	bh=4QFva8CgyIACQba/f5c92WyVxVN9rrPQP1oysdcjBTI=;
+	s=arc-20240116; t=1745421181; c=relaxed/simple;
+	bh=cvOBVADpuRffSN+7Gk7WNkGAOxzwpUsExqDQV7D/cck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pobVaqAaBf4Ajwij2YmoRzbkv36tpU8gFkD/fWm5X8mVgkOrFYdMsUP7np47NLr0BjW+cSuC1kM/xb5Q5Ib3ilQPObuI+CzEsDXUK8uBIf/6d3f7+JcPkFfBQ0J9bJuoG1lT0CXlwBDRtbckwy5A5Rwyr/Y7SKbwKaC4IaX3RN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/VFKRQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0DFC4CEE2;
-	Wed, 23 Apr 2025 14:47:26 +0000 (UTC)
+	 MIME-Version; b=uR2+4AvQ99IoK6aXE6etg1ik0GpXm2D6JFt4jhGy3fYcqRHh6WzqVbLAm7JWmhCMP0SxKyRehw8KZSlXAWqiCo9lXj7IPxgf7qz5fni6SaQ41zyR2Ny0imxN7S+adQ472ZbUTdKZ00ElUowBnsTh9aXzwv71C58Ow+PvY1u0Y0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM+Zg2bO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A27C4CEE2;
+	Wed, 23 Apr 2025 15:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419647;
-	bh=4QFva8CgyIACQba/f5c92WyVxVN9rrPQP1oysdcjBTI=;
+	s=korg; t=1745421181;
+	bh=cvOBVADpuRffSN+7Gk7WNkGAOxzwpUsExqDQV7D/cck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/VFKRQnYDb72qa2cc0YnMzyaBQTkkAw83Q5uNMyxDt0GFFtvgIaHHrMpj0UxbsM1
-	 T8+J+faocZy8jpaY3aOAZ1flW+PLjB20aLesXBb5i3JRcc1wc3Ji55nJKqrjmr5nob
-	 CqAz6TWcfgvQbmTXVUa05lG+1WjTSVogYBhiJork=
+	b=xM+Zg2bO4K+2+2RTGg/g50CSKx76VOn0zJUvGssX4+XMlsPfBfg+7I30yog4m/eSi
+	 NwHX6SqxH4Ebb5Tk0RLfhq7ciiDMNexH6lUexe0Vxk8f6lWABt+CeNuh5bDH+kBake
+	 d+JK2bxZfmiaqfnfJu7D/uDZiyWu2WHuxcwlRKQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bert Karwatzki <spasswolf@web.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/223] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.1 115/291] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
 Date: Wed, 23 Apr 2025 16:41:44 +0200
-Message-ID: <20250423142618.420011832@linuxfoundation.org>
+Message-ID: <20250423142629.073946404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 0937cb5f345c79d702b4d0d744e2a2529b551cb2 ]
+commit c8222ef6cf29dd7cad21643228f96535cc02b327 upstream.
 
-This reverts commit a104042e2bf6528199adb6ca901efe7b60c2c27f.
+soc_dev_attr->revision could be NULL, thus,
+a pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Since the original bug seems to have been around for years,
-but a new issue was report with the fix, revert the fix for
-now. We have a couple of weeks to figure it out for this
-release, if needed.
+This issue is found by our static analysis tool.
 
-Reported-by: Bert Karwatzki <spasswolf@web.de>
-Closes: https://lore.kernel.org/linux-wireless/20250410215527.3001-1-spasswolf@web.de
-Fixes: a104042e2bf6 ("wifi: mac80211: Update skb's control block key in ieee80211_tx_dequeue()")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
+Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/soc/samsung/exynos-chipid.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 9b3a5ef20f29e..0ff8b56f58070 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3892,7 +3892,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
- 	 * The key can be removed while the packet was queued, so need to call
- 	 * this here to get the current key.
- 	 */
--	info->control.hw_key = NULL;
- 	r = ieee80211_tx_h_select_key(&tx);
- 	if (r != TX_CONTINUE) {
- 		ieee80211_free_txskb(&local->hw, skb);
--- 
-2.39.5
-
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -131,6 +131,8 @@ static int exynos_chipid_probe(struct pl
+ 
+ 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%x", soc_info.revision);
++	if (!soc_dev_attr->revision)
++		return -ENOMEM;
+ 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
+ 	if (!soc_dev_attr->soc_id) {
+ 		pr_err("Unknown SoC\n");
 
 
 
