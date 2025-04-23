@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-136280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99810A992FC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77F1A99016
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AAF29212BF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A42CC8E13A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A829280CCD;
-	Wed, 23 Apr 2025 15:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D5B28CF75;
+	Wed, 23 Apr 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vacl8u09"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lq4uFLuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 470C9279906;
-	Wed, 23 Apr 2025 15:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D244288CBC;
+	Wed, 23 Apr 2025 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422131; cv=none; b=Vc3SqtiDo2iKnI4THWyhJLwtkirM1LWbcppalo2sa4ZXesWGvtl1jWsSvb0YxNVEGuGwpo2tkbXiol0BaNy0+nmm7tvXDBffPLdeg1ACg3qJQLqVVB3jaVwjP5mlIKgHp0sxC2mfFKVgKAtY+0q96TnRpWbFe9SynoD0sNdF7No=
+	t=1745420749; cv=none; b=ATDyrfFEpjhZKKppf/8zd7KSfdCZaQ4ctvVxO1gnb6aYQaLUUVNm/odX9vX24D6cxWiYDzkTPggdTT8ojokXGdZXtlxGslBgUEDw+eNm2QfNEiv2Y8+pYkn7zvfV4NoXuDNCFk5NwPeqg3EIhn2NUej/hwHtL0WeF73VgieLGhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422131; c=relaxed/simple;
-	bh=SVbWkhcbnOKIGR/RCMItJDWvmz0RnfPLzBwO6X2DhSQ=;
+	s=arc-20240116; t=1745420749; c=relaxed/simple;
+	bh=EmKcxj/MbhSoIoFpDf4VaWRB9a+TV5WnYS/tXzeZpbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDK6jfs0rFLtv2JVhBXcXCdj17FFO0zFKpIasrGNHkbaN6cUMc+9G4OjcW+9zq2tzW96Z5/tif+9tLVOrGKFQPRvsTdb/x0c489iIob7JUqjo4oZjh3zcXCP/6V80wLYaclSbcBhGmO2Gr2BlYQ1mTxeQ2wnjcNJE+SgD579nUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vacl8u09; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75336C4CEE2;
-	Wed, 23 Apr 2025 15:28:50 +0000 (UTC)
+	 MIME-Version; b=C8DZKsZ2GKA+puis20KRGkG6jSOYSDsEPqV+2ayxcmORRbncSJAexYHeTNa7TY2mLw3qRw45oVSNvmwmErJIkEovtgD/8wiNwp1KqKf3Gu79JaxG28YN1mY1+QN2UnQWyXQsb5jyPMd0D0HdST+u8UJJSfbZv2t+difQwbwq46c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lq4uFLuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FF9C4CEE8;
+	Wed, 23 Apr 2025 15:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422130;
-	bh=SVbWkhcbnOKIGR/RCMItJDWvmz0RnfPLzBwO6X2DhSQ=;
+	s=korg; t=1745420748;
+	bh=EmKcxj/MbhSoIoFpDf4VaWRB9a+TV5WnYS/tXzeZpbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vacl8u09ATrEONWWernQhb7HPp7TVDgheEuCXmp7Fg/hxgO/r/EP85RXVtyWPMucT
-	 AoQvSmOqwbHvdUJrzCK6wUa9rMJtXCpaaeKGs6ivEqNCIG5UC8hs3erfuvjGrW+ETc
-	 sQHRbO1ysoqwGfins5xyOzbRxe9dZEDAV6Y/LVn8=
+	b=lq4uFLuX3frp7s/hTm/ji2G6CxIfmxLW9aq6uM3wDkLosKxVayMmyFXAhhxQNDzHX
+	 a5WBAyxlVd6L0jGodcdpiGHut+2KbGJB6KdCTVNvstdRolUBBMAAm8dZ6NX1r6uhMn
+	 cRLXE4yJECZIwiVR0utdgIJBdqmMSQpQIipQ74ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rolf Eike Beer <eb@emlix.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 6.1 242/291] drm/sti: remove duplicate object names
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 159/223] drm/amd/pm/smu11: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:43:51 +0200
-Message-ID: <20250423142634.308079982@linuxfoundation.org>
+Message-ID: <20250423142623.647754155@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
+commit 7ba88b5cccc1a99c1afb96e31e7eedac9907704c upstream.
 
-When merging 2 drivers common object files were not deduplicated.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
-Cc: stable@kernel.org
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1e866f1fe528 ("drm/amd/pm: Prevent divide by zero")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit da7dc714a8f8e1c9fc33c57cd63583779a3bef71)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/sti/Makefile
-+++ b/drivers/gpu/drm/sti/Makefile
-@@ -7,8 +7,6 @@ sti-drm-y := \
- 	sti_compositor.o \
- 	sti_crtc.o \
- 	sti_plane.o \
--	sti_crtc.o \
--	sti_plane.o \
- 	sti_hdmi.o \
- 	sti_hdmi_tx3g4c28phy.o \
- 	sti_dvo.o \
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
+@@ -1199,7 +1199,7 @@ int smu_v11_0_set_fan_speed_rpm(struct s
+ 	uint32_t crystal_clock_freq = 2500;
+ 	uint32_t tach_period;
+ 
+-	if (speed == 0)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
+ 	/*
+ 	 * To prevent from possible overheat, some ASICs may have requirement
 
 
 
