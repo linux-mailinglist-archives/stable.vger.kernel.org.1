@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECBEA992E1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582ADA990EE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF7C94662B0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 263CE17C9AE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AE927FD67;
-	Wed, 23 Apr 2025 15:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E6728EA51;
+	Wed, 23 Apr 2025 15:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVS1WImo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnrOH62l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E592F279906;
-	Wed, 23 Apr 2025 15:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAEC62A1B2;
+	Wed, 23 Apr 2025 15:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422121; cv=none; b=hrwKIVQJQU5klkDPZQQzzjvWVBObRZ8jOpRaKDlmwmerc6mDelcbd8vVf/9HrQKCwUATkBRMwoEbQSatKlbseSOR+UuoO7gglUgr07G96uNRfo4NdKnF9rYt/BkbGdXSFu4h9OMO0NfsEucwXKOhcEfScjsSzo9o+0QnBgYx/ME=
+	t=1745421197; cv=none; b=In/kvsUqI/SMiqkWGRCiLZxVPnCY9YzVz0dwR7/KTcDGg5DiwB1FYBk+LfQNLa62cRMhLadHehN2L8TJ2BCjXwRZyt4Uql2rUPafTANS28wjY6AuIZsQiDgUbq4JxUUF1gwu7jRoCSZHoqWlXqHyumDQVLS6auA+saUBtGaG3M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422121; c=relaxed/simple;
-	bh=uCXTZf/K3l02Zp8OAX5eFLM9j/DpaPCFoe09gtLASxk=;
+	s=arc-20240116; t=1745421197; c=relaxed/simple;
+	bh=zpl1MTEjAxr1QblBt2iMbMP/+DEHV6fDZbMuLeUvoMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swv18zvRcTDbUxN8SnXAo75AIfTumhU2VLN1JFYYQe8gTnu0EksQCH4zMFJpMQyKHAsQBCqm3fLQhNS3jlXpdeT3rizELBOoa9V3k/oWJN8Dx7FfxLDYnSHTprxPDmsYL7JpaYvWbLTW9flWkWtj/CG7BGv6C4W7q8BZENMrYNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVS1WImo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F53AC4CEE2;
-	Wed, 23 Apr 2025 15:28:39 +0000 (UTC)
+	 MIME-Version; b=HPNsAJ9uI3xqzO/hyzCc6Nryz/UNC52f5Y3o2EmVJSHe66jXIWzuXoXv4pAJU7bw1GmgmA4uYHJ4D1J+PYrQfMPrsdcoZsJ83nZDPMm+4ASbeJHkDRbGeW9hPkfxMF2MY92BuYqtlG7HcO4SIJ2V+Spjy2uDuThSVCX7Q4axQfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnrOH62l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4F9C4CEE2;
+	Wed, 23 Apr 2025 15:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422120;
-	bh=uCXTZf/K3l02Zp8OAX5eFLM9j/DpaPCFoe09gtLASxk=;
+	s=korg; t=1745421194;
+	bh=zpl1MTEjAxr1QblBt2iMbMP/+DEHV6fDZbMuLeUvoMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVS1WImoNhyU17Dw0FlP8WdlrAW6Y09fU0WLijkPwRWqWQz3KN8jyP3rKZNjbTZg8
-	 L+wEV2syISewe9n6IITVbGslss3J7V4kzKuo1+pwLH9HRunmEObZAtPSUrrPp37qyV
-	 iRSzZLhb0bYqp+Q0pW3Q81YQar1kBO9xXt60JFNc=
+	b=SnrOH62lfs0KuFhnEPFomeOydPa655U3de/FPIR6g1CwZ0Sdqd/XCHCCNPC/+J/sP
+	 h/XjkzAxv5efHkdt7HKnAbY/qAhPL5cf77c7dymLp9PWbHJQ27ldBHla4ed3B6oBzI
+	 ezOj4FwEEK1lFu0CDVfJgxEnY4f2cZjp0C7PTcgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 235/291] drm/amd/pm/powerplay: Prevent division by zero
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
+	Ryan Lahfa <ryan@lahfa.xyz>
+Subject: [PATCH 6.14 160/241] scsi: megaraid_sas: Block zero-length ATA VPD inquiry
 Date: Wed, 23 Apr 2025 16:43:44 +0200
-Message-ID: <20250423142634.021414177@linuxfoundation.org>
+Message-ID: <20250423142627.075472601@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 
-commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
+commit aad9945623ab4029ae7789609fb6166c97976c62 upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+A firmware bug was observed where ATA VPD inquiry commands with a
+zero-length data payload were not handled and failed with a non-standard
+status code of 0xf0.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Avoid sending ATA VPD inquiry commands without data payload by setting
+the device no_vpd_size flag to 1. In addition, if the firmware returns a
+status code of 0xf0, set scsi_cmnd->result to CHECK_CONDITION to
+facilitate proper error handling.
 
-Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250402193735.5098-1-chandrakanth.patil@broadcom.com
+Tested-by: Ryan Lahfa <ryan@lahfa.xyz>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/megaraid/megaraid_sas_base.c   |    9 +++++++--
+ drivers/scsi/megaraid/megaraid_sas_fusion.c |    5 ++++-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
-@@ -307,10 +307,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
- 	int result = 0;
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -2103,6 +2103,9 @@ static int megasas_sdev_configure(struct
+ 	/* This sdev property may change post OCR */
+ 	megasas_set_dynamic_target_properties(sdev, lim, is_target_prop);
  
- 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
--	    speed == 0 ||
-+	    (!speed || speed > UINT_MAX/8) ||
- 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
- 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
--		return -1;
-+		return -EINVAL;
++	if (!MEGASAS_IS_LOGICAL(sdev))
++		sdev->no_vpd_size = 1;
++
+ 	mutex_unlock(&instance->reset_mutex);
  
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
- 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
+ 	return 0;
+@@ -3662,8 +3665,10 @@ megasas_complete_cmd(struct megasas_inst
+ 
+ 		case MFI_STAT_SCSI_IO_FAILED:
+ 		case MFI_STAT_LD_INIT_IN_PROGRESS:
+-			cmd->scmd->result =
+-			    (DID_ERROR << 16) | hdr->scsi_status;
++			if (hdr->scsi_status == 0xf0)
++				cmd->scmd->result = (DID_ERROR << 16) | SAM_STAT_CHECK_CONDITION;
++			else
++				cmd->scmd->result = (DID_ERROR << 16) | hdr->scsi_status;
+ 			break;
+ 
+ 		case MFI_STAT_SCSI_DONE_WITH_ERROR:
+--- a/drivers/scsi/megaraid/megaraid_sas_fusion.c
++++ b/drivers/scsi/megaraid/megaraid_sas_fusion.c
+@@ -2043,7 +2043,10 @@ map_cmd_status(struct fusion_context *fu
+ 
+ 	case MFI_STAT_SCSI_IO_FAILED:
+ 	case MFI_STAT_LD_INIT_IN_PROGRESS:
+-		scmd->result = (DID_ERROR << 16) | ext_status;
++		if (ext_status == 0xf0)
++			scmd->result = (DID_ERROR << 16) | SAM_STAT_CHECK_CONDITION;
++		else
++			scmd->result = (DID_ERROR << 16) | ext_status;
+ 		break;
+ 
+ 	case MFI_STAT_SCSI_DONE_WITH_ERROR:
 
 
 
