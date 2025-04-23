@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B01A99101
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CE7A991EC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C865923738
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:17:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2846A925113
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD45628D849;
-	Wed, 23 Apr 2025 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BA32973BD;
+	Wed, 23 Apr 2025 15:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4bvMtH7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dhj12Pnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5C51A317A;
-	Wed, 23 Apr 2025 15:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B562973A7;
+	Wed, 23 Apr 2025 15:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421077; cv=none; b=WBpMsAMZZ9dtT76UbGCL99Rmktyfz0cV5IIpedzxTAhSiF2tSmOkP+g40VI5crgM+gUJPWmF4jXAY+6FbYbKaW6+Rk9udkEK3fjmVsuJ8ixeKrgL0MOb31m6Tcftfe2E0cZV8E2qrvI99W2yTDLC2x2lsx7lOSOdlp9b8HUIklo=
+	t=1745421608; cv=none; b=oKO2cwqilxlFEMuZbFisBapgdeAnyZyjATwOnSCHCggzYMgFOPzvKzp2pciRZc9pnbGEbTLLFS3ZShSzyjgUkMThXypppVx5ld+ev9EJDORIL9G+GW2HsSUwgHZbt4fw/M9HE/VwxEF/PLb0XsQi6zY6Ws0665BARoV3+ZWYvx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421077; c=relaxed/simple;
-	bh=N0egCELzaCbTSdaQ+IcSDyEQ6FfYS9d8anRd0lDI2iA=;
+	s=arc-20240116; t=1745421608; c=relaxed/simple;
+	bh=MQ1pC99fujJ+SoKy+9evK3VuD+O7Wvp5XlHzjq0Z+a0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMKj0KgjSMABTSShG3evjTcmzMDtvP00jD4fEXezkV6E4dIkh144XGpU9YW6AJsJrqwIxv3mz426gACnkhZemfQ578yux4RZlrBNy2+AJzc2GZ4rM0NasqH/8gLog2SPgs9PNsdB5zwZLz8aMPqy9AlEcJBYa2pDTTRyihHi7OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4bvMtH7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A753AC4CEE2;
-	Wed, 23 Apr 2025 15:11:15 +0000 (UTC)
+	 MIME-Version; b=o8fj/N9Ztz/d0OB10n1jio9dPfb6ST+/3nfIf6ltCmd4RringhvRIZpIoeUuIO+cNlFBBBoIuqK0UbkWNU2sYHU04wCQWQS18CgYAGbk4agbW5xqyhpRhSMskAhuxl2ZryHX2ghLeTheHtcz5+e0Ee/coQ8e38gveDAx0jTH8s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dhj12Pnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74967C4CEE2;
+	Wed, 23 Apr 2025 15:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421076;
-	bh=N0egCELzaCbTSdaQ+IcSDyEQ6FfYS9d8anRd0lDI2iA=;
+	s=korg; t=1745421607;
+	bh=MQ1pC99fujJ+SoKy+9evK3VuD+O7Wvp5XlHzjq0Z+a0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4bvMtH7hvVSt/EAdTFNePMpuDXysjUwBQfcdALvLnSaEQMy7tq4B1ToCN/lts1lH
-	 m+UoDpARu0Nl4P9fXTbLQT1KbO3zQrsDOXVAceqjEtrmIB9YJ0a7ittDE2Uzxk8Syi
-	 6p45F0HmVM2pF9D9/Kr1KDJ5hHLe3D19zbj57RZE=
+	b=Dhj12Pnu/4eHtZRfpGbBFBFxEXCJ/UkAM1PQOTwi7jl2SAVZvJ/sjX1im/73VW16p
+	 CI/kuyYvOR8E7R0BmfY7qloEI5qfmSgqnMXfwIEzXbr6iPn4zykquZuzN3X0EeeB9m
+	 9mYBS56GshoqdJY9anoFVWt582loBBoYVV9LsI+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.1 106/291] wifi: mt76: Add check for devm_kstrdup()
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Douglas Raillard <douglas.raillard@arm.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 199/393] tracing: Do not add length to print format in synthetic events
 Date: Wed, 23 Apr 2025 16:41:35 +0200
-Message-ID: <20250423142628.697142962@linuxfoundation.org>
+Message-ID: <20250423142651.609588317@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 4bc1da524b502999da28d287de4286c986a1af57 upstream.
+commit e1a453a57bc76be678bd746f84e3d73f378a9511 upstream.
 
-Add check for the return value of devm_kstrdup() in
-mt76_get_of_data_from_mtd() to catch potential exception.
+The following causes a vsnprintf fault:
 
-Fixes: e7a6a044f9b9 ("mt76: testmode: move mtd part to mt76_dev")
+  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
+  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
+  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
+
+Because the synthetic event's "wakee" field is created as a dynamic string
+(even though the string copied is not). The print format to print the
+dynamic string changed from "%*s" to "%s" because another location
+(__set_synth_event_print_fmt()) exported this to user space, and user
+space did not need that. But it is still used in print_synth_event(), and
+the output looks like:
+
+          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
+    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
+          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
+            bash-880     [002] d..5.   193.811371: wake_lat: wakee=(efault)kworker/u35:2delta=21
+          <idle>-0       [001] d..5.   193.811516: wake_lat: wakee=(efault)sshd-sessiondelta=129
+    sshd-session-879     [001] d..5.   193.967576: wake_lat: wakee=(efault)kworker/u34:5delta=50
+
+The length isn't needed as the string is always nul terminated. Just print
+the string and not add the length (which was hard coded to the max string
+length anyway).
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20250219033645.2594753-1-haoxiang_li2024@163.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Cc: Douglas Raillard <douglas.raillard@arm.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Link: https://lore.kernel.org/20250407154139.69955768@gandalf.local.home
+Fixes: 4d38328eb442d ("tracing: Fix synth event printk format for str fields");
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/trace/trace_events_synth.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -90,6 +90,10 @@ int mt76_get_of_eeprom(struct mt76_dev *
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -377,7 +377,6 @@ static enum print_line_t print_synth_eve
+ 				union trace_synth_field *data = &entry->fields[n_u64];
  
- #ifdef CONFIG_NL80211_TESTMODE
- 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
-+	if (!dev->test_mtd.name) {
-+		ret = -ENOMEM;
-+		goto out_put_node;
-+	}
- 	dev->test_mtd.offset = offset;
- #endif
- 
+ 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
+-						 STR_VAR_LEN_MAX,
+ 						 (char *)entry + data->as_dynamic.offset,
+ 						 i == se->n_fields - 1 ? "" : " ");
+ 				n_u64++;
 
 
 
