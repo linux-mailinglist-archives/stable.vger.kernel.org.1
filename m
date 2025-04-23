@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D38A992D4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F0DA98F05
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD5E71BA05C2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45A35A7D62
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D9928A1C6;
-	Wed, 23 Apr 2025 15:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECC727CCD7;
+	Wed, 23 Apr 2025 14:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rme1Mnjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GF60yHP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DC128A1CC;
-	Wed, 23 Apr 2025 15:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A47827CB12;
+	Wed, 23 Apr 2025 14:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421703; cv=none; b=cstykHp5GHNqKfY7aQfzhyNqFU37uLQUDanRQ+pT0fpbiXgPs9KbqJ7F3GLAzcakaMTa0uZzQOkKG5DC9io1Kb3mFXXz7kMllu8s4QcbjFfYNxB0VgEFSa6X5tOlmYvElPoOCC/Tb8emG7+2hrEooh7Z7CtF/7IJVMXCE+CM8HE=
+	t=1745420258; cv=none; b=o7yVP3ItlvycRO4p0ly6DO8lojTMwpoS4SppzfLtSa5AthFJlWgHZRz6jYRfSb6LBQv7i/B+axKFuhDrIRhRDVXW0Sy8gTKfMHQ46rDkvYEf4L0vlBUGakd6OqQEnIHiUU7QS3tofsl8sFtBta9GAzvCkdYNMt+0W+pWidDyG7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421703; c=relaxed/simple;
-	bh=SuWKjMm3l1djzOdiAa/X7I9xYSRIpEysQADRSTkDWtQ=;
+	s=arc-20240116; t=1745420258; c=relaxed/simple;
+	bh=6HY00/j53BOMdNupQyo0+debJaQuoqdYtQYpg/u9aLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlPWa1GoAtTlq8TxNZZlZayaqFvAEeuDowx3NtZBIhT5q7Oyoba+90syGrBcveLjaQ4NIWKkvK9bIY6Cqn42vz+QkV8Tt3j8eZ7PDYaXnxTKuMZ2if3Al6BSwzblUTNICSEQRGA7g4koPO0rvcTz5/UYX5sq4v5FYX26sVCE9uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rme1Mnjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84958C4CEE2;
-	Wed, 23 Apr 2025 15:21:42 +0000 (UTC)
+	 MIME-Version; b=t79NJlEjEk3fAHNepExB/pYyTwyiOjRsBsTSccuvsy7Gj2wce3NbYMox4hx/t+q1DGSngGffdAy9BgTyUDdzMbrbzevlQUlammMY5bTZ/DNi9u9RYfibzGMj8vd7WKAkKmeARmXMRq0GJeM/TexSbcIHfcBz2MpYDxScbstoCrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GF60yHP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF067C4CEE2;
+	Wed, 23 Apr 2025 14:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421702;
-	bh=SuWKjMm3l1djzOdiAa/X7I9xYSRIpEysQADRSTkDWtQ=;
+	s=korg; t=1745420258;
+	bh=6HY00/j53BOMdNupQyo0+debJaQuoqdYtQYpg/u9aLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rme1MnjjUkrbPWVkGPfSWr1FP+jCWwfzvqetKpFapVKw+2nBEEc435g1lFiSNUkNn
-	 rQhE38DU3xFaEoTQZIx3o/R+03mgX51CsjAoXkgq65+jr0O8yiy8j+wtcsrmq+AfF5
-	 s0lq0RCB0aS7Lt276HjM52lpIxamInZw4LEOn5Zk=
+	b=GF60yHP8WyLbcNcJR+lut9zsOw9oODfv6g6QRZ2x2b/OyezgGzkioNJo8qKARn/Vo
+	 rJS72m+cD9KV4dKwXeczR6+qXpTYH5cLcIt1UBgx3swtuzRK5v+v2srKQJGD8MMD4U
+	 RwL+KE7cXK2NcywrOQUlh3YBqL0sQyfD9J2BShyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 6.1 151/291] of/irq: Fix device node refcount leakage in API of_irq_parse_one()
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 076/241] net: dsa: clean up FDB, MDB, VLAN entries on unbind
 Date: Wed, 23 Apr 2025 16:42:20 +0200
-Message-ID: <20250423142630.567401186@linuxfoundation.org>
+Message-ID: <20250423142623.699714280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 0cb58d6c7b558a69957fabe159bfb184196e1e8d upstream.
+[ Upstream commit 7afb5fb42d4950f33af2732b8147c552659f79b7 ]
 
-of_irq_parse_one(@int_gen_dev, i, ...) will leak refcount of @i_th_phandle
+As explained in many places such as commit b117e1e8a86d ("net: dsa:
+delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
+the assumption that higher layers have balanced additions/deletions.
+As such, it only makes sense to be extremely vocal when those
+assumptions are violated and the driver unbinds with entries still
+present.
 
-int_gen_dev {
-    ...
-    interrupts-extended = ..., <&i_th_phandle ...>, ...;
-    ...
-};
+But Ido Schimmel points out a very simple situation where that is wrong:
+https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
+(also briefly discussed by me in the aforementioned commit).
 
-Refcount of @i_th_phandle is increased by of_parse_phandle_with_args()
-but is not decreased by API of_irq_parse_one() before return, so causes
-refcount leakage.
+Basically, while the bridge bypass operations are not something that DSA
+explicitly documents, and for the majority of DSA drivers this API
+simply causes them to go to promiscuous mode, that isn't the case for
+all drivers. Some have the necessary requirements for bridge bypass
+operations to do something useful - see dsa_switch_supports_uc_filtering().
 
-Rework the refcounting to use __free() cleanup and simplify the code to
-have a single call to of_irq_parse_raw().
+Although in tools/testing/selftests/net/forwarding/local_termination.sh,
+we made an effort to popularize better mechanisms to manage address
+filters on DSA interfaces from user space - namely macvlan for unicast,
+and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
+fact is that 'bridge fdb add ... self static local' also exists as
+kernel UAPI, and might be useful to someone, even if only for a quick
+hack.
 
-Also add comments about refcount of node @out_irq->np got by the API.
+It seems counter-productive to block that path by implementing shim
+.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
+in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
+running, although we could do that.
 
-Fixes: 79d9701559a9 ("of/irq: create interrupts-extended property")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-2-93e3a2659aa7@quicinc.com
-[robh: Use __free() to do puts]
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Accepting that cleanup is necessary seems to be the only option.
+Especially since we appear to be coming back at this from a different
+angle as well. Russell King is noticing that the WARN_ON() triggers even
+for VLANs:
+https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
+
+What happens in the bug report above is that dsa_port_do_vlan_del() fails,
+then the VLAN entry lingers on, and then we warn on unbind and leak it.
+
+This is not a straight revert of the blamed commit, but we now add an
+informational print to the kernel log (to still have a way to see
+that bugs exist), and some extra comments gathered from past years'
+experience, to justify the logic.
+
+Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414212930.2956310-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/irq.c |   59 +++++++++++++++++++++++++------------------------------
- 1 file changed, 27 insertions(+), 32 deletions(-)
+ net/dsa/dsa.c | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -16,6 +16,7 @@
+diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
+index e827775baf2ee..e7e32956070aa 100644
+--- a/net/dsa/dsa.c
++++ b/net/dsa/dsa.c
+@@ -1478,12 +1478,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
  
- #define pr_fmt(fmt)	"OF: " fmt
- 
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/errno.h>
- #include <linux/list.h>
-@@ -339,10 +340,12 @@ EXPORT_SYMBOL_GPL(of_irq_parse_raw);
-  * This function resolves an interrupt for a node by walking the interrupt tree,
-  * finding which interrupt controller node it is attached to, and returning the
-  * interrupt specifier that can be used to retrieve a Linux IRQ number.
-+ *
-+ * Note: refcount of node @out_irq->np is increased by 1 on success.
-  */
- int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_args *out_irq)
+ static void dsa_switch_release_ports(struct dsa_switch *ds)
  {
--	struct device_node *p;
-+	struct device_node __free(device_node) *p = NULL;
- 	const __be32 *addr;
- 	u32 intsize;
- 	int i, res, addr_len;
-@@ -367,41 +370,33 @@ int of_irq_parse_one(struct device_node
- 	/* Try the new-style interrupts-extended first */
- 	res = of_parse_phandle_with_args(device, "interrupts-extended",
- 					"#interrupt-cells", index, out_irq);
--	if (!res)
--		return of_irq_parse_raw(addr_buf, out_irq);
--
--	/* Look for the interrupt parent. */
--	p = of_irq_find_parent(device);
--	if (p == NULL)
--		return -EINVAL;
--
--	/* Get size of interrupt specifier */
--	if (of_property_read_u32(p, "#interrupt-cells", &intsize)) {
--		res = -EINVAL;
--		goto out;
--	}
--
--	pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
-+	if (!res) {
-+		p = out_irq->np;
-+	} else {
-+		/* Look for the interrupt parent. */
-+		p = of_irq_find_parent(device);
-+		/* Get size of interrupt specifier */
-+		if (!p || of_property_read_u32(p, "#interrupt-cells", &intsize))
-+			return -EINVAL;
-+
-+		pr_debug(" parent=%pOF, intsize=%d\n", p, intsize);
-+
-+		/* Copy intspec into irq structure */
-+		out_irq->np = p;
-+		out_irq->args_count = intsize;
-+		for (i = 0; i < intsize; i++) {
-+			res = of_property_read_u32_index(device, "interrupts",
-+							(index * intsize) + i,
-+							out_irq->args + i);
-+			if (res)
-+				return res;
++	struct dsa_mac_addr *a, *tmp;
+ 	struct dsa_port *dp, *next;
++	struct dsa_vlan *v, *n;
+ 
+ 	dsa_switch_for_each_port_safe(dp, next, ds) {
+-		WARN_ON(!list_empty(&dp->fdbs));
+-		WARN_ON(!list_empty(&dp->mdbs));
+-		WARN_ON(!list_empty(&dp->vlans));
++		/* These are either entries that upper layers lost track of
++		 * (probably due to bugs), or installed through interfaces
++		 * where one does not necessarily have to remove them, like
++		 * ndo_dflt_fdb_add().
++		 */
++		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up unicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
 +		}
- 
--	/* Copy intspec into irq structure */
--	out_irq->np = p;
--	out_irq->args_count = intsize;
--	for (i = 0; i < intsize; i++) {
--		res = of_property_read_u32_index(device, "interrupts",
--						 (index * intsize) + i,
--						 out_irq->args + i);
--		if (res)
--			goto out;
-+		pr_debug(" intspec=%d\n", *out_irq->args);
++
++		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
++			dev_info(ds->dev,
++				 "Cleaning up multicast address %pM vid %u from port %d\n",
++				 a->addr, a->vid, dp->index);
++			list_del(&a->list);
++			kfree(a);
++		}
++
++		/* These are entries that upper layers have lost track of,
++		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
++		 * having failed and the VLAN entry still lingering on.
++		 */
++		list_for_each_entry_safe(v, n, &dp->vlans, list) {
++			dev_info(ds->dev,
++				 "Cleaning up vid %u from port %d\n",
++				 v->vid, dp->index);
++			list_del(&v->list);
++			kfree(v);
++		}
++
+ 		list_del(&dp->list);
+ 		kfree(dp);
  	}
- 
--	pr_debug(" intspec=%d\n", *out_irq->args);
--
--
- 	/* Check if there are any interrupt-map translations to process */
--	res = of_irq_parse_raw(addr_buf, out_irq);
-- out:
--	of_node_put(p);
--	return res;
-+	return of_irq_parse_raw(addr_buf, out_irq);
- }
- EXPORT_SYMBOL_GPL(of_irq_parse_one);
- 
+-- 
+2.39.5
+
 
 
 
