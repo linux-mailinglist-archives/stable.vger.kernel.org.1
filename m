@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48152A9928E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E9DA98DD4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D062926F17
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C6361B81B73
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626702BE7DD;
-	Wed, 23 Apr 2025 15:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8D0280A52;
+	Wed, 23 Apr 2025 14:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaUNYgxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeakNRbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2077A2BE7D7;
-	Wed, 23 Apr 2025 15:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C14827FD7A;
+	Wed, 23 Apr 2025 14:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421738; cv=none; b=ezhsg5BGeR23ZefgowI8Td2NUCBtOE7FiJpsyYYthS4A0MDWylE6htxr+pNPBbnlDKsa3yD/u7L47c95Fay3Z3ZH+s8JZULdJamAREQSW6G+wZdS9zEjsi9TkuX3lYeWKnaTiVipwokeZEAedU822GejqQ8e+zduvhQjGhj+oII=
+	t=1745419684; cv=none; b=ncOHdibtP7c3g3HWW/Tmxk16RyfTQKH7tT8kFVddk4JGeBsuyXmIzIQa4zcDCLAeSr+iRJMtbsXrY3SdKmoKG2UwljS+GlOFpq35GxyH1fcf4pxzmmoybBzMTRnZ1cTIYGTGqjul77rQQGYFHzPp1M23fSCFY04vV97aHE+dj4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421738; c=relaxed/simple;
-	bh=824HpfQIYoeZW3MS/F3San1U5wcoc2wt+WWhPsgyQTc=;
+	s=arc-20240116; t=1745419684; c=relaxed/simple;
+	bh=4fRTpV2Sl2XsDPQTuqdC0ecrqCQFRlFDXTiTHDtl9+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaOCL+HhAjBNZcM02ABmjWZl89Ldoru/l/Ay0/3pDLh0KsFQElGIWu5NyJrAFdcgjDN1Q55IYm35LCcQDSuohSzAPnadv53a01/OfESMq2kBQHY3INBWdx5f+7ikHupJMzfHUpU1J08nGA7o7tYaXqx+wthWWskESOvdyNMhRYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaUNYgxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFC5C4CEE2;
-	Wed, 23 Apr 2025 15:22:16 +0000 (UTC)
+	 MIME-Version; b=cNS7pxb4GLUwMvNrTdkNiVSX2bTnVxpEnMUbotjT0kiiwyH0ekIQiTZKKBkxm4G6LWjTTm3zF8ygsH1QejJ1zKg+Qili9BTASyGYxU6tgTyHcsaPivOq8WsaW3hxQzXivku89tIBxTwjCiepNY+CoKhAQR5rcQcJ7yqvd8Tq2qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeakNRbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F06C4CEE2;
+	Wed, 23 Apr 2025 14:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421736;
-	bh=824HpfQIYoeZW3MS/F3San1U5wcoc2wt+WWhPsgyQTc=;
+	s=korg; t=1745419684;
+	bh=4fRTpV2Sl2XsDPQTuqdC0ecrqCQFRlFDXTiTHDtl9+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaUNYgxwHmFSnTlv0ULaWfFyh0BEREC9MDE7S7iBlyad+NvIYXQFUt/uj4XwjC30X
-	 Cka8V8BlWMmGCd+mKe7rJliASe0jXPDgb8IIYJAeubYIhModfLtqesag0S2pKwaFLc
-	 uPpDf2dnX5w0s2UoI17u5ujvwRHWfpYQuh9ldQ20=
+	b=eeakNRbmb69/gFH7dIS+dazWMtiSzSdXzE/hDev75TCOgSMv0hMbgrYqPA4QhN/rk
+	 XOmLTagHBZUG0tSzvdh9PpH3EAp9+74oaa8utdW9f0lx+VXqUqEy9EEa5Bxry6EWUp
+	 CIIjQrgGdLfsEl9gPElVGmK7bfQWH26WpqyeeoGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 218/393] KVM: x86: Explicitly zero-initialize on-stack CPUID unions
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 042/223] pds_core: fix memory leak in pdsc_debugfs_add_qcq()
 Date: Wed, 23 Apr 2025 16:41:54 +0200
-Message-ID: <20250423142652.388239785@linuxfoundation.org>
+Message-ID: <20250423142618.841147872@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit bc52ae0a708cb6fa3926d11c88e3c55e1171b4a1 upstream.
+[ Upstream commit 8b82f656826c741d032490b089a5638c33f2c91d ]
 
-Explicitly zero/empty-initialize the unions used for PMU related CPUID
-entries, instead of manually zeroing all fields (hopefully), or in the
-case of 0x80000022, relying on the compiler to clobber the uninitialized
-bitfields.
+The memory allocated for intr_ctrl_regset, which is passed to
+debugfs_create_regset32() may not be cleaned up when the driver is
+removed. Fix that by using device managed allocation for it.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Message-ID: <20250315024102.2361628-1-seanjc@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://patch.msgid.link/20250409054450.48606-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/cpuid.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/amd/pds_core/debugfs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1011,8 +1011,8 @@ static inline int __do_cpuid_func(struct
- 		}
- 		break;
- 	case 0xa: { /* Architectural Performance Monitoring */
--		union cpuid10_eax eax;
--		union cpuid10_edx edx;
-+		union cpuid10_eax eax = { };
-+		union cpuid10_edx edx = { };
+diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
+index ac37a4e738ae7..04c5e3abd8d70 100644
+--- a/drivers/net/ethernet/amd/pds_core/debugfs.c
++++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
+@@ -154,8 +154,9 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
+ 		debugfs_create_u32("index", 0400, intr_dentry, &intr->index);
+ 		debugfs_create_u32("vector", 0400, intr_dentry, &intr->vector);
  
- 		if (!enable_pmu || !static_cpu_has(X86_FEATURE_ARCH_PERFMON)) {
- 			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
-@@ -1028,8 +1028,6 @@ static inline int __do_cpuid_func(struct
- 
- 		if (kvm_pmu_cap.version)
- 			edx.split.anythread_deprecated = 1;
--		edx.split.reserved1 = 0;
--		edx.split.reserved2 = 0;
- 
- 		entry->eax = eax.full;
- 		entry->ebx = kvm_pmu_cap.events_mask;
-@@ -1303,7 +1301,7 @@ static inline int __do_cpuid_func(struct
- 		break;
- 	/* AMD Extended Performance Monitoring and Debug */
- 	case 0x80000022: {
--		union cpuid_0x80000022_ebx ebx;
-+		union cpuid_0x80000022_ebx ebx = { };
- 
- 		entry->ecx = entry->edx = 0;
- 		if (!enable_pmu || !kvm_cpu_cap_has(X86_FEATURE_PERFMON_V2)) {
+-		intr_ctrl_regset = kzalloc(sizeof(*intr_ctrl_regset),
+-					   GFP_KERNEL);
++		intr_ctrl_regset = devm_kzalloc(pdsc->dev,
++						sizeof(*intr_ctrl_regset),
++						GFP_KERNEL);
+ 		if (!intr_ctrl_regset)
+ 			return;
+ 		intr_ctrl_regset->regs = intr_ctrl_regs;
+-- 
+2.39.5
+
 
 
 
