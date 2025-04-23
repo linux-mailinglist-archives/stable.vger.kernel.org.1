@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87B9FA98FD9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E3DA98D81
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3FA5A7694
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8F801B66A5C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D5928A3F3;
-	Wed, 23 Apr 2025 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C20D27FD73;
+	Wed, 23 Apr 2025 14:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwLIDEN1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXULMPi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C82927EC73;
-	Wed, 23 Apr 2025 15:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED30A27CB12;
+	Wed, 23 Apr 2025 14:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420648; cv=none; b=RVcEW5n9dlaVTPAcA0VLdhUw1eUC9Tyecj+NCltwYYpWLu2QGVgC5Kqua3jz8LanraGh3klhCFX4jdx3lHS4H43s+Pcv7piD3syNk27ShInukdxUo08b81XOSeaDhxhHzRGrQ4SjMcNgArau2sUfZo4kc5D+ZMfxeb8OljUNQ+k=
+	t=1745419559; cv=none; b=VeltbYtY0C+ykozpmbTWya7yRxL63hhVjVBgZXaw/dwIcKZJkZS+5RoS/5UXQHUobnpdaE/Fka22znA6Jp1BbpDZpkfp20jNbcnGHBsh/vnxjcjPpK7H2hg3y5XoU4vtT5lFwFBkvuuJr5zNyohUaXT7FY4a3HcuUqeRIcFhm9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420648; c=relaxed/simple;
-	bh=jl+jknpTuORh+eaTD7qtX1eo6eSYqX5xIMGYrwSW7lA=;
+	s=arc-20240116; t=1745419559; c=relaxed/simple;
+	bh=tJ6xMqH/0uPkZckafKJXR9aY5Scui95suLGLxdQS4xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ARTzrdQmmSlMcgS2OvjZGSjim5i6K8bnL1pP7nTrVIroQaEhr2HsKOpGsVkO38ztXiALQzPECUfZKcjXqmpa/E7mD+VXROaH9hJnBtmewF4hzeNsUdptSEbG1dQH1dYHBty6NjXWjcQOy/NnZ2/fbgVtolnbl44P8x8+skBqJWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwLIDEN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C5DC4CEE2;
-	Wed, 23 Apr 2025 15:04:07 +0000 (UTC)
+	 MIME-Version; b=dmMTfuLFBQoCSf0+gJAqvL3CjaXDsnyz4eIW+d8l86JJHBFYlshrgoJCCc8/zu1FKna8Or8ODdfVFGlsSPio1ZosX+g2VRy7u2S1gU0zSXPmAFAWsJ7hiWgi07T1s7U1zM6GNNiPyqrfLTA8a+AwwYXzW5pz52QJ5HjAqd9upV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXULMPi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120D1C4CEE2;
+	Wed, 23 Apr 2025 14:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420648;
-	bh=jl+jknpTuORh+eaTD7qtX1eo6eSYqX5xIMGYrwSW7lA=;
+	s=korg; t=1745419558;
+	bh=tJ6xMqH/0uPkZckafKJXR9aY5Scui95suLGLxdQS4xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwLIDEN1FK862ws+Fumf8xC16e5cKXfrRXUJdqBWN2uSuQsAPmc+V1VxrHI7dluQa
-	 9h7xMFAgmo6JZrehEU//8AqVoiiLS9e/U7fqqv0OzFQr0jPOUgW5qGuEr51qcqI55P
-	 fxHKUBtmv5OawH0rKIn60//1ip6GhM9zP6oUAtwM=
+	b=aXULMPi7FAxdcd5bqLYityKN+MOzhrGeqMj6tnK2Ex2FQ+iFSpHmqvLEmS9RmdVIA
+	 c92CzvwnHj7i1IHsnXO7CbJxXYMTdLPTys0HPkFSxpy9uQHEJD7uPO1Jw/H8TWjkDq
+	 n3y35s+xFyIN5t6fKdW+7AfTJwc+9dP7EVU7Qgj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Wyatt <fewtarius@steamfork.org>,
-	John Edwards <uejji@uejji.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/393] drm: panel-orientation-quirks: Add quirk for AYA NEO Slide
+Subject: [PATCH 6.1 003/291] tipc: fix memory leak in tipc_link_xmit
 Date: Wed, 23 Apr 2025 16:39:52 +0200
-Message-ID: <20250423142647.253328619@linuxfoundation.org>
+Message-ID: <20250423142624.553617758@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Wyatt <fewtarius@steamfork.org>
+From: Tung Nguyen <tung.quang.nguyen@est.tech>
 
-[ Upstream commit 132c89ef8872e602cfb909377815111d121fe8d7 ]
+[ Upstream commit 69ae94725f4fc9e75219d2d69022029c5b24bc9a ]
 
-The AYANEO Slide uses a 1080x1920 portrait LCD panel.  This is the same
-panel used on the AYANEO Air Plus, but the DMI data is too different to
-match both with one entry.
+In case the backlog transmit queue for system-importance messages is overloaded,
+tipc_link_xmit() returns -ENOBUFS but the skb list is not purged. This leads to
+memory leak and failure when a skb is allocated.
 
-Add a DMI match to correctly rotate the panel on the AYANEO Slide.
+This commit fixes this issue by purging the skb list before tipc_link_xmit()
+returns.
 
-This also covers the Antec Core HS, which is a rebranded AYANEO Slide with
-the exact same hardware and DMI strings.
-
-Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
-Signed-off-by: John Edwards <uejji@uejji.net>
-Tested-by: John Edwards <uejji@uejji.net>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-4-uejji@uejji.net
+Fixes: 365ad353c256 ("tipc: reduce risk of user starvation during link congestion")
+Signed-off-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250403092431.514063-1-tung.quang.nguyen@est.tech
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/tipc/link.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index d9ed6214cf28b..702246ee7ced2 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -244,6 +244,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_rightside_up,
-+	}, {	/* AYA NEO SLIDE */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
-+		  DMI_MATCH(DMI_PRODUCT_NAME, "SLIDE"),
-+		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {    /* AYN Loki Max */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index 8715c9b05f90d..d6a8f0aa531bd 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -1068,6 +1068,7 @@ int tipc_link_xmit(struct tipc_link *l, struct sk_buff_head *list,
+ 	if (unlikely(l->backlog[imp].len >= l->backlog[imp].limit)) {
+ 		if (imp == TIPC_SYSTEM_IMPORTANCE) {
+ 			pr_warn("%s<%s>, link overflow", link_rst_msg, l->name);
++			__skb_queue_purge(list);
+ 			return -ENOBUFS;
+ 		}
+ 		rc = link_schedule_user(l, hdr);
 -- 
 2.39.5
 
