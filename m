@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-135403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7B1A98E1D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0EEA991B0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D564A1B82722
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A0DF7A7E17
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD14280CD4;
-	Wed, 23 Apr 2025 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA0B29AAE0;
+	Wed, 23 Apr 2025 15:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqCRof0m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc+4LtNv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CAB27D76E;
-	Wed, 23 Apr 2025 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E1028B50E;
+	Wed, 23 Apr 2025 15:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419832; cv=none; b=t1nJn9dDuNn5CgI1r6zEei4FRwyYMKRJo4V7tzj9hF4fnwJnV8LWg3RxN7bZI0q5aO+a6CR/WlSXJ8QGdxvy9VzEx24DjL4TytBBwnB3pgN/N1q/hIefdpGTyh0WkQydKPgsQ+e27aBl6Sufa7vtduMM6Esp7GrnXqgHHcpziMU=
+	t=1745421783; cv=none; b=GGheeSACMGb5IBWFsh2ctHjiPV0Fx7Y+gGiF2ESOudVy2PM+37lfWb7PS5oCe1zYK2SbbUa9KPLErMozNMRazkjSl+CCd5CkGKwOXvqEPt4L/j1n/HLHuYvYg3abRPXg9pNIr8WaMLhtLApcDnUv/vIZZ2VdRyxOeo3voOowq1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419832; c=relaxed/simple;
-	bh=9/kre7z2agR/vqILKiP5RRKuHks9L45fFJkCVgfEU6A=;
+	s=arc-20240116; t=1745421783; c=relaxed/simple;
+	bh=nWp9oOKgYfOLWoA+iYlLRzQIrhPplAEkdFNel/RzgFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7oR4vL5ObgXfKZ4I0Zh83siq5+aJMzetgTAeM03WieUxrEK9e9umR8T+iIWjxp2BPZz9KVWGSVl9AoDIO7YQcFOKj8n1yuTQDYY0NW/Yh5UP6n0mmvz/HualGXzU+R3I+c2a23D/6sOQxnfuhQqq7j9pPuWT7uJhGfV/qTGUZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqCRof0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD58C4CEE2;
-	Wed, 23 Apr 2025 14:50:31 +0000 (UTC)
+	 MIME-Version; b=qplrv7ac6x3rvgM/hcG3Amtt1B6A6BlJfaEI+3klIuQDNxwn17M4o4PoC8Nl3MQvqovtw7qT3x+8bWUbch9k54tMXnktv3lSa6jU8bVjzrY4W4E0x9sncQaIMUtwcu51o2RCnYxinWx+njeGZJXt72rZJZs0xvUC+4Yq8kgJ5Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc+4LtNv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E111C4CEE2;
+	Wed, 23 Apr 2025 15:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419831;
-	bh=9/kre7z2agR/vqILKiP5RRKuHks9L45fFJkCVgfEU6A=;
+	s=korg; t=1745421781;
+	bh=nWp9oOKgYfOLWoA+iYlLRzQIrhPplAEkdFNel/RzgFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqCRof0m1mhiP6u2g0J8kLejq/filB+DDF9yMFK04vRYgBXtgvHyq5yP0qBEcA1/8
-	 c1t2zlEdaspD45bB5K6Adf8t1QD7PJRWuWU4YykiARkFHgbODrC9rERZJnONmLVxwA
-	 DixP7zQRbdmvPuiIe5TNZMkdfF+RGNeD85ffFFzM=
+	b=vc+4LtNvL8FJRGg9czDVQtFvlTBTH/wD2Hcz96UQ9sA1u0Q2NP+cLTyCvr94GrpO7
+	 NF+5Kc88mCxTCMpInyJFTgsMbcR/4IdbVczyCECPR/AF3pdBzzj5dnTdmm2AAZrEoe
+	 amhbj7MypLwOjmZ0xiyVTGOYx1s74N10j3SxNVQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/223] net: openvswitch: fix nested key length validation in the set() action
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.6 223/393] of/irq: Fix device node refcount leakages in of_irq_count()
 Date: Wed, 23 Apr 2025 16:41:59 +0200
-Message-ID: <20250423142619.049569797@linuxfoundation.org>
+Message-ID: <20250423142652.598365857@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,48 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
+commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
 
-It's not safe to access nla_len(ovs_key) if the data is smaller than
-the netlink header.  Check that the attribute is OK first.
+of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
+invocation of the later will get device node @irq.np refcount, but the
+former does not put the refcount before next iteration invocation, hence
+causes device node refcount leakages.
 
-Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
-Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by putting @irq.np refcount before the next iteration invocation.
+
+Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/flow_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/of/irq.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 0df89240b7336..305daf57a4f9d 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2876,7 +2876,8 @@ static int validate_set(const struct nlattr *a,
- 	size_t key_len;
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -509,8 +509,10 @@ int of_irq_count(struct device_node *dev
+ 	struct of_phandle_args irq;
+ 	int nr = 0;
  
- 	/* There can be only one key in a action */
--	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
-+	if (!nla_ok(ovs_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
- 		return -EINVAL;
+-	while (of_irq_parse_one(dev, nr, &irq) == 0)
++	while (of_irq_parse_one(dev, nr, &irq) == 0) {
++		of_node_put(irq.np);
+ 		nr++;
++	}
  
- 	key_len = nla_len(ovs_key);
--- 
-2.39.5
-
+ 	return nr;
+ }
 
 
 
