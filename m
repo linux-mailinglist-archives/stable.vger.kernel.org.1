@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-136405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2812AA9939D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 819C9A991F8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B0F79A182A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08D84927C07
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA54329A3DE;
-	Wed, 23 Apr 2025 15:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E0C28EA55;
+	Wed, 23 Apr 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="md3SHryQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlP9mGFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76008298CB5;
-	Wed, 23 Apr 2025 15:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574F6283C98;
+	Wed, 23 Apr 2025 15:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422459; cv=none; b=elsSLn9EYi5HeRhjMfVCOWHgI7IhVtL32Lrlj0uddvfhJs9CBJ/CTwXdcOFyH80op3aLAaHZ/y4a18igUiXpt81h4R7z48BscoqD7oxfeLZSP+4clPDWFCpZApaZN7mhqkVRCSx0HbvhB5ZE++C3bFKV+3771ytDKGM9aJWAwbU=
+	t=1745421618; cv=none; b=PNq5CqaKCTBbOrn75CF/+M7YiQtPAPBYyyex/0QUXyMsQ0rbUlAVUqAWtaDPIYirZmoR2whL9AM4Q6ZArtqlTTOaF4NhxiJHuRR7twRgbbR10MgUCm/N7aEMLSh04oXhGrFSFHsL/BsoYbEbvb0BpmAT/TACioIFZDw7Q2sodtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422459; c=relaxed/simple;
-	bh=2mS9irV8Xwct1MpiAFwVeNAhkdmVOmtXTh3mB+eZpn0=;
+	s=arc-20240116; t=1745421618; c=relaxed/simple;
+	bh=tnUac6utk5nc/nppFvT1+IWmfDmoSvpEUWAJDkQrc2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HiFOszz3fZTc2w3x+fhSnjHbM7IEfY6/qdU+jgIUxM6NXpQ0Fqpe61HGuUzg/J+2Z6UT/D1nflPule+C2hCrD8g4Jd8adLq1wHBw8mTrb5aRsFWmnmHwZ+oAEcDFe3P9AdJZPmNe764GzhvFjMYsImdiN+5S6erZWP8CnBlIk4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=md3SHryQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0044EC4CEE2;
-	Wed, 23 Apr 2025 15:34:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nvaf+GixOgBhnUCdlxGR7yQPWFZtZDO4T8MGcIndFTc+vTV/PvXmQ4cCPFOpwLoQ5lycYHefjm+tWP9TlZnL03dE5mdUKX+j2npr3/jdow5J/ARRZdRp6jJ7j1QnsB1ZkipmKqSakO/IE++BedUpGYPDqhUP8wXjqx2XBt1h1P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlP9mGFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D73C4CEE2;
+	Wed, 23 Apr 2025 15:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422459;
-	bh=2mS9irV8Xwct1MpiAFwVeNAhkdmVOmtXTh3mB+eZpn0=;
+	s=korg; t=1745421618;
+	bh=tnUac6utk5nc/nppFvT1+IWmfDmoSvpEUWAJDkQrc2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=md3SHryQH1J4wr/yclnk8gVzlvw8bNCD5ULZS0Qq+pBJJn08RsCWzFqK31/vIZ5A6
-	 F3ZZZ71EuN2nOZcgjFOraSLmMUBEmlqWeY4io/ocJJFptq+5tc6GIQbhxksL0PnBIq
-	 q+87ZM4MDnDBUJkeAYA5eyeJnG1/JKCJgcCQt4ug=
+	b=wlP9mGFetR/1EKWfD+DWc3nrt5mFPJg7dwue3p2/3JIhDB9cXCKb/YdXQCzq49FBe
+	 a1SyDctH7k8QWV+ZhHmg1i6uHmyxj5/ZN7cFEJI7uNw88+eZ4iovLUCRTpMhV2wmMl
+	 EsFm0dWOqQ/w8iYM1xW+Mm5DNw3wBtU61uQI5Wfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	R Nageswara Sastry <rnsastry@linux.ibm.com>,
-	Neal Gompa <neal@gompa.dev>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 287/291] sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH 6.14 212/241] drm/xe/dma_buf: stop relying on placement in unmap
 Date: Wed, 23 Apr 2025 16:44:36 +0200
-Message-ID: <20250423142636.147703380@linuxfoundation.org>
+Message-ID: <20250423142629.209447971@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Stancek <jstancek@redhat.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 467d60eddf55588add232feda325da7215ddaf30 upstream.
+commit 25583ad42d091819157832e894179200ba8b54ee upstream.
 
-ERR_get_error_line() is deprecated since OpenSSL 3.0.
+The is_vram() is checking the current placement, however if we consider
+exported VRAM with dynamic dma-buf, it looks possible for the xe driver
+to async evict the memory, notifying the importer, however importer does
+not have to call unmap_attachment() immediately, but rather just as
+"soon as possible", like when the dma-resv idles. Following from this we
+would then pipeline the move, attaching the fence to the manager, and
+then update the current placement. But when the unmap_attachment() runs
+at some later point we might see that is_vram() is now false, and take
+the complete wrong path when dma-unmapping the sg, leading to
+explosions.
 
-Use ERR_peek_error_line() instead, and combine display_openssl_errors()
-and drain_openssl_errors() to a single function where parameter decides
-if it should consume errors silently.
+To fix this check if the sgl was mapping a struct page.
 
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+v2:
+  - The attachment can be mapped multiple times it seems, so we can't
+    really rely on encoding something in the attachment->priv. Instead
+    see if the page_link has an encoded struct page. For vram we expect
+    this to be NULL.
+
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4563
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Acked-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250410162716.159403-2-matthew.auld@intel.com
+(cherry picked from commit d755887f8e5a2a18e15e6632a5193e5feea18499)
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- certs/extract-cert.c |    4 ++--
- scripts/sign-file.c  |    6 +++---
- scripts/ssl-common.h |   23 ++++++++---------------
- 3 files changed, 13 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/xe/xe_dma_buf.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -96,11 +96,11 @@ int main(int argc, char **argv)
- 		parms.cert = NULL;
- 
- 		ENGINE_load_builtin_engines();
--		drain_openssl_errors();
-+		drain_openssl_errors(__LINE__, 1);
- 		e = ENGINE_by_id("pkcs11");
- 		ERR(!e, "Load PKCS#11 ENGINE");
- 		if (ENGINE_init(e))
--			drain_openssl_errors();
-+			drain_openssl_errors(__LINE__, 1);
- 		else
- 			ERR(1, "ENGINE_init");
- 		if (key_pass)
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -114,11 +114,11 @@ static EVP_PKEY *read_private_key(const
- 		ENGINE *e;
- 
- 		ENGINE_load_builtin_engines();
--		drain_openssl_errors();
-+		drain_openssl_errors(__LINE__, 1);
- 		e = ENGINE_by_id("pkcs11");
- 		ERR(!e, "Load PKCS#11 ENGINE");
- 		if (ENGINE_init(e))
--			drain_openssl_errors();
-+			drain_openssl_errors(__LINE__, 1);
- 		else
- 			ERR(1, "ENGINE_init");
- 		if (key_pass)
-@@ -273,7 +273,7 @@ int main(int argc, char **argv)
- 
- 		/* Digest the module data. */
- 		OpenSSL_add_all_digests();
--		display_openssl_errors(__LINE__);
-+		drain_openssl_errors(__LINE__, 0);
- 		digest_algo = EVP_get_digestbyname(hash_algo);
- 		ERR(!digest_algo, "EVP_get_digestbyname");
- 
---- a/scripts/ssl-common.h
-+++ b/scripts/ssl-common.h
-@@ -3,7 +3,7 @@
-  * SSL helper functions shared by sign-file and extract-cert.
-  */
- 
--static void display_openssl_errors(int l)
-+static void drain_openssl_errors(int l, int silent)
+--- a/drivers/gpu/drm/xe/xe_dma_buf.c
++++ b/drivers/gpu/drm/xe/xe_dma_buf.c
+@@ -145,10 +145,7 @@ static void xe_dma_buf_unmap(struct dma_
+ 			     struct sg_table *sgt,
+ 			     enum dma_data_direction dir)
  {
- 	const char *file;
- 	char buf[120];
-@@ -11,28 +11,21 @@ static void display_openssl_errors(int l
- 
- 	if (ERR_peek_error() == 0)
- 		return;
--	fprintf(stderr, "At main.c:%d:\n", l);
-+	if (!silent)
-+		fprintf(stderr, "At main.c:%d:\n", l);
- 
--	while ((e = ERR_get_error_line(&file, &line))) {
-+	while ((e = ERR_peek_error_line(&file, &line))) {
- 		ERR_error_string(e, buf);
--		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
-+		if (!silent)
-+			fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
-+		ERR_get_error();
- 	}
- }
- 
--static void drain_openssl_errors(void)
--{
--	const char *file;
--	int line;
+-	struct dma_buf *dma_buf = attach->dmabuf;
+-	struct xe_bo *bo = gem_to_xe_bo(dma_buf->priv);
 -
--	if (ERR_peek_error() == 0)
--		return;
--	while (ERR_get_error_line(&file, &line)) {}
--}
--
- #define ERR(cond, fmt, ...)				\
- 	do {						\
- 		bool __cond = (cond);			\
--		display_openssl_errors(__LINE__);	\
-+		drain_openssl_errors(__LINE__, 0);	\
- 		if (__cond) {				\
- 			errx(1, fmt, ## __VA_ARGS__);	\
- 		}					\
+-	if (!xe_bo_is_vram(bo)) {
++	if (sg_page(sgt->sgl)) {
+ 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
+ 		sg_free_table(sgt);
+ 		kfree(sgt);
 
 
 
