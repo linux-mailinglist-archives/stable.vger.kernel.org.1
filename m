@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-136390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D42CA9929C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FA2A992FD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5CEE7B0EDF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385449A36DB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B4E294A19;
-	Wed, 23 Apr 2025 15:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA0C2820DC;
+	Wed, 23 Apr 2025 15:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buOAj6Ri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZrKLBCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3C5288CA4;
-	Wed, 23 Apr 2025 15:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3D128152D;
+	Wed, 23 Apr 2025 15:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422420; cv=none; b=cREzTHnLpBsseZk7VEf1ZFIwSKEsXXhDBqiB9+anK/npa/R2PbDnl7s5T4A0WThqChbFB7ETK8QZhuw5KeALCpuWOwiEQBOeHalezjRKC96WIsZzDaxtPRTUKhgGPzixavuamJ79LYEMtdHL/UyJ6uIAmnrq7lV6iz3d9+ofCns=
+	t=1745422175; cv=none; b=Ptb5mJIejI8bzxkMoJpGv8cRyPCOEKPbzeJyvZUhJXySDio9NO0Xqqg0IyrMxS2XGENxvXaIIwhBsLPMXgMSAGz0vZ/ZCtO0M+y716V+19ZOpNHh1xp/rSFW1WttxT+Bs91d/jAMfnMwAD1QplGTJPrZNG5tgRr6mEeKtt5Kv3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422420; c=relaxed/simple;
-	bh=fm+aeEreatll3wQyvmZUdIZfpEgL9bhKQj4ICfBMimo=;
+	s=arc-20240116; t=1745422175; c=relaxed/simple;
+	bh=KzS8Suj0ApsMWf6eQZ+dD7NmKNotmYkubPF4grzKEus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=al2/3esCFDiM0zPG47cFMMGHwfmzfoeNGZ+EFHXAY9wmi6f6mGMtVqBDqxzhT4cAmokxrw7O47sg5/UGDYPiRd6oR7Jt4M5xBt6LS3lva2xQceSVsXZ1//xMtF2b6iSzUf552IqOo2FKC5arwkOXpT7CzRwXnktUdpK7kcSmANo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buOAj6Ri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950BAC4CEE2;
-	Wed, 23 Apr 2025 15:33:39 +0000 (UTC)
+	 MIME-Version; b=DE9xt65diCb4se4IRJWvjKRjTAVBwB9wiLPTtuwDoB6hmcZb8NFVwJCX4iayvIK2sT79BNiJhacbVA6T0V1UZKnYd0IcunqDq/2JFDXBW4PbG6yNNZsxTMHy89n3NQg0ixiC+ZFOrDy/gdJzdLovo21jm4ZHUMVXGOPvR5fvWKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZrKLBCa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F8DC4CEE2;
+	Wed, 23 Apr 2025 15:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422419;
-	bh=fm+aeEreatll3wQyvmZUdIZfpEgL9bhKQj4ICfBMimo=;
+	s=korg; t=1745422175;
+	bh=KzS8Suj0ApsMWf6eQZ+dD7NmKNotmYkubPF4grzKEus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buOAj6RiO6VJHne0qgkiQ/+XATzuusA2/eXu4uhletuYBuQxX1MmYRDQX1CDYUCfS
-	 Hpfx9gEVj3he85ipO1aoKzn8k+dTc3SZMsx0OPwcoKwLVDls3agd1Lq2SE7BTgVRvf
-	 nw1aEN3ipKPz2ZPEnP5Elo2DnIk+DrtHyGXYXPRk=
+	b=xZrKLBCaR/hlRPp0jigj4yGW4e9PoMkRP+CvycT+4CcbrqiHEhOZtrwbsWTxczZ4M
+	 WoXtRsJvvazfIqLJO2RhINJsRqz4NJoRIltithsRvCrxtaL+09RbDWC179pNd5klte
+	 1jDBX3OiTU17taS64Gb6JxGykHhD+tcd3jLxQFB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <a.p.zijlstra@chello.nl>
-Subject: [PATCH 6.6 343/393] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.1 250/291] KVM: arm64: Remove host FPSIMD saving for non-protected KVM
 Date: Wed, 23 Apr 2025 16:43:59 +0200
-Message-ID: <20250423142657.509585697@linuxfoundation.org>
+Message-ID: <20250423142634.642902378@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +66,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
+[ Upstream commit 8eca7f6d5100b6997df4f532090bc3f7e0203bef ]
 
-There was a mistake in the SNR uncore spec. The counter increments for
-every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
-which was documented in the spec.
+Now that the host eagerly saves its own FPSIMD/SVE/SME state,
+non-protected KVM never needs to save the host FPSIMD/SVE/SME state,
+and the code to do this is never used. Protected KVM still needs to
+save/restore the host FPSIMD/SVE state to avoid leaking guest state to
+the host (and to avoid revealing to the host whether the guest used
+FPSIMD/SVE/SME), and that code needs to be retained.
 
-The event list has been updated:
+Remove the unused code and data structures.
 
-  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
-  "BriefDescription": "Free running counter that increments for every 32
-		       bytes of data sent from the IO agent to the SOC",
+To avoid the need for a stub copy of kvm_hyp_save_fpsimd_host() in the
+VHE hyp code, the nVHE/hVHE version is moved into the shared switch
+header, where it is only invoked when KVM is in protected mode.
 
-Update the scale of the IIO bandwidth in free running counters as well.
-
-Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-3-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/kvm_host.h       |    1 -
+ arch/arm64/kvm/fpsimd.c                 |    2 --
+ arch/arm64/kvm/hyp/include/hyp/switch.h |    4 ----
+ 3 files changed, 7 deletions(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -4882,28 +4882,28 @@ static struct uncore_event_desc snr_unco
- 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
- 	/* Free-Running IIO BANDWIDTH IN Counters */
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
--	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
-+	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
- 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
- 	{ /* end: all zeroes */ },
- };
+--- a/arch/arm64/include/asm/kvm_host.h
++++ b/arch/arm64/include/asm/kvm_host.h
+@@ -380,7 +380,6 @@ struct kvm_vcpu_arch {
+ 	struct kvm_guest_debug_arch vcpu_debug_state;
+ 	struct kvm_guest_debug_arch external_debug_state;
+ 
+-	struct user_fpsimd_state *host_fpsimd_state;	/* hyp VA */
+ 	struct task_struct *parent_task;
+ 
+ 	struct {
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -49,8 +49,6 @@ int kvm_arch_vcpu_run_map_fp(struct kvm_
+ 	if (ret)
+ 		return ret;
+ 
+-	vcpu->arch.host_fpsimd_state = kern_hyp_va(fpsimd);
+-
+ 	/*
+ 	 * We need to keep current's task_struct pinned until its data has been
+ 	 * unshared with the hypervisor to make sure it is not re-used by the
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -207,10 +207,6 @@ static bool kvm_hyp_handle_fpsimd(struct
+ 	}
+ 	isb();
+ 
+-	/* Write out the host state if it's in the registers */
+-	if (vcpu->arch.fp_state == FP_STATE_HOST_OWNED)
+-		__fpsimd_save_state(vcpu->arch.host_fpsimd_state);
+-
+ 	/* Restore the guest state */
+ 	if (sve_guest)
+ 		__hyp_sve_restore_guest(vcpu);
 
 
 
