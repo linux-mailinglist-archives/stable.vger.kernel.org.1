@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8D2A992A6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27C0A99369
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A366C1BA37F1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122059A0FD6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F628CF6E;
-	Wed, 23 Apr 2025 15:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898D328F509;
+	Wed, 23 Apr 2025 15:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9bPkZPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ix6/bei2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EB127F4D9;
-	Wed, 23 Apr 2025 15:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A3C27FD75;
+	Wed, 23 Apr 2025 15:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421929; cv=none; b=iJx/NYXouJAyRzVrc2Hp7SyEYHarPUWE7PefNcL9yVHja4fTa0+XmwBTdg9FFSaj8RmDIz9dgOwzVAoRpfzuQ2tmQyEERzaUU5ydpsYCp3v/b/E65zUjjQs7vhC0CM3u1Hljnovsf6z/6iSVjPS0hY05/swB4afvqzfilflYRlg=
+	t=1745422233; cv=none; b=F8tCLes4Gy6E4x3TGNQDO9OU69u3PXM/n10daBJb7jjcmm2109bZd7hFfBtKJC5AzjhgCTjzcYbxsfTyJG18+11sAp0Ypsbxck4ZKJ7fL3mawy7dLW+z31ASS6Bfth78vBn3nyDDP3TFaDlmtWeSe6vd8HRCiaAIYUCZJlfNxTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421929; c=relaxed/simple;
-	bh=ubNGzRovKsW1KPic2qPIo+KJey+p62ke8zerwxfRKH0=;
+	s=arc-20240116; t=1745422233; c=relaxed/simple;
+	bh=8bi19nHHi7RMaXH95huB6OuC0pCvrGJBjb05pJVGC44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DeglL59Ol56x+NLLbOoJj2RsgQO2H6YDWfLy6gMqF2VjWFG7WJJxAmTtJlgbAZVdrwFJ8PlOwU968Z1ygMMYt5aaWmWElvsYYRuT+MGR025ioJxrHLj2t89RzXVUfYh3+4FpBPlZxK5M0Lh15kj1hC2WqbqNNORri8huVxXTPUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9bPkZPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907A5C4CEE2;
-	Wed, 23 Apr 2025 15:25:28 +0000 (UTC)
+	 MIME-Version; b=O7szCo6qMzWH2TOnEoN37waUklrGKL/SxkwREGSBh1AJaydIYyv/jFDwEo6GszJOWhkLcLhiqG6od5J7hAKt3SHy6jNM+zjNvrY8D9vo5s0bRIMM4VuXqrw1NwDkvkRveVsyNuJLucRRzuI3Yt1H1XGAEkH86YhhyeCV2QZ5IIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ix6/bei2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA32C4CEE2;
+	Wed, 23 Apr 2025 15:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421928;
-	bh=ubNGzRovKsW1KPic2qPIo+KJey+p62ke8zerwxfRKH0=;
+	s=korg; t=1745422233;
+	bh=8bi19nHHi7RMaXH95huB6OuC0pCvrGJBjb05pJVGC44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9bPkZPFYwtQLphuB6uXrhvyKEVkbufSgpmzQ1TkXwZBuu5OT01rsT/v4ScaIw/Ff
-	 PvtDh3Q4/NgMgO6U4WGMMoaiTOtAZWNa3d9bkNzuqQRrk1yOfBcPy61obDJho4Fq/E
-	 0R0D1dwmlzhSRPsxe4JxwUwjK821KS8KXo5u/My0=
+	b=ix6/bei2zUZKw8vtv2IK5aqfyfUHspVikelI80H0h8vTSTMprGbIqVpsX6/YevAsx
+	 TNfSB46Cs2bGOP+Qm5hToRcXb1MVc4Te8Nnts0EtEMtA2TLiqbgozVi2P3wVF9/Lz8
+	 XO/c7+fKenHB2ErSSNdK4gwD76WvjYz0Kn/N2an4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
 	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/291] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
+Subject: [PATCH 6.6 280/393] netlink: specs: rt-link: add an attr layer around alt-ifname
 Date: Wed, 23 Apr 2025 16:42:56 +0200
-Message-ID: <20250423142632.016287321@linuxfoundation.org>
+Message-ID: <20250423142654.912950959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
+[ Upstream commit acf4da17deada7f8b120e051aa6c9cac40dbd83b ]
 
-In the for loop used to allocate the loc_array and bmap for each port, a
-memory leak is possible when the allocation for loc_array succeeds,
-but the allocation for bmap fails. This is because when the control flow
-goes to the label free_eth_finfo, only the allocations starting from
-(i-1)th iteration are freed.
+alt-ifname attr is directly placed in requests (as an alternative
+to ifname) but in responses its wrapped up in IFLA_PROP_LIST
+and only there is may be multi-attr. See rtnl_fill_prop_list().
 
-Fix that by freeing the loc_array in the bmap allocation error path.
-
-Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
+Link: https://patch.msgid.link/20250414211851.602096-6-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/netlink/specs/rt_link.yaml | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 8477a93cee6bd..b77897aa06c4f 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -2273,6 +2273,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
- 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
- 		if (!eth_filter->port[i].bmap) {
- 			ret = -ENOMEM;
-+			kvfree(eth_filter->port[i].loc_array);
- 			goto free_eth_finfo;
- 		}
- 	}
+diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
+index d86a68f8475ca..34f74c451dcdb 100644
+--- a/Documentation/netlink/specs/rt_link.yaml
++++ b/Documentation/netlink/specs/rt_link.yaml
+@@ -892,11 +892,10 @@ attribute-sets:
+       -
+         name: prop-list
+         type: nest
+-        nested-attributes: link-attrs
++        nested-attributes: prop-list-link-attrs
+       -
+         name: alt-ifname
+         type: string
+-        multi-attr: true
+       -
+         name: perm-address
+         type: binary
+@@ -931,6 +930,13 @@ attribute-sets:
+       -
+         name: gro-ipv4-max-size
+         type: u32
++  -
++    name: prop-list-link-attrs
++    subset-of: link-attrs
++    attributes:
++      -
++        name: alt-ifname
++        multi-attr: true
+   -
+     name: af-spec-attrs
+     attributes:
+@@ -1362,7 +1368,6 @@ operations:
+             - min-mtu
+             - max-mtu
+             - prop-list
+-            - alt-ifname
+             - perm-address
+             - proto-down-reason
+             - parent-dev-name
 -- 
 2.39.5
 
