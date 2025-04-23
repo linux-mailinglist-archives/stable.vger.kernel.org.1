@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26ACA99010
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8E9A99380
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12102441D5D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49DD91BC18B6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6092B2949F0;
-	Wed, 23 Apr 2025 15:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583AB2BCF76;
+	Wed, 23 Apr 2025 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yjk5stg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRus3oY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C72628F502;
-	Wed, 23 Apr 2025 15:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF97298997;
+	Wed, 23 Apr 2025 15:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420848; cv=none; b=eWVt+xR7rSgBqsETGK6RSD/gsjtxpKt8e3OcW0C6J6n2FTEto7AoIjUcRodjCSIc/svBpUpDNPjgTfZAsJ+rTFSQ91Ii9p4fvTm9OmH1RPeM+Br+OuOagBO1WNRNjJ2dPsmRFinQn0WTf7bc9+Q1iG8QJRbQsKU6yIYt0b4v+ZM=
+	t=1745422373; cv=none; b=pjD/5vYtypY+8FKbqGfQLXaonEaiVL9Ga25+J3mFgDpbUqng/snKTw+GqG9weRsHyya9326J6rXSuOWbYJTzUgXma2GpwPYr9EsYriWZgvtOXCKW5FrNwTav5TUQDZP9/Zv1421t3Cg5gerKncwiGex6OUxpK6qRmyWmXT0JbbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420848; c=relaxed/simple;
-	bh=AS6E8fIVTrQZKMYOqKArIaoXp4JuIH6govfel82AnHU=;
+	s=arc-20240116; t=1745422373; c=relaxed/simple;
+	bh=3cfrNAQk1fJN5KiAGdk+DKGWUwF1RrYpJMtTbXtlZUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NK8HYpYsrZJF42kWYVe5Xo4Eb1mFQ1YzUmhynYP8at4TLJGFOMin4JrdhbS8XRKCHa6f2X/4fStnPsStOmvlfU3qhuHZ8MKijq4qv7j6Dqb6Pg7riXdz5S4cspBo8mCbTx0aJBKI3VUa9DFXuAT3nld/XXNdv5yoFsv6n1ZOrqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yjk5stg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AA9C4CEE2;
-	Wed, 23 Apr 2025 15:07:27 +0000 (UTC)
+	 MIME-Version; b=ZEnkY8ewt3oN9dbV5Vdjcfc3zK+lHpzPlrfrc456+oT1Rb+VFBSOsSlGA7eDtFPdBPvvcBJTmOo0JzljAzPQNgeEmE5jMmphBJWwFA2/0+TS4mbBGxNBSlWeXTHun2Vzdq7jZ08YlG37G//cT3sr3VJIB8iYuip9tf4Uw2H0HoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qRus3oY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90294C4CEE2;
+	Wed, 23 Apr 2025 15:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420848;
-	bh=AS6E8fIVTrQZKMYOqKArIaoXp4JuIH6govfel82AnHU=;
+	s=korg; t=1745422372;
+	bh=3cfrNAQk1fJN5KiAGdk+DKGWUwF1RrYpJMtTbXtlZUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yjk5stg8paq1AOiK+OSH+aod+1THKohbRL+XxseUPw9tLjeZfoHAfatZhVA6MFdwR
-	 dVGAWsQqx5HOSbo5Z+kn+s2E8PiRbzHYemWIo1esz9VUe8Gci7AW2KxYGrrntOoit0
-	 be+xO9c+aBHNqJ1YQUsBMXBhxY0l9AjO9y4Il5qY=
+	b=qRus3oY9lOii6G52Yex4ga4Gucg+6bhDd64kUgs38ssyhwbdttlw5SkVExr6KPjvY
+	 jxNa8uyJwzIJDX3MwUxyQpIW/L2A41A11ccg7p+uEoNY2kGwaIr92rEqZYoLvICKAP
+	 3lkjjceEw6+AiTQoRX5e4beknXlJllCT+XEavX/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 154/223] drm/amd: Handle being compiled without SI or CIK support better
+	Nathan Chancellor <nathan@kernel.org>,
+	"Dmitry V. Levin" <ldv@strace.io>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 330/393] riscv: Avoid fortify warning in syscall_get_arguments()
 Date: Wed, 23 Apr 2025 16:43:46 +0200
-Message-ID: <20250423142623.448811943@linuxfoundation.org>
+Message-ID: <20250423142656.971134671@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 5f054ddead33c1622ea9c0c0aaf07c6843fc7ab0 upstream.
+commit adf53771a3123df99ca26e38818760fbcf5c05d0 upstream.
 
-If compiled without SI or CIK support but amdgpu tries to load it
-will run into failures with uninitialized callbacks.
+When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
+because of the memcpy() in syscall_get_arguments():
 
-Show a nicer message in this case and fail probe instead.
+  In file included from include/linux/string.h:392,
+                   from include/linux/bitmap.h:13,
+                   from include/linux/cpumask.h:12,
+                   from arch/riscv/include/asm/processor.h:55,
+                   from include/linux/sched.h:13,
+                   from kernel/ptrace.c:13:
+  In function 'fortify_memcpy_chk',
+      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
+  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
+    580 |                         __read_overflow2_field(q_size_field, size);
+        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  cc1: all warnings being treated as errors
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4050
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The fortified memcpy() routine enforces that the source is not overread
+and the destination is not overwritten if the size of either field and
+the size of the copy are known at compile time. The memcpy() in
+syscall_get_arguments() intentionally overreads from a1 to a5 in
+'struct pt_regs' but this is bigger than the size of a1.
+
+Normally, this could be solved by wrapping a1 through a5 with
+struct_group() but there was already a struct_group() applied to these
+members in commit bba547810c66 ("riscv: tracing: Fix
+__write_overflow_field in ftrace_partial_regs()").
+
+Just avoid memcpy() altogether and write the copying of args from regs
+manually, which clears up the warning at the expense of three extra
+lines of code.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Dmitry V. Levin <ldv@strace.io>
+Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |   44 +++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 20 deletions(-)
+ arch/riscv/include/asm/syscall.h |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -1795,7 +1795,6 @@ static const u16 amdgpu_unsupported_pcii
- };
+--- a/arch/riscv/include/asm/syscall.h
++++ b/arch/riscv/include/asm/syscall.h
+@@ -62,8 +62,11 @@ static inline void syscall_get_arguments
+ 					 unsigned long *args)
+ {
+ 	args[0] = regs->orig_a0;
+-	args++;
+-	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
++	args[1] = regs->a1;
++	args[2] = regs->a2;
++	args[3] = regs->a3;
++	args[4] = regs->a4;
++	args[5] = regs->a5;
+ }
  
- static const struct pci_device_id pciidlist[] = {
--#ifdef CONFIG_DRM_AMDGPU_SI
- 	{0x1002, 0x6780, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
- 	{0x1002, 0x6784, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
- 	{0x1002, 0x6788, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TAHITI},
-@@ -1868,8 +1867,6 @@ static const struct pci_device_id pciidl
- 	{0x1002, 0x6665, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
- 	{0x1002, 0x6667, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
- 	{0x1002, 0x666F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_HAINAN|AMD_IS_MOBILITY},
--#endif
--#ifdef CONFIG_DRM_AMDGPU_CIK
- 	/* Kaveri */
- 	{0x1002, 0x1304, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_MOBILITY|AMD_IS_APU},
- 	{0x1002, 0x1305, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_KAVERI|AMD_IS_APU},
-@@ -1952,7 +1949,6 @@ static const struct pci_device_id pciidl
- 	{0x1002, 0x985D, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
- 	{0x1002, 0x985E, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
- 	{0x1002, 0x985F, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_MULLINS|AMD_IS_MOBILITY|AMD_IS_APU},
--#endif
- 	/* topaz */
- 	{0x1002, 0x6900, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
- 	{0x1002, 0x6901, PCI_ANY_ID, PCI_ANY_ID, 0, 0, CHIP_TOPAZ},
-@@ -2284,14 +2280,14 @@ static int amdgpu_pci_probe(struct pci_d
- 		return -ENOTSUPP;
- 	}
- 
-+	switch (flags & AMD_ASIC_MASK) {
-+	case CHIP_TAHITI:
-+	case CHIP_PITCAIRN:
-+	case CHIP_VERDE:
-+	case CHIP_OLAND:
-+	case CHIP_HAINAN:
- #ifdef CONFIG_DRM_AMDGPU_SI
--	if (!amdgpu_si_support) {
--		switch (flags & AMD_ASIC_MASK) {
--		case CHIP_TAHITI:
--		case CHIP_PITCAIRN:
--		case CHIP_VERDE:
--		case CHIP_OLAND:
--		case CHIP_HAINAN:
-+		if (!amdgpu_si_support) {
- 			dev_info(&pdev->dev,
- 				 "SI support provided by radeon.\n");
- 			dev_info(&pdev->dev,
-@@ -2299,16 +2295,18 @@ static int amdgpu_pci_probe(struct pci_d
- 				);
- 			return -ENODEV;
- 		}
--	}
-+		break;
-+#else
-+		dev_info(&pdev->dev, "amdgpu is built without SI support.\n");
-+		return -ENODEV;
- #endif
-+	case CHIP_KAVERI:
-+	case CHIP_BONAIRE:
-+	case CHIP_HAWAII:
-+	case CHIP_KABINI:
-+	case CHIP_MULLINS:
- #ifdef CONFIG_DRM_AMDGPU_CIK
--	if (!amdgpu_cik_support) {
--		switch (flags & AMD_ASIC_MASK) {
--		case CHIP_KAVERI:
--		case CHIP_BONAIRE:
--		case CHIP_HAWAII:
--		case CHIP_KABINI:
--		case CHIP_MULLINS:
-+		if (!amdgpu_cik_support) {
- 			dev_info(&pdev->dev,
- 				 "CIK support provided by radeon.\n");
- 			dev_info(&pdev->dev,
-@@ -2316,8 +2314,14 @@ static int amdgpu_pci_probe(struct pci_d
- 				);
- 			return -ENODEV;
- 		}
--	}
-+		break;
-+#else
-+		dev_info(&pdev->dev, "amdgpu is built without CIK support.\n");
-+		return -ENODEV;
- #endif
-+	default:
-+		break;
-+	}
- 
- 	adev = devm_drm_dev_alloc(&pdev->dev, &amdgpu_kms_driver, typeof(*adev), ddev);
- 	if (IS_ERR(adev))
+ static inline int syscall_get_arch(struct task_struct *task)
 
 
 
