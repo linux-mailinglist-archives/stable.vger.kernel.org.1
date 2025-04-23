@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F687A9903F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59624A98EB7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBCE1BA148F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BE3F1B8154F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5999928D85D;
-	Wed, 23 Apr 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797D227FD7A;
+	Wed, 23 Apr 2025 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPDfpiSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="foe2Ix0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120C4288CBD;
-	Wed, 23 Apr 2025 15:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3678D143736;
+	Wed, 23 Apr 2025 14:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420775; cv=none; b=aonQByjgi7OxQiT2kGbRpkKHFJpvvkCgZXMpNEwFIZGcNShGCGkwAOMU69OlBd168T6h+20/EEG6pGDNVXbfsw5kgJV8iHAOoVg41gWByEVFeOgTXo5zjFjjLCbcdNM39W6Fpr/fIJNu0vmQ2z5ZPLAuwcoGfngfgh8qARFLl20=
+	t=1745420113; cv=none; b=C9MEpd9zzFbG4qTL2kIUqGFJzghf0m/AKngBRdAXo3G5x3rrbJ70DJUMDvYhlzZLm4BlGNZDfY83gQVVAplwBZcVpBsbR/H7z3qMtXA29RvOKBdG7nL8fHlkIuoWGDRqyAFJX8BV56JIgmlGh6oog9NApn5h4OHvWQthbsvAkEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420775; c=relaxed/simple;
-	bh=ru1NkOPg1aGUnF/DCE8DU4yFcbe/kXxbASca1luvRMk=;
+	s=arc-20240116; t=1745420113; c=relaxed/simple;
+	bh=OXVVjyJcBjtdE/JD6mnNZdEPL1DBx8K7LE//ugDrTyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uc01kI+sQfDv77B3depspJGhALyPiHElegS4O6lzQwDC99S6dCLM5CIYSC3ahDx0vdHidntn/EIOIapOWs0WnKIeJkb1PLGStt/2BSb3EfKGUGUNnlZ7Cv0txmiG+yR9KHkqEnKwXtW9HPDDEt970Pd5ROwG9mcw/gB/fhHO1EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPDfpiSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CAFC4CEE3;
-	Wed, 23 Apr 2025 15:06:14 +0000 (UTC)
+	 MIME-Version; b=XcOqSLsKC/MW2RuQiOVMAZ3vXMNYbXDb4beU6fQoyQWO6H4OjVuANMnJDbjuzWDhtKq3VtuC3hKjpDfhGiOjqH+NSeUhbvmWasLpMK446REH89iORUYIjOW/T/2u3gZT4nx1YQ6tOVhAV3uGPt57Lnruwc2ShOYtnvoAcDBHZJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=foe2Ix0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE312C4CEE2;
+	Wed, 23 Apr 2025 14:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420774;
-	bh=ru1NkOPg1aGUnF/DCE8DU4yFcbe/kXxbASca1luvRMk=;
+	s=korg; t=1745420113;
+	bh=OXVVjyJcBjtdE/JD6mnNZdEPL1DBx8K7LE//ugDrTyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPDfpiSI6zW/NGLEjELgrz/g1sybknygazgqMFBnezMF5Zj5l7MzBaBpMngXUtvry
-	 TvR/I7v0aD7rt7WsztRPTCDcFSkzCxZ7cVAs3P/khurYGPCdrfFfCcpPyHMmt0lpIQ
-	 jPkFWB4Y5fiAoK8ZrHsaOrJzYmxTnLpbRkJz0eWI=
+	b=foe2Ix0dN8urcO+F6JRKx8M0PzoVlgtQNF44Vc9JAYVEmJ/lhbW4r47yY8IN+TA++
+	 a623F010Nn/i19TBCv78XTlI+h9jBlbIzO0GxHG1oSFR64X103hYTZp5RFNKidH6Bd
+	 3MBUpSskYMp4ffx/SRLCjxkl8VKgmrMdDmJsNZIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/393] tracing: probe-events: Add comments about entry data storing code
+	Yong Wu <yong.wu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>
+Subject: [PATCH 6.1 018/291] iommu/mediatek: Fix NULL pointer deference in mtk_iommu_device_group
 Date: Wed, 23 Apr 2025 16:40:07 +0200
-Message-ID: <20250423142647.951415441@linuxfoundation.org>
+Message-ID: <20250423142625.149301340@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +65,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit bb9c6020f4c3a07a90dc36826cb5fbe83f09efd5 ]
+[ Upstream commit 38e8844005e6068f336a3ad45451a562a0040ca1 ]
 
-Add comments about entry data storing code to __store_entry_arg() and
-traceprobe_get_entry_data_size(). These are a bit complicated because of
-building the entry data storing code and scanning it.
+Currently, mtk_iommu calls during probe iommu_device_register before
+the hw_list from driver data is initialized. Since iommu probing issue
+fix, it leads to NULL pointer dereference in mtk_iommu_device_group when
+hw_list is accessed with list_first_entry (not null safe).
 
-This just add comments, no behavior change.
+So, change the call order to ensure iommu_device_register is called
+after the driver data are initialized.
 
-Link: https://lore.kernel.org/all/174061715004.501424.333819546601401102.stgit@devnote2/
-
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/all/20250226102223.586d7119@gandalf.local.home/
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 9e3a2a643653 ("iommu/mediatek: Adapt sharing and non-sharing pgtable case")
+Fixes: bcb81ac6ae3c ("iommu: Get DT/ACPI parsing into the proper probe path")
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org> # MT8183 Juniper, MT8186 Tentacruel
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Link: https://lore.kernel.org/r/20250403-fix-mtk-iommu-error-v2-1-fe8b18f8b0a8@collabora.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_probe.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/iommu/mtk_iommu.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
-index 8c73156a7eb94..606190239c877 100644
---- a/kernel/trace/trace_probe.c
-+++ b/kernel/trace/trace_probe.c
-@@ -769,6 +769,10 @@ static int check_prepare_btf_string_fetch(char *typename,
+diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+index 576163f88a4a5..d4cb09b2e267e 100644
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1268,15 +1268,6 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, data);
+ 	mutex_init(&data->mutex);
  
- #ifdef CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
- 
-+/*
-+ * Add the entry code to store the 'argnum'th parameter and return the offset
-+ * in the entry data buffer where the data will be stored.
-+ */
- static int __store_entry_arg(struct trace_probe *tp, int argnum)
- {
- 	struct probe_entry_arg *earg = tp->entry_arg;
-@@ -792,6 +796,20 @@ static int __store_entry_arg(struct trace_probe *tp, int argnum)
- 		tp->entry_arg = earg;
+-	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
+-				     "mtk-iommu.%pa", &ioaddr);
+-	if (ret)
+-		goto out_link_remove;
+-
+-	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
+-	if (ret)
+-		goto out_sysfs_remove;
+-
+ 	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE)) {
+ 		list_add_tail(&data->list, data->plat_data->hw_list);
+ 		data->hw_list = data->plat_data->hw_list;
+@@ -1286,19 +1277,28 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+ 		data->hw_list = &data->hw_list_head;
  	}
  
-+	/*
-+	 * The entry code array is repeating the pair of
-+	 * [FETCH_OP_ARG(argnum)][FETCH_OP_ST_EDATA(offset of entry data buffer)]
-+	 * and the rest of entries are filled with [FETCH_OP_END].
-+	 *
-+	 * To reduce the redundant function parameter fetching, we scan the entry
-+	 * code array to find the FETCH_OP_ARG which already fetches the 'argnum'
-+	 * parameter. If it doesn't match, update 'offset' to find the last
-+	 * offset.
-+	 * If we find the FETCH_OP_END without matching FETCH_OP_ARG entry, we
-+	 * will save the entry with FETCH_OP_ARG and FETCH_OP_ST_EDATA, and
-+	 * return data offset so that caller can find the data offset in the entry
-+	 * data buffer.
-+	 */
- 	offset = 0;
- 	for (i = 0; i < earg->size - 1; i++) {
- 		switch (earg->code[i].op) {
-@@ -825,6 +843,16 @@ int traceprobe_get_entry_data_size(struct trace_probe *tp)
- 	if (!earg)
- 		return 0;
++	ret = iommu_device_sysfs_add(&data->iommu, dev, NULL,
++				     "mtk-iommu.%pa", &ioaddr);
++	if (ret)
++		goto out_list_del;
++
++	ret = iommu_device_register(&data->iommu, &mtk_iommu_ops, dev);
++	if (ret)
++		goto out_sysfs_remove;
++
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
+ 		ret = component_master_add_with_match(dev, &mtk_iommu_com_ops, match);
+ 		if (ret)
+-			goto out_list_del;
++			goto out_device_unregister;
+ 	}
+ 	return ret;
  
-+	/*
-+	 * earg->code[] array has an operation sequence which is run in
-+	 * the entry handler.
-+	 * The sequence stopped by FETCH_OP_END and each data stored in
-+	 * the entry data buffer by FETCH_OP_ST_EDATA. The FETCH_OP_ST_EDATA
-+	 * stores the data at the data buffer + its offset, and all data are
-+	 * "unsigned long" size. The offset must be increased when a data is
-+	 * stored. Thus we need to find the last FETCH_OP_ST_EDATA in the
-+	 * code array.
-+	 */
- 	for (i = 0; i < earg->size; i++) {
- 		switch (earg->code[i].op) {
- 		case FETCH_OP_END:
+-out_list_del:
+-	list_del(&data->list);
++out_device_unregister:
+ 	iommu_device_unregister(&data->iommu);
+ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+-out_link_remove:
++out_list_del:
++	list_del(&data->list);
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
+ 		device_link_remove(data->smicomm_dev, dev);
+ out_runtime_disable:
 -- 
 2.39.5
 
