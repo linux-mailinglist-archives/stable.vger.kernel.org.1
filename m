@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-136097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC98A9928A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C2AA992BA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739091BA35EA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 114EA16D9B8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0143228F50A;
-	Wed, 23 Apr 2025 15:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CD32957BD;
+	Wed, 23 Apr 2025 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HkvMRq1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvIF1Ox/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC61F5435;
-	Wed, 23 Apr 2025 15:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821D62957A3;
+	Wed, 23 Apr 2025 15:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421647; cv=none; b=LFefvc7GL5WoTufKuFpDMzd3v+O7jxwlM/cewggy6QActTExHHBCOg5C66NhXIkM7z9W1B0MkN8bc9FOwGvPpqX3bveh4A0ZY7Vj5ZKW4v1MS5wPE0oqKMKDBDeuppN1GZmyz42nNHtp00Ea+EKnvsS3t1S4tJlAlzuRUj3mZpw=
+	t=1745421976; cv=none; b=VWaG+lWmvznnOk7D62ODcCo2ZLsO/4l/YFV+kG+7YRhku/MNXrfpng0+dXq9vd49QrC00UpBJ60ge26PvrNNjLAryWXXAchat5OK64Xx5k81P3XYmIMVX+JS2DMoT1N79iAUPxPD546HwojxyuF41awav55dDUKkI1PgXuWLbaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421647; c=relaxed/simple;
-	bh=pJy4I3cziAS5RSqp3tSIU+u3kNIv4WRUECIpvPwfrXI=;
+	s=arc-20240116; t=1745421976; c=relaxed/simple;
+	bh=dA0Wdx6TFYFyyhHe3B533Py4wa7NOJQIASZuMXv+X2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBODrbyfZyyq2ml6+eFAzmRi9CotJ/lpm128KN1g34MTJxELtNs8SZFsixi5D/ct8D6R2MZa/kH6AJxSnmqmRT/fh1XFGSJhSvYesqldcHXgkaAKYXaJi8lPKmxfiixTL2oK0P3HM+ZKvbdRVWTc/e3X5g/6vdSWw4efZX6yKgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HkvMRq1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4B7C4CEE2;
-	Wed, 23 Apr 2025 15:20:46 +0000 (UTC)
+	 MIME-Version; b=CWwXBUaK7tazq3koiPQREZ68Kj6tb/59tjUVGFMywVQm/uuD1AZf4GP/Ha3y+wEASaJXGSN/aNPlRXda0qeRzwo+lY0//k3ESYD/viEu5j9cfMR52Q3EYGGQaUd4r0g+cCL95Z5TQPk5fM4PqgsNSzQkMgZpfGUW1GnrqTwZxPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvIF1Ox/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161E3C4CEE3;
+	Wed, 23 Apr 2025 15:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421647;
-	bh=pJy4I3cziAS5RSqp3tSIU+u3kNIv4WRUECIpvPwfrXI=;
+	s=korg; t=1745421976;
+	bh=dA0Wdx6TFYFyyhHe3B533Py4wa7NOJQIASZuMXv+X2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HkvMRq1cxMn3VvpxygJWHE5qbfNRwLCqp77+oGYjHUwCsNQOvA7B3sYEDbXzaFr4S
-	 FEp6rcYTAc2QGrusU9s0octp2nsAHu/FGDeVexlXce0IBsUoZFWFgCFDic998NfjVQ
-	 LRc7WAuv0EDaiYEMSISOh60H2AgGmVF+ouK34GDM=
+	b=dvIF1Ox/AmK+PbyZkJd6Qc6BwfFwWfrD+L8e70O1qM13KvBU04jlo9UfmNkSBGgkw
+	 oNV9j8lyR4P+clthjuOw048baAV5HKl5rok3M0uulTvYt953gxE8NBVBDVatxpqwRn
+	 OJRMvnxuMyZgGyW1e9qXyVENShgewE5IMqmVC3zU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roberto Ricci <io@r-ricci.it>,
-	Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Len Brown <len.brown@intel.com>
-Subject: [PATCH 6.1 162/291] x86/e820: Fix handling of subpage regions when calculating nosave ranges in e820__register_nosave_regions()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 255/393] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
 Date: Wed, 23 Apr 2025 16:42:31 +0200
-Message-ID: <20250423142631.015116279@linuxfoundation.org>
+Message-ID: <20250423142653.906524523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit f2f29da9f0d4367f6ff35e0d9d021257bb53e273 upstream.
+[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
 
-While debugging kexec/hibernation hangs and crashes, it turned out that
-the current implementation of e820__register_nosave_regions() suffers from
-multiple serious issues:
+This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
+(00:00:00:00:00:00) which is a regression introduced by
+a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+since in the attempt to skip storing data for extended advertisement it
+actually made the code to skip the entire if statement supposed to send
+MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
+is garanteed to be invalid for extended advertisement since we never
+store anything on it.
 
- - The end of last region is tracked by PFN, causing it to find holes
-   that aren't there if two consecutive subpage regions are present
-
- - The nosave PFN ranges derived from holes are rounded out (instead of
-   rounded in) which makes it inconsistent with how explicitly reserved
-   regions are handled
-
-Fix this by:
-
- - Treating reserved regions as if they were holes, to ensure consistent
-   handling (rounding out nosave PFN ranges is more correct as the
-   kernel does not use partial pages)
-
- - Tracking the end of the last RAM region by address instead of pages
-   to detect holes more precisely
-
-These bugs appear to have been introduced about ~18 years ago with the very
-first version of e820_mark_nosave_regions(), and its flawed assumptions were
-carried forward uninterrupted through various waves of rewrites and renames.
-
-[ mingo: Added Git archeology details, for kicks and giggles. ]
-
-Fixes: e8eff5ac294e ("[PATCH] Make swsusp avoid memory holes and reserved memory regions on x86_64")
-Reported-by: Roberto Ricci <io@r-ricci.it>
-Tested-by: Roberto Ricci <io@r-ricci.it>
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Len Brown <len.brown@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250406-fix-e820-nosave-v3-1-f3787bc1ee1d@qtmlabs.xyz
-Closes: https://lore.kernel.org/all/Z4WFjBVHpndct7br@desktop0a/
-Signed-off-by: Myrrh Periwinkle <myrrhperiwinkle@qtmlabs.xyz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/bluez/bluez/issues/1157
+Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
+Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/e820.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/bluetooth/hci_event.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -753,22 +753,21 @@ void __init e820__memory_setup_extended(
- void __init e820__register_nosave_regions(unsigned long limit_pfn)
- {
- 	int i;
--	unsigned long pfn = 0;
-+	u64 last_addr = 0;
- 
- 	for (i = 0; i < e820_table->nr_entries; i++) {
- 		struct e820_entry *entry = &e820_table->entries[i];
- 
--		if (pfn < PFN_UP(entry->addr))
--			register_nosave_region(pfn, PFN_UP(entry->addr));
--
--		pfn = PFN_DOWN(entry->addr + entry->size);
--
- 		if (entry->type != E820_TYPE_RAM && entry->type != E820_TYPE_RESERVED_KERN)
--			register_nosave_region(PFN_UP(entry->addr), pfn);
-+			continue;
- 
--		if (pfn >= limit_pfn)
--			break;
-+		if (last_addr < entry->addr)
-+			register_nosave_region(PFN_DOWN(last_addr), PFN_UP(entry->addr));
-+
-+		last_addr = entry->addr + entry->size;
- 	}
-+
-+	register_nosave_region(PFN_DOWN(last_addr), limit_pfn);
- }
- 
- #ifdef CONFIG_ACPI
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 1e689d8c00a50..4029330e29a99 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6149,11 +6149,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 	 * event or send an immediate device found event if the data
+ 	 * should not be stored for later.
+ 	 */
+-	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
++	if (!has_pending_adv_report(hdev)) {
+ 		/* If the report will trigger a SCAN_REQ store it for
+ 		 * later merging.
+ 		 */
+-		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
++		if (!ext_adv && (type == LE_ADV_IND ||
++				 type == LE_ADV_SCAN_IND)) {
+ 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
+ 						 rssi, flags, data, len);
+ 			return;
+-- 
+2.39.5
+
 
 
 
