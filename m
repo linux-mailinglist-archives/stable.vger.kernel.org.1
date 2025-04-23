@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E9BA98DBB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A6CA98E46
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D99D7A52AB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 111DB446C57
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF916280A33;
-	Wed, 23 Apr 2025 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4E727CB12;
+	Wed, 23 Apr 2025 14:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtHXZbGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGrNBE9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C336280A27;
-	Wed, 23 Apr 2025 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B2175BF;
+	Wed, 23 Apr 2025 14:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419679; cv=none; b=iU+0MX28NujC26vkeW7KHlKWczESascXnyaBFNk6sst7u+K0aNmOcH3uQgzyGutayW7DdChkC4Gj+vilJr3Pw8JDMO3VwN+Wb5EkXWG7JnKRv6L8hyXrpxCVqNuG4dqi7D9V2ROAXSuXsga1UU8hL9s7Klc7X1MZRytBKn5bstU=
+	t=1745419984; cv=none; b=RUA+BFX2dFlQsv7hQpYnY5vY+W2Se8BehR+fazy/ZPCPYuvePa6mWMdqHaLL+1Zy4YxYCZRYKYEoSed82ZiKnj2zI9ErTcdylgldh+xeDM3mJhWw5RKubPNI5quNv+cmHwCXwJh3OO2RHNcX+4oRvDXfdvo8ma8DVSugbKqnQ+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419679; c=relaxed/simple;
-	bh=dxQiIESHnhL8kZAfu4wGiwp5cYBiyE4oMi7W0M/JUQU=;
+	s=arc-20240116; t=1745419984; c=relaxed/simple;
+	bh=1Oxi5BNjmjWG0PVj+PsY1ns8njgpB3kaoYz1vIX0ScI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3WxHElU1D1XMsK1fU0s10Mi6Zoh+Tcp7X61yJshiVRFhSZ4XuuTNVEbBoX/+VJeM0pNgWRRsHJUl8gwUpo5CDJWCEgvYRJxGT7DqWb5bpbjcFKmfF4u5Pl4FYJhj9PFZGF8t1pVNYTA1aARDYKRN4Qvs47znPbcn2G5mTYU5Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtHXZbGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BEAAC4CEE2;
-	Wed, 23 Apr 2025 14:47:58 +0000 (UTC)
+	 MIME-Version; b=Qo2w58zkw73J7W7gDrorYgGAfRHw5VtlxfRSFmAKpq9FKBljn/7pO4WIIYgIowGy3Fynh0ZLo74wvEfYyKcoUrHZJldNml84HZCYnrsEuLtGEJc2ZcwkEwInxM5xMSheJl47zRvkafhZS7LeuHawVLeqrm+e77c4Rq+WDkcQeqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGrNBE9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0050C4CEE3;
+	Wed, 23 Apr 2025 14:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419678;
-	bh=dxQiIESHnhL8kZAfu4wGiwp5cYBiyE4oMi7W0M/JUQU=;
+	s=korg; t=1745419984;
+	bh=1Oxi5BNjmjWG0PVj+PsY1ns8njgpB3kaoYz1vIX0ScI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtHXZbGLezkAae+3eisIfiYe6srg1cVgEBCdxdw2vtXYob188Nf/BuM+qH+XSlv6W
-	 73TrxfRIc4uysY7oAUi5VGkYUsccXhJr4A5pmm8yk9zA4FQ1ydVd7S7+fCvoHU5y1O
-	 l+OkqcYpulctvZTPTS7L/bUtrxvOicVQLb1zJDZM=
+	b=wGrNBE9WKr+qJSJrlSI+TZnHe6oxi9V+8Kzs43jy8DvOniDjLt02S5zPTU00JgPdd
+	 BEbH0G5Yiy18chvt7xGPlCaZiBf/VQDJDvatSxmqb6vfS+aPHh+RiFODx5WuQMn2Uj
+	 mRvi3IcPOgRDGabUbIPad+FkasZ8O1u3m7XRgxPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/223] test suite: use %zu to print size_t
+Subject: [PATCH 6.14 049/241] net: hibmcge: fix wrong mtu log issue
 Date: Wed, 23 Apr 2025 16:41:53 +0200
-Message-ID: <20250423142618.801300012@linuxfoundation.org>
+Message-ID: <20250423142622.512459425@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit a30951d09c33c899f0e4aca80eb87fad5f10ecfa ]
+[ Upstream commit 4e4ac53335de54bcb9d26842df0998cfd8fcaf90 ]
 
-On 32-bit, we can't use %lu to print a size_t variable and gcc warns us
-about it.  Shame it doesn't warn about it on 64-bit.
+A dbg log is generated when the driver modifies the MTU,
+which is expected to trace the change of the MTU.
 
-Link: https://lkml.kernel.org/r/20250403003311.359917-1-Liam.Howlett@oracle.com
-Fixes: cc86e0c2f306 ("radix tree test suite: add support for slab bulk APIs")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+However, the log is recorded after WRITE_ONCE().
+At this time, netdev->mtu has been changed to the new value.
+As a result, netdev->mtu is the same as new_mtu.
+
+This patch modifies the log location and records logs before WRITE_ONCE().
+
+Fixes: ff4edac6e9bd ("net: hibmcge: Implement some .ndo functions")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250410021327.590362-5-shaojijie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/shared/linux.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/shared/linux.c b/tools/testing/shared/linux.c
-index 17263696b5d88..61b3f571f7a70 100644
---- a/tools/testing/shared/linux.c
-+++ b/tools/testing/shared/linux.c
-@@ -147,7 +147,7 @@ void kmem_cache_free(struct kmem_cache *cachep, void *objp)
- void kmem_cache_free_bulk(struct kmem_cache *cachep, size_t size, void **list)
- {
- 	if (kmalloc_verbose)
--		pr_debug("Bulk free %p[0-%lu]\n", list, size - 1);
-+		pr_debug("Bulk free %p[0-%zu]\n", list, size - 1);
+diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+index bb0f25ac97600..4d20679b2543a 100644
+--- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
++++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
+@@ -198,12 +198,12 @@ static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
+ 	if (netif_running(netdev))
+ 		return -EBUSY;
  
- 	pthread_mutex_lock(&cachep->lock);
- 	for (int i = 0; i < size; i++)
-@@ -165,7 +165,7 @@ int kmem_cache_alloc_bulk(struct kmem_cache *cachep, gfp_t gfp, size_t size,
- 	size_t i;
+-	hbg_hw_set_mtu(priv, new_mtu);
+-	WRITE_ONCE(netdev->mtu, new_mtu);
+-
+ 	dev_dbg(&priv->pdev->dev,
+ 		"change mtu from %u to %u\n", netdev->mtu, new_mtu);
  
- 	if (kmalloc_verbose)
--		pr_debug("Bulk alloc %lu\n", size);
-+		pr_debug("Bulk alloc %zu\n", size);
++	hbg_hw_set_mtu(priv, new_mtu);
++	WRITE_ONCE(netdev->mtu, new_mtu);
++
+ 	return 0;
+ }
  
- 	pthread_mutex_lock(&cachep->lock);
- 	if (cachep->nr_objs >= size) {
 -- 
 2.39.5
 
