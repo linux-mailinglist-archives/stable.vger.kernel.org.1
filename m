@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9E3A993AD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 907E8A9908D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4233B68EC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 069C87AEF97
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E772949E0;
-	Wed, 23 Apr 2025 15:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80F3A2853FC;
+	Wed, 23 Apr 2025 15:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RucD9n99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6zeV+rL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC59528F93A;
-	Wed, 23 Apr 2025 15:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6A6280CF0;
+	Wed, 23 Apr 2025 15:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422405; cv=none; b=uZWzwbYceaBoKVuthzgtRlhyCRcoVhbWKasPDs02C59/4qZF6PiRWZYZphSSli0ftBey10Q+Jb7TefAmx4osNRdZP5T5RGKWkKGApGR4vwWc0OOrSgOLyhYgNjniaRalCQl/Fl3hNQl4Y39AunKY77mlTMjT0nXMfTSMDcK/8AM=
+	t=1745421254; cv=none; b=eJGcJAGkXfN0XtQ6zhox4dCNg0zFC6CWo/nQoc9EKLPJIr2nyJDtzjpM1n3iylESNUewz46FWmDL/widCA7OXFBopn4QrFNmdo+b9STLwSqfpOZRCScDOx0SgQPhMVTHiQSuDf6jC+3V4kUGM15z/ORa+9To0sphrALEfveiA/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422405; c=relaxed/simple;
-	bh=qmeKZahCrPljg7f/SOREpLNjKiwmKhYxkYXmHNt/NIs=;
+	s=arc-20240116; t=1745421254; c=relaxed/simple;
+	bh=BOhgZc9Ac1WfyGgDD+4xqwlauCAnIX4lu5VCYeP+DHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6XjV0nPwNs2imV8InEkn8l0GxWYaaykCgFv0PIkyWvRnHgJvFWuB0QuHJ4wfpfbvjzJk3veFbu2yT1Igye/lMhAwpcSTdcF4S4xEq2xBu5cJesWbQejOY5TPwEv4qjBBGE1Z6sl46xF6OzMMCI/V5Cos8wwggr8in03OK8/qkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RucD9n99; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF61C4CEE2;
-	Wed, 23 Apr 2025 15:33:23 +0000 (UTC)
+	 MIME-Version; b=ielucvh2ZpGMqYE8Ml+nRYNCyqcapLdzAqg63Hbe8pvBYNnHpwcYq6YguCfoge34iV3u9diaJJDJZ6oUsvr1UO3IzraB8GSYVN62kQZnS68XYX9XaeF7bAovSXtfR/GMn7bpQ6h+xb5yKiNiTCsoVt8yL9WxWX7bmdonAxS1grc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6zeV+rL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27E3C4CEE2;
+	Wed, 23 Apr 2025 15:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422404;
-	bh=qmeKZahCrPljg7f/SOREpLNjKiwmKhYxkYXmHNt/NIs=;
+	s=korg; t=1745421254;
+	bh=BOhgZc9Ac1WfyGgDD+4xqwlauCAnIX4lu5VCYeP+DHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RucD9n99fdRldvIxxXtj079p9ghPONoQSDTywRHEm7lhWWIjnBto0lZu/4/3b7Ea5
-	 5bYU68x7aOlAOcRLdGmt3iXo+AXSWoFOvteC2yOfWbPkdFrz3dYi/QFFFDg+t+M+9V
-	 3G786bYmukodtY7x4tsBxRKTAL4jeOsHKE9CCI8g=
+	b=X6zeV+rLUbf7zdficGwpXWlOpWlJgkD8q16wcWa376O1X+8w1kj95SQWbqlBrf/2M
+	 C7LcouRIFbVDfPQjYzjFujTNcbDRVIWYqHhKbc+bxvI/jurv5u6fIsBuFvriYNfH5R
+	 oC7XzSFLK238zT7JCGSMW6ucgNGXeB0cLXXq05gY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandipan Das <sandipan.das@amd.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
 	Ingo Molnar <mingo@kernel.org>,
-	Borislav Petkov <bp@alien8.de>
-Subject: [PATCH 6.6 337/393] x86/cpu/amd: Fix workaround for erratum 1054
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 6.14 169/241] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
 Date: Wed, 23 Apr 2025 16:43:53 +0200
-Message-ID: <20250423142657.254453551@linuxfoundation.org>
+Message-ID: <20250423142627.437718385@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandipan Das <sandipan.das@amd.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit 263e55949d8902a6a09bdb92a1ab6a3f67231abe upstream.
+commit 96a720db59ab330c8562b2437153faa45dac705f upstream.
 
-Erratum 1054 affects AMD Zen processors that are a part of Family 17h
-Models 00-2Fh and the workaround is to not set HWCR[IRPerfEn]. However,
-when X86_FEATURE_ZEN1 was introduced, the condition to detect unaffected
-processors was incorrectly changed in a way that the IRPerfEn bit gets
-set only for unaffected Zen 1 processors.
+There was a mistake in the SNR uncore spec. The counter increments for
+every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
+which was documented in the spec.
 
-Ensure that HWCR[IRPerfEn] is set for all unaffected processors. This
-includes a subset of Zen 1 (Family 17h Models 30h and above) and all
-later processors. Also clear X86_FEATURE_IRPERF on affected processors
-so that the IRPerfCount register is not used by other entities like the
-MSR PMU driver.
+The event list has been updated:
 
-Fixes: 232afb557835 ("x86/CPU/AMD: Add X86_FEATURE_ZEN1")
-Signed-off-by: Sandipan Das <sandipan.das@amd.com>
+  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
+  "BriefDescription": "Free running counter that increments for every 32
+		       bytes of data sent from the IO agent to the SOC",
+
+Update the scale of the IIO bandwidth in free running counters as well.
+
+Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Borislav Petkov <bp@alien8.de>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/caa057a9d6f8ad579e2f1abaa71efbd5bd4eaf6d.1744956467.git.sandipan.das@amd.com
+Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/amd.c |   19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -1039,6 +1039,16 @@ static void init_amd_zen1(struct cpuinfo
- 
- 	pr_notice_once("AMD Zen1 DIV0 bug detected. Disable SMT for full protection.\n");
- 	setup_force_cpu_bug(X86_BUG_DIV0);
-+
-+	/*
-+	 * Turn off the Instructions Retired free counter on machines that are
-+	 * susceptible to erratum #1054 "Instructions Retired Performance
-+	 * Counter May Be Inaccurate".
-+	 */
-+	if (c->x86_model < 0x30) {
-+		msr_clear_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
-+		clear_cpu_cap(c, X86_FEATURE_IRPERF);
-+	}
- }
- 
- static bool cpu_has_zenbleed_microcode(void)
-@@ -1185,13 +1195,8 @@ static void init_amd(struct cpuinfo_x86
- 	if (!cpu_feature_enabled(X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
- 
--	/*
--	 * Turn on the Instructions Retired free counter on machines not
--	 * susceptible to erratum #1054 "Instructions Retired Performance
--	 * Counter May Be Inaccurate".
--	 */
--	if (cpu_has(c, X86_FEATURE_IRPERF) &&
--	    (boot_cpu_has(X86_FEATURE_ZEN1) && c->x86_model > 0x2f))
-+	/* Enable the Instructions Retired free counter */
-+	if (cpu_has(c, X86_FEATURE_IRPERF))
- 		msr_set_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
- 
- 	check_null_seg_clears_base(c);
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4891,28 +4891,28 @@ static struct uncore_event_desc snr_unco
+ 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+ 	/* Free-Running IIO BANDWIDTH IN Counters */
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+ 	{ /* end: all zeroes */ },
+ };
 
 
 
