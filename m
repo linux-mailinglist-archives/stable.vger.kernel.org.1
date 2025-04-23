@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B382A98FB3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 343FAA98EE5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B60817CD8C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39C70189463B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C8628BABA;
-	Wed, 23 Apr 2025 15:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1595E2820A7;
+	Wed, 23 Apr 2025 14:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrG/WAm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoDLZilT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B929D28B516;
-	Wed, 23 Apr 2025 15:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C324B281507;
+	Wed, 23 Apr 2025 14:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420690; cv=none; b=COpt98uOh5le7qkl2CIld6RPW9obr79kkua4neQBpC6mMv2sZGgzAwsn2cO9FpYM93DgJwyaLT66ckPkLTaaPfcmOluRIDnPWym9ItzD6ssKfHJ+fGmKLfjUR7AeeX7iThKjEkBmZKsEPNguAWw+wmrM5hVn2SpvFPyBY9fuXYw=
+	t=1745420189; cv=none; b=UFPxatsCfN3Wfn+gKeY63sSvMvo3+VqMBQ7ORuGVqlMrjP2FPaqrnY2aKmHSjNAotW5pJkONfVbMsuDo5MRanPpBJcO5P7d7/EeLjCZ2GlbHPE+mb3pNvsqvB1Cfy3zUPuJ0k0x6vX09dU+LcNW+erJiSC0FyWw1iPiQfuQKVyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420690; c=relaxed/simple;
-	bh=KW4J5p7Mff6r63sUniqCa6t0JWupE4+0Qb+8x2iaDyQ=;
+	s=arc-20240116; t=1745420189; c=relaxed/simple;
+	bh=vqPniA4RwBrC5u4M5W53TEEAIEszP/pophXU8zyqjRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPN5DrWd+/4YsdD7p58d1x5Kdp1H3sfU6Fio3tQVXNFwqlrA+jUTdzyN9t9HuVHi3C/lAcZDx3lMUQgRjnddKmY3Zgh0DlkaqD7yBSEpVdAnJd8dVeNThOByDdt/7Ddi1xvXURR3dfJ9zXUyRJQFyIAbpNO5MRb3Xb5Sdpwzwxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrG/WAm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E314DC4CEE2;
-	Wed, 23 Apr 2025 15:04:49 +0000 (UTC)
+	 MIME-Version; b=StMRpB3LYPgh3r5ZCqiqvt33o7jy5wPThXpN1I4/YSOqyd2pf6svCN1CtJQ5oz4kD71wN6vMjUBwVwfQkdJwv37SqB/sM9dr5UrrZJvMGpNRSxG5kvGBJsExWGkX5D7I+KsE4Nx9aFx4I+SkYVAfb5Xzv/bR1OE467iKOqCWxJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoDLZilT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD69C4CEE2;
+	Wed, 23 Apr 2025 14:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420690;
-	bh=KW4J5p7Mff6r63sUniqCa6t0JWupE4+0Qb+8x2iaDyQ=;
+	s=korg; t=1745420189;
+	bh=vqPniA4RwBrC5u4M5W53TEEAIEszP/pophXU8zyqjRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrG/WAm9PqgvH37Pxx4zDxSyHvDbA2g7QhfUFTXkkokl4U1otn48dsfNxfPlAQMMY
-	 4/ECdhwteoXnQa9mQmA3+2bTigCSR2kc+kPJtR8rx0ZQB64Zrvn7Y+WkVdpDlWAei5
-	 ECSd5GMYdTSrS0TNFl6s/bd656kb8Q0EId1vQn5c=
+	b=BoDLZilTAU2nE+HW4b7w0BPSxBDrOiGes/QFBMii9cbdpeErwiT4VArbp4ZO8c9tA
+	 E6p7pyOlpbzB82J48fgJ287/DY5wdw/R6qrGxSSeDA3yAOcvkfEuwHmbZkKPhF3pZf
+	 uVBQ6Ou3aprqN+yN+FslhJp177jvcU8IoyyxrhUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 114/241] drm/msm/dpu: Fix error pointers in dpu_plane_virtual_atomic_check
-Date: Wed, 23 Apr 2025 16:42:58 +0200
-Message-ID: <20250423142625.234654781@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 107/223] Bluetooth: vhci: Avoid needless snprintf() calls
+Date: Wed, 23 Apr 2025 16:42:59 +0200
+Message-ID: <20250423142621.470973616@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 5cb1b130e1cd04239cc9c26a98279f4660dce583 ]
+commit 875db86e1ec75fe633f1e85ed2f92c731cdbf760 upstream.
 
-The function dpu_plane_virtual_atomic_check was dereferencing pointers
-returned by drm_atomic_get_plane_state without checking for errors. This
-could lead to undefined behavior if the function returns an error pointer.
+Avoid double-copying of string literals. Use a "const char *" for each
+string instead of copying from .rodata into stack and then into the skb.
+We can go directly from .rodata to the skb.
 
-This commit adds checks using IS_ERR to ensure that plane_state is
-valid before dereferencing them.
+This also works around a Clang bug (that has since been fixed[1]).
 
-Similar to commit da29abe71e16
-("drm/amd/display: Fix error pointers in amdgpu_dm_crtc_mem_type_changed").
-
-Fixes: 774bcfb73176 ("drm/msm/dpu: add support for virtual planes")
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/643132/
-Link: https://lore.kernel.org/r/20250314011004.663804-1-chenyuan0y@gmail.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401250927.1poZERd6-lkp@intel.com/
+Fixes: ab4e4380d4e1 ("Bluetooth: Add vhci devcoredump support")
+Link: https://github.com/llvm/llvm-project/commit/ea2e66aa8b6e363b89df66dc44275a0d7ecd70ce [1]
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bluetooth/hci_vhci.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index af3e541f60c30..b19193b02ab32 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -1059,6 +1059,9 @@ static int dpu_plane_virtual_atomic_check(struct drm_plane *plane,
- 	struct drm_crtc_state *crtc_state;
- 	int ret;
+--- a/drivers/bluetooth/hci_vhci.c
++++ b/drivers/bluetooth/hci_vhci.c
+@@ -289,18 +289,18 @@ static void vhci_coredump(struct hci_dev
  
-+	if (IS_ERR(plane_state))
-+		return PTR_ERR(plane_state);
-+
- 	if (plane_state->crtc)
- 		crtc_state = drm_atomic_get_new_crtc_state(state,
- 							   plane_state->crtc);
--- 
-2.39.5
-
+ static void vhci_coredump_hdr(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	char buf[80];
++	const char *buf;
+ 
+-	snprintf(buf, sizeof(buf), "Controller Name: vhci_ctrl\n");
++	buf = "Controller Name: vhci_ctrl\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Firmware Version: vhci_fw\n");
++	buf = "Firmware Version: vhci_fw\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Driver: vhci_drv\n");
++	buf = "Driver: vhci_drv\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ 
+-	snprintf(buf, sizeof(buf), "Vendor: vhci\n");
++	buf = "Vendor: vhci\n";
+ 	skb_put_data(skb, buf, strlen(buf));
+ }
+ 
 
 
 
