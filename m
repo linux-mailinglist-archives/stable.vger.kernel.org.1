@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D312A98FA3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:12:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BA9A99299
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9EB016C1AE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:09:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68C8B7A781C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F2F28A40A;
-	Wed, 23 Apr 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28252BE7A8;
+	Wed, 23 Apr 2025 15:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o6S1Me70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVKTMjYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9D128A419;
-	Wed, 23 Apr 2025 15:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90319284692;
+	Wed, 23 Apr 2025 15:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420661; cv=none; b=EVz1/9PuQ9/WFI8LYC9vGZn1k7zCw1ox3UrrtWOYDECpQbF0p+lm49T7qacbxjhO17LJ4K/BbJRYfetUWja9DuB0jPZSmoy7/Emx8MSSfp3i8g/P2kWnCRmArQ7JU7aruCNU28gW5w7uja7ZsXsMiwOW77L9DzVHOuPd5eDwsrI=
+	t=1745422400; cv=none; b=gfud8ymAKCTDL32EC2sbGWsqWHACkS+E6pCySwQuwzIm9XETaNLa6K97Q751MBs1pYVvTp0Ytl0UogW9Iq2NBADyR4i1dNxePbzGPq+ZcN9dW5xOQzD9IxSfyZhLuck46VcLEDfbGh5A19Djmj5IJNaXfmUSKpwP9VaYtkibko4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420661; c=relaxed/simple;
-	bh=5sGWRvHneMxcFkcHN6NVakmiWGh9bAbFM9gB2KbZQHI=;
+	s=arc-20240116; t=1745422400; c=relaxed/simple;
+	bh=pI3duBjXdOxwChaJNgU83E7vCLTUACN7EournJXfKQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdPXI+QKT6V3NmBShJMWIbYW9e5ZfW1cgoqmw0dureStaRSz8EjeF9pSeQmE4WFncvKpVFRzfdDc67Wbom+bjtt/AAgSZ3+Y2czpg9Iuc7WaaaWo5bZGDJh5Y373WuycyFcWDNx2OVDgBteXraja4GV1YvXNG5i/KxQ4LMbzvVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o6S1Me70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BA1C4CEE8;
-	Wed, 23 Apr 2025 15:04:20 +0000 (UTC)
+	 MIME-Version; b=pWcFd6djkz0TMoimp7EIrHa9GxNf1v2A12ffQq2c55djnBV0h0RGdQhS0xTaEZhXYmPvNzvJo9qNCAMFOrSAO0WTwnsSyrY24PSlaKPx8+SVVPKDLEhPG9uDe5u6kUaje2IxaI8VwZQSOrUMkAsWln2zSk4WblauGztlqei4knM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVKTMjYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5A15C4CEE2;
+	Wed, 23 Apr 2025 15:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420661;
-	bh=5sGWRvHneMxcFkcHN6NVakmiWGh9bAbFM9gB2KbZQHI=;
+	s=korg; t=1745422399;
+	bh=pI3duBjXdOxwChaJNgU83E7vCLTUACN7EournJXfKQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o6S1Me70vYnD/lR1SXhDskchpLBQ10o561lQfYM+EoxEdD1cQyW9Pd/0QS2s+0ZF1
-	 QopiC1vJdRYyGH/X4y0dj6JDX2cxAij7cz8zkN1IejjidDVpSNlpnXEqStxLIQIw3d
-	 MpayI5AHFYFU4RDxR0URwIJWplFAfuRVew71dy28=
+	b=OVKTMjYM4LG9esMYc353zrSblvBuORuKnqA+C55OAta+bAf5P7pa1/LxftP1S6ZMQ
+	 22EhoTX1hmfZ5w0GGadSXdQylARiMP/zYriGFDQKKbKt2DWS3TSXBN4lc5CcGeWdwT
+	 F4Axq0nwE4Xlq4kPKIvac1nVPIIgHHo8ukaeFb7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.12 150/223] drm/msm/dsi: Add check for devm_kstrdup()
+	Denis Arefev <arefev@swemel.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 326/393] ksmbd: Prevent integer overflow in calculation of deadtime
 Date: Wed, 23 Apr 2025 16:43:42 +0200
-Message-ID: <20250423142623.289801051@linuxfoundation.org>
+Message-ID: <20250423142656.796553369@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 52b3f0e118b1700e5c60ff676a1f522ce44fadc8 upstream.
+commit a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 upstream.
 
-Add check for the return value of devm_kstrdup() in
-dsi_host_parse_dt() to catch potential exception.
+The user can set any value for 'deadtime'. This affects the arithmetic
+expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+overflow. The added check makes the server behavior more predictable.
 
-Fixes: 958d8d99ccb3 ("drm/msm/dsi: parse vsync source from device tree")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/638297/
-Link: https://lore.kernel.org/r/20250219040712.2598161-1-haoxiang_li2024@163.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_ipc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -1827,8 +1827,15 @@ static int dsi_host_parse_dt(struct msm_
- 			__func__, ret);
- 		goto err;
- 	}
--	if (!ret)
-+	if (!ret) {
- 		msm_dsi->te_source = devm_kstrdup(dev, te_source, GFP_KERNEL);
-+		if (!msm_dsi->te_source) {
-+			DRM_DEV_ERROR(dev, "%s: failed to allocate te_source\n",
-+				__func__);
-+			ret = -ENOMEM;
-+			goto err;
-+		}
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -296,7 +296,11 @@ static int ipc_server_config_on_startup(
+ 	server_conf.signing = req->signing;
+ 	server_conf.tcp_port = req->tcp_port;
+ 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
+-	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
++	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
++					&server_conf.deadtime)) {
++		ret = -EINVAL;
++		goto out;
 +	}
- 	ret = 0;
+ 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
+ 	ksmbd_init_domain(req->sub_auth);
  
- 	if (of_property_read_bool(np, "syscon-sfpb")) {
+@@ -322,6 +326,7 @@ static int ipc_server_config_on_startup(
+ 	ret |= ksmbd_set_work_group(req->work_group);
+ 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
+ 					req->ifc_list_sz);
++out:
+ 	if (ret) {
+ 		pr_err("Server configuration error: %s %s %s\n",
+ 		       req->netbios_name, req->server_string,
 
 
 
