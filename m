@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-136434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C3EA993A4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E62A99164
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EE1D1BA4146
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7182E4414CB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C92E2BF3DC;
-	Wed, 23 Apr 2025 15:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB49290BCC;
+	Wed, 23 Apr 2025 15:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tchPv7yu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akgYJeud"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096C828BAA0;
-	Wed, 23 Apr 2025 15:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB52428CF52;
+	Wed, 23 Apr 2025 15:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422536; cv=none; b=BqAMdvZGIXZctbfgPmU10cZUq6pfEvbinWPCzZY/znmBQ/8tqcp393kW1BVe2OpkYzEZqGV6siTOyFVCqNUySUGptOhkSz2Kwp+oN9zAtSAtXKZFcFZEe9k9hXBrCbMxa9/urBUAQJnI6nw/h6a+y1T/m/EcXWVgScqSFxa9t+o=
+	t=1745421431; cv=none; b=Hqcjxg/SBfMAvJqeNIncWR8RvHJ3sjGmbTYVCp8kPw7CpyKmnDrsokUpDhxdPlx3HWTQL4uPpCRfJJwRKVLyzRFsB4JwpIGuAX8pHUsoJiCbMcHnnHtz52AeCT1DQ5LyCrY7DWPBzrbArTo22Yq/i82iaWGhRrFD376I8bNc74M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422536; c=relaxed/simple;
-	bh=R1DkDkT6iYiNHgFeqG7muc77pMyfqoEDJPrSwxfqw58=;
+	s=arc-20240116; t=1745421431; c=relaxed/simple;
+	bh=iSP0vdqPofBRmBIoNOS1hN7vIbKjdUS9iR4dBMzqERg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErByIrcbglOc75LM3aG5Y8dmhQSxmeVHZO5U+u6T+XehDNXmsxNR2iI9keUW2G2yvfe7WIgaprra6smBtSS7YL/Fu96rW0u20Ew81tenSIO5EZdgT1kgrR2cZghPHi8CGyZLRq0B9e7VfcPCM5xBxMM6WkEdqWntFnBS3b02adw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tchPv7yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087B3C4CEE2;
-	Wed, 23 Apr 2025 15:35:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S+VrDaK0lr0k0WKbgT8+6mWzvfIqP3TR8ChEI/yCMX9Ow2Z/v2U6e6T8/VrvHKJpJZ/88Zanewg4fnzZphZbCKfVZho4rBAIl7ZDSSLyW1H1o7phfvjFJFam1LBMHDNkG4GmgnfD8zNPChQBgU7Rvp9OX1eRxC+nWpUa4rKFrI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akgYJeud; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D306C4CEE2;
+	Wed, 23 Apr 2025 15:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422535;
-	bh=R1DkDkT6iYiNHgFeqG7muc77pMyfqoEDJPrSwxfqw58=;
+	s=korg; t=1745421431;
+	bh=iSP0vdqPofBRmBIoNOS1hN7vIbKjdUS9iR4dBMzqERg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tchPv7yuCfRYNzoR3UHWEVkCT2OeS32pDFKUrzt98qrKNFGZF3fzdP/Kr2NSoRFvK
-	 7fe+3WaZvk4W8dN/sC9FzKFLR40Uor0EMjPJRhjjyUzSwhSUVlxPHW7qV8/g36kutJ
-	 1+sFat8AHj09TjtCyAES3FXBAHf9ZlKgvFYqh/Fc=
+	b=akgYJeudqHN1+zlgB7jntfdFlTdibEyGcm7oQ1cycjc6bv9iCx5/0nd2nCnQCRyS0
+	 Oy/TGk1wQB/iXULPf7mrk2wJT923X+QsruLbV7lP9MA1GvezNKdwCPEgCPoCwPzy+M
+	 go9ay+hb+GIiG/du0SRjR8oy+SVgTex9QilJkLgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Rolf Eike Beer <eb@emlix.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
-Subject: [PATCH 6.6 357/393] drm/sti: remove duplicate object names
+	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
+	Arun R Murthy <arun.r.murthy@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.14 189/241] drm/i915/vrr: Add vrr.vsync_{start, end} in vrr_params_changed
 Date: Wed, 23 Apr 2025 16:44:13 +0200
-Message-ID: <20250423142658.082763298@linuxfoundation.org>
+Message-ID: <20250423142628.242347639@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rolf Eike Beer <eb@emlix.com>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
+commit a421f5033c82990d795f8fcd30d5b835f8975508 upstream.
 
-When merging 2 drivers common object files were not deduplicated.
+Add the missing vrr parameters in vrr_params_changed() helper.
+This ensures that changes in vrr.vsync_{start,end} trigger a call to
+appropriate helpers to update the VRR registers.
 
-Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
-Cc: stable@kernel.org
-Signed-off-by: Rolf Eike Beer <eb@emlix.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
-Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Fixes: e8cd188e91bb ("drm/i915/display: Compute vrr_vsync params")
+Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+Cc: Arun R Murthy <arun.r.murthy@intel.com>
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://lore.kernel.org/r/20250404080540.2059511-1-ankit.k.nautiyal@intel.com
+(cherry picked from commit ced5e64f011cb5cd541988442997ceaa7385827e)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/sti/Makefile |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/sti/Makefile
-+++ b/drivers/gpu/drm/sti/Makefile
-@@ -7,8 +7,6 @@ sti-drm-y := \
- 	sti_compositor.o \
- 	sti_crtc.o \
- 	sti_plane.o \
--	sti_crtc.o \
--	sti_plane.o \
- 	sti_hdmi.o \
- 	sti_hdmi_tx3g4c28phy.o \
- 	sti_dvo.o \
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -1109,7 +1109,9 @@ static bool vrr_params_changed(const str
+ 		old_crtc_state->vrr.vmin != new_crtc_state->vrr.vmin ||
+ 		old_crtc_state->vrr.vmax != new_crtc_state->vrr.vmax ||
+ 		old_crtc_state->vrr.guardband != new_crtc_state->vrr.guardband ||
+-		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full;
++		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full ||
++		old_crtc_state->vrr.vsync_start != new_crtc_state->vrr.vsync_start ||
++		old_crtc_state->vrr.vsync_end != new_crtc_state->vrr.vsync_end;
+ }
+ 
+ static bool cmrr_params_changed(const struct intel_crtc_state *old_crtc_state,
 
 
 
