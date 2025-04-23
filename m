@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-135962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471E4A99097
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC6BA990CE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC8007AF3DE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 592A5920E7D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2281A08A4;
-	Wed, 23 Apr 2025 15:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2E228467D;
+	Wed, 23 Apr 2025 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6jwPqEQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7Zi4OUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F7227EC73;
-	Wed, 23 Apr 2025 15:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057F557C9F;
+	Wed, 23 Apr 2025 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421296; cv=none; b=jN9DgI38iXzbNuNLz2mCdxTWn6z5pKTznJjT1DkO3PDMMBrIP/LdeHBzShB64GqVyzLbXQ6xeEVB0EOtsT8GSM5ePqCMnp20hBaOxlmApSIkT4ALrQJ83k3ZtusTswkBmcEOSBEKPUGj9COuJkuInnU+XBSpTPiBdd2MBhvFw5k=
+	t=1745420869; cv=none; b=nCTwbArViF0gp2V9873HRzJbnUsV3pBCVMQaQoVMAwuNp+huQsEyP5CNq7E27C/ey1txCnf7D4Rf52el7qntyLG6mGgi39lWzYzUOlQY1sKwsGF4JOxIrMCDgwuLarSyns5Z+69/H/+kjmY2WcxbNbc3myK4SAZpwN+rFFwrJcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421296; c=relaxed/simple;
-	bh=C4IAmXgWl4UX10ntt6hsnfxI9H4Q5SO2lzHVjsGSd8w=;
+	s=arc-20240116; t=1745420869; c=relaxed/simple;
+	bh=AOKGx0FYcfGwZZejyigRirqU6JmzWPn7ZA9vdsDd0CA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFcIJ+K8s0gdeWizkuSbqJov4Yk4ONpyP1nBOLtL6y7EUpICG7Du5P79TiLUfgMMXqNtwehy4jdQiOJ9rDgW7VxRC2k7JPdwUHfnJzezG6ot0z8lV3S0MgkM17n+QGlqPt2eKKvMAn/HNr8Nvm63pw5CdEEvZLdlhF+IFva7nlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6jwPqEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA7CC4CEE2;
-	Wed, 23 Apr 2025 15:14:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ui/Pk6RQzhZbGQqvmY9mzx+50Ml1zdPcj1xoFEpmFScnIdO11vOcYABrfrqe6//ykqu7xz7XoKiNchrq5R1XU/bFf504YC6Q4rRKFWU/RE5ZVI8UD3woYNVewzCVAtVHT6yAmeFUsHqqWXVQ1UueJotV53EZNajZrVmiARgSecA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7Zi4OUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8741EC4CEE2;
+	Wed, 23 Apr 2025 15:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421296;
-	bh=C4IAmXgWl4UX10ntt6hsnfxI9H4Q5SO2lzHVjsGSd8w=;
+	s=korg; t=1745420868;
+	bh=AOKGx0FYcfGwZZejyigRirqU6JmzWPn7ZA9vdsDd0CA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6jwPqEQwYh735Jrt9Hr092AEuB9qmJS/KqdYZM18HM7JEQXvG34YjECzBMETsxLX
-	 EMK5FBRH38MDTPdfAkohnQQ7GFerXefZ8vjvpZTGRMnBMZBBCAAoZQqoqT5ywWVZsq
-	 sFwnMrGnzBBZNSWeLA6fG9AaHQVJ0jJOLxrGqTo0=
+	b=m7Zi4OUe5/qgurkMLLCBCq9agWJv6PENvFiYjiel+rOsOgovVTUBUyE583s2hiOLJ
+	 wcaEjnbZr1+zXBx8Z0+2/X//sHyN/gfE59wUNO2VsoO1XER2J2L0XqFXlKsT+HE/kP
+	 zzJLGLLGAAyfwyLpnbmfCYRBLBHZDkffJW3e9Q2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 166/393] smb311 client: fix missing tcon check when mounting with linux/posix extensions
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/291] pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()
 Date: Wed, 23 Apr 2025 16:41:02 +0200
-Message-ID: <20250423142650.226459200@linuxfoundation.org>
+Message-ID: <20250423142627.357373739@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,42 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit b365b9d404b7376c60c91cd079218bfef11b7822 upstream.
+[ Upstream commit 7ca59947b5fcf94e7ea4029d1bd0f7c41500a161 ]
 
-When mounting the same share twice, once with the "linux" mount parameter
-(or equivalently "posix") and then once without (or e.g. with "nolinux"),
-we were incorrectly reusing the same tree connection for both mounts.
-This meant that the first mount of the share on the client, would
-cause subsequent mounts of that same share on the same client to
-ignore that mount parm ("linux" vs. "nolinux") and incorrectly reuse
-the same tcon.
+With CONFIG_COMPILE_TEST && !CONFIG_HAVE_CLK, pwm_mediatek_config() has a
+divide-by-zero in the following line:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
+
+due to the fact that the !CONFIG_HAVE_CLK version of clk_get_rate()
+returns zero.
+
+This is presumably just a theoretical problem: COMPILE_TEST overrides
+the dependency on RALINK which would select COMMON_CLK.  Regardless it's
+a good idea to check for the error explicitly to avoid divide-by-zero.
+
+Fixes the following warning:
+
+  drivers/pwm/pwm-mediatek.o: warning: objtool: .text: unexpected end of section
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/fb56444939325cc173e752ba199abd7aeae3bf12.1742852847.git.jpoimboe@kernel.org
+[ukleinek: s/CONFIG_CLK/CONFIG_HAVE_CLK/]
+Fixes: caf065f8fd58 ("pwm: Add MediaTek PWM support")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/9e78a0796acba3435553ed7db1c7965dcffa6215.1743501688.git.u.kleine-koenig@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pwm/pwm-mediatek.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2488,6 +2488,8 @@ static int match_tcon(struct cifs_tcon *
- 		return 0;
- 	if (tcon->nodelete != ctx->nodelete)
- 		return 0;
-+	if (tcon->posix_extensions != ctx->linux_ext)
-+		return 0;
- 	return 1;
- }
+diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
+index a337b47dc2f7d..10c2ed23f5511 100644
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -120,21 +120,25 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	struct pwm_mediatek_chip *pc = to_pwm_mediatek_chip(chip);
+ 	u32 clkdiv = 0, cnt_period, cnt_duty, reg_width = PWMDWIDTH,
+ 	    reg_thres = PWMTHRES;
++	unsigned long clk_rate;
+ 	u64 resolution;
+ 	int ret;
  
+ 	ret = pwm_mediatek_clk_enable(chip, pwm);
+-
+ 	if (ret < 0)
+ 		return ret;
+ 
++	clk_rate = clk_get_rate(pc->clk_pwms[pwm->hwpwm]);
++	if (!clk_rate)
++		return -EINVAL;
++
+ 	/* Make sure we use the bus clock and not the 26MHz clock */
+ 	if (pc->soc->has_ck_26m_sel)
+ 		writel(0, pc->regs + PWM_CK_26M_SEL);
+ 
+ 	/* Using resolution in picosecond gets accuracy higher */
+ 	resolution = (u64)NSEC_PER_SEC * 1000;
+-	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
++	do_div(resolution, clk_rate);
+ 
+ 	cnt_period = DIV_ROUND_CLOSEST_ULL((u64)period_ns * 1000, resolution);
+ 	while (cnt_period > 8191) {
+-- 
+2.39.5
+
 
 
 
