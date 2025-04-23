@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E2AA991F0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED16A993C3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F65B7A85EE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 845FD1B87ABF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A9E29008C;
-	Wed, 23 Apr 2025 15:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042B528CF6B;
+	Wed, 23 Apr 2025 15:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afuukwiT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/kerI1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EE728DEE8;
-	Wed, 23 Apr 2025 15:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B5F101F2;
+	Wed, 23 Apr 2025 15:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421944; cv=none; b=Z3GpR9dpDQ3i1lXEPSU1VlyDMEK3PTYu9ZwcSbYlNB7H7hFLD7rrUuHb3010zrHalUnqDfK3r3BJGliZBrJSSp2YR+b/fRNagiODx61KLkLnJbTFZUInKMtFgkeeRR500ghXkmt5/8KDM5yCubTjyAuuToWw6br/6L7isKvkXqE=
+	t=1745422201; cv=none; b=CD5kwVvlhgqbAXRzWYcIcPQJ7ZSd9rmqSIt6ISHezi/ZBjcWtXpabLlhBx4szx25j8ez+jWigdxAOHyIGY7mECvarBAYG0XSMe7MxEmUD9FE2pq1XyCXM3akc9RtFhadhQgNDrZdfegOZWuKqsqICWg6BWqlfaZdeq0GyoQtOUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421944; c=relaxed/simple;
-	bh=IQvhQghjGW1Qm08KQlqtcwpc3oG75fjiO+/niCGB9p4=;
+	s=arc-20240116; t=1745422201; c=relaxed/simple;
+	bh=SpCnkjln4i3UXYSHfFM2Vwn9m3RRNUDNCKqFxx77Ig8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SF2sh5yPaLRilFSrA4Dt/HJh0cP2uaKWRKGDI41C8BcI+4ifj5q1GExTQX6t7a0HoHkXkxfXzEqI82vQgt1zxoiU5mzMcHf0OP3U91TZth6Yn7ECwXgW47/r43saytIiYk1Fe0+4SUG9ouTRNDBgi4Y81JIWOAA+0S25S0SjsNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afuukwiT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A611C4CEE3;
-	Wed, 23 Apr 2025 15:25:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ObdnekY7+o58vPsTZ1PSzJlrdsWqcJP/8O+aOhxtSq9OpBgm5fdggPZDyzE40xWMChmVOVoGsom+aHCzPMT3RXfIpEhPkgLEIU0NrzGq9Djeq7j7T/gSGZXy3Xtic1gIxYv36GRSgKYajoXtzt1xi0SctZ45TKL63FXKu5xZ6ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/kerI1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A322C4CEE2;
+	Wed, 23 Apr 2025 15:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421944;
-	bh=IQvhQghjGW1Qm08KQlqtcwpc3oG75fjiO+/niCGB9p4=;
+	s=korg; t=1745422201;
+	bh=SpCnkjln4i3UXYSHfFM2Vwn9m3RRNUDNCKqFxx77Ig8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afuukwiTFFKcAg+R2nl0Yl889rf7xYKOK7EI+rlovPUNoI18tXR0RMl5HYcdvFbYX
-	 PqRDMvtLLnxSCav/0YzcvWJSECUH4epQoaH8D6DVASOqZCFYcGi30wOqsoGzojeyIL
-	 VaFdiiDfzgOl/FKccQcg6KwP0lTtZcoamUVJCbvM=
+	b=f/kerI1t5+bZ/wify00qQe9uvv5lwSBqHkzvYw2hGQwHaBcdFeXvT3Og35QFWoSnx
+	 8/6C2Wa1puQgnH21RSpcKlcJT1yFNl3whjZCqP1D9hrMPW6JBbDFtPgVDeHPsLVIxK
+	 tb2pXdCf+g3xdHeaG1g91TbTBGSTgDkO6TghYVkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/291] nfs: move nfs_fhandle_hash to common include file
+Subject: [PATCH 6.6 296/393] kunit: qemu_configs: SH: Respect kunit cmdline
 Date: Wed, 23 Apr 2025 16:43:12 +0200
-Message-ID: <20250423142632.672922156@linuxfoundation.org>
+Message-ID: <20250423142655.568855298@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-[ Upstream commit e59fb6749ed833deee5b3cfd7e89925296d41f49 ]
+[ Upstream commit b26c1a85f3fc3cc749380ff94199377fc2d0c203 ]
 
-lockd needs to be able to hash filehandles for tracepoints. Move the
-nfs_fhandle_hash() helper to a common nfs include file.
+The default SH kunit configuration sets CONFIG_CMDLINE_OVERWRITE which
+completely disregards the cmdline passed from the bootloader/QEMU in favor
+of the builtin CONFIG_CMDLINE.
+However the kunit tool needs to pass arguments to the in-kernel kunit core,
+for filters and other runtime parameters.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: cd35b6cb4664 ("nfs: add missing selections of CONFIG_CRC32")
+Enable CONFIG_CMDLINE_EXTEND instead, so kunit arguments are respected.
+
+Link: https://lore.kernel.org/r/20250407-kunit-sh-v1-1-f5432a54cf2f@linutronix.de
+Fixes: 8110a3cab05e ("kunit: tool: Add support for SH under QEMU")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h   | 15 ---------------
- include/linux/nfs.h | 20 ++++++++++++++++++++
- 2 files changed, 20 insertions(+), 15 deletions(-)
+ tools/testing/kunit/qemu_configs/sh.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 7fa23a6368e0b..d511d66bd8a3a 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -827,27 +827,12 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
- }
- 
- #ifdef CONFIG_CRC32
--/**
-- * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-- * @fh - pointer to filehandle
-- *
-- * returns a crc32 hash for the filehandle that is compatible with
-- * the one displayed by "wireshark".
-- */
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
--}
- static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
- {
- 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
- 				NFS4_STATEID_OTHER_SIZE);
- }
- #else
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return 0;
--}
- static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
- {
- 	return 0;
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index b06375e88e589..ceb70a926b95e 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -10,6 +10,7 @@
- 
- #include <linux/sunrpc/msg_prot.h>
- #include <linux/string.h>
-+#include <linux/crc32.h>
- #include <uapi/linux/nfs.h>
- 
- /*
-@@ -44,4 +45,23 @@ enum nfs3_stable_how {
- 	/* used by direct.c to mark verf as invalid */
- 	NFS_INVALID_STABLE_HOW = -1
- };
-+
-+#ifdef CONFIG_CRC32
-+/**
-+ * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-+ * @fh - pointer to filehandle
-+ *
-+ * returns a crc32 hash for the filehandle that is compatible with
-+ * the one displayed by "wireshark".
-+ */
-+static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
-+{
-+	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
-+}
-+#else /* CONFIG_CRC32 */
-+static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_CRC32 */
- #endif /* _LINUX_NFS_H */
+diff --git a/tools/testing/kunit/qemu_configs/sh.py b/tools/testing/kunit/qemu_configs/sh.py
+index 78a474a5b95f3..f00cb89fdef6a 100644
+--- a/tools/testing/kunit/qemu_configs/sh.py
++++ b/tools/testing/kunit/qemu_configs/sh.py
+@@ -7,7 +7,9 @@ CONFIG_CPU_SUBTYPE_SH7751R=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_SH_RTS7751R2D=y
+ CONFIG_RTS7751R2D_PLUS=y
+-CONFIG_SERIAL_SH_SCI=y''',
++CONFIG_SERIAL_SH_SCI=y
++CONFIG_CMDLINE_EXTEND=y
++''',
+ 			   qemu_arch='sh4',
+ 			   kernel_path='arch/sh/boot/zImage',
+ 			   kernel_command_line='console=ttySC1',
 -- 
 2.39.5
 
