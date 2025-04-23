@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02E7A99114
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D39A98F20
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C10B25A799E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DF28462939
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01EE28A403;
-	Wed, 23 Apr 2025 15:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA364288C97;
+	Wed, 23 Apr 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUfFmnH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJ/BkQcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7D127CCD7;
-	Wed, 23 Apr 2025 15:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9556C284B57;
+	Wed, 23 Apr 2025 15:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421033; cv=none; b=aRL44o2xZaeVAk1HML1+xdjXh3nSdJpm8PlHM8oomKDnC3zXyVf/54NCjh6rt2p9oO0tAuh3D7u1VJ+ZLIvmWG8lnhTuDjU3SpEv40tM+494ySbBnGcP/W87lw/Tapq0doZnX5zINe5TPg7rnLg/h+1V+h9X7Ia18TNA8OlVmbw=
+	t=1745420403; cv=none; b=pbiuTGWf2JSHerT2ZQBnNfhz+y1/FahjrE2i0keKGqb9HzUV3HbrsJRwKLULuF8m9VlLJekXlJgfngbJMFOsrBdzrXQ8vdKRzFKQkG1m9s1K/xhQI1d4WyP2vpYvT9h/swwLm5fJAVJ+G8k6nhK9VGbGJ4YdTdnlwL27xtwjlds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421033; c=relaxed/simple;
-	bh=9RiVrxTI1TTyOBCyZ/Pfy58z765U3EoamfFWb+UPBH8=;
+	s=arc-20240116; t=1745420403; c=relaxed/simple;
+	bh=F9Jgx7BWN/GSaDlzONRxPt0gFKo2g+VcEsA8DehYX4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WVsa8dcxjt+pQgnMxASMQ8F3qQ0UrI1GgtFGHxLq/HTfASmHyw1IrrCKi50XuYyjF/Q02mHvPqfx5hIl7zJyijpb1uh9aPwBafxmd+D0rnS+rULRrdwAevZFFQvzgVNrPB52X17421WmqPNMHQeYZNsUrpMHBu0jw8LbD/FMHOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUfFmnH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025A9C4CEE2;
-	Wed, 23 Apr 2025 15:10:32 +0000 (UTC)
+	 MIME-Version; b=MA4mPhVvV7wpXy9ZfwioUL6aauUHvNauq9OGNZVnIkdOWCofi4//oaF/6ZXe5O2zz2W/3XFxhn6G5HSXoDwd/kWJnTDAcwxy/+VMuBhWs5vEN+Bkjg5vW0plT3HU6itLSVeioKNTaY3MOAKxdAfJ8vdofv9kqpAPEhdBg6ADVTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJ/BkQcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6677C4CEE2;
+	Wed, 23 Apr 2025 15:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421033;
-	bh=9RiVrxTI1TTyOBCyZ/Pfy58z765U3EoamfFWb+UPBH8=;
+	s=korg; t=1745420403;
+	bh=F9Jgx7BWN/GSaDlzONRxPt0gFKo2g+VcEsA8DehYX4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUfFmnH23xXBYE0wCni7aOSh0Ax8TA/d0GJpuJVX2EgsBhx8M0ScIRifiPYjX19x4
-	 WSqEtP7wQEtvo845EhQpq0izdx7snu+R1tFdA/ki9HO9YtQVZQ1MUDe0LSMlCKruex
-	 69IFgU1tMpoNR2bzppY07EPv7W8KmlwSDIWbd3LE=
+	b=CJ/BkQcG1bsuuchV9th3MjqceyoWgtfu5Bi63guc4O8l8Cg3qgWwa/1xa9UOwvDG/
+	 w5oLXexM2zNigCjZkNYv+sD7cbXCxCStM5gkgD3PZz2sCAkBzJhX3ItW6KYU5/Rb3c
+	 pxc7+dmqvt+pPNhtWi47HUEVYTUO3U6oi8J+FvcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 137/393] media: visl: Fix ERANGE error when setting enum controls
+	Daniel Kral <d.kral@proxmox.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 044/291] ahci: add PCI ID for Marvell 88SE9215 SATA Controller
 Date: Wed, 23 Apr 2025 16:40:33 +0200
-Message-ID: <20250423142649.036449585@linuxfoundation.org>
+Message-ID: <20250423142626.195859584@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Daniel Kral <d.kral@proxmox.com>
 
-commit d98e9213a768a3cc3a99f5e1abe09ad3baff2104 upstream.
+[ Upstream commit 885251dc35767b1c992f6909532ca366c830814a ]
 
-The visl driver supports both frame and slice mode, with and without a
-start-code. But, the range and default for these enum controls was not
-set, which currently limits the decoder to enums with a value of 0. Fix
-this by setting the decoder mode and start code controls for both the
-H.264 and HEVC codecs.
+Add support for Marvell Technology Group Ltd. 88SE9215 SATA 6 Gb/s
+controller, which is e.g. used in the DAWICONTROL DC-614e RAID bus
+controller and was not automatically recognized before.
 
-Fixes: 0c078e310b6d ("media: visl: add virtual stateless decoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested with a DAWICONTROL DC-614e RAID bus controller.
+
+Signed-off-by: Daniel Kral <d.kral@proxmox.com>
+Link: https://lore.kernel.org/r/20250304092030.37108-1-d.kral@proxmox.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/visl/visl-core.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/ata/ahci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/test-drivers/visl/visl-core.c
-+++ b/drivers/media/test-drivers/visl/visl-core.c
-@@ -156,9 +156,15 @@ static const struct visl_ctrl_desc visl_
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_H264_DECODE_MODE,
-+		.cfg.min = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
-+		.cfg.max = V4L2_STATELESS_H264_DECODE_MODE_FRAME_BASED,
-+		.cfg.def = V4L2_STATELESS_H264_DECODE_MODE_SLICE_BASED,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_H264_START_CODE,
-+		.cfg.min = V4L2_STATELESS_H264_START_CODE_NONE,
-+		.cfg.max = V4L2_STATELESS_H264_START_CODE_ANNEX_B,
-+		.cfg.def = V4L2_STATELESS_H264_START_CODE_NONE,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_H264_SLICE_PARAMS,
-@@ -193,9 +199,15 @@ static const struct visl_ctrl_desc visl_
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_HEVC_DECODE_MODE,
-+		.cfg.min = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
-+		.cfg.max = V4L2_STATELESS_HEVC_DECODE_MODE_FRAME_BASED,
-+		.cfg.def = V4L2_STATELESS_HEVC_DECODE_MODE_SLICE_BASED,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_HEVC_START_CODE,
-+		.cfg.min = V4L2_STATELESS_HEVC_START_CODE_NONE,
-+		.cfg.max = V4L2_STATELESS_HEVC_START_CODE_ANNEX_B,
-+		.cfg.def = V4L2_STATELESS_HEVC_START_CODE_NONE,
- 	},
- 	{
- 		.cfg.id = V4L2_CID_STATELESS_HEVC_ENTRY_POINT_OFFSETS,
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 20f53ae4d204e..a4b0a499b67d4 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -592,6 +592,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x91a3),
+ 	  .driver_data = board_ahci_yes_fbs },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9215),
++	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9230),
+ 	  .driver_data = board_ahci_yes_fbs },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9235),
+-- 
+2.39.5
+
 
 
 
