@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93E57A990ED
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21255A992EA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D8A4189C04A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:17:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D182466137
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0829F28DEEB;
-	Wed, 23 Apr 2025 15:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E837129614D;
+	Wed, 23 Apr 2025 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4KkNXAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYbQUeuW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B3828D859;
-	Wed, 23 Apr 2025 15:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B8128DEEA;
+	Wed, 23 Apr 2025 15:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421078; cv=none; b=XB8Ez/KRRG15hCnh+rh+4RE3FSaXUgKhu4F1SxNB47vOiE057f3+yY7FenBMUovb+v4WdzY9ItJoJgGywLQ6DvuxdMJaUOlWc0aluBaJAW7X9jBAM4H6Oj5NTt0g2gsPY5dnKHe5t1TV2Dx2H4kZNcpKoSlSl5e3Hum+A/rcGvQ=
+	t=1745422055; cv=none; b=XUBmXLSt3OUvgkjNYWe9lCpxrZyZv42LyhY3fdEJv7TxAhdPRTJP8kqQUltKsBB0vPa9xUPFwxYM7/dI+Tq+TQTl4zC/Oc6rxq/HllZbmlXYkXsxuJZ5GAiJLCPUWKI3+pao25/llJ6xql+Jbsxa/aU2pBfTSiwr3QLF3Zw/ziA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421078; c=relaxed/simple;
-	bh=GEy284vWZUUYx2Rs1kC4XrK+RFTau3UCuR1LBJN69Xw=;
+	s=arc-20240116; t=1745422055; c=relaxed/simple;
+	bh=DTTMDJKByPKC7ehWTcsucmo8elS+wrOX8xWvSk8FrTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYnJhGPCivaTmPBE7x87TPr3DLBg3S+Xvec6Zgmxase0qRv9ciX2ZPgOcbH1uxItBIcfpIJB5xJmfU3R/8hAPM4RnjzPdnLIzgDwNWijVcgabzOwOf5yWhQrGH8YnVqW0JKz5iZMM0rCCiP2c0N8qLyO5ZoSxmGWrZmsAomyo8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4KkNXAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F64C4CEE2;
-	Wed, 23 Apr 2025 15:11:18 +0000 (UTC)
+	 MIME-Version; b=ib9KjKNOmSvQmuCzCN6LIQsjwSMtXYYfvIoZ7JFCwJat6c63Fx9cEfI4g8I0drHO5QPo0qmR17hIUT1lCHDGIcIG/qqo3NPnW6yc80JVPM2olDUsorxLP0aMwcW3a+01ldBLOjl6oTqSajvPizZTKGJEEZ4Tdz/aPL9baMCfiqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYbQUeuW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEC6C4CEE2;
+	Wed, 23 Apr 2025 15:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421078;
-	bh=GEy284vWZUUYx2Rs1kC4XrK+RFTau3UCuR1LBJN69Xw=;
+	s=korg; t=1745422055;
+	bh=DTTMDJKByPKC7ehWTcsucmo8elS+wrOX8xWvSk8FrTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4KkNXABJRO7JsIvHTx/YRNwbonvw3mkqwqPHVdn7ciGkB8bhCws4Ao6YIEXp8w/l
-	 UMktFn6GMTUEsLKBxDQEMXAF1xiWX+i/dIhmrsnxtT9NvMzYbCWlNMe2nmVAouQ2Y5
-	 QScgVbEK92i6txSrkrPLAyPsLUdcy5ksptnqF6sw=
+	b=cYbQUeuWTyse5t72XYVk1nGq3b5L/5DVMKcIcFUZWbwP4MeBKEEwc+oeB2g5oVQBW
+	 1F77j9UbdhlaI3J6F/RvuP1ZWJv0eP85ZFJ5AnXFPV72URUCnwtj2tnZd4y3y2Xgx1
+	 12WpckJnm1PI8naIf2JbgcgjuxafPCpWe2jJe0uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.14 150/241] riscv: Avoid fortify warning in syscall_get_arguments()
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 225/291] scsi: ufs: exynos: Ensure consistent phy reference counts
 Date: Wed, 23 Apr 2025 16:43:34 +0200
-Message-ID: <20250423142626.674370370@linuxfoundation.org>
+Message-ID: <20250423142633.617702224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit adf53771a3123df99ca26e38818760fbcf5c05d0 upstream.
+commit 7f05fd9a3b6fb3a9abc5a748307d11831c03175f upstream.
 
-When building with CONFIG_FORTIFY_SOURCE=y and W=1, there is a warning
-because of the memcpy() in syscall_get_arguments():
+ufshcd_link_startup() can call ufshcd_vops_link_startup_notify()
+multiple times when retrying. This causes the phy reference count to
+keep increasing and the phy to not properly re-initialize.
 
-  In file included from include/linux/string.h:392,
-                   from include/linux/bitmap.h:13,
-                   from include/linux/cpumask.h:12,
-                   from arch/riscv/include/asm/processor.h:55,
-                   from include/linux/sched.h:13,
-                   from kernel/ptrace.c:13:
-  In function 'fortify_memcpy_chk',
-      inlined from 'syscall_get_arguments.isra' at arch/riscv/include/asm/syscall.h:66:2:
-  include/linux/fortify-string.h:580:25: error: call to '__read_overflow2_field' declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-    580 |                         __read_overflow2_field(q_size_field, size);
-        |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  cc1: all warnings being treated as errors
+If the phy has already been previously powered on, first issue a
+phy_power_off() and phy_exit(), before re-initializing and powering on
+again.
 
-The fortified memcpy() routine enforces that the source is not overread
-and the destination is not overwritten if the size of either field and
-the size of the copy are known at compile time. The memcpy() in
-syscall_get_arguments() intentionally overreads from a1 to a5 in
-'struct pt_regs' but this is bigger than the size of a1.
-
-Normally, this could be solved by wrapping a1 through a5 with
-struct_group() but there was already a struct_group() applied to these
-members in commit bba547810c66 ("riscv: tracing: Fix
-__write_overflow_field in ftrace_partial_regs()").
-
-Just avoid memcpy() altogether and write the copying of args from regs
-manually, which clears up the warning at the expense of three extra
-lines of code.
-
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Dmitry V. Levin <ldv@strace.io>
-Fixes: e2c0cdfba7f6 ("RISC-V: User-facing API")
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-4-96722cc2ba1b@linaro.org
+Fixes: 3d73b200f989 ("scsi: ufs: ufs-exynos: Change ufs phy control sequence")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250409-riscv-avoid-fortify-warning-syscall_get_arguments-v1-1-7853436d4755@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/syscall.h |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/ufs/host/ufs-exynos.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -62,8 +62,11 @@ static inline void syscall_get_arguments
- 					 unsigned long *args)
- {
- 	args[0] = regs->orig_a0;
--	args++;
--	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
-+	args[1] = regs->a1;
-+	args[2] = regs->a2;
-+	args[3] = regs->a3;
-+	args[4] = regs->a4;
-+	args[5] = regs->a5;
- }
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -901,6 +901,12 @@ static int exynos_ufs_phy_init(struct ex
+ 	}
  
- static inline int syscall_get_arch(struct task_struct *task)
+ 	phy_set_bus_width(generic_phy, ufs->avail_ln_rx);
++
++	if (generic_phy->power_count) {
++		phy_power_off(generic_phy);
++		phy_exit(generic_phy);
++	}
++
+ 	ret = phy_init(generic_phy);
+ 	if (ret) {
+ 		dev_err(hba->dev, "%s: phy init failed, ret = %d\n",
 
 
 
