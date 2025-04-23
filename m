@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-135640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D6CA98F6A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C009A9935A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BA235A6995
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86A281BA162C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2B0280A51;
-	Wed, 23 Apr 2025 15:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F0E29C357;
+	Wed, 23 Apr 2025 15:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kEsRyPaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3TzTVG4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1732127FD7A;
-	Wed, 23 Apr 2025 15:00:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DA62957DA;
+	Wed, 23 Apr 2025 15:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420456; cv=none; b=uQJC7SmwQJK6wvlZ5ZOTuF8MNOdPz58mzV/wu5JB2lnPS/hJM/Ccd80Jo+1HwtcopNjUghPXcY4QMf1w/IbQ/2BMt1MNGg1uhi91LD/MkRYspILjSWBpcY2TZLzhqkE7lBjm8dKpUWCF359Qc69+NQQSQ0u/kqLMBzZFPfj0cL8=
+	t=1745422008; cv=none; b=TM9++tB5RFbuytlopkQrZ1qxXQ/Lp3wzrwEZflKuWbstlfAwpXoJukbieyQTkGMcZfiTPdNc/etN2XY9OYB5G4I3R+7Md/xCb2UOj5KBdGAaD9gCkTMCCoiHLaqYf4NEkzYG/HXJmvfy7pemorXiw649Vjf4rSh/GMabGpzEF5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420456; c=relaxed/simple;
-	bh=18xYFtwhXwqYSje0wMT4he8NIMPtPWldlsJh0E+U3wI=;
+	s=arc-20240116; t=1745422008; c=relaxed/simple;
+	bh=GddF6ptcG98HOuCwqocGgxFcSd7d7aklD1NAqUyB75o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dg4nIGcsX1nkQi4A0od88yH/+5oArD8F5wCaLZQpY2QxLE9A9uXu2V469aatoafP1Alp3glOI+t2BF5U9WNgBHWzEINPGg6vkobIYeymEYcwWHscHkxEmejTDiXJYsYHr7SLCr+Q/d6qEpc2QanEdLWQt77wlXnzG2MQI+V41kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kEsRyPaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9788FC4CEE2;
-	Wed, 23 Apr 2025 15:00:55 +0000 (UTC)
+	 MIME-Version; b=gwwZj7AgNtkpHf01nsGeKJtlufpcryyEv2Lkw4UPZAPjy76gMVf+k1ucXIGtyE3awWwV5pZF1bF6prqUS0Vpukumuu4OKExuTE8loGJ+d2gLBjiO1i8pcLP1q15VQkPWIRl0ro09MLicWtBNT5iB3SD+MJ973UM+VHQW5Cu64h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3TzTVG4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728E5C4CEE8;
+	Wed, 23 Apr 2025 15:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420455;
-	bh=18xYFtwhXwqYSje0wMT4he8NIMPtPWldlsJh0E+U3wI=;
+	s=korg; t=1745422007;
+	bh=GddF6ptcG98HOuCwqocGgxFcSd7d7aklD1NAqUyB75o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kEsRyPaW+eGPkSU/RFZIcWIUcaLMWcXLuTEi0ZeYm7uQYduDd4+SaTXfjy2sM0JBF
-	 wN75Dn/DkU99iKxdPs8QmK/gJauVZz2pGGlzJhnjF+k43PO6O6G93jGsw4jSAKSS/N
-	 GCaXA2+niu5qSqIbsKd0+5jFq+y5btJLyi0QXcis=
+	b=D3TzTVG48+oApilwugFwN9xoPZhJIbkDXcMZiWMgWp7EI8K0Vk/JLcMJUdTZ1xieZ
+	 R1wLSEi3IdDaDvm2u2FESiFrjWO9ZKJihivdu9AA2gbIh8kqZ48/lGXtbAjVdJ2d9L
+	 JQr0sgtdiMdtem/xH/Mh1rGCepR3C6Sx99X+QJCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 133/223] tracing: Fix filter string testing
-Date: Wed, 23 Apr 2025 16:43:25 +0200
-Message-ID: <20250423142622.509138169@linuxfoundation.org>
+	Denis Arefev <arefev@swemel.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 217/291] ksmbd: Prevent integer overflow in calculation of deadtime
+Date: Wed, 23 Apr 2025 16:43:26 +0200
+Message-ID: <20250423142633.270981302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit a8c5b0ed89a3f2c81c6ae0b041394e6eea0e7024 upstream.
+commit a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 upstream.
 
-The filter string testing uses strncpy_from_kernel/user_nofault() to
-retrieve the string to test the filter against. The if() statement was
-incorrect as it considered 0 as a fault, when it is only negative that it
-faulted.
+The user can set any value for 'deadtime'. This affects the arithmetic
+expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+overflow. The added check makes the server behavior more predictable.
 
-Running the following commands:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  # cd /sys/kernel/tracing
-  # echo "filename.ustring ~ \"/proc*\"" > events/syscalls/sys_enter_openat/filter
-  # echo 1 > events/syscalls/sys_enter_openat/enable
-  # ls /proc/$$/maps
-  # cat trace
-
-Would produce nothing, but with the fix it will produce something like:
-
-      ls-1192    [007] .....  8169.828333: sys_openat(dfd: ffffffffffffff9c, filename: 7efc18359904, flags: 80000, mode: 0)
-
-Link: https://lore.kernel.org/all/CAEf4BzbVPQ=BjWztmEwBPRKHUwNfKBkS3kce-Rzka6zvbQeVpg@mail.gmail.com/
-
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250417183003.505835fb@gandalf.local.home
-Fixes: 77360f9bbc7e5 ("tracing: Add test for user space strings when filtering on string pointers")
-Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Reported-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_filter.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/transport_ipc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -808,7 +808,7 @@ static __always_inline char *test_string
- 	kstr = ubuf->buffer;
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -296,7 +296,11 @@ static int ipc_server_config_on_startup(
+ 	server_conf.signing = req->signing;
+ 	server_conf.tcp_port = req->tcp_port;
+ 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
+-	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
++	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
++					&server_conf.deadtime)) {
++		ret = -EINVAL;
++		goto out;
++	}
+ 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
+ 	ksmbd_init_domain(req->sub_auth);
  
- 	/* For safety, do not trust the string pointer */
--	if (!strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE))
-+	if (strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE) < 0)
- 		return NULL;
- 	return kstr;
- }
-@@ -827,7 +827,7 @@ static __always_inline char *test_ustrin
- 
- 	/* user space address? */
- 	ustr = (char __user *)str;
--	if (!strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE))
-+	if (strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE) < 0)
- 		return NULL;
- 
- 	return kstr;
+@@ -319,6 +323,7 @@ static int ipc_server_config_on_startup(
+ 	ret |= ksmbd_set_work_group(req->work_group);
+ 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
+ 					req->ifc_list_sz);
++out:
+ 	if (ret) {
+ 		pr_err("Server configuration error: %s %s %s\n",
+ 		       req->netbios_name, req->server_string,
 
 
 
