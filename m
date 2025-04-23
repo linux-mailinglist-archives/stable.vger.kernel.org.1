@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-135567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790D2A98ECA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6A3A98EE7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F2C445FC2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9709316F152
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D024B27FD67;
-	Wed, 23 Apr 2025 14:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80A4281376;
+	Wed, 23 Apr 2025 14:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltoD0c04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlJu4gFd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D921269B07;
-	Wed, 23 Apr 2025 14:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C9E279790;
+	Wed, 23 Apr 2025 14:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420263; cv=none; b=kMhYXV2BJ9rHUxfzJskEe9naIL9wDQ/grEVibPyU9eEdT8wwC2N6OHcXntAo04PVOpG+IqxrpIRyYez5ZHdhRDjRW2jS3E6yxEt2LpGhrY5L2dDIR6+8eGayhWFymp0cPNWRu4pv0kCUjXkvJEVapjTnySzZRVhT6Vn7dgONPzo=
+	t=1745420321; cv=none; b=FaUZK8CIKJZitfWimxMJbHbfbRch+YHRNtL1zUjMGQZwmBoA5arOB1NtNucJyPeNvj6rOBftAhnVdkb4BwBl23QFb2/hCaw1aOUJDjyFdhfuvza+1X8dhrA3PFyKhiOYTDKtrqpqvrkjBIWp44ZtS4onMdFFR4C4cbWlw5GbGlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420263; c=relaxed/simple;
-	bh=axNaMpf0KKZvbhf309aZuAZOSchNI/tzL9GFhN/AAeM=;
+	s=arc-20240116; t=1745420321; c=relaxed/simple;
+	bh=cuDm91yiCQqhNI/B0OQpJ8xmesY90dlnlxQXa7iPS9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGlKWpvR+XOEeOu5LlvM5NWWdmoc4qxW1svpaWF3YiB7+8+onNhRVJIpH4XYnRu89t9AhNyv6OHfXHFjJjCuakbysWFkHDJHmU7WYBo7Vsf8kIe7VO5dGeUexo3FE33qeGruYLX1l8JJQZDaas2wxsxRgB3cIt9AOQHpVo5UdwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltoD0c04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAE7C4CEE2;
-	Wed, 23 Apr 2025 14:57:42 +0000 (UTC)
+	 MIME-Version; b=LrxJnc4JnmmSFG8dmwc1QMCfmGTpDi66M/ePgdmZ33qb+c7LPU0yqcRyQT0m4lBgyDV2DfgWc+2BDaVt1gOalYga2ERjLzDbJq398HbT4K2EmC01GsFtE5W4L8b8g2G2vOGAQpH+izPjsn+vqLYJpQAL/Ea+Gq40GBs9/8YbPbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlJu4gFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086BBC4CEE2;
+	Wed, 23 Apr 2025 14:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420263;
-	bh=axNaMpf0KKZvbhf309aZuAZOSchNI/tzL9GFhN/AAeM=;
+	s=korg; t=1745420321;
+	bh=cuDm91yiCQqhNI/B0OQpJ8xmesY90dlnlxQXa7iPS9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltoD0c04LTJE8yRH3rybXJIE+A4p0KyTdo/Vln16GqMYwFUjNAFOufC2JeKv7aeZP
-	 AoCTEJWIvwOcydZ4G/3iP6ogVGT8jyXCPv7+/hK9A+WNN+HgD0aRa/umBikg0TPK9l
-	 zuryPU6h32gwgH006xjCKM2IxlWQRRTxznn+KWuM=
+	b=mlJu4gFddtRH76TYTzeEQofdX+Th4B6FSB9kbOXsD1Nl73++wUvH183nms8j4NRTI
+	 ILrnqc0TL8KF6cKrWzVmnMq0e4UgNJDAkPBqsQ1q791ynEsCtLCZbNyqmwuwwMhM2F
+	 iX7dqXKl0hyn9UisRemhFzJiwWr1OAK/75Tss2xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, Michael Kelley <mhklinux@outlook.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	"https://lore.kernel.org/r/SN6PR02MB415723FBCD79365E8D72CA5FD4D82"@SN6PR02MB4157.namprd02.prod.outlook.com
-Subject: [PATCH 6.6 046/393] zstd: Increase DYNAMIC_BMI2 GCC version cutoff from 4.8 to 11.0 to work around compiler segfault
-Date: Wed, 23 Apr 2025 16:39:02 +0200
-Message-ID: <20250423142645.188625951@linuxfoundation.org>
+	patches@lists.linux.dev,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 047/393] ASoC: SOF: topology: Use krealloc_array() to replace krealloc()
+Date: Wed, 23 Apr 2025 16:39:03 +0200
+Message-ID: <20250423142645.230765415@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -67,50 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ingo Molnar <mingo@kernel.org>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit 1400c87e6cac47eb243f260352c854474d9a9073 ]
+[ Upstream commit a05143a8f713d9ae6abc41141dac52c66fca8b06 ]
 
-Due to pending percpu improvements in -next, GCC9 and GCC10 are
-crashing during the build with:
+Use krealloc_array() to replace krealloc() with multiplication.
+krealloc_array() has multiply overflow check, which will be safer.
 
-    lib/zstd/compress/huf_compress.c:1033:1: internal compiler error: Segmentation fault
-     1033 | {
-          | ^
-    Please submit a full bug report,
-    with preprocessed source if appropriate.
-    See <file:///usr/share/doc/gcc-9/README.Bugs> for instructions.
-
-The DYNAMIC_BMI2 feature is a known-challenging feature of
-the ZSTD library, with an existing GCC quirk turning it off
-for GCC versions below 4.8.
-
-Increase the DYNAMIC_BMI2 version cutoff to GCC 11.0 - GCC 10.5
-is the last version known to crash.
-
-Reported-by: Michael Kelley <mhklinux@outlook.com>
-Debugged-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: https://lore.kernel.org/r/SN6PR02MB415723FBCD79365E8D72CA5FD4D82@SN6PR02MB4157.namprd02.prod.outlook.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20250117014343.451503-1-zhangheng@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/zstd/common/portability_macros.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/topology.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/zstd/common/portability_macros.h b/lib/zstd/common/portability_macros.h
-index 0e3b2c0a527db..0dde8bf56595e 100644
---- a/lib/zstd/common/portability_macros.h
-+++ b/lib/zstd/common/portability_macros.h
-@@ -55,7 +55,7 @@
- #ifndef DYNAMIC_BMI2
-   #if ((defined(__clang__) && __has_attribute(__target__)) \
-       || (defined(__GNUC__) \
--          && (__GNUC__ >= 5 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8)))) \
-+          && (__GNUC__ >= 11))) \
-       && (defined(__x86_64__) || defined(_M_X64)) \
-       && !defined(__BMI2__)
-   #  define DYNAMIC_BMI2 1
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index cf1e63daad86b..7afded323150c 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -1267,8 +1267,8 @@ static int sof_widget_parse_tokens(struct snd_soc_component *scomp, struct snd_s
+ 			struct snd_sof_tuple *new_tuples;
+ 
+ 			num_tuples += token_list[object_token_list[i]].count * (num_sets - 1);
+-			new_tuples = krealloc(swidget->tuples,
+-					      sizeof(*new_tuples) * num_tuples, GFP_KERNEL);
++			new_tuples = krealloc_array(swidget->tuples,
++						    num_tuples, sizeof(*new_tuples), GFP_KERNEL);
+ 			if (!new_tuples) {
+ 				ret = -ENOMEM;
+ 				goto err;
 -- 
 2.39.5
 
