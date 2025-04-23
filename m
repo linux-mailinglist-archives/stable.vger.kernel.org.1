@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AA7A98E32
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03480A99048
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBD4E7A13BB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570DC1B61AC6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2B727FD74;
-	Wed, 23 Apr 2025 14:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF1028C5AD;
+	Wed, 23 Apr 2025 15:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udw/Vifs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kd4u6y5k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298CB27FD62;
-	Wed, 23 Apr 2025 14:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C82028B518;
+	Wed, 23 Apr 2025 15:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420003; cv=none; b=LxwEo5dXiJed2s/3J5ruM+LSrFLCvgnt/2Q6118rzWzB9FaOyFtJnZ+81Tu2L2/0O3YS766SUJOpss4uCS02vISK19f2nGk0WzQyWK1c8+xRFz85ovA9f5JvIf4PLZyQRQM3aGyhzSH8e+hbss3PuIipR1aAiQcVVxQxOEwEJVA=
+	t=1745420693; cv=none; b=Z8uKltUqVKBBFjbw3F82qqiTR/bnTBocsGt/OlgBJdlGPdP6pRqPNyGZK4v+fG2zEk4xWKN175nnjxU32uyGAMbwMz4UliVO+iCrbAI8+LNWIoNcyi+40/BNy3i38e84Uwg7gJCrXHHXOElOht37BYaXgWRgtU3+b2b+dcvxIhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420003; c=relaxed/simple;
-	bh=nWvnSj2GzwAKyxBHu3A1l0QBZRdNj513oxt2XG9Z01k=;
+	s=arc-20240116; t=1745420693; c=relaxed/simple;
+	bh=PC25LzY+o8yviPD7OW2JMthnHMltgKS6+FBrnIOgTVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=om3bEYe5WueqcxkN3k/ZV47WcMAmFmRmE5BhhOfvE9DbmpzoLY/+Tb6npXwKN09eztVYw1G3Y6Mo22PteRSO/fZEzBGpzOahY58R6v/9S9DoBcy0Z19C8xtkieAm7RcchWdftTNepGnxxfhpVsqUqbsoP4sAjd0h2K0o4P9BVOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udw/Vifs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D546C4CEE3;
-	Wed, 23 Apr 2025 14:53:22 +0000 (UTC)
+	 MIME-Version; b=aMiOdArt+C6dfYyKDUe5xDwlVWp5a1MIRQyTjSYAuWveCxY0lW5/1Fl3BhllCUGx7/xgjHooX/nkLhHlZtMCQJWenpjEhkit2US0ZS6wT/sJwvs73gqc4/jiSVBDqHwqCS8kBt1YMTLUnO6GSy5iRxFU6r1j3iTIJm/HtxOk1ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kd4u6y5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5F0C4CEE2;
+	Wed, 23 Apr 2025 15:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420002;
-	bh=nWvnSj2GzwAKyxBHu3A1l0QBZRdNj513oxt2XG9Z01k=;
+	s=korg; t=1745420692;
+	bh=PC25LzY+o8yviPD7OW2JMthnHMltgKS6+FBrnIOgTVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udw/VifsZh+xeUAKiUrmHMXXnhAb8C/bIIoTz+wTee9kLTWrhMlQw+F6C5i74Aynn
-	 073Z9iBskn1KXx5w/e8K7ExicWagnslxfFdmEKO5/ggYF2ogsg/1Urpw7tMNIh1mJA
-	 unZMenw05vcZAGTFVpl3MKw5ITlb9z2yHw5tOHvs=
+	b=kd4u6y5kAYYS25W6LDR3n4/xyZZjimhX0vYUDuzPmn4L1lvP2LkSu7FWBnK11ha4D
+	 zEX41Q/MeME4Y8hN6pLqLR1+wMqbIB6hFbzcHki8jUv0XEJTWYw/Z9jBJ6LtSsF3S/
+	 dvSjybLq46bOXnoP+sk9Zm9G8OsvNnQG4quNS0W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manikantan R <quic_manrav@quicinc.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 091/223] ASoC: codecs:lpass-wsa-macro: Fix logic of enabling vi channels
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.14 099/241] rust: disable `clippy::needless_continue`
 Date: Wed, 23 Apr 2025 16:42:43 +0200
-Message-ID: <20250423142620.828620061@linuxfoundation.org>
+Message-ID: <20250423142624.622323835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 7648beb65600220996ebb2da207610b1ff9b735e upstream.
+commit 0866ee8e50f017731b80891294c0edd0f5fcd0a9 upstream.
 
-Existing code only configures one of WSA_MACRO_TX0 or WSA_MACRO_TX1
-paths eventhough we enable both of them. Fix this bug by adding proper
-checks and rearranging some of the common code to able to allow setting
-both TX0 and TX1 paths
+Starting with Rust 1.86.0, Clippy's `needless_continue` lint complains
+about the last statement of a loop [1], including cases like:
 
-Without this patch only one channel gets enabled in VI path instead of 2
-channels. End result would be 1 channel recording instead of 2.
+    while ... {
+        match ... {
+            ... if ... => {
+                ...
+                return ...;
+            }
+            _ => continue,
+        }
+    }
 
-Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
-Cc: stable@vger.kernel.org
-Co-developed-by: Manikantan R <quic_manrav@quicinc.com>
-Signed-off-by: Manikantan R <quic_manrav@quicinc.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250403160209.21613-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+as well as nested `match`es in a loop.
+
+One solution is changing `continue` for `()` [2], but arguably using
+`continue` shows the intent better when it is alone in an arm like that.
+
+Moreover, I am not sure we want to force people to try to find other
+ways to write the code either, in cases when that applies.
+
+In addition, the help text does not really apply in the new cases the
+lint has introduced, e.g. here one cannot simply "drop" the expression:
+
+    warning: this `continue` expression is redundant
+      --> rust/macros/helpers.rs:85:18
+       |
+    85 |             _ => continue,
+       |                  ^^^^^^^^
+       |
+       = help: consider dropping the `continue` expression
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_continue
+       = note: requested on the command line with `-W clippy::needless-continue`
+
+The examples in the documentation do not show a case like this, either,
+so the second "help" line does not help.
+
+In addition, locally disabling the lint is not possible with `expect`,
+since the behavior differs across versions. Using `allow` would be
+possible, but, even then, an extra line just for this is a bit too much,
+especially if there are other ways to satisfy the lint.
+
+Finally, the lint is still in the "pedantic" category and disabled by
+default by Clippy.
+
+Thus disable the lint, at least for the time being.
+
+Feedback was submitted to upstream Clippy, in case this can be improved
+or perhaps the lint split into several [3].
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust-clippy/pull/13891 [1]
+Link: https://lore.kernel.org/rust-for-linux/20250401221205.52381-1-ojeda@kernel.org/ [2]
+Link: https://github.com/rust-lang/rust-clippy/issues/14536 [3]
+Link: https://lore.kernel.org/r/20250403163805.67770-1-ojeda@kernel.org
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-wsa-macro.c |  108 +++++++++++++++++++++----------------
- 1 file changed, 63 insertions(+), 45 deletions(-)
+ Makefile |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/sound/soc/codecs/lpass-wsa-macro.c
-+++ b/sound/soc/codecs/lpass-wsa-macro.c
-@@ -1459,6 +1459,67 @@ static void wsa_macro_mclk_enable(struct
- 	}
- }
- 
-+static void wsa_macro_enable_disable_vi_sense(struct snd_soc_component *component, bool enable,
-+						u32 tx_reg0, u32 tx_reg1, u32 val)
-+{
-+	if (enable) {
-+		/* Enable V&I sensing */
-+		snd_soc_component_update_bits(component, tx_reg0,
-+					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_RESET);
-+		snd_soc_component_update_bits(component, tx_reg1,
-+					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_RESET);
-+		snd_soc_component_update_bits(component, tx_reg0,
-+					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
-+					      val);
-+		snd_soc_component_update_bits(component, tx_reg1,
-+					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
-+					      val);
-+		snd_soc_component_update_bits(component, tx_reg0,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
-+		snd_soc_component_update_bits(component, tx_reg1,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
-+		snd_soc_component_update_bits(component, tx_reg0,
-+					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
-+		snd_soc_component_update_bits(component, tx_reg1,
-+					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
-+	} else {
-+		snd_soc_component_update_bits(component, tx_reg0,
-+					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_RESET);
-+		snd_soc_component_update_bits(component, tx_reg1,
-+					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_RESET);
-+		snd_soc_component_update_bits(component, tx_reg0,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
-+		snd_soc_component_update_bits(component, tx_reg1,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
-+					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
-+	}
-+}
-+
-+static void wsa_macro_enable_disable_vi_feedback(struct snd_soc_component *component,
-+						 bool enable, u32 rate)
-+{
-+	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
-+
-+	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
-+		wsa_macro_enable_disable_vi_sense(component, enable,
-+				CDC_WSA_TX0_SPKR_PROT_PATH_CTL,
-+				CDC_WSA_TX1_SPKR_PROT_PATH_CTL, rate);
-+
-+	if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
-+		wsa_macro_enable_disable_vi_sense(component, enable,
-+				CDC_WSA_TX2_SPKR_PROT_PATH_CTL,
-+				CDC_WSA_TX3_SPKR_PROT_PATH_CTL, rate);
-+}
-+
- static int wsa_macro_mclk_event(struct snd_soc_dapm_widget *w,
- 				struct snd_kcontrol *kcontrol, int event)
- {
-@@ -1475,7 +1536,6 @@ static int wsa_macro_enable_vi_feedback(
- {
- 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
- 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
--	u32 tx_reg0, tx_reg1;
- 	u32 rate_val;
- 
- 	switch (wsa->pcm_rate_vi) {
-@@ -1499,56 +1559,14 @@ static int wsa_macro_enable_vi_feedback(
- 		break;
- 	}
- 
--	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
--		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
--		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
--	} else if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
--		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
--		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
--	}
--
- 	switch (event) {
- 	case SND_SOC_DAPM_POST_PMU:
- 		/* Enable V&I sensing */
--		snd_soc_component_update_bits(component, tx_reg0,
--					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
--					      CDC_WSA_TX_SPKR_PROT_RESET);
--		snd_soc_component_update_bits(component, tx_reg1,
--					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
--					      CDC_WSA_TX_SPKR_PROT_RESET);
--		snd_soc_component_update_bits(component, tx_reg0,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      rate_val);
--		snd_soc_component_update_bits(component, tx_reg1,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      rate_val);
--		snd_soc_component_update_bits(component, tx_reg0,
--					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
--					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
--		snd_soc_component_update_bits(component, tx_reg1,
--					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
--					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
--		snd_soc_component_update_bits(component, tx_reg0,
--					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
--					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
--		snd_soc_component_update_bits(component, tx_reg1,
--					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
--					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
-+		wsa_macro_enable_disable_vi_feedback(component, true, rate_val);
- 		break;
- 	case SND_SOC_DAPM_POST_PMD:
- 		/* Disable V&I sensing */
--		snd_soc_component_update_bits(component, tx_reg0,
--					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
--					      CDC_WSA_TX_SPKR_PROT_RESET);
--		snd_soc_component_update_bits(component, tx_reg1,
--					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
--					      CDC_WSA_TX_SPKR_PROT_RESET);
--		snd_soc_component_update_bits(component, tx_reg0,
--					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
--					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
--		snd_soc_component_update_bits(component, tx_reg1,
--					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
--					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
-+		wsa_macro_enable_disable_vi_feedback(component, false, rate_val);
- 		break;
- 	}
- 
+--- a/Makefile
++++ b/Makefile
+@@ -480,7 +480,6 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+ 			    -Wclippy::needless_bitwise_bool \
+-			    -Wclippy::needless_continue \
+ 			    -Aclippy::needless_lifetimes \
+ 			    -Wclippy::no_mangle_with_rust_abi \
+ 			    -Wclippy::undocumented_unsafe_blocks \
 
 
 
