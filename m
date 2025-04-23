@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-136304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73116A99323
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442D6A990B0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20747928152
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EFB93A88F6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68767290BC4;
-	Wed, 23 Apr 2025 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BE0284B20;
+	Wed, 23 Apr 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaNjA2OC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wW2OAhZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D47D283CA3;
-	Wed, 23 Apr 2025 15:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646D6156F28;
+	Wed, 23 Apr 2025 15:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422194; cv=none; b=DrcL1yovJO/WIuKFbMrypKbpHkq0M4XrkJZe80SE604UzCVf2pfVeHsfPKnOzUAfExeydBJmD34vhynjC4SPkE9HhytCtBSKTkBhKMc1PeacChp7CJ+6kxwtYXb/ThmjWuKcaThHZaQS4qHQHSN7EfZNw7kY4bLSIj2FLupOX9Q=
+	t=1745420887; cv=none; b=CbEKW74nOZCNteNVCkLfSb+h2meDdVvPX01Cg5wh+GWxSbPgFAIZPXSuaP77YowOn38UpKGAquqhUOiXGF4KXRxBtRiOgnZHjaysvoFEgEYmDqixRaPoVhOi0TkSq5rV7i6HLOC2kzLuzCLIu3F3UlKnnVMjCOEgEwHRy/LEwhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422194; c=relaxed/simple;
-	bh=hhFFYoxG622UhCS3jhy1chmqSM9DirIZ+vBmlC6Sk9I=;
+	s=arc-20240116; t=1745420887; c=relaxed/simple;
+	bh=k6biEyu2tCgaR03QdATC9epmCTvd9ER7bgZDnhHncbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eC2r5qLfFGyfwhh5f1KvLaYB7xRaJUMWQk+hWbMIhYGfwQafpOBRbA+PzkuAjrRFaDtMinGHWgnxCF4QUlzI27TBMpls0qerL8Kca3T7K3do81SBHmJ5fg73H8oasgHFF+MirSNX9s4pwsay51neVTsmvOnIee9MT9qcMdWNLxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaNjA2OC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BA2C4CEE2;
-	Wed, 23 Apr 2025 15:29:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sn7oFuyV8Rmhk+XN6VA+K56Y1NF7X1nKNvekm8S2huG7Vupl0L9MB3bVKinsKGrBJ4Tf02i1vWHjmgB8Ey27s+f46YMrmAFUsU9SohNby/YWN67ETfxW2TMYZzVoyfuJ4NKrmnkkep9m/PgXsUgZvwgOLeerV8Qhf1Dq+u78aQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2wW2OAhZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20C9C4CEE2;
+	Wed, 23 Apr 2025 15:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422193;
-	bh=hhFFYoxG622UhCS3jhy1chmqSM9DirIZ+vBmlC6Sk9I=;
+	s=korg; t=1745420887;
+	bh=k6biEyu2tCgaR03QdATC9epmCTvd9ER7bgZDnhHncbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WaNjA2OCBTnn41KPPWtzFkeAwNUacmDAwgDavlcP5VXd/BjqAGEorlae/3ZoJKBtF
-	 qUms+L3YIU95H4ncnE45gi/2PUAOPMeDuYl+ioSv0p39yfGjOwjHg08WXQ3m+DcIsz
-	 Cew9T3gWVSX8INVTKOD9ertJ4NDeRtmys1Pq93E8=
+	b=2wW2OAhZE8kkrXX+0bUEE4fev+2z/aXA+nr+AiMw1T30pP+coODM3CKMpmykJy6VK
+	 6ZyFL737eRw8JRLOCx+QTB0FwDXG9tL5UOCUYHTRLkkyp0/yY4YI42uC2KQy7p9Q8a
+	 z7zjids4o3k70qvpd9Fb9v/wwqvKDwhFq3woIRCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.1 253/291] KVM: arm64: Refactor exit handlers
-Date: Wed, 23 Apr 2025 16:44:02 +0200
-Message-ID: <20250423142634.768666265@linuxfoundation.org>
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Stable@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.12 171/223] drm/nouveau: prime: fix ttm_bo_delayed_delete oops
+Date: Wed, 23 Apr 2025 16:44:03 +0200
+Message-ID: <20250423142624.130188454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,183 +61,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
 
-[ Upstream commit 9b66195063c5a145843547b1d692bd189be85287 ]
+commit 8ec0fbb28d049273bfd4f1e7a5ae4c74884beed3 upstream.
 
-The hyp exit handling logic is largely shared between VHE and nVHE/hVHE,
-with common logic in arch/arm64/kvm/hyp/include/hyp/switch.h. The code
-in the header depends on function definitions provided by
-arch/arm64/kvm/hyp/vhe/switch.c and arch/arm64/kvm/hyp/nvhe/switch.c
-when they include the header.
+Fix an oops in ttm_bo_delayed_delete which results from dererencing a
+dangling pointer:
 
-This is an unusual header dependency, and prevents the use of
-arch/arm64/kvm/hyp/include/hyp/switch.h in other files as this would
-result in compiler warnings regarding missing definitions, e.g.
+Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b7b: 0000 [#1] PREEMPT SMP
+CPU: 4 UID: 0 PID: 1082 Comm: kworker/u65:2 Not tainted 6.14.0-rc4-00267-g505460b44513-dirty #216
+Hardware name: LENOVO 82N6/LNVNB161216, BIOS GKCN65WW 01/16/2024
+Workqueue: ttm ttm_bo_delayed_delete [ttm]
+RIP: 0010:dma_resv_iter_first_unlocked+0x55/0x290
+Code: 31 f6 48 c7 c7 00 2b fa aa e8 97 bd 52 ff e8 a2 c1 53 00 5a 85 c0 74 48 e9 88 01 00 00 4c 89 63 20 4d 85 e4 0f 84 30 01 00 00 <41> 8b 44 24 10 c6 43 2c 01 48 89 df 89 43 28 e8 97 fd ff ff 4c 8b
+RSP: 0018:ffffbf9383473d60 EFLAGS: 00010202
+RAX: 0000000000000001 RBX: ffffbf9383473d88 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffbf9383473d78 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 6b6b6b6b6b6b6b6b
+R13: ffffa003bbf78580 R14: ffffa003a6728040 R15: 00000000000383cc
+FS:  0000000000000000(0000) GS:ffffa00991c00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000758348024dd0 CR3: 000000012c259000 CR4: 0000000000f50ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body.cold+0x19/0x26
+ ? die_addr+0x3d/0x70
+ ? exc_general_protection+0x159/0x460
+ ? asm_exc_general_protection+0x27/0x30
+ ? dma_resv_iter_first_unlocked+0x55/0x290
+ dma_resv_wait_timeout+0x56/0x100
+ ttm_bo_delayed_delete+0x69/0xb0 [ttm]
+ process_one_work+0x217/0x5c0
+ worker_thread+0x1c8/0x3d0
+ ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
+ kthread+0x10b/0x240
+ ? kthreads_online_cpu+0x140/0x140
+ ret_from_fork+0x40/0x70
+ ? kthreads_online_cpu+0x140/0x140
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
 
-| In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
-| ./arch/arm64/kvm/hyp/include/hyp/switch.h:733:31: warning: 'kvm_get_exit_handler_array' used but never defined
-|   733 | static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu);
-|       |                               ^~~~~~~~~~~~~~~~~~~~~~~~~~
-| ./arch/arm64/kvm/hyp/include/hyp/switch.h:735:13: warning: 'early_exit_filter' used but never defined
-|   735 | static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code);
-|       |             ^~~~~~~~~~~~~~~~~
+The cause of this is:
 
-Refactor the logic such that the header doesn't depend on anything from
-the C files. There should be no functional change as a result of this
-patch.
+- drm_prime_gem_destroy calls dma_buf_put(dma_buf) which releases the
+  reference to the shared dma_buf. The reference count is 0, so the
+  dma_buf is destroyed, which in turn decrements the corresponding
+  amdgpu_bo reference count to 0, and the amdgpu_bo is destroyed -
+  calling drm_gem_object_release then dma_resv_fini (which destroys the
+  reservation object), then finally freeing the amdgpu_bo.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Tested-by: Mark Brown <broonie@kernel.org>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20250210195226.1215254-7-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+- nouveau_bo obj->bo.base.resv is now a dangling pointer to the memory
+  formerly allocated to the amdgpu_bo.
+
+- nouveau_gem_object_del calls ttm_bo_put(&nvbo->bo) which calls
+  ttm_bo_release, which schedules ttm_bo_delayed_delete.
+
+- ttm_bo_delayed_delete runs and dereferences the dangling resv pointer,
+  resulting in a general protection fault.
+
+Fix this by moving the drm_prime_gem_destroy call from
+nouveau_gem_object_del to nouveau_bo_del_ttm. This ensures that it will
+be run after ttm_bo_delayed_delete.
+
+Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Fixes: 22b33e8ed0e3 ("nouveau: add PRIME support")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3937
+Cc: Stable@vger.kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/Z-P4epVK8k7tFZ7C@debian.local
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/include/hyp/switch.h |   30 ++++++------------------------
- arch/arm64/kvm/hyp/nvhe/switch.c        |   27 +++++++++++++++------------
- arch/arm64/kvm/hyp/vhe/switch.c         |    8 +++-----
- 3 files changed, 24 insertions(+), 41 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_bo.c  |    3 +++
+ drivers/gpu/drm/nouveau/nouveau_gem.c |    3 ---
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -398,23 +398,16 @@ static bool kvm_hyp_handle_dabt_low(stru
+--- a/drivers/gpu/drm/nouveau/nouveau_bo.c
++++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+@@ -144,6 +144,9 @@ nouveau_bo_del_ttm(struct ttm_buffer_obj
+ 	nouveau_bo_del_io_reserve_lru(bo);
+ 	nv10_bo_put_tile_region(dev, nvbo->tile, NULL);
  
- typedef bool (*exit_handler_fn)(struct kvm_vcpu *, u64 *);
- 
--static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu);
--
--static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code);
--
- /*
-  * Allow the hypervisor to handle the exit with an exit handler if it has one.
-  *
-  * Returns true if the hypervisor handled the exit, and control should go back
-  * to the guest, or false if it hasn't.
-  */
--static inline bool kvm_hyp_handle_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
-+static inline bool kvm_hyp_handle_exit(struct kvm_vcpu *vcpu, u64 *exit_code,
-+				       const exit_handler_fn *handlers)
- {
--	const exit_handler_fn *handlers = kvm_get_exit_handler_array(vcpu);
--	exit_handler_fn fn;
--
--	fn = handlers[kvm_vcpu_trap_get_class(vcpu)];
--
-+	exit_handler_fn fn = handlers[kvm_vcpu_trap_get_class(vcpu)];
- 	if (fn)
- 		return fn(vcpu, exit_code);
- 
-@@ -444,20 +437,9 @@ static inline void synchronize_vcpu_psta
-  * the guest, false when we should restore the host state and return to the
-  * main run loop.
-  */
--static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
-+static inline bool __fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code,
-+				      const exit_handler_fn *handlers)
- {
--	/*
--	 * Save PSTATE early so that we can evaluate the vcpu mode
--	 * early on.
--	 */
--	synchronize_vcpu_pstate(vcpu, exit_code);
--
--	/*
--	 * Check whether we want to repaint the state one way or
--	 * another.
--	 */
--	early_exit_filter(vcpu, exit_code);
--
- 	if (ARM_EXCEPTION_CODE(*exit_code) != ARM_EXCEPTION_IRQ)
- 		vcpu->arch.fault.esr_el2 = read_sysreg_el2(SYS_ESR);
- 
-@@ -487,7 +469,7 @@ static inline bool fixup_guest_exit(stru
- 		goto exit;
- 
- 	/* Check if there's an exit handler and allow it to handle the exit. */
--	if (kvm_hyp_handle_exit(vcpu, exit_code))
-+	if (kvm_hyp_handle_exit(vcpu, exit_code, handlers))
- 		goto guest;
- exit:
- 	/* Return to the host kernel and handle the exit */
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -209,21 +209,22 @@ static const exit_handler_fn *kvm_get_ex
- 	return hyp_exit_handlers;
- }
- 
--/*
-- * Some guests (e.g., protected VMs) are not be allowed to run in AArch32.
-- * The ARMv8 architecture does not give the hypervisor a mechanism to prevent a
-- * guest from dropping to AArch32 EL0 if implemented by the CPU. If the
-- * hypervisor spots a guest in such a state ensure it is handled, and don't
-- * trust the host to spot or fix it.  The check below is based on the one in
-- * kvm_arch_vcpu_ioctl_run().
-- *
-- * Returns false if the guest ran in AArch32 when it shouldn't have, and
-- * thus should exit to the host, or true if a the guest run loop can continue.
-- */
--static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
-+static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
-+	const exit_handler_fn *handlers = kvm_get_exit_handler_array(vcpu);
- 	struct kvm *kvm = kern_hyp_va(vcpu->kvm);
- 
-+	synchronize_vcpu_pstate(vcpu, exit_code);
++	if (bo->base.import_attach)
++		drm_prime_gem_destroy(&bo->base, bo->sg);
 +
-+	/*
-+	 * Some guests (e.g., protected VMs) are not be allowed to run in
-+	 * AArch32.  The ARMv8 architecture does not give the hypervisor a
-+	 * mechanism to prevent a guest from dropping to AArch32 EL0 if
-+	 * implemented by the CPU. If the hypervisor spots a guest in such a
-+	 * state ensure it is handled, and don't trust the host to spot or fix
-+	 * it.  The check below is based on the one in
-+	 * kvm_arch_vcpu_ioctl_run().
-+	 */
- 	if (kvm_vm_is_protected(kvm) && vcpu_mode_is_32bit(vcpu)) {
- 		/*
- 		 * As we have caught the guest red-handed, decide that it isn't
-@@ -236,6 +237,8 @@ static void early_exit_filter(struct kvm
- 		*exit_code &= BIT(ARM_EXIT_WITH_SERROR_BIT);
- 		*exit_code |= ARM_EXCEPTION_IL;
+ 	/*
+ 	 * If nouveau_bo_new() allocated this buffer, the GEM object was never
+ 	 * initialized, so don't attempt to release it.
+--- a/drivers/gpu/drm/nouveau/nouveau_gem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
+@@ -87,9 +87,6 @@ nouveau_gem_object_del(struct drm_gem_ob
+ 		return;
  	}
-+
-+	return __fixup_guest_exit(vcpu, exit_code, handlers);
- }
  
- /* Switch to the guest for legacy non-VHE systems */
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -114,13 +114,11 @@ static const exit_handler_fn hyp_exit_ha
- 	[ESR_ELx_EC_PAC]		= kvm_hyp_handle_ptrauth,
- };
+-	if (gem->import_attach)
+-		drm_prime_gem_destroy(gem, nvbo->bo.sg);
+-
+ 	ttm_bo_put(&nvbo->bo);
  
--static const exit_handler_fn *kvm_get_exit_handler_array(struct kvm_vcpu *vcpu)
-+static inline bool fixup_guest_exit(struct kvm_vcpu *vcpu, u64 *exit_code)
- {
--	return hyp_exit_handlers;
--}
-+	synchronize_vcpu_pstate(vcpu, exit_code);
- 
--static void early_exit_filter(struct kvm_vcpu *vcpu, u64 *exit_code)
--{
-+	return __fixup_guest_exit(vcpu, exit_code, hyp_exit_handlers);
- }
- 
- /* Switch to the guest for VHE systems running in EL2 */
+ 	pm_runtime_mark_last_busy(dev);
 
 
 
