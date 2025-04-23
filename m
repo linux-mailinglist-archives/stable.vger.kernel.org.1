@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB95A98E47
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438F2A99366
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE0D1B65B1E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1AE192500B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B81A5674E;
-	Wed, 23 Apr 2025 14:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6C7290BC0;
+	Wed, 23 Apr 2025 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWm7jQ4f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2cPmeOX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC382263F54;
-	Wed, 23 Apr 2025 14:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381C828DEF9;
+	Wed, 23 Apr 2025 15:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419881; cv=none; b=TGUtBX0gfDpHl6y+65mH6jDHte8k2NPjcWggMHOGpBMxmZPNEUlaPHRwPrEjf5/BW52vcgP65mWgnwLYfqobD7RDzoAUcmQsrpPYdng3bu2XKkielz/qWoaNQR61ZXjGI5BmC/ZKuu2jxwUUzM3toZeMaZLYEKFZQbOUm2CiDho=
+	t=1745421961; cv=none; b=ECi3U/kZf+PzxeReyEK4rjNM6c60ldthYMr6bdLgg5MmzipGdOQ1L0TEgv2NqW9nNQztEo2yjzmH5ACCfp84o8L8KD92uy3u8NsYTJv77Vl/FECEOBRbFk9Uu2elrWPrczEft3cSQVnspBEqIiGyj2bDPkdpio3QUqRr4Nxs6Co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419881; c=relaxed/simple;
-	bh=C72fxhGyFQ0qcDqt9FiVUKq/CCXhPf0cH5oadzxNZ+g=;
+	s=arc-20240116; t=1745421961; c=relaxed/simple;
+	bh=8f/HGOZ1y5RCyJQehh6qvMC9PW0sUM6P+nWSp6dxBaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s5zlG+/FoyuuKLj5Pjy7cKBvVYZqGiCNhW5RD4flQDBkpYr8t3ZeW/44Fl8JgFOSV+MAJ5WnP4q69mn+lKXM3YM4LiDcPZWwv4NOCMZSwmTa3GoEecFOgMsQi3/QjvgYXTJUD05W3tTsKRNGVS6TJnrGxc/Sh31Ch5HQE7uRzjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWm7jQ4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61961C4CEE2;
-	Wed, 23 Apr 2025 14:51:21 +0000 (UTC)
+	 MIME-Version; b=UjacJz2daWmTzNU9O5+Z9xdP94Ca4c+o2bpSnQEqOy6aeFGcnqRs0DSpho+C0/Gafg0NjtJnzvXMIPDEk0JriKHrRfDSbuP9gzoTLa/lkCZF2vT+htl4lJyPcmz+JBYlTAQxCwggDKBBoNMDXuomq5+hzQPJ2kA3BCc4MnCEKEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2cPmeOX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66524C4CEE3;
+	Wed, 23 Apr 2025 15:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419881;
-	bh=C72fxhGyFQ0qcDqt9FiVUKq/CCXhPf0cH5oadzxNZ+g=;
+	s=korg; t=1745421960;
+	bh=8f/HGOZ1y5RCyJQehh6qvMC9PW0sUM6P+nWSp6dxBaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWm7jQ4fSP7qL/J96Pavh/zUJr1PQ7Jxc+6fXd5R3XRzirQdY5Ky68gus/yYVqkS1
-	 qrh3Rws9f8ceDNChjh9nxXMbVKRIWHX0ds8btqDBpIsUSEUYmPKZk24HiiThbYWVkO
-	 c6h5Pex7mCcHb6BvhKdStcEp2mEsLXhu9WMmMXNQ=
+	b=a2cPmeOXfoNczIsxBTGlvqmTxKC4hjIe2p53AAdg4snOg4WjQiNmEziKMwvp4y7KS
+	 aF8TYZElr0AZnLBtE0qXgvFtwK8Q/baG7VuqDN4nGifJUivQRnptQ3bFiW6h532aiH
+	 KnvPPdoHRMEmeprWISSZSgTHXA0psqWZoMJD2B2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Will Pierce <wgpierce17@gmail.com>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/223] riscv: Use kvmalloc_array on relocation_hashtable
-Date: Wed, 23 Apr 2025 16:42:27 +0200
-Message-ID: <20250423142620.181031724@linuxfoundation.org>
+Subject: [PATCH 6.6 252/393] RDMA/hns: Fix wrong maximum DMA segment size
+Date: Wed, 23 Apr 2025 16:42:28 +0200
+Message-ID: <20250423142653.781330903@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Pierce <wgpierce17@gmail.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit 8578b2f7e1fb79d4b92b62fbbe913548bb363654 ]
+[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
 
-The number of relocations may be a huge value that is unallocatable
-by kmalloc. Use kvmalloc instead so that it does not fail.
+Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
 
-Fixes: 8fd6c5142395 ("riscv: Add remaining module relocations")
-Suggested-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Will Pierce <wgpierce17@gmail.com>
-Link: https://lore.kernel.org/r/20250402081426.5197-1-wgpierce17@gmail.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
+Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/module.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index 47d0ebeec93c2..0ae34d79b87bd 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -648,7 +648,7 @@ process_accumulated_relocations(struct module *me,
- 		kfree(bucket_iter);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index dcd763dbb636d..a7e4c951f8fe4 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -731,7 +731,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
+ 		if (ret)
+ 			return ret;
  	}
- 
--	kfree(*relocation_hashtable);
-+	kvfree(*relocation_hashtable);
- }
- 
- static int add_relocation_to_accumulate(struct module *me, int type,
-@@ -752,9 +752,10 @@ initialize_relocation_hashtable(unsigned int num_relocations,
- 
- 	hashtable_size <<= should_double_size;
- 
--	*relocation_hashtable = kmalloc_array(hashtable_size,
--					      sizeof(**relocation_hashtable),
--					      GFP_KERNEL);
-+	/* Number of relocations may be large, so kvmalloc it */
-+	*relocation_hashtable = kvmalloc_array(hashtable_size,
-+					       sizeof(**relocation_hashtable),
-+					       GFP_KERNEL);
- 	if (!*relocation_hashtable)
- 		return 0;
- 
+-	dma_set_max_seg_size(dev, UINT_MAX);
++	dma_set_max_seg_size(dev, SZ_2G);
+ 	ret = ib_register_device(ib_dev, "hns_%d", dev);
+ 	if (ret) {
+ 		dev_err(dev, "ib_register_device failed!\n");
 -- 
 2.39.5
 
