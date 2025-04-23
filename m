@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-135362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E47AA98DC7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9535BA98D95
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB9C17A902B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC97B3BBB71
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED0E12820BC;
-	Wed, 23 Apr 2025 14:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9679C27FD4F;
+	Wed, 23 Apr 2025 14:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Th89FqTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhmaZMIO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7837280A2B;
-	Wed, 23 Apr 2025 14:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4B127D788;
+	Wed, 23 Apr 2025 14:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419723; cv=none; b=TJYyvmAO0jsbNwpR+GJLvMLeDlptEQhN1ip+X3FgcIqYXrBjWXlyypXcE9mLTAu3+fHe3jFEm55Kpc63UnswUtpEaZk6PlOmQTXGNYMJG6vxK7OCRbX064JtEWHqgmfEAfaGKOHX0nytw/SghLMLkuk0VXIKRAi/cGrzr/PkcHc=
+	t=1745419603; cv=none; b=RA/jM0G0eHL7S9aw7EvZtNGtaW4o4XhN6JbfpLgGG6H7ru+pCbJ1I8V6RXUE5N1iO7edBFDdTtFE9tBvlytMUkairYtROc59h0NADTVNqpJc6YrY6s5WVpROjeEaswtQWAsM4eLMs9G3seHGQPQ5Yy6XteWRDREpgqUsDZujTmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419723; c=relaxed/simple;
-	bh=tS0iPh+mts0BKhQNPqxV9iqQoe27MvmY3rvqUMWFDng=;
+	s=arc-20240116; t=1745419603; c=relaxed/simple;
+	bh=C/D/MEmfQGY8mXD/qJGj49Dk12TtBWhrjfJrIyTDcew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=arv+fULzsTjfcqrtDxEFVmpYzYbsoYT9aq2Cn4MRMJOPjRcCC1wRZhx47+qjr3XlaI65d9petvNmoTRhZC80uyTxDMHBm0Ng4viabpIwSThOpOGgtujbTqLo2/mYrwbxqb4FnPeoCDm5Bwhbfpzx9QuEy+/XCyd/1TQ+Aiqv2hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Th89FqTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326C7C4CEE2;
-	Wed, 23 Apr 2025 14:48:43 +0000 (UTC)
+	 MIME-Version; b=KgUEz0sam7Fr9bYU/xOy5ZHNiV44JlIZovYydolRgAgZG18QXoWDhV/oenswuiYFJG9jzYadmUPvyyLfe3yy5xGo+DGstsAC1Vprh8eopmLsTYqcYmbbeRa/+fUOlfB4F7bZD9jQihsQddRFCdMlsfiTk8xm1bNxcpe+pXmJdEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhmaZMIO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5877AC4CEE2;
+	Wed, 23 Apr 2025 14:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419723;
-	bh=tS0iPh+mts0BKhQNPqxV9iqQoe27MvmY3rvqUMWFDng=;
+	s=korg; t=1745419601;
+	bh=C/D/MEmfQGY8mXD/qJGj49Dk12TtBWhrjfJrIyTDcew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Th89FqTEDBsyxhfqeXMyBNt0Ov0srhBd5xH6V0VXaWu6Il6GpgsCjCibGvLfDBMuq
-	 Jxn/TvlJrtXbRGtp/qmXe3nPf9dgw3m8ZmlbQKg7MExcch5YSPK/oTEoMU6P53cVFv
-	 AXrCTPz7f04eBDPChNNBncXX2Gv6ozVZT9g1TyVA=
+	b=OhmaZMIOmGQ77jKFIyMDCsjSKae65I4NdO0i13A61jhFaj5IwvL9d6LICBGZUjkvt
+	 hNwQcT7NFEM1WsF78vj2iJZ4zyEG1cabG8G3AaSAIUFMY/FzOyNbJm5kKaZ+tTG/2u
+	 CkuGfFqzQQUyjhoyqs5No0SsfyqTKAMtu7H6bl+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Daniel Wagner <wagi@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 016/241] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
+Subject: [PATCH 6.12 008/223] blk-mq: introduce blk_mq_map_hw_queues
 Date: Wed, 23 Apr 2025 16:41:20 +0200
-Message-ID: <20250423142621.181248563@linuxfoundation.org>
+Message-ID: <20250423142617.460275438@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
+[ Upstream commit 1452e9b470c903fc4137a448e9f5767e92d68229 ]
 
-drivers/infiniband/hw/usnic/usnic_ib_main.c:590
- usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
+blk_mq_pci_map_queues and blk_mq_virtio_map_queues will create a CPU to
+hardware queue mapping based on affinity information. These two function
+share common code and only differ on how the affinity information is
+retrieved. Also, those functions are located in the block subsystem
+where it doesn't really fit in. They are virtio and pci subsystem
+specific.
 
-Make usnic_ib_device_add() return NULL on fail path, also remove
-useless NULL check for usnic_ib_discover_pf()
+Thus introduce provide a generic mapping function which uses the
+irq_get_affinity callback from bus_type.
 
-Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
-Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Originally idea from Ming Lei <ming.lei@redhat.com>
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Link: https://lore.kernel.org/r/20241202-refactor-blk-affinity-helpers-v6-4-27211e9c2cd5@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: a2d5a0072235 ("scsi: smartpqi: Use is_kdump_kernel() to check for kdump")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ block/blk-mq-cpumap.c  | 37 +++++++++++++++++++++++++++++++++++++
+ include/linux/blk-mq.h |  2 ++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-index 4ddcd5860e0fa..11eca39b73a93 100644
---- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
-+++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
-@@ -397,7 +397,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
- 	if (!us_ibdev) {
- 		usnic_err("Device %s context alloc failed\n",
- 				netdev_name(pci_get_drvdata(dev)));
--		return ERR_PTR(-EFAULT);
-+		return NULL;
- 	}
+diff --git a/block/blk-mq-cpumap.c b/block/blk-mq-cpumap.c
+index 9638b25fd5212..ad8d6a363f24a 100644
+--- a/block/blk-mq-cpumap.c
++++ b/block/blk-mq-cpumap.c
+@@ -11,6 +11,7 @@
+ #include <linux/smp.h>
+ #include <linux/cpu.h>
+ #include <linux/group_cpus.h>
++#include <linux/device/bus.h>
  
- 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
-@@ -517,8 +517,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
- 	}
+ #include "blk.h"
+ #include "blk-mq.h"
+@@ -54,3 +55,39 @@ int blk_mq_hw_queue_to_node(struct blk_mq_queue_map *qmap, unsigned int index)
  
- 	us_ibdev = usnic_ib_device_add(parent_pci);
--	if (IS_ERR_OR_NULL(us_ibdev)) {
--		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
-+	if (!us_ibdev) {
-+		us_ibdev = ERR_PTR(-EFAULT);
- 		goto out;
- 	}
+ 	return NUMA_NO_NODE;
+ }
++
++/**
++ * blk_mq_map_hw_queues - Create CPU to hardware queue mapping
++ * @qmap:	CPU to hardware queue map
++ * @dev:	The device to map queues
++ * @offset:	Queue offset to use for the device
++ *
++ * Create a CPU to hardware queue mapping in @qmap. The struct bus_type
++ * irq_get_affinity callback will be used to retrieve the affinity.
++ */
++void blk_mq_map_hw_queues(struct blk_mq_queue_map *qmap,
++			  struct device *dev, unsigned int offset)
++
++{
++	const struct cpumask *mask;
++	unsigned int queue, cpu;
++
++	if (!dev->bus->irq_get_affinity)
++		goto fallback;
++
++	for (queue = 0; queue < qmap->nr_queues; queue++) {
++		mask = dev->bus->irq_get_affinity(dev, queue + offset);
++		if (!mask)
++			goto fallback;
++
++		for_each_cpu(cpu, mask)
++			qmap->mq_map[cpu] = qmap->queue_offset + queue;
++	}
++
++	return;
++
++fallback:
++	WARN_ON_ONCE(qmap->nr_queues > 1);
++	blk_mq_clear_mq_map(qmap);
++}
++EXPORT_SYMBOL_GPL(blk_mq_map_hw_queues);
+diff --git a/include/linux/blk-mq.h b/include/linux/blk-mq.h
+index 7b5e5388c3801..d5229fd6f054b 100644
+--- a/include/linux/blk-mq.h
++++ b/include/linux/blk-mq.h
+@@ -947,6 +947,8 @@ void blk_mq_unfreeze_queue_non_owner(struct request_queue *q);
+ void blk_freeze_queue_start_non_owner(struct request_queue *q);
  
-@@ -586,10 +586,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
- 	}
+ void blk_mq_map_queues(struct blk_mq_queue_map *qmap);
++void blk_mq_map_hw_queues(struct blk_mq_queue_map *qmap,
++			  struct device *dev, unsigned int offset);
+ void blk_mq_update_nr_hw_queues(struct blk_mq_tag_set *set, int nr_hw_queues);
  
- 	pf = usnic_ib_discover_pf(vf->vnic);
--	if (IS_ERR_OR_NULL(pf)) {
--		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
--				pci_name(pdev), PTR_ERR(pf));
--		err = pf ? PTR_ERR(pf) : -EFAULT;
-+	if (IS_ERR(pf)) {
-+		err = PTR_ERR(pf);
-+		usnic_err("Failed to discover pf of vnic %s with err%d\n",
-+				pci_name(pdev), err);
- 		goto out_clean_vnic;
- 	}
- 
+ void blk_mq_quiesce_queue_nowait(struct request_queue *q);
 -- 
 2.39.5
 
