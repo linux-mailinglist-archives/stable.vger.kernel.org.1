@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08BD1A98D98
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26933A991FE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BF467A86C0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:46:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3590B1B880A6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9E4269B07;
-	Wed, 23 Apr 2025 14:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995E4283684;
+	Wed, 23 Apr 2025 15:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKNdRuh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osv01vbK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 294982701A0;
-	Wed, 23 Apr 2025 14:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579B8280A52;
+	Wed, 23 Apr 2025 15:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419618; cv=none; b=RMk+Kf+h8ncRrdjsahmyUjJYcclhz3Q8Jl9Uv1B2xP9Ux6YRXPt7wtnVln8dFbMT5+wNuoRIL/cMZ60xdzNS/q9DcUUri2TFEbuZHUMan4IaYwdw8m35a9XM2c2SC/+kcbEpV90t2nIsy9TZtcCueU1g2Cp9NAOGWUUUFVj7EF0=
+	t=1745421600; cv=none; b=SJo3BZEmmNCVfTA5hwMgzto5z6P/uQILNZ513Z8FQWu+FLi/VyYQzTQaPtO5OmzHxtnRw6V2eRmYStri0ZfIgmXO7i+srbt3PFJdgpPImZ5CYHctCzyMvJipv6QuRnV9+DhaU0aQtnKz6UTt17TnEEhlJKFidQq3EA1EJOICtDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419618; c=relaxed/simple;
-	bh=omZ1saq1fZRA+tf29SH4Eush5isZBZIVkyWoUZxjqxg=;
+	s=arc-20240116; t=1745421600; c=relaxed/simple;
+	bh=CpPMyflzQ+mkDeSwYUT5Qx4UPqfRTWxT92DhoBXQwyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfBD7ibNj9MqOyv4gq6i719Y85UjoKF8Khm/YbcMlmwvHN+eQNpCGxX2Bu6bX0T5N7BWlMSg5BHk6pEEZezyiFXNDIp3yOS0iCTK37XAwSNOLxeBX345NvZmpJDVryl/U61YRwqa3dpf9dsAVwgG4N4AliDt6RkA15gIDezs6qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKNdRuh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD266C4CEE2;
-	Wed, 23 Apr 2025 14:46:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hx6Z8KDDn9g17RXfcjuwLFqG7XNfbxaBNKo56inP9FRk24nMJ9+zoP0pJnt3Os1XjGm6mgi1eQLXn/F/L1elbzEKuYoer7C9lVNSws3IOd4L6xyJF+z0HUTjTN/b4TwH6ebFk7DFtRKovXhI1trmwzf5PjydiKTd2EOG0zkyrFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osv01vbK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECB0C4CEE2;
+	Wed, 23 Apr 2025 15:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419618;
-	bh=omZ1saq1fZRA+tf29SH4Eush5isZBZIVkyWoUZxjqxg=;
+	s=korg; t=1745421599;
+	bh=CpPMyflzQ+mkDeSwYUT5Qx4UPqfRTWxT92DhoBXQwyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKNdRuh23DcJIBhy8h5HwQGMz1Ntu0skw9m8KyBhdAAZC+HqZiS1u4juPbPqFMWjt
-	 Itge0Bj+b+qy++ZV+2TT9m/FYBMFSAAeA+1MedO02vym8ARcDcDySBYdho7KDtIwfz
-	 UXYC1EmZc1cCqnbvmU6mBtQsPqYCWtXxUPC56e2w=
+	b=osv01vbKqWlTfhI2JhFcRyENN19B/aTSDZ9Cl4bc1KFeZKkWciXDFoixDffURldw/
+	 E2AUabqo34LzHyNLXhJJrcIbxXX/FAsLvuAGzsYhh1lyWEhAyR/eISsdwIhWwjn0xS
+	 RGC5ABW+gwW0xB0JqhqIdqdRRVHpbW2Z5aOj+CXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/223] ALSA: hda: improve bass speaker support for ASUS Zenbook UM5606WA
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 198/393] x86/xen: fix balloon target initialization for PVH dom0
 Date: Wed, 23 Apr 2025 16:41:34 +0200
-Message-ID: <20250423142618.021315495@linuxfoundation.org>
+Message-ID: <20250423142651.566091814@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +59,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaroslav Kysela <perex@perex.cz>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-[ Upstream commit a7df7f909cec96e2fb7813a9b0b7e06a976983ab ]
+commit 87af633689ce16ddb166c80f32b120e50b1295de upstream.
 
-This hardware has ALC294 codec with speaker NID 0x17 and bass speaker
-NID 0x15.
+PVH dom0 re-uses logic from PV dom0, in which RAM ranges not assigned to
+dom0 are re-used as scratch memory to map foreign and grant pages.  Such
+logic relies on reporting those unpopulated ranges as RAM to Linux, and
+mark them as reserved.  This way Linux creates the underlying page
+structures required for metadata management.
 
-This patch removes DAC NID 0x06 (without volume control) from
-the connection list for bass speaker NID 0x15. Both speaker PINs
-are routed to DAC NID 0x03 with this change.
+Such approach works fine on PV because the initial balloon target is
+calculated using specific Xen data, that doesn't take into account the
+memory type changes described above.  However on HVM and PVH the initial
+balloon target is calculated using get_num_physpages(), and that function
+does take into account the unpopulated RAM regions used as scratch space
+for remote domain mappings.
 
-Link: https://github.com/alsa-project/alsa-ucm-conf/issues/467
-Signed-off-by: Jaroslav Kysela <perex@perex.cz>
-Link: https://patch.msgid.link/20241128112145.3409492-1-perex@perex.cz
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: b5458fcabd96 ("ALSA: hda/realtek - Fixed ASUS platform headset Mic issue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leads to PVH dom0 having an incorrect initial balloon target, which
+causes malfunction (excessive memory freeing) of the balloon driver if the
+dom0 memory target is later adjusted from the toolstack.
+
+Fix this by using xen_released_pages to account for any pages that are part
+of the memory map, but are already unpopulated when the balloon driver is
+initialized.  This accounts for any regions used for scratch remote
+mappings.  Note on x86 xen_released_pages definition is moved to
+enlighten.c so it's uniformly available for all Xen-enabled builds.
+
+Take the opportunity to unify PV with PVH/HVM guests regarding the usage of
+get_num_physpages(), as that avoids having to add different logic for PV vs
+PVH in both balloon_add_regions() and arch_xen_unpopulated_init().
+
+Much like a6aa4eb994ee, the code in this changeset should have been part of
+38620fc4e893.
+
+Fixes: a6aa4eb994ee ('xen/x86: add extra pages to unpopulated-alloc if available')
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250407082838.65495-1-roger.pau@citrix.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/x86/xen/enlighten.c |   10 ++++++++++
+ arch/x86/xen/setup.c     |    3 ---
+ drivers/xen/balloon.c    |   34 ++++++++++++++++++++++++----------
+ 3 files changed, 34 insertions(+), 13 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 0bf833c960215..4ae987731a152 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6603,6 +6603,16 @@ static void alc285_fixup_speaker2_to_dac1(struct hda_codec *codec,
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -75,6 +75,9 @@ EXPORT_SYMBOL(xen_start_flags);
+  */
+ struct shared_info *HYPERVISOR_shared_info = &xen_dummy_shared_info;
+ 
++/* Number of pages released from the initial allocation. */
++unsigned long xen_released_pages;
++
+ static __ref void xen_get_vendor(void)
+ {
+ 	init_cpu_devs();
+@@ -471,6 +474,13 @@ int __init arch_xen_unpopulated_init(str
+ 			xen_free_unpopulated_pages(1, &pg);
+ 		}
+ 
++		/*
++		 * Account for the region being in the physmap but unpopulated.
++		 * The value in xen_released_pages is used by the balloon
++		 * driver to know how much of the physmap is unpopulated and
++		 * set an accurate initial memory target.
++		 */
++		xen_released_pages += xen_extra_mem[i].n_pfns;
+ 		/* Zero so region is not also added to the balloon driver. */
+ 		xen_extra_mem[i].n_pfns = 0;
  	}
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -38,9 +38,6 @@
+ 
+ #define GB(x) ((uint64_t)(x) * 1024 * 1024 * 1024)
+ 
+-/* Number of pages released from the initial allocation. */
+-unsigned long xen_released_pages;
+-
+ /* Memory map would allow PCI passthrough. */
+ bool xen_pv_pci_possible;
+ 
+--- a/drivers/xen/balloon.c
++++ b/drivers/xen/balloon.c
+@@ -671,7 +671,7 @@ void xen_free_ballooned_pages(unsigned i
+ }
+ EXPORT_SYMBOL(xen_free_ballooned_pages);
+ 
+-static void __init balloon_add_regions(void)
++static int __init balloon_add_regions(void)
+ {
+ 	unsigned long start_pfn, pages;
+ 	unsigned long pfn, extra_pfn_end;
+@@ -694,26 +694,38 @@ static void __init balloon_add_regions(v
+ 		for (pfn = start_pfn; pfn < extra_pfn_end; pfn++)
+ 			balloon_append(pfn_to_page(pfn));
+ 
+-		balloon_stats.total_pages += extra_pfn_end - start_pfn;
++		/*
++		 * Extra regions are accounted for in the physmap, but need
++		 * decreasing from current_pages to balloon down the initial
++		 * allocation, because they are already accounted for in
++		 * total_pages.
++		 */
++		if (extra_pfn_end - start_pfn >= balloon_stats.current_pages) {
++			WARN(1, "Extra pages underflow current target");
++			return -ERANGE;
++		}
++		balloon_stats.current_pages -= extra_pfn_end - start_pfn;
+ 	}
++
++	return 0;
  }
  
-+/* disable DAC3 (0x06) selection on NID 0x15 - share Speaker/Bass Speaker DAC 0x03 */
-+static void alc294_fixup_bass_speaker_15(struct hda_codec *codec,
-+					 const struct hda_fixup *fix, int action)
-+{
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
-+		static const hda_nid_t conn[] = { 0x02, 0x03 };
-+		snd_hda_override_conn_list(codec, 0x15, ARRAY_SIZE(conn), conn);
+ static int __init balloon_init(void)
+ {
+ 	struct task_struct *task;
++	int rc;
+ 
+ 	if (!xen_domain())
+ 		return -ENODEV;
+ 
+ 	pr_info("Initialising balloon driver\n");
+ 
+-#ifdef CONFIG_XEN_PV
+-	balloon_stats.current_pages = xen_pv_domain()
+-		? min(xen_start_info->nr_pages - xen_released_pages, max_pfn)
+-		: get_num_physpages();
+-#else
+-	balloon_stats.current_pages = get_num_physpages();
+-#endif
++	if (xen_released_pages >= get_num_physpages()) {
++		WARN(1, "Released pages underflow current target");
++		return -ERANGE;
 +	}
-+}
 +
- /* Hook to update amp GPIO4 for automute */
- static void alc280_hp_gpio4_automute_hook(struct hda_codec *codec,
- 					  struct hda_jack_callback *jack)
-@@ -7888,6 +7898,7 @@ enum {
- 	ALC245_FIXUP_CLEVO_NOISY_MIC,
- 	ALC269_FIXUP_VAIO_VJFH52_MIC_NO_PRESENCE,
- 	ALC233_FIXUP_MEDION_MTL_SPK,
-+	ALC294_FIXUP_BASS_SPEAKER_15,
- };
++	balloon_stats.current_pages = get_num_physpages() - xen_released_pages;
+ 	balloon_stats.target_pages  = balloon_stats.current_pages;
+ 	balloon_stats.balloon_low   = 0;
+ 	balloon_stats.balloon_high  = 0;
+@@ -730,7 +742,9 @@ static int __init balloon_init(void)
+ 	register_sysctl_init("xen/balloon", balloon_table);
+ #endif
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -10222,6 +10233,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 			{ }
- 		},
- 	},
-+	[ALC294_FIXUP_BASS_SPEAKER_15] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc294_fixup_bass_speaker_15,
-+	},
- };
+-	balloon_add_regions();
++	rc = balloon_add_regions();
++	if (rc)
++		return rc;
  
- static const struct hda_quirk alc269_fixup_tbl[] = {
-@@ -10750,6 +10765,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
- 	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1df3, "ASUS UM5606WA", ALC294_FIXUP_BASS_SPEAKER_15),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
- 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
--- 
-2.39.5
-
+ 	task = kthread_run(balloon_thread, NULL, "xen-balloon");
+ 	if (IS_ERR(task)) {
 
 
 
