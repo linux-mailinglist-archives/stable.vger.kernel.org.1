@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 679FAA98F03
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50122A99021
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C1445A7D20
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5445F464D3C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE1C19E966;
-	Wed, 23 Apr 2025 14:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757D027FD7F;
+	Wed, 23 Apr 2025 15:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXiR75Oj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dI1W2VUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9FF1A23B0;
-	Wed, 23 Apr 2025 14:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234EF262FD6;
+	Wed, 23 Apr 2025 15:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420255; cv=none; b=lpZ++cwxBKN8nxlxaGq6fJ/SkNaaaOghKtCozk0HwI8LWUO4BOITK20uF2abBHc8mVTqZunV5awFaZG0NucdBCZcCLuSAYzTa933dyqVOIw63tpuo0+Qekvdn5h11YnW8qqiWoPhvCs9kGByaIoAsra+lt/JaWBPloP90/4N4jI=
+	t=1745420886; cv=none; b=i9vYZ4Owl/0KHXVG6Ky1ROsLI1CbzfMZCQq/vJMnGO9C/uWrxLFQXQYSDciB7gixYSETAMzH3YlguV2NfbL6Y2UzuJSxAMi4TNsJGw1WM0oXadkBzPilr9DH7iXr5Eo6TrzqA59omUCxpnpNLURmDYBqvqTmpUzx0sBdh++t0HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420255; c=relaxed/simple;
-	bh=dPic0aBFEPifqzB3rcJEG7amT6fgbhjLneFMG8v+qWk=;
+	s=arc-20240116; t=1745420886; c=relaxed/simple;
+	bh=z4RuWPpYSzyxFo9T0AeDZHlxgN8lc1KJV7t6F8L4zzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9TLvLSAml1EG1I8gSAi9et5Io88ypsi700jds2byrjHaMvaOgk1PReNkuM+pY/Wmo8wobwnbAwmRZA5N65+/W5BRoduEhxI9A1u6lSb0KY7rRan3sU0rIcnMS1MFEyRypFJT/4sM6+2svnElSb8ZN3t9ezRe5kHFnLQ3o0+o9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXiR75Oj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F781C4CEE2;
-	Wed, 23 Apr 2025 14:57:34 +0000 (UTC)
+	 MIME-Version; b=pSWQWUFKzQbXVHm0eiPL0Q7qzW8B1SuCSOni7NLZOFnGj7AgCQVyCF8enUm2TfSDT3X3XHg3Dc5dbGE65MUTaItc2d94CxxgcXFkIrZqA+sgHhHuCjITI6JaoLikcyFEsZLbm/G8bTOTrxeBOcqW5fnW6sze7G/JxWJuek1tGr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dI1W2VUf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449D7C4CEE2;
+	Wed, 23 Apr 2025 15:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420255;
-	bh=dPic0aBFEPifqzB3rcJEG7amT6fgbhjLneFMG8v+qWk=;
+	s=korg; t=1745420884;
+	bh=z4RuWPpYSzyxFo9T0AeDZHlxgN8lc1KJV7t6F8L4zzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXiR75OjxHTBPd8ozwodfga7T86ihTZxOVpRtssnj7rjfGNFAfB5x2+VMlZn8bGw1
-	 5Eh6azUVZcOdnO29grPvb4zQB1+WjvvDkkRbyuXjWoOmcO9oxxfl8E0HCThy5sU4Kf
-	 F3avOJHaSZZ3hQn0RDWklucxs5Aj6NaO8Sw2NHBw=
+	b=dI1W2VUf/8Llfne5lGj6nJPBqwiajt41VkPdERqAsRsNdFoL5OoaLDOABipu8Bct1
+	 FkCKmk5+Ze00eD3Ovr+le5ie9aPhs8b1w3lcIc+Fwfzl+FlTXINFrlc6A0Uvmi4gpL
+	 AWty75QmyCf7kMZF4Fe/zDR7vv+0RFyB0YQZr1qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/291] ASoC: fsl_audmix: register card device depends on dais property
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 124/393] media: venus: hfi: add check to handle incorrect queue size
 Date: Wed, 23 Apr 2025 16:40:20 +0200
-Message-ID: <20250423142625.669233446@linuxfoundation.org>
+Message-ID: <20250423142648.483859319@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
+commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
 
-In order to make the audmix device linked by audio graph card, make
-'dais' property to be optional.
+qsize represents size of shared queued between driver and video
+firmware. Firmware can modify this value to an invalid large value. In
+such situation, empty_space will be bigger than the space actually
+available. Since new_wr_idx is not checked, so the following code will
+result in an OOB write.
+...
+qsize = qhdr->q_size
 
-If 'dais' property exists, then register the imx-audmix card driver.
-otherwise, it should be linked by audio graph card.
+if (wr_idx >= rd_idx)
+ empty_space = qsize - (wr_idx - rd_idx)
+....
+if (new_wr_idx < qsize) {
+ memcpy(wr_ptr, packet, dwords << 2) --> OOB write
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add check to ensure qsize is within the allocated size while
+reading and writing packets into the queue.
+
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index 672148dd4b234..acb499a5043c8 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -492,11 +492,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		goto err_disable_pm;
- 	}
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
+ 	/* ensure rd/wr indices's are read from memory */
+ 	rmb();
  
--	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
--	if (IS_ERR(priv->pdev)) {
--		ret = PTR_ERR(priv->pdev);
--		dev_err(dev, "failed to register platform: %d\n", ret);
--		goto err_disable_pm;
-+	/*
-+	 * If dais property exist, then register the imx-audmix card driver.
-+	 * otherwise, it should be linked by audio graph card.
-+	 */
-+	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
-+		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
-+		if (IS_ERR(priv->pdev)) {
-+			ret = PTR_ERR(priv->pdev);
-+			dev_err(dev, "failed to register platform: %d\n", ret);
-+			goto err_disable_pm;
-+		}
- 	}
++	if (qsize > IFACEQ_QUEUE_SIZE / 4)
++		return -EINVAL;
++
+ 	if (wr_idx >= rd_idx)
+ 		empty_space = qsize - (wr_idx - rd_idx);
+ 	else
+@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
+ 	wr_idx = qhdr->write_idx;
+ 	qsize = qhdr->q_size;
  
- 	return 0;
--- 
-2.39.5
-
++	if (qsize > IFACEQ_QUEUE_SIZE / 4)
++		return -EINVAL;
++
+ 	/* make sure data is valid before using it */
+ 	rmb();
+ 
 
 
 
