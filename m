@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157A7A98E51
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE55A99075
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16AB34474B9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6428E22A1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF6D27055F;
-	Wed, 23 Apr 2025 14:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0061628B51A;
+	Wed, 23 Apr 2025 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUlWmV9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXa+HcI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0249F1A08A6;
-	Wed, 23 Apr 2025 14:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C0E27D763;
+	Wed, 23 Apr 2025 15:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420011; cv=none; b=n3ai5/kProp6WeKNpODvKyyoQ3kYFsPJa4mpeXbKJ7h8qx/YCK09lNrGazg6Aevgr0J0xdWs88P11FI6XdgtUDP0zfV6k2DSruyH74quIgnd/dwKhwihTwB6jRJdDzSyIfvhEejv+ywa7AIHEUE1N7O1urv1w9Ns39xCmg53nNw=
+	t=1745420790; cv=none; b=mKFEAQ9S/8x9ejf1RgLlAON1MhRKUkXL3mOXFe/wsnxwf6snO+7gPytwhtaL7HLvjSwCdVeulcgANGiXuprYFR0L8C+K9lkFnHmdJENFg06V5t0qEingueDFJEPLwPcZNugVw3/PwlPZtEb8kurBni57W4ef8jf0GI88MWTpP10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420011; c=relaxed/simple;
-	bh=7FpJDcdXWUG3ahWpbR8EEcS6Opha/SySD0Nedzd11wY=;
+	s=arc-20240116; t=1745420790; c=relaxed/simple;
+	bh=AsWVqR1QmoHR8ZIgSDtHtU84ZzsWyA8/Gj07Xb00OLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Sc6RrN8RgDHyw+RPvWvX03CbdGTuiDRBrh8iqVQIFBM3GBglYtPK/jUyJa1idrnEhF4SlVcjlhB1c4zPU2R0budlM6a/A0/EY7Z8yDnMThwA4zMOKKuMmgWkgfb8iTI1ZrYQsektT83sTu6BjdHbSki3bOUIgYa+BaOeJPmZk3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUlWmV9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B53C4CEE2;
-	Wed, 23 Apr 2025 14:53:29 +0000 (UTC)
+	 MIME-Version; b=bWrXMswB4ioCN7k2IRGcgRx0KH3HuPaVwCrwDkgWqA1762/Kj1QbTs+iLtJK3uj70VL5Y4acZi1XdNtzfaKaflsKWPJsfqDFRCRJ05Tv5Pzkv++703BM1WQHJu+XRTZCKNSGzRvl58hpLZcmi1aCBiewzDkCtjorim88NtMjQq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXa+HcI5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442BCC4CEE2;
+	Wed, 23 Apr 2025 15:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420010;
-	bh=7FpJDcdXWUG3ahWpbR8EEcS6Opha/SySD0Nedzd11wY=;
+	s=korg; t=1745420790;
+	bh=AsWVqR1QmoHR8ZIgSDtHtU84ZzsWyA8/Gj07Xb00OLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUlWmV9no0EhnJSjaR4fymR01Rjg5y9ESfYmYvrOwVqEI0jbVV9P9ehCILbUqKyRm
-	 NXUwcynWh3iaCZluQpPeK7gtC5lZuEXrDkW2NVgf4AYa8PuPW/KGcHNFmDqqDMzd+z
-	 LgtUg6zvAzEkK18knJ3TFSUbBYcnwX0Ge9VP7ucY=
+	b=XXa+HcI53EGsSjN1lhawnY+caRdP4Ry2V8Lj6F7Go3VE/gcNHj7GFtJBHPikCMTg5
+	 5Q8Cc0DwZUeJBeQIrkgc9SO02uFgApYDPsIxk6CXZXIx9lX5cFMx/nwFP5siHaf09H
+	 gB5iOppf2VJCjw/FztvA2EpcYrauRpS1S/KPvReQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frode Nordahl <frode.nordahl@canonical.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/291] tc: Ensure we have enough buffer space when sending filter netlink notifications
-Date: Wed, 23 Apr 2025 16:39:58 +0200
-Message-ID: <20250423142624.790818820@linuxfoundation.org>
+Subject: [PATCH 6.6 103/393] drm/amdkfd: Fix pqm_destroy_queue race with GPU reset
+Date: Wed, 23 Apr 2025 16:39:59 +0200
+Message-ID: <20250423142647.543153481@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,163 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 369609fc6272c2f6ad666ba4fd913f3baf32908f ]
+[ Upstream commit 7919b4cad5545ed93778f11881ceee72e4dbed66 ]
 
-The tfilter_notify() and tfilter_del_notify() functions assume that
-NLMSG_GOODSIZE is always enough to dump the filter chain. This is not
-always the case, which can lead to silent notify failures (because the
-return code of tfilter_notify() is not always checked). In particular,
-this can lead to NLM_F_ECHO not being honoured even though an action
-succeeds, which forces userspace to create workarounds[0].
+If GPU in reset, destroy_queue return -EIO, pqm_destroy_queue should
+delete the queue from process_queue_list and free the resource.
 
-Fix this by increasing the message size if dumping the filter chain into
-the allocated skb fails. Use the size of the incoming skb as a size hint
-if set, so we can start at a larger value when appropriate.
-
-To trigger this, run the following commands:
-
- # ip link add type veth
- # tc qdisc replace dev veth0 root handle 1: fq_codel
- # tc -echo filter add dev veth0 parent 1: u32 match u32 0 0 $(for i in $(seq 32); do echo action pedit munge ip dport set 22; done)
-
-Before this fix, tc just returns:
-
-Not a filter(cmd 2)
-
-After the fix, we get the correct echo:
-
-added filter dev veth0 parent 1: protocol all pref 49152 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 terminal flowid not_in_hw
-  match 00000000/00000000 at 0
-	action order 1:  pedit action pass keys 1
- 	index 1 ref 1 bind 1
-	key #0  at 20: val 00000016 mask ffff0000
-[repeated 32 times]
-
-[0] https://github.com/openvswitch/ovs/commit/106ef21860c935e5e0017a88bf42b94025c4e511
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Frode Nordahl <frode.nordahl@canonical.com>
-Closes: https://bugs.launchpad.net/ubuntu/+source/openvswitch/+bug/2018500
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250407105542.16601-1-toke@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_api.c | 66 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 45 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 2b44b82877f5a..89da596be1b86 100644
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -1824,6 +1824,7 @@ static int tcf_fill_node(struct net *net, struct sk_buff *skb,
- 	struct tcmsg *tcm;
- 	struct nlmsghdr  *nlh;
- 	unsigned char *b = skb_tail_pointer(skb);
-+	int ret = -EMSGSIZE;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index e057c2bc7be42..d11a71e8aa141 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -510,7 +510,7 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
+ 			pr_err("Pasid 0x%x destroy queue %d failed, ret %d\n",
+ 				pqm->process->pasid,
+ 				pqn->q->properties.queue_id, retval);
+-			if (retval != -ETIME)
++			if (retval != -ETIME && retval != -EIO)
+ 				goto err_destroy_queue;
+ 		}
  
- 	nlh = nlmsg_put(skb, portid, seq, event, sizeof(*tcm), flags);
- 	if (!nlh)
-@@ -1868,11 +1869,45 @@ static int tcf_fill_node(struct net *net, struct sk_buff *skb,
- 
- 	return skb->len;
- 
-+cls_op_not_supp:
-+	ret = -EOPNOTSUPP;
- out_nlmsg_trim:
- nla_put_failure:
--cls_op_not_supp:
- 	nlmsg_trim(skb, b);
--	return -1;
-+	return ret;
-+}
-+
-+static struct sk_buff *tfilter_notify_prep(struct net *net,
-+					   struct sk_buff *oskb,
-+					   struct nlmsghdr *n,
-+					   struct tcf_proto *tp,
-+					   struct tcf_block *block,
-+					   struct Qdisc *q, u32 parent,
-+					   void *fh, int event,
-+					   u32 portid, bool rtnl_held,
-+					   struct netlink_ext_ack *extack)
-+{
-+	unsigned int size = oskb ? max(NLMSG_GOODSIZE, oskb->len) : NLMSG_GOODSIZE;
-+	struct sk_buff *skb;
-+	int ret;
-+
-+retry:
-+	skb = alloc_skb(size, GFP_KERNEL);
-+	if (!skb)
-+		return ERR_PTR(-ENOBUFS);
-+
-+	ret = tcf_fill_node(net, skb, tp, block, q, parent, fh, portid,
-+			    n->nlmsg_seq, n->nlmsg_flags, event, false,
-+			    rtnl_held, extack);
-+	if (ret <= 0) {
-+		kfree_skb(skb);
-+		if (ret == -EMSGSIZE) {
-+			size += NLMSG_GOODSIZE;
-+			goto retry;
-+		}
-+		return ERR_PTR(-EINVAL);
-+	}
-+	return skb;
- }
- 
- static int tfilter_notify(struct net *net, struct sk_buff *oskb,
-@@ -1888,16 +1923,10 @@ static int tfilter_notify(struct net *net, struct sk_buff *oskb,
- 	if (!unicast && !rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC))
- 		return 0;
- 
--	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
--	if (!skb)
--		return -ENOBUFS;
--
--	if (tcf_fill_node(net, skb, tp, block, q, parent, fh, portid,
--			  n->nlmsg_seq, n->nlmsg_flags, event,
--			  false, rtnl_held, extack) <= 0) {
--		kfree_skb(skb);
--		return -EINVAL;
--	}
-+	skb = tfilter_notify_prep(net, oskb, n, tp, block, q, parent, fh, event,
-+				  portid, rtnl_held, extack);
-+	if (IS_ERR(skb))
-+		return PTR_ERR(skb);
- 
- 	if (unicast)
- 		err = rtnl_unicast(skb, net, portid);
-@@ -1920,16 +1949,11 @@ static int tfilter_del_notify(struct net *net, struct sk_buff *oskb,
- 	if (!rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC))
- 		return tp->ops->delete(tp, fh, last, rtnl_held, extack);
- 
--	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
--	if (!skb)
--		return -ENOBUFS;
--
--	if (tcf_fill_node(net, skb, tp, block, q, parent, fh, portid,
--			  n->nlmsg_seq, n->nlmsg_flags, RTM_DELTFILTER,
--			  false, rtnl_held, extack) <= 0) {
-+	skb = tfilter_notify_prep(net, oskb, n, tp, block, q, parent, fh,
-+				  RTM_DELTFILTER, portid, rtnl_held, extack);
-+	if (IS_ERR(skb)) {
- 		NL_SET_ERR_MSG(extack, "Failed to build del event notification");
--		kfree_skb(skb);
--		return -EINVAL;
-+		return PTR_ERR(skb);
- 	}
- 
- 	err = tp->ops->delete(tp, fh, last, rtnl_held, extack);
 -- 
 2.39.5
 
