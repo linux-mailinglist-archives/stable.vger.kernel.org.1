@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42687A98F28
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE4DA99233
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4E0A921194
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 407771B8611B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0838527FD60;
-	Wed, 23 Apr 2025 14:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7034D293B54;
+	Wed, 23 Apr 2025 15:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaZae+GJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFZwgBP5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B698A27FD7A;
-	Wed, 23 Apr 2025 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B434293B4A;
+	Wed, 23 Apr 2025 15:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420329; cv=none; b=Z+0aDe/WkOGpCcDqdBCs02SBWb1I1nRZIzkpnvh0EurZBsH10XNmqObQZWb3aDc1aqlW583s4dPbTnFcQ5aN9BTNHhDni+oPi5685WvjBNU8Ilj9nZ3+Jjj+RjTWytj9lmUDGIqpOlhHAWR5eBl0JZB/2iA9w01b1mKC3BhO3UQ=
+	t=1745421613; cv=none; b=tryQRyqzTdMbsL2q2lf38ZxyPNW50z2+jiSRUFNT4BE19S5VDojrXMYbY7Min7QWl9m+Xxabdam0s5LLFV6TzMqDRfjz+pzaYuHU0DLyT+Vg8+S1HjbqrR4ogr3/3ObuYGc2g5QriVLk+wVHNRAEibVP/eZsMwG5aA56blRFmdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420329; c=relaxed/simple;
-	bh=MgAfK1+hyfbdfvc4IgP7OE/I5kmmVfSOYnj7BVs0VHM=;
+	s=arc-20240116; t=1745421613; c=relaxed/simple;
+	bh=U1WRBLITAE6urfHrrmm6HWRK8+jCpJY6HCYDLvimRD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TH1CRdNy5e38He+2U7BlXqPLZqXajAEFA1arsNlpA0VOShQ9sdV8c9UOM4vG5oMVETHoc8dVdc4E4Qt00xuzIdF61ny1J7gJGkPb1BxoeyWcvq4db3opGWlnIvEGFVdLym6GztKqim8ubxhgTQb/3pVuRMi0uboJfqnRxKwv9+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaZae+GJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3198C4CEE2;
-	Wed, 23 Apr 2025 14:58:48 +0000 (UTC)
+	 MIME-Version; b=i0cjS2fjGh+aZ7t62JVS6s69RhPt9/N0eMfPPFBZaXQWSykYQT0kcMzidEqZY7R6dEaE9YSrjA9oF9bN5G+NfoTotyLzd4zytHAvBbnQJEyXC6Wk+w5AQHqFIMIwJJtlNVtAsUfJn++X2gnbQIVbVje8x7LYMnCv2T2173i3WuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xFZwgBP5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AD2C4CEE3;
+	Wed, 23 Apr 2025 15:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420329;
-	bh=MgAfK1+hyfbdfvc4IgP7OE/I5kmmVfSOYnj7BVs0VHM=;
+	s=korg; t=1745421613;
+	bh=U1WRBLITAE6urfHrrmm6HWRK8+jCpJY6HCYDLvimRD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NaZae+GJUuzIuhftqJKoQv4l/YZFQCC6vNEZB8HcPSqvBIao8ShsldyWNqbAy11AH
-	 SilRPacZJBmF/65llQVesVcblgok8CdjfJKXMv3XWLKQl3qattyigrbPsWyTOgXWM4
-	 dRbpXEmCkHsOHT5yjqLDH638llSP/YHJfR2KEd9o=
+	b=xFZwgBP5y+TqLzRsJU6gtZopojlAPxOAEYn9gl0BUOj4zLIFHf1aAhsX8TF+Aa8pv
+	 XHay60jQiN5LeI6tNt07NFZsvTkyPlWlb4T4iro8EqFwF8vS9y7eOU6T5OVW8HXBhW
+	 ubvSKdLGKkAkKHgS4mOMQcA6MuuyvcJ+cN2BDTuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 082/241] net: ti: icss-iep: Add phase offset configuration for perout signal
-Date: Wed, 23 Apr 2025 16:42:26 +0200
-Message-ID: <20250423142623.931981157@linuxfoundation.org>
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 158/291] pinctrl: qcom: Clear latched interrupt status when changing IRQ type
+Date: Wed, 23 Apr 2025 16:42:27 +0200
+Message-ID: <20250423142630.846138766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 220cb1be647a7ca4e60241405c66f8f612c9b046 ]
+commit e225128c3f8be879e7d4eb71a25949e188b420ae upstream.
 
-icss_iep_perout_enable_hw() is a common function for generating
-both pps and perout signals. When enabling pps, the application needs
-to only pass enable/disable argument, whereas for perout it supports
-different flags to configure the signal.
+When submitting the TLMM test driver, Bjorn reported that some of the test
+cases are failing for GPIOs that not are backed by PDC (i.e. "non-wakeup"
+GPIOs that are handled directly in pinctrl-msm). Basically, lingering
+latched interrupt state is still being delivered at IRQ request time, e.g.:
 
-In case the app passes a valid phase offset value, the signal should
-start toggling after that phase offset, else start immediately or
-as soon as possible. ICSS_IEP_SYNC_START_REG register take number of
-clock cycles to wait before starting the signal after activation time.
-Set appropriate value to this register to support phase offset.
+  ok 1 tlmm_test_silent_rising
+  tlmm_test_silent_falling: ASSERTION FAILED at drivers/pinctrl/qcom/tlmm-test.c:178
+  Expected atomic_read(&priv->intr_count) == 0, but
+      atomic_read(&priv->intr_count) == 1 (0x1)
+  not ok 2 tlmm_test_silent_falling
+  tlmm_test_silent_low: ASSERTION FAILED at drivers/pinctrl/qcom/tlmm-test.c:178
+  Expected atomic_read(&priv->intr_count) == 0, but
+      atomic_read(&priv->intr_count) == 1 (0x1)
+  not ok 3 tlmm_test_silent_low
+  ok 4 tlmm_test_silent_high
 
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Link: https://patch.msgid.link/20250304105753.1552159-3-m-malladi@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7349c9e99793 ("net: ti: icss-iep: Fix possible NULL pointer dereference for perout request")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Whether to report interrupts that came in while the IRQ was unclaimed
+doesn't seem to be well-defined in the Linux IRQ API. However, looking
+closer at these specific cases, we're actually reporting events that do not
+match the interrupt type requested by the driver:
+
+ 1. After "ok 1 tlmm_test_silent_rising", the GPIO is in low state and
+    configured for IRQF_TRIGGER_RISING.
+
+ 2. (a) In preparation for "tlmm_test_silent_falling", the GPIO is switched
+        to high state. The rising interrupt gets latched.
+    (b) The GPIO is re-configured for IRQF_TRIGGER_FALLING, but the latched
+        interrupt isn't cleared.
+    (c) The IRQ handler is called for the latched interrupt, but there
+        wasn't any falling edge.
+
+ 3. (a) For "tlmm_test_silent_low", the GPIO remains in high state.
+    (b) The GPIO is re-configured for IRQF_TRIGGER_LOW. This seems to
+        result in a phantom interrupt that gets latched.
+    (c) The IRQ handler is called for the latched interrupt, but the GPIO
+        isn't in low state.
+
+ 4. (a) For "tlmm_test_silent_high", the GPIO is switched to low state.
+    (b) This doesn't result in a latched interrupt, because RAW_STATUS_EN
+        was cleared when masking the level-triggered interrupt.
+
+Fix this by clearing the interrupt state whenever making any changes to the
+interrupt configuration. This includes previously disabled interrupts, but
+also any changes to interrupt polarity or detection type.
+
+With this change, all 16 test cases are now passing for the non-wakeup
+GPIOs in the TLMM.
+
+Cc: stable@vger.kernel.org
+Fixes: cf9d052aa600 ("pinctrl: qcom: Don't clear pending interrupts when enabling")
+Reported-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Closes: https://lore.kernel.org/r/20250227-tlmm-test-v1-1-d18877b4a5db@oss.qualcomm.com/
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Tested-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/20250312-pinctrl-msm-type-latch-v1-1-ce87c561d3d7@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-msm.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 2981c19c48b18..b4a34c57b7b48 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -407,6 +407,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 				     struct ptp_perout_request *req, int on)
- {
- 	struct timespec64 ts;
-+	u64 ns_start;
- 	u64 ns_width;
- 	int ret;
- 	u64 cmp;
-@@ -416,6 +417,14 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 	ts.tv_nsec = req->on.nsec;
- 	ns_width = timespec64_to_ns(&ts);
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -1006,8 +1006,7 @@ static int msm_gpio_irq_set_type(struct
+ 	struct msm_pinctrl *pctrl = gpiochip_get_data(gc);
+ 	const struct msm_pingroup *g;
+ 	unsigned long flags;
+-	bool was_enabled;
+-	u32 val;
++	u32 val, oldval;
  
-+	if (req->flags & PTP_PEROUT_PHASE) {
-+		ts.tv_sec = req->phase.sec;
-+		ts.tv_nsec = req->phase.nsec;
-+		ns_start = timespec64_to_ns(&ts);
-+	} else {
-+		ns_start = 0;
-+	}
-+
- 	if (iep->ops && iep->ops->perout_enable) {
- 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
- 		if (ret)
-@@ -430,7 +439,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
- 				     div_u64(ns_width, iep->def_inc));
- 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
--			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
-+			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
-+				     div_u64(ns_start, iep->def_inc));
- 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
- 			/* Enable CMP 1 */
- 			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
-@@ -457,6 +467,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 	if (msm_gpio_needs_dual_edge_parent_workaround(d, type)) {
+ 		set_bit(d->hwirq, pctrl->dual_edge_irqs);
+@@ -1067,8 +1066,7 @@ static int msm_gpio_irq_set_type(struct
+ 	 * internal circuitry of TLMM, toggling the RAW_STATUS
+ 	 * could cause the INTR_STATUS to be set for EDGE interrupts.
+ 	 */
+-	val = msm_readl_intr_cfg(pctrl, g);
+-	was_enabled = val & BIT(g->intr_raw_status_bit);
++	val = oldval = msm_readl_intr_cfg(pctrl, g);
+ 	val |= BIT(g->intr_raw_status_bit);
+ 	if (g->intr_detection_width == 2) {
+ 		val &= ~(3 << g->intr_detection_bit);
+@@ -1121,9 +1119,11 @@ static int msm_gpio_irq_set_type(struct
+ 	/*
+ 	 * The first time we set RAW_STATUS_EN it could trigger an interrupt.
+ 	 * Clear the interrupt.  This is safe because we have
+-	 * IRQCHIP_SET_TYPE_MASKED.
++	 * IRQCHIP_SET_TYPE_MASKED. When changing the interrupt type, we could
++	 * also still have a non-matching interrupt latched, so clear whenever
++	 * making changes to the interrupt configuration.
+ 	 */
+-	if (!was_enabled)
++	if (val != oldval)
+ 		msm_ack_intr_status(pctrl, g);
  
- 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
- 				     div_u64(ns_width, iep->def_inc));
-+			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
-+				     div_u64(ns_start, iep->def_inc));
- 			/* Enable Sync in single shot mode  */
- 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
- 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
-@@ -487,7 +499,8 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
- 	int ret = 0;
- 
- 	/* Reject requests with unsupported flags */
--	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE)
-+	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
-+			  PTP_PEROUT_PHASE))
- 		return -EOPNOTSUPP;
- 
- 	mutex_lock(&iep->ptp_clk_mutex);
-@@ -588,6 +601,7 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
- 	if (on) {
- 		ns = icss_iep_gettime(iep, NULL);
- 		ts = ns_to_timespec64(ns);
-+		rq.perout.flags = 0;
- 		rq.perout.period.sec = 1;
- 		rq.perout.period.nsec = 0;
- 		rq.perout.start.sec = ts.tv_sec + 2;
--- 
-2.39.5
-
+ 	if (test_bit(d->hwirq, pctrl->dual_edge_irqs))
 
 
 
