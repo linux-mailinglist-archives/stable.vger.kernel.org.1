@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15508A98E0C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A5DCA98D76
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A673D3AA613
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 078557A674D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D22280CD1;
-	Wed, 23 Apr 2025 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478411B041E;
+	Wed, 23 Apr 2025 14:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu3DQF7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LP+NrVo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23864280A32;
-	Wed, 23 Apr 2025 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03ECD2D613;
+	Wed, 23 Apr 2025 14:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419824; cv=none; b=c0XW468DbJ9d+1AH7A3p9a5NbemS7kc5xpgumNX8uT3Mr3XG9l26e+QcweITlrlQNxRZEuu+rmEpF7xcsRminRGeWq3mAYPeYsF7+u1e8oRnJl7x4mLuOd0z/AM/M0At8f8oh4pWx3nRr6EGhzBxr+y1V7PrnlE4dQD1K6H2pws=
+	t=1745419537; cv=none; b=DkQmKlccJr5ovtsgsM9m+L+SbpHnQWTZcTTCI7iY3qZskNQU7RDm+Oex9idvmJNOxvK+zODgPzJDRrzmNi0yxHH/AHjRPvelgNS5QaQr82n5yE/rprVKkFZhUWy42wgTzrA+PlhyiEtUx47X0ebEigt0sbYvR2UmuUMljS/azds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419824; c=relaxed/simple;
-	bh=qQC7OByffDQhkAMh2sHcGmWSbath0c+at8BawLMvFSE=;
+	s=arc-20240116; t=1745419537; c=relaxed/simple;
+	bh=oQLNLUvN7u3rQ11+heMLd0ymg4Mxtgn9WxGusPOEIYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRK/xpy7kSRMbu85hlmNc8bt+2/MWDmkzsvdQF+8Tu2jCrtOEyr3oZpv1i9bfVxUN62LMAH0vqGm8RM2pdW/rskzrToeKBc187oO2LWFeyO1r+PF7djOenG5peJ6v/BK4YfI3ih6DqX/ZKn9mhcMybid932VAheMK3hlyXOyTPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu3DQF7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA2F2C4CEE2;
-	Wed, 23 Apr 2025 14:50:23 +0000 (UTC)
+	 MIME-Version; b=GfX8UCLBDz5j9218W9Kj8Y0X44+anVXma10iMIEXHTKvX7F7x/jWShP/E1FO8HuuGH7L/LqT9EULUuwC0V5q+e75PGAIHtVBLva/O+xb5681yK7K4mYAUJcV0MaBXyif/I+mAJh4ToNzcRHT7DTLuEW2M56+6SXZlUk2tzh3/UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LP+NrVo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EBDC4CEE2;
+	Wed, 23 Apr 2025 14:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419824;
-	bh=qQC7OByffDQhkAMh2sHcGmWSbath0c+at8BawLMvFSE=;
+	s=korg; t=1745419536;
+	bh=oQLNLUvN7u3rQ11+heMLd0ymg4Mxtgn9WxGusPOEIYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mu3DQF7A2qj9MVaQbVCsgJdTXBjYVD9MlfJsW+ZT00P89b0QiIyBLziLP3ymloSmg
-	 Ea8NbUQsG/0CLNV4Mnke7pzZokum5GO4Q1P8yRjVU6U+PfF4ovUBnd0JWsO/fGLr6f
-	 pRERQcoLyOK3X5a1QyxSfianiXfe04hLoNjvgeu0=
+	b=LP+NrVo8fllKvbJ9Lr9jjL+LMmR6dd7fotULkdmveTAX8+sUWCsBO39GaJr9/W0P4
+	 14DrwQjPD27tX47vTSRK9YJjAbgrCFaGTf9FuxiW7/BttmV6ykgPeRy19RV3m7GZux
+	 jb97aHjBfc7dgKAMpfhO+sGToSX3IlJ4Z2QTSx5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brady Norander <bradynorander@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Remi Pommarel <repk@triplefau.lt>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 011/241] ASoC: dwc: always enable/disable i2s irqs
+Subject: [PATCH 6.12 003/223] wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()
 Date: Wed, 23 Apr 2025 16:41:15 +0200
-Message-ID: <20250423142620.985402960@linuxfoundation.org>
+Message-ID: <20250423142617.260980619@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brady Norander <bradynorander@gmail.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 2b727b3f8a04fe52f55316ccb8792cfd9b2dd05d ]
+[ Upstream commit a104042e2bf6528199adb6ca901efe7b60c2c27f ]
 
-Commit a42e988 ("ASoC: dwc: add DMA handshake control") changed the
-behavior of the driver to not enable or disable i2s irqs if using DMA. This
-breaks platforms such as AMD ACP. Audio playback appears to work but no
-audio can be heard. Revert to the old behavior by always enabling and
-disabling i2s irqs while keeping DMA handshake control.
+The ieee80211 skb control block key (set when skb was queued) could have
+been removed before ieee80211_tx_dequeue() call. ieee80211_tx_dequeue()
+already called ieee80211_tx_h_select_key() to get the current key, but
+the latter do not update the key in skb control block in case it is
+NULL. Because some drivers actually use this key in their TX callbacks
+(e.g. ath1{1,2}k_mac_op_tx()) this could lead to the use after free
+below:
 
-Fixes: a42e988b626 ("ASoC: dwc: add DMA handshake control")
-Signed-off-by: Brady Norander <bradynorander@gmail.com>
-Link: https://patch.msgid.link/20250330130852.37881-3-bradynorander@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  BUG: KASAN: slab-use-after-free in ath11k_mac_op_tx+0x590/0x61c
+  Read of size 4 at addr ffffff803083c248 by task kworker/u16:4/1440
+
+  CPU: 3 UID: 0 PID: 1440 Comm: kworker/u16:4 Not tainted 6.13.0-ge128f627f404 #2
+  Hardware name: HW (DT)
+  Workqueue: bat_events batadv_send_outstanding_bcast_packet
+  Call trace:
+   show_stack+0x14/0x1c (C)
+   dump_stack_lvl+0x58/0x74
+   print_report+0x164/0x4c0
+   kasan_report+0xac/0xe8
+   __asan_report_load4_noabort+0x1c/0x24
+   ath11k_mac_op_tx+0x590/0x61c
+   ieee80211_handle_wake_tx_queue+0x12c/0x1c8
+   ieee80211_queue_skb+0xdcc/0x1b4c
+   ieee80211_tx+0x1ec/0x2bc
+   ieee80211_xmit+0x224/0x324
+   __ieee80211_subif_start_xmit+0x85c/0xcf8
+   ieee80211_subif_start_xmit+0xc0/0xec4
+   dev_hard_start_xmit+0xf4/0x28c
+   __dev_queue_xmit+0x6ac/0x318c
+   batadv_send_skb_packet+0x38c/0x4b0
+   batadv_send_outstanding_bcast_packet+0x110/0x328
+   process_one_work+0x578/0xc10
+   worker_thread+0x4bc/0xc7c
+   kthread+0x2f8/0x380
+   ret_from_fork+0x10/0x20
+
+  Allocated by task 1906:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_alloc_info+0x3c/0x4c
+   __kasan_kmalloc+0xac/0xb0
+   __kmalloc_noprof+0x1b4/0x380
+   ieee80211_key_alloc+0x3c/0xb64
+   ieee80211_add_key+0x1b4/0x71c
+   nl80211_new_key+0x2b4/0x5d8
+   genl_family_rcv_msg_doit+0x198/0x240
+  <...>
+
+  Freed by task 1494:
+   kasan_save_stack+0x28/0x4c
+   kasan_save_track+0x1c/0x40
+   kasan_save_free_info+0x48/0x94
+   __kasan_slab_free+0x48/0x60
+   kfree+0xc8/0x31c
+   kfree_sensitive+0x70/0x80
+   ieee80211_key_free_common+0x10c/0x174
+   ieee80211_free_keys+0x188/0x46c
+   ieee80211_stop_mesh+0x70/0x2cc
+   ieee80211_leave_mesh+0x1c/0x60
+   cfg80211_leave_mesh+0xe0/0x280
+   cfg80211_leave+0x1e0/0x244
+  <...>
+
+Reset SKB control block key before calling ieee80211_tx_h_select_key()
+to avoid that.
+
+Fixes: bb42f2d13ffc ("mac80211: Move reorder-sensitive TX handlers to after TXQ dequeue")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Link: https://patch.msgid.link/06aa507b853ca385ceded81c18b0a6dd0f081bc8.1742833382.git.repk@triplefau.lt
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/dwc/dwc-i2s.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ net/mac80211/tx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
-index 57b789d7fbedd..5b4f20dbf7bba 100644
---- a/sound/soc/dwc/dwc-i2s.c
-+++ b/sound/soc/dwc/dwc-i2s.c
-@@ -199,12 +199,10 @@ static void i2s_start(struct dw_i2s_dev *dev,
- 	else
- 		i2s_write_reg(dev->i2s_base, IRER, 1);
- 
--	/* I2S needs to enable IRQ to make a handshake with DMAC on the JH7110 SoC */
--	if (dev->use_pio || dev->is_jh7110)
--		i2s_enable_irqs(dev, substream->stream, config->chan_nr);
--	else
-+	if (!(dev->use_pio || dev->is_jh7110))
- 		i2s_enable_dma(dev, substream->stream);
- 
-+	i2s_enable_irqs(dev, substream->stream, config->chan_nr);
- 	i2s_write_reg(dev->i2s_base, CER, 1);
- }
- 
-@@ -218,11 +216,12 @@ static void i2s_stop(struct dw_i2s_dev *dev,
- 	else
- 		i2s_write_reg(dev->i2s_base, IRER, 0);
- 
--	if (dev->use_pio || dev->is_jh7110)
--		i2s_disable_irqs(dev, substream->stream, 8);
--	else
-+	if (!(dev->use_pio || dev->is_jh7110))
- 		i2s_disable_dma(dev, substream->stream);
- 
-+	i2s_disable_irqs(dev, substream->stream, 8);
-+
-+
- 	if (!dev->active) {
- 		i2s_write_reg(dev->i2s_base, CER, 0);
- 		i2s_write_reg(dev->i2s_base, IER, 0);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 0ff8b56f58070..9b3a5ef20f29e 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3892,6 +3892,7 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+ 	 * The key can be removed while the packet was queued, so need to call
+ 	 * this here to get the current key.
+ 	 */
++	info->control.hw_key = NULL;
+ 	r = ieee80211_tx_h_select_key(&tx);
+ 	if (r != TX_CONTINUE) {
+ 		ieee80211_free_txskb(&local->hw, skb);
 -- 
 2.39.5
 
