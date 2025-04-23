@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF535A993F3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB4FA99412
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D1592685B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8E079A404D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7A12BF3E1;
-	Wed, 23 Apr 2025 15:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078C1262FD6;
+	Wed, 23 Apr 2025 15:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9wbZ0BO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbMVRhpQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10EA28BAA0;
-	Wed, 23 Apr 2025 15:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8131284B20;
+	Wed, 23 Apr 2025 15:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422545; cv=none; b=ryybZQnQvtRT/GmiE8jRQ4SQY8rYJJYq2642L3JitX9yscSsB1Fj7t6Yd6R7nvw9lkH1fpLUqn33awzwbue8ch3RakTP92lEojyU5r+N7ZhGDZ3Elh24gnMhidwNH4EbnL/X4hl1xTc48StpBuwPYirIS1KqngXRMq1/eJywvhE=
+	t=1745422280; cv=none; b=COFIwgTzFtPMI9N95YEnrfJUUWjBKcyPUg41e2iZ1tlTrLrfXHQVna0vgHKhgS+Ktey6lQdMIRQd7Er0K5c8Y2EDXF1IUDzsdLDDHPgnI7S2FfNXGUAP9nArOumHtcGLzu7Ut7Idt7zfJSIfFQEcM08cSlTbeRfaBauwlzn8uZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422545; c=relaxed/simple;
-	bh=iGbppD07ifKOHbgaykku/600YEqvE5lagOpUEa0a5K4=;
+	s=arc-20240116; t=1745422280; c=relaxed/simple;
+	bh=2u7AoL9ZG/ZriXhn9VFwYyZT31u1NjLyFZkUKuZ4eQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ocy2pAfdv5qLX3ul2zWN/FAhjniXCUtyc76+t6rjFkkHkcbl3UtsYgmwRfhIgHsKKrsarlC4nPDPv+J3il8lhozYPTcE6DSK9JIVQO3bk98JIZlaoLmkSDngNG5uCZE95r7p2Y3jbWGagVVSC3Y8QWNGXdYqRxoNSE3dR1G9foY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9wbZ0BO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55387C4CEE3;
-	Wed, 23 Apr 2025 15:35:45 +0000 (UTC)
+	 MIME-Version; b=iMOKJU//Mwi5CBmdLDNupFLa60SWng8hfwaPPqDhGHt6f8X0XlI3vKJN3w22ZueZY4W3py9hFLrWFg3hYRH6JpVVjTzwJBqKrth0I/1bXG2/h9Hvh6PcsBB95gryc08yykYVXUrnuKFeU7PC36nTE8sAYDwC9bRrCvDnwwIU6Eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbMVRhpQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4652DC4CEE2;
+	Wed, 23 Apr 2025 15:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422545;
-	bh=iGbppD07ifKOHbgaykku/600YEqvE5lagOpUEa0a5K4=;
+	s=korg; t=1745422280;
+	bh=2u7AoL9ZG/ZriXhn9VFwYyZT31u1NjLyFZkUKuZ4eQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9wbZ0BOUNwXbRN0QuMaDMy77lm0dHt9hTAqwu25ZvHUdi9qtbwOih2sa1k3fFM9L
-	 57xdDnp71PXa15Ab6JV1LkYj7OGhl93Qbe/NydEkORmUY3F4SYTDVTdMG2Eqk5WoLW
-	 dDf/4KU7sSJEB6u9yS0moYyvzfAybBgQCQXSh4ag=
+	b=XbMVRhpQIapNgHtGJ2Z1D3utPnxo9u9Zdg4JHWtB/4l5rngyeh4QspN0T8v0mdotg
+	 Ugb4vdczMEtGLMcXMxH5ttx0JvRzwvrBCkjx6wKfpVwbjAngwk1DTTak+iqwS3IZiR
+	 JBkdkkkYOCDrgsWjM7lfuAsZMC9niKf2X1AFv0o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.6 360/393] cpufreq: Reference count policy in cpufreq_update_limits()
-Date: Wed, 23 Apr 2025 16:44:16 +0200
-Message-ID: <20250423142658.209590516@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 269/291] btrfs: fix qgroup reserve leaks in cow_file_range
+Date: Wed, 23 Apr 2025 16:44:18 +0200
+Message-ID: <20250423142635.413512902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +62,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Boris Burkov <boris@bur.io>
 
-commit 9e4e249018d208678888bdf22f6b652728106528 upstream.
+commit 30479f31d44d47ed00ae0c7453d9b253537005b2 upstream.
 
-Since acpi_processor_notify() can be called before registering a cpufreq
-driver or even in cases when a cpufreq driver is not registered at all,
-cpufreq_update_limits() needs to check if a cpufreq driver is present
-and prevent it from being unregistered.
+In the buffered write path, the dirty page owns the qgroup reserve until
+it creates an ordered_extent.
 
-For this purpose, make it call cpufreq_cpu_get() to obtain a cpufreq
-policy pointer for the given CPU and reference count the corresponding
-policy object, if present.
+Therefore, any errors that occur before the ordered_extent is created
+must free that reservation, or else the space is leaked. The fstest
+generic/475 exercises various IO error paths, and is able to trigger
+errors in cow_file_range where we fail to get to allocating the ordered
+extent. Note that because we *do* clear delalloc, we are likely to
+remove the inode from the delalloc list, so the inodes/pages to not have
+invalidate/launder called on them in the commit abort path.
 
-Fixes: 5a25e3f7cc53 ("cpufreq: intel_pstate: Driver-specific handling of _PPC updates")
-Closes: https://lore.kernel.org/linux-acpi/Z-ShAR59cTow0KcR@mail-itl
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/1928789.tdWV9SEqCh@rjwysocki.net
-[do not use __free(cpufreq_cpu_put) in a backport]
-Signed-off-by: Marek Marczykowski-GÃ³recki <marmarek@invisiblethingslab.com>
+This results in failures at the unmount stage of the test that look like:
+
+  BTRFS: error (device dm-8 state EA) in cleanup_transaction:2018: errno=-5 IO failure
+  BTRFS: error (device dm-8 state EA) in btrfs_replace_file_extents:2416: errno=-5 IO failure
+  BTRFS warning (device dm-8 state EA): qgroup 0/5 has unreleased space, type 0 rsv 28672
+  ------------[ cut here ]------------
+  WARNING: CPU: 3 PID: 22588 at fs/btrfs/disk-io.c:4333 close_ctree+0x222/0x4d0 [btrfs]
+  Modules linked in: btrfs blake2b_generic libcrc32c xor zstd_compress raid6_pq
+  CPU: 3 PID: 22588 Comm: umount Kdump: loaded Tainted: G W          6.10.0-rc7-gab56fde445b8 #21
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
+  RIP: 0010:close_ctree+0x222/0x4d0 [btrfs]
+  RSP: 0018:ffffb4465283be00 EFLAGS: 00010202
+  RAX: 0000000000000001 RBX: ffffa1a1818e1000 RCX: 0000000000000001
+  RDX: 0000000000000000 RSI: ffffb4465283bbe0 RDI: ffffa1a19374fcb8
+  RBP: ffffa1a1818e13c0 R08: 0000000100028b16 R09: 0000000000000000
+  R10: 0000000000000003 R11: 0000000000000003 R12: ffffa1a18ad7972c
+  R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+  FS:  00007f9168312b80(0000) GS:ffffa1a4afcc0000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f91683c9140 CR3: 000000010acaa000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   ? close_ctree+0x222/0x4d0 [btrfs]
+   ? __warn.cold+0x8e/0xea
+   ? close_ctree+0x222/0x4d0 [btrfs]
+   ? report_bug+0xff/0x140
+   ? handle_bug+0x3b/0x70
+   ? exc_invalid_op+0x17/0x70
+   ? asm_exc_invalid_op+0x1a/0x20
+   ? close_ctree+0x222/0x4d0 [btrfs]
+   generic_shutdown_super+0x70/0x160
+   kill_anon_super+0x11/0x40
+   btrfs_kill_super+0x11/0x20 [btrfs]
+   deactivate_locked_super+0x2e/0xa0
+   cleanup_mnt+0xb5/0x150
+   task_work_run+0x57/0x80
+   syscall_exit_to_user_mode+0x121/0x130
+   do_syscall_64+0xab/0x1a0
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f916847a887
+  ---[ end trace 0000000000000000 ]---
+  BTRFS error (device dm-8 state EA): qgroup reserved space leaked
+
+Cases 2 and 3 in the out_reserve path both pertain to this type of leak
+and must free the reserved qgroup data. Because it is already an error
+path, I opted not to handle the possible errors in
+btrfs_free_qgroup_data.
+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/btrfs/inode.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2743,10 +2743,18 @@ EXPORT_SYMBOL(cpufreq_update_policy);
-  */
- void cpufreq_update_limits(unsigned int cpu)
- {
-+	struct cpufreq_policy *policy;
-+
-+	policy = cpufreq_cpu_get(cpu);
-+	if (!policy)
-+		return;
-+
- 	if (cpufreq_driver->update_limits)
- 		cpufreq_driver->update_limits(cpu);
- 	else
- 		cpufreq_update_policy(cpu);
-+
-+	cpufreq_cpu_put(policy);
- }
- EXPORT_SYMBOL_GPL(cpufreq_update_limits);
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1428,6 +1428,7 @@ out_unlock:
+ 					     locked_page,
+ 					     clear_bits,
+ 					     page_ops);
++		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
+ 		start += cur_alloc_size;
+ 	}
  
+@@ -1441,6 +1442,7 @@ out_unlock:
+ 		clear_bits |= EXTENT_CLEAR_DATA_RESV;
+ 		extent_clear_unlock_delalloc(inode, start, end, locked_page,
+ 					     clear_bits, page_ops);
++		btrfs_qgroup_free_data(inode, NULL, start, cur_alloc_size, NULL);
+ 	}
+ 	return ret;
+ }
+@@ -2168,13 +2170,15 @@ error:
+ 	if (nocow)
+ 		btrfs_dec_nocow_writers(bg);
+ 
+-	if (ret && cur_offset < end)
++	if (ret && cur_offset < end) {
+ 		extent_clear_unlock_delalloc(inode, cur_offset, end,
+ 					     locked_page, EXTENT_LOCKED |
+ 					     EXTENT_DELALLOC | EXTENT_DEFRAG |
+ 					     EXTENT_DO_ACCOUNTING, PAGE_UNLOCK |
+ 					     PAGE_START_WRITEBACK |
+ 					     PAGE_END_WRITEBACK);
++		btrfs_qgroup_free_data(inode, NULL, cur_offset, end - cur_offset + 1, NULL);
++	}
+ 	btrfs_free_path(path);
+ 	return ret;
+ }
 
 
 
