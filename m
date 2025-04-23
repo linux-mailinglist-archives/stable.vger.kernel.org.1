@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-135686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA19A98FDA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5072A98FE5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D4BE5A0449
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AAFBD1BA09AE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9124C28468C;
-	Wed, 23 Apr 2025 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC26C2857EF;
+	Wed, 23 Apr 2025 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYLwk/04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZlv5aLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4911027F73E;
-	Wed, 23 Apr 2025 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A7E263F2D;
+	Wed, 23 Apr 2025 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420577; cv=none; b=CUCVzExQLF8aHpl7O8y1e2wbiRhPj4aQLfSuqMhBM40u2acoEkWFHy/Eje5/L9l/UHnXfzIoMCLUoYuuo1/oF1BiNyBeYFQHw/sInfZCDstSw6BQ++1IplDUIv3jbBz/+mwW63WJAi6Q6kn3XjAvQh9EAoAcIfUNthNPIOPYLBM=
+	t=1745420590; cv=none; b=F7z0azx37jOPRbPRSKc2efrFk1DdMFPIe0F8UsG38YV485ciZOMs3m67YRJCTEZUitzl07VMr64oSLeCJnxHT/ILQ7+j6EVO+gkZ5RLYCgOA/ZKkOfeKKzLTHvXU+dAsmKYyh3SY10exwZK6nc54blhLEh29hsdik9qNwHF2M3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420577; c=relaxed/simple;
-	bh=XgNOuZlujB1E9Qx8hkvikJMFpfo8Yo8h/7gO5oWgpVI=;
+	s=arc-20240116; t=1745420590; c=relaxed/simple;
+	bh=o62NYw+JbA7SXYimpVcp1ddg/BNwKybROR4ZyGKPXvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZRAuzmgf6OLCCxIBANw9H+VcFth9gSCPNiVnipMtloUX2Qyv5O9EqEWwk4R0uqLK+CzBkP+LU2XUR8PUa9pxSk37PdFInzgHss2HdUtDJT0AtS6VelrSixoqfAEOFi2xn67IUjUSGHdT0iwMNpJe3y40AvMPUK6KxdFGnZS02k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYLwk/04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB39C4CEE2;
-	Wed, 23 Apr 2025 15:02:56 +0000 (UTC)
+	 MIME-Version; b=a9jjK9ovdJ4BO7yVvStUd2c0vDC9i5IrU8A8aMMvVRSM7GP0v/VWM9oqgaAmu5WeOLSZpWoHCpxxFJECNWqCrnE/LJBWZtcZkbplmBJG2pTFrohbgY9bDIYeVcLhOzRVxIKzFu1ojXSojbVSbeJ4SoDDhI6cT7QQyOWz2cCWWBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZlv5aLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378D9C4CEE2;
+	Wed, 23 Apr 2025 15:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420577;
-	bh=XgNOuZlujB1E9Qx8hkvikJMFpfo8Yo8h/7gO5oWgpVI=;
+	s=korg; t=1745420590;
+	bh=o62NYw+JbA7SXYimpVcp1ddg/BNwKybROR4ZyGKPXvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYLwk/04/PsT5GOkjU6EEi/3BVelGOD70+Ow+V38u8x2jVQDSXkRkml7/jlr60jXj
-	 4qXyuPoNpbWuZj05/6jGEO57CMMZ8gbYBTH7mm/epEvKHjUYVEScdsGywyBXAGUIqU
-	 DnZhngJL8Aw9jqydxUeY7pGEvIBxRW9U+OwJpisM=
+	b=sZlv5aLRxjfpbnv5NVX8nulCM6yFOW8hgKixCfrS+nrNi6NdHg3S815pOOD6OgQTE
+	 uzFFlakfLxmPPn7IhRgiqSgsxeLBn6B9P9g8Xm6QpOgfJjJ3whvCD0AzCTXLp6YPCM
+	 nb7UdE2QYh5K3p7mu6m2OVCeDURZKwvL+ELha/os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/393] Bluetooth: qca: simplify WCN399x NVM loading
-Date: Wed, 23 Apr 2025 16:39:46 +0200
-Message-ID: <20250423142647.014497887@linuxfoundation.org>
+Subject: [PATCH 6.6 091/393] drm: allow encoder mode_set even when connectors change for crtc
+Date: Wed, 23 Apr 2025 16:39:47 +0200
+Message-ID: <20250423142647.052116742@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -66,53 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit 1cc41b5092e3aa511454ec882c525af311bee631 ]
+[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
 
-The WCN399x code has two separate cases for loading the NVM data. In
-preparation to adding support for WCN3950, which also requires similar
-quirk, split the "variant" to be specified explicitly and merge two
-snprintfs into a single one.
+In certain use-cases, a CRTC could switch between two encoders
+and because the mode being programmed on the CRTC remains
+the same during this switch, the CRTC's mode_changed remains false.
+In such cases, the encoder's mode_set also gets skipped.
 
+Skipping mode_set on the encoder for such cases could cause an issue
+because even though the same CRTC mode was being used, the encoder
+type could have changed like the CRTC could have switched from a
+real time encoder to a writeback encoder OR vice-versa.
+
+Allow encoder's mode_set to happen even when connectors changed on a
+CRTC and not just when the mode changed.
+
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 892e2540f008a..5651f40db1736 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -807,6 +807,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		   const char *firmware_name)
- {
- 	struct qca_fw_config config = {};
-+	const char *variant = "";
- 	int err;
- 	u8 rom_ver = 0;
- 	u32 soc_ver;
-@@ -901,13 +902,11 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		case QCA_WCN3990:
- 		case QCA_WCN3991:
- 		case QCA_WCN3998:
--			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02xu.bin", rom_ver);
--			} else {
--				snprintf(config.fwname, sizeof(config.fwname),
--					 "qca/crnv%02x.bin", rom_ver);
--			}
-+			if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID)
-+				variant = "u";
-+
-+			snprintf(config.fwname, sizeof(config.fwname),
-+				 "qca/crnv%02x%s.bin", rom_ver, variant);
- 			break;
- 		case QCA_WCN3988:
- 			snprintf(config.fwname, sizeof(config.fwname),
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index 554d4468aa7c0..f3681970887cc 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -1373,7 +1373,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
+ 		mode = &new_crtc_state->mode;
+ 		adjusted_mode = &new_crtc_state->adjusted_mode;
+ 
+-		if (!new_crtc_state->mode_changed)
++		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
+ 			continue;
+ 
+ 		drm_dbg_atomic(dev, "modeset on [ENCODER:%d:%s]\n",
 -- 
 2.39.5
 
