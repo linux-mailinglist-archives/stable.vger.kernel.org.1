@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4040A98FD6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71159A9929D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1651C8E01B2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC814A1B4B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337AD2836A4;
-	Wed, 23 Apr 2025 15:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E8E29DB83;
+	Wed, 23 Apr 2025 15:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFKu3xKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLQeFvT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F2B283686;
-	Wed, 23 Apr 2025 15:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25E22918CE;
+	Wed, 23 Apr 2025 15:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420551; cv=none; b=KjgnfkzGZJXj1tnwkTrjctgZeWeeM/Epb6IU626AV4DNN52WaDdkrSWeOoqydxIADQbaiNEjImEsuQT/qEDxJ9CE0kNhEZ2a5eE/4lmRM2ZGrvkf9IWX1bXIfBPz7yQ9I2VXaefmrScMEZWZ2ZUqdze6DrCUZnI2/nsbxpEsnYo=
+	t=1745422063; cv=none; b=IXVw6pYhINdKE4FrNDLnw6cOU/yuxOkRCsLY8rsEclsHrXDD+KUjdYJJ1I/Bh12SA6qKMa6rzmiZD7DWvDd71k2toR3FDEQV4CzKYZkCBagWCZfhOYzCc7wRhaBlw6FA/3yd+2gwOW34TQD1L2pDMPvw5Ilq9HBdvmkx8n/FWw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420551; c=relaxed/simple;
-	bh=O9M2672Txs6vOhk9gBfcm1a6rQjmgsXd6BBQDRAT6+8=;
+	s=arc-20240116; t=1745422063; c=relaxed/simple;
+	bh=jx7nKo2v7Q4mHjBec5nf73HmK37Gj7u95S6uF5FDfMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAh+rHjFxEfmux/s6hlo4IIjMhqU1pZyOceMc6v+N1phH2Lw7+zZDUKWnqGyTE4YzBSWw9B77ftYRW4riPZXcLhPx1EBjWL7Zgx5v6IOAiLEdIMonOu0bXI0QKQPVyHHJSZmhqO9iB3D0jKE5cOLLXJ3hDfrsjIizakhOGULT7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFKu3xKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 694AFC4CEE8;
-	Wed, 23 Apr 2025 15:02:30 +0000 (UTC)
+	 MIME-Version; b=W8YKQiVKYrZpH3pPUTe4385c+sUO5IFbNvRpqmpPlSJj12bkSLPfyr8FTIuNhPLbw3s6j/SYNWQz9ZDZRzYu+KIeMJ3T/3aupCiVJYUPTUogAFO41ycLSprMgYfBc9Lw2qIEJyzoruat4tRafjFGgbIdlc0oIam+/8zuw9ktEXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLQeFvT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822DFC4CEE2;
+	Wed, 23 Apr 2025 15:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420550;
-	bh=O9M2672Txs6vOhk9gBfcm1a6rQjmgsXd6BBQDRAT6+8=;
+	s=korg; t=1745422062;
+	bh=jx7nKo2v7Q4mHjBec5nf73HmK37Gj7u95S6uF5FDfMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFKu3xKRExgtaGuxi4nDj0LLXrtI+6v0/VcjWEVSAVIMYv8OpJgl9sCDqxA3PeVSs
-	 Swb1AFdTucQxnMVIlMwwfspE+xsZK1RJ5fDxxhPLyXEWu25+YyOSJm8WwQKc1Vdf5E
-	 cn5+HXJd1TYUvAW7WktwjkGO88h+fZsWh8wjxpKA=
+	b=rLQeFvT76SuM6wMtwmMOj+mICxxrstKlYNqbtYZNLW6Tes5r1GRaaxgP0sCdgC/cU
+	 35bdBqyth2tFLTOoJZ/bireTA0zB5a8gfgDD1I2rcDwX5Am/DLImkuXqPuNtC9X3BZ
+	 EgJKB/h9s57qpkrNwr7b5CQBXmsbSc0t0VJjK5KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 102/241] writeback: fix false warning in inode_to_wb()
-Date: Wed, 23 Apr 2025 16:42:46 +0200
-Message-ID: <20250423142624.740592403@linuxfoundation.org>
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 271/393] net: ethernet: ti: am65-cpsw-nuss: rename phy_node -> port_np
+Date: Wed, 23 Apr 2025 16:42:47 +0200
+Message-ID: <20250423142654.552452012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
+[ Upstream commit 78269025e192ec8122ddd87a1ec2805598d8a1ab ]
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+Rename phy_node to port_np to better reflect what it actually is,
+because the new phylink API takes netdev node (or DSA port node),
+and resolves the phandle internally.
 
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20240528075954.3608118-2-alexander.sverdlin@siemens.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 903d2b9f9efc ("net: ethernet: ti: am65-cpsw: fix port_np reference counting")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 6 +++---
+ drivers/net/ethernet/ti/am65-cpsw-nuss.h | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -249,6 +249,7 @@ static inline struct bdi_writeback *inod
- {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 8ffc1fbb036f9..dbca0b2889bc5 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -626,7 +626,7 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
+ 	/* mac_sl should be configured via phy-link interface */
+ 	am65_cpsw_sl_ctl_reset(port);
+ 
+-	ret = phylink_of_phy_connect(port->slave.phylink, port->slave.phy_node, 0);
++	ret = phylink_of_phy_connect(port->slave.phylink, port->slave.port_np, 0);
+ 	if (ret)
+ 		goto error_cleanup;
+ 
+@@ -2076,7 +2076,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 				of_property_read_bool(port_np, "ti,mac-only");
+ 
+ 		/* get phy/link info */
+-		port->slave.phy_node = port_np;
++		port->slave.port_np = port_np;
+ 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
+ 		if (ret) {
+ 			dev_err(dev, "%pOF read phy-mode err %d\n",
+@@ -2217,7 +2217,7 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
+ 	}
+ 
+ 	phylink = phylink_create(&port->slave.phylink_config,
+-				 of_node_to_fwnode(port->slave.phy_node),
++				 of_node_to_fwnode(port->slave.port_np),
+ 				 port->slave.phy_if,
+ 				 &am65_cpsw_phylink_mac_ops);
+ 	if (IS_ERR(phylink))
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.h b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
+index f3dad2ab9828b..f107198e25721 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.h
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
+@@ -29,7 +29,7 @@ struct am65_cpts;
+ struct am65_cpsw_slave_data {
+ 	bool				mac_only;
+ 	struct cpsw_sl			*mac_sl;
+-	struct device_node		*phy_node;
++	struct device_node		*port_np;
+ 	phy_interface_t			phy_if;
+ 	struct phy			*ifphy;
+ 	struct phy			*serdes_phy;
+-- 
+2.39.5
+
 
 
 
