@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87967A98D99
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7DCA99260
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4191444563A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B660A1B666CB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D995674E;
-	Wed, 23 Apr 2025 14:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3A82820CD;
+	Wed, 23 Apr 2025 15:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpY+mUNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgSZf0Rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00532D613;
-	Wed, 23 Apr 2025 14:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B72E2820B2;
+	Wed, 23 Apr 2025 15:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419612; cv=none; b=gaTfKS4GMbTqfcjk1D7exzOvSyo6qe8+yaoT5bVDbJCMCfLvt/6HaFs/MGGW9Zy49ClYStFSgqJtD4XnIErj2mtvexTIZgdkjozyQk26Pi4uc3OaE2wAoTdW9hyILg7bMhiOICAHzL3lubkl5sRbJ4EDc1krXWv7+lFF3JWMxR4=
+	t=1745421583; cv=none; b=ASQXawJ1DgwpDV6OWZd6QEmnYfPatIDQBq8VRLxcNZpMOEC5wHzEMRioDoeVACi3UwBKC4RpRdSIDgNeKWuApmBeVZGgFdOFt4qDHXPskgX+bXFGMaWkpwX0cBxkTOVOn1QBRQfiebIpDa+zaTHsLuYfzXyOhLpxxRPa1fbyoFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419612; c=relaxed/simple;
-	bh=UK/Iw/WZQVeldeE7eRoSIrNC76edMHPotmY03H1zn3A=;
+	s=arc-20240116; t=1745421583; c=relaxed/simple;
+	bh=gCR+5VrWdO/mZRsJdMPC1CnSe9V6eZEq11SEnm21Lbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhalzfO/Ssse5prcIn9lF+Gnil5cXCEmzN28+dCddC2I9oBNAUpJowrQGGJ49Xjcs3oGMHHIe2t4JfwQ74fMZi+IiPsdLfPuRC1TMP2+8Z37If+akWbpjsynttue7GbOaaLDIl8pVB71an1loeQa0WMX5L/feLk6WQnmZ8IoLqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpY+mUNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642B2C4CEE2;
-	Wed, 23 Apr 2025 14:46:52 +0000 (UTC)
+	 MIME-Version; b=jWFoyGp7zIwxaufTPp8wFgOuHmMcVrN/CTduSI9S7GEch+r8kx6dtCVfcHz9GvTzmrnedCrrtn1t7/T7S/YcYMXNIwXg7cH8dcRT0zvKIrJ8u+hR3O42OQP/JvDnsBvefbawzVc87U7nBCYr3ls4e7rOefFK6OnSoTUZS0QNXSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgSZf0Rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3210CC4CEE2;
+	Wed, 23 Apr 2025 15:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419612;
-	bh=UK/Iw/WZQVeldeE7eRoSIrNC76edMHPotmY03H1zn3A=;
+	s=korg; t=1745421581;
+	bh=gCR+5VrWdO/mZRsJdMPC1CnSe9V6eZEq11SEnm21Lbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpY+mUNX0YNS1juWHU+PM/N2UyNeT5UpBysaCLU3vH6jyQ1zVDQyJ94cwCk69yhuQ
-	 CYzw3dBKIX1eqmyiSMWQguw+SUMSdVhzLAltJeYgqPJvW45RBQS6qj+m7cfQkl7C/t
-	 NccE/OBUwxZymvUbjKSc53Hm2f0uJcK+80w8idPM=
+	b=jgSZf0Rb82jPI5Lba9+grZI762HqRu5Xyp3QZIt0tNnvS+WDnmzgyYNGOqNps9jwY
+	 17P1rwJt6v58LqRuDXQFBN4JQi2AtLZgYwnzIYxEu0/lk2qPIQGrkZOHWE/RFLtcPZ
+	 0xl91SdhbOPhGXb5Yo5cGhKmleWduPlZPrQJb45A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/223] RDMA/hns: Fix wrong maximum DMA segment size
+	Marc Herbert <Marc.Herbert@linux.intel.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 196/393] mm/hugetlb: move hugetlb_sysctl_init() to the __init section
 Date: Wed, 23 Apr 2025 16:41:32 +0200
-Message-ID: <20250423142617.940737411@linuxfoundation.org>
+Message-ID: <20250423142651.482684840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Marc Herbert <Marc.Herbert@linux.intel.com>
 
-[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
+commit 1ca77ff1837249701053a7fcbdedabc41f4ae67c upstream.
 
-Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
+hugetlb_sysctl_init() is only invoked once by an __init function and is
+merely a wrapper around another __init function so there is not reason to
+keep it.
 
-Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
-Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes the following warning when toning down some GCC inline options:
+
+ WARNING: modpost: vmlinux: section mismatch in reference:
+   hugetlb_sysctl_init+0x1b (section: .text) ->
+     __register_sysctl_init (section: .init.text)
+
+Link: https://lkml.kernel.org/r/20250319060041.2737320-1-marc.herbert@linux.intel.com
+Signed-off-by: Marc Herbert <Marc.Herbert@linux.intel.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ mm/hugetlb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index cf89a8db4f64c..8d0b63d4b50a6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -763,7 +763,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
- 		if (ret)
- 			return ret;
- 	}
--	dma_set_max_seg_size(dev, UINT_MAX);
-+	dma_set_max_seg_size(dev, SZ_2G);
- 	ret = ib_register_device(ib_dev, "hns_%d", dev);
- 	if (ret) {
- 		dev_err(dev, "ib_register_device failed!\n");
--- 
-2.39.5
-
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4695,7 +4695,7 @@ static struct ctl_table hugetlb_table[]
+ 	{ }
+ };
+ 
+-static void hugetlb_sysctl_init(void)
++static void __init hugetlb_sysctl_init(void)
+ {
+ 	register_sysctl_init("vm", hugetlb_table);
+ }
 
 
 
