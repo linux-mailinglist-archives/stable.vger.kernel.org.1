@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296F0A98FDD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B25A9907F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4709B1885470
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67FF37ACC34
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150D728468E;
-	Wed, 23 Apr 2025 15:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14AA28EA74;
+	Wed, 23 Apr 2025 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwusrOgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFLg1iOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C440957C9F;
-	Wed, 23 Apr 2025 15:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7B3284663;
+	Wed, 23 Apr 2025 15:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420582; cv=none; b=h4ZEzL/siDv8JvoElsxCJp76i5NqiUHFGWqJyvwLVn1grZ2hcQyMI18JJKBYOGP+4vf/H9HqdFoTtTGhsD67cSV3lLnrfvmnJfZGUz25aOvA0QKZmKFb0Jl+T8R7eYWZ0tz3Q6oPGO56EKsf56ccGgQp4ZWvAEOof35yTwqxQss=
+	t=1745421210; cv=none; b=oIxclIYSLmQfbzjXhWcqDrt4FYD2uOyC6AZzT9D7BIqToHX93ffuWZ+eIqyVAZFraUNSpFmHQH0IqblW70SzHhuRt76P0dmDe7t4H2WUZEZeiIi5GxoSegsvx454AOv1R2y0OINeHGk4Ce7HQzmhVSqH5nmnMsUPSNhybRFXRig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420582; c=relaxed/simple;
-	bh=2EpD3V+zq9f4zuL/L7NTPcy6YG2XGZqQoftaAIHkHgA=;
+	s=arc-20240116; t=1745421210; c=relaxed/simple;
+	bh=ZA83VlfZMZLe7WgOcvQOD6j5Ym2PBY+YBdLJR9NQtrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjFNjymWSP/Ce2KchBetwNbQSsraC19IBrlGn3r4O2thaD/+6IgBYvygYMA7dqw0tV+XwJsoZc9hD6QZ+45kCpF/t3Zuj6vyvm4sd0iN6HSIh8cLwU+EZJFcx77xz5S0rN3iTU1eAC/OjCGUTkWSbORdOxscFlSU1Fzs+az0BXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwusrOgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524BEC4CEE3;
-	Wed, 23 Apr 2025 15:03:02 +0000 (UTC)
+	 MIME-Version; b=SOulp8Jk1eEkmgPgzlMOFJjGYDabgQ+/WvWb2+pjuJaXlaHxN7Q1eRaoKPt5hhG3Q+0pSr9IzRcZhhKMh9a01MjtEz81UgaZarPqLgAXhX4wrUz3bWrB4OXkXmzR39qYT/Zz0xWdWWDHWLDX/LTyGD3+wQ03jy3BKvny+XvY2pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFLg1iOZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DB4C4CEE2;
+	Wed, 23 Apr 2025 15:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420582;
-	bh=2EpD3V+zq9f4zuL/L7NTPcy6YG2XGZqQoftaAIHkHgA=;
+	s=korg; t=1745421209;
+	bh=ZA83VlfZMZLe7WgOcvQOD6j5Ym2PBY+YBdLJR9NQtrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwusrOgsAOZMeLagJbsBLrp9pHJbbjEgdGNgefzKLqYBw3mWuqX5/PhjrS/i+9IZm
-	 VJ3AeGm/3o7PUFuQZZPYt8NxdyEjzng6kb7HWO+YnQzp5OeX3Il3ooEGi3yPfKmUc8
-	 lebIkp+vWzvRVdOdn/nbywfmHuVSUCFwCnsidnEA=
+	b=aFLg1iOZNgaXWfOXFL6r0u0VndfTB5u2B6huq3DibZh8CugySpVNsjSKa/h8xjEZf
+	 usBlTQiR0b3bpVzNNlO4DNgenNVzO0rCL1h8nPjupvqhncsF1suCkBQb/mzB3tEC0m
+	 oi+NVTbDdIFbOA7i2uTe9zUn07kYcxgA5zbk4u1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yat Sin <David.YatSin@amd.com>,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/291] drm/amdkfd: clamp queue size to minimum
-Date: Wed, 23 Apr 2025 16:40:51 +0200
-Message-ID: <20250423142626.913779928@linuxfoundation.org>
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 156/393] ASoC: qdsp6: q6apm-dai: set 10 ms period and buffer alignment.
+Date: Wed, 23 Apr 2025 16:40:52 +0200
+Message-ID: <20250423142649.821139588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yat Sin <David.YatSin@amd.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
+commit 3107019501842c27334554ba9d6583b1f200f61f upstream.
 
-If queue size is less than minimum, clamp it to minimum to prevent
-underflow when writing queue mqd.
+DSP expects the periods to be aligned to fragment sizes, currently
+setting up to hw constriants on periods bytes is not going to work
+correctly as we can endup with periods sizes aligned to 32 bytes however
+not aligned to fragment size.
 
-Signed-off-by: David Yat Sin <David.YatSin@amd.com>
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Update the constriants to use fragment size, and also set at step of
+10ms for period size to accommodate DSP requirements of 10ms latency.
+
+Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://patch.msgid.link/20250314174800.10142-5-srinivas.kandagatla@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
- include/uapi/linux/kfd_ioctl.h           |  2 ++
- 2 files changed, 12 insertions(+)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index f83574107eb85..773913a7d6e90 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -208,6 +208,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
- 		return -EINVAL;
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -380,13 +380,14 @@ static int q6apm_dai_open(struct snd_soc
+ 		}
  	}
  
-+	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
-+		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
-+		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
-+	}
-+
- 	if (!access_ok((const void __user *) args->read_pointer_address,
- 			sizeof(uint32_t))) {
- 		pr_err("Can't access read pointer\n");
-@@ -464,6 +469,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
- 		return -EINVAL;
+-	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
++	/* setup 10ms latency to accommodate DSP restrictions */
++	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
+ 	if (ret < 0) {
+ 		dev_err(dev, "constraint for period bytes step ret = %d\n", ret);
+ 		goto err;
  	}
  
-+	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
-+		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
-+		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
-+	}
-+
- 	properties.queue_address = args->ring_base_address;
- 	properties.queue_size = args->ring_size;
- 	properties.queue_percent = args->queue_percentage;
-diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
-index 42b60198b6c5f..deed930ed3051 100644
---- a/include/uapi/linux/kfd_ioctl.h
-+++ b/include/uapi/linux/kfd_ioctl.h
-@@ -55,6 +55,8 @@ struct kfd_ioctl_get_version_args {
- #define KFD_MAX_QUEUE_PERCENTAGE	100
- #define KFD_MAX_QUEUE_PRIORITY		15
- 
-+#define KFD_MIN_QUEUE_RING_SIZE		1024
-+
- struct kfd_ioctl_create_queue_args {
- 	__u64 ring_base_address;	/* to KFD */
- 	__u64 write_pointer_address;	/* from KFD */
--- 
-2.39.5
-
+-	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
++	ret = snd_pcm_hw_constraint_step(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
+ 	if (ret < 0) {
+ 		dev_err(dev, "constraint for buffer bytes step ret = %d\n", ret);
+ 		goto err;
 
 
 
