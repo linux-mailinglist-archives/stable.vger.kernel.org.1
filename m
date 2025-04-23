@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE26A98EDB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:01:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A640A99004
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6754C7AF15E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0A357AE87D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0167028466F;
-	Wed, 23 Apr 2025 14:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B072428B4EA;
+	Wed, 23 Apr 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fspFQHfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZoHmM+D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E87280A5F;
-	Wed, 23 Apr 2025 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C94928C5D1;
+	Wed, 23 Apr 2025 15:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420392; cv=none; b=er2yHcoDx6v+VOThmwyHViGIK0EOuILeb0dtw8aMi/YVoLHsH+4Zfb9SGv5pTSL71cCNOb+1p3CVGsdSaNkWOd1h5KUB1GyZvHAhbaiva+vxXbgQD/G6JSgz9Ctr8hH/CPdvQU0tcOT+nl3vp3KldZet6fteBV28TWiDYSJhu2c=
+	t=1745421023; cv=none; b=TtgBofg83GSJklqRDyb9yGKuhrAC+sVyvOcRNqDIbFTgmZwr/RRZbN47YSvEqQ6xt3pnSMY3Jd4A0Y0cdC09iu+mtXwp/4xwg0jkK5w4vm/Atu4iyTuVA7NOG4oyPpLIS9q2OzgDOeImjxVnsWyQ04RylbxzheV2bDWL8n6sMbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420392; c=relaxed/simple;
-	bh=NBko84BXYlO2xgg3kpHHByzRGeyEFr8jIUzARY9xfRo=;
+	s=arc-20240116; t=1745421023; c=relaxed/simple;
+	bh=//zXE4idh9IjfkiJCS9lUFXs8QxUFhTbcxvsqnVY3Nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHZKare8/0x5ItqTNrwXxMFPTKVfUYHO9C5M9y3WOR58+PPhaLmN+VxEssG276Y8JyKCN6wnP88KeZCu3sq7sP9UHtI91eP2pJ333Jfdr84Ey5rV2wUGbhc9Eg9g13lF95iC6CveUlKH1DSzOgXC/HUfhu7MYNrkI23nQ6dP5UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fspFQHfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464D8C4CEE2;
-	Wed, 23 Apr 2025 14:59:52 +0000 (UTC)
+	 MIME-Version; b=ADfz5g8eT5gQyjb8HnaVbcbR6pwNEObVN4pzcZtekamIXmYuHnrTP2TeqvhduTfa5cjREvu+FWKyQJialfvoeVvzLbE9IfkuDI9Zt+dT0h16qhQsf8Xc+E4NG4ECqhVuKTsXGEVey4fBteBQzBWsS3awpHrtOGHIj4pImZxGSCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZoHmM+D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C4DC4CEE2;
+	Wed, 23 Apr 2025 15:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420392;
-	bh=NBko84BXYlO2xgg3kpHHByzRGeyEFr8jIUzARY9xfRo=;
+	s=korg; t=1745421022;
+	bh=//zXE4idh9IjfkiJCS9lUFXs8QxUFhTbcxvsqnVY3Nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fspFQHfcWFgh7mzafUGCk3yK3aWP6RYR6nTWDI3mOaeE+Mt6DpMaGm+BlVOQ2iYJ2
-	 Zkedh7mZ0P2AVCy8U1hGLPczQ24CkBF9o5deR0iZo2YSosKDRLOkTu9gkd/xd2UC9B
-	 l8KAzavl0CwsL3oiyyYYoj2/Wmf5WJP1+0x7g14I=
+	b=VZoHmM+D4mA4JSNsyIOySBnnMWxqJCDi1BUIhOaEY8bANp7LCacqFmxUSuhlz7jfe
+	 csXLWrk+DZnqRkqBv1yDJoLpPcwl9w8ZGAmo/AUfaBXhOw1cmLcOv9HK6fBTEl9etX
+	 ZIKNJrDsZmddg84/HF3yCGbiJw1aPV2vasIbD+o8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/291] f2fs: fix to avoid out-of-bounds access in f2fs_truncate_inode_blocks()
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 136/393] media: streamzap: prevent processing IR data on URB failure
 Date: Wed, 23 Apr 2025 16:40:32 +0200
-Message-ID: <20250423142626.157063687@linuxfoundation.org>
+Message-ID: <20250423142648.996896883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit e6494977bd4a83862118a05f57a8df40256951c0 ]
+commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
 
-syzbot reports an UBSAN issue as below:
+If streamzap_callback() receives an urb with any non-critical error
+status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
+it will try to process IR data, ignoring a possible transfer failure.
 
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in fs/f2fs/node.h:381:10
-index 18446744073709550692 is out of range for type '__le32[5]' (aka 'unsigned int[5]')
-CPU: 0 UID: 0 PID: 5318 Comm: syz.0.0 Not tainted 6.14.0-rc3-syzkaller-00060-g6537cfb395f3 #0
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0x121/0x150 lib/ubsan.c:429
- get_nid fs/f2fs/node.h:381 [inline]
- f2fs_truncate_inode_blocks+0xa5e/0xf60 fs/f2fs/node.c:1181
- f2fs_do_truncate_blocks+0x782/0x1030 fs/f2fs/file.c:808
- f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:836
- f2fs_truncate+0x417/0x720 fs/f2fs/file.c:886
- f2fs_file_write_iter+0x1bdb/0x2550 fs/f2fs/file.c:5093
- aio_write+0x56b/0x7c0 fs/aio.c:1633
- io_submit_one+0x8a7/0x18a0 fs/aio.c:2052
- __do_sys_io_submit fs/aio.c:2111 [inline]
- __se_sys_io_submit+0x171/0x2e0 fs/aio.c:2081
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f238798cde9
+Make streamzap_callback() process IR data only when urb->status is 0.
+Move processing logic to a separate function to make code cleaner and
+more similar to the URB completion handlers in other RC drivers.
 
-index 18446744073709550692 (decimal, unsigned long long)
-= 0xfffffffffffffc64 (hexadecimal, unsigned long long)
-= -924 (decimal, long long)
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-In f2fs_truncate_inode_blocks(), UBSAN detects that get_nid() tries to
-access .i_nid[-924], it means both offset[0] and level should zero.
-
-The possible case should be in f2fs_do_truncate_blocks(), we try to
-truncate inode size to zero, however, dn.ofs_in_node is zero and
-dn.node_page is not an inode page, so it fails to truncate inode page,
-and then pass zeroed free_from to f2fs_truncate_inode_blocks(), result
-in this issue.
-
-	if (dn.ofs_in_node || IS_INODE(dn.node_page)) {
-		f2fs_truncate_data_blocks_range(&dn, count);
-		free_from += count;
-	}
-
-I guess the reason why dn.node_page is not an inode page could be: there
-are multiple nat entries share the same node block address, once the node
-block address was reused, f2fs_get_node_page() may load a non-inode block.
-
-Let's add a sanity check for such condition to avoid out-of-bounds access
-issue.
-
-Reported-by: syzbot+6653f10281a1badc749e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/66fdcdf3.050a0220.40bef.0025.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/node.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 745ecf5523c9b..ccc72781e0c61 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1112,7 +1112,14 @@ int f2fs_truncate_inode_blocks(struct inode *inode, pgoff_t from)
- 	trace_f2fs_truncate_inode_blocks_enter(inode, from);
+--- a/drivers/media/rc/streamzap.c
++++ b/drivers/media/rc/streamzap.c
+@@ -138,39 +138,10 @@ static void sz_push_half_space(struct st
+ 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
+ }
  
- 	level = get_node_path(inode, from, offset, noffset);
--	if (level < 0) {
-+	if (level <= 0) {
-+		if (!level) {
-+			level = -EFSCORRUPTED;
-+			f2fs_err(sbi, "%s: inode ino=%lx has corrupted node block, from:%lu addrs:%u",
-+					__func__, inode->i_ino,
-+					from, ADDRS_PER_INODE(inode));
-+			set_sbi_flag(sbi, SBI_NEED_FSCK);
-+		}
- 		trace_f2fs_truncate_inode_blocks_exit(inode, level);
- 		return level;
+-/*
+- * streamzap_callback - usb IRQ handler callback
+- *
+- * This procedure is invoked on reception of data from
+- * the usb remote.
+- */
+-static void streamzap_callback(struct urb *urb)
++static void sz_process_ir_data(struct streamzap_ir *sz, int len)
+ {
+-	struct streamzap_ir *sz;
+ 	unsigned int i;
+-	int len;
+-
+-	if (!urb)
+-		return;
+-
+-	sz = urb->context;
+-	len = urb->actual_length;
+-
+-	switch (urb->status) {
+-	case -ECONNRESET:
+-	case -ENOENT:
+-	case -ESHUTDOWN:
+-		/*
+-		 * this urb is terminated, clean up.
+-		 * sz might already be invalid at this point
+-		 */
+-		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
+-		return;
+-	default:
+-		break;
+-	}
+ 
+-	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
+ 	for (i = 0; i < len; i++) {
+ 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
+ 			i, (unsigned char)sz->buf_in[i]);
+@@ -219,6 +190,43 @@ static void streamzap_callback(struct ur
  	}
--- 
-2.39.5
-
+ 
+ 	ir_raw_event_handle(sz->rdev);
++}
++
++/*
++ * streamzap_callback - usb IRQ handler callback
++ *
++ * This procedure is invoked on reception of data from
++ * the usb remote.
++ */
++static void streamzap_callback(struct urb *urb)
++{
++	struct streamzap_ir *sz;
++	int len;
++
++	if (!urb)
++		return;
++
++	sz = urb->context;
++	len = urb->actual_length;
++
++	switch (urb->status) {
++	case 0:
++		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
++		sz_process_ir_data(sz, len);
++		break;
++	case -ECONNRESET:
++	case -ENOENT:
++	case -ESHUTDOWN:
++		/*
++		 * this urb is terminated, clean up.
++		 * sz might already be invalid at this point
++		 */
++		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
++		return;
++	default:
++		break;
++	}
++
+ 	usb_submit_urb(urb, GFP_ATOMIC);
+ }
+ 
 
 
 
