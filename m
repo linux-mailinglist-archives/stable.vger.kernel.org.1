@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3018EA992D0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C76FA9933F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885441B86A8B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2039C179EC3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38D52BCF5A;
-	Wed, 23 Apr 2025 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BC7F510;
+	Wed, 23 Apr 2025 15:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on5GxFdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqFty9hV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912E12BCF56;
-	Wed, 23 Apr 2025 15:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95901A08A4;
+	Wed, 23 Apr 2025 15:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422091; cv=none; b=ANWDqYQ241SjQLLBtBAAxGXDE16m0tWsGN/fy4sEYGLMHKXyupvNSzFO/OHAkVan+dspfxQsaCz2GzCI+C2B0cBDP4mDnKrXOWoG15ybwd82ghKliTmQNMSsnIwB/meL2+nSPNbH9ro9479c0Z2fqZdPmRmDtGSP+XWknNy+tvc=
+	t=1745422346; cv=none; b=A9P45Wcgv63mT2PyFX9s2C+Bd/ZSWb6ur9OV4JMvwvVQyF3TyHy3ZjJi/23YQactEvQFivFiSLLwmAafQDDB8tWdj/LVnB130sif3MAN1tiCc4kqFWfJF2S0cd+txta1pQSLBo/zazgbLk4HeDgjr7stc0EWjm9pvuglvpqCVvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422091; c=relaxed/simple;
-	bh=XTfoQGzovHHwG5acWlaCHrNViDWJPZRn79p43A78yVI=;
+	s=arc-20240116; t=1745422346; c=relaxed/simple;
+	bh=iGsjGiaxlIaMm9lc3jCkHWzmjBnjwW6A0lgeL2tUY+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNlcJxNEb3aN7EOE8oIutW0OZjqUzxLIqbjqlmPJHj8DnwTZJZ5aZC5OH+Rfug2H2EAuxt9OBVRiyoyk/Arflfs3Zcry9NUoPLZieH7fXUhALVL6BfO+epWMlf2sTG7XyrRgwJEIRlB4QRP7o4mbSIOH2pC5S7xD62kD5BQkpGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on5GxFdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A643BC4CEE2;
-	Wed, 23 Apr 2025 15:28:08 +0000 (UTC)
+	 MIME-Version; b=lfTOWBcvy0KGpPQng/EM2UwVq3ivA7I3n2OtUMV8Cnfk1AhRnaV6oIiapbxITNAVbFM7o9jNXMXpHULS0spO8SL6OnLd2XVOjYbXVueOtEqgsdahEvO9jr6tOcG2LG0BQNB1ER2ugZHocZZuUv3bFhPUqMKHRYXGvmO/WwyOUtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqFty9hV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F9CC4CEE3;
+	Wed, 23 Apr 2025 15:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422089;
-	bh=XTfoQGzovHHwG5acWlaCHrNViDWJPZRn79p43A78yVI=;
+	s=korg; t=1745422346;
+	bh=iGsjGiaxlIaMm9lc3jCkHWzmjBnjwW6A0lgeL2tUY+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=on5GxFdpILMnPhvJVXzoPkhSnkzte1/tpF+yZ58o9oTfZbNSTIrFCigjOcHyIfEv/
-	 k3Mwt/7gBRqlcZh9bcp4Tb8le+3YjfNtwbjojx6VSYNOhi5fRrM1wK17m8COgVdZ7K
-	 rrozmdRW4TkpoSarPUsME9Xa7CVMPwdgFoNFlLHU=
+	b=AqFty9hVlgmOpvzafm8iJfrDM0tGYrwCXtMtrI1Bj7vh2svvkpgWcv76VmZpZUzrr
+	 zaIKoegUsddALeGjY9LROe+I02D48S3ix4OV6TC8gWCjXZH7UoQtL29cOJDocik57u
+	 5NZdB0NN0WqxCraiczIv8lsQ0iWzcXRvh756evuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Lanzano <lanzano.alex@gmail.com>
-Subject: [PATCH 6.1 231/291] drm/repaper: fix integer overflows in repeat functions
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 324/393] ksmbd: Fix dangling pointer in krb_authenticate
 Date: Wed, 23 Apr 2025 16:43:40 +0200
-Message-ID: <20250423142633.856632935@linuxfoundation.org>
+Message-ID: <20250423142656.716204404@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
+commit 1e440d5b25b7efccb3defe542a73c51005799a5f upstream.
 
-There are conditions, albeit somewhat unlikely, under which right hand
-expressions, calculating the end of time period in functions like
-repaper_frame_fixed_repeat(), may overflow.
+krb_authenticate frees sess->user and does not set the pointer
+to NULL. It calls ksmbd_krb5_authenticate to reinitialise
+sess->user but that function may return without doing so. If
+that happens then smb2_sess_setup, which calls krb_authenticate,
+will be accessing free'd memory when it later uses sess->user.
 
-For instance, if 'factor10x' in repaper_get_temperature() is high
-enough (170), as is 'epd->stage_time' in repaper_probe(), then the
-resulting value of 'end' will not fit in unsigned int expression.
-
-Mitigate this by casting 'epd->factored_stage_time' to wider type before
-any multiplication is done.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tiny/repaper.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tiny/repaper.c
-+++ b/drivers/gpu/drm/tiny/repaper.c
-@@ -455,7 +455,7 @@ static void repaper_frame_fixed_repeat(s
- 				       enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1599,8 +1599,10 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
  
- 	do {
- 		repaper_frame_fixed(epd, fixed_value, stage);
-@@ -466,7 +466,7 @@ static void repaper_frame_data_repeat(st
- 				      const u8 *mask, enum repaper_stage stage)
- {
- 	u64 start = local_clock();
--	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
-+	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+-	if (sess->state == SMB2_SESSION_VALID)
++	if (sess->state == SMB2_SESSION_VALID) {
+ 		ksmbd_free_user(sess->user);
++		sess->user = NULL;
++	}
  
- 	do {
- 		repaper_frame_data(epd, image, mask, stage);
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
 
 
 
