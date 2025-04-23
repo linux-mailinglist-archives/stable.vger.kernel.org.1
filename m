@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-136137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4224AA991A3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1826AA9920D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EDEE7A59A5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 125391BA24F6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098CE29899A;
-	Wed, 23 Apr 2025 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79703290BC9;
+	Wed, 23 Apr 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6wrtyU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjOee0F7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C77298985;
-	Wed, 23 Apr 2025 15:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EDF28D85F;
+	Wed, 23 Apr 2025 15:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421752; cv=none; b=fy8MRq64nYv7lYWJ8eprM4z65t05sliB2mOxz2iMHZTOp/h4ycJSjRYmNabG5DowzG6HPLM2IcqkM4AzC0i5vmROOWP/x7sJrv9MNrvUjGnwz8BMtIQtORAccw5Azuhqb1D1jKIHvKQ6CUoy5B7bXmK8PeV90Hg5IHYkNqJnJ9M=
+	t=1745421437; cv=none; b=f7Zu3hIzpW23EzqkKgF3JUoCCqBox3asf0b6+XU1z9dHU+a4YLwRQxuxyzWQgliW6PuHMiEH5PNuvEVthzvfBH1Ak24pPfchJ7gVNUmtiTZ+RvUHt39kdcIWYGZ75Z6umZ0+TJgbelJMUQPt2feB4kzLygQE7ZhAD8dUcQ/IFXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421752; c=relaxed/simple;
-	bh=SY0SOMH4x3xEXcIVNVFqD5+s54F9EmFql6qhyt3gtik=;
+	s=arc-20240116; t=1745421437; c=relaxed/simple;
+	bh=u/9ei2vJzYATrWzqVjI9yDfs3sNKx9nlKVZaO5Y7UiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhYptYP/2TuiEcz/aVpG0eWGvOxA1RR/LUrk+50zNwL8mY7tvOortmH2mU3za8Y5Tp0ohjEZhoEuKbK6CCAvz9bmcBurcQBUHoDnXLfIo1vzdiF7Kp+5h3bQm7zZnzEWPFWAen/ICsL0gQtXMCGkIQU8lkSg02dHy7xYdyWl2lI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6wrtyU+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40511C4CEE2;
-	Wed, 23 Apr 2025 15:22:32 +0000 (UTC)
+	 MIME-Version; b=MrZkAoNidxsHgEMYX0xgYAa/olyiVts8+ErC3nRDv7mFcWGisIFPapidQZSX/HUAfm3eVERJ18DBvbSqwLCphCx3Eu+irH4/0C/sd+VwKtyAmI7IUyIsPQc3VnCNB5Hv0YuBzz5dYehNVJYoSOuv5wXl/ZPTqxk4p72MiYDMbIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjOee0F7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A013BC4CEE2;
+	Wed, 23 Apr 2025 15:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421752;
-	bh=SY0SOMH4x3xEXcIVNVFqD5+s54F9EmFql6qhyt3gtik=;
+	s=korg; t=1745421437;
+	bh=u/9ei2vJzYATrWzqVjI9yDfs3sNKx9nlKVZaO5Y7UiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6wrtyU+wTVy42DZG2Mruw4i3dSeheyLTGKRk2bgTkfsarAnjH+2ZmCzRdgiVxGhm
-	 stTZG+b+DJ+pnJCQc9oIHZ0bf+ZoQff83q31eZqoSLtBj6VX3ooQ09pMO97qFYFuYz
-	 Ftb2t+YY35/n8uchOoaD3sF0KbrhjKl6ODjkq5GY=
+	b=HjOee0F7a9iGlZW/3OZc4j9dbBIiGSSOWNHBPTolUJxmD45mxfia7LIQyzN7VNVoh
+	 dsm6KpBsv2Jl8fSz97IogWzmSgGSDqTISH4TKQ99MbwbjnfMadfwjaNpgPSmIf3wn4
+	 ut2hna4dwQj8ZrFi6I815jdxidbl8PArblfWYrsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Fischer <kernel@o1oo11oo.de>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.14 229/241] scripts: generate_rust_analyzer: Add ffi crate
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 221/223] bpf: fix null dereference when computing changes_pkt_data of prog w/o subprogs
 Date: Wed, 23 Apr 2025 16:44:53 +0200
-Message-ID: <20250423142629.930105185@linuxfoundation.org>
+Message-ID: <20250423142626.166908438@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Fischer <kernel@o1oo11oo.de>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 05a2b0011c4b6cbbc9b577f6abebe4e9333b0cf6 upstream.
+commit ac6542ad92759cda383ad62b4e4cbfc28136abc1 upstream.
 
-Commit d072acda4862 ("rust: use custom FFI integer types") did not
-update rust-analyzer to include the new crate.
+bpf_prog_aux->func field might be NULL if program does not have
+subprograms except for main sub-program. The fixed commit does
+bpf_prog_aux->func access unconditionally, which might lead to null
+pointer dereference.
 
-To enable rust-analyzer support for these custom ffi types, add the
-`ffi` crate as a dependency to the `bindings`, `uapi` and `kernel`
-crates, which all directly depend on it.
+The bug could be triggered by replacing the following BPF program:
 
-Fixes: d072acda4862 ("rust: use custom FFI integer types")
-Signed-off-by: Lukas Fischer <kernel@o1oo11oo.de>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250404125150.85783-2-kernel@o1oo11oo.de
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+    SEC("tc")
+    int main_changes(struct __sk_buff *sk)
+    {
+        bpf_skb_pull_data(sk, 0);
+        return 0;
+    }
+
+With the following BPF program:
+
+    SEC("freplace")
+    long changes_pkt_data(struct __sk_buff *sk)
+    {
+        return bpf_skb_pull_data(sk, 0);
+    }
+
+bpf_prog_aux instance itself represents the main sub-program,
+use this property to fix the bug.
+
+Fixes: 81f6d0530ba0 ("bpf: check changes_pkt_data property for extension programs")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202412111822.qGw6tOyB-lkp@intel.com/
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20241212070711.427443-1-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -97,6 +97,12 @@ def generate_crates(srctree, objtree, sy
-         ["core", "compiler_builtins"],
-     )
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -21990,6 +21990,7 @@ int bpf_check_attach_target(struct bpf_v
+ 	}
+ 	if (tgt_prog) {
+ 		struct bpf_prog_aux *aux = tgt_prog->aux;
++		bool tgt_changes_pkt_data;
  
-+    append_crate(
-+        "ffi",
-+        srctree / "rust" / "ffi.rs",
-+        ["core", "compiler_builtins"],
-+    )
-+
-     def append_crate_with_generated(
-         display_name,
-         deps,
-@@ -116,9 +122,9 @@ def generate_crates(srctree, objtree, sy
-             "exclude_dirs": [],
-         }
- 
--    append_crate_with_generated("bindings", ["core"])
--    append_crate_with_generated("uapi", ["core"])
--    append_crate_with_generated("kernel", ["core", "macros", "build_error", "bindings", "uapi"])
-+    append_crate_with_generated("bindings", ["core", "ffi"])
-+    append_crate_with_generated("uapi", ["core", "ffi"])
-+    append_crate_with_generated("kernel", ["core", "macros", "build_error", "ffi", "bindings", "uapi"])
- 
-     def is_root_crate(build_file, target):
-         try:
+ 		if (bpf_prog_is_dev_bound(prog->aux) &&
+ 		    !bpf_prog_dev_bound_match(prog, tgt_prog)) {
+@@ -22024,8 +22025,10 @@ int bpf_check_attach_target(struct bpf_v
+ 					"Extension programs should be JITed\n");
+ 				return -EINVAL;
+ 			}
+-			if (prog->aux->changes_pkt_data &&
+-			    !aux->func[subprog]->aux->changes_pkt_data) {
++			tgt_changes_pkt_data = aux->func
++					       ? aux->func[subprog]->aux->changes_pkt_data
++					       : aux->changes_pkt_data;
++			if (prog->aux->changes_pkt_data && !tgt_changes_pkt_data) {
+ 				bpf_log(log,
+ 					"Extension program changes packet data, while original does not\n");
+ 				return -EINVAL;
 
 
 
