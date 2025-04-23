@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170E8A98F82
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA65A99092
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A678188814E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E41E46408B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC98B284677;
-	Wed, 23 Apr 2025 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A78329116A;
+	Wed, 23 Apr 2025 15:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5Q55rfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWhiAwxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C0F284681;
-	Wed, 23 Apr 2025 15:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3771C28D854;
+	Wed, 23 Apr 2025 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420485; cv=none; b=YN9Xjrw+ucZgnyiwkGfOFf9M+KLhgwkTfBLD+/44f5i2n3jGszMdSEnuOmfi5Z2cqUncxlpLEC3kjwaPJTWMgRY12YAiXGoYFxIcs9y8ty+5S7CNyvc/s9YJHYMShv6X7n9jTBPINhj7dv8Tjks6pblF0E5X2SwQVjKqksrz7ik=
+	t=1745421071; cv=none; b=ujui9TCeyyvpmoD3iZFlRl2T636LX3fyrdzZWLzKS73MukwV07cGfsqb6SpRAGghGOYGxTHzdec/AgCj3vc9yZf3/X9tynspxQ8FwhpFjuurssG0wi2oV37khPBf3IJ+yRvQ5cPP/VQwlfSZn2GRsmt3flDDHb/ZkwllxNAJ/aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420485; c=relaxed/simple;
-	bh=g5FY809qNbb99edIMBewA5+RvjYshpPNBsJGzGLrtAI=;
+	s=arc-20240116; t=1745421071; c=relaxed/simple;
+	bh=YOYAv+YwPa4kh5yGVBQI7MEyDsTgh20PimoPWYQvbfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cn5uyaC8/ABVPl2fiwm/tPtGO/v8AKqAs6RUw/2ogxC2o1s/c49uJtpFHfXlrBIdkma7FrmxSjvV4Dl0D9udRVVrehO4l1qKBtUhJBc3NaSlgurqLucwP01ux2xbhuVrFIjh31pDPo07vdoKOFOTh5isxqCKUscnh/rPOh9WPeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5Q55rfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D529C4CEE2;
-	Wed, 23 Apr 2025 15:01:24 +0000 (UTC)
+	 MIME-Version; b=rnKRP217sxAmKqHcU8Y9k3+i/6JJNcAy4ifvHpag2Pw0RBeBHyxbi1eRaop2U8a5SDJVzNm/Ufkfdzt0TVX8F1lpGumOgCH++KYYvb5Ax+kAMK76j5KYsY8yETvj+9HSdhUPEppNtgMDiRSLC24kVtzkBb+5KOTZo24tPBmwFds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWhiAwxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6506DC4CEE2;
+	Wed, 23 Apr 2025 15:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420485;
-	bh=g5FY809qNbb99edIMBewA5+RvjYshpPNBsJGzGLrtAI=;
+	s=korg; t=1745421070;
+	bh=YOYAv+YwPa4kh5yGVBQI7MEyDsTgh20PimoPWYQvbfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5Q55rfUWFiVK8NSlmNEV1O6BTByEMDD+aUaqzVv9nqHLSNhgS39fGQspZm4qvn+2
-	 oI3GXvQD3Wl2FP+xnPLbIE06wnPbZLgjmoUjyrOuUHx2zgFhOysASdDnLSLENZbrn8
-	 FT2LHyWIf0g8C/m943I/W2FkQJuY/HF+/i5+3RLA=
+	b=KWhiAwxmyVa7a3MAQdl/ZIZ8EDM/OOVdNJqBZ7nCEyIdlojQkbQjl2LxHI5LmIOnr
+	 ivOS1jt2EyvA/TnnYYRlcx1ZGXP23Fi8hBLNkVTXgmadleJUENWGz0IjZfZZ8RPWEy
+	 zQPQR9ZkUmKMRnzGHl9dKqF6ONXjgzwupi+d9v98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/291] Bluetooth: hci_uart: fix race during initialization
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 144/393] media: venus: hfi_parser: add check to avoid out of bound access
 Date: Wed, 23 Apr 2025 16:40:40 +0200
-Message-ID: <20250423142626.473366603@linuxfoundation.org>
+Message-ID: <20250423142649.330699316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit 366ceff495f902182d42b6f41525c2474caf3f9a ]
+commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
 
-'hci_register_dev()' calls power up function, which is executed by
-kworker - 'hci_power_on()'. This function does access to bluetooth chip
-using callbacks from 'hci_ldisc.c', for example 'hci_uart_send_frame()'.
-Now 'hci_uart_send_frame()' checks 'HCI_UART_PROTO_READY' bit set, and
-if not - it fails. Problem is that 'HCI_UART_PROTO_READY' is set after
-'hci_register_dev()', and there is tiny chance that 'hci_power_on()' will
-be executed before setting this bit. In that case HCI init logic fails.
+There is a possibility that init_codecs is invoked multiple times during
+manipulated payload from video firmware. In such case, if codecs_count
+can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+access. Reset the count so that it always starts from beginning.
 
-Patch moves setting of 'HCI_UART_PROTO_READY' before calling function
-'hci_uart_register_dev()'.
-
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_ldisc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_ldisc.c b/drivers/bluetooth/hci_ldisc.c
-index c1feebd9e3a03..5dc2f38c7b9a7 100644
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -709,12 +709,13 @@ static int hci_uart_set_proto(struct hci_uart *hu, int id)
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
- 	hu->proto = p;
- 
-+	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	core->codecs_count = 0;
 +
- 	err = hci_uart_register_dev(hu);
- 	if (err) {
- 		return err;
- 	}
+ 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+ 		return;
  
--	set_bit(HCI_UART_PROTO_READY, &hu->flags);
- 	return 0;
- }
- 
--- 
-2.39.5
-
 
 
 
