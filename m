@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71159A9929D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA00A99238
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DC814A1B4B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98CD94A2321
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E8E29DB83;
-	Wed, 23 Apr 2025 15:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EECE28B50E;
+	Wed, 23 Apr 2025 15:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLQeFvT7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFs7t1Q2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25E22918CE;
-	Wed, 23 Apr 2025 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACF225EF8E;
+	Wed, 23 Apr 2025 15:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422063; cv=none; b=IXVw6pYhINdKE4FrNDLnw6cOU/yuxOkRCsLY8rsEclsHrXDD+KUjdYJJ1I/Bh12SA6qKMa6rzmiZD7DWvDd71k2toR3FDEQV4CzKYZkCBagWCZfhOYzCc7wRhaBlw6FA/3yd+2gwOW34TQD1L2pDMPvw5Ilq9HBdvmkx8n/FWw8=
+	t=1745421784; cv=none; b=YwbmI169NZ9Zwj2LK8kOVNEl7yTDESLfGg9zt4vdWt7pAUEjvzkr+cqP31a1KtCUPyoqYigpbQu11pr4MK/0hiEJm8lXd5N2CQDL8QQ7JXPLjiwPg5+04/LIq7jLjkrcwm71368c73c5vMPnsOcTFhWV5+fFp9d3ewWcBuywUO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422063; c=relaxed/simple;
-	bh=jx7nKo2v7Q4mHjBec5nf73HmK37Gj7u95S6uF5FDfMg=;
+	s=arc-20240116; t=1745421784; c=relaxed/simple;
+	bh=Hig+eDCqAmO5JV//k5eeOJYUpX2nUdHWM84+FTxfLjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8YKQiVKYrZpH3pPUTe4385c+sUO5IFbNvRpqmpPlSJj12bkSLPfyr8FTIuNhPLbw3s6j/SYNWQz9ZDZRzYu+KIeMJ3T/3aupCiVJYUPTUogAFO41ycLSprMgYfBc9Lw2qIEJyzoruat4tRafjFGgbIdlc0oIam+/8zuw9ktEXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLQeFvT7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822DFC4CEE2;
-	Wed, 23 Apr 2025 15:27:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l+BKUmE9Io3uSsGA2SRXcQTtNv9TXf5jaI5MnYLBYTqvqeT/bV2zkRGwTrO6VUnWl5QpeCZxY0OP36kwMA/M0AxqhHLPv6Smhouylp9Gx/rQJgF1+InkOoJAY4EBNvANItU7bT2OdbSZpyD2inDP1lZwEO00I+convxOaXb24ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFs7t1Q2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCA8C4CEE2;
+	Wed, 23 Apr 2025 15:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422062;
-	bh=jx7nKo2v7Q4mHjBec5nf73HmK37Gj7u95S6uF5FDfMg=;
+	s=korg; t=1745421784;
+	bh=Hig+eDCqAmO5JV//k5eeOJYUpX2nUdHWM84+FTxfLjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLQeFvT76SuM6wMtwmMOj+mICxxrstKlYNqbtYZNLW6Tes5r1GRaaxgP0sCdgC/cU
-	 35bdBqyth2tFLTOoJZ/bireTA0zB5a8gfgDD1I2rcDwX5Am/DLImkuXqPuNtC9X3BZ
-	 EgJKB/h9s57qpkrNwr7b5CQBXmsbSc0t0VJjK5KE=
+	b=IFs7t1Q2+eBKE4NulyyYZVDGG6iBfhwUSZmlas6+sfcJNJzgTBiEhkF4mcZFSgj/a
+	 IoBcZx74PxlrwARy1+rPLo6IZcQFJOYIAKlK7SQFS3zzzkUYKEui2PJON00FOYpYzi
+	 QQqxA+GtzGyt8FH5zia0RA1pFkdkY6BWI17hKyds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/393] net: ethernet: ti: am65-cpsw-nuss: rename phy_node -> port_np
+Subject: [PATCH 6.1 178/291] Bluetooth: l2cap: Check encryption key size on incoming connection
 Date: Wed, 23 Apr 2025 16:42:47 +0200
-Message-ID: <20250423142654.552452012@linuxfoundation.org>
+Message-ID: <20250423142631.657925160@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit 78269025e192ec8122ddd87a1ec2805598d8a1ab ]
+[ Upstream commit 522e9ed157e3c21b4dd623c79967f72c21e45b78 ]
 
-Rename phy_node to port_np to better reflect what it actually is,
-because the new phylink API takes netdev node (or DSA port node),
-and resolves the phandle internally.
+This is required for passing GAP/SEC/SEM/BI-04-C PTS test case:
+  Security Mode 4 Level 4, Responder - Invalid Encryption Key Size
+  - 128 bit
 
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20240528075954.3608118-2-alexander.sverdlin@siemens.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 903d2b9f9efc ("net: ethernet: ti: am65-cpsw: fix port_np reference counting")
+This tests the security key with size from 1 to 15 bytes while the
+Security Mode 4 Level 4 requests 16 bytes key size.
+
+Currently PTS fails with the following logs:
+- expected:Connection Response:
+    Code: [3 (0x03)] Code
+    Identifier: (lt)WildCard: Exists(gt)
+    Length: [8 (0x0008)]
+    Destination CID: (lt)WildCard: Exists(gt)
+    Source CID: [64 (0x0040)]
+    Result: [3 (0x0003)] Connection refused - Security block
+    Status: (lt)WildCard: Exists(gt),
+but received:Connection Response:
+    Code: [3 (0x03)] Code
+    Identifier: [1 (0x01)]
+    Length: [8 (0x0008)]
+    Destination CID: [64 (0x0040)]
+    Source CID: [64 (0x0040)]
+    Result: [0 (0x0000)] Connection Successful
+    Status: [0 (0x0000)] No further information available
+
+And HCI logs:
+< HCI Command: Read Encrypti.. (0x05|0x0008) plen 2
+        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
+> HCI Event: Command Complete (0x0e) plen 7
+      Read Encryption Key Size (0x05|0x0008) ncmd 1
+        Status: Success (0x00)
+        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
+        Key size: 7
+> ACL Data RX: Handle 14 flags 0x02 dlen 12
+      L2CAP: Connection Request (0x02) ident 1 len 4
+        PSM: 4097 (0x1001)
+        Source CID: 64
+< ACL Data TX: Handle 14 flags 0x00 dlen 16
+      L2CAP: Connection Response (0x03) ident 1 len 8
+        Destination CID: 64
+        Source CID: 64
+        Result: Connection successful (0x0000)
+        Status: No further information available (0x0000)
+
+Fixes: 288c06973daa ("Bluetooth: Enforce key size of 16 bytes on FIPS level")
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 6 +++---
- drivers/net/ethernet/ti/am65-cpsw-nuss.h | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/l2cap_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 8ffc1fbb036f9..dbca0b2889bc5 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -626,7 +626,7 @@ static int am65_cpsw_nuss_ndo_slave_open(struct net_device *ndev)
- 	/* mac_sl should be configured via phy-link interface */
- 	am65_cpsw_sl_ctl_reset(port);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 21a79ef7092d7..222105e24d2d8 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4186,7 +4186,8 @@ static struct l2cap_chan *l2cap_connect(struct l2cap_conn *conn,
  
--	ret = phylink_of_phy_connect(port->slave.phylink, port->slave.phy_node, 0);
-+	ret = phylink_of_phy_connect(port->slave.phylink, port->slave.port_np, 0);
- 	if (ret)
- 		goto error_cleanup;
- 
-@@ -2076,7 +2076,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 				of_property_read_bool(port_np, "ti,mac-only");
- 
- 		/* get phy/link info */
--		port->slave.phy_node = port_np;
-+		port->slave.port_np = port_np;
- 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
- 		if (ret) {
- 			dev_err(dev, "%pOF read phy-mode err %d\n",
-@@ -2217,7 +2217,7 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
- 	}
- 
- 	phylink = phylink_create(&port->slave.phylink_config,
--				 of_node_to_fwnode(port->slave.phy_node),
-+				 of_node_to_fwnode(port->slave.port_np),
- 				 port->slave.phy_if,
- 				 &am65_cpsw_phylink_mac_ops);
- 	if (IS_ERR(phylink))
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.h b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-index f3dad2ab9828b..f107198e25721 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.h
-@@ -29,7 +29,7 @@ struct am65_cpts;
- struct am65_cpsw_slave_data {
- 	bool				mac_only;
- 	struct cpsw_sl			*mac_sl;
--	struct device_node		*phy_node;
-+	struct device_node		*port_np;
- 	phy_interface_t			phy_if;
- 	struct phy			*ifphy;
- 	struct phy			*serdes_phy;
+ 	/* Check if the ACL is secure enough (if not SDP) */
+ 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
+-	    !hci_conn_check_link_mode(conn->hcon)) {
++	    (!hci_conn_check_link_mode(conn->hcon) ||
++	    !l2cap_check_enc_key_size(conn->hcon))) {
+ 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
+ 		result = L2CAP_CR_SEC_BLOCK;
+ 		goto response;
 -- 
 2.39.5
 
