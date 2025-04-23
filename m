@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407B7A99059
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 477CBA9930D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62DA4164D6D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1684A04D6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4818C28A408;
-	Wed, 23 Apr 2025 15:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9702980B4;
+	Wed, 23 Apr 2025 15:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zjT02/y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wpQChQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F367A28A400;
-	Wed, 23 Apr 2025 15:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92D920D4F8;
+	Wed, 23 Apr 2025 15:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420971; cv=none; b=FC0v3Ci0ZJ0y77JB3Zthn35LOcRgy9ODCfZx8r7rHefQsSM4b5JRPcJp5N6NqcbWO/o2yny6XTd0JIM0nvDnnFR4azJFNctaEiXJCE6YpbXtAgslMjLSKVe1OTVgscaxmUSE9mAv/6BEkhUnrBaujW4zQA0MMgDWyRBZgrulugw=
+	t=1745422259; cv=none; b=sFBLFail8DNLWcky1O64NgRDifh2mKaDdjnat+QBr7zuxmjvA0SFgHx+KP8FGgIeap1AUFzKry9bHrji7Wo/vhiLEgOFwEfsJkwobvm0JYtoGUDJK+m+9UtoUQu+HTNjkSlWH4bPfcrORLqNB3VmfkByX7ZXoAKRnA71/6zIIwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420971; c=relaxed/simple;
-	bh=MorKZ+OHPTrbe3pV2FWNpQn3TgYQbsWHDN7WIfank2U=;
+	s=arc-20240116; t=1745422259; c=relaxed/simple;
+	bh=XGsmt1r0WH9G2vdwFK7D/br0g9K4Lw1kezZM7kti14A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecTkh7aAKrRpZMyno5wEICuKrywATb3ZcEIP8ig8XghuiO948EUmkbN3loR02BLwm8lBotcUIqQBWJswtGz93ORz6g5EkQ8EuIc3rNQAb0DIEKI38pcNi4G+HQclr1y45D9QPqFF3qQ/SUTj32PFCh6nD8aNGL4N/g9IigXr28Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zjT02/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831C2C4CEE2;
-	Wed, 23 Apr 2025 15:09:30 +0000 (UTC)
+	 MIME-Version; b=ux/jGVGqBhaRsTbuE7UlfTLI3uVKae0siw07s7r07FhV2jerjfEwRdiCUORnFJd8+hd/6cFSrrHwhb6C5D2J09rT52M4Oi1U28druOhGDzlkrxL/sfd6kR6ec7C3dBJINNZ8Ztl5cQJxXlu6Moqf41iPZPItAn8K4t9kaJDHuWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wpQChQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AFEAC4CEE2;
+	Wed, 23 Apr 2025 15:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420970;
-	bh=MorKZ+OHPTrbe3pV2FWNpQn3TgYQbsWHDN7WIfank2U=;
+	s=korg; t=1745422259;
+	bh=XGsmt1r0WH9G2vdwFK7D/br0g9K4Lw1kezZM7kti14A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zjT02/yifkRUQR9DdeKGX6rIQrq35lANG6AefA+wB+TjPFV51ox/vroDNDCeZirK
-	 kIrLJNR64k2Q4d8MzJCtxsBWykxn+zkWDj1G75eXDIvCYmtyTBHpOjcvrYet3T15nx
-	 zC+I9WEuqSZh80p+ipgMOqdKeQmsmNQAM7X6TBFI=
+	b=1wpQChQMPkr9fodUpoAnZm/5J0y5mlbDZxRI+r8a2V8iBKqbozcSmBivX91qH4pUv
+	 5al36j7JJoFOGxP6p/Oz9t/+lhipBxC5s8TsH1o7oh152ERwaYQz28CxRktUfZ2GrR
+	 4pt8ZL93OcDbEsQvid+XeClkmvLFFo7r1CBASVGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Qu Wenruo <quwenruo.btrfs@gmx.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 140/241] mm: fix filemap_get_folios_contig returning batches of identical folios
-Date: Wed, 23 Apr 2025 16:43:24 +0200
-Message-ID: <20250423142626.279595816@linuxfoundation.org>
+	Menglong Dong <dongml2@chinatelecom.cn>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 309/393] ftrace: fix incorrect hash size in register_ftrace_direct()
+Date: Wed, 23 Apr 2025 16:43:25 +0200
+Message-ID: <20250423142656.094705862@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-commit 8ab1b16023961dc640023b10436d282f905835ad upstream.
+[ Upstream commit 92f1d3b40179b15630d72e2c6e4e25a899b67ba9 ]
 
-filemap_get_folios_contig() is supposed to return distinct folios found
-within [start, end].  Large folios in the Xarray become multi-index
-entries.  xas_next() can iterate through the sub-indexes before finding a
-sibling entry and breaking out of the loop.
+The maximum of the ftrace hash bits is made fls(32) in
+register_ftrace_direct(), which seems illogical. So, we fix it by making
+the max hash bits FTRACE_HASH_MAX_BITS instead.
 
-This can result in a returned folio_batch containing an indeterminate
-number of duplicate folios, which forces the callers to skeptically handle
-the returned batch.  This is inefficient and incurs a large maintenance
-overhead.
-
-We can fix this by calling xas_advance() after we have successfully adding
-a folio to the batch to ensure our Xarray is positioned such that it will
-correctly find the next folio - similar to filemap_get_read_batch().
-
-Link: https://lkml.kernel.org/r/Z-8s1-kiIDkzgRbc@fedora
-Fixes: 35b471467f88 ("filemap: add filemap_get_folios_contig()")
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Reported-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Closes: https://lkml.kernel.org/r/b714e4de-2583-4035-b829-72cfb5eb6fc6@gmx.com
-Tested-by: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/20250413014444.36724-1-dongml2@chinatelecom.cn
+Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
+Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/filemap.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/ftrace.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -2244,6 +2244,7 @@ unsigned filemap_get_folios_contig(struc
- 			*start = folio->index + nr;
- 			goto out;
- 		}
-+		xas_advance(&xas, folio_next_index(folio) - 1);
- 		continue;
- put_folio:
- 		folio_put(folio);
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index 580ceb75f8c38..650493ed76cd4 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5420,9 +5420,10 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
+ 
+ 	/* Make a copy hash to place the new and the old entries in */
+ 	size = hash->count + direct_functions->count;
+-	if (size > 32)
+-		size = 32;
+-	new_hash = alloc_ftrace_hash(fls(size));
++	size = fls(size);
++	if (size > FTRACE_HASH_MAX_BITS)
++		size = FTRACE_HASH_MAX_BITS;
++	new_hash = alloc_ftrace_hash(size);
+ 	if (!new_hash)
+ 		goto out_unlock;
+ 
+-- 
+2.39.5
+
 
 
 
