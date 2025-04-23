@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-136051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B372A99201
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:38:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52043A98DB9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0B431BA4E02
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2D423A7948
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE593280A5B;
-	Wed, 23 Apr 2025 15:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BDD27FD67;
+	Wed, 23 Apr 2025 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pb2RiLzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOw0er2c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C74527D763;
-	Wed, 23 Apr 2025 15:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738C72D613;
+	Wed, 23 Apr 2025 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421526; cv=none; b=m4vpkT1urcclkQaJlrdgq7TkwRBXgd0QbO7AFeo/gf0NcDkygYC92j/DUetnHbiWSdKkjxsqYPyUkP/57/e0sxwahppk6wTvzaL0o22WKyFYMkXhZZGYBvZyMcYqbc10LC7ogSoRva1Vwb72CPkrsjUvgOCcwY/VAnNdaigW/I8=
+	t=1745419668; cv=none; b=YkTNtYw4AkrrCilbOa0b41XJWT09F9zOhzfVa81ijpMGUXbkmyA1dpNJfg4gfrcvbCjbu81XJDKEebFQ4Qzzyyqf2XT2dPKANAuAxxHwvgpylEhB0aAm0EprCS9cFse+IEGhK4sM7WTrXJNVVfRtTVJAXym21QFuRXeF6kzG4Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421526; c=relaxed/simple;
-	bh=dcagu0EtLKpOPlSEgZBiJsWLYNitevcJAoBOxmZeyAY=;
+	s=arc-20240116; t=1745419668; c=relaxed/simple;
+	bh=TcdNewgQNsMOUOJR6PaOVRrVne0yuUb66a8cBZ6/C9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izLFrBuwhCGXdR6M8tk5WfoSshRiochZ2qOIhMHbDgkRAFBNMKMLHWYnQ5UphA5LFure9vXxCSfq3QZXeqrrPdJ46hiTSURHCLYkSH4WQo/klrPnKln47hbUbhHl2I3q9cCLFEjiw5aZi8X4HpLmB8yjDCbzw35MGxDJ4Bn8ptU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pb2RiLzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F20C4CEE2;
-	Wed, 23 Apr 2025 15:18:45 +0000 (UTC)
+	 MIME-Version; b=eqfmSpZkft9QLaLAFxNx/K0rWLCq8qe/RNsGmBysFQZvYvT+M8IIyTqjhxfwxUXzYSdO8mIy/U4LZAD7ObNotJ8EuBs+2wHki0FVjrzit3RoiEY1csrNqArAwUzUOMozYRFFg3tk5jXuXBwDPJf79MnIALuXHB6S8dTfpTQXkyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOw0er2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0944FC4CEE2;
+	Wed, 23 Apr 2025 14:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421526;
-	bh=dcagu0EtLKpOPlSEgZBiJsWLYNitevcJAoBOxmZeyAY=;
+	s=korg; t=1745419668;
+	bh=TcdNewgQNsMOUOJR6PaOVRrVne0yuUb66a8cBZ6/C9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pb2RiLzzxiXW72EPNhU4UcS9R0Jb/5onM/DPqNc+NdgVOdBDsC/2LGNM8LfwPproS
-	 1Lu56lkbVQhqcbgcz/6Edm3RfzHxXC56rNJKWsjUfPSuknC79rh7fHc8YMtbMLCmBM
-	 878JN/TjcQAjBjvxJoSpj+LaYzIQOFNRfLJDdtqs=
+	b=zOw0er2cVBffbmnrmgabDrWgbhFEBVIkZG5DCuW8HuA55VQc03pqL+/IVQZBEvsXs
+	 LRofRm/DZVyHNacUqSHMFINnTk23ZDaVaCIAaBcqGUm7Kob2giXWAeJGLGPgJn1V1y
+	 MPmS0wCG7HAKuM/CpAuDqfnfyFLXwKS+l6v+CbRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Juergen Gross <jgross@suse.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Matthew Wilcow (Oracle)" <willy@infradead.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 188/393] sparc/mm: avoid calling arch_enter/leave_lazy_mmu() in set_ptes
-Date: Wed, 23 Apr 2025 16:41:24 +0200
-Message-ID: <20250423142651.149820300@linuxfoundation.org>
+	Brady Norander <bradynorander@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 013/223] ASoC: dwc: always enable/disable i2s irqs
+Date: Wed, 23 Apr 2025 16:41:25 +0200
+Message-ID: <20250423142617.660654000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,75 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Brady Norander <bradynorander@gmail.com>
 
-commit eb61ad14c459b54f71f76331ca35d12fa3eb8f98 upstream.
+[ Upstream commit 2b727b3f8a04fe52f55316ccb8792cfd9b2dd05d ]
 
-With commit 1a10a44dfc1d ("sparc64: implement the new page table range
-API") set_ptes was added to the sparc architecture.  The implementation
-included calling arch_enter/leave_lazy_mmu() calls.
+Commit a42e988 ("ASoC: dwc: add DMA handshake control") changed the
+behavior of the driver to not enable or disable i2s irqs if using DMA. This
+breaks platforms such as AMD ACP. Audio playback appears to work but no
+audio can be heard. Revert to the old behavior by always enabling and
+disabling i2s irqs while keeping DMA handshake control.
 
-The patch removes the usage of arch_enter/leave_lazy_mmu() since this
-implies nesting of lazy mmu regions which is not supported.  Without this
-fix, lazy mmu mode is effectively disabled because we exit the mode after
-the first set_ptes:
-
-remap_pte_range()
-  -> arch_enter_lazy_mmu()
-  -> set_ptes()
-      -> arch_enter_lazy_mmu()
-      -> arch_leave_lazy_mmu()
-  -> arch_leave_lazy_mmu()
-
-Powerpc suffered the same problem and fixed it in a corresponding way with
-commit 47b8def9358c ("powerpc/mm: Avoid calling
-arch_enter/leave_lazy_mmu() in set_ptes").
-
-Link: https://lkml.kernel.org/r/20250303141542.3371656-5-ryan.roberts@arm.com
-Fixes: 1a10a44dfc1d ("sparc64: implement the new page table range API")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Andreas Larsson <andreas@gaisler.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Juegren Gross <jgross@suse.com>
-Cc: Matthew Wilcow (Oracle) <willy@infradead.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a42e988b626 ("ASoC: dwc: add DMA handshake control")
+Signed-off-by: Brady Norander <bradynorander@gmail.com>
+Link: https://patch.msgid.link/20250330130852.37881-3-bradynorander@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sparc/include/asm/pgtable_64.h |    2 --
- 1 file changed, 2 deletions(-)
+ sound/soc/dwc/dwc-i2s.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/arch/sparc/include/asm/pgtable_64.h
-+++ b/arch/sparc/include/asm/pgtable_64.h
-@@ -931,7 +931,6 @@ static inline void __set_pte_at(struct m
- static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
- 		pte_t *ptep, pte_t pte, unsigned int nr)
- {
--	arch_enter_lazy_mmu_mode();
- 	for (;;) {
- 		__set_pte_at(mm, addr, ptep, pte, 0);
- 		if (--nr == 0)
-@@ -940,7 +939,6 @@ static inline void set_ptes(struct mm_st
- 		pte_val(pte) += PAGE_SIZE;
- 		addr += PAGE_SIZE;
- 	}
--	arch_leave_lazy_mmu_mode();
- }
- #define set_ptes set_ptes
+diff --git a/sound/soc/dwc/dwc-i2s.c b/sound/soc/dwc/dwc-i2s.c
+index 57b789d7fbedd..5b4f20dbf7bba 100644
+--- a/sound/soc/dwc/dwc-i2s.c
++++ b/sound/soc/dwc/dwc-i2s.c
+@@ -199,12 +199,10 @@ static void i2s_start(struct dw_i2s_dev *dev,
+ 	else
+ 		i2s_write_reg(dev->i2s_base, IRER, 1);
  
+-	/* I2S needs to enable IRQ to make a handshake with DMAC on the JH7110 SoC */
+-	if (dev->use_pio || dev->is_jh7110)
+-		i2s_enable_irqs(dev, substream->stream, config->chan_nr);
+-	else
++	if (!(dev->use_pio || dev->is_jh7110))
+ 		i2s_enable_dma(dev, substream->stream);
+ 
++	i2s_enable_irqs(dev, substream->stream, config->chan_nr);
+ 	i2s_write_reg(dev->i2s_base, CER, 1);
+ }
+ 
+@@ -218,11 +216,12 @@ static void i2s_stop(struct dw_i2s_dev *dev,
+ 	else
+ 		i2s_write_reg(dev->i2s_base, IRER, 0);
+ 
+-	if (dev->use_pio || dev->is_jh7110)
+-		i2s_disable_irqs(dev, substream->stream, 8);
+-	else
++	if (!(dev->use_pio || dev->is_jh7110))
+ 		i2s_disable_dma(dev, substream->stream);
+ 
++	i2s_disable_irqs(dev, substream->stream, 8);
++
++
+ 	if (!dev->active) {
+ 		i2s_write_reg(dev->i2s_base, CER, 0);
+ 		i2s_write_reg(dev->i2s_base, IER, 0);
+-- 
+2.39.5
+
 
 
 
