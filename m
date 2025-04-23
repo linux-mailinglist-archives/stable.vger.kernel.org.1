@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-136380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBE0A993A5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:01:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A241A99073
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD479245F7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C24C1B8393C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963652949F0;
-	Wed, 23 Apr 2025 15:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3CE266B4B;
+	Wed, 23 Apr 2025 15:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGfAY2CD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7iBL/aS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5345328B4E4;
-	Wed, 23 Apr 2025 15:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8D628CF61;
+	Wed, 23 Apr 2025 15:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422396; cv=none; b=E7SkajuE2fp2Q4Bm64wSer8Of9PusEh4Xy5Twa+wn3ab3Xr4l2djqHkUrZ3ALRaXwacN9R2k+L153/YXwRZxqsVJArUtNfUl4/PDy53IwFdma5u4bOYrKZreLfvYE0T5YcG5UdFmZAf87DMz/CS9lovfTJrkRQ6tf3208ZRew0c=
+	t=1745420737; cv=none; b=L6HhVAFYqQf9Ow44fWJnCGEzr2+jv4rz0LhLNXQI1WLHbNYp/qGJ2zCwOttnk3ujgHMZLtbd9r4rqD2/0KJaXUBuNDls2agbn/meary5I+n85slsR087e3khYrcOEEl9dqImNq6ms4LfPjpnEzQ1f4siq1sFkKKof/m3F+3ekCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422396; c=relaxed/simple;
-	bh=qFCdy2tDQBg0QOrwlgOGnIC2pDtXzKkTV9VAlNUSu6A=;
+	s=arc-20240116; t=1745420737; c=relaxed/simple;
+	bh=bkv/24m11SQBpYpjlkdd14z9jrR8vqq5zrCVOqMQupo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvcvOCWVd7Vw0gH+J7WspLahbplCAQF1USflDqJhIfw3UPksNYa/lXDTyqqVqMuqT7j2Q+IRc0eXVNhldHeWeWC43uEE7mxSAwAPT7h2cfG12EqZPBN6xfw4WIApWllesaufnHskgc5nN5PIWRf0LdxEVPlJq/ttOGDIh1lBNFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGfAY2CD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75387C4CEE2;
-	Wed, 23 Apr 2025 15:33:13 +0000 (UTC)
+	 MIME-Version; b=t4kFEABjmdtdhI6rcYlLuLJBJPHmtTtdkb/Tg3ArGguy9awuzvT1S1J2Fz9/XlfpIyV4F4TUeaJDTr9DYFXInw9GeB1z5WdNcTREn9HY9zMbsv1PUKXwYEuFnElNvs65w2dcCz4eEp5Sh4twP/schhVChIk6vn9tfrrhc8bf4/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7iBL/aS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2B5C4CEE2;
+	Wed, 23 Apr 2025 15:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422393;
-	bh=qFCdy2tDQBg0QOrwlgOGnIC2pDtXzKkTV9VAlNUSu6A=;
+	s=korg; t=1745420737;
+	bh=bkv/24m11SQBpYpjlkdd14z9jrR8vqq5zrCVOqMQupo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGfAY2CD3OWejkKgeA8luoUoK9YVQ3pNS3yHYnH89x4utU+K/s2TO6ioq4jJNVsW5
-	 CFl+I+ngyTO8JjuJK5O3XKmJCBzr5FYETascWYl+c/w3/KrHAgep9boeTm/aW79W0B
-	 3JsT/Uz5AQIu3/cMqLnNENi69Xf6c3YpL4jdSFQ4=
+	b=c7iBL/aS9bqtCiAB1QWgtnBJ5YAdcwSKslQXUnisRoDtIrIqbx3E44T5ePA6yBHvL
+	 PwnB/dktStY9/6b01+kG7mmoK84qnfWBQvOiJ12W063L02r7FPclo/QxdP54+K3UbC
+	 3Pba3vGfG8JiGlPhXWIYOhQJ18ZZZItOwVpD533Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 334/393] tracing: Fix filter string testing
+	Denis Arefev <arefev@swemel.ru>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 158/223] drm/amd/pm/powerplay: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:43:50 +0200
-Message-ID: <20250423142657.134025077@linuxfoundation.org>
+Message-ID: <20250423142623.607770276@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit a8c5b0ed89a3f2c81c6ae0b041394e6eea0e7024 upstream.
+commit 4b8c3c0d17c07f301011e2908fecd2ebdcfe3d1c upstream.
 
-The filter string testing uses strncpy_from_kernel/user_nofault() to
-retrieve the string to test the filter against. The if() statement was
-incorrect as it considered 0 as a fault, when it is only negative that it
-faulted.
+The user can set any speed value.
+If speed is greater than UINT_MAX/8, division by zero is possible.
 
-Running the following commands:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-  # cd /sys/kernel/tracing
-  # echo "filename.ustring ~ \"/proc*\"" > events/syscalls/sys_enter_openat/filter
-  # echo 1 > events/syscalls/sys_enter_openat/enable
-  # ls /proc/$$/maps
-  # cat trace
-
-Would produce nothing, but with the fix it will produce something like:
-
-      ls-1192    [007] .....  8169.828333: sys_openat(dfd: ffffffffffffff9c, filename: 7efc18359904, flags: 80000, mode: 0)
-
-Link: https://lore.kernel.org/all/CAEf4BzbVPQ=BjWztmEwBPRKHUwNfKBkS3kce-Rzka6zvbQeVpg@mail.gmail.com/
-
+Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Link: https://lore.kernel.org/20250417183003.505835fb@gandalf.local.home
-Fixes: 77360f9bbc7e5 ("tracing: Add test for user space strings when filtering on string pointers")
-Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Reported-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_filter.c |    4 ++--
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -808,7 +808,7 @@ static __always_inline char *test_string
- 	kstr = ubuf->buffer;
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_thermal.c
+@@ -307,10 +307,10 @@ int vega10_fan_ctrl_set_fan_speed_rpm(st
+ 	int result = 0;
  
- 	/* For safety, do not trust the string pointer */
--	if (!strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE))
-+	if (strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE) < 0)
- 		return NULL;
- 	return kstr;
- }
-@@ -827,7 +827,7 @@ static __always_inline char *test_ustrin
+ 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
+-	    speed == 0 ||
++	    (!speed || speed > UINT_MAX/8) ||
+ 	    (speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
+ 	    (speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
+-		return -1;
++		return -EINVAL;
  
- 	/* user space address? */
- 	ustr = (char __user *)str;
--	if (!strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE))
-+	if (strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE) < 0)
- 		return NULL;
- 
- 	return kstr;
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
+ 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
