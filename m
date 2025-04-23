@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C14B8A992A0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4014A99315
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27AD3172A24
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7C29A4133
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3D928DF17;
-	Wed, 23 Apr 2025 15:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061D9280CF0;
+	Wed, 23 Apr 2025 15:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1Lwfc9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="019NJNla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D32A29CB47;
-	Wed, 23 Apr 2025 15:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99E4280A3C;
+	Wed, 23 Apr 2025 15:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422031; cv=none; b=emcQ9Nw12MCpMDw1ffVngVHvGqVyO4wb46vIezH2r+h2d9BMFw5wp5aD8iNipUwJYrjb/tikhj0MZON56Pczl4uOiUaOtiBWvpMxUgGNadiXm2D4cIt1R/R6qb4AVc0YL5ZfOJU+xFeG+cjTXL1OqmbZU77zR303WJplZvqs8pc=
+	t=1745422293; cv=none; b=thNMXfW4j85J8lyuGd+S3q+lakAwQBzogFmM2Auyr67IvDlZ3F2+loQcFdA8cir8q9Tm62V+Acd7IZPgCEhGHvCbj+CSKPe5Z1F1rew5yiRFvisA7XWJTrEio3ZbwzwXwUIJlEldIOQYqbNYQoYEcGHMd0o+9djwzlarqdgfIIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422031; c=relaxed/simple;
-	bh=pRFd6tSwLuxATHuNLWTdIMDyEmodrd5TrhCt4IBFJFc=;
+	s=arc-20240116; t=1745422293; c=relaxed/simple;
+	bh=6xRVJd5yL18mMVjVa7PyjjngnW40cszUmqymCbv5kAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSSeCRPNhaLc+Dcbwz1s8HZQlAkd18f6FJBmfNXpoBuoPb+BiXvWzm0He3n/Uf8R/NNjLoei6SauJyiQ70/vAG7TPISHEQztAJ+Us/Up74ab+YM+ZtowL3lADcrjPsfGw3YyHgIeNdEy4sHgvXr/csDWLCpSAITZxnwVz0zxGU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1Lwfc9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3031EC4CEE2;
-	Wed, 23 Apr 2025 15:27:11 +0000 (UTC)
+	 MIME-Version; b=dlgCMJfKusfV5IbwrgLA53XDg07ZLu1+lxCUEh71xSia8YxikM0kPXjtugw+rkZyZU+Y2RgautMuYo255GiQdO7P1D2dkjXmMjh2G2KVYpPxt1X37ZXKrrzHJFtrRufabEnsIO+1E9zCuaucliI0bM5UE70w2GFK454hq+OGib0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=019NJNla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBADC4CEE2;
+	Wed, 23 Apr 2025 15:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422031;
-	bh=pRFd6tSwLuxATHuNLWTdIMDyEmodrd5TrhCt4IBFJFc=;
+	s=korg; t=1745422293;
+	bh=6xRVJd5yL18mMVjVa7PyjjngnW40cszUmqymCbv5kAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p1Lwfc9IWUskfdQ6MNHbb9C8y4Xfp0oKpvli5hbeMBIUmdBFSoP5Mc+Oo3wBrG5pN
-	 Z+fN9h43bqznUbBKb9mJhbijzfwVzn3cI55eY0AJRaHKtIxcptM+DwgMJCYr1UfIrZ
-	 Eh0L8JC6C4ni9SGOhj8or4Z7vUUmB+gnmt9yzHWw=
+	b=019NJNla1Ztr5TtyqYiKtLYbwE5cduws6bZ2YxViPLc7MW7w89vD5wu9e2W4XDVUL
+	 HjDtlp09/alxHuaSejBWa8m6ucLA/wqr7/uSq1k0VbPLxxDPoEmY+rJG3LdNxe/zbY
+	 VJUkIMfJnNLong3XKs+BycslUTVoL0qnjxuHt1r4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.1 221/291] string: Add load_unaligned_zeropad() code path to sized_strscpy()
-Date: Wed, 23 Apr 2025 16:43:30 +0200
-Message-ID: <20250423142633.437163324@linuxfoundation.org>
+	syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 315/393] hfs/hfsplus: fix slab-out-of-bounds in hfs_bnode_read_key
+Date: Wed, 23 Apr 2025 16:43:31 +0200
+Message-ID: <20250423142656.351208199@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit d94c12bd97d567de342fd32599e7cd9e50bfa140 upstream.
+commit bb5e07cb927724e0b47be371fa081141cfb14414 upstream.
 
-The call to read_word_at_a_time() in sized_strscpy() is problematic
-with MTE because it may trigger a tag check fault when reading
-across a tag granule (16 bytes) boundary. To make this code
-MTE compatible, let's start using load_unaligned_zeropad()
-on architectures where it is available (i.e. architectures that
-define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
-takes care of page boundaries as well as tag granule boundaries,
-also disable the code preventing crossing page boundaries when using
-load_unaligned_zeropad().
+Syzbot reported an issue in hfs subsystem:
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+BUG: KASAN: slab-out-of-bounds in memcpy_from_page include/linux/highmem.h:423 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+BUG: KASAN: slab-out-of-bounds in hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+Write of size 94 at addr ffff8880123cd100 by task syz-executor237/5102
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ memcpy_from_page include/linux/highmem.h:423 [inline]
+ hfs_bnode_read fs/hfs/bnode.c:35 [inline]
+ hfs_bnode_read_key+0x314/0x450 fs/hfs/bnode.c:70
+ hfs_brec_insert+0x7f3/0xbd0 fs/hfs/brec.c:159
+ hfs_cat_create+0x41d/0xa50 fs/hfs/catalog.c:118
+ hfs_mkdir+0x6c/0xe0 fs/hfs/dir.c:232
+ vfs_mkdir+0x2f9/0x4f0 fs/namei.c:4257
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4280
+ __do_sys_mkdir fs/namei.c:4300 [inline]
+ __se_sys_mkdir fs/namei.c:4298 [inline]
+ __x64_sys_mkdir+0x6c/0x80 fs/namei.c:4298
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fbdd6057a99
+
+Add a check for key length in hfs_bnode_read_key to prevent
+out-of-bounds memory access. If the key length is invalid, the
+key buffer is cleared, improving stability and reliability.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+5f3a973ed3dfb85a6683@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5f3a973ed3dfb85a6683
 Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20250403000703.2584581-2-pcc@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/20241019191303.24048-1-kovalev@altlinux.org
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/string.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/hfs/bnode.c     |    6 ++++++
+ fs/hfsplus/bnode.c |    6 ++++++
+ 2 files changed, 12 insertions(+)
 
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -181,6 +181,7 @@ ssize_t strscpy(char *dest, const char *
- 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
- 		return -E2BIG;
+--- a/fs/hfs/bnode.c
++++ b/fs/hfs/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 1;
  
-+#ifndef CONFIG_DCACHE_WORD_ACCESS
- #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	/*
- 	 * If src is unaligned, don't cross a page boundary,
-@@ -196,11 +197,13 @@ ssize_t strscpy(char *dest, const char *
- 	if (((long) dest | (long) src) & (sizeof(long) - 1))
- 		max = 0;
- #endif
-+#endif
++	if (key_len > sizeof(hfs_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfs_btree_key));
++		pr_err("hfs: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
  
- 	/*
--	 * read_word_at_a_time() below may read uninitialized bytes after the
--	 * trailing zero and use them in comparisons. Disable this optimization
--	 * under KMSAN to prevent false positive reports.
-+	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
-+	 * uninitialized bytes after the trailing zero and use them in
-+	 * comparisons. Disable this optimization under KMSAN to prevent
-+	 * false positive reports.
- 	 */
- 	if (IS_ENABLED(CONFIG_KMSAN))
- 		max = 0;
-@@ -208,7 +211,11 @@ ssize_t strscpy(char *dest, const char *
- 	while (max >= sizeof(unsigned long)) {
- 		unsigned long c, data;
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -67,6 +67,12 @@ void hfs_bnode_read_key(struct hfs_bnode
+ 	else
+ 		key_len = tree->max_key_len + 2;
  
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+		c = load_unaligned_zeropad(src+res);
-+#else
- 		c = read_word_at_a_time(src+res);
-+#endif
- 		if (has_zero(c, &data, &constants)) {
- 			data = prep_zero_mask(c, data, &constants);
- 			data = create_zero_mask(data);
++	if (key_len > sizeof(hfsplus_btree_key) || key_len < 1) {
++		memset(key, 0, sizeof(hfsplus_btree_key));
++		pr_err("hfsplus: Invalid key length: %d\n", key_len);
++		return;
++	}
++
+ 	hfs_bnode_read(node, key, off, key_len);
+ }
+ 
 
 
 
