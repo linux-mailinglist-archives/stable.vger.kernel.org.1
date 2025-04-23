@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10877A98D86
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:46:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B64A991D2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1784A4435A2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5031B8769E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE31280CCD;
-	Wed, 23 Apr 2025 14:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57CC029B784;
+	Wed, 23 Apr 2025 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRpVUAir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8ma+bvr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146431A08A6;
-	Wed, 23 Apr 2025 14:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D6229B777;
+	Wed, 23 Apr 2025 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419564; cv=none; b=XYuOROK35capnunrKre82fYPWkrwpgxsrEiZNJ+IFMH60zHRYvnr8rE3Nz0wtdOTrRLFFUZYuDKJznrQf4B2wo6g3PmQkzlTCrD/P3H5i2qEUK3HKzYTBCeagxSbGXBGgO868t1gz32R4pvWcpGAwHyGeHYZawZthhXt2aCapP0=
+	t=1745421330; cv=none; b=LDm/LCCKk+VIfOzRUGdyCulW5akliMaggqqVYo0SXtYmA5yjxrh06sBLBkY++G6vthq3Xt1GQT3nJjPZT6URpWfF6G0XuBTjHI3NLKMXth1sXX9YviHfLdFCb4g/fAxIDuVNK6qWgY9A25Sslq6k3c+P37ienGgIwa7pC6F3NxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419564; c=relaxed/simple;
-	bh=K4aVh9Hb3RVweg45NvEsXkdc2Wir0eETNjAC6X6UyzU=;
+	s=arc-20240116; t=1745421330; c=relaxed/simple;
+	bh=ZycrAIXJbonIow5Gn7luah27irPyfoz0Ye4edHjE5t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kl9Re8in8j0sYdFyM29VCR5aBCow5bxH+36so2pU+/jFRBdH7FpjdISShrDEVBwAGntuvwpoB42syyM1DI3pulYdp2/tmJc1cAOXBc8tdAqkuRpZh5GGE3b6ermUKZ8NMdMOdd2GOmr9rfaXpzi/Baar7HXOlOELpL9MstlqGSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRpVUAir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D111C4CEE2;
-	Wed, 23 Apr 2025 14:46:03 +0000 (UTC)
+	 MIME-Version; b=ZhxfM9nU3W5PBKDng2qlClyjJwcaHxcjwksX1Idlb6STBuRCXx3YWU7l+yP7n0rdEqjH9z98KKf7jAze+sHZz2kWWVKXdqtAWYZIqgLf6e+iZy+aaycuT/AH1VMl3uvh9W/35iM9kKvLup/NMmRlc+FmR5BZRcM5L6L6Liat6J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8ma+bvr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D90BC4CEE8;
+	Wed, 23 Apr 2025 15:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419563;
-	bh=K4aVh9Hb3RVweg45NvEsXkdc2Wir0eETNjAC6X6UyzU=;
+	s=korg; t=1745421330;
+	bh=ZycrAIXJbonIow5Gn7luah27irPyfoz0Ye4edHjE5t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRpVUAir0rZXFvTiusJPE4E992mNpdNvD3cqtPA1+dtiTD98IVq3A3iyu5Ye+GFqi
-	 8k0QC753WAqstWaYZfRXj/dD1zM2M+DnipMT0YH+nLZP/d/OSg0RxaISXjInl0VgNR
-	 FBqBd2LmsLG54XZi2DXyqK1ReuDjxLgGu1Iqtukc=
+	b=E8ma+bvruRaWQzKMXA2QS7Ru2N19JUMrLfuz3NclqsotlH1kVP3KJt+kxrUpYf97Y
+	 gCZ3q5U8nlmnyt5RY5f6BjjDI84i84vQxXk1Fe1jjZJUDoktGbz3gbPQvTe3LSW9a6
+	 QmET66X3IW+0aJaDSJ1/psd9KijzhqER2c4gLZ/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 001/241] scsi: hisi_sas: Enable force phy when SATA disk directly connected
+	Jan Kara <jack@suse.cz>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 169/393] jbd2: remove wrong sb->s_sequence check
 Date: Wed, 23 Apr 2025 16:41:05 +0200
-Message-ID: <20250423142620.589255654@linuxfoundation.org>
+Message-ID: <20250423142650.349224567@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 8aa580cd92843b60d4d6331f3b0a9e8409bb70eb ]
+commit e6eff39dd0fe4190c6146069cc16d160e71d1148 upstream.
 
-when a SATA disk is directly connected the SAS controller determines the
-disk to which I/Os are delivered based on the port ID in the DQ entry.
+Journal emptiness is not determined by sb->s_sequence == 0 but rather by
+sb->s_start == 0 (which is set a few lines above). Furthermore 0 is a
+valid transaction ID so the check can spuriously trigger. Remove the
+invalid WARN_ON.
 
-When many phys are disconnected and reconnect, the port ID of phys were
-changed and used by other link, resulting in I/O being sent to incorrect
-disk. Data inconsistency on the SATA disk may occur during I/O retries
-using the old port ID. So enable force phy, then force the command to be
-executed in a certain phy, and if the actual phy ID of the port does not
-match the phy configured in the command, the chip will stop delivering the
-I/O to disk.
-
-Fixes: ce60689e12dd ("scsi: hisi_sas: add v3 code to send ATA frame")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20250312095135.3048379-2-yangxingui@huawei.com
-Reviewed-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250206094657.20865-3-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  9 +++++++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 14 ++++++++++++--
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ fs/jbd2/journal.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index 6e7f99fcc8247..3af991cad07eb 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -2501,6 +2501,7 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
- 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
- 	struct sas_ata_task *ata_task = &task->ata_task;
- 	struct sas_tmf_task *tmf = slot->tmf;
-+	int phy_id;
- 	u8 *buf_cmd;
- 	int has_data = 0, hdr_tag = 0;
- 	u32 dw0, dw1 = 0, dw2 = 0;
-@@ -2508,10 +2509,14 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
- 	/* create header */
- 	/* dw0 */
- 	dw0 = port->id << CMD_HDR_PORT_OFF;
--	if (parent_dev && dev_is_expander(parent_dev->dev_type))
-+	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
- 		dw0 |= 3 << CMD_HDR_CMD_OFF;
--	else
-+	} else {
-+		phy_id = device->phy->identify.phy_identifier;
-+		dw0 |= (1U << phy_id) << CMD_HDR_PHY_ID_OFF;
-+		dw0 |= CMD_HDR_FORCE_PHY_MSK;
- 		dw0 |= 4 << CMD_HDR_CMD_OFF;
-+	}
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1914,7 +1914,6 @@ int jbd2_journal_update_sb_log_tail(jour
  
- 	if (tmf && ata_task->force_phy) {
- 		dw0 |= CMD_HDR_FORCE_PHY_MSK;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 095bbf80c34ef..6a0656f3b596c 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -359,6 +359,10 @@
- #define CMD_HDR_RESP_REPORT_MSK		(0x1 << CMD_HDR_RESP_REPORT_OFF)
- #define CMD_HDR_TLR_CTRL_OFF		6
- #define CMD_HDR_TLR_CTRL_MSK		(0x3 << CMD_HDR_TLR_CTRL_OFF)
-+#define CMD_HDR_PHY_ID_OFF		8
-+#define CMD_HDR_PHY_ID_MSK		(0x1ff << CMD_HDR_PHY_ID_OFF)
-+#define CMD_HDR_FORCE_PHY_OFF		17
-+#define CMD_HDR_FORCE_PHY_MSK		(0x1U << CMD_HDR_FORCE_PHY_OFF)
- #define CMD_HDR_PORT_OFF		18
- #define CMD_HDR_PORT_MSK		(0xf << CMD_HDR_PORT_OFF)
- #define CMD_HDR_PRIORITY_OFF		27
-@@ -1429,15 +1433,21 @@ static void prep_ata_v3_hw(struct hisi_hba *hisi_hba,
- 	struct hisi_sas_cmd_hdr *hdr = slot->cmd_hdr;
- 	struct asd_sas_port *sas_port = device->port;
- 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
-+	int phy_id;
- 	u8 *buf_cmd;
- 	int has_data = 0, hdr_tag = 0;
- 	u32 dw1 = 0, dw2 = 0;
+ 	/* Log is no longer empty */
+ 	write_lock(&journal->j_state_lock);
+-	WARN_ON(!sb->s_sequence);
+ 	journal->j_flags &= ~JBD2_FLUSHED;
+ 	write_unlock(&journal->j_state_lock);
  
- 	hdr->dw0 = cpu_to_le32(port->id << CMD_HDR_PORT_OFF);
--	if (parent_dev && dev_is_expander(parent_dev->dev_type))
-+	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
- 		hdr->dw0 |= cpu_to_le32(3 << CMD_HDR_CMD_OFF);
--	else
-+	} else {
-+		phy_id = device->phy->identify.phy_identifier;
-+		hdr->dw0 |= cpu_to_le32((1U << phy_id)
-+				<< CMD_HDR_PHY_ID_OFF);
-+		hdr->dw0 |= CMD_HDR_FORCE_PHY_MSK;
- 		hdr->dw0 |= cpu_to_le32(4U << CMD_HDR_CMD_OFF);
-+	}
- 
- 	switch (task->data_dir) {
- 	case DMA_TO_DEVICE:
--- 
-2.39.5
-
 
 
 
