@@ -1,115 +1,152 @@
-Return-Path: <stable+bounces-136460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9128EA9968C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:25:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06739A996FE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED4F07AC17E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A2571898609
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2570428A1E8;
-	Wed, 23 Apr 2025 17:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92B0228BA95;
+	Wed, 23 Apr 2025 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iwGGpqYC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e7ypJdgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA07F28B50E
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 17:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FDA41C69
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 17:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745429134; cv=none; b=MUjw7emDL10YYwzuvo27mU3RRZefEhyuRZ0aAaCCdoK02cSE+e86c4DqIfzkJRp+1oM/qUbjwBDnIuVZJh3zUGUpdo7Gf4KNaSioU/l1fslJKQdBCNllueHHzXTSqS0ge7+p74B799qzCqWcNVsAHZRpxdm6pftxP9/dxnSX/cs=
+	t=1745430469; cv=none; b=nSDgqpmVppFJ896EAC6PZ3hlgH6iDbSUnZaIHrZxvWKbVvsVyfSxOp8m6CHFrMuTRHq9VV47eAAT7so/50Zoeprdc+JoBAPD2UxfJhK8ui6+bdjY9WEzmXrua4wgrYlk4elWqKTuA7LJ0IzE6N0fRVnPc81ZUF7W0O7hi1bMghw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745429134; c=relaxed/simple;
-	bh=m2NnblMxaxOcIaLbafnubhrGJ9wMgY5KgogBfJAbkYY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcxoO3O/eCPPcYHI68F+q8OIiHRUzorVUwf6naCusGJbEm3U4ljacfIZEJCqwbSw0QMjM6Gj1/aE5X3K/Y1YEWBw/uqc3iq2iGeCuglGNkiVGDu8jcWP/HD8xnnFFgbOyb8B+JSKyK9XQDjsAAE4QKSQhX+ASeqAdY9RDdUDjLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iwGGpqYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20DCEC4CEE2;
-	Wed, 23 Apr 2025 17:25:32 +0000 (UTC)
+	s=arc-20240116; t=1745430469; c=relaxed/simple;
+	bh=RjQSY9IZjrkQwD1GdLzVnqjOrQYMUXS1u4tmvORqREY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sgthNpvwJLdusyzqIJMWmZEHu/s3CVod5hckO5YPUYK89DMr7Qu1ghOrBFK+wb0pcWLKRGlrlfWys6PuSoFP2jt1MUVQ+yBXxWDWTTEf+bp6i7/GXgkntLssn++J1TL05l/4dxr2n7YT0QH5AKBQvOE4qNeP9mj7++t7DNbun98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e7ypJdgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B77C4CEE8;
+	Wed, 23 Apr 2025 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745429134;
-	bh=m2NnblMxaxOcIaLbafnubhrGJ9wMgY5KgogBfJAbkYY=;
+	s=k20201202; t=1745430468;
+	bh=RjQSY9IZjrkQwD1GdLzVnqjOrQYMUXS1u4tmvORqREY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwGGpqYCYLXkXrk+w0M6vXgEl7jEBisD1re1zNdENVjFaq2l1RhuvJodxebqWI7Y4
-	 yowuAGFc+2DGdWxDv0yoeQm5ABOYc1pTEuNLxn4UVM+W/GEwz96sPxRSgWToTwWeMX
-	 sB22xuiiVNcOlmBTPhQFmAYeQdVHbjjbYF1uAxREcOrhgc4rhUhlQVvGbLYbObwChd
-	 hw6KMYZ98k4JNCeuTzaJP4esFgFUk98G+I6SuwYqTBduJPiDHY6lr9TEeN1/90Y4Nb
-	 tZb1mNBa9lszMfta+uAPUlzjKmXeI61vb0LWGoc9t4YzPq42/SUrxK795Kk6vQW3+O
-	 iJ6qzAFwfF14Q==
-From: Nathan Chancellor <nathan@kernel.org>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org
-Cc: stable@vger.kernel.org,
-	nathan@kernel.org,
-	kees@kernel.org
-Subject: [PATCH 6.14 v2] lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
-Date: Wed, 23 Apr 2025 10:25:05 -0700
-Message-ID: <20250423172504.1334237-2-nathan@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <2025042119-imbecile-greeter-0ce1@gregkh>
-References: <2025042119-imbecile-greeter-0ce1@gregkh>
+	b=e7ypJdgptzlDkx2MknKJtk4CfHio/sC/+ib4fn/GFJ6KqBuwUPqFWKvYPBoKnMkOQ
+	 HzCoh6Wl47JdQg/EQBWKIuepXyN2l78StOzyVT55aaKlUGTRD1l945Sn4r2n3NQ6Dm
+	 t1xe9WhCfWtL7M7EGicsWbAoYz6WqtrICFdRmAva9TK34d+f3lG5UZHVdnzW5ztLiy
+	 aGAcFdhUi7C4b1a4zERYQNkNP05CfPyGN0AQS74ayBLf+Ttfl40OcZbAV6XWLtYNM2
+	 mgdb09VM5F9tBtR2xQXHyVHtcbj6zgG6yZb/9DGnta3AFfhjPl8PgzxR0GrCPDeNSG
+	 xFNcokaPZAHWA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: bin.lan.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] scsi: lpfc: Fix null pointer dereference after failing to issue FLOGI and PLOGI
+Date: Wed, 23 Apr 2025 13:47:46 -0400
+Message-Id: <20250423124236-db305a4c20aa9e11@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <20250423115644.1585421-1-bin.lan.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-commit cdc2e1d9d929d7f7009b3a5edca52388a2b0891f upstream.
+[ Sasha's backport helper bot ]
 
-CONFIG_UBSAN_INTEGER_WRAP is 'default UBSAN', which is problematic for a
-couple of reasons.
+Hi,
 
-The first is that this sanitizer is under active development on the
-compiler side to come up with a solution that is maintainable on the
-compiler side and usable on the kernel side. As a result of this, there
-are many warnings when the sanitizer is enabled that have no clear path
-to resolution yet but users may see them and report them in the meantime.
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The second is that this option was renamed from
-CONFIG_UBSAN_SIGNED_WRAP, meaning that if a configuration has
-CONFIG_UBSAN=y but CONFIG_UBSAN_SIGNED_WRAP=n and it is upgraded via
-olddefconfig (common in non-interactive scenarios such as CI),
-CONFIG_UBSAN_INTEGER_WRAP will be silently enabled again.
+The upstream commit SHA1 provided is correct: 577a942df3de2666f6947bdd3a5c9e8d30073424
 
-Remove 'default UBSAN' from CONFIG_UBSAN_INTEGER_WRAP until it is ready
-for regular usage and testing from a broader community than the folks
-actively working on the feature.
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: bin.lan.cn@windriver.com
+Commit author: James Smart<jsmart2021@gmail.com>
 
-Cc: stable@vger.kernel.org
-Fixes: 557f8c582a9b ("ubsan: Reintroduce signed overflow sanitizer")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20250414-drop-default-ubsan-integer-wrap-v1-1-392522551d6b@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-[nathan: Fix conflict due to lack of rename from ed2b548f1017 in stable]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+
+Note: The patch differs from the upstream commit:
 ---
-v1 -> v2: Correct upstream ID
+1:  577a942df3de2 ! 1:  84e3972d52302 scsi: lpfc: Fix null pointer dereference after failing to issue FLOGI and PLOGI
+    @@ Metadata
+      ## Commit message ##
+         scsi: lpfc: Fix null pointer dereference after failing to issue FLOGI and PLOGI
+     
+    +    [ Upstream commit 577a942df3de2666f6947bdd3a5c9e8d30073424 ]
+    +
+         If lpfc_issue_els_flogi() fails and returns non-zero status, the node
+         reference count is decremented to trigger the release of the nodelist
+         structure. However, if there is a prior registration or dev-loss-evt work
+    @@ Commit message
+         Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+         Signed-off-by: James Smart <jsmart2021@gmail.com>
+         Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    +    [Minor context change fixed.]
+    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+      ## drivers/scsi/lpfc/lpfc_els.c ##
+     @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_initial_flogi(struct lpfc_vport *vport)
+    - 	/* Reset the Fabric flag, topology change may have happened */
+    - 	vport->fc_flag &= ~FC_FABRIC;
+    + 	}
+    + 
+      	if (lpfc_issue_els_flogi(vport, ndlp, 0)) {
+     -		/* This decrement of reference count to node shall kick off
+     -		 * the release of the node.
+    @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_initial_fdisc(struct lpfc_vport *vport)
+      	}
+      	return 1;
+     @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_cmpl_els_plogi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+    + 	struct lpfc_dmabuf *prsp;
+      	int disc;
+      	struct serv_parm *sp = NULL;
+    - 	u32 ulp_status, ulp_word4, did, iotag;
+     +	bool release_node = false;
+      
+      	/* we pass cmdiocb to state machine which needs rspiocb as well */
+    @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_cmpl_els_plogi(struct lpfc_hba *phba, struct
+      		/* Good status, call state machine */
+      		prsp = list_entry(((struct lpfc_dmabuf *)
+     @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_cmpl_els_prli(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+    + 	struct lpfc_nodelist *ndlp;
+    + 	char *mode;
+      	u32 loglevel;
+    - 	u32 ulp_status;
+    - 	u32 ulp_word4;
+     +	bool release_node = false;
+      
+      	/* we pass cmdiocb to state machine which needs rspiocb as well */
+    @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_cmpl_els_prli(struct lpfc_hba *phba, struct l
+      		/* Good status, call state machine.  However, if another
+      		 * PRLI is outstanding, don't call the state machine
+     @@ drivers/scsi/lpfc/lpfc_els.c: lpfc_cmpl_els_adisc(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+    + 	IOCB_t *irsp;
+      	struct lpfc_nodelist *ndlp;
+      	int  disc;
+    - 	u32 ulp_status, ulp_word4, tmo;
+     +	bool release_node = false;
+      
+      	/* we pass cmdiocb to state machine which needs rspiocb as well */
 ---
- lib/Kconfig.ubsan | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/lib/Kconfig.ubsan b/lib/Kconfig.ubsan
-index 1d4aa7a83b3a..37655f58b855 100644
---- a/lib/Kconfig.ubsan
-+++ b/lib/Kconfig.ubsan
-@@ -118,7 +118,6 @@ config UBSAN_UNREACHABLE
- 
- config UBSAN_SIGNED_WRAP
- 	bool "Perform checking for signed arithmetic wrap-around"
--	default UBSAN
- 	depends on !COMPILE_TEST
- 	# The no_sanitize attribute was introduced in GCC with version 8.
- 	depends on !CC_IS_GCC || GCC_VERSION >= 80000
+Results of testing on various branches:
 
-base-commit: d12acd7bc3d4ca813dc2360e6f5ca6bb1682c290
--- 
-2.49.0
-
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
 
