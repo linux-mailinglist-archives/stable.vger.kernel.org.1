@@ -1,179 +1,124 @@
-Return-Path: <stable+bounces-136475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 182A1A99886
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 21:33:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690DBA998A7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 21:36:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6CF33BD942
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:32:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54C811B86923
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 19:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8830293B42;
-	Wed, 23 Apr 2025 19:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBACC28EA76;
+	Wed, 23 Apr 2025 19:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T6OObWSo"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="V3QU37Tz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AFB293471;
-	Wed, 23 Apr 2025 19:33:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BD325C834;
+	Wed, 23 Apr 2025 19:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745436782; cv=none; b=FENzhPQKeq2vi24i5q2V97e0pCbDA6H1lvijNpsKZeMCy/6B+OOl1MRs8Ajl+7r21F8Tqyzvdui2KlZUV53W/F4hHbW9UdUv4ZdIScfZuTTKs9/7lp5CgTuhamDcuJMC+30DqQslfXjdfiFz6jZ1fQAiAxzJu6ubSbwOyQ2kEy8=
+	t=1745436992; cv=none; b=CXvODuqa9O8794QvNz8zENIco2LbA83y932OQ4JjPDVIFNIQvIIyOGY8wL86iX4QWjJSkjQziRTp5krYvxhwthWsl2omfzQzBrN58IJ35ciWSM1CLPsxDgPOpm75gngkNZ4FCk/zJnVxcD7/sGHfYDQQewaUr7WGMmKkq6Ozo40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745436782; c=relaxed/simple;
-	bh=qeXaEOZxb709KPbgIWs4cj6m9zaoicIroOb1v3e0D38=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CthRZKd88FMoLO+UkujMd+uNO+OLS6RyNH0xGBEYxYm31KBCLegcUHPCNlV36hg8QnpQmXmkQvYKHxwZSSRfL7cT6NK4P+BYxXNIYVyr2yfFSfVJW7ALF0OombShBRGO4IKLdnwDk1G/qkgc2ekbhsS5pyrOxx2AdZ78senHeE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T6OObWSo; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22c33e4fdb8so1914005ad.2;
-        Wed, 23 Apr 2025 12:33:00 -0700 (PDT)
+	s=arc-20240116; t=1745436992; c=relaxed/simple;
+	bh=F8Lms9WWcqbi9UKLZVM3A4yA8hdTJR3kmzCK+DkmcwM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pJT71R8vCV3aozqLgrQ+4sSRXN5H8c/EiFBwChHDkR3pLQPROOJeRxthDL2cTgqlOLdQhgskMITo0KH5vXTLzkHIDzuI4+E7kymW2PESSrCSQDMh1DjPQ4xs12Y+J239ZXHT2+H+VBK95UG2i3+lvrZGV83SdP5fFI+yPXZcrBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=V3QU37Tz; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43cef035a3bso1488485e9.1;
+        Wed, 23 Apr 2025 12:36:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745436780; x=1746041580; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7TWawy/oO2koF169FCbsai+IajiXPIwWUAaxyA1lZrk=;
-        b=T6OObWSoyjLfGNeKZZI692OwBdfvG0Cr/tu+jL7l3+I4Tn7fRcs4VxzJzqbyDf1JOb
-         bZTyjlbgkatxWkRBuK9TcRU+aSFucd88RU0gLHK0HKq6QkooTjVdM176uSFQ6dG2ZIMt
-         PI9AjvnULsLvBXX18umqufxRZv5EnwesFYlUhbeD5Zg4JlNXdDucqrSVHs+0Zfi/mZSG
-         J4zGBAR221/eEPVKcKh+Wn69SyFNNXds9Lhecn09WeurRR0zlv57mrHNp8cxNAvO266y
-         jcA4T3PB3KJkgHx9Wbnkvfti3goBbEXFicA08aBHm2CDxEEaSIJmSFmmsnblVGsjTcKN
-         x/XQ==
+        d=googlemail.com; s=20230601; t=1745436989; x=1746041789; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J13/1f/4bpG2OkBxc41bbyLlaHxbEughKpa7FrPZ83o=;
+        b=V3QU37TzhticWADYrKgkY1nsiFJqQatyjyNptKiTiNmqbaOGZ+B9jM9sGvz2eG8nvc
+         3NtGGfn9U9noTSSX6wfZzslF4ad9mS5Un+BSkb/XmyYJMxcSIytFLT4fesEafyRysJNk
+         QzXVl/9m+izTYha2Hn6OKVuxs8Y30Hmhl0QuHLit+S7RfR0OwiVSgRtzSpyrqy4pWeFQ
+         BE5heJyXEfJlxVbSrWBkF6elH6cMikRazdLf6RYJ+qr/mS/LPyw3av9Wu+T8fOu7SnaR
+         R0qOhla84wDzAeZDFzXCUjj3iPhg6a/QM2nyFDV4EY9xLONDj105DUcIHWxw3HJhS0/Z
+         s6CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745436780; x=1746041580;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7TWawy/oO2koF169FCbsai+IajiXPIwWUAaxyA1lZrk=;
-        b=LOzMZRGxuufmnA0UmehSm+stTINdMZzN5z4OUXYlrAkFzk/RB5yWFWrBm+pQYGY6G3
-         sG+xJ9VgsgREl0cX521jnXtvzAuIE9tSsgciEYMoXkA0Bd22dYbwRrbf9xhbujAh6mU2
-         pbe9htcqW+Yh3ka0pTH1BtJUTt/sJZWwciuIddnRi6UQyV7J4CLuaLnmSJ35q3CWO/NB
-         GiqxBOz6SVGFeJWai/zcRGWrs5WRlIJ6P5Eh8rMHevFWRL5YvkW970RU08c8qBFCrLrd
-         4NaybmQ9bvPvlhJ99T8gIjQE1nxpY+xwtMME+m908yq1rvbJ8+lSZmORB5e6Dq5HN1Xp
-         gpxw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8JM5jJ5bsUY1aTV1eC9u1YyByOW5R0yV9nLKmcC+UWrmTpbXnzxIhgXtQWTfE2ZrYHTidPQuqssH571k=@vger.kernel.org, AJvYcCVdpQ527Q5WpGiPwYf9r1bSW9hBbLn0e4dOGb/okdlWhwZT/5xqQ4rrQTLlDyi2zhIH+Z0X6ntK@vger.kernel.org, AJvYcCXcWUvwuticsw/mRhd3TnkQB82MdV7sKxonEFIM4u7byWlVxB9uHuh/sIHt21+GDLNDj/S7CzIe@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLTibhI7Si7lMssZh2tAbu8QmhU2RTQQ+n+U9K+rOOG2GJBnhv
-	YqYzeyVEemNEs7Tp+KTnb1xzrw5+8Tx6v1141VmWOCZ9Tw1iz3nu
-X-Gm-Gg: ASbGncsfSPJzMaWM5m/BN5gmwmmvT70HqcAA+X+tnTqR9BPBcOpekqJB+JWmmD/6Uxh
-	FGqfA+PuwGu7sfAWZHR0H4pxoBc1mZz/BwL8WfguJ2N5KztXyKtJsYeZv5Q+PajpacQlV5CR7h2
-	RTW2pKuPx0t2L9bOv+JbnHhoN++5aaIT48+yfECNmMPG0oRTYt/jWESjMm+0mz7FIpEA3Wyg5Oe
-	Ayp7HreHqrfaOaY3cjrYDq4J+BLvrGeIYU1bvcRDNnVVgcZKbKrFA1xtKUe/O7jqt/b1Cox6JDY
-	mbZcMU6l3VvcaYpFynU20rZMocgQ6PqO50mZEVG0h9Sb
-X-Google-Smtp-Source: AGHT+IEWT0wZBmAOH0PSIjsDQw7UecOVeWgSLRwG+BXz/ugDANFWFinATMDNMWo+M4dyODERvpT75A==
-X-Received: by 2002:a17:902:e5cc:b0:223:3630:cd32 with SMTP id d9443c01a7336-22c5365eaefmr309410525ad.53.1745436780172;
-        Wed, 23 Apr 2025 12:33:00 -0700 (PDT)
-Received: from localhost ([129.210.115.104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50bf52cesm108249605ad.65.2025.04.23.12.32.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Apr 2025 12:32:59 -0700 (PDT)
-Date: Wed, 23 Apr 2025 12:32:58 -0700
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: "Alan J. Wylie" <alan@wylie.me.uk>
-Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <aAlAakEUu4XSEdXF@pop-os.localdomain>
-References: <20250421131000.6299a8e0@frodo.int.wylie.me.uk>
- <20250421200601.5b2e28de@frodo.int.wylie.me.uk>
- <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
- <20250421210927.50d6a355@frodo.int.wylie.me.uk>
- <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
- <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
- <aAf/K7F9TmCJIT+N@pop-os.localdomain>
- <20250422214716.5e181523@frodo.int.wylie.me.uk>
- <aAgO59L0ccXl6kUs@pop-os.localdomain>
- <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
+        d=1e100.net; s=20230601; t=1745436989; x=1746041789;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J13/1f/4bpG2OkBxc41bbyLlaHxbEughKpa7FrPZ83o=;
+        b=pQd3FiL8iDCPB+zfxAzH65OLRl14K33IAZVFMcs6SEjRfMSXxZZNhneDQspiWLSCim
+         Flxhz/+Oh0F2dJfLNF2HBEJlcZBW/LLEpcUOjEJ5CH6AJHLADsDT3wc6ZrcWgEhnLj7w
+         /oVRCY6iXPypRra5GrKDtfvb9Owi1JyJc3O0G1s2V7u7u4wCBD3ZskWMIIoMJ3sOqJ7h
+         Ibos9BKgJBJ5amuwJUAxzr5C4h8Onox1O32eJhAm9RpWAtV/hLNWUOVAWiaBd7yUcwGs
+         c/NVky7u5jP06xXYWER5GPHMqhhCpHjTohLCVjY1yB8wCoeVZpi9ohWbBKMenrNr22JI
+         6KXA==
+X-Forwarded-Encrypted: i=1; AJvYcCV/MTOwprAbjDmDlBDmTu0uH95pqmIlxQcXw3nNRoE+Wmk44AtQGAp3lqKX7ioJEiZmWkJxTuRq@vger.kernel.org, AJvYcCVzkyI8d85XADqfFpHCtz/7up0XwEi2bl9jn3fyrQbdiucmCLD6MXCpZAMsHa+vOdA24v+h00TzZZOU13s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX5BOAFAU1nFSo3pz0uEZikFgjMz5P/vvOFeMjgj50WuauA5OL
+	dOzPbY0M59im1td+ZoTr9qw0qq5jHDX8lXuoHOhKwC+vhlytWSE=
+X-Gm-Gg: ASbGncs7bQln4UPKdPVSWIjEximhP9aHYC2UtdWyKUI+ZPIsoiSUxkFwCNtpS+HOyRd
+	oiWlaWgomKSF+72KFJf/6xr1AvoXWA9VFEo40n7aNuIEHVkFhfgdZN2O8Ce3IJG1CEu8nAdvCym
+	Esz6vc1FqDjGCSughewazlYag36rjjOfcqntsubhi7nfq9Xd1vFHJyCzIBXsFFlSNQRi6fywQvh
+	rte4YCV1YwZaA4ZDD5iPfgQTCIiXhVHk3LtaaefZgJNyr2dntkguQZd0x6+SqfiCzcxyAgOef+t
+	p2UJkYq5dmg5cXzCP7fDAa5+VyGhBZbPeEETqo6iF38w2IMMIwS+RNgidyXNBT5B1bP6xymXPxd
+	ocArnNKZSaqBhPp87SA==
+X-Google-Smtp-Source: AGHT+IHXrAT5Ym8Wfi9Mv5P7WsaXUZaJTk3APhWCaUhtxOeEgA1taGsSqysoypMvC/sD45jNiPBpgQ==
+X-Received: by 2002:a05:600c:4e8f:b0:43d:47e:3205 with SMTP id 5b1f17b1804b1-4406ab99521mr172733875e9.11.1745436989205;
+        Wed, 23 Apr 2025 12:36:29 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac758.dip0.t-ipconnect.de. [91.42.199.88])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44092d369f1sm35725315e9.29.2025.04.23.12.36.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Apr 2025 12:36:28 -0700 (PDT)
+Message-ID: <0f058a7b-72ac-49b5-8121-92a189e7b82b@googlemail.com>
+Date: Wed, 23 Apr 2025 21:36:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 000/223] 6.12.25-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250423142617.120834124@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Wed, Apr 23, 2025 at 10:51:49AM +0100, Alan J. Wylie wrote:
-> On Tue, 22 Apr 2025 14:49:27 -0700
-> Cong Wang <xiyou.wangcong@gmail.com> wrote:
-> 
-> > Although I am still trying to understand the NULL pointer, which seems
-> > likely from:
-> > 
-> >  478                         if (p->inner.clprio[prio].ptr == cl->node + prio) {
-> >  479                                 /* we are removing child which is pointed to from
-> >  480                                  * parent feed - forget the pointer but remember
-> >  481                                  * classid
-> >  482                                  */
-> >  483                                 p->inner.clprio[prio].last_ptr_id = cl->common.classid;
-> >  484                                 p->inner.clprio[prio].ptr = NULL;
-> >  485                         }
-> > 
-> > Does the following patch work? I mean not just fixing the crash, but
-> > also not causing any other problem.
-> 
-> > ---
-> > 
-> > diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-> > index 4b9a639b642e..0cdc778fddef 100644
-> > --- a/net/sched/sch_htb.c
-> > +++ b/net/sched/sch_htb.c
-> > @@ -348,7 +348,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
-> >   */
-> >  static inline void htb_next_rb_node(struct rb_node **n)
-> >  {
-> > -	*n = rb_next(*n);
-> > +	if (*n)
-> > +		*n = rb_next(*n);
-> >  }
-> >  
-> >  /**
-> 
-> There's been three of these: 
-> 
-> Apr 23 08:08:32 bilbo kernel: WARNING: CPU: 0 PID: 0 at htb_deactivate+0xd/0x30 [sch_htb]
-> Apr 23 08:08:32 bilbo kernel: WARNING: CPU: 0 PID: 0 at htb_deactivate+0xd/0x30 [sch_htb]
-> Apr 23 10:41:36 bilbo kernel: WARNING: CPU: 1 PID: 0 at htb_deactivate+0xd/0x30 [sch_htb]
-> 
-> But no panic.
-> 
-> I've run scripts/decode.sh on the last one.
-> 
+Am 23.04.2025 um 16:41 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.25 release.
+> There are 223 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks a lot for testing! This helped a lot to verify how far we can go
-beyond the panic and what I still missed. To me it looks a bit
-complicated for -stable if we make everything idempotent along the path.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Do you mind testing the following one instead? Please revert the
-above one for htb_next_rb_node(). I think maybe this is the safest fix
-we could have for -stable.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Thanks!
 
---------->
+Beste Grüße,
+Peter Schneider
 
-diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-index 4b9a639b642e..3786abbdc4c3 100644
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -1487,7 +1487,8 @@ static void htb_qlen_notify(struct Qdisc *sch, unsigned long arg)
- 
- 	if (!cl->prio_activity)
- 		return;
--	htb_deactivate(qdisc_priv(sch), cl);
-+	if (!cl->leaf.q->q.qlen)
-+		htb_deactivate(qdisc_priv(sch), cl);
- }
- 
- static inline int htb_parent_last_child(struct htb_class *cl)
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
