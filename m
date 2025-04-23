@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03E1A98E99
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54865A99287
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E811317E451
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBF346809C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F8A27F4D1;
-	Wed, 23 Apr 2025 14:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB41269B07;
+	Wed, 23 Apr 2025 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVjXCUin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYB7l5A+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73A21EFFB9;
-	Wed, 23 Apr 2025 14:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED0728DEF0;
+	Wed, 23 Apr 2025 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420153; cv=none; b=AsQbFxj0SXsq0NGZtW2v9tixl7DiPyWVZZEQ8gWIwojhrIGnVzzbCn0mvuF0IQwKy/OTMff9YXuoMT44f2RqraUfdNnp3y9dChH3ayyHlS244Dns0FmRW+na331yTo9v3DPP4TSBEg7t8EtPNtEzQ+gn62/6FopyAl6PhQuF03o=
+	t=1745421979; cv=none; b=jHWilFDJGSl3fSaOFY0elSOTfgGFACbBigay488+VO2IUvsvSLeadxu8ZMQYwRtsLBLmTFsJlBj0ZHEYDlhb2mIpWuvF9xpLDj+YN+ysDyjNc4VRJLS5GBWxsQC4huMWfxK2sySotoqLd6S2gOKTKszT8u3Oe0j8yWu3iST8hoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420153; c=relaxed/simple;
-	bh=q1AzHKTwpNxcr3JA2EFzfg4IzDOC8cD6M8HTGBsnkUs=;
+	s=arc-20240116; t=1745421979; c=relaxed/simple;
+	bh=VDp6i5JumPudVZT4wElQWWyRTytqN/4shxkjHsixKEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iy8HfunSdZQzgmoOptBsUW27h7e801Kbmmf4tZgalinvT8XEcTXtKfX8WpeL2b8Dxvp3InGBT62zfDC7WrZauoegII1Q785BMDk99cLcTA2ZzVepOHZchdg/WRNHepS2+WzInLRv2fADtRN4YwRQPEujRQau4ZbHXn8wP6RCTFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVjXCUin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783ECC4CEE2;
-	Wed, 23 Apr 2025 14:55:52 +0000 (UTC)
+	 MIME-Version; b=ATXy+neDptYJglE12LtaB8RTAagI6C4LEoi6WaEnbJjdPGMCmrwIeG/Lxv43sFS+FOSPd5MYSXx492Mmaxmsb+r9/qSaTyCpEDyBFE4nub4csp1xXpx7jFVvpuZ28Mc9UlARMIQxexxv8e43aGvS0fVjL8nQVr2Vj2WtKE5r1WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYB7l5A+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E65C4CEE2;
+	Wed, 23 Apr 2025 15:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420152;
-	bh=q1AzHKTwpNxcr3JA2EFzfg4IzDOC8cD6M8HTGBsnkUs=;
+	s=korg; t=1745421979;
+	bh=VDp6i5JumPudVZT4wElQWWyRTytqN/4shxkjHsixKEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVjXCUinoHuYfB1D+3pNYbon8OvxseT2DI/BYwRA35nkfwM7ipBEukmMEjBXQVe1L
-	 GKaXQgTHVkenyF5dGKL13uO8KyXM1aGTc80xrzEfrBLrfsvOQNXrp47PNT2ngGhCNk
-	 AdAmtrxSGRaMvnerm9SmSIOUPLSOTQ1SpFanl1U4=
+	b=NYB7l5A+SHGzB+aXbt/yQc2l1Vmtzs9mGqTfaql74+8zPV54EYdWJ333KjZIbHIiR
+	 FK2qhFXZ4exoixs8ds3Ph1Z9NULOx2BcjNWhBgOzkCRhkzLZiAjYsJa/WbginL9uza
+	 BB0uosoOZGfpGgwYzK37VM5u7+/NfcRnBzrlVUAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/223] ftrace: fix incorrect hash size in register_ftrace_direct()
-Date: Wed, 23 Apr 2025 16:42:56 +0200
-Message-ID: <20250423142621.349320061@linuxfoundation.org>
+Subject: [PATCH 6.1 188/291] net: b53: enable BPDU reception for management port
+Date: Wed, 23 Apr 2025 16:42:57 +0200
+Message-ID: <20250423142632.064510922@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 92f1d3b40179b15630d72e2c6e4e25a899b67ba9 ]
+[ Upstream commit 36355ddfe8955f226a88a543ed354b9f6b84cd70 ]
 
-The maximum of the ftrace hash bits is made fls(32) in
-register_ftrace_direct(), which seems illogical. So, we fix it by making
-the max hash bits FTRACE_HASH_MAX_BITS instead.
+For STP to work, receiving BPDUs is essential, but the appropriate bit
+was never set. Without GC_RX_BPDU_EN, the switch chip will filter all
+BPDUs, even if an appropriate PVID VLAN was setup.
 
-Link: https://lore.kernel.org/20250413014444.36724-1-dongml2@chinatelecom.cn
-Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20250414200434.194422-1-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 90b59c627bb8e..e67d67f7b9065 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5944,9 +5944,10 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 463c6d84ae1b0..ea7d2c01e6726 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -724,6 +724,15 @@ static void b53_enable_mib(struct b53_device *dev)
+ 	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
+ }
  
- 	/* Make a copy hash to place the new and the old entries in */
- 	size = hash->count + direct_functions->count;
--	if (size > 32)
--		size = 32;
--	new_hash = alloc_ftrace_hash(fls(size));
-+	size = fls(size);
-+	if (size > FTRACE_HASH_MAX_BITS)
-+		size = FTRACE_HASH_MAX_BITS;
-+	new_hash = alloc_ftrace_hash(size);
- 	if (!new_hash)
- 		goto out_unlock;
++static void b53_enable_stp(struct b53_device *dev)
++{
++	u8 gc;
++
++	b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &gc);
++	gc |= GC_RX_BPDU_EN;
++	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
++}
++
+ static u16 b53_default_pvid(struct b53_device *dev)
+ {
+ 	if (is5325(dev) || is5365(dev))
+@@ -863,6 +872,7 @@ static int b53_switch_reset(struct b53_device *dev)
+ 	}
  
+ 	b53_enable_mib(dev);
++	b53_enable_stp(dev);
+ 
+ 	return b53_flush_arl(dev, FAST_AGE_STATIC);
+ }
 -- 
 2.39.5
 
