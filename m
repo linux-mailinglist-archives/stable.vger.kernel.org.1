@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76AA2A98EA5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5DBA991C7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478C21B67CE2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477461B87168
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAFD27F4D1;
-	Wed, 23 Apr 2025 14:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B3728D852;
+	Wed, 23 Apr 2025 15:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6L4kUhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENUPLm2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7818A143736;
-	Wed, 23 Apr 2025 14:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934802900A3;
+	Wed, 23 Apr 2025 15:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420097; cv=none; b=ZWfweRNUNlwDlKhrHn7xItSVD3aNrUUgsgBZ0CvkfWeDG/z9i3bbPk2f9GiZUn+MLdx7rUOIkQGj2YcPufLs0RpZV/G4wYS9aCEN/+XBlSHX7FyeDy+Z3ngRIxpPESbg5MY5GThBaWABzHc0pJCZPDriyDlrLImxS30wCd8Jz1w=
+	t=1745421413; cv=none; b=elf0SV4RgP2coH0RsXR+WZsGqOQsunv0SrxknzWhsYIUf+pWGMPOPdP0H1y9CrAurctE+mOfBlOLAgmqt5lHp75/K3V25ylQitmmeco5B7a8UF4BuBa/GbiZEb12t57cUsIdfhrwAz4L8o5g0yLY4v4mhQETniQ3ieStG7046wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420097; c=relaxed/simple;
-	bh=U0gXrbJPDB+zwu8UioTJxG6jvZLctjJMJILmNJ29ynQ=;
+	s=arc-20240116; t=1745421413; c=relaxed/simple;
+	bh=pzbC9OHwqltir+kr+uny027ABgGZ99EfvwglMkbWEF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPQfQb8pgufQgbEZp6uH4wwzNNvSytGreGFpTdZpz20fYhx9GXAFk3l8ULUqg8zD53ObEioV9SRhkoTECLhc8NvSyP99liCqn0glvOpcwRXLbHYTURCjblZspxG7UZAzMMediWxoswrnseyQjwhXqHFmczFRxI/KC79AbRmIWfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6L4kUhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCE6C4CEE3;
-	Wed, 23 Apr 2025 14:54:56 +0000 (UTC)
+	 MIME-Version; b=HVRMaGw0cXChmMlZO1RpV6DVpS/SVhqQYMSAzqLWf5zXVOFqR8sjB8b/FWf5glwMYCrfi04z6FpdWd9VJyaoQB7RZvITkh9gZU5bxapwzw7S2o4J61/HUdhs457Uzf+tq0d5oWW+USvF/CFHyvhCXxf5nV2r3qVHZoYmkciOxBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENUPLm2H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC17BC4CEE2;
+	Wed, 23 Apr 2025 15:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420097;
-	bh=U0gXrbJPDB+zwu8UioTJxG6jvZLctjJMJILmNJ29ynQ=;
+	s=korg; t=1745421413;
+	bh=pzbC9OHwqltir+kr+uny027ABgGZ99EfvwglMkbWEF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f6L4kUhEgO8WKEYVRxEpmhbkmRjhpUhmh7rpA4T5KdceQ+sdfYSLTQAz9F8VJtqas
-	 6JATrwCrsEzF/zgoInI/zw6pVuOrVyVRJYAZ3E7xQgQTMJc12gnXpuRM5cUZY2UzLl
-	 lGdomgQ7Wfjtrb7hOlMdXOuiJNHYG/RG8Sp+7T8c=
+	b=ENUPLm2Hv/jIRbqitiY++HFfE3xrUU7XZ9jkLUl6jY2sbvAKOMY8DWqD7sEio+5Lz
+	 9WbrOIW22+Lr9FjIwPf+SphoqP7K/Cgge/za9FygY9FTYq3GaFAeQR3qwsoJD5PqL7
+	 Sg6BjXFH9v6z37xc6M7kUmFq2WssD/BMLBe1Q7dY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlong Xing <yunlong.xing@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 059/241] loop: aio inherit the ioprio of original request
-Date: Wed, 23 Apr 2025 16:42:03 +0200
-Message-ID: <20250423142623.017042589@linuxfoundation.org>
+	Trevor Woerner <twoerner@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.1 135/291] thermal/drivers/rockchip: Add missing rk3328 mapping entry
+Date: Wed, 23 Apr 2025 16:42:04 +0200
+Message-ID: <20250423142629.921856393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunlong Xing <yunlong.xing@unisoc.com>
+From: Trevor Woerner <twoerner@gmail.com>
 
-[ Upstream commit 1fdb8188c3d505452b40cdb365b1bb32be533a8e ]
+commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
 
-Set cmd->iocb.ki_ioprio to the ioprio of loop device's request.
-The purpose is to inherit the original request ioprio in the aio
-flow.
+The mapping table for the rk3328 is missing the entry for -25C which is
+found in the TRM section 9.5.2 "Temperature-to-code mapping".
 
-Signed-off-by: Yunlong Xing <yunlong.xing@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250414030159.501180-1-yunlong.xing@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: f2fed441c69b ("loop: stop using vfs_iter_{read,write} for buffered I/O")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
+      4096-<code in table>. Whereas the table in the TRM gives the code
+      "3774" for -25C, the kernel uses 4096-3774=322.
+
+[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
+  well as through the downstream kernel code, it seems we may have
+  some troubles at our hands.  Let me explain, please.
+
+  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
+  the equation for the output when tsadc_q_sel equals 1 is (4096 -
+  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
+  equation is (1024 - tsadc_q) in that case.
+
+  The downstream kernel code, however, treats the RK3308 and RK3328
+  tables and their values as being the same.  It even mentions 1024 as
+  the "offset" value in a comment block for the rk_tsadcv3_control()
+  function, just like the upstream code does, which is obviously wrong
+  "offset" value when correlated with the table on page 544 of part 1
+  of the RK3308 TRM v1.1.
+
+  With all this in mind, it's obvious that more work is needed to make
+  it clear where's the actual mistake (it could be that the TRM is
+  wrong), which I'll volunteer for as part of the SoC binning project.
+  In the meantime, this patch looks fine as-is to me, by offering
+  what's a clear improvement to the current state of the upstream
+  code"
+
+Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+Cc: stable@vger.kernel.org
+Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/rockchip_thermal.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index c05fe27a96b64..1a4dbd4116069 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -471,7 +471,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
- 	cmd->iocb.ki_filp = file;
- 	cmd->iocb.ki_complete = lo_rw_aio_complete;
- 	cmd->iocb.ki_flags = IOCB_DIRECT;
--	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
-+	cmd->iocb.ki_ioprio = req_get_ioprio(rq);
- 
- 	if (rw == ITER_SOURCE)
- 		ret = file->f_op->write_iter(&cmd->iocb, &iter);
--- 
-2.39.5
-
+--- a/drivers/thermal/rockchip_thermal.c
++++ b/drivers/thermal/rockchip_thermal.c
+@@ -373,6 +373,7 @@ static const struct tsadc_table rk3328_c
+ 	{296, -40000},
+ 	{304, -35000},
+ 	{313, -30000},
++	{322, -25000},
+ 	{331, -20000},
+ 	{340, -15000},
+ 	{349, -10000},
 
 
 
