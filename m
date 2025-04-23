@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF9AA98DA3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 680E1A990FF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26911B6813F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C05D518930E3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAA027FD7D;
-	Wed, 23 Apr 2025 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735D828CF4F;
+	Wed, 23 Apr 2025 15:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+e5im6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ha6LeBsM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A8D27F4F3;
-	Wed, 23 Apr 2025 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9EB28CF6C;
+	Wed, 23 Apr 2025 15:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419593; cv=none; b=eS9qa3dHMUCHdNt8KnKtyOq9cZacXRipWYXJj+PrO4H6u67sJu90F31LlwKD0kGX48m6o9mDxofaEvw0FBu4hN6C3k5++B1RGr+xsBTQtrTlqltqF46JpHJUD/+qSyV5NSWyRRbXMfx10+53I7W/wRR/VNrrYgjPn1NFa/3+Pb4=
+	t=1745421044; cv=none; b=r9MDQVs9gbkiFJu4ARwXB7TQ45QIfYOi2mKWHWLp4vQ2OkBVbDzdc3+nUHqgLm5XqrDO5+fNgoFpVyD5ybQouArhoSAC01WDylkFf+rdPkB9Txaw/A7yKHmOV1znm8jAuZqSqwJRzVoHxYDL8p6bXB/llnTlIUfqYUNfvlE2tCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419593; c=relaxed/simple;
-	bh=qf0Jf0Z9BFMmBWAF+a55lAm0Z45jJWWVsG6Y5HQpZDE=;
+	s=arc-20240116; t=1745421044; c=relaxed/simple;
+	bh=P15eP17d98fbJ7o2DmPT+Mkxx6u5uPLbSsb3j+p2sE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKkQPr5T5kuUwslva9Efs+hWgPmkDoZ8VBgAU4Df60KQA9e3cuTEq6YvwMSn5XHJ/HHyk4SRqH/2UcPHChdny42FqjYRgmnafKDhAQ60Bn461RsV+SznQ2zie6c+8934Yo+ig+XeSfVhiiQhuWhKEirNA/n6IeFtTwgjopsuJd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+e5im6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3294DC4CEE8;
-	Wed, 23 Apr 2025 14:46:33 +0000 (UTC)
+	 MIME-Version; b=E4zQBcE59sJexFah3dmphLZzKQV6fp0F+EJ1RiKPP5R6w1PXEE9+2/mKX9YOXRAndOh3O1B/8zUrAi3p6T6SfIrP+56xv8/LUTOc03JdYR8DM8mZqB/ET9Yx9Me1qlvX9Yj3oJ/hn4soT0Tz1gzrcPPwRJt2O5sb2wWgwgW3bmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ha6LeBsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE22C4CEE2;
+	Wed, 23 Apr 2025 15:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419593;
-	bh=qf0Jf0Z9BFMmBWAF+a55lAm0Z45jJWWVsG6Y5HQpZDE=;
+	s=korg; t=1745421044;
+	bh=P15eP17d98fbJ7o2DmPT+Mkxx6u5uPLbSsb3j+p2sE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0+e5im6Att0bYyGGpUxpEYGakwdzXIzLkC65bYlIoE9oCt+R3tFAeMdyiZeaxTm56
-	 sB0u0v/Zc79g4M+70eCvWJ24w7kDhjS/IQ33F9NLFXzq2viD0l/g5QbXz8kWf4tpHg
-	 fWpvv0XjjRiUxIR+npQ90xuqTdC49yxZk9wlWb1Y=
+	b=ha6LeBsMlk4YikJmtskq2pL1OYWve1qChJldpktV8MKxrZxd0fEvUUMbqBj2mGWO0
+	 zuorMvoe0YMVoTTjzMfJBWC3HvOkMyM7xmJBMhyt4TGmomHUDq2P+Whl3rPZ937dBy
+	 9q0W4HlehcNjotfXsyAUk6fM/P6LkK7/HvJ5RQzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Michael Nemanov <michael.nemanov@ti.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/223] wifi: wl1251: fix memory leak in wl1251_tx_work
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Quentin Perret <qperret@google.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 088/291] KVM: arm64: Tear down vGIC on failed vCPU creation
 Date: Wed, 23 Apr 2025 16:41:17 +0200
-Message-ID: <20250423142617.338791712@linuxfoundation.org>
+Message-ID: <20250423142627.957196114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit a0f0dc96de03ffeefc2a177b7f8acde565cb77f4 ]
+commit 250f25367b58d8c65a1b060a2dda037eea09a672 upstream.
 
-The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
-with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
+If kvm_arch_vcpu_create() fails to share the vCPU page with the
+hypervisor, we propagate the error back to the ioctl but leave the
+vGIC vCPU data initialised. Note only does this leak the corresponding
+memory when the vCPU is destroyed but it can also lead to use-after-free
+if the redistributor device handling tries to walk into the vCPU.
 
-Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
-Link: https://patch.msgid.link/20250330104532.44935-1-abdun.nihaal@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing cleanup to kvm_arch_vcpu_create(), ensuring that the
+vGIC vCPU structures are destroyed on error.
+
+Cc: <stable@vger.kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: Quentin Perret <qperret@google.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20250314133409.9123-1-will@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/arm.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index 474b603c121cb..adb4840b04893 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
- 	while ((skb = skb_dequeue(&wl->tx_queue))) {
- 		if (!woken_up) {
- 			ret = wl1251_ps_elp_wakeup(wl);
--			if (ret < 0)
-+			if (ret < 0) {
-+				skb_queue_head(&wl->tx_queue, skb);
- 				goto out;
-+			}
- 			woken_up = true;
- 		}
+--- a/arch/arm64/kvm/arm.c
++++ b/arch/arm64/kvm/arm.c
+@@ -371,7 +371,11 @@ int kvm_arch_vcpu_create(struct kvm_vcpu
+ 	if (err)
+ 		return err;
  
--- 
-2.39.5
-
+-	return kvm_share_hyp(vcpu, vcpu + 1);
++	err = kvm_share_hyp(vcpu, vcpu + 1);
++	if (err)
++		kvm_vgic_vcpu_destroy(vcpu);
++
++	return err;
+ }
+ 
+ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
 
 
 
