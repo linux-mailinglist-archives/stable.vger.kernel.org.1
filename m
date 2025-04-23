@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5DBA991C7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E124A9926D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477461B87168
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 435EC4A0833
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B3728D852;
-	Wed, 23 Apr 2025 15:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1525529B231;
+	Wed, 23 Apr 2025 15:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENUPLm2H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VWra9eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934802900A3;
-	Wed, 23 Apr 2025 15:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FA428B4F4;
+	Wed, 23 Apr 2025 15:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421413; cv=none; b=elf0SV4RgP2coH0RsXR+WZsGqOQsunv0SrxknzWhsYIUf+pWGMPOPdP0H1y9CrAurctE+mOfBlOLAgmqt5lHp75/K3V25ylQitmmeco5B7a8UF4BuBa/GbiZEb12t57cUsIdfhrwAz4L8o5g0yLY4v4mhQETniQ3ieStG7046wc=
+	t=1745421825; cv=none; b=t7UrUFrrHnDHxsawZhSwNa0y0jw2jid55ELMMhtKusYzfWECiqyE+rQhM/wD63W0XXmrbIDLNjIRZ8nCvXS3hL1+GttEFHlAYB+2VIY6ZsCfMoFY70WSR3nhaJSjmOwQW53PE6UNt0hkkKT9WJaxgohFuNzvOfs7bmqe7W/0cHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421413; c=relaxed/simple;
-	bh=pzbC9OHwqltir+kr+uny027ABgGZ99EfvwglMkbWEF4=;
+	s=arc-20240116; t=1745421825; c=relaxed/simple;
+	bh=xK6AHEf9e9H18NDIAzQS2rhYHy9WYTwKyivLSUfxCQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVRMaGw0cXChmMlZO1RpV6DVpS/SVhqQYMSAzqLWf5zXVOFqR8sjB8b/FWf5glwMYCrfi04z6FpdWd9VJyaoQB7RZvITkh9gZU5bxapwzw7S2o4J61/HUdhs457Uzf+tq0d5oWW+USvF/CFHyvhCXxf5nV2r3qVHZoYmkciOxBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENUPLm2H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC17BC4CEE2;
-	Wed, 23 Apr 2025 15:16:52 +0000 (UTC)
+	 MIME-Version; b=Dsv5NIYL7f23KU3G2EjY2SYXto37d5DJEsq1RLdjN2YTo95s1mURXzyF1O8zd7v/pn6h747L0QnC+de83Xo/Ee1eD8LywZsJHIfElC0C+BLzRgdGhbNYUIHp+W+janxlEdjfUPlOEHywlraj/aYOt/IvruPhKzaJv3d3zZuUCVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VWra9eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B5CC4CEE2;
+	Wed, 23 Apr 2025 15:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421413;
-	bh=pzbC9OHwqltir+kr+uny027ABgGZ99EfvwglMkbWEF4=;
+	s=korg; t=1745421825;
+	bh=xK6AHEf9e9H18NDIAzQS2rhYHy9WYTwKyivLSUfxCQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENUPLm2Hv/jIRbqitiY++HFfE3xrUU7XZ9jkLUl6jY2sbvAKOMY8DWqD7sEio+5Lz
-	 9WbrOIW22+Lr9FjIwPf+SphoqP7K/Cgge/za9FygY9FTYq3GaFAeQR3qwsoJD5PqL7
-	 Sg6BjXFH9v6z37xc6M7kUmFq2WssD/BMLBe1Q7dY=
+	b=2VWra9eqeuZsmGMD1VuQ5WhrpYL0MiITJGFno/95l8+Pl3sMK4wHHiYeFk/1rqWkC
+	 Xm61ZDTtHT7lFy7soWg0MJhv1M/lHTOBOJD23c7973NpKZvsPZA3GPVIUboqUFpgBc
+	 dbyKgYrFVSBf0g2pco+bvx2kQmqYk76wLG/OqM7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Woerner <twoerner@gmail.com>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.1 135/291] thermal/drivers/rockchip: Add missing rk3328 mapping entry
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 228/393] phy: freescale: imx8m-pcie: assert phy reset and perst in power off
 Date: Wed, 23 Apr 2025 16:42:04 +0200
-Message-ID: <20250423142629.921856393@linuxfoundation.org>
+Message-ID: <20250423142652.805174324@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Woerner <twoerner@gmail.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-commit ee022e5cae052e0c67ca7c5fec0f2e7bc897c70e upstream.
+commit aecb63e88c5e5fb9afb782a1577264c76f179af9 upstream.
 
-The mapping table for the rk3328 is missing the entry for -25C which is
-found in the TRM section 9.5.2 "Temperature-to-code mapping".
+Ensure the PHY reset and perst is asserted during power-off to
+guarantee it is in a reset state upon repeated power-on calls. This
+resolves an issue where the PHY may not properly initialize during
+subsequent power-on cycles. Power-on will deassert the reset at the
+appropriate time after tuning the PHY parameters.
 
-NOTE: the kernel uses the tsadc_q_sel=1'b1 mode which is defined as:
-      4096-<code in table>. Whereas the table in the TRM gives the code
-      "3774" for -25C, the kernel uses 4096-3774=322.
+During suspend/resume cycles, we observed that the PHY PLL failed to
+lock during resume when the CPU temperature increased from 65C to 75C.
+The observed errors were:
+  phy phy-32f00000.pcie-phy.3: phy poweron failed --> -110
+  imx6q-pcie 33800000.pcie: waiting for PHY ready timeout!
+  imx6q-pcie 33800000.pcie: PM: dpm_run_callback(): genpd_resume_noirq+0x0/0x80 returns -110
+  imx6q-pcie 33800000.pcie: PM: failed to resume noirq: error -110
 
-[Dragan Simic] : "After going through the RK3308 and RK3328 TRMs, as
-  well as through the downstream kernel code, it seems we may have
-  some troubles at our hands.  Let me explain, please.
+This resulted in a complete CPU freeze, which is resolved by ensuring
+the PHY is in reset during power-on, thus preventing PHY PLL failures.
 
-  To sum it up, part 1 of the RK3308 TRM v1.1 says on page 538 that
-  the equation for the output when tsadc_q_sel equals 1 is (4096 -
-  tsadc_q), while part 1 of the RK3328 TRM v1.2 says that the output
-  equation is (1024 - tsadc_q) in that case.
-
-  The downstream kernel code, however, treats the RK3308 and RK3328
-  tables and their values as being the same.  It even mentions 1024 as
-  the "offset" value in a comment block for the rk_tsadcv3_control()
-  function, just like the upstream code does, which is obviously wrong
-  "offset" value when correlated with the table on page 544 of part 1
-  of the RK3308 TRM v1.1.
-
-  With all this in mind, it's obvious that more work is needed to make
-  it clear where's the actual mistake (it could be that the TRM is
-  wrong), which I'll volunteer for as part of the SoC binning project.
-  In the meantime, this patch looks fine as-is to me, by offering
-  what's a clear improvement to the current state of the upstream
-  code"
-
-Link: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
 Cc: stable@vger.kernel.org
-Fixes: eda519d5f73e ("thermal: rockchip: Support the RK3328 SOC in thermal driver")
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Link: https://lore.kernel.org/r/20250207175048.35959-1-twoerner@gmail.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Fixes: 1aa97b002258 ("phy: freescale: pcie: Initialize the imx8 pcie standalone phy driver")
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250305144355.20364-3-eichest@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/rockchip_thermal.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/thermal/rockchip_thermal.c
-+++ b/drivers/thermal/rockchip_thermal.c
-@@ -373,6 +373,7 @@ static const struct tsadc_table rk3328_c
- 	{296, -40000},
- 	{304, -35000},
- 	{313, -30000},
-+	{322, -25000},
- 	{331, -20000},
- 	{340, -15000},
- 	{349, -10000},
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -162,6 +162,16 @@ static int imx8_pcie_phy_power_on(struct
+ 	return ret;
+ }
+ 
++static int imx8_pcie_phy_power_off(struct phy *phy)
++{
++	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
++
++	reset_control_assert(imx8_phy->reset);
++	reset_control_assert(imx8_phy->perst);
++
++	return 0;
++}
++
+ static int imx8_pcie_phy_init(struct phy *phy)
+ {
+ 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
+@@ -182,6 +192,7 @@ static const struct phy_ops imx8_pcie_ph
+ 	.init		= imx8_pcie_phy_init,
+ 	.exit		= imx8_pcie_phy_exit,
+ 	.power_on	= imx8_pcie_phy_power_on,
++	.power_off	= imx8_pcie_phy_power_off,
+ 	.owner		= THIS_MODULE,
+ };
+ 
 
 
 
