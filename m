@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-136143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E6BA992C7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60594A99256
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A56FC9263DE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 141FE1BA64F4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E16298CCD;
-	Wed, 23 Apr 2025 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AC229AAE1;
+	Wed, 23 Apr 2025 15:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DFsMWNuy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIwgm6Rm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83218298CB7;
-	Wed, 23 Apr 2025 15:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002D529AAE0;
+	Wed, 23 Apr 2025 15:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421768; cv=none; b=goaAtu/bu8FNv3gMW+1isgd8PPb7uDFujCY80Lzocuid8ZvAeWLvfuabqQMo+toeHXWcH+WVZP6I8vHbRKTepivg4Z7JQNWC/dbtAalv8RBaN2NZfFBWwnC6oCHsfeDJ/A4RPwXLRMTlAQhTDibGcZb8JoMJZbU6hr4RIIFS4No=
+	t=1745421779; cv=none; b=exYO/rPWIinqNMgMcMKKKdIJSd0C9Jf1zvBvdJCsQFVq+3B/3I/ev9Uz4PhNNdmLH8Sdyy73jGwjX47tVFs2GX9IDM/9bGI9gFZgDxXEzc6TD/s783B6VcCtUn59BImDH7qYZ8U4xh5g5boiwdw/AVKCUFIFlD/F4dgtZh8Q420=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421768; c=relaxed/simple;
-	bh=QIVVz7h57aBIk89y8ZUm6fvVeGAvOblVNO2vrYplTx8=;
+	s=arc-20240116; t=1745421779; c=relaxed/simple;
+	bh=vS/1osaHEujlLN0s7Rni+35KDUh9X1WFrlM2+gehioQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bq8Txx71YcP9gA8VjaT0fKMDzGp2VDzlyd69IyBRvUutRBDnPbnrFJpg+njbXLwR1S4xgCZbRA1TL0F0bDU8lvkc1RloC04W1scwLG+LX+ELx1hH0DiyYI066YAf0UfzsGpsBa9J+xmv+JsqDVXCzrf+WJQCEIBoW2Mj45hUTRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DFsMWNuy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A49C4CEE2;
-	Wed, 23 Apr 2025 15:22:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Rsdi4fYgEi4xv+gk0QbA+O3jrza82PXamXQPOCJUHPdwEmAr7s0odB+iS99bYIfbPMHfef73XcBBdj3BANMFmAL66p0AbmpqobkIFpEaySProVS0RFxegwEsGIIb0iyAhzPEsxdkRzEwTFlFhxRI9PCGQcSsUnTYIW7e0LJg3OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIwgm6Rm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BC1C4CEE2;
+	Wed, 23 Apr 2025 15:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421768;
-	bh=QIVVz7h57aBIk89y8ZUm6fvVeGAvOblVNO2vrYplTx8=;
+	s=korg; t=1745421778;
+	bh=vS/1osaHEujlLN0s7Rni+35KDUh9X1WFrlM2+gehioQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DFsMWNuy8/tKDm28WVz2BmNgKatvGnYNhch8kKw82cLZVWFSpviojpwmI72CTQFBb
-	 B0QHDYiA8hj8SZbgamgKlzBb1xaAWVMdRF6u8p9KHfu1vNSEDpmdtKj7Vi7rsY1n1W
-	 SvKJWh1ULEVNaTBMDtcOLZ63SeJZ9ZwL0d7QIwkU=
+	b=AIwgm6RmUfKOlpFV+zWLSA1HhBh7rCj8VEif3Z7dD6XbwFivG+h/Lj2kmf5gLbOC0
+	 fpY3jQoBm0cHlXcp6wcBwb/21zf6zPhjD/A/V+epW2diNlKXM2bd6CczK29LKH4PHT
+	 VMSes+Gx8MvrQSWTnRSdz8dz5C5121vgz4YRYe90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Borja <kuurtb@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.14 231/241] platform/x86: alienware-wmi-wmax: Extend support to more laptops
-Date: Wed, 23 Apr 2025 16:44:55 +0200
-Message-ID: <20250423142630.011911300@linuxfoundation.org>
+Subject: [PATCH 6.14 232/241] platform/x86: msi-wmi-platform: Rename "data" variable
+Date: Wed, 23 Apr 2025 16:44:56 +0200
+Message-ID: <20250423142630.050321930@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -66,126 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-commit 202a861205905629c5f10ce0a8358623485e1ae9 upstream.
+commit 912d614ac99e137fd2016777e4b090c46ce84898 upstream.
 
-Extend thermal control support to:
+Rename the "data" variable inside msi_wmi_platform_read() to avoid
+a name collision when the driver adds support for a state container
+struct (that is to be called "data" too) in the future.
 
- - Alienware Area-51m R2
- - Alienware m16 R1
- - Alienware m16 R2
- - Dell G16 7630
- - Dell G5 5505 SE
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250411-awcc-support-v1-2-09a130ec4560@gmail.com
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20250414140453.7691-1-W_Armin@gmx.de
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/dell/alienware-wmi.c |   54 ++++++++++++++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ drivers/platform/x86/msi-wmi-platform.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/x86/dell/alienware-wmi.c
-+++ b/drivers/platform/x86/dell/alienware-wmi.c
-@@ -216,6 +216,15 @@ static int __init dmi_matched(const stru
- static const struct dmi_system_id alienware_quirks[] __initconst = {
- 	{
- 		.callback = dmi_matched,
-+		.ident = "Alienware Area-51m R2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware Area-51m R2"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
-+	{
-+		.callback = dmi_matched,
- 		.ident = "Alienware ASM100",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-@@ -243,6 +252,15 @@ static const struct dmi_system_id alienw
- 	},
- 	{
- 		.callback = dmi_matched,
-+		.ident = "Alienware m16 R1",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1"),
-+		},
-+		.driver_data = &quirk_g_series,
-+	},
-+	{
-+		.callback = dmi_matched,
- 		.ident = "Alienware m16 R1 AMD",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-@@ -261,6 +279,15 @@ static const struct dmi_system_id alienw
- 	},
- 	{
- 		.callback = dmi_matched,
-+		.ident = "Alienware m16 R2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R2"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
-+	{
-+		.callback = dmi_matched,
- 		.ident = "Alienware m18 R2",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-@@ -279,6 +306,15 @@ static const struct dmi_system_id alienw
- 	},
- 	{
- 		.callback = dmi_matched,
-+		.ident = "Alienware x15 R2",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware x15 R2"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
-+	{
-+		.callback = dmi_matched,
- 		.ident = "Alienware x17 R2",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-@@ -342,6 +378,15 @@ static const struct dmi_system_id alienw
- 	},
- 	{
- 		.callback = dmi_matched,
-+		.ident = "Dell Inc. G16 7630",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Dell G16 7630"),
-+		},
-+		.driver_data = &quirk_g_series,
-+	},
-+	{
-+		.callback = dmi_matched,
- 		.ident = "Dell Inc. G3 3500",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-@@ -367,6 +412,15 @@ static const struct dmi_system_id alienw
- 		},
- 		.driver_data = &quirk_g_series,
- 	},
-+	{
-+		.callback = dmi_matched,
-+		.ident = "Dell Inc. G5 5505",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G5 5505"),
-+		},
-+		.driver_data = &quirk_g_series,
-+	},
- 	{
- 		.callback = dmi_matched,
- 		.ident = "Dell Inc. Inspiron 5675",
+--- a/drivers/platform/x86/msi-wmi-platform.c
++++ b/drivers/platform/x86/msi-wmi-platform.c
+@@ -173,7 +173,7 @@ static int msi_wmi_platform_read(struct
+ 	struct wmi_device *wdev = dev_get_drvdata(dev);
+ 	u8 input[32] = { 0 };
+ 	u8 output[32];
+-	u16 data;
++	u16 value;
+ 	int ret;
+ 
+ 	ret = msi_wmi_platform_query(wdev, MSI_PLATFORM_GET_FAN, input, sizeof(input), output,
+@@ -181,11 +181,11 @@ static int msi_wmi_platform_read(struct
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	data = get_unaligned_be16(&output[channel * 2 + 1]);
+-	if (!data)
++	value = get_unaligned_be16(&output[channel * 2 + 1]);
++	if (!value)
+ 		*val = 0;
+ 	else
+-		*val = 480000 / data;
++		*val = 480000 / value;
+ 
+ 	return 0;
+ }
 
 
 
