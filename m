@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C2AA992BA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5E3A98E49
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 114EA16D9B8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DF175A6D78
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CD32957BD;
-	Wed, 23 Apr 2025 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BEB280CFC;
+	Wed, 23 Apr 2025 14:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvIF1Ox/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwNTgAmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821D62957A3;
-	Wed, 23 Apr 2025 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D644427F4CA;
+	Wed, 23 Apr 2025 14:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421976; cv=none; b=VWaG+lWmvznnOk7D62ODcCo2ZLsO/4l/YFV+kG+7YRhku/MNXrfpng0+dXq9vd49QrC00UpBJ60ge26PvrNNjLAryWXXAchat5OK64Xx5k81P3XYmIMVX+JS2DMoT1N79iAUPxPD546HwojxyuF41awav55dDUKkI1PgXuWLbaE=
+	t=1745419926; cv=none; b=HbnFirFnynFahA2/JXRG+WwnuER8WO6jWJ33iv37w1oSa2YDKjkitalK739569Y5MMpQp0IJkTGTvZbZf4kd6EbSY1UMJo285AmY5Ce+VTefFNDQZAihqUaGP9eunV7+h59cHHUS+GFcfAf1FvPh31GBbL3vdWQkSM4GXS/2njw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421976; c=relaxed/simple;
-	bh=dA0Wdx6TFYFyyhHe3B533Py4wa7NOJQIASZuMXv+X2Y=;
+	s=arc-20240116; t=1745419926; c=relaxed/simple;
+	bh=arHg+RNvgwdynUqfpv6dWMEB+pR/6rgy6MZKDZDBsC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWwXBUaK7tazq3koiPQREZ68Kj6tb/59tjUVGFMywVQm/uuD1AZf4GP/Ha3y+wEASaJXGSN/aNPlRXda0qeRzwo+lY0//k3ESYD/viEu5j9cfMR52Q3EYGGQaUd4r0g+cCL95Z5TQPk5fM4PqgsNSzQkMgZpfGUW1GnrqTwZxPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvIF1Ox/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161E3C4CEE3;
-	Wed, 23 Apr 2025 15:26:15 +0000 (UTC)
+	 MIME-Version; b=ny6QnnBVolhNWDrky+w7nJgA0gSGQTgumRK4P2Pb6HFbkoieY0dS0I2asB3zaexVhjXGyd8mXW8H6wQc037U0yQqVDwZNxdZWY30wa9daBTF+Tam3fZmPBa62qKI+1sKea5xeMF0PTLZP1gikOlQ40D84rnw4NnLRBfdUKtC7yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwNTgAmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C58C4CEE2;
+	Wed, 23 Apr 2025 14:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421976;
-	bh=dA0Wdx6TFYFyyhHe3B533Py4wa7NOJQIASZuMXv+X2Y=;
+	s=korg; t=1745419926;
+	bh=arHg+RNvgwdynUqfpv6dWMEB+pR/6rgy6MZKDZDBsC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dvIF1Ox/AmK+PbyZkJd6Qc6BwfFwWfrD+L8e70O1qM13KvBU04jlo9UfmNkSBGgkw
-	 oNV9j8lyR4P+clthjuOw048baAV5HKl5rok3M0uulTvYt953gxE8NBVBDVatxpqwRn
-	 OJRMvnxuMyZgGyW1e9qXyVENShgewE5IMqmVC3zU=
+	b=pwNTgAmV6s5nnq1nASzQILt6LHR2vqzMBfudVy6WunsB9u/qbJY1xVTew7OPeYp+G
+	 ejs9IDsk2fw3Ja51cOh5ZNEZkd2cx2HBTIAMKyhlbgDXKJUupMJropA+k1BQitSLcR
+	 9OpdufnqHaaXMpPKfACX946iWbso8VrjW3SDIePU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/393] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
-Date: Wed, 23 Apr 2025 16:42:31 +0200
-Message-ID: <20250423142653.906524523@linuxfoundation.org>
+Subject: [PATCH 6.12 080/223] riscv: KGDB: Do not inline arch_kgdb_breakpoint()
+Date: Wed, 23 Apr 2025 16:42:32 +0200
+Message-ID: <20250423142620.383817838@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
+[ Upstream commit 3af4bec9c1db3f003be4d5ae09b6a737e4be1612 ]
 
-This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
-(00:00:00:00:00:00) which is a regression introduced by
-a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
-since in the attempt to skip storing data for extended advertisement it
-actually made the code to skip the entire if statement supposed to send
-MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
-is garanteed to be invalid for extended advertisement since we never
-store anything on it.
+The arch_kgdb_breakpoint() function defines the kgdb_compiled_break
+symbol using inline assembly.
 
-Link: https://github.com/bluez/bluez/issues/1157
-Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
-Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_compiled_break
+symbol multiple times, leading to fail to link vmlinux.o.
+
+This isn't merely a potential compilation problem. The intent here
+is to determine the global symbol address of kgdb_compiled_break,
+and if this function is inlined multiple times, it would logically
+be a grave error.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/5b0adf9b-2b22-43fe-ab74-68df94115b9a@ghiti.fr/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Co-developed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/F22359AFB6FF9FD8+20250411073222.56820-1-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/kgdb.h | 9 +--------
+ arch/riscv/kernel/kgdb.c      | 8 ++++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 1e689d8c00a50..4029330e29a99 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6149,11 +6149,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
- 	 * event or send an immediate device found event if the data
- 	 * should not be stored for later.
- 	 */
--	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
-+	if (!has_pending_adv_report(hdev)) {
- 		/* If the report will trigger a SCAN_REQ store it for
- 		 * later merging.
- 		 */
--		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
-+		if (!ext_adv && (type == LE_ADV_IND ||
-+				 type == LE_ADV_SCAN_IND)) {
- 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
- 						 rssi, flags, data, len);
- 			return;
+diff --git a/arch/riscv/include/asm/kgdb.h b/arch/riscv/include/asm/kgdb.h
+index 46677daf708bd..cc11c4544cffd 100644
+--- a/arch/riscv/include/asm/kgdb.h
++++ b/arch/riscv/include/asm/kgdb.h
+@@ -19,16 +19,9 @@
+ 
+ #ifndef	__ASSEMBLY__
+ 
++void arch_kgdb_breakpoint(void);
+ extern unsigned long kgdb_compiled_break;
+ 
+-static inline void arch_kgdb_breakpoint(void)
+-{
+-	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
+-}
+-
+ #endif /* !__ASSEMBLY__ */
+ 
+ #define DBG_REG_ZERO "zero"
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 2e0266ae6bd72..5d1ce8dacaf58 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -254,6 +254,14 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->epc = pc;
+ }
+ 
++noinline void arch_kgdb_breakpoint(void)
++{
++	asm(".global kgdb_compiled_break\n"
++	    ".option norvc\n"
++	    "kgdb_compiled_break: ebreak\n"
++	    ".option rvc\n");
++}
++
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+ 				char *remcom_out_buffer)
+ {
 -- 
 2.39.5
 
