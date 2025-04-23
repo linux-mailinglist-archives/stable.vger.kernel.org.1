@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808DA99042
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC9AA98E6E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165281BA12AA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0689445708
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3A928CF58;
-	Wed, 23 Apr 2025 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E65D266B4B;
+	Wed, 23 Apr 2025 14:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jj/H0LGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qo6KGD1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1DD266B4B;
-	Wed, 23 Apr 2025 15:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0883175BF;
+	Wed, 23 Apr 2025 14:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420727; cv=none; b=MMWT93yc5CcDK7yOXz9K2Zse9VcCfJ0IqsNR687hcDYk1XnlkIKpeVGUnbOLdb3AbHL6NNWS9kBxS59RQiXtjQcO1zED+t21AWSXH/tBRUlgCQ4bLSSXhGyp6ThLSMg7y3EV1MTNHAuFLm2GJeLCBHxzTR3e0gh+YSLQVMnWZI0=
+	t=1745420079; cv=none; b=iD/XCsWbsYSo1YMB4LAYYwk5W7F9ICl44yiZ3aHz0yATKZqmvqukTBc6LBIrR67XoUBXeh/YmN3CdHA/S6+jglwIhfVf5oTtxGqVe2tlSnPczbtHWog79d/Hn2qYsY0i0SXEC5oT+kilWcB3QTXXHnfOZjdQzRC/80Rizb2k9jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420727; c=relaxed/simple;
-	bh=QuUKNH5G/+a2iAdI6/0/9RiV8L2t5y2XKIeQBSHy4UI=;
+	s=arc-20240116; t=1745420079; c=relaxed/simple;
+	bh=ch4wo6nbsY8c6GWk1tf4b1anDbkdFE8BJxLspoaqA74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J8FMArpuMXk7NCXMU69Xz2zojo9EcxC+YKeFryi+xQdXEsT7BXIiR5zcHdUMLiDG89J3OEeCUtNvrH5y3JXaiKzeVTRTalgpD9N3GfCGM7azc3mu2OdZRBmB0KMYAmdiSPX0VkSDZDHziYHR1icsZ961N3XnnO7mGjnEvQcg4xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jj/H0LGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15F6C4CEE2;
-	Wed, 23 Apr 2025 15:05:26 +0000 (UTC)
+	 MIME-Version; b=IMS826u/bWhCKDZjZLN6661UPYeLNAsa+W4sOmxUT1QAv4p5tBQiL7aFeWjBvmWOfKfeLGvb2ulawRPwTd4YVE8Poyw5fAfUr2taKFM8RbDv/11RNWQk8luTnIlHNMaRMbWIc2BbIwbvsDGJ3Z6FhKZbFbBvF4+YpfLfvexYPN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qo6KGD1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C4BC4CEE2;
+	Wed, 23 Apr 2025 14:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420727;
-	bh=QuUKNH5G/+a2iAdI6/0/9RiV8L2t5y2XKIeQBSHy4UI=;
+	s=korg; t=1745420078;
+	bh=ch4wo6nbsY8c6GWk1tf4b1anDbkdFE8BJxLspoaqA74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jj/H0LGdAc8esNKoIEd+BoQjRAFTXxn4CY4bAjjGdafajeACuh0nw2TbU/ZOTeR+d
-	 G++DAlR65mhfRokTUWUxT18XCR5eCBn6GHYEVfog3rKg+QjOj0F/FOh90am6qT/iap
-	 ax0ifvDJaK45mlWwPq6WWn2W6PjqfxmTQYLSfOYI=
+	b=Qo6KGD1sGO6v36Qyrr4u+uIJ6WCjX+jXrpuDjIkStFzFI7MW51sDaibvBPliewmT1
+	 GAbEbw5iDbe6/BmVzZ8awK4QdvahB+pi+2pdRLAeBE8bRCW3X2dcro65esroA3eX/B
+	 fiscrTEC5Yy66jzTWYTJ9QTIWSsz1S7Gkhbd6QGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/393] drm/amdgpu: handle amdgpu_cgs_create_device() errors in amd_powerplay_create()
-Date: Wed, 23 Apr 2025 16:40:03 +0200
-Message-ID: <20250423142647.702162863@linuxfoundation.org>
+Subject: [PATCH 6.1 015/291] ipv6: Align behavior across nexthops during path selection
+Date: Wed, 23 Apr 2025 16:40:04 +0200
+Message-ID: <20250423142625.030448015@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 1435e895d4fc967d64e9f5bf81e992ac32f5ac76 ]
+[ Upstream commit 6933cd4714861eea6848f18396a119d741f25fc3 ]
 
-Add error handling to propagate amdgpu_cgs_create_device() failures
-to the caller. When amdgpu_cgs_create_device() fails, release hwmgr
-and return -ENOMEM to prevent null pointer dereference.
+A nexthop is only chosen when the calculated multipath hash falls in the
+nexthop's hash region (i.e., the hash is smaller than the nexthop's hash
+threshold) and when the nexthop is assigned a non-negative score by
+rt6_score_route().
 
-[v1]->[v2]: Change error code from -EINVAL to -ENOMEM. Free hwmgr.
+Commit 4d0ab3a6885e ("ipv6: Start path selection from the first
+nexthop") introduced an unintentional difference between the first
+nexthop and the rest when the score is negative.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+When the first nexthop matches, but has a negative score, the code will
+currently evaluate subsequent nexthops until one is found with a
+non-negative score. On the other hand, when a different nexthop matches,
+but has a negative score, the code will fallback to the nexthop with
+which the selection started ('match').
+
+Align the behavior across all nexthops and fallback to 'match' when the
+first nexthop matches, but has a negative score.
+
+Fixes: 3d709f69a3e7 ("ipv6: Use hash-threshold instead of modulo-N")
+Fixes: 4d0ab3a6885e ("ipv6: Start path selection from the first nexthop")
+Reported-by: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Closes: https://lore.kernel.org/netdev/67efef607bc41_1ddca82948c@willemb.c.googlers.com.notmuch/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250408084316.243559-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/ipv6/route.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-index 86f95a291d65f..bef6578ac4bfe 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-@@ -51,6 +51,11 @@ static int amd_powerplay_create(struct amdgpu_device *adev)
- 	hwmgr->adev = adev;
- 	hwmgr->not_vf = !amdgpu_sriov_vf(adev);
- 	hwmgr->device = amdgpu_cgs_create_device(adev);
-+	if (!hwmgr->device) {
-+		kfree(hwmgr);
-+		return -ENOMEM;
-+	}
-+
- 	mutex_init(&hwmgr->msg_lock);
- 	hwmgr->chip_family = adev->family;
- 	hwmgr->chip_id = adev->asic_type;
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index d6de164720a05..4e6b833dc40bb 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -474,10 +474,10 @@ void fib6_select_path(const struct net *net, struct fib6_result *res,
+ 		goto out;
+ 
+ 	hash = fl6->mp_hash;
+-	if (hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound) &&
+-	    rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
+-			    strict) >= 0) {
+-		match = first;
++	if (hash <= atomic_read(&first->fib6_nh->fib_nh_upper_bound)) {
++		if (rt6_score_route(first->fib6_nh, first->fib6_flags, oif,
++				    strict) >= 0)
++			match = first;
+ 		goto out;
+ 	}
+ 
 -- 
 2.39.5
 
