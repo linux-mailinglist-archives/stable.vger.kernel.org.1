@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB24A98DB8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44EB3A99328
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5D8B3ABCCD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DEBB1BA6C45
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E8C27FD60;
-	Wed, 23 Apr 2025 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002592C10A2;
+	Wed, 23 Apr 2025 15:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xif4yMQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxBn7BGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C1B27FD48;
-	Wed, 23 Apr 2025 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B220528C5C5;
+	Wed, 23 Apr 2025 15:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419665; cv=none; b=YQZ8L2IlRRizaoOCvnXmhOAQaTO7x+AnUK+LnoFkdS/9ZH6nUrLNSff/KMUXjTABWDIQDSU6o+FJrOaGrERPSMnMT5PLQLhguqRPA8yg3ZX8o/T9sMbrYpKecM2ETITBsRMvSiqgeGBEXkHZjcey+s3kffEpk+AdrJXCxvIqxLc=
+	t=1745421863; cv=none; b=CyTo9z62begOH0XTKCBR/pqXg3/Nvs4y6PFVO3b23ejaxAhgDV126DtM5+OkFx1O9Md4qVEDbNEvGntyFew125oKUO4kSiWsxY6Eo0VnrE3mlX+znuHXmT8HConEVb2RJOPiFN+Tvok/x6UCSc+GRfB2XEYmqebaMGLQh1G3rUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419665; c=relaxed/simple;
-	bh=gaihpRDXku+Optpp8tm0kRtmXhrvLMUsyezJKfp380U=;
+	s=arc-20240116; t=1745421863; c=relaxed/simple;
+	bh=MY5nxagZc47Phmra7j5+LaU9slFZZAay/VaXIOQfViY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qo7A+F8Y9ANCx1m5Oapotc5BAO9nKGPDdqWfRI0SoSIkz9wuSSqWxk3eW3S2BlQWVjvYlqygfgRHqigw3DZnLs7MSKbHY90kOrCR/e2QlRVrEUPuNJdRT8Yqzxetok5V2130pN8H5zg9MlRdSYYQ4bUZtON5hwuCsi7t3kZ0VGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xif4yMQ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D910C4CEE2;
-	Wed, 23 Apr 2025 14:47:45 +0000 (UTC)
+	 MIME-Version; b=k1G3hkYjXQTWzjpfuQIdz6V50L2JF8C3t//xCYM9PelNaZ0JzObW6puKfJ7+qU25dIeQ4NhBlpZnjKJawi1uveEjns/rX7/SZS1gCd/oHOH7gv8rpeXxZsxFh40deYfmxvhh2Z3GWqRcEqAU6i5Up6SWqEyNJJfbjCRE3E7czFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxBn7BGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA916C4AF09;
+	Wed, 23 Apr 2025 15:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419665;
-	bh=gaihpRDXku+Optpp8tm0kRtmXhrvLMUsyezJKfp380U=;
+	s=korg; t=1745421863;
+	bh=MY5nxagZc47Phmra7j5+LaU9slFZZAay/VaXIOQfViY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xif4yMQ1PUfq0Gs9STvlJXtCW4D68qmcEQrr1FokDkWWmDMFbjE4XAZ51cQGr6D4X
-	 5badQlRuXcykLxf41aoOtxD+YcIJd8WmUrHKXxbnHtZHndRd7pkx5KsAnFdKxQjrdb
-	 m6BC3KG6f1oFQcNW2GgaI4176p+ff3oWKf304e9Y=
+	b=TxBn7BGBCeUsHEuOi+6v2Fb6SwmyfDwpcqkAuybxA7nG8p7BSDyiMuGUQj0LAqGC3
+	 52+k0y8I97X/vKv5d4C49On9swqznI08z602HQkIcMf46FRdI8eIKpAoovmUTwteW6
+	 bgTFxRF4EUSxijWBEffjNc2CYGVLidhsCnb+aeqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Frank Li <Frank.Li@nxp.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/223] dt-bindings: soc: fsl: fsl,ls1028a-reset: Fix maintainer entry
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 215/393] gpio: tegra186: fix resource handling in ACPI probe path
 Date: Wed, 23 Apr 2025 16:41:51 +0200
-Message-ID: <20250423142618.719698835@linuxfoundation.org>
+Message-ID: <20250423142652.262509588@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit d5f49921707cc73376ad6cf8410218b438fcd233 ]
+commit 8323f3a69de6f6e96bf22f32dd8e2920766050c2 upstream.
 
-make dt_binding_check:
+When the Tegra186 GPIO controller is probed through ACPI matching,
+the driver emits two error messages during probing:
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
+  "tegra186-gpio NVDA0508:00: invalid resource (null)"
 
-    Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml: maintainers:0: 'Frank Li' does not match '@'
-	    from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+Fix this by getting resource first and then do the ioremap.
 
-Fix this by adding Frank's email address.
-
-Fixes: 9ca5a7d9d2e05de6 ("dt-bindings: soc: fsl: Add fsl,ls1028a-reset for reset syscon node")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/185e1e06692dc5b08abcde2d3dd137c78e979d08.1744301283.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2606e7c9f5fc ("gpio: tegra186: Add ACPI support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250327032349.78809-1-kanie@linux.alibaba.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml          | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-tegra186.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
-index 31295be910130..234089b5954dd 100644
---- a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
-+++ b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
-@@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: Freescale Layerscape Reset Registers Module
+--- a/drivers/gpio/gpio-tegra186.c
++++ b/drivers/gpio/gpio-tegra186.c
+@@ -822,6 +822,7 @@ static int tegra186_gpio_probe(struct pl
+ 	struct gpio_irq_chip *irq;
+ 	struct tegra_gpio *gpio;
+ 	struct device_node *np;
++	struct resource *res;
+ 	char **names;
+ 	int err;
  
- maintainers:
--  - Frank Li
-+  - Frank Li <Frank.Li@nxp.com>
+@@ -841,19 +842,19 @@ static int tegra186_gpio_probe(struct pl
+ 	gpio->num_banks++;
  
- description:
-   Reset Module includes chip reset, service processor control and Reset Control
--- 
-2.39.5
-
+ 	/* get register apertures */
+-	gpio->secure = devm_platform_ioremap_resource_byname(pdev, "security");
+-	if (IS_ERR(gpio->secure)) {
+-		gpio->secure = devm_platform_ioremap_resource(pdev, 0);
+-		if (IS_ERR(gpio->secure))
+-			return PTR_ERR(gpio->secure);
+-	}
+-
+-	gpio->base = devm_platform_ioremap_resource_byname(pdev, "gpio");
+-	if (IS_ERR(gpio->base)) {
+-		gpio->base = devm_platform_ioremap_resource(pdev, 1);
+-		if (IS_ERR(gpio->base))
+-			return PTR_ERR(gpio->base);
+-	}
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "security");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	gpio->secure = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->secure))
++		return PTR_ERR(gpio->secure);
++
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "gpio");
++	if (!res)
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
++	gpio->base = devm_ioremap_resource(&pdev->dev, res);
++	if (IS_ERR(gpio->base))
++		return PTR_ERR(gpio->base);
+ 
+ 	err = platform_irq_count(pdev);
+ 	if (err < 0)
 
 
 
