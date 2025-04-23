@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-135436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F569A98E54
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB27A98E15
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64C461883C6B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F6027AA799
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2E9280CCE;
-	Wed, 23 Apr 2025 14:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C1727CCFA;
+	Wed, 23 Apr 2025 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3iXkisY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1ucUwFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBFF27CB12;
-	Wed, 23 Apr 2025 14:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705785674E;
+	Wed, 23 Apr 2025 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419919; cv=none; b=p5dWDaoCIKPYQsS/zJ2/VDS+8oDXKdGTXGfCnd+BbRX2UMFTWYmYgAMlbkTP/RDZ6A/giUPMMsNt60zzruD7AaCgVwv5v4OL/lY6olzrLgnth0Zo3jTYDZI/+SqRA8CzlEkBAMo7x+tKSePUfr0of1Ihf78zflxX+fGadl5ts2E=
+	t=1745419929; cv=none; b=EzAYYDVnmM1xoM5CXW1PBFk9+oy4YqAj/UFY/o3rTS6gNObdiT+L/L9oaCgrBYNJOVb+zL/opvJqpjPK7R5YHN5Z79u98EhJ8BYIXbC6A6jt5ED75cPqjb0E+fUtgV//cpseFwJp4XSY34CXw3QRO9eiWfibbV02aeDGn/Kvrh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419919; c=relaxed/simple;
-	bh=EskSvx4pBuRF+DwPxZ9vYj3QgNRVhRC6ZsjQcAG/Tjo=;
+	s=arc-20240116; t=1745419929; c=relaxed/simple;
+	bh=w52cHdtaQ/a2EmCwXuIN1wXw0vbMOMZEKC6W2/XjuTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lw4n8Xi9UjHjvoKiFIoTURHJ1ZqfjpILjLY2jaDMJpIKuF0lU6O6MrF2G3efHeavKsw8ytSOp4xMUKk6PaooZnTS10GEizkti8dZt1XkgDXB/A2zdLR9npx8oqTLW7G6uhM+Erjrt+YXKyUzGgF6B8LPk4+MgV0/Uz5j8dn/oCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3iXkisY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B2CC4CEE2;
-	Wed, 23 Apr 2025 14:51:58 +0000 (UTC)
+	 MIME-Version; b=qbktBllr88IuodVg9H5VCjGVORtZErOtCoOGnNw2JbYu8eBCpAteTziUEcBvglxOYsqJ7pbHm2fGE86YpYtB6UBvVyIQmb7PgUFjYGyyzU2rWEwSppAWclMrOHxbwZ158vGgYFpW27F+o75oEDAimtx2PB7KF8lO2lpf+qJyvOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1ucUwFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04354C4CEE2;
+	Wed, 23 Apr 2025 14:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419918;
-	bh=EskSvx4pBuRF+DwPxZ9vYj3QgNRVhRC6ZsjQcAG/Tjo=;
+	s=korg; t=1745419929;
+	bh=w52cHdtaQ/a2EmCwXuIN1wXw0vbMOMZEKC6W2/XjuTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3iXkisYoJbNFaUBjGyV+d7eJ9h8Bw/KqalE9jmh+TDVBIBqEFwGxtdFmfugo9voA
-	 TgviTyIY1FVmvTgd8BPa/oLUNHz0R30BX+IGLNGKCtPUlbx/i+gPpV+qDDcfUAO9Ra
-	 dqsgnIHPvLtC18ynEElaQDnuCmsHT2TW5/BEEtFI=
+	b=c1ucUwFR53x6/HKXcuTfKsJvEp1zEQzWQ/Iq+QR8nk6kT9FCgXQs8ct/IHCum+p9S
+	 Rc3jlQydm5zDq8Atq2mX97MPi3oK2dWhq/Cex/6Hu71AOaL345MSmCL4kyRq74yId6
+	 Nb4a2DkzDSMYaMHsclleRAHVT11eHVDbJzro4Puk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Maxime Ripard <mripard@kernel.org>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/393] drm/tests: Add helper to create mock crtc
-Date: Wed, 23 Apr 2025 16:38:36 +0200
-Message-ID: <20250423142644.099708186@linuxfoundation.org>
+Subject: [PATCH 6.6 021/393] drm/tests: helpers: Add helper for drm_display_mode_from_cea_vic()
+Date: Wed, 23 Apr 2025 16:38:37 +0200
+Message-ID: <20250423142644.140793487@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -60,130 +60,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxime Ripard <mripard@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 51f90720381dea79208513d059e0eb426dee511e ]
+[ Upstream commit caa714f86699bcfb01aa2d698db12d91af7d0d81 ]
 
-We're going to need a full-blown, functional, KMS device to test more
-components of the atomic modesetting infrastructure.
+As Maxime suggested, add a new helper
+drm_kunit_display_mode_from_cea_vic(), it can replace the direct call
+of drm_display_mode_from_cea_vic(), and it will help solving
+the `mode` memory leaks.
 
-Let's add a new helper to create a dumb, mocked, CRTC. By default it
-will create a CRTC relying only on the default helpers, but drivers are
-free to deviate from that.
-
-Reviewed-by: Maíra Canal <mcanal@igalia.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241030023504.530425-2-ruanjinjie@huawei.com
 Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240222-kms-hdmi-connector-state-v7-4-8f4af575fce2@kernel.org
 Stable-dep-of: 70f29ca3117a ("drm/tests: cmdline: Fix drm_display_mode memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tests/drm_kunit_helpers.c | 62 +++++++++++++++++++++++
- include/drm/drm_kunit_helpers.h           | 10 ++++
- 2 files changed, 72 insertions(+)
+ drivers/gpu/drm/tests/drm_kunit_helpers.c | 42 +++++++++++++++++++++++
+ include/drm/drm_kunit_helpers.h           |  4 +++
+ 2 files changed, 46 insertions(+)
 
 diff --git a/drivers/gpu/drm/tests/drm_kunit_helpers.c b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-index e0778a7ec2608..ca513235b5e2a 100644
+index ca513235b5e2a..9a35b2cf6a032 100644
 --- a/drivers/gpu/drm/tests/drm_kunit_helpers.c
 +++ b/drivers/gpu/drm/tests/drm_kunit_helpers.c
-@@ -321,5 +321,67 @@ drm_kunit_helper_create_primary_plane(struct kunit *test,
+@@ -3,6 +3,7 @@
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_drv.h>
++#include <drm/drm_edid.h>
+ #include <drm/drm_fourcc.h>
+ #include <drm/drm_kunit_helpers.h>
+ #include <drm/drm_managed.h>
+@@ -383,5 +384,46 @@ drm_kunit_helper_create_crtc(struct kunit *test,
  }
- EXPORT_SYMBOL_GPL(drm_kunit_helper_create_primary_plane);
+ EXPORT_SYMBOL_GPL(drm_kunit_helper_create_crtc);
  
-+static const struct drm_crtc_helper_funcs default_crtc_helper_funcs = {
-+};
++static void kunit_action_drm_mode_destroy(void *ptr)
++{
++	struct drm_display_mode *mode = ptr;
 +
-+static const struct drm_crtc_funcs default_crtc_funcs = {
-+	.atomic_destroy_state   = drm_atomic_helper_crtc_destroy_state,
-+	.atomic_duplicate_state = drm_atomic_helper_crtc_duplicate_state,
-+	.reset                  = drm_atomic_helper_crtc_reset,
-+};
++	drm_mode_destroy(NULL, mode);
++}
 +
 +/**
-+ * drm_kunit_helper_create_crtc - Creates a mock CRTC for a KUnit test
++ * drm_kunit_display_mode_from_cea_vic() - return a mode for CEA VIC
++					   for a KUnit test
 + * @test: The test context object
-+ * @drm: The device to alloc the plane for
-+ * @primary: Primary plane for CRTC
-+ * @cursor: Cursor plane for CRTC. Optional.
-+ * @funcs: Callbacks for the new plane. Optional.
-+ * @helper_funcs: Helpers callbacks for the new plane. Optional.
++ * @dev: DRM device
++ * @video_code: CEA VIC of the mode
 + *
-+ * This allocates and initializes a mock struct &drm_crtc meant to be
-+ * part of a mock device for a KUnit test.
++ * Creates a new mode matching the specified CEA VIC for a KUnit test.
 + *
 + * Resources will be cleaned up automatically.
 + *
-+ * @funcs will default to the default helpers implementations.
-+ * @helper_funcs will default to an empty implementation.
-+ *
-+ * Returns:
-+ * A pointer to the new CRTC, or an ERR_PTR() otherwise.
++ * Returns: A new drm_display_mode on success or NULL on failure
 + */
-+struct drm_crtc *
-+drm_kunit_helper_create_crtc(struct kunit *test,
-+			     struct drm_device *drm,
-+			     struct drm_plane *primary,
-+			     struct drm_plane *cursor,
-+			     const struct drm_crtc_funcs *funcs,
-+			     const struct drm_crtc_helper_funcs *helper_funcs)
++struct drm_display_mode *
++drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
++				    u8 video_code)
 +{
-+	struct drm_crtc *crtc;
++	struct drm_display_mode *mode;
 +	int ret;
 +
-+	if (!funcs)
-+		funcs = &default_crtc_funcs;
++	mode = drm_display_mode_from_cea_vic(dev, video_code);
++	if (!mode)
++		return NULL;
 +
-+	if (!helper_funcs)
-+		helper_funcs = &default_crtc_helper_funcs;
++	ret = kunit_add_action_or_reset(test,
++					kunit_action_drm_mode_destroy,
++					mode);
++	if (ret)
++		return NULL;
 +
-+	crtc = drmm_kzalloc(drm, sizeof(*crtc), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_NULL(test, crtc);
-+
-+	ret = drmm_crtc_init_with_planes(drm, crtc,
-+					 primary,
-+					 cursor,
-+					 funcs,
-+					 NULL);
-+	KUNIT_ASSERT_EQ(test, ret, 0);
-+
-+	drm_crtc_helper_add(crtc, helper_funcs);
-+
-+	return crtc;
++	return mode;
 +}
-+EXPORT_SYMBOL_GPL(drm_kunit_helper_create_crtc);
++EXPORT_SYMBOL_GPL(drm_kunit_display_mode_from_cea_vic);
 +
  MODULE_AUTHOR("Maxime Ripard <maxime@cerno.tech>");
  MODULE_LICENSE("GPL");
 diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
-index 38667d624aa8c..6e99627edf458 100644
+index 6e99627edf458..3e5f4a23685ef 100644
 --- a/include/drm/drm_kunit_helpers.h
 +++ b/include/drm/drm_kunit_helpers.h
-@@ -9,6 +9,8 @@
+@@ -120,4 +120,8 @@ drm_kunit_helper_create_crtc(struct kunit *test,
+ 			     const struct drm_crtc_funcs *funcs,
+ 			     const struct drm_crtc_helper_funcs *helper_funcs);
  
- #include <kunit/test.h>
- 
-+struct drm_crtc_funcs;
-+struct drm_crtc_helper_funcs;
- struct drm_device;
- struct drm_plane_funcs;
- struct drm_plane_helper_funcs;
-@@ -110,4 +112,12 @@ drm_kunit_helper_create_primary_plane(struct kunit *test,
- 				      unsigned int num_formats,
- 				      const uint64_t *modifiers);
- 
-+struct drm_crtc *
-+drm_kunit_helper_create_crtc(struct kunit *test,
-+			     struct drm_device *drm,
-+			     struct drm_plane *primary,
-+			     struct drm_plane *cursor,
-+			     const struct drm_crtc_funcs *funcs,
-+			     const struct drm_crtc_helper_funcs *helper_funcs);
++struct drm_display_mode *
++drm_kunit_display_mode_from_cea_vic(struct kunit *test, struct drm_device *dev,
++				    u8 video_code);
 +
  #endif // DRM_KUNIT_HELPERS_H_
 -- 
