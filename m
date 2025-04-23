@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461A8A98ECE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 528ECA99173
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B6083B33D3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FCC5467D2C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76287280CE0;
-	Wed, 23 Apr 2025 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B172857E6;
+	Wed, 23 Apr 2025 15:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxocelUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYMRjptf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34996280A53;
-	Wed, 23 Apr 2025 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB8D2951CA;
+	Wed, 23 Apr 2025 15:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420158; cv=none; b=llkotrV5naHSRAq8P/7fu/vGmNemVPAuQZ1EoXhe7whpKUGK236z/nRrxidbPZvrNE4e9KSGXFQAujZd/1kB3/F9xnVyKxxGdwg55krvxwvEjV91ZNiiIy62Cx3+ttymJ0jaVeD3nHG3yMs9JTtSRsJRlSXqZXEYuYXCGGh4y5s=
+	t=1745421460; cv=none; b=VXGhftPu+XSMA/IFIJ8mc3TSCeKG0QEW4lFlkqJja6eTHuRQEMKPWApzWBQbXSA7zs2HEyMfP57yIOKjtnS7IRrWeqND4GFOh+0t+ZkWr20gNyXVx4Ql2aVz3F9Z4FFcmIhNaM9S0190Gez1t5gK4/xE2t1h115M1IaXhRzSSJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420158; c=relaxed/simple;
-	bh=2taQ/I/AWxpW1sgB8BsDpbRm+1is2bJyouvm3qQlFnE=;
+	s=arc-20240116; t=1745421460; c=relaxed/simple;
+	bh=IaZeOx38S1rUHNS7LFlezwYUqHJHkoMGjhv1HccdvBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqkJVNmVYJTEIwvvhot7smcj3Aa32ILFfIAod9gjHc1NB/axbID+5SsbefGUYG0NxB4p5CXwOZQ8v5bKdbKoM4I8BtUAAJ2d6EL1sXInK3iAl9YP1YV+G8dMIGiJMFXULeZKGFSdGhdZ5btSW8D9IDByEkgWOFtGeTW3yr8NJmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxocelUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB08DC4CEEB;
-	Wed, 23 Apr 2025 14:55:57 +0000 (UTC)
+	 MIME-Version; b=UO7HEH5icMA0tNnKLP5yCxrjwS38mCsq5Xnpy0ad5ka+m0RnUjhzP/LkJXQvSx2YbvssbOxXKKL7tO3LZT2jjRFkjqj1kJX7DJe4Ud0NoGJQGcrmGRyKVdlxSR7T+tIJpsEIOwXeLwwrusAijV7+lntwvY/3N+TbD+RsegFIXgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYMRjptf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4506AC4CEE2;
+	Wed, 23 Apr 2025 15:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420158;
-	bh=2taQ/I/AWxpW1sgB8BsDpbRm+1is2bJyouvm3qQlFnE=;
+	s=korg; t=1745421460;
+	bh=IaZeOx38S1rUHNS7LFlezwYUqHJHkoMGjhv1HccdvBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxocelUtLMPzmF+sy/0hgI+tICtNsLPEcOG0RSgjNl7bOkiLG2jsuFjYlBtABR3g8
-	 bmInGAeF4PgaJOewXGuu/6rs/0WV6w5LXKpc3igHgW4LO1OASfoCBW+eLMB7r/9aDc
-	 VA7HQ4Do9reiToDfsbgc4ykvU9RazoX1+xicNUXU=
+	b=NYMRjptfzioNQQGPrltoEEPrQdpKXx+EWW0xldlynqT5nrPfn+GDESnI/ypWsQTK9
+	 UBBBJap/Cpj+P6PO31NUwftg2taQrijZrpuiF6HyAabjlOsbO37LJ83AXzWmjQ2a1H
+	 +BYI+7qeWYtwH2fyUFqjQSbprXJ2TFhW5eXyvCq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 064/241] cxgb4: fix memory leak in cxgb4_init_ethtool_filters() error path
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 139/291] clk: qcom: gdsc: Capture pm_genpd_add_subdomain result code
 Date: Wed, 23 Apr 2025 16:42:08 +0200
-Message-ID: <20250423142623.218154905@linuxfoundation.org>
+Message-ID: <20250423142630.091648950@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 00ffb3724ce743578163f5ade2884374554ca021 ]
+commit 65a733464553ea192797b889d1533a1a37216f32 upstream.
 
-In the for loop used to allocate the loc_array and bmap for each port, a
-memory leak is possible when the allocation for loc_array succeeds,
-but the allocation for bmap fails. This is because when the control flow
-goes to the label free_eth_finfo, only the allocations starting from
-(i-1)th iteration are freed.
+Adding a new clause to this if/else I noticed the existing usage of
+pm_genpd_add_subdomain() wasn't capturing and returning the result code.
 
-Fix that by freeing the loc_array in the bmap allocation error path.
+pm_genpd_add_subdomain() returns an int and can fail. Capture that result
+code and throw it up the call stack if something goes wrong.
 
-Fixes: d915c299f1da ("cxgb4: add skeleton for ethtool n-tuple filters")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414170649.89156-1-abdun.nihaal@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1b771839de05 ("clk: qcom: gdsc: enable optional power domain support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20250117-b4-linux-next-24-11-18-clock-multiple-power-domains-v10-2-13f2bb656dad@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/gdsc.c |   40 +++++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-index 7f3f5afa864f4..1546c3db08f09 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_ethtool.c
-@@ -2270,6 +2270,7 @@ int cxgb4_init_ethtool_filters(struct adapter *adap)
- 		eth_filter->port[i].bmap = bitmap_zalloc(nentries, GFP_KERNEL);
- 		if (!eth_filter->port[i].bmap) {
- 			ret = -ENOMEM;
-+			kvfree(eth_filter->port[i].loc_array);
- 			goto free_eth_finfo;
- 		}
+--- a/drivers/clk/qcom/gdsc.c
++++ b/drivers/clk/qcom/gdsc.c
+@@ -463,6 +463,23 @@ err_disable_supply:
+ 	return ret;
+ }
+ 
++static void gdsc_pm_subdomain_remove(struct gdsc_desc *desc, size_t num)
++{
++	struct device *dev = desc->dev;
++	struct gdsc **scs = desc->scs;
++	int i;
++
++	/* Remove subdomains */
++	for (i = num - 1; i >= 0; i--) {
++		if (!scs[i])
++			continue;
++		if (scs[i]->parent)
++			pm_genpd_remove_subdomain(scs[i]->parent, &scs[i]->pd);
++		else if (!IS_ERR_OR_NULL(dev->pm_domain))
++			pm_genpd_remove_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
++	}
++}
++
+ int gdsc_register(struct gdsc_desc *desc,
+ 		  struct reset_controller_dev *rcdev, struct regmap *regmap)
+ {
+@@ -507,30 +524,27 @@ int gdsc_register(struct gdsc_desc *desc
+ 		if (!scs[i])
+ 			continue;
+ 		if (scs[i]->parent)
+-			pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
++			ret = pm_genpd_add_subdomain(scs[i]->parent, &scs[i]->pd);
+ 		else if (!IS_ERR_OR_NULL(dev->pm_domain))
+-			pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
++			ret = pm_genpd_add_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
++		if (ret)
++			goto err_pm_subdomain_remove;
  	}
--- 
-2.39.5
-
+ 
+ 	return of_genpd_add_provider_onecell(dev->of_node, data);
++
++err_pm_subdomain_remove:
++	gdsc_pm_subdomain_remove(desc, i);
++
++	return ret;
+ }
+ 
+ void gdsc_unregister(struct gdsc_desc *desc)
+ {
+-	int i;
+ 	struct device *dev = desc->dev;
+-	struct gdsc **scs = desc->scs;
+ 	size_t num = desc->num;
+ 
+-	/* Remove subdomains */
+-	for (i = num - 1; i >= 0; i--) {
+-		if (!scs[i])
+-			continue;
+-		if (scs[i]->parent)
+-			pm_genpd_remove_subdomain(scs[i]->parent, &scs[i]->pd);
+-		else if (!IS_ERR_OR_NULL(dev->pm_domain))
+-			pm_genpd_remove_subdomain(pd_to_genpd(dev->pm_domain), &scs[i]->pd);
+-	}
++	gdsc_pm_subdomain_remove(desc, num);
+ 	of_genpd_del_provider(dev->of_node);
+ }
+ 
 
 
 
