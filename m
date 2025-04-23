@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18FEA99270
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76115A98ED0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 026624A329F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAAA8447E76
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A58A28D83A;
-	Wed, 23 Apr 2025 15:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BD8281365;
+	Wed, 23 Apr 2025 14:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iMThUwb/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMIJ0n39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4204528D83B;
-	Wed, 23 Apr 2025 15:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F62280A55;
+	Wed, 23 Apr 2025 14:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421924; cv=none; b=l/hMvKzFTu2mtBimr1y8g2F+v2aES8qqwV1qVY77ZEbxp4BeLy2tgrDoEaxwkBPjFPCC/Nqiyfm0bl7LADWbJRjjCdMfk8edRf7ZNM2vINxhUJPNisbnA9IPbXJAXp8rSTeiWsQA9Ed14sgXYdhbeb3VRHgtC1hF2oaSI31OFko=
+	t=1745420282; cv=none; b=GeFRnE4XlLRkTc4RcJTU+n2K4c7IbKAOcbk83zQxxb3Y/mYTtCjGSm0ga5VtFvF3elNqfBGAkMrvXuOdQvmPXuDoNHrI//SOLsOttDVdlBeVmMFy/Sdc0PTreRfkmtQqdpxRu5c9GVwNbWU5uiChuPfcc3UfEdqt0cMo0xCaNTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421924; c=relaxed/simple;
-	bh=LcSHFVhh7IA2XQRbGoJ576xksbXf/MZ6aqrxlGk3w0I=;
+	s=arc-20240116; t=1745420282; c=relaxed/simple;
+	bh=pluNPGyr1CaWOLT9KeeTl7/+j8mKG2ROsS7T0CQYDBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kVPn9pbP73DapzvmPJwtmA4iJlH8lug2LKkLVkZ+jhiwkmPp1MLr+fYQ5Vp2LiX+Eqi9HqIVp3nDq4N+ysi+fn9s998Aw1lf7yUAlNCnu8fkpt2rcRDC00XIeWTb/pYz+lXhXttFPRGKtb/euYfOH1wo8Elpj9uczNKQTiwPD9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iMThUwb/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657EBC4CEE2;
-	Wed, 23 Apr 2025 15:25:23 +0000 (UTC)
+	 MIME-Version; b=sgt2usvJ9NFaxv6tf2+Q12Wna0iSjDQcRSW/MdTTu9IV6GxgeIOqmCDwci3giupGw3/Sniy9IMvN3DeS5maZtD+/J/J5Q4lE6VU+BXCT/UTKmH49ZjxfSUh5GkT/w5/EqFPjxLdM3eAncQaF4hfO4REd0BsfJ8iDKegZL26EoE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMIJ0n39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD72C4CEE2;
+	Wed, 23 Apr 2025 14:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421923;
-	bh=LcSHFVhh7IA2XQRbGoJ576xksbXf/MZ6aqrxlGk3w0I=;
+	s=korg; t=1745420281;
+	bh=pluNPGyr1CaWOLT9KeeTl7/+j8mKG2ROsS7T0CQYDBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iMThUwb/fcZpK2rnKmKjq6uoUBFINChExMyPn9uIPMhjm55Yu1C6GhwS8Xar8sP8c
-	 ych0cZb/cHbTBh9qYWraUunoQlZnyQyEcxOPJy5mY8NgoHiUbi311Gxv4q2kppCdB/
-	 mfNoSCZ0HXW/jAChUlsvqIOHj+T4tzAstkTQW+xk=
+	b=VMIJ0n39K1PSt02EUy71YE0w4/IKqwemIHKNgtINLdSSnArvGxBv/zp4Pq/3Iiw+c
+	 pK4U9Znird8e8DW62pLClL8GDqT3YnIRx+SCXt+WndT2LmsfNu9QerLHNlvHlwhXh/
+	 KPP5C2xPHdv7sPLGvBpaFAG6+shd4LvLx5fpkAW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Coly Li <colyli@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/393] md/raid10: fix missing discard IO accounting
+Subject: [PATCH 6.14 078/241] net: dsa: avoid refcount warnings when ds->ops->tag_8021q_vlan_del() fails
 Date: Wed, 23 Apr 2025 16:42:22 +0200
-Message-ID: <20250423142653.541046242@linuxfoundation.org>
+Message-ID: <20250423142623.777083206@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit d05af90d6218e9c8f1c2026990c3f53c1b41bfb0 ]
+[ Upstream commit 514eff7b0aa1c5eb645ddbb8676ef3e2d88a8b99 ]
 
-md_account_bio() is not called from raid10_handle_discard(), now that we
-handle bitmap inside md_account_bio(), also fix missing
-bitmap_startwrite for discard.
+This is very similar to the problem and solution from commit
+232deb3f9567 ("net: dsa: avoid refcount warnings when
+->port_{fdb,mdb}_del returns error"), except for the
+dsa_port_do_tag_8021q_vlan_del() operation.
 
-Test whole disk discard for 20G raid10:
-
-Before:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    48.00     16.00     0.00   0.00    5.42   341.33
-
-After:
-Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
-md0    68.00  20462.00     0.00   0.00    2.65 308133.65
-
-Link: https://lore.kernel.org/linux-raid/20250325015746.3195035-1-yukuai1@huaweicloud.com
-Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Coly Li <colyli@kernel.org>
+Fixes: c64b9c05045a ("net: dsa: tag_8021q: add proper cross-chip notifier support")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414213020.2959021-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/dsa/tag_8021q.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index c300fd609ef08..36b6bf3f8b29f 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1756,6 +1756,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
- 	 * The discard bio returns only first r10bio finishes
- 	 */
- 	if (first_copy) {
-+		md_account_bio(mddev, &bio);
- 		r10_bio->master_bio = bio;
- 		set_bit(R10BIO_Discard, &r10_bio->state);
- 		first_copy = false;
+diff --git a/net/dsa/tag_8021q.c b/net/dsa/tag_8021q.c
+index 3ee53e28ec2e9..53e03fd8071b4 100644
+--- a/net/dsa/tag_8021q.c
++++ b/net/dsa/tag_8021q.c
+@@ -197,7 +197,7 @@ static int dsa_port_do_tag_8021q_vlan_del(struct dsa_port *dp, u16 vid)
+ 
+ 	err = ds->ops->tag_8021q_vlan_del(ds, port, vid);
+ 	if (err) {
+-		refcount_inc(&v->refcount);
++		refcount_set(&v->refcount, 1);
+ 		return err;
+ 	}
+ 
 -- 
 2.39.5
 
