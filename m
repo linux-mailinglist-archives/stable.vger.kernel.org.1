@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-135773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F39A98FE4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0438EA99182
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:31:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07D216A926
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCAF51B83A40
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA58427FD67;
-	Wed, 23 Apr 2025 15:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E9C288CAF;
+	Wed, 23 Apr 2025 15:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DayABlNE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GP9rQjyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692C71EEA3E;
-	Wed, 23 Apr 2025 15:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F398A281344;
+	Wed, 23 Apr 2025 15:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420806; cv=none; b=i0dYpCDgqWsLODfZRHvDaa71z+maPr1I6/c7uJK9+EhuHafV1x9HA8RIonxC6O9kDXO2RywoIc0s96TAOBO+XyHAASoNANN0ozCJX+JFBQk10GyyGCajOYLjjOIRmk4UFS3zuFwsHfY/u2iTxN9+QJ3o2KcH4QcT1AoJRGQJBms=
+	t=1745421291; cv=none; b=q3bFoRJpLV5A9XWwG5UQ0LbWR+idBUu5uEbo2cl5mi/6KwEra41FpFTK7pIm5IKTPqftSga9v0wr+DdddR5hvulL16r7AwbwWdNKzyHmZ1iHSuD9GMuXu/oCo4qAztvlEK4RuuQHRla0V4/XLwk4Y4bOg6KK2iZmMvgF9Vz76jI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420806; c=relaxed/simple;
-	bh=HyYBx3ZTa1JGr1WpE+eU+g4EdUFwtvaHG5Uud3S3Qx4=;
+	s=arc-20240116; t=1745421291; c=relaxed/simple;
+	bh=LQEWZIv+fj1ARm2a/e2DSdFFvuOGFD70RXYb2xYTxFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GxAqVhdKuRXFu52LQj0aYyuayX6ykgAGzK0Y5503kDRfMlHfpnCSgxXCH8dD1x0ctus3Xp788L6pb8+mN5ORJvpS/FqG0yNiZiU5dugRKlWd7HSjD9GdXCYdnGrh1pKXORP8+dL7J8lmmDncuHgTHOWArKBzTdc6iY6v/JgoNMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DayABlNE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8378C4CEE2;
-	Wed, 23 Apr 2025 15:06:45 +0000 (UTC)
+	 MIME-Version; b=q3X6APjiJGTZ1D3vckM6CHrWRr6w6Ti8ppf/ml4+Hj6oj8ycnxaqAx5N2a8tVeIxAstRRvRiO+8P3z0gqSm0NRTxCVYaX2Z0SpW+gzndnNattWOu0EbU/S0bizZ/DqVfjjb9Sz1nixcw8vJrjDhYtQBDUZr+I9yBnC/N1AwNH1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GP9rQjyX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8269BC4CEE2;
+	Wed, 23 Apr 2025 15:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420806;
-	bh=HyYBx3ZTa1JGr1WpE+eU+g4EdUFwtvaHG5Uud3S3Qx4=;
+	s=korg; t=1745421290;
+	bh=LQEWZIv+fj1ARm2a/e2DSdFFvuOGFD70RXYb2xYTxFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DayABlNEQ4KML+5jU7UuHmMuI95hvNMJhxg2JmZ6y+mKHRGrKxG8OF9HFrRuuA+QL
-	 CmbFXdnlvp4NvJycU/y8bFh2UjLDH/lyK0SpE/qduEDcSa1FB49bhXIyfH2a9BZa4T
-	 NK0O1G13s7hlgWNmFQs5bj3mNR0ESJO7NEj8CRoM=
+	b=GP9rQjyX3moEs8T0LRnvU85Jmo9XEdfLjgZuTotoVs4DWQ109V+aPZlhVEDYPi8mj
+	 SJws2H21f+df2Ohq/gIzsSmY3J1d7Af+g46RhFirF4bEO8lJ9FTjnyvC2NsrySeOts
+	 yIr4nQYVAc5obv+/vW91/fuNhBQY2Pr5V4eB8IdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>,
-	Arun R Murthy <arun.r.murthy@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.12 164/223] drm/i915/vrr: Add vrr.vsync_{start, end} in vrr_params_changed
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Lanzano <lanzano.alex@gmail.com>
+Subject: [PATCH 6.14 172/241] drm/repaper: fix integer overflows in repeat functions
 Date: Wed, 23 Apr 2025 16:43:56 +0200
-Message-ID: <20250423142623.849254978@linuxfoundation.org>
+Message-ID: <20250423142627.557851190@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit a421f5033c82990d795f8fcd30d5b835f8975508 upstream.
+commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
 
-Add the missing vrr parameters in vrr_params_changed() helper.
-This ensures that changes in vrr.vsync_{start,end} trigger a call to
-appropriate helpers to update the VRR registers.
+There are conditions, albeit somewhat unlikely, under which right hand
+expressions, calculating the end of time period in functions like
+repaper_frame_fixed_repeat(), may overflow.
 
-Fixes: e8cd188e91bb ("drm/i915/display: Compute vrr_vsync params")
-Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Cc: Arun R Murthy <arun.r.murthy@intel.com>
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://lore.kernel.org/r/20250404080540.2059511-1-ankit.k.nautiyal@intel.com
-(cherry picked from commit ced5e64f011cb5cd541988442997ceaa7385827e)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+For instance, if 'factor10x' in repaper_get_temperature() is high
+enough (170), as is 'epd->stage_time' in repaper_probe(), then the
+resulting value of 'end' will not fit in unsigned int expression.
+
+Mitigate this by casting 'epd->factored_stage_time' to wider type before
+any multiplication is done.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/repaper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -1006,7 +1006,9 @@ static bool vrr_params_changed(const str
- 		old_crtc_state->vrr.vmin != new_crtc_state->vrr.vmin ||
- 		old_crtc_state->vrr.vmax != new_crtc_state->vrr.vmax ||
- 		old_crtc_state->vrr.guardband != new_crtc_state->vrr.guardband ||
--		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full;
-+		old_crtc_state->vrr.pipeline_full != new_crtc_state->vrr.pipeline_full ||
-+		old_crtc_state->vrr.vsync_start != new_crtc_state->vrr.vsync_start ||
-+		old_crtc_state->vrr.vsync_end != new_crtc_state->vrr.vsync_end;
- }
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -456,7 +456,7 @@ static void repaper_frame_fixed_repeat(s
+ 				       enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
  
- static bool cmrr_params_changed(const struct intel_crtc_state *old_crtc_state,
+ 	do {
+ 		repaper_frame_fixed(epd, fixed_value, stage);
+@@ -467,7 +467,7 @@ static void repaper_frame_data_repeat(st
+ 				      const u8 *mask, enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+ 
+ 	do {
+ 		repaper_frame_data(epd, image, mask, stage);
 
 
 
