@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-136116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2ACA9921B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCC2A990DF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB10A1BA4288
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C657B7A5D4F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F44288CB5;
-	Wed, 23 Apr 2025 15:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A0428C5C6;
+	Wed, 23 Apr 2025 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbZqPiwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="goELR0s8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2FC2F2E;
-	Wed, 23 Apr 2025 15:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAF123D298;
+	Wed, 23 Apr 2025 15:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421698; cv=none; b=b99CmNsf9GEaBjzR/+WaR0qezURbOheZCbW4UKZIuoKSRcpdUxRUtKU5Bncl1K8K/4v+XkryGpOV7qQ84tvP+F07Bxk9wDVR2HomAHiIWTL5SXeBZ0pkEUyr7qmODj/EsD27uTEuVnzBxkiA6qT/y+GBBp1KFsCX4GkHgWuKtGc=
+	t=1745421357; cv=none; b=esUx0yhOBe5u/9erYfsISqS3MH02Wvf1UsZc2YzeGdh2ygJoTnQHUYyRfDvYr0CsXaPymgSTlnw3UtQEmmmNZJl9EkRrGtSMxaLrWSAqQ5hk5ZgNffOutJ6H2PKJRjmi4lHyFmu7XL3xIx0T1a8jOTzzLQblWWgTZbghzopW3lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421698; c=relaxed/simple;
-	bh=NkZRqXQRTNgj9/u3XXnJVb4GYvU54IhrT3eUzBk3RiY=;
+	s=arc-20240116; t=1745421357; c=relaxed/simple;
+	bh=YOlikTlQiJQXY+KqI33t04jxAL0jlT/klmXZWCsgDmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/BgDYu6Aico1eehqE6SqFWck09+qrzC/UypnET3xBBwX4lZQOJ5b+181zGf4MhQfuOi0vVFxVp7Ta3Vd+78VaO1BNmYsCrMmH2OII8je04At0zi6+xYNLJHFYudQt1WgTGki3y1e79Mo4ZrfTA6xnN+BeykBDbgy0+TftvLVwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbZqPiwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55682C4AF0C;
-	Wed, 23 Apr 2025 15:21:37 +0000 (UTC)
+	 MIME-Version; b=BpfRVswkOe7pfb46llc960njqJ424pPTT8LhcNqSW8u2KfkYgPyGhgqf28k+fGWbIr5o6EALX/IbUpHENLyERGF9NEGXBFl4a0Rlc1BJqnnKyFSeCJp9ZPqYow/5f8d/uaXq45kzD9osmKQq+J5B8oNUnc+xQub/ESoLXIhh4yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=goELR0s8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116C7C4CEE8;
+	Wed, 23 Apr 2025 15:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421697;
-	bh=NkZRqXQRTNgj9/u3XXnJVb4GYvU54IhrT3eUzBk3RiY=;
+	s=korg; t=1745421357;
+	bh=YOlikTlQiJQXY+KqI33t04jxAL0jlT/klmXZWCsgDmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbZqPiwjAJiOP7/WJ8xwzFyqQjmYliIOkn+vRpGtui8xQ5yYXLbOHNcB23Fh/naCH
-	 IJ02w8qcA11i2CTsKbxL1wSGC+nZ99ucKeo2kruSRj1txmSxRKhHcsY00LkO5u8gnD
-	 amavq0AtAA2I16g2CHDsvTBAWFK3RI2JGsO6lZ8M=
+	b=goELR0s8Y21ZlrZT//VGQrow3apDMeNFmuM8p9rZdyo0gTkKpPdhBAajfbqxMQzRS
+	 nyasiTpH3ZQxeuBX1m/9BN4g1SAYOIWWSal4aBukh8ZYhWUfTIFy3OBs+zQ6Isu5JE
+	 SsqZyMhNS2+mxgIr3WeRvDZBkumRUOKmYVWGcTlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Will Deacon <will@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Eric Auger <eric.auger@redhat.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.14 221/241] arm64/sysreg: Update register fields for ID_AA64MMFR0_EL1
-Date: Wed, 23 Apr 2025 16:44:45 +0200
-Message-ID: <20250423142629.585270529@linuxfoundation.org>
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Alexander Tsoy <alexander@tsoy.me>
+Subject: [PATCH 6.12 214/223] wifi: ath12k: Fix invalid entry fetch in ath12k_dp_mon_srng_process
+Date: Wed, 23 Apr 2025 16:44:46 +0200
+Message-ID: <20250423142625.878977701@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,49 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-commit cc15f548cc77574bcd68425ae01a796659bd3705 upstream.
+commit 63fdc4509bcf483e79548de6bc08bf3c8e504bb3 upstream.
 
-This updates ID_AA64MMFR0_EL1 register fields as per the definitions based
-on DDI0601 2024-12.
+Currently, ath12k_dp_mon_srng_process uses ath12k_hal_srng_src_get_next_entry
+to fetch the next entry from the destination ring. This is incorrect because
+ath12k_hal_srng_src_get_next_entry is intended for source rings, not destination
+rings. This leads to invalid entry fetches, causing potential data corruption or
+crashes due to accessing incorrect memory locations. This happens because the
+source ring and destination ring have different handling mechanisms and using
+the wrong function results in incorrect pointer arithmetic and ring management.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250203050828.1049370-2-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+To fix this issue, replace the call to ath12k_hal_srng_src_get_next_entry with
+ath12k_hal_srng_dst_get_next_entry in ath12k_dp_mon_srng_process. This ensures
+that the correct function is used for fetching entries from the destination
+ring, preventing invalid memory accesses.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Link: https://patch.msgid.link/20241223060132.3506372-7-quic_ppranees@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/tools/sysreg |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_mon.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/tools/sysreg
-+++ b/arch/arm64/tools/sysreg
-@@ -1664,6 +1664,7 @@ EndEnum
- UnsignedEnum	59:56	FGT
- 	0b0000	NI
- 	0b0001	IMP
-+	0b0010	FGT2
- EndEnum
- Res0	55:48
- UnsignedEnum	47:44	EXS
-@@ -1725,6 +1726,7 @@ Enum	3:0	PARANGE
- 	0b0100	44
- 	0b0101	48
- 	0b0110	52
-+	0b0111	56
- EndEnum
- EndSysreg
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -2118,7 +2118,7 @@ int ath12k_dp_mon_srng_process(struct at
+ 		dest_idx = 0;
+ move_next:
+ 		ath12k_dp_mon_buf_replenish(ab, buf_ring, 1);
+-		ath12k_hal_srng_src_get_next_entry(ab, srng);
++		ath12k_hal_srng_dst_get_next_entry(ab, srng);
+ 		num_buffs_reaped++;
+ 	}
  
 
 
