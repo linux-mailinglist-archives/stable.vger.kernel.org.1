@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-136232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08C24A99283
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F75A98E27
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05704169DD4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BACFE7ADBAD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA85D29C34F;
-	Wed, 23 Apr 2025 15:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A7C280A4F;
+	Wed, 23 Apr 2025 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbHo6G1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veX2mCp3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E98D296146;
-	Wed, 23 Apr 2025 15:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD48280A3C;
+	Wed, 23 Apr 2025 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422005; cv=none; b=PTrqjjeltnufbhM3iWc1yaDaCETrOFyVs2MBnNbTStMd/agpWpA4nGsK9EshNXA5iKNHVbEvUj111U87LQQsq2djBVvWvGv0v1mV5OxkQ7Pdsuky5MmvbwGtxh2jczWZavtGK+SVuK2eBQxmK9STEtjmVaH305v/gtH4awiXCvY=
+	t=1745419976; cv=none; b=HcTtYx9WDVpwRfxUHIOVN0EL4jLmm2d43vLooFb/hIn5XKUYIQEdp2fBCOqsB4mU5oMTWLZGO8WZ+iSlyQIKwZUAFnV2NRM/m/5fbGBv1YJGJe1aiyN0bVWQXXvo1zwYelHg6AO1U15U2VKdLhtOZ45TN9kGnsWkdDSZz2rSZ3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422005; c=relaxed/simple;
-	bh=7/XGCyip29YnzNqFeznBpzrvmG/lo2X/dnDDZ5vAw10=;
+	s=arc-20240116; t=1745419976; c=relaxed/simple;
+	bh=gzp+a6IgUrcdlS1qy9uwdJyeY1Eipp4OVBMgo8wukmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSssdVSDyF28xLK6wYjMRcw0q/8D5jxUXnwT98GHctTGPXlcJnQOv7BxkRjbIfwVtDVHXa4hRtkKWv8KLNmRpP1i8sLRsjFORncIHms9Q59yl4oPwiszHdWFMlvjJJSEkByixgGnJmFCPP9I3h8wkg6pAsdWcIUDJmIqIm6CILA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbHo6G1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C640CC4CEE2;
-	Wed, 23 Apr 2025 15:26:44 +0000 (UTC)
+	 MIME-Version; b=nxb5SqpOawVuTe9iMS9d+kse0/jAYm7S4SlbnbS4sp/gZkT5a09rnJE1Wb/u+fmXtoWdnkcT7l1CZk6hhavsF21F86QDRoIbbmxGs1by5AsC0Tb6PnPcGCyvGKFCALoe3b90G6ogLbx9qkSB+QG4DrWolPXGmrT2l31aOeMnIEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veX2mCp3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E948C4CEE3;
+	Wed, 23 Apr 2025 14:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422005;
-	bh=7/XGCyip29YnzNqFeznBpzrvmG/lo2X/dnDDZ5vAw10=;
+	s=korg; t=1745419976;
+	bh=gzp+a6IgUrcdlS1qy9uwdJyeY1Eipp4OVBMgo8wukmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbHo6G1Z5q4U0zFwuXfD0Uhnx89wMHJOR16qlsuevAR1LZNlj9EhwbNkIvUQ0AVw7
-	 6CYp5SZCNsCN+aAbO5sUg5eAb1smLGrVw+lSwcT+ky0LCpCm/Cc4OSTdON18tIJO7M
-	 J5QEb/FEF4uJEfZMYPAOoiGXg199WQGOAuZ1jUko=
+	b=veX2mCp3w/+Z1er9zwLX+OweFgBrm8/TVulX6c/dK19y+1IsGv6bLPPbD90pdX0bq
+	 mUX8UMzd0OqCmZzlaE1D4v1XGEvYSGdckmcXzcOO4lnpYuq2WTX5cq8Q+N/x2mIoK2
+	 fCBdH6slJLjWpeP4VJ1kAfC17Mmkdm7YdwTms3xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Christopher S M Hall <christopher.s.hall@intel.com>,
-	Corinna Vinschen <vinschen@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/393] igc: move ktime snapshot into PTM retry loop
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 085/223] rust: disable `clippy::needless_continue`
 Date: Wed, 23 Apr 2025 16:42:37 +0200
-Message-ID: <20250423142654.151692089@linuxfoundation.org>
+Message-ID: <20250423142620.586407794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,64 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher S M Hall <christopher.s.hall@intel.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit cd7f7328d691937102732f39f97ead35b15bf803 ]
+commit 0866ee8e50f017731b80891294c0edd0f5fcd0a9 upstream.
 
-Move ktime_get_snapshot() into the loop. If a retry does occur, a more
-recent snapshot will result in a more accurate cross-timestamp.
+Starting with Rust 1.86.0, Clippy's `needless_continue` lint complains
+about the last statement of a loop [1], including cases like:
 
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
-Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    while ... {
+        match ... {
+            ... if ... => {
+                ...
+                return ...;
+            }
+            _ => continue,
+        }
+    }
+
+as well as nested `match`es in a loop.
+
+One solution is changing `continue` for `()` [2], but arguably using
+`continue` shows the intent better when it is alone in an arm like that.
+
+Moreover, I am not sure we want to force people to try to find other
+ways to write the code either, in cases when that applies.
+
+In addition, the help text does not really apply in the new cases the
+lint has introduced, e.g. here one cannot simply "drop" the expression:
+
+    warning: this `continue` expression is redundant
+      --> rust/macros/helpers.rs:85:18
+       |
+    85 |             _ => continue,
+       |                  ^^^^^^^^
+       |
+       = help: consider dropping the `continue` expression
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#needless_continue
+       = note: requested on the command line with `-W clippy::needless-continue`
+
+The examples in the documentation do not show a case like this, either,
+so the second "help" line does not help.
+
+In addition, locally disabling the lint is not possible with `expect`,
+since the behavior differs across versions. Using `allow` would be
+possible, but, even then, an extra line just for this is a bit too much,
+especially if there are other ways to satisfy the lint.
+
+Finally, the lint is still in the "pedantic" category and disabled by
+default by Clippy.
+
+Thus disable the lint, at least for the time being.
+
+Feedback was submitted to upstream Clippy, in case this can be improved
+or perhaps the lint split into several [3].
+
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust-clippy/pull/13891 [1]
+Link: https://lore.kernel.org/rust-for-linux/20250401221205.52381-1-ojeda@kernel.org/ [2]
+Link: https://github.com/rust-lang/rust-clippy/issues/14536 [3]
+Link: https://lore.kernel.org/r/20250403163805.67770-1-ojeda@kernel.org
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ Makefile |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 097a481e6b73d..adb31cccaf9a5 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -980,16 +980,16 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
- 	int err, count = 100;
- 	ktime_t t1, t2_curr;
- 
--	/* Get a snapshot of system clocks to use as historic value. */
--	ktime_get_snapshot(&adapter->snapshot);
--
-+	/* Doing this in a loop because in the event of a
-+	 * badly timed (ha!) system clock adjustment, we may
-+	 * get PTM errors from the PCI root, but these errors
-+	 * are transitory. Repeating the process returns valid
-+	 * data eventually.
-+	 */
- 	do {
--		/* Doing this in a loop because in the event of a
--		 * badly timed (ha!) system clock adjustment, we may
--		 * get PTM errors from the PCI root, but these errors
--		 * are transitory. Repeating the process returns valid
--		 * data eventually.
--		 */
-+		/* Get a snapshot of system clocks to use as historic value. */
-+		ktime_get_snapshot(&adapter->snapshot);
-+
- 		igc_ptm_trigger(hw);
- 
- 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
--- 
-2.39.5
-
+--- a/Makefile
++++ b/Makefile
+@@ -455,7 +455,6 @@ export rust_common_flags := --edition=20
+ 			    -Wclippy::ignored_unit_patterns \
+ 			    -Wclippy::mut_mut \
+ 			    -Wclippy::needless_bitwise_bool \
+-			    -Wclippy::needless_continue \
+ 			    -Aclippy::needless_lifetimes \
+ 			    -Wclippy::no_mangle_with_rust_abi \
+ 			    -Wclippy::undocumented_unsafe_blocks \
 
 
 
