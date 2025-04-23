@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D46BA98D87
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:46:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B69A0A990DB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64984445130
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:46:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27EFC7A53EA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46423280CE0;
-	Wed, 23 Apr 2025 14:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0156A28BAA8;
+	Wed, 23 Apr 2025 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ4Xa8Kp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/8joUE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EE227FD59;
-	Wed, 23 Apr 2025 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB482367A0;
+	Wed, 23 Apr 2025 15:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419568; cv=none; b=qheWEC6z9BmnGbWZTQS2YZzsU9ZAohJBFiNVtY2Wr6OZl9oVJ7HeyMGrPZ/e6J1tEvv3D8kgoqVcvWRmF0D/S0kogueH/rz/IgQ8AVK6lpx7AiLGjozRfZND0QNjnisPZOggNypIuyqdM49FXTs19RuMsH1uVfgYAXD7egeTxYM=
+	t=1745421340; cv=none; b=BHZdcxNIn847aCih0csB7GCrPraJaOng3bQL/yQs1fqMUQEOWjqjefuliMHlIiqcjruHEtDP/fMXy009eJNEShz4ugMWp9JI8dbZ1cjgyY+NmS/K32Fi8GUiMzbzFinnPw4vGOYdlNbFCj4+65UvYZuWt8QKkFnHM5hidZvpycc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419568; c=relaxed/simple;
-	bh=myNolpVq09Ylg1g8aVTwIEDqCLj/MBjA6HRhgE6juVs=;
+	s=arc-20240116; t=1745421340; c=relaxed/simple;
+	bh=q8nOMnX+nLjo60WLDvL1NOPYuVxpFI1hCgQl/f647JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwEiUL6EIpO0h4f+bQ+hX5SRonko8vYCSgeFxqLNgZ3x+KTo90yEhvmDG1QhGlbRjROtKcmz1ofZGwlbCZig+X6FJ2/MPMQSrZDK4DxB83hRRcq+ZLMi3ez4yUuAlpDZaGQkXelHypvRml/bVtcDOxPGlX25D8+Z8L8kfR3HaC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ4Xa8Kp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC25C4CEE2;
-	Wed, 23 Apr 2025 14:46:06 +0000 (UTC)
+	 MIME-Version; b=DxMSkkIdIcybeCLksw3nD4+IAiDohEMYsMy4saMG4ho/2Tkuq7jCv76Wgtsdpb7K/EsOqtATicPzbJAvAliJUmEulKcjzW2YbQwQOAvUGq/mwpNMBTx7KbF4RAX4hg7dmOoPDiKt0xrjojdWwOYM4u7SlrTW6dgZWRNFgMfHSWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/8joUE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D85C4CEE2;
+	Wed, 23 Apr 2025 15:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419566;
-	bh=myNolpVq09Ylg1g8aVTwIEDqCLj/MBjA6HRhgE6juVs=;
+	s=korg; t=1745421340;
+	bh=q8nOMnX+nLjo60WLDvL1NOPYuVxpFI1hCgQl/f647JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQ4Xa8Kpe5gZJloJGOOE1i16T9l29pdWR6/av8G9H9DQNzXZ+mIhqYX9GI0tqqQcF
-	 Qf5LwrtxCAlr7gwZGv2D5noqHusy6Eqij2rjOwiul4FI+gqX4UumUzt343L7yQO9rx
-	 gDrglo/H8F/4xrNExBfWrbREnP6THoG9aLOASh80=
+	b=N/8joUE6eh79TA+GD5RxK4kiBq92c1C8nsT8lqbH9vQoDoyoQ0Cba8GBLoMCc+JCy
+	 KhlJJ+SXohQnWFgfRkov3vOK9LC1cu7wXC+WRqb/QS9Qgi7Fr3We7ushuNUVu/MDic
+	 +chvW80AC9Ujw62Fbj0XPXENEo4i7ACtHr3GP1k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 002/241] wifi: at76c50x: fix use after free access in at76_disconnect
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 170/393] leds: rgb: leds-qcom-lpg: Fix pwm resolution max for Hi-Res PWMs
 Date: Wed, 23 Apr 2025 16:41:06 +0200
-Message-ID: <20250423142620.627883432@linuxfoundation.org>
+Message-ID: <20250423142650.391758248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 27c7e63b3cb1a20bb78ed4a36c561ea4579fd7da ]
+commit b7881eacc07fdf50be3f33c662997541bb59366d upstream.
 
-The memory pointed to by priv is freed at the end of at76_delete_device
-function (using ieee80211_free_hw). But the code then accesses the udev
-field of the freed object to put the USB device. This may also lead to a
-memory leak of the usb device. Fix this by using udev from interface.
+Ideally, the requested duty cycle should never translate to a PWM
+value higher than the selected resolution (PWM size), but currently the
+best matched period is never reported back to the PWM consumer, so the
+consumer will still be using the requested period which is higher than
+the best matched one. This will result in PWM consumer requesting
+duty cycle values higher than the allowed PWM value.
 
-Fixes: 29e20aa6c6af ("at76c50x-usb: fix use after free on failure path in at76_probe()")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Link: https://patch.msgid.link/20250330103110.44080-1-abdun.nihaal@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, a consumer might request a period of 5ms while the best
+(closest) period the PWM hardware will do is 4.26ms. For this best
+matched resolution, if the selected resolution is 8-bit wide, when
+the consumer asks for a duty cycle of 5ms, the PWM value will be 300,
+which is outside of what the resolution allows. This will happen with
+all possible resolutions when selected.
+
+Since for these Hi-Res PWMs, the current implementation is capping the PWM
+value at a 15-bit resolution, even when lower resolutions are selected,
+the value will be wrapped around by the HW internal logic to the selected
+resolution.
+
+Fix the issue by capping the PWM value to the maximum value allowed by
+the selected resolution.
+
+Cc: stable@vger.kernel.org    # 6.4
+Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Sebastian Reichel <sre@kernel.org>
+Link: https://lore.kernel.org/r/20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-2-bfe124a53a9f@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
+ drivers/leds/rgb/leds-qcom-lpg.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
-index 504e05ea30f29..97ea7ab0f4910 100644
---- a/drivers/net/wireless/atmel/at76c50x-usb.c
-+++ b/drivers/net/wireless/atmel/at76c50x-usb.c
-@@ -2552,7 +2552,7 @@ static void at76_disconnect(struct usb_interface *interface)
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -379,7 +379,7 @@ static void lpg_calc_duty(struct lpg_cha
+ 	unsigned int clk_rate;
  
- 	wiphy_info(priv->hw->wiphy, "disconnecting\n");
- 	at76_delete_device(priv);
--	usb_put_dev(priv->udev);
-+	usb_put_dev(interface_to_usbdev(interface));
- 	dev_info(&interface->dev, "disconnected\n");
- }
- 
--- 
-2.39.5
-
+ 	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
+-		max = LPG_RESOLUTION_15BIT - 1;
++		max = BIT(lpg_pwm_resolution_hi_res[chan->pwm_resolution_sel]) - 1;
+ 		clk_rate = lpg_clk_rates_hi_res[chan->clk_sel];
+ 	} else {
+ 		max = LPG_RESOLUTION_9BIT - 1;
 
 
 
