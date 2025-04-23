@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-136351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9290EA99417
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B30A99403
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 532B29A420F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 696ED1B875F8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F85288C89;
-	Wed, 23 Apr 2025 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F152C256E;
+	Wed, 23 Apr 2025 15:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSJgDSmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5qeFkez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959C62857C1;
-	Wed, 23 Apr 2025 15:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9172BEC3A;
+	Wed, 23 Apr 2025 15:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422317; cv=none; b=b2eCLu2YsPqACHiBinjo7/XZyVGj9z6NTTmpQfPdMDGUlW7rooiVebUK0pLgWlgC1bVPwjNFa05GeQKdYX7EAL5SS6sBlSwS/wGf+z6Tekus5tmD/VjTSz9hcFF5VgNZ/PhMmgPNwOPD0H45V1lofmvFrFWGDd94LyfYRSbt3Cw=
+	t=1745422446; cv=none; b=gh4oYQm1LxvGq6zV4a4DDWMHjrsfxGfYaEEc+tLu+3dFOcFb9UbBfQpLfqjps/eUOihsrO6iqSlKI8fMM7QQm3/tp4LvezVi90BJMQB35SWzv9od2neTKJQZeG2i72T/b3lj0Fi3tCUb0AL2nfgATjFVkHaLeE3oTYWbvkdnDfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422317; c=relaxed/simple;
-	bh=8LlWXlITa5Pzf13CWE6bf1XVQpjEc9nsKayOOV6JtbA=;
+	s=arc-20240116; t=1745422446; c=relaxed/simple;
+	bh=tgtUzIv85qy0+SS+KnClh/omouzAwcW7FSX78CUxt9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ncrRREMvO97qs2d+74QxlCDauXaUwDv7wkMbUSIl+6Lxesss0iOb/cpnciDL0IzfyumLB8ly+/IGYwWN78qlpyu4vK9dc/so2UrktYSYmYoQmkYwsCimLBjGTfyZZsmH1fkdQedpBcnCJk0/Cyn1KAaWigf1y0D/8AJdCGpqPiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSJgDSmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10CEC4CEE2;
-	Wed, 23 Apr 2025 15:31:56 +0000 (UTC)
+	 MIME-Version; b=t7IM99s9pZjmcTbB15Mm7/9mQDDmJPPVbJvlqGbCAcuLqun6ZvvU3UWP9AyTlvlHqShWrGayt59Id43M+rt+kTaWMg+c6VYU9gkCGkwOU0Z26r8H42yZg2tCPnNCV2st1jpcMrEUttgZPH54SZ1MMHWXqV5a1SVsbmc6RWgyGP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5qeFkez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C724C4CEE2;
+	Wed, 23 Apr 2025 15:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422317;
-	bh=8LlWXlITa5Pzf13CWE6bf1XVQpjEc9nsKayOOV6JtbA=;
+	s=korg; t=1745422446;
+	bh=tgtUzIv85qy0+SS+KnClh/omouzAwcW7FSX78CUxt9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSJgDSmpTw4AYCL8IPWWqxfvglcZMzUOR3Y2VlfP1LKXnOF8Jjfx57Gcw5gtDnOox
-	 BgQtUS81IOULhTg///lEEAfMGvqWUsRnaLlpips03ZCT2DhQmbBPBeJX4U8puMLSUP
-	 QeuFg4xnm1C42YcWY5FC15k4i8xy2SRethJrh3Fo=
+	b=o5qeFkezYTgbiZij9QTUjQCvQV2WQj1Ve6V+xOI+pCQnOfdt+ZqIDOMkTI1A9BKbe
+	 zGeUJtsG8OaiKZzWM9vNsgXVUH+D4luMKHMDNxAfy/x/6u0Ay94ZmHD6rAhDiBjYnf
+	 UhKy40fMAzOJDvd0l9q60f6NwtONVmflStv/2gEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Jan Kara <jack@suse.cz>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 319/393] loop: LOOP_SET_FD: send uevents for partitions
-Date: Wed, 23 Apr 2025 16:43:35 +0200
-Message-ID: <20250423142656.516821285@linuxfoundation.org>
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 327/393] ksmbd: fix the warning from __kernel_write_iter
+Date: Wed, 23 Apr 2025 16:43:43 +0200
+Message-ID: <20250423142656.835382006@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -60,59 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 0dba7a05b9e47d8b546399117b0ddf2426dc6042 upstream.
+commit b37f2f332b40ad1c27f18682a495850f2f04db0a upstream.
 
-Remove the suppression of the uevents before scanning for partitions.
-The partitions inherit their suppression settings from their parent device,
-which lead to the uevents being dropped.
+[ 2110.972290] ------------[ cut here ]------------
+[ 2110.972301] WARNING: CPU: 3 PID: 735 at fs/read_write.c:599 __kernel_write_iter+0x21b/0x280
 
-This is similar to the same changes for LOOP_CONFIGURE done in
-commit bb430b694226 ("loop: LOOP_CONFIGURE: send uevents for partitions").
+This patch doesn't allow writing to directory.
 
-Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v3-1-60ff69ac6088@linutronix.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/loop.c |    3 ++-
+ fs/smb/server/vfs.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -624,12 +624,12 @@ static int loop_change_fd(struct loop_de
- 	 * dependency.
- 	 */
- 	fput(old_file);
-+	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
- 	if (partscan)
- 		loop_reread_partitions(lo);
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -496,7 +496,8 @@ int ksmbd_vfs_write(struct ksmbd_work *w
+ 	int err = 0;
  
- 	error = 0;
- done:
--	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
- 	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 	return error;
- 
-@@ -637,6 +637,7 @@ out_err:
- 	loop_global_unlock(lo, is_loop);
- out_putf:
- 	fput(file);
-+	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
- 	goto done;
- }
- 
+ 	if (work->conn->connection_type) {
+-		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE))) {
++		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE)) ||
++		    S_ISDIR(file_inode(fp->filp)->i_mode)) {
+ 			pr_err("no right to write(%pD)\n", fp->filp);
+ 			err = -EACCES;
+ 			goto out;
 
 
 
