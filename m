@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-136393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A840AA99413
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23B2A993E7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:05:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8239D1884C6F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:47:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC81C1B81EB3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592AA28B4FA;
-	Wed, 23 Apr 2025 15:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C79B2C3741;
+	Wed, 23 Apr 2025 15:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTC/HmN9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="biXvtI1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FFA28A415;
-	Wed, 23 Apr 2025 15:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474E92BF3C9;
+	Wed, 23 Apr 2025 15:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422428; cv=none; b=YnEX0LTuOMLlgwnVfMLev+xtQs3vVHKnPdsR5v17IqZRvnkre9t7gDwKolnfBxtGxVZn+snRIlG1bBmrXwO0uL1n9RBXK/0YKs7VcLZul5AA7SXAFp5bO3lGBTAfgh0J0Zj1I7E5BIPy+2kz5sq15C6oH/qHMvImWWh4dr+sTZ4=
+	t=1745422512; cv=none; b=DEsZm9PrGayIhJ+yTNOop3p7GfNZJn5Pqxfw6eZtpA89cNkDEFq371XUNG+kz08WQAPsd3Fq+JB3wV1axlVuzW3iJGM0L//bEfNh4ezvdYnTVWzH3aqqf7pejeP+rCiN7ha6T3xswxi+kqoWCQ/Nk42EYcGOlnr+EWVAC4jsZsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422428; c=relaxed/simple;
-	bh=/1f0iCgRqlfcL8ka7PbIUvOnFOkFBUVVEIciuh1uC2s=;
+	s=arc-20240116; t=1745422512; c=relaxed/simple;
+	bh=YeMR0XwkWsLUwMqv885RtcXmcFx15BdPPSR+Ltxii1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATHCxE8cbpOI6TtlXRGWYSebBSxzav2AKcQlA+zVB/KWm7Ft7b1M3jtof5kvgTLNXcQwn4unU6uUj0nx6SnaUOivyzxDMXk2Ol4Rt9VvpHZgp5IwRaffH5/uoPLcOAHznsKw/2RpsvPYLnmoGfLqxxA1HnaPeAcf4brmwTlrEl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTC/HmN9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E74EC4CEE2;
-	Wed, 23 Apr 2025 15:33:47 +0000 (UTC)
+	 MIME-Version; b=s2BLAwjRCFiUY2J7kV4WIbRH6NU4fTQGM2FUj376ZFhFJvNmn4yj330Nea1rFlssb0YJury0KTf1Yzn/jtyXX9dqrRtUtoljxcS7f9osjZyIAFqZgMLFAHeCwTwaBxbRXEWIDFCnOHThtei25BrFtSFVY+r//n3xeqwGt92EKO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=biXvtI1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64BF2C4CEE2;
+	Wed, 23 Apr 2025 15:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422428;
-	bh=/1f0iCgRqlfcL8ka7PbIUvOnFOkFBUVVEIciuh1uC2s=;
+	s=korg; t=1745422511;
+	bh=YeMR0XwkWsLUwMqv885RtcXmcFx15BdPPSR+Ltxii1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTC/HmN9ra8DT11DWyH9tVQEv0jaTS8gy6N5Ak/heN2k1tw4Ghh/BhqaivscdUF52
-	 C+ItkXwoChVM7m8i3ejw5Eekgcwe1iP0w3YVp3eBWGJgYoKNwnkqHfb6ke2ak0XoFX
-	 xTgvAxJua0asOB79OoDZzIsSomkR71MQsFmXoqIs=
+	b=biXvtI1Yli5TPgtiBMYUwLTANiMeqVGyGpJJxHgCuyHEEQdSHug4BFhZ8fG/DsvH+
+	 heQ8UcspdPpzfxnJc/6DQ17kSpwOeDYWaESc+bZOQwzVW/Sl72ubVIuwwifgW9OiYB
+	 IfoLzdVObV2XySSJaf/AHTOkiQq3G1b4hSZHoKjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	stable <stable@kernel.org>,
+	GONG Ruiqi <gongruiqi1@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Bin Lan <bin.lan.cn@windriver.com>,
 	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 6.1 284/291] blk-iocost: do not WARN if iocg was already offlined
-Date: Wed, 23 Apr 2025 16:44:33 +0200
-Message-ID: <20250423142636.026790100@linuxfoundation.org>
+Subject: [PATCH 6.6 378/393] usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
+Date: Wed, 23 Apr 2025 16:44:34 +0200
+Message-ID: <20250423142658.944800819@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: GONG Ruiqi <gongruiqi1@huawei.com>
 
-commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 upstream.
+commit b0e525d7a22ea350e75e2aec22e47fcfafa4cacd upstream.
 
-In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
-is intended to confirm iocg is active when it has debt. However, warn
-can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
-is run at that time:
+The error handling for the case `con_index == 0` should involve dropping
+the pm usage counter, as ucsi_ccg_sync_control() gets it at the
+beginning. Fix it.
 
-  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
-  Call trace:
-  iocg_pay_debt+0x14c/0x190
-  iocg_kick_waitq+0x438/0x4c0
-  iocg_waitq_timer_fn+0xd8/0x130
-  __run_hrtimer+0x144/0x45c
-  __hrtimer_run_queues+0x16c/0x244
-  hrtimer_interrupt+0x2cc/0x7b0
-
-The warn in this situation is meaningless. Since this iocg is being
-removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
-is canceled after removing 'active_list' in ioc_pd_free(), which ensures
-iocg is freed after iocg_waitq_timer_fn() returns.
-
-Therefore, add the check if iocg was already offlined to avoid warn
-when removing a blkcg or disk.
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable <stable@kernel.org>
+Fixes: e56aac6e5a25 ("usb: typec: fix potential array underflow in ucsi_ccg_sync_control()")
+Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250107015750.2778646-1-gongruiqi1@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Minor context change fixed]
 Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
 Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-iocost.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1430,8 +1430,11 @@ static void iocg_pay_debt(struct ioc_gq
- 	lockdep_assert_held(&iocg->ioc->lock);
- 	lockdep_assert_held(&iocg->waitq.lock);
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -587,7 +587,7 @@ static int ucsi_ccg_sync_write(struct uc
+ 				    UCSI_CMD_CONNECTOR_MASK;
+ 			if (con_index == 0) {
+ 				ret = -EINVAL;
+-				goto unlock;
++				goto err_put;
+ 			}
+ 			con = &uc->ucsi->connector[con_index - 1];
+ 			ucsi_ccg_update_set_new_cam_cmd(uc, con, (u64 *)val);
+@@ -603,8 +603,8 @@ static int ucsi_ccg_sync_write(struct uc
  
--	/* make sure that nobody messed with @iocg */
--	WARN_ON_ONCE(list_empty(&iocg->active_list));
-+	/*
-+	 * make sure that nobody messed with @iocg. Check iocg->pd.online
-+	 * to avoid warn when removing blkcg or disk.
-+	 */
-+	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
- 	WARN_ON_ONCE(iocg->inuse > 1);
+ err_clear_bit:
+ 	clear_bit(DEV_CMD_PENDING, &uc->flags);
++err_put:
+ 	pm_runtime_put_sync(uc->dev);
+-unlock:
+ 	mutex_unlock(&uc->lock);
  
- 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
+ 	return ret;
 
 
 
