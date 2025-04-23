@@ -1,122 +1,111 @@
-Return-Path: <stable+bounces-135217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54843A97BD8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 02:54:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46CFA97BE3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 03:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 643AB189D899
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 00:54:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA8E43BE109
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 01:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5112571D6;
-	Wed, 23 Apr 2025 00:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD424086A;
+	Wed, 23 Apr 2025 01:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="baiRJ6Uu"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="h9tOvoj3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m3288.qiye.163.com (mail-m3288.qiye.163.com [220.197.32.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190AC1F153A;
-	Wed, 23 Apr 2025 00:53:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEB72F41;
+	Wed, 23 Apr 2025 01:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745369635; cv=none; b=dbq8jwrpKdjwzWftwopJBtxoY3eVSpYi+ur+mkmPVIqeU0MTR2xV3BeEki2Qz6p7rhfAoYpypb+1VAg3CJWkyf5NzapEh8KCf9VgwQoBMP0vY9Pq0mBwmu2PcKEZmqkuzteCwxW9IZ7amePJhfTnm9AApJtGcY7u/SjHNZi7jJU=
+	t=1745370048; cv=none; b=L1SnvYPBFwHZIO5TMKR7Y6JR+jfXWaMi3mB07VklPwdFlrG+4YC+Lu7NYGJ93nYYk5nYd80l2b2brSZJV7sHqJcJmxP7uVXk6quSoRzHa+E8fvVT+KVYjaFq6QG2UZCpYAo8M/W529ZUfNJNOC/4ULIzqoE78elaIbRc4Nm03OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745369635; c=relaxed/simple;
-	bh=h89QorGM6hDJXrR3R1bsEMWXdIGIlO4FBik7S/lJZcY=;
-	h=Date:To:From:Subject:Message-Id; b=EtUwaF2kkET4cNpzlJbf2ACP3mYS5YoaWrc+H/7FezoGVEEtFsHPXZrYc2X2MHxRAbcHbgnONyzkACmxRqWIFbVtEr+VE38xEh68Rd3guoi+GKxcwF92DjNknL7U90MrvTi1Si+5rkepeDa3wbCQmV/+NcG3Kyk6u22nWgAxV7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=baiRJ6Uu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34665C4CEE9;
-	Wed, 23 Apr 2025 00:53:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745369634;
-	bh=h89QorGM6hDJXrR3R1bsEMWXdIGIlO4FBik7S/lJZcY=;
-	h=Date:To:From:Subject:From;
-	b=baiRJ6UuKOk++GvL65UfJKuBT3QWNBwhbFCzch83mTJzIUorp2iONaxx2BloFyAF9
-	 MMCaZfP/CInVPrVkSkYp1S0vN1fF+seXH8ptzHZLdv5zLDf3Ilyan1RUwvgbzqNf3M
-	 ugrJtDw9lAHcD+vGLjBHlbhxsMLgZjfSKoDlM2nE=
-Date: Tue, 22 Apr 2025 17:53:53 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,nathan@kernel.org,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,gechangwei@live.cn,mark.tinguely@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250423005354.34665C4CEE9@smtp.kernel.org>
+	s=arc-20240116; t=1745370048; c=relaxed/simple;
+	bh=wWF2vmfT5YKSI7GFAZGvlLniJyUBVqutiphSMk+mWe4=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ja/lTZwdKtGnS7P9csFVUnIUTjoqNlkujTK1oe1qgSBtZ/KJJckDwXTzvgeqaG4arlP0xLlMw8csRhXt723Xt0BiSVSKg7ACnaFCOlQh9dVkDq0MSh4x8HtzWyseJPdITk0VheRcDS76C1aWUNqO+HNfuJOmfK6Z9+ms7+QDlzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=h9tOvoj3; arc=none smtp.client-ip=220.197.32.88
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.129] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 12c84bfa6;
+	Wed, 23 Apr 2025 09:00:33 +0800 (GMT+08:00)
+Message-ID: <4c00fce8-f148-c222-e0c1-e932f04bead0@rock-chips.com>
+Date: Wed, 23 Apr 2025 09:00:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Cc: shawn.lin@rock-chips.com, Dragan Simic <dsimic@manjaro.org>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Rob Herring <robh@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] PCI: dw-rockchip: Fix function call sequence in
+ rockchip_pcie_phy_deinit
+To: Diederik de Haas <didi.debian@cknow.org>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Heiko Stuebner <heiko@sntech.de>
+References: <20250417142138.1377451-1-didi.debian@cknow.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <20250417142138.1377451-1-didi.debian@cknow.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGhhMSVYdH0NJTU9LT0hJQ0NWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+X-HM-Tid: 0a9660292c4d09cckunm12c84bfa6
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MxA6MQw4NjJDS0g4KRBOPgkr
+	DzoKCQ1VSlVKTE9OSExLS0hPTExOVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
+	C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUlITUg3Bg++
+DKIM-Signature:a=rsa-sha256;
+	b=h9tOvoj3hPT5WazN6NPH16KOTyYFb7W7Mubm3RWn2bfWOK9GADUVp15NwbrISzsiN+Ip3ufHh/zwQ9bg/lWixhRSBE8+fi4aPKJ9olJJKjTihi2IQ/+CTPJ5ZK5i1glMnRlWWDqGR5hDO9PVZPupk4VWVLnyNDff0BAlxu0rAIc=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
+	bh=2QkUHWrrRsbgwVuGJvlBbxO6cfRY8uSV95tNc6tCSZw=;
+	h=date:mime-version:subject:message-id:from;
 
+在 2025/04/17 星期四 22:21, Diederik de Haas 写道:
+> The documentation for the phy_power_off() function explicitly says
+> 
+>    Must be called before phy_exit().
+> 
+> So let's follow that instruction.
 
-The patch titled
-     Subject: ocfs2: fix panic in failed foilio allocation
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
+Thanks for this fixing.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Mark Tinguely <mark.tinguely@oracle.com>
-Subject: ocfs2: fix panic in failed foilio allocation
-Date: Fri, 11 Apr 2025 11:31:24 -0500
-
-commit 7e119cff9d0a ("ocfs2: convert w_pages to w_folios") and commit
-9a5e08652dc4b ("ocfs2: use an array of folios instead of an array of
-pages") save -ENOMEM in the folio array upon allocation failure and call
-the folio array free code.
-
-The folio array free code expects either valid folio pointers or NULL. 
-Finding the -ENOMEM will result in a panic.  Fix by NULLing the error
-folio entry.
-
-Link: https://lkml.kernel.org/r/c879a52b-835c-4fa0-902b-8b2e9196dcbd@oracle.com
-Fixes: 7e119cff9d0a ("ocfs2: convert w_pages to w_folios")
-Fixes: 9a5e08652dc4b ("ocfs2: use an array of folios instead of an array of pages")
-Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/alloc.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/fs/ocfs2/alloc.c~v2-ocfs2-fix-panic-in-failed-foilio-allocation
-+++ a/fs/ocfs2/alloc.c
-@@ -6918,6 +6918,7 @@ static int ocfs2_grab_folios(struct inod
- 		if (IS_ERR(folios[numfolios])) {
- 			ret = PTR_ERR(folios[numfolios]);
- 			mlog_errno(ret);
-+			folios[numfolios] = NULL;
- 			goto out;
- 		}
- 
-_
-
-Patches currently in -mm which might be from mark.tinguely@oracle.com are
-
-v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
-
+> 
+> Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+> Cc: stable@vger.kernel.org	# v5.15+
+> Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+> ---
+>   drivers/pci/controller/dwc/pcie-dw-rockchip.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pci/controller/dwc/pcie-dw-rockchip.c b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> index c624b7ebd118..4f92639650e3 100644
+> --- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> +++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+> @@ -410,8 +410,8 @@ static int rockchip_pcie_phy_init(struct rockchip_pcie *rockchip)
+>   
+>   static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
+>   {
+> -	phy_exit(rockchip->phy);
+>   	phy_power_off(rockchip->phy);
+> +	phy_exit(rockchip->phy);
+>   }
+>   
+>   static const struct dw_pcie_ops dw_pcie_ops = {
 
