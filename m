@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-136279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA3A9923B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D119BA98FC1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:13:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09FC07AD474
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6543944368E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053FF280A5B;
-	Wed, 23 Apr 2025 15:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672B627F4D9;
+	Wed, 23 Apr 2025 15:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie8zzkCw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cisOFNJX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D41279906;
-	Wed, 23 Apr 2025 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2462028C5D2;
+	Wed, 23 Apr 2025 15:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422128; cv=none; b=f1eB1ggh0/pDb41gHs5CyZRvOuqOpYx23FTqdAKY82NAe1YCthAfCCGfDJr5vXrb5V/4I1RJl1HddBV/YChBpajCfAAWDcwdkXA9/nOWZOkLCoDRKUDBu723nzc5TRybA7AYX2ZNh/T7Ni/D4g4mkSN/z5Y5riphtEJ+1JJWKRA=
+	t=1745420709; cv=none; b=tMTv7DxXEI6XiNPxE5vRNUEuEB+qTs083GUePvxhNqVJIPZfVZlSaDhanukgc4EC7RsOeOHzxQneCn1ZRLUA4tQluGztQ0QlSpvnqTXiKjnoz/3MpU+cKOQmTaIVBWEzcqYbebtcx4M5KIF4FTFceGalHM1vzDvx+vu7TuzpThE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422128; c=relaxed/simple;
-	bh=ePAOj0PPFgq2hUQiMLGULG5LSAd8aGOSrDnonvEIPZY=;
+	s=arc-20240116; t=1745420709; c=relaxed/simple;
+	bh=RbMABq4ZzxISwfXuOTtPD1lG5iafqfC/2vXPEn1VQh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7Nv1WFcBu4Xn8/5iF9rycoC97aPSzCuJs5A7pMJgy5dTliZCQRmQc9ChOJBieeWTp7hwBLekAcMs5nF6s2AKLn0C0egjnuymVDx6t7Op6t3oSq4LQiyTXB0NE/VTlyiBBu0gXt4lT1d9djXC4LHreMT8F0POQpkc0KNrZj+/Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ie8zzkCw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4D9C4CEE2;
-	Wed, 23 Apr 2025 15:28:47 +0000 (UTC)
+	 MIME-Version; b=JyccIVwgZeSL2Vo97VjXW70DOifmwgE/CkptRlak6KPI80XmJ3VsjllTq9RKJuRk9FO1Amg5miXLrWXJvT3IPQsEat7Uc3ITz/tMFmWtOmevuhozy2gqXmRuhAkbzljSOh0RQRrxddncsDWnTvz57CFLpQrUX8iH2TKvkfBEkx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cisOFNJX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DEEC4CEE2;
+	Wed, 23 Apr 2025 15:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422128;
-	bh=ePAOj0PPFgq2hUQiMLGULG5LSAd8aGOSrDnonvEIPZY=;
+	s=korg; t=1745420708;
+	bh=RbMABq4ZzxISwfXuOTtPD1lG5iafqfC/2vXPEn1VQh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ie8zzkCwfVb5Vpf3ZqH/iFB3rgh3wRF/Tf8FFn1a+n8kw1Ozze5rCTKCoFrTRcfaw
-	 GCCAaRwwgp96mKqrTnCXLyeHMetXprMwfxQpWHoYLnF0lcYuAerd9rudIIBE94slig
-	 Rl4aF1/WI5jGATHYj8cXg6MH56bwRLzd3ElkiY9g=
+	b=cisOFNJXGFVsziMsgsRVDpWs9sc9ejrxevQteW1UWaoqNn0uWWkgTkthzD17apUje
+	 iBx+TjfL0tdo+Z8vm5KWnORmiFgGPJXQz/cunN/ugoBdn10Q6Thsr5pBY3CoCAJ5/o
+	 5zfSTy44dl1D0mn2wNnJOuanqxRUGL9jdio7DfXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/393] net: bridge: switchdev: do not notify new brentries as changed
+Subject: [PATCH 6.14 115/241] drm/msm/dpu: drop rogue intr_tear_rd_ptr values
 Date: Wed, 23 Apr 2025 16:42:59 +0200
-Message-ID: <20250423142655.034475454@linuxfoundation.org>
+Message-ID: <20250423142625.273536888@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +62,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit eb25de13bd9cf025413a04f25e715d0e99847e30 ]
+[ Upstream commit ddfa00afae800b3dea02fa36f3f4012a8379ae58 ]
 
-When adding a bridge vlan that is pvid or untagged after the vlan has
-already been added to any other switchdev backed port, the vlan change
-will be propagated as changed, since the flags change.
+The commit 5a9d50150c2c ("drm/msm/dpu: shift IRQ indices by 1") shifted
+IRQ indices by 1, making 'NO_IRQ' to be 0 rather than -1 (and allowing
+to skip the definition if the IRQ is not present).
+Several platform files were sketched before that commit, but got applied
+afterwards. As such, they inherited historical (and currently incorrect)
+setting of .intr_tear_rd_ptr = -1 for 'NO_IRQ' value.
 
-This causes the vlan to not be added to the hardware for DSA switches,
-since the DSA handler ignores any vlans for the CPU or DSA ports that
-are changed.
+Drop that setting for all the affected platforms.
 
-E.g. the following order of operations would work:
-
-$ ip link add swbridge type bridge vlan_filtering 1 vlan_default_pvid 0
-$ ip link set lan1 master swbridge
-$ bridge vlan add dev swbridge vid 1 pvid untagged self
-$ bridge vlan add dev lan1 vid 1 pvid untagged
-
-but this order would break:
-
-$ ip link add swbridge type bridge vlan_filtering 1 vlan_default_pvid 0
-$ ip link set lan1 master swbridge
-$ bridge vlan add dev lan1 vid 1 pvid untagged
-$ bridge vlan add dev swbridge vid 1 pvid untagged self
-
-Additionally, the vlan on the bridge itself would become undeletable:
-
-$ bridge vlan
-port              vlan-id
-lan1              1 PVID Egress Untagged
-swbridge          1 PVID Egress Untagged
-$ bridge vlan del dev swbridge vid 1 self
-$ bridge vlan
-port              vlan-id
-lan1              1 PVID Egress Untagged
-swbridge          1 Egress Untagged
-
-since the vlan was never added to DSA's vlan list, so deleting it will
-cause an error, causing the bridge code to not remove it.
-
-Fix this by checking if flags changed only for vlans that are already
-brentry and pass changed as false for those that become brentries, as
-these are a new vlan (member) from the switchdev point of view.
-
-Since *changed is set to true for becomes_brentry = true regardless of
-would_change's value, this will not change any rtnetlink notification
-delivery, just the value passed on to switchdev in vlan->changed.
-
-Fixes: 8d23a54f5bee ("net: bridge: switchdev: differentiate new VLANs from changed ones")
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250414200020.192715-1-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 62af6e1cb596 ("drm/msm/dpu: Add support for MSM8917")
+Fixes: c079680bb0fa ("drm/msm/dpu: Add support for MSM8937")
+Fixes: 7a6109ce1c2c ("drm/msm/dpu: Add support for MSM8953")
+Fixes: daf9a92daeb8 ("drm/msm/dpu: Add support for MSM8996")
+Fixes: 7204df5e7e68 ("drm/msm/dpu: add support for SDM660 and SDM630 platforms")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/647486/
+Link: https://lore.kernel.org/r/20250408-dpu-drop-intr-rd-ptr-v1-1-eeac337d88f8@oss.qualcomm.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_vlan.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h | 2 --
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h | 1 -
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h | 3 ---
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h  | 4 ----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h   | 3 ---
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h   | 2 --
+ 6 files changed, 15 deletions(-)
 
-diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-index be714b4d7b430..a1c22eab71ffe 100644
---- a/net/bridge/br_vlan.c
-+++ b/net/bridge/br_vlan.c
-@@ -715,8 +715,8 @@ static int br_vlan_add_existing(struct net_bridge *br,
- 				u16 flags, bool *changed,
- 				struct netlink_ext_ack *extack)
- {
--	bool would_change = __vlan_flags_would_change(vlan, flags);
- 	bool becomes_brentry = false;
-+	bool would_change = false;
- 	int err;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h
+index ab3dfb0b374ea..cb89d8cf300f9 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_14_msm8937.h
+@@ -132,7 +132,6 @@ static const struct dpu_intf_cfg msm8937_intf[] = {
+ 		.prog_fetch_lines_worst_case = 14,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_2", .id = INTF_2,
+ 		.base = 0x6b000, .len = 0x268,
+@@ -141,7 +140,6 @@ static const struct dpu_intf_cfg msm8937_intf[] = {
+ 		.prog_fetch_lines_worst_case = 14,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
+-		.intr_tear_rd_ptr = -1,
+ 	},
+ };
  
- 	if (!br_vlan_is_brentry(vlan)) {
-@@ -725,6 +725,8 @@ static int br_vlan_add_existing(struct net_bridge *br,
- 			return -EINVAL;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
+index 6bdaecca67614..b2a38e62d3a93 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_15_msm8917.h
+@@ -118,7 +118,6 @@ static const struct dpu_intf_cfg msm8917_intf[] = {
+ 		.prog_fetch_lines_worst_case = 14,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
+-		.intr_tear_rd_ptr = -1,
+ 	},
+ };
  
- 		becomes_brentry = true;
-+	} else {
-+		would_change = __vlan_flags_would_change(vlan, flags);
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
+index 14f36ea6ad0eb..06859984d2a5c 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_16_msm8953.h
+@@ -131,7 +131,6 @@ static const struct dpu_intf_cfg msm8953_intf[] = {
+ 		.prog_fetch_lines_worst_case = 14,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_1", .id = INTF_1,
+ 		.base = 0x6a800, .len = 0x268,
+@@ -140,7 +139,6 @@ static const struct dpu_intf_cfg msm8953_intf[] = {
+ 		.prog_fetch_lines_worst_case = 14,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_2", .id = INTF_2,
+ 		.base = 0x6b000, .len = 0x268,
+@@ -149,7 +147,6 @@ static const struct dpu_intf_cfg msm8953_intf[] = {
+ 		.prog_fetch_lines_worst_case = 14,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
+-		.intr_tear_rd_ptr = -1,
+ 	},
+ };
  
- 	/* Master VLANs that aren't brentries weren't notified before,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h
+index 491f6f5827d15..153e275513c31 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_1_7_msm8996.h
+@@ -241,7 +241,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
+ 		.prog_fetch_lines_worst_case = 25,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_1", .id = INTF_1,
+ 		.base = 0x6a800, .len = 0x268,
+@@ -250,7 +249,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
+ 		.prog_fetch_lines_worst_case = 25,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_2", .id = INTF_2,
+ 		.base = 0x6b000, .len = 0x268,
+@@ -259,7 +257,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
+ 		.prog_fetch_lines_worst_case = 25,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_3", .id = INTF_3,
+ 		.base = 0x6b800, .len = 0x268,
+@@ -267,7 +264,6 @@ static const struct dpu_intf_cfg msm8996_intf[] = {
+ 		.prog_fetch_lines_worst_case = 25,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 30),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 31),
+-		.intr_tear_rd_ptr = -1,
+ 	},
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h
+index 424815e7fb7dd..f247625ed7e5b 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_2_sdm660.h
+@@ -202,7 +202,6 @@ static const struct dpu_intf_cfg sdm660_intf[] = {
+ 		.prog_fetch_lines_worst_case = 21,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_1", .id = INTF_1,
+ 		.base = 0x6a800, .len = 0x280,
+@@ -211,7 +210,6 @@ static const struct dpu_intf_cfg sdm660_intf[] = {
+ 		.prog_fetch_lines_worst_case = 21,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_2", .id = INTF_2,
+ 		.base = 0x6b000, .len = 0x280,
+@@ -220,7 +218,6 @@ static const struct dpu_intf_cfg sdm660_intf[] = {
+ 		.prog_fetch_lines_worst_case = 21,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 28),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 29),
+-		.intr_tear_rd_ptr = -1,
+ 	},
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h
+index df01227fc3646..5ddd2b3c0cd2e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_3_sdm630.h
+@@ -147,7 +147,6 @@ static const struct dpu_intf_cfg sdm630_intf[] = {
+ 		.prog_fetch_lines_worst_case = 21,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 24),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 25),
+-		.intr_tear_rd_ptr = -1,
+ 	}, {
+ 		.name = "intf_1", .id = INTF_1,
+ 		.base = 0x6a800, .len = 0x280,
+@@ -156,7 +155,6 @@ static const struct dpu_intf_cfg sdm630_intf[] = {
+ 		.prog_fetch_lines_worst_case = 21,
+ 		.intr_underrun = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 26),
+ 		.intr_vsync = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 27),
+-		.intr_tear_rd_ptr = -1,
+ 	},
+ };
+ 
 -- 
 2.39.5
 
