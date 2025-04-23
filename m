@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-136298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D34CA993A0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55558A99313
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5A513BBB1D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C87E1BA5527
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513C728E618;
-	Wed, 23 Apr 2025 15:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A8426A08C;
+	Wed, 23 Apr 2025 15:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6uDJbb7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrQj9t9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E43828152D;
-	Wed, 23 Apr 2025 15:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F2A28F50A;
+	Wed, 23 Apr 2025 15:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422178; cv=none; b=AHBr6IFky3MSp3vL1aptkWwkb4SC32n799TO1WCwYGN962wCffqjse+iiRhXaemSmKg3ALkBPGcI8ienoE09CIZ2/Codc54syZT/m2ex0A8Zjs6Ztvp/3rXG6WHbPv2XQgD77r+AYLl+Dpw3TaBomKohAc1t7xNpKfkHWYQz+LM=
+	t=1745422230; cv=none; b=p+IzhZ6RWIYSDVTtyaySUN3VZOxTtRbAKPPHC5Wfh4pGuNIyIbFZn35t4fdoqeInMnOlMR1R5HBaAQIKvNWY4sQAu5BBYZ7dWgcCs/G51lHDEdUV4iR8bMuGSEx5t01DPhVYc18wABTETV1gFTZeG8AK+LhVFVjGBo4TlZAqZHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422178; c=relaxed/simple;
-	bh=LPqZ5Q7hUUJV0bBkrP8H0xLU5zpoCqI/YJXzeaFe1Zg=;
+	s=arc-20240116; t=1745422230; c=relaxed/simple;
+	bh=Kss84yfNbzjeh8Z2CKGhsSRdYXGTCR7WGWYKQS+h33o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6NXVpp5qbvPyc6pxuMZhQCCigGZ1c1zHgSYjm/fFrUTdIlWQVd/SoaX2G7WR59ANMsbtQtN2NgxR0WSupw4WsJxjLO9Umixc+Hyh90MPxA30yXzC9ePxltqqmelLZcrDaQsgIWiAn6YFLSmn1cwvJedz3CrNLB4y5opBVXQXT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6uDJbb7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89DF2C4CEE3;
-	Wed, 23 Apr 2025 15:29:37 +0000 (UTC)
+	 MIME-Version; b=PgkgEOGSwgZfY1uNp3wPt70SsVz1XKaKTFDsMJzJ5hvp++ss0LMB5DH6MNzK5CyLOX0l97QHzM/xJWR3ErElcKcv6ih28bckDzjzvbiZehUjjq9dJVwqo9Tytm3/J1X2QyWIctqVlkfEqNw3qK9aBuJMHrYiQ9IJUamxIePpsxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrQj9t9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6D9C4CEE8;
+	Wed, 23 Apr 2025 15:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422177;
-	bh=LPqZ5Q7hUUJV0bBkrP8H0xLU5zpoCqI/YJXzeaFe1Zg=;
+	s=korg; t=1745422230;
+	bh=Kss84yfNbzjeh8Z2CKGhsSRdYXGTCR7WGWYKQS+h33o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d6uDJbb7yZakaLgQCR20ydGTF2POEQFW1HJv9g50PvkvjI5yF64KlTp/+mAeagEJI
-	 Xvpv0qKgyGGUogGEVE6/Bv/GrVtET5igLQO+Xcx1brzvxzCeuYMbzbtajFvliZYXDP
-	 gKylFm3zYN1I5axo5WdkYwRGCVDYKizcepszwZok=
+	b=KrQj9t9PJtD5sD++/3CLNNkPG+KhNJCbXq24tnarcVJ20Z+l6PRwPaoPse+9PwIIk
+	 en3TYC/9Zuzrc6VlP8SjsvI5Xi/1wkaHRdY1jSpOwfgYS0qjhbtF7MJaP40zhDL/mz
+	 4P8XquqFtENe/D1qMy/NXNVYKE8Xr3/IaSJj2v3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Denis Arefev <arefev@swemel.ru>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 237/291] drm/amd/pm/powerplay/hwmgr/smu7_thermal: Prevent division by zero
-Date: Wed, 23 Apr 2025 16:43:46 +0200
-Message-ID: <20250423142634.100748840@linuxfoundation.org>
+Subject: [PATCH 6.1 238/291] drm/amd/pm/swsmu/smu13/smu_v13_0: Prevent division by zero
+Date: Wed, 23 Apr 2025 16:43:47 +0200
+Message-ID: <20250423142634.141814951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -67,37 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Denis Arefev <arefev@swemel.ru>
 
-commit 7c246a05df51c52fe0852ce56ba10c41e6ed1f39 upstream.
+commit f23e9116ebb71b63fe9cec0dcac792aa9af30b0c upstream.
 
 The user can set any speed value.
 If speed is greater than UINT_MAX/8, division by zero is possible.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
+Fixes: c05d1c401572 ("drm/amd/swsmu: add aldebaran smu13 ip support (v3)")
 Signed-off-by: Denis Arefev <arefev@swemel.ru>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
-@@ -267,10 +267,10 @@ int smu7_fan_ctrl_set_fan_speed_rpm(stru
- 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
- 			(hwmgr->thermal_controller.fanInfo.
- 			ucTachometerPulsesPerRevolution == 0) ||
--			speed == 0 ||
-+			(!speed || speed > UINT_MAX/8) ||
- 			(speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
- 			(speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
--		return 0;
-+		return -EINVAL;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -1265,7 +1265,7 @@ int smu_v13_0_set_fan_speed_rpm(struct s
+ 	uint32_t tach_period;
+ 	int ret;
  
- 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
- 		smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
+-	if (!speed)
++	if (!speed || speed > UINT_MAX/8)
+ 		return -EINVAL;
+ 
+ 	ret = smu_v13_0_auto_fan_control(smu, 0);
 
 
 
