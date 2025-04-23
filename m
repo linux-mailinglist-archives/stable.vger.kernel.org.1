@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61290A98ED7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1781AA98DF1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC0954616F6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 752F07AE373
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E8E27FD7A;
-	Wed, 23 Apr 2025 14:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C414263F54;
+	Wed, 23 Apr 2025 14:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BI91Q3PZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SCIttDzP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E0027FD73;
-	Wed, 23 Apr 2025 14:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF3EC8EB;
+	Wed, 23 Apr 2025 14:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420296; cv=none; b=E4kcue/WJpO5zzQQsYS8qls7y+ZTHEKdv3t6h5iNY+6vjA73jrD5LSgOx/5U1zYuzY+9791/P5Bvsl6LIw5MR9Pg69xWrrzubYOEBQD8EERcPPgAgXbthQi/1N781frRkXibBuCw2xj4xr1AymRDjBxxdwzM57hialLkXgLI8mI=
+	t=1745419847; cv=none; b=mqVNEO4g+6jsgGfNA5q7bo3x4oXj1AL2bbWiJz2uoslP89YFTjTnvcTPZri+Ax3ynRAFR909h7Sib087LmiLIdWuqJU0YHj0CqnqKiQHf/AUPFojxxuu3Ur0PIzvgErWHkl4D5jk9kBM+J50/j7joGdZh/wo41p5S6qfhonbHSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420296; c=relaxed/simple;
-	bh=nkF4EZdgMGX6BL1/0ZmD5hf9kxAuzc42KFA51akdAbk=;
+	s=arc-20240116; t=1745419847; c=relaxed/simple;
+	bh=pyXNyFGT5klYJceIG7XN6v5KVHPPeDYHzqs3XmqXnzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUO3NRd0hn7k5/vwcdMv9ag1LLE5lsh0ugtuWbslEXFR8LAjNJ8XN4o4vsJt28MxNZ/kB7PntQgSuvcMkx/NzSU4OPbzYfNKpQjSAEqrFGQfwg/BicvQXSSOFVvTULQBqIzdYH7sTEx7VNc0ErG+lhUFJbBlT0mi7WtucY6qN+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BI91Q3PZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A433C4CEE2;
-	Wed, 23 Apr 2025 14:58:14 +0000 (UTC)
+	 MIME-Version; b=hxnJKsIhBaPtbZYZPMCSkKuxXQ6/97d3kKqTdkWRotDob1cvpU/J7JloSfsc9Vs7UMduShM0rbgV4h+3PN5LthBguDCuTJvmQe2Inm7Rh7XWdVrQmd97KRGFrIBWEPt4CyuLAzvi3f3tWG9Mg6ghIOJZ7ZXRBswAXOpLffNEM1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SCIttDzP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDEEC4CEE2;
+	Wed, 23 Apr 2025 14:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420294;
-	bh=nkF4EZdgMGX6BL1/0ZmD5hf9kxAuzc42KFA51akdAbk=;
+	s=korg; t=1745419847;
+	bh=pyXNyFGT5klYJceIG7XN6v5KVHPPeDYHzqs3XmqXnzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BI91Q3PZ5MBfAwLBD95i9REPMqYDJM0u0A6WTL1I0KJXJq7bbhbR62Je+xJjuENBR
-	 JdlYuypr4OiCJ4V+8fbIFECpdRchQbLX1KOvt3IvwGn1IiqVbl9JfdG6gEB6M/oBwk
-	 0vCEsT8nE1bFnmd/Ukeu6h5lEqtnxVmB3d9+/SkE=
+	b=SCIttDzPpxVA00VftavDFf9qsYWCQJtk6kjWgMUYrUEeVDMCN0mtcfqLjCV7affFh
+	 Q6S2pky2PtO8W5Zr18NZ4jXsMTq3EocXrdTMjOl/PqkZh49NaYmk8T2IyiqHdS1iHJ
+	 6mzJoIKEvVFGEpjgzM6y894cIjbBPzqoFPsNvUcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Maimon <maimon.sagi@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 079/241] ptp: ocp: fix start time alignment in ptp_ocp_signal_set
+Subject: [PATCH 6.12 071/223] net: ti: icss-iep: Fix possible NULL pointer dereference for perout request
 Date: Wed, 23 Apr 2025 16:42:23 +0200
-Message-ID: <20250423142623.815667425@linuxfoundation.org>
+Message-ID: <20250423142620.022949275@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +64,194 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Maimon <maimon.sagi@gmail.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit 2a5970d5aaff8f3e33ce3bfaa403ae88c40de40d ]
+[ Upstream commit 7349c9e9979333abfce42da5f9025598083b59c9 ]
 
-In ptp_ocp_signal_set, the start time for periodic signals is not
-aligned to the next period boundary. The current code rounds up the
-start time and divides by the period but fails to multiply back by
-the period, causing misaligned signal starts. Fix this by multiplying
-the rounded-up value by the period to ensure the start time is the
-closest next period.
+The ICSS IEP driver tracks perout and pps enable state with flags.
+Currently when disabling pps and perout signals during icss_iep_exit(),
+results in NULL pointer dereference for perout.
 
-Fixes: 4bd46bb037f8e ("ptp: ocp: Use DIV64_U64_ROUND_UP for rounding.")
-Signed-off-by: Sagi Maimon <maimon.sagi@gmail.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250415053131.129413-1-maimon.sagi@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix the null pointer dereference issue, the icss_iep_perout_enable_hw
+function can be modified to directly clear the IEP CMP registers when
+disabling PPS or PEROUT, without referencing the ptp_perout_request
+structure, as its contents are irrelevant in this case.
+
+Fixes: 9b115361248d ("net: ti: icssg-prueth: Fix clearing of IEP_CMP_CFG registers during iep_init")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/all/7b1c7c36-363a-4085-b26c-4f210bee1df6@stanley.mountain/
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250415090543.717991-4-m-malladi@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_ocp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 121 +++++++++++------------
+ 1 file changed, 58 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
-index 4a87af0980d69..4b7344e1816e4 100644
---- a/drivers/ptp/ptp_ocp.c
-+++ b/drivers/ptp/ptp_ocp.c
-@@ -2067,6 +2067,7 @@ ptp_ocp_signal_set(struct ptp_ocp *bp, int gen, struct ptp_ocp_signal *s)
- 	if (!s->start) {
- 		/* roundup() does not work on 32-bit systems */
- 		s->start = DIV64_U64_ROUND_UP(start_ns, s->period);
-+		s->start *= s->period;
- 		s->start = ktime_add(s->start, s->phase);
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index b4a34c57b7b48..2a1c43316f462 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -412,6 +412,22 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 	int ret;
+ 	u64 cmp;
+ 
++	if (!on) {
++		/* Disable CMP 1 */
++		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
++				   IEP_CMP_CFG_CMP_EN(1), 0);
++
++		/* clear CMP regs */
++		regmap_write(iep->map, ICSS_IEP_CMP1_REG0, 0);
++		if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
++			regmap_write(iep->map, ICSS_IEP_CMP1_REG1, 0);
++
++		/* Disable sync */
++		regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0);
++
++		return 0;
++	}
++
+ 	/* Calculate width of the signal for PPS/PEROUT handling */
+ 	ts.tv_sec = req->on.sec;
+ 	ts.tv_nsec = req->on.nsec;
+@@ -430,64 +446,39 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 		if (ret)
+ 			return ret;
+ 
+-		if (on) {
+-			/* Configure CMP */
+-			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
+-			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+-				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
+-			/* Configure SYNC, based on req on width */
+-			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+-				     div_u64(ns_width, iep->def_inc));
+-			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
+-			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
+-				     div_u64(ns_start, iep->def_inc));
+-			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
+-			/* Enable CMP 1 */
+-			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+-					   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
+-		} else {
+-			/* Disable CMP 1 */
+-			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+-					   IEP_CMP_CFG_CMP_EN(1), 0);
+-
+-			/* clear regs */
+-			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, 0);
+-			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+-				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, 0);
+-		}
++		/* Configure CMP */
++		regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
++		if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
++			regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
++		/* Configure SYNC, based on req on width */
++		regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
++			     div_u64(ns_width, iep->def_inc));
++		regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
++		regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++			     div_u64(ns_start, iep->def_inc));
++		regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
++		/* Enable CMP 1 */
++		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
++				   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
+ 	} else {
+-		if (on) {
+-			u64 start_ns;
+-
+-			iep->period = ((u64)req->period.sec * NSEC_PER_SEC) +
+-				      req->period.nsec;
+-			start_ns = ((u64)req->period.sec * NSEC_PER_SEC)
+-				   + req->period.nsec;
+-			icss_iep_update_to_next_boundary(iep, start_ns);
+-
+-			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+-				     div_u64(ns_width, iep->def_inc));
+-			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
+-				     div_u64(ns_start, iep->def_inc));
+-			/* Enable Sync in single shot mode  */
+-			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
+-				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
+-			/* Enable CMP 1 */
+-			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+-					   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
+-		} else {
+-			/* Disable CMP 1 */
+-			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+-					   IEP_CMP_CFG_CMP_EN(1), 0);
+-
+-			/* clear CMP regs */
+-			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, 0);
+-			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+-				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, 0);
+-
+-			/* Disable sync */
+-			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0);
+-		}
++		u64 start_ns;
++
++		iep->period = ((u64)req->period.sec * NSEC_PER_SEC) +
++				req->period.nsec;
++		start_ns = ((u64)req->period.sec * NSEC_PER_SEC)
++				+ req->period.nsec;
++		icss_iep_update_to_next_boundary(iep, start_ns);
++
++		regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
++			     div_u64(ns_width, iep->def_inc));
++		regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++			     div_u64(ns_start, iep->def_inc));
++		/* Enable Sync in single shot mode  */
++		regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
++			     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
++		/* Enable CMP 1 */
++		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
++				   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
  	}
  
+ 	return 0;
+@@ -498,11 +489,21 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ {
+ 	int ret = 0;
+ 
++	if (!on)
++		goto disable;
++
+ 	/* Reject requests with unsupported flags */
+ 	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
+ 			  PTP_PEROUT_PHASE))
+ 		return -EOPNOTSUPP;
+ 
++	/* Set default "on" time (1ms) for the signal if not passed by the app */
++	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
++		req->on.sec = 0;
++		req->on.nsec = NSEC_PER_MSEC;
++	}
++
++disable:
+ 	mutex_lock(&iep->ptp_clk_mutex);
+ 
+ 	if (iep->pps_enabled) {
+@@ -513,12 +514,6 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 	if (iep->perout_enabled == !!on)
+ 		goto exit;
+ 
+-	/* Set default "on" time (1ms) for the signal if not passed by the app */
+-	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
+-		req->on.sec = 0;
+-		req->on.nsec = NSEC_PER_MSEC;
+-	}
+-
+ 	ret = icss_iep_perout_enable_hw(iep, req, on);
+ 	if (!ret)
+ 		iep->perout_enabled = !!on;
 -- 
 2.39.5
 
