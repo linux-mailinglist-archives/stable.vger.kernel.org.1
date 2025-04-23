@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB84A9923C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC39A99099
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0C21B66691
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D19261BA1D9E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88A928E618;
-	Wed, 23 Apr 2025 15:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22531294A11;
+	Wed, 23 Apr 2025 15:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0eOrXTqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwkY40EI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A404D2820BC;
-	Wed, 23 Apr 2025 15:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85C828F924;
+	Wed, 23 Apr 2025 15:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421560; cv=none; b=AroRJvGuki7rb/6rIrUAEC6QzQ7Rd0KUEtpxWlM0kR9qX6blxgdtC4TKsHkMr1iNnCkM7zrMQQu4bz/VvhrpGalFruF/6aGW5COCE+1Rd6Vnr667OQZ8PGhShgew248+ZHLNCOZY9/uFiALKpHRa3r6LXr5hkD+reC4qbznu9lA=
+	t=1745420910; cv=none; b=i7gnC+SbqsGZQUGUAMN4UCl6gZ2ERK1yLN9IRui8dBNFP2KZpbfCgwuQ4YuhalL416g9OVAtNGhI7neqSNnfjIKVIBPoFYVlOW1cLHbIE5Fsw8ho+hQ/YLUZ6H2R3YefkpLFepMCz1nospObK9aOPueF8jsQidVjkRwgov5NSBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421560; c=relaxed/simple;
-	bh=m5u7Tpv+H5nUDl4EEa68gVkNGLsExaDiRte8HEfwhyU=;
+	s=arc-20240116; t=1745420910; c=relaxed/simple;
+	bh=KyhZhE5dGqhMWH08K+wcXac2IeNyZPvM9BArz5Vsvqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6e/z7YbhDidf+z/DvEgad6k7++D7RATFvQJcCN2BcbjJy/W8cRn8S6gR2NoU+5ebvLG7Z0XLB/4bmjfzmoiYJ0TrLJJN4hsrDSG5PWsYVWLa404DUIEm7C34ffHWzKnbKJzYFOc+5EBovRSMHlJaPPJuFZLOojKK4mYzECZNuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0eOrXTqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369C7C4CEE2;
-	Wed, 23 Apr 2025 15:19:20 +0000 (UTC)
+	 MIME-Version; b=AlrHui5W/jwMTDvKxfxlaUVDPHd/0RehBXOMMgxlB9biM9wZsiiPRJprzHkMEouIcRUZsl3fWjCcRigU917Tz5wzNbYH8k0h0kk77SG7s4Qu1W3gMN5G1N/sjW5NTUCqV7kbuwcBNEc1vjQ+/rfrf1c4Wr9pVDja4+0OGJL/OpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwkY40EI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4F3C4CEE2;
+	Wed, 23 Apr 2025 15:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421560;
-	bh=m5u7Tpv+H5nUDl4EEa68gVkNGLsExaDiRte8HEfwhyU=;
+	s=korg; t=1745420910;
+	bh=KyhZhE5dGqhMWH08K+wcXac2IeNyZPvM9BArz5Vsvqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0eOrXTqX/yP5AeSChs6NZZymKRzciZ/j6HUlFiksKWCPb5kCZDNJT3LuD2/NRp6+H
-	 RDACoV93vDblnB/+Beg230FI1vDvDmlPSeamIhogrDq/9bunfQFuGFbC9syNcOL1zz
-	 ftvKALbdFuTAIyDnXgfw3qCnUYh6WbJvwb8+oOvM=
+	b=CwkY40EIzn2pcyUhLzd9MACd4k3aT6ds/Vlup9XIKI1evzqtUtQoRdDfuY9wY00lv
+	 Z+OBhXxqkPg/lzWlSu7CQbI6CLrVUqO3jG+7Kn3jmp4VfoFwPEbw0Hk51UFxHELT+I
+	 uyrgkeu9pUemMGlp/+dCwIM9+QJOIlDegYrhqdeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 181/241] drm/amd/pm: Prevent division by zero
+	Brendan King <brendan.king@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>
+Subject: [PATCH 6.12 173/223] drm/imagination: take paired job reference
 Date: Wed, 23 Apr 2025 16:44:05 +0200
-Message-ID: <20250423142627.915564516@linuxfoundation.org>
+Message-ID: <20250423142624.208735912@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Brendan King <Brendan.King@imgtec.com>
 
-commit 7d641c2b83275d3b0424127b2e0d2d0f7dd82aef upstream.
+commit 4ba2abe154ef68f9612eee9d6fbfe53a1736b064 upstream.
 
-The user can set any speed value.
-If speed is greater than UINT_MAX/8, division by zero is possible.
+For paired jobs, have the fragment job take a reference on the
+geometry job, so that the geometry job cannot be freed until
+the fragment job has finished with it.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The geometry job structure is accessed when the fragment job is being
+prepared by the GPU scheduler. Taking the reference prevents the
+geometry job being freed until the fragment job no longer requires it.
 
-Fixes: b64625a303de ("drm/amd/pm: correct the address of Arcturus fan related registers")
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes a use after free bug detected by KASAN:
+
+[  124.256386] BUG: KASAN: slab-use-after-free in pvr_queue_prepare_job+0x108/0x868 [powervr]
+[  124.264893] Read of size 1 at addr ffff0000084cb960 by task kworker/u16:4/63
+
 Cc: stable@vger.kernel.org
+Fixes: eaf01ee5ba28 ("drm/imagination: Implement job submission and scheduling")
+Signed-off-by: Brendan King <brendan.king@imgtec.com>
+Reviewed-by: Matt Coster <matt.coster@imgtec.com>
+Link: https://lore.kernel.org/r/20250318-ddkopsrc-1337-use-after-free-in-pvr_queue_prepare_job-v1-1-80fb30d044a6@imgtec.com
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/imagination/pvr_job.c   |    7 +++++++
+ drivers/gpu/drm/imagination/pvr_queue.c |    4 ++++
+ 2 files changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-@@ -1267,6 +1267,9 @@ static int arcturus_set_fan_speed_rpm(st
- 	uint32_t crystal_clock_freq = 2500;
- 	uint32_t tach_period;
+--- a/drivers/gpu/drm/imagination/pvr_job.c
++++ b/drivers/gpu/drm/imagination/pvr_job.c
+@@ -684,6 +684,13 @@ pvr_jobs_link_geom_frag(struct pvr_job_d
+ 		geom_job->paired_job = frag_job;
+ 		frag_job->paired_job = geom_job;
  
-+	if (!speed || speed > UINT_MAX/8)
-+		return -EINVAL;
++		/* The geometry job pvr_job structure is used when the fragment
++		 * job is being prepared by the GPU scheduler. Have the fragment
++		 * job hold a reference on the geometry job to prevent it being
++		 * freed until the fragment job has finished with it.
++		 */
++		pvr_job_get(geom_job);
 +
- 	tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
- 	WREG32_SOC15(THM, 0, mmCG_TACH_CTRL_ARCT,
- 		     REG_SET_FIELD(RREG32_SOC15(THM, 0, mmCG_TACH_CTRL_ARCT),
+ 		/* Skip the fragment job we just paired to the geometry job. */
+ 		i++;
+ 	}
+--- a/drivers/gpu/drm/imagination/pvr_queue.c
++++ b/drivers/gpu/drm/imagination/pvr_queue.c
+@@ -866,6 +866,10 @@ static void pvr_queue_free_job(struct dr
+ 	struct pvr_job *job = container_of(sched_job, struct pvr_job, base);
+ 
+ 	drm_sched_job_cleanup(sched_job);
++
++	if (job->type == DRM_PVR_JOB_TYPE_FRAGMENT && job->paired_job)
++		pvr_job_put(job->paired_job);
++
+ 	job->paired_job = NULL;
+ 	pvr_job_put(job);
+ }
 
 
 
