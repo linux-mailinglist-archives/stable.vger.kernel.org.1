@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-136073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9FAA991DF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12985A9907D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DBEE5A76CB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 854187AC392
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A1C29291D;
-	Wed, 23 Apr 2025 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F2128EA59;
+	Wed, 23 Apr 2025 15:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrYD+O1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zFIllbT4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A010A289373;
-	Wed, 23 Apr 2025 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BF4E2836A4;
+	Wed, 23 Apr 2025 15:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421584; cv=none; b=C9CTgFi0/dtASxalgf5d0FFQuzB0LztOJpndTiQLl82B+ZbLEcdSOD8JyszHdghFv6Gxcay+kYXUbzEGqRtMYClz47u8LI8jT5+KGOjGi62M/+L/DSyimrETmO85bHq4g9vYdxvJHAp/YUfek9EM7XvCHe6hnQ79/6cbzcgdnI8=
+	t=1745421202; cv=none; b=LV0dITISAk2CdlkPCePs6D6qh1QepYm+kWX38AMaLeOJRffjcfzddRPr1yjYQLfuzaWHp33mypOToG1UWGB9a2mmqBSYMKQ2w2x9JpCFMo7rhfjYVo8I/QsyQMODFeefm/j0Z9gecNziv1l/wpZTlYmJowZtkfJLZg6PPQxWPCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421584; c=relaxed/simple;
-	bh=AygCXRF2HsabppF4m+aQW41OKqdfIlOu2xVUaqvWv7o=;
+	s=arc-20240116; t=1745421202; c=relaxed/simple;
+	bh=Res+6Spr1NR3gcGRxFUpEOXFel2mErs9elgTOAlpalY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rCMdMAJHpx1eUJeyxw7aPqvCcrq1bAjaOMT5FsmxeAyg6gfhYIHHk+NKRsy6pXRCyAIu1FUVZz0oskU9xroWeg+MNup3zaVkOPV63TtsBr+HiEQSyLVReT3vGnXV0zFIQLc0LjV0H3x4iPEvFaEa6x9dirHB4ztRAhWLnOohHa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrYD+O1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2BF0C4CEE2;
-	Wed, 23 Apr 2025 15:19:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ex0pluC95PxoS+t4yDmuL6fEth+9RFhlffZmRPf0aW/NtXyfveCa1WW2KSgoHtxbO8+Z8lfj5V2SvSKBF/Yjbrm2wclU3Y0IzCsNee2luaDFwFvt8z4HRfqu4ektB+QME4sBTJWWZhaaBLUzX3bYGZqeRWgIfiYycQmjGc0ORzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zFIllbT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A456FC4CEE2;
+	Wed, 23 Apr 2025 15:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421584;
-	bh=AygCXRF2HsabppF4m+aQW41OKqdfIlOu2xVUaqvWv7o=;
+	s=korg; t=1745421202;
+	bh=Res+6Spr1NR3gcGRxFUpEOXFel2mErs9elgTOAlpalY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrYD+O1pGbibH2oKTR8LHDNZMMjNmRvor9vrL8BoFWhy+5qeoqOp4ARYWERJp4vK6
-	 R+AiRTgOu1MiTqCk8iMC5PDe5+E+pC2Mnz0QUQDwt22ZgZGOP5OXpkBo5DhfwvPg7u
-	 bTXo2e50ex0eqJhlH9kAtDFX82LG1GMl7+mkZ3Jg=
+	b=zFIllbT43WYgtQsnLsKadUfgZ6pUalikqCsLJFeAzUfgfJd/EfoKz7HlWuQQgXv8P
+	 kwgeq0zx1QlZCcw+I/Q/R5582O8TeezgU7P6d6X1qy5Y9Erff6/EBiBIJxLnggD/rw
+	 oaE/eod3UnwwpdbrOtkbGqHuEolZkWmCcj3gnT9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 208/241] drm/amdgpu: immediately use GTT for new allocations
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.12 200/223] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
 Date: Wed, 23 Apr 2025 16:44:32 +0200
-Message-ID: <20250423142629.036378227@linuxfoundation.org>
+Message-ID: <20250423142625.317089491@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit a755906fb2b8370c43e91ba437ae1b3e228e8b02 upstream.
+commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
 
-Only use GTT as a fallback if we already have a backing store. This
-prevents evictions when an application constantly allocates and frees new
-memory.
+After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
+the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
+have been released.
 
-Partially fixes
-https://gitlab.freedesktop.org/drm/amd/-/issues/3844#note_2833985.
+However, some requested IRQs remain unreleased, so there are still
+/proc/irq/* entries remaining, and this results in WARN() with the
+following message:
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 216c1282dde3 ("drm/amdgpu: use GTT only as fallback for VRAM|GTT")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
+  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
+
+To solve this issue, set the number of remaining IRQs to test->num_irqs,
+and release IRQs in advance by calling pci_endpoint_test_release_irq().
+
 Cc: stable@vger.kernel.org
+Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -163,8 +163,8 @@ void amdgpu_bo_placement_from_domain(str
- 		 * When GTT is just an alternative to VRAM make sure that we
- 		 * only use it as fallback and still try to fill up VRAM first.
- 		 */
--		if (domain & abo->preferred_domains & AMDGPU_GEM_DOMAIN_VRAM &&
--		    !(adev->flags & AMD_IS_APU))
-+		if (abo->tbo.resource && !(adev->flags & AMD_IS_APU) &&
-+		    domain & abo->preferred_domains & AMDGPU_GEM_DOMAIN_VRAM)
- 			places[c].flags |= TTM_PL_FLAG_FALLBACK;
- 		c++;
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -251,6 +251,9 @@ fail:
+ 		break;
  	}
+ 
++	test->num_irqs = i;
++	pci_endpoint_test_release_irq(test);
++
+ 	return false;
+ }
+ 
 
 
 
