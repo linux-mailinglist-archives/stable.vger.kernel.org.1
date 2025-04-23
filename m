@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F18A993D9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:04:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8492DA990C0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E22BC1BA1AC8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F8B53B4F34
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 675572980CF;
-	Wed, 23 Apr 2025 15:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445A828CF4A;
+	Wed, 23 Apr 2025 15:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4998dv6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcQd0bkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5492980C7;
-	Wed, 23 Apr 2025 15:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029D3C8EB;
+	Wed, 23 Apr 2025 15:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422262; cv=none; b=cBPbx/9ZZIungeICCivsCd7nUWs+ExDyVdRkfQlwBdlO4kxeHdEg84MgC9wr64XcevFslcnE35N32bQt+MN5D+cvqP6+bKQy8HwLTjEOIJ3ovgCyS+r3SUn6N485ZzXZbO6g0hS8/MAO5hQhc5bM7Ao3hmEe0LhoYR0MP26aoYs=
+	t=1745421036; cv=none; b=C7e/L+WzBQFswde/CwaqLSDRCXMlNkH6HRAZmtCWSfTrUJMY7a/OGFudWCoDJ1e2s0hZ/2JLl/mgv4IR3oV0VlbmWiBsaMKvp5MbD/TqqkDoDI5FHHby7pyDyyjonLzy9abRDsZkgrbgqRDcP15QB3OfmMlGxSjUKV7ybu8JvjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422262; c=relaxed/simple;
-	bh=ZAXQg4uC2mGYSeq1PfD1XEf5KyxD7qvQFD5sg+gFe8E=;
+	s=arc-20240116; t=1745421036; c=relaxed/simple;
+	bh=SfXzHRhkN5HAuig8Rai5osMoEh9D8AB6cSj/jhFcq0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OA/ik6kud4ZHYrEAOtea935lrxVgpzo6kxvIVL0XPQiwQiq7vdb3vVibd+34uE8t+tM4As9Scb9T30qgEGOPUZ6J266bdntzlxgQjYTuag7XPHLdh4MdkuxSIX/SNgFCGMhcELTz87UTYbQ1U7Z8DeEnKl9rc6a43ao3CK+Nze0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4998dv6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D505EC4CEE3;
-	Wed, 23 Apr 2025 15:31:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N/VXtxf3OLjrLhZay1ANnAN3Q9nhEFd38ia14p/R+K03OTpxRjLZUD86K/rU/TQQOGLtzWXiSSSHoGYqiJnRCfgOkYqdB5rGcPFCwInqTdGVDqL6ZrSL8SllrykcoDUUMehWUW1KuvK2VpxpJRj8rSyV4iHXIW9oaWEZEHf0zXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcQd0bkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C86DC4CEE2;
+	Wed, 23 Apr 2025 15:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422262;
-	bh=ZAXQg4uC2mGYSeq1PfD1XEf5KyxD7qvQFD5sg+gFe8E=;
+	s=korg; t=1745421035;
+	bh=SfXzHRhkN5HAuig8Rai5osMoEh9D8AB6cSj/jhFcq0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4998dv64BToVZ0riQ9LqRa44XhkfmmFLnes5GQPnAgENr3vXkEMdBdh2OIOvZjQG
-	 LpHubZaafNa0k4aK70BcMUfW57hFbGCyQBV0Q1H0cEUYiMDWFTpFsqTn8jxDkJrIQY
-	 UpHnS/XlycSYFk7Vd5Sau5AKSanQD8iBEJADT5cQ=
+	b=fcQd0bktbNzSWiuxJWKP3GS52FaKXFAWwVIcFW+WPl7g1rWZTR7+laJAU8R+g1kaH
+	 z4NJ4ByGVhWihS+NjRFBQoIlnc48RWBDxOQIrX+PfZP2N6RAcWfxb1wlxyNcgOmu5w
+	 bZZws7RS3emvZPvR4yYnSktqQSi7ey8sRagZx+sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.1 266/291] x86/pvh: Call C code via the kernel virtual mapping
-Date: Wed, 23 Apr 2025 16:44:15 +0200
-Message-ID: <20250423142635.294020231@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	ZhenGuo Yin <zhenguo.yin@amd.com>
+Subject: [PATCH 6.12 184/223] drm/amdgpu: fix warning of drm_mm_clean
+Date: Wed, 23 Apr 2025 16:44:16 +0200
+Message-ID: <20250423142624.665705050@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: ZhenGuo Yin <zhenguo.yin@amd.com>
 
-commit e8fbc0d9cab6c1ee6403f42c0991b0c1d5dbc092 upstream.
+commit e7afa85a0d0eba5bf2c0a446ff622ebdbc9812d6 upstream.
 
-Calling C code via a different mapping than it was linked at is
-problematic, because the compiler assumes that RIP-relative and absolute
-symbol references are interchangeable. GCC in particular may use
-RIP-relative per-CPU variable references even when not using -fpic.
+Kernel doorbell BOs needs to be freed before ttm_fini.
 
-So call xen_prepare_pvh() via its kernel virtual mapping on x86_64, so
-that those RIP-relative references produce the correct values. This
-matches the pre-existing behavior for i386, which also invokes
-xen_prepare_pvh() via the kernel virtual mapping before invoking
-startup_32 with paging disabled again.
-
-Fixes: 7243b93345f7 ("xen/pvh: Bootstrap PVH guest")
-Tested-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Message-ID: <20241009160438.3884381-8-ardb+git@google.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-[ Stable context update ]
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4145
+Fixes: 54c30d2a8def ("drm/amdgpu: create kernel doorbell pages")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: ZhenGuo Yin <zhenguo.yin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 39938a8ed979e398faa3791a47e282c82bcc6f04)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/platform/pvh/head.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/platform/pvh/head.S
-+++ b/arch/x86/platform/pvh/head.S
-@@ -100,7 +100,12 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
- 	xor %edx, %edx
- 	wrmsr
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -3322,6 +3322,7 @@ static int amdgpu_device_ip_fini(struct
+ 			amdgpu_device_mem_scratch_fini(adev);
+ 			amdgpu_ib_pool_fini(adev);
+ 			amdgpu_seq64_fini(adev);
++			amdgpu_doorbell_fini(adev);
+ 		}
  
--	call xen_prepare_pvh
-+	/* Call xen_prepare_pvh() via the kernel virtual mapping */
-+	leaq xen_prepare_pvh(%rip), %rax
-+	subq phys_base(%rip), %rax
-+	addq $__START_KERNEL_map, %rax
-+	ANNOTATE_RETPOLINE_SAFE
-+	call *%rax
+ 		r = adev->ip_blocks[i].version->funcs->sw_fini((void *)adev);
+@@ -4670,7 +4671,6 @@ void amdgpu_device_fini_sw(struct amdgpu
  
- 	/* startup_64 expects boot_params in %rsi. */
- 	mov $_pa(pvh_bootparams), %rsi
+ 		iounmap(adev->rmmio);
+ 		adev->rmmio = NULL;
+-		amdgpu_doorbell_fini(adev);
+ 		drm_dev_exit(idx);
+ 	}
+ 
 
 
 
