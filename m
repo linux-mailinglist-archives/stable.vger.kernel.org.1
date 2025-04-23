@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99150A98EB8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E650A99246
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18EE77A4CA4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2C20927A79
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6881280A47;
-	Wed, 23 Apr 2025 14:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30776289373;
+	Wed, 23 Apr 2025 15:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlz37wj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2AHrC/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A031F2C45;
-	Wed, 23 Apr 2025 14:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D482820B2;
+	Wed, 23 Apr 2025 15:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420305; cv=none; b=OjFZPp6cnDrB8um4qjCO72ffnXofKVViJzLewHcPk5EqfBIzj2CgSOaLDnZE2y+TOpP8F9yLBtKT7fQo8+QCuq6ymdycKJjtBrb3jRxIs6CBQ0weFWZkKcIkolCVb10aUCPRo6W8gSndgGR8MB9UJOokmPnMdu012+w9ioDrgcY=
+	t=1745421587; cv=none; b=aH2umKnYb3CWJeZru/yZzz04JXEuCRm323ZSp/DRcyBJV5IqRbqSwDbZJPG6UFDFQ2HsKWzF06ZUJfgBCSzVv9qEUAWHwxFpCRYbnjerduzMcwqeZHi4YB7RZ98eqfkCqqxVUGPoamF/oDNAfXTnNQGuhreyUgkgRFhCXjCmKbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420305; c=relaxed/simple;
-	bh=oPUNRA4N4jjFfIScXoeHJLFGitr9Abt4g1F6aIr8NZI=;
+	s=arc-20240116; t=1745421587; c=relaxed/simple;
+	bh=Af4DKbCJsDnrK7Wv8e2uOMVsxIeubgsSrCV7h39mnd4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcvNE6cObySFy+uqctMjq3HSDXqfO8VOerO+1wpXdi/C0JWzvURpA1wG8zN/0WWb2uYjgFmK74635cYPS7/AtB8ZB3/3AMQuA3VXfMre1cK5Dv8vHeaVhbVs0JDvf/5+3oDeI+APe6WtIxh5tDV9tkSKiBg+o301XE/6e+RnwrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlz37wj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F70FC4CEE2;
-	Wed, 23 Apr 2025 14:58:24 +0000 (UTC)
+	 MIME-Version; b=JB6VIEr6jBnoOXGiQOoMraGE/iolOGEscDIp9UR+RfUun9EUYFKXh9o/NWsBe+lXhUc33o26v1eqP+BrJI15fsqofR8xJMcW73b8phs+/1h1JRTzQKpR0bGo+SZIZT/NkVIliSDD/qEVk5TCSYohbHwStCz/Mj0g9zAswvQ+gZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2AHrC/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E627C4CEE2;
+	Wed, 23 Apr 2025 15:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420305;
-	bh=oPUNRA4N4jjFfIScXoeHJLFGitr9Abt4g1F6aIr8NZI=;
+	s=korg; t=1745421586;
+	bh=Af4DKbCJsDnrK7Wv8e2uOMVsxIeubgsSrCV7h39mnd4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlz37wj9njRmph26bOYnPtzYRbWphsUkp4shxiazUGFdE3KxPVU3UOkL1LSu6n7Ei
-	 YE3RBL6ACJj2QyR9g2jrLD5/4KuCGH9N9780tdvyaTB2uUDUxE29QLKRk4UISizQ4e
-	 JdcBF6CGKv0zUPnH40RUoGu/fVYULnfVPYmnghS4=
+	b=n2AHrC/5LsmzjIhEzxVLEYWbmTSSdOE7Prruz1t/n24/SKuWVnN4kV/Nj283d+cu4
+	 6YGr2LeTZrJEedrK5f0s86yI6atJBOR4bkU7oRTpZwI7Kll0dG9jq9atY5K/hYcr92
+	 eEBaO16AY9QvoUvAT5Sqs53wMiD+Ijtbjxw8iQBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 080/241] netfilter: conntrack: fix erronous removal of offload bit
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.1 155/291] of/irq: Fix device node refcount leakages in of_irq_init()
 Date: Wed, 23 Apr 2025 16:42:24 +0200
-Message-ID: <20250423142623.855270556@linuxfoundation.org>
+Message-ID: <20250423142630.724715520@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit d2d31ea8cd80b9830cdab624e94f9d41178fc99d ]
+commit 708124d9e6e7ac5ebf927830760679136b23fdf0 upstream.
 
-The blamed commit exposes a possible issue with flow_offload_teardown():
-We might remove the offload bit of a conntrack entry that has been
-offloaded again.
+of_irq_init() will leak interrupt controller device node refcounts
+in two places as explained below:
 
-1. conntrack entry c1 is offloaded via flow f1 (f1->ct == c1).
-2. f1 times out and is pushed back to slowpath, c1 offload bit is
-   removed.  Due to bug, f1 is not unlinked from rhashtable right away.
-3. a new packet arrives for the flow and re-offload is triggered, i.e.
-   f2->ct == c1.  This is because lookup in flowtable skip entries with
-   teardown bit set.
-4. Next flowtable gc cycle finds f1 again
-5. flow_offload_teardown() is called again for f1 and c1 offload bit is
-   removed again, even though we have f2 referencing the same entry.
+1) Leak refcounts of both @desc->dev and @desc->interrupt_parent when
+   suffers @desc->irq_init_cb() failure.
+2) Leak refcount of @desc->interrupt_parent when cleans up list
+   @intc_desc_list in the end.
 
-This is harmless, but clearly not correct.
-Fix the bug that exposes this: set 'teardown = true' to have the gc
-callback unlink the flowtable entry from the table right away instead of
-the unintentional defer to the next round.
+Refcounts of both @desc->dev and @desc->interrupt_parent were got in
+the first loop, but of_irq_init() does not put them before kfree(@desc)
+in places mentioned above, so causes refcount leakages.
 
-Also prevent flow_offload_teardown() from fixing up the ct state more than
-once: We could also be called from the data path or a notifier, not only
-from the flowtable gc callback.
+Fix by putting refcounts involved before kfree(@desc).
 
-NF_FLOW_TEARDOWN can never be unset, so we can use it as synchronization
-point: if we observe did not see a 0 -> 1 transition, then another CPU
-is already doing the ct state fixups for us.
-
-Fixes: 03428ca5cee9 ("netfilter: conntrack: rework offload nf_conn timeout extension logic")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8363ccb917c6 ("of/irq: add missing of_node_put")
+Fixes: c71a54b08201 ("of/irq: introduce of_irq_init")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-7-93e3a2659aa7@quicinc.com
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_flow_table_core.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/of/irq.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 9d8361526f82a..9441ac3d8c1a2 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -383,8 +383,8 @@ static void flow_offload_del(struct nf_flowtable *flow_table,
- void flow_offload_teardown(struct flow_offload *flow)
- {
- 	clear_bit(IPS_OFFLOAD_BIT, &flow->ct->status);
--	set_bit(NF_FLOW_TEARDOWN, &flow->flags);
--	flow_offload_fixup_ct(flow);
-+	if (!test_and_set_bit(NF_FLOW_TEARDOWN, &flow->flags))
-+		flow_offload_fixup_ct(flow);
- }
- EXPORT_SYMBOL_GPL(flow_offload_teardown);
- 
-@@ -558,10 +558,12 @@ static void nf_flow_offload_gc_step(struct nf_flowtable *flow_table,
- 
- 	if (nf_flow_has_expired(flow) ||
- 	    nf_ct_is_dying(flow->ct) ||
--	    nf_flow_custom_gc(flow_table, flow))
-+	    nf_flow_custom_gc(flow_table, flow)) {
- 		flow_offload_teardown(flow);
--	else if (!teardown)
-+		teardown = true;
-+	} else if (!teardown) {
- 		nf_flow_table_extend_ct_timeout(flow->ct);
-+	}
- 
- 	if (teardown) {
- 		if (test_bit(NF_FLOW_HW, &flow->flags)) {
--- 
-2.39.5
-
+--- a/drivers/of/irq.c
++++ b/drivers/of/irq.c
+@@ -627,6 +627,8 @@ void __init of_irq_init(const struct of_
+ 				       __func__, desc->dev, desc->dev,
+ 				       desc->interrupt_parent);
+ 				of_node_clear_flag(desc->dev, OF_POPULATED);
++				of_node_put(desc->interrupt_parent);
++				of_node_put(desc->dev);
+ 				kfree(desc);
+ 				continue;
+ 			}
+@@ -657,6 +659,7 @@ void __init of_irq_init(const struct of_
+ err:
+ 	list_for_each_entry_safe(desc, temp_desc, &intc_desc_list, list) {
+ 		list_del(&desc->list);
++		of_node_put(desc->interrupt_parent);
+ 		of_node_put(desc->dev);
+ 		kfree(desc);
+ 	}
 
 
 
