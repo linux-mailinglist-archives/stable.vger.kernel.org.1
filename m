@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-135351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C21A98DC1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 715BEA9920B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABAD73B23DA
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C1E1681AA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21211280CCE;
-	Wed, 23 Apr 2025 14:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F20228A1CC;
+	Wed, 23 Apr 2025 15:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="in/AOwdr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwi7xanq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A2F27D76E;
-	Wed, 23 Apr 2025 14:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD2F27FD42;
+	Wed, 23 Apr 2025 15:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419694; cv=none; b=Ppn1K884JbyUTQp2S2U/QnXL5EQ/JQSnqpanDWYePnaigH1eWz+MyXjQ80lyzxp5zLFv70GyKW5+qhAjx8CC3NExQ63z2oFfYrje1J9jGHw2lq04nTg4hAoIky+AMF3bGScyrOaFXp4sRsGH48FN9LgdSZr/NAcAuTanGJnE1vQ=
+	t=1745421706; cv=none; b=q+7zjYIfQCgJE95pbeZM6s0phRl71Y+lV11MOU3OGdN5fvgOal9bPKwglgtMOGwNrxBOYa95c4dpsNKlBIS7EIw57DjKEoxCd/UW4ZlnWXQpNe9ixCczaQDsUFrDm5+CF3z5v20DsE4a2C3GhKeZvf+YwYBjqq1ZsEuN/VD7JiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419694; c=relaxed/simple;
-	bh=SatHcYa2FZgkrCvRUHQU37nWIIQYlc+Nr9q0dQZuhRo=;
+	s=arc-20240116; t=1745421706; c=relaxed/simple;
+	bh=v5IvUSzEGUQ/wZAj6+QxV3fRzzjyRTSU1yyjUs2nFEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rz21y21NEumTLe7FV1S8FdAGhs0PBFlsnC/kKEYlwt978Wl2ni3Cbxyov+B7/hjswISfouLG/+O0QmrOQozIXagYy8Eccin2GWJiwT0wylODH3P0OypSgpLIfpyPXhena5+cU0OTs93mkH1VRQrweX2O24jFONxPinaeZdjLI68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=in/AOwdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637ADC4CEE2;
-	Wed, 23 Apr 2025 14:48:14 +0000 (UTC)
+	 MIME-Version; b=ViCwj7d/rG/AwgGolqBim15U4TSkApI0muexnsfoZeC8X2k6wALcDm9ZC0AAjeQrUSvm9GzC1il2XFNEVZwHY9E/YrH/G0g3SRVe3gOKg4HzNRmEPRB/YCOUICArjYf+NfDAQwosQC5OapxeP6PQK+7tXrnvN0HdFRv/rTN+3vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bwi7xanq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1EA1C4CEE2;
+	Wed, 23 Apr 2025 15:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419694;
-	bh=SatHcYa2FZgkrCvRUHQU37nWIIQYlc+Nr9q0dQZuhRo=;
+	s=korg; t=1745421705;
+	bh=v5IvUSzEGUQ/wZAj6+QxV3fRzzjyRTSU1yyjUs2nFEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=in/AOwdrGD3XlzLq4lkxPeQBS5xaHUkH6R3J5KOY003fJdxPzDrmslV+AEURV4jI8
-	 matlMQuXGp3oB+GZ1UUWJ6w1rqttDR0Gz9R0nnZz2rHPFUzPI7WQVEFWWn6sBZFAiN
-	 cZzX+dEVZJXMfRXUKks/gWDeAXzyviSZtfIkx+RQ=
+	b=bwi7xanqaxx1l9DEPX5XrTtRrZcuCV8Gl09je+mcUmvnbZj3k6UCCHlyQkE6/mwZF
+	 rE1pqiQkWPQ0RMPhU+Yudqa6GE0abnO3OdS1zSKtyHXK18REBs4NCDOJqoN3Oh4PWj
+	 PTZBB29D4bPgLDxBLGyQ8Zx2twp8RIEiZD7za7ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/223] crypto: tegra - Fix IV usage for AES ECB
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 193/393] mm: add missing release barrier on PGDAT_RECLAIM_LOCKED unlock
 Date: Wed, 23 Apr 2025 16:41:29 +0200
-Message-ID: <20250423142617.820974343@linuxfoundation.org>
+Message-ID: <20250423142651.362162877@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +73,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-[ Upstream commit 1ddaff40c08abb926be5ba713c5efc412d0836c5 ]
+commit c0ebbb3841e07c4493e6fe351698806b09a87a37 upstream.
 
-Modifying the crypto_request turns out to be not the right way to handle
-the stale value issue with the IV. Though the IV is not used for AES ECB,
-it eventually get used in algorithms like LRW in the next step after
-AES ECB encryption/decryption. Setting req->iv to NULL breaks the
-implementation of such algorithms. Hence modify only the local reqctx
-to check for IV.
+The PGDAT_RECLAIM_LOCKED bit is used to provide mutual exclusion of node
+reclaim for struct pglist_data using a single bit.
 
-Fixes: bde558220866 ("crypto: tegra - Set IV to NULL explicitly for AES ECB")
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is "locked" with a test_and_set_bit (similarly to a try lock) which
+provides full ordering with respect to loads and stores done within
+__node_reclaim().
+
+It is "unlocked" with clear_bit(), which does not provide any ordering
+with respect to loads and stores done before clearing the bit.
+
+The lack of clear_bit() memory ordering with respect to stores within
+__node_reclaim() can cause a subsequent CPU to fail to observe stores from
+a prior node reclaim.  This is not an issue in practice on TSO (e.g.
+x86), but it is an issue on weakly-ordered architectures (e.g.  arm64).
+
+Fix this by using clear_bit_unlock rather than clear_bit to clear
+PGDAT_RECLAIM_LOCKED with a release memory ordering semantic.
+
+This provides stronger memory ordering (release rather than relaxed).
+
+Link: https://lkml.kernel.org/r/20250312141014.129725-1-mathieu.desnoyers@efficios.com
+Fixes: d773ed6b856a ("mm: test and set zone reclaim lock before starting reclaim")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Andrea Parri <parri.andrea@gmail.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jade Alglave <j.alglave@ucl.ac.uk>
+Cc: Luc Maranget <luc.maranget@inria.fr>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ mm/vmscan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index 46c4dac92dd7a..cd52807e76afd 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -263,7 +263,7 @@ static int tegra_aes_do_one_req(struct crypto_engine *engine, void *areq)
- 	unsigned int cmdlen;
- 	int ret;
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -8115,7 +8115,7 @@ int node_reclaim(struct pglist_data *pgd
+ 		return NODE_RECLAIM_NOSCAN;
  
--	rctx->iv = (u32 *)req->iv;
-+	rctx->iv = (ctx->alg == SE_ALG_ECB) ? NULL : (u32 *)req->iv;
- 	rctx->len = req->cryptlen;
+ 	ret = __node_reclaim(pgdat, gfp_mask, order);
+-	clear_bit(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
++	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
  
- 	/* Pad input to AES Block size */
-@@ -443,9 +443,6 @@ static int tegra_aes_crypt(struct skcipher_request *req, bool encrypt)
- 	if (!req->cryptlen)
- 		return 0;
- 
--	if (ctx->alg == SE_ALG_ECB)
--		req->iv = NULL;
--
- 	rctx->encrypt = encrypt;
- 	rctx->config = tegra234_aes_cfg(ctx->alg, encrypt);
- 	rctx->crypto_config = tegra234_aes_crypto_cfg(ctx->alg, encrypt);
--- 
-2.39.5
-
+ 	if (!ret)
+ 		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
 
 
 
