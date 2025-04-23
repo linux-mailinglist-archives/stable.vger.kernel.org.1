@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E3BBA98E6C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FFCA98F81
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7B455A2C10
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFD4916E600
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DBB1A9B39;
-	Wed, 23 Apr 2025 14:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15D1281505;
+	Wed, 23 Apr 2025 15:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5uRsX8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoVwufp2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F79381BA;
-	Wed, 23 Apr 2025 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AE517B421;
+	Wed, 23 Apr 2025 15:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420025; cv=none; b=gh46eY/alAhsrsL9VmsHot4MnhFI4pEfq/5P16xvEXLOxw2lZKET7NnicgYOFRARTT1TGUWryb5YPO1oxqTvxCDeCdNpy7JbosiM6BDDMv07/BGTo9qfgD6p4swHZQQsv2MfyIFnA+tvT3d7ajjF8VnRzpeAdMNkgrOuCFY7Kfw=
+	t=1745420540; cv=none; b=PjkRICW0uE2z1glFi2w5LtVhpP24LAsQG3fLZXT+T6RMeMBFrzSmsbL1R2AdoLhx82D73jnnGqz3OHNKQEFyOB6vUL5Rmqv3QF9jsFzwhsaFKx8PkFHwpaAj9e0x0uDlw1eA2uYVTMk6CYe/JkZ0IB9DgEv3cVtFtqrheiV/SKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420025; c=relaxed/simple;
-	bh=oBvIUfxGT4dqbgmrxgBrlpKR03+KLrwz2IsxQSucC1w=;
+	s=arc-20240116; t=1745420540; c=relaxed/simple;
+	bh=CTJItSX9QrAvzJL2ZkOIokO0yNYCIL0CgktLTY4x/PM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxotM0H34NL8IqMfEDSPAaBPLYO+1IfvDgqEEDT5Sw4cA7/Eh4jhcSM3iI0OWqh6xpO3q1kLWH78BRSS0NZnldt08JemulYHp8TDpvvnG5w3RDjOjcM+kOD3Nf2dNidI3survlNSkNg1UIN8ddnw0NSzmsf/3cwYLsMdcax4C24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5uRsX8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9CAC4CEE2;
-	Wed, 23 Apr 2025 14:53:43 +0000 (UTC)
+	 MIME-Version; b=nTY15E2vKP6FPhSro/8yLs1pQtpqD0Ni6bMjNI+OoXBOYCfCIf1fp4j7sW9AlakqN2d2e98/IWu2b12vy8UgnYgeCU3EbtjjfQo1abHXMN6ODz4WOv8CZ+d6YFrNxagurMAsCzJDCNC67BurtX6jUi3tnbw51vJPKXJNGtVjRs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoVwufp2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6760C4CEE2;
+	Wed, 23 Apr 2025 15:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420023;
-	bh=oBvIUfxGT4dqbgmrxgBrlpKR03+KLrwz2IsxQSucC1w=;
+	s=korg; t=1745420540;
+	bh=CTJItSX9QrAvzJL2ZkOIokO0yNYCIL0CgktLTY4x/PM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5uRsX8Y3ci3IB5NEA4shWM0aYCLlDW+wphcUQcotWJrNclid4eKDYPo1BDrGwVXg
-	 8FcsoEOc4YI4wMqjBMC4x33UqAC2j0RaR8VVM4TyJHG7Jzf+Jm7vxlJqMhFLOAv/Wm
-	 CiG31C3fuKHplADniMI2FAya05ck7bO7IEBftHcE=
+	b=EoVwufp2rdti5b3HIwZMl7dyXxKjIuegyCGQmTNWJkZXtanizTHDdT5fTlo3OJfAE
+	 ydrjflHOhCWBaKO9au2d6G9oGLTUErUhnxuObrSYmq6Aaw1Lk22hQ+QHmkyR9WUTg2
+	 a/j4/1K9WMl48HBjCDqTzZ7/TzvuAV37B0gEWcBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Kobuk <m.kobuk@ispras.ru>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Evgeny Pimenov <pimenoveu12@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 093/223] ASoC: qcom: Fix sc7280 lpass potential buffer overflow
+	moyi geek <1441339168@qq.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.14 101/241] rust: kbuild: use `pound` to support GNU Make < 4.3
 Date: Wed, 23 Apr 2025 16:42:45 +0200
-Message-ID: <20250423142620.907389767@linuxfoundation.org>
+Message-ID: <20250423142624.699930479@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Evgeny Pimenov <pimenoveu12@gmail.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit a31a4934b31faea76e735bab17e63d02fcd8e029 upstream.
+commit 1c4494c14b4124f3a13a7f4912b84b633ff4f9ba upstream.
 
-Case values introduced in commit
-5f78e1fb7a3e ("ASoC: qcom: Add driver support for audioreach solution")
-cause out of bounds access in arrays of sc7280 driver data (e.g. in case
-of RX_CODEC_DMA_RX_0 in sc7280_snd_hw_params()).
+GNU Make 4.3 changed the behavior of `#` inside commands in commit
+c6966b323811 ("[SV 20513] Un-escaped # are not comments in function
+invocations"):
 
-Redefine LPASS_MAX_PORTS to consider the maximum possible port id for
-q6dsp as sc7280 driver utilizes some of those values.
+    * WARNING: Backward-incompatibility!
+      Number signs (#) appearing inside a macro reference or function invocation
+      no longer introduce comments and should not be escaped with backslashes:
+      thus a call such as:
+        foo := $(shell echo '#')
+      is legal.  Previously the number sign needed to be escaped, for example:
+        foo := $(shell echo '\#')
+      Now this latter will resolve to "\#".  If you want to write makefiles
+      portable to both versions, assign the number sign to a variable:
+        H := \#
+        foo := $(shell echo '$H')
+      This was claimed to be fixed in 3.81, but wasn't, for some reason.
+      To detect this change search for 'nocomment' in the .FEATURES variable.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Unlike other commits in the kernel about this issue, such as commit
+633174a7046e ("lib/raid6/test/Makefile: Use $(pound) instead of \#
+for Make 4.3"), that fixed the issue for newer GNU Makes, in our case
+it was the opposite, i.e. we need to fix it for the older ones: someone
+building with e.g. 4.2.1 gets the following error:
 
-Fixes: 77d0ffef793d ("ASoC: qcom: Add macro for lpass DAI id's max limit")
-Cc: stable@vger.kernel.org # v6.0+
-Suggested-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Suggested-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Evgeny Pimenov <pimenoveu12@gmail.com>
-Link: https://patch.msgid.link/20250401204058.32261-1-pimenoveu12@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+    scripts/Makefile.compiler:81: *** unterminated call to function 'call': missing ')'.  Stop.
+
+Thus use the existing variable to fix it.
+
+Reported-by: moyi geek <1441339168@qq.com>
+Closes: https://rust-for-linux.zulipchat.com/#narrow/channel/291565/topic/x/near/512001985
+Cc: stable@vger.kernel.org
+Fixes: e72a076c620f ("kbuild: fix issues with rustc-option")
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250414171241.2126137-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/lpass.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/Makefile.compiler |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/qcom/lpass.h
-+++ b/sound/soc/qcom/lpass.h
-@@ -13,10 +13,11 @@
- #include <linux/platform_device.h>
- #include <linux/regmap.h>
- #include <dt-bindings/sound/qcom,lpass.h>
-+#include <dt-bindings/sound/qcom,q6afe.h>
- #include "lpass-hdmi.h"
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -75,7 +75,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
+ # Usage: MY_RUSTFLAGS += $(call __rustc-option,$(RUSTC),$(MY_RUSTFLAGS),-Cinstrument-coverage,-Zinstrument-coverage)
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+-	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
++	echo '$(pound)![allow(missing_docs)]$(pound)![feature(no_core)]$(pound)![no_core]' | RUSTC_BOOTSTRAP=1\
+ 	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
  
- #define LPASS_AHBIX_CLOCK_FREQUENCY		131072000
--#define LPASS_MAX_PORTS			(LPASS_CDC_DMA_VA_TX8 + 1)
-+#define LPASS_MAX_PORTS			(DISPLAY_PORT_RX_7 + 1)
- #define LPASS_MAX_MI2S_PORTS			(8)
- #define LPASS_MAX_DMA_CHANNELS			(8)
- #define LPASS_MAX_HDMI_DMA_CHANNELS		(4)
 
 
 
