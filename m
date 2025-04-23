@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351F1A98E63
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AA5A98F66
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CDF31B649AB
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89D3F5A5A65
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3869280CD9;
-	Wed, 23 Apr 2025 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D507827F4F3;
+	Wed, 23 Apr 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FlOeeyr+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBzG7Den"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B145323D298;
-	Wed, 23 Apr 2025 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D24C27EC9C;
+	Wed, 23 Apr 2025 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419955; cv=none; b=lC2JpRKJbNuDumuKntTw9+dBk+oLNbMF/J8zAWF7Yy3as0ZTOQH+N6q5Hw59RTENdYWqM7bP4UH/MFZ9t4UiEIUSWQh4MRVWj224HiKGQw/DAjjd801mvOMsrrwqBtwq+I+wf9Q83ik/kFGQIlIYC6O4JmU8OeYaevDitetrEHE=
+	t=1745420429; cv=none; b=fFA0FhM2C3Q8+hfpFGScRhSFl2u9M8Ug8gzY2s4z6UJ7Mv0c8l6wRKRJY0cE50xM0Bpg5upIs/d3txQzO8o3DB+xu13TNNtQfUcyNPO6RS3PXdYBvmMmWxELTFXXwBvJ2AEbyFd2ydfkH3CfmmfroewpYsRuSvCN1fweKy3SJuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419955; c=relaxed/simple;
-	bh=IVuUS9EZmBFl0ObWc3GFvf1aqT6e/1vdC3ux/TWZ68Q=;
+	s=arc-20240116; t=1745420429; c=relaxed/simple;
+	bh=Xj0XWpiLKsobEbOfQz3Q1REPWZOl+EOLSvD3ei7ACOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aa4d3c2QpoBspYjVdqlV+SzcDUZVkvCdOmq4gTZxnXws15Gsw78wJALFIOPJqe1B24cTSdIBiuJTKPEqnEgvkI6xgo/Z/u09ByaArSfOihpiJkY0dAdEm8BJYyviAfcEzuf2LcVaOXPQwOYFcPS0rbVs+heekIP/qrGMZRhsfg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FlOeeyr+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DB3C4CEE2;
-	Wed, 23 Apr 2025 14:52:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PueyNHKiU5ef1XnWFZrGQeGwhSMTS10dPo8kf28dl6d085lUUfbSkeP8wRUkcfMQL1vlQIJ648v3mqrnrtFEs6FuG6oPJyhM6ViqK3hPmuE4lxSpkJyrMOcFZ4kPyLFHpm0U55b55Wcj6PrqsO5aJBdnCCycm2fZfcor+uR1CJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBzG7Den; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BBBC4CEE2;
+	Wed, 23 Apr 2025 15:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419955;
-	bh=IVuUS9EZmBFl0ObWc3GFvf1aqT6e/1vdC3ux/TWZ68Q=;
+	s=korg; t=1745420429;
+	bh=Xj0XWpiLKsobEbOfQz3Q1REPWZOl+EOLSvD3ei7ACOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FlOeeyr+5wn/97Kx6pXNF6KsUDpJHzc1IpTMv+4VjvsX3ywzJz/u5SfstgOm/w6Ro
-	 mQQJ9+AdGtBvBk58DsgwgWsEFB8k8L2lWAqtF2mguF0Xn4bhc4DojiFzbdzXNyGOVM
-	 lXq3Xrdygmfu3GDQG4QYcoKLQs65JvRgEt7stwwI=
+	b=FBzG7DenBv8yz0Y5Fckj10D8HAw9k0+rPMNC7ChlhOOq9je3sVr2nKjzfp7AO1lHF
+	 2aClDc6s46esRRzy9Zq28OBaFCuptqznOP1K2gTkhYG+r+Tu8xkOtNuk36s+6Sh5Vb
+	 BWPZ1tF01qtsnAwfge9mlKkL+5waGy79GS/MGtyo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 083/223] objtool/rust: add one more `noreturn` Rust function for Rust 1.86.0
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 091/241] kunit: qemu_configs: SH: Respect kunit cmdline
 Date: Wed, 23 Apr 2025 16:42:35 +0200
-Message-ID: <20250423142620.505512042@linuxfoundation.org>
+Message-ID: <20250423142624.299053617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit a3cd5f507b72c0532c3345b6913557efab34f405 upstream.
+[ Upstream commit b26c1a85f3fc3cc749380ff94199377fc2d0c203 ]
 
-Starting with Rust 1.86.0 (see upstream commit b151b513ba2b ("Insert null
-checks for pointer dereferences when debug assertions are enabled") [1]),
-under some kernel configurations with `CONFIG_RUST_DEBUG_ASSERTIONS=y`,
-one may trigger a new `objtool` warning:
+The default SH kunit configuration sets CONFIG_CMDLINE_OVERWRITE which
+completely disregards the cmdline passed from the bootloader/QEMU in favor
+of the builtin CONFIG_CMDLINE.
+However the kunit tool needs to pass arguments to the in-kernel kunit core,
+for filters and other runtime parameters.
 
-    rust/kernel.o: warning: objtool: _R..._6kernel9workqueue6system()
-    falls through to next function _R...9workqueue14system_highpri()
+Enable CONFIG_CMDLINE_EXTEND instead, so kunit arguments are respected.
 
-due to a call to the `noreturn` symbol:
-
-    core::panicking::panic_null_pointer_dereference
-
-Thus add it to the list so that `objtool` knows it is actually `noreturn`.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Fixes: 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-Link: https://github.com/rust-lang/rust/commit/b151b513ba2b65c7506ec1a80f2712bbd09154d1 [1]
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250413002338.1741593-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250407-kunit-sh-v1-1-f5432a54cf2f@linutronix.de
+Fixes: 8110a3cab05e ("kunit: tool: Add support for SH under QEMU")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/kunit/qemu_configs/sh.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -217,6 +217,7 @@ static bool is_rust_noreturn(const struc
- 	       str_ends_with(func->name, "_4core9panicking14panic_nounwind")				||
- 	       str_ends_with(func->name, "_4core9panicking18panic_bounds_check")			||
- 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
-+	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
- 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
- 	       strstr(func->name, "_4core9panicking13assert_failed")					||
- 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
+diff --git a/tools/testing/kunit/qemu_configs/sh.py b/tools/testing/kunit/qemu_configs/sh.py
+index 78a474a5b95f3..f00cb89fdef6a 100644
+--- a/tools/testing/kunit/qemu_configs/sh.py
++++ b/tools/testing/kunit/qemu_configs/sh.py
+@@ -7,7 +7,9 @@ CONFIG_CPU_SUBTYPE_SH7751R=y
+ CONFIG_MEMORY_START=0x0c000000
+ CONFIG_SH_RTS7751R2D=y
+ CONFIG_RTS7751R2D_PLUS=y
+-CONFIG_SERIAL_SH_SCI=y''',
++CONFIG_SERIAL_SH_SCI=y
++CONFIG_CMDLINE_EXTEND=y
++''',
+ 			   qemu_arch='sh4',
+ 			   kernel_path='arch/sh/boot/zImage',
+ 			   kernel_command_line='console=ttySC1',
+-- 
+2.39.5
+
 
 
 
