@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E0CA98DBF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847B8A98E00
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C9733AF58E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90FE81B82195
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295D8280A5C;
-	Wed, 23 Apr 2025 14:48:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB73280CD4;
+	Wed, 23 Apr 2025 14:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2heig+kg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yLzJVEa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF0327D76E;
-	Wed, 23 Apr 2025 14:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D366281357;
+	Wed, 23 Apr 2025 14:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419690; cv=none; b=UH35tfA9FgsMcd7Ie/Owc0cnUbjv0LgcMwSjk4Wofx69OqkUrEd9jl8ZASjMZS5WKyNClgsGhu7AMrVkxITtfyYr7o1mVf/h4s/L+agX6rv189N6KkAPZxMvFHSz/DUnuoeKvtGkWfIjeWTNal8qlrG/d9Kz2PTv/xna8qKkVB4=
+	t=1745419766; cv=none; b=W/R8KtYxsyAOo6Mu2eN3r9A1mFRL5zdGsg0JoACwc5wzr+8PnmUfr58sU2ZyFOOxe84fiISSuRglP5Yp9GnMhamaye0iLbaxv/ysk5mG90HUO7bDkahR1LfcWgFtzGb33weXaG0sbjLzf6smWrSopb89s9OZUG3gtn0BCxms3kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419690; c=relaxed/simple;
-	bh=DbXnRRuzUtTHYkyvqGM79BR+cX3eDEVctRBzV2zGiL8=;
+	s=arc-20240116; t=1745419766; c=relaxed/simple;
+	bh=J2RbSB0LfpZ/uP8o71SMzyQgpHP7MvZKwotVqIA2vgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F65d+SgqDxNqp6iIKj1K783amusWI2f7ip9+FuFT2G8c5RQKo4ThMGO/b43GGNEVrkp3/AQCgijJpTyfhFj5wzKJKjI+6AVpaKpjdlYR61qIinZsxl6etqAd9ISMFAbGopfJ3rcyJu1ffeKirEdr01EjmBk3s4GJxGE9vKgFe/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2heig+kg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC87C4CEE8;
-	Wed, 23 Apr 2025 14:48:08 +0000 (UTC)
+	 MIME-Version; b=LQMjD3a5do1MFnNqe6913c+/9mU+yn83XB0HlLs6ro3imGNCkn9w0XkC3i/F3+A/aYgOYjVXyjEU46r7oeH9V25cI8VmU6Opq6gPzP+Iurj6zPK/R7GD0eGwIAzNciSSNGfuWffaoC8NM3ebA8Q47iXmzswg8Z5p2l2M3y9bJUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yLzJVEa1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0487C4CEE2;
+	Wed, 23 Apr 2025 14:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419689;
-	bh=DbXnRRuzUtTHYkyvqGM79BR+cX3eDEVctRBzV2zGiL8=;
+	s=korg; t=1745419766;
+	bh=J2RbSB0LfpZ/uP8o71SMzyQgpHP7MvZKwotVqIA2vgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2heig+kg0P7OY/75Z59u6iAG8I9Ru566betyKvhRfukPrpf6/zYnW0CxPm1dnYplI
-	 XihYxxLhJkjliAb55lIGu4P2j+I3D3GpaqIROTTQ2QqrX7n6EQ0EW3oUCmpLHle9hK
-	 1VGvuFFpIYxf2md/y9zMGiIMaDcLwdern2oupDEI=
+	b=yLzJVEa1/vEPZeMUSAy8BYjWsDz16POUoT2d/9YH+AyE0WQcUDVB4Q3p5n8ABF6cA
+	 NaXLUBaQQNUolUfQbpfM0JEL5SQP0/f5QVV+4iF3uiap+yJuqBT3wEvwNGRGIYEm7k
+	 Sl28zNfNOpXIoIJnUfQRBXy959qdsje07PEEn/xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/223] crypto: tegra - remove redundant error check on ret
+Subject: [PATCH 6.14 023/241] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
 Date: Wed, 23 Apr 2025 16:41:27 +0200
-Message-ID: <20250423142617.740037902@linuxfoundation.org>
+Message-ID: <20250423142621.466542907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 7b90df78184de90fe5afcc45393c8ad83b5b18a1 ]
+[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
 
-Currently there is an unnecessary error check on ret without a proceeding
-assignment to ret that needs checking. The check is redundant and can be
-removed.
+This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
+(00:00:00:00:00:00) which is a regression introduced by
+a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+since in the attempt to skip storing data for extended advertisement it
+actually made the code to skip the entire if statement supposed to send
+MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
+is garanteed to be invalid for extended advertisement since we never
+store anything on it.
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Acked-by: Akhil R <akhilrajeev@nvidia.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: 1ddaff40c08a ("crypto: tegra - Fix IV usage for AES ECB")
+Link: https://github.com/bluez/bluez/issues/1157
+Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
+Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/tegra/tegra-se-aes.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/bluetooth/hci_event.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/tegra/tegra-se-aes.c b/drivers/crypto/tegra/tegra-se-aes.c
-index 0ed0515e1ed54..9ab832bee81a2 100644
---- a/drivers/crypto/tegra/tegra-se-aes.c
-+++ b/drivers/crypto/tegra/tegra-se-aes.c
-@@ -1183,8 +1183,6 @@ static int tegra_ccm_do_one_req(struct crypto_engine *engine, void *areq)
- 			goto out;
- 	} else {
- 		rctx->cryptlen = req->cryptlen - ctx->authsize;
--		if (ret)
--			goto out;
- 
- 		/* CTR operation */
- 		ret = tegra_ccm_do_ctr(ctx, rctx);
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index e2bfbcee06a80..20d3cdcb14f6c 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6153,11 +6153,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
+ 	 * event or send an immediate device found event if the data
+ 	 * should not be stored for later.
+ 	 */
+-	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
++	if (!has_pending_adv_report(hdev)) {
+ 		/* If the report will trigger a SCAN_REQ store it for
+ 		 * later merging.
+ 		 */
+-		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
++		if (!ext_adv && (type == LE_ADV_IND ||
++				 type == LE_ADV_SCAN_IND)) {
+ 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
+ 						 rssi, flags, data, len);
+ 			return;
 -- 
 2.39.5
 
