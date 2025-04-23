@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA576A98DEC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7BB4A9916B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4502E1B81E25
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22302467A43
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B8827FD75;
-	Wed, 23 Apr 2025 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8887528DEE8;
+	Wed, 23 Apr 2025 15:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPwe/i1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kj+JUjFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6C827CB12;
-	Wed, 23 Apr 2025 14:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBCF28D856;
+	Wed, 23 Apr 2025 15:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419745; cv=none; b=d53vzUluQXb+0KCzMfzO+ak7qhcKcyLR6VyJaxrbayQQVZSNGxnTlM4U9wHO2/gkYgJo+w8F1Jy9esANImKWtXsBsaKELYYcuihWQkm8TEBoJv6uq+OP9XiFAStq2o/VzC3c8C1gw9XI03+UKzanbr46zNFilfn3zPTPVa5ovlI=
+	t=1745421440; cv=none; b=ftB+Yu+y7gHtdkM8kCqKF3X2FNs54WPk1Kfi2BTy1OsHiB9fgfmQxC2dvad8yxJ64uQjmDv8QxZalFYyn8R9k+s5NS7lWgyAD7q8chC8NLtscq9ueR1MovlqVnD8qcrlXk0Kt8HUHBE0Ct00plb0+dC0o+1Njwrhvz4xHwWJMh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419745; c=relaxed/simple;
-	bh=6ZYvM6pZUxwSylLvbmuHv7ypQMntLUJpNWpi/uO72Xo=;
+	s=arc-20240116; t=1745421440; c=relaxed/simple;
+	bh=LqFHXLQnO3pbL5ia+1YBfu69gf1YxnArb4Xccr+OOgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtBffNZlLwtwas0UTJ018nhrjVLEipk8PlApVoJDgGtHitjJhX4FN/WbcXtouYRCemkzQqd6KlXDMhhwAZ6yTLIHLHS9ghBvsEdISGn+uF6KVLNMna0ElD4mWdwBUGqlv6zDIdgVZw6PfXkIIJ2WkJ08vs8YgbZIACHyoKWwgdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPwe/i1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AE5C4CEEB;
-	Wed, 23 Apr 2025 14:49:04 +0000 (UTC)
+	 MIME-Version; b=PLkD7H0gBLvGWiR+lG+a/5FKBJaprAIer/ETDowd3MuU0qeQrsas7D84zLLHYIUsIleLMawq8xP0I4FWkssXTNPynLo1AhOJ+IkjoTBFuk6++afF8/GLA2WA2coEZMNTm9oJljS8eKZSNRWHkbI48WdH2iTIspaU1OWS0GFLJ7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kj+JUjFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55291C4CEE2;
+	Wed, 23 Apr 2025 15:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419744;
-	bh=6ZYvM6pZUxwSylLvbmuHv7ypQMntLUJpNWpi/uO72Xo=;
+	s=korg; t=1745421439;
+	bh=LqFHXLQnO3pbL5ia+1YBfu69gf1YxnArb4Xccr+OOgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPwe/i1RgY2I1+eS86zJDN1Hu+46JLmAQ/6/2T2ijM3dI+Jktm7mpF1p9fkkcI7QM
-	 ONqvq4zLweLdJ6G0mssoY1WeSqAValKMkKGgr1yYdWv6+WRWLJlA564VT9/+foV7VF
-	 rcWwvn89tkQ9GwEnPyON1ZQrTQ4NSr3P/RKARjPc=
+	b=Kj+JUjFv5JAkNx5fkNMm1nE3kjY5IUsT5yaEgurWgqXIV5ypIPiuZ21FHjZlLXG38
+	 yUwwQaHi+zIxSLR676w8ky4qDHkJVno/DBYl6KApsxtBnrRFWFvmJIquenR2iKfOPB
+	 /Q4+kzr1jDgHuZZZ8J9YhCskCar50ORx0YYdDEXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/223] ata: libata-sata: Save all fields from sense data descriptor
+	Roman Smirnov <r.smirnov@omp.ru>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 137/291] cifs: fix integer overflow in match_server()
 Date: Wed, 23 Apr 2025 16:42:06 +0200
-Message-ID: <20250423142619.329833677@linuxfoundation.org>
+Message-ID: <20250423142630.007014255@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Roman Smirnov <r.smirnov@omp.ru>
 
-[ Upstream commit 399eab7f92fb73ffe621294a2d6bec8fc9f3b36b ]
+commit 2510859475d7f46ed7940db0853f3342bf1b65ee upstream.
 
-When filling the taskfile result for a successful NCQ command, we use
-the SDB FIS from the FIS Receive Area, see e.g. ahci_qc_ncq_fill_rtf().
+The echo_interval is not limited in any way during mounting,
+which makes it possible to write a large number to it. This can
+cause an overflow when multiplying ctx->echo_interval by HZ in
+match_server().
 
-However, the SDB FIS only has fields STATUS and ERROR.
+Add constraints for echo_interval to smb3_fs_context_parse_param().
 
-For a successful NCQ command that has sense data, we will have a
-successful sense data descriptor, in the Sense Data for Successful NCQ
-Commands log.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Since we have access to additional taskfile result fields, fill in these
-additional fields in qc->result_tf.
-
-This matches how for failing/aborted NCQ commands, we will use e.g.
-ahci_qc_fill_rtf() to fill in some fields, but then for the command that
-actually caused the NCQ error, we will use ata_eh_read_log_10h(), which
-provides additional fields, saving additional fields/overriding the
-qc->result_tf that was fetched using ahci_qc_fill_rtf().
-
-Fixes: 18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: adfeb3e00e8e1 ("cifs: Make echo interval tunable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-sata.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/smb/client/fs_context.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 9c76fb1ad2ec5..a7442dc0bd8e1 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -1510,6 +1510,8 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
- 	unsigned int err_mask, tag;
- 	u8 *sense, sk = 0, asc = 0, ascq = 0;
- 	u64 sense_valid, val;
-+	u16 extended_sense;
-+	bool aux_icc_valid;
- 	int ret = 0;
- 
- 	err_mask = ata_read_log_page(dev, ATA_LOG_SENSE_NCQ, 0, buf, 2);
-@@ -1529,6 +1531,8 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
- 
- 	sense_valid = (u64)buf[8] | ((u64)buf[9] << 8) |
- 		((u64)buf[10] << 16) | ((u64)buf[11] << 24);
-+	extended_sense = get_unaligned_le16(&buf[14]);
-+	aux_icc_valid = extended_sense & BIT(15);
- 
- 	ata_qc_for_each_raw(ap, qc, tag) {
- 		if (!(qc->flags & ATA_QCFLAG_EH) ||
-@@ -1556,6 +1560,17 @@ int ata_eh_get_ncq_success_sense(struct ata_link *link)
- 			continue;
- 		}
- 
-+		qc->result_tf.nsect = sense[6];
-+		qc->result_tf.hob_nsect = sense[7];
-+		qc->result_tf.lbal = sense[8];
-+		qc->result_tf.lbam = sense[9];
-+		qc->result_tf.lbah = sense[10];
-+		qc->result_tf.hob_lbal = sense[11];
-+		qc->result_tf.hob_lbam = sense[12];
-+		qc->result_tf.hob_lbah = sense[13];
-+		if (aux_icc_valid)
-+			qc->result_tf.auxiliary = get_unaligned_le32(&sense[16]);
-+
- 		/* Set sense without also setting scsicmd->result */
- 		scsi_build_sense_buffer(dev->flags & ATA_DFLAG_D_SENSE,
- 					qc->scsicmd->sense_buffer, sk,
--- 
-2.39.5
-
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1111,6 +1111,11 @@ static int smb3_fs_context_parse_param(s
+ 		ctx->closetimeo = HZ * result.uint_32;
+ 		break;
+ 	case Opt_echo_interval:
++		if (result.uint_32 < SMB_ECHO_INTERVAL_MIN ||
++		    result.uint_32 > SMB_ECHO_INTERVAL_MAX) {
++			cifs_errorf(fc, "echo interval is out of bounds\n");
++			goto cifs_parse_mount_err;
++		}
+ 		ctx->echo_interval = result.uint_32;
+ 		break;
+ 	case Opt_snapshot:
 
 
 
