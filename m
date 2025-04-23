@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F350A98E20
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB743A98E0F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A43B3B5AD7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C715E166550
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB1F27FD62;
-	Wed, 23 Apr 2025 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AA6281363;
+	Wed, 23 Apr 2025 14:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWqdpPJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKv6NIZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55762C8EB;
-	Wed, 23 Apr 2025 14:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17FD280CFF;
+	Wed, 23 Apr 2025 14:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419858; cv=none; b=bqQNsOymB0DOTWmoIp1eatzzoKYW+0BuepvHwFFPu+1eKqLm1tt2f1Ut9CchR+R/kZsxsozoOPC1W0t0lfyJ1FCqsd08eAMlxfm9RlZznKaySG2yYzOCEMFXNNPaQZS7oh2dwjRYTZygwSVVMZMZMkMAptk0ugeI57BHn+yfsvs=
+	t=1745419869; cv=none; b=Qkmy1XiTgbq5xYF4LdlnI2wjZc5uSX1lo8q0cK7UXXxJvr6cZXCBkrF7bKbvIgES5Wa7aGstBqYtDVJTDB1NHxzBb+DkcckwKs7OS9MNzZ8vBJhx4HRSomUMpYtwfc438QwnygvAOgJ8LCu5b4cd+xsF/Ci9D42VF1BEFtlMOAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419858; c=relaxed/simple;
-	bh=+r5AFtB+hTLGloy/XwWZVf4+4oK5moIgy4QgMx9ivP4=;
+	s=arc-20240116; t=1745419869; c=relaxed/simple;
+	bh=3nL7GEnfTEIfxjQaf7myhvkOtAvRyYDpE+ro3j5BDYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHEVABRD4or9DssktDYOmg++SPWpMyj/fwPntg8BzhPr7VEkr17UeMfaeYYudPp1yHIRaKKJAUPIi2VtxWnDOMFTLr66573MXH4wnsKqBInOoGWesS3clG+gOxtI05el5vIGVfVhixqryW5uZaTa0/8xxl7CTXjVu/7VKXpd/H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWqdpPJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0B0C4CEE2;
-	Wed, 23 Apr 2025 14:50:57 +0000 (UTC)
+	 MIME-Version; b=rmxBECdCOUV1MqDYAn9Ka8ncR+YY1VCbQgHF3ncGE7mCK6ABWJX6EfY0nW8MY5IQQRjDCzrIxo8s6g9BgV77kdINLOfp216Plxf65+xiVRJFukMP2HDeN9HyP+6NFXkKIIseZZWStZJoOJ1/lo1lKpWiu4WqyPPv7T/nQ768IL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKv6NIZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2EEC4CEE8;
+	Wed, 23 Apr 2025 14:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419858;
-	bh=+r5AFtB+hTLGloy/XwWZVf4+4oK5moIgy4QgMx9ivP4=;
+	s=korg; t=1745419868;
+	bh=3nL7GEnfTEIfxjQaf7myhvkOtAvRyYDpE+ro3j5BDYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWqdpPJkII4sv0s8ju6yHCIS+SGWRfHPKZRgOVvuibf8nAX7pgxJRUGjdSl6WsVW+
-	 GKLYyTd7Bwrt449WT6kjAggtXjlSXHM5EC/q7HxcwV1+XuuKt1va57lxcYqgIdKurc
-	 9++3L0zdYHZzOQATQc+x+ZoksIc6uCu8nPFoVFco=
+	b=RKv6NIZChY7o1nfADk3kcV5rrVxU70bWK0vT1gMHjbZRf5qvOKR3uLwWgw8N5lYmZ
+	 miPU6KezIW1pGH5ehW5QtZC+mddc966GWswIJmN89qI4s0P9+RGRlqEOhJSYCuUbUc
+	 pTYJtclByDwc7PkkwbYofLp2QZHDqXXAqiCWIRX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jiri Pirko <jiri@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
-	Victor Nogueira <victor@mojatatu.com>,
 	Pedro Tammela <pctammela@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/393] rtnl: add helper to check if a notification is needed
-Date: Wed, 23 Apr 2025 16:38:29 +0200
-Message-ID: <20250423142643.821081244@linuxfoundation.org>
+Subject: [PATCH 6.6 014/393] net/sched: cls_api: conditional notification of events
+Date: Wed, 23 Apr 2025 16:38:30 +0200
+Message-ID: <20250423142643.860517417@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -69,49 +68,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 8439109b76a3c405808383bf9dd532fc4b9c2dbd ]
+[ Upstream commit 93775590b1ee98bf2976b1f4a1ed24e9ff76170f ]
 
-Building on the rtnl_has_listeners helper, add the rtnl_notify_needed
-helper to check if we can bail out early in the notification routines.
+As of today tc-filter/chain events are unconditionally built and sent to
+RTNLGRP_TC. As with the introduction of rtnl_notify_needed we can check
+before-hand if they are really needed. This will help to alleviate
+system pressure when filters are concurrently added without the rtnl
+lock as in tc-flower.
 
 Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Link: https://lore.kernel.org/r/20231208192847.714940-3-pctammela@mojatatu.com
+Link: https://lore.kernel.org/r/20231208192847.714940-8-pctammela@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 369609fc6272 ("tc: Ensure we have enough buffer space when sending filter netlink notifications")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/rtnetlink.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/sched/cls_api.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/rtnetlink.h b/include/linux/rtnetlink.h
-index a7d757e96c55f..0cbbbded03319 100644
---- a/include/linux/rtnetlink.h
-+++ b/include/linux/rtnetlink.h
-@@ -137,4 +137,19 @@ static inline int rtnl_has_listeners(const struct net *net, u32 group)
- 	return netlink_has_listeners(rtnl, group);
- }
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index 96c39e9a873c7..a0eb389b4fb4b 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2038,6 +2038,9 @@ static int tfilter_notify(struct net *net, struct sk_buff *oskb,
+ 	u32 portid = oskb ? NETLINK_CB(oskb).portid : 0;
+ 	int err = 0;
  
-+/**
-+ * rtnl_notify_needed - check if notification is needed
-+ * @net: Pointer to the net namespace
-+ * @nlflags: netlink ingress message flags
-+ * @group: rtnl group
-+ *
-+ * Based on the ingress message flags and rtnl group, returns true
-+ * if a notification is needed, false otherwise.
-+ */
-+static inline bool
-+rtnl_notify_needed(const struct net *net, u16 nlflags, u32 group)
-+{
-+	return (nlflags & NLM_F_ECHO) || rtnl_has_listeners(net, group);
-+}
++	if (!unicast && !rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC))
++		return 0;
 +
- #endif	/* __LINUX_RTNETLINK_H */
+ 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOBUFS;
+@@ -2067,6 +2070,9 @@ static int tfilter_del_notify(struct net *net, struct sk_buff *oskb,
+ 	u32 portid = oskb ? NETLINK_CB(oskb).portid : 0;
+ 	int err;
+ 
++	if (!rtnl_notify_needed(net, n->nlmsg_flags, RTNLGRP_TC))
++		return tp->ops->delete(tp, fh, last, rtnl_held, extack);
++
+ 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOBUFS;
+@@ -2891,6 +2897,9 @@ static int tc_chain_notify(struct tcf_chain *chain, struct sk_buff *oskb,
+ 	struct sk_buff *skb;
+ 	int err = 0;
+ 
++	if (!unicast && !rtnl_notify_needed(net, flags, RTNLGRP_TC))
++		return 0;
++
+ 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOBUFS;
+@@ -2920,6 +2929,9 @@ static int tc_chain_notify_delete(const struct tcf_proto_ops *tmplt_ops,
+ 	struct net *net = block->net;
+ 	struct sk_buff *skb;
+ 
++	if (!rtnl_notify_needed(net, flags, RTNLGRP_TC))
++		return 0;
++
+ 	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+ 	if (!skb)
+ 		return -ENOBUFS;
 -- 
 2.39.5
 
