@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-135792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 563C2A99078
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F15A98E8A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D346920B14
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 214357A4325
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898551F5435;
-	Wed, 23 Apr 2025 15:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF6C23D298;
+	Wed, 23 Apr 2025 14:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16L+wTzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZKCssAq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C6F280CFC;
-	Wed, 23 Apr 2025 15:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5CA481CD;
+	Wed, 23 Apr 2025 14:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420856; cv=none; b=pPVheeq4SUq1xZOx3yLzcXX0qc5WR6V3a1tEi+Bg7HSxAjiJ334k+4BcsOif8jDRNxgobf6ji5E6IQOeYg4Nk6KBXChISkMlBFPjwYuI2DQbxYeGynmAMgHUBXqIKYT9OwJMg+TF6P94ED5WUBI86G++YDpXUFShbXDE7hN37KM=
+	t=1745420202; cv=none; b=hsCaKs5rYqixAmaC+xqdFLTJxp2iSKysZ3R0fIpDkodx94/IaUGAVGsrU/nHCPWaG+bwdOpN9s7rRHiTubFfLu9hGI9WuPzRda6wQR4YJe4WBH3+Wsgm4D6EI53MhTpg9VUgZYjPXEw84O+bbAGMOugUJedvbTNAE2l8i22eE60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420856; c=relaxed/simple;
-	bh=DLh55972HUR7O6ni3lOFDFA/1BpIE3p94osVT5ZlUws=;
+	s=arc-20240116; t=1745420202; c=relaxed/simple;
+	bh=Fm68xKX4LDii94xv3RxQcnphb+2GwrFqRZRUYVxCe7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyPvcU0ClopVUsWwqhju5Sy2L3mrr08akOqQ49qbEUtTc6EKTXctd7fgXQYd0cnSw2uolo45rB7Mqq77FlATbB064jkirc3yFjS/Ty2sFWlKeZMPccZAqxr5JEq5Jg2pJXb66iGUb7NYmmJjkfeV3veYk0NpmnjLRaAhUW3xIO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16L+wTzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B98CC4CEE2;
-	Wed, 23 Apr 2025 15:07:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IjsPnwUaM2oD3JC5hijKABq99MXWYSCVPYFluV4HGMX6Dy7YyDFHSsrvHlQMxYY3ZOVtrom0rvOGcgwDrZ8zS/LIlbBM9RhIab8vvpgZQB+hAuWIWJDXyUVvVMR+qAJBirRVX29Unx4QMhWBIMdKgmZnXlCg3n1v130c+D8WfVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZKCssAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6124EC4CEE2;
+	Wed, 23 Apr 2025 14:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420855;
-	bh=DLh55972HUR7O6ni3lOFDFA/1BpIE3p94osVT5ZlUws=;
+	s=korg; t=1745420202;
+	bh=Fm68xKX4LDii94xv3RxQcnphb+2GwrFqRZRUYVxCe7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16L+wTzmsK0X52XXOKGvzM/QryO95xKKIRXmbUWBb6c6XymsCgIYxmfxOOgvw4+w/
-	 qctPQ6gLqBZ4aoS7J+z4H+i3TOlcxlQpmJt84dijDaJnWfsJ7cZq5SsqZthUPm8kix
-	 jIIStHFp0028YayYnuvN2CM8vj8JNWe4yYKh9Qeg=
+	b=zZKCssAqltPGCvzbHU1QT6ObmEdxTu9bRoLDwTC4x/ntTtxhG1iCazy70/qKAeDiC
+	 9PhSF8kubGL+LTmgV/gWrgFwlbw/+qjaZtfHN05pMB2FZT/I05+qkmOafy6X+ytFdK
+	 SHd3L3ccrBuQoPSPZ6sRISAid81pNVymQ3FW7wVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/393] ext4: dont treat fhandle lookup of ea_inode as FS corruption
-Date: Wed, 23 Apr 2025 16:40:14 +0200
-Message-ID: <20250423142648.230811537@linuxfoundation.org>
+Subject: [PATCH 6.1 026/291] HID: pidff: Convert infinite length from Linux API to PID standard
+Date: Wed, 23 Apr 2025 16:40:15 +0200
+Message-ID: <20250423142625.470467213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,148 +65,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit 642335f3ea2b3fd6dba03e57e01fa9587843a497 ]
+[ Upstream commit 37e0591fe44dce39d1ebc7a82d5b6e4dba1582eb ]
 
-A file handle that userspace provides to open_by_handle_at() can
-legitimately contain an outdated inode number that has since been reused
-for another purpose - that's why the file handle also contains a generation
-number.
+Software uses 0 as de-facto infinite lenght on Linux FF apis (SDL),
+Linux doesn't actually define anythi as of now, while USB PID defines
+NULL (0xffff). Most PID devices do not expect a 0-length effect and
+can't interpret it as infinite. This change fixes Force Feedback for
+most PID compliant devices.
 
-But if the inode number has been reused for an ea_inode, check_igot_inode()
-will notice, __ext4_iget() will go through ext4_error_inode(), and if the
-inode was newly created, it will also be marked as bad by iget_failed().
-This all happens before the point where the inode generation is checked.
+As most games depend on updating the values of already playing infinite
+effects, this is crucial to ensure they will actually work.
 
-ext4_error_inode() is supposed to only be used on filesystem corruption; it
-should not be used when userspace just got unlucky with a stale file
-handle. So when this happens, let __ext4_iget() just return an error.
+Previously, users had to rely on third-party software to do this conversion
+and make their PID devices usable.
 
-Fixes: b3e6bcb94590 ("ext4: add EA_INODE checking to ext4_iget()")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20241129-ext4-ignore-ea-fhandle-v1-1-e532c0d1cee0@google.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c | 68 ++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 48 insertions(+), 20 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 19d7bcf16ebb8..ddfeaf19bff1b 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4692,22 +4692,43 @@ static inline void ext4_inode_set_iversion_queried(struct inode *inode, u64 val)
- 		inode_set_iversion_queried(inode, val);
- }
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 3b4ee21cd8111..5fe4422bb5bad 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -21,6 +21,7 @@
+ #include "usbhid.h"
  
--static const char *check_igot_inode(struct inode *inode, ext4_iget_flags flags)
--
-+static int check_igot_inode(struct inode *inode, ext4_iget_flags flags,
-+			    const char *function, unsigned int line)
- {
-+	const char *err_str;
-+
- 	if (flags & EXT4_IGET_EA_INODE) {
--		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
--			return "missing EA_INODE flag";
-+		if (!(EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+			err_str = "missing EA_INODE flag";
-+			goto error;
-+		}
- 		if (ext4_test_inode_state(inode, EXT4_STATE_XATTR) ||
--		    EXT4_I(inode)->i_file_acl)
--			return "ea_inode with extended attributes";
-+		    EXT4_I(inode)->i_file_acl) {
-+			err_str = "ea_inode with extended attributes";
-+			goto error;
-+		}
- 	} else {
--		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL))
--			return "unexpected EA_INODE flag";
-+		if ((EXT4_I(inode)->i_flags & EXT4_EA_INODE_FL)) {
-+			/*
-+			 * open_by_handle_at() could provide an old inode number
-+			 * that has since been reused for an ea_inode; this does
-+			 * not indicate filesystem corruption
-+			 */
-+			if (flags & EXT4_IGET_HANDLE)
-+				return -ESTALE;
-+			err_str = "unexpected EA_INODE flag";
-+			goto error;
-+		}
-+	}
-+	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD)) {
-+		err_str = "unexpected bad inode w/o EXT4_IGET_BAD";
-+		goto error;
- 	}
--	if (is_bad_inode(inode) && !(flags & EXT4_IGET_BAD))
--		return "unexpected bad inode w/o EXT4_IGET_BAD";
--	return NULL;
-+	return 0;
-+
-+error:
-+	ext4_error_inode(inode, function, line, 0, err_str);
-+	return -EFSCORRUPTED;
- }
+ #define	PID_EFFECTS_MAX		64
++#define	PID_INFINITE		0xffff
  
- struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
-@@ -4719,7 +4740,6 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	struct ext4_inode_info *ei;
- 	struct ext4_super_block *es = EXT4_SB(sb)->s_es;
- 	struct inode *inode;
--	const char *err_str;
- 	journal_t *journal = EXT4_SB(sb)->s_journal;
- 	long ret;
- 	loff_t size;
-@@ -4748,10 +4768,10 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 	if (!inode)
- 		return ERR_PTR(-ENOMEM);
- 	if (!(inode->i_state & I_NEW)) {
--		if ((err_str = check_igot_inode(inode, flags)) != NULL) {
--			ext4_error_inode(inode, function, line, 0, err_str);
-+		ret = check_igot_inode(inode, flags, function, line);
-+		if (ret) {
- 			iput(inode);
--			return ERR_PTR(-EFSCORRUPTED);
-+			return ERR_PTR(ret);
- 		}
- 		return inode;
- 	}
-@@ -5023,13 +5043,21 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 		ret = -EFSCORRUPTED;
- 		goto bad_inode;
- 	}
--	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
--		ext4_error_inode(inode, function, line, 0, err_str);
--		ret = -EFSCORRUPTED;
--		goto bad_inode;
-+	ret = check_igot_inode(inode, flags, function, line);
-+	/*
-+	 * -ESTALE here means there is nothing inherently wrong with the inode,
-+	 * it's just not an inode we can return for an fhandle lookup.
-+	 */
-+	if (ret == -ESTALE) {
-+		brelse(iloc.bh);
-+		unlock_new_inode(inode);
-+		iput(inode);
-+		return ERR_PTR(-ESTALE);
- 	}
--
-+	if (ret)
-+		goto bad_inode;
- 	brelse(iloc.bh);
-+
- 	unlock_new_inode(inode);
- 	return inode;
+ /* Report usage table used to put reports into an array */
  
+@@ -301,7 +302,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 	pidff->set_effect_type->value[0] =
+ 		pidff->create_new_effect_type->value[0];
+-	pidff->set_effect[PID_DURATION].value[0] = effect->replay.length;
++
++	/* Convert infinite length from Linux API (0)
++	   to PID standard (NULL) if needed */
++	pidff->set_effect[PID_DURATION].value[0] =
++		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
++
+ 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
+ 	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
+ 		effect->trigger.interval;
 -- 
 2.39.5
 
