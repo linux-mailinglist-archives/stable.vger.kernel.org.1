@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B355FA98E14
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D22E5A991C4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46EF418959B0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314621B87DD2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A522820BC;
-	Wed, 23 Apr 2025 14:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438D28E5F5;
+	Wed, 23 Apr 2025 15:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0D2GTdn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQDZ1LRt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA391A9B39;
-	Wed, 23 Apr 2025 14:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FBF2798E3;
+	Wed, 23 Apr 2025 15:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419813; cv=none; b=M/hPF9fn3wER1j4jhpes4WeGihzJcug3J1QBGGRhpi4msIz0BNafsxmN3IVIajgEpNp1Okty8h+yIfMj5amxrwxhf8XQ4fzC+ZdsLv1PmC/qtp1J4AQWUIceERkqMixKxKG6Bz0FZ6+6W7D1ormHA2JksTbjXXbaczU32QRrRKQ=
+	t=1745421539; cv=none; b=OF3oNJN4iArfFI4dU0lluAN3imMFzveTNrpI1big68fPnTYFFFFHqa4Zpy01VOeVPkIJ3zyEP3rQnYUGGInOy880sajN/13RYlKyKsPZvpxFLYUfzM5k9+DeQ5gNH33oxXKlct6qI8QQCC+i9ibPB3n18FL8vOKCBjPgEBwBWnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419813; c=relaxed/simple;
-	bh=WFvKcK9DAKxzilwsaqngjmEgGkmtRxUCf4WNG27Z8n4=;
+	s=arc-20240116; t=1745421539; c=relaxed/simple;
+	bh=NTrhA1LC68tM7w4YInmesCQ4dRqESnYOb0Ril3YTrR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1surCDej4+otGUMycJYvwLi7GYzu6swC/9cYJ7JHQzZvBSHhHQ++weMuvrmb4iNsmWacfwziWqlJbSCSKiqI+v3Kiig5GMbYgcb+7rSM4XRc0WdO8Lp2H3sZP2WCiNYTONYLEgAYEC3nJb1wctNpC/LnxMSErIYRIreTNTftEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0D2GTdn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFE7C4AF09;
-	Wed, 23 Apr 2025 14:50:13 +0000 (UTC)
+	 MIME-Version; b=iS34CymEgHK49Q+KydMXp2auG9ZGlPLgQzNzCNb1sgMToP+fFHvI2Q7WwaqQngGMfV7WUnBaTSQosz34WdNXJ87MM5w323d4FVbHYLKFX8oUeC8AgGaKm2V+ZlkRS8LgV71Uo3g7mBNHdrfcEXPOW+CW/e13vzjWfi5SjXieOo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQDZ1LRt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34728C4CEE3;
+	Wed, 23 Apr 2025 15:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419813;
-	bh=WFvKcK9DAKxzilwsaqngjmEgGkmtRxUCf4WNG27Z8n4=;
+	s=korg; t=1745421539;
+	bh=NTrhA1LC68tM7w4YInmesCQ4dRqESnYOb0Ril3YTrR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0D2GTdn84b6OKUyTeACj1hG9tMbEJ81nAdW0gCvuPP+7EXN79NE2xTsg/zT6pn/j
-	 Fev/KGZjG9np/PWRuU9C2fJqH7xfJ9cPFh7QDoO/EtzOI/c3F6fGAoWHLUmiMxXsGi
-	 LZboFeS3i9x95M+kL+BjzdFZXg4sRP8IF2TG+C8g=
+	b=QQDZ1LRtL1CfkpFm/GwScHOtc+kjTJVBw7Qki1uuji2muyCJbDj60quUyVqFE+8bN
+	 bmpPYNhT51+CvuzWnLgPltmByx0URdfEgPtJwhVyoDeyaFwvRd/P4bfhbgttWCj89Q
+	 hrR7m8oZ7THtr+mV+QyJL0M7jtD2Jy5Er6sfIDDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/223] net: dsa: clean up FDB, MDB, VLAN entries on unbind
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 148/291] gve: handle overflow when reporting TX consumed descriptors
 Date: Wed, 23 Apr 2025 16:42:17 +0200
-Message-ID: <20250423142619.781448842@linuxfoundation.org>
+Message-ID: <20250423142630.448146254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Joshua Washington <joshwash@google.com>
 
-[ Upstream commit 7afb5fb42d4950f33af2732b8147c552659f79b7 ]
+commit 15970e1b23f5c25db88c613fddf9131de086f28e upstream.
 
-As explained in many places such as commit b117e1e8a86d ("net: dsa:
-delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
-the assumption that higher layers have balanced additions/deletions.
-As such, it only makes sense to be extremely vocal when those
-assumptions are violated and the driver unbinds with entries still
-present.
+When the tx tail is less than the head (in cases of wraparound), the TX
+consumed descriptor statistic in DQ will be reported as
+UINT32_MAX - head + tail, which is incorrect. Mask the difference of
+head and tail according to the ring size when reporting the statistic.
 
-But Ido Schimmel points out a very simple situation where that is wrong:
-https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
-(also briefly discussed by me in the aforementioned commit).
-
-Basically, while the bridge bypass operations are not something that DSA
-explicitly documents, and for the majority of DSA drivers this API
-simply causes them to go to promiscuous mode, that isn't the case for
-all drivers. Some have the necessary requirements for bridge bypass
-operations to do something useful - see dsa_switch_supports_uc_filtering().
-
-Although in tools/testing/selftests/net/forwarding/local_termination.sh,
-we made an effort to popularize better mechanisms to manage address
-filters on DSA interfaces from user space - namely macvlan for unicast,
-and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
-fact is that 'bridge fdb add ... self static local' also exists as
-kernel UAPI, and might be useful to someone, even if only for a quick
-hack.
-
-It seems counter-productive to block that path by implementing shim
-.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
-in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
-running, although we could do that.
-
-Accepting that cleanup is necessary seems to be the only option.
-Especially since we appear to be coming back at this from a different
-angle as well. Russell King is noticing that the WARN_ON() triggers even
-for VLANs:
-https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
-
-What happens in the bug report above is that dsa_port_do_vlan_del() fails,
-then the VLAN entry lingers on, and then we warn on unbind and leak it.
-
-This is not a straight revert of the blamed commit, but we now add an
-informational print to the kernel log (to still have a way to see
-that bugs exist), and some extra comments gathered from past years'
-experience, to justify the logic.
-
-Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212930.2956310-1-vladimir.oltean@nxp.com
+Cc: stable@vger.kernel.org
+Fixes: 2c9198356d56 ("gve: Add consumed counts to ethtool stats")
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250402001037.2717315-1-hramamurthy@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/dsa.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/google/gve/gve_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/dsa/dsa.c b/net/dsa/dsa.c
-index 1664547deffd0..b20be568b9d3b 100644
---- a/net/dsa/dsa.c
-+++ b/net/dsa/dsa.c
-@@ -1478,12 +1478,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
- 
- static void dsa_switch_release_ports(struct dsa_switch *ds)
- {
-+	struct dsa_mac_addr *a, *tmp;
- 	struct dsa_port *dp, *next;
-+	struct dsa_vlan *v, *n;
- 
- 	dsa_switch_for_each_port_safe(dp, next, ds) {
--		WARN_ON(!list_empty(&dp->fdbs));
--		WARN_ON(!list_empty(&dp->mdbs));
--		WARN_ON(!list_empty(&dp->vlans));
-+		/* These are either entries that upper layers lost track of
-+		 * (probably due to bugs), or installed through interfaces
-+		 * where one does not necessarily have to remove them, like
-+		 * ndo_dflt_fdb_add().
-+		 */
-+		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up unicast address %pM vid %u from port %d\n",
-+				 a->addr, a->vid, dp->index);
-+			list_del(&a->list);
-+			kfree(a);
-+		}
-+
-+		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up multicast address %pM vid %u from port %d\n",
-+				 a->addr, a->vid, dp->index);
-+			list_del(&a->list);
-+			kfree(a);
-+		}
-+
-+		/* These are entries that upper layers have lost track of,
-+		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
-+		 * having failed and the VLAN entry still lingering on.
-+		 */
-+		list_for_each_entry_safe(v, n, &dp->vlans, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up vid %u from port %d\n",
-+				 v->vid, dp->index);
-+			list_del(&v->list);
-+			kfree(v);
-+		}
-+
- 		list_del(&dp->list);
- 		kfree(dp);
- 	}
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -327,7 +327,9 @@ gve_get_ethtool_stats(struct net_device
+ 				 */
+ 				data[i++] = 0;
+ 				data[i++] = 0;
+-				data[i++] = tx->dqo_tx.tail - tx->dqo_tx.head;
++				data[i++] =
++					(tx->dqo_tx.tail - tx->dqo_tx.head) &
++					tx->mask;
+ 			}
+ 			do {
+ 				start =
 
 
 
