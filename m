@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D949A99300
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E53A98F0F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:03:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E86B89A1F07
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19301B83397
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7076428D82F;
-	Wed, 23 Apr 2025 15:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7225B280A5C;
+	Wed, 23 Apr 2025 14:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFX8d5fc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT/z4Fsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D88E27F4D9;
-	Wed, 23 Apr 2025 15:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEC127FD5B;
+	Wed, 23 Apr 2025 14:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421911; cv=none; b=lodRut/r0UKMfb3uDje+anqlANOUBFZ98zEBnLGgUdu0DVb+7MD7ZhNuAWuLPb5TLFc+9OoTNntDJWQyKkTUBNW0G8jSxmaFaFILH1nDc56QGeHsyedLXAww7G/hp7zN63a+HT8hdZQRXDq7BlrG5x8zOp5eGU+9IlkcXP3y2Cw=
+	t=1745420266; cv=none; b=F8OhUcUOJMpn4RV3uPjT4CtwormAS7LXq5WHzyzObj+MTYPoZlgPJRRdmz5g2YB3OTVTT9OSCr+RAKVFsIjwwhWK+gmbLUati27OSSj/xaPikupvgWF4l0iHeFzFSC/NUOOqFufbRSJD8m/QCZCajX8Qu5OMVUUO6IbG/czlydI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421911; c=relaxed/simple;
-	bh=JBaxcfzVqdQ5w1B2tSuN8VKhbBbpV0cj5bVnkX4B4jQ=;
+	s=arc-20240116; t=1745420266; c=relaxed/simple;
+	bh=Yo832697sqJs7kWAxwSRpFTENjg5Xtc89s/7CqvYR5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmWXYJRgt3C5ADqz7WiWUZqkZU0A2CesK59Oq9IBjN93pWWOK9YRnV1NmAlFeLP9d5Kp2l4ReR6rYjDoaoMvpwwUPPWWJb3266O53UgVvs3weiJ49ho9VCZwEOgo8N9LZi8/RLTIqtXQRzqa+7eLBI5xG+fy8xNi3wLdfYUJ6Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFX8d5fc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB5DC4CEE2;
-	Wed, 23 Apr 2025 15:25:10 +0000 (UTC)
+	 MIME-Version; b=p2hBvXLNcneIllIZicpcRkmtCR8D7Zl4qDUseyckjwks1Tl/OLE3docmhnAxwLSl4gz2Cx0j3L+CX1eiiWZ8RKC838PVubgJPZwIe0yNQCol8lZlYfC2tv37c9u4MAYYUUdLb6RjY/Xb7faiBWXrQ4ViEY64RE2FsKxyoMWCAFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT/z4Fsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74F2C4CEE3;
+	Wed, 23 Apr 2025 14:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421910;
-	bh=JBaxcfzVqdQ5w1B2tSuN8VKhbBbpV0cj5bVnkX4B4jQ=;
+	s=korg; t=1745420266;
+	bh=Yo832697sqJs7kWAxwSRpFTENjg5Xtc89s/7CqvYR5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFX8d5fc3RbQ5XJqi9Bd3FUbk85UYmUi5grvnJSNyT78xzS1KE5iZN1RAyx0e2htE
-	 AYcgkvZv8AoM42TaX/IUWdHgpafe0n4T5PXAXjnNbyxSA2r9g19ZzwV6UcWE8ugnKo
-	 p9XZU2P/JmImYOpKs1ytVcu5mLIdkbPVazFj7WBQ=
+	b=WT/z4Fsc17XIvtKnxUTlp4Mz6i7Pvc7R3J5QZ2ZoeqdolMCQoD8WRsfzfC4HJn7en
+	 ++wNEqtwzWr7xfPAf3ZHuYTHunNLBcuHqDStxMJbEGck66u/oc0MxGMPuEknBilWcl
+	 FVrzYej4c9jVQCorUXtv8ns7PuD7BWOmkJksgOmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 197/291] cpufreq/sched: Fix the usage of CPUFREQ_NEED_UPDATE_LIMITS
+	syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.12 114/223] isofs: Prevent the use of too small fid
 Date: Wed, 23 Apr 2025 16:43:06 +0200
-Message-ID: <20250423142632.435020018@linuxfoundation.org>
+Message-ID: <20250423142621.752391818@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit cfde542df7dd51d26cf667f4af497878ddffd85a ]
+commit 0405d4b63d082861f4eaff9d39c78ee9dc34f845 upstream.
 
-Commit 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused
-by need_freq_update") modified sugov_should_update_freq() to set the
-need_freq_update flag only for drivers with CPUFREQ_NEED_UPDATE_LIMITS
-set, but that flag generally needs to be set when the policy limits
-change because the driver callback may need to be invoked for the new
-limits to take effect.
+syzbot reported a slab-out-of-bounds Read in isofs_fh_to_parent. [1]
 
-However, if the return value of cpufreq_driver_resolve_freq() after
-applying the new limits is still equal to the previously selected
-frequency, the driver callback needs to be invoked only in the case
-when CPUFREQ_NEED_UPDATE_LIMITS is set (which means that the driver
-specifically wants its callback to be invoked every time the policy
-limits change).
+The handle_bytes value passed in by the reproducing program is equal to 12.
+In handle_to_path(), only 12 bytes of memory are allocated for the structure
+file_handle->f_handle member, which causes an out-of-bounds access when
+accessing the member parent_block of the structure isofs_fid in isofs,
+because accessing parent_block requires at least 16 bytes of f_handle.
+Here, fh_len is used to indirectly confirm that the value of handle_bytes
+is greater than 3 before accessing parent_block.
 
-Update the code accordingly to avoid missing policy limits changes for
-drivers without CPUFREQ_NEED_UPDATE_LIMITS.
+[1]
+BUG: KASAN: slab-out-of-bounds in isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
+Read of size 4 at addr ffff0000cc030d94 by task syz-executor215/6466
+CPU: 1 UID: 0 PID: 6466 Comm: syz-executor215 Not tainted 6.14.0-rc7-syzkaller-ga2392f333575 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call trace:
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:466 (C)
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0x198/0x550 mm/kasan/report.c:521
+ kasan_report+0xd8/0x138 mm/kasan/report.c:634
+ __asan_report_load4_noabort+0x20/0x2c mm/kasan/report_generic.c:380
+ isofs_fh_to_parent+0x1b8/0x210 fs/isofs/export.c:183
+ exportfs_decode_fh_raw+0x2dc/0x608 fs/exportfs/expfs.c:523
+ do_handle_to_path+0xa0/0x198 fs/fhandle.c:257
+ handle_to_path fs/fhandle.c:385 [inline]
+ do_handle_open+0x8cc/0xb8c fs/fhandle.c:403
+ __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
+ __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
+ __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
 
-Fixes: 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused by need_freq_update")
-Closes: https://lore.kernel.org/lkml/Z_Tlc6Qs-tYpxWYb@linaro.org/
-Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3010358.e9J7NaK4W3@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Allocated by task 6466:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x40/0x78 mm/kasan/common.c:68
+ kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:562
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:394
+ kasan_kmalloc include/linux/kasan.h:260 [inline]
+ __do_kmalloc_node mm/slub.c:4294 [inline]
+ __kmalloc_noprof+0x32c/0x54c mm/slub.c:4306
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ handle_to_path fs/fhandle.c:357 [inline]
+ do_handle_open+0x5a4/0xb8c fs/fhandle.c:403
+ __do_sys_open_by_handle_at fs/fhandle.c:443 [inline]
+ __se_sys_open_by_handle_at fs/fhandle.c:434 [inline]
+ __arm64_sys_open_by_handle_at+0x80/0x94 fs/fhandle.c:434
+ __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:49
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:132
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:744
+ el0t_64_sync_handler+0x84/0x108 arch/arm64/kernel/entry-common.c:762
+ el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:600
+
+Reported-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4d7cd7dd0ce1aa8d5c65
+Tested-by: syzbot+4d7cd7dd0ce1aa8d5c65@syzkaller.appspotmail.com
+CC: stable@vger.kernel.org
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/tencent_9C8CB8A7E7C6C512C7065DC98B6EDF6EC606@qq.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/isofs/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 542c0e82a9005..4dcb489733181 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -84,7 +84,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
+--- a/fs/isofs/export.c
++++ b/fs/isofs/export.c
+@@ -180,7 +180,7 @@ static struct dentry *isofs_fh_to_parent
+ 		return NULL;
  
- 	if (unlikely(sg_policy->limits_changed)) {
- 		sg_policy->limits_changed = false;
--		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
-+		sg_policy->need_freq_update = true;
- 		return true;
- 	}
- 
-@@ -96,10 +96,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
- 				   unsigned int next_freq)
- {
--	if (sg_policy->need_freq_update)
-+	if (sg_policy->need_freq_update) {
- 		sg_policy->need_freq_update = false;
--	else if (sg_policy->next_freq == next_freq)
-+		/*
-+		 * The policy limits have changed, but if the return value of
-+		 * cpufreq_driver_resolve_freq() after applying the new limits
-+		 * is still equal to the previously selected frequency, the
-+		 * driver callback need not be invoked unless the driver
-+		 * specifically wants that to happen on every update of the
-+		 * policy limits.
-+		 */
-+		if (sg_policy->next_freq == next_freq &&
-+		    !cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS))
-+			return false;
-+	} else if (sg_policy->next_freq == next_freq) {
- 		return false;
-+	}
- 
- 	sg_policy->next_freq = next_freq;
- 	sg_policy->last_freq_update_time = time;
--- 
-2.39.5
-
+ 	return isofs_export_iget(sb,
+-			fh_len > 2 ? ifid->parent_block : 0,
++			fh_len > 3 ? ifid->parent_block : 0,
+ 			ifid->parent_offset,
+ 			fh_len > 4 ? ifid->parent_generation : 0);
+ }
 
 
 
