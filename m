@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-135522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 325E1A98EC5
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7AA7A98E32
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23FEF1B84B9A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBD4E7A13BB
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D2B280A32;
-	Wed, 23 Apr 2025 14:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2B727FD74;
+	Wed, 23 Apr 2025 14:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQwGJAlr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udw/Vifs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CAF280A5A;
-	Wed, 23 Apr 2025 14:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298CB27FD62;
+	Wed, 23 Apr 2025 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420144; cv=none; b=FG987FNhVrzOcwNbZC1E5Y29HFmwiGFxOgX4R1TDJDzotPKgLzPu2UnfCwjY5ZUTk9aExyfF6ux8mBcX+nXQj3Hy0cciu0NB2znT5MtGjjMBeruiw80GrGw41f3ZLqvl1ako0xbK3P1eJZBktjIxZMLqH1j1T6/EwYK+hhrvX3c=
+	t=1745420003; cv=none; b=LxwEo5dXiJed2s/3J5ruM+LSrFLCvgnt/2Q6118rzWzB9FaOyFtJnZ+81Tu2L2/0O3YS766SUJOpss4uCS02vISK19f2nGk0WzQyWK1c8+xRFz85ovA9f5JvIf4PLZyQRQM3aGyhzSH8e+hbss3PuIipR1aAiQcVVxQxOEwEJVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420144; c=relaxed/simple;
-	bh=v3hbHNRYa3H0b7FNrxOBDF/dU7YwM4VBHXWVz/sRTSM=;
+	s=arc-20240116; t=1745420003; c=relaxed/simple;
+	bh=nWvnSj2GzwAKyxBHu3A1l0QBZRdNj513oxt2XG9Z01k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q42UncIFjl6YNzw7UGjxj9RGLBEaLMsS/v+h8BbQdUv5hOpGUTrnMkBK9jeYnVAc9AmyS4oG1ahCHx2AvSplskXVmsMWaMujMy1ITulk7ng8QWbfchhzwaajTyqoHLm/THsbMlW9XnzMEWjhMjXpRHrXD0LEKhl2jOIMxeUu9pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQwGJAlr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC3DC4CEE3;
-	Wed, 23 Apr 2025 14:55:44 +0000 (UTC)
+	 MIME-Version; b=om3bEYe5WueqcxkN3k/ZV47WcMAmFmRmE5BhhOfvE9DbmpzoLY/+Tb6npXwKN09eztVYw1G3Y6Mo22PteRSO/fZEzBGpzOahY58R6v/9S9DoBcy0Z19C8xtkieAm7RcchWdftTNepGnxxfhpVsqUqbsoP4sAjd0h2K0o4P9BVOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udw/Vifs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D546C4CEE3;
+	Wed, 23 Apr 2025 14:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420144;
-	bh=v3hbHNRYa3H0b7FNrxOBDF/dU7YwM4VBHXWVz/sRTSM=;
+	s=korg; t=1745420002;
+	bh=nWvnSj2GzwAKyxBHu3A1l0QBZRdNj513oxt2XG9Z01k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQwGJAlrWDss8hoHmMmAQ/QvITy+koX6O6mJWfM6Won7whO6c5t04v3UCSu7Nanch
-	 qXIUScBexYoLTVuh66HzN9JXaKeNLUt3plL7eRPZ8k6tDV3y5XAQh3ZKLh2Dpwe6YT
-	 Gy3XaK9ZY2g1M/qSYdb1IxlZoZ8HL+S6JdnwP0GM=
+	b=udw/VifsZh+xeUAKiUrmHMXXnhAb8C/bIIoTz+wTee9kLTWrhMlQw+F6C5i74Aynn
+	 073Z9iBskn1KXx5w/e8K7ExicWagnslxfFdmEKO5/ggYF2ogsg/1Urpw7tMNIh1mJA
+	 unZMenw05vcZAGTFVpl3MKw5ITlb9z2yHw5tOHvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Manikantan R <quic_manrav@quicinc.com>,
 	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 090/223] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
-Date: Wed, 23 Apr 2025 16:42:42 +0200
-Message-ID: <20250423142620.787951817@linuxfoundation.org>
+Subject: [PATCH 6.12 091/223] ASoC: codecs:lpass-wsa-macro: Fix logic of enabling vi channels
+Date: Wed, 23 Apr 2025 16:42:43 +0200
+Message-ID: <20250423142620.828620061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
 References: <20250423142617.120834124@linuxfoundation.org>
@@ -68,117 +69,166 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
+commit 7648beb65600220996ebb2da207610b1ff9b735e upstream.
 
-Currently the VI feedback rate is set to fixed 8K, fix this by getting
-the correct rate from params_rate.
+Existing code only configures one of WSA_MACRO_TX0 or WSA_MACRO_TX1
+paths eventhough we enable both of them. Fix this bug by adding proper
+checks and rearranging some of the common code to able to allow setting
+both TX0 and TX1 paths
 
-Without this patch incorrect rate will be set on the VI feedback
-recording resulting in rate miss match and audio artifacts.
+Without this patch only one channel gets enabled in VI path instead of 2
+channels. End result would be 1 channel recording instead of 2.
 
 Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
 Cc: stable@vger.kernel.org
+Co-developed-by: Manikantan R <quic_manrav@quicinc.com>
+Signed-off-by: Manikantan R <quic_manrav@quicinc.com>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
+Link: https://patch.msgid.link/20250403160209.21613-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |  108 +++++++++++++++++++++----------------
+ 1 file changed, 63 insertions(+), 45 deletions(-)
 
 --- a/sound/soc/codecs/lpass-wsa-macro.c
 +++ b/sound/soc/codecs/lpass-wsa-macro.c
-@@ -63,6 +63,10 @@
- #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
- #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
- #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
- #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
- #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
- #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
-@@ -407,6 +411,7 @@ struct wsa_macro {
- 	int ear_spkr_gain;
- 	int spkr_gain_offset;
- 	int spkr_mode;
-+	u32 pcm_rate_vi;
- 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
- 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
- 	struct regmap *regmap;
-@@ -1280,6 +1285,7 @@ static int wsa_macro_hw_params(struct sn
- 			       struct snd_soc_dai *dai)
- {
- 	struct snd_soc_component *component = dai->component;
-+	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 	int ret;
- 
- 	switch (substream->stream) {
-@@ -1292,6 +1298,11 @@ static int wsa_macro_hw_params(struct sn
- 			return ret;
- 		}
- 		break;
-+	case SNDRV_PCM_STREAM_CAPTURE:
-+		if (dai->id == WSA_MACRO_AIF_VI)
-+			wsa->pcm_rate_vi = params_rate(params);
-+
-+		break;
- 	default:
- 		break;
+@@ -1459,6 +1459,67 @@ static void wsa_macro_mclk_enable(struct
  	}
-@@ -1465,6 +1476,28 @@ static int wsa_macro_enable_vi_feedback(
+ }
+ 
++static void wsa_macro_enable_disable_vi_sense(struct snd_soc_component *component, bool enable,
++						u32 tx_reg0, u32 tx_reg1, u32 val)
++{
++	if (enable) {
++		/* Enable V&I sensing */
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
++					      val);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++	} else {
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
++					      CDC_WSA_TX_SPKR_PROT_RESET);
++		snd_soc_component_update_bits(component, tx_reg0,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		snd_soc_component_update_bits(component, tx_reg1,
++					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
++					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++	}
++}
++
++static void wsa_macro_enable_disable_vi_feedback(struct snd_soc_component *component,
++						 bool enable, u32 rate)
++{
++	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
++
++	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX0_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX1_SPKR_PROT_PATH_CTL, rate);
++
++	if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI]))
++		wsa_macro_enable_disable_vi_sense(component, enable,
++				CDC_WSA_TX2_SPKR_PROT_PATH_CTL,
++				CDC_WSA_TX3_SPKR_PROT_PATH_CTL, rate);
++}
++
+ static int wsa_macro_mclk_event(struct snd_soc_dapm_widget *w,
+ 				struct snd_kcontrol *kcontrol, int event)
+ {
+@@ -1475,7 +1536,6 @@ static int wsa_macro_enable_vi_feedback(
+ {
  	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
  	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 	u32 tx_reg0, tx_reg1;
-+	u32 rate_val;
-+
-+	switch (wsa->pcm_rate_vi) {
-+	case 8000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
-+		break;
-+	case 16000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
-+		break;
-+	case 24000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
-+		break;
-+	case 32000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
-+		break;
-+	case 48000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
-+		break;
-+	default:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
-+		break;
-+	}
+-	u32 tx_reg0, tx_reg1;
+ 	u32 rate_val;
  
- 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
- 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
-@@ -1476,7 +1509,7 @@ static int wsa_macro_enable_vi_feedback(
+ 	switch (wsa->pcm_rate_vi) {
+@@ -1499,56 +1559,14 @@ static int wsa_macro_enable_vi_feedback(
+ 		break;
+ 	}
  
+-	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX1_SPKR_PROT_PATH_CTL;
+-	} else if (test_bit(WSA_MACRO_TX1, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
+-		tx_reg0 = CDC_WSA_TX2_SPKR_PROT_PATH_CTL;
+-		tx_reg1 = CDC_WSA_TX3_SPKR_PROT_PATH_CTL;
+-	}
+-
  	switch (event) {
  	case SND_SOC_DAPM_POST_PMU:
--			/* Enable V&I sensing */
-+		/* Enable V&I sensing */
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
- 					      CDC_WSA_TX_SPKR_PROT_RESET);
-@@ -1485,10 +1518,10 @@ static int wsa_macro_enable_vi_feedback(
- 					      CDC_WSA_TX_SPKR_PROT_RESET);
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
-+					      rate_val);
- 		snd_soc_component_update_bits(component, tx_reg1,
- 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
-+					      rate_val);
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
- 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+ 		/* Enable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
+-					      rate_val);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_NO_RESET);
++		wsa_macro_enable_disable_vi_feedback(component, true, rate_val);
+ 		break;
+ 	case SND_SOC_DAPM_POST_PMD:
+ 		/* Disable V&I sensing */
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_RESET);
+-		snd_soc_component_update_bits(component, tx_reg0,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
+-		snd_soc_component_update_bits(component, tx_reg1,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
+-					      CDC_WSA_TX_SPKR_PROT_CLK_DISABLE);
++		wsa_macro_enable_disable_vi_feedback(component, false, rate_val);
+ 		break;
+ 	}
+ 
 
 
 
