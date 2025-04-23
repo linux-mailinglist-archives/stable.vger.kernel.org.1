@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0D7A9935D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:57:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E17F1A98ECD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237F81BA7539
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBAFF44790C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C420128D831;
-	Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0C8280CE6;
+	Wed, 23 Apr 2025 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqQ6k3rk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2Jg4aMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818DC28CF6E;
-	Wed, 23 Apr 2025 15:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A713E26A082;
+	Wed, 23 Apr 2025 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421918; cv=none; b=DYTGkYDgOmMTxtq8itXcbR0PcWvUGEC/BOzrWbCTtZpS2RUyBqK9p/wZXKykDlFxwWnrho3CyCz2qc0vcECAUPbo9WHAel/1//3nn7S/qxRHupCcQrOjskhQArsME5gdJso2KMSEWi95lRzDE792cM2hzucdYNJvty0uO+46We8=
+	t=1745420276; cv=none; b=WbSE1QJ1p4p8BJtXT0woD3EamWUIe9ovrmjYxOUZLewI/N26VmujCNS+MuHihNLP9YMJX7px2enRvP4AMbdwzOIOV9mFCu7w+5hk+VpYZikcgXvbW+qmx+A7zrdqnhyuVIuDnq0Hb62reba4ys2oSviOjRCwlcHeC+OBp6NQtUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421918; c=relaxed/simple;
-	bh=weZPZHcBcoIA11xlt2PlavBE+r2uUtltuYipPSF6WIQ=;
+	s=arc-20240116; t=1745420276; c=relaxed/simple;
+	bh=p+IelbYYNc+T0fInxWlk1P31FB3fw6NCCJ4LUff2Iuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDq6N91tdM5sWMQhpA3qzESuSzUnnG42omIJPgauZAj4Wsb4dCotgBrklRm3Ki2gVvAgaTRwpJ7hpK3W9PJPeT6LpQPdEDoK6gfasbx/zpiKH5mBSS0C6kFaeCj/zyeRFVbcYbh6vU1a4jgHtNimgj71zLWUQ3LnNk00RQMvwSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqQ6k3rk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACC8C4CEE2;
-	Wed, 23 Apr 2025 15:25:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FUxSTzBRmzEMF1dZWPjJFxuTfJ5gXxL/y4rT/DFV/k9aOBxXatYZvq1sLFG9L7Oxmp2PEly/vEmmux6j6d+uYLpiwiSn238++QqhCvxODb8JV47rslgwSSxgosGVeImHJ1mSMFq7vEZA3CVdqMLNYJwMbOvkAZTtl0ytI1Zs07w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2Jg4aMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39942C4CEE8;
+	Wed, 23 Apr 2025 14:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421916;
-	bh=weZPZHcBcoIA11xlt2PlavBE+r2uUtltuYipPSF6WIQ=;
+	s=korg; t=1745420276;
+	bh=p+IelbYYNc+T0fInxWlk1P31FB3fw6NCCJ4LUff2Iuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqQ6k3rkAAuCAmDcoWg++uhLQztTQfXEtfgtAw/O7QqzG4kSNjE3tj8VRaRCtkF4f
-	 a5DCMSfqliPa5y3WI8BGucRbIrUBqsfHfpUtUCGR7WMDED1cieYF/DTjXKaNa1/NDP
-	 4fU08B37xslT59ibEsKfhK678XCwNsOtLhmhz/I0=
+	b=f2Jg4aMvGpU0gd83nEIMGSITDW3Wo1J5pGDJhPn7BPRdR3M9XuMvr+NxPTaQ4f0ED
+	 hsxdMxQiZP8FMxGJCCANKHEnqTnXE82FuWSi6xAWs3t/420sJHuJMpLnSOctXroqgX
+	 Ge6JpAzE4sIcrtJIzOjJDo/fvUCuJ9y6JUcvBbiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 198/291] writeback: fix false warning in inode_to_wb()
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 115/223] loop: properly send KOBJ_CHANGED uevent for disk device
 Date: Wed, 23 Apr 2025 16:43:07 +0200
-Message-ID: <20250423142632.472445505@linuxfoundation.org>
+Message-ID: <20250423142621.794983088@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
+commit e7bc0010ceb403d025100698586c8e760921d471 upstream.
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+The original commit message and the wording "uncork" in the code comment
+indicate that it is expected that the suppressed event instances are
+automatically sent after unsuppressing.
+This is not the case, instead they are discarded.
+In effect this means that no "changed" events are emitted on the device
+itself by default.
+While each discovered partition does trigger a changed event on the
+device, devices without partitions don't have any event emitted.
 
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This makes udev miss the device creation and prompted workarounds in
+userspace. See the linked util-linux/losetup bug.
+
+Explicitly emit the events and drop the confusingly worded comments.
+
+Link: https://github.com/util-linux/util-linux/issues/2434
+Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/loop.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -241,6 +241,7 @@ static inline struct bdi_writeback *inod
- {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -573,8 +573,8 @@ static int loop_change_fd(struct loop_de
+ 
+ 	error = 0;
+ done:
+-	/* enable and uncork uevent now that we are done */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
++	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 	return error;
+ 
+ out_err:
+@@ -1034,8 +1034,8 @@ static int loop_configure(struct loop_de
+ 	if (partscan)
+ 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
+ 
+-	/* enable and uncork uevent now that we are done */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
++	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
+ 
+ 	loop_global_unlock(lo, is_loop);
+ 	if (partscan)
 
 
 
