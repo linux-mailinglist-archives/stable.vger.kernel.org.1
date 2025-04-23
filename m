@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-135553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD0DA98EBF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4D1A990B9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD66817A8E2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666531BA2278
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFD5280CEA;
-	Wed, 23 Apr 2025 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C7B28C5A0;
+	Wed, 23 Apr 2025 15:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5UBgQrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WP2nBZ7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAD6280CCD;
-	Wed, 23 Apr 2025 14:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06B228BAB7;
+	Wed, 23 Apr 2025 15:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420226; cv=none; b=MYO7RyVmDUibUsfRfYLxMA3Ts1bzhcrt1l5YbT+as+5NXht/q8aL1oLU6sCTQqIMTu0jKSklXWdj/UCXT98EzDCzNnT0NhUeklujv7YC3W9H7aJpBlIsvNwwiid58aCS1D/pgsfmtD+0uO/FDJRytKejPBUVERTen3DXtLwfeJQ=
+	t=1745420992; cv=none; b=W8dIdmbhX975xcecHo6ewDNBwzfCs0PJofMKfYCT93m9gu47rmUPdfP37kdcVuCLA5lJmGPwiJKbv+Jebxkz096xUdSiPfztqxcRJKFSi/i/eDb/XWItYO964zTwAR2rUgwKTRTFQJ2ysLy5uLSj9bO+LXigAtScKs2Q+Qh7sJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420226; c=relaxed/simple;
-	bh=fREVIJtKqWJsQjEJ9GP5yujG35tZXlEvX9i3PLjfnKc=;
+	s=arc-20240116; t=1745420992; c=relaxed/simple;
+	bh=hLBu7WK1WowL/iDw6KsdNpnY/twPdih5pKbgnf15+E4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eju3xOkINqjKj8KsbiGjb8l8qGzZ4rFlxq/R9V3Xhc8H2MjpQxpzmYZwRRYe40+dFRQlDlagSYu38FiIoySPT9PDMXLxeNfcgSoJqyoSytOP986fp9yjed1rkbqYD6Au02J7JzgXQK6LPpX5LhRtufKjrgDRiDdK0Eo06MmLLXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5UBgQrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC58C4CEEB;
-	Wed, 23 Apr 2025 14:57:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KfvweDBW/zGwfvwgox3tZzBmHQcwy1R2S/1KDa2LnGyCgkrDF2nAN2EeVOc2nqNPdyf9ljkm98u8WsaU2QdqDi9Sn2Zuf7ftjOBaXA9JlYVzuRUPacqH8RTSw3QWrWC2qSHwdbt83UFuYaJPH0AT7+ATr+PsWqVyYz2ksELyOGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WP2nBZ7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7373DC4CEE2;
+	Wed, 23 Apr 2025 15:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420226;
-	bh=fREVIJtKqWJsQjEJ9GP5yujG35tZXlEvX9i3PLjfnKc=;
+	s=korg; t=1745420991;
+	bh=hLBu7WK1WowL/iDw6KsdNpnY/twPdih5pKbgnf15+E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5UBgQrkq5iaP0j0U1wHOC0e9Dp7X3/biN6SjgATFbmDUnBYd4wFFrRGOAab2KQft
-	 QQnTlY1QBI7RjDTk2LYnlyVKKHUurtwqWS1sHN99A/YNTw9b4BTyqaqqVgm/fw9ALK
-	 MNUWBMj8DTYnWvCjuCOFXk2QB0tkCR5mBUdjwqjI=
+	b=WP2nBZ7pbWWZolYeYnSY0vtJXhsdU5Wgif68HlbrOqmVzIjdT8Cx+9c8wVxHhBPqJ
+	 mUfAhkTVJ0YmCnwmu9iVOPyYS+NnoGQb4OUsD00xq6xtc3S9Mzi+OwxSxbbj7FMRZk
+	 qS70a0Oy7b230asgXyjD01VPelj1HTKrzUGumI8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nolan Nicholson <nolananicholson@gmail.com>,
-	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
-	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
-	Paul Dino Jones <paul@spacefreak18.xyz>,
-	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
-	Pablo Cisneros <patchkez@protonmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/291] HID: pidff: Fix null pointer dereference in pidff_find_fields
-Date: Wed, 23 Apr 2025 16:40:17 +0200
-Message-ID: <20250423142625.550259232@linuxfoundation.org>
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 122/393] media: i2c: adv748x: Fix test pattern selection mask
+Date: Wed, 23 Apr 2025 16:40:18 +0200
+Message-ID: <20250423142648.405168012@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +63,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomasz Pakuła <forest10pl@gmail.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
+commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
 
-This function triggered a null pointer dereference if used to search for
-a report that isn't implemented on the device. This happened both for
-optional and required reports alike.
+The mask to select the test-pattern in register ADV748X_SDP_FRP is
+incorrect, it's the lower 3 bits which controls the pattern. The
+GENMASK() macro is used incorrectly and the generated mask is 0x0e
+instead of 0x07.
 
-The same logic was applied to pidff_find_special_field and although
-pidff_init_fields should return an error earlier if one of the required
-reports is missing, future modifications could change this logic and
-resurface this possible null pointer dereference again.
+The result is that not all test patterns are selectable, and that in
+some cases the wrong test pattern is activated. Fix this by correcting
+the GENMASK().
 
-LKML bug report:
-https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
-
-Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
-Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
-Reviewed-by: Michał Kopeć <michal@nozomi.space>
-Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
-Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
-Tested-by: Pablo Cisneros <patchkez@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: fixed tiny typo in commit log: my -> by]
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/i2c/adv748x/adv748x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
-index a01c1b2ab2f4c..26cb331b646ca 100644
---- a/drivers/hid/usbhid/hid-pidff.c
-+++ b/drivers/hid/usbhid/hid-pidff.c
-@@ -770,6 +770,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
- static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
- 			     struct hid_report *report, int count, int strict)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_fields, null report\n");
-+		return -1;
-+	}
-+
- 	int i, j, k, found;
+--- a/drivers/media/i2c/adv748x/adv748x.h
++++ b/drivers/media/i2c/adv748x/adv748x.h
+@@ -322,7 +322,7 @@ struct adv748x_state {
  
- 	for (k = 0; k < count; k++) {
-@@ -883,6 +888,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
- static struct hid_field *pidff_find_special_field(struct hid_report *report,
- 						  int usage, int enforce_min)
- {
-+	if (!report) {
-+		pr_debug("pidff_find_special_field, null report\n");
-+		return NULL;
-+	}
-+
- 	int i;
+ /* Free run pattern select */
+ #define ADV748X_SDP_FRP			0x14
+-#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
++#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
  
- 	for (i = 0; i < report->maxfield; i++) {
--- 
-2.39.5
-
+ /* Saturation */
+ #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
 
 
 
