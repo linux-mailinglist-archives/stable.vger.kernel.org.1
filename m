@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17F1A98ECD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B67A98FE6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBAFF44790C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33B2316BF37
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0C8280CE6;
-	Wed, 23 Apr 2025 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA61280A51;
+	Wed, 23 Apr 2025 15:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2Jg4aMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMORqya8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A713E26A082;
-	Wed, 23 Apr 2025 14:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C221EEA3E;
+	Wed, 23 Apr 2025 15:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420276; cv=none; b=WbSE1QJ1p4p8BJtXT0woD3EamWUIe9ovrmjYxOUZLewI/N26VmujCNS+MuHihNLP9YMJX7px2enRvP4AMbdwzOIOV9mFCu7w+5hk+VpYZikcgXvbW+qmx+A7zrdqnhyuVIuDnq0Hb62reba4ys2oSviOjRCwlcHeC+OBp6NQtUk=
+	t=1745420811; cv=none; b=VNIkAAdiccUvBXqaVSgXAi+limIhwCg/whCt0V8WZVB2/bhkn71fXICCPl4Ey82T0nokmVxzGA5AU73xW/gWX8snpuAzWTjkfYZndxywdZFIvfWEuA39KSIMjrU0dmK85ThiZRku9yjLc+22tU3XLbOl9L001gvxAfBh9lQn4TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420276; c=relaxed/simple;
-	bh=p+IelbYYNc+T0fInxWlk1P31FB3fw6NCCJ4LUff2Iuk=;
+	s=arc-20240116; t=1745420811; c=relaxed/simple;
+	bh=/y3PXEWiZYktXloAE/89xr5lUskF/Wo7xnE45lofjA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FUxSTzBRmzEMF1dZWPjJFxuTfJ5gXxL/y4rT/DFV/k9aOBxXatYZvq1sLFG9L7Oxmp2PEly/vEmmux6j6d+uYLpiwiSn238++QqhCvxODb8JV47rslgwSSxgosGVeImHJ1mSMFq7vEZA3CVdqMLNYJwMbOvkAZTtl0ytI1Zs07w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2Jg4aMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39942C4CEE8;
-	Wed, 23 Apr 2025 14:57:56 +0000 (UTC)
+	 MIME-Version; b=kcORDJXSaCZSfCeoh+aa1vP7R4YB2TuI4MosMcc00fAcqmqMZpBmM8ijwmzOpy6CL5d1NXljjr3sTFia80JkAxId1I5qPDwipEJybYnexBIKMLB6xo9qtN5TL8dZJhHSa+JS2uuRzuKXKFnlLDsZtqtQrKvn3qypoYwwE8e5NFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMORqya8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D21FC4CEE2;
+	Wed, 23 Apr 2025 15:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420276;
-	bh=p+IelbYYNc+T0fInxWlk1P31FB3fw6NCCJ4LUff2Iuk=;
+	s=korg; t=1745420811;
+	bh=/y3PXEWiZYktXloAE/89xr5lUskF/Wo7xnE45lofjA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2Jg4aMvGpU0gd83nEIMGSITDW3Wo1J5pGDJhPn7BPRdR3M9XuMvr+NxPTaQ4f0ED
-	 hsxdMxQiZP8FMxGJCCANKHEnqTnXE82FuWSi6xAWs3t/420sJHuJMpLnSOctXroqgX
-	 Ge6JpAzE4sIcrtJIzOjJDo/fvUCuJ9y6JUcvBbiA=
+	b=hMORqya8lt4O0bT4zlGjnLj6DR7SbzqqEKzvkicBotxxfUw0SOImIaZz9ba/iWnjn
+	 hFQ0hx6e/74fsnDn8zMYvf/5DqtCEyUGtmtKPuMG3PpSkqfhngQhW6XRAdJ0ovgr6w
+	 LvVJ8TApPJfKU2NzpYC9Y1RvjMKuD2bLrHpv9zS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 115/223] loop: properly send KOBJ_CHANGED uevent for disk device
-Date: Wed, 23 Apr 2025 16:43:07 +0200
-Message-ID: <20250423142621.794983088@linuxfoundation.org>
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 124/241] drm/msm/a6xx+: Dont let IB_SIZE overflow
+Date: Wed, 23 Apr 2025 16:43:08 +0200
+Message-ID: <20250423142625.641506990@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Rob Clark <robdclark@chromium.org>
 
-commit e7bc0010ceb403d025100698586c8e760921d471 upstream.
+[ Upstream commit 9d78f02503227d3554d26cf8ca73276105c98f3e ]
 
-The original commit message and the wording "uncork" in the code comment
-indicate that it is expected that the suppressed event instances are
-automatically sent after unsuppressing.
-This is not the case, instead they are discarded.
-In effect this means that no "changed" events are emitted on the device
-itself by default.
-While each discovered partition does trigger a changed event on the
-device, devices without partitions don't have any event emitted.
+IB_SIZE is only b0..b19.  Starting with a6xx gen3, additional fields
+were added above the IB_SIZE.  Accidentially setting them can cause
+badness.  Fix this by properly defining the CP_INDIRECT_BUFFER packet
+and using the generated builder macro to ensure unintended bits are not
+set.
 
-This makes udev miss the device creation and prompted workarounds in
-userspace. See the linked util-linux/losetup bug.
+v2: add missing type attribute for IB_BASE
+v3: fix offset attribute in xml
 
-Explicitly emit the events and drop the confusingly worded comments.
-
-Link: https://github.com/util-linux/util-linux/issues/2434
-Fixes: 498ef5c777d9 ("loop: suppress uevents while reconfiguring the device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Link: https://lore.kernel.org/r/20250415-loop-uevent-changed-v2-1-0c4e6a923b2a@linutronix.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Connor Abbott <cwabbott0@gmail.com>
+Fixes: a83366ef19ea ("drm/msm/a6xx: add A640/A650 to gpulist")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/643396/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c               | 8 ++++----
+ drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml | 7 +++++++
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -573,8 +573,8 @@ static int loop_change_fd(struct loop_de
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 0ae29a7c8a4d3..2a317cdb8eaa1 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -242,10 +242,10 @@ static void a6xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 				break;
+ 			fallthrough;
+ 		case MSM_SUBMIT_CMD_BUF:
+-			OUT_PKT7(ring, CP_INDIRECT_BUFFER_PFE, 3);
++			OUT_PKT7(ring, CP_INDIRECT_BUFFER, 3);
+ 			OUT_RING(ring, lower_32_bits(submit->cmd[i].iova));
+ 			OUT_RING(ring, upper_32_bits(submit->cmd[i].iova));
+-			OUT_RING(ring, submit->cmd[i].size);
++			OUT_RING(ring, A5XX_CP_INDIRECT_BUFFER_2_IB_SIZE(submit->cmd[i].size));
+ 			ibs++;
+ 			break;
+ 		}
+@@ -377,10 +377,10 @@ static void a7xx_submit(struct msm_gpu *gpu, struct msm_gem_submit *submit)
+ 				break;
+ 			fallthrough;
+ 		case MSM_SUBMIT_CMD_BUF:
+-			OUT_PKT7(ring, CP_INDIRECT_BUFFER_PFE, 3);
++			OUT_PKT7(ring, CP_INDIRECT_BUFFER, 3);
+ 			OUT_RING(ring, lower_32_bits(submit->cmd[i].iova));
+ 			OUT_RING(ring, upper_32_bits(submit->cmd[i].iova));
+-			OUT_RING(ring, submit->cmd[i].size);
++			OUT_RING(ring, A5XX_CP_INDIRECT_BUFFER_2_IB_SIZE(submit->cmd[i].size));
+ 			ibs++;
+ 			break;
+ 		}
+diff --git a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
+index 55a35182858cc..5a6ae9fc31945 100644
+--- a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
++++ b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
+@@ -2259,5 +2259,12 @@ opcode: CP_LOAD_STATE4 (30) (4 dwords)
+ 	</reg32>
+ </domain>
  
- 	error = 0;
- done:
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 	return error;
++<domain name="CP_INDIRECT_BUFFER" width="32" varset="chip" prefix="chip" variants="A5XX-">
++	<reg64 offset="0" name="IB_BASE" type="address"/>
++	<reg32 offset="2" name="2">
++		<bitfield name="IB_SIZE" low="0" high="19"/>
++	</reg32>
++</domain>
++
+ </database>
  
- out_err:
-@@ -1034,8 +1034,8 @@ static int loop_configure(struct loop_de
- 	if (partscan)
- 		clear_bit(GD_SUPPRESS_PART_SCAN, &lo->lo_disk->state);
- 
--	/* enable and uncork uevent now that we are done */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 0);
-+	kobject_uevent(&disk_to_dev(lo->lo_disk)->kobj, KOBJ_CHANGE);
- 
- 	loop_global_unlock(lo, is_loop);
- 	if (partscan)
+-- 
+2.39.5
+
 
 
 
