@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-136278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC71A9939B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 742EBA990FD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC6DA1BA4A68
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B88416932F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E251280A51;
-	Wed, 23 Apr 2025 15:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA29262FD6;
+	Wed, 23 Apr 2025 15:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8wh6mRm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbt9YEU1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1339027D763;
-	Wed, 23 Apr 2025 15:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C4157C9F;
+	Wed, 23 Apr 2025 15:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422127; cv=none; b=amLque8fPi4Kf4uIzup6VI0Br1pMjEDjd02l2gRKB+c8TSVyMcft/++zAqi5n2ZJUkuaJ/8A0k3NpBIi/5fItpwlujeJtw40/n4CRRuNp7iAYH/3o4uyXIK5cRAU/SoNmxSwfigJ/3kDZIyZRQeLb9QhIblZ/Lq3zCM0p264QD4=
+	t=1745421233; cv=none; b=ZDi7+DWlQbEUuj6K15XVQgZU1XQtXxOdU4FGPGf9WR4n6Dzh5VybaEORmK+hIYeKx8//y+hSEoj4wPOXyAGq0nA/lhxUNk5vJQ2IIjnuPXgXITxn9CAhbg82oCgx+HSjOHKFkpW1qbMbhgh/0slpxHwvqMeUO+5RDBjsz0IQIqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422127; c=relaxed/simple;
-	bh=XCfL0J3FCYPY8cCeEQPP6DlRx1QuIJDBEaKkyJR4VN4=;
+	s=arc-20240116; t=1745421233; c=relaxed/simple;
+	bh=6wDPrFu7U5frrKv/q4JG4lkHXIEr77Dsgu6dUDF3TPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u0xZfVbm6boE4mw55lN7PuHvtpuHRYlQQLM0SZMtmYkmhOTTkfEwxCt6yqOy5e4AuLL7Kx0Ns2ojpD7HrqPdNWagUDNgWCaSQKstLwY/ycqmAWIdIokEQ0cWT4relXia3Nao9ml16ksGfXiQ78QLDRNSQLX1GPIfBJuFVFiSTkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8wh6mRm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342B6C4CEE2;
-	Wed, 23 Apr 2025 15:28:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qOgvRokiWU/44OMoGi3pagkecI/KVYfzBU0PAu+U8Rm5ce79VDlU7vcyWS+7fSmEFZ8X+O9radZXlrTNvrRyLw7epxVmtoJ9SuPBcdegDmBReazYnBV7moXmDIs7PJKs1JdvY0L5bLWDPSFws7ZBuRnhuh2I0JIVOT6xzfUtD4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbt9YEU1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF27FC4CEE3;
+	Wed, 23 Apr 2025 15:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422125;
-	bh=XCfL0J3FCYPY8cCeEQPP6DlRx1QuIJDBEaKkyJR4VN4=;
+	s=korg; t=1745421233;
+	bh=6wDPrFu7U5frrKv/q4JG4lkHXIEr77Dsgu6dUDF3TPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8wh6mRmcE71mQEzFEPu/ZxpX52VK7ffoYlggBGriruLhIPZop+1c+MAhVP8tDAMA
-	 4wXH6ameNR9rsoaF02NOzXNtdm3PXH3ac5Y+J7CTlwghPPZ1Y4uLEM/nHhP5u8Gozo
-	 xQwcLymd570qI0/njXkOzTdpdxMGSHM3Ah0PSBJo=
+	b=Lbt9YEU1dcIW0bhC0St6xy1woUe2mldTdWEe7Yq3HWgemmkVi2rhtRAym6AqB1wE9
+	 jQQ5d2XQSVNYfZs5uPN+xRxR7N1sKyR38ol1ZJSSB5Y2rmfnzM/eYBtrcXyTmYYpPk
+	 fDt3XELFmE9LF1DhTzqLmCyOhp7eDSy9URi68/2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Stable@vger.kernel.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.1 241/291] drm/nouveau: prime: fix ttm_bo_delayed_delete oops
-Date: Wed, 23 Apr 2025 16:43:50 +0200
-Message-ID: <20250423142634.266550834@linuxfoundation.org>
+	Yijun Shen <Yijun.Shen@dell.com>,
+	Yijun Shen <Yijun_Shen@Dell.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.14 167/241] platform/x86: amd: pmf: Fix STT limits
+Date: Wed, 23 Apr 2025 16:43:51 +0200
+Message-ID: <20250423142627.352793592@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,111 +65,155 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 8ec0fbb28d049273bfd4f1e7a5ae4c74884beed3 upstream.
+commit fcf27a6a926fd9eeba39e9c3fde43c9298fe284e upstream.
 
-Fix an oops in ttm_bo_delayed_delete which results from dererencing a
-dangling pointer:
+On some platforms it has been observed that STT limits are not being
+applied properly causing poor performance as power limits are set too low.
 
-Oops: general protection fault, probably for non-canonical address 0x6b6b6b6b6b6b6b7b: 0000 [#1] PREEMPT SMP
-CPU: 4 UID: 0 PID: 1082 Comm: kworker/u65:2 Not tainted 6.14.0-rc4-00267-g505460b44513-dirty #216
-Hardware name: LENOVO 82N6/LNVNB161216, BIOS GKCN65WW 01/16/2024
-Workqueue: ttm ttm_bo_delayed_delete [ttm]
-RIP: 0010:dma_resv_iter_first_unlocked+0x55/0x290
-Code: 31 f6 48 c7 c7 00 2b fa aa e8 97 bd 52 ff e8 a2 c1 53 00 5a 85 c0 74 48 e9 88 01 00 00 4c 89 63 20 4d 85 e4 0f 84 30 01 00 00 <41> 8b 44 24 10 c6 43 2c 01 48 89 df 89 43 28 e8 97 fd ff ff 4c 8b
-RSP: 0018:ffffbf9383473d60 EFLAGS: 00010202
-RAX: 0000000000000001 RBX: ffffbf9383473d88 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffbf9383473d78 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 6b6b6b6b6b6b6b6b
-R13: ffffa003bbf78580 R14: ffffa003a6728040 R15: 00000000000383cc
-FS:  0000000000000000(0000) GS:ffffa00991c00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000758348024dd0 CR3: 000000012c259000 CR4: 0000000000f50ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x19/0x26
- ? die_addr+0x3d/0x70
- ? exc_general_protection+0x159/0x460
- ? asm_exc_general_protection+0x27/0x30
- ? dma_resv_iter_first_unlocked+0x55/0x290
- dma_resv_wait_timeout+0x56/0x100
- ttm_bo_delayed_delete+0x69/0xb0 [ttm]
- process_one_work+0x217/0x5c0
- worker_thread+0x1c8/0x3d0
- ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
- kthread+0x10b/0x240
- ? kthreads_online_cpu+0x140/0x140
- ret_from_fork+0x40/0x70
- ? kthreads_online_cpu+0x140/0x140
- ret_from_fork_asm+0x11/0x20
- </TASK>
+STT limits that are sent to the platform are supposed to be in Q8.8
+format.  Convert them before sending.
 
-The cause of this is:
-
-- drm_prime_gem_destroy calls dma_buf_put(dma_buf) which releases the
-  reference to the shared dma_buf. The reference count is 0, so the
-  dma_buf is destroyed, which in turn decrements the corresponding
-  amdgpu_bo reference count to 0, and the amdgpu_bo is destroyed -
-  calling drm_gem_object_release then dma_resv_fini (which destroys the
-  reservation object), then finally freeing the amdgpu_bo.
-
-- nouveau_bo obj->bo.base.resv is now a dangling pointer to the memory
-  formerly allocated to the amdgpu_bo.
-
-- nouveau_gem_object_del calls ttm_bo_put(&nvbo->bo) which calls
-  ttm_bo_release, which schedules ttm_bo_delayed_delete.
-
-- ttm_bo_delayed_delete runs and dereferences the dangling resv pointer,
-  resulting in a general protection fault.
-
-Fix this by moving the drm_prime_gem_destroy call from
-nouveau_gem_object_del to nouveau_bo_del_ttm. This ensures that it will
-be run after ttm_bo_delayed_delete.
-
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Fixes: 22b33e8ed0e3 ("nouveau: add PRIME support")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3937
-Cc: Stable@vger.kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/Z-P4epVK8k7tFZ7C@debian.local
+Reported-by: Yijun Shen <Yijun.Shen@dell.com>
+Fixes: 7c45534afa443 ("platform/x86/amd/pmf: Add support for PMF Policy Binary")
+Cc: stable@vger.kernel.org
+Tested-by: Yijun Shen <Yijun_Shen@Dell.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250407181915.1482450-1-superm1@kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c  |    3 +++
- drivers/gpu/drm/nouveau/nouveau_gem.c |    3 ---
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/platform/x86/amd/pmf/auto-mode.c |    4 ++--
+ drivers/platform/x86/amd/pmf/cnqf.c      |    8 ++++----
+ drivers/platform/x86/amd/pmf/core.c      |   14 ++++++++++++++
+ drivers/platform/x86/amd/pmf/pmf.h       |    1 +
+ drivers/platform/x86/amd/pmf/sps.c       |   12 ++++++++----
+ drivers/platform/x86/amd/pmf/tee-if.c    |    6 ++++--
+ 6 files changed, 33 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -143,6 +143,9 @@ nouveau_bo_del_ttm(struct ttm_buffer_obj
- 	nouveau_bo_del_io_reserve_lru(bo);
- 	nv10_bo_put_tile_region(dev, nvbo->tile, NULL);
+--- a/drivers/platform/x86/amd/pmf/auto-mode.c
++++ b/drivers/platform/x86/amd/pmf/auto-mode.c
+@@ -120,9 +120,9 @@ static void amd_pmf_set_automode(struct
+ 	amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pwr_ctrl->sppt_apu_only, NULL);
+ 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pwr_ctrl->stt_min, NULL);
+ 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+-			 pwr_ctrl->stt_skin_temp[STT_TEMP_APU], NULL);
++			 fixp_q88_fromint(pwr_ctrl->stt_skin_temp[STT_TEMP_APU]), NULL);
+ 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+-			 pwr_ctrl->stt_skin_temp[STT_TEMP_HS2], NULL);
++			 fixp_q88_fromint(pwr_ctrl->stt_skin_temp[STT_TEMP_HS2]), NULL);
  
-+	if (bo->base.import_attach)
-+		drm_prime_gem_destroy(&bo->base, bo->sg);
+ 	if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
+ 		apmf_update_fan_idx(dev, config_store.mode_set[idx].fan_control.manual,
+--- a/drivers/platform/x86/amd/pmf/cnqf.c
++++ b/drivers/platform/x86/amd/pmf/cnqf.c
+@@ -81,10 +81,10 @@ static int amd_pmf_set_cnqf(struct amd_p
+ 	amd_pmf_send_cmd(dev, SET_SPPT, false, pc->sppt, NULL);
+ 	amd_pmf_send_cmd(dev, SET_SPPT_APU_ONLY, false, pc->sppt_apu_only, NULL);
+ 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false, pc->stt_min, NULL);
+-	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, pc->stt_skin_temp[STT_TEMP_APU],
+-			 NULL);
+-	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, pc->stt_skin_temp[STT_TEMP_HS2],
+-			 NULL);
++	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
++			 fixp_q88_fromint(pc->stt_skin_temp[STT_TEMP_APU]), NULL);
++	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
++			 fixp_q88_fromint(pc->stt_skin_temp[STT_TEMP_HS2]), NULL);
+ 
+ 	if (is_apmf_func_supported(dev, APMF_FUNC_SET_FAN_IDX))
+ 		apmf_update_fan_idx(dev,
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -176,6 +176,20 @@ static void __maybe_unused amd_pmf_dump_
+ 	dev_dbg(dev->dev, "AMD_PMF_REGISTER_MESSAGE:%x\n", value);
+ }
+ 
++/**
++ * fixp_q88_fromint: Convert integer to Q8.8
++ * @val: input value
++ *
++ * Converts an integer into binary fixed point format where 8 bits
++ * are used for integer and 8 bits are used for the decimal.
++ *
++ * Return: unsigned integer converted to Q8.8 format
++ */
++u32 fixp_q88_fromint(u32 val)
++{
++	return val << 8;
++}
 +
- 	/*
- 	 * If nouveau_bo_new() allocated this buffer, the GEM object was never
- 	 * initialized, so don't attempt to release it.
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -87,9 +87,6 @@ nouveau_gem_object_del(struct drm_gem_ob
- 		return;
- 	}
+ int amd_pmf_send_cmd(struct amd_pmf_dev *dev, u8 message, bool get, u32 arg, u32 *data)
+ {
+ 	int rc;
+--- a/drivers/platform/x86/amd/pmf/pmf.h
++++ b/drivers/platform/x86/amd/pmf/pmf.h
+@@ -777,6 +777,7 @@ int apmf_install_handler(struct amd_pmf_
+ int apmf_os_power_slider_update(struct amd_pmf_dev *dev, u8 flag);
+ int amd_pmf_set_dram_addr(struct amd_pmf_dev *dev, bool alloc_buffer);
+ int amd_pmf_notify_sbios_heartbeat_event_v2(struct amd_pmf_dev *dev, u8 flag);
++u32 fixp_q88_fromint(u32 val);
  
--	if (gem->import_attach)
--		drm_prime_gem_destroy(gem, nvbo->bo.sg);
--
- 	ttm_bo_put(&nvbo->bo);
+ /* SPS Layer */
+ int amd_pmf_get_pprof_modes(struct amd_pmf_dev *pmf);
+--- a/drivers/platform/x86/amd/pmf/sps.c
++++ b/drivers/platform/x86/amd/pmf/sps.c
+@@ -198,9 +198,11 @@ static void amd_pmf_update_slider_v2(str
+ 	amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
+ 			 apts_config_store.val[idx].stt_min_limit, NULL);
+ 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+-			 apts_config_store.val[idx].stt_skin_temp_limit_apu, NULL);
++			 fixp_q88_fromint(apts_config_store.val[idx].stt_skin_temp_limit_apu),
++			 NULL);
+ 	amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+-			 apts_config_store.val[idx].stt_skin_temp_limit_hs2, NULL);
++			 fixp_q88_fromint(apts_config_store.val[idx].stt_skin_temp_limit_hs2),
++			 NULL);
+ }
  
- 	pm_runtime_mark_last_busy(dev);
+ void amd_pmf_update_slider(struct amd_pmf_dev *dev, bool op, int idx,
+@@ -217,9 +219,11 @@ void amd_pmf_update_slider(struct amd_pm
+ 		amd_pmf_send_cmd(dev, SET_STT_MIN_LIMIT, false,
+ 				 config_store.prop[src][idx].stt_min, NULL);
+ 		amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
+-				 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU], NULL);
++				 fixp_q88_fromint(config_store.prop[src][idx].stt_skin_temp[STT_TEMP_APU]),
++				 NULL);
+ 		amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
+-				 config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2], NULL);
++				 fixp_q88_fromint(config_store.prop[src][idx].stt_skin_temp[STT_TEMP_HS2]),
++				 NULL);
+ 	} else if (op == SLIDER_OP_GET) {
+ 		amd_pmf_send_cmd(dev, GET_SPL, true, ARG_NONE, &table->prop[src][idx].spl);
+ 		amd_pmf_send_cmd(dev, GET_FPPT, true, ARG_NONE, &table->prop[src][idx].fppt);
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -123,7 +123,8 @@ static void amd_pmf_apply_policies(struc
+ 
+ 		case PMF_POLICY_STT_SKINTEMP_APU:
+ 			if (dev->prev_data->stt_skintemp_apu != val) {
+-				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false, val, NULL);
++				amd_pmf_send_cmd(dev, SET_STT_LIMIT_APU, false,
++						 fixp_q88_fromint(val), NULL);
+ 				dev_dbg(dev->dev, "update STT_SKINTEMP_APU: %u\n", val);
+ 				dev->prev_data->stt_skintemp_apu = val;
+ 			}
+@@ -131,7 +132,8 @@ static void amd_pmf_apply_policies(struc
+ 
+ 		case PMF_POLICY_STT_SKINTEMP_HS2:
+ 			if (dev->prev_data->stt_skintemp_hs2 != val) {
+-				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false, val, NULL);
++				amd_pmf_send_cmd(dev, SET_STT_LIMIT_HS2, false,
++						 fixp_q88_fromint(val), NULL);
+ 				dev_dbg(dev->dev, "update STT_SKINTEMP_HS2: %u\n", val);
+ 				dev->prev_data->stt_skintemp_hs2 = val;
+ 			}
 
 
 
