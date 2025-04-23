@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-136066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D97A991C1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC05A99110
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B60C178568
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B9C7922C32
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF0829617A;
-	Wed, 23 Apr 2025 15:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212C42900A6;
+	Wed, 23 Apr 2025 15:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqFWUSSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hchotGBr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADD71EEA3E;
-	Wed, 23 Apr 2025 15:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D262D28B4EA;
+	Wed, 23 Apr 2025 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421566; cv=none; b=YoemuBGQRD3nKTfswyB0xWbNyb/7dRHQOebok3IAm2R9hBVuUpbYRvjoB814UD22JVQAUDshpS+rZhKMmMMI/8Dn1nKgAMzICF4P4l1yNd6AGze5Gnl0rBR+1KcXnEuiQk/Oa05dJlUmtkPftUg0hXENfz0H86vC+Q+BlQFi/QQ=
+	t=1745421017; cv=none; b=hfN9zSiMEhuZuLJWFMyzJwB3lMSy03TtSQDT/qjrdj1gbEX3AfkT/Yko3u8ZANsKs1Y2ZnwiR2DLy+dNIHqCfZPTHDN0WWy1wieglYT9u60dz0r2H11Ka7CUc31+wsuySTaa6sctUZVWFO9pSqEBNVNkKvVkrsuClS9Jzo+qQ2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421566; c=relaxed/simple;
-	bh=LyhpGiE1d3gDrgYiviMOR0aUBTHHQWqdww2FmAJ9RE8=;
+	s=arc-20240116; t=1745421017; c=relaxed/simple;
+	bh=lMlNfIdu8R94bOj1BW4XAAu1XHHhRzcDm4YY4U3geTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex8FBIEKNJw4aDVWuc8yfKWNP1jdC/lnO9cebybQ6FYpeQU1QPMqKWCd0YdfjLPft11SERIRcPWlHAygX4q2oXTJU0Gd86MzcqeNJ583Pkw2MkBHLEdIv7/CiGpj0WwBXt+EHMQRoAWYCUo+Blc7Wsub507lOL+KHftDl0j8ey0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqFWUSSC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817B7C4CEE2;
-	Wed, 23 Apr 2025 15:19:25 +0000 (UTC)
+	 MIME-Version; b=svGCdylMYqXE3g6oXU3r/NhBJxJYVaIsP32Tf3cbDqhlwQ+7L5ecBDOBCWZb9ybtWOJO+JCmngHGmpiW9V5yLFRQCMRdbPlBHBdGCrqp8f3c2aXdtkTFwF9627usO4x5MTFJsdelR4UnTKQFWilTsEkScDAlWrZD3XQDvqwijCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hchotGBr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9A8C4CEE2;
+	Wed, 23 Apr 2025 15:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421565;
-	bh=LyhpGiE1d3gDrgYiviMOR0aUBTHHQWqdww2FmAJ9RE8=;
+	s=korg; t=1745421017;
+	bh=lMlNfIdu8R94bOj1BW4XAAu1XHHhRzcDm4YY4U3geTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqFWUSSCbF1LxXnoghOgEnRPLEjJ803HtDZXNd/8tOP/yC63isWuCyXUrYkYCQc/h
-	 qZiEUKmwM+R6q9lVpxorhSnopV+L1ToaRUnIF4JlzYnSZC5E3arXe+o/g/6YcmeXeI
-	 iUohAZypWyTeFp2KFfPgZd41wVsXMwRWaJhXIpzE=
+	b=hchotGBrIc/NXETEIF6N3IFoybFbFLlCras4KQU1lWm8iXY4LQOcNl0XqC/8YjR4v
+	 Ke+vHOGehK72sLjSWB5ZANxFU5T8G6c/TzLrtkqiNT6tC6hG7w/sq8c5S1s+/aom57
+	 QIIr17DykKzrFIk2T3ta8Leu7i7AJQnVcCkwQTWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 194/393] mm/userfaultfd: fix release hang over concurrent GUP
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 101/291] mptcp: sockopt: fix getting IPV6_V6ONLY
 Date: Wed, 23 Apr 2025 16:41:30 +0200
-Message-ID: <20250423142651.401346991@linuxfoundation.org>
+Message-ID: <20250423142628.478440049@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,125 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit fe4cdc2c4e248f48de23bc778870fd71e772a274 upstream.
+commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
 
-This patch should fix a possible userfaultfd release() hang during
-concurrent GUP.
+When adding a socket option support in MPTCP, both the get and set parts
+are supposed to be implemented.
 
-This problem was initially reported by Dimitris Siakavaras in July 2023
-[1] in a firecracker use case.  Firecracker has a separate process
-handling page faults remotely, and when the process releases the
-userfaultfd it can race with a concurrent GUP from KVM trying to fault in
-a guest page during the secondary MMU page fault process.
+IPV6_V6ONLY support for the setsockopt part has been added a while ago,
+but it looks like the get part got forgotten. It should have been
+present as a way to verify a setting has been set as expected, and not
+to act differently from TCP or any other socket types.
 
-A similar problem was reported recently again by Jinjiang Tu in March 2025
-[2], even though the race happened this time with a mlockall() operation,
-which does GUP in a similar fashion.
+Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
+to check the default value, before doing extra actions. On Linux, the
+default value is 0, but this can be changed with the net.ipv6.bindv6only
+sysctl knob. On Windows, it is set to 1 by default. So supporting the
+get part, like for all other socket options, is important.
 
-In 2017, commit 656710a60e36 ("userfaultfd: non-cooperative: closing the
-uffd without triggering SIGBUS") was trying to fix this issue.  AFAIU,
-that fixes well the fault paths but may not work yet for GUP.  In GUP, the
-issue is NOPAGE will be almost treated the same as "page fault resolved"
-in faultin_page(), then the GUP will follow page again, seeing page
-missing, and it'll keep going into a live lock situation as reported.
+Everything was in place to expose it, just the last step was missing.
+Only new code is added to cover this specific getsockopt(), that seems
+safe.
 
-This change makes core mm return RETRY instead of NOPAGE for both the GUP
-and fault paths, proactively releasing the mmap read lock.  This should
-guarantee the other release thread make progress on taking the write lock
-and avoid the live lock even for GUP.
-
-When at it, rearrange the comments to make sure it's uptodate.
-
-[1] https://lore.kernel.org/r/79375b71-db2e-3e66-346b-254c90d915e2@cslab.ece.ntua.gr
-[2] https://lore.kernel.org/r/20250307072133.3522652-1-tujinjiang@huawei.com
-
-Link: https://lkml.kernel.org/r/20250312145131.1143062-1-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Jinjiang Tu <tujinjiang@huawei.com>
-Cc: Dimitris Siakavaras <jimsiak@cslab.ece.ntua.gr>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/userfaultfd.c |   51 +++++++++++++++++++++++++--------------------------
- 1 file changed, 25 insertions(+), 26 deletions(-)
+ net/mptcp/sockopt.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -452,32 +452,6 @@ vm_fault_t handle_userfault(struct vm_fa
- 		goto out;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -1271,6 +1271,20 @@ static int mptcp_getsockopt_v4(struct mp
+ 	return -EOPNOTSUPP;
+ }
  
- 	/*
--	 * If it's already released don't get it. This avoids to loop
--	 * in __get_user_pages if userfaultfd_release waits on the
--	 * caller of handle_userfault to release the mmap_lock.
--	 */
--	if (unlikely(READ_ONCE(ctx->released))) {
--		/*
--		 * Don't return VM_FAULT_SIGBUS in this case, so a non
--		 * cooperative manager can close the uffd after the
--		 * last UFFDIO_COPY, without risking to trigger an
--		 * involuntary SIGBUS if the process was starting the
--		 * userfaultfd while the userfaultfd was still armed
--		 * (but after the last UFFDIO_COPY). If the uffd
--		 * wasn't already closed when the userfault reached
--		 * this point, that would normally be solved by
--		 * userfaultfd_must_wait returning 'false'.
--		 *
--		 * If we were to return VM_FAULT_SIGBUS here, the non
--		 * cooperative manager would be instead forced to
--		 * always call UFFDIO_UNREGISTER before it can safely
--		 * close the uffd.
--		 */
--		ret = VM_FAULT_NOPAGE;
--		goto out;
--	}
--
--	/*
- 	 * Check that we can return VM_FAULT_RETRY.
- 	 *
- 	 * NOTE: it should become possible to return VM_FAULT_RETRY
-@@ -513,6 +487,31 @@ vm_fault_t handle_userfault(struct vm_fa
- 	if (vmf->flags & FAULT_FLAG_RETRY_NOWAIT)
- 		goto out;
- 
-+	if (unlikely(READ_ONCE(ctx->released))) {
-+		/*
-+		 * If a concurrent release is detected, do not return
-+		 * VM_FAULT_SIGBUS or VM_FAULT_NOPAGE, but instead always
-+		 * return VM_FAULT_RETRY with lock released proactively.
-+		 *
-+		 * If we were to return VM_FAULT_SIGBUS here, the non
-+		 * cooperative manager would be instead forced to
-+		 * always call UFFDIO_UNREGISTER before it can safely
-+		 * close the uffd, to avoid involuntary SIGBUS triggered.
-+		 *
-+		 * If we were to return VM_FAULT_NOPAGE, it would work for
-+		 * the fault path, in which the lock will be released
-+		 * later.  However for GUP, faultin_page() does nothing
-+		 * special on NOPAGE, so GUP would spin retrying without
-+		 * releasing the mmap read lock, causing possible livelock.
-+		 *
-+		 * Here only VM_FAULT_RETRY would make sure the mmap lock
-+		 * be released immediately, so that the thread concurrently
-+		 * releasing the userfault would always make progress.
-+		 */
-+		release_fault_lock(vmf);
-+		goto out;
++static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
++			       char __user *optval, int __user *optlen)
++{
++	struct sock *sk = (void *)msk;
++
++	switch (optname) {
++	case IPV6_V6ONLY:
++		return mptcp_put_int_option(msk, optval, optlen,
++					    sk->sk_ipv6only);
 +	}
 +
- 	/* take the reference before dropping the mmap_lock */
- 	userfaultfd_ctx_get(ctx);
++	return -EOPNOTSUPP;
++}
++
+ static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
+ 				      char __user *optval, int __user *optlen)
+ {
+@@ -1308,6 +1322,8 @@ int mptcp_getsockopt(struct sock *sk, in
  
+ 	if (level == SOL_IP)
+ 		return mptcp_getsockopt_v4(msk, optname, optval, option);
++	if (level == SOL_IPV6)
++		return mptcp_getsockopt_v6(msk, optname, optval, option);
+ 	if (level == SOL_TCP)
+ 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
+ 	if (level == SOL_MPTCP)
 
 
 
