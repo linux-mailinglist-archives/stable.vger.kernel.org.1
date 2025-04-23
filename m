@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-135920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756A3A9911B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E7CA9924A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750651B84264
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1F03924A7D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726AC293B58;
-	Wed, 23 Apr 2025 15:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3A929291B;
+	Wed, 23 Apr 2025 15:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6luzvjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5YpQBEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2374C293B42;
-	Wed, 23 Apr 2025 15:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673AD2918F6;
+	Wed, 23 Apr 2025 15:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421189; cv=none; b=DkAt/oB8Wqp52CtKjhXQC3K84juPIRMfVFAr4V+KIdOYdjcDDv54DmJkwQKlEQtKpjI2ofR+BsMolBeXZ52fSba/6wk+dBbLOaA2ryqo85pal25PvZEzxyKQ4kdjE1lIKlr3vVzupTa1aYK8fgavWX8JRNC3zIE1pnDg+8kSKaU=
+	t=1745421576; cv=none; b=DwYue+l1og9hvNYkf3p2iPCIY8pigC6alX2SF1y5PJ9r0swdYyVCoKM/BHltGl3mlvwnYYXXspwhUKPcpxHfmfmUPSRhmNql/XesUcveCS6+RWzeFuQsDTiDS2UNaK1fqTl3wUm09iRf/TUdju1O2uePqkek0m1xZJzIqwN9CKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421189; c=relaxed/simple;
-	bh=Ahu1KzaGytbxBss0fNyFckjfo8NKkXI/KHcmaFkfiB0=;
+	s=arc-20240116; t=1745421576; c=relaxed/simple;
+	bh=ZGGn0ZSJlIvMUUy9v9pLApzdZz1TQqntaQ0d/6PGFQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnBTbCd1hQRMw2rsjag+XeH9tfgrDmbDP6i3ZyGyHLqp43DIlHwJkey1cUOr61qhS+TiUAllTCpca6QGUcsFyalOt7mUtpnDVpdXu1pYBHsNVHjLRKrSHS+9grpSNyhvVYtKJi+Psr0xDF3u/LCwmNa4pCWmyxrjzC715cR5xjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6luzvjO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA961C4CEE2;
-	Wed, 23 Apr 2025 15:13:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ls5g+rpTUTBq1IjPZe0URWnRt1fkJl0XRnTmRdL1YPj5Pj6PK/ngnKnM9vbDJpVeNHDgwYv7ZM21BqqZvLBQQn34KkhfvyuWhSsG1X6Jy3blj9qZH+6C12sOn9UiS5coDbFvJbsP4t0MyrCAlDXHJevwTohOkFEQ3jqDjOVQ51I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5YpQBEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA546C4CEE2;
+	Wed, 23 Apr 2025 15:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421189;
-	bh=Ahu1KzaGytbxBss0fNyFckjfo8NKkXI/KHcmaFkfiB0=;
+	s=korg; t=1745421576;
+	bh=ZGGn0ZSJlIvMUUy9v9pLApzdZz1TQqntaQ0d/6PGFQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6luzvjO3ZxuxIQfiB+B0CwCP77gx/64RXYa4W5QoZNXsVQlLDJIMit4p5YEBlbko
-	 FCz7VfE/Cmm4HR1TtX4DJMvuXS428bfWC9+hpxSQ0QqdeocKqFHZ/+XLabhuKJ2YBu
-	 8FD0ndja9LmxE+lgYT3sGkfQSMq2wFZlMtDoLQV8=
+	b=Z5YpQBEn0xV2hYqg4O4EUAU7C9oybQRpMVxBlL3DyZzDe0Lfw0nBQgUdEkXO6Lrzx
+	 HiJLnGMICQ1XDn3M0lTMRpMMn1t6WDQNHESf4cqFnAfHLWgL50X1VI69bHNThykn83
+	 4IUdXM3XV3XzMnL82Tl+SIwi6+D9a1aOR79JycsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 199/223] selftests/bpf: Fix raw_tp null handling test
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.14 207/241] drm/i915/dp: Reject HBR3 when sink doesnt support TPS4
 Date: Wed, 23 Apr 2025 16:44:31 +0200
-Message-ID: <20250423142625.276327128@linuxfoundation.org>
+Message-ID: <20250423142628.996295699@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,89 +60,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Commit b2fc4b17fc13, backport of upstream commit 838a10bd2ebf ("bpf:
-Augment raw_tp arguments with PTR_MAYBE_NULL"), was missing the changes
-to tools/testing/selftests/bpf/progs/raw_tp_null.c, and cause the test
-to fail with the following error (see link below for the complete log)
+commit 584cf613c24a4250d9be4819efc841aa2624d5b6 upstream.
 
-  Error: #205 raw_tp_null
-  libbpf: prog 'test_raw_tp_null': BPF program load failed: Permission denied
-  libbpf: prog 'test_raw_tp_null': -- BEGIN PROG LOAD LOG --
-  0: R1=ctx() R10=fp0
-  ; int BPF_PROG(test_raw_tp_null, struct sk_buff *skb) @ raw_tp_null.c:13
-  0: (79) r6 = *(u64 *)(r1 +0)
-  func 'bpf_testmod_test_raw_tp_null' arg0 has btf_id 2081 type STRUCT 'sk_buff'
-  1: R1=ctx() R6_w=trusted_ptr_or_null_sk_buff(id=1)
-  ; struct task_struct *task = bpf_get_current_task_btf(); @ raw_tp_null.c:15
-  1: (85) call bpf_get_current_task_btf#158     ; R0_w=trusted_ptr_task_struct()
-  ; if (task->pid != tid) @ raw_tp_null.c:17
-  2: (61) r1 = *(u32 *)(r0 +1416)       ; R0_w=trusted_ptr_task_struct() R1_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  3: (18) r2 = 0xffffa3bb801c6000       ; R2_w=map_value(map=raw_tp_n.bss,ks=4,vs=8)
-  5: (61) r2 = *(u32 *)(r2 +0)          ; R2_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  6: (5e) if w1 != w2 goto pc+11        ; R1_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff)) R2_w=scalar(smin=0,smax=umax=0xffffffff,var_off=(0x0; 0xffffffff))
-  ; i = i + skb->mark + 1; @ raw_tp_null.c:20
-  7: (61) r2 = *(u32 *)(r6 +164)
-  R6 invalid mem access 'trusted_ptr_or_null_'
-  processed 7 insns (limit 1000000) max_states_per_insn 0 total_states 0 peak_states 0 mark_read 0
-  -- END PROG LOAD LOG --
-  libbpf: prog 'test_raw_tp_null': failed to load: -13
-  libbpf: failed to load object 'raw_tp_null'
-  libbpf: failed to load BPF skeleton 'raw_tp_null': -13
-  test_raw_tp_null:FAIL:raw_tp_null__open_and_load unexpected error: -13
+According to the DP spec TPS4 is mandatory for HBR3. We have
+however seen some broken eDP sinks that violate this and
+declare support for HBR3 without TPS4 support.
 
-Bring the missing changes in to fix the test failure.
+At least in the case of the icl Dell XPS 13 7390 this results
+in an unstable output.
 
-Link: https://github.com/shunghsiyu/libbpf/actions/runs/14522396622/job/40766998873
-Fixes: b2fc4b17fc13 ("bpf: Augment raw_tp arguments with PTR_MAYBE_NULL")
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Reject HBR3 when TPS4 supports is unavailable on the sink.
+
+v2: Leave breadcrumbs in dmesg to avoid head scratching (Jani)
+
+Cc: stable@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5969
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250306210740.11886-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 38188a7f575dacba1120a59fd5d62c7f3313c0fa)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/raw_tp_null.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |   49 +++++++++++++++++++++++++++-----
+ 1 file changed, 42 insertions(+), 7 deletions(-)
 
---- a/tools/testing/selftests/bpf/progs/raw_tp_null.c
-+++ b/tools/testing/selftests/bpf/progs/raw_tp_null.c
-@@ -3,6 +3,7 @@
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -172,10 +172,28 @@ int intel_dp_link_symbol_clock(int rate)
  
- #include <vmlinux.h>
- #include <bpf/bpf_tracing.h>
-+#include "bpf_misc.h"
+ static int max_dprx_rate(struct intel_dp *intel_dp)
+ {
++	struct intel_display *display = to_intel_display(intel_dp);
++	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
++	int max_rate;
++
+ 	if (intel_dp_tunnel_bw_alloc_is_enabled(intel_dp))
+-		return drm_dp_tunnel_max_dprx_rate(intel_dp->tunnel);
++		max_rate = drm_dp_tunnel_max_dprx_rate(intel_dp->tunnel);
++	else
++		max_rate = drm_dp_bw_code_to_link_rate(intel_dp->dpcd[DP_MAX_LINK_RATE]);
  
- char _license[] SEC("license") = "GPL";
- 
-@@ -17,16 +18,14 @@ int BPF_PROG(test_raw_tp_null, struct sk
- 	if (task->pid != tid)
- 		return 0;
- 
--	i = i + skb->mark + 1;
--	/* The compiler may move the NULL check before this deref, which causes
--	 * the load to fail as deref of scalar. Prevent that by using a barrier.
-+	/* If dead code elimination kicks in, the increment +=2 will be
-+	 * removed. For raw_tp programs attaching to tracepoints in kernel
-+	 * modules, we mark input arguments as PTR_MAYBE_NULL, so branch
-+	 * prediction should never kick in.
- 	 */
--	barrier();
--	/* If dead code elimination kicks in, the increment below will
--	 * be removed. For raw_tp programs, we mark input arguments as
--	 * PTR_MAYBE_NULL, so branch prediction should never kick in.
--	 */
--	if (!skb)
--		i += 2;
-+	asm volatile ("%[i] += 1; if %[ctx] != 0 goto +1; %[i] += 2;"
-+			: [i]"+r"(i)
-+			: [ctx]"r"(skb)
-+			: "memory");
- 	return 0;
+-	return drm_dp_bw_code_to_link_rate(intel_dp->dpcd[DP_MAX_LINK_RATE]);
++	/*
++	 * Some broken eDP sinks illegally declare support for
++	 * HBR3 without TPS4, and are unable to produce a stable
++	 * output. Reject HBR3 when TPS4 is not available.
++	 */
++	if (max_rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
++		drm_dbg_kms(display->drm,
++			    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
++			    encoder->base.base.id, encoder->base.name);
++		max_rate = 540000;
++	}
++
++	return max_rate;
  }
+ 
+ static int max_dprx_lane_count(struct intel_dp *intel_dp)
+@@ -4188,6 +4206,9 @@ static void intel_edp_mso_init(struct in
+ static void
+ intel_edp_set_sink_rates(struct intel_dp *intel_dp)
+ {
++	struct intel_display *display = to_intel_display(intel_dp);
++	struct intel_encoder *encoder = &dp_to_dig_port(intel_dp)->base;
++
+ 	intel_dp->num_sink_rates = 0;
+ 
+ 	if (intel_dp->edp_dpcd[0] >= DP_EDP_14) {
+@@ -4198,10 +4219,7 @@ intel_edp_set_sink_rates(struct intel_dp
+ 				 sink_rates, sizeof(sink_rates));
+ 
+ 		for (i = 0; i < ARRAY_SIZE(sink_rates); i++) {
+-			int val = le16_to_cpu(sink_rates[i]);
+-
+-			if (val == 0)
+-				break;
++			int rate;
+ 
+ 			/* Value read multiplied by 200kHz gives the per-lane
+ 			 * link rate in kHz. The source rates are, however,
+@@ -4209,7 +4227,24 @@ intel_edp_set_sink_rates(struct intel_dp
+ 			 * back to symbols is
+ 			 * (val * 200kHz)*(8/10 ch. encoding)*(1/8 bit to Byte)
+ 			 */
+-			intel_dp->sink_rates[i] = (val * 200) / 10;
++			rate = le16_to_cpu(sink_rates[i]) * 200 / 10;
++
++			if (rate == 0)
++				break;
++
++			/*
++			 * Some broken eDP sinks illegally declare support for
++			 * HBR3 without TPS4, and are unable to produce a stable
++			 * output. Reject HBR3 when TPS4 is not available.
++			 */
++			if (rate >= 810000 && !drm_dp_tps4_supported(intel_dp->dpcd)) {
++				drm_dbg_kms(display->drm,
++					    "[ENCODER:%d:%s] Rejecting HBR3 due to missing TPS4 support\n",
++					    encoder->base.base.id, encoder->base.name);
++				break;
++			}
++
++			intel_dp->sink_rates[i] = rate;
+ 		}
+ 		intel_dp->num_sink_rates = i;
+ 	}
 
 
 
