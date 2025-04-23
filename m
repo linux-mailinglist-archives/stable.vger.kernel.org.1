@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-135456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434A9A98E3D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5519CA992AC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BA62447B07
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783D15A74C8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0973D27D763;
-	Wed, 23 Apr 2025 14:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F096C2BE7B1;
+	Wed, 23 Apr 2025 15:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8PX+F4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l133+ulF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DE21A9B39;
-	Wed, 23 Apr 2025 14:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B001C2BE7A8;
+	Wed, 23 Apr 2025 15:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419971; cv=none; b=NuCfxGdFgE/5lHiYhoejeFaA9P/i3HYd/3fQPTXTF+8abp4AY8xJiD2K4wCPEjXiWH2gvkbtNWappICU/qCZgR5WnfhUfFb2FdnPg3in6nqPEgd7wpL/GW7vR+orAuH84/nL4meUJPVkIx5uAhjzp8ilT3WcnWn3Pe3+OTW0vak=
+	t=1745421721; cv=none; b=fgDkhFQNE4xn8Twwy9QZiJKcroxy9AyALlhLHcRufk9Sin05jfNMAERo2AHa1D4Auu4PW3BLVp/hTTjtCl3IQ16r6QB2GKqrN9D8D3uroHHMsnW+/yf4kwcCBNa8aMN3BccL36baXibKWbiaeTABomEjrkZ10ZRZg34ZdKNJ+Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419971; c=relaxed/simple;
-	bh=xsaTwqTGjE1aBl/t0O9OJLNvBTFjTo/TnAeoa0lnQVY=;
+	s=arc-20240116; t=1745421721; c=relaxed/simple;
+	bh=lEg3w+OwJ7iE/E49YbjrdACZjDFDCJPYNIf7bTvR7nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2rjk7+MOayn/qdGnYI9DeQO/9qPzcIgixE581NOud7aD9dtZTXGOGyGbJGh2Lg03ZLagLAnocoW5BUpmgmigBaIagsAETCdg73xsspVvHC5SiAfxPFQRBKyJ+ZmLv0QqJ5K7MCgqWDI6dNuy52uBfPuyV9EVfX5N3BzoEhSuf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8PX+F4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03E2C4CEE2;
-	Wed, 23 Apr 2025 14:52:50 +0000 (UTC)
+	 MIME-Version; b=G4aVl/+YOP0cN0OcBo6tmLJWylk/gAgTyNEK702ZF1HX7Ag3jZeKwYTicaM7ayNxm7Ml90mReoENsC5exYqDEdbYJey+YP1m+ecoHFVdOwNkj+ZrE6P/h+tNVw/GixrtsEjktOIcEWH+Y9bMd4UhFo587+yb3qNvj0ZXWtEWZq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l133+ulF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA16C4CEE2;
+	Wed, 23 Apr 2025 15:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419971;
-	bh=xsaTwqTGjE1aBl/t0O9OJLNvBTFjTo/TnAeoa0lnQVY=;
+	s=korg; t=1745421721;
+	bh=lEg3w+OwJ7iE/E49YbjrdACZjDFDCJPYNIf7bTvR7nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8PX+F4AZy4N8K98rEoxiExCDVzQOIadCidTe9xKV4en9b0aB4qNPQI/XaBCFWVc4
-	 7r+Xr9JKjThBG/urhrYJSPS0KjLTRWWoQna5cdda2cUV5shqJYRkx34N9oe8c48FCW
-	 LUXXDGoViZpIQK/OWvpCa72GMxgnnErF19jDa9Io=
+	b=l133+ulFnR51pEimhcFdm4Gq1ZXILie7LOpkqlCuA2iO9QLZWsssZDMcZ3uAQOA6C
+	 ncf5a9dx9DtqJIUpbbwZKlzT7bl8W5Vri4BLR0+mlaut1nNfkHGXKc0CLHgPnLqyzg
+	 hy15da/5yv4txmRT8QOfTKRCv2HG905uLbdyJNA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 048/241] net: hibmcge: fix incorrect multicast filtering issue
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 216/393] gpio: zynq: Fix wakeup source leaks on device unbind
 Date: Wed, 23 Apr 2025 16:41:52 +0200
-Message-ID: <20250423142622.469227419@linuxfoundation.org>
+Message-ID: <20250423142652.302159070@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 9afaaa54e3eb9b64fc07c06741897800e98ac253 ]
+commit c5672e310ad971d408752fce7596ed27adc6008f upstream.
 
-The driver does not support multicast filtering,
-the mask must be set to 0xFFFFFFFF. Otherwise,
-incorrect filtering occurs.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-This patch fixes this problem.
-
-Fixes: 37b367d60d0f ("net: hibmcge: Add unicast frame filter supported in this module")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250410021327.590362-3-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406202245.53854-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c  | 4 ++++
- drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h | 2 ++
- 2 files changed, 6 insertions(+)
+ drivers/gpio/gpio-zynq.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-index 169e6a0bac496..56089849753dc 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_hw.c
-@@ -224,6 +224,10 @@ void hbg_hw_set_mac_filter_enable(struct hbg_priv *priv, u32 enable)
- {
- 	hbg_reg_write_field(priv, HBG_REG_REC_FILT_CTRL_ADDR,
- 			    HBG_REG_REC_FILT_CTRL_UC_MATCH_EN_B, enable);
-+
-+	/* only uc filter is supported, so set all bits of mc mask reg to 1 */
-+	hbg_reg_write64(priv, HBG_REG_STATION_ADDR_LOW_MSK_0, U64_MAX);
-+	hbg_reg_write64(priv, HBG_REG_STATION_ADDR_LOW_MSK_1, U64_MAX);
- }
- 
- void hbg_hw_set_pause_enable(struct hbg_priv *priv, u32 tx_en, u32 rx_en)
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-index e7bc5435d51ba..c254f4036329f 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_reg.h
-@@ -82,6 +82,8 @@
- #define HBG_REG_STATION_ADDR_HIGH_4_ADDR	(HBG_REG_SGMII_BASE + 0x0224)
- #define HBG_REG_STATION_ADDR_LOW_5_ADDR		(HBG_REG_SGMII_BASE + 0x0228)
- #define HBG_REG_STATION_ADDR_HIGH_5_ADDR	(HBG_REG_SGMII_BASE + 0x022C)
-+#define HBG_REG_STATION_ADDR_LOW_MSK_0		(HBG_REG_SGMII_BASE + 0x0230)
-+#define HBG_REG_STATION_ADDR_LOW_MSK_1		(HBG_REG_SGMII_BASE + 0x0238)
- 
- /* PCU */
- #define HBG_REG_TX_FIFO_THRSLD_ADDR		(HBG_REG_SGMII_BASE + 0x0420)
--- 
-2.39.5
-
+--- a/drivers/gpio/gpio-zynq.c
++++ b/drivers/gpio/gpio-zynq.c
+@@ -1018,6 +1018,7 @@ static int zynq_gpio_remove(struct platf
+ 	ret = pm_runtime_get_sync(&pdev->dev);
+ 	if (ret < 0)
+ 		dev_warn(&pdev->dev, "pm_runtime_get_sync() Failed\n");
++	device_init_wakeup(&pdev->dev, 0);
+ 	gpiochip_remove(&gpio->chip);
+ 	clk_disable_unprepare(gpio->clk);
+ 	device_set_wakeup_capable(&pdev->dev, 0);
 
 
 
