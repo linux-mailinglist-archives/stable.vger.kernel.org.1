@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-136095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6198CA991E4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEABA98E19
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:52:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B06194678C0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 193F43B18D3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3720126A08C;
-	Wed, 23 Apr 2025 15:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C822B27F4F3;
+	Wed, 23 Apr 2025 14:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQqWnLwy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XEtblz5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7CA71F5435;
-	Wed, 23 Apr 2025 15:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8437927CB12;
+	Wed, 23 Apr 2025 14:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421642; cv=none; b=ggWzu4mrv7LM9xt6h8tQzVbjuNlllncqzVC+e8JQuBYTfEZySRk+2NPkGVYrGS14KC1JFhQ5WbddZ01n/yk8OGnN245KHsLPc06ylGHNt/Gdml8qFzzAZIu8mPGUSr22b2X2zMS7Z2j2A4PNvLkt80scvjGD7SoUPcyBs8b3wFQ=
+	t=1745419853; cv=none; b=q6g1EnxzuNQsuWwAh51kmiTVWU2MF3WF8SFaq8D7ReiOEe87BgHyjBivu9VFDz550pW8eUu6HWLczJb+0gO69iLD9os5p22EWk6+UrMgEfwcUMJX7t8VCBrS9Pt7Bvc3mB72lbS61SETssdsvI5VqYM2jQIMwoqa0up/n+/zdBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421642; c=relaxed/simple;
-	bh=6PIpxABVYn9QulES4zMEMOqNeqPEbxwvEXAMDAmTR0s=;
+	s=arc-20240116; t=1745419853; c=relaxed/simple;
+	bh=3Z9qNE1DOvmyTUFJAcoocuXHiqM5r5eqf3Z6muIQqiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=miw31BBd+PzoJjXwnFaHMYwUfdSwNxzm0tYOrZFfJ8qSdDx7uGe8BWbo945VSt5H93W0GCFb92Lu564+RC+rrhNyyTa+PDDB0XLz/Y1z7GeiCnozjd/e/rJw4vUvdgs+17FOEEjA4XI+zmhZwFpmgRGjJdsuAhRiJLuBqB08GQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQqWnLwy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78556C4CEE2;
-	Wed, 23 Apr 2025 15:20:41 +0000 (UTC)
+	 MIME-Version; b=NAB9XSj+jPKDdVjPfc3UeCfLYkNlx7/xU/5v21GY3he1F2fnkV2Il5kyU4YfR0uFE9TOQLw41zHQIYnUT9vl7k/UHIO9yHgXeWjbeKiO3kUm1r+8GnN1345Gc5jrOhJKt/focP0VsHsqUiO+IembredMII5Gwy+3yqMT07PUZxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XEtblz5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47CFC4CEE2;
+	Wed, 23 Apr 2025 14:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421641;
-	bh=6PIpxABVYn9QulES4zMEMOqNeqPEbxwvEXAMDAmTR0s=;
+	s=korg; t=1745419853;
+	bh=3Z9qNE1DOvmyTUFJAcoocuXHiqM5r5eqf3Z6muIQqiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQqWnLwyqoztbgVh/qMFaDcb3afelU63Lh101II3FGbWMtuLH3Sp2YNhQbCkaoCPi
-	 F6OlR2cUSGn4VSIUv2LU/QJn30xftpA3dje52j1MS9BWVe3oIpHSTgUsyNHAluntWe
-	 q4Xf/WzT4FIQXLFuKshJ+JX/IYCk/04LRKmJSN2g=
+	b=XEtblz5Fl3ECDKHgfdURDZWvhOKjwaBZp70qAUNU4BTkIhXx3NHtaRaqbms49nhRZ
+	 n2DNjuIltMG6COjjaIQHNesL2dUkB+WJ/xv0LdAtZwiL+0UxnAU/r46qpN8QOS22gQ
+	 qDv7S9jNhZOZk9zkOpVwu70QLmGU6CWIJIbBDIi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junwen Sun <sunjw8888@gmail.com>,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 203/393] cifs: Ensure that all non-client-specific reparse points are processed by the server
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 035/241] igc: move ktime snapshot into PTM retry loop
 Date: Wed, 23 Apr 2025 16:41:39 +0200
-Message-ID: <20250423142651.775096765@linuxfoundation.org>
+Message-ID: <20250423142621.950662564@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +66,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pali Rohár <pali@kernel.org>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-commit 6f8a394aa952257575910d57cf0a63627fa949a2 upstream.
+[ Upstream commit cd7f7328d691937102732f39f97ead35b15bf803 ]
 
-Fix regression in mounts to e.g. onedrive shares.
+Move ktime_get_snapshot() into the loop. If a retry does occur, a more
+recent snapshot will result in a more accurate cross-timestamp.
 
-Generally, reparse points are processed by the SMB server during the
-SMB OPEN request, but there are few reparse points which do not have
-OPEN-like meaning for the SMB server and has to be processed by the SMB
-client. Those are symlinks and special files (fifo, socket, block, char).
-
-For Linux SMB client, it is required to process also name surrogate reparse
-points as they represent another entity on the SMB server system. Linux
-client will mark them as separate mount points. Examples of name surrogate
-reparse points are NTFS junction points (e.g. created by the "mklink" tool
-on Windows servers).
-
-So after processing the name surrogate reparse points, clear the
--EOPNOTSUPP error code returned from the parse_reparse_point() to let SMB
-server to process reparse points.
-
-And remove printing misleading error message "unhandled reparse tag:" as
-reparse points are handled by SMB server and hence unhandled fact is normal
-operation.
-
-Fixes: cad3fc0a4c8c ("cifs: Throw -EOPNOTSUPP error on unsupported reparse point type from parse_reparse_point()")
-Fixes: b587fd128660 ("cifs: Treat unhandled directory name surrogate reparse points as mount directory nodes")
-Cc: stable@vger.kernel.org
-Reported-by: Junwen Sun <sunjw8888@gmail.com>
-Tested-by: Junwen Sun <sunjw8888@gmail.com>
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c   |   10 ++++++++++
- fs/smb/client/reparse.c |    4 ----
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -1145,6 +1145,16 @@ static int reparse_info_to_fattr(struct
- 				cifs_create_junction_fattr(fattr, sb);
- 				goto out;
- 			}
-+			/*
-+			 * If the reparse point is unsupported by the Linux SMB
-+			 * client then let it process by the SMB server. So mask
-+			 * the -EOPNOTSUPP error code. This will allow Linux SMB
-+			 * client to send SMB OPEN request to server. If server
-+			 * does not support this reparse point too then server
-+			 * will return error during open the path.
-+			 */
-+			if (rc == -EOPNOTSUPP)
-+				rc = 0;
- 		}
- 		break;
- 	}
---- a/fs/smb/client/reparse.c
-+++ b/fs/smb/client/reparse.c
-@@ -633,8 +633,6 @@ int parse_reparse_point(struct reparse_d
- 			const char *full_path,
- 			bool unicode, struct cifs_open_info_data *data)
- {
--	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
--
- 	data->reparse.buf = buf;
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index c640e346342be..516abe7405dee 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1011,16 +1011,16 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
+ 	int err, count = 100;
+ 	ktime_t t1, t2_curr;
  
- 	/* See MS-FSCC 2.1.2 */
-@@ -658,8 +656,6 @@ int parse_reparse_point(struct reparse_d
- 		}
- 		return 0;
- 	default:
--		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
--			      le32_to_cpu(buf->ReparseTag));
- 		return -EOPNOTSUPP;
- 	}
- }
+-	/* Get a snapshot of system clocks to use as historic value. */
+-	ktime_get_snapshot(&adapter->snapshot);
+-
++	/* Doing this in a loop because in the event of a
++	 * badly timed (ha!) system clock adjustment, we may
++	 * get PTM errors from the PCI root, but these errors
++	 * are transitory. Repeating the process returns valid
++	 * data eventually.
++	 */
+ 	do {
+-		/* Doing this in a loop because in the event of a
+-		 * badly timed (ha!) system clock adjustment, we may
+-		 * get PTM errors from the PCI root, but these errors
+-		 * are transitory. Repeating the process returns valid
+-		 * data eventually.
+-		 */
++		/* Get a snapshot of system clocks to use as historic value. */
++		ktime_get_snapshot(&adapter->snapshot);
++
+ 		igc_ptm_trigger(hw);
+ 
+ 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
+-- 
+2.39.5
+
 
 
 
