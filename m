@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2C5A9906E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A0CA98EB2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 955F31B67669
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A7E74609BF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E6328CF4A;
-	Wed, 23 Apr 2025 15:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFD027A12D;
+	Wed, 23 Apr 2025 14:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YakV61/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSmmlJ0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3443C8EB;
-	Wed, 23 Apr 2025 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E48819DF4C;
+	Wed, 23 Apr 2025 14:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420720; cv=none; b=lIbt9fFNHYZto9wexLjs1ybe0B9rmOmX3VkVjsx+Uez4/dMZGhH+W0nvmVryfuCWQMa+zL1gTeJs+G+0QukKcnweFrZXSj2uNwBglG43WXn4wy0IMzJLlwBOoC55qXmwiJtHEvbKiEVUB9Ipml6UNzvC2OR70bpVWyjI70O6jMM=
+	t=1745420197; cv=none; b=Hr371HeJ1JFg8xS+B8Vm72AHkCfXnPAdsVw+WWO8Zms7AGH/NGNp35LRDHBleJvFML1byR2PhRDf8gx/XYoOEY0Hh9k6PZ9NqjJMRHQLJDBpw0TYsR+OtSCcREcAFQF3J5I4oW+XBCRpVBGYbfvXPR05Wj4SShCK0zdQPYZH7DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420720; c=relaxed/simple;
-	bh=ow1Ze8xBmK7TJz0+kZRbh2WO0pfQ/gPB7np4xzZCM20=;
+	s=arc-20240116; t=1745420197; c=relaxed/simple;
+	bh=72NMWS7FNd70dGYm+inwnKQvwfnQqOUOXjtHJEaqIDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PtUuk8kOkIzlvvVCH7WKPsoFEPCQFQ0NHOLttaziQz35jfYbjlsJPdpbQLMfJg7Q2l+pOlp5beoV83XQ/2ByMmgoGXo/mU7SYp3zqcEkoluBGrktuxqX3VjJQ8TXjJs2XzYRBQMqQwU5qovPYqYWJ8K1GntsrWZwfUS35QHca/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YakV61/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8DAC4CEE2;
-	Wed, 23 Apr 2025 15:05:18 +0000 (UTC)
+	 MIME-Version; b=EGt/OXunQ+EumcYrL3anLXN3lgDaTd1dwUurCtQZw/yXtz9FQtECH2ceYtHMdEXvmzgfASc6LJmJWUcKCz7eJaniQ6vkpqjnCmDrCusx2b+Bu9u++a3NN6NggBhULK1SmckDwuaBvu5c9OxbNne2GkESkxWoaWeJNLt8bhMVlbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSmmlJ0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E40C4CEE2;
+	Wed, 23 Apr 2025 14:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420719;
-	bh=ow1Ze8xBmK7TJz0+kZRbh2WO0pfQ/gPB7np4xzZCM20=;
+	s=korg; t=1745420197;
+	bh=72NMWS7FNd70dGYm+inwnKQvwfnQqOUOXjtHJEaqIDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0YakV61/m7SsR2wqhlWLGCwelmDtfZohtyMp4eBZeTSemc46ZGm8FQ71538jMeuQU
-	 NVi4hcmPsm2AfMp/fyEnmmUflInCrq5h27T1z8aVCBG1h3UBfElfb5wPnVxiivH9YZ
-	 Dd7GaLyKSDqCc2fvpB3w/+BuJbAn3qekycCiX/28=
+	b=fSmmlJ0PmKqhj3MpB5tJmyFpoejRO9LjDS8tpAm8JrQmYgxV6uChZNAeVAaknijk1
+	 +DHBmJWc3+TifyHwbfkvbr+Cw3B/e6PsTX4WaxE0oYiG+NTfFWRd2uXteTuFIv7tyj
+	 23OjTw3fJ9VOLVuveGWC4cA8R9S41E2abH2jBwp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 116/241] dma-buf/sw_sync: Decrement refcount on error in sw_sync_ioctl_get_deadline()
+	Calvin Walton <calvin.walton@kepstin.ca>,
+	Johannes Kimmel <kernel@bareminimum.eu>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 108/223] btrfs: correctly escape subvol in btrfs_show_options()
 Date: Wed, 23 Apr 2025 16:43:00 +0200
-Message-ID: <20250423142625.323196748@linuxfoundation.org>
+Message-ID: <20250423142621.512668233@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johannes Kimmel <kernel@bareminimum.eu>
 
-[ Upstream commit d27326a9999286fa45ad063f760e63329254f130 ]
+commit dc08c58696f8555e4a802f1f23c894a330d80ab7 upstream.
 
-Call dma_fence_put(fence) before returning an error if
-dma_fence_to_sync_pt() fails.  Use an unwind ladder at the
-end of the function to do the cleanup.
+Currently, displaying the btrfs subvol mount option doesn't escape ','.
+This makes parsing /proc/self/mounts and /proc/self/mountinfo
+ambiguous for subvolume names that contain commas. The text after the
+comma could be mistaken for another option (think "subvol=foo,ro", where
+ro is actually part of the subvolumes name).
 
-Fixes: 70e67aaec2f4 ("dma-buf/sw_sync: Add fence deadline support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/a010a1ac-107b-4fc0-a052-9fd3706ad690@stanley.mountain
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace the manual escape characters list with a call to
+seq_show_option(). Thanks to Calvin Walton for suggesting this approach.
+
+Fixes: c8d3fe028f64 ("Btrfs: show subvol= and subvolid= in /proc/mounts")
+CC: stable@vger.kernel.org # 5.4+
+Suggested-by: Calvin Walton <calvin.walton@kepstin.ca>
+Signed-off-by: Johannes Kimmel <kernel@bareminimum.eu>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/sw_sync.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ fs/btrfs/super.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
-index f5905d67dedbb..22a808995f106 100644
---- a/drivers/dma-buf/sw_sync.c
-+++ b/drivers/dma-buf/sw_sync.c
-@@ -438,15 +438,17 @@ static int sw_sync_ioctl_get_deadline(struct sync_timeline *obj, unsigned long a
- 		return -EINVAL;
- 
- 	pt = dma_fence_to_sync_pt(fence);
--	if (!pt)
--		return -EINVAL;
-+	if (!pt) {
-+		ret = -EINVAL;
-+		goto put_fence;
-+	}
- 
- 	spin_lock_irqsave(fence->lock, flags);
--	if (test_bit(SW_SYNC_HAS_DEADLINE_BIT, &fence->flags)) {
--		data.deadline_ns = ktime_to_ns(pt->deadline);
--	} else {
-+	if (!test_bit(SW_SYNC_HAS_DEADLINE_BIT, &fence->flags)) {
- 		ret = -ENOENT;
-+		goto unlock;
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -1140,8 +1140,7 @@ static int btrfs_show_options(struct seq
+ 	subvol_name = btrfs_get_subvol_name_from_objectid(info,
+ 			btrfs_root_id(BTRFS_I(d_inode(dentry))->root));
+ 	if (!IS_ERR(subvol_name)) {
+-		seq_puts(seq, ",subvol=");
+-		seq_escape(seq, subvol_name, " \t\n\\");
++		seq_show_option(seq, "subvol", subvol_name);
+ 		kfree(subvol_name);
  	}
-+	data.deadline_ns = ktime_to_ns(pt->deadline);
- 	spin_unlock_irqrestore(fence->lock, flags);
- 
- 	dma_fence_put(fence);
-@@ -458,6 +460,13 @@ static int sw_sync_ioctl_get_deadline(struct sync_timeline *obj, unsigned long a
- 		return -EFAULT;
- 
  	return 0;
-+
-+unlock:
-+	spin_unlock_irqrestore(fence->lock, flags);
-+put_fence:
-+	dma_fence_put(fence);
-+
-+	return ret;
- }
- 
- static long sw_sync_ioctl(struct file *file, unsigned int cmd,
--- 
-2.39.5
-
 
 
 
