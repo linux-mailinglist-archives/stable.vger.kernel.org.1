@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AA5A98F66
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:08:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88031A98E25
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89D3F5A5A65
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1D1E7AC5A9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D507827F4F3;
-	Wed, 23 Apr 2025 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D32827F4CA;
+	Wed, 23 Apr 2025 14:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBzG7Den"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdSmjuVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D24C27EC9C;
-	Wed, 23 Apr 2025 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A8C23D298;
+	Wed, 23 Apr 2025 14:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420429; cv=none; b=fFA0FhM2C3Q8+hfpFGScRhSFl2u9M8Ug8gzY2s4z6UJ7Mv0c8l6wRKRJY0cE50xM0Bpg5upIs/d3txQzO8o3DB+xu13TNNtQfUcyNPO6RS3PXdYBvmMmWxELTFXXwBvJ2AEbyFd2ydfkH3CfmmfroewpYsRuSvCN1fweKy3SJuk=
+	t=1745419966; cv=none; b=DBWJXSzVWF3ljkmSeupVa4bcFpRzRe/vLfbchsrrJCL43+HF8aV2V4rFoLYUjZ9dK5RzdxTbHp5tabVk525uf+Lg1eZXq6Bjg2maFU6QX/QvycQ8kDoiDOHGiSEhXLraaPZ4m7okoa7SUy0nANsEPE4DyniCAcqlelESv79n2w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420429; c=relaxed/simple;
-	bh=Xj0XWpiLKsobEbOfQz3Q1REPWZOl+EOLSvD3ei7ACOs=;
+	s=arc-20240116; t=1745419966; c=relaxed/simple;
+	bh=QQwv4Y4PZD1m9RjMVjZLqmB1W8Y0g31mrsbL5/XgZvs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PueyNHKiU5ef1XnWFZrGQeGwhSMTS10dPo8kf28dl6d085lUUfbSkeP8wRUkcfMQL1vlQIJ648v3mqrnrtFEs6FuG6oPJyhM6ViqK3hPmuE4lxSpkJyrMOcFZ4kPyLFHpm0U55b55Wcj6PrqsO5aJBdnCCycm2fZfcor+uR1CJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBzG7Den; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BBBC4CEE2;
-	Wed, 23 Apr 2025 15:00:28 +0000 (UTC)
+	 MIME-Version; b=lWvVc9PYG1T0TH8h4Nq1d4QY3+NMKkxlltU4iaZ96wsvUi8XYQrU2z9dk02+kxytAp9zXADklJ8wH66KgAD/+G9+Q/V0oXWvejkOHsi8ksQoXZVpuco9ZsHU9zQSL4J8ZZ0yiUx0pJjV5Yr/ijVXSzyjMgS9RKzU0/e1rtDZjiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdSmjuVc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F1BC4CEE2;
+	Wed, 23 Apr 2025 14:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420429;
-	bh=Xj0XWpiLKsobEbOfQz3Q1REPWZOl+EOLSvD3ei7ACOs=;
+	s=korg; t=1745419966;
+	bh=QQwv4Y4PZD1m9RjMVjZLqmB1W8Y0g31mrsbL5/XgZvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBzG7DenBv8yz0Y5Fckj10D8HAw9k0+rPMNC7ChlhOOq9je3sVr2nKjzfp7AO1lHF
-	 2aClDc6s46esRRzy9Zq28OBaFCuptqznOP1K2gTkhYG+r+Tu8xkOtNuk36s+6Sh5Vb
-	 BWPZ1tF01qtsnAwfge9mlKkL+5waGy79GS/MGtyo=
+	b=YdSmjuVce3VqFsLxMUgqmmbQhap8GPbwUdP+8yaoyyklmNJdmkXAxYj4eYk1G0PSz
+	 zlNFMdNJzVTWNfxgGxRyqBIJ6UyFrwvsxczAf1ZzLcOeI6rtrKTRBpss8mu3VijlG9
+	 uTsj4xNH/VYAHmPV84oSpUCBNqoE83nqtMnHoUik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 091/241] kunit: qemu_configs: SH: Respect kunit cmdline
-Date: Wed, 23 Apr 2025 16:42:35 +0200
-Message-ID: <20250423142624.299053617@linuxfoundation.org>
+	Matthew Maurer <mmaurer@google.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 084/223] rust: kasan/kbuild: fix missing flags on first build
+Date: Wed, 23 Apr 2025 16:42:36 +0200
+Message-ID: <20250423142620.546723043@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit b26c1a85f3fc3cc749380ff94199377fc2d0c203 ]
+commit 46e24a545cdb4556f8128c90ecc34eeae52477a0 upstream.
 
-The default SH kunit configuration sets CONFIG_CMDLINE_OVERWRITE which
-completely disregards the cmdline passed from the bootloader/QEMU in favor
-of the builtin CONFIG_CMDLINE.
-However the kunit tool needs to pass arguments to the in-kernel kunit core,
-for filters and other runtime parameters.
+If KASAN is enabled, and one runs in a clean repository e.g.:
 
-Enable CONFIG_CMDLINE_EXTEND instead, so kunit arguments are respected.
+    make LLVM=1 prepare
+    make LLVM=1 prepare
 
-Link: https://lore.kernel.org/r/20250407-kunit-sh-v1-1-f5432a54cf2f@linutronix.de
-Fixes: 8110a3cab05e ("kunit: tool: Add support for SH under QEMU")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Then the Rust code gets rebuilt, which should not happen.
+
+The reason is some of the LLVM KASAN `rustc` flags are added in the
+second run:
+
+    -Cllvm-args=-asan-instrumentation-with-call-threshold=10000
+    -Cllvm-args=-asan-stack=0
+    -Cllvm-args=-asan-globals=1
+    -Cllvm-args=-asan-kernel-mem-intrinsic-prefix=1
+
+Further runs do not rebuild Rust because the flags do not change anymore.
+
+Rebuilding like that in the second run is bad, even if this just happens
+with KASAN enabled, but missing flags in the first one is even worse.
+
+The root issue is that we pass, for some architectures and for the moment,
+a generated `target.json` file. That file is not ready by the time `rustc`
+gets called for the flag test, and thus the flag test fails just because
+the file is not available, e.g.:
+
+    $ ... --target=./scripts/target.json ... -Cllvm-args=...
+    error: target file "./scripts/target.json" does not exist
+
+There are a few approaches we could take here to solve this. For instance,
+we could ensure that every time that the config is rebuilt, we regenerate
+the file and recompute the flags. Or we could use the LLVM version to
+check for these flags, instead of testing the flag (which may have other
+advantages, such as allowing us to detect renames on the LLVM side).
+
+However, it may be easier than that: `rustc` is aware of the `-Cllvm-args`
+regardless of the `--target` (e.g. I checked that the list printed
+is the same, plus that I can check for these flags even if I pass
+a completely unrelated target), and thus we can just eliminate the
+dependency completely.
+
+Thus filter out the target.
+
+This does mean that `rustc-option` cannot be used to test a flag that
+requires the right target, but we don't have other users yet, it is a
+minimal change and we want to get rid of custom targets in the future.
+
+We could only filter in the case `target.json` is used, to make it work
+in more cases, but then it would be harder to notice that it may not
+work in a couple architectures.
+
+Cc: Matthew Maurer <mmaurer@google.com>
+Cc: Sami Tolvanen <samitolvanen@google.com>
+Cc: stable@vger.kernel.org
+Fixes: e3117404b411 ("kbuild: rust: Enable KASAN support")
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20250408220311.1033475-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/kunit/qemu_configs/sh.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/Makefile.compiler |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/kunit/qemu_configs/sh.py b/tools/testing/kunit/qemu_configs/sh.py
-index 78a474a5b95f3..f00cb89fdef6a 100644
---- a/tools/testing/kunit/qemu_configs/sh.py
-+++ b/tools/testing/kunit/qemu_configs/sh.py
-@@ -7,7 +7,9 @@ CONFIG_CPU_SUBTYPE_SH7751R=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_SH_RTS7751R2D=y
- CONFIG_RTS7751R2D_PLUS=y
--CONFIG_SERIAL_SH_SCI=y''',
-+CONFIG_SERIAL_SH_SCI=y
-+CONFIG_CMDLINE_EXTEND=y
-+''',
- 			   qemu_arch='sh4',
- 			   kernel_path='arch/sh/boot/zImage',
- 			   kernel_command_line='console=ttySC1',
--- 
-2.39.5
-
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -76,7 +76,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
+ # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
+ __rustc-option = $(call try-run,\
+ 	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
+-	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null,$(2)) $(3)\
++	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
+ 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+ 
+ # rustc-option
 
 
 
