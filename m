@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258C9A98E9D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6836FA98DD0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB15F1B84146
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCD2A3BBA0B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D9127D763;
-	Wed, 23 Apr 2025 14:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F0B2820A3;
+	Wed, 23 Apr 2025 14:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+9ia4g3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWdDyei6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE3481CD;
-	Wed, 23 Apr 2025 14:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE9F28134C;
+	Wed, 23 Apr 2025 14:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420063; cv=none; b=pR8+7a7EWC7kRnCFofu0Z1UlWJBIL7RXU0xjVHyWDTiyrwgJOMycIk2dKBfjyk8L33oPSdiNsiogh1JseyvHDBTDBecX7zIjck5wtTQU8CdD4HXP7OPk/4La5j5obMptGabhriykTW9GHbBPGPUdQgyFg6zsO2gfC/KWb8O2tms=
+	t=1745419710; cv=none; b=bErLR6sqbk1XAt4knuJff9aEQOHkGyq42AzEShjpivkM8ueq94paD3cd1K3pgRRb4CyfGqKwUO5/xs9+8bU+xpsVg/beX0wF0xpdQCWXH6kmPkCrGetI4N7dZ6V2J2RW8R/d9IQIPze0G01CsdU/q7FilFyteYmTkH2ineNzd+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420063; c=relaxed/simple;
-	bh=4lI7BiKDbnVHrKleRdhNrV/rKKpKohdMYK7ndp+Rngg=;
+	s=arc-20240116; t=1745419710; c=relaxed/simple;
+	bh=n2WiBPdErB05xkyu+MfAFo1k8IIpSd5/aLmlmRIqh9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BzPohO0V+YwI8kb0flyBWMPZw4rE0LhtK+u1tG2hJSHZf0l60mVoLnLI5eRmiwSa6BcGwi3B1YVR738v/5kwzKIqDGvtRGcJVq96RJG3pFaZExk5G4unYhr8tZT4iqVUI3miO7OuVqIfhkkETJYPxpvVfPmIkHqaQxT50+IWKrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+9ia4g3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98B0C4CEE2;
-	Wed, 23 Apr 2025 14:54:22 +0000 (UTC)
+	 MIME-Version; b=b/UiUW94VzbwpCFBLY3SLAwEXAilxhoT3N7QNUB1ZOG1eAsoK2iwAnE1uuO6qE4beoyDe2uOoBAqqxkSl7BfdKsK5jave80QYXaDXmSkAGNypGHG1CYg+nPNJOGo7ECJ1KVTXxK3vRTALUMEOzCVPZIFKV5kcNO6jveGQT+O9y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWdDyei6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B7CC4CEE2;
+	Wed, 23 Apr 2025 14:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420063;
-	bh=4lI7BiKDbnVHrKleRdhNrV/rKKpKohdMYK7ndp+Rngg=;
+	s=korg; t=1745419710;
+	bh=n2WiBPdErB05xkyu+MfAFo1k8IIpSd5/aLmlmRIqh9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+9ia4g3p2BZdZzQ7lrljQXQnrokGuzHHWg3kzePZ9KoHRZWXYK5DvXYDOjZRxxuh
-	 Qoxq3JJI1ZNBK3ik8FRmM4RCmV4Xfwl5zdVYxKFnlOceJ4E+/aORKpBV/Gt4Ab+KOU
-	 D+tCDUbIfFe1dr/fUx4C8Dm1r4lKVWaGpXxphgqU=
+	b=rWdDyei6lxXDyeWp6ll6HIW4maF75kjfHY88ac3nWnHJfWuRyN1QweSQ1TLZs1k9k
+	 o0CnwLRATGfjJpqKWTY6MCpNYd3nBpg37KZEjOEXb5uAuk1RxQdthq85o7n5pnx+58
+	 rpLmeqZnGZoHILIWmx2gmoLp4WTtaWD4Zi01U2rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Weizhao Ouyang <o451686892@gmail.com>,
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 056/241] octeontx2-pf: handle otx2_mbox_get_rsp errors
+Subject: [PATCH 6.12 048/223] can: rockchip_canfd: fix broken quirks checks
 Date: Wed, 23 Apr 2025 16:42:00 +0200
-Message-ID: <20250423142622.795902383@linuxfoundation.org>
+Message-ID: <20250423142619.090464799@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Weizhao Ouyang <o451686892@gmail.com>
 
-[ Upstream commit 688abe1027d00b7d4b2ce2d8764a2ae5ec6d250b ]
+[ Upstream commit 6315d93541f8a5f77c5ef5c4f25233e66d189603 ]
 
-Adding error pointer check after calling otx2_mbox_get_rsp().
+First get the devtype_data then check quirks.
 
-This is similar to the commit bd3110bc102a
-("octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_flows.c").
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: 6c40ca957fe5 ("octeontx2-pf: Adds TC offload support")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250412183327.3550970-1-chenyuan0y@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: bbdffb341498 ("can: rockchip_canfd: add quirk for broken CAN-FD support")
+Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://patch.msgid.link/20250324114416.10160-1-o451686892@gmail.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/rep.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/can/rockchip/rockchip_canfd-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-index 04e08e06f30ff..7153a71dfc860 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-@@ -67,6 +67,8 @@ static int rvu_rep_mcam_flow_init(struct rep_dev *rep)
+diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net/can/rockchip/rockchip_canfd-core.c
+index d9a937ba126c3..ac514766d431c 100644
+--- a/drivers/net/can/rockchip/rockchip_canfd-core.c
++++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+@@ -907,15 +907,16 @@ static int rkcanfd_probe(struct platform_device *pdev)
+ 	priv->can.data_bittiming_const = &rkcanfd_data_bittiming_const;
+ 	priv->can.ctrlmode_supported = CAN_CTRLMODE_LOOPBACK |
+ 		CAN_CTRLMODE_BERR_REPORTING;
+-	if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
+-		priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
+ 	priv->can.do_set_mode = rkcanfd_set_mode;
+ 	priv->can.do_get_berr_counter = rkcanfd_get_berr_counter;
+ 	priv->ndev = ndev;
  
- 		rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
- 			(&priv->mbox.mbox, 0, &req->hdr);
-+		if (IS_ERR(rsp))
-+			goto exit;
+ 	match = device_get_match_data(&pdev->dev);
+-	if (match)
++	if (match) {
+ 		priv->devtype_data = *(struct rkcanfd_devtype_data *)match;
++		if (!(priv->devtype_data.quirks & RKCANFD_QUIRK_CANFD_BROKEN))
++			priv->can.ctrlmode_supported |= CAN_CTRLMODE_FD;
++	}
  
- 		for (ent = 0; ent < rsp->count; ent++)
- 			rep->flow_cfg->flow_ent[ent + allocated] = rsp->entry_list[ent];
+ 	err = can_rx_offload_add_manual(ndev, &priv->offload,
+ 					RKCANFD_NAPI_WEIGHT);
 -- 
 2.39.5
 
