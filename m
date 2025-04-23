@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC05A99110
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:26:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8A2A98DE2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B9C7922C32
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EEA97ADB40
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212C42900A6;
-	Wed, 23 Apr 2025 15:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFB927F4D9;
+	Wed, 23 Apr 2025 14:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hchotGBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oj7OwLNe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D262D28B4EA;
-	Wed, 23 Apr 2025 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561B127CB33;
+	Wed, 23 Apr 2025 14:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421017; cv=none; b=hfN9zSiMEhuZuLJWFMyzJwB3lMSy03TtSQDT/qjrdj1gbEX3AfkT/Yko3u8ZANsKs1Y2ZnwiR2DLy+dNIHqCfZPTHDN0WWy1wieglYT9u60dz0r2H11Ka7CUc31+wsuySTaa6sctUZVWFO9pSqEBNVNkKvVkrsuClS9Jzo+qQ2I=
+	t=1745419787; cv=none; b=SwZ4HRfx7a54MD8zv2GDFtJICt619sHhj5Py3z1NSgkIlc9RLUN8/IUU5nfYX6YRlVo6C8U1mLD6OHJP+fEuuRkaLnphOzRlNeW5gcLog3xdDa53Sgl9sjIe2qsaQDn8qqeljTTCgREkMa7KgRfi/ZqDUawB8/Oqdu7g5sExRAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421017; c=relaxed/simple;
-	bh=lMlNfIdu8R94bOj1BW4XAAu1XHHhRzcDm4YY4U3geTY=;
+	s=arc-20240116; t=1745419787; c=relaxed/simple;
+	bh=IoqrGK5owEgWKsoU9Nv3qSdTsijndyZHDv6avjJyGA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=svGCdylMYqXE3g6oXU3r/NhBJxJYVaIsP32Tf3cbDqhlwQ+7L5ecBDOBCWZb9ybtWOJO+JCmngHGmpiW9V5yLFRQCMRdbPlBHBdGCrqp8f3c2aXdtkTFwF9627usO4x5MTFJsdelR4UnTKQFWilTsEkScDAlWrZD3XQDvqwijCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hchotGBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9A8C4CEE2;
-	Wed, 23 Apr 2025 15:10:17 +0000 (UTC)
+	 MIME-Version; b=p+I9koa6iZ6QxTaI2xqgIJ3rhOLyTcY0w2T1yTuJ03EwKnNu+Hoi0QLUipTzYV91+uu5tlAceZS1DiOCn4Q0dOCAwo42Q2ApXf7URQO/tfAA3Lfp7HMNUvZ7n/gkfkfz3xJjvHyRc8flmwuSdaGHV7CPPHyvlu+bgFB2ddTvmFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oj7OwLNe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB88BC4CEE2;
+	Wed, 23 Apr 2025 14:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421017;
-	bh=lMlNfIdu8R94bOj1BW4XAAu1XHHhRzcDm4YY4U3geTY=;
+	s=korg; t=1745419787;
+	bh=IoqrGK5owEgWKsoU9Nv3qSdTsijndyZHDv6avjJyGA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hchotGBrIc/NXETEIF6N3IFoybFbFLlCras4KQU1lWm8iXY4LQOcNl0XqC/8YjR4v
-	 Ke+vHOGehK72sLjSWB5ZANxFU5T8G6c/TzLrtkqiNT6tC6hG7w/sq8c5S1s+/aom57
-	 QIIr17DykKzrFIk2T3ta8Leu7i7AJQnVcCkwQTWA=
+	b=oj7OwLNef1opVE+VRSrpM3uEVpOjy3NOlZdfPP+wJlarvmG+5al2mk1WbAU5LKqJz
+	 GGFPTSNTAoTplO9ZAeRNFgS6XOAou6Y2Yu9ppWs8mTlPqxzw2ShxP8GIWNFnM3qlzw
+	 Nykz1/BHhQecWWGCjA7tevp0QK3TkTeoILACZqsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 101/291] mptcp: sockopt: fix getting IPV6_V6ONLY
-Date: Wed, 23 Apr 2025 16:41:30 +0200
-Message-ID: <20250423142628.478440049@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 027/241] RDMA/bnxt_re: Remove unusable nq variable
+Date: Wed, 23 Apr 2025 16:41:31 +0200
+Message-ID: <20250423142621.626894010@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 8c39633759885b6ff85f6d96cf445560e74df5e8 upstream.
+[ Upstream commit ffc59e32c67e599cc473d6427a4aa584399d5b3c ]
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+Remove nq variable from bnxt_re_create_srq() and bnxt_re_destroy_srq()
+as it generates the following compilation warnings:
 
-IPV6_V6ONLY support for the setsockopt part has been added a while ago,
-but it looks like the get part got forgotten. It should have been
-present as a way to verify a setting has been set as expected, and not
-to act differently from TCP or any other socket types.
+>> drivers/infiniband/hw/bnxt_re/ib_verbs.c:1777:24: warning: variable
+'nq' set but not used [-Wunused-but-set-variable]
+    1777 |         struct bnxt_qplib_nq *nq = NULL;
+         |                               ^
+   drivers/infiniband/hw/bnxt_re/ib_verbs.c:1828:24: warning: variable
+'nq' set but not used [-Wunused-but-set-variable]
+    1828 |         struct bnxt_qplib_nq *nq = NULL;
+         |                               ^
+   2 warnings generated.
 
-Not supporting this getsockopt(IPV6_V6ONLY) blocks some apps which want
-to check the default value, before doing extra actions. On Linux, the
-default value is 0, but this can be changed with the net.ipv6.bindv6only
-sysctl knob. On Windows, it is set to 1 by default. So supporting the
-get part, like for all other socket options, is important.
-
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover this specific getsockopt(), that seems
-safe.
-
-Fixes: c9b95a135987 ("mptcp: support IPV6_V6ONLY setsockopt")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/550
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-2-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6b395d31146a ("RDMA/bnxt_re: Fix budget handling of notification queue")
+Link: https://patch.msgid.link/r/8a4343e217d7d1c0a5a786b785c4ac57cb72a2a0.1744288299.git.leonro@nvidia.com
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202504091055.CzgXnk4C-lkp@intel.com/
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/sockopt.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1271,6 +1271,20 @@ static int mptcp_getsockopt_v4(struct mp
- 	return -EOPNOTSUPP;
- }
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index cb9b820c613d6..02b21d484677e 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1773,10 +1773,7 @@ int bnxt_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata)
+ 					       ib_srq);
+ 	struct bnxt_re_dev *rdev = srq->rdev;
+ 	struct bnxt_qplib_srq *qplib_srq = &srq->qplib_srq;
+-	struct bnxt_qplib_nq *nq = NULL;
  
-+static int mptcp_getsockopt_v6(struct mptcp_sock *msk, int optname,
-+			       char __user *optval, int __user *optlen)
-+{
-+	struct sock *sk = (void *)msk;
-+
-+	switch (optname) {
-+	case IPV6_V6ONLY:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    sk->sk_ipv6only);
-+	}
-+
-+	return -EOPNOTSUPP;
-+}
-+
- static int mptcp_getsockopt_sol_mptcp(struct mptcp_sock *msk, int optname,
- 				      char __user *optval, int __user *optlen)
+-	if (qplib_srq->cq)
+-		nq = qplib_srq->cq->nq;
+ 	if (rdev->chip_ctx->modes.toggle_bits & BNXT_QPLIB_SRQ_TOGGLE_BIT) {
+ 		free_page((unsigned long)srq->uctx_srq_page);
+ 		hash_del(&srq->hash_entry);
+@@ -1824,7 +1821,6 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
+ 		       struct ib_udata *udata)
  {
-@@ -1308,6 +1322,8 @@ int mptcp_getsockopt(struct sock *sk, in
+ 	struct bnxt_qplib_dev_attr *dev_attr;
+-	struct bnxt_qplib_nq *nq = NULL;
+ 	struct bnxt_re_ucontext *uctx;
+ 	struct bnxt_re_dev *rdev;
+ 	struct bnxt_re_srq *srq;
+@@ -1870,7 +1866,6 @@ int bnxt_re_create_srq(struct ib_srq *ib_srq,
+ 	srq->qplib_srq.eventq_hw_ring_id = rdev->nqr->nq[0].ring_id;
+ 	srq->qplib_srq.sg_info.pgsize = PAGE_SIZE;
+ 	srq->qplib_srq.sg_info.pgshft = PAGE_SHIFT;
+-	nq = &rdev->nqr->nq[0];
  
- 	if (level == SOL_IP)
- 		return mptcp_getsockopt_v4(msk, optname, optval, option);
-+	if (level == SOL_IPV6)
-+		return mptcp_getsockopt_v6(msk, optname, optval, option);
- 	if (level == SOL_TCP)
- 		return mptcp_getsockopt_sol_tcp(msk, optname, optval, option);
- 	if (level == SOL_MPTCP)
+ 	if (udata) {
+ 		rc = bnxt_re_init_user_srq(rdev, pd, srq, udata);
+-- 
+2.39.5
+
 
 
 
