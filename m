@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDC7A990EC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48386A98F44
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B585A1BA1103
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 520759223F2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49C528C5BF;
-	Wed, 23 Apr 2025 15:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C1C281507;
+	Wed, 23 Apr 2025 14:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxMw+gvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3SMdPSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB4928C5B9;
-	Wed, 23 Apr 2025 15:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812681EFFB9;
+	Wed, 23 Apr 2025 14:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421010; cv=none; b=EnTwoXitJymjU1eNWqMYJxTFHbqdpN+7BKHjRHkymqKOcXqdsFR8lZUnM9vaA8Kv9zHpAeLiaojpedOtpiIKCiN0ic2oL4SKVWvpKxeCSRvz84k0OT0PX42sfNoEu+s0DmrNh5QqHVD3nWH/DfvbA/EH8xXBjC1qsnFXzuSWqZk=
+	t=1745420379; cv=none; b=McdtBYNhidBTvjMAmpBfIxFoN652ZtnIsQwXZijfVXYUAvJtbvWOpFHX5Vh4Vucq/fO6sV2oiusBbFeIomfAsJz0aYOtT6s54WH0z+gSLECHFKL1nk0WwBI6YBlHBiZ2EbeOikneUDB9ob7wwhszZpYccaLcL5fWEhW8JhU+u+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421010; c=relaxed/simple;
-	bh=ZK6GyPNmxdUgjZly8+ZUtsuzKtq1owZLb6kh+gDDjWc=;
+	s=arc-20240116; t=1745420379; c=relaxed/simple;
+	bh=8ZdBhYOImJchWBIJRjnf6IZNwZEpV3v+Zf4z8jwGjBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gJOs10h+O4W7j+Lutr74pGKextAmVncdwi/Y6cUNR/8Teyu5rHda/ZlvNlu/rfI697JLn19X2Xdys9u3ooVr5MoWBYZfp3pM8Ti0msshWo9MwS+nS9YOol5mb4HPxv1x1Xxuojeg9e0jLfIZLgQTeLZUEw/I2aLpYWacX/6IVw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxMw+gvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F5CC4CEEB;
-	Wed, 23 Apr 2025 15:10:09 +0000 (UTC)
+	 MIME-Version; b=rINx23iAY0Q7i4u407WH1qRPUb4lI2nQIPtAlN2ODi7rp+nKbKW5b59TzbgAcxvJDJzCNfzPLJTdScQFNSeyD1T6gHZ89L8G6pdKO3lnlPo1NHjh2ZZESs2kxLve4Vpdbeu5AAHksfc0XEIrAtENEoCcCRzre9mmrs5/j+FK87Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3SMdPSo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BAFC4CEE2;
+	Wed, 23 Apr 2025 14:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421009;
-	bh=ZK6GyPNmxdUgjZly8+ZUtsuzKtq1owZLb6kh+gDDjWc=;
+	s=korg; t=1745420379;
+	bh=8ZdBhYOImJchWBIJRjnf6IZNwZEpV3v+Zf4z8jwGjBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxMw+gvr+Oe1E/nNlk9DqpAtpJuov6QhXub0N63ik+a/KPPPMkSEgeMEj+HB3DL7I
-	 fSFf1SuSGTv5wvUyN/1cS2KAWkhbLZ4g/m3RcRYsoHxABkB2AmoobG6Pm441UPcI7k
-	 rdrn2VoL2BveyG/ZmI7GxDZWemd8PjmC1rtN/ZdE=
+	b=J3SMdPSom6pDj5d2apycCDYSln+fISgv81qYOQd5qMfp/8z7yKkRf3pGhIKVNkWEG
+	 4JAkW1ndruhSf5UIboDtiymSfCftOAskI3quQMQrWV9dSTew8xH5tPMTHAvE5npLT0
+	 2xqP1r/hc3f9zfdnJmIm+5rtp7DpwvBhbQcgqKDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	=?UTF-8?q?Michal=20Such=C3=A1nek?= <msuchanek@suse.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.6 135/393] tpm, tpm_tis: Fix timeout handling when waiting for TPM status
+	Philip Pemberton <lists@philpem.me.uk>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 042/291] ata: libata-eh: Do not use ATAPI DMA for a device limited to PIO mode
 Date: Wed, 23 Apr 2025 16:40:31 +0200
-Message-ID: <20250423142648.954872728@linuxfoundation.org>
+Message-ID: <20250423142626.114923213@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan McDowell <noodles@meta.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit 7146dffa875cd00e7a7f918e1fce79c7593ac1fa upstream.
+[ Upstream commit 91ec84f8eaddbc93d7c62e363d68aeb7b89879c7 ]
 
-The change to only use interrupts to handle supported status changes
-introduced an issue when it is necessary to poll for the status. Rather
-than checking for the status after sleeping the code now sleeps after
-the check. This means a correct, but slower, status change on the part
-of the TPM can be missed, resulting in a spurious timeout error,
-especially on a more loaded system. Switch back to sleeping *then*
-checking. An up front check of the status has been done at the start of
-the function, so this does not cause an additional delay when the status
-is already what we're looking for.
+atapi_eh_request_sense() currently uses ATAPI DMA if the SATA controller
+has ATA_FLAG_PIO_DMA (PIO cmds via DMA) set.
 
-Cc: stable@vger.kernel.org # v6.4+
-Fixes: e87fcf0dc2b4 ("tpm, tpm_tis: Only handle supported interrupts")
-Signed-off-by: Jonathan McDowell <noodles@meta.com>
-Reviewed-by: Michal Suchánek <msuchanek@suse.de>
-Reviewed-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, ATA_FLAG_PIO_DMA is a flag that can be set by a low-level driver
+on a port at initialization time, before any devices are scanned.
+
+If a controller detects a connected device that only supports PIO, we set
+the flag ATA_DFLAG_PIO.
+
+Modify atapi_eh_request_sense() to not use ATAPI DMA if the connected
+device only supports PIO.
+
+Reported-by: Philip Pemberton <lists@philpem.me.uk>
+Closes: https://lore.kernel.org/linux-ide/c6722ee8-5e21-4169-af59-cbbae9edc02f@philpem.me.uk/
+Tested-by: Philip Pemberton <lists@philpem.me.uk>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250221015422.20687-2-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/tpm/tpm_tis_core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/libata-eh.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/char/tpm/tpm_tis_core.c
-+++ b/drivers/char/tpm/tpm_tis_core.c
-@@ -114,11 +114,10 @@ again:
- 		return 0;
- 	/* process status changes without irq support */
- 	do {
-+		usleep_range(priv->timeout_min, priv->timeout_max);
- 		status = chip->ops->status(chip);
- 		if ((status & mask) == mask)
- 			return 0;
--		usleep_range(priv->timeout_min,
--			     priv->timeout_max);
- 	} while (time_before(jiffies, stop));
- 	return -ETIME;
- }
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 3f327ba759fd9..586982a2a61ff 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1510,8 +1510,15 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
+ 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
+ 	tf.command = ATA_CMD_PACKET;
+ 
+-	/* is it pointless to prefer PIO for "safety reasons"? */
+-	if (ap->flags & ATA_FLAG_PIO_DMA) {
++	/*
++	 * Do not use DMA if the connected device only supports PIO, even if the
++	 * port prefers PIO commands via DMA.
++	 *
++	 * Ideally, we should call atapi_check_dma() to check if it is safe for
++	 * the LLD to use DMA for REQUEST_SENSE, but we don't have a qc.
++	 * Since we can't check the command, perhaps we should only use pio?
++	 */
++	if ((ap->flags & ATA_FLAG_PIO_DMA) && !(dev->flags & ATA_DFLAG_PIO)) {
+ 		tf.protocol = ATAPI_PROT_DMA;
+ 		tf.feature |= ATAPI_PKT_DMA;
+ 	} else {
+-- 
+2.39.5
+
 
 
 
