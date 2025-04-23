@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-135535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6EAA98ED8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A92A993BD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:02:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B7FC3BB889
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:56:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5B4A3AE304
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B19280A20;
-	Wed, 23 Apr 2025 14:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647F427FD73;
+	Wed, 23 Apr 2025 15:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDGxGfm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/Ul9Jq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445A127FD56;
-	Wed, 23 Apr 2025 14:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6FF279906;
+	Wed, 23 Apr 2025 15:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420179; cv=none; b=ssW8hSHfrS4+HVrncUSWZSFHwoRQV1MwTuLnSPdgj56/I65BXk0t9uYhnaL7l9SbqzdnY7IulltI1RMWEui2VdtvKnbzflEgxoOlGHVNBB3yZdMPWlGOKk9hrqYKmEqPXo3p84ew2hzL0QIajoIWASqxMs7KlQnZM1qJbGAwBp8=
+	t=1745422123; cv=none; b=Wemp8xaYkU/lDUgb2tKv6zC091JYIUyTHnnqQ0RQhkpJ3Agwu5YzBofgeS/efWbZh0DZqYqUFd5f4IjmPh95DliIZ9CPUChBfqfQER2SeG49uDA5YjDSr6d3leU0Y8CbROG1GPN5MkMzwmwTmZzYsRz4N6unqjAAaii0yMBUFmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420179; c=relaxed/simple;
-	bh=Py2qbHfIBDcMPZdG9IhDTpUaxjqKeXgfUkU8BeALf2k=;
+	s=arc-20240116; t=1745422123; c=relaxed/simple;
+	bh=GfzBdBhGahNJe22X1dRCjD7pwiKelpZRWJYdJAFrgQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EzgfiN5FkwoxXjmtkX9GQe0TnMJ97Mbg2XHPrKdemtl+3vklW/AlSJVRh1V61fucYhiguAYLPsnzLcEhDVtnsP3SfhQHE5zsRGx38HBc2SsHJeMj05oWB8cXKhGUarVkwW+0P9xx2IzDVMuLqUUp7gkYVA59pxlvg+zcnuFHK+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDGxGfm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96A0C4CEE2;
-	Wed, 23 Apr 2025 14:56:18 +0000 (UTC)
+	 MIME-Version; b=mF2TmJiCwgW3+FdqqQj+Qi4oV0/6Zfq8/zPzTCie9JrmmUtYShKr9wHfim1HOGd8A3EbkxcOvnPZvf4YE1FMxSwp8NSYYb17ZktT2v6zNUy03MW5pnZ93Q67jucaYK5qZp6m5DtcgvjuS5w6mMNuWbgk+v5ypjzk3pyGG9AqNbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/Ul9Jq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE30C4CEE2;
+	Wed, 23 Apr 2025 15:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420179;
-	bh=Py2qbHfIBDcMPZdG9IhDTpUaxjqKeXgfUkU8BeALf2k=;
+	s=korg; t=1745422123;
+	bh=GfzBdBhGahNJe22X1dRCjD7pwiKelpZRWJYdJAFrgQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDGxGfm2fJhjFUbzcULlzbFHnt+HTv+FdQEa9fg3CyoGoW/Eqxsq/A1pD9Lz6wRpW
-	 AmPdPMtuRHWKrNTAZl7QTWN48+htizHutc44Dv8RCc/EJA6cVN1YCL64M9phjCd3lU
-	 G8+ZauBqK0m7RZvMqe4VoC8VrWISDgA7tkZJ4FOU=
+	b=w/Ul9Jq0kK8NchPmavNczLkcoBOQAw2s5OlMEeyN/xUPY6kKzJc7WdMdnrlkPXA+z
+	 //VJA8/LeOQo88neZoFMgYdlz7Y6O31YRn67Od2dajbLdicRf2r9unPK0s2G/DzhnA
+	 a0bxT/Dwctq/ZOQFh7WH0RhOgi7gRbNICdfiFM7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 106/223] Bluetooth: l2cap: Process valid commands in too long frame
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 282/393] net: b53: enable BPDU reception for management port
 Date: Wed, 23 Apr 2025 16:42:58 +0200
-Message-ID: <20250423142621.430803308@linuxfoundation.org>
+Message-ID: <20250423142654.993270194@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,111 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit e2e49e214145a8f6ece6ecd52fec63ebc2b27ce9 upstream.
+[ Upstream commit 36355ddfe8955f226a88a543ed354b9f6b84cd70 ]
 
-This is required for passing PTS test cases:
-- L2CAP/COS/CED/BI-14-C
-  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
-  Connection Request
-- L2CAP/COS/CED/BI-15-C
-  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
-  Disconnection Request
+For STP to work, receiving BPDUs is essential, but the appropriate bit
+was never set. Without GC_RX_BPDU_EN, the switch chip will filter all
+BPDUs, even if an appropriate PVID VLAN was setup.
 
-The test procedure defined in L2CAP.TS.p39 for both tests is:
-1. The Lower Tester sends a C-frame to the IUT with PDU Length set
-   to 8 and Channel ID set to the correct signaling channel for the
-   logical link. The Information payload contains one L2CAP_ECHO_REQ
-   packet with Data Length set to 0 with 0 octets of echo data and
-   one command packet and Data Length set as specified in Table 4.6
-   and the correct command data.
-2. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
-3. Perform alternative 3A, 3B, 3C, or 3D depending on the IUT’s
-   response.
-   Alternative 3A (IUT terminates the link):
-     3A.1 The IUT terminates the link.
-     3A.2 The test ends with a Pass verdict.
-   Alternative 3B (IUT discards the frame):
-     3B.1 The IUT does not send a reply to the Lower Tester.
-   Alternative 3C (IUT rejects PDU):
-     3C.1 The IUT sends an L2CAP_COMMAND_REJECT_RSP PDU to the
-          Lower Tester.
-   Alternative 3D (Any other IUT response):
-     3D.1 The Upper Tester issues a warning and the test ends.
-4. The Lower Tester sends a C-frame to the IUT with PDU Length set
-   to 4 and Channel ID set to the correct signaling channel for the
-   logical link. The Information payload contains Data Length set to
-   0 with an L2CAP_ECHO_REQ packet with 0 octets of echo data.
-5. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
-
-With expected outcome:
-  In Steps 2 and 5, the IUT responds with an L2CAP_ECHO_RSP.
-  In Step 3A.1, the IUT terminates the link.
-  In Step 3B.1, the IUT does not send a reply to the Lower Tester.
-  In Step 3C.1, the IUT rejects the PDU.
-  In Step 3D.1, the IUT sends any valid response.
-
-Currently PTS fails with the following logs:
-  Failed to receive ECHO RESPONSE.
-
-And HCI logs:
-> ACL Data RX: Handle 11 flags 0x02 dlen 20
-      L2CAP: Information Response (0x0b) ident 2 len 12
-        Type: Fixed channels supported (0x0003)
-        Result: Success (0x0000)
-        Channels: 0x000000000000002e
-          L2CAP Signaling (BR/EDR)
-          Connectionless reception
-          AMP Manager Protocol
-          L2CAP Signaling (LE)
-> ACL Data RX: Handle 11 flags 0x02 dlen 13
-        frame too long
-        08 01 00 00 08 02 01 00 aa                       .........
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20250414200434.194422-1-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/dsa/b53/b53_common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7504,8 +7504,24 @@ void l2cap_recv_acldata(struct hci_conn
- 		if (skb->len > len) {
- 			BT_ERR("Frame is too long (len %u, expected len %d)",
- 			       skb->len, len);
-+			/* PTS test cases L2CAP/COS/CED/BI-14-C and BI-15-C
-+			 * (Multiple Signaling Command in one PDU, Data
-+			 * Truncated, BR/EDR) send a C-frame to the IUT with
-+			 * PDU Length set to 8 and Channel ID set to the
-+			 * correct signaling channel for the logical link.
-+			 * The Information payload contains one L2CAP_ECHO_REQ
-+			 * packet with Data Length set to 0 with 0 octets of
-+			 * echo data and one invalid command packet due to
-+			 * data truncated in PDU but present in HCI packet.
-+			 *
-+			 * Shorter the socket buffer to the PDU length to
-+			 * allow to process valid commands from the PDU before
-+			 * setting the socket unreliable.
-+			 */
-+			skb->len = len;
-+			l2cap_recv_frame(conn, skb);
- 			l2cap_conn_unreliable(conn, ECOMM);
--			goto drop;
-+			goto unlock;
- 		}
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 4a2c9a9134d8c..cfcda893f1a16 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -724,6 +724,15 @@ static void b53_enable_mib(struct b53_device *dev)
+ 	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
+ }
  
- 		/* Append fragment into frame (with header) */
++static void b53_enable_stp(struct b53_device *dev)
++{
++	u8 gc;
++
++	b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &gc);
++	gc |= GC_RX_BPDU_EN;
++	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
++}
++
+ static u16 b53_default_pvid(struct b53_device *dev)
+ {
+ 	if (is5325(dev) || is5365(dev))
+@@ -863,6 +872,7 @@ static int b53_switch_reset(struct b53_device *dev)
+ 	}
+ 
+ 	b53_enable_mib(dev);
++	b53_enable_stp(dev);
+ 
+ 	return b53_flush_arl(dev, FAST_AGE_STATIC);
+ }
+-- 
+2.39.5
+
 
 
 
