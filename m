@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B45A98F55
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:07:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE509A991F3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 834EA1B869D2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94722445392
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2DA5284696;
-	Wed, 23 Apr 2025 14:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3D52857F8;
+	Wed, 23 Apr 2025 15:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xF98fxNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDd23GsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CF828468E;
-	Wed, 23 Apr 2025 14:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE711280CC8;
+	Wed, 23 Apr 2025 15:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420395; cv=none; b=e0S9WWDOBanSzv6dfbL3/UbrAFKSjU0xZOQai+BVhU6V4C4MGbX1H/iY3Uvro4QgLbMOzbxMcExXIiUtiJF/PLqFHDgZEsVINiiXWO0r7Gq+MdzEEe4S5185IabJRvJSqHY1w2hbvo1NnAVwVsVKzzIZSGKis2GnyvkwFllvt8A=
+	t=1745421659; cv=none; b=Z/hBRzoKbpJEdHdjlXWS6oSEsUjfZbN/P+T8888PYg9kS4ygmepnN4h6WpqTzjaMBlTM4Ig4RBrlpInvotGKU6y6j6SrG9lm/ikjrPtHp9fpIeLm1ULMLG0TFquhci0SlRZn1QMMLx+M4d99ZYFK0BmCpzOBrmd0nW18VzYvOKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420395; c=relaxed/simple;
-	bh=0RHgjRXovHduyPYU5KCqch+V3nU4v7Rbarx3NiCEFP0=;
+	s=arc-20240116; t=1745421659; c=relaxed/simple;
+	bh=XwsJJWGlnI1olFLgJAKWNHTZkwfqWbcYT6eU/HXUUDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JgGy7SdCQeVmR4BzbNf9eFMVCRF1efxku9QJNu9r+TlKFG9ouCQLjy4A0wJcPDVFfrUWf/NLygGIWpx4r+aABOBqZlllf2B6E5hhJNlBxAffs5VLY12SKGHtpGJ6o/eFM0OCGNmgW530HRTTxAeB9aaMl9ySi3uA2t1tA9YPtiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xF98fxNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC4FC4CEE2;
-	Wed, 23 Apr 2025 14:59:54 +0000 (UTC)
+	 MIME-Version; b=uNvQjS+teF0hKMap0u0tkYcPNqcl0Jhv/2yTAG5kh7GEgf1DbZxU4TsNWJH9nEstsWJzjw5gbtWjEeyXTm0fpRZGYUQeeD9aQkyb2BNXDw8oNY+0DDEshZCw5c3JXCdg3QEskTqj9trxWkUpWddV/9V141hZ+1WGKQXZdT4HFiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDd23GsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F263C4CEE2;
+	Wed, 23 Apr 2025 15:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420395;
-	bh=0RHgjRXovHduyPYU5KCqch+V3nU4v7Rbarx3NiCEFP0=;
+	s=korg; t=1745421658;
+	bh=XwsJJWGlnI1olFLgJAKWNHTZkwfqWbcYT6eU/HXUUDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xF98fxNcH478/pkov6BDO13TSe+u9P44FNwkACwoZJ8641RaIK1svZNr1wJbbDHO0
-	 kTwBP8Ps9qxOeOrMxnubacNW+8+1LxWwik6ofacn+Ny8zYMwfilPvrSJkSMR2xq+8w
-	 b9fzF5A1I9L/dlbV/RFxvm6meE4PUV5ARjJRCYFA=
+	b=CDd23GsLyQwAnJSlLuMDpQ+mp+AIsJ6mxIUzCwtuiB+P8B1qDxcvJZVdBLxy/dpvM
+	 egV7759DModXF/iEWYaj+z1VbewaTMtlOAt+rcveUMKZOIDVIFSHHud86ZcZnL46gR
+	 kwqzb3LlYTz9scM9E21unXH0dNr58Dp6MPW9lzGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 088/241] riscv: Properly export reserved regions in /proc/iomem
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 163/291] Bluetooth: hci_uart: Fix another race during initialization
 Date: Wed, 23 Apr 2025 16:42:32 +0200
-Message-ID: <20250423142624.177116964@linuxfoundation.org>
+Message-ID: <20250423142631.055117427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,125 +60,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit e94eb7ea6f206e229791761a5fdf9389f8dbd183 ]
+commit 5df5dafc171b90d0b8d51547a82657cd5a1986c7 upstream.
 
-The /proc/iomem represents the kernel's memory map. Regions marked
-with "Reserved" tells the user that the range should not be tampered
-with. Kexec-tools, when using the older kexec_load syscall relies on
-the "Reserved" regions to build the memory segments, that will be the
-target of the new kexec'd kernel.
+Do not set 'HCI_UART_PROTO_READY' before call 'hci_uart_register_dev()'.
+Possible race is when someone calls 'hci_tty_uart_close()' after this bit
+is set, but 'hci_uart_register_dev()' wasn't done. This leads to access
+to uninitialized fields. To fix it let's set this bit after device was
+registered (as before patch c411c62cc133) and to fix previous problem let's
+add one more bit in addition to 'HCI_UART_PROTO_READY' which allows to
+perform power up without original bit set (pls see commit c411c62cc133).
 
-The RISC-V port tries to expose all reserved regions to userland, but
-some regions were not properly exposed: Regions that resided in both
-the "regular" and reserved memory block, e.g. the EFI Memory Map. A
-missing entry could result in reserved memory being overwritten.
+Crash backtrace from syzbot report:
 
-It turns out, that arm64, and loongarch had a similar issue a while
-back:
+RIP: 0010:skb_queue_empty_lockless include/linux/skbuff.h:1887 [inline]
+RIP: 0010:skb_queue_purge_reason+0x6d/0x140 net/core/skbuff.c:3936
 
-  commit d91680e687f4 ("arm64: Fix /proc/iomem for reserved but not memory regions")
-  commit 50d7ba36b916 ("arm64: export memblock_reserve()d regions via /proc/iomem")
+Call Trace:
+ <TASK>
+ skb_queue_purge include/linux/skbuff.h:3364 [inline]
+ mrvl_close+0x2f/0x90 drivers/bluetooth/hci_mrvl.c:100
+ hci_uart_tty_close+0xb6/0x120 drivers/bluetooth/hci_ldisc.c:557
+ tty_ldisc_close drivers/tty/tty_ldisc.c:455 [inline]
+ tty_ldisc_kill+0x66/0xc0 drivers/tty/tty_ldisc.c:613
+ tty_ldisc_release+0xc9/0x120 drivers/tty/tty_ldisc.c:781
+ tty_release_struct+0x10/0x80 drivers/tty/tty_io.c:1690
+ tty_release+0x4ef/0x640 drivers/tty/tty_io.c:1861
+ __fput+0x86/0x2a0 fs/file_table.c:450
+ task_work_run+0x82/0xb0 kernel/task_work.c:239
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xa3/0x1b0 kernel/entry/common.c:218
+ do_syscall_64+0x9a/0x190 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Similar to the other ports, resolve the issue by splitting the regions
-in an arch initcall, since we need a working allocator.
-
-Fixes: ffe0e5261268 ("RISC-V: Improve init_resources()")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250409182129.634415-1-bjorn@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reported-by: syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com
+Tested-by: syzbot+683f8cb11b94b1824c77@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-bluetooth/d159c57f-8490-4c26-79da-6ad3612c4a14@salutedevices.com/
+Fixes: 366ceff495f9 ("Bluetooth: hci_uart: fix race during initialization")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/setup.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/bluetooth/hci_ldisc.c |   20 ++++++++++++++------
+ drivers/bluetooth/hci_uart.h  |    1 +
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 4fe45daa6281e..b7d0bd4c0a81a 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -66,6 +66,9 @@ static struct resource bss_res = { .name = "Kernel bss", };
- static struct resource elfcorehdr_res = { .name = "ELF Core hdr", };
- #endif
+--- a/drivers/bluetooth/hci_ldisc.c
++++ b/drivers/bluetooth/hci_ldisc.c
+@@ -102,7 +102,8 @@ static inline struct sk_buff *hci_uart_d
+ 	if (!skb) {
+ 		percpu_down_read(&hu->proto_lock);
  
-+static int num_standard_resources;
-+static struct resource *standard_resources;
-+
- static int __init add_resource(struct resource *parent,
- 				struct resource *res)
- {
-@@ -139,7 +142,7 @@ static void __init init_resources(void)
- 	struct resource *res = NULL;
- 	struct resource *mem_res = NULL;
- 	size_t mem_res_sz = 0;
--	int num_resources = 0, res_idx = 0;
-+	int num_resources = 0, res_idx = 0, non_resv_res = 0;
- 	int ret = 0;
+-		if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
++		if (test_bit(HCI_UART_PROTO_READY, &hu->flags) ||
++		    test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 			skb = hu->proto->dequeue(hu);
  
- 	/* + 1 as memblock_alloc() might increase memblock.reserved.cnt */
-@@ -193,6 +196,7 @@ static void __init init_resources(void)
- 	/* Add /memory regions to the resource tree */
- 	for_each_mem_region(region) {
- 		res = &mem_res[res_idx--];
-+		non_resv_res++;
+ 		percpu_up_read(&hu->proto_lock);
+@@ -124,7 +125,8 @@ int hci_uart_tx_wakeup(struct hci_uart *
+ 	if (!percpu_down_read_trylock(&hu->proto_lock))
+ 		return 0;
  
- 		if (unlikely(memblock_is_nomap(region))) {
- 			res->name = "Reserved";
-@@ -210,6 +214,9 @@ static void __init init_resources(void)
- 			goto error;
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags))
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 		goto no_schedule;
+ 
+ 	set_bit(HCI_UART_TX_WAKEUP, &hu->tx_state);
+@@ -278,7 +280,8 @@ static int hci_uart_send_frame(struct hc
+ 
+ 	percpu_down_read(&hu->proto_lock);
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags)) {
+ 		percpu_up_read(&hu->proto_lock);
+ 		return -EUNATCH;
  	}
+@@ -582,7 +585,8 @@ static void hci_uart_tty_wakeup(struct t
+ 	if (tty != hu->tty)
+ 		return;
  
-+	num_standard_resources = non_resv_res;
-+	standard_resources = &mem_res[res_idx + 1];
-+
- 	/* Clean-up any unused pre-allocated resources */
- 	if (res_idx >= 0)
- 		memblock_free(mem_res, (res_idx + 1) * sizeof(*mem_res));
-@@ -221,6 +228,33 @@ static void __init init_resources(void)
- 	memblock_free(mem_res, mem_res_sz);
+-	if (test_bit(HCI_UART_PROTO_READY, &hu->flags))
++	if (test_bit(HCI_UART_PROTO_READY, &hu->flags) ||
++	    test_bit(HCI_UART_PROTO_INIT, &hu->flags))
+ 		hci_uart_tx_wakeup(hu);
  }
  
-+static int __init reserve_memblock_reserved_regions(void)
-+{
-+	u64 i, j;
-+
-+	for (i = 0; i < num_standard_resources; i++) {
-+		struct resource *mem = &standard_resources[i];
-+		phys_addr_t r_start, r_end, mem_size = resource_size(mem);
-+
-+		if (!memblock_is_region_reserved(mem->start, mem_size))
-+			continue;
-+
-+		for_each_reserved_mem_range(j, &r_start, &r_end) {
-+			resource_size_t start, end;
-+
-+			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
-+			end = min(PFN_PHYS(PFN_UP(r_end)) - 1, mem->end);
-+
-+			if (start > mem->end || end < mem->start)
-+				continue;
-+
-+			reserve_region_with_split(mem, start, end, "Reserved");
-+		}
-+	}
-+
-+	return 0;
-+}
-+arch_initcall(reserve_memblock_reserved_regions);
+@@ -608,7 +612,8 @@ static void hci_uart_tty_receive(struct
  
- static void __init parse_dtb(void)
- {
--- 
-2.39.5
-
+ 	percpu_down_read(&hu->proto_lock);
+ 
+-	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags)) {
++	if (!test_bit(HCI_UART_PROTO_READY, &hu->flags) &&
++	    !test_bit(HCI_UART_PROTO_INIT, &hu->flags)) {
+ 		percpu_up_read(&hu->proto_lock);
+ 		return;
+ 	}
+@@ -709,13 +714,16 @@ static int hci_uart_set_proto(struct hci
+ 
+ 	hu->proto = p;
+ 
+-	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	set_bit(HCI_UART_PROTO_INIT, &hu->flags);
+ 
+ 	err = hci_uart_register_dev(hu);
+ 	if (err) {
+ 		return err;
+ 	}
+ 
++	set_bit(HCI_UART_PROTO_READY, &hu->flags);
++	clear_bit(HCI_UART_PROTO_INIT, &hu->flags);
++
+ 	return 0;
+ }
+ 
+--- a/drivers/bluetooth/hci_uart.h
++++ b/drivers/bluetooth/hci_uart.h
+@@ -90,6 +90,7 @@ struct hci_uart {
+ #define HCI_UART_REGISTERED		1
+ #define HCI_UART_PROTO_READY		2
+ #define HCI_UART_NO_SUSPEND_NOTIFIER	3
++#define HCI_UART_PROTO_INIT		4
+ 
+ /* TX states  */
+ #define HCI_UART_SENDING	1
 
 
 
