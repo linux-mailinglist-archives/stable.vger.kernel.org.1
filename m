@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-135763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E06A99083
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:20:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0D54A98DBD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF84E8E11DD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 310E53A997C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D78291170;
-	Wed, 23 Apr 2025 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F369280A46;
+	Wed, 23 Apr 2025 14:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Alp2JHZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRyPS7vI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A3428DF16;
-	Wed, 23 Apr 2025 15:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECBA280A27;
+	Wed, 23 Apr 2025 14:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420780; cv=none; b=QuFlEz1FhSh5/+0ZJIneb4BxfGNCCgn8RECgXU6rOoOhJaWizVfq7ycS8luKEKNVLlg/alb0MBuDwxnMW4bB0kdBBDRGGlscj2YvhzXbCy1Doy1nVNCfLIqj8UcsnskMmDCt1cZ8GHP3w/k+8hDX6MC8kfsf+ui8GXMhHog5hFU=
+	t=1745419676; cv=none; b=SgWE/HdEFOgO35273Pdw7zAX7sga+lqsEVaJrlCcE6QtFDhDT57/1RL9pX9M7haPhacXICBjUGBdMD+4NgqnQwFMoOxUSoTk0H4DOCVM+bjamM8eJv1MoxP/INpXJTk56owE42SmzgbSzWJv56UtYH5a6rKD5OVYQy0jcdtH7r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420780; c=relaxed/simple;
-	bh=8FnkFg07vX46Raq/M4L12JQQ41vN4/C+PbL6+pty78s=;
+	s=arc-20240116; t=1745419676; c=relaxed/simple;
+	bh=PCeyVXi3nl2N2+D2VnAO7Sbc9YyK9pOwKMl+aSPpfJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c65FqzuB5oXyB8d77TCwHvr7Q3uxtgcRmmwwLD+34OHgSXO5IyxVwqOINod0tsV+Ahk/jbOzC+YnJL7Osa0NKj2F/BegbrP56zPbVKB8N7nbJMwCKXejXIrhIr5nAvAMQdE7p8Z6oMsai74byqKo10h3PqJB1FHGa3n8u8dt0d0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Alp2JHZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D282DC4CEE2;
-	Wed, 23 Apr 2025 15:06:19 +0000 (UTC)
+	 MIME-Version; b=bjrnjeJiQdJSktR8crEJjHLwBKPTzWN0sWS6UBz6D7Aay9HzvD4mvAjCezV73c3uF7GZHC+7HwZlNS9oWl6Vv3kgiIH83To6QBvlsKjiDdC+2ThTeCLQyScuhq/fcU+B3zDo3gnlNbGDi8+LH58QYwx0Nn4IidCwe9yJLuj3ONY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRyPS7vI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C88C4CEE2;
+	Wed, 23 Apr 2025 14:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420780;
-	bh=8FnkFg07vX46Raq/M4L12JQQ41vN4/C+PbL6+pty78s=;
+	s=korg; t=1745419676;
+	bh=PCeyVXi3nl2N2+D2VnAO7Sbc9YyK9pOwKMl+aSPpfJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Alp2JHZcRdn9x1xHLSNCkCWYSkwEU0k2KQG5Jp6BcOzFMcG0ZfDf96zvxWlZtBJYT
-	 9cdjltmkGDS5LuEGwvAKSdsD08l0pGVC4Agd5kXTD1/RYjSTKIgEKagDNdtclOgQXx
-	 qMHRc+Jx+SSRXpoSBkMkiVgeHbf4riHSfHOjXwnQ=
+	b=BRyPS7vI9tIqifjgx/b//6FtxcPk8neHwStL4XcwAf9577rK5a9a60QF6TyiJTdMO
+	 HR4abzrCBEDpmYNvDgFvQ3lMBXscOldKvNiunfpfnsQ6X1rtkGz1skDqz5Ya1gLxUf
+	 6CcQNIdydSnw4GuHznD92B2rAw/wYjYJ2LeN/Ws4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 080/291] media: venus: hfi: add check to handle incorrect queue size
-Date: Wed, 23 Apr 2025 16:41:09 +0200
-Message-ID: <20250423142627.638829011@linuxfoundation.org>
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Michael Nemanov <michael.nemanov@ti.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 006/241] wifi: wl1251: fix memory leak in wl1251_tx_work
+Date: Wed, 23 Apr 2025 16:41:10 +0200
+Message-ID: <20250423142620.786485767@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
+[ Upstream commit a0f0dc96de03ffeefc2a177b7f8acde565cb77f4 ]
 
-qsize represents size of shared queued between driver and video
-firmware. Firmware can modify this value to an invalid large value. In
-such situation, empty_space will be bigger than the space actually
-available. Since new_wr_idx is not checked, so the following code will
-result in an OOB write.
-...
-qsize = qhdr->q_size
+The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
+with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
 
-if (wr_idx >= rd_idx)
- empty_space = qsize - (wr_idx - rd_idx)
-....
-if (new_wr_idx < qsize) {
- memcpy(wr_ptr, packet, dwords << 2) --> OOB write
-
-Add check to ensure qsize is within the allocated size while
-reading and writing packets into the queue.
-
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
+Link: https://patch.msgid.link/20250330104532.44935-1-abdun.nihaal@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
- 	/* ensure rd/wr indices's are read from memory */
- 	rmb();
+diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
+index 474b603c121cb..adb4840b04893 100644
+--- a/drivers/net/wireless/ti/wl1251/tx.c
++++ b/drivers/net/wireless/ti/wl1251/tx.c
+@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
+ 	while ((skb = skb_dequeue(&wl->tx_queue))) {
+ 		if (!woken_up) {
+ 			ret = wl1251_ps_elp_wakeup(wl);
+-			if (ret < 0)
++			if (ret < 0) {
++				skb_queue_head(&wl->tx_queue, skb);
+ 				goto out;
++			}
+ 			woken_up = true;
+ 		}
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	if (wr_idx >= rd_idx)
- 		empty_space = qsize - (wr_idx - rd_idx);
- 	else
-@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
- 	wr_idx = qhdr->write_idx;
- 	qsize = qhdr->q_size;
- 
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	/* make sure data is valid before using it */
- 	rmb();
- 
+-- 
+2.39.5
+
 
 
 
