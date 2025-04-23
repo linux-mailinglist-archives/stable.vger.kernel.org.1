@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F27A9917D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:31:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BAFA9905F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 012CC1B86CD1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C371B83AC0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9212A28C5B8;
-	Wed, 23 Apr 2025 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19129291159;
+	Wed, 23 Apr 2025 15:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFS6mLnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1021qgck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F72B2367A0;
-	Wed, 23 Apr 2025 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB58E269B07;
+	Wed, 23 Apr 2025 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421355; cv=none; b=cG35ghCbg6NPLyqhrPeHTVflopkVtSi1MXZIgexDuNvXWW37F7crq87Z1do6CTkDB0yIqajkTxOAFec2sWQ10VAA3kte81lcSoqP5e94icWx7f7qNWqysfsedUJkiGkTWzRgLLs+Z0VEXYfGqwmNuWD/rmn0+BGCcDbFQihVjmQ=
+	t=1745420756; cv=none; b=hURvx4vcL/GUhcc75TLdQS7F9cwytFKaP+dB9Y4jA2pxb1SSFdGUuO2ZCJelnJyWi6qDbVV3VJ0LW662o4aIaoEpTW4RAVC9tSt4MjUMwY987Knv4NThkT6Rlub8TpOaaonsKKFaGFhP8ybLWBsO2Gr8xCBFU+0TAI/QcU5SdZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421355; c=relaxed/simple;
-	bh=MDj5btanynEtJ4iLEN/oYQiYzzRKcBfhdL5tYb2fDi0=;
+	s=arc-20240116; t=1745420756; c=relaxed/simple;
+	bh=tEzl66fiS2bFum9+7+E1V2gtBsPISk988CsvpQWo44A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEhk3KzfF3JW23ecyfHf+V6nc+toLDnRK1L1d3TmD31OaQtDLQljcu9nkXgIGbubFnNddWMNvovOnLuNcijawXMG1VXPVv/+J9dnLqX3CdNuJrkUbdWw8jAN1bjK5n2WInF7NafQVqQNaJQnUWSSJ3CVgoot+0pTaK9oj08iehk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFS6mLnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EA3C4CEE3;
-	Wed, 23 Apr 2025 15:15:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=An4fk9CM9Al5AU34ogBaF0eFKK9B9a3ajGxlL35iSRfMDt91RcWNrykIiClhO9V2EsL3zsmRquZpibZmeHKI/GmLzDTFcHUOMFhY1IXpTT1Nf4bK45sLIWLpxMTm5fpZ5N7JtpvmWQq5zicagq/eVyhXL743YdAZfc91JCbzYp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1021qgck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E042C4CEE2;
+	Wed, 23 Apr 2025 15:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421354;
-	bh=MDj5btanynEtJ4iLEN/oYQiYzzRKcBfhdL5tYb2fDi0=;
+	s=korg; t=1745420756;
+	bh=tEzl66fiS2bFum9+7+E1V2gtBsPISk988CsvpQWo44A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFS6mLnhB/Ns2L4Lkq00HnHSc5FdYKU5yJ2fTJlkI+1MFVBQldo7U9OZppd5eUasD
-	 Fewzn7yNR2pLmT7gzuuHVT0+6XGMkVbVzF4iaXKYAUa5eS9R9lgF8eqF/jbJKrQtrj
-	 tWzUliiH8K9Eq5BJoUD8L0B1GFbp9B9mxlbS65iM=
+	b=1021qgckIX73Ge2jFKwoDlYdKJCHFnWDiLiqHRvOpahqH/HZE0paJryxnpuzOHUwe
+	 1co50hw6uRmNynpoea5QU1H6AYVDayL95sztfzlwRX+wbWOBLCGUfqcWXZBMyjEZ9e
+	 f6e7Q9Xa07faD7ZRJOogrwnMXEYbInf6eivOrszE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sebastian Reichel <sre@kernel.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 171/393] leds: rgb: leds-qcom-lpg: Fix calculation of best period Hi-Res PWMs
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 078/291] media: i2c: adv748x: Fix test pattern selection mask
 Date: Wed, 23 Apr 2025 16:41:07 +0200
-Message-ID: <20250423142650.442255933@linuxfoundation.org>
+Message-ID: <20250423142627.556504180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-commit 2528eec7da0ec58fcae6d12cfa79a622c933d86b upstream.
+commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
 
-When determining the actual best period by looping through all
-possible PWM configs, the resolution currently used is based on
-bit shift value which is off-by-one above the possible maximum
-PWM value allowed.
+The mask to select the test-pattern in register ADV748X_SDP_FRP is
+incorrect, it's the lower 3 bits which controls the pattern. The
+GENMASK() macro is used incorrectly and the generated mask is 0x0e
+instead of 0x07.
 
-So subtract one from the resolution before determining the best
-period so that the maximum duty cycle requested by the PWM user
-won't result in a value above the maximum allowed by the selected
-resolution.
+The result is that not all test patterns are selectable, and that in
+some cases the wrong test pattern is activated. Fix this by correcting
+the GENMASK().
 
-Cc: stable@vger.kernel.org    # 6.4
-Fixes: b00d2ed37617 ("leds: rgb: leds-qcom-lpg: Add support for high resolution PWM")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Sebastian Reichel <sre@kernel.org>
-Link: https://lore.kernel.org/r/20250305-leds-qcom-lpg-fix-max-pwm-on-hi-res-v4-3-bfe124a53a9f@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+[hverkuil: fixed tiny typo in commit log: my -> by]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/rgb/leds-qcom-lpg.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/i2c/adv748x/adv748x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -311,7 +311,7 @@ static int lpg_calc_freq(struct lpg_chan
- 		max_res = LPG_RESOLUTION_9BIT;
- 	}
+--- a/drivers/media/i2c/adv748x/adv748x.h
++++ b/drivers/media/i2c/adv748x/adv748x.h
+@@ -322,7 +322,7 @@ struct adv748x_state {
  
--	min_period = div64_u64((u64)NSEC_PER_SEC * (1 << pwm_resolution_arr[0]),
-+	min_period = div64_u64((u64)NSEC_PER_SEC * ((1 << pwm_resolution_arr[0]) - 1),
- 			       clk_rate_arr[clk_len - 1]);
- 	if (period <= min_period)
- 		return -EINVAL;
-@@ -332,7 +332,7 @@ static int lpg_calc_freq(struct lpg_chan
- 	 */
+ /* Free run pattern select */
+ #define ADV748X_SDP_FRP			0x14
+-#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
++#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
  
- 	for (i = 0; i < pwm_resolution_count; i++) {
--		resolution = 1 << pwm_resolution_arr[i];
-+		resolution = (1 << pwm_resolution_arr[i]) - 1;
- 		for (clk_sel = 1; clk_sel < clk_len; clk_sel++) {
- 			u64 numerator = period * clk_rate_arr[clk_sel];
- 
-@@ -1060,7 +1060,7 @@ static int lpg_pwm_get_state(struct pwm_
- 		if (ret)
- 			return ret;
- 
--		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * (1 << resolution) *
-+		state->period = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * ((1 << resolution) - 1) *
- 						 pre_div * (1 << m), refclk);
- 		state->duty_cycle = DIV_ROUND_UP_ULL((u64)NSEC_PER_SEC * pwm_value * pre_div * (1 << m), refclk);
- 	} else {
+ /* Saturation */
+ #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
 
 
 
