@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5451BA98E35
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42687A98F28
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2FAD1896493
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4E0A921194
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCFB280CD3;
-	Wed, 23 Apr 2025 14:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0838527FD60;
+	Wed, 23 Apr 2025 14:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU3zztQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaZae+GJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09293280A32;
-	Wed, 23 Apr 2025 14:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B698A27FD7A;
+	Wed, 23 Apr 2025 14:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419874; cv=none; b=UZ3ONE0IXZBM2A7qLO0acB7xS1TdKVwjQIr7MH32IABAgh0HsOq7fIctoh6FUCny17vk8rH2I1cXvHuw2Y1nY+Ova3QLe7sKfcLrFHWHkmrz8Q+PZAooyGf/0NP0hrRM3KJXUU6P/OTcGfw3sY7+JR5H0esCHwXUccrizLWZyPw=
+	t=1745420329; cv=none; b=Z+0aDe/WkOGpCcDqdBCs02SBWb1I1nRZIzkpnvh0EurZBsH10XNmqObQZWb3aDc1aqlW583s4dPbTnFcQ5aN9BTNHhDni+oPi5685WvjBNU8Ilj9nZ3+Jjj+RjTWytj9lmUDGIqpOlhHAWR5eBl0JZB/2iA9w01b1mKC3BhO3UQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419874; c=relaxed/simple;
-	bh=svr9Gup1SEt9osdtExRXH4U8L8HilPU3OjjUxGJzn2g=;
+	s=arc-20240116; t=1745420329; c=relaxed/simple;
+	bh=MgAfK1+hyfbdfvc4IgP7OE/I5kmmVfSOYnj7BVs0VHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Axdcjw8WK7JPNx9cFsTVg8hiq/FH3Dk1AeVuR0azUFhcUT87+rUDTCHFHAB8h826E8yP2ekR2WN1HC731G8XQsScZovrHbGISevRXOIfCeJeyqJ3h08e/5r/sTNZub0go6a0dIiYeoyLStditxDYP+tuCPgH8Y38kPCqrPOzvZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU3zztQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89560C4CEE2;
-	Wed, 23 Apr 2025 14:51:13 +0000 (UTC)
+	 MIME-Version; b=TH1CRdNy5e38He+2U7BlXqPLZqXajAEFA1arsNlpA0VOShQ9sdV8c9UOM4vG5oMVETHoc8dVdc4E4Qt00xuzIdF61ny1J7gJGkPb1BxoeyWcvq4db3opGWlnIvEGFVdLym6GztKqim8ubxhgTQb/3pVuRMi0uboJfqnRxKwv9+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaZae+GJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3198C4CEE2;
+	Wed, 23 Apr 2025 14:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419873;
-	bh=svr9Gup1SEt9osdtExRXH4U8L8HilPU3OjjUxGJzn2g=;
+	s=korg; t=1745420329;
+	bh=MgAfK1+hyfbdfvc4IgP7OE/I5kmmVfSOYnj7BVs0VHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tU3zztQl1BXLI3lCe5mjfMKPWwMEiG2zn8kx0Yy6XrXq0nUVGnx5cI6pNCfryIUQP
-	 XmH1e+9SkH7Ffias+lqoIHyb/HYdr7tA4mAXHiSlh3haqNH2hCoTbbKjCBZXzlx5y8
-	 CeChIYOk1ubK9+NfWqDUYDU9LiDCq6oNVImWgsyY=
+	b=NaZae+GJUuzIuhftqJKoQv4l/YZFQCC6vNEZB8HcPSqvBIao8ShsldyWNqbAy11AH
+	 SilRPacZJBmF/65llQVesVcblgok8CdjfJKXMv3XWLKQl3qattyigrbPsWyTOgXWM4
+	 dRbpXEmCkHsOHT5yjqLDH638llSP/YHJfR2KEd9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
+	Meghana Malladi <m-malladi@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 074/223] net: ethernet: mtk_eth_soc: revise QDMA packet scheduler settings
+Subject: [PATCH 6.14 082/241] net: ti: icss-iep: Add phase offset configuration for perout signal
 Date: Wed, 23 Apr 2025 16:42:26 +0200
-Message-ID: <20250423142620.141422362@linuxfoundation.org>
+Message-ID: <20250423142623.931981157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-[ Upstream commit 1b66124135f5f8640bd540fadda4b20cdd23114b ]
+[ Upstream commit 220cb1be647a7ca4e60241405c66f8f612c9b046 ]
 
-The QDMA packet scheduler suffers from a performance issue.
-Fix this by picking up changes from MediaTek's SDK which change to use
-Token Bucket instead of Leaky Bucket and fix the SPEED_1000 configuration.
+icss_iep_perout_enable_hw() is a common function for generating
+both pps and perout signals. When enabling pps, the application needs
+to only pass enable/disable argument, whereas for perout it supports
+different flags to configure the signal.
 
-Fixes: 160d3a9b1929 ("net: ethernet: mtk_eth_soc: introduce MTK_NETSYS_V2 support")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/18040f60f9e2f5855036b75b28c4332a2d2ebdd8.1744764277.git.daniel@makrotopia.org
+In case the app passes a valid phase offset value, the signal should
+start toggling after that phase offset, else start immediately or
+as soon as possible. ICSS_IEP_SYNC_START_REG register take number of
+clock cycles to wait before starting the signal after activation time.
+Set appropriate value to this register to support phase offset.
+
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://patch.msgid.link/20250304105753.1552159-3-m-malladi@ti.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7349c9e99793 ("net: ti: icss-iep: Fix possible NULL pointer dereference for perout request")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 941c7c380870b..d408dcda76d79 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -762,8 +762,8 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 			break;
- 		case SPEED_1000:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 10) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 6) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 10);
- 			break;
- 		default:
-@@ -3274,7 +3274,7 @@ static int mtk_start_dma(struct mtk_eth *eth)
- 		if (mtk_is_netsys_v2_or_greater(eth))
- 			val |= MTK_MUTLI_CNT | MTK_RESV_BUF |
- 			       MTK_WCOMP_EN | MTK_DMAD_WR_WDONE |
--			       MTK_CHK_DDONE_EN | MTK_LEAKY_BUCKET_EN;
-+			       MTK_CHK_DDONE_EN;
- 		else
- 			val |= MTK_RX_BT_32DWORDS;
- 		mtk_w32(eth, val, reg_map->qdma.glo_cfg);
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 2981c19c48b18..b4a34c57b7b48 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -407,6 +407,7 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 				     struct ptp_perout_request *req, int on)
+ {
+ 	struct timespec64 ts;
++	u64 ns_start;
+ 	u64 ns_width;
+ 	int ret;
+ 	u64 cmp;
+@@ -416,6 +417,14 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 	ts.tv_nsec = req->on.nsec;
+ 	ns_width = timespec64_to_ns(&ts);
+ 
++	if (req->flags & PTP_PEROUT_PHASE) {
++		ts.tv_sec = req->phase.sec;
++		ts.tv_nsec = req->phase.nsec;
++		ns_start = timespec64_to_ns(&ts);
++	} else {
++		ns_start = 0;
++	}
++
+ 	if (iep->ops && iep->ops->perout_enable) {
+ 		ret = iep->ops->perout_enable(iep->clockops_data, req, on, &cmp);
+ 		if (ret)
+@@ -430,7 +439,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+ 				     div_u64(ns_width, iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
+-			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG, 0);
++			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++				     div_u64(ns_start, iep->def_inc));
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
+ 			/* Enable CMP 1 */
+ 			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
+@@ -457,6 +467,8 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
+ 
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
+ 				     div_u64(ns_width, iep->def_inc));
++			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
++				     div_u64(ns_start, iep->def_inc));
+ 			/* Enable Sync in single shot mode  */
+ 			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
+ 				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
+@@ -487,7 +499,8 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
+ 	int ret = 0;
+ 
+ 	/* Reject requests with unsupported flags */
+-	if (req->flags & ~PTP_PEROUT_DUTY_CYCLE)
++	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
++			  PTP_PEROUT_PHASE))
+ 		return -EOPNOTSUPP;
+ 
+ 	mutex_lock(&iep->ptp_clk_mutex);
+@@ -588,6 +601,7 @@ static int icss_iep_pps_enable(struct icss_iep *iep, int on)
+ 	if (on) {
+ 		ns = icss_iep_gettime(iep, NULL);
+ 		ts = ns_to_timespec64(ns);
++		rq.perout.flags = 0;
+ 		rq.perout.period.sec = 1;
+ 		rq.perout.period.nsec = 0;
+ 		rq.perout.start.sec = ts.tv_sec + 2;
 -- 
 2.39.5
 
