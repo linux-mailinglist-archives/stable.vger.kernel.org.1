@@ -1,144 +1,157 @@
-Return-Path: <stable+bounces-135283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1961BA98A4B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64805A98AE4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE64E4435D3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 13:03:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF1C162537
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 13:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A04D78F36;
-	Wed, 23 Apr 2025 13:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1C514EC60;
+	Wed, 23 Apr 2025 13:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="CvHBibE0"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="iu4GVOzd"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E55D8F0
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A554D1714B4
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745413374; cv=none; b=gcUDqWYbzGWfylFC4C4JW9aM+3V0h4fu7OGcJ2NF7LkJ4P8s556LDVtxbLE/+ybTQVJvEcM3BGSP9vAsIBRseugKghUo4US9orcNKVyCvsfXkLcdjpa4+6rJbtVcOLijYpN34PtWpib4iBYa5m4tOwphUt5Pq5F8Ay33HnTiiqs=
+	t=1745414582; cv=none; b=bY7BZRPyfrPGiWaFvaaMe3iSBQLtM30zrM61Mx0w/pwqh4pWaIq1JYgaTq5nWpNVyDYlR+QSJ1zbo3nmzhvS8USGja42jr/QslSfe1u4tjJ4xV7TKXVS4Xvgga/TGxd1AUnLXof4YelHuE6Pc/thdKeTJiPLBKyK8J/L83FJmFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745413374; c=relaxed/simple;
-	bh=BnvOXO+boD8aoX/yVyEiclGZPfk5b7M+Q3WLNEqtKXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h2PRt02wleq8i7JMD8kjs9r8gakzBzRmpqTHmjzljvipF19lrW+l5fuxJ+SX3wdYW/o6RPVcOPH3VYwLtMWvJF+c/BGxLpq5SC1LWww8Jnfd2TZzIS0uqbSBv8tAlhB0tHb6klHlP9WPiFzb3aDodJV+o8ktoImCDbECF7gyGSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=CvHBibE0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53NB0YEp024105
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:02:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	zfAVF+aMaiSo/7Us8CKrNfv3JkPdUAHjwZh9PyIZpAw=; b=CvHBibE04Ca2Uz9v
-	lsgtR5XjledecTmtOP1xlkizF62cGjd1jH+g7A3Yadj6RK3aVxGiXykOBBWGhaal
-	+oqEAQOv7l7jkwq3+02kMK91m2MxE9dt5XMEjpVTTL6awk9nY7ivOibVfqHwhzFd
-	ygEFR7YcHzzT9/2OxV/G/7/wiyB1Xv5Be2f32ord0ohi6v9Llr682/iodh6WRS5g
-	UN6L2glMhMHXkkEPRIo1vBwfSky54vZ0uj8cN5oI025R6VzUCutVd8LQqIB93d/y
-	bVj7JGyGpHZpF3wkhj5SkmbudItYqmvSFyWEdsQCnE3+R7WaDIggDXZobQv37qJI
-	K2zi5w==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 466jh3a68k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 13:02:52 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7c54788bdf7so28835185a.2
-        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 06:02:52 -0700 (PDT)
+	s=arc-20240116; t=1745414582; c=relaxed/simple;
+	bh=yGMSVv9f4+/4b3cn0zZNoJ4i27It+95C4eOcXL1wdAk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NDMoSg03K6cA/LyFxLyYGWo5E8iUbM7vl8o8hqQOd0ZBAnSGROeGtXV8HiaG/VSrC3NNb/wsk41XDK3n/pBdzWM4XzRcoOg8LQ9pNGdTvkixS3FDu1IGHnkuDDODvxDec3/bmJnJOmuQizm2b1oCCoHbttA/4BFE92WYnInKpDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=iu4GVOzd; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-43cfe574976so47813145e9.1
+        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 06:22:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ionos.com; s=google; t=1745414578; x=1746019378; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UKMjh80pkF0U1r9Ws45Yco9sh0xx3u5MhQd3yiBsdSA=;
+        b=iu4GVOzdGdvIbkMoSUvuhlzhXz9vyGHeztUkkvHfi9avJq426ILdaRtLltID3d0zWp
+         la8GZ7n80hgTegYWxVoRWvJRsm6TThFJSxqyivyUp5w8nsnymgfLQtjEWEexVu35rtyc
+         kbNUlI/SPWT2M4vCaave98TXhR8OYSOHpWX/T4D7ySjwOqirrW8bjgpMDfYI0W9rJ/zn
+         ncBfu0H8/mjUeOZe5c8eduTav0qDU2bSugzAyHqBNEoYcZ3IZJqS+1/aDjscCKq5kFVo
+         hkr+c7aRqPAO5VaJ428e29Id9rq3SQgj6CNn+mViTYGpUl0wUqaV5WQ4/vaWIYzODNOr
+         AjKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745413371; x=1746018171;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zfAVF+aMaiSo/7Us8CKrNfv3JkPdUAHjwZh9PyIZpAw=;
-        b=XPAHx9Xfy0FGyy6VIG9ykUjifuRBEhtiF/VVzG0UccW9FOJBiCSsPhimqI5+Ov6i6g
-         JVlj9FpSO997PqqyB0t4AQWTX+Iamd7zNFOvD1RREKuPzvL2LjdmHfGk6jWjiStRrIE3
-         v+iBFWvIhaycygOCfhh058SoFnIcXnodwZMrlP90tfNDJIdLpC1YcIrFGYfBF5Vl24r2
-         /Vo3951ERVQkwPnG06EnOTFtfX+3L54AsektmaoRHLmT4/MlVscdnf3glOS/t9nE3y0E
-         dL8Z6gU8igJA2QPtOzJ1jsIcGke9ZuT8MTNWWcbTh0ONSblp2MkVfEhWbkKrTvxOWvIC
-         r/7A==
-X-Forwarded-Encrypted: i=1; AJvYcCXq+W+BNRNRoHGLtVkJ1sl/jQZXcF4UwE/pNam+WFGrxPT13yGUeUiupNZkqFGvR1JWzncJNKM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHN5fo+qT6kr7t2bkln/BYfn285WKKRn05Le3qWxiV/VcUIrh8
-	lUB40wnQfVk0dmeKFQ/m1XRzjJhRaJxGWeyT1bV44tSu63/Y8+dF55tfRYfwmX0RRLjczETHEH9
-	wwV8BO8OpNFahpPH3gZEIoWvj7tsYVKCpPmRW5EfhOC/xq0tHDXkuxRc=
-X-Gm-Gg: ASbGncsfwvSbSjwoWPLF4Rs1XbHFTA3DnRhwwCVU2I7kKqto9wDcfc1UtUaeLu5lo2d
-	mvgs0bEAYEB4LZISeB+fOfAfNi4oUktn7/uI2qE6LWXjs+mVNhYtLpS47gkoYqZrgzpSUyz4wq6
-	NWC/brUQCAakg8iEQ2qpuAyjCWu6DRLJeNZ3UWq/+HRdMq2hDq+OJ0ylpiHBq2Z+7Zn2WJDCH+w
-	hV4K1iYUGTbSRM1lKNX//h37MKxc4g+4/5TgAYbgmcTTS+dZZDjaurAgT4DaODao80IxRIrIBpJ
-	AxOAbeVDeBAp935ixd6/nIWA2GHTpIc6mR2O8emixduEN5Q7G5luIGJvQgoFHuro/e0=
-X-Received: by 2002:a05:620a:17a1:b0:7c0:c42a:707d with SMTP id af79cd13be357-7c94d32ec56mr169897685a.15.1745413370758;
-        Wed, 23 Apr 2025 06:02:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/ovwutEM93izQp2u3D8TlzNzpz5TZzJ2ihH4iRdeWJCL9e6H4/DMIlsm5XIOUTBCuAmehFg==
-X-Received: by 2002:a05:620a:17a1:b0:7c0:c42a:707d with SMTP id af79cd13be357-7c94d32ec56mr169895285a.15.1745413370184;
-        Wed, 23 Apr 2025 06:02:50 -0700 (PDT)
-Received: from [192.168.65.183] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-acb6eefcf37sm805661966b.97.2025.04.23.06.02.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Apr 2025 06:02:49 -0700 (PDT)
-Message-ID: <2dae7d88-4b3e-452f-9555-05f10b42dabc@oss.qualcomm.com>
-Date: Wed, 23 Apr 2025 15:02:47 +0200
+        d=1e100.net; s=20230601; t=1745414578; x=1746019378;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UKMjh80pkF0U1r9Ws45Yco9sh0xx3u5MhQd3yiBsdSA=;
+        b=rYvL1Tb4xEm84a/FHCKdyZRAiTpxztHTHjE4uPLCgPN/ZheQbkEFYcS2kbfwk3UsCT
+         35HfCy4sNtMWr4T4VrM/CcJgLV+G6j1aiqez6PBCZBecSMPI9I1PeIa3mj+KNfr5Oj8g
+         19JUb3lj8yVuLKAn46kDAgTFlEFEJIl2MI44mBfOcRUmO1w8TziJq73UMkqepJ2AFhO/
+         +UGfcOQ/9BVDW3ShDPQFaRo3UR0DV1qWpUnINb5Bg2/MTBTOl9ETi84GliDgXc3lD6KQ
+         QchVHyDg412N7SHFsmGSFfl2Sk9Xpq4gieRa8eGI7NzRE6RIpXlI5vJkpTzbuBHFIWIK
+         i36A==
+X-Forwarded-Encrypted: i=1; AJvYcCVaVTTV1WD6xDJqOKfzxZDNuIHe0+BT1gA65syLFbQfKZWaJPRvta6BzWuiymKe/xlb6p08Pvk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxgfrHXCh+RvizJXl8QMNJRe2QoeAQVpGMuN5kyjVdke+c73S0j
+	kgfMTZxADQj58lTB9+7Op6SVkDMQ5LFVXMuZRxvqc3br5LmZewILaKoHr4KBAQw=
+X-Gm-Gg: ASbGnct0Cq2mAqmHdGz7ACbroXet1UyfGXGbMGogaJzl333RDZcriIbPqeb8jB+/f10
+	mZjzh848tEjN9FeIlExrW0M2eEC5hxcnpHlJ+WFDcDtATBEcdvr8+B0V7AtuM7d04SU5Z2i+8rY
+	iuvazoFaEuoOORgVJqELibXnN92a+UNY5UYsQYrNYJh1+vtbVOMfo1ppcrT3mrttQT1DCCpVx9W
+	S27AKMIJC58fJ8QqIrLSiTMz064WYntaG+AcErjCVtABUwR/oDiRHzoZ6zOxBBhEjpUdy7Yoh0c
+	JOaPZrMfPcnHEZRfD6brc3Bcvw6fhHf5iVze6G0HO3b6acmSWT84rEtwTuk4sPGHhRXTlWJbyD9
+	QGWtZmBw+39sqp95rJBn2Etdw/haCbGRWbltc3rSf
+X-Google-Smtp-Source: AGHT+IH3oOCJPqy8g9E1uMBWxJG33+l7Q/cJgMxL7y9T/lFqjvdA8c0HXVW/rdbAsZ8zObi1wqadtg==
+X-Received: by 2002:a05:600c:3107:b0:43d:ed:ad07 with SMTP id 5b1f17b1804b1-4406ac21886mr167630725e9.29.1745414577838;
+        Wed, 23 Apr 2025 06:22:57 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f041700023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f04:1700:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-44092d16dc0sm25792765e9.6.2025.04.23.06.22.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Apr 2025 06:22:57 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: linux-nfs@vger.kernel.org,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	dwysocha@redhat.com
+Cc: linux-kernel@vger.kernel.org,
+	Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/nfs/read: fix double-unlock bug in nfs_return_empty_folio()
+Date: Wed, 23 Apr 2025 15:22:50 +0200
+Message-ID: <20250423132250.1821518-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: x1e80100: Add GFX power domain to GPU
- clock controller
-To: Abel Vesa <abel.vesa@linaro.org>, Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Akhil P Oommen <quic_akhilpo@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>,
-        stable@vger.kernel.org
-References: <20250423-x1e80100-add-gpucc-gfx-pd-v1-1-677d97f61963@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <20250423-x1e80100-add-gpucc-gfx-pd-v1-1-677d97f61963@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: VA43e6p1jUcvf4tEpmeYJVtvuehIu6kZ
-X-Proofpoint-GUID: VA43e6p1jUcvf4tEpmeYJVtvuehIu6kZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDIzMDA5MSBTYWx0ZWRfX7E0cV89jA1Cz VzqMCGAPe4EvP1xSBgxr7LjwNczY7D3vZt9gVd3DAJPyZkWgPbNXyeS/JEzVd0hVRuFwMYGzh11 WO1RfQGUbboAcVQIUsMLiOXC3ffyxHBPXoZ156JC6UZ+5WAWQAxMdbehJ1Mc9OHQ9pvcDpyNj1c
- BNUSXs6UsWdoMy7FmrzAHeM0G6LSvJKCnq4/6PKSLyUaQLKKPScwdmPYwM4vngerZAGtIsQ7f40 mXLPfcmrYopyXkmO068HdlADodX5X+qHDTtIpPpAc+aivaW2PLJIe9G3Hi020UD2PpJBdmEN5Jb QZY3Cge6ngqqK9sDE0n9P0cq+wcNAuH9645boy3oCobXljKWWZk/BpEQEfCu9rZc1q6xm06Q2W2
- rLmM0UuVS5JhYt1iT9aEYDDpiJVDXVYKZHrCZo9VeFxKC0GqsocxJj4FHPitri0c9v4FYCGB
-X-Authority-Analysis: v=2.4 cv=Mepsu4/f c=1 sm=1 tr=0 ts=6808e4fc cx=c_pps a=50t2pK5VMbmlHzFWWp8p/g==:117 a=FpWmc02/iXfjRdCD7H54yg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=O4X4kKYYB9jgRp4dNnsA:9 a=QEXdDO2ut3YA:10
- a=IoWCM6iH3mJn3m4BftBB:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
- definitions=2025-04-23_08,2025-04-22_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 malwarescore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 clxscore=1015
- mlxlogscore=975 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2504230091
+Content-Transfer-Encoding: 8bit
 
-On 4/23/25 2:58 PM, Abel Vesa wrote:
-> According to documentation, the VDD_GFX is powering up the whole GPU
-> subsystem. The VDD_GFX is routed through the RPMh GFX power domain.
-> 
-> So tie the RPMh GFX power domain to the GPU clock controller.
-> 
-> Cc: stable@vger.kernel.org # 6.11
-> Fixes: 721e38301b79 ("arm64: dts: qcom: x1e80100: Add gpu support")
-> Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-> ---
+Sometimes, when a file was read while it was being truncated by
+another NFS client, the kernel could deadlock because folio_unlock()
+was called twice, and the second call would XOR back the `PG_locked`
+flag.
 
-You shouldn't be messing with VDD_GFX on platforms with a GMU.
+Most of the time (depending on the timing of the truncation), nobody
+notices the problem because folio_unlock() gets called three times,
+which flips `PG_locked` back off:
 
-Parts of the clock controller are backed by one of the MX rails,
-with some logic depending on CX/GFX, but handling of the latter is
-fully deferred to the GMU firmware.
+ 1. vfs_read, nfs_read_folio, ... nfs_read_add_folio,
+    nfs_return_empty_folio
+ 2. vfs_read, nfs_read_folio, ... netfs_read_collection,
+    netfs_unlock_abandoned_read_pages
+ 3. vfs_read, ... nfs_do_read_folio, nfs_read_add_folio,
+    nfs_return_empty_folio
 
-Konrad
+The problem is that nfs_read_add_folio() is not supposed to unlock the
+folio if fscache is enabled, and a nfs_netfs_folio_unlock() check is
+missing in nfs_return_empty_folio().
+
+Rarely this leads to a warning in netfs_read_collection():
+
+ ------------[ cut here ]------------
+ R=0000031c: folio 10 is not locked
+ WARNING: CPU: 0 PID: 29 at fs/netfs/read_collect.c:133 netfs_read_collection+0x7c0/0xf00
+ [...]
+ Workqueue: events_unbound netfs_read_collection_worker
+ RIP: 0010:netfs_read_collection+0x7c0/0xf00
+ [...]
+ Call Trace:
+  <TASK>
+  netfs_read_collection_worker+0x67/0x80
+  process_one_work+0x12e/0x2c0
+  worker_thread+0x295/0x3a0
+
+Most of the time, however, processes just get stuck forever in
+folio_wait_bit_common(), waiting for `PG_locked` to disappear, which
+never happens because nobody is really holding the folio lock.
+
+Fixes: 000dbe0bec05 ("NFS: Convert buffered read paths to use netfs when fscache is enabled")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+---
+ fs/nfs/read.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/nfs/read.c b/fs/nfs/read.c
+index 81bd1b9aba17..3c1fa320b3f1 100644
+--- a/fs/nfs/read.c
++++ b/fs/nfs/read.c
+@@ -56,7 +56,8 @@ static int nfs_return_empty_folio(struct folio *folio)
+ {
+ 	folio_zero_segment(folio, 0, folio_size(folio));
+ 	folio_mark_uptodate(folio);
+-	folio_unlock(folio);
++	if (nfs_netfs_folio_unlock(folio))
++		folio_unlock(folio);
+ 	return 0;
+ }
+ 
+-- 
+2.47.2
+
 
