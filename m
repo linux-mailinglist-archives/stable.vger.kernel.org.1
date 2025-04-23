@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-136156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF139A991B3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B952A98E4F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4075E7A7C7C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CCE35A708B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F1529AB03;
-	Wed, 23 Apr 2025 15:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A2E27FD62;
+	Wed, 23 Apr 2025 14:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQNBZGYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH95EN9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5548725EF8E;
-	Wed, 23 Apr 2025 15:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A11263F54;
+	Wed, 23 Apr 2025 14:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421802; cv=none; b=hQXkCEdgZ46TTBqIEb8PjsmmATO7eFsrvjLQrE/ALdHwqTt9tD8Bvf1B8z+ZuZ3DJE10haJsj+QnVnL6N3qoej9rI8rjUsed9bXESuQYqoPPH7lwunsxhDZ/96teqtbaXk6u4H8suUcquE3ypsNmpCyCRNAjBWXJmJeSSWyHjqM=
+	t=1745419940; cv=none; b=PorqEG389RJP0Wx/jBasAUy6UlPNEhjpmomeGlKSjktYWzX5acqjOVEXqoOrYSzE5tdjnV37++diFEL/1KBmRh8yBLfaW9H6UlUDU50hFHw4ENkxg2QZ72uKyD/LXGcicoiUk3P+k7i2DqIjp6ZwXxnmbCD3ktoTy9kppnMr11E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421802; c=relaxed/simple;
-	bh=/jo1/nFCp2a2Xos8IpevB/JdbAzJKd1VrW+F/Ue9Eq8=;
+	s=arc-20240116; t=1745419940; c=relaxed/simple;
+	bh=hgnEN94KL20AbiXYedQICSJT/cfjPOO5Y87tBo7VhmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swXjqNKiR7LHozWkikJlKaWRK6n1t7tXI8RWR0mzmm++RY9VS8jpeU4e8XuuZqxqTgUOYutqEdAIf19LanXDso1H3WAjlZpOOUy5O1+FTLL7wMXHNk0evpvtIwYIvNYafupjhdWGswdDaWf/pxNBlDVPhGeztDyRaHqzevlfG2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQNBZGYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA85EC4CEE2;
-	Wed, 23 Apr 2025 15:23:21 +0000 (UTC)
+	 MIME-Version; b=H2QCmhJAWU0t+0b9VORjlulUW8WAvzyzNsd0DPF8ugg9XF/aDjVlb+sar87+s++1ndra4u9I8HVO2DARSfGRpodcqS+/NPh6MgpDHTgSvt/Vj5HJBDvz7sXpAgaERiDfOcOTpTjbW3VFqlmZbCbJ8zNG5Hn4+tZIctgQkmoBV7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH95EN9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7800DC4CEE2;
+	Wed, 23 Apr 2025 14:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421802;
-	bh=/jo1/nFCp2a2Xos8IpevB/JdbAzJKd1VrW+F/Ue9Eq8=;
+	s=korg; t=1745419939;
+	bh=hgnEN94KL20AbiXYedQICSJT/cfjPOO5Y87tBo7VhmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQNBZGYz7WeGFr660QvcywrDNhAIjS5LzZWitUid5ukLVPWt/LBHriyGxkAuBQced
-	 fJhaUmntQ7DGATBroNCvE2dn9E3qYxOaE/A4zU8Ud6wlXR0CExDfaWnamyeb6GVSFn
-	 pLreiNi1D0m1w2pZUoxD4ijeqf7FPyK+zVGtJdS0=
+	b=WH95EN9zkQhCsZVN0dtFv5nBgVcyfMsYX9Fmpnwfo8P6QkrYhrC1u2/EkOw6ffTT3
+	 v4RxTik8CsvpPrCmXG81mdlB8HFoTQwdUWh2kP1+BdfyrcwTJxyzgbm4/NvWJouLg1
+	 RxUVEbFx1k0VdYqZTidkVPXSf9UQESGk4p2y6T+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 6.6 213/393] dt-bindings: coresight: qcom,coresight-tpdm: Fix too many reg
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 045/241] ethtool: cmis_cdb: use correct rpl size in ethtool_cmis_module_poll()
 Date: Wed, 23 Apr 2025 16:41:49 +0200
-Message-ID: <20250423142652.180490784@linuxfoundation.org>
+Message-ID: <20250423142622.348724026@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
 
-commit 1e4e454223f770748775f211455513c79cb3121e upstream.
+[ Upstream commit f3fdd4fba16c74697d8bc730b82fb7c1eff7fab3 ]
 
-Binding listed variable number of IO addresses without defining them,
-however example DTS code, all in-tree DTS and Linux kernel driver
-mention only one address space, so drop the second to make binding
-precise and correctly describe the hardware.
+rpl is passed as a pointer to ethtool_cmis_module_poll(), so the correct
+size of rpl is sizeof(*rpl) which should be just 1 byte.  Using the
+pointer size instead can cause stack corruption:
 
-Fixes: 6c781a35133d ("dt-bindings: arm: Add CoreSight TPDM hardware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250226112914.94361-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: ethtool_cmis_wait_for_cond+0xf4/0x100
+CPU: 72 UID: 0 PID: 4440 Comm: kworker/72:2 Kdump: loaded Tainted: G           OE      6.11.0 #24
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: Dell Inc. PowerEdge R760/04GWWM, BIOS 1.6.6 09/20/2023
+Workqueue: events module_flash_fw_work
+Call Trace:
+ <TASK>
+ panic+0x339/0x360
+ ? ethtool_cmis_wait_for_cond+0xf4/0x100
+ ? __pfx_status_success+0x10/0x10
+ ? __pfx_status_fail+0x10/0x10
+ __stack_chk_fail+0x10/0x10
+ ethtool_cmis_wait_for_cond+0xf4/0x100
+ ethtool_cmis_cdb_execute_cmd+0x1fc/0x330
+ ? __pfx_status_fail+0x10/0x10
+ cmis_cdb_module_features_get+0x6d/0xd0
+ ethtool_cmis_cdb_init+0x8a/0xd0
+ ethtool_cmis_fw_update+0x46/0x1d0
+ module_flash_fw_work+0x17/0xa0
+ process_one_work+0x179/0x390
+ worker_thread+0x239/0x340
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xcc/0x100
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2d/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Fixes: a39c84d79625 ("ethtool: cmis_cdb: Add a layer for supporting CDB commands")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250409173312.733012-1-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ethtool/cmis_cdb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml
-+++ b/Documentation/devicetree/bindings/arm/qcom,coresight-tpdm.yaml
-@@ -41,8 +41,7 @@ properties:
-       - const: arm,primecell
+diff --git a/net/ethtool/cmis_cdb.c b/net/ethtool/cmis_cdb.c
+index 0e2691ccb0df3..3057576bc81e3 100644
+--- a/net/ethtool/cmis_cdb.c
++++ b/net/ethtool/cmis_cdb.c
+@@ -351,7 +351,7 @@ ethtool_cmis_module_poll(struct net_device *dev,
+ 	struct netlink_ext_ack extack = {};
+ 	int err;
  
-   reg:
--    minItems: 1
--    maxItems: 2
-+    maxItems: 1
+-	ethtool_cmis_page_init(&page_data, 0, offset, sizeof(rpl));
++	ethtool_cmis_page_init(&page_data, 0, offset, sizeof(*rpl));
+ 	page_data.data = (u8 *)rpl;
  
-   clocks:
-     maxItems: 1
+ 	err = ops->get_module_eeprom_by_page(dev, &page_data, &extack);
+-- 
+2.39.5
+
 
 
 
