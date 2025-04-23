@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-135321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40B2A98DA9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB20FA99015
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A99471B808BD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FCE67AFF85
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C06280A46;
-	Wed, 23 Apr 2025 14:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F6828D835;
+	Wed, 23 Apr 2025 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4y9knpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYLd24dR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60ED27FD49;
-	Wed, 23 Apr 2025 14:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A046828D82C;
+	Wed, 23 Apr 2025 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419615; cv=none; b=chancR8HQf1bPwOoivy77wrx5vXdElgXxnO//4rKFqtPtUCFx3ZPOhE5rm8GxXsUIqE2gsBeSJc01lnmJXJXi2TT3be2dHcQBQILXRMxJtdcv3AgrDW10AEqogNy174nPvWYIwSdcd6JMJeTbQ8t7G69lgMrSHJYhlxmc9gO3LQ=
+	t=1745421057; cv=none; b=a6v9d5H2aNl5FLqexbSw/33Lr4kV06piBGXJJapmSb4KWy5QbIzmhoYEQalbswlZX+FiEL4QJMjXXx5pvhBh4/UpMQG/cdIZ6JqCYXfKvTn0jL+VoHYCdlAFWR/GDMs3pnfmLpwwr/PBDaPjidFqOxkwzFmc4hQloNd+5cPU71I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419615; c=relaxed/simple;
-	bh=Ij2Skx1UqL30yxzXhDFIZczhE83DF8V0DtWUKM0g2RY=;
+	s=arc-20240116; t=1745421057; c=relaxed/simple;
+	bh=ddJFFBdC73TIlFqzshy3Sg0mSboX9GUsDG317hVhjis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rU8p/edaPpXDaZqFsnmjrFhLFNB5dgu1d381dPleCo9P9EtD0HVHXZPuikpGpxeeU3xbOekFRqDlGYHCCiEG4YHxuB+MRDW2anLr1+ux05o7aw5Ym3nCzVd7rVSlPdK5rsApa4lEP1OaoqROeTfaqpxkAmHPhBOpz1WI2OZBPSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4y9knpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB12C4CEE2;
-	Wed, 23 Apr 2025 14:46:54 +0000 (UTC)
+	 MIME-Version; b=oFMLh7+jVuWAF+aVCNleSI3xK0CbLtqqSjAp0yP1j726bqW7L7r/AehgzyV2M5HnfW5v9AQUWq0vA7jPZPUIYZmPc0DXhc2uBOuxoeB+co4aTBSyGjPPorB8kvvzHNxOQ7V2we8urHWjoZq0SjeF/s9dALXANxgLb4ZhO/lIW0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GYLd24dR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3273AC4CEE2;
+	Wed, 23 Apr 2025 15:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419615;
-	bh=Ij2Skx1UqL30yxzXhDFIZczhE83DF8V0DtWUKM0g2RY=;
+	s=korg; t=1745421057;
+	bh=ddJFFBdC73TIlFqzshy3Sg0mSboX9GUsDG317hVhjis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4y9knpME1WFWsaJIkp5ZEon28b0AdWzQzWqPK82utOi1X17qHsAP5mXyGjdlei5w
-	 eQ3Kz4v9hpfzNFSuH1wPsRidP0QcLtG8ezU4cwtJqeTjtxzWMewvEBFDX8z0icyBIe
-	 KoWW3TfAer2xlMuuNbiWw7Sh1eQnzCaBO6UgQ6sc=
+	b=GYLd24dRVgWioIqW27bJR+u5n6/7BrkG2sBrZ06wYiMApWxqbL0PD1fH70X2+oxIW
+	 +lxsW+V3RuMkmQBF7G3mwzOFuhrH4tACLvfRLdPHNhBZBXMa9ulv5rjBYHA6IuJeEC
+	 71So6KM/OeoCxtIt4Adg/14iO5yN9ehlu//AWxwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 021/223] ALSA: hda/cirrus_scodec_test: Dont select dependencies
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 104/291] mtd: Replace kcalloc() with devm_kcalloc()
 Date: Wed, 23 Apr 2025 16:41:33 +0200
-Message-ID: <20250423142617.981215446@linuxfoundation.org>
+Message-ID: <20250423142628.602163020@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-[ Upstream commit e9c7fa025dc6125eb47993515d45da0cd02a263c ]
+commit 1b61a59876f0eafc19b23007c522ee407f55dbec upstream.
 
-Depend on SND_HDA_CIRRUS_SCODEC and GPIOLIB instead of selecting them.
+Replace kcalloc() with devm_kcalloc() to prevent memory leaks in case of
+errors.
 
-KUNIT_ALL_TESTS should only build tests that have satisfied dependencies
-and test components that are already being built. It must not cause
-other stuff to be added to the build.
-
-Fixes: 2144833e7b41 ("ALSA: hda: cirrus_scodec: Add KUnit test")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250409114520.914079-1-rf@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78c08247b9d3 ("mtd: Support kmsg dumper based on pstore/blk")
+Cc: stable@vger.kernel.org # v5.10+
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/Kconfig | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mtd/mtdpstore.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/sound/pci/hda/Kconfig b/sound/pci/hda/Kconfig
-index dbf933c18a821..fd9391e61b3d9 100644
---- a/sound/pci/hda/Kconfig
-+++ b/sound/pci/hda/Kconfig
-@@ -96,9 +96,7 @@ config SND_HDA_CIRRUS_SCODEC
+--- a/drivers/mtd/mtdpstore.c
++++ b/drivers/mtd/mtdpstore.c
+@@ -417,11 +417,11 @@ static void mtdpstore_notify_add(struct
+ 	}
  
- config SND_HDA_CIRRUS_SCODEC_KUNIT_TEST
- 	tristate "KUnit test for Cirrus side-codec library" if !KUNIT_ALL_TESTS
--	select SND_HDA_CIRRUS_SCODEC
--	select GPIOLIB
--	depends on KUNIT
-+	depends on SND_HDA_CIRRUS_SCODEC && GPIOLIB && KUNIT
- 	default KUNIT_ALL_TESTS
- 	help
- 	  This builds KUnit tests for the cirrus side-codec library.
--- 
-2.39.5
-
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, info->kmsg_size));
+-	cxt->rmmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
+-	cxt->usedmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->rmmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
++	cxt->usedmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	longcnt = BITS_TO_LONGS(div_u64(mtd->size, mtd->erasesize));
+-	cxt->badmap = kcalloc(longcnt, sizeof(long), GFP_KERNEL);
++	cxt->badmap = devm_kcalloc(&mtd->dev, longcnt, sizeof(long), GFP_KERNEL);
+ 
+ 	if (!cxt->rmmap || !cxt->usedmap || !cxt->badmap)
+ 		return;
+@@ -530,9 +530,6 @@ static void mtdpstore_notify_remove(stru
+ 	mtdpstore_flush_removed(cxt);
+ 
+ 	unregister_pstore_device(&cxt->dev);
+-	kfree(cxt->badmap);
+-	kfree(cxt->usedmap);
+-	kfree(cxt->rmmap);
+ 	cxt->mtd = NULL;
+ 	cxt->index = -1;
+ }
 
 
 
