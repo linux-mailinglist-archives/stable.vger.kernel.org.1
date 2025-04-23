@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-135435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3D8A98E44
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68C8A98F50
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6AEE5A6B24
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E2C21B86515
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7C0280CE6;
-	Wed, 23 Apr 2025 14:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE6F283680;
+	Wed, 23 Apr 2025 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wra56rIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3VMOZc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B76E27CB12;
-	Wed, 23 Apr 2025 14:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF282820D8;
+	Wed, 23 Apr 2025 14:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419916; cv=none; b=na3xk0RYHEW7RLGpSqCW+7SrUCMGEUGENKFbTvkhHGYKGfYmni27xsglDJlD93PTcz2zZTBVVcasccFYIZpryoKsAisnVtZrR3GOXD+p/+NBBOdxkkMeoUlWCYapmFxBgVTs0k3f8AoWuBrpMOzHvXcZ30Jj6jRCSxQNpKR0SJI=
+	t=1745420384; cv=none; b=S9C2Hifx/cWtz1i2+zYYXqP6dBMPrY5lVVVU4VV+n877TResBJmRDFAwJ6QChWFlq8BrdHg+MQXc3ytm+Sm7vvEb5j2Zzv3N6Z4rDkjI6mmpfh3OnQn5x7bjmE/zkgRoR4FVdeW5AgnzsOOZK6Dds0z6gLX/LUZQ7h5NrAI518c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419916; c=relaxed/simple;
-	bh=TW80RM4tD6tCYlDs6x8/EXYKHLMrGtoLxk6VYn2BO8g=;
+	s=arc-20240116; t=1745420384; c=relaxed/simple;
+	bh=9R+zCwnrL4f+QCKOT1SfgH6B7ExxwkFC2Lnlf+w5eVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tc/vc7KDv9EMqL2d31IMfwEnJh9Nli3rfR63qKQzQ3HkDZNcd2gXKyR6ZtRzaRPcbjpgDKBAzKqNJWLW873M6XnO+cHnzZeoLhfa3YoKl9uawm6ir6FYdBIiqJ1lvwvcD1sZRrR+1H3qkpew7T/jR9jieQLcBdUn5HToZ0OEFRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wra56rIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36BEC4CEE2;
-	Wed, 23 Apr 2025 14:51:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lI7F6f8Q9R3QTS8iWmZfcMF5cLTWyp4m4KsAx0mdvkXLD9tm+SOphDfSBGnyy1AzFqISEX8361SLK8VGQ3Cg3QCFZOxWiHxBB+zlWFrPzKxw7EyIUONuRjr/fu5AAeKoIULkBxSogdCfv/trHCWiRYb/GQBb7bCc1JZWa4fWaDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3VMOZc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E90C4CEE3;
+	Wed, 23 Apr 2025 14:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419916;
-	bh=TW80RM4tD6tCYlDs6x8/EXYKHLMrGtoLxk6VYn2BO8g=;
+	s=korg; t=1745420384;
+	bh=9R+zCwnrL4f+QCKOT1SfgH6B7ExxwkFC2Lnlf+w5eVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wra56rInW9XFwjNFSK/uhbs5k9mf93NcMjwStn/ivNPUTc+vDS+7d0w5fhmDAZaxs
-	 dUfh0k/DgPrqCT9hbK887qPOg//vuRvNqwUw7mulJCRAm/F7hzI10Pkp8H7RKiAqMI
-	 RBvZvN7PaV0AS8IKVV5cLGlUriH3tyYqhV/lfwUs=
+	b=w3VMOZc3sfJfTYmeTWZw7z7LtMo+2bTHSF5dEo16PQsq1wyR0z+S//3or53okwN4L
+	 HRQEkEs1bq1CrMnYpq+7MPkGD4KhUejwnuSbrHmHt9VBgenNIoS5AicZm4QC0Opx8w
+	 +AMokfIqnSyppdAuAiWyGn/aYBA0h9R38R/aKvXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Will Pierce <wgpierce17@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/223] kunit: qemu_configs: SH: Respect kunit cmdline
+Subject: [PATCH 6.14 087/241] riscv: Use kvmalloc_array on relocation_hashtable
 Date: Wed, 23 Apr 2025 16:42:31 +0200
-Message-ID: <20250423142620.339759258@linuxfoundation.org>
+Message-ID: <20250423142624.137079785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Will Pierce <wgpierce17@gmail.com>
 
-[ Upstream commit b26c1a85f3fc3cc749380ff94199377fc2d0c203 ]
+[ Upstream commit 8578b2f7e1fb79d4b92b62fbbe913548bb363654 ]
 
-The default SH kunit configuration sets CONFIG_CMDLINE_OVERWRITE which
-completely disregards the cmdline passed from the bootloader/QEMU in favor
-of the builtin CONFIG_CMDLINE.
-However the kunit tool needs to pass arguments to the in-kernel kunit core,
-for filters and other runtime parameters.
+The number of relocations may be a huge value that is unallocatable
+by kmalloc. Use kvmalloc instead so that it does not fail.
 
-Enable CONFIG_CMDLINE_EXTEND instead, so kunit arguments are respected.
-
-Link: https://lore.kernel.org/r/20250407-kunit-sh-v1-1-f5432a54cf2f@linutronix.de
-Fixes: 8110a3cab05e ("kunit: tool: Add support for SH under QEMU")
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 8fd6c5142395 ("riscv: Add remaining module relocations")
+Suggested-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Will Pierce <wgpierce17@gmail.com>
+Link: https://lore.kernel.org/r/20250402081426.5197-1-wgpierce17@gmail.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/qemu_configs/sh.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/module.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/kunit/qemu_configs/sh.py b/tools/testing/kunit/qemu_configs/sh.py
-index 78a474a5b95f3..f00cb89fdef6a 100644
---- a/tools/testing/kunit/qemu_configs/sh.py
-+++ b/tools/testing/kunit/qemu_configs/sh.py
-@@ -7,7 +7,9 @@ CONFIG_CPU_SUBTYPE_SH7751R=y
- CONFIG_MEMORY_START=0x0c000000
- CONFIG_SH_RTS7751R2D=y
- CONFIG_RTS7751R2D_PLUS=y
--CONFIG_SERIAL_SH_SCI=y''',
-+CONFIG_SERIAL_SH_SCI=y
-+CONFIG_CMDLINE_EXTEND=y
-+''',
- 			   qemu_arch='sh4',
- 			   kernel_path='arch/sh/boot/zImage',
- 			   kernel_command_line='console=ttySC1',
+diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+index 47d0ebeec93c2..0ae34d79b87bd 100644
+--- a/arch/riscv/kernel/module.c
++++ b/arch/riscv/kernel/module.c
+@@ -648,7 +648,7 @@ process_accumulated_relocations(struct module *me,
+ 		kfree(bucket_iter);
+ 	}
+ 
+-	kfree(*relocation_hashtable);
++	kvfree(*relocation_hashtable);
+ }
+ 
+ static int add_relocation_to_accumulate(struct module *me, int type,
+@@ -752,9 +752,10 @@ initialize_relocation_hashtable(unsigned int num_relocations,
+ 
+ 	hashtable_size <<= should_double_size;
+ 
+-	*relocation_hashtable = kmalloc_array(hashtable_size,
+-					      sizeof(**relocation_hashtable),
+-					      GFP_KERNEL);
++	/* Number of relocations may be large, so kvmalloc it */
++	*relocation_hashtable = kvmalloc_array(hashtable_size,
++					       sizeof(**relocation_hashtable),
++					       GFP_KERNEL);
+ 	if (!*relocation_hashtable)
+ 		return 0;
+ 
 -- 
 2.39.5
 
