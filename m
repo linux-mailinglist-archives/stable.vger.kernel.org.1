@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC582A9915F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:30:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9B1A99343
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A89681B875F7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:18:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACF2D17921E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79605280A5B;
-	Wed, 23 Apr 2025 15:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665BB28469E;
+	Wed, 23 Apr 2025 15:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbjE0Iyq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnClrLzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1EF280A2C;
-	Wed, 23 Apr 2025 15:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2682B279345;
+	Wed, 23 Apr 2025 15:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421126; cv=none; b=Tu1rnuDHVtG+gVJOo39fHF/cyDe07Yi6xkasN589o0m1KZpl+3eelqAGZtJ+fTBCms4t0eThcFAxKhKvJnRaBvGENLYgoVqB7ENMe2zJafP5HkOe1CJAcDFTXBd7VByF8CThFMcjo0F6kwNodcOFxxwqNsbpjQjbZGIiScRgHHk=
+	t=1745422336; cv=none; b=gabjQZhXwa/G1h7sglEfMbPgYwqJ40J1NaCbE1dobJ51V4WULcP44LQZB2zJel8Pae0Ncu8zj8giLDZuks3YOJzsoZgqwI0Ev8s0a3GyQgtqK+jP4/rQal3T60MbcEDXayv9TIFu2kSBW5nWniRAwRLwD+43oyc6Bg18OkkODd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421126; c=relaxed/simple;
-	bh=AT95jeqUBhDkHbvLBUAAmdnc1kFlarCgEELczmOem6o=;
+	s=arc-20240116; t=1745422336; c=relaxed/simple;
+	bh=xIDXTX9qj6ww2vNZidxxNrUZmKGxrHyWB0n6Gpj8VoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izgZ0hC6AycklEUvdm/n4KhydCM9YCh7UTlYBmdRkhc3WEq1DYgV4//URZykJsQBFFEQbnUzIGhixgyFbxQUAavnLEegxHbNnqwPlWxngQ21k6qlBORNq4iWXjPa3UH8ly5K2vrya7aA82xkdP8gqTLT+TK/1nRn1CzzIvdKgs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbjE0Iyq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B304BC4CEE3;
-	Wed, 23 Apr 2025 15:12:05 +0000 (UTC)
+	 MIME-Version; b=W4SbC+Wa0mxFJ6Wv7vyfII7HMVKkbTkVZYcsa9/rCKHQNvS+YkxwcwSOM5Dika8sOZkSltvZQ3OA6jDUigNnXJiXmnT/83/kdIiw2sLS4wgojW+PBiygT8ETikFiQWP9SLyCLTKSDP6SbIke1pjGu25kSgf9FNq4bGKuiAlAh20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnClrLzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8B6C4CEE2;
+	Wed, 23 Apr 2025 15:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421126;
-	bh=AT95jeqUBhDkHbvLBUAAmdnc1kFlarCgEELczmOem6o=;
+	s=korg; t=1745422336;
+	bh=xIDXTX9qj6ww2vNZidxxNrUZmKGxrHyWB0n6Gpj8VoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbjE0Iyqh0HJo7uLgQAPfcB5Xveg0G8cLOCpZ6tlZKCWuCiaLtE6uixVXmCOUMlQ8
-	 Drk6ri5VRyUV1KigqVYzAuZZgiiUkoGhWIMy7x1jm7vtS3IKZiATG22KsAfqVYiNFW
-	 uQzX+2ulo+E+wO3QZ0DDGIrmOWuwviSFhbPeNV5E=
+	b=LnClrLzoqavyZZCo1zViepHdUq9nlPFkZQWSKwqTtNJKdKIZIcBJ8PLbfQi4ujHLJ
+	 0AJiZbpD8OAwYWFbGg4BYo3mErpL+oVJTt7Ni2sEAo0QY4xCVI1jo/soiHR+RcaCps
+	 AGwoIeM3yEp5cgSng762namuRWqyunBvlmY3iV/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Kees Cook <kees@kernel.org>
-Subject: [PATCH 6.14 154/241] string: Add load_unaligned_zeropad() code path to sized_strscpy()
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Daniel Axtens <dja@axtens.net>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 322/393] mm: fix apply_to_existing_page_range()
 Date: Wed, 23 Apr 2025 16:43:38 +0200
-Message-ID: <20250423142626.832456989@linuxfoundation.org>
+Message-ID: <20250423142656.635453631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit d94c12bd97d567de342fd32599e7cd9e50bfa140 upstream.
+commit a995199384347261bb3f21b2e171fa7f988bd2f8 upstream.
 
-The call to read_word_at_a_time() in sized_strscpy() is problematic
-with MTE because it may trigger a tag check fault when reading
-across a tag granule (16 bytes) boundary. To make this code
-MTE compatible, let's start using load_unaligned_zeropad()
-on architectures where it is available (i.e. architectures that
-define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
-takes care of page boundaries as well as tag granule boundaries,
-also disable the code preventing crossing page boundaries when using
-load_unaligned_zeropad().
+In the case of apply_to_existing_page_range(), apply_to_pte_range() is
+reached with 'create' set to false.  When !create, the loop over the PTE
+page table is broken.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20250403000703.2584581-2-pcc@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+apply_to_pte_range() will only move to the next PTE entry if 'create' is
+true or if the current entry is not pte_none().
+
+This means that the user of apply_to_existing_page_range() will not have
+'fn' called for any entries after the first pte_none() in the PTE page
+table.
+
+Fix the loop logic in apply_to_pte_range().
+
+There are no known runtime issues from this, but the fix is trivial enough
+for stable@ even without a known buggy user.
+
+Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/string.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -119,6 +119,7 @@ ssize_t sized_strscpy(char *dest, const
- 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
- 		return -E2BIG;
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2600,11 +2600,11 @@ static int apply_to_pte_range(struct mm_
+ 	if (fn) {
+ 		do {
+ 			if (create || !pte_none(ptep_get(pte))) {
+-				err = fn(pte++, addr, data);
++				err = fn(pte, addr, data);
+ 				if (err)
+ 					break;
+ 			}
+-		} while (addr += PAGE_SIZE, addr != end);
++		} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	}
+ 	*mask |= PGTBL_PTE_MODIFIED;
  
-+#ifndef CONFIG_DCACHE_WORD_ACCESS
- #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	/*
- 	 * If src is unaligned, don't cross a page boundary,
-@@ -134,11 +135,13 @@ ssize_t sized_strscpy(char *dest, const
- 	if (((long) dest | (long) src) & (sizeof(long) - 1))
- 		max = 0;
- #endif
-+#endif
- 
- 	/*
--	 * read_word_at_a_time() below may read uninitialized bytes after the
--	 * trailing zero and use them in comparisons. Disable this optimization
--	 * under KMSAN to prevent false positive reports.
-+	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
-+	 * uninitialized bytes after the trailing zero and use them in
-+	 * comparisons. Disable this optimization under KMSAN to prevent
-+	 * false positive reports.
- 	 */
- 	if (IS_ENABLED(CONFIG_KMSAN))
- 		max = 0;
-@@ -146,7 +149,11 @@ ssize_t sized_strscpy(char *dest, const
- 	while (max >= sizeof(unsigned long)) {
- 		unsigned long c, data;
- 
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+		c = load_unaligned_zeropad(src+res);
-+#else
- 		c = read_word_at_a_time(src+res);
-+#endif
- 		if (has_zero(c, &data, &constants)) {
- 			data = prep_zero_mask(c, data, &constants);
- 			data = create_zero_mask(data);
 
 
 
