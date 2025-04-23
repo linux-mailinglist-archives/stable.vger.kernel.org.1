@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-135331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEACA98DBE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E352A99141
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68AA91885699
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5A001B85F01
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C9A283C87;
-	Wed, 23 Apr 2025 14:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905102820D7;
+	Wed, 23 Apr 2025 15:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHTwIjp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOLvKsY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828622836BE;
-	Wed, 23 Apr 2025 14:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0D917B421;
+	Wed, 23 Apr 2025 15:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419642; cv=none; b=AN3N9+d7v+THFr8NbNvJ/3I2tLQDOTyo+ad1sG9wvAf5hUe051YFPQ17vNkTu0i0+Hv6EIRI4QrHpvMcq3GNcyBPI2m7k1cjQot913NQw9ntf0ygBL03Vgjlywp2lWG2l8vULEajKMcUrPto9BzkiPyiffqe4uLVvIT+xaKD8oY=
+	t=1745421168; cv=none; b=Vd2ZWbw0dgkcfFH9HZKkeG3ZQ4x7lIOflKuSVttqQB7O524gfEcfC1U9LteSSZCpb1FbXWnS6BAU/crBnqLi+pbYdyvw5gR6phOyGun4ARJAhlx+2+fI23X8lta8+zn+o94O4VO6GEkm3dCf5WKnd9KN1nMYyUSROJGiNIUFmWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419642; c=relaxed/simple;
-	bh=XGPlDipsWdU9/U8KNNZJXsPYK7CwPiFKv8Z//sBqlCo=;
+	s=arc-20240116; t=1745421168; c=relaxed/simple;
+	bh=FfttEDL5PChT2fTA0/9bvwkdE7Fg+WsxRT/8z+Cai8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qGz3bt79RlHGzX2zaepTMxDOaGB4+5F+C0W7fOhHKOY9FsKcw4mAeVAA4yW5y6TvewHRBaU6UOqTMoxY6N6Q2pBeRoUKPekGlPdSkneXaj3++Avf0GKtogR9fzOivd8XJIiGJleIMmJh7F9jscGnoWA/BtX2M2MUpT2/arYiGjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHTwIjp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BD7C4CEE3;
-	Wed, 23 Apr 2025 14:47:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DAu4l7a6f24/WDm7KUMsGtsBZY84E3/wzedT2/LTEa8yIjIClYMi8WNfI58I/8YpsbdKc6Uk/fzDaezxtwo/z22mf7Dxv1Boml85YJLKh8SAA+8xzo4gc3rpjpsuv4wIBTlqDRL1LUXePfoIUqofknr1A/5nTsp/uVqtQ0dceZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOLvKsY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35CAC4CEE2;
+	Wed, 23 Apr 2025 15:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419642;
-	bh=XGPlDipsWdU9/U8KNNZJXsPYK7CwPiFKv8Z//sBqlCo=;
+	s=korg; t=1745421168;
+	bh=FfttEDL5PChT2fTA0/9bvwkdE7Fg+WsxRT/8z+Cai8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HHTwIjp576bDvi7UQmrYqSUNe7sc7qbvKhLLTiQymE428tWt7uYm4FsvgokYwUQXj
-	 +XfkAhBLX3ECTk/Cf2ECilVFla5u6sxpVWfrxDjE+aaQ6zapH/8fF+auQxcxDrf7Md
-	 EV9SU+xX9Vy1fABpbf0asR3KIRHXPHfL0RV/Lj/w=
+	b=wOLvKsY/NqYrbMyMvxxIurfuEeqglPicX1U80Rj4kkGHKdpKCpXp/A3ZCNs9kNf5H
+	 9TK8ej+GOzNcDXizkGlYUkTqsfV+AJIk1J040OSnjLlJPxK5vOCfEqS5zEx7JaXQ9y
+	 a03khhsznf5MgD7EcSXnqphWDHpehgjh2p8zwovM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianlin Shi <jishi@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 030/223] ipv6: add exception routes to GC list in rt6_insert_exception
-Date: Wed, 23 Apr 2025 16:41:42 +0200
-Message-ID: <20250423142618.340450252@linuxfoundation.org>
+	Cong Meng <cong.meng@oracle.com>,
+	Si-Wei Liu <si-wei.liu@oracle.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 6.1 114/291] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+Date: Wed, 23 Apr 2025 16:41:43 +0200
+Message-ID: <20250423142629.032854602@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Si-Wei Liu <si-wei.liu@oracle.com>
 
-[ Upstream commit cfe82469a00f0c0983bf4652de3a2972637dfc56 ]
+commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
 
-Commit 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list
-of routes.") introduced a separated list for managing route expiration via
-the GC timer.
+create_user_mr() has correct code to count the number of null keys
+used to fill in a hole for the memory map. However, fill_indir()
+does not follow the same to cap the range up to the 1GB limit
+correspondingly. Fill in more null keys for the gaps in between,
+so that null keys are correctly populated.
 
-However, it missed adding exception routes (created by ip6_rt_update_pmtu()
-and rt6_do_redirect()) to this GC list. As a result, these exceptions were
-never considered for expiration and removal, leading to stale entries
-persisting in the routing table.
-
-This patch fixes the issue by calling fib6_add_gc_list() in
-rt6_insert_exception(), ensuring that exception routes are properly tracked
-and garbage collected when expired.
-
-Fixes: 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list of routes.")
-Reported-by: Jianlin Shi <jishi@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/837e7506ffb63f47faa2b05d9b85481aad28e1a4.1744134377.git.lucien.xin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Cc: stable@vger.kernel.org
+Reported-by: Cong Meng <cong.meng@oracle.com>
+Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/vdpa/mlx5/core/mr.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index bae8ece3e881e..d9ab070e78e05 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1771,6 +1771,7 @@ static int rt6_insert_exception(struct rt6_info *nrt,
- 	if (!err) {
- 		spin_lock_bh(&f6i->fib6_table->tb6_lock);
- 		fib6_update_sernum(net, f6i);
-+		fib6_add_gc_list(f6i);
- 		spin_unlock_bh(&f6i->fib6_table->tb6_lock);
- 		fib6_force_start_gc(net);
+--- a/drivers/vdpa/mlx5/core/mr.c
++++ b/drivers/vdpa/mlx5/core/mr.c
+@@ -166,9 +166,12 @@ again:
+ 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
+ 			preve = dmr->end;
+ 		} else {
++			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
++
+ 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
+-			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
+-			preve = dmr->start;
++			klm->bcount = cpu_to_be32(klm_bcount(bcount));
++			preve += bcount;
++
+ 			goto again;
+ 		}
  	}
--- 
-2.39.5
-
 
 
 
