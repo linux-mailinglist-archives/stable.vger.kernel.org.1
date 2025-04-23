@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBD0A99047
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0929EA99022
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EA81B8075D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64641B66571
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFCE29114A;
-	Wed, 23 Apr 2025 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AFD28CF5F;
+	Wed, 23 Apr 2025 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6GVz7s2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSmNBUcg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF55291140;
-	Wed, 23 Apr 2025 15:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61775266B4B;
+	Wed, 23 Apr 2025 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420703; cv=none; b=Ay5XWmux8LOzA5uaYrDLufuXpVqEmllt716AEKm9mL7fGHZbWRx6N+808mp+d3i36B12BLGD6h/VRszvufRabKOVaTg0xBgThCjpxK3J6NtOJO3qxXz0XqLXnRdecD3/TWN/mcf6okOkCKW84UTh3s7XYX5oiyh/vJAz91A5sCo=
+	t=1745420732; cv=none; b=IbDnngMuiqkLoPrYB7Uu/owGGaLIJ+OUtWwJZsD1qAU9f3qk7Kt4pBvIZUZkEBvA7WmFa3OPzA9occSSCTpn18KUW5UDoV5PY5DQC7RuDH9wDf0w5KtbC6K4Ze1c3WJtd9fVYVie+5yjAdgR0CP7lUEm3yYHJspPeXfLLJrNTiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420703; c=relaxed/simple;
-	bh=/2kghcT6WHzXPgc+MrSVAfJq8w6lsCVi8D0BBB+E69U=;
+	s=arc-20240116; t=1745420732; c=relaxed/simple;
+	bh=Arz0OORay63MkiSUbEfzVlue7cSd0Fcmhum0BGssYaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaxnRk6cidsxXtxCZbxTqbdsZjq8NVl+AZ71SHQ5fza0XNc+TGwC4E3hkR3eoGVwzWOuxfITZOtr9pFnSToGnTRzzOIuv2qcwPUQ9wp56SqTmzyyZCCcLtLNOfXQtueZD06B+GKtc7NC1BZDaK5XS4wWcGAbd40AN0tlzLZM2GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6GVz7s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B08DC4CEEC;
-	Wed, 23 Apr 2025 15:05:02 +0000 (UTC)
+	 MIME-Version; b=XQcySdMny57QeKJboZKlWXlQ1DpdCC7/A/N/g19Sv2W/6FZoq/7CnabJWuTM7Y99dZqLmHkcwCTsxkuCeqnW7Go+kau3CPaTcjLhDH+7vhE1DPyyEpl6yy9EOIgF/06Q8KQli4F0di8xREKRMKwY5+HF+cFW7guAtUNyfX6knJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSmNBUcg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8302C4CEE2;
+	Wed, 23 Apr 2025 15:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420703;
-	bh=/2kghcT6WHzXPgc+MrSVAfJq8w6lsCVi8D0BBB+E69U=;
+	s=korg; t=1745420732;
+	bh=Arz0OORay63MkiSUbEfzVlue7cSd0Fcmhum0BGssYaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6GVz7s2fcJgBrZ+akRxB8K3tCvD7VPzaps2/HwrHJjUHfhpPpDR6/rpTEzo3GlnA
-	 Kh01JVc5H7mUT0GYYkuZI/y8RKc55c1wKGiPaCmWIl9YfRtQZzknFKzVlus2uN6EP3
-	 vhl2wu4saUY86z/CnsfPbBTt0SWeEokjczaym8to=
+	b=jSmNBUcgZ/Yvu60ELNeV4VCjlRgPYGsmTGDVCJlJWAMCHImdiKh1ip9ZtptowZ2/b
+	 0zniLXiEEt1DPmsH30cJ6BcxBEd1fsYeQKbjxO6svHcNb5zE+9QvKSUsLnAuLrQOjx
+	 IFG4746T5vJMPVMvbIvGhHWvZGkuzx+gajGcaE+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yat Sin <David.YatSin@amd.com>,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/393] drm/amdkfd: clamp queue size to minimum
-Date: Wed, 23 Apr 2025 16:39:57 +0200
-Message-ID: <20250423142647.458279247@linuxfoundation.org>
+Subject: [PATCH 6.6 102/393] drm/amdkfd: Fix mode1 reset crash issue
+Date: Wed, 23 Apr 2025 16:39:58 +0200
+Message-ID: <20250423142647.498421585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
 References: <20250423142643.246005366@linuxfoundation.org>
@@ -68,64 +68,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Yat Sin <David.YatSin@amd.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
+[ Upstream commit f0b4440cdc1807bb6ec3dce0d6de81170803569b ]
 
-If queue size is less than minimum, clamp it to minimum to prevent
-underflow when writing queue mqd.
+If HW scheduler hangs and mode1 reset is used to recover GPU, KFD signal
+user space to abort the processes. After process abort exit, user queues
+still use the GPU to access system memory before h/w is reset while KFD
+cleanup worker free system memory and free VRAM.
 
-Signed-off-by: David Yat Sin <David.YatSin@amd.com>
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+There is use-after-free race bug that KFD allocate and reuse the freed
+system memory, and user queue write to the same system memory to corrupt
+the data structure and cause driver crash.
+
+To fix this race, KFD cleanup worker terminate user queues, then flush
+reset_domain wq to wait for any GPU ongoing reset complete, and then
+free outstanding BOs.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
- include/uapi/linux/kfd_ioctl.h           |  2 ++
- 2 files changed, 12 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_process.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 8669677662d0c..35dc926f234e3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -212,6 +212,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process.c b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+index 64346c71c62a3..a6d08dee74f6e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process.c
+@@ -35,6 +35,7 @@
+ #include <linux/pm_runtime.h>
+ #include "amdgpu_amdkfd.h"
+ #include "amdgpu.h"
++#include "amdgpu_reset.h"
  
-+	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
-+		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
-+		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
-+	}
-+
- 	if (!access_ok((const void __user *) args->read_pointer_address,
- 			sizeof(uint32_t))) {
- 		pr_err("Can't access read pointer\n");
-@@ -477,6 +482,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
- 		return -EINVAL;
- 	}
+ struct mm_struct;
  
-+	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
-+		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
-+		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
-+	}
-+
- 	properties.queue_address = args->ring_base_address;
- 	properties.queue_size = args->ring_size;
- 	properties.queue_percent = args->queue_percentage & 0xFF;
-diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
-index cd924c959d732..1f753e72fa2c2 100644
---- a/include/uapi/linux/kfd_ioctl.h
-+++ b/include/uapi/linux/kfd_ioctl.h
-@@ -58,6 +58,8 @@ struct kfd_ioctl_get_version_args {
- #define KFD_MAX_QUEUE_PERCENTAGE	100
- #define KFD_MAX_QUEUE_PRIORITY		15
+@@ -1110,6 +1111,17 @@ static void kfd_process_remove_sysfs(struct kfd_process *p)
+ 	p->kobj = NULL;
+ }
  
-+#define KFD_MIN_QUEUE_RING_SIZE		1024
++/*
++ * If any GPU is ongoing reset, wait for reset complete.
++ */
++static void kfd_process_wait_gpu_reset_complete(struct kfd_process *p)
++{
++	int i;
 +
- struct kfd_ioctl_create_queue_args {
- 	__u64 ring_base_address;	/* to KFD */
- 	__u64 write_pointer_address;	/* from KFD */
++	for (i = 0; i < p->n_pdds; i++)
++		flush_workqueue(p->pdds[i]->dev->adev->reset_domain->wq);
++}
++
+ /* No process locking is needed in this function, because the process
+  * is not findable any more. We must assume that no other thread is
+  * using it any more, otherwise we couldn't safely free the process
+@@ -1123,6 +1135,11 @@ static void kfd_process_wq_release(struct work_struct *work)
+ 	kfd_process_dequeue_from_all_devices(p);
+ 	pqm_uninit(&p->pqm);
+ 
++	/*
++	 * If GPU in reset, user queues may still running, wait for reset complete.
++	 */
++	kfd_process_wait_gpu_reset_complete(p);
++
+ 	/* Signal the eviction fence after user mode queues are
+ 	 * destroyed. This allows any BOs to be freed without
+ 	 * triggering pointless evictions or waiting for fences.
 -- 
 2.39.5
 
