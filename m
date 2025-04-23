@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5120A98DF3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0141A98DDD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5093D44741B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2741B67994
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE845674E;
-	Wed, 23 Apr 2025 14:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27016280CC8;
+	Wed, 23 Apr 2025 14:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWHzfLc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJUVN3Vm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795A027CB33;
-	Wed, 23 Apr 2025 14:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437F281375;
+	Wed, 23 Apr 2025 14:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419784; cv=none; b=Xs/LZBDkZe6J/YXIova9ekFmMoAuSYbkVHHTbK9u49DPVtU5bIp5a/DUe+oRdKmkPYhgAQotYKnTak57uNINBCJuU0FCiGSwjhl51ztX9ycnvdYwm7LsKXk0K2Zk19yojmAFu9PzANYar0QhaAe/de5/wObF7S0m7qV7T5rRM74=
+	t=1745419697; cv=none; b=t1urjFJWvUrOWuUeNluKXH0ctPYli3wsv+mxPIMlxvR7tb+YtTj3GBho7XmhdZifm7//m5R5SJtFfMdDneGQp4J3lZ0IZtTrvR+BJjMrSbWygnbHxy2aVU3l7fcX97tUWk0PwkHqdWnU78hE2bYZF3zhXNWu7CcUSplOP4PAjrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419784; c=relaxed/simple;
-	bh=v4uCKiptO4d0yaSCsnWR+/WMOiCvKj8RoI78/6G/UGI=;
+	s=arc-20240116; t=1745419697; c=relaxed/simple;
+	bh=fhhBOYAMPuiZMjjrF5oe/ltfxgZ8RV96mlrm43RqO8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pgb4NvH+15O1tK8ZejgojCFXe+3VXDK+0N90jYbuZzTRqkQil4lbxQbiM9c0RQTM+14MvBt/TpfMASfE8sa0DlujrA+x2+GlHKc1O38oZnf06Ww1ISmSlCuYrZOF+w6wLn0rm9XWeGc5qebrVgjOJ8Op0eg+pMiigHqTPbiE+rA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWHzfLc3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15C3C4CEE3;
-	Wed, 23 Apr 2025 14:49:41 +0000 (UTC)
+	 MIME-Version; b=H+1QESTRRN4yccKfndK5Z11Xa+RYZZpu6jNOtIzQLGMwbKai6S8DTL+pCYIbl4tr3TCqIdZZj1NtujLDLqMMQ3d6n8GrgzTPM2QrBjIkT8Z9LtVQcFzGT1P90DMpoDTqV0zLSFhF0saHcL0pG4cpWCc8NMJ1roEXmtyR3rNuxhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJUVN3Vm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE6EC4CEE3;
+	Wed, 23 Apr 2025 14:48:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419782;
-	bh=v4uCKiptO4d0yaSCsnWR+/WMOiCvKj8RoI78/6G/UGI=;
+	s=korg; t=1745419697;
+	bh=fhhBOYAMPuiZMjjrF5oe/ltfxgZ8RV96mlrm43RqO8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWHzfLc3uT8FcjfLdT5OQ4C6qLI79rhc0s3Pq1O6eNs8n0gl0JIBYlUWXq4pxL809
-	 yQ1KydR6D+T7YYCP6ev5ZQMow4f0enXs+Km0fGXUi1jAHZZIRg/8ZhYcMzaVEmU2Qk
-	 x/rgjfN6T/fYFhugk331oRwImiAvybSkOV30r0CY=
+	b=fJUVN3VmkOGyNw1YCMRFMR0WT+STr+PDzeW323k6lN9nsWhRIjnh708D1c+dHlBJw
+	 XVKThq3Bo/YAHEHS74YzoyXg6LyJiKAT4F9hwacWQr01B5+Pgn5sE2APYq1lMt6CkZ
+	 alt3pSqfKVpMyqQf5aG0imUSzKW116o/aEwbXmAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Giuseppe Scrivano <gscrivan@redhat.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Alexander Larsson <alexl@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 026/241] Bluetooth: l2cap: Check encryption key size on incoming connection
+Subject: [PATCH 6.12 018/223] ovl: remove unused forward declaration
 Date: Wed, 23 Apr 2025 16:41:30 +0200
-Message-ID: <20250423142621.587093760@linuxfoundation.org>
+Message-ID: <20250423142617.860217477@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +63,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: Giuseppe Scrivano <gscrivan@redhat.com>
 
-[ Upstream commit 522e9ed157e3c21b4dd623c79967f72c21e45b78 ]
+[ Upstream commit a6eb9a4a69cc360b930dad9dc8513f8fd9b3577f ]
 
-This is required for passing GAP/SEC/SEM/BI-04-C PTS test case:
-  Security Mode 4 Level 4, Responder - Invalid Encryption Key Size
-  - 128 bit
+The ovl_get_verity_xattr() function was never added, only its declaration.
 
-This tests the security key with size from 1 to 15 bytes while the
-Security Mode 4 Level 4 requests 16 bytes key size.
-
-Currently PTS fails with the following logs:
-- expected:Connection Response:
-    Code: [3 (0x03)] Code
-    Identifier: (lt)WildCard: Exists(gt)
-    Length: [8 (0x0008)]
-    Destination CID: (lt)WildCard: Exists(gt)
-    Source CID: [64 (0x0040)]
-    Result: [3 (0x0003)] Connection refused - Security block
-    Status: (lt)WildCard: Exists(gt),
-but received:Connection Response:
-    Code: [3 (0x03)] Code
-    Identifier: [1 (0x01)]
-    Length: [8 (0x0008)]
-    Destination CID: [64 (0x0040)]
-    Source CID: [64 (0x0040)]
-    Result: [0 (0x0000)] Connection Successful
-    Status: [0 (0x0000)] No further information available
-
-And HCI logs:
-< HCI Command: Read Encrypti.. (0x05|0x0008) plen 2
-        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Success (0x00)
-        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
-        Key size: 7
-> ACL Data RX: Handle 14 flags 0x02 dlen 12
-      L2CAP: Connection Request (0x02) ident 1 len 4
-        PSM: 4097 (0x1001)
-        Source CID: 64
-< ACL Data TX: Handle 14 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 1 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection successful (0x0000)
-        Status: No further information available (0x0000)
-
-Fixes: 288c06973daa ("Bluetooth: Enforce key size of 16 bytes on FIPS level")
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Giuseppe Scrivano <gscrivan@redhat.com>
+Fixes: 184996e92e86 ("ovl: Validate verity xattr when resolving lowerdata")
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Alexander Larsson <alexl@redhat.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/overlayfs/overlayfs.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index c27ea70f71e1e..499e38ed639e6 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -3956,7 +3956,8 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
- 
- 	/* Check if the ACL is secure enough (if not SDP) */
- 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
--	    !hci_conn_check_link_mode(conn->hcon)) {
-+	    (!hci_conn_check_link_mode(conn->hcon) ||
-+	    !l2cap_check_enc_key_size(conn->hcon))) {
- 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
- 		result = L2CAP_CR_SEC_BLOCK;
- 		goto response;
+diff --git a/fs/overlayfs/overlayfs.h b/fs/overlayfs/overlayfs.h
+index 844874b4a91a9..500a9634ad533 100644
+--- a/fs/overlayfs/overlayfs.h
++++ b/fs/overlayfs/overlayfs.h
+@@ -547,8 +547,6 @@ int ovl_set_metacopy_xattr(struct ovl_fs *ofs, struct dentry *d,
+ bool ovl_is_metacopy_dentry(struct dentry *dentry);
+ char *ovl_get_redirect_xattr(struct ovl_fs *ofs, const struct path *path, int padding);
+ int ovl_ensure_verity_loaded(struct path *path);
+-int ovl_get_verity_xattr(struct ovl_fs *ofs, const struct path *path,
+-			 u8 *digest_buf, int *buf_length);
+ int ovl_validate_verity(struct ovl_fs *ofs,
+ 			struct path *metapath,
+ 			struct path *datapath);
 -- 
 2.39.5
 
