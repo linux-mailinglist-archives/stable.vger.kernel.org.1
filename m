@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-135272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9394A9897A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:17:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6609FA9897B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93038174524
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 12:17:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F37CC7AECBF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 12:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763111F37D8;
-	Wed, 23 Apr 2025 12:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E411E7C06;
+	Wed, 23 Apr 2025 12:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OUr1VKmc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JdGTtTCt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366FB1119A
-	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 12:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A7D33062
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 12:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745410619; cv=none; b=G2ZnGpzrXJlUW6paXij+cjKSTUuwBbUSmDVNDVYiN8r6fJInC4LgZPT3fa7Ernqyjic7bnwMkPC++7DSbF5fRpLccM9DLNR5faOvhUMqwx8++FvTCeudcvb/p3xo3Vrjkmz1TpO/AA40TxYBHxhg/qxReuEq9eBDRxPkqx5pA9Q=
+	t=1745410621; cv=none; b=uf9ThpzGE8L/1v7NL1Seuuu9j3u2FmC3pVl1RkkF5IwoVE5p/YRMWNUjpVOC7gSv1WJSN3K7g3l3HrnGsCSPXSJqHoqymYQPPUUNZDDyoAb8Cfu1tekZLMVYn4swZ5YdkkLh+6WMF0a41ZGzGBmAYDBJPchTRG86D1jgZyDE0kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745410619; c=relaxed/simple;
-	bh=VmSP3tZD7ru4IbmdRivpqjr0TGcqJLQen4nfOiOMTV0=;
+	s=arc-20240116; t=1745410621; c=relaxed/simple;
+	bh=vFpvZdP9PTSd9r8H+dzUfqKzd6WHgxRxNS/dR9X7tN4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pyGmx4Z0gE/5ONF2KqN/cgIrTqj78lgJum6Hu4iNvr1NrmkcipNbRLzYp8PhVPS527O81NKTAG9sNhv/UQhrbd3+rT7g72CaKeGJeK4x8KndQ+RJlpXATKS4zMPby8oaLWbVJsL9SR6T0DMiE3ztd0n2IucIYr/2msuuvijCyS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OUr1VKmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5CBC4CEE2;
-	Wed, 23 Apr 2025 12:16:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ctAEORIJxJ70VMNeB9iHZREud029rplyEbZ2KrAPxW1GQOP65kX+6l93MRVvbSlsONiRcl0U+Oe/+c6m3IUfiqIhaAVOExOBsOiRlzH9iVi2gznhOr4rOwIm8iuXZQGrXIu6PEsY2mjpQ37bLxf7j/LfCW3DV5K1w073eTJcjjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JdGTtTCt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0118C4CEE2;
+	Wed, 23 Apr 2025 12:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745410618;
-	bh=VmSP3tZD7ru4IbmdRivpqjr0TGcqJLQen4nfOiOMTV0=;
+	s=k20201202; t=1745410621;
+	bh=vFpvZdP9PTSd9r8H+dzUfqKzd6WHgxRxNS/dR9X7tN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUr1VKmcZ/EnN0vwbWPp53womkkItpxkOG8JmXrtWo0ySBaZ7xr/QsI7VrRU0BmY/
-	 3bMyWHO5AU5meelHje+bnIYbaHGvL/H+oLyPAdDi3/mgC9wsdXWQ1yIiACq0o1/DFV
-	 kxsN+1Mi+seaPbJ++q/wr08RfeGqgtB0slEt7b4yeisFtJAtidCfpuvg41tnOBMAI8
-	 rOIRDYOYuSALZhQvrbH5XWXpFWSWxGGVH+5Mv9Rjrq9+GjXHtZnyf+vGwx9coIGQwI
-	 4l7p2+74jUSFlYGNcDNyHZR2C1OL1L2E2UYhROl5SnoTXLHx6JAG+ybE2TxHzcXntx
-	 n777Bs6k05kRA==
+	b=JdGTtTCtkCuX+6ueAwb1VtvNY3KSy5HzrymZJ+oLCjC88V2qKv6/apXzKC2WuL62q
+	 r60J5ML2BiGt2ULMUAMoU/cJDE9QXgnY9VzdLF9hsx29gfwq1zrYnzIpKBwruS/Snl
+	 NNkDavCa7Z/7x8yWBOcqFsMdTs9tctivhMXwcQVlVAzHDFaK0YdRTWhinTrJMWDxQ4
+	 ths7nITtGEHqOBk21J9J29ZH8nOcUe2Pj4dqoA4mI/4DIkPupPhyEZQu41hPTcwXVG
+	 rk77UHnGFfLbPrIHPPfVxhBt8q8M6LRxGAmMCPvnO+o1mA4Fm8brSFOGqgP5/w+Cpf
+	 C8pp+1t50q/OQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Zhi Yang <Zhi.Yang@eng.windriver.com>,
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] xfs: add bounds checking to xlog_recover_process_data
-Date: Wed, 23 Apr 2025 08:16:57 -0400
-Message-Id: <20250423073617-10311c814bb02a1e@stable.kernel.org>
+Subject: Re: [PATCH stable 6.12 8/8] selftests/bpf: extend changes_pkt_data with cases w/o subprograms
+Date: Wed, 23 Apr 2025 08:16:59 -0400
+Message-Id: <20250423081248-ee346ada69260f4a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250423072750.3369814-1-Zhi.Yang@eng.windriver.com>
+In-Reply-To:  <20250423055334.52791-9-shung-hsi.yu@suse.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,44 +67,40 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: fb63435b7c7dc112b1ae1baea5486e0a6e27b196
+The upstream commit SHA1 provided is correct: 04789af756a4a43e72986185f66f148e65b32fed
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Zhi Yang<Zhi.Yang@eng.windriver.com>
-Commit author: lei lu<llfamsec@gmail.com>
+Backport author: Shung-Hsi Yu<shung-hsi.yu@suse.com>
+Commit author: Eduard Zingerman<eddyz87@gmail.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 7cd9f0a33e73)
-6.1.y | Present (different SHA1: d1e3efe78336)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  fb63435b7c7dc ! 1:  bf85574b1bf1b xfs: add bounds checking to xlog_recover_process_data
+1:  04789af756a4a ! 1:  0196ebe171f2c selftests/bpf: extend changes_pkt_data with cases w/o subprograms
     @@ Metadata
       ## Commit message ##
-         xfs: add bounds checking to xlog_recover_process_data
+         selftests/bpf: extend changes_pkt_data with cases w/o subprograms
      
-    +    commit fb63435b7c7dc112b1ae1baea5486e0a6e27b196 upstream.
+    +    commit 04789af756a4a43e72986185f66f148e65b32fed upstream.
     +
-         There is a lack of verification of the space occupied by fixed members
-         of xlog_op_header in the xlog_recover_process_data.
-     
+         Extend changes_pkt_data tests with test cases freplacing the main
+         program that does not have subprograms. Try four combinations when
+         both main program and replacement do and do not change packet data.
     @@ Commit message
-         Reviewed-by: Dave Chinner <dchinner@redhat.com>
-         Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-         Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-    +    Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+         Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+         Link: https://lore.kernel.org/r/20241212070711.427443-2-eddyz87@gmail.com
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
      
-      ## fs/xfs/xfs_log_recover.c ##
-     @@ fs/xfs/xfs_log_recover.c: xlog_recover_process_data(
+      ## tools/testing/selftests/bpf/prog_tests/changes_pkt_data.c ##
+     @@ tools/testing/selftests/bpf/prog_tests/changes_pkt_data.c: static void print_verifier_log(const char *log)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.14.y       |  Success    |  Success   |
 
