@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE55A99075
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:19:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF71A98E6A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA6428E22A1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62C395A2C40
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0061628B51A;
-	Wed, 23 Apr 2025 15:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529FC269826;
+	Wed, 23 Apr 2025 14:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXa+HcI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNORmj1+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C0E27D763;
-	Wed, 23 Apr 2025 15:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB41381BA;
+	Wed, 23 Apr 2025 14:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420790; cv=none; b=mKFEAQ9S/8x9ejf1RgLlAON1MhRKUkXL3mOXFe/wsnxwf6snO+7gPytwhtaL7HLvjSwCdVeulcgANGiXuprYFR0L8C+K9lkFnHmdJENFg06V5t0qEingueDFJEPLwPcZNugVw3/PwlPZtEb8kurBni57W4ef8jf0GI88MWTpP10=
+	t=1745420021; cv=none; b=ZlyNEYHgiJe8w5//9C/jQ92wDoromCT+dygkZXnfLbw1ZjkRHeWIdZFHpFmP2GSF6n4YSZTV29sZyClIcAHrTwC1RMMxA2AftfL+nKVrffDaSPACtgbZLqohlGNebVFluw8DXOSMS+PDZtn4KQ2E1gIz6LKwpoQdZRL8GMy1XCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420790; c=relaxed/simple;
-	bh=AsWVqR1QmoHR8ZIgSDtHtU84ZzsWyA8/Gj07Xb00OLQ=;
+	s=arc-20240116; t=1745420021; c=relaxed/simple;
+	bh=+6R7jy++AODK32EdpUccDLuD9pjfe0GohYW8BsuCfmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bWrXMswB4ioCN7k2IRGcgRx0KH3HuPaVwCrwDkgWqA1762/Kj1QbTs+iLtJK3uj70VL5Y4acZi1XdNtzfaKaflsKWPJsfqDFRCRJ05Tv5Pzkv++703BM1WQHJu+XRTZCKNSGzRvl58hpLZcmi1aCBiewzDkCtjorim88NtMjQq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXa+HcI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442BCC4CEE2;
-	Wed, 23 Apr 2025 15:06:30 +0000 (UTC)
+	 MIME-Version; b=G2PAXHoWQpZJMQJw7/Ev7+CpfS9SmCxpsSsN4np4kH0pqKPVPyizBKY2qQa2ILHbCkdDoV1Yymc0H9wrekjNN6+jp2iqTeNNq8uEL+Gh1OUm0SXpvDac0NIFafGV1jHddD5BQliApkQog7eYDqmkIFDYrOrqXDOfkV7P0H7pzJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNORmj1+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91185C4CEE2;
+	Wed, 23 Apr 2025 14:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420790;
-	bh=AsWVqR1QmoHR8ZIgSDtHtU84ZzsWyA8/Gj07Xb00OLQ=;
+	s=korg; t=1745420020;
+	bh=+6R7jy++AODK32EdpUccDLuD9pjfe0GohYW8BsuCfmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XXa+HcI53EGsSjN1lhawnY+caRdP4Ry2V8Lj6F7Go3VE/gcNHj7GFtJBHPikCMTg5
-	 5Q8Cc0DwZUeJBeQIrkgc9SO02uFgApYDPsIxk6CXZXIx9lX5cFMx/nwFP5siHaf09H
-	 gB5iOppf2VJCjw/FztvA2EpcYrauRpS1S/KPvReQ=
+	b=DNORmj1+K/8mxzKTUPbcIRpyCOWWToXwKnRv/JhqpuIzDm7uXJmmsI8EJVKCANRNa
+	 kvfcJW5mS9vSyT+8gA9olzbOcuHfO2pa50ljFq6Pxa8F4TbYXIbQ5ca5J3+7UY+zzv
+	 wCVxJfOqYy97wBt/4eijiW4/wQGxY5aVmVRROtLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Simon Horman <horms@kernel.org>,
+	Michal Kubecek <mkubecek@suse.cz>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/393] drm/amdkfd: Fix pqm_destroy_queue race with GPU reset
+Subject: [PATCH 6.1 010/291] net: ethtool: Dont call .cleanup_data when prepare_data fails
 Date: Wed, 23 Apr 2025 16:39:59 +0200
-Message-ID: <20250423142647.543153481@linuxfoundation.org>
+Message-ID: <20250423142624.829914585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 
-[ Upstream commit 7919b4cad5545ed93778f11881ceee72e4dbed66 ]
+[ Upstream commit 4f038a6a02d20859a3479293cbf172b0f14cbdd6 ]
 
-If GPU in reset, destroy_queue return -EIO, pqm_destroy_queue should
-delete the queue from process_queue_list and free the resource.
+There's a consistent pattern where the .cleanup_data() callback is
+called when .prepare_data() fails, when it should really be called to
+clean after a successful .prepare_data() as per the documentation.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Rewrite the error-handling paths to make sure we don't cleanup
+un-prepared data.
+
+Fixes: c781ff12a2f3 ("ethtool: Allow network drivers to dump arbitrary EEPROM data")
+Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Michal Kubecek <mkubecek@suse.cz>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/20250407130511.75621-1-maxime.chevallier@bootlin.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/netlink.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index e057c2bc7be42..d11a71e8aa141 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -510,7 +510,7 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
- 			pr_err("Pasid 0x%x destroy queue %d failed, ret %d\n",
- 				pqm->process->pasid,
- 				pqn->q->properties.queue_id, retval);
--			if (retval != -ETIME)
-+			if (retval != -ETIME && retval != -EIO)
- 				goto err_destroy_queue;
- 		}
- 
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index e5efdf2817eff..98c0641138825 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -384,7 +384,7 @@ static int ethnl_default_doit(struct sk_buff *skb, struct genl_info *info)
+ 	ret = ops->prepare_data(req_info, reply_data, info);
+ 	rtnl_unlock();
+ 	if (ret < 0)
+-		goto err_cleanup;
++		goto err_dev;
+ 	ret = ops->reply_size(req_info, reply_data);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -442,7 +442,7 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
+ 	ret = ctx->ops->prepare_data(ctx->req_info, ctx->reply_data, NULL);
+ 	rtnl_unlock();
+ 	if (ret < 0)
+-		goto out;
++		goto out_cancel;
+ 	ret = ethnl_fill_reply_header(skb, dev, ctx->ops->hdr_attr);
+ 	if (ret < 0)
+ 		goto out;
+@@ -451,6 +451,7 @@ static int ethnl_default_dump_one(struct sk_buff *skb, struct net_device *dev,
+ out:
+ 	if (ctx->ops->cleanup_data)
+ 		ctx->ops->cleanup_data(ctx->reply_data);
++out_cancel:
+ 	ctx->reply_data->dev = NULL;
+ 	if (ret < 0)
+ 		genlmsg_cancel(skb, ehdr);
+@@ -636,7 +637,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
+ 	ethnl_init_reply_data(reply_data, ops, dev);
+ 	ret = ops->prepare_data(req_info, reply_data, NULL);
+ 	if (ret < 0)
+-		goto err_cleanup;
++		goto err_rep;
+ 	ret = ops->reply_size(req_info, reply_data);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -671,6 +672,7 @@ static void ethnl_default_notify(struct net_device *dev, unsigned int cmd,
+ err_cleanup:
+ 	if (ops->cleanup_data)
+ 		ops->cleanup_data(reply_data);
++err_rep:
+ 	kfree(reply_data);
+ 	kfree(req_info);
+ 	return;
 -- 
 2.39.5
 
