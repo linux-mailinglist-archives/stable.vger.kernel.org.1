@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-136360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C84A99329
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3018EA992D0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A8A2178AB7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 885441B86A8B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179DB27EC73;
-	Wed, 23 Apr 2025 15:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38D52BCF5A;
+	Wed, 23 Apr 2025 15:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PSRbe2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on5GxFdp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8AF82820B3;
-	Wed, 23 Apr 2025 15:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912E12BCF56;
+	Wed, 23 Apr 2025 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422341; cv=none; b=q9ZHo1Sn2Ifse0IbNC6iQZ4cIOkrQk3YZ2RJy+vLLJw8HUJyw/nrid9FF1yE2BXsAsnilrtZw8Jh3JBjjVD7oo3Mexpql3aHP61Tq4BaLIvOvLhMwERZGNFRKDzR+o9AtAsgKb9Gpmji8fgdOxhFX4fntCbc2rfrRxkdPN267DU=
+	t=1745422091; cv=none; b=ANWDqYQ241SjQLLBtBAAxGXDE16m0tWsGN/fy4sEYGLMHKXyupvNSzFO/OHAkVan+dspfxQsaCz2GzCI+C2B0cBDP4mDnKrXOWoG15ybwd82ghKliTmQNMSsnIwB/meL2+nSPNbH9ro9479c0Z2fqZdPmRmDtGSP+XWknNy+tvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422341; c=relaxed/simple;
-	bh=uIo5GPs5NS9U3GpQx6/J40mk1edEC1MPGnCFpWPQ65o=;
+	s=arc-20240116; t=1745422091; c=relaxed/simple;
+	bh=XTfoQGzovHHwG5acWlaCHrNViDWJPZRn79p43A78yVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxBvRfbr1cBN795FIXVReHNB7otJm8eqezbwdKgQl4S7dmO6eRulIDb8GL8C1n10dI7x8qomiLsBtsqQIRIk4aMZXbsa4i5UOu5dZO+GnYud3XyxK4iPiRZo1wUYTt4Qi0NRN7tucamdM6dO5dBc7NjJqL56J8OwyTYOtv5H/B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PSRbe2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDE3C4CEE3;
-	Wed, 23 Apr 2025 15:32:20 +0000 (UTC)
+	 MIME-Version; b=XNlcJxNEb3aN7EOE8oIutW0OZjqUzxLIqbjqlmPJHj8DnwTZJZ5aZC5OH+Rfug2H2EAuxt9OBVRiyoyk/Arflfs3Zcry9NUoPLZieH7fXUhALVL6BfO+epWMlf2sTG7XyrRgwJEIRlB4QRP7o4mbSIOH2pC5S7xD62kD5BQkpGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on5GxFdp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A643BC4CEE2;
+	Wed, 23 Apr 2025 15:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422341;
-	bh=uIo5GPs5NS9U3GpQx6/J40mk1edEC1MPGnCFpWPQ65o=;
+	s=korg; t=1745422089;
+	bh=XTfoQGzovHHwG5acWlaCHrNViDWJPZRn79p43A78yVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0PSRbe2eCYBnbVTctGKUhZMwx5NSrgWsKkr33f2O48NBId4rL8rsMgod3oV1yq4sB
-	 aatk68Z2eopvwi0Ct3+6l5j1fTqe15bmjoAsNbpf5zZE/GjPvuZLgNDjGCzCRxNa3n
-	 lc5BkOR3VFThS3S5k+sfqsN7h9uQr8UMEWt9BnDg=
+	b=on5GxFdpILMnPhvJVXzoPkhSnkzte1/tpF+yZ58o9oTfZbNSTIrFCigjOcHyIfEv/
+	 k3Mwt/7gBRqlcZh9bcp4Tb8le+3YjfNtwbjojx6VSYNOhi5fRrM1wK17m8COgVdZ7K
+	 rrozmdRW4TkpoSarPUsME9Xa7CVMPwdgFoNFlLHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giuseppe Scrivano <gscrivan@redhat.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Alexander Larsson <alexl@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 323/393] ovl: dont allow datadir only
-Date: Wed, 23 Apr 2025 16:43:39 +0200
-Message-ID: <20250423142656.675515249@linuxfoundation.org>
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Lanzano <lanzano.alex@gmail.com>
+Subject: [PATCH 6.1 231/291] drm/repaper: fix integer overflows in repeat functions
+Date: Wed, 23 Apr 2025 16:43:40 +0200
+Message-ID: <20250423142633.856632935@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miklos Szeredi <mszeredi@redhat.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit eb3a04a8516ee9b5174379306f94279fc90424c4 upstream.
+commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
 
-In theory overlayfs could support upper layer directly referring to a data
-layer, but there's no current use case for this.
+There are conditions, albeit somewhat unlikely, under which right hand
+expressions, calculating the end of time period in functions like
+repaper_frame_fixed_repeat(), may overflow.
 
-Originally, when data-only layers were introduced, this wasn't allowed,
-only introduced by the "datadir+" feature, but without actually handling
-this case, resulting in an Oops.
+For instance, if 'factor10x' in repaper_get_temperature() is high
+enough (170), as is 'epd->stage_time' in repaper_probe(), then the
+resulting value of 'end' will not fit in unsigned int expression.
 
-Fix by disallowing datadir without lowerdir.
+Mitigate this by casting 'epd->factored_stage_time' to wider type before
+any multiplication is done.
 
-Reported-by: Giuseppe Scrivano <gscrivan@redhat.com>
-Fixes: 24e16e385f22 ("ovl: add support for appending lowerdirs one by one")
-Cc: <stable@vger.kernel.org> # v6.7
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Alexander Larsson <alexl@redhat.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/super.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/tiny/repaper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1180,6 +1180,11 @@ static struct ovl_entry *ovl_get_lowerst
- 		return ERR_PTR(-EINVAL);
- 	}
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -455,7 +455,7 @@ static void repaper_frame_fixed_repeat(s
+ 				       enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
  
-+	if (ctx->nr == ctx->nr_data) {
-+		pr_err("at least one non-data lowerdir is required\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
- 	err = -EINVAL;
- 	for (i = 0; i < ctx->nr; i++) {
- 		l = &ctx->lower[i];
+ 	do {
+ 		repaper_frame_fixed(epd, fixed_value, stage);
+@@ -466,7 +466,7 @@ static void repaper_frame_data_repeat(st
+ 				      const u8 *mask, enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
+ 
+ 	do {
+ 		repaper_frame_data(epd, image, mask, stage);
 
 
 
