@@ -1,104 +1,112 @@
-Return-Path: <stable+bounces-135286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCB3A98BD3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:49:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03F3A98BE1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 781367A364D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 13:48:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1EB17FC80
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 13:53:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF281A314E;
-	Wed, 23 Apr 2025 13:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8121A5B88;
+	Wed, 23 Apr 2025 13:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsYUVthQ"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="iJrkxxYc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986DC195B1A;
-	Wed, 23 Apr 2025 13:49:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3175F1A23AC;
+	Wed, 23 Apr 2025 13:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745416175; cv=none; b=o4HdzDEHJsz11KMCJDASG8bNhoEI3q51fwTnNE4yJAloWkBtxg+xYQFV4RGtMwX5une0UD+2yBdZ8UIsy+EdkeHy05XE9qK7yerBsI65geG2ma7898nSX0+O9DWhPtCTA0w02mBFHICgIMCwxBBwgw1MFSCJrWS1926fwnveqGM=
+	t=1745416377; cv=none; b=Zr2X+kE+1LIiGdiDBe4UGOph4eP6SrCtfGtppxdg5HRJWwKhWnNl/t+CA5x5rHpRX5qxWP+KCIx/+ePyZdybT4B0Dqgxcy75oWtqW4fTjaylgBKYxZvlk8iPgJTpFZsZWXbLcy0RAycJocvBVIFStyF4yUgIHt2/KInbMlZewaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745416175; c=relaxed/simple;
-	bh=51DzNBedmVdDOpjFygbR61HRvxMoCnaWd7SdEKWH5U8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=POjpwaDO1UniEedpbOvqvC3kIHmojrLpezhfnig/KH1ZLUJ1+cmOgfZ5jud5moUB7LC4R7n7qYpzjwPqI66yCfZkxwSzCosUojUKGgd9x8L3m61SHrVOiIB8Q2ExenvggyzxcktKYUzGBhWv7ptXQcalShWHuG6AmwpfVyhiV88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsYUVthQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B660FC4CEE2;
-	Wed, 23 Apr 2025 13:49:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745416175;
-	bh=51DzNBedmVdDOpjFygbR61HRvxMoCnaWd7SdEKWH5U8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=EsYUVthQn5eHDBFy3F8hJkdSDHW4eKpE5otGTPgLVwME+gCj/LVWJ7F9K8cdJpFgv
-	 GfBvdOIXH/k0wueLLhbj/+xM/HS6D6N5K2vyQkdYSYbLWIUtYTSAtHQ67HYiVsyN4O
-	 +lW8aOZcUFB0I7HrerlPnuLytk6swOjTuz7K0EEQTaLjmmegh6pk+kJFsqDXEzU7oF
-	 ra2z1uY/nrDBxxkZ/bkha34OjIudJ9yaMUfX9V9mL93Szus1nsRauA8mAi+YdBBhNz
-	 sc0LYLJ6LY4GGIa4mJdQeQ42l+trtUFa73ufHNNeMz+QzIT98myHaS4IH0siGl1P3A
-	 LTIwy5f2fG4aA==
-From: Mark Brown <broonie@kernel.org>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Liam Girdwood <lgirdwood@gmail.com>, Watson Chow <watson.chow@avnet.com>, 
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20250420-fix-max20086-v1-0-8cc9ee0d5a08@gmail.com>
-References: <20250420-fix-max20086-v1-0-8cc9ee0d5a08@gmail.com>
-Subject: Re: [PATCH 0/2] regulator: max20086: Fixes chip id and enable gpio
-Message-Id: <174541617346.423530.9368803789321095887.b4-ty@kernel.org>
-Date: Wed, 23 Apr 2025 14:49:33 +0100
+	s=arc-20240116; t=1745416377; c=relaxed/simple;
+	bh=KUKZbHAriJOIzQIQdzNGHbT7RDZY7bT+Pa+gg0mDIgk=;
+	h=From:To:Cc:Date:Message-Id:MIME-Version:Content-Type:Subject; b=asrgR5/BF3wpTAsXIiRX309maDkMDXi+Fs8lg6H1pDUIDXJn/r6wtIokZbe5oHJ3jcEcSEgL3IStCDm8U826ahOrKI9MN26yhhgAI7ltExG6HHEQL+V1BaIdDssXzMfP4OM05caRbKUsvrtBxIxZi/6E4hwcZoP/R4kpOK4/ffA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=iJrkxxYc; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=tnvSs/gBKw3NOmvliWJyDFCWiOaJ4p22Yq2ks0Z5jtM=; b=iJrkxxYcQU+qkY8IBTfpSk+aL+
+	qSjSaTtWys+QoMP09vAn+SIsYkOvavZXxyrASufxZUTJGNmula3W0ruGxzJQjBg2XIswsXH4/FP1B
+	KVzJs7Uy37rtNcftcwjAe0k7ux/RpRgdgytv7y0sNjmgTygu05CuE5kqefp95KI+pQxk=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:38616 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1u7aWr-0000FT-Gr; Wed, 23 Apr 2025 09:52:45 -0400
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Maximilian Weigand <mweigand@mweigand.net>,
+	Alistair Francis <alistair@alistair23.me>
+Cc: hugo@hugovil.com,
+	Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>,
+	stable@vger.kernel.org,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Date: Wed, 23 Apr 2025 09:52:43 -0400
+Message-Id: <20250423135243.1261460-1-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.15-dev-c25d1
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+Subject: [PATCH v2] Input: cyttsp5 - fix power control issue on wakeup
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-On Sun, 20 Apr 2025 15:28:00 -0300, João Paulo Gonçalves wrote:
-> I'm working on integrating a system with a MAX20086 and noticed these
-> small issues in the driver: the chip ID for MAX20086 is 0x30 and not
-> 0x40. Also, in my use case, the enable pin is always enabled by
-> hardware, so the enable GPIO isn't needed. Without these changes, the
-> driver fails to probe.
-> 
-> 
-> [...]
+From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 
-Applied to
+The power control function ignores the "on" argument when setting the
+report ID, and thus is always sending HID_POWER_SLEEP. This causes a
+problem when trying to wakeup.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+Fix by sending the state variable, which contains the proper HID_POWER_ON or
+HID_POWER_SLEEP based on the "on" argument.
 
-Thanks!
+Fixes: 3c98b8dbdced ("Input: cyttsp5 - implement proper sleep and wakeup procedures")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+---
+Changes for v2:
+ - Add Mikael SOB tag
 
-[1/2] regulator: max20086: Fix MAX200086 chip id
-      commit: 71406b6d1155d883c80c1b4405939a52f723aa05
-[2/2] regulator: max20086: Change enable gpio to optional
-      commit: e8ac7336dd62f0443a675ed80b17f0f0e6846e20
+ drivers/input/touchscreen/cyttsp5.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+diff --git a/drivers/input/touchscreen/cyttsp5.c b/drivers/input/touchscreen/cyttsp5.c
+index eafe5a9b89648..86edcacb4ab3e 100644
+--- a/drivers/input/touchscreen/cyttsp5.c
++++ b/drivers/input/touchscreen/cyttsp5.c
+@@ -580,7 +580,7 @@ static int cyttsp5_power_control(struct cyttsp5 *ts, bool on)
+ 	int rc;
+ 
+ 	SET_CMD_REPORT_TYPE(cmd[0], 0);
+-	SET_CMD_REPORT_ID(cmd[0], HID_POWER_SLEEP);
++	SET_CMD_REPORT_ID(cmd[0], state);
+ 	SET_CMD_OPCODE(cmd[1], HID_CMD_SET_POWER);
+ 
+ 	rc = cyttsp5_write(ts, HID_COMMAND_REG, cmd, sizeof(cmd));
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+base-commit: 7adf8b1afc14832de099f9e178f08f91dc0dd6d0
+-- 
+2.39.5
 
 
