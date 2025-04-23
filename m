@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF1FA99184
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:31:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE33A9933B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA93292659B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2538E4A49A4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6745928C5DA;
-	Wed, 23 Apr 2025 15:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9D7298CA8;
+	Wed, 23 Apr 2025 15:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWH89Ivx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7VReZHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0DB27CCC7;
-	Wed, 23 Apr 2025 15:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1442989B4;
+	Wed, 23 Apr 2025 15:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421371; cv=none; b=RYYkGDNDZbRBjm5PcOZsvKvv4Jw/4Lr/D4DIDN1oBbr8+1ZM642y6DUQwgKRqGl2tnz8SOEv6SsO8GmPs4foEhObn1cnUo0z4Z+MNcPqSfn73uOY9cmyiUqm994b+ExrGqeo4H1ZAMBobx6dQXjitB8p7ZQGWtSJPsUsKMkgnRI=
+	t=1745422433; cv=none; b=mLGl5iSzCog9iSc/8u4lWT7jlYh5IegsQfYuaj4PYb9a6OERlbj2L7yw/zrXKNbYgMSu/s4G32DJZ+B8UNJD7j0fUN4m7PPFHBojXdXDY3Z/a71UbOofL9djArFXeg8JALyzw0lTLdvuBEzL5pN7PTuZTL4ASPgPjqfPmf9Hsa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421371; c=relaxed/simple;
-	bh=jQGy5XqqgR5kJ98nfRBBt1ikX/FqaC4eVup2J2MHTy4=;
+	s=arc-20240116; t=1745422433; c=relaxed/simple;
+	bh=Qyqvlhj3EUDXRc1v2X1gXfyRP8ZFbB7s3opwGEFulSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fz3vG/oK33MaJfXIPIotGxJk7QeG+Hrh1FMsY9KSzONfvhh8v7EOHLpUin3ekN2Yc24tUZBUwK7SgfRGNAZLwIKZvla03QYHqTLokxeWEtTfBT5zBxPh3zZ+LM33aKRLMKQKvGNz927TMfx1Ds4uFb0dRb5yedXgR7jv0kvKTY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWH89Ivx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D54C4CEE2;
-	Wed, 23 Apr 2025 15:16:10 +0000 (UTC)
+	 MIME-Version; b=NpKAs2srbsu6oQmuL4nHBIvdY2FX2rpkI3x50NSbTaC5ma1d1SYpnkd/lAMKfxq74Ov7gZZXQQcsxYu0DtvF/dREJFUYGyuKOwJda9oaq/ZS1l4fh3/QEPBy+IL24ZP9iGtaNqBgquNvboKRC8A8hknGrHava5cGg7Zoirs1cYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7VReZHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D47C4CEF7;
+	Wed, 23 Apr 2025 15:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421370;
-	bh=jQGy5XqqgR5kJ98nfRBBt1ikX/FqaC4eVup2J2MHTy4=;
+	s=korg; t=1745422433;
+	bh=Qyqvlhj3EUDXRc1v2X1gXfyRP8ZFbB7s3opwGEFulSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWH89Ivxfmd1CA5qgyQmgY/VXdWGE6XkKtpTwHIxhft9TGScU2FSIL71LzBFH2+j5
-	 +7sPgdXB11AGlwSl5g2gOyK9kVC8BHBYrQX0yElBVFsx/IftzXiuD10fjlC4D4VW0R
-	 nUqn2yK5RvVOk5Pd7cRW/w03MLZcnkNB1F8H4QQc=
+	b=C7VReZHuIzfCymyZEdmONAhuA4AoAgUGRzFJU7yfybEb/V+eZ8aM2H6SP8W5XoYtx
+	 dnhTGKDlYYWcEwqpNTyfgI9eWMZJFdo9e6w8I19TcgxOKc/Ppc1AK+kRDUhbi7LRfc
+	 hF7uuzqu0tfMdTQ+l6tQKFByna+kMgvkefOwyCw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 179/241] drm/amd/display: Actually do immediate vblank disable
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>
+Subject: [PATCH 6.6 347/393] drm/msm/a6xx: Fix stale rpmh votes from GPU
 Date: Wed, 23 Apr 2025 16:44:03 +0200
-Message-ID: <20250423142627.836661811@linuxfoundation.org>
+Message-ID: <20250423142657.670873942@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Li <sunpeng.li@amd.com>
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
 
-commit 704bc361e3a4ead1c0eb40acc255b636b788dc89 upstream.
+commit f561db72a663f8a73c2250bf3244ce1ce221bed7 upstream.
 
-[Why]
+It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
+BCM nodes were not removed after GPU suspend. This was because we
+skipped sending 'prepare-slumber' request to gmu during suspend sequence
+in some cases. So, make sure we always call prepare-slumber hfi during
+suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
+messes up gmu firmware's internal state. So, do that when required.
 
-The `vblank_config.offdelay` field follows the same semantics as the
-`drm_vblank_offdelay` parameter. Setting it to 0 will never disable
-vblank.
-
-[How]
-
-Set `offdelay` to a positive number.
-
-Fixes: e45b6716de4b ("drm/amd/display: use a more lax vblank enable policy for DCN35+")
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/639569/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gmu.c |   82 ++++++++++++++++++----------------
+ 1 file changed, 44 insertions(+), 38 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8592,6 +8592,8 @@ static void manage_dm_interrupts(struct
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
+@@ -1042,50 +1042,51 @@ static void a6xx_gmu_shutdown(struct a6x
+ 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
+ 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
+ 	u32 val;
++	int ret;
  
- 			config.offdelay_ms = offdelay ?: 30;
- 		} else {
-+			/* offdelay_ms = 0 will never disable vblank */
-+			config.offdelay_ms = 1;
- 			config.disable_immediate = true;
- 		}
+ 	/*
+-	 * The GMU may still be in slumber unless the GPU started so check and
+-	 * skip putting it back into slumber if so
++	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
++	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
++	 * required
+ 	 */
+-	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
++	if (adreno_gpu->base.needs_hw_init) {
++		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
++			goto force_off;
+ 
+-	if (val != 0xf) {
+-		int ret = a6xx_gmu_wait_for_idle(gmu);
+-
+-		/* If the GMU isn't responding assume it is hung */
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
+-
+-		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
+-
+-		/* tell the GMU we want to slumber */
+-		ret = a6xx_gmu_notify_slumber(gmu);
+-		if (ret) {
+-			a6xx_gmu_force_off(gmu);
+-			return;
+-		}
+-
+-		ret = gmu_poll_timeout(gmu,
+-			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
+-			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
+-			100, 10000);
+-
+-		/*
+-		 * Let the user know we failed to slumber but don't worry too
+-		 * much because we are powering down anyway
+-		 */
+-
+-		if (ret)
+-			DRM_DEV_ERROR(gmu->dev,
+-				"Unable to slumber GMU: status = 0%x/0%x\n",
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
+-				gmu_read(gmu,
+-					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
++		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
+ 	}
+ 
++	ret = a6xx_gmu_wait_for_idle(gmu);
++
++	/* If the GMU isn't responding assume it is hung */
++	if (ret)
++		goto force_off;
++
++	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
++
++	/* tell the GMU we want to slumber */
++	ret = a6xx_gmu_notify_slumber(gmu);
++	if (ret)
++		goto force_off;
++
++	ret = gmu_poll_timeout(gmu,
++		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
++		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
++		100, 10000);
++
++	/*
++	 * Let the user know we failed to slumber but don't worry too
++	 * much because we are powering down anyway
++	 */
++
++	if (ret)
++		DRM_DEV_ERROR(gmu->dev,
++			"Unable to slumber GMU: status = 0%x/0%x\n",
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
++			gmu_read(gmu,
++				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
++
+ 	/* Turn off HFI */
+ 	a6xx_hfi_stop(gmu);
+ 
+@@ -1094,6 +1095,11 @@ static void a6xx_gmu_shutdown(struct a6x
+ 
+ 	/* Tell RPMh to power off the GPU */
+ 	a6xx_rpmh_stop(gmu);
++
++	return;
++
++force_off:
++	a6xx_gmu_force_off(gmu);
+ }
+ 
  
 
 
