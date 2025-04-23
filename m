@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-135581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E362DA98F1A
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:04:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753B3A98FF0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD0C9204D0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68DED17350C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F4A927FD73;
-	Wed, 23 Apr 2025 14:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111272918F3;
+	Wed, 23 Apr 2025 15:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8sJuLEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lG3uIIg/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B79C27FD5B;
-	Wed, 23 Apr 2025 14:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5142820AC;
+	Wed, 23 Apr 2025 15:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420300; cv=none; b=MpdfV8BlLKc7LBWKhmxTQiYvrowYI1dTGt8yIu/DvplJiDCMGSAntdvdPjpabEzzpGrhXA029u8kiQ4tBKvqWAzWTWBefGAwMcMRFz5t7qLxfi7Xxf6MZGdIVeKd1JqOW/h0ySsNPQ6IhjN4rxF7OMMBcfTPstowpJ4Q/9bYG90=
+	t=1745420824; cv=none; b=RO+NoTtZZsYnPKfTX5WYxBwIrr8yQxKmg2xRe2yjtRtshfhVcNx1o4V741QuEbFfRg8Px/ZDhSiBLWXfPQwxgbF6k2Ksqz3tBDAHnMEpCvIhuJK2SeRDKIcMDFCSsJReFMsr49tkycySgWYhdgTbaDQpyc5Hc3sEBn4l7avyD7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420300; c=relaxed/simple;
-	bh=VZWEy9zB+zJ1BiPxeVr4LOkfCPGpbIQGEhk6JmBelPk=;
+	s=arc-20240116; t=1745420824; c=relaxed/simple;
+	bh=W8UKKBB1p5BrN+6ucTVl9odEzue0RfWF6FzQzLS2Va8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ra2RgtVAwYQg2HtkVBHt9CXzCK8TUQ2Y1w3T039oxNin9L4YCXRq6yqXg5k5uPC65PZNRUytg69JzzJOuCf5bXwaEo++Kpu9iwEtO7kN1+6Vrn438CYQ2aNUJojhNooPpiG1pohapXb/1ruM3AQfv0GCRiI5Q0Vt7U38TDXeyAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8sJuLEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12BFC4CEE2;
-	Wed, 23 Apr 2025 14:58:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EjoDVSyWRyg0SOuwe8C9RxMFuFkbRyEkcFkK9msiwAfS/lyRSeauEdP88NAVdUMvjrDH+3xDfPLd1Y/SdiP6dB1Pis9vcONzYlNR5Y2mM6B2AHQvnHPS5FT8xYiPTQipLKHXUj7/CtbAUaziW2Kfzh6RGamPaljpUC1ODFoNb/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lG3uIIg/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF5AC4CEEB;
+	Wed, 23 Apr 2025 15:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420300;
-	bh=VZWEy9zB+zJ1BiPxeVr4LOkfCPGpbIQGEhk6JmBelPk=;
+	s=korg; t=1745420824;
+	bh=W8UKKBB1p5BrN+6ucTVl9odEzue0RfWF6FzQzLS2Va8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8sJuLEaBbg4Si5RdBttHwA620nKjG32t0ifhTT2qSkUA1rc+8EqSu5x0iWWXJaSr
-	 PRBcC3HAnxKFypwvpO8qd1830TC5Vey4+NLCZcODKp3OIdogIod5u0w3RaHqAc0A2G
-	 ebwAqncExJfG8rrSyyp4nlmVJ1vqWT241lAxeP3I=
+	b=lG3uIIg/jbd1RMymemJzeU1+y5NT7tx+Rw8SQyBDaXrD8JvTwWXt13u9hkyqem7hw
+	 IEwR21gPUEP5+w/Z1Xee365YJjKcvE8wncpUdh7Z6BPMjQU4s726hsNJAmQUBHj+V1
+	 3XbVoFWiDcaTXqefMxlEWCPbJG8WF+wjgfrfigTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Zi Yan <ziy@nvidia.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 117/223] mm/compaction: fix bug in hugetlb handling pathway
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.14 125/241] Bluetooth: l2cap: Process valid commands in too long frame
 Date: Wed, 23 Apr 2025 16:43:09 +0200
-Message-ID: <20250423142621.877247451@linuxfoundation.org>
+Message-ID: <20250423142625.679659192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +59,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-commit a84edd52f0a0fa193f0f685769939cf84510755b upstream.
+commit e2e49e214145a8f6ece6ecd52fec63ebc2b27ce9 upstream.
 
-The compaction code doesn't take references on pages until we're certain
-we should attempt to handle it.
+This is required for passing PTS test cases:
+- L2CAP/COS/CED/BI-14-C
+  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
+  Connection Request
+- L2CAP/COS/CED/BI-15-C
+  Multiple Signaling Command in one PDU, Data Truncated, BR/EDR,
+  Disconnection Request
 
-In the hugetlb case, isolate_or_dissolve_huge_page() may return -EBUSY
-without taking a reference to the folio associated with our pfn.  If our
-folio's refcount drops to 0, compound_nr() becomes unpredictable, making
-low_pfn and nr_scanned unreliable.  The user-visible effect is minimal -
-this should rarely happen (if ever).
+The test procedure defined in L2CAP.TS.p39 for both tests is:
+1. The Lower Tester sends a C-frame to the IUT with PDU Length set
+   to 8 and Channel ID set to the correct signaling channel for the
+   logical link. The Information payload contains one L2CAP_ECHO_REQ
+   packet with Data Length set to 0 with 0 octets of echo data and
+   one command packet and Data Length set as specified in Table 4.6
+   and the correct command data.
+2. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
+3. Perform alternative 3A, 3B, 3C, or 3D depending on the IUT’s
+   response.
+   Alternative 3A (IUT terminates the link):
+     3A.1 The IUT terminates the link.
+     3A.2 The test ends with a Pass verdict.
+   Alternative 3B (IUT discards the frame):
+     3B.1 The IUT does not send a reply to the Lower Tester.
+   Alternative 3C (IUT rejects PDU):
+     3C.1 The IUT sends an L2CAP_COMMAND_REJECT_RSP PDU to the
+          Lower Tester.
+   Alternative 3D (Any other IUT response):
+     3D.1 The Upper Tester issues a warning and the test ends.
+4. The Lower Tester sends a C-frame to the IUT with PDU Length set
+   to 4 and Channel ID set to the correct signaling channel for the
+   logical link. The Information payload contains Data Length set to
+   0 with an L2CAP_ECHO_REQ packet with 0 octets of echo data.
+5. The IUT sends an L2CAP_ECHO_RSP PDU to the Lower Tester.
 
-Fix this by storing the folio statistics earlier on the stack (just like
-the THP and Buddy cases).
+With expected outcome:
+  In Steps 2 and 5, the IUT responds with an L2CAP_ECHO_RSP.
+  In Step 3A.1, the IUT terminates the link.
+  In Step 3B.1, the IUT does not send a reply to the Lower Tester.
+  In Step 3C.1, the IUT rejects the PDU.
+  In Step 3D.1, the IUT sends any valid response.
 
-Also revert commit 66fe1cf7f581 ("mm: compaction: use helper compound_nr
-in isolate_migratepages_block") to make backporting easier.
+Currently PTS fails with the following logs:
+  Failed to receive ECHO RESPONSE.
 
-Link: https://lkml.kernel.org/r/20250401021025.637333-1-vishal.moola@gmail.com
-Fixes: 369fa227c219 ("mm: make alloc_contig_range handle free hugetlb pages")
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+And HCI logs:
+> ACL Data RX: Handle 11 flags 0x02 dlen 20
+      L2CAP: Information Response (0x0b) ident 2 len 12
+        Type: Fixed channels supported (0x0003)
+        Result: Success (0x0000)
+        Channels: 0x000000000000002e
+          L2CAP Signaling (BR/EDR)
+          Connectionless reception
+          AMP Manager Protocol
+          L2CAP Signaling (LE)
+> ACL Data RX: Handle 11 flags 0x02 dlen 13
+        frame too long
+        08 01 00 00 08 02 01 00 aa                       .........
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/compaction.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -980,13 +980,13 @@ isolate_migratepages_block(struct compac
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7504,8 +7504,24 @@ void l2cap_recv_acldata(struct hci_conn
+ 		if (skb->len > len) {
+ 			BT_ERR("Frame is too long (len %u, expected len %d)",
+ 			       skb->len, len);
++			/* PTS test cases L2CAP/COS/CED/BI-14-C and BI-15-C
++			 * (Multiple Signaling Command in one PDU, Data
++			 * Truncated, BR/EDR) send a C-frame to the IUT with
++			 * PDU Length set to 8 and Channel ID set to the
++			 * correct signaling channel for the logical link.
++			 * The Information payload contains one L2CAP_ECHO_REQ
++			 * packet with Data Length set to 0 with 0 octets of
++			 * echo data and one invalid command packet due to
++			 * data truncated in PDU but present in HCI packet.
++			 *
++			 * Shorter the socket buffer to the PDU length to
++			 * allow to process valid commands from the PDU before
++			 * setting the socket unreliable.
++			 */
++			skb->len = len;
++			l2cap_recv_frame(conn, skb);
+ 			l2cap_conn_unreliable(conn, ECOMM);
+-			goto drop;
++			goto unlock;
  		}
  
- 		if (PageHuge(page)) {
-+			const unsigned int order = compound_order(page);
- 			/*
- 			 * skip hugetlbfs if we are not compacting for pages
- 			 * bigger than its order. THPs and other compound pages
- 			 * are handled below.
- 			 */
- 			if (!cc->alloc_contig) {
--				const unsigned int order = compound_order(page);
- 
- 				if (order <= MAX_PAGE_ORDER) {
- 					low_pfn += (1UL << order) - 1;
-@@ -1010,8 +1010,8 @@ isolate_migratepages_block(struct compac
- 				 /* Do not report -EBUSY down the chain */
- 				if (ret == -EBUSY)
- 					ret = 0;
--				low_pfn += compound_nr(page) - 1;
--				nr_scanned += compound_nr(page) - 1;
-+				low_pfn += (1UL << order) - 1;
-+				nr_scanned += (1UL << order) - 1;
- 				goto isolate_fail;
- 			}
- 
+ 		/* Append fragment into frame (with header) */
 
 
 
