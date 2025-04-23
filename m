@@ -1,133 +1,124 @@
-Return-Path: <stable+bounces-136463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1497A9977E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 20:08:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC46A99781
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 20:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6F0446227B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA7C4A2DBE
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADA728DEF0;
-	Wed, 23 Apr 2025 18:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C776828CF75;
+	Wed, 23 Apr 2025 18:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="etJnk9LL"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="f4foq/8A"
 X-Original-To: stable@vger.kernel.org
-Received: from fllvem-ot03.ext.ti.com (fllvem-ot03.ext.ti.com [198.47.19.245])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4B128C5CA;
-	Wed, 23 Apr 2025 18:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.245
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18AE28CF77;
+	Wed, 23 Apr 2025 18:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745431720; cv=none; b=lJzwUoNYPEgX8w7vKKscVN2roCj1+YFgAEGFoeq1quaHGj+cB0wNC4dj8wDNK1BGSzPHNVhVlk/wTU5oBpaSO6aNKtwlWl/lA79Nq8HB2d3jb46eeJif5degacRGz0vQhyC3eI1S5LDSpLXJiphWfPAIwa18qTAAlf73x5qFPko=
+	t=1745431737; cv=none; b=HIV6RWCJiNDUACuhjOGUn213zngQn8WhzX3S23YX4aANy5itPuOcmbCxl9b7ekZ3Dfe9E8eldpa5mi/fU268DcBCwdJdq695SBe8CNYO+N0pJxny7+TkynCw7GCml19/Bt/CY0ifICVjsYMhVwHhmHbhFI0HDQz8UCrLbPsqOpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745431720; c=relaxed/simple;
-	bh=+Ki4H7wivjI2Q8MWTECBILoqGHb0mMSFqBmPA79zYnk=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=juagi0Mtc6TKy8sjj+12V4cNPoUF8/PPizdwtdQA3tdWlvz95L/kgF/kGhSnxbCFPgj7+6wr0cMDc++kSjFo8nkbhU6KEO1rTYm8N25yv/SR6toeugKw9JNiWdFm6vN3jBuzeLPZFScnvWgBH9x3oEOPqXv545wfE9y5LQBwejI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=etJnk9LL; arc=none smtp.client-ip=198.47.19.245
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllvem-ot03.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53NI8ATV1615961
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 23 Apr 2025 13:08:10 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1745431690;
-	bh=EFWPuqQMAL7NxNHoKz6mQkM5FY+ToS1fRX2hOlbxr9M=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To;
-	b=etJnk9LL5YyulNfARr1RPpEstaU5mXL0BY4HyWpMQ0Gf47Ckr+BDOp/N94jB/ydmO
-	 ugPHD9U1x8CCzjCg3DnCM7mcrF8MhJ/7/2c4LIGltEzVM+jJRoD3UW7d57RmnHaXVJ
-	 k3PysXHTXqvBiBCFZ3BfnwQkf08+VkB4hcdtvUrY=
-Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53NI8AMr116997
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 23 Apr 2025 13:08:10 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 23
- Apr 2025 13:08:09 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 23 Apr 2025 13:08:09 -0500
-Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53NI89wp126662;
-	Wed, 23 Apr 2025 13:08:09 -0500
-Date: Wed, 23 Apr 2025 13:08:09 -0500
-From: Nishanth Menon <nm@ti.com>
-To: Judith Mendez <jm@ti.com>, Josua Mayer <josua@solid-run.com>,
-        "Sverdlin,
- Alexander" <alexander.sverdlin@siemens.com>
-CC: Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter
-	<adrian.hunter@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Vignesh Raghavendra
-	<vigneshr@ti.com>,
-        Tero Kristo <kristo@kernel.org>, Josua Mayer
-	<josua@solid-run.com>,
-        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        Francesco Dolcini
-	<francesco@dolcini.it>,
-        Hiago De Franco <hiagofranco@gmail.com>, Moteen Shah
-	<m-shah@ti.com>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH RESEND v3 0/3] Add ti,suppress-v1p8-ena
-Message-ID: <20250423180809.l3l6sfbwquaaazar@shrank>
-References: <20250422220512.297396-1-jm@ti.com>
+	s=arc-20240116; t=1745431737; c=relaxed/simple;
+	bh=/a6rlE6WF6SC5/BC0SPA4vfety/OfUOdkiUb0LxSejs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nHL909+gyqQUeTmV9IOlkh+6yhVY3aWastvtnVkCqE/bfmFe26pwoCrvfyG/3R4fhv84HBqH4AUu0itwWPAN040AnMJiryATry/sqbNG7wXRCtrcOjPGS5T2hefESZXpIHkYNZLtuZbiriW++PQgK9IyOWqe/og6Sqfbcj9HD+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=f4foq/8A; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-43d0782d787so908945e9.0;
+        Wed, 23 Apr 2025 11:08:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1745431734; x=1746036534; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/5xauHxSZRZBjL1s6uQdVTJHCQeRvkb+4xCubFVd7n4=;
+        b=f4foq/8A0PvfZhhEk/kaNMcMbETbyKqQWbkhKN9WJa8AKa30iQh1z42vqmnokPqX9T
+         D3fpQh8b8DpfsfTZJL2oxcjbV2YVJgwGzAv8Ds4jo5kM1s1FhIpAeR9FiTVyeZL7sGfC
+         fdA2ePEOnq3uHy2ZV4TGzYtyZsBRHdevFtLEYfnD0gIxEdSS8YMtBb/pMhck2O8o4Eik
+         gUc//xmTKb5tx9omHt+8Ls3K3YBQBXdxgT6A6YOmpmo8GeWlZGmiDrNjtHx4E/cGP+g/
+         vZ6xPo1qzMu27uRI1sXC6W7GA4hjXkcrAk+B9S881exnNXbKJvwbJ/W7XO5/meTfG0e5
+         jaUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745431734; x=1746036534;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/5xauHxSZRZBjL1s6uQdVTJHCQeRvkb+4xCubFVd7n4=;
+        b=TKyiEAVgXq3fH8HrncRNHvm+tlMCiYasFbs6tvIxIi9fO6ASGA4BE4e3Wr5ZaQWhnt
+         xwyzxxO6FBvxTO2uxVcBghrrlmhbJp2dU+BkWVuo1VkOGjwkLZjpzOtwV1S+YlKEni8v
+         b301mEfJX6rkqH8YD1M+060sQqdihZ10Pblq7JIJtQVJOWx7ud97nQLwZ2CQ27dNfGE4
+         R7q6+mu9RnpIl7UQ6LGiWjQBOmEn717uyOtN0gNXR6uEAn9lyFnocbzunuBmNMqUkwrI
+         VIc2u9BkxxcwuKpddgBdCIymkhnJ44wsG4zwsJqiVUoqBq9MzxPNUKaGpltnuIw4ZGD0
+         SGZg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmIAexi5nrXDoRLWSZXYKx/Dc2DVxiWK5aQevk3XARjGGLJRlqSoPOHVFooIssMO77ejgXFjla@vger.kernel.org, AJvYcCXUm4xvZNzQaG1FcESUh+enrVy9DS67neFbZolENc556v2GgUPQerZXJa1GDUsh90kyv04pemUQe3Z9s7M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzlEQKSGcZcQNZQDkVFNP6/d9+NDqt2PYbwiGIqlsyjaG+k4vTb
+	qSHpF7XWsTb273hcE4HuNRtuS7EnOOtACkBdaWhvUMfIcRSmWRo=
+X-Gm-Gg: ASbGncv7693zo+CQ6WIpJn/g8lqYjKmJU9+Bxs3AOHT2NsolvlSYcaUwgRozpNQng2S
+	54pyaU1fGA0bweSnx6Ap7SUPMYk090fgVW7Wx0l4BtcaqjzA1wAx4DISOqV+Hu3uV2rSKDIMyVN
+	8nGIlZkEreIshrtic4sJkwqRZoOIAGwXfBJm9uAGqBi6YkYtABnXro118fNUeCCv0heL9MaViBx
+	Ou4E/O0LIh6W3L4oj+oxL78BoUOULtxOFk4qkk6tF5a1fLLT9oYaRJq09PFamOOJQQZcYhIFUY1
+	3gSQHyCuKBM6EFqi/3maC+ZNFj0V4ABDQJsJhmGpYNowRCiVQtTpP9W+1wu29VMaHX8SaJZUCiR
+	IiHunSvRdB+WteRwyJg==
+X-Google-Smtp-Source: AGHT+IENifynQvLMfyjbaFmHerjupvosjrvvoV00BFoAAhIPUsf6sZjXUl/Wm/EfEtV8y/3bKy3dfg==
+X-Received: by 2002:a05:6000:18a8:b0:391:1218:d5f7 with SMTP id ffacd0b85a97d-39efbad7d6amr16420654f8f.40.1745431733961;
+        Wed, 23 Apr 2025 11:08:53 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2ac758.dip0.t-ipconnect.de. [91.42.199.88])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39efa4a4cd0sm20036747f8f.90.2025.04.23.11.08.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Apr 2025 11:08:53 -0700 (PDT)
+Message-ID: <14fbae74-0620-4e9c-aebc-5f4337e14089@googlemail.com>
+Date: Wed, 23 Apr 2025 20:08:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20250422220512.297396-1-jm@ti.com>
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/393] 6.6.88-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250423142643.246005366@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 17:05-20250422, Judith Mendez wrote:
-> Resend patch series to fix cc list
-> 
-> There are MMC boot failures seen with V1P8_SIGNAL_ENA on Kingston eMMC
-> and Microcenter/Patriot SD cards on Sitara K3 boards due to the HS200
-> initialization sequence involving V1P8_SIGNAL_ENA. Since V1P8_SIGNAL_ENA
-> is optional for eMMC, do not set V1P8_SIGNAL_ENA by default for eMMC.
-> For SD cards we shall parse DT for ti,suppress-v1p8-ena property to
-> determine whether to suppress V1P8_SIGNAL_ENA. Add new ti,suppress-v1p8-ena
-> to am62x, am62ax, and am62px SoC dtsi files since there is no internal LDO
-> tied to sdhci1 interface so V1P8_SIGNAL_ENA only affects timing.
-> 
-> This fix was previously merged in the kernel, but was reverted due
-> to the "heuristics for enabling the quirk"[0]. This issue is adressed
-> in this patch series by adding optional ti,suppress-v1p8-ena DT property
-> which determines whether to apply the quirk for SD.
-[...]
-> 
-> [0] https://lore.kernel.org/linux-mmc/20250127-am654-mmc-regression-v2-1-9bb39fb12810@solid-run.com/
+Am 23.04.2025 um 16:38 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.88 release.
+> There are 393 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Why cant we use compatible to enable the quirk instead of blindly
-enabling for all IPs including ones that have onchip LDOs? That was the
-reason it failed in the first place for am64x.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-This is very much like a quirk that seems to go hand-in-hand with the
-compatible for am62-sdhci ?
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Is it worth exploring that option in the driver thread? from where I
-stand, this sounds very much like an issue that AM62x IP has, and should
-be handled by the driver instead of punting to dts to select where to
-use and not to use the quirk.
+
+Beste Grüße,
+Peter Schneider
 
 -- 
-Regards,
-Nishanth Menon
-Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
