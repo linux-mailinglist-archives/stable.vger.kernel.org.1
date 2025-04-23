@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBC1A98FC9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:13:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1169AA9929E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86C3C1B81D0B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA430167C13
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9005828D850;
-	Wed, 23 Apr 2025 15:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE6229CB45;
+	Wed, 23 Apr 2025 15:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmVr7j2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJNs6DBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A52F28D83D;
-	Wed, 23 Apr 2025 15:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C21C296155;
+	Wed, 23 Apr 2025 15:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420511; cv=none; b=oNnK6yq6VEReDjhfcZdAF7BgV8EclT6ojX6fsY5vjdEIMcGJ8T1UYIpLSC6XpqOrfxWAScSUFHdBI9bvTW1L1ixSz3JoPzCuJicTZMAOBxkmlo+DyAqfOIu2jUaRAFtQz044O+JFdWADABhitVIBX9k/Ml+vn2uyFTSLqoUjvfw=
+	t=1745422034; cv=none; b=AZu4Z6bksnFBZVJVvNuahauJ7Pjog3QkIIs2wWAEIcQHGr+wxdF3oMoG8s/hXJixLa3S37ld6ZS/MZVqLaIAq38fwA2K6X5kgF/NsMhD55hfauRqJka1dI1iB7+PjDq4yM4kZVk8bxMawPAskHfeYcVDH15iux9xwF43ahIItWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420511; c=relaxed/simple;
-	bh=c1R3DZKoSBSPU4SzvZVzKZUIk6/oP2A5mesf2PNqvGc=;
+	s=arc-20240116; t=1745422034; c=relaxed/simple;
+	bh=CgUlGqVIjm69OLbmZhpU8Qk2dYxVgQK6jL0yKIaOb+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nD3mp4CkhtVO3Y9WP2bGw5KnrvbGRylUXqL5qBVdXSGKRRf/4VwTkhkC6ljNewNLJXwUVPF1K5FrXMX6qpdsClo32okczQxcC/mXL6TczH3fCguWP3S7OCJYVm2PuJuxd5ddOS1XkG6OPm/XWR9W7kHGOqjPu9OgjsQ624Zbi88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmVr7j2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C4DC4CEE3;
-	Wed, 23 Apr 2025 15:01:50 +0000 (UTC)
+	 MIME-Version; b=rUGS5cEcmfxPWAKlkEnKQ3zBnOJg5n9IB7GWAtcjg3UeJOvicDahM5Lm1DXDqMl0/1aD1ixOaxOI9n7IkhKnEX9sSUofm3EI8dKt/fQwJ7tqv1KKN8hff6ptmVK/E/W8UvZfgerUU8p1cAaSgC0+l1Wm6jL8xy6oGiNUrbI2JGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJNs6DBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C572EC4CEE2;
+	Wed, 23 Apr 2025 15:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420511;
-	bh=c1R3DZKoSBSPU4SzvZVzKZUIk6/oP2A5mesf2PNqvGc=;
+	s=korg; t=1745422034;
+	bh=CgUlGqVIjm69OLbmZhpU8Qk2dYxVgQK6jL0yKIaOb+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmVr7j2tYes3SCBhnPp8FbXdDnCuLJps+kn6NjlImjaDW6YpHo/Ok2XMzq0LhpD3m
-	 2Cuzu6FaXR9eLp7Ig0e0jgV71aV8dc5Y5kHydM5uMj34Z/IJcKn9covprqRtOyilhB
-	 SR9Mr3NhHTic7HYYj8XYrmt8AhO+7z/WVLZAhTNA=
+	b=IJNs6DBKEsoKi2lKqoEQ4HAzB5cc17rb0HcdDZb6SkvrYEldjahv08MqTSDmPjZZA
+	 2f52uU/2vguK/cIbNG1hKJ8d7HSoNqbj3on03LIXbZ6t8qaivlNZiQyoxhZEU5Z/45
+	 HNWpVWf4Iiv+5251RzqgD3UgB1dKBEMXyzS6gN2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.14 098/241] rust: kasan/kbuild: fix missing flags on first build
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 266/393] pds_core: fix memory leak in pdsc_debugfs_add_qcq()
 Date: Wed, 23 Apr 2025 16:42:42 +0200
-Message-ID: <20250423142624.581858639@linuxfoundation.org>
+Message-ID: <20250423142654.352164590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 46e24a545cdb4556f8128c90ecc34eeae52477a0 upstream.
+[ Upstream commit 8b82f656826c741d032490b089a5638c33f2c91d ]
 
-If KASAN is enabled, and one runs in a clean repository e.g.:
+The memory allocated for intr_ctrl_regset, which is passed to
+debugfs_create_regset32() may not be cleaned up when the driver is
+removed. Fix that by using device managed allocation for it.
 
-    make LLVM=1 prepare
-    make LLVM=1 prepare
-
-Then the Rust code gets rebuilt, which should not happen.
-
-The reason is some of the LLVM KASAN `rustc` flags are added in the
-second run:
-
-    -Cllvm-args=-asan-instrumentation-with-call-threshold=10000
-    -Cllvm-args=-asan-stack=0
-    -Cllvm-args=-asan-globals=1
-    -Cllvm-args=-asan-kernel-mem-intrinsic-prefix=1
-
-Further runs do not rebuild Rust because the flags do not change anymore.
-
-Rebuilding like that in the second run is bad, even if this just happens
-with KASAN enabled, but missing flags in the first one is even worse.
-
-The root issue is that we pass, for some architectures and for the moment,
-a generated `target.json` file. That file is not ready by the time `rustc`
-gets called for the flag test, and thus the flag test fails just because
-the file is not available, e.g.:
-
-    $ ... --target=./scripts/target.json ... -Cllvm-args=...
-    error: target file "./scripts/target.json" does not exist
-
-There are a few approaches we could take here to solve this. For instance,
-we could ensure that every time that the config is rebuilt, we regenerate
-the file and recompute the flags. Or we could use the LLVM version to
-check for these flags, instead of testing the flag (which may have other
-advantages, such as allowing us to detect renames on the LLVM side).
-
-However, it may be easier than that: `rustc` is aware of the `-Cllvm-args`
-regardless of the `--target` (e.g. I checked that the list printed
-is the same, plus that I can check for these flags even if I pass
-a completely unrelated target), and thus we can just eliminate the
-dependency completely.
-
-Thus filter out the target.
-
-This does mean that `rustc-option` cannot be used to test a flag that
-requires the right target, but we don't have other users yet, it is a
-minimal change and we want to get rid of custom targets in the future.
-
-We could only filter in the case `target.json` is used, to make it work
-in more cases, but then it would be harder to notice that it may not
-work in a couple architectures.
-
-Cc: Matthew Maurer <mmaurer@google.com>
-Cc: Sami Tolvanen <samitolvanen@google.com>
-Cc: stable@vger.kernel.org
-Fixes: e3117404b411 ("kbuild: rust: Enable KASAN support")
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250408220311.1033475-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45d76f492938 ("pds_core: set up device and adminq")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://patch.msgid.link/20250409054450.48606-1-abdun.nihaal@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.compiler |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/pds_core/debugfs.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -76,7 +76,7 @@ ld-option = $(call try-run, $(LD) $(KBUI
- # TODO: remove RUSTC_BOOTSTRAP=1 when we raise the minimum GNU Make version to 4.4
- __rustc-option = $(call try-run,\
- 	echo '#![allow(missing_docs)]#![feature(no_core)]#![no_core]' | RUSTC_BOOTSTRAP=1\
--	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null,$(2)) $(3)\
-+	$(1) --sysroot=/dev/null $(filter-out --sysroot=/dev/null --target=%,$(2)) $(3)\
- 	--crate-type=rlib --out-dir=$(TMPOUT) --emit=obj=- - >/dev/null,$(3),$(4))
+diff --git a/drivers/net/ethernet/amd/pds_core/debugfs.c b/drivers/net/ethernet/amd/pds_core/debugfs.c
+index 4e8579ca1c8c7..51f3f73a839a9 100644
+--- a/drivers/net/ethernet/amd/pds_core/debugfs.c
++++ b/drivers/net/ethernet/amd/pds_core/debugfs.c
+@@ -154,8 +154,9 @@ void pdsc_debugfs_add_qcq(struct pdsc *pdsc, struct pdsc_qcq *qcq)
+ 		debugfs_create_u32("index", 0400, intr_dentry, &intr->index);
+ 		debugfs_create_u32("vector", 0400, intr_dentry, &intr->vector);
  
- # rustc-option
+-		intr_ctrl_regset = kzalloc(sizeof(*intr_ctrl_regset),
+-					   GFP_KERNEL);
++		intr_ctrl_regset = devm_kzalloc(pdsc->dev,
++						sizeof(*intr_ctrl_regset),
++						GFP_KERNEL);
+ 		if (!intr_ctrl_regset)
+ 			return;
+ 		intr_ctrl_regset->regs = intr_ctrl_regs;
+-- 
+2.39.5
+
 
 
 
