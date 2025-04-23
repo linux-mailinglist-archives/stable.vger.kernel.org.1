@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-136062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19375A991CC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:36:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADE5A99235
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D87BE921628
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98888465585
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154B228153C;
-	Wed, 23 Apr 2025 15:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5A92949F7;
+	Wed, 23 Apr 2025 15:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uH8HKfqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6s5U3y5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61FA2820A8;
-	Wed, 23 Apr 2025 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D581128A402;
+	Wed, 23 Apr 2025 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421555; cv=none; b=Bm2CEhXWYy+Z47lMxLdPQrx7Nio5S0zDGRfqqm9TES0kxKkks8+UJNFgtpjMRetEj7FNbYM2NiZyb5aUPBOGzFlotJnbFdrN10cjbHLJL5lXfAOaUKMgJV32nxh4mGnk6/exe6Tt77b1h6s2fdU/5vTP36eVEvLCGDL3EFMG8WM=
+	t=1745421736; cv=none; b=S2ENhUbVSligeE3yDyNWb3n828xXU1RNYF+qVkK2Z/d8Wx+Rl1n4lQKZ1D0Yg+75f3Z0OB+9rqMiRjzFIgXNTLEm6wja8snMvmePQ7AfikUemZQVR9eRxsN2OnH3PCwSEb6L4sXRoFlcQAm6pH8QDoSdk83H3s0t3Iwk0H7yMU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421555; c=relaxed/simple;
-	bh=xm9yKs0dzFiuQJ//xtkoG6AuTojR8XRkiCamC2P9E9g=;
+	s=arc-20240116; t=1745421736; c=relaxed/simple;
+	bh=mD+dv+PEt1ufPDp6ohHJqlNFRkaPmJBo0UfyAitqRvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccOXAmeKCBwwvI49vx1iMxF0/lCMrGcdk0nkxe9XJQIC2AlQ8fqzPBaon916sF3pw+0TsulLhs+WmjstqH2Fgn8780Azy7TeIVsnrYQOCAIvbZqxB/pIK/ZEchWU/4rF4HsjpUrE9zXEpp0L829EuK1nrD6c10bYmGU7xAPnHRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uH8HKfqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE367C4CEE2;
-	Wed, 23 Apr 2025 15:19:14 +0000 (UTC)
+	 MIME-Version; b=s+QXnmY4FftmYEdaMZdOUM3kGItCNku/LwmZ2erim81Nf3nm+DKjFOGq4VFyPNbRPjLIt2uLW/IILb0OIfDC2Zv7EzXoNePMz92W01jY/zixvxaauB4guTVmgct89yYuwAQ4ZLHzULiQTEZBTuOYUeC/08jqt05eUj7fF5BgzDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6s5U3y5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE26C4CEE3;
+	Wed, 23 Apr 2025 15:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421555;
-	bh=xm9yKs0dzFiuQJ//xtkoG6AuTojR8XRkiCamC2P9E9g=;
+	s=korg; t=1745421734;
+	bh=mD+dv+PEt1ufPDp6ohHJqlNFRkaPmJBo0UfyAitqRvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uH8HKfqJAPMorKi4QyIDSC4qt2Vu1saCHpQvJ+FqPsI82gwSZtiKQSuEYo8MjqiVB
-	 GpyFqcg4TLnvSXkR/prdLsPe820uJ4mWIeS8x6njLIbvLy6Xtc8eihkip8XaoGRMA2
-	 BYD6xzeJHShulXip+eH2ex4LoJOTYr5rVVQmFjkU=
+	b=K6s5U3y5qsvaQXh+puonBw4SkgAMFdRecRT4gtZxSJT27ydoqGKIZZCBdNKyU5pGT
+	 u6BwMiqkST9NDhqiGy5lpOGx0RNeSAZfqHOd0+uagQCcJnNuLJGO+7mPRxAtCaedSo
+	 EBtwppACKOId9FpSxvd8dOgeZtMQbFvy3SeA/Ef4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 218/223] bpf: check changes_pkt_data property for extension programs
-Date: Wed, 23 Apr 2025 16:44:50 +0200
-Message-ID: <20250423142626.045637070@linuxfoundation.org>
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Rob Herring <robh@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.14 227/241] arm64/boot: Enable EL2 requirements for FEAT_PMUv3p9
+Date: Wed, 23 Apr 2025 16:44:51 +0200
+Message-ID: <20250423142629.838396660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +71,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-commit 81f6d0530ba031b5f038a091619bf2ff29568852 upstream.
+commit 858c7bfcb35e1100b58bb63c9f562d86e09418d9 upstream.
 
-When processing calls to global sub-programs, verifier decides whether
-to invalidate all packet pointers in current state depending on the
-changes_pkt_data property of the global sub-program.
+FEAT_PMUv3p9 registers such as PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1
+access from EL1 requires appropriate EL2 fine grained trap configuration
+via FEAT_FGT2 based trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2.
+Otherwise such register accesses will result in traps into EL2.
 
-Because of this, an extension program replacing a global sub-program
-must be compatible with changes_pkt_data property of the sub-program
-being replaced.
+Add a new helper __init_el2_fgt2() which initializes FEAT_FGT2 based fine
+grained trap control registers HDFGRTR2_EL2 and HDFGWTR2_EL2 (setting the
+bits nPMICNTR_EL0, nPMICFILTR_EL0 and nPMUACR_EL1) to enable access into
+PMICNTR_EL0, PMICFILTR_EL0, and PMUACR_EL1 registers.
 
-This commit:
-- adds changes_pkt_data flag to struct bpf_prog_aux:
-  - this flag is set in check_cfg() for main sub-program;
-  - in jit_subprogs() for other sub-programs;
-- modifies bpf_check_attach_btf_id() to check changes_pkt_data flag;
-- moves call to check_attach_btf_id() after the call to check_cfg(),
-  because it needs changes_pkt_data flag to be set:
+Also update booting.rst with SCR_EL3.FGTEn2 requirement for all FEAT_FGT2
+based registers to be accessible in EL2.
 
-    bpf_check:
-      ...                             ...
-    - check_attach_btf_id             resolve_pseudo_ldimm64
-      resolve_pseudo_ldimm64   -->    bpf_prog_is_offloaded
-      bpf_prog_is_offloaded           check_cfg
-      check_cfg                     + check_attach_btf_id
-      ...                             ...
-
-The following fields are set by check_attach_btf_id():
-- env->ops
-- prog->aux->attach_btf_trace
-- prog->aux->attach_func_name
-- prog->aux->attach_func_proto
-- prog->aux->dst_trampoline
-- prog->aux->mod
-- prog->aux->saved_dst_attach_type
-- prog->aux->saved_dst_prog_type
-- prog->expected_attach_type
-
-Neither of these fields are used by resolve_pseudo_ldimm64() or
-bpf_prog_offload_verifier_prep() (for netronome and netdevsim
-drivers), so the reordering is safe.
-
-Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-6-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ shung-hsi.yu: both jits_use_priv_stack and priv_stack_requested fields are
-missing from context because "bpf: Support private stack for bpf progs" series
-is not present.]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: kvmarm@lists.linux.dev
+Fixes: 0bbff9ed8165 ("perf/arm_pmuv3: Add PMUv3.9 per counter EL0 access control")
+Fixes: d8226d8cfbaf ("perf: arm_pmuv3: Add support for Armv9.4 PMU instruction counter")
+Tested-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250227035119.2025171-1-anshuman.khandual@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf.h   |    1 +
- kernel/bpf/verifier.c |   16 ++++++++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ Documentation/arch/arm64/booting.rst |   22 ++++++++++++++++++++++
+ arch/arm64/include/asm/el2_setup.h   |   25 +++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1499,6 +1499,7 @@ struct bpf_prog_aux {
- 	bool exception_cb;
- 	bool exception_boundary;
- 	bool is_extended; /* true if extended by freplace program */
-+	bool changes_pkt_data;
- 	u64 prog_array_member_cnt; /* counts how many times as member of prog_array */
- 	struct mutex ext_mutex; /* mutex for is_extended and prog_array_member_cnt */
- 	struct bpf_arena *arena;
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -16650,6 +16650,7 @@ walk_cfg:
- 		}
- 	}
- 	ret = 0; /* cfg looks good */
-+	env->prog->aux->changes_pkt_data = env->subprog_info[0].changes_pkt_data;
+--- a/Documentation/arch/arm64/booting.rst
++++ b/Documentation/arch/arm64/booting.rst
+@@ -288,6 +288,12 @@ Before jumping into the kernel, the foll
  
- err_free:
- 	kvfree(insn_state);
-@@ -20152,6 +20153,7 @@ static int jit_subprogs(struct bpf_verif
- 		func[i]->aux->num_exentries = num_exentries;
- 		func[i]->aux->tail_call_reachable = env->subprog_info[i].tail_call_reachable;
- 		func[i]->aux->exception_cb = env->subprog_info[i].is_exception_cb;
-+		func[i]->aux->changes_pkt_data = env->subprog_info[i].changes_pkt_data;
- 		if (!i)
- 			func[i]->aux->exception_boundary = env->seen_exception;
- 		func[i] = bpf_int_jit_compile(func[i]);
-@@ -22022,6 +22024,12 @@ int bpf_check_attach_target(struct bpf_v
- 					"Extension programs should be JITed\n");
- 				return -EINVAL;
- 			}
-+			if (prog->aux->changes_pkt_data &&
-+			    !aux->func[subprog]->aux->changes_pkt_data) {
-+				bpf_log(log,
-+					"Extension program changes packet data, while original does not\n");
-+				return -EINVAL;
-+			}
- 		}
- 		if (!tgt_prog->jited) {
- 			bpf_log(log, "Can attach to only JITed progs\n");
-@@ -22487,10 +22495,6 @@ int bpf_check(struct bpf_prog **prog, un
- 	if (ret < 0)
- 		goto skip_full_check;
+     - SCR_EL3.FGTEn (bit 27) must be initialised to 0b1.
  
--	ret = check_attach_btf_id(env);
--	if (ret)
--		goto skip_full_check;
--
- 	ret = resolve_pseudo_ldimm64(env);
- 	if (ret < 0)
- 		goto skip_full_check;
-@@ -22505,6 +22509,10 @@ int bpf_check(struct bpf_prog **prog, un
- 	if (ret < 0)
- 		goto skip_full_check;
- 
-+	ret = check_attach_btf_id(env);
-+	if (ret)
-+		goto skip_full_check;
++  For CPUs with the Fine Grained Traps 2 (FEAT_FGT2) extension present:
 +
- 	ret = mark_fastcall_patterns(env);
- 	if (ret < 0)
- 		goto skip_full_check;
++  - If EL3 is present and the kernel is entered at EL2:
++
++    - SCR_EL3.FGTEn2 (bit 59) must be initialised to 0b1.
++
+   For CPUs with support for HCRX_EL2 (FEAT_HCX) present:
+ 
+   - If EL3 is present and the kernel is entered at EL2:
+@@ -382,6 +388,22 @@ Before jumping into the kernel, the foll
+ 
+     - SMCR_EL2.EZT0 (bit 30) must be initialised to 0b1.
+ 
++  For CPUs with the Performance Monitors Extension (FEAT_PMUv3p9):
++
++ - If EL3 is present:
++
++    - MDCR_EL3.EnPM2 (bit 7) must be initialised to 0b1.
++
++ - If the kernel is entered at EL1 and EL2 is present:
++
++    - HDFGRTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
++    - HDFGRTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
++    - HDFGRTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
++
++    - HDFGWTR2_EL2.nPMICNTR_EL0 (bit 2) must be initialised to 0b1.
++    - HDFGWTR2_EL2.nPMICFILTR_EL0 (bit 3) must be initialised to 0b1.
++    - HDFGWTR2_EL2.nPMUACR_EL1 (bit 4) must be initialised to 0b1.
++
+   For CPUs with Memory Copy and Memory Set instructions (FEAT_MOPS):
+ 
+   - If the kernel is entered at EL1 and EL2 is present:
+--- a/arch/arm64/include/asm/el2_setup.h
++++ b/arch/arm64/include/asm/el2_setup.h
+@@ -259,6 +259,30 @@
+ .Lskip_fgt_\@:
+ .endm
+ 
++.macro __init_el2_fgt2
++	mrs	x1, id_aa64mmfr0_el1
++	ubfx	x1, x1, #ID_AA64MMFR0_EL1_FGT_SHIFT, #4
++	cmp	x1, #ID_AA64MMFR0_EL1_FGT_FGT2
++	b.lt	.Lskip_fgt2_\@
++
++	mov	x0, xzr
++	mrs	x1, id_aa64dfr0_el1
++	ubfx	x1, x1, #ID_AA64DFR0_EL1_PMUVer_SHIFT, #4
++	cmp	x1, #ID_AA64DFR0_EL1_PMUVer_V3P9
++	b.lt	.Lskip_pmuv3p9_\@
++
++	orr	x0, x0, #HDFGRTR2_EL2_nPMICNTR_EL0
++	orr	x0, x0, #HDFGRTR2_EL2_nPMICFILTR_EL0
++	orr	x0, x0, #HDFGRTR2_EL2_nPMUACR_EL1
++.Lskip_pmuv3p9_\@:
++	msr_s   SYS_HDFGRTR2_EL2, x0
++	msr_s   SYS_HDFGWTR2_EL2, x0
++	msr_s   SYS_HFGRTR2_EL2, xzr
++	msr_s   SYS_HFGWTR2_EL2, xzr
++	msr_s   SYS_HFGITR2_EL2, xzr
++.Lskip_fgt2_\@:
++.endm
++
+ .macro __init_el2_gcs
+ 	mrs_s	x1, SYS_ID_AA64PFR1_EL1
+ 	ubfx	x1, x1, #ID_AA64PFR1_EL1_GCS_SHIFT, #4
+@@ -304,6 +328,7 @@
+ 	__init_el2_nvhe_idregs
+ 	__init_el2_cptr
+ 	__init_el2_fgt
++	__init_el2_fgt2
+         __init_el2_gcs
+ .endm
+ 
 
 
 
