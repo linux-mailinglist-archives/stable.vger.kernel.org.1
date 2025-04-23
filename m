@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0718A9904B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0D7A9935D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:57:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66AF31BA015C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:12:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 237F81BA7539
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F10528E61B;
-	Wed, 23 Apr 2025 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C420128D831;
+	Wed, 23 Apr 2025 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGAIRqoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqQ6k3rk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B75628E613;
-	Wed, 23 Apr 2025 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818DC28CF6E;
+	Wed, 23 Apr 2025 15:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420801; cv=none; b=bQmGp9/vbDGAXnd46CvX4lbHemee5HIcmPslVfxmNTOUkhBZoKmBIpQ2+hK/cvZOdC6qvrbX+v6BsNlmj+9OzYiSRq4Yow9N0z7osByR2J+aAM/LkhCgEkcZbXwORX/fCwuTFTpAM7P5DHP0qXaMNglDkjxYTdlJ/dAZhFzNgiM=
+	t=1745421918; cv=none; b=DYTGkYDgOmMTxtq8itXcbR0PcWvUGEC/BOzrWbCTtZpS2RUyBqK9p/wZXKykDlFxwWnrho3CyCz2qc0vcECAUPbo9WHAel/1//3nn7S/qxRHupCcQrOjskhQArsME5gdJso2KMSEWi95lRzDE792cM2hzucdYNJvty0uO+46We8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420801; c=relaxed/simple;
-	bh=7Y2VH2DM89Je1lveUwpO/GybBdW5V6FR6RwoQhmZMps=;
+	s=arc-20240116; t=1745421918; c=relaxed/simple;
+	bh=weZPZHcBcoIA11xlt2PlavBE+r2uUtltuYipPSF6WIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+sQWtBioNH7FwaxxdB7hwYCBJmjDyPK4ME+vMI/Cdn6kdsjvKliDW5v4wgMWcS+Qjqhuxh8fxHJLOXybgOzgzS7vZhBEtM9iRQD9y6P27ull72YBTjj7Oe0Ji/SBBOGhbvYI2FqFXUoPXQTtaxuyKsntJQpuL6/L8Ikf8GXoZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGAIRqoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30CDC4CEE2;
-	Wed, 23 Apr 2025 15:06:40 +0000 (UTC)
+	 MIME-Version; b=tDq6N91tdM5sWMQhpA3qzESuSzUnnG42omIJPgauZAj4Wsb4dCotgBrklRm3Ki2gVvAgaTRwpJ7hpK3W9PJPeT6LpQPdEDoK6gfasbx/zpiKH5mBSS0C6kFaeCj/zyeRFVbcYbh6vU1a4jgHtNimgj71zLWUQ3LnNk00RQMvwSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqQ6k3rk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ACC8C4CEE2;
+	Wed, 23 Apr 2025 15:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420801;
-	bh=7Y2VH2DM89Je1lveUwpO/GybBdW5V6FR6RwoQhmZMps=;
+	s=korg; t=1745421916;
+	bh=weZPZHcBcoIA11xlt2PlavBE+r2uUtltuYipPSF6WIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iGAIRqoy87sS1Q1qb74orB2y8RhoLp5UmqFiOo5W1FEup8THR6GJjGX+ZGp7uLjTN
-	 3AqGCeJMpNrlq1vuCcSJ7DFaLyIXc3m4AlUZwtO7KEBAvTkaRWryv0eymW/rB0Rxzr
-	 ezTHnhitBZxS3koTl0h3o0HI49VZSNH5obdd/c5Q=
+	b=VqQ6k3rkAAuCAmDcoWg++uhLQztTQfXEtfgtAw/O7QqzG4kSNjE3tj8VRaRCtkF4f
+	 a5DCMSfqliPa5y3WI8BGucRbIrUBqsfHfpUtUCGR7WMDED1cieYF/DTjXKaNa1/NDP
+	 4fU08B37xslT59ibEsKfhK678XCwNsOtLhmhz/I0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 123/241] ftrace: fix incorrect hash size in register_ftrace_direct()
+	Jan Kara <jack@suse.cz>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 198/291] writeback: fix false warning in inode_to_wb()
 Date: Wed, 23 Apr 2025 16:43:07 +0200
-Message-ID: <20250423142625.602006598@linuxfoundation.org>
+Message-ID: <20250423142632.472445505@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 92f1d3b40179b15630d72e2c6e4e25a899b67ba9 ]
+commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
 
-The maximum of the ftrace hash bits is made fls(32) in
-register_ftrace_direct(), which seems illogical. So, we fix it by making
-the max hash bits FTRACE_HASH_MAX_BITS instead.
+inode_to_wb() is used also for filesystems that don't support cgroup
+writeback.  For these filesystems inode->i_wb is stable during the
+lifetime of the inode (it points to bdi->wb) and there's no need to hold
+locks protecting the inode->i_wb dereference.  Improve the warning in
+inode_to_wb() to not trigger for these filesystems.
 
-Link: https://lore.kernel.org/20250413014444.36724-1-dongml2@chinatelecom.cn
-Fixes: d05cb470663a ("ftrace: Fix modification of direct_function hash while in use")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
+Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/backing-dev.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
-index 62d300eee7eb8..201e770185dde 100644
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -5912,9 +5912,10 @@ int register_ftrace_direct(struct ftrace_ops *ops, unsigned long addr)
- 
- 	/* Make a copy hash to place the new and the old entries in */
- 	size = hash->count + direct_functions->count;
--	if (size > 32)
--		size = 32;
--	new_hash = alloc_ftrace_hash(fls(size));
-+	size = fls(size);
-+	if (size > FTRACE_HASH_MAX_BITS)
-+		size = FTRACE_HASH_MAX_BITS;
-+	new_hash = alloc_ftrace_hash(size);
- 	if (!new_hash)
- 		goto out_unlock;
- 
--- 
-2.39.5
-
+--- a/include/linux/backing-dev.h
++++ b/include/linux/backing-dev.h
+@@ -241,6 +241,7 @@ static inline struct bdi_writeback *inod
+ {
+ #ifdef CONFIG_LOCKDEP
+ 	WARN_ON_ONCE(debug_locks &&
++		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
+ 		     (!lockdep_is_held(&inode->i_lock) &&
+ 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
+ 		      !lockdep_is_held(&inode->i_wb->list_lock)));
 
 
 
