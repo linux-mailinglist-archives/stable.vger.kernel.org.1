@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-135714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63868A98FF9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59909A99131
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D6278E034D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4718F924D43
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D1228A3E1;
-	Wed, 23 Apr 2025 15:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A7C293453;
+	Wed, 23 Apr 2025 15:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okGMgR0s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyPzNlKd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D8227F755;
-	Wed, 23 Apr 2025 15:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B532280CF6;
+	Wed, 23 Apr 2025 15:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420652; cv=none; b=SQSoUTyESNAtUZUOpbAUy3Z28NHEa9yZQJqWZPcqdC5UW3QJUxeopGi3LsgoF6xYLIa30EiKfP6/mVArXrnOFpJFoqf/ISlWmyGL3azZPw41GoZyqCNgZzIu1Oz+6bDOBzAA2lU967js81uuxfgS1tTe2RedpojeVH56+8SLyGI=
+	t=1745421160; cv=none; b=QzatztbmB5PTF8bcIXth/rnr2mReuMU3PbLOvpiouzqbWcGqFhfWV3aCfZLNlV7ZRwmfGYXjtyDnKd1p8lY4lDgyZyhXQCUTTg0eMkzrF/70Ued7mRt8to/l79p6Vr40pR6m10sLIqTtEBc3wUQOTKC69bdd8BU9ObqhTTf3zmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420652; c=relaxed/simple;
-	bh=sKitR6gJOaJO9GdmcJigpdI4xJqqgrf+Z96bcERjt3Y=;
+	s=arc-20240116; t=1745421160; c=relaxed/simple;
+	bh=fhYu/zdCCYkzXDk6GEI9qPYgJ4uCibDVO1cI32lvdhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTiuf9MCcTH4Pvby29pGg1wjw13A+G3ug08yE+G1WFt7xhtRIxvnOC1klw2Gpt/B7dSjqbCaIT9KJw26xeyS/soEhnpketrmM1mrDiA2elrmUB8b0ajGWFELmzJFSC/ohwZIzoMhWMzrf4/Fvo9SJj/HXarj1BuAfAeavUu5lps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okGMgR0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3D9C4CEE2;
-	Wed, 23 Apr 2025 15:04:10 +0000 (UTC)
+	 MIME-Version; b=WnAY2QjRp9rpitYSlLbK+omaOXkIqrGGSsK8i9x8QVWG4y8GnjG7w3ecbqHIa7/5ZS/ZJzqa2QLg41euCR632uvMVGJ7xsHy6CJF1CPJUpIXVrpFZTcd23duFACDyUBkQQVulPzvG4GB+iJal9p5raBElrZLnrRvBFo2uZxj0oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyPzNlKd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE41CC4CEE2;
+	Wed, 23 Apr 2025 15:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420650;
-	bh=sKitR6gJOaJO9GdmcJigpdI4xJqqgrf+Z96bcERjt3Y=;
+	s=korg; t=1745421160;
+	bh=fhYu/zdCCYkzXDk6GEI9qPYgJ4uCibDVO1cI32lvdhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okGMgR0smDU/TzlMbHvhHeHlAQim0ll0mwhxDdwLFo6GPPCVFU6cjY8G46ero0KAZ
-	 Z1R4COrkvzbsTY8InA++Udm0yMV7yesEumhAaM6iHLQOP3GL2pTa8QWmJtIhQbYjSA
-	 uKQga08Enpy2puFsl4qJ/rBbGJSD9M+2OIIQuzlQ=
+	b=dyPzNlKddfuaLvsuP3hp1/f1hkeIXr3A4OcZwxS9aNftkSmxgJyEVIN3auRS5Kc4z
+	 YjWOL64Znq1qtkNACdlDjTtl2ywQsToSkDoy2u9yQNs4Nwu2otece8yukJU23ZQ760
+	 5JNxH2Sz/1KhFXC3sbdFAZ+4PNZVe4wtF9FeIZKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jocelyn Falempe <jfalempe@redhat.com>,
-	Jerry Hoemann <jerry.hoemann@hpe.com>,
-	Jose Lopez <jose.lopez@hpe.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Dave Airlie <airlied@redhat.com>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.12 149/223] drm/ast: Fix ast_dp connection status
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	stable@kernel.org,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>
+Subject: [PATCH 6.14 157/241] x86/microcode/AMD: Extend the SHA check to Zen5, block loading of any unreleased standalone Zen5 microcode patches
 Date: Wed, 23 Apr 2025 16:43:41 +0200
-Message-ID: <20250423142623.245905709@linuxfoundation.org>
+Message-ID: <20250423142626.957741508@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +68,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jocelyn Falempe <jfalempe@redhat.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit c28f72c6ca98e039c2aa5aac6752c416bc31dbab upstream.
+commit 805b743fc163f1abef7ce1bea8eca8dfab5b685b upstream.
 
-ast_dp_is_connected() used to also check for link training success
-to report the DP connector as connected. Without this check, the
-physical_status is always connected. So if no monitor is present, it
-will fail to read the EDID and set the default resolution to 640x480
-instead of 1024x768.
+All Zen5 machines out there should get BIOS updates which update to the
+correct microcode patches addressing the microcode signature issue.
+However, silly people carve out random microcode blobs from BIOS
+packages and think are doing other people a service this way...
 
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
-Fixes: 2281475168d2 ("drm/ast: astdp: Perform link training during atomic_enable")
-Reported-by: Jerry Hoemann <jerry.hoemann@hpe.com>
-Tested-by: Jose Lopez <jose.lopez@hpe.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.12+
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250124141142.2434138-1-jfalempe@redhat.com
+Block loading of any unreleased standalone Zen5 microcode patches.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Cc: Nikolay Borisov <nik.borisov@suse.com>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/20250410114222.32523-1-bp@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/kernel/cpu/microcode/amd.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-index 0e282b7b167c..30aad5c0112a 100644
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -17,6 +17,12 @@ static bool ast_astdp_is_connected(struct ast_device *ast)
- {
- 	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDF, AST_IO_VGACRDF_HPD))
- 		return false;
-+	/*
-+	 * HPD might be set even if no monitor is connected, so also check that
-+	 * the link training was successful.
-+	 */
-+	if (!ast_get_index_reg_mask(ast, AST_IO_VGACRI, 0xDC, AST_IO_VGACRDC_LINK_SUCCESS))
-+		return false;
- 	return true;
- }
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -199,6 +199,12 @@ static bool need_sha_check(u32 cur_rev)
+ 	case 0xa70c0: return cur_rev <= 0xa70C009; break;
+ 	case 0xaa001: return cur_rev <= 0xaa00116; break;
+ 	case 0xaa002: return cur_rev <= 0xaa00218; break;
++	case 0xb0021: return cur_rev <= 0xb002146; break;
++	case 0xb1010: return cur_rev <= 0xb101046; break;
++	case 0xb2040: return cur_rev <= 0xb204031; break;
++	case 0xb4040: return cur_rev <= 0xb404031; break;
++	case 0xb6000: return cur_rev <= 0xb600031; break;
++	case 0xb7000: return cur_rev <= 0xb700031; break;
+ 	default: break;
+ 	}
  
--- 
-2.49.0
-
+@@ -214,8 +220,7 @@ static bool verify_sha256_digest(u32 pat
+ 	struct sha256_state s;
+ 	int i;
+ 
+-	if (x86_family(bsp_cpuid_1_eax) < 0x17 ||
+-	    x86_family(bsp_cpuid_1_eax) > 0x19)
++	if (x86_family(bsp_cpuid_1_eax) < 0x17)
+ 		return true;
+ 
+ 	if (!need_sha_check(cur_rev))
 
 
 
