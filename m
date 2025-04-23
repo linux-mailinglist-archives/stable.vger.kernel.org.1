@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-135354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1432A98DC3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461A2A98D97
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 657757A7344
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:48:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1072C445691
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08802281522;
-	Wed, 23 Apr 2025 14:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8812227FD7F;
+	Wed, 23 Apr 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aceNkFKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAtObwFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2F2281375;
-	Wed, 23 Apr 2025 14:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDD127EC91;
+	Wed, 23 Apr 2025 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419702; cv=none; b=pY7LPa/udEKvtCsChcHXz3W+qS0J86sL/2ekxg5Ktm5ArALAoH8j/4EG77bPgdRb1By2v8JUKo6K5+WO7Oo2N3GRI7Wcd5c/JzXGb0uuU8sg52xZYgdTKUeqeCkzx5Pg6RW+lavZX+qjHe7WXApUo/aEeeYH6u2CaMRI5wW1dCE=
+	t=1745419610; cv=none; b=ea0JxjSMTUtaIjptr2F1keqlp9TEyGo+Xel0g+tzRQKfeulbd2HK5agsQocWM2yggQKVVbQG0vXQEnocAD78j6XbpV6+AjCE0hJztxgpnKR1iP2XaWzCBR+TB045wjdHFK4ZNq/sBYBftgcAqYm27fxFswThcYGU+Y5WL0RYYH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419702; c=relaxed/simple;
-	bh=rI+Ht9TvLc6sYUCdRdMIczU3BkQ0SzeDD7shiHC/u0w=;
+	s=arc-20240116; t=1745419610; c=relaxed/simple;
+	bh=JbeAlUdCUUugWBlxoWGrr1XsI1e4q8rrQxw74RoiNqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u+reKElckoH98nM5Eb8jNr+uEoPxdWdrcI/5fAIcSmUwLd4qatoHNmkB8y2iBCAPtglNrAy376lumcSLQ5S9mUTCSLsRwankc56CjPHWf1OUNO7XonufFwId2czLqFFXQ9OH6O7kcWgXmvuPcwAhN1KElkG3I5Rd7QA+LQbIl3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aceNkFKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB4EC4CEE3;
-	Wed, 23 Apr 2025 14:48:22 +0000 (UTC)
+	 MIME-Version; b=cIcBIJId45VJXlrYjbmfpSkTDV6UeGfwVQYEnUWkWZSBkGULO4SkfoFEWIvgZkeYoOyLHOS7JDg82VG8DLHh96tgmKIqxFNpstq9Q3IvpWRVXLVgIDLrtwW+vHd8qcjnuwfj55YwRSx9376Iu41ygQr2V/BybTVXTS719CInZtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAtObwFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E105C4CEE2;
+	Wed, 23 Apr 2025 14:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419702;
-	bh=rI+Ht9TvLc6sYUCdRdMIczU3BkQ0SzeDD7shiHC/u0w=;
+	s=korg; t=1745419610;
+	bh=JbeAlUdCUUugWBlxoWGrr1XsI1e4q8rrQxw74RoiNqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aceNkFKDG6SsLPw8YUGyssW1127JnS7y/fKcEOM8jtZluPZDzhPvlerAOT0jPtBi7
-	 gTNOyyu/eI/tcWTeGihsGVvTbjZfrdjQghJ38rrm69E/sNrTcJwkPUoX36ghvuAXWn
-	 9Uq2RDnD8PdS18NtoLVnnZAn/iZlNLpBb4yvlrFk=
+	b=AAtObwFYh4oeXEvy5WeWtZjyQMyLiWuxyUNCYqeFY7utRenTKd9m9AVvbPWGB5l5y
+	 KVwjOs0cuIg1BSPPReWJBVPoD7NRw3xBmIhHDasL6y/hNqFzz4RvPnLyGQi0qoiSC3
+	 2ARZhXUiDRES2mnnAPnhgCPTBD41t4I48ubkg75Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Wilck <mwilck@suse.com>,
-	Randy Wright <rwright@hpe.com>,
-	Don Brace <don.brace@microchip.com>,
-	Lee Duncan <lduncan@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Coly Li <colyli@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 010/223] scsi: smartpqi: Use is_kdump_kernel() to check for kdump
-Date: Wed, 23 Apr 2025 16:41:22 +0200
-Message-ID: <20250423142617.541191209@linuxfoundation.org>
+Subject: [PATCH 6.12 011/223] md/raid10: fix missing discard IO accounting
+Date: Wed, 23 Apr 2025 16:41:23 +0200
+Message-ID: <20250423142617.580729571@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
 References: <20250423142617.120834124@linuxfoundation.org>
@@ -69,96 +66,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Martin Wilck <mwilck@suse.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit a2d5a0072235a69749ceb04c1a26dc75df66a31a ]
+[ Upstream commit d05af90d6218e9c8f1c2026990c3f53c1b41bfb0 ]
 
-The smartpqi driver checks the reset_devices variable to determine
-whether special adjustments need to be made for kdump. This has the
-effect that after a regular kexec reboot, some driver parameters such as
-max_transfer_size are much lower than usual. More importantly, kexec
-reboot tests have revealed memory corruption caused by the driver log
-being written to system memory after a kexec.
+md_account_bio() is not called from raid10_handle_discard(), now that we
+handle bitmap inside md_account_bio(), also fix missing
+bitmap_startwrite for discard.
 
-Fix this by testing is_kdump_kernel() rather than reset_devices where
-appropriate.
+Test whole disk discard for 20G raid10:
 
-Fixes: 058311b72f54 ("scsi: smartpqi: Add fw log to kdump")
-Signed-off-by: Martin Wilck <mwilck@suse.com>
-Link: https://lore.kernel.org/r/20250321223319.109250-1-mwilck@suse.com
-Cc: Randy Wright <rwright@hpe.com>
-Acked-by: Don Brace <don.brace@microchip.com>
-Tested-by: Don Brace <don.brace@microchip.com>
-Reviewed-by: Lee Duncan <lduncan@suse.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Before:
+Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
+md0    48.00     16.00     0.00   0.00    5.42   341.33
+
+After:
+Device   d/s     dMB/s   drqm/s  %drqm d_await dareq-sz
+md0    68.00  20462.00     0.00   0.00    2.65 308133.65
+
+Link: https://lore.kernel.org/linux-raid/20250325015746.3195035-1-yukuai1@huaweicloud.com
+Fixes: 528bc2cf2fcc ("md/raid10: enable io accounting")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Coly Li <colyli@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi_init.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/md/raid10.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index 04fb24d77e9b5..d919a74746a05 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -19,6 +19,7 @@
- #include <linux/bcd.h>
- #include <linux/reboot.h>
- #include <linux/cciss_ioctl.h>
-+#include <linux/crash_dump.h>
- #include <scsi/scsi_host.h>
- #include <scsi/scsi_cmnd.h>
- #include <scsi/scsi_device.h>
-@@ -5246,7 +5247,7 @@ static void pqi_calculate_io_resources(struct pqi_ctrl_info *ctrl_info)
- 	ctrl_info->error_buffer_length =
- 		ctrl_info->max_io_slots * PQI_ERROR_BUFFER_ELEMENT_LENGTH;
- 
--	if (reset_devices)
-+	if (is_kdump_kernel())
- 		max_transfer_size = min(ctrl_info->max_transfer_size,
- 			PQI_MAX_TRANSFER_SIZE_KDUMP);
- 	else
-@@ -5275,7 +5276,7 @@ static void pqi_calculate_queue_resources(struct pqi_ctrl_info *ctrl_info)
- 	u16 num_elements_per_iq;
- 	u16 num_elements_per_oq;
- 
--	if (reset_devices) {
-+	if (is_kdump_kernel()) {
- 		num_queue_groups = 1;
- 	} else {
- 		int num_cpus;
-@@ -8287,12 +8288,12 @@ static int pqi_ctrl_init(struct pqi_ctrl_info *ctrl_info)
- 	u32 product_id;
- 
- 	if (reset_devices) {
--		if (pqi_is_fw_triage_supported(ctrl_info)) {
-+		if (is_kdump_kernel() && pqi_is_fw_triage_supported(ctrl_info)) {
- 			rc = sis_wait_for_fw_triage_completion(ctrl_info);
- 			if (rc)
- 				return rc;
- 		}
--		if (sis_is_ctrl_logging_supported(ctrl_info)) {
-+		if (is_kdump_kernel() && sis_is_ctrl_logging_supported(ctrl_info)) {
- 			sis_notify_kdump(ctrl_info);
- 			rc = sis_wait_for_ctrl_logging_completion(ctrl_info);
- 			if (rc)
-@@ -8343,7 +8344,7 @@ static int pqi_ctrl_init(struct pqi_ctrl_info *ctrl_info)
- 	ctrl_info->product_id = (u8)product_id;
- 	ctrl_info->product_revision = (u8)(product_id >> 8);
- 
--	if (reset_devices) {
-+	if (is_kdump_kernel()) {
- 		if (ctrl_info->max_outstanding_requests >
- 			PQI_MAX_OUTSTANDING_REQUESTS_KDUMP)
- 				ctrl_info->max_outstanding_requests =
-@@ -8479,7 +8480,7 @@ static int pqi_ctrl_init(struct pqi_ctrl_info *ctrl_info)
- 	if (rc)
- 		return rc;
- 
--	if (ctrl_info->ctrl_logging_supported && !reset_devices) {
-+	if (ctrl_info->ctrl_logging_supported && !is_kdump_kernel()) {
- 		pqi_host_setup_buffer(ctrl_info, &ctrl_info->ctrl_log_memory, PQI_CTRL_LOG_TOTAL_SIZE, PQI_CTRL_LOG_MIN_SIZE);
- 		pqi_host_memory_update(ctrl_info, &ctrl_info->ctrl_log_memory, PQI_VENDOR_GENERAL_CTRL_LOG_MEMORY_UPDATE);
- 	}
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index a214fed4f1622..cc194f6ec18da 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1687,6 +1687,7 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 	 * The discard bio returns only first r10bio finishes
+ 	 */
+ 	if (first_copy) {
++		md_account_bio(mddev, &bio);
+ 		r10_bio->master_bio = bio;
+ 		set_bit(R10BIO_Discard, &r10_bio->state);
+ 		first_copy = false;
 -- 
 2.39.5
 
