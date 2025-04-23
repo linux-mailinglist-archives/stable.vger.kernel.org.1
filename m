@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-136011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA405A991C9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44245A99278
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321CA922AA3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:25:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87ABB7A5829
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2B2290BAB;
-	Wed, 23 Apr 2025 15:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE297289351;
+	Wed, 23 Apr 2025 15:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZ65GTh4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smO4jTkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950A428CF52;
-	Wed, 23 Apr 2025 15:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892FF20D4F8;
+	Wed, 23 Apr 2025 15:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421422; cv=none; b=H5eq0a6g+q2Wiei4op3mCSNFx96qWwrYXKpRdOSvNTxRvkaSy74DsvRWvZrukW0jJkqdxuhFG/iXNNkqwLYXUoeYiOdeNRvXifvz/jFpI4vihKy5BMx5W+w8iMLNDjo5jDDV4LrVi+FTii+1mEaKJYU7S+zTmRWDnHzCkSNlxMg=
+	t=1745422365; cv=none; b=pZmkqBAQJjS6scrwq8955tXLcKTOH9+Lc6tFcwk9Itqb1niJaSSKrbM+cIR0oFOEh3jemcDBjwlywjJUIopooy718ihbA0NqBkvP16RKfWfxZhRhuk2p71A+sBoe998eBulzsBJo4muBDedGka5uyz+mSrvalBv1kpP6qW1veXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421422; c=relaxed/simple;
-	bh=GxCRJM/nGm1Auv3K60Lz6L3E9jf6jK69X5sJCbSB5HI=;
+	s=arc-20240116; t=1745422365; c=relaxed/simple;
+	bh=2w5SuprNVyiDlv9snIrnjWc3KDPFaBIfq2NsD/S+zEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FO2ijOq+XjRrsoSmKvHhlV4TfSFPS/iLOWcTPNF9DA5Kl0P12sAsPDwRTgbyiwDoA71yQid0vWi/BWRWRpkirQna0t8HFvcwzrULPkJix8FS1a69apGDENGqJXnvxUPmD2aYMU7cxMKco4kvZYViG6dli0g3OxhRW15Dj/MYvoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZ65GTh4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C173AC4CEE2;
-	Wed, 23 Apr 2025 15:17:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JmL++z2q4XtB/M8IcgLo/I7pnSQodTb2aizvgyY+AEZf0lKNk8MEcj+5zVLimb6dPGEhN83POJlUbXRkC+2vElQ3YwguJ6Qv6KE78N1TfjbNARj9fYhyUBrOZ6VsMQ2nngWSCyMzF7unsOo+NEPaYug+4GCcEf56braXREYE+5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smO4jTkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08B0C4CEE2;
+	Wed, 23 Apr 2025 15:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421421;
-	bh=GxCRJM/nGm1Auv3K60Lz6L3E9jf6jK69X5sJCbSB5HI=;
+	s=korg; t=1745422365;
+	bh=2w5SuprNVyiDlv9snIrnjWc3KDPFaBIfq2NsD/S+zEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZ65GTh4lYghvTElYTRy1gnefGf15SQKe+0Tv5cg3/BXDbCgRXtCwMuwC4hj6xhwa
-	 84CALXnVToPUMO2Y1x3P4gjQEtBF7wH3PtEAk6O6ePrBTA+esRALyUD9GoZQ2nuorO
-	 Vk0TyX83GOAzRZyYxKJZS0OZ0tngdN9MuK8Y9SkI=
+	b=smO4jTkHkt3dxRFB/Yn1u3V0i4ZCEnMIm2IIlQUOzupR/c/yoPs7VCxg8wKNDuCTZ
+	 W6vZcntuJqp1nt68nc8+qWHEtR4jXUkoGDHfhhma6Lquw0kxpE4tnubbSxuiUe5Vt0
+	 wPRvqAO/61OuShzBfAnQ21GDMo46NO5er8qk0POU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Shaoyun.liu" <Shaoyun.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 188/241] drm/amdgpu/mes12: optimize MES pipe FW version fetching
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.1 263/291] misc: pci_endpoint_test: Fix irq_type to convey the correct type
 Date: Wed, 23 Apr 2025 16:44:12 +0200
-Message-ID: <20250423142628.202294010@linuxfoundation.org>
+Message-ID: <20250423142635.172659225@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 34779e14461cf715238dec5fd43a1e11977ec115 upstream.
+commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
 
-Don't fetch it again if we already have it.  It seems the
-registers don't reliably have the value at resume in some
-cases.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-Fixes: 785f0f9fe742 ("drm/amdgpu: Add mes v12_0 ip block support (v4)")
-Reviewed-by: Shaoyun.liu <Shaoyun.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9e7b08d239c2f21e8f417854f81e5ff40edbebff)
-Cc: stable@vger.kernel.org # 6.12.x
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
+
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
+
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |   21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/misc/pci_endpoint_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -1390,17 +1390,20 @@ static int mes_v12_0_queue_init(struct a
- 		mes_v12_0_queue_init_register(ring);
- 	}
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -717,6 +717,7 @@ static bool pci_endpoint_test_set_irq(st
+ 	if (!pci_endpoint_test_request_irq(test))
+ 		goto err;
  
--	/* get MES scheduler/KIQ versions */
--	mutex_lock(&adev->srbm_mutex);
--	soc21_grbm_select(adev, 3, pipe, 0, 0);
-+	if (((pipe == AMDGPU_MES_SCHED_PIPE) && !adev->mes.sched_version) ||
-+	    ((pipe == AMDGPU_MES_KIQ_PIPE) && !adev->mes.kiq_version)) {
-+		/* get MES scheduler/KIQ versions */
-+		mutex_lock(&adev->srbm_mutex);
-+		soc21_grbm_select(adev, 3, pipe, 0, 0);
++	irq_type = test->irq_type;
+ 	return true;
  
--	if (pipe == AMDGPU_MES_SCHED_PIPE)
--		adev->mes.sched_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
--	else if (pipe == AMDGPU_MES_KIQ_PIPE && adev->enable_mes_kiq)
--		adev->mes.kiq_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
-+		if (pipe == AMDGPU_MES_SCHED_PIPE)
-+			adev->mes.sched_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
-+		else if (pipe == AMDGPU_MES_KIQ_PIPE && adev->enable_mes_kiq)
-+			adev->mes.kiq_version = RREG32_SOC15(GC, 0, regCP_MES_GP3_LO);
- 
--	soc21_grbm_select(adev, 0, 0, 0, 0);
--	mutex_unlock(&adev->srbm_mutex);
-+		soc21_grbm_select(adev, 0, 0, 0, 0);
-+		mutex_unlock(&adev->srbm_mutex);
-+	}
- 
- 	return 0;
- }
+ err:
 
 
 
