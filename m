@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-135802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4332BA990A9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49FBCA98D92
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D5E921099
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75D013BB144
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640F327F73E;
-	Wed, 23 Apr 2025 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CC627FD75;
+	Wed, 23 Apr 2025 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i01kSkwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc+YjS70"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8D020D4F8;
-	Wed, 23 Apr 2025 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503351A0711;
+	Wed, 23 Apr 2025 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420882; cv=none; b=nPmaiec9bSHrFUB3R6JFpz5843HwI9AQNgD5gy0sPD8rSx0RyD6UUItNGuBj2xxxJqwx1gLc9AjbhdBNV/bNRuRvhszUzIVfpUjC9ZGIwpg39Y5kc6OfeXJupf4Z/I5S5imdq2CODNe1KEufCNV2kvbOep0YXVd/QPJT58PMbCw=
+	t=1745419596; cv=none; b=LT7eNiGRh8Ewmv3dOGPWKiro5nrWhJukfjKjVwSTKmeO7GnMJto4koDj1qAvkpT2Tv25CfwgipX1wzuwMvnSB0nMir9h8RypSzzQYjzvGHAspzaYAVYGSW/AjWS4UdW5kOT5My859rWGb8ZoaXPAKukzD+2UCz+okWG3Zi9hX6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420882; c=relaxed/simple;
-	bh=nIbiu931ak4Wf1GsLbYTXwsvQjV7TMFaHc2tYA1qhPA=;
+	s=arc-20240116; t=1745419596; c=relaxed/simple;
+	bh=sdbgRCrfAWavg5Acj0RP2PflrlFz3uVbJs3vNTS2F9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIdw5w/3h0T/FjPJ7jK1ZkhHexoIl1xk+tOl6A7sXP9HoOMb61crGZ+HNU4727PvlkSP8SJOr61FSdaQPRVQsyZBVC/Cce1z5U2o+jx3BOtQKZO1EO8QhvgLMtqZOmpMt6lWFbypc7N0y7pp1cJOrBAaYmGEyccIjrTRvejfSXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i01kSkwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37FDC4CEE3;
-	Wed, 23 Apr 2025 15:08:01 +0000 (UTC)
+	 MIME-Version; b=n/Dt2QRxrCT948Q/LHmCagqjAGbbSDaCfNxK9Xr/41BtOYO2a2G1SAPPT8NTrKrjtH7ZWL/C1vuvXZBB/bnS7IgpD7Nn1FC+L1VP8ohZ0ESJ4CcELU+QMlYBS7zS60IK9sas2tXPpqnM4t2FoeUfTk7jikpxbwjNaiv3l6up59I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jc+YjS70; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A1EC4CEE2;
+	Wed, 23 Apr 2025 14:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420882;
-	bh=nIbiu931ak4Wf1GsLbYTXwsvQjV7TMFaHc2tYA1qhPA=;
+	s=korg; t=1745419596;
+	bh=sdbgRCrfAWavg5Acj0RP2PflrlFz3uVbJs3vNTS2F9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i01kSkwI46bdkxo39qHP+GVi/gNMnXQUiph5kuIKLmCHcWa5XMYr0r3vGwkS49pBc
-	 +Fu7AH9g+7wL8VdcGjcmWZ4RZmjyZqbwjiWlFtOKQNpgTND0itaIG0qglOLztX3JCO
-	 mQrwvjTDLGU376eogeowjlFf2koaaKmSPC+2qyak=
+	b=Jc+YjS70Ek3jdCctj1RpyL0omV/OY3AtxJbtmoKaHj7POOYCYDeJHXgHl6EvbcOhm
+	 AMqlQNaJIkPIVNwx4SWV3wSb79X489ObnfXV53B+vaGU0bQkEjmPqTKdrlOlX1jBoi
+	 /2lNCAcCanuouEvvgnWqGOFdcYbwXhIs8K8SZ9rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 089/291] spi: cadence-qspi: Fix probe on AM62A LP SK
+	Miaoqian Lin <linmq006@gmail.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 006/223] scsi: iscsi: Fix missing scsi_host_put() in error path
 Date: Wed, 23 Apr 2025 16:41:18 +0200
-Message-ID: <20250423142627.996981454@linuxfoundation.org>
+Message-ID: <20250423142617.379747114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
+[ Upstream commit 72eea84a1092b50a10eeecfeba4b28ac9f1312ab ]
 
-In 2020, there's been an unnoticed change which rightfully attempted to
-report probe deferrals upon DMA absence by checking the return value of
-dma_request_chan_by_mask(). By doing so, it also reported errors which
-were simply ignored otherwise, likely on purpose.
+Add goto to ensure scsi_host_put() is called in all error paths of
+iscsi_set_host_param() function. This fixes a potential memory leak when
+strlen() check fails.
 
-This change actually turned a void return into an error code. Hence, not
-only the -EPROBE_DEFER error codes but all error codes got reported to
-the callers, now failing to probe in the absence of Rx DMA channel,
-despite the fact that DMA seems to not be supported natively by many
-implementations.
-
-Looking at the history, this change probably led to:
-ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
-f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
-
-In my case, the AM62A LP SK core octo-SPI node from TI does not
-advertise any DMA channel, hinting that there is likely no support for
-it, but yet when the support for the am654 compatible was added, DMA
-seemed to be used, so just discarding its use with the
-CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
-correct approach.
-
-Let's get change the return condition back to:
-- return a probe deferral error if we get one
-- ignore the return value otherwise
-The "error" log level was however likely too high for something that is
-expected to fail, so let's lower it arbitrarily to the info level.
-
-Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ce51c8170084 ("scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Link: https://lore.kernel.org/r/20250318094344.91776-1-linmq006@gmail.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cadence-quadspi.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/scsi_transport_iscsi.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1509,6 +1509,12 @@ static int cqspi_request_mmap_dma(struct
- 		int ret = PTR_ERR(cqspi->rx_chan);
- 
- 		cqspi->rx_chan = NULL;
-+		if (ret == -ENODEV) {
-+			/* DMA support is not mandatory */
-+			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
-+			return 0;
-+		}
-+
- 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 9b47f91c5b972..8274fe0ec7146 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3209,11 +3209,14 @@ iscsi_set_host_param(struct iscsi_transport *transport,
  	}
- 	init_completion(&cqspi->rx_dma_complete);
+ 
+ 	/* see similar check in iscsi_if_set_param() */
+-	if (strlen(data) > ev->u.set_host_param.len)
+-		return -EINVAL;
++	if (strlen(data) > ev->u.set_host_param.len) {
++		err = -EINVAL;
++		goto out;
++	}
+ 
+ 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
+ 					data, ev->u.set_host_param.len);
++out:
+ 	scsi_host_put(shost);
+ 	return err;
+ }
+-- 
+2.39.5
+
 
 
 
