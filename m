@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2ECA98E33
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8497CA992A9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D25B7A3AF8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1949F9A0861
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689B027CB33;
-	Wed, 23 Apr 2025 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5E7284B57;
+	Wed, 23 Apr 2025 15:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL2YPyWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvwZYoce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2514B1A08A6;
-	Wed, 23 Apr 2025 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056212989AF;
+	Wed, 23 Apr 2025 15:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420013; cv=none; b=Z1/AzVdg4PsvntuoKu+ZUexpr4H/5Ct8kYl9LqlcOcU0tj+WbVi4/1OmRpApPoOCpFL9wEMuxuz23sUvIcI/d+WxDyDDAHTpf2WlcvT2F8JdHSXH+m3rASjLYQRW+L5xbZzVhH2/WGHkXGkivWhcz5IXn7DJkyUw9/U50cuqfl0=
+	t=1745421758; cv=none; b=i2xrw/jMw0npB/vaxas1uE2Mssg9lg6G4WAdzGk5zd//ZQtTjIHhywdYpNPU5BC63ythI0JKl0bWOHZhlJ74+BQLjVezy8AyA7BAFV1fFW4hLdWG7fORJ0uNo4NArgiRnIgSCXZYcPQLUQFnhWOg0IefjCdZxeLH4aMHVjedAf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420013; c=relaxed/simple;
-	bh=Mk5F4Snv8KFUR1KCfR8sd4xD3Fp5PEL+ELQ2HyxNz6I=;
+	s=arc-20240116; t=1745421758; c=relaxed/simple;
+	bh=ZdnIZ1Z5N+JPDMQwp1gTBvMSnnvoQIQNj7a49WvcVik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3xN1N6VwsT3XlgDpfHm+rW/QGZvfv21YN7v7JQU+XbS0cKAgvG4yeI0NQjGz0N65Ji3XC30PRm+DAgz9x2z5ACtNQV9IOEumvQUDH8YHGNi23Gxfqp0Ee9hmE/YX+lAd+/Ezs7hGugojt9BjfWyByN4FzxFGEXnZUWt8U9SZpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL2YPyWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE5BC4CEE2;
-	Wed, 23 Apr 2025 14:53:32 +0000 (UTC)
+	 MIME-Version; b=sHhaND87riQdbuqsgZVv67toKaPvAFOasT4xHW0fcqbuMP97kAiQrMOX2TbV24Na37DHrcvrUWLoa43kO953GZSjQA6Fo+czx7vbe41qtr5HpLNzxsllwlno/W5yFE59qUGQatWXFfDFjM5lskZ4pNIQ7oJR0ewcKwtggL/nSAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvwZYoce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875C6C4CEE3;
+	Wed, 23 Apr 2025 15:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420013;
-	bh=Mk5F4Snv8KFUR1KCfR8sd4xD3Fp5PEL+ELQ2HyxNz6I=;
+	s=korg; t=1745421757;
+	bh=ZdnIZ1Z5N+JPDMQwp1gTBvMSnnvoQIQNj7a49WvcVik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qL2YPyWKpY7xQQdPsQ1djLoFpkqX2sMqlYVzoLl5lb4IKJ98moGN7QAKAHiCy4WQf
-	 g/u4jxJP34pwjnua8HzlLERfci1bHUr/q5aKcDyUHXYslJlwL6zISNCYHUvVmyF2Sw
-	 pi4XQJLWQ4EgtcpZAB+K1KaKp9gXRzwOE/tmJaE8=
+	b=JvwZYoceyfCDblDGjlHEdBaYUQ9Zp3fTkZHgKkB26a241pdxNkhNUSpwfVUtXa4KH
+	 Bww7BTabca9YcDjfczSAXTz3J+xznagVzf/g+7Os2OI/OW9s/N29bhk3K8LjmIolpJ
+	 oZBzRKrbgNzLYvWkLvdJXyGUx9sYWu8Z6aSFBLIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 092/223] ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S16
+	Shay Drory <shayd@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 175/291] RDMA/core: Silence oversized kvmalloc() warning
 Date: Wed, 23 Apr 2025 16:42:44 +0200
-Message-ID: <20250423142620.868045754@linuxfoundation.org>
+Message-ID: <20250423142631.534576257@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit dfcf3dde45df383f2695c3d3475fec153d2c7dbe upstream.
+[ Upstream commit 9a0e6f15029e1a8a21e40f06fd05aa52b7f063de ]
 
-Asus laptops with sound PCI subsystem ID 1043:1f43 have the DMICs
-connected to the host instead of the CS42L43 so need the
-SOC_SDW_CODEC_MIC quirk.
+syzkaller triggered an oversized kvmalloc() warning.
+Silence it by adding __GFP_NOWARN.
 
-Link: https://github.com/thesofproject/sof/issues/9930
-Fixes: 084344970808 ("ASoC: Intel: sof_sdw: Add quirk for Asus Zenbook S14")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Simon Trimmer <simont@opensource.cirrus.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250404133213.4658-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+syzkaller log:
+ WARNING: CPU: 7 PID: 518 at mm/util.c:665 __kvmalloc_node_noprof+0x175/0x180
+ CPU: 7 UID: 0 PID: 518 Comm: c_repro Not tainted 6.11.0-rc6+ #6
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:__kvmalloc_node_noprof+0x175/0x180
+ RSP: 0018:ffffc90001e67c10 EFLAGS: 00010246
+ RAX: 0000000000000100 RBX: 0000000000000400 RCX: ffffffff8149d46b
+ RDX: 0000000000000000 RSI: ffff8881030fae80 RDI: 0000000000000002
+ RBP: 000000712c800000 R08: 0000000000000100 R09: 0000000000000000
+ R10: ffffc90001e67c10 R11: 0030ae0601000000 R12: 0000000000000000
+ R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000000
+ FS:  00007fde79159740(0000) GS:ffff88813bdc0000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000020000180 CR3: 0000000105eb4005 CR4: 00000000003706b0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ Call Trace:
+  <TASK>
+  ib_umem_odp_get+0x1f6/0x390
+  mlx5_ib_reg_user_mr+0x1e8/0x450
+  ib_uverbs_reg_mr+0x28b/0x440
+  ib_uverbs_write+0x7d3/0xa30
+  vfs_write+0x1ac/0x6c0
+  ksys_write+0x134/0x170
+  ? __sanitizer_cov_trace_pc+0x1c/0x50
+  do_syscall_64+0x50/0x110
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Fixes: 37824952dc8f ("RDMA/odp: Use kvcalloc for the dma_list and page_list")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Link: https://patch.msgid.link/c6cb92379de668be94894f49c2cfa40e73f94d56.1742388096.git.leonro@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/core/umem_odp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -688,6 +688,7 @@ static const struct dmi_system_id sof_sd
+diff --git a/drivers/infiniband/core/umem_odp.c b/drivers/infiniband/core/umem_odp.c
+index e9fa22d31c233..c48ef60830205 100644
+--- a/drivers/infiniband/core/umem_odp.c
++++ b/drivers/infiniband/core/umem_odp.c
+@@ -76,12 +76,14 @@ static inline int ib_init_umem_odp(struct ib_umem_odp *umem_odp,
  
- static const struct snd_pci_quirk sof_sdw_ssid_quirk_table[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1e13, "ASUS Zenbook S14", SOC_SDW_CODEC_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1f43, "ASUS Zenbook S16", SOC_SDW_CODEC_MIC),
- 	{}
- };
+ 		npfns = (end - start) >> PAGE_SHIFT;
+ 		umem_odp->pfn_list = kvcalloc(
+-			npfns, sizeof(*umem_odp->pfn_list), GFP_KERNEL);
++			npfns, sizeof(*umem_odp->pfn_list),
++			GFP_KERNEL | __GFP_NOWARN);
+ 		if (!umem_odp->pfn_list)
+ 			return -ENOMEM;
  
+ 		umem_odp->dma_list = kvcalloc(
+-			ndmas, sizeof(*umem_odp->dma_list), GFP_KERNEL);
++			ndmas, sizeof(*umem_odp->dma_list),
++			GFP_KERNEL | __GFP_NOWARN);
+ 		if (!umem_odp->dma_list) {
+ 			ret = -ENOMEM;
+ 			goto out_pfn_list;
+-- 
+2.39.5
+
 
 
 
