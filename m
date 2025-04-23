@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889E0A98EF0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:02:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08792A99306
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D30115A6C97
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C429A21E3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D56719E966;
-	Wed, 23 Apr 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FD1288CBD;
+	Wed, 23 Apr 2025 15:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t174VgD8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/VkXQ1c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19BC7263C9E;
-	Wed, 23 Apr 2025 14:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435B928DEE8;
+	Wed, 23 Apr 2025 15:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420234; cv=none; b=IB7Rw5G5HKrOlp7fPtdZdV6VbJ61/I82SNAWO/KHJSFpvtfJjQT/oauY7rLNzcwFO7t6KYvJZL8EkbdvbOiS+9MEeI+YOjPhpAGEADsCAvXpdi4z6PzfiGQTuZKvQdWqIc+BiMctD22LFCU30mUeQD4E4j0vVxYGgR/SSY1S+9Y=
+	t=1745421958; cv=none; b=J/86IA5KUg5M3sNmtBQecq5rA5X//ei6YGxpmxvHurCiigQ45hJ3F/MSVaVPyhD4HUMieywZ0Dg8hDZrqJy/pxnWkMJ5LdGUBv6CwIZxM2EYnjqgb4TIhcMljJdtZOHAzcvLApluTzYU88zYqKCMFrLvHkmKhhhwTouwkAMK/9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420234; c=relaxed/simple;
-	bh=q6iu41dtoXDMR+mTs8DOf0m/HQ1MuyLU4HhOvRBRw3I=;
+	s=arc-20240116; t=1745421958; c=relaxed/simple;
+	bh=UBTB7Ca4NCIDFy3Raz+L7xkH7AeOnajGZh7P2P5TA90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdTKGc/udC/lKY7Gy9uoPkAg7MrNlkTY8GYavCmtd2Ig3u9wRpBM8tiuzEzgeOwaUBaykx75RRhTnQ+50JpteYWX1uXjKtNO9XuUbC9idZ1FDwBrMG3/cTOHVjuwsp7VqNwUcLsNa8b94W0Zo1qf4z0JCDcbpfToRLeU1yH6oD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t174VgD8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F075C4CEE3;
-	Wed, 23 Apr 2025 14:57:13 +0000 (UTC)
+	 MIME-Version; b=kA7C1lyra/lxAVsDUqMs4Nd3PBKr2xq4z0vw5dGP10SB4C05fBRx9juALlDQ2w9o7UODg+bjyjQPzLhjuxII4W6tZeHbQGk4xRQMnM0NA+4es3Xtyr27VxDVDAw2dv8GVElkHiK1yhzq/Gb8Yt7X7ntvaHfaHNxPxJkGsgOOtFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/VkXQ1c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90FFC4CEE3;
+	Wed, 23 Apr 2025 15:25:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420234;
-	bh=q6iu41dtoXDMR+mTs8DOf0m/HQ1MuyLU4HhOvRBRw3I=;
+	s=korg; t=1745421958;
+	bh=UBTB7Ca4NCIDFy3Raz+L7xkH7AeOnajGZh7P2P5TA90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t174VgD8E7Xo9A/EolTUYFgH+FpY8KQr4IPZcVcRf68PZmfjU6y69iIaH0KAuGwgz
-	 RUZdQm7l5y9wVN14IuetLfp3qtV/eo+sN810YSXBFXzgaMo9AD7xr30uooHiogXdrj
-	 e+1XRBIy+YZj5q7tlWNWw5vkpLTHcFDzcORt96zE=
+	b=Q/VkXQ1cQk9US3qzmeia/n5KaOaQYC0e583zuYIZAiySjIIK0oVbb9B74P+YvVm3L
+	 htafcVttIwGudt5OyIjNIrOw+m7h3fIlw1HKIwx4ZK4Dqbf05DJD6xnaPnff6+UwrZ
+	 S5f/37aWmANCfRsaie1vt+0Z3R15X0E1If9Xo0Bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 066/241] tools: ynl-gen: make sure we validate subtype of array-nest
+	John Rowley <lkml@johnrowley.me>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 234/393] ACPI: platform-profile: Fix CFI violation when accessing sysfs files
 Date: Wed, 23 Apr 2025 16:42:10 +0200
-Message-ID: <20250423142623.297717626@linuxfoundation.org>
+Message-ID: <20250423142653.053128531@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 57e7dedf2b8c72caa6f04b9e08b19e4f370562fa ]
+commit dd4f730b557ce701a2cd4f604bf1e57667bd8b6e upstream.
 
-ArrayNest AKA indexed-array support currently skips inner type
-validation. We count the attributes and then we parse them,
-make sure we call validate, too. Otherwise buggy / unexpected
-kernel response may lead to crashes.
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be of the same type as the callbacks in 'struct kobj_attribute'.
 
-Fixes: be5bea1cc0bf ("net: add basic C code generators for Netlink")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-5-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, ->show() and ->store() in the platform_profile driver are
+defined for struct device_attribute with the help of DEVICE_ATTR_RO()
+and DEVICE_ATTR_RW(), which results in a CFI violation when accessing
+platform_profile or platform_profile_choices under /sys/firmware/acpi
+because the types do not match:
+
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+
+There is no functional issue from the type mismatch because the layout
+of 'struct kobj_attribute' and 'struct device_attribute' are the same,
+so the container_of() cast does not break anything aside from CFI.
+
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to
+match, which resolves the CFI violation.
+
+Cc: All applicable <stable@vger.kernel.org>
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://patch.msgid.link/20250210-acpi-platform_profile-fix-cfi-violation-v3-1-ed9e9901c33a@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+[nathan: Fix conflicts in older stable branches]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/net/ynl/pyynl/ynl_gen_c.py | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/acpi/platform_profile.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/ynl_gen_c.py b/tools/net/ynl/pyynl/ynl_gen_c.py
-index 9c9a62a93afe7..f36af0e1da78e 100755
---- a/tools/net/ynl/pyynl/ynl_gen_c.py
-+++ b/tools/net/ynl/pyynl/ynl_gen_c.py
-@@ -706,8 +706,11 @@ class TypeArrayNest(Type):
-     def _attr_get(self, ri, var):
-         local_vars = ['const struct nlattr *attr2;']
-         get_lines = [f'attr_{self.c_name} = attr;',
--                     'ynl_attr_for_each_nested(attr2, attr)',
--                     f'\t{var}->n_{self.c_name}++;']
-+                     'ynl_attr_for_each_nested(attr2, attr) {',
-+                     '\tif (ynl_attr_validate(yarg, attr2))',
-+                     '\t\treturn YNL_PARSE_CB_ERROR;',
-+                     f'\t{var}->n_{self.c_name}++;',
-+                     '}']
-         return get_lines, None, local_vars
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -22,8 +22,8 @@ static const char * const profile_names[
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
  
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	int len = 0;
+@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_
+ 	return len;
+ }
  
--- 
-2.39.5
-
+-static ssize_t platform_profile_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(str
+ 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+ }
+ 
+-static ssize_t platform_profile_store(struct device *dev,
+-			    struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++			    struct kobj_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+ 	int err, i;
+@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(st
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
 
 
 
