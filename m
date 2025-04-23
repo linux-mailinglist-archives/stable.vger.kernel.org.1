@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 393CAA98E28
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:53:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC8EA991D5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C5C1B8094F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:51:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B5E54A0C05
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE79280A3A;
-	Wed, 23 Apr 2025 14:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DD029347F;
+	Wed, 23 Apr 2025 15:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pfd9VVe/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0tr3Si1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC885C8EB;
-	Wed, 23 Apr 2025 14:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A672820DE;
+	Wed, 23 Apr 2025 15:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419863; cv=none; b=u1MgUxEODdCHZublQasB/qriJvCMnaX1PgWuK7SxKSTvATC0eWngX8c1vMHFlWVDoux+6gKX2BasppjUIOA1vYZHBi9Y56g4GkXctgD5bWz1rydNtYb24Oy+E/hsnw5LH2JBbHrapepFNWGhcpuY/QFT5Iyilek+gAJWfXSooVU=
+	t=1745421605; cv=none; b=UbeoCMYKdUuRUxKz8RIZLy4HTLnROVLrBDucC1qJC7PPGS4pUDs7nAyYFLqgKDcGRFh4IAiH2Qbxc8JWMM3AcuOgH17viwU2qQAKyBOnqDHbwjAjkhQ2rLVCDpXg/hGkypS6eRg9ARZJJcZLPucPU80dhUYaWdKC2EITUhQGdNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419863; c=relaxed/simple;
-	bh=3godAIAT3FOagBmVy56lmOITPl2nLyOXa8Jod4IIqtA=;
+	s=arc-20240116; t=1745421605; c=relaxed/simple;
+	bh=4ICkZboolAGl3mV7W0WkcctPosBhQ5ekUkAUl+SNRwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULsOBbGvffIUqTMg63PnjVpq9aIvITla79XHlUAlp96ZLzaOoJrfvIzx401t/HgU6A3nTViK8LdeJOE1ZGi/3OYn4t+ePLvoa4Es3eo5qb6/oBQkyBspIETvHiL8DeAmP1IwKC6HxOg8hgn4NYjoEjzDVunnSJQArIxM0/cWuwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pfd9VVe/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C1AC4CEE2;
-	Wed, 23 Apr 2025 14:51:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YKQHW2P1kQWCsGilyF4cRQ9FN+g0kreINsV8/kqfxMN5OdlQawer3mrT4FvVTpxTSz7ej6rgx14fCP0zxBDtLR36n8+UdikErgcsI4JpI5mA8Fy00jA+KSVvUtAq9YGgDwqMJIT4+hWeh9Tl4zhRbSFGEJCfayoOOGgYQqeE8VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0tr3Si1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0D5C4CEE2;
+	Wed, 23 Apr 2025 15:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419863;
-	bh=3godAIAT3FOagBmVy56lmOITPl2nLyOXa8Jod4IIqtA=;
+	s=korg; t=1745421605;
+	bh=4ICkZboolAGl3mV7W0WkcctPosBhQ5ekUkAUl+SNRwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pfd9VVe/tPup8lspSNjd1Qx+c8vVX7cKxE/TcSMALLt/mwUbwHqovGVosvUw16MZ1
-	 Xmm0xFw6MeHrZOxL+N99DqRXEqrexVRFbJS6Q+Me4rR9BD+qhp+MMex8zZV/noHuce
-	 McoVcdu0hAiQRsELaUJhOI4naPR1YTOc2LJ63dPI=
+	b=q0tr3Si1XtwOx3rrsPFCM6oP64UzVoE/hjGg6NH9wHzVhgy0KsPWuNmagrebNL97o
+	 doA5k0RjiubJqXQIrGBqQmxwU1n1lZarcMlAjGa6qkkS+jYymr2+LOTDrsSxTxgqzF
+	 7hYmjpu9IHsPpCmqYX9ddwQfOB5UaWjV/WDfaq8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/223] net: ethernet: mtk_eth_soc: correct the max weight of the queue limit for 100Mbps
-Date: Wed, 23 Apr 2025 16:42:25 +0200
-Message-ID: <20250423142620.101014276@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 157/291] PCI: Fix reference leak in pci_alloc_child_bus()
+Date: Wed, 23 Apr 2025 16:42:26 +0200
+Message-ID: <20250423142630.806511184@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 6b02eb372c6776c9abb8bc81cf63f96039c24664 ]
+commit 1f2768b6a3ee77a295106e3a5d68458064923ede upstream.
 
-Without this patch, the maximum weight of the queue limit will be
-incorrect when linked at 100Mbps due to an apparent typo.
+If device_register(&child->dev) fails, call put_device() to explicitly
+release child->dev, per the comment at device_register().
 
-Fixes: f63959c7eec31 ("net: ethernet: mtk_eth_soc: implement multi-queue support for per-port queues")
-Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/74111ba0bdb13743313999ed467ce564e8189006.1744764277.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Link: https://lore.kernel.org/r/20250202062357.872971-1-make24@iscas.ac.cn
+Fixes: 4f535093cf8f ("PCI: Put pci_dev in device tree as early as possible")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/probe.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 82af9bddc12fb..941c7c380870b 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -734,7 +734,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 		case SPEED_100:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 103) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3);
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
- 			break;
- 		case SPEED_1000:
-@@ -757,7 +757,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
- 		case SPEED_100:
- 			val |= MTK_QTX_SCH_MAX_RATE_EN |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
--			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5);
-+			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
- 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
- 			break;
- 		case SPEED_1000:
--- 
-2.39.5
-
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1141,7 +1141,10 @@ static struct pci_bus *pci_alloc_child_b
+ add_dev:
+ 	pci_set_bus_msi_domain(child);
+ 	ret = device_register(&child->dev);
+-	WARN_ON(ret < 0);
++	if (WARN_ON(ret < 0)) {
++		put_device(&child->dev);
++		return NULL;
++	}
+ 
+ 	pcibios_add_bus(child);
+ 
 
 
 
