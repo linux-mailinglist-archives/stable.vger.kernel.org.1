@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-136346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED15CA993FD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:06:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F77A99404
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F959A4187
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE2C1B86150
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CE02857C7;
-	Wed, 23 Apr 2025 15:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B13F2367DF;
+	Wed, 23 Apr 2025 15:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3lvD/k7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWNzJ9lo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0222857E2;
-	Wed, 23 Apr 2025 15:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF39374F1;
+	Wed, 23 Apr 2025 15:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422305; cv=none; b=oU6CfWRE9VR837OJ1z9B89qH48faQ/mv5K2ECQL/NaTj2r6FfGXIC5YVyrKWCD6Skt/AoSBUWiP/V+aZeePT7YgsE1iZkq+Hk66FAX+B044c8tvmVUvd/gH+29sCDtO0AyDA+VpAPzmqY6YZgXCEnpzwV0iOauZV7XneoyWFVGM=
+	t=1745422360; cv=none; b=l6OOp+vBkRTtWcOwHMIRgpfu5jprmwim60ZtShRPUlJRdDVpQcDGwgqI9etuCtJO5il18IWYf2AOmh/ZYEZU4htAtdX8w6FLJ0t3Bk1t2fu6bhuMoKC9qMk0jpW8m7NYkVwdEvKMBy0bkyMP1daSZ3qGyphqSXaU3pGnnfiohVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422305; c=relaxed/simple;
-	bh=kT8DJqszx5g4q+0r7P9M9Ipln2KCGSna//yIkARL10U=;
+	s=arc-20240116; t=1745422360; c=relaxed/simple;
+	bh=Tsi2uHyhsI8a/owt45NN3zNc2yeedYnN93x2krk7AOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbOYCUgSr+R+VqZmi83xVIzQOqXe9GBCXh86lZE1clLMt8e3h5J9pOUffdAd4vTggobMYDS81FBpW3GXNCqWb2P5r8AHHE75xTBlTtkZCGJsN8SEFJS3YAbBrhJrRamnP5G8xmSMs5xQQAJtRGb2YuWB/WiM/pPADkXHXIVTTzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3lvD/k7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B192DC4CEE2;
-	Wed, 23 Apr 2025 15:31:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eW+z4fOTNnkUA3RGE81+8B+FX3ExHFnq/KE0z+ShoY/STynkvnE5UVIgnRCrK8NLRyDM/PJ5qcKvRP50W99I6CtI9re0MBf7kd0U2Sbe/XXpVZkY9HQBvBhvaBwOa02RfE7QcQP90YWRPJYeym+g1G9YBD9QFQEp4rhP4biNL48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWNzJ9lo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3CAC4CEE2;
+	Wed, 23 Apr 2025 15:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422304;
-	bh=kT8DJqszx5g4q+0r7P9M9Ipln2KCGSna//yIkARL10U=;
+	s=korg; t=1745422359;
+	bh=Tsi2uHyhsI8a/owt45NN3zNc2yeedYnN93x2krk7AOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3lvD/k7n9xKCTeXz1cTY1NAdzGLASg1J9js1K8KhzRL8B5FJox9snfj28ZbEI/Ty
-	 SwQTWRax64JL+mFq63AA1TarFMin4OjctkDw+gqBOSD4wwZL+hhFmphIh0qiPkyOTa
-	 Qd3dOgUvRFFGi2H96ysk5GaSStBtj/HIfndlF//4=
+	b=uWNzJ9lofJhONW6QZpSDwzj6gAgJOxmr2ntiEZeBVapSTcNSgxQ5rZryD/Cupmmfm
+	 IOgUi2gy0S9hD90OA7z5C4ILYQPFc6f6bxRQh4M+bBNfKnhFUU9wkBVUKdFGPqHVp0
+	 wd/XeM0V7NtIFwa85EFpKdicsFa1o42QRNBRiSJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 260/291] mptcp: sockopt: fix getting freebind & transparent
-Date: Wed, 23 Apr 2025 16:44:09 +0200
-Message-ID: <20250423142635.052236091@linuxfoundation.org>
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.1 262/291] misc: pci_endpoint_test: Fix displaying irq_type after request_irq error
+Date: Wed, 23 Apr 2025 16:44:11 +0200
+Message-ID: <20250423142635.132499907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
 References: <20250423142624.409452181@linuxfoundation.org>
@@ -61,76 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit e2f4ac7bab2205d3c4dd9464e6ffd82502177c51 upstream.
+commit 919d14603dab6a9cf03ebbeb2cfa556df48737c8 upstream.
 
-When adding a socket option support in MPTCP, both the get and set parts
-are supposed to be implemented.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, global "irq_type" and "test->irq_type".
 
-IP(V6)_FREEBIND and IP(V6)_TRANSPARENT support for the setsockopt part
-has been added a while ago, but it looks like the get part got
-forgotten. It should have been present as a way to verify a setting has
-been set as expected, and not to act differently from TCP or any other
-socket types.
+The former is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
 
-Everything was in place to expose it, just the last step was missing.
-Only new code is added to cover these specific getsockopt(), that seems
-safe.
+In the pci_endpoint_test_request_irq(), since this global variable
+is referenced when an error occurs, the unintended error message is
+displayed.
 
-Fixes: c9406a23c116 ("mptcp: sockopt: add SOL_IP freebind & transparent options")
+For example, after running "pcitest -i 2", the following message
+shows "MSI 3" even if the current IRQ type becomes "MSI-X":
+
+  pci-endpoint-test 0000:01:00.0: Failed to request IRQ 30 for MSI 3
+  SET IRQ TYPE TO MSI-X:          NOT OKAY
+
+Fix this issue by using "test->irq_type" instead of global "irq_type".
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250314-net-mptcp-fix-data-stream-corr-sockopt-v1-3-122dbb249db3@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflict in sockopt.c due to commit e08d0b3d1723 ("inet: implement
-  lockless IP_TOS") not being in this version. The conflict is in the
-  context and the modification can still be applied in
-  mptcp_getsockopt_v4() after the IP_TOS case.
-  Also, get the values without 'inet_test_bit()' like it was done in
-  this version. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Link: https://lore.kernel.org/r/20250225110252.28866-4-hayashi.kunihiko@socionext.com
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/sockopt.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/misc/pci_endpoint_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -1266,6 +1266,12 @@ static int mptcp_getsockopt_v4(struct mp
- 	switch (optname) {
- 	case IP_TOS:
- 		return mptcp_put_int_option(msk, optval, optlen, inet_sk(sk)->tos);
-+	case IP_FREEBIND:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    inet_sk(sk)->freebind);
-+	case IP_TRANSPARENT:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    inet_sk(sk)->transparent);
- 	}
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -245,7 +245,7 @@ static bool pci_endpoint_test_request_ir
+ 	return true;
  
- 	return -EOPNOTSUPP;
-@@ -1280,6 +1286,12 @@ static int mptcp_getsockopt_v6(struct mp
- 	case IPV6_V6ONLY:
- 		return mptcp_put_int_option(msk, optval, optlen,
- 					    sk->sk_ipv6only);
-+	case IPV6_TRANSPARENT:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    inet_sk(sk)->transparent);
-+	case IPV6_FREEBIND:
-+		return mptcp_put_int_option(msk, optval, optlen,
-+					    inet_sk(sk)->freebind);
- 	}
- 
- 	return -EOPNOTSUPP;
+ fail:
+-	switch (irq_type) {
++	switch (test->irq_type) {
+ 	case IRQ_TYPE_LEGACY:
+ 		dev_err(dev, "Failed to request IRQ %d for Legacy\n",
+ 			pci_irq_vector(pdev, i));
 
 
 
