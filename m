@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-135815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01EAA99044
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE435A98DA7
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CEB717254D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC3AB1B805E1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF836289367;
-	Wed, 23 Apr 2025 15:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEAE1A08A6;
+	Wed, 23 Apr 2025 14:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeUIT5Eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tTtF6K6G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F2E28936B;
-	Wed, 23 Apr 2025 15:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199755674E;
+	Wed, 23 Apr 2025 14:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420916; cv=none; b=mGgWdSNtkBXrfFJSSF47APdgECYHMxWxWZlETTrnTi2qc/zKOPxIlJRZrI7ZiWj1mjyU+vCgNMvtBw37e/vr2XH7L2ZTC8aArfnTR74g7tpux+N9mrVrSMaT50bqRfIDph1JN8hPOd4SzCQAjP5idNSALBeVAAttn7OkAOu5Ys4=
+	t=1745419606; cv=none; b=VLQWabsopKc3mR/VGtI9GCBCfpsNUwToOzTDQgtAE8mhbsIriHZhpuakUlxVgUXy93jt/IspXnPSaPF+RkhSlECBnF2wmeWMXB3pUc2xRqmQ0ZBrXo6cxfswUrdLNpPAIouqzaAQH2b/x7HWCydj9aQkKaB3FE/avpP7gx8F050=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420916; c=relaxed/simple;
-	bh=0YRS8zDXQBg5ki+tMemr/uhlHvQZWfgUC1l53FrhyD4=;
+	s=arc-20240116; t=1745419606; c=relaxed/simple;
+	bh=ONexW6heVhDKkgBn6Qs+WwSiMLZwK4Nr9eNWE2CC1pY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6DjPkIye1SFLPl6RWXfz38FdATJsXgPWO6kUbdpAOyZSxRCNt0Tx/yZK9D6M/Mef1hm/lN4pEP6Gel40FkfmiaDDlXw1JwZkKmTINUyGnw4QJw6XZQ36B0G2f+nM853RZ0msQF15AzRbUfgNfR+eCMUKUAMLpe7KjgXHvrTbYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeUIT5Eb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96631C4CEE2;
-	Wed, 23 Apr 2025 15:08:35 +0000 (UTC)
+	 MIME-Version; b=ZnKQbXsbBTgNRt046c0j+QEhqnNSXfhNl5OfA3y17YLn7dcgZ3bSltphPunD1Mw+UwPEkuPewecZqJxoBWya9sFN64S0qPzmEKDarSIVqPrIaoNx3nZazPfO63dVxZ1hE3McA/yMbqdbyLNKqn5xgbSzOPzEU/DZKr7fdQGMq7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tTtF6K6G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F50CC4CEE8;
+	Wed, 23 Apr 2025 14:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420915;
-	bh=0YRS8zDXQBg5ki+tMemr/uhlHvQZWfgUC1l53FrhyD4=;
+	s=korg; t=1745419604;
+	bh=ONexW6heVhDKkgBn6Qs+WwSiMLZwK4Nr9eNWE2CC1pY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeUIT5EbkbCix6gFRfiUsB4QmKPiODZNjr1j1YGfCI7SXwTMhkDGaqqr6pyw4EFwH
-	 y+6fLbgObSq4ECwzyeXKtVqLdZ6p5DGH71+C+AVMtWWnsU2l8NQU7NQIvsAr2Taz2c
-	 yYWWLac/ekjeYSVqgCqHMnqhXCA+PYuZo+9UIbik=
+	b=tTtF6K6Gb0On+kh8qJGQih0wpZYj2sMSsctxldP2LFyWXUQ5byweqpbQQoa8vskTw
+	 WdejXXkLI6NDQqxYNr/VMTD0LFspH5xpVGJN6dDOaLC+ABokduxxYVcdbl5ARZAHuv
+	 9mRrm7S12ME16R4zSN7fYCuFIDuc2XugIgnh/Rfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 092/291] media: streamzap: prevent processing IR data on URB failure
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Daniel Wagner <wagi@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 009/223] scsi: replace blk_mq_pci_map_queues with blk_mq_map_hw_queues
 Date: Wed, 23 Apr 2025 16:41:21 +0200
-Message-ID: <20250423142628.116385875@linuxfoundation.org>
+Message-ID: <20250423142617.500661964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +67,255 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Daniel Wagner <wagi@kernel.org>
 
-commit 549f6d348167fb2f7800ed7c8d4bce9630c74498 upstream.
+[ Upstream commit bd326a5ad6397ccfc67af862606be107c15a43e6 ]
 
-If streamzap_callback() receives an urb with any non-critical error
-status, i.e. any error code other than -ECONNRESET, -ENOENT or -ESHUTDOWN,
-it will try to process IR data, ignoring a possible transfer failure.
+Replace all users of blk_mq_pci_map_queues with the more generic
+blk_mq_map_hw_queues. This in preparation to retire
+blk_mq_pci_map_queues.
 
-Make streamzap_callback() process IR data only when urb->status is 0.
-Move processing logic to a separate function to make code cleaner and
-more similar to the URB completion handlers in other RC drivers.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 19770693c354 ("V4L/DVB: staging/lirc: add lirc_streamzap driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Link: https://lore.kernel.org/r/20241202-refactor-blk-affinity-helpers-v6-5-27211e9c2cd5@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: a2d5a0072235 ("scsi: smartpqi: Use is_kdump_kernel() to check for kdump")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c |   68 ++++++++++++++++++++++++-------------------
- 1 file changed, 38 insertions(+), 30 deletions(-)
+ drivers/scsi/fnic/fnic_main.c             | 3 +--
+ drivers/scsi/hisi_sas/hisi_sas.h          | 1 -
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c    | 4 ++--
+ drivers/scsi/megaraid/megaraid_sas_base.c | 3 +--
+ drivers/scsi/mpi3mr/mpi3mr.h              | 1 -
+ drivers/scsi/mpi3mr/mpi3mr_os.c           | 2 +-
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c      | 3 +--
+ drivers/scsi/pm8001/pm8001_init.c         | 2 +-
+ drivers/scsi/pm8001/pm8001_sas.h          | 1 -
+ drivers/scsi/qla2xxx/qla_nvme.c           | 3 +--
+ drivers/scsi/qla2xxx/qla_os.c             | 4 ++--
+ drivers/scsi/smartpqi/smartpqi_init.c     | 7 +++----
+ 12 files changed, 13 insertions(+), 21 deletions(-)
 
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -138,39 +138,10 @@ static void sz_push_half_space(struct st
- 	sz_push_full_space(sz, value & SZ_SPACE_MASK);
- }
- 
--/*
-- * streamzap_callback - usb IRQ handler callback
-- *
-- * This procedure is invoked on reception of data from
-- * the usb remote.
-- */
--static void streamzap_callback(struct urb *urb)
-+static void sz_process_ir_data(struct streamzap_ir *sz, int len)
- {
--	struct streamzap_ir *sz;
- 	unsigned int i;
--	int len;
--
--	if (!urb)
--		return;
--
--	sz = urb->context;
--	len = urb->actual_length;
--
--	switch (urb->status) {
--	case -ECONNRESET:
--	case -ENOENT:
--	case -ESHUTDOWN:
--		/*
--		 * this urb is terminated, clean up.
--		 * sz might already be invalid at this point
--		 */
--		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
--		return;
--	default:
--		break;
--	}
- 
--	dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
- 	for (i = 0; i < len; i++) {
- 		dev_dbg(sz->dev, "sz->buf_in[%d]: %x\n",
- 			i, (unsigned char)sz->buf_in[i]);
-@@ -219,6 +190,43 @@ static void streamzap_callback(struct ur
+diff --git a/drivers/scsi/fnic/fnic_main.c b/drivers/scsi/fnic/fnic_main.c
+index adec0df24bc47..1cb517f731f4a 100644
+--- a/drivers/scsi/fnic/fnic_main.c
++++ b/drivers/scsi/fnic/fnic_main.c
+@@ -16,7 +16,6 @@
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+ #include <linux/if_ether.h>
+-#include <linux/blk-mq-pci.h>
+ #include <scsi/fc/fc_fip.h>
+ #include <scsi/scsi_host.h>
+ #include <scsi/scsi_transport.h>
+@@ -601,7 +600,7 @@ void fnic_mq_map_queues_cpus(struct Scsi_Host *host)
+ 		return;
  	}
  
- 	ir_raw_event_handle(sz->rdev);
-+}
-+
-+/*
-+ * streamzap_callback - usb IRQ handler callback
-+ *
-+ * This procedure is invoked on reception of data from
-+ * the usb remote.
-+ */
-+static void streamzap_callback(struct urb *urb)
-+{
-+	struct streamzap_ir *sz;
-+	int len;
-+
-+	if (!urb)
-+		return;
-+
-+	sz = urb->context;
-+	len = urb->actual_length;
-+
-+	switch (urb->status) {
-+	case 0:
-+		dev_dbg(sz->dev, "%s: received urb, len %d\n", __func__, len);
-+		sz_process_ir_data(sz, len);
-+		break;
-+	case -ECONNRESET:
-+	case -ENOENT:
-+	case -ESHUTDOWN:
-+		/*
-+		 * this urb is terminated, clean up.
-+		 * sz might already be invalid at this point
-+		 */
-+		dev_err(sz->dev, "urb terminated, status: %d\n", urb->status);
-+		return;
-+	default:
-+		break;
-+	}
-+
- 	usb_submit_urb(urb, GFP_ATOMIC);
+-	blk_mq_pci_map_queues(qmap, l_pdev, FNIC_PCI_OFFSET);
++	blk_mq_map_hw_queues(qmap, &l_pdev->dev, FNIC_PCI_OFFSET);
  }
  
+ static int fnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
+index d223f482488fc..010479a354eee 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas.h
++++ b/drivers/scsi/hisi_sas/hisi_sas.h
+@@ -9,7 +9,6 @@
+ 
+ #include <linux/acpi.h>
+ #include <linux/blk-mq.h>
+-#include <linux/blk-mq-pci.h>
+ #include <linux/clk.h>
+ #include <linux/debugfs.h>
+ #include <linux/dmapool.h>
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 6b4cb560ff304..2b04556681a1a 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -3333,8 +3333,8 @@ static void hisi_sas_map_queues(struct Scsi_Host *shost)
+ 		if (i == HCTX_TYPE_POLL)
+ 			blk_mq_map_queues(qmap);
+ 		else
+-			blk_mq_pci_map_queues(qmap, hisi_hba->pci_dev,
+-					      BASE_VECTORS_V3_HW);
++			blk_mq_map_hw_queues(qmap, hisi_hba->dev,
++					     BASE_VECTORS_V3_HW);
+ 		qoff += qmap->nr_queues;
+ 	}
+ }
+diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
+index 50f1dcb6d5846..49abd7dd75a7b 100644
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -37,7 +37,6 @@
+ #include <linux/poll.h>
+ #include <linux/vmalloc.h>
+ #include <linux/irq_poll.h>
+-#include <linux/blk-mq-pci.h>
+ 
+ #include <scsi/scsi.h>
+ #include <scsi/scsi_cmnd.h>
+@@ -3193,7 +3192,7 @@ static void megasas_map_queues(struct Scsi_Host *shost)
+ 	map = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
+ 	map->nr_queues = instance->msix_vectors - offset;
+ 	map->queue_offset = 0;
+-	blk_mq_pci_map_queues(map, instance->pdev, offset);
++	blk_mq_map_hw_queues(map, &instance->pdev->dev, offset);
+ 	qoff += map->nr_queues;
+ 	offset += map->nr_queues;
+ 
+diff --git a/drivers/scsi/mpi3mr/mpi3mr.h b/drivers/scsi/mpi3mr/mpi3mr.h
+index ee5a75a4b3bb8..ab7c5f1fc0412 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr.h
++++ b/drivers/scsi/mpi3mr/mpi3mr.h
+@@ -12,7 +12,6 @@
+ 
+ #include <linux/blkdev.h>
+ #include <linux/blk-mq.h>
+-#include <linux/blk-mq-pci.h>
+ #include <linux/delay.h>
+ #include <linux/dmapool.h>
+ #include <linux/errno.h>
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 1bef88130d0c0..1e8735538b238 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -4042,7 +4042,7 @@ static void mpi3mr_map_queues(struct Scsi_Host *shost)
+ 		 */
+ 		map->queue_offset = qoff;
+ 		if (i != HCTX_TYPE_POLL)
+-			blk_mq_pci_map_queues(map, mrioc->pdev, offset);
++			blk_mq_map_hw_queues(map, &mrioc->pdev->dev, offset);
+ 		else
+ 			blk_mq_map_queues(map);
+ 
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+index f2a55aa5fe650..9599d7a500286 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
+@@ -53,7 +53,6 @@
+ #include <linux/pci.h>
+ #include <linux/interrupt.h>
+ #include <linux/raid_class.h>
+-#include <linux/blk-mq-pci.h>
+ #include <linux/unaligned.h>
+ 
+ #include "mpt3sas_base.h"
+@@ -11890,7 +11889,7 @@ static void scsih_map_queues(struct Scsi_Host *shost)
+ 		 */
+ 		map->queue_offset = qoff;
+ 		if (i != HCTX_TYPE_POLL)
+-			blk_mq_pci_map_queues(map, ioc->pdev, offset);
++			blk_mq_map_hw_queues(map, &ioc->pdev->dev, offset);
+ 		else
+ 			blk_mq_map_queues(map);
+ 
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index 33e1eba62ca12..b53b1ae5b74c3 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -101,7 +101,7 @@ static void pm8001_map_queues(struct Scsi_Host *shost)
+ 	struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
+ 
+ 	if (pm8001_ha->number_of_intr > 1) {
+-		blk_mq_pci_map_queues(qmap, pm8001_ha->pdev, 1);
++		blk_mq_map_hw_queues(qmap, &pm8001_ha->pdev->dev, 1);
+ 		return;
+ 	}
+ 
+diff --git a/drivers/scsi/pm8001/pm8001_sas.h b/drivers/scsi/pm8001/pm8001_sas.h
+index ced6721380a85..c46470e0cf63b 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.h
++++ b/drivers/scsi/pm8001/pm8001_sas.h
+@@ -56,7 +56,6 @@
+ #include <scsi/sas_ata.h>
+ #include <linux/atomic.h>
+ #include <linux/blk-mq.h>
+-#include <linux/blk-mq-pci.h>
+ #include "pm8001_defs.h"
+ 
+ #define DRV_NAME		"pm80xx"
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 8f4cc136a9c9c..8ee2e337c9e1b 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -8,7 +8,6 @@
+ #include <linux/delay.h>
+ #include <linux/nvme.h>
+ #include <linux/nvme-fc.h>
+-#include <linux/blk-mq-pci.h>
+ #include <linux/blk-mq.h>
+ 
+ static struct nvme_fc_port_template qla_nvme_fc_transport;
+@@ -841,7 +840,7 @@ static void qla_nvme_map_queues(struct nvme_fc_local_port *lport,
+ {
+ 	struct scsi_qla_host *vha = lport->private;
+ 
+-	blk_mq_pci_map_queues(map, vha->hw->pdev, vha->irq_offset);
++	blk_mq_map_hw_queues(map, &vha->hw->pdev->dev, vha->irq_offset);
+ }
+ 
+ static void qla_nvme_localport_delete(struct nvme_fc_local_port *lport)
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 7ab717ed72327..31535beaaa161 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -13,7 +13,6 @@
+ #include <linux/mutex.h>
+ #include <linux/kobject.h>
+ #include <linux/slab.h>
+-#include <linux/blk-mq-pci.h>
+ #include <linux/refcount.h>
+ #include <linux/crash_dump.h>
+ #include <linux/trace_events.h>
+@@ -8071,7 +8070,8 @@ static void qla2xxx_map_queues(struct Scsi_Host *shost)
+ 	if (USER_CTRL_IRQ(vha->hw) || !vha->hw->mqiobase)
+ 		blk_mq_map_queues(qmap);
+ 	else
+-		blk_mq_pci_map_queues(qmap, vha->hw->pdev, vha->irq_offset);
++		blk_mq_map_hw_queues(qmap, &vha->hw->pdev->dev,
++				       vha->irq_offset);
+ }
+ 
+ struct scsi_host_template qla2xxx_driver_template = {
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 870f37b705464..04fb24d77e9b5 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -19,7 +19,6 @@
+ #include <linux/bcd.h>
+ #include <linux/reboot.h>
+ #include <linux/cciss_ioctl.h>
+-#include <linux/blk-mq-pci.h>
+ #include <scsi/scsi_host.h>
+ #include <scsi/scsi_cmnd.h>
+ #include <scsi/scsi_device.h>
+@@ -6547,10 +6546,10 @@ static void pqi_map_queues(struct Scsi_Host *shost)
+ 	struct pqi_ctrl_info *ctrl_info = shost_to_hba(shost);
+ 
+ 	if (!ctrl_info->disable_managed_interrupts)
+-		return blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
+-			      ctrl_info->pci_dev, 0);
++		blk_mq_map_hw_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
++				       &ctrl_info->pci_dev->dev, 0);
+ 	else
+-		return blk_mq_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT]);
++		blk_mq_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT]);
+ }
+ 
+ static inline bool pqi_is_tape_changer_device(struct pqi_scsi_dev *device)
+-- 
+2.39.5
+
 
 
 
