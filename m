@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-136395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EE33A9933B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18BDA992E5
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2538E4A49A4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:46:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D29461B84D4F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9D7298CA8;
-	Wed, 23 Apr 2025 15:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5867283CA3;
+	Wed, 23 Apr 2025 15:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7VReZHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5OpHNpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1442989B4;
-	Wed, 23 Apr 2025 15:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7131C2820CC;
+	Wed, 23 Apr 2025 15:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422433; cv=none; b=mLGl5iSzCog9iSc/8u4lWT7jlYh5IegsQfYuaj4PYb9a6OERlbj2L7yw/zrXKNbYgMSu/s4G32DJZ+B8UNJD7j0fUN4m7PPFHBojXdXDY3Z/a71UbOofL9djArFXeg8JALyzw0lTLdvuBEzL5pN7PTuZTL4ASPgPjqfPmf9Hsa4=
+	t=1745422199; cv=none; b=ApcL3UI061E8KE9/2TEkU8n4M0A+6IIaCPXgSz/E1Va+ve7/jsjWp5QsuhZdADYajguZVys1HLADpdlV4AOrXkbPhVmOAvzA4G2XHycUmzWkVRX8x0jfiDEhYejozCosnEJ/yRl6bSfdRDk/Xd34N0lOpmQql3mnTYj9CF5sIv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422433; c=relaxed/simple;
-	bh=Qyqvlhj3EUDXRc1v2X1gXfyRP8ZFbB7s3opwGEFulSM=;
+	s=arc-20240116; t=1745422199; c=relaxed/simple;
+	bh=q3a2nCT2dxdM9Qr8CNqX7v/bM5J2qYybz37hRA6nsQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpKAs2srbsu6oQmuL4nHBIvdY2FX2rpkI3x50NSbTaC5ma1d1SYpnkd/lAMKfxq74Ov7gZZXQQcsxYu0DtvF/dREJFUYGyuKOwJda9oaq/ZS1l4fh3/QEPBy+IL24ZP9iGtaNqBgquNvboKRC8A8hknGrHava5cGg7Zoirs1cYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7VReZHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D47C4CEF7;
-	Wed, 23 Apr 2025 15:33:52 +0000 (UTC)
+	 MIME-Version; b=feL2EW6jm0uqnhYNUvdkr8VezGvzR3iTmeklMR1T5HzrHfq973QQJDP06Y+YPU1SEFCR/A33zlMl4CKsx4tsYoz9anU0XnbErwb7PsdfUMozLS1N/ZMVuFPza4L9a7I733V2DoJvOD8to/qJOaxyqij6mFoLpbUC19jierYujsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5OpHNpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C57DC4CEE2;
+	Wed, 23 Apr 2025 15:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422433;
-	bh=Qyqvlhj3EUDXRc1v2X1gXfyRP8ZFbB7s3opwGEFulSM=;
+	s=korg; t=1745422198;
+	bh=q3a2nCT2dxdM9Qr8CNqX7v/bM5J2qYybz37hRA6nsQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7VReZHuIzfCymyZEdmONAhuA4AoAgUGRzFJU7yfybEb/V+eZ8aM2H6SP8W5XoYtx
-	 dnhTGKDlYYWcEwqpNTyfgI9eWMZJFdo9e6w8I19TcgxOKc/Ppc1AK+kRDUhbi7LRfc
-	 hF7uuzqu0tfMdTQ+l6tQKFByna+kMgvkefOwyCw4=
+	b=b5OpHNpGi0CPxJa/WoS3Ha5v/U+u+XlfU4iTLdfAuYvAUUNIRBjgSLUb7CnqorcC1
+	 IOQAxZWkJ7HDzv0dIWnvIxDjxaAwy1IyKoCIc01c8PVkT4y+4/3/SPYNonB2u+9/DV
+	 NaGfxcUV73Wg/puFzM5HLQz2rWGzmg2IaQLgTN98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 6.6 347/393] drm/msm/a6xx: Fix stale rpmh votes from GPU
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.1 254/291] KVM: arm64: Mark some header functions as inline
 Date: Wed, 23 Apr 2025 16:44:03 +0200
-Message-ID: <20250423142657.670873942@linuxfoundation.org>
+Message-ID: <20250423142634.809601497@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,135 +66,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <quic_akhilpo@quicinc.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit f561db72a663f8a73c2250bf3244ce1ce221bed7 upstream.
+[ Upstream commit f9dd00de1e53a47763dfad601635d18542c3836d ]
 
-It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
-BCM nodes were not removed after GPU suspend. This was because we
-skipped sending 'prepare-slumber' request to gmu during suspend sequence
-in some cases. So, make sure we always call prepare-slumber hfi during
-suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
-messes up gmu firmware's internal state. So, do that when required.
+The shared hyp switch header has a number of static functions which
+might not be used by all files that include the header, and when unused
+they will provoke compiler warnings, e.g.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/639569/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+| In file included from arch/arm64/kvm/hyp/nvhe/hyp-main.c:8:
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:703:13: warning: 'kvm_hyp_handle_dabt_low' defined but not used [-Wunused-function]
+|   703 | static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:682:13: warning: 'kvm_hyp_handle_cp15_32' defined but not used [-Wunused-function]
+|   682 | static bool kvm_hyp_handle_cp15_32(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:662:13: warning: 'kvm_hyp_handle_sysreg' defined but not used [-Wunused-function]
+|   662 | static bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:458:13: warning: 'kvm_hyp_handle_fpsimd' defined but not used [-Wunused-function]
+|   458 | static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~~~
+| ./arch/arm64/kvm/hyp/include/hyp/switch.h:329:13: warning: 'kvm_hyp_handle_mops' defined but not used [-Wunused-function]
+|   329 | static bool kvm_hyp_handle_mops(struct kvm_vcpu *vcpu, u64 *exit_code)
+|       |             ^~~~~~~~~~~~~~~~~~~
+
+Mark these functions as 'inline' to suppress this warning. This
+shouldn't result in any functional change.
+
+At the same time, avoid the use of __alias() in the header and alias
+kvm_hyp_handle_iabt_low() and kvm_hyp_handle_watchpt_low() to
+kvm_hyp_handle_memory_fault() using CPP, matching the style in the rest
+of the kernel. For consistency, kvm_hyp_handle_memory_fault() is also
+marked as 'inline'.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: Mark Brown <broonie@kernel.org>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Fuad Tabba <tabba@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20250210195226.1215254-8-mark.rutland@arm.com
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c |   82 ++++++++++++++++++----------------
- 1 file changed, 44 insertions(+), 38 deletions(-)
+ arch/arm64/kvm/hyp/include/hyp/switch.h |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1042,50 +1042,51 @@ static void a6xx_gmu_shutdown(struct a6x
- 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	u32 val;
-+	int ret;
- 
- 	/*
--	 * The GMU may still be in slumber unless the GPU started so check and
--	 * skip putting it back into slumber if so
-+	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
-+	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
-+	 * required
- 	 */
--	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
-+	if (adreno_gpu->base.needs_hw_init) {
-+		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
-+			goto force_off;
- 
--	if (val != 0xf) {
--		int ret = a6xx_gmu_wait_for_idle(gmu);
--
--		/* If the GMU isn't responding assume it is hung */
--		if (ret) {
--			a6xx_gmu_force_off(gmu);
--			return;
--		}
--
--		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
--
--		/* tell the GMU we want to slumber */
--		ret = a6xx_gmu_notify_slumber(gmu);
--		if (ret) {
--			a6xx_gmu_force_off(gmu);
--			return;
--		}
--
--		ret = gmu_poll_timeout(gmu,
--			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
--			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
--			100, 10000);
--
--		/*
--		 * Let the user know we failed to slumber but don't worry too
--		 * much because we are powering down anyway
--		 */
--
--		if (ret)
--			DRM_DEV_ERROR(gmu->dev,
--				"Unable to slumber GMU: status = 0%x/0%x\n",
--				gmu_read(gmu,
--					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
--				gmu_read(gmu,
--					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
-+		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
- 	}
- 
-+	ret = a6xx_gmu_wait_for_idle(gmu);
-+
-+	/* If the GMU isn't responding assume it is hung */
-+	if (ret)
-+		goto force_off;
-+
-+	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
-+
-+	/* tell the GMU we want to slumber */
-+	ret = a6xx_gmu_notify_slumber(gmu);
-+	if (ret)
-+		goto force_off;
-+
-+	ret = gmu_poll_timeout(gmu,
-+		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
-+		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
-+		100, 10000);
-+
-+	/*
-+	 * Let the user know we failed to slumber but don't worry too
-+	 * much because we are powering down anyway
-+	 */
-+
-+	if (ret)
-+		DRM_DEV_ERROR(gmu->dev,
-+			"Unable to slumber GMU: status = 0%x/0%x\n",
-+			gmu_read(gmu,
-+				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
-+			gmu_read(gmu,
-+				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
-+
- 	/* Turn off HFI */
- 	a6xx_hfi_stop(gmu);
- 
-@@ -1094,6 +1095,11 @@ static void a6xx_gmu_shutdown(struct a6x
- 
- 	/* Tell RPMh to power off the GPU */
- 	a6xx_rpmh_stop(gmu);
-+
-+	return;
-+
-+force_off:
-+	a6xx_gmu_force_off(gmu);
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -173,7 +173,7 @@ static inline void __hyp_sve_restore_gue
+  * If FP/SIMD is not implemented, handle the trap and inject an undefined
+  * instruction exception to the guest. Similarly for trapped SVE accesses.
+  */
+-static bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_fpsimd(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	bool sve_guest;
+ 	u8 esr_ec;
+@@ -331,7 +331,7 @@ static bool kvm_hyp_handle_ptrauth(struc
+ 	return true;
  }
  
+-static bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_sysreg(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (cpus_have_final_cap(ARM64_WORKAROUND_CAVIUM_TX2_219_TVM) &&
+ 	    handle_tx2_tvm(vcpu))
+@@ -347,7 +347,7 @@ static bool kvm_hyp_handle_sysreg(struct
+ 	return false;
+ }
  
+-static bool kvm_hyp_handle_cp15_32(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_cp15_32(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (static_branch_unlikely(&vgic_v3_cpuif_trap) &&
+ 	    __vgic_v3_perform_cpuif_access(vcpu) == 1)
+@@ -356,19 +356,18 @@ static bool kvm_hyp_handle_cp15_32(struc
+ 	return false;
+ }
+ 
+-static bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_memory_fault(struct kvm_vcpu *vcpu,
++					       u64 *exit_code)
+ {
+ 	if (!__populate_fault_info(vcpu))
+ 		return true;
+ 
+ 	return false;
+ }
+-static bool kvm_hyp_handle_iabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+-	__alias(kvm_hyp_handle_memory_fault);
+-static bool kvm_hyp_handle_watchpt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+-	__alias(kvm_hyp_handle_memory_fault);
++#define kvm_hyp_handle_iabt_low		kvm_hyp_handle_memory_fault
++#define kvm_hyp_handle_watchpt_low	kvm_hyp_handle_memory_fault
+ 
+-static bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
++static inline bool kvm_hyp_handle_dabt_low(struct kvm_vcpu *vcpu, u64 *exit_code)
+ {
+ 	if (kvm_hyp_handle_memory_fault(vcpu, exit_code))
+ 		return true;
 
 
 
