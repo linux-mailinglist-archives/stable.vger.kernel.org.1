@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-136270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09480A9936E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:58:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EC73A98E58
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED6E1B81FEC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD7781B81274
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFD91A08A6;
-	Wed, 23 Apr 2025 15:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00BB327FD5B;
+	Wed, 23 Apr 2025 14:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3TW9+JG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOhbs0kO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB558289368;
-	Wed, 23 Apr 2025 15:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35DC27F4F3;
+	Wed, 23 Apr 2025 14:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422104; cv=none; b=BLWX9uxEZlGR+/T1yRtRf9iw8Ee3wI917Kc42pjNKNYloIy1UmtacGMvihVk9fqB7U3oYEZWiv9BFJQ9a2p0VFIdnSwo5lJ4NhjzVgmKErVRM/mG+QsOzbInoLXmf/237fj1ZHZaHBtFmoXWdEyEXNi/WEy6pyZi83N2H5jilYw=
+	t=1745419934; cv=none; b=KF3f+j4Ny41b0+zISyZmJ268Z3sWaWcxddhzpqJePsDu94IqILdFt6CLYVDa5MDIp9kDNspwL5VandM66D5YMLHAnzxwDnCP1ThvHkAN2A/MPgM0S+07uLjDSHTcoPAfU2dtyv5j0XKaILH8L/lCZ4JTVf7qY8SnS4NJFLoXNVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422104; c=relaxed/simple;
-	bh=E9pSR3STqRdJ2qwmKVQ601TYugzi4ZldwtixO0Aucp4=;
+	s=arc-20240116; t=1745419934; c=relaxed/simple;
+	bh=eryBN/NlLSFipR5N1+BhzMUplUDqcRPaZ/6XAhsmOHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RpfAQ5KZEkYFryxW0kCA7l8vfnxyV3O7tBZcbLENJCGGJVB1h2m5uRrUPq1MF+S3LSSZ66efC7YwFtO/pIMXtWEF8bHqQreSLTSZNg8ht6oQESlQD/obf/h3NcROwVts7T4TKLHH+/GFQULvZm6Sk3TklQ/jYw7U7FQFxmAz/g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3TW9+JG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672DAC4CEE2;
-	Wed, 23 Apr 2025 15:28:24 +0000 (UTC)
+	 MIME-Version; b=HlhWg3hfq7+7dHH+zdzQahMTTlBf/wsEiYdq28wjn+k7NEK4ZHctUBmqgtEHetGgzcUdjfGnkxHBZlkhGq5fGs3HjI5Ph3gkGHhKL1JNDWxrbx+r+wXPyMqXiky4r9YPvCR/BVXHKk0Qv5TWgoaBsLaFq8PkQAhLVkKSAljj62E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOhbs0kO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E60C4CEE2;
+	Wed, 23 Apr 2025 14:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422104;
-	bh=E9pSR3STqRdJ2qwmKVQ601TYugzi4ZldwtixO0Aucp4=;
+	s=korg; t=1745419934;
+	bh=eryBN/NlLSFipR5N1+BhzMUplUDqcRPaZ/6XAhsmOHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3TW9+JGOgGAb8ov0k5oJiuskqKuBN2npYI9SyeRT2XFKaGBx+58ddb5lz8cw2no9
-	 v2NyAsjahtJxPwP/nDEG0jpCQulT7fCxeI+edYJAWNAUXtkdZcnWHIQGUU9MWRIzEZ
-	 Zw7qrKtbp08DuWEvInLeIjMO4HznPn+8x/sWsIBM=
+	b=gOhbs0kOdPUbpgwjtwj2cIbURcNvXCXbIDR/XGXj29EM2x4A2Vn4pKwbYaTOm+KDc
+	 657tTCQaP6aBgbNQeGu3U+ZyeygaHJqSmtgONftIIwG2aOLZ8BlOqh3nD27kU7hQ9f
+	 vVpHyNvu5Z2P34BJfHVNoVp/6+h4rkJ0bUoPDrSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 257/393] Bluetooth: l2cap: Check encryption key size on incoming connection
+Subject: [PATCH 6.12 081/223] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
 Date: Wed, 23 Apr 2025 16:42:33 +0200
-Message-ID: <20250423142653.990031756@linuxfoundation.org>
+Message-ID: <20250423142620.424497802@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +63,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frédéric Danis <frederic.danis@collabora.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 522e9ed157e3c21b4dd623c79967f72c21e45b78 ]
+[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
 
-This is required for passing GAP/SEC/SEM/BI-04-C PTS test case:
-  Security Mode 4 Level 4, Responder - Invalid Encryption Key Size
-  - 128 bit
+[ Quoting Samuel Holland: ]
 
-This tests the security key with size from 1 to 15 bytes while the
-Security Mode 4 Level 4 requests 16 bytes key size.
+  This is a separate issue, but using ".option rvc" here is a bug.
+  It will unconditionally enable the C extension for the rest of
+  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
 
-Currently PTS fails with the following logs:
-- expected:Connection Response:
-    Code: [3 (0x03)] Code
-    Identifier: (lt)WildCard: Exists(gt)
-    Length: [8 (0x0008)]
-    Destination CID: (lt)WildCard: Exists(gt)
-    Source CID: [64 (0x0040)]
-    Result: [3 (0x0003)] Connection refused - Security block
-    Status: (lt)WildCard: Exists(gt),
-but received:Connection Response:
-    Code: [3 (0x03)] Code
-    Identifier: [1 (0x01)]
-    Length: [8 (0x0008)]
-    Destination CID: [64 (0x0040)]
-    Source CID: [64 (0x0040)]
-    Result: [0 (0x0000)] Connection Successful
-    Status: [0 (0x0000)] No further information available
+[ Quoting Palmer Dabbelt: ]
 
-And HCI logs:
-< HCI Command: Read Encrypti.. (0x05|0x0008) plen 2
-        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
-> HCI Event: Command Complete (0x0e) plen 7
-      Read Encryption Key Size (0x05|0x0008) ncmd 1
-        Status: Success (0x00)
-        Handle: 14 Address: 00:1B:DC:F2:24:10 (Vencer Co., Ltd.)
-        Key size: 7
-> ACL Data RX: Handle 14 flags 0x02 dlen 12
-      L2CAP: Connection Request (0x02) ident 1 len 4
-        PSM: 4097 (0x1001)
-        Source CID: 64
-< ACL Data TX: Handle 14 flags 0x00 dlen 16
-      L2CAP: Connection Response (0x03) ident 1 len 8
-        Destination CID: 64
-        Source CID: 64
-        Result: Connection successful (0x0000)
-        Status: No further information available (0x0000)
+  We're just looking at the address of kgdb_compiled_break, so it's
+  fine if it ends up as a c.ebreak.
 
-Fixes: 288c06973daa ("Bluetooth: Enforce key size of 16 bytes on FIPS level")
-Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Quoting Alexandre Ghiti: ]
+
+  .option norvc is used to prevent the assembler from using compressed
+  instructions, but it's generally used when we need to ensure the
+  size of the instructions that are used, which is not the case here
+  as noted by Palmer since we only care about the address. So yes
+  it will work fine with C enabled :)
+
+So let's just remove them all.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/kgdb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 8d6fc18695033..1258532228bbb 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -3954,7 +3954,8 @@ static void l2cap_connect(struct l2cap_conn *conn, struct l2cap_cmd_hdr *cmd,
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 5d1ce8dacaf58..9f3db3503dabd 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -257,9 +257,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ noinline void arch_kgdb_breakpoint(void)
+ {
+ 	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
++	    "kgdb_compiled_break: ebreak\n");
+ }
  
- 	/* Check if the ACL is secure enough (if not SDP) */
- 	if (psm != cpu_to_le16(L2CAP_PSM_SDP) &&
--	    !hci_conn_check_link_mode(conn->hcon)) {
-+	    (!hci_conn_check_link_mode(conn->hcon) ||
-+	    !l2cap_check_enc_key_size(conn->hcon))) {
- 		conn->disc_reason = HCI_ERROR_AUTH_FAILURE;
- 		result = L2CAP_CR_SEC_BLOCK;
- 		goto response;
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
 -- 
 2.39.5
 
