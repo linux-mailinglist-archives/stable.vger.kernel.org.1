@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-136117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C618A992B6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C24A99283
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 893B6924879
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05704169DD4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C1C2BE7B8;
-	Wed, 23 Apr 2025 15:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA85D29C34F;
+	Wed, 23 Apr 2025 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzpG+l1Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbHo6G1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658232BE7B1;
-	Wed, 23 Apr 2025 15:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E98D296146;
+	Wed, 23 Apr 2025 15:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421700; cv=none; b=O6jxyn29b8EJHtys7WtMQZD/guNRtnaqzoX7Z2bvlTTVOOKbOQXKNeLUOtgbIPeK01cdwAv/ICiyGkXEY8mLS9tMwRV+GpXGkZT3zA63CnoGUZtozOrC5gI2uTluMlG9dXv0bS1Xey39h5Gt/tQq7HS8oog4R0IYxLVpyBTGepg=
+	t=1745422005; cv=none; b=PTrqjjeltnufbhM3iWc1yaDaCETrOFyVs2MBnNbTStMd/agpWpA4nGsK9EshNXA5iKNHVbEvUj111U87LQQsq2djBVvWvGv0v1mV5OxkQ7Pdsuky5MmvbwGtxh2jczWZavtGK+SVuK2eBQxmK9STEtjmVaH305v/gtH4awiXCvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421700; c=relaxed/simple;
-	bh=gIjeRaKjc8bHZOFRO6ZYsdTlmFbew9KnqNT5kWW+iVI=;
+	s=arc-20240116; t=1745422005; c=relaxed/simple;
+	bh=7/XGCyip29YnzNqFeznBpzrvmG/lo2X/dnDDZ5vAw10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoBGnVHr/LL+lgJNzbqm5FuFtNt7WTz/WSdw72BuyrCW/24XadM522JzatirsbwaiQXDEebACMN3Inmmdir6bO8PUKfJ+CdRCxrKdbdLexPg5EuaNejlcAW9D6TcH1OMgfBNhHB5h3cTIUCuniPlEGLOFFNc7gxZo68ptcLrWNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzpG+l1Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC812C4CEE2;
-	Wed, 23 Apr 2025 15:21:39 +0000 (UTC)
+	 MIME-Version; b=TSssdVSDyF28xLK6wYjMRcw0q/8D5jxUXnwT98GHctTGPXlcJnQOv7BxkRjbIfwVtDVHXa4hRtkKWv8KLNmRpP1i8sLRsjFORncIHms9Q59yl4oPwiszHdWFMlvjJJSEkByixgGnJmFCPP9I3h8wkg6pAsdWcIUDJmIqIm6CILA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbHo6G1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C640CC4CEE2;
+	Wed, 23 Apr 2025 15:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421700;
-	bh=gIjeRaKjc8bHZOFRO6ZYsdTlmFbew9KnqNT5kWW+iVI=;
+	s=korg; t=1745422005;
+	bh=7/XGCyip29YnzNqFeznBpzrvmG/lo2X/dnDDZ5vAw10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TzpG+l1ZWu5b5ItAAe6oTs9/Uc1v6B4xmdcft+wAdEob+nep4Sg2ixq1kvxDN4p8x
-	 jNewNfi1sE1oJ41QoDx2OWa78hf1bg6BOeZJh7arXvwMukdUuTxWw0VeoLEilJsFun
-	 HgTumt9MHy14ny36Ave4HfrBrysKkLSwP6TwAttA=
+	b=nbHo6G1Z5q4U0zFwuXfD0Uhnx89wMHJOR16qlsuevAR1LZNlj9EhwbNkIvUQ0AVw7
+	 6CYp5SZCNsCN+aAbO5sUg5eAb1smLGrVw+lSwcT+ky0LCpCm/Cc4OSTdON18tIJO7M
+	 J5QEb/FEF4uJEfZMYPAOoiGXg199WQGOAuZ1jUko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Remi Pommarel <repk@triplefau.lt>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/291] wifi: mac80211: Purge vif txq in ieee80211_do_stop()
+Subject: [PATCH 6.6 261/393] igc: move ktime snapshot into PTM retry loop
 Date: Wed, 23 Apr 2025 16:42:37 +0200
-Message-ID: <20250423142631.255651358@linuxfoundation.org>
+Message-ID: <20250423142654.151692089@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +68,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-[ Upstream commit 378677eb8f44621ecc9ce659f7af61e5baa94d81 ]
+[ Upstream commit cd7f7328d691937102732f39f97ead35b15bf803 ]
 
-After ieee80211_do_stop() SKB from vif's txq could still be processed.
-Indeed another concurrent vif schedule_and_wake_txq call could cause
-those packets to be dequeued (see ieee80211_handle_wake_tx_queue())
-without checking the sdata current state.
+Move ktime_get_snapshot() into the loop. If a retry does occur, a more
+recent snapshot will result in a more accurate cross-timestamp.
 
-Because vif.drv_priv is now cleared in this function, this could lead to
-driver crash.
-
-For example in ath12k, ahvif is store in vif.drv_priv. Thus if
-ath12k_mac_op_tx() is called after ieee80211_do_stop(), ahvif->ah can be
-NULL, leading the ath12k_warn(ahvif->ah,...) call in this function to
-trigger the NULL deref below.
-
-  Unable to handle kernel paging request at virtual address dfffffc000000001
-  KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-  batman_adv: bat0: Interface deactivated: brbh1337
-  Mem abort info:
-    ESR = 0x0000000096000004
-    EC = 0x25: DABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x04: level 0 translation fault
-  Data abort info:
-    ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-    CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-    GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-  [dfffffc000000001] address between user and kernel address ranges
-  Internal error: Oops: 0000000096000004 [#1] SMP
-  CPU: 1 UID: 0 PID: 978 Comm: lbd Not tainted 6.13.0-g633f875b8f1e #114
-  Hardware name: HW (DT)
-  pstate: 10000005 (nzcV daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k]
-  lr : ath12k_mac_op_tx+0x174/0x29b8 [ath12k]
-  sp : ffffffc086ace450
-  x29: ffffffc086ace450 x28: 0000000000000000 x27: 1ffffff810d59ca4
-  x26: ffffff801d05f7c0 x25: 0000000000000000 x24: 000000004000001e
-  x23: ffffff8009ce4926 x22: ffffff801f9c0800 x21: ffffff801d05f7f0
-  x20: ffffff8034a19f40 x19: 0000000000000000 x18: ffffff801f9c0958
-  x17: ffffff800bc0a504 x16: dfffffc000000000 x15: ffffffc086ace4f8
-  x14: ffffff801d05f83c x13: 0000000000000000 x12: ffffffb003a0bf03
-  x11: 0000000000000000 x10: ffffffb003a0bf02 x9 : ffffff8034a19f40
-  x8 : ffffff801d05f818 x7 : 1ffffff0069433dc x6 : ffffff8034a19ee0
-  x5 : ffffff801d05f7f0 x4 : 0000000000000000 x3 : 0000000000000001
-  x2 : 0000000000000000 x1 : dfffffc000000000 x0 : 0000000000000008
-  Call trace:
-   ath12k_mac_op_tx+0x6cc/0x29b8 [ath12k] (P)
-   ieee80211_handle_wake_tx_queue+0x16c/0x260
-   ieee80211_queue_skb+0xeec/0x1d20
-   ieee80211_tx+0x200/0x2c8
-   ieee80211_xmit+0x22c/0x338
-   __ieee80211_subif_start_xmit+0x7e8/0xc60
-   ieee80211_subif_start_xmit+0xc4/0xee0
-   __ieee80211_subif_start_xmit_8023.isra.0+0x854/0x17a0
-   ieee80211_subif_start_xmit_8023+0x124/0x488
-   dev_hard_start_xmit+0x160/0x5a8
-   __dev_queue_xmit+0x6f8/0x3120
-   br_dev_queue_push_xmit+0x120/0x4a8
-   __br_forward+0xe4/0x2b0
-   deliver_clone+0x5c/0xd0
-   br_flood+0x398/0x580
-   br_dev_xmit+0x454/0x9f8
-   dev_hard_start_xmit+0x160/0x5a8
-   __dev_queue_xmit+0x6f8/0x3120
-   ip6_finish_output2+0xc28/0x1b60
-   __ip6_finish_output+0x38c/0x638
-   ip6_output+0x1b4/0x338
-   ip6_local_out+0x7c/0xa8
-   ip6_send_skb+0x7c/0x1b0
-   ip6_push_pending_frames+0x94/0xd0
-   rawv6_sendmsg+0x1a98/0x2898
-   inet_sendmsg+0x94/0xe0
-   __sys_sendto+0x1e4/0x308
-   __arm64_sys_sendto+0xc4/0x140
-   do_el0_svc+0x110/0x280
-   el0_svc+0x20/0x60
-   el0t_64_sync_handler+0x104/0x138
-   el0t_64_sync+0x154/0x158
-
-To avoid that, empty vif's txq at ieee80211_do_stop() so no packet could
-be dequeued after ieee80211_do_stop() (new packets cannot be queued
-because SDATA_STATE_RUNNING is cleared at this point).
-
-Fixes: ba8c3d6f16a1 ("mac80211: add an intermediate software queue implementation")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Link: https://patch.msgid.link/ff7849e268562456274213c0476e09481a48f489.1742833382.git.repk@triplefau.lt
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/iface.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 8861f63e2cfb9..fc60e80088a38 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -688,6 +688,9 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		ieee80211_txq_remove_vlan(local, sdata);
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 097a481e6b73d..adb31cccaf9a5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -980,16 +980,16 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
+ 	int err, count = 100;
+ 	ktime_t t1, t2_curr;
  
-+	if (sdata->vif.txq)
-+		ieee80211_txq_purge(sdata->local, to_txq_info(sdata->vif.txq));
+-	/* Get a snapshot of system clocks to use as historic value. */
+-	ktime_get_snapshot(&adapter->snapshot);
+-
++	/* Doing this in a loop because in the event of a
++	 * badly timed (ha!) system clock adjustment, we may
++	 * get PTM errors from the PCI root, but these errors
++	 * are transitory. Repeating the process returns valid
++	 * data eventually.
++	 */
+ 	do {
+-		/* Doing this in a loop because in the event of a
+-		 * badly timed (ha!) system clock adjustment, we may
+-		 * get PTM errors from the PCI root, but these errors
+-		 * are transitory. Repeating the process returns valid
+-		 * data eventually.
+-		 */
++		/* Get a snapshot of system clocks to use as historic value. */
++		ktime_get_snapshot(&adapter->snapshot);
 +
- 	sdata->bss = NULL;
+ 		igc_ptm_trigger(hw);
  
- 	if (local->open_count == 0)
+ 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
 -- 
 2.39.5
 
