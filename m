@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CA6A9904F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE65A98E6D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B76AA8E4C43
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3516E4452FD
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA96828CF48;
-	Wed, 23 Apr 2025 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0FF18DB17;
+	Wed, 23 Apr 2025 14:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBD4abaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vj9iLQcf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0514284685;
-	Wed, 23 Apr 2025 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13E1175BF;
+	Wed, 23 Apr 2025 14:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420716; cv=none; b=V/AVbI7sXBleSfUyVZyv11A5ndoUpTQs5hTYPQfFo9q1dU+gFx2KCGQzvSKBF6lKaczlkwyIAL5RYGGLJbWH5A7sRQt6ETXpm48ZiN4XcENqRyGjOoAu6EcZ2K4pHeq0to59PHmNeVrUkj2wU6ug937ns15D7XtFsRZDnaPqLWo=
+	t=1745420069; cv=none; b=FWve/WnYdZm/4cu24/g4r8b2jf0fuY78/5G7VncDNu++H9fekTovQPoBopzEDfFMkCHwHs4BkeTtmGCr/1q9t4kZ4ADoVwAYd4ibZVvrhw/9ZThwUmjAWBP/OJGXSybd9AQwwzFMOEdw19Gf5KNEF4jqH03psjg5KpEvLeiSEPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420716; c=relaxed/simple;
-	bh=rfJ4PneyYTpiI8GWTTKYUTfijsM5WNxef8AS6wVdCHM=;
+	s=arc-20240116; t=1745420069; c=relaxed/simple;
+	bh=QS1HXhA9So4UgQHdlfnw828MoeFzNqXlI4WUQG1q9EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9ZAV0hZDqftJgUycd55SC1d9je/p3m3z6k56bBTLhHvcrjk9GGoZJz7KdKFHqYRHyqIAqHRiUOm8XU14yZ4LS/6ZQN8/Zgs0XV1XnPaKgQK+RCCMs3FlOToVSfj7OyeSekZk1oOhmmmkMyCl1CO+KMpa/g87CRBvTfEDkK2R6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBD4abaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C32C4CEE2;
-	Wed, 23 Apr 2025 15:05:16 +0000 (UTC)
+	 MIME-Version; b=XRZDWE54qjEBsqWYs7JcGbh/GmqqjJL+4k+X9I/KCtoAKJDqy3SjUPS9TkN9IMptvV74aCI5RD4z5pqJ90nwTDciqjc20urFoszsvYFpN8aYPZUL30Z3p03owN9mnjmP7vgKNwkOeEdfRkloSnAOFt8+HTHTL0w9Qi1+fI3SWaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vj9iLQcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F5AC4CEE2;
+	Wed, 23 Apr 2025 14:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420716;
-	bh=rfJ4PneyYTpiI8GWTTKYUTfijsM5WNxef8AS6wVdCHM=;
+	s=korg; t=1745420068;
+	bh=QS1HXhA9So4UgQHdlfnw828MoeFzNqXlI4WUQG1q9EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBD4abaVQ0beiKNp7mKSGzN9dY+GHyPYiEiTqqxZnr7+9y/vg3Xzqu1Km11LhPb5W
-	 gWLIVtjIHyT6wiIbarzWg4csVkQuYhDFnvcAkC1w0ar4geF/vdoRZOQrT6oEkvQnX5
-	 mFwtffx+YHsydI/8ZRJOayfycZOBfCu1rVUEJyzU=
+	b=Vj9iLQcf3ESpjJ1nyX74gxj4DMcIx89oIsJ8sq9UbQHjOtO2shTSKMq3YX1pp/8HB
+	 +PrA5AbUIn3ZVLKUEj5WlO16BB3/eD71d9jqCKX07MO6nMVIo8SN/wDDHKxJzPee/K
+	 h1EHQ4LKrlco6QT7QMoSkIULbluLn2SFV93cjsi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Octavian Purdila <tavip@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/393] drm/mediatek: mtk_dpi: Explicitly manage TVD clock in power on/off
-Date: Wed, 23 Apr 2025 16:40:02 +0200
-Message-ID: <20250423142647.663326457@linuxfoundation.org>
+Subject: [PATCH 6.1 014/291] net_sched: sch_sfq: move the limit validation
+Date: Wed, 23 Apr 2025 16:40:03 +0200
+Message-ID: <20250423142624.989277295@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Octavian Purdila <tavip@google.com>
 
-[ Upstream commit 473c33f5ce651365468503c76f33158aaa1c7dd2 ]
+[ Upstream commit b3bf8f63e6179076b57c9de660c9f80b5abefe70 ]
 
-In preparation for adding support for MT8195's HDMI reserved
-DPI, add calls to clk_prepare_enable() / clk_disable_unprepare()
-for the TVD clock: in this particular case, the aforementioned
-clock is not (and cannot be) parented to neither pixel or engine
-clocks hence it won't get enabled automatically by the clock
-framework.
+It is not sufficient to directly validate the limit on the data that
+the user passes as it can be updated based on how the other parameters
+are changed.
 
-Please note that on all of the currently supported MediaTek
-platforms, the TVD clock is always a parent of either pixel or
-engine clocks, and this means that the common clock framework
-is already enabling this clock before the children.
-On such platforms, this commit will only increase the refcount
-of the TVD clock without any functional change.
+Move the check at the end of the configuration update process to also
+catch scenarios where the limit is indirectly updated, for example
+with the following configurations:
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-10-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
+tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 divisor 1
+
+This fixes the following syzkaller reported crash:
+
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:6
+index 65535 is out of range for type 'struct sfq_head[128]'
+CPU: 1 UID: 0 PID: 3037 Comm: syz.2.16 Not tainted 6.14.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x201/0x300 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0xf5/0x120 lib/ubsan.c:429
+ sfq_link net/sched/sch_sfq.c:203 [inline]
+ sfq_dec+0x53c/0x610 net/sched/sch_sfq.c:231
+ sfq_dequeue+0x34e/0x8c0 net/sched/sch_sfq.c:493
+ sfq_reset+0x17/0x60 net/sched/sch_sfq.c:518
+ qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
+ tbf_reset+0x41/0x110 net/sched/sch_tbf.c:339
+ qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
+ dev_reset_queue+0x100/0x1b0 net/sched/sch_generic.c:1311
+ netdev_for_each_tx_queue include/linux/netdevice.h:2590 [inline]
+ dev_deactivate_many+0x7e5/0xe70 net/sched/sch_generic.c:1375
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/sched/sch_sfq.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index e4a3bd3989d8a..54fc3f819577e 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -471,6 +471,7 @@ static void mtk_dpi_power_off(struct mtk_dpi *dpi)
- 
- 	mtk_dpi_disable(dpi);
- 	clk_disable_unprepare(dpi->pixel_clk);
-+	clk_disable_unprepare(dpi->tvd_clk);
- 	clk_disable_unprepare(dpi->engine_clk);
- }
- 
-@@ -487,6 +488,12 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 		goto err_refcount;
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index 68e909e8fabd9..002941d35b643 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -661,10 +661,6 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		if (!p)
+ 			return -ENOMEM;
  	}
+-	if (ctl->limit == 1) {
+-		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
+-		return -EINVAL;
+-	}
  
-+	ret = clk_prepare_enable(dpi->tvd_clk);
-+	if (ret) {
-+		dev_err(dpi->dev, "Failed to enable tvd pll: %d\n", ret);
-+		goto err_engine;
+ 	sch_tree_lock(sch);
+ 
+@@ -705,6 +701,12 @@ static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
+ 		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
+ 		maxflows = min_t(u32, maxflows, limit);
+ 	}
++	if (limit == 1) {
++		sch_tree_unlock(sch);
++		kfree(p);
++		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
++		return -EINVAL;
 +	}
-+
- 	ret = clk_prepare_enable(dpi->pixel_clk);
- 	if (ret) {
- 		dev_err(dpi->dev, "Failed to enable pixel clock: %d\n", ret);
-@@ -496,6 +503,8 @@ static int mtk_dpi_power_on(struct mtk_dpi *dpi)
- 	return 0;
  
- err_pixel:
-+	clk_disable_unprepare(dpi->tvd_clk);
-+err_engine:
- 	clk_disable_unprepare(dpi->engine_clk);
- err_refcount:
- 	dpi->refcount--;
+ 	/* commit configuration */
+ 	q->limit = limit;
 -- 
 2.39.5
 
