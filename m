@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-135822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B319FA9908F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD0DA98EBF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91DD11BA0390
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD66817A8E2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7AA28A1D5;
-	Wed, 23 Apr 2025 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFD5280CEA;
+	Wed, 23 Apr 2025 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hscYIbPQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5UBgQrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A44628A1CF;
-	Wed, 23 Apr 2025 15:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAD6280CCD;
+	Wed, 23 Apr 2025 14:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420934; cv=none; b=H4Rk9fnzejMQq0Jh61TdK2l1HwNuZ3TfLInBlnAP75wyo9utZQCX3TWxXBbeBA2BkAtSuv7jo51ZFGQqy0qaP1LH/SVLx3h41ohkCBj4nEc0JKraxwQDurPeRSdBOuuSfgmU0My6KQXedHiOfgQCjaXC2YkK9rH/eBrCN6qw3yc=
+	t=1745420226; cv=none; b=MYO7RyVmDUibUsfRfYLxMA3Ts1bzhcrt1l5YbT+as+5NXht/q8aL1oLU6sCTQqIMTu0jKSklXWdj/UCXT98EzDCzNnT0NhUeklujv7YC3W9H7aJpBlIsvNwwiid58aCS1D/pgsfmtD+0uO/FDJRytKejPBUVERTen3DXtLwfeJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420934; c=relaxed/simple;
-	bh=os7KqS6dqVWxn2JFj9MFOZa/wsas/n0WTQKfYWohwa8=;
+	s=arc-20240116; t=1745420226; c=relaxed/simple;
+	bh=fREVIJtKqWJsQjEJ9GP5yujG35tZXlEvX9i3PLjfnKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htH7iuUJFddtBqQMZaZ2bkEI/WLPQm1pGNKr1kA7PV1z4hWzeGrlyd0JZU1KQQjwKaXefakUclL8y0Ub/c6HeJ+yjcC3zVbF7oqFxhtEFP4p0gwn0sqBn3/cbl4uPuthG9uIvhWMnlV3ZM6fkyGpHtnVRkLVCgIsx8HcwGbeWhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hscYIbPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0431C4CEE2;
-	Wed, 23 Apr 2025 15:08:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eju3xOkINqjKj8KsbiGjb8l8qGzZ4rFlxq/R9V3Xhc8H2MjpQxpzmYZwRRYe40+dFRQlDlagSYu38FiIoySPT9PDMXLxeNfcgSoJqyoSytOP986fp9yjed1rkbqYD6Au02J7JzgXQK6LPpX5LhRtufKjrgDRiDdK0Eo06MmLLXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5UBgQrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC58C4CEEB;
+	Wed, 23 Apr 2025 14:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420934;
-	bh=os7KqS6dqVWxn2JFj9MFOZa/wsas/n0WTQKfYWohwa8=;
+	s=korg; t=1745420226;
+	bh=fREVIJtKqWJsQjEJ9GP5yujG35tZXlEvX9i3PLjfnKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hscYIbPQ5VQJbjrEpfvQIMhefcawQkrwD0WoM1oxTPa0ngr0gn+HNhyqH82LvcCHq
-	 1Z4IzAk65LsUWjx3YAHriKkNo/eq7g3YH7yLtev8C8oedahZei/r1nCSIfn6F37HkQ
-	 hc/xmmGcipeZplCrwX8idl+QNVtJBowYiaMcL+LM=
+	b=w5UBgQrkq5iaP0j0U1wHOC0e9Dp7X3/biN6SjgATFbmDUnBYd4wFFrRGOAab2KQft
+	 QQnTlY1QBI7RjDTk2LYnlyVKKHUurtwqWS1sHN99A/YNTw9b4BTyqaqqVgm/fw9ALK
+	 MNUWBMj8DTYnWvCjuCOFXk2QB0tkCR5mBUdjwqjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alexandre Courbot <acourbot@google.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 121/393] media: mtk-vcodec: venc: avoid -Wenum-compare-conditional warning
+	Nolan Nicholson <nolananicholson@gmail.com>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/291] HID: pidff: Fix null pointer dereference in pidff_find_fields
 Date: Wed, 23 Apr 2025 16:40:17 +0200
-Message-ID: <20250423142648.365505240@linuxfoundation.org>
+Message-ID: <20250423142625.550259232@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Tomasz Pakuła <forest10pl@gmail.com>
 
-commit 07df4f23ef3ffe6fee697cd2e03623ad27108843 upstream.
+[ Upstream commit 22a05462c3d0eee15154faf8d13c49e6295270a5 ]
 
-This is one of three clang warnings about incompatible enum types
-in a conditional expression:
+This function triggered a null pointer dereference if used to search for
+a report that isn't implemented on the device. This happened both for
+optional and required reports alike.
 
-drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c:597:29: error: conditional expression between different enumeration types ('enum scp_ipi_id' and 'enum ipi_id') [-Werror,-Wenum-compare-conditional]
-  597 |         inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-      |                                    ^ ~~~~~~~~~~~~~~~~~   ~~~~~~~~~~~~~
+The same logic was applied to pidff_find_special_field and although
+pidff_init_fields should return an error earlier if one of the required
+reports is missing, future modifications could change this logic and
+resurface this possible null pointer dereference again.
 
-The code is correct, so just rework it to avoid the warning.
+LKML bug report:
+https://lore.kernel.org/all/CAL-gK7f5=R0nrrQdPtaZZr1fd-cdAMbDMuZ_NLA8vM0SX+nGSw@mail.gmail.com
 
-Fixes: 0dc4b3286125 ("media: mtk-vcodec: venc: support SCP firmware")
-Cc: stable@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Alexandre Courbot <acourbot@google.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Nolan Nicholson <nolananicholson@gmail.com>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/usbhid/hid-pidff.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc/venc_h264_if.c
-@@ -594,7 +594,11 @@ static int h264_enc_init(struct mtk_vcod
- 
- 	inst->ctx = ctx;
- 	inst->vpu_inst.ctx = ctx;
--	inst->vpu_inst.id = is_ext ? SCP_IPI_VENC_H264 : IPI_VENC_H264;
-+	if (is_ext)
-+		inst->vpu_inst.id = SCP_IPI_VENC_H264;
-+	else
-+		inst->vpu_inst.id = IPI_VENC_H264;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index a01c1b2ab2f4c..26cb331b646ca 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -770,6 +770,11 @@ static void pidff_set_autocenter(struct input_dev *dev, u16 magnitude)
+ static int pidff_find_fields(struct pidff_usage *usage, const u8 *table,
+ 			     struct hid_report *report, int count, int strict)
+ {
++	if (!report) {
++		pr_debug("pidff_find_fields, null report\n");
++		return -1;
++	}
 +
- 	inst->hw_base = mtk_vcodec_get_reg_addr(inst->ctx->dev->reg_base, VENC_SYS);
+ 	int i, j, k, found;
  
- 	ret = vpu_enc_init(&inst->vpu_inst);
+ 	for (k = 0; k < count; k++) {
+@@ -883,6 +888,11 @@ static int pidff_reports_ok(struct pidff_device *pidff)
+ static struct hid_field *pidff_find_special_field(struct hid_report *report,
+ 						  int usage, int enforce_min)
+ {
++	if (!report) {
++		pr_debug("pidff_find_special_field, null report\n");
++		return NULL;
++	}
++
+ 	int i;
+ 
+ 	for (i = 0; i < report->maxfield; i++) {
+-- 
+2.39.5
+
 
 
 
