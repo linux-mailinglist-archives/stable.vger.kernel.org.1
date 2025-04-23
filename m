@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-135486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B7A98E43
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 258C9A98E9D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:57:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E022A7ABA36
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB15F1B84146
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A3023D298;
-	Wed, 23 Apr 2025 14:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D9127D763;
+	Wed, 23 Apr 2025 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c6O8wjrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+9ia4g3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E90227A12D;
-	Wed, 23 Apr 2025 14:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBE3481CD;
+	Wed, 23 Apr 2025 14:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420050; cv=none; b=QS4gp/0dotVRUmqc9IaqCpxJLrTW4T/RfNbFMTgpdiIlJ/EwBLBw57BW5kYv7GNmqSlvjjDWOkIm6xrzS5rPvcnhFFuzF8seTFLNoONoCtYF3W7q1kLSX9JK+FEVj//VXONFdsiJNs6Eo5RhpfzS8MqlWREl8r1tX+FQFzirJxI=
+	t=1745420063; cv=none; b=pR8+7a7EWC7kRnCFofu0Z1UlWJBIL7RXU0xjVHyWDTiyrwgJOMycIk2dKBfjyk8L33oPSdiNsiogh1JseyvHDBTDBecX7zIjck5wtTQU8CdD4HXP7OPk/4La5j5obMptGabhriykTW9GHbBPGPUdQgyFg6zsO2gfC/KWb8O2tms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420050; c=relaxed/simple;
-	bh=bNgILPOLyKqqVprf77Hfd2k9H1L0ZE0l2kFfjyMGRs8=;
+	s=arc-20240116; t=1745420063; c=relaxed/simple;
+	bh=4lI7BiKDbnVHrKleRdhNrV/rKKpKohdMYK7ndp+Rngg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3gpEh953FS74v3rOea0Py/JT9YslOM2HPlGiBaqe9tQ5xbMyAQHMlfn4sVd26faNvIBArJKMXjjYxvVmjWSHZ0vTViDpW3G6+RqmIDvFXRDxVbUcXeO7PYM0kg8+LNEvBA2a3C+kC2NT1Gu0pF89LAhzBDTM2SeWpjRrfd6jBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c6O8wjrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E2DC4CEE2;
-	Wed, 23 Apr 2025 14:54:09 +0000 (UTC)
+	 MIME-Version; b=BzPohO0V+YwI8kb0flyBWMPZw4rE0LhtK+u1tG2hJSHZf0l60mVoLnLI5eRmiwSa6BcGwi3B1YVR738v/5kwzKIqDGvtRGcJVq96RJG3pFaZExk5G4unYhr8tZT4iqVUI3miO7OuVqIfhkkETJYPxpvVfPmIkHqaQxT50+IWKrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+9ia4g3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C98B0C4CEE2;
+	Wed, 23 Apr 2025 14:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420050;
-	bh=bNgILPOLyKqqVprf77Hfd2k9H1L0ZE0l2kFfjyMGRs8=;
+	s=korg; t=1745420063;
+	bh=4lI7BiKDbnVHrKleRdhNrV/rKKpKohdMYK7ndp+Rngg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c6O8wjrpnd4aoUCDWxc200lpScycJrSvdqWnSHFUcTPMDlK73n5xiPDPVvoFo8KxE
-	 +xIimOWBBabUcaYP6PgWTxqWHkuh8ujD1pA+R2t9TUZR6lEdo4tFUw//ChjUWk8U6N
-	 MBLkHcJj5gZLzlKPydbZRaLd1zvosrxQEUcShkFQ=
+	b=b+9ia4g3p2BZdZzQ7lrljQXQnrokGuzHHWg3kzePZ9KoHRZWXYK5DvXYDOjZRxxuh
+	 Qoxq3JJI1ZNBK3ik8FRmM4RCmV4Xfwl5zdVYxKFnlOceJ4E+/aORKpBV/Gt4Ab+KOU
+	 D+tCDUbIfFe1dr/fUx4C8Dm1r4lKVWaGpXxphgqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 055/241] net: ngbe: fix memory leak in ngbe_probe() error path
-Date: Wed, 23 Apr 2025 16:41:59 +0200
-Message-ID: <20250423142622.755100280@linuxfoundation.org>
+Subject: [PATCH 6.14 056/241] octeontx2-pf: handle otx2_mbox_get_rsp errors
+Date: Wed, 23 Apr 2025 16:42:00 +0200
+Message-ID: <20250423142622.795902383@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
 References: <20250423142620.525425242@linuxfoundation.org>
@@ -68,51 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 88fa80021b77732bc98f73fb69d69c7cc37b9f0d ]
+[ Upstream commit 688abe1027d00b7d4b2ce2d8764a2ae5ec6d250b ]
 
-When ngbe_sw_init() is called, memory is allocated for wx->rss_key
-in wx_init_rss_key(). However, in ngbe_probe() function, the subsequent
-error paths after ngbe_sw_init() don't free the rss_key. Fix that by
-freeing it in error path along with wx->mac_table.
+Adding error pointer check after calling otx2_mbox_get_rsp().
 
-Also change the label to which execution jumps when ngbe_sw_init()
-fails, because otherwise, it could lead to a double free for rss_key,
-when the mac_table allocation fails in wx_sw_init().
+This is similar to the commit bd3110bc102a
+("octeontx2-pf: handle otx2_mbox_get_rsp errors in otx2_flows.c").
 
-Fixes: 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250412154927.25908-1-abdun.nihaal@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: 6c40ca957fe5 ("octeontx2-pf: Adds TC offload support")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250412183327.3550970-1-chenyuan0y@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/rep.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index 53aeae2f884b0..1be2a5cc4a83c 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -607,7 +607,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- 	/* setup the private structure */
- 	err = ngbe_sw_init(wx);
- 	if (err)
--		goto err_free_mac_table;
-+		goto err_pci_release_regions;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+index 04e08e06f30ff..7153a71dfc860 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
+@@ -67,6 +67,8 @@ static int rvu_rep_mcam_flow_init(struct rep_dev *rep)
  
- 	/* check if flash load is done after hw power up */
- 	err = wx_check_flash_load(wx, NGBE_SPI_ILDR_STATUS_PERST);
-@@ -701,6 +701,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- err_clear_interrupt_scheme:
- 	wx_clear_interrupt_scheme(wx);
- err_free_mac_table:
-+	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
- err_pci_release_regions:
- 	pci_release_selected_regions(pdev,
+ 		rsp = (struct npc_mcam_alloc_entry_rsp *)otx2_mbox_get_rsp
+ 			(&priv->mbox.mbox, 0, &req->hdr);
++		if (IS_ERR(rsp))
++			goto exit;
+ 
+ 		for (ent = 0; ent < rsp->count; ent++)
+ 			rep->flow_cfg->flow_ent[ent + allocated] = rsp->entry_list[ent];
 -- 
 2.39.5
 
