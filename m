@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-135506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC71A98EB0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F687A9903F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 954171B810F6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:55:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DBCE1BA148F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F8228137D;
-	Wed, 23 Apr 2025 14:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5999928D85D;
+	Wed, 23 Apr 2025 15:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jb2DfwI9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPDfpiSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7727281375;
-	Wed, 23 Apr 2025 14:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120C4288CBD;
+	Wed, 23 Apr 2025 15:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420102; cv=none; b=KPqacp5mRv4Ge2KfYcz6LttrvDdcO1ZdqaNJg3U3PggwN2BLz4yj/jAirOBTBp5RPVPrabF8MmZwf1g8O4ooYKO7Z90AjdZibOAT4azbYIPIxVgiULJ/r+6PN8r0EilIQjjJb7nS5V9NFBYb3kQ09ZD/xjJ1M6BeA/FNQvLZY8Y=
+	t=1745420775; cv=none; b=aonQByjgi7OxQiT2kGbRpkKHFJpvvkCgZXMpNEwFIZGcNShGCGkwAOMU69OlBd168T6h+20/EEG6pGDNVXbfsw5kgJV8iHAOoVg41gWByEVFeOgTXo5zjFjjLCbcdNM39W6Fpr/fIJNu0vmQ2z5ZPLAuwcoGfngfgh8qARFLl20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420102; c=relaxed/simple;
-	bh=9ldwXaH3bFmuFCE3dB2GtedtmCjjiTi5nWX9TThtuf8=;
+	s=arc-20240116; t=1745420775; c=relaxed/simple;
+	bh=ru1NkOPg1aGUnF/DCE8DU4yFcbe/kXxbASca1luvRMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOhchJEjSSIFOX8PHhY4A0f2fdM9DvqusQ+95ksr5rO6HA/2RxE9eRtoGoKcW+NrgO2ci64iGlEfMiT33rH+NFlmfOsfsWvlbT7r0dqKtSeuZmiNOIiJGwvFkrggPSzUOPjdSLIkAuRs9Q+p79fHbBVsR0ctdRM/wABr/DkNnXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jb2DfwI9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A47EC4CEE8;
-	Wed, 23 Apr 2025 14:55:02 +0000 (UTC)
+	 MIME-Version; b=Uc01kI+sQfDv77B3depspJGhALyPiHElegS4O6lzQwDC99S6dCLM5CIYSC3ahDx0vdHidntn/EIOIapOWs0WnKIeJkb1PLGStt/2BSb3EfKGUGUNnlZ7Cv0txmiG+yR9KHkqEnKwXtW9HPDDEt970Pd5ROwG9mcw/gB/fhHO1EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPDfpiSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CAFC4CEE3;
+	Wed, 23 Apr 2025 15:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420102;
-	bh=9ldwXaH3bFmuFCE3dB2GtedtmCjjiTi5nWX9TThtuf8=;
+	s=korg; t=1745420774;
+	bh=ru1NkOPg1aGUnF/DCE8DU4yFcbe/kXxbASca1luvRMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jb2DfwI91fzg9QbwsNKl3EdxaJFzm3CE/w6ViI8MyOfMbhrcPlVwNBoejLHjEP+Ks
-	 aFr+uHvzVxDBIJmc+47RfE+Q0EEewaLqhXbOtqnO7s4sNe4BkLA7P+6/EqdREKZWF+
-	 RLrN4QBuLwBgbfmO2WRiocsoBK5LLsBuniYCW7jI=
+	b=JPDfpiSI6zW/NGLEjELgrz/g1sybknygazgqMFBnezMF5Zj5l7MzBaBpMngXUtvry
+	 TvR/I7v0aD7rt7WsztRPTCDcFSkzCxZ7cVAs3P/khurYGPCdrfFfCcpPyHMmt0lpIQ
+	 jPkFWB4Y5fiAoK8ZrHsaOrJzYmxTnLpbRkJz0eWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sontu mazumdar <sontu21@gmail.com>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/291] nft_set_pipapo: fix incorrect avx2 match of 5th field octet
-Date: Wed, 23 Apr 2025 16:40:06 +0200
-Message-ID: <20250423142625.108898714@linuxfoundation.org>
+Subject: [PATCH 6.6 111/393] tracing: probe-events: Add comments about entry data storing code
+Date: Wed, 23 Apr 2025 16:40:07 +0200
+Message-ID: <20250423142647.951415441@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit e042ed950d4e176379ba4c0722146cd96fb38aa2 ]
+[ Upstream commit bb9c6020f4c3a07a90dc36826cb5fbe83f09efd5 ]
 
-Given a set element like:
+Add comments about entry data storing code to __store_entry_arg() and
+traceprobe_get_entry_data_size(). These are a bit complicated because of
+building the entry data storing code and scanning it.
 
-	icmpv6 . dead:beef:00ff::1
+This just add comments, no behavior change.
 
-The value of 'ff' is irrelevant, any address will be matched
-as long as the other octets are the same.
+Link: https://lore.kernel.org/all/174061715004.501424.333819546601401102.stgit@devnote2/
 
-This is because of too-early register clobbering:
-ymm7 is reloaded with new packet data (pkt[9])  but it still holds data
-of an earlier load that wasn't processed yet.
-
-The existing tests in nft_concat_range.sh selftests do exercise this code
-path, but do not trigger incorrect matching due to the network prefix
-limitation.
-
-Fixes: 7400b063969b ("nft_set_pipapo: Introduce AVX2-based lookup implementation")
-Reported-by: sontu mazumdar <sontu21@gmail.com>
-Closes: https://lore.kernel.org/netfilter/CANgxkqwnMH7fXra+VUfODT-8+qFLgskq3set1cAzqqJaV4iEZg@mail.gmail.com/T/#t
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/all/20250226102223.586d7119@gandalf.local.home/
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace_probe.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index b8d3c3213efee..c15db28c5ebc4 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -994,8 +994,9 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(5, lt,  8,  pkt[8], bsize);
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 8c73156a7eb94..606190239c877 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -769,6 +769,10 @@ static int check_prepare_btf_string_fetch(char *typename,
  
- 		NFT_PIPAPO_AVX2_AND(6, 2, 3);
-+		NFT_PIPAPO_AVX2_AND(3, 4, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(7, lt,  9,  pkt[9], bsize);
--		NFT_PIPAPO_AVX2_AND(0, 4, 5);
-+		NFT_PIPAPO_AVX2_AND(0, 3, 5);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(1, lt, 10, pkt[10], bsize);
- 		NFT_PIPAPO_AVX2_AND(2, 6, 7);
- 		NFT_PIPAPO_AVX2_BUCKET_LOAD8(3, lt, 11, pkt[11], bsize);
+ #ifdef CONFIG_HAVE_FUNCTION_ARG_ACCESS_API
+ 
++/*
++ * Add the entry code to store the 'argnum'th parameter and return the offset
++ * in the entry data buffer where the data will be stored.
++ */
+ static int __store_entry_arg(struct trace_probe *tp, int argnum)
+ {
+ 	struct probe_entry_arg *earg = tp->entry_arg;
+@@ -792,6 +796,20 @@ static int __store_entry_arg(struct trace_probe *tp, int argnum)
+ 		tp->entry_arg = earg;
+ 	}
+ 
++	/*
++	 * The entry code array is repeating the pair of
++	 * [FETCH_OP_ARG(argnum)][FETCH_OP_ST_EDATA(offset of entry data buffer)]
++	 * and the rest of entries are filled with [FETCH_OP_END].
++	 *
++	 * To reduce the redundant function parameter fetching, we scan the entry
++	 * code array to find the FETCH_OP_ARG which already fetches the 'argnum'
++	 * parameter. If it doesn't match, update 'offset' to find the last
++	 * offset.
++	 * If we find the FETCH_OP_END without matching FETCH_OP_ARG entry, we
++	 * will save the entry with FETCH_OP_ARG and FETCH_OP_ST_EDATA, and
++	 * return data offset so that caller can find the data offset in the entry
++	 * data buffer.
++	 */
+ 	offset = 0;
+ 	for (i = 0; i < earg->size - 1; i++) {
+ 		switch (earg->code[i].op) {
+@@ -825,6 +843,16 @@ int traceprobe_get_entry_data_size(struct trace_probe *tp)
+ 	if (!earg)
+ 		return 0;
+ 
++	/*
++	 * earg->code[] array has an operation sequence which is run in
++	 * the entry handler.
++	 * The sequence stopped by FETCH_OP_END and each data stored in
++	 * the entry data buffer by FETCH_OP_ST_EDATA. The FETCH_OP_ST_EDATA
++	 * stores the data at the data buffer + its offset, and all data are
++	 * "unsigned long" size. The offset must be increased when a data is
++	 * stored. Thus we need to find the last FETCH_OP_ST_EDATA in the
++	 * code array.
++	 */
+ 	for (i = 0; i < earg->size; i++) {
+ 		switch (earg->code[i].op) {
+ 		case FETCH_OP_END:
 -- 
 2.39.5
 
