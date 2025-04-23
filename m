@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-136056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D22E5A991C4
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:35:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C85EA992C3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314621B87DD2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086791BA73A3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E438D28E5F5;
-	Wed, 23 Apr 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C49128CF68;
+	Wed, 23 Apr 2025 15:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQDZ1LRt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V87e8/rP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FBF2798E3;
-	Wed, 23 Apr 2025 15:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A03B28C5AB;
+	Wed, 23 Apr 2025 15:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421539; cv=none; b=OF3oNJN4iArfFI4dU0lluAN3imMFzveTNrpI1big68fPnTYFFFFHqa4Zpy01VOeVPkIJ3zyEP3rQnYUGGInOy880sajN/13RYlKyKsPZvpxFLYUfzM5k9+DeQ5gNH33oxXKlct6qI8QQCC+i9ibPB3n18FL8vOKCBjPgEBwBWnQ=
+	t=1745421895; cv=none; b=BcOJfnOwy0vD8woMjml7tZqhl/Jeu3bbmhA9XVIRJwnW5WU9LX5cSCc1z1INhpKh62+HtPcrzPoF9S2vqG4NnR/pLonCVGwjOJZcvDmwpn1YQQgAmUWu6ipTSgo2ZeTCOehgyj30gk7lXqVbyENWt+mkCe8tCGumDE+2Z41CxBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421539; c=relaxed/simple;
-	bh=NTrhA1LC68tM7w4YInmesCQ4dRqESnYOb0Ril3YTrR0=;
+	s=arc-20240116; t=1745421895; c=relaxed/simple;
+	bh=jj4LtM9lvuUYwCEmzLmESCq7yf9H42KMsnVONV4qNTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iS34CymEgHK49Q+KydMXp2auG9ZGlPLgQzNzCNb1sgMToP+fFHvI2Q7WwaqQngGMfV7WUnBaTSQosz34WdNXJ87MM5w323d4FVbHYLKFX8oUeC8AgGaKm2V+ZlkRS8LgV71Uo3g7mBNHdrfcEXPOW+CW/e13vzjWfi5SjXieOo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQDZ1LRt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34728C4CEE3;
-	Wed, 23 Apr 2025 15:18:59 +0000 (UTC)
+	 MIME-Version; b=R7bebiia/+cNXI7WyHNlfNAvzpG4oDfMNfE40ZoMfHcuovR9VSUIQVycup6LHigXt98KahxwM5k2V7M0mO2wHiscYoyJ/2OOtgAFtlOwt5Mlp5yM3/KaH8SRivRoW7/ELF44nuwkLvd1HmahQk9n7QNOJPC+Umj9GIZA8lwCbgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V87e8/rP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EB5C4CEE2;
+	Wed, 23 Apr 2025 15:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421539;
-	bh=NTrhA1LC68tM7w4YInmesCQ4dRqESnYOb0Ril3YTrR0=;
+	s=korg; t=1745421894;
+	bh=jj4LtM9lvuUYwCEmzLmESCq7yf9H42KMsnVONV4qNTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QQDZ1LRtL1CfkpFm/GwScHOtc+kjTJVBw7Qki1uuji2muyCJbDj60quUyVqFE+8bN
-	 bmpPYNhT51+CvuzWnLgPltmByx0URdfEgPtJwhVyoDeyaFwvRd/P4bfhbgttWCj89Q
-	 hrR7m8oZ7THtr+mV+QyJL0M7jtD2Jy5Er6sfIDDg=
+	b=V87e8/rPQV9xTPrfuKhKJVtMs/QCE+6Kyc0kXzpnlVuu6FyG2rEOuK/qTaNCAI6hq
+	 f586gYmo9aGsQopv/h130zR1yb2IyCfbwTnAGMulGsvg5Y7vwP50KELX7xytLukZJT
+	 dN6CdxBW7Dmx2rfl4LYN198yUMkjybizU/pD3Uew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Washington <joshwash@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 148/291] gve: handle overflow when reporting TX consumed descriptors
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 241/393] wifi: at76c50x: fix use after free access in at76_disconnect
 Date: Wed, 23 Apr 2025 16:42:17 +0200
-Message-ID: <20250423142630.448146254@linuxfoundation.org>
+Message-ID: <20250423142653.340437892@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Washington <joshwash@google.com>
+From: Abdun Nihaal <abdun.nihaal@gmail.com>
 
-commit 15970e1b23f5c25db88c613fddf9131de086f28e upstream.
+[ Upstream commit 27c7e63b3cb1a20bb78ed4a36c561ea4579fd7da ]
 
-When the tx tail is less than the head (in cases of wraparound), the TX
-consumed descriptor statistic in DQ will be reported as
-UINT32_MAX - head + tail, which is incorrect. Mask the difference of
-head and tail according to the ring size when reporting the statistic.
+The memory pointed to by priv is freed at the end of at76_delete_device
+function (using ieee80211_free_hw). But the code then accesses the udev
+field of the freed object to put the USB device. This may also lead to a
+memory leak of the usb device. Fix this by using udev from interface.
 
-Cc: stable@vger.kernel.org
-Fixes: 2c9198356d56 ("gve: Add consumed counts to ethtool stats")
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250402001037.2717315-1-hramamurthy@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 29e20aa6c6af ("at76c50x-usb: fix use after free on failure path in at76_probe()")
+Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20250330103110.44080-1-abdun.nihaal@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_ethtool.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/atmel/at76c50x-usb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/google/gve/gve_ethtool.c
-+++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
-@@ -327,7 +327,9 @@ gve_get_ethtool_stats(struct net_device
- 				 */
- 				data[i++] = 0;
- 				data[i++] = 0;
--				data[i++] = tx->dqo_tx.tail - tx->dqo_tx.head;
-+				data[i++] =
-+					(tx->dqo_tx.tail - tx->dqo_tx.head) &
-+					tx->mask;
- 			}
- 			do {
- 				start =
+diff --git a/drivers/net/wireless/atmel/at76c50x-usb.c b/drivers/net/wireless/atmel/at76c50x-usb.c
+index 447b51cff8f96..c1a92c7f0f8e8 100644
+--- a/drivers/net/wireless/atmel/at76c50x-usb.c
++++ b/drivers/net/wireless/atmel/at76c50x-usb.c
+@@ -2554,7 +2554,7 @@ static void at76_disconnect(struct usb_interface *interface)
+ 
+ 	wiphy_info(priv->hw->wiphy, "disconnecting\n");
+ 	at76_delete_device(priv);
+-	usb_put_dev(priv->udev);
++	usb_put_dev(interface_to_usbdev(interface));
+ 	dev_info(&interface->dev, "disconnected\n");
+ }
+ 
+-- 
+2.39.5
+
 
 
 
