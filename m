@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-135762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC77A98F9C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:11:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B1DA9927B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C4A97AF651
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:10:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD284445675
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0695628DEF4;
-	Wed, 23 Apr 2025 15:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE4528FFFE;
+	Wed, 23 Apr 2025 15:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4hZLMzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/g2IgQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B842918C6;
-	Wed, 23 Apr 2025 15:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EF228FFF9;
+	Wed, 23 Apr 2025 15:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420777; cv=none; b=PO2yMYuZBWv1K8Wy+FuK2erYLxDM32JgNR520pOGgwK1qapuLzDL9aZ8DwwAES8rRJDa26CEffaEeRpOwpUuWp4ueBudLARDRCFN0fwT0jfVeVqoXIFAYuyitrcjaK/hpwq/iY97MxbNVsDFHREOTxZ1Pb49S57bPuHfziFAs8w=
+	t=1745421905; cv=none; b=ljs1q3HuqQcd9pCaLUfx3alY9pW3gJUOzay/MQb3kjflGK2JAzHC+KGyDOK78b4mveYzXEXF/4cgZZlOTBiPvn6YWTR8CYtnyxsJsuR1szlZ26JYuyts1JYXkzrbW0B0gLgcnUb2/m8H++2m3wsNm32Xf2EHoM54nU4UN5gpLbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420777; c=relaxed/simple;
-	bh=3J36967YIlkAq9gZJdd2bhTBZbAWBgCEo5HifbdAPDw=;
+	s=arc-20240116; t=1745421905; c=relaxed/simple;
+	bh=H4thESjUmxL3DwYhxJUF7a/fVplorC+ORmBQHnaxYVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMT9v3AdV1KzbwklWCxSWWw/ISG5dk4nXiNZgmI3giaAuj8QGxy0amus13NlgixyIX7Mh0XDEJcvAs8RVEYEwMoo3444gZh4eHvQfBUeFjgAkSx8oM2FnmEmpI+q9OEMeH7es2bxzANFVauJ/0DePxlMFDjDTFk9I7Mhe+SYN+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4hZLMzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43155C4CEF8;
-	Wed, 23 Apr 2025 15:06:17 +0000 (UTC)
+	 MIME-Version; b=k5ynIWSg+UvoyK0dzZxSi2X2FeJJ4VuC4eT8MJMqwoSGbE0jKirsbDNtO2L1nvDZU7uWSR6iWECSW8Udy/b7jMsH8Q/7mSy00PKjvySapaXxjrt8jAi6NoZr9LoI19iOc/xy2W7KNgajfEsG1WLchVPRE/6sUL59vgYrRepzGGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/g2IgQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27C6C4CEE8;
+	Wed, 23 Apr 2025 15:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420777;
-	bh=3J36967YIlkAq9gZJdd2bhTBZbAWBgCEo5HifbdAPDw=;
+	s=korg; t=1745421905;
+	bh=H4thESjUmxL3DwYhxJUF7a/fVplorC+ORmBQHnaxYVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4hZLMzMbJU8TgARRm6Ow48Zy6JE1WUBMut3jXT6FlZn5NjZjKW1+tNJtlpUMQya9
-	 qdjgZsCGqkxxlsxk/1DwMzTFI50e9KTA5ItouXJtvQviB2N8bqI1Pwr4aIRsPK2/6x
-	 saycueI0BwTEjWXyb4GuHm0FEON45hjdjR+ZE0sA=
+	b=f/g2IgQHG2dsIR4xUTvUDBYwublRo/0MQS6CfbXFtP+RzjWTUN4Xmgtb66+BybaWI
+	 weL4KHq3gslAwQZnNfalEHv93Yfi+BYzHVWz1YIE2FWWOppDrDFHwqgjb6+s9iFnak
+	 s5LxGEHhyDD3+6/hyYNtZDx97VAzDJvx8qn3ic4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <jdamato@fastly.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 121/241] eventpoll: Set epoll timeout if its in the future
+Subject: [PATCH 6.1 196/291] riscv: KGDB: Remove ".option norvc/.option rvc" for kgdb_compiled_break
 Date: Wed, 23 Apr 2025 16:43:05 +0200
-Message-ID: <20250423142625.524368814@linuxfoundation.org>
+Message-ID: <20250423142632.389043791@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joe Damato <jdamato@fastly.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 0a65bc27bd645894175c059397b4916e31955fb2 ]
+[ Upstream commit 550c2aa787d1b06efcb11de1877354502a1237f2 ]
 
-Avoid an edge case where epoll_wait arms a timer and calls schedule()
-even if the timer will expire immediately.
+[ Quoting Samuel Holland: ]
 
-For example: if the user has specified an epoll busy poll usecs which is
-equal or larger than the epoll_wait/epoll_pwait2 timeout, it is
-unnecessary to call schedule_hrtimeout_range; the busy poll usecs have
-consumed the entire timeout duration so it is unnecessary to induce
-scheduling latency by calling schedule() (via schedule_hrtimeout_range).
+  This is a separate issue, but using ".option rvc" here is a bug.
+  It will unconditionally enable the C extension for the rest of
+  the file, even if the kernel is being built with CONFIG_RISCV_ISA_C=n.
 
-This can be measured using a simple bpftrace script:
+[ Quoting Palmer Dabbelt: ]
 
-tracepoint:sched:sched_switch
-/ args->prev_pid == $1 /
-{
-  print(kstack());
-  print(ustack());
-}
+  We're just looking at the address of kgdb_compiled_break, so it's
+  fine if it ends up as a c.ebreak.
 
-Before this patch is applied:
+[ Quoting Alexandre Ghiti: ]
 
-  Testing an epoll_wait app with busy poll usecs set to 1000, and
-  epoll_wait timeout set to 1ms using the script above shows:
+  .option norvc is used to prevent the assembler from using compressed
+  instructions, but it's generally used when we need to ensure the
+  size of the instructions that are used, which is not the case here
+  as noted by Palmer since we only care about the address. So yes
+  it will work fine with C enabled :)
 
-     __traceiter_sched_switch+69
-     __schedule+1495
-     schedule+32
-     schedule_hrtimeout_range+159
-     do_epoll_wait+1424
-     __x64_sys_epoll_wait+97
-     do_syscall_64+95
-     entry_SYSCALL_64_after_hwframe+118
+So let's just remove them all.
 
-     epoll_wait+82
-
-  Which is unexpected; the busy poll usecs should have consumed the
-  entire timeout and there should be no reason to arm a timer.
-
-After this patch is applied: the same test scenario does not generate a
-call to schedule() in the above edge case. If the busy poll usecs are
-reduced (for example usecs: 100, epoll_wait timeout 1ms) the timer is
-armed as expected.
-
-Fixes: bf3b9f6372c4 ("epoll: Add busy poll support to epoll with socket fds.")
-Signed-off-by: Joe Damato <jdamato@fastly.com>
-Link: https://lore.kernel.org/20250416185826.26375-1-jdamato@fastly.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/mhng-69513841-5068-441d-be8f-2aeebdc56a08@palmer-ri-x1c9a/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Cc: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/8B431C6A4626225C+20250411073222.56820-2-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/kgdb.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 67d1808fda0e5..c01234bbac498 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1996,6 +1996,14 @@ static int ep_try_send_events(struct eventpoll *ep,
- 	return res;
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index b0db3350d243b..1d83b36967212 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -276,9 +276,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ noinline void arch_kgdb_breakpoint(void)
+ {
+ 	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
++	    "kgdb_compiled_break: ebreak\n");
  }
  
-+static int ep_schedule_timeout(ktime_t *to)
-+{
-+	if (to)
-+		return ktime_after(*to, ktime_get());
-+	else
-+		return 1;
-+}
-+
- /**
-  * ep_poll - Retrieves ready events, and delivers them to the caller-supplied
-  *           event buffer.
-@@ -2103,7 +2111,7 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
- 
- 		write_unlock_irq(&ep->lock);
- 
--		if (!eavail)
-+		if (!eavail && ep_schedule_timeout(to))
- 			timed_out = !schedule_hrtimeout_range(to, slack,
- 							      HRTIMER_MODE_ABS);
- 		__set_current_state(TASK_RUNNING);
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
 -- 
 2.39.5
 
