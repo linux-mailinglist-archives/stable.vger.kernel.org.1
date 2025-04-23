@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF63A9937B
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694D5A98F7D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C6179A3A59
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F39D445516
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EB4280CFF;
-	Wed, 23 Apr 2025 15:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42161EEA3E;
+	Wed, 23 Apr 2025 15:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmt2S3Fu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwM/8Gk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B92266F1E;
-	Wed, 23 Apr 2025 15:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E19280A50;
+	Wed, 23 Apr 2025 15:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422220; cv=none; b=r4QdkC6EKo1Ql3ke0SQJo2z20xP80AA9MCaYEonRcChJp/5jv6IFj7vuGCrfaQPSYZzOvP5qnH3u65wfJpDKXN7qQoW7gJgwzwo7cy9vmHSLkRhTAl7I5RZHvj69vIdv3wvQbcWWVPdAJMI0xaC7XjHk+nrU7zxWI63jl7j9VFQ=
+	t=1745420519; cv=none; b=J6DF6gmxlxsQaWIXz54WAlr7cOWxGVpB6VVqwkWogIy+X/xfAZ3cB9El+T0bqUxyTcehCacpOZImWtVRs2vW3x0+ccekz0wBFpLedmBTQxKnb3tuZ4pX5PC3TR7+W4qU8VFnGSup6j2cGBbD9GO4x8cPvZVW8Ndk+1gd03XJ6VE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422220; c=relaxed/simple;
-	bh=y/sJc+yQfMtkLYyzdS7TSf6VPrAodI6yd5d3jqW+ZnQ=;
+	s=arc-20240116; t=1745420519; c=relaxed/simple;
+	bh=X3grnDL+sWPLAirMM2dsOpYlYQ/MkxRPe7sT1lVhLSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9J2b07nkVsTte81g1b294pAoPKKP90TJDgtGK80+kg05xLo6BgoeKtMGUEs+JZDN4H/lQt9BhdTKVsQ0a9ZxBoQXY13YYHfLwikgPw64FMY8/a6b6m+XE953/FWUFIMuYyt04DpAMOZG4nNUkUz+kA4hGrCO6yDZ/Pg0lOseHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmt2S3Fu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95E5C4CEE3;
-	Wed, 23 Apr 2025 15:30:19 +0000 (UTC)
+	 MIME-Version; b=Q1E4ME3xNdTdnQBPcqLYiipO4NWC6XjSdakR6ANM3qrmP3BomZglxOvZukfRi8mwt58J42NVIalYCWFPFnSg0LjwAKE7WviprFcMvnH6z0dGTDwhUPvNzRq845C89o95HvknTGvbV2t5slsiJlPT/e+WJn7dELPan1vmpSKphgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwM/8Gk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2298C4CEE2;
+	Wed, 23 Apr 2025 15:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422220;
-	bh=y/sJc+yQfMtkLYyzdS7TSf6VPrAodI6yd5d3jqW+ZnQ=;
+	s=korg; t=1745420519;
+	bh=X3grnDL+sWPLAirMM2dsOpYlYQ/MkxRPe7sT1lVhLSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmt2S3Fu9G+u9Yiako3BKxlw5gDN+XIPUe9TLeEXTDuO4xtK1QEAdOQxDtXWtHab8
-	 7CTo0zoi7ADREvNkshW0scEnj4EZaVMT2wnl6pbJAx7SuHoUm4q+R6kiUR4McVMvWe
-	 EyR/u7lHYcu6aTzRdd+HYTuGUkwyNVnoX3cMcalw=
+	b=uwM/8Gk/xtn3UNVRsUQeY0m6ryke+YPzoWNiEpYGeSs8+mWGPy5gM/V3LlpUe4iCm
+	 D3I2zptZaRQLyELuif22vzl6m5M7+Z11R+xS6fid+D4wL5IJOooUlfoJ4DlcpvYbhV
+	 2JQEbfwTw4k+g8WwBgxtxekHBJKvKx+CUEngW7YE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 299/393] cpufreq/sched: Fix the usage of CPUFREQ_NEED_UPDATE_LIMITS
-Date: Wed, 23 Apr 2025 16:43:15 +0200
-Message-ID: <20250423142655.689461340@linuxfoundation.org>
+	Denis Arefev <arefev@swemel.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 124/223] ksmbd: Prevent integer overflow in calculation of deadtime
+Date: Wed, 23 Apr 2025 16:43:16 +0200
+Message-ID: <20250423142622.154304623@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit cfde542df7dd51d26cf667f4af497878ddffd85a ]
+commit a93ff742820f75bf8bb3fcf21d9f25ca6eb3d4c6 upstream.
 
-Commit 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused
-by need_freq_update") modified sugov_should_update_freq() to set the
-need_freq_update flag only for drivers with CPUFREQ_NEED_UPDATE_LIMITS
-set, but that flag generally needs to be set when the policy limits
-change because the driver callback may need to be invoked for the new
-limits to take effect.
+The user can set any value for 'deadtime'. This affects the arithmetic
+expression 'req->deadtime * SMB_ECHO_INTERVAL', which is subject to
+overflow. The added check makes the server behavior more predictable.
 
-However, if the return value of cpufreq_driver_resolve_freq() after
-applying the new limits is still equal to the previously selected
-frequency, the driver callback needs to be invoked only in the case
-when CPUFREQ_NEED_UPDATE_LIMITS is set (which means that the driver
-specifically wants its callback to be invoked every time the policy
-limits change).
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Update the code accordingly to avoid missing policy limits changes for
-drivers without CPUFREQ_NEED_UPDATE_LIMITS.
-
-Fixes: 8e461a1cb43d ("cpufreq: schedutil: Fix superfluous updates caused by need_freq_update")
-Closes: https://lore.kernel.org/lkml/Z_Tlc6Qs-tYpxWYb@linaro.org/
-Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://patch.msgid.link/3010358.e9J7NaK4W3@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/smb/server/transport_ipc.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index a49f136014ce6..259521b179aa1 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -83,7 +83,7 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- 
- 	if (unlikely(sg_policy->limits_changed)) {
- 		sg_policy->limits_changed = false;
--		sg_policy->need_freq_update = cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS);
-+		sg_policy->need_freq_update = true;
- 		return true;
- 	}
- 
-@@ -95,10 +95,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
- static bool sugov_update_next_freq(struct sugov_policy *sg_policy, u64 time,
- 				   unsigned int next_freq)
- {
--	if (sg_policy->need_freq_update)
-+	if (sg_policy->need_freq_update) {
- 		sg_policy->need_freq_update = false;
--	else if (sg_policy->next_freq == next_freq)
-+		/*
-+		 * The policy limits have changed, but if the return value of
-+		 * cpufreq_driver_resolve_freq() after applying the new limits
-+		 * is still equal to the previously selected frequency, the
-+		 * driver callback need not be invoked unless the driver
-+		 * specifically wants that to happen on every update of the
-+		 * policy limits.
-+		 */
-+		if (sg_policy->next_freq == next_freq &&
-+		    !cpufreq_driver_test_flags(CPUFREQ_NEED_UPDATE_LIMITS))
-+			return false;
-+	} else if (sg_policy->next_freq == next_freq) {
- 		return false;
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -310,7 +310,11 @@ static int ipc_server_config_on_startup(
+ 	server_conf.signing = req->signing;
+ 	server_conf.tcp_port = req->tcp_port;
+ 	server_conf.ipc_timeout = req->ipc_timeout * HZ;
+-	server_conf.deadtime = req->deadtime * SMB_ECHO_INTERVAL;
++	if (check_mul_overflow(req->deadtime, SMB_ECHO_INTERVAL,
++					&server_conf.deadtime)) {
++		ret = -EINVAL;
++		goto out;
 +	}
+ 	server_conf.share_fake_fscaps = req->share_fake_fscaps;
+ 	ksmbd_init_domain(req->sub_auth);
  
- 	sg_policy->next_freq = next_freq;
- 	sg_policy->last_freq_update_time = time;
--- 
-2.39.5
-
+@@ -336,6 +340,7 @@ static int ipc_server_config_on_startup(
+ 	ret |= ksmbd_set_work_group(req->work_group);
+ 	ret |= ksmbd_tcp_set_interfaces(KSMBD_STARTUP_CONFIG_INTERFACES(req),
+ 					req->ifc_list_sz);
++out:
+ 	if (ret) {
+ 		pr_err("Server configuration error: %s %s %s\n",
+ 		       req->netbios_name, req->server_string,
 
 
 
