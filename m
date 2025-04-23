@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-135716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9EE1A9903C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED0F4A992D6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6FC8E0467
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7386922C7A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C129127F755;
-	Wed, 23 Apr 2025 15:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE2C28BAA6;
+	Wed, 23 Apr 2025 15:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSphAvqe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ro3WMF5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F61D27CB12;
-	Wed, 23 Apr 2025 15:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2BA27FD49;
+	Wed, 23 Apr 2025 15:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420657; cv=none; b=lCaFkt2ibxW8iHcZ5bAswyypYsDDRzHwDFEXKxp6EcapNKzpH9WJk5jkeY88vqKhOXeNfMv/9URusAHIVGsQHMGDtszX7LGqlaaLx7jdo/Gvp4j0Y5UVuP8Bwqq496PvKe48OTQIqVvAPHMnK8Jg/y5e8h5SO46+69OXfuS/cPY=
+	t=1745421855; cv=none; b=fiyZJQay4sGuegArPeB7IQvUB4eryzKLLvwviv1OzcpB6eZNLcdGycHLBWYhigkzMvYZnDkl4M6cy9P38ALiKowVGcerWn42i6f/eawbfqgRp+ntSSVJnVJ2NHLHwrT61OR84B3UvKkKhf+AuD9N1/z3xAOGtnlYeBPZduhKAEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420657; c=relaxed/simple;
-	bh=1jDJiwgAo5D/k1M07iANLtFEcCzwOgZHM+c/bclVTuA=;
+	s=arc-20240116; t=1745421855; c=relaxed/simple;
+	bh=BJGEhW27Lr2TGVKka1wg4aV4wH0+F+J2iUfeHmLHlu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j/iGm0JfVcyUtPF6F7/gQP57wct/R6W38TodKtwWpVkx56exXQlic2w4B0AFlPFOvhX9VCXNJzh98zYULN6J5DfcXcEpysQry9LfO9QQrmzQ6RjT11ipYNeH3hBZOrFueX/Q3lhWqXuxhhqEW7ld77qLPPcriIM9uQrXHEoVyq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSphAvqe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A915CC4CEE2;
-	Wed, 23 Apr 2025 15:04:15 +0000 (UTC)
+	 MIME-Version; b=pZxkfp2LQ2J4FeHC7dOepNjV+FKxcY+WDCHyebhXTMjpRihvSBhiYut4TldW/P/z/uKNPBDoGQ3BihV6GC8ZPp+VdQ7ByPrQKgGrzF8sneX/GZUmV8EPQw68Bw12vZtRurRyw867+nFP4W99+uut6GBvNVIQwFOoF3qvKH8eShE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ro3WMF5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB022C4CEE2;
+	Wed, 23 Apr 2025 15:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420656;
-	bh=1jDJiwgAo5D/k1M07iANLtFEcCzwOgZHM+c/bclVTuA=;
+	s=korg; t=1745421855;
+	bh=BJGEhW27Lr2TGVKka1wg4aV4wH0+F+J2iUfeHmLHlu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSphAvqe3AAb0aTp8bI8eC8ZK0Xi/Ps5JsVki3WBm7OZNsNWEqY1xfEpzkyVZC0nu
-	 XkypGCG04C+/tDrbUjgOqOQBl0SkGznqkHEiOnarFEPS//E3MySBOs1YCGFly3kf2q
-	 DHbeDCfayatEPheG0gbE2n8esiDyINGEt3xcM5V4=
+	b=Ro3WMF5nRPAlbq4NwxH+RI/qfIKb4YNfoionyinFxiBTtyjIgsMq5NL26VWtyn+QA
+	 +E/NMROqmtiAaHQ+oVV7t5lL5MqNYR8/ZW5v132bJ9rKFUPGeNMmoWq5t8aKkY3vL9
+	 4/2eFL3N2tDxrFckLwbdUIgqe4QVHxcGl1EBp7RY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.14 111/241] asus-laptop: Fix an uninitialized variable
+	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 186/291] net: openvswitch: fix nested key length validation in the set() action
 Date: Wed, 23 Apr 2025 16:42:55 +0200
-Message-ID: <20250423142625.114291047@linuxfoundation.org>
+Message-ID: <20250423142631.976158633@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
+[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
 
-The value returned by acpi_evaluate_integer() is not checked,
-but the result is not always successful, so it is necessary to
-add a check of the returned value.
+It's not safe to access nla_len(ovs_key) if the data is smaller than
+the netlink header.  Check that the attribute is OK first.
 
-If the result remains negative during three iterations of the loop,
-then the uninitialized variable 'val' will be used in the clamp_val()
-macro, so it must be initialized with the current value of the 'curr'
-variable.
-
-In this case, the algorithm should be less noisy.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
+Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-laptop.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/openvswitch/flow_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -426,11 +426,14 @@ static int asus_pega_lucid_set(struct as
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 5ebbec656895e..0ed3953dbe529 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2860,7 +2860,8 @@ static int validate_set(const struct nlattr *a,
+ 	size_t key_len;
  
- static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
- {
-+	unsigned long long val = (unsigned long long)curr;
-+	acpi_status status;
- 	int i, delta;
--	unsigned long long val;
--	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
--		acpi_evaluate_integer(asus->handle, method, NULL, &val);
+ 	/* There can be only one key in a action */
+-	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
++	if (!nla_ok(ovs_key, nla_len(a)) ||
++	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
+ 		return -EINVAL;
  
-+	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
-+		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
-+		if (ACPI_FAILURE(status))
-+			continue;
- 		/* The output is noisy.  From reading the ASL
- 		 * dissassembly, timeout errors are returned with 1's
- 		 * in the high word, and the lack of locking around
+ 	key_len = nla_len(ovs_key);
+-- 
+2.39.5
+
 
 
 
