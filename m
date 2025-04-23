@@ -1,75 +1,114 @@
-Return-Path: <stable+bounces-135245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D8EA98105
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 09:33:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1C6A98137
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 09:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF70A17CE9E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 07:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E531884B38
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 07:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A177227465A;
-	Wed, 23 Apr 2025 07:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2352690C4;
+	Wed, 23 Apr 2025 07:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMgd2C/E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bdI+zYqb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4BD2741D5;
-	Wed, 23 Apr 2025 07:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85401267392
+	for <stable@vger.kernel.org>; Wed, 23 Apr 2025 07:38:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745393442; cv=none; b=doG3erJz2XroR4U+oxjNaJPkTZGuEjDJi6Mo9YqKI5cP4Op0jojXHONe9od5WHUNnoKP6mR79O6hcXGZywXl/P5LT6xNGav9awmNvqKZF1YEh+QIw7k/18pcX8wfY6aSK7ZzDgMp94zJgHgEGmKLey+iL2XbuOznUfqx124ArcI=
+	t=1745393883; cv=none; b=O5HXgoUy+oAmEfabRTm0cBNnyIFPMo6Ae+772Z1fF10IVrFQfFwog9mDFZlS/Oonwh6x63fZrdiQRO/mWd57w8i8xqUKstczjybRo8Z9dhlGngbBY8dLOuw5vni8KP2sT7N9URvYXJ7jODDnmENN3/k9JBe+xqm51hdNKSIFg4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745393442; c=relaxed/simple;
-	bh=HZRYRCV3pXnH6mdLHlJbBbonz669nVLcSkwX4WuVk9g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kzsRrM1QWlOuFaUoHpZA0AMEvyxUUJx0XCzgPwxOjF5GWGbk0qPPFvX78lBMo3E8nuK3hkVwSu0peE0ZlGihK/s+vfOsmBiYHRcXmGWFKVuV3rQW2lLAOahYjugXwTJJA8d4FmAqviU3fb4ATaVB06Z/TqLt3IDOC7BCphwGWek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMgd2C/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17AB8C4CEEF;
-	Wed, 23 Apr 2025 07:30:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745393441;
-	bh=HZRYRCV3pXnH6mdLHlJbBbonz669nVLcSkwX4WuVk9g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SMgd2C/EoxuVOUJ44YVL8CqVz2U186QceBQy1SZFk/H9Hvbb41O8RUFvb/ihIlZ1g
-	 lQ+8Cp8pJGO8mB6RgrPjfc72/xEtChIQD0af7NGc2jjqOuz0BIqaYdLi2NjfiMueAM
-	 4DjPCfOwlwomfKqROJn7MNH4R3BeBAI39Ut5HdKw=
-Date: Wed, 23 Apr 2025 09:29:02 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Yang, Zhi" <Zhi.Yang@windriver.com>
-Cc: "cem@kernel.org" <cem@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"llfamsec@gmail.com" <llfamsec@gmail.com>,
-	"He, Zhe" <Zhe.He@windriver.com>,
-	"Chen, Xiangyu" <Xiangyu.Chen@windriver.com>,
-	"amir73il@gmail.com" <amir73il@gmail.com>,
-	"djwong@kernel.org" <djwong@kernel.org>,
-	"dchinner@redhat.com" <dchinner@redhat.com>,
-	"chandanbabu@kernel.org" <chandanbabu@kernel.org>,
-	"linux-xfs@vger.kernel.org" <linux-xfs@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 5.10.y] xfs: add bounds checking to
- xlog_recover_process_data
-Message-ID: <2025042345-enable-economist-b5b6@gregkh>
-References: <20250423021325.1718990-1-Zhi.Yang@eng.windriver.com>
- <2025042340-delicate-stubbed-218e@gregkh>
- <DM6PR11MB3324E74F9DF280B6E13914619FBA2@DM6PR11MB3324.namprd11.prod.outlook.com>
+	s=arc-20240116; t=1745393883; c=relaxed/simple;
+	bh=teol8+j7T+KUdmAwLstc1ROAyK3EMfIdRvJ3znd4Gr4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r7K5wsBATc9P9PMxpY0mGpCubiqlx/J+IW/8aWY98YF1NzljoZ2MRHBMlpODBV9L5q7l2468VQci3l40D40HVEzGXK9htI7HvhvGtJBrBcwXu/P+0mPbsG0cTDbuvemp0rHi2rYHhnXTyWBvNsM9djL4mIsH5R1CDq3wVP3wao8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bdI+zYqb; arc=none smtp.client-ip=209.85.219.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-e72a786b1b8so706582276.1
+        for <stable@vger.kernel.org>; Wed, 23 Apr 2025 00:38:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745393880; x=1745998680; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=teol8+j7T+KUdmAwLstc1ROAyK3EMfIdRvJ3znd4Gr4=;
+        b=bdI+zYqbP2e6zMj7EnWNFVhdTAM/Rp29tKI7nZx40zP9VOfNqa33PdamTRNXR6p5a7
+         98sWj4/1YFvpKVt2jS8dfag2XIuBumW8yMt1Ew1RNJ3BS2aOIMs3cVa54B4oAhV0pthA
+         APB/W/i1Von9xtS/eQVlXnadrlnkRgrugbgGQwrvarkbToaq1ArlkMiKuNPoiikJ5in1
+         AnmxwSvxHI2NdsLvhdtJLcFu1yX/3Q6AFgOO2yS8PpWmIBxw9T/L82WOnQlxg1SXTj72
+         bsPi2quiUX8RgxCEZDN0w7ulOyupR2xXwGaqRkqnw/5x0H33z4dOBL6RW9SUtfPrINMr
+         +LpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745393880; x=1745998680;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=teol8+j7T+KUdmAwLstc1ROAyK3EMfIdRvJ3znd4Gr4=;
+        b=t8HI+2VIfiBQ+1gYymOd9x3YYJqA6uHoFPldj1aqQf0eDf1TuRyUIVoZFB5QKo/9CI
+         rA/72rDBb7qxFx2QomAY1SUoJRR3IRHmz0g/AsQroXdzKLoGPlAZv9eFJ0BYO20VN+AK
+         8LyRGICjYHXaAyg0uz2e+x8DGVnZnRVTKOAmeyQphEMiN3fHIOnzFlN8BTB7IIUtjhPO
+         AemNM8BNbOJWgCtZSDn4IceUlp6b008hdP2jKyD/ankO8RxR3qwBnW/nVpAavwQvNWXU
+         pNpF2r5jPDnfG7/2WIGB15j7yn2Fz92Jc09ZDZ81qquP12XW9jZ9FEbc3DQMmjmA7IvG
+         9qGg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ0wovvM9rgE0OrOm2zUra6ynu4l12v14MdBfEPbR9nQKy2N0BuE5dIQzY0FZGEx6vqcmaNgw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiBP8Pv9Z9TpXWZQ65i3nLRWh5PHIBEfKespqhGeDoXKSjOhaK
+	WF9v8Y9I2J0tnB2JLtcyoBDH7bnYbcj8cxffzMz4Hx7zo0kH0DmDoryWBpYUVohCuPoQXhLzbOw
+	ffiWMonSDH2ZxGoQcWY6bKGwqHuY=
+X-Gm-Gg: ASbGnctv8bHOBsX+rt8H9HE+2/4OzX775kttvRZVtxrG4jhBpxwEhcuPkqIlbEPH5LG
+	CYcdwyFwoHg0rd60Zne4ktLjQNRUBT6MDScofjfSZ0LLpJ2AhdBAu0GGodslAOlTfTN255UvNjc
+	wdMZYaVaeAiJ15GDlYrFPQbFXlHqiWeCrS8biM3g==
+X-Google-Smtp-Source: AGHT+IH5RrmcAdxYycNKU6x3jaRqkUSPGz0Qo8C5MXeEjk52EB/IWpIlrFx+DoZC9JfrZ1mNE7GXEaAr+yIJuok2Cc4=
+X-Received: by 2002:a05:6902:5412:b0:e72:f64c:26b4 with SMTP id
+ 3f1490d57ef6-e72f64c285emr285024276.22.1745393880324; Wed, 23 Apr 2025
+ 00:38:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM6PR11MB3324E74F9DF280B6E13914619FBA2@DM6PR11MB3324.namprd11.prod.outlook.com>
+References: <CALW65jbBY3EyRD-5vXz6w87Q+trxaod-QVy2NhVxLNcQHVw0hg@mail.gmail.com>
+ <2025042251-energize-preorder-31cd@gregkh> <CALW65jbNq76JJsa9sH2GhRzn=Fe=+bBicW8XWmcj-rzjJSjCQg@mail.gmail.com>
+ <2025042237-express-coconut-592c@gregkh> <CALW65jbEq250E1T=DpGWnP+_1QnPmfQ=q92NK8vo8n+jdqbDLg@mail.gmail.com>
+ <7bf68ddd-7204-4a8c-b7df-03ecb6aa2ad2@redhat.com> <CALW65jaLXR3rjcTZN-uojuym6uCT8pMRnTHoY_OqCWJ+Yq0ggw@mail.gmail.com>
+ <2025042256-unnerve-doorway-7cb7@gregkh>
+In-Reply-To: <2025042256-unnerve-doorway-7cb7@gregkh>
+From: Qingfang Deng <dqfext@gmail.com>
+Date: Wed, 23 Apr 2025 15:37:39 +0800
+X-Gm-Features: ATxdqUE3cGgo8cxtPKLqZH9GZn5l7Y5RiENn4kSMGj6oiaPyvPU19GLnQeY51nM
+Message-ID: <CALW65jaXh=0+MkkNWHG9PpcDA88zBR5-S3j=pYbMZVcQ19hvag@mail.gmail.com>
+Subject: Re: Please apply d2155fe54ddb to 5.10 and 5.4
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David Hildenbrand <david@redhat.com>, Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org, 
+	linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brendan Jackman <jackmanb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Liu Xiang <liu.xiang@zlingsmart.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 23, 2025 at 07:24:41AM +0000, Yang, Zhi wrote:
-> Add xfs stable maintainer.
+On Tue, Apr 22, 2025 at 8:41=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> > >
+> > > The commit looks harmless. But I don't see how it could fix any warni=
+ng?
+> > >
+> > > I mean, we replace two !list_empty() checks by a single one ... and t=
+he
+> > > warning is about list_cut_position() ?
+> >
+> > I have no idea, actually. Maybe the double !list_empty() confuses the
+> > compiler, making it think `sublist` can be referenced out of the
+> > scope?
+>
+> That is odd, are you sure this isn't a compiler bug?
 
-That provided no context at all.  Please do this properly.
+I think it is a compiler bug. If so, what should we do to fix the warning?
 
