@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-135644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28642A98F29
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:05:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4237A98FF8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734E7175646
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:02:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5143B7AB5A8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F306F281505;
-	Wed, 23 Apr 2025 15:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87B828BAB8;
+	Wed, 23 Apr 2025 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGE3hDOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asaJGC3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4DD1F193C;
-	Wed, 23 Apr 2025 15:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829D528BAA8;
+	Wed, 23 Apr 2025 15:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420466; cv=none; b=BDGdcIi7H07BVozBTQcPDqUxw2fvKcWjJAdBmHQp/DVdhyR4QkRdRi1upuYWkfQ+dZY0LcLMoZ36/IiZSv8jzL+7FG00+4dOkWeJ1cA9llD5OMuMaJK6AGtGUs4pQ+fpLlhI+Cp+uBxpF9spAQ4t+djn6V52KIUYiy6oeLTGBHM=
+	t=1745420994; cv=none; b=uHvaHQtvG6TR+WEoBKdGTl4uLWriy7SuMn4hZQi3Dcjb0MZEVuEmNfeHj3aYjdX6j0fuXvACQ1zisO89v3kCDCn64aLenCYd5IskksIAMkq3RXX4x1QKSYhM91SgHv4puUkXeQ8jAL8RnzYY6Pj5UHMTBI3KD72owaJvfkSAZCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420466; c=relaxed/simple;
-	bh=DZzMKOD+Adys665PKV175Zi8jxMKGgCr5tcmLvVnY9g=;
+	s=arc-20240116; t=1745420994; c=relaxed/simple;
+	bh=hdXi4rrxrKrw9YlHDwb847ML12KVu7wpwzJkOh14NJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1cNyBMnVCK/Ck9ISCv9uuj4iIvMw/2RcmpypCS6fV3CbFlS/PYHYMzuoxA+BkWnvzm/papizGRhnumUYwlcz0PTteU2BUVNpJqklpgAoaf2MLJrnYfTw3ReG7/devyOQuUJB0IJyYCBU+YMeEkkgee8e2exVcx5sj1y4pUko9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGE3hDOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4216EC4CEE2;
-	Wed, 23 Apr 2025 15:01:06 +0000 (UTC)
+	 MIME-Version; b=gt0lzusp/R1qhzYP6stlApAuxnGyhkrudum8y8HzQWuMG29Er7PgKPomp573rwI5E2biWH0Zi1fRYNDt001POISzWkiy92CvA35zzvFyDqFSo6+S8X0Jz4CxTb3+3W4lD2q+o9KTPjTMGvntBJr/WDNrHUzJtWslZgLcS1toiAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asaJGC3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EAAC4CEE2;
+	Wed, 23 Apr 2025 15:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420466;
-	bh=DZzMKOD+Adys665PKV175Zi8jxMKGgCr5tcmLvVnY9g=;
+	s=korg; t=1745420994;
+	bh=hdXi4rrxrKrw9YlHDwb847ML12KVu7wpwzJkOh14NJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGE3hDOMTx1bKQ8dvFofAptqiKetXpXGDUl5r1Bxstzma1ToK08kbkO7XkumtDq8c
-	 BZp7zHAhg6S5QIGxEyZ+XQI8glvvKkmWwtaKqNQttJ5OipWUNUwskADzB1kFwCwRbU
-	 U0d0RmZfceIutYtgZh9VYjkqbU7SjwwHpKtaVCT4=
+	b=asaJGC3ojLwHxWQdqckDC9tzQdQsBy9F+2JDmMjxzqx9FFrWt9qfB0+yemo46BgMk
+	 4PN85uQl2/3wFkrzq3sEH1U7SFg1XLCMF+dhYwEN2G2N7t/cHtnaesRI8eQURy4obO
+	 iJCqobQ1INWABYzAQr8WAYypb1a53QnESRwShN04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiangsheng Hou <xiangsheng.hou@mediatek.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.12 134/223] virtiofs: add filesystem context source name check
+	Giuseppe Scrivano <gscrivan@redhat.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Alexander Larsson <alexl@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.14 142/241] ovl: dont allow datadir only
 Date: Wed, 23 Apr 2025 16:43:26 +0200
-Message-ID: <20250423142622.550126221@linuxfoundation.org>
+Message-ID: <20250423142626.358125283@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit a94fd938df2b1628da66b498aa0eeb89593bc7a2 upstream.
+commit eb3a04a8516ee9b5174379306f94279fc90424c4 upstream.
 
-In certain scenarios, for example, during fuzz testing, the source
-name may be NULL, which could lead to a kernel panic. Therefore, an
-extra check for the source name should be added.
+In theory overlayfs could support upper layer directly referring to a data
+layer, but there's no current use case for this.
 
-Fixes: a62a8ef9d97d ("virtio-fs: add virtiofs filesystem")
-Cc: <stable@vger.kernel.org> # all LTS kernels
-Signed-off-by: Xiangsheng Hou <xiangsheng.hou@mediatek.com>
-Link: https://lore.kernel.org/20250407115111.25535-1-xiangsheng.hou@mediatek.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Originally, when data-only layers were introduced, this wasn't allowed,
+only introduced by the "datadir+" feature, but without actually handling
+this case, resulting in an Oops.
+
+Fix by disallowing datadir without lowerdir.
+
+Reported-by: Giuseppe Scrivano <gscrivan@redhat.com>
+Fixes: 24e16e385f22 ("ovl: add support for appending lowerdirs one by one")
+Cc: <stable@vger.kernel.org> # v6.7
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Alexander Larsson <alexl@redhat.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/virtio_fs.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/overlayfs/super.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -1663,6 +1663,9 @@ static int virtio_fs_get_tree(struct fs_
- 	unsigned int virtqueue_size;
- 	int err = -EIO;
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1137,6 +1137,11 @@ static struct ovl_entry *ovl_get_lowerst
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
-+	if (!fsc->source)
-+		return invalf(fsc, "No source specified");
++	if (ctx->nr == ctx->nr_data) {
++		pr_err("at least one non-data lowerdir is required\n");
++		return ERR_PTR(-EINVAL);
++	}
 +
- 	/* This gets a reference on virtio_fs object. This ptr gets installed
- 	 * in fc->iq->priv. Once fuse_conn is going away, it calls ->put()
- 	 * to drop the reference to this object.
+ 	err = -EINVAL;
+ 	for (i = 0; i < ctx->nr; i++) {
+ 		l = &ctx->lower[i];
 
 
 
