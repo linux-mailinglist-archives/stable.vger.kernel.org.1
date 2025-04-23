@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA12A991E6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F54A99312
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:53:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D639F924938
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:28:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03EDD4A2A1E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9FC2918F9;
-	Wed, 23 Apr 2025 15:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93861288C8A;
+	Wed, 23 Apr 2025 15:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGOF054P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1k059ddC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5F92918EE;
-	Wed, 23 Apr 2025 15:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511AA57C9F;
+	Wed, 23 Apr 2025 15:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421563; cv=none; b=IXSY/sqH+RGcxg234LNnJFiXHpYNbn8ng0wALeK1YWs78E5tYHX4IvLdpewqLGGPDNbfK8zxQkMT7yyLySPQACNZEdb1VavJPjoTyeeyhRIEGN5XMcedABMJQVBZkDcjgYBjjEwmvt/KYtCZ3EbTLnt962c3RDShNv7PZTnyZN0=
+	t=1745422325; cv=none; b=VYT45DUxccj3BCRo27DHYTi+dP0EaGo1jhPgc/Fy4lrMhe8j+jjaOssfsyxfCJAwhcPZXF0rYjZhahnuOWfxgJkiTb8jHJcQirLBiOO4T3h1grN6bq2QQO415xT/P9XJ0Hw2WEyV76VAlPb9eooIzpgM8qrTRVuwv6XIGuA3k3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421563; c=relaxed/simple;
-	bh=kBeQkmntcoI2tYNYuNQFgwEHVjBle6fyGOJG8t7qlWw=;
+	s=arc-20240116; t=1745422325; c=relaxed/simple;
+	bh=Y1IdUxBw8gsAkI8R/XmfGtau0syQdpL0k0w6HYRjJrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dglRq1Q2BG+Em+G/fkumCOyxX36MiyFTT5MZmyABCoowHBkZG7tDBl7GT476AiR9DI73nJTW1JiAy9BBd4/4i1NYkHTnLXeV6DlEidpbR95juV/ag9IkYRUOIhLoxFDwTX4rgo26+67husQMNN9tbDSvUl9i0NCzoK1xRwfko/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGOF054P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4057C4CEE2;
-	Wed, 23 Apr 2025 15:19:22 +0000 (UTC)
+	 MIME-Version; b=Us0s8exwhliaNlcmF320kaVjNrDpJFSv9qZPLY+vxnHwfZo+lKkO+D5aTCkRCiW9WykwvBld1gcFssry8JfnUr0EPIpOyyqCdFzFoXQ9OyzeFD0krcvcXiBQPROclg2jRQpMY2kJ/Ec7fb2FDbsQKWsLMEetwNRF+wAnDREMXiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1k059ddC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F1BC4CEE3;
+	Wed, 23 Apr 2025 15:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421563;
-	bh=kBeQkmntcoI2tYNYuNQFgwEHVjBle6fyGOJG8t7qlWw=;
+	s=korg; t=1745422325;
+	bh=Y1IdUxBw8gsAkI8R/XmfGtau0syQdpL0k0w6HYRjJrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGOF054PdvUOiFdACgPEOppVaBmy4HTvSUO74qFK0YcyDaj1kvH32PjM50WZXvZkU
-	 FWBNd8dBwTy1Z+TzcK6XIgZVi5S6u0EbuPfKI2clAoFEC1i2lIP8em1tfNkzJwq+4w
-	 cvI+4EGgo6YQXm5RhR7N/jozQkNrKdPvPXG/kI9c=
+	b=1k059ddCKzqGtVNKClX71Y2lZyPESc5XE0b6ZeNhBkvTvPRcwXTCFY9HESn4bg7ik
+	 nDJ9zUdT1NFORG/2C+VQfKAWtEv6alrYv1t4t93pyI0anog1cerzQ3L9RhuWPfrkrQ
+	 dqY7m07q5CoSwZDyag8EfinDxXzIbrTi079McIwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Uma Shankar <uma.shankar@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.14 202/241] drm/i915: Fix scanline_offset for LNL+ and BMG+
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Steve French <stfrench@microsoft.com>,
+	Jianqi Ren <jianqi.ren.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.1 277/291] smb/server: fix potential null-ptr-deref of lease_ctx_info in smb2_open()
 Date: Wed, 23 Apr 2025 16:44:26 +0200
-Message-ID: <20250423142628.778529760@linuxfoundation.org>
+Message-ID: <20250423142635.751661125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-commit ed583d008edcb021c30ecad2e9d5c868d9ed5862 upstream.
+commit 4e8771a3666c8f216eefd6bd2fd50121c6c437db upstream.
 
-Turns out LNL+ and BMG+ no longer have the weird extra scanline
-offset for HDMI outputs. Fix intel_crtc_scanline_offset()
-accordingly so that scanline evasion/etc. works correctly on
-HDMI outputs on these new platforms.
+null-ptr-deref will occur when (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
+and parse_lease_state() return NULL.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250207215406.19348-2-ville.syrjala@linux.intel.com
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-(cherry picked from commit fede97b72b957b46260ca98fc924ba2b916e50d7)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fix this by check if 'lease_ctx_info' is NULL.
+
+Additionally, remove the redundant parentheses in
+parse_durable_handle_context().
+
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Drop the parentheses clean-up since the parentheses was introduced by
+  c8efcc786146 ("ksmbd: add support for durable handles v1/v2") in v6.9
+  Minor context change fixed ]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_vblank.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/server/oplock.c  |    2 +-
+ fs/smb/server/smb2pdu.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_vblank.c
-+++ b/drivers/gpu/drm/i915/display/intel_vblank.c
-@@ -222,7 +222,9 @@ int intel_crtc_scanline_offset(const str
- 	 * However if queried just before the start of vblank we'll get an
- 	 * answer that's slightly in the future.
- 	 */
--	if (DISPLAY_VER(display) == 2)
-+	if (DISPLAY_VER(display) >= 20 || display->platform.battlemage)
-+		return 1;
-+	else if (DISPLAY_VER(display) == 2)
- 		return -1;
- 	else if (HAS_DDI(display) && intel_crtc_has_type(crtc_state, INTEL_OUTPUT_HDMI))
- 		return 2;
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1515,7 +1515,7 @@ void create_lease_buf(u8 *rbuf, struct l
+  * @open_req:	buffer containing smb2 file open(create) request
+  * @is_dir:	whether leasing file is directory
+  *
+- * Return:  oplock state, -ENOENT if create lease context not found
++ * Return: allocated lease context object on success, otherwise NULL
+  */
+ struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
+ {
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3243,7 +3243,7 @@ int smb2_open(struct ksmbd_work *work)
+ 			goto err_out1;
+ 		}
+ 	} else {
+-		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
++		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE && lc) {
+ 			/*
+ 			 * Compare parent lease using parent key. If there is no
+ 			 * a lease that has same parent key, Send lease break
 
 
 
