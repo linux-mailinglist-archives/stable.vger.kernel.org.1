@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A9EA990BC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C22A98DEA
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A65A92218E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03A361B63684
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA97281344;
-	Wed, 23 Apr 2025 15:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF9F2820D6;
+	Wed, 23 Apr 2025 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvyUCDz/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbVT8wY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD5D289373;
-	Wed, 23 Apr 2025 15:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBE127FD56;
+	Wed, 23 Apr 2025 14:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420939; cv=none; b=bY+/UjUyUWlcdr9ismnn5QCHCp0sfOlbmYaDZbbYwGLJN9dB1LM7R1ipBJBS8M+ATI7U1kutmieAMiI05NX9h28sSwtMJ+mL41dgXtv+ri2ZufrfRErjUkmSe6CJU6yLQ5xr/2TOTqlWIA7OqTGwWBGp/5z2JtFLQwoAwahpPjQ=
+	t=1745419742; cv=none; b=Dc0GPa/7PebJnGfE3AZXByXPAfi5fkrPjOdHBPNZ8Dvaa0z/bQDKk7SnPnssVM/WikVWqiKdKdZot9LlbATEOl+oz7OP6yZvkp5fytre/GhrBIsBbT5f6FYaXxw5ugK6/EgKvOZBfOXKBPZ/Q054BSensdQ7qKkdCE9iFVv7z2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420939; c=relaxed/simple;
-	bh=gA2lUw3OIS6A1pCJpLRg2ZnpWSAi1Ib/7TOIlVbZylQ=;
+	s=arc-20240116; t=1745419742; c=relaxed/simple;
+	bh=ajzZncfpTod4Shxh9496jOmrs7R05Qf5Vxg4lU2g0kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RlMbEXTZbLq8pZRZZg0vaW2ukpJ6gKd8GNGzoKogjTp2DjXhWajbqF+ttHniy4J6DExVaYzHjA5bHT/2lCdCzKxZRbCivSZ9n1n6Xb8igFsy0Ly27cO3eNCxx71BJZBVSM86wdWYsbLxoijOP/6GVG7EAocKBqz7p153GChfWoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvyUCDz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBE5C4CEE2;
-	Wed, 23 Apr 2025 15:08:59 +0000 (UTC)
+	 MIME-Version; b=UP4WNq9XxdP50OmtALoMG/qxeSAj0qs0mpsZPxVJ4xMMWlGxLqp1Lmz+tjWSYLaI3VcVpGfEyjmZMHVuMJBD7c3XqQaVRgLHc/JFm6oODCKA1omCMrZptdwj4cl79iEqTtQXJ16eErO9y6Kyv+DMJc4vZUDV3WgaxGZ140ZkgrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbVT8wY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF738C4CEE2;
+	Wed, 23 Apr 2025 14:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420939;
-	bh=gA2lUw3OIS6A1pCJpLRg2ZnpWSAi1Ib/7TOIlVbZylQ=;
+	s=korg; t=1745419742;
+	bh=ajzZncfpTod4Shxh9496jOmrs7R05Qf5Vxg4lU2g0kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvyUCDz/TqbOYBoFfygnbHS7bzEhyPqJJ/y0GGcNbAnO79coCStX1xb7Ij3K7c42y
-	 fzZ9Nckv3TVf4w/HjEdmovffqSffwLVE6mdBb+UGJa+UjnSNKY8ZQP5BcKAxcTU6lF
-	 aXbdrFCULNRJGmKGbHAfLN6ozF7BYkivKPCJYvWY=
+	b=cbVT8wY+B9tyr5fMYG1XiCGEOTFBu/e8CQB6FpE1tBY1dtiesHjJVLojgFPa4ID3w
+	 FRI79CXkPmTIzIeAfpL4TifijN4aZwlFIQpwyr4bUHpU9RnmPfNFaFPz0JLGts2TA5
+	 oIQPmmvlFSHNxgOV8nCn2+yfb7bW1kOMem6AYkgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karina Yankevich <k.yankevich@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 094/291] media: v4l2-dv-timings: prevent possible overflow in v4l2_detect_gtf()
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 019/241] ALSA: hda/realtek - Fixed ASUS platform headset Mic issue
 Date: Wed, 23 Apr 2025 16:41:23 +0200
-Message-ID: <20250423142628.197188677@linuxfoundation.org>
+Message-ID: <20250423142621.302697898@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karina Yankevich <k.yankevich@omp.ru>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 3edd1fc48d2c045e8259561797c89fe78f01717e upstream.
+[ Upstream commit b5458fcabd96ce29adbf7225c1741ecdfff70a91 ]
 
-In v4l2_detect_gtf(), it seems safer to cast the 32-bit image_width
-variable to the 64-bit type u64 before multiplying to avoid
-a possible overflow. The resulting object code even seems to
-look better, at least on x86_64.
+ASUS platform Headset Mic was disable by default.
+Assigned verb table for Mic pin will enable it.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-[Sergey: rewrote the patch subject/descripition]
-
-Fixes: c9bc9f50753d ("[media] v4l2-dv-timings: fix overflow in gtf timings calculation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7ab61d0a9a35 ("ALSA: hda/realtek: Add support for ASUS B3405 and B3605 Laptops using CS35L41 HDA")
+Fixes: c86dd79a7c33 ("ALSA: hda/realtek: Add support for ASUS B5405 and B5605 Laptops using CS35L41 HDA")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/0fe3421a6850461fb0b7012cb28ef71d@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-dv-timings.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-dv-timings.c
-+++ b/drivers/media/v4l2-core/v4l2-dv-timings.c
-@@ -764,7 +764,7 @@ bool v4l2_detect_gtf(unsigned int frame_
- 		u64 num;
- 		u32 den;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 8e482f6ecafea..356df48c97309 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7924,6 +7924,7 @@ enum {
+ 	ALC233_FIXUP_MEDION_MTL_SPK,
+ 	ALC294_FIXUP_BASS_SPEAKER_15,
+ 	ALC283_FIXUP_DELL_HP_RESUME,
++	ALC294_FIXUP_ASUS_CS35L41_SPI_2,
+ };
  
--		num = ((image_width * GTF_D_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_D_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_D_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_D_C_PRIME) + GTF_D_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
-@@ -774,7 +774,7 @@ bool v4l2_detect_gtf(unsigned int frame_
- 		u64 num;
- 		u32 den;
+ /* A special fixup for Lenovo C940 and Yoga Duet 7;
+@@ -10278,6 +10279,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc283_fixup_dell_hp_resume,
+ 	},
++	[ALC294_FIXUP_ASUS_CS35L41_SPI_2] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = cs35l41_fixup_spi_two,
++		.chained = true,
++		.chain_id = ALC294_FIXUP_ASUS_HEADSET_MIC,
++	},
+ };
  
--		num = ((image_width * GTF_S_C_PRIME * (u64)hfreq) -
-+		num = (((u64)image_width * GTF_S_C_PRIME * hfreq) -
- 		      ((u64)image_width * GTF_S_M_PRIME * 1000));
- 		den = (hfreq * (100 - GTF_S_C_PRIME) + GTF_S_M_PRIME * 1000) *
- 		      (2 * GTF_CELL_GRAN);
+ static const struct hda_quirk alc269_fixup_tbl[] = {
+@@ -10763,7 +10770,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x12a0, "ASUS X441UV", ALC233_FIXUP_EAPD_COEF_AND_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
+ 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+@@ -10853,14 +10860,14 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1fb3, "ASUS ROG Flow Z13 GZ302EA", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3011, "ASUS B5605CVA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
+-	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3061, "ASUS B3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x3071, "ASUS B5405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30c1, "ASUS B3605CCA / P3605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30d1, "ASUS B5405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x30e1, "ASUS B5605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x31d0, "ASUS Zen AIO 27 Z272SD_A272SD", ALC274_FIXUP_ASUS_ZEN_AIO_27),
+-	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC245_FIXUP_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x31e1, "ASUS B5605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x31f1, "ASUS B3605CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a30, "ASUS G814JVR/JIR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+ 	SND_PCI_QUIRK(0x1043, 0x3a40, "ASUS G814JZR", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+-- 
+2.39.5
+
 
 
 
