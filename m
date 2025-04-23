@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-136191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F9B3A99327
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:54:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52023A98FD2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 662371BA4D51
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FEE172987
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A32D528CF4E;
-	Wed, 23 Apr 2025 15:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8849D28DEE4;
+	Wed, 23 Apr 2025 15:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NE/0vmSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k76kjkiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609F028C5AB;
-	Wed, 23 Apr 2025 15:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413C428D85E;
+	Wed, 23 Apr 2025 15:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421897; cv=none; b=chVdx6V4KzHfBPkQpsuelf8MjmTV3iDdb705ry9AcOzBHjiz4spa1VHpGKRmljTNLGqay+BLRDLZ4b0SeZxbk+/jo0LQMBDpMvw0SR04Iq4CgvIWM0hCyqiaitD10uDQKbJpC5F+g+EdfDePH0X0LBpi5B0yj0Ej7V51xkHebYg=
+	t=1745420767; cv=none; b=mjxvoZBxMtWcBRc7/5nqNAbIZjnCVLywcXoYbcX6gzSmb6THuflY0GMsshxUcFsbd3nWf2SWJw1jV3f4b44bIOVtvAU96PM8k/tk8yRCnSrMi4Q2YLQXxosgC3f7hJI3LzUsu5wGq7x2kiFal+fkxnHJzw44/bZlJRWmxd/KEV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421897; c=relaxed/simple;
-	bh=aq/oIcSBccrR5rCr4VZtfo0ghRXvrnoQtu1mo2Yndbc=;
+	s=arc-20240116; t=1745420767; c=relaxed/simple;
+	bh=1p0uizIPmo7jQ/YZwoSu2oKbHFFiRYc2tvbdwvQ37vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE6NaASpfWffnk6TCHsIyEWGSvnNs3MqzB6gkzqPuholRYYLaU12rNcZOTfBANH/E1DhpzoJAjh+l90sNHRm0iclQ3tQQicYwhtnRAmm4VHN04+st8HkihdvfD6YjmOjKzGtFxVa9wPuezHnhK95Up4c5+aX9rHWtvVzkrNSDWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NE/0vmSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5729C4CEE2;
-	Wed, 23 Apr 2025 15:24:56 +0000 (UTC)
+	 MIME-Version; b=dCORZKfxQFmspEuMj/IKeQegoAQ3zQ2gIIf0afELv7mIvzvjfJBiD3qad8t7OCk449SVMxKwBUUeb2KhGmD+yiQ/gRaFl+fsV5V+qO87wFLIA16h4nkKtYp6YW6tUIsOyvFq/7MAJZPJc8l+fG8K+6tFEFkDWdV0LAbLbzPNoiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k76kjkiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4197C4CEE2;
+	Wed, 23 Apr 2025 15:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421897;
-	bh=aq/oIcSBccrR5rCr4VZtfo0ghRXvrnoQtu1mo2Yndbc=;
+	s=korg; t=1745420767;
+	bh=1p0uizIPmo7jQ/YZwoSu2oKbHFFiRYc2tvbdwvQ37vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NE/0vmSFx+FWXjFfhh3kPEfA1LZdxkwZRMQB6VSHDBXeicG4mcvsqg/siQy99DoES
-	 mpmS35intcaTazESY7X4CKNMn31TA27+SmB2LySIihyKH0+pMk8SRKWZ7zdEXMQi7j
-	 nifzdA+dQDEKKUD5KOpPvjOWUgAD8kHTChR0lClM=
+	b=k76kjkiwtuC/Jvx4Vo4ZuGf4z9/fbqGAISJSIcVD2jiY92A1yAquqDjpOwJ3JiTVe
+	 p6aWCZ2TqELR6K8TkTYdBudrT2kM3W/vKOPIzTL4lmw2APFo+9QZfj3RwuNU0MxpFk
+	 tMGERYCm43/6ez+nx1NSoOEG56KhEb10ZwVjK2Sg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	WangYuli <wangyuli@uniontech.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/291] riscv: KGDB: Do not inline arch_kgdb_breakpoint()
+Subject: [PATCH 6.14 120/241] eventpoll: abstract out ep_try_send_events() helper
 Date: Wed, 23 Apr 2025 16:43:04 +0200
-Message-ID: <20250423142632.348669705@linuxfoundation.org>
+Message-ID: <20250423142625.486032193@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 3af4bec9c1db3f003be4d5ae09b6a737e4be1612 ]
+[ Upstream commit 38d203560118a673018df5892a6555bb0aba7762 ]
 
-The arch_kgdb_breakpoint() function defines the kgdb_compiled_break
-symbol using inline assembly.
+In preparation for reusing this helper in another epoll setup helper,
+abstract it out.
 
-There's a potential issue where the compiler might inline
-arch_kgdb_breakpoint(), which would then define the kgdb_compiled_break
-symbol multiple times, leading to fail to link vmlinux.o.
-
-This isn't merely a potential compilation problem. The intent here
-is to determine the global symbol address of kgdb_compiled_break,
-and if this function is inlined multiple times, it would logically
-be a grave error.
-
-Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
-Link: https://lore.kernel.org/all/5b0adf9b-2b22-43fe-ab74-68df94115b9a@ghiti.fr/
-Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
-Fixes: fe89bd2be866 ("riscv: Add KGDB support")
-Co-developed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/F22359AFB6FF9FD8+20250411073222.56820-1-wangyuli@uniontech.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/r/20250219172552.1565603-3-axboe@kernel.dk
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in the future")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/kgdb.h | 9 +--------
- arch/riscv/kernel/kgdb.c      | 8 ++++++++
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ fs/eventpoll.c | 28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kgdb.h b/arch/riscv/include/asm/kgdb.h
-index 46677daf708bd..cc11c4544cffd 100644
---- a/arch/riscv/include/asm/kgdb.h
-+++ b/arch/riscv/include/asm/kgdb.h
-@@ -19,16 +19,9 @@
- 
- #ifndef	__ASSEMBLY__
- 
-+void arch_kgdb_breakpoint(void);
- extern unsigned long kgdb_compiled_break;
- 
--static inline void arch_kgdb_breakpoint(void)
--{
--	asm(".global kgdb_compiled_break\n"
--	    ".option norvc\n"
--	    "kgdb_compiled_break: ebreak\n"
--	    ".option rvc\n");
--}
--
- #endif /* !__ASSEMBLY__ */
- 
- #define DBG_REG_ZERO "zero"
-diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
-index 963ed7edcff26..b0db3350d243b 100644
---- a/arch/riscv/kernel/kgdb.c
-+++ b/arch/riscv/kernel/kgdb.c
-@@ -273,6 +273,14 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
- 	regs->epc = pc;
+diff --git a/fs/eventpoll.c b/fs/eventpoll.c
+index 7c0980db77b31..67d1808fda0e5 100644
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -1980,6 +1980,22 @@ static int ep_autoremove_wake_function(struct wait_queue_entry *wq_entry,
+ 	return ret;
  }
  
-+noinline void arch_kgdb_breakpoint(void)
++static int ep_try_send_events(struct eventpoll *ep,
++			      struct epoll_event __user *events, int maxevents)
 +{
-+	asm(".global kgdb_compiled_break\n"
-+	    ".option norvc\n"
-+	    "kgdb_compiled_break: ebreak\n"
-+	    ".option rvc\n");
++	int res;
++
++	/*
++	 * Try to transfer events to user space. In case we get 0 events and
++	 * there's still timeout left over, we go trying again in search of
++	 * more luck.
++	 */
++	res = ep_send_events(ep, events, maxevents);
++	if (res > 0)
++		ep_suspend_napi_irqs(ep);
++	return res;
 +}
 +
- void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
- 				char *remcom_out_buffer)
- {
+ /**
+  * ep_poll - Retrieves ready events, and delivers them to the caller-supplied
+  *           event buffer.
+@@ -2031,17 +2047,9 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
+ 
+ 	while (1) {
+ 		if (eavail) {
+-			/*
+-			 * Try to transfer events to user space. In case we get
+-			 * 0 events and there's still timeout left over, we go
+-			 * trying again in search of more luck.
+-			 */
+-			res = ep_send_events(ep, events, maxevents);
+-			if (res) {
+-				if (res > 0)
+-					ep_suspend_napi_irqs(ep);
++			res = ep_try_send_events(ep, events, maxevents);
++			if (res)
+ 				return res;
+-			}
+ 		}
+ 
+ 		if (timed_out)
 -- 
 2.39.5
 
