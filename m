@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-136142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF12A991AD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:34:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B716A992D1
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E537A5301
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C0AB464AE3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2675B2BEC37;
-	Wed, 23 Apr 2025 15:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CE229DB82;
+	Wed, 23 Apr 2025 15:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+u4BNzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXl8bjYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E75298CC0;
-	Wed, 23 Apr 2025 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1273129614D;
+	Wed, 23 Apr 2025 15:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421765; cv=none; b=VF8j8Q2TL29wBUSBUmeXHJFvN/jO8AFFXqCwjij63mo2JKAY687x609Zy2Xu2OZjohoNNuKk9eu09yvAccsfRcUmEh1DH7wHeDqnoJ7PsXMuKx6/w8RwXuMCKqjQHgkhdfCC+yCIVO4N/GC0VPdtk3xsWYnc0mChvrIsOEfgJb0=
+	t=1745422050; cv=none; b=oXjDlKRsLSSPLeSAXtXTdgllCCByz+J5KXRnSsDcUux2i8XKNM6N8PKjpaqq2+zY/wwdZ6QmUZ6tmbL+qhoTgKRO1FiA3g2Ihhkx3qzqiyP7U6qlLduKMfEMTC7b22sA7H/bGXSJSKvcWGvT+zPC9Y0oQz/zj+41tCI86/l8s6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421765; c=relaxed/simple;
-	bh=4lujKTjKb9iO54phXhr04nqR/msjYvcLF7VMxTub53s=;
+	s=arc-20240116; t=1745422050; c=relaxed/simple;
+	bh=gz8ND9px3DP8WKm7ovnoRmwc6YDKp9ScN4qeZW2c1vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g35nzxScEn8XZ1DP0PO21etswdfNXbfCToQ9z8YM5GhnV0dSL+YPHE4mUjSKroVlGU1EUJTQevMWAfg4UMJS6uN6rus48aR1eHSEd8t5GPjmdsBh0+pJ0ovGv+XfJaiE0Ix+3pQcPsVSi/tlqebKAXjqei55zJsQhSiq6g5hxF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+u4BNzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67571C4CEE2;
-	Wed, 23 Apr 2025 15:22:45 +0000 (UTC)
+	 MIME-Version; b=BbFhFywZcXgiFfJ/Lp3dg0Gu37WUN6RWXFkzC1vvUZgHbN9XAobLQdZBTx9Z9qXTtnkhsq5vozjVu0iTmNg6nDQ1aBuWVl+1wA8HM6jjFOjoNHaQrb5QyBbIOLyLuictNqGjXhqc6AwopSTOsxFBiQTjhWznWXyZSoEp1BJRdRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXl8bjYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A94EC4CEE2;
+	Wed, 23 Apr 2025 15:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421765;
-	bh=4lujKTjKb9iO54phXhr04nqR/msjYvcLF7VMxTub53s=;
+	s=korg; t=1745422050;
+	bh=gz8ND9px3DP8WKm7ovnoRmwc6YDKp9ScN4qeZW2c1vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+u4BNzcBS2+Kx4tP6Gmw6RzYggOPKZiZx2yl7wdM8YnSHny4EOCBs40VL9L+Xpyt
-	 IKYsgFcxA3ha0J2eX9IPOk6Yi/xwwpITx4uAQ7DYt0bkU3msg2m3BX62EcXhxf1RQY
-	 EXlNlJgrsOCW6Dbb/2F8YsZ4nFeHGgvFxOjGxxOA=
+	b=sXl8bjYDOFBiLetRb7jqMVDewNZinmgJk8tVXrZHHtcRI3zhpOZzPhZfoeuji8N+X
+	 zXdQJn2M4Jt8vjV1lHFxMnFWtM9utQdeq/QYTmNd/H0zL+sg+0tL0648jhFFK+Su7T
+	 vtB8L+yNNgUnkTRRSbDn3/DkQkvQMgbOXokaHLvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/291] Bluetooth: hci_event: Fix sending MGMT_EV_DEVICE_FOUND for invalid address
+Subject: [PATCH 6.6 269/393] net: openvswitch: fix nested key length validation in the set() action
 Date: Wed, 23 Apr 2025 16:42:45 +0200
-Message-ID: <20250423142631.575003073@linuxfoundation.org>
+Message-ID: <20250423142654.471868019@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit eb73b5a9157221f405b4fe32751da84ee46b7a25 ]
+[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
 
-This fixes sending MGMT_EV_DEVICE_FOUND for invalid address
-(00:00:00:00:00:00) which is a regression introduced by
-a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
-since in the attempt to skip storing data for extended advertisement it
-actually made the code to skip the entire if statement supposed to send
-MGMT_EV_DEVICE_FOUND without attempting to use the last_addr_adv which
-is garanteed to be invalid for extended advertisement since we never
-store anything on it.
+It's not safe to access nla_len(ovs_key) if the data is smaller than
+the netlink header.  Check that the attribute is OK first.
 
-Link: https://github.com/bluez/bluez/issues/1157
-Link: https://github.com/bluez/bluez/issues/1149#issuecomment-2767215658
-Fixes: a2ec905d1e16 ("Bluetooth: fix kernel oops in store_pending_adv_report")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
+Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/openvswitch/flow_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 6cfd61628cd78..8667723d4e969 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6248,11 +6248,12 @@ static void process_adv_report(struct hci_dev *hdev, u8 type, bdaddr_t *bdaddr,
- 	 * event or send an immediate device found event if the data
- 	 * should not be stored for later.
- 	 */
--	if (!ext_adv &&	!has_pending_adv_report(hdev)) {
-+	if (!has_pending_adv_report(hdev)) {
- 		/* If the report will trigger a SCAN_REQ store it for
- 		 * later merging.
- 		 */
--		if (type == LE_ADV_IND || type == LE_ADV_SCAN_IND) {
-+		if (!ext_adv && (type == LE_ADV_IND ||
-+				 type == LE_ADV_SCAN_IND)) {
- 			store_pending_adv_report(hdev, bdaddr, bdaddr_type,
- 						 rssi, flags, data, len);
- 			return;
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 9c13e14034d3b..089ab1826e1d5 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2862,7 +2862,8 @@ static int validate_set(const struct nlattr *a,
+ 	size_t key_len;
+ 
+ 	/* There can be only one key in a action */
+-	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
++	if (!nla_ok(ovs_key, nla_len(a)) ||
++	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
+ 		return -EINVAL;
+ 
+ 	key_len = nla_len(ovs_key);
 -- 
 2.39.5
 
