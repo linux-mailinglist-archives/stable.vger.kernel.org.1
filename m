@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326A8A993C7
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:03:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BD5A99258
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22971BA6371
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 664C2446CDC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1755829CB5D;
-	Wed, 23 Apr 2025 15:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4C629A3DE;
+	Wed, 23 Apr 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmXMxno1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgBqJvwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75FD29DB81;
-	Wed, 23 Apr 2025 15:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCC2298CB7;
+	Wed, 23 Apr 2025 15:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422057; cv=none; b=W6EmO/5PWEqZyXJHHNG9B1rUJ46WjTFghLnPZvUix7r2S+FDRDVlbk74BFHWWQggsBR3ffFVkWzYshSJvFQbMciGvs0/DHVrmzvDwwlokUSfcU7nF/9ig9jR8wkuw6FGfSkvIykTFUpjGgGw2voV65J8CRJ1LpsFx4XvYAjr2GE=
+	t=1745421776; cv=none; b=OJMLO+6K/9WIhwcYwzSRVPFTy2IyxBHDjjcgSfi4iVk+4PDD0PVnl/gBiqjXInH4gZoGo0/mVbisAEeuSclJUqHfGDsE9M71IOvpUOCUXGpLlOKMjTte1ZHZT+8hjvmEWEKtr1mEIPLA5uNUh9b7uK9GbYXZa4nw89zvmwVoQvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422057; c=relaxed/simple;
-	bh=UaHEXakF8xTyAIw0zked7sOYEZ0Pr+nQgQ0jn+nNPRY=;
+	s=arc-20240116; t=1745421776; c=relaxed/simple;
+	bh=8tEUPTSMkjirLZqBhFi0ZIXnNS+dFVbR75Jlea0lSig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXDHlPN0xw/E34n2xn8pJWqgSFiBwDuQbWo0mkKi2+xj4K1yUelOvxZDESYafK8VU0WM2sVi+WdX9zp+onBwcAEK/hrl9eA9G/t0D2UyIHLQP40o0RhVU/lRTgh8R+UCjSZhMNWlsObnQZ0Ai62XJc5pvP3VBmjpib2sSxz6gTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmXMxno1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB39C4CEE2;
-	Wed, 23 Apr 2025 15:27:37 +0000 (UTC)
+	 MIME-Version; b=TokI52xERrKB8iSwiMtNa7NK7VYO4w/IFoOB70nPGgfvyLjPfM7SWJsPB/lR7ezYPJ4CeAmZB1nn3IkL25QBgxViCa5hwzHvb+ynKjScftXoeDE7jOKew9GTLdLJRkxCIZ8zSjSE7IgX43MI9ajjyOHbJLT2ugB176xLPxWaHY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgBqJvwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AA5C4CEF1;
+	Wed, 23 Apr 2025 15:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422057;
-	bh=UaHEXakF8xTyAIw0zked7sOYEZ0Pr+nQgQ0jn+nNPRY=;
+	s=korg; t=1745421776;
+	bh=8tEUPTSMkjirLZqBhFi0ZIXnNS+dFVbR75Jlea0lSig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmXMxno1TXV8k9OEuSsnIik4QrIp3i4kdMwDb+T/MiV4co5XEbFvG+3bsSIG2f2hd
-	 1kXlhAOc7TwXna18Xt7qxA5OA4wmQfZmWYRKTt1+Tk0aBbBl+C4W9yJg2G263u4YuD
-	 1YMxh+OsHOCxAwHpoQrsBI658X9bPCqX9hvvdao8=
+	b=EgBqJvwTLYbX/g4TO5Qi4t7i7A7CwD3CNszIbKMeCEd6DoocPiR10lO3vknj3RjQV
+	 mX1JCmt5E8cRqRX2vxjU+0xOZ2Z35dDH916qQqqTlvgysDDrkfUGmOovHtnFpTw3D/
+	 Zsi/SkTOuwu9TosbPakN/bODJ4wZyHZLJXhvzaLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/393] net: ngbe: fix memory leak in ngbe_probe() error path
+Subject: [PATCH 6.1 177/291] Bluetooth: btrtl: Prevent potential NULL dereference
 Date: Wed, 23 Apr 2025 16:42:46 +0200
-Message-ID: <20250423142654.513329397@linuxfoundation.org>
+Message-ID: <20250423142631.615478148@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 88fa80021b77732bc98f73fb69d69c7cc37b9f0d ]
+[ Upstream commit 324dddea321078a6eeb535c2bff5257be74c9799 ]
 
-When ngbe_sw_init() is called, memory is allocated for wx->rss_key
-in wx_init_rss_key(). However, in ngbe_probe() function, the subsequent
-error paths after ngbe_sw_init() don't free the rss_key. Fix that by
-freeing it in error path along with wx->mac_table.
+The btrtl_initialize() function checks that rtl_load_file() either
+had an error or it loaded a zero length file.  However, if it loaded
+a zero length file then the error code is not set correctly.  It
+results in an error pointer vs NULL bug, followed by a NULL pointer
+dereference.  This was detected by Smatch:
 
-Also change the label to which execution jumps when ngbe_sw_init()
-fails, because otherwise, it could lead to a double free for rss_key,
-when the mac_table allocation fails in wx_sw_init().
+drivers/bluetooth/btrtl.c:592 btrtl_initialize() warn: passing zero to 'ERR_PTR'
 
-Fixes: 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250412154927.25908-1-abdun.nihaal@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 26503ad25de8 ("Bluetooth: btrtl: split the device initialization into smaller parts")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btrtl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index a4d63d2f3c5bb..91f0f23c176a0 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -589,7 +589,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- 	/* setup the private structure */
- 	err = ngbe_sw_init(wx);
- 	if (err)
--		goto err_free_mac_table;
-+		goto err_pci_release_regions;
- 
- 	/* check if flash load is done after hw power up */
- 	err = wx_check_flash_load(wx, NGBE_SPI_ILDR_STATUS_PERST);
-@@ -687,6 +687,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- err_clear_interrupt_scheme:
- 	wx_clear_interrupt_scheme(wx);
- err_free_mac_table:
-+	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
- err_pci_release_regions:
- 	pci_release_selected_regions(pdev,
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index 5671f0d9ab28c..1c122613e562c 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -817,6 +817,8 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
+ 			rtl_dev_err(hdev, "mandatory config file %s not found",
+ 				    btrtl_dev->ic_info->cfg_name);
+ 			ret = btrtl_dev->cfg_len;
++			if (!ret)
++				ret = -EINVAL;
+ 			goto err_free;
+ 		}
+ 	}
 -- 
 2.39.5
 
