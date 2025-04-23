@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-136299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3D4A9935E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:57:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B64A992E6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D131C1BA4BEF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2652F9A1F9C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D2128E61E;
-	Wed, 23 Apr 2025 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8528D836;
+	Wed, 23 Apr 2025 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsVavvmk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qg1mPWQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF3028A3F8;
-	Wed, 23 Apr 2025 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523E628D83C;
+	Wed, 23 Apr 2025 15:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422180; cv=none; b=C8duzY1/GCwd78IDbazgga8UgCmzPACpTzdRcMztkDiTtm7y7RYqEejLzNIb1LwiMV1cvkNFGjxbQtFJLC8ww3RL8M4Zn9gHdy//437poR08YuG9fJmtY6xrlUgB48jRRm0CoWZSZpPalW02xTh8I+BizLDTY2EvZ8Ge78hYL+E=
+	t=1745421921; cv=none; b=t8iI9/SJIMG+jsKJ0ajrS6BBJk+g5Aa136E1F0Y4sI2iKndn8MoHRvyBVbYCea0R8DK0O9Um0y2NVnW66l4lm1653VTBH2HZKAfCz2F5LFczpWS/mtq3AHlraE/S8cnuYRbKbAsBOD1whEVyZqQFOARHEKap7i1AZRa8EaqFMCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422180; c=relaxed/simple;
-	bh=dHjKLAQubEuKUugmg2Gf3/n/7uIdasrwi7BBhM25rnM=;
+	s=arc-20240116; t=1745421921; c=relaxed/simple;
+	bh=fkM7vKgMdKUPyJWOxcfuI0x06B0MhDm6W9RWsXc9MNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAtxeeATvWCgWZjMy7439nUN7MkQcg192o2TnGV4XQwZdieXVnyLFNZtXm08Te6hADKEqa8mbLpv4MEV9FGzJRUK7G9uryKnl8t4oEWFZ95ubHd4jJ68WCU/it6Dor5fvN4Wpc5p9tIqHk3+/ex2cSFwtJ1Li8xQJ6Rw6mei/II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsVavvmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27789C4CEE2;
-	Wed, 23 Apr 2025 15:29:39 +0000 (UTC)
+	 MIME-Version; b=l5Up5712ejoWAoKgZgLfAr3lTh29jO+M2DHvjWTTBt4Zf2HTTflMfD5nBfVAMrwFWS+CkeCHWs6nUhxqEgp50D85+fwLJIVOpp0oZw4ISl8SYXLhKqqjt4Mnc0MhJlJK5ErjEDc1sbon6/rUX4qoK2aiOnyDaR/pODPYvU/iv0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qg1mPWQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA5CC4CEE2;
+	Wed, 23 Apr 2025 15:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422180;
-	bh=dHjKLAQubEuKUugmg2Gf3/n/7uIdasrwi7BBhM25rnM=;
+	s=korg; t=1745421921;
+	bh=fkM7vKgMdKUPyJWOxcfuI0x06B0MhDm6W9RWsXc9MNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JsVavvmk3d4UaZxRM43aEaM6n+2A1tUGsmNRCcO6FznG3G6ryM54q5c4JK4q4NTjb
-	 qUNueZXau3YvFdZwMmaHtGg6Vl1NSFwnTAd6/wWSVIfBRgQbYHzF3K9z8lXrqMWPhX
-	 kZNcIm/KstdpItaMLPVcd9SLB1Ov5IB//tDmdK4I=
+	b=qg1mPWQLt4twOjsjQHvBKcHtTl98yrxRxzBij17gmOctjZq2FmIOqt05dlzNxanYc
+	 eB8t1kIU0gQFeDIm3Q07RQLs58Pa/KZ5x/rS1Fxxos0noxLfPUwslL8QY2cJ8/7ch2
+	 86zq7FUVawlyzt4BALgrkOBTZwSOQONimnIr7cCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Meghana Malladi <m-malladi@ti.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 292/393] net: ti: icss-iep: Fix possible NULL pointer dereference for perout request
+	Cal Peake <cp@absolutedigital.net>,
+	Athul Krishna <athul.krishna.kr@protonmail.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Subject: [PATCH 6.1 199/291] Revert "PCI: Avoid reset when disabled via sysfs"
 Date: Wed, 23 Apr 2025 16:43:08 +0200
-Message-ID: <20250423142655.401810933@linuxfoundation.org>
+Message-ID: <20250423142632.516061808@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,197 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Alex Williamson <alex.williamson@redhat.com>
 
-[ Upstream commit 7349c9e9979333abfce42da5f9025598083b59c9 ]
+commit bc0b828ef6e561081ebc4c758d0c4d166bb9829c upstream.
 
-The ICSS IEP driver tracks perout and pps enable state with flags.
-Currently when disabling pps and perout signals during icss_iep_exit(),
-results in NULL pointer dereference for perout.
+This reverts commit 479380efe1625e251008d24b2810283db60d6fcd.
 
-To fix the null pointer dereference issue, the icss_iep_perout_enable_hw
-function can be modified to directly clear the IEP CMP registers when
-disabling PPS or PEROUT, without referencing the ptp_perout_request
-structure, as its contents are irrelevant in this case.
+The reset_method attribute on a PCI device is only intended to manage the
+availability of function scoped resets for a device.  It was never intended
+to restrict resets targeting the bus or slot.
 
-Fixes: 9b115361248d ("net: ti: icssg-prueth: Fix clearing of IEP_CMP_CFG registers during iep_init")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/7b1c7c36-363a-4085-b26c-4f210bee1df6@stanley.mountain/
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250415090543.717991-4-m-malladi@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In introducing a restriction that each device must support function level
+reset by testing pci_reset_supported(), we essentially create a catch-22,
+that a device must have a function scope reset in order to support bus/slot
+reset, when we use bus/slot reset to effect a reset of a device that does
+not support a function scoped reset, especially multi-function devices.
+
+This breaks the majority of uses cases where vfio-pci uses bus/slot resets
+to manage multifunction devices that do not support function scoped resets.
+
+Fixes: 479380efe162 ("PCI: Avoid reset when disabled via sysfs")
+Reported-by: Cal Peake <cp@absolutedigital.net>
+Closes: https://lore.kernel.org/all/808e1111-27b7-f35b-6d5c-5b275e73677b@absolutedigital.net
+Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220010
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250414211828.3530741-1-alex.williamson@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icss_iep.c | 121 +++++++++++------------
- 1 file changed, 58 insertions(+), 63 deletions(-)
+ drivers/pci/pci.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
-index 6006276ecce6f..f3315c6515156 100644
---- a/drivers/net/ethernet/ti/icssg/icss_iep.c
-+++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
-@@ -482,6 +482,22 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 	int ret;
- 	u64 cmp;
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5578,8 +5578,6 @@ static bool pci_bus_resetable(struct pci
+ 		return false;
  
-+	if (!on) {
-+		/* Disable CMP 1 */
-+		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
-+				   IEP_CMP_CFG_CMP_EN(1), 0);
-+
-+		/* clear CMP regs */
-+		regmap_write(iep->map, ICSS_IEP_CMP1_REG0, 0);
-+		if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
-+			regmap_write(iep->map, ICSS_IEP_CMP1_REG1, 0);
-+
-+		/* Disable sync */
-+		regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0);
-+
-+		return 0;
-+	}
-+
- 	/* Calculate width of the signal for PPS/PEROUT handling */
- 	ts.tv_sec = req->on.sec;
- 	ts.tv_nsec = req->on.nsec;
-@@ -500,64 +516,39 @@ static int icss_iep_perout_enable_hw(struct icss_iep *iep,
- 		if (ret)
- 			return ret;
- 
--		if (on) {
--			/* Configure CMP */
--			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
--			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
--				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
--			/* Configure SYNC, based on req on width */
--			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
--				     div_u64(ns_width, iep->def_inc));
--			regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
--			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
--				     div_u64(ns_start, iep->def_inc));
--			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
--			/* Enable CMP 1 */
--			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
--					   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
--		} else {
--			/* Disable CMP 1 */
--			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
--					   IEP_CMP_CFG_CMP_EN(1), 0);
--
--			/* clear regs */
--			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, 0);
--			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
--				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, 0);
--		}
-+		/* Configure CMP */
-+		regmap_write(iep->map, ICSS_IEP_CMP1_REG0, lower_32_bits(cmp));
-+		if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
-+			regmap_write(iep->map, ICSS_IEP_CMP1_REG1, upper_32_bits(cmp));
-+		/* Configure SYNC, based on req on width */
-+		regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
-+			     div_u64(ns_width, iep->def_inc));
-+		regmap_write(iep->map, ICSS_IEP_SYNC0_PERIOD_REG, 0);
-+		regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
-+			     div_u64(ns_start, iep->def_inc));
-+		regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0); /* one-shot mode */
-+		/* Enable CMP 1 */
-+		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
-+				   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
- 	} else {
--		if (on) {
--			u64 start_ns;
--
--			iep->period = ((u64)req->period.sec * NSEC_PER_SEC) +
--				      req->period.nsec;
--			start_ns = ((u64)req->period.sec * NSEC_PER_SEC)
--				   + req->period.nsec;
--			icss_iep_update_to_next_boundary(iep, start_ns);
--
--			regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
--				     div_u64(ns_width, iep->def_inc));
--			regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
--				     div_u64(ns_start, iep->def_inc));
--			/* Enable Sync in single shot mode  */
--			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
--				     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
--			/* Enable CMP 1 */
--			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
--					   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
--		} else {
--			/* Disable CMP 1 */
--			regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
--					   IEP_CMP_CFG_CMP_EN(1), 0);
--
--			/* clear CMP regs */
--			regmap_write(iep->map, ICSS_IEP_CMP1_REG0, 0);
--			if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
--				regmap_write(iep->map, ICSS_IEP_CMP1_REG1, 0);
--
--			/* Disable sync */
--			regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG, 0);
--		}
-+		u64 start_ns;
-+
-+		iep->period = ((u64)req->period.sec * NSEC_PER_SEC) +
-+				req->period.nsec;
-+		start_ns = ((u64)req->period.sec * NSEC_PER_SEC)
-+				+ req->period.nsec;
-+		icss_iep_update_to_next_boundary(iep, start_ns);
-+
-+		regmap_write(iep->map, ICSS_IEP_SYNC_PWIDTH_REG,
-+			     div_u64(ns_width, iep->def_inc));
-+		regmap_write(iep->map, ICSS_IEP_SYNC_START_REG,
-+			     div_u64(ns_start, iep->def_inc));
-+		/* Enable Sync in single shot mode  */
-+		regmap_write(iep->map, ICSS_IEP_SYNC_CTRL_REG,
-+			     IEP_SYNC_CTRL_SYNC_N_EN(0) | IEP_SYNC_CTRL_SYNC_EN);
-+		/* Enable CMP 1 */
-+		regmap_update_bits(iep->map, ICSS_IEP_CMP_CFG_REG,
-+				   IEP_CMP_CFG_CMP_EN(1), IEP_CMP_CFG_CMP_EN(1));
- 	}
- 
- 	return 0;
-@@ -568,11 +559,21 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
- {
- 	int ret = 0;
- 
-+	if (!on)
-+		goto disable;
-+
- 	/* Reject requests with unsupported flags */
- 	if (req->flags & ~(PTP_PEROUT_DUTY_CYCLE |
- 			  PTP_PEROUT_PHASE))
- 		return -EOPNOTSUPP;
- 
-+	/* Set default "on" time (1ms) for the signal if not passed by the app */
-+	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
-+		req->on.sec = 0;
-+		req->on.nsec = NSEC_PER_MSEC;
-+	}
-+
-+disable:
- 	mutex_lock(&iep->ptp_clk_mutex);
- 
- 	if (iep->pps_enabled) {
-@@ -583,12 +584,6 @@ static int icss_iep_perout_enable(struct icss_iep *iep,
- 	if (iep->perout_enabled == !!on)
- 		goto exit;
- 
--	/* Set default "on" time (1ms) for the signal if not passed by the app */
--	if (!(req->flags & PTP_PEROUT_DUTY_CYCLE)) {
--		req->on.sec = 0;
--		req->on.nsec = NSEC_PER_MSEC;
--	}
--
- 	ret = icss_iep_perout_enable_hw(iep, req, on);
- 	if (!ret)
- 		iep->perout_enabled = !!on;
--- 
-2.39.5
-
+ 	list_for_each_entry(dev, &bus->devices, bus_list) {
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
+ 			return false;
+@@ -5656,8 +5654,6 @@ static bool pci_slot_resetable(struct pc
+ 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
+ 		if (!dev->slot || dev->slot != slot)
+ 			continue;
+-		if (!pci_reset_supported(dev))
+-			return false;
+ 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
+ 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
+ 			return false;
 
 
 
