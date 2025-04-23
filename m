@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-135305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4E1FA98D7F
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:46:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70E9A98FF6
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B2B07A948C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:44:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C86761B8712E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2418B27FD60;
-	Wed, 23 Apr 2025 14:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BCF28A1D7;
+	Wed, 23 Apr 2025 15:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx5wqGpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoAuQ6SB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D614527FD5B;
-	Wed, 23 Apr 2025 14:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CF9284B4F;
+	Wed, 23 Apr 2025 15:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419555; cv=none; b=oqLFOHqxsqnjCYtdXOsP6IMwEovHok/PuP8KCDvh2i07ZAygGTGpNsOnJoc1kOClHTz6hDC/OoNEcsgEdRc4zsNTFHLc2QjC9wf9ovb4u4+eUImQLa4rpq81ixC0wciRT96oDIdvlvT98ImDPqgzD97hXPBcjIWa8GMAfd4MMQI=
+	t=1745420635; cv=none; b=LGNGAr7GeCWG/Dtdd6DbOXwhJarN2vuxxx6P+jB//BolLeUUF26H7LK00zQVQ6wGHEX0jj/rZ+2pnzHGwyP3Zr3a6y5hdHGyWFHdja0urWKmBdNwv2oKuHvOwNnXxT4E8PMOXmj3ts5uB0wan4S0SjfvMT8m1FXHR9bE+RdI4TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419555; c=relaxed/simple;
-	bh=w8NXvx+wz5cfTj9mjGwlFxdJtFBPVY1eNZjz9M58bDY=;
+	s=arc-20240116; t=1745420635; c=relaxed/simple;
+	bh=mFw8M7VgUpDfY+gO20+r0x57pOpcpLh/3KC71WDTEtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iehFWyrjB5ImxZ/lqK49vsUsTrtVpsHaCXVgPvOacfzegfGl9pNHSluxdvdqCtJ10D2Oeu6r5fCcm5efY1sNuLOI0GEQ60aqneIomT4r6ScPHNrn6b8LeYrdP7oMLAmueOidE9acY4kC5XK5a8HA3iiFtOaWTgPFDyYanMX17PY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx5wqGpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64739C4CEE2;
-	Wed, 23 Apr 2025 14:45:55 +0000 (UTC)
+	 MIME-Version; b=GsFsTWm4HU9qERAFBK9UUyFwYDKX6QTkgrmXZD3OVjvJK0UYZUR4kuAeK1VaYgAAnWgBGsiIwB/IsBlEYD+TygBpY8nZXOgT4EJMAy0m/qqO5RaGehG+YCXyl46Sw15eTMLDIWv5CBj8sSKIDHETwle/gahfaH5yjsV6VZDH5E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoAuQ6SB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B8BC4CEE2;
+	Wed, 23 Apr 2025 15:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419555;
-	bh=w8NXvx+wz5cfTj9mjGwlFxdJtFBPVY1eNZjz9M58bDY=;
+	s=korg; t=1745420635;
+	bh=mFw8M7VgUpDfY+gO20+r0x57pOpcpLh/3KC71WDTEtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bx5wqGpMwNyLRnkseZ+w460vLzVT2BDwy2d06DqQ4pZm3RaddSQlTP7Kz+ONNCe5f
-	 DIxhTyqKZvThoJW96h9NqS/2M2/9UC/dgmNFx7LeegbQCLq8RG5Sbv6gonkcp5KnY3
-	 oxA17/w+AURL/Dmdx3/FdWoFuT7SHtX6jLtRZY9c=
+	b=RoAuQ6SBAm7NkcJD9b/sTW4VcPmd8RVhrn03T1Mwwpd2GwiR8/hOEHeCIXje/2pjw
+	 9q554y1Kf4eHxkIGpqMLPywmuQxVUxa4olfPkHCe3NAeu3/LIRnJdvYM08XxXvtnkO
+	 SB2wKCJ7YvBacpB/tH0EihyzKctFRTW/IHb+TGM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Andrew Wyatt <fewtarius@steamfork.org>,
+	John Edwards <uejji@uejji.net>,
+	Paco Avelar <pacoavelar@hotmail.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/291] ata: pata_pxa: Fix potential NULL pointer dereference in pxa_ata_probe()
+Subject: [PATCH 6.6 095/393] drm: panel-orientation-quirks: Add quirks for AYA NEO Flip DS and KB
 Date: Wed, 23 Apr 2025 16:39:51 +0200
-Message-ID: <20250423142624.512973093@linuxfoundation.org>
+Message-ID: <20250423142647.214321523@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Andrew Wyatt <fewtarius@steamfork.org>
 
-[ Upstream commit ad320e408a8c95a282ab9c05cdf0c9b95e317985 ]
+[ Upstream commit 529741c331da1fbf54f86c6ec3a4558b9b0b16dc ]
 
-devm_ioremap() returns NULL on error. Currently, pxa_ata_probe() does
-not check for this case, which can result in a NULL pointer dereference.
+The AYA NEO Flip DS and KB both use a 1080x1920 portrait LCD panel.  The
+Flip DS additionally uses a 640x960 portrait LCD panel as a second display.
 
-Add NULL check after devm_ioremap() to prevent this issue.
+Add DMI matches to correctly rotate these panels.
 
-Fixes: 2dc6c6f15da9 ("[ARM] pata_pxa: DMA-capable PATA driver")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Andrew Wyatt <fewtarius@steamfork.org>
+Co-developed-by: John Edwards <uejji@uejji.net>
+Signed-off-by: John Edwards <uejji@uejji.net>
+Tested-by: Paco Avelar <pacoavelar@hotmail.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213222455.93533-3-uejji@uejji.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_pxa.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/ata/pata_pxa.c b/drivers/ata/pata_pxa.c
-index 985f42c4fd700..9113b74b2b67d 100644
---- a/drivers/ata/pata_pxa.c
-+++ b/drivers/ata/pata_pxa.c
-@@ -223,10 +223,16 @@ static int pxa_ata_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 7bf096ddeb06d..d9ed6214cf28b 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -93,6 +93,12 @@ static const struct drm_dmi_panel_orientation_data onegx1_pro = {
+ 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
+ };
  
- 	ap->ioaddr.cmd_addr	= devm_ioremap(&pdev->dev, cmd_res->start,
- 						resource_size(cmd_res));
-+	if (!ap->ioaddr.cmd_addr)
-+		return -ENOMEM;
- 	ap->ioaddr.ctl_addr	= devm_ioremap(&pdev->dev, ctl_res->start,
- 						resource_size(ctl_res));
-+	if (!ap->ioaddr.ctl_addr)
-+		return -ENOMEM;
- 	ap->ioaddr.bmdma_addr	= devm_ioremap(&pdev->dev, dma_res->start,
- 						resource_size(dma_res));
-+	if (!ap->ioaddr.bmdma_addr)
-+		return -ENOMEM;
- 
- 	/*
- 	 * Adjust register offsets
++static const struct drm_dmi_panel_orientation_data lcd640x960_leftside_up = {
++	.width = 640,
++	.height = 960,
++	.orientation = DRM_MODE_PANEL_ORIENTATION_LEFT_UP,
++};
++
+ static const struct drm_dmi_panel_orientation_data lcd720x1280_rightside_up = {
+ 	.width = 720,
+ 	.height = 1280,
+@@ -202,6 +208,18 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_PRODUCT_NAME, "AIR"),
+ 		},
+ 		.driver_data = (void *)&lcd1080x1920_leftside_up,
++	}, {    /* AYA NEO Flip DS Bottom Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "FLIP DS"),
++		},
++		.driver_data = (void *)&lcd640x960_leftside_up,
++	}, {    /* AYA NEO Flip KB/DS Top Screen */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYANEO"),
++		  DMI_MATCH(DMI_PRODUCT_NAME, "FLIP"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* AYA NEO Founder */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "AYA NEO"),
 -- 
 2.39.5
 
