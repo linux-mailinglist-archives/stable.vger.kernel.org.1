@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF756A99345
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C14B8A992A0
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8D5D4A2AE8
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27AD3172A24
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC010284B32;
-	Wed, 23 Apr 2025 15:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3D928DF17;
+	Wed, 23 Apr 2025 15:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMt8uLoI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1Lwfc9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBA8242D64;
-	Wed, 23 Apr 2025 15:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D32A29CB47;
+	Wed, 23 Apr 2025 15:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422288; cv=none; b=d38wtrjTY2rXSYXDKJarAa8kLsPUHJobcaDai7aMD8QS3LUGsoycBzzBKy2eBtaBcUDEAZnTxKsHU9lUsD3VKbF1eU0X+MD//hqatYNXp3uv4ksT7IsjcLNyfCwXKOxva0WdmLqkorJHRbexbmYJopPBxVRbFtPYlX3LP8r/wtc=
+	t=1745422031; cv=none; b=emcQ9Nw12MCpMDw1ffVngVHvGqVyO4wb46vIezH2r+h2d9BMFw5wp5aD8iNipUwJYrjb/tikhj0MZON56Pczl4uOiUaOtiBWvpMxUgGNadiXm2D4cIt1R/R6qb4AVc0YL5ZfOJU+xFeG+cjTXL1OqmbZU77zR303WJplZvqs8pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422288; c=relaxed/simple;
-	bh=oFn0Yq20cGpm31e2TVIOnR9gyPFfJ003EbAMr8Dw1sg=;
+	s=arc-20240116; t=1745422031; c=relaxed/simple;
+	bh=pRFd6tSwLuxATHuNLWTdIMDyEmodrd5TrhCt4IBFJFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G3A/EETotUxmveQb6nr+UT60+b/hGiMHIePajVa8Ygm7GCwGasEY8DRV9RgV9MuZNXhxfTcK9c2/1yKlqk+eEhb9h2CRc9stKLCpBt8ibZNYMPagDAPQ0/6WY9fLRhfpQ5uYLqAfQbpHqxunoV8ym8MLU7FzhCW5dzayKdQ8MM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMt8uLoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4D6C4CEE2;
-	Wed, 23 Apr 2025 15:31:27 +0000 (UTC)
+	 MIME-Version; b=uSSeCRPNhaLc+Dcbwz1s8HZQlAkd18f6FJBmfNXpoBuoPb+BiXvWzm0He3n/Uf8R/NNjLoei6SauJyiQ70/vAG7TPISHEQztAJ+Us/Up74ab+YM+ZtowL3lADcrjPsfGw3YyHgIeNdEy4sHgvXr/csDWLCpSAITZxnwVz0zxGU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1Lwfc9I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3031EC4CEE2;
+	Wed, 23 Apr 2025 15:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422288;
-	bh=oFn0Yq20cGpm31e2TVIOnR9gyPFfJ003EbAMr8Dw1sg=;
+	s=korg; t=1745422031;
+	bh=pRFd6tSwLuxATHuNLWTdIMDyEmodrd5TrhCt4IBFJFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uMt8uLoIEJ0RsDHSt2F5+hYo2Oo0ONGNJ8KcgizM0NrInfmMdDQFu2ttRwyJcNpIf
-	 wVR3RFk3xHTJx0dCUoq0PhvUDNtTSayiwO7oavLwYeZfM/cCTS02wCq4yZvv+GAcbB
-	 s8MsYgSao8owqR4cSq3WsxWhzd1rZXu54YA/TkBs=
+	b=p1Lwfc9IWUskfdQ6MNHbb9C8y4Xfp0oKpvli5hbeMBIUmdBFSoP5Mc+Oo3wBrG5pN
+	 Z+fN9h43bqznUbBKb9mJhbijzfwVzn3cI55eY0AJRaHKtIxcptM+DwgMJCYr1UfIrZ
+	 Eh0L8JC6C4ni9SGOhj8or4Z7vUUmB+gnmt9yzHWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
-Subject: [PATCH 6.6 314/393] crypto: caam/qi - Fix drv_ctx refcount bug
+	Peter Collingbourne <pcc@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 6.1 221/291] string: Add load_unaligned_zeropad() code path to sized_strscpy()
 Date: Wed, 23 Apr 2025 16:43:30 +0200
-Message-ID: <20250423142656.297862063@linuxfoundation.org>
+Message-ID: <20250423142633.437163324@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Peter Collingbourne <pcc@google.com>
 
-commit b7b39df7e710b0068356e4c696af07aa10e2cd3d upstream.
+commit d94c12bd97d567de342fd32599e7cd9e50bfa140 upstream.
 
-Ensure refcount is raised before request is enqueued since it could
-be dequeued before the call returns.
+The call to read_word_at_a_time() in sized_strscpy() is problematic
+with MTE because it may trigger a tag check fault when reading
+across a tag granule (16 bytes) boundary. To make this code
+MTE compatible, let's start using load_unaligned_zeropad()
+on architectures where it is available (i.e. architectures that
+define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
+takes care of page boundaries as well as tag granule boundaries,
+also disable the code preventing crossing page boundaries when using
+load_unaligned_zeropad().
 
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: <stable@vger.kernel.org>
-Fixes: 11144416a755 ("crypto: caam/qi - optimize frame queue cleanup")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
-Tested-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
+Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
+Cc: stable@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20250403000703.2584581-2-pcc@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/qi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/string.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/crypto/caam/qi.c
-+++ b/drivers/crypto/caam/qi.c
-@@ -122,12 +122,12 @@ int caam_qi_enqueue(struct device *qidev
- 	qm_fd_addr_set64(&fd, addr);
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -181,6 +181,7 @@ ssize_t strscpy(char *dest, const char *
+ 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
+ 		return -E2BIG;
  
- 	do {
-+		refcount_inc(&req->drv_ctx->refcnt);
- 		ret = qman_enqueue(req->drv_ctx->req_fq, &fd);
--		if (likely(!ret)) {
--			refcount_inc(&req->drv_ctx->refcnt);
-+		if (likely(!ret))
- 			return 0;
--		}
++#ifndef CONFIG_DCACHE_WORD_ACCESS
+ #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
+ 	/*
+ 	 * If src is unaligned, don't cross a page boundary,
+@@ -196,11 +197,13 @@ ssize_t strscpy(char *dest, const char *
+ 	if (((long) dest | (long) src) & (sizeof(long) - 1))
+ 		max = 0;
+ #endif
++#endif
  
-+		refcount_dec(&req->drv_ctx->refcnt);
- 		if (ret != -EBUSY)
- 			break;
- 		num_retries++;
+ 	/*
+-	 * read_word_at_a_time() below may read uninitialized bytes after the
+-	 * trailing zero and use them in comparisons. Disable this optimization
+-	 * under KMSAN to prevent false positive reports.
++	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
++	 * uninitialized bytes after the trailing zero and use them in
++	 * comparisons. Disable this optimization under KMSAN to prevent
++	 * false positive reports.
+ 	 */
+ 	if (IS_ENABLED(CONFIG_KMSAN))
+ 		max = 0;
+@@ -208,7 +211,11 @@ ssize_t strscpy(char *dest, const char *
+ 	while (max >= sizeof(unsigned long)) {
+ 		unsigned long c, data;
+ 
++#ifdef CONFIG_DCACHE_WORD_ACCESS
++		c = load_unaligned_zeropad(src+res);
++#else
+ 		c = read_word_at_a_time(src+res);
++#endif
+ 		if (has_zero(c, &data, &constants)) {
+ 			data = prep_zero_mask(c, data, &constants);
+ 			data = create_zero_mask(data);
 
 
 
