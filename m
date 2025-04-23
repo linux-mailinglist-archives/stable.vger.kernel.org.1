@@ -1,132 +1,201 @@
-Return-Path: <stable+bounces-135932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F70A990F2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6B5A990DC
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD4B517E115
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:20:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 881DE7A535B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14F28369C;
-	Wed, 23 Apr 2025 15:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65B228BAB8;
+	Wed, 23 Apr 2025 15:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="lbDO9Ppy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPICuGzH"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AC927CB33;
-	Wed, 23 Apr 2025 15:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6330E2367A0;
+	Wed, 23 Apr 2025 15:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421219; cv=none; b=ma3IL7fh0uCz5voSVDDLXgdILsR08asLV5Z5MWJO5JDiM0ivnp9VNlA+dEpct7jZO5C7dJG7iBmBmWdxJyig7NYJ1aB40eex2QVC0U+lVetjK9TVubgxYO8VK8r4wgidS/4qtkKKMnLomwQRbywaINM1ROWt4AfRNuzESE6LieE=
+	t=1745421341; cv=none; b=KNsojPWPMOw/qB1Kht9oXTQfcuTAkSh9k7YMSHdFqMZGZ61Vz2VU8j1S8e8CQT1YtsKKMPauJL+1FBILRsah9rE21qtf+MlVYAR5u6xFR5udV9fgGy5r+17FuMqBeny+GWUqtcQkEPXuWL3s39EI8DWosSNvaJRramwHTdnsqEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421219; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p6++vwXz/QCRHfXmKX237gpoKxUihPull4YwkTYoV53p7LWktR2xmqNNKr1ze5dPJtKvjsZZ3nBCnV6sB/J8CC0wQozejCImSfRqb1Zel0wAedrRPdTPUIEdkGMjZpzsmnzgf4gq2XhzrWPPEuLV8aOr+eDqGtbbmxXVOtqKBDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=lbDO9Ppy; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1745421198; x=1746025998; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=lbDO9PpyCw6/XeT9fWfYSItoms/7171/GwSyf+9r9JTpdLcL835dIdo11X1AaWZk
-	 g2qFKsqiVXB1JU2v7foI7CHNXeZ1qp3h8Z7DPU1wozbfu8s8Rc8FAJ1vFOrE0HPhx
-	 u4pOp+QuQTUKsQpmeABXbjF8VJCO++5nB59Yi/0DQv9sUONmjBwydJGsBOP7H/2st
-	 TM4FZDuxO8v30/s75Tx5Nmw4Ino5bBdv+QTPXtOa/LKvSP2S72+XdiWxpdiiOd2JZ
-	 o78tuNiDx7RbRCGiL0VXp5IL4j4zMqtgcxBQe75Cc4pKU3TJw8+7bASs/7A7UCgYD
-	 hst4Tdjl1o/ySdGtSQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.32.99]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MbRfv-1ueTYt12hV-00mmrz; Wed, 23
- Apr 2025 17:13:18 +0200
-Message-ID: <f5ee9a3f-8534-46df-873c-073f61a68fed@gmx.de>
-Date: Wed, 23 Apr 2025 17:13:16 +0200
+	s=arc-20240116; t=1745421341; c=relaxed/simple;
+	bh=SlGeXQMO8f8SNagA77D5mkSDCScVQeO0XiQhpieUubQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bi9tymMH/gB7VNkYY0txBhhzqanp3zcVDoGIWnGT+HBfdasrfEK9ZC9H7W5X8F9bkgh76AqeWeWuBbnT8UuEVKP57yWVkg7cXbyQKqUNFe9tEa7hevFikam+Gh36DW0cKa8A+t8VNAqTiZ84thMBgVbjH7x0MTN1AY2gcZEttjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPICuGzH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F9FC4CEE2;
+	Wed, 23 Apr 2025 15:15:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745421341;
+	bh=SlGeXQMO8f8SNagA77D5mkSDCScVQeO0XiQhpieUubQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aPICuGzHJiE/ZAhQL8vi4oOMgHcKKwnx/jCoDcSv5hoSbfGmJMkd8PjUypcTzL4dR
+	 wXOymo5SuKs3UNM8w3gfsgXnAZfsca8MGvarm9mkNp+ASyos96xDUkN/Rqu0NpBVur
+	 uGW+391cpKh6BFLV1GlN31SwDZr6k4TYZeF58hWciLdRpJfGFEERD5AE+HbQTqu/W/
+	 37ZIRo2hFv1rc/8IL+uhrIfbbUPxZu2WpNrTaon3uXWjFGucGgrF3tCdV/n3QyXIe3
+	 JnY+FYYI8gNdFRf0sb0OOhfwb+jbfH05JgmigFzoVk3Po0toHLEH9BMrGd/uSXlPzA
+	 CCp+p0YzrA4Pg==
+Date: Wed, 23 Apr 2025 08:15:40 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 122/241] fs: move the bdex_statx call to
+ vfs_getattr_nosec
+Message-ID: <20250423151540.GK25700@frogsfrogsfrogs>
+References: <20250423142620.525425242@linuxfoundation.org>
+ <20250423142625.563593359@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14 000/241] 6.14.4-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250423142620.525425242@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:aqrLckR4uCwlgh6/JEaYQP0FOJLWHt9SZpk3kTxgPRM8y2T0w2r
- lXA+NkLgiXy4ilB7vHJiDnef6cDXvCkC4Jl+dgG/rLrUgk/IyE3z1YNog5KmLOBVvyJdakn
- To13MbRmgSXgVg0TU2dK0jWmMWxAhtX+mEA9KUUNytPEgXXGFHzM9Yqq+qGZ8afPgHhxhh6
- KwTMV1jD1IbsYuxGJqJsw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ImHXXAdgq8g=;t1oBT8mUFMrEy2aeGi+oO3fQRWJ
- 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
- 50KdhfiJXQ==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250423142625.563593359@linuxfoundation.org>
 
-Hi Greg
+On Wed, Apr 23, 2025 at 04:43:06PM +0200, Greg Kroah-Hartman wrote:
+> 6.14-stable review patch.  If anyone has any objections, please let me know.
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+You might want to hold this patch (for 6.14 and 6.12) until "devtmpfs:
+don't use vfs_getattr_nosec to query i_mode" lands, since (AFAICT) it's
+needed to fix a hang introduced by this patch.
 
-Thanks
+(Unless that's already queued for stable, but afaict it isn't)
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+--D
 
+> ------------------
+> 
+> From: Christoph Hellwig <hch@lst.de>
+> 
+> [ Upstream commit 777d0961ff95b26d5887fdae69900374364976f3 ]
+> 
+> Currently bdex_statx is only called from the very high-level
+> vfs_statx_path function, and thus bypassing it for in-kernel calls
+> to vfs_getattr or vfs_getattr_nosec.
+> 
+> This breaks querying the block ѕize of the underlying device in the
+> loop driver and also is a pitfall for any other new kernel caller.
+> 
+> Move the call into the lowest level helper to ensure all callers get
+> the right results.
+> 
+> Fixes: 2d985f8c6b91 ("vfs: support STATX_DIOALIGN on block devices")
+> Fixes: f4774e92aab8 ("loop: take the file system minimum dio alignment into account")
+> Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Link: https://lore.kernel.org/20250417064042.712140-1-hch@lst.de
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  block/bdev.c           |  3 +--
+>  fs/stat.c              | 32 ++++++++++++++++++--------------
+>  include/linux/blkdev.h |  6 +++---
+>  3 files changed, 22 insertions(+), 19 deletions(-)
+> 
+> diff --git a/block/bdev.c b/block/bdev.c
+> index 9d73a8fbf7f99..e5147cab21b21 100644
+> --- a/block/bdev.c
+> +++ b/block/bdev.c
+> @@ -1268,8 +1268,7 @@ void sync_bdevs(bool wait)
+>  /*
+>   * Handle STATX_{DIOALIGN, WRITE_ATOMIC} for block devices.
+>   */
+> -void bdev_statx(struct path *path, struct kstat *stat,
+> -		u32 request_mask)
+> +void bdev_statx(const struct path *path, struct kstat *stat, u32 request_mask)
+>  {
+>  	struct inode *backing_inode;
+>  	struct block_device *bdev;
+> diff --git a/fs/stat.c b/fs/stat.c
+> index f13308bfdc983..3d9222807214a 100644
+> --- a/fs/stat.c
+> +++ b/fs/stat.c
+> @@ -204,12 +204,25 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
+>  				  STATX_ATTR_DAX);
+>  
+>  	idmap = mnt_idmap(path->mnt);
+> -	if (inode->i_op->getattr)
+> -		return inode->i_op->getattr(idmap, path, stat,
+> -					    request_mask,
+> -					    query_flags);
+> +	if (inode->i_op->getattr) {
+> +		int ret;
+> +
+> +		ret = inode->i_op->getattr(idmap, path, stat, request_mask,
+> +				query_flags);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		generic_fillattr(idmap, request_mask, inode, stat);
+> +	}
+> +
+> +	/*
+> +	 * If this is a block device inode, override the filesystem attributes
+> +	 * with the block device specific parameters that need to be obtained
+> +	 * from the bdev backing inode.
+> +	 */
+> +	if (S_ISBLK(stat->mode))
+> +		bdev_statx(path, stat, request_mask);
+>  
+> -	generic_fillattr(idmap, request_mask, inode, stat);
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL(vfs_getattr_nosec);
+> @@ -295,15 +308,6 @@ static int vfs_statx_path(struct path *path, int flags, struct kstat *stat,
+>  	if (path_mounted(path))
+>  		stat->attributes |= STATX_ATTR_MOUNT_ROOT;
+>  	stat->attributes_mask |= STATX_ATTR_MOUNT_ROOT;
+> -
+> -	/*
+> -	 * If this is a block device inode, override the filesystem
+> -	 * attributes with the block device specific parameters that need to be
+> -	 * obtained from the bdev backing inode.
+> -	 */
+> -	if (S_ISBLK(stat->mode))
+> -		bdev_statx(path, stat, request_mask);
+> -
+>  	return 0;
+>  }
+>  
+> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+> index d37751789bf58..38fc78501ef2d 100644
+> --- a/include/linux/blkdev.h
+> +++ b/include/linux/blkdev.h
+> @@ -1664,7 +1664,7 @@ int sync_blockdev(struct block_device *bdev);
+>  int sync_blockdev_range(struct block_device *bdev, loff_t lstart, loff_t lend);
+>  int sync_blockdev_nowait(struct block_device *bdev);
+>  void sync_bdevs(bool wait);
+> -void bdev_statx(struct path *, struct kstat *, u32);
+> +void bdev_statx(const struct path *path, struct kstat *stat, u32 request_mask);
+>  void printk_all_partitions(void);
+>  int __init early_lookup_bdev(const char *pathname, dev_t *dev);
+>  #else
+> @@ -1682,8 +1682,8 @@ static inline int sync_blockdev_nowait(struct block_device *bdev)
+>  static inline void sync_bdevs(bool wait)
+>  {
+>  }
+> -static inline void bdev_statx(struct path *path, struct kstat *stat,
+> -				u32 request_mask)
+> +static inline void bdev_statx(const struct path *path, struct kstat *stat,
+> +		u32 request_mask)
+>  {
+>  }
+>  static inline void printk_all_partitions(void)
+> -- 
+> 2.39.5
+> 
+> 
+> 
 
