@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-135461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A6CA98E46
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:54:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1C4A99269
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 111DB446C57
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:53:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 023DF3AA2DF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4E727CB12;
-	Wed, 23 Apr 2025 14:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FAA28B4FD;
+	Wed, 23 Apr 2025 15:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGrNBE9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dpd/MIqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687B2175BF;
-	Wed, 23 Apr 2025 14:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FAA2BE7D0;
+	Wed, 23 Apr 2025 15:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419984; cv=none; b=RUA+BFX2dFlQsv7hQpYnY5vY+W2Se8BehR+fazy/ZPCPYuvePa6mWMdqHaLL+1Zy4YxYCZRYKYEoSed82ZiKnj2zI9ErTcdylgldh+xeDM3mJhWw5RKubPNI5quNv+cmHwCXwJh3OO2RHNcX+4oRvDXfdvo8ma8DVSugbKqnQ+U=
+	t=1745421729; cv=none; b=rElojfN6j+pxIpk9aKqgUchRK1gc1Dl1xbAuyUSj1uMsJcVlKxkE0Xxl0DGHs89Wxpb/5uciFJL9ticONykUXS+Tv/zztW5remWuBIXPflrLgbcFLwt+p/psCr4cs5VblTHmdg99PHT0sAQRLdudIry8sEIcbEMTomdq8Q7N//s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419984; c=relaxed/simple;
-	bh=1Oxi5BNjmjWG0PVj+PsY1ns8njgpB3kaoYz1vIX0ScI=;
+	s=arc-20240116; t=1745421729; c=relaxed/simple;
+	bh=67mYhkQyEyqtlVggTvJ69w0a+h5pS80PyENqXdA56ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qo2w58zkw73J7W7gDrorYgGAfRHw5VtlxfRSFmAKpq9FKBljn/7pO4WIIYgIowGy3Fynh0ZLo74wvEfYyKcoUrHZJldNml84HZCYnrsEuLtGEJc2ZcwkEwInxM5xMSheJl47zRvkafhZS7LeuHawVLeqrm+e77c4Rq+WDkcQeqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGrNBE9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0050C4CEE3;
-	Wed, 23 Apr 2025 14:53:03 +0000 (UTC)
+	 MIME-Version; b=WMh4RBvVsgmAjrAirwOWNeiXPwVLn52EkKg8o2fDG4VMkixtElrEpGdYu2UYxaID7s/ssBNj7qbE7Zkiarj6sMTx0ScTuQM1jMB52BUkigEFwiXObYpLVUDajWGn7PMSEOtBo+zMvVg6FjWczHecbcmF5nP5jZh589Vi+QzmkBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dpd/MIqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3573C4CEE2;
+	Wed, 23 Apr 2025 15:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419984;
-	bh=1Oxi5BNjmjWG0PVj+PsY1ns8njgpB3kaoYz1vIX0ScI=;
+	s=korg; t=1745421729;
+	bh=67mYhkQyEyqtlVggTvJ69w0a+h5pS80PyENqXdA56ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGrNBE9WKr+qJSJrlSI+TZnHe6oxi9V+8Kzs43jy8DvOniDjLt02S5zPTU00JgPdd
-	 BEbH0G5Yiy18chvt7xGPlCaZiBf/VQDJDvatSxmqb6vfS+aPHh+RiFODx5WuQMn2Uj
-	 mRvi3IcPOgRDGabUbIPad+FkasZ8O1u3m7XRgxPU=
+	b=Dpd/MIqpxFBWjBWE6ajXf97SBBNFHJwfq/vIKtDkn2E3gnjnxykg7Rmv0Yq+jyO1y
+	 H8nMJGmH5XfQFwNVdVqcVj7/BNTA7xmd+RKXZKB+PvZQtPMk9zK95z8SJnAcMqD2M6
+	 yD4GZUH2w//0RZU344uxvoJGKeig86heU/5NLw2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jijie Shao <shaojijie@huawei.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 049/241] net: hibmcge: fix wrong mtu log issue
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 217/393] gve: handle overflow when reporting TX consumed descriptors
 Date: Wed, 23 Apr 2025 16:41:53 +0200
-Message-ID: <20250423142622.512459425@linuxfoundation.org>
+Message-ID: <20250423142652.343284541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Joshua Washington <joshwash@google.com>
 
-[ Upstream commit 4e4ac53335de54bcb9d26842df0998cfd8fcaf90 ]
+commit 15970e1b23f5c25db88c613fddf9131de086f28e upstream.
 
-A dbg log is generated when the driver modifies the MTU,
-which is expected to trace the change of the MTU.
+When the tx tail is less than the head (in cases of wraparound), the TX
+consumed descriptor statistic in DQ will be reported as
+UINT32_MAX - head + tail, which is incorrect. Mask the difference of
+head and tail according to the ring size when reporting the statistic.
 
-However, the log is recorded after WRITE_ONCE().
-At this time, netdev->mtu has been changed to the new value.
-As a result, netdev->mtu is the same as new_mtu.
-
-This patch modifies the log location and records logs before WRITE_ONCE().
-
-Fixes: ff4edac6e9bd ("net: hibmcge: Implement some .ndo functions")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 2c9198356d56 ("gve: Add consumed counts to ethtool stats")
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250410021327.590362-5-shaojijie@huawei.com
+Link: https://patch.msgid.link/20250402001037.2717315-1-hramamurthy@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/google/gve/gve_ethtool.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-index bb0f25ac97600..4d20679b2543a 100644
---- a/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-+++ b/drivers/net/ethernet/hisilicon/hibmcge/hbg_main.c
-@@ -198,12 +198,12 @@ static int hbg_net_change_mtu(struct net_device *netdev, int new_mtu)
- 	if (netif_running(netdev))
- 		return -EBUSY;
- 
--	hbg_hw_set_mtu(priv, new_mtu);
--	WRITE_ONCE(netdev->mtu, new_mtu);
--
- 	dev_dbg(&priv->pdev->dev,
- 		"change mtu from %u to %u\n", netdev->mtu, new_mtu);
- 
-+	hbg_hw_set_mtu(priv, new_mtu);
-+	WRITE_ONCE(netdev->mtu, new_mtu);
-+
- 	return 0;
- }
- 
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/google/gve/gve_ethtool.c
++++ b/drivers/net/ethernet/google/gve/gve_ethtool.c
+@@ -356,7 +356,9 @@ gve_get_ethtool_stats(struct net_device
+ 				 */
+ 				data[i++] = 0;
+ 				data[i++] = 0;
+-				data[i++] = tx->dqo_tx.tail - tx->dqo_tx.head;
++				data[i++] =
++					(tx->dqo_tx.tail - tx->dqo_tx.head) &
++					tx->mask;
+ 			}
+ 			do {
+ 				start =
 
 
 
