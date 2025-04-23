@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0A5A99342
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:55:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF3DA98F42
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861E05A808D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:38:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 984AE3B846F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D27429114E;
-	Wed, 23 Apr 2025 15:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB7A27CCC7;
+	Wed, 23 Apr 2025 14:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grgjwzu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn10up+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2E6269B07;
-	Wed, 23 Apr 2025 15:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADC41A23B0;
+	Wed, 23 Apr 2025 14:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421966; cv=none; b=FZdqtXMU85JwREuidyIrOqGGbsCqrX4ha2jOrkaBy29lWJmilYN1FoyskL2aZjuGl8FEUNFuQxwlLCKHnMD78+JwaKbZN+EG/044r+YDfcuvJuukr2Sb05Hk1TJrB19cQGM08pwvA2GpcMwfWXmgAxDC/LwCjFNvwvCLMDJ/8TM=
+	t=1745420363; cv=none; b=ONULjejX/QpA3NNRawF5nv6r16o6FQgJSsH7VIZhxTMASpWZjGlgDPvyZsl3NGh4u/6ii0hYu/RGTQE4lT4TMzwQRUw6YxvfhnIw62Pe9qB9x26HU60FsaIGxVhIoKGRBYo55xiocpotAHrIXat5OcMiinAeyDSo/rvnCJr51eg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421966; c=relaxed/simple;
-	bh=bpoNs3S5+H40kM6qWOgBY0AINKKEiGFrT7fBKjWPYPU=;
+	s=arc-20240116; t=1745420363; c=relaxed/simple;
+	bh=eu4AExGYxOLsgLzaLcZ89j86An9HG5ktvLOwMCIAwxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEo0VuXe/oA2VtIxI1czmSG1IiE40ANDC1z3rb6nryWsCuPAJ1VKYoEso11BhCQP2KKXTeWkRHmZ/44La0yaukByQYxg2OE2c5fIBKknDz+igCbuh3+s0yIn/UJ/Q76Nm9dbREs5VI6MQ6zAmGnF2mDdMkIHzzw6r2cpDq3LYMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grgjwzu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC0DC4CEE2;
-	Wed, 23 Apr 2025 15:26:05 +0000 (UTC)
+	 MIME-Version; b=N/3vbzJHrQ31iCll2hYU5SM9DDvTMx9+nb07DLDUIbPJtiVcWg/qYdKEplObQo7ZRXDorpm4vFricfhf4M/8EXUiK1dfo6XBF7eIVNccIjNxK18yMVZsskDdb7nx+xiVYM2/mydm8/ZbSzb77gZK+HRYZL8nnMWXnTD5en0EPkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn10up+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C0C4C4CEE2;
+	Wed, 23 Apr 2025 14:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421966;
-	bh=bpoNs3S5+H40kM6qWOgBY0AINKKEiGFrT7fBKjWPYPU=;
+	s=korg; t=1745420363;
+	bh=eu4AExGYxOLsgLzaLcZ89j86An9HG5ktvLOwMCIAwxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grgjwzu1wO78aPNB8hYR99OGNslboxEzZBAt6WQI6daZC60mixm+S4j27tCKIVD88
-	 hlhjHIgDMRHf480qlc9aYivLwS3AL4rPpS9HUC4YmMYBk0oqC6tZqPKpTQY6DewGd+
-	 uT0EIRgPzRpl/PkVNuWLsSastzyntDI0y2Dzr2uk=
+	b=kn10up+B1OON2fz5KjvFzgueM4fn1V10oFrd3QxwSkOb4V8BwY4JmBhd9An8q0RUx
+	 pty7gdSj638CwYoxVPDVMKOBYGxMmXnkbtEQRWZ8SV4yvJyT/BFQPOfAUdnWfyHi8x
+	 BIWAfllSbv6W/Jk3ds7caKnEfpu6TVkczhm1TSno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/393] ASoC: cs42l43: Reset clamp override on jack removal
+Subject: [PATCH 6.14 085/241] net: ethernet: mtk_eth_soc: correct the max weight of the queue limit for 100Mbps
 Date: Wed, 23 Apr 2025 16:42:29 +0200
-Message-ID: <20250423142653.821116753@linuxfoundation.org>
+Message-ID: <20250423142624.051265628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit 5fc7d2b5cab47f2ac712f689140b1fed978fb91c ]
+[ Upstream commit 6b02eb372c6776c9abb8bc81cf63f96039c24664 ]
 
-Some of the manually selected jack configurations will disable the
-headphone clamp override. Restore this on jack removal, such that
-the state is consistent for a new insert.
+Without this patch, the maximum weight of the queue limit will be
+incorrect when linked at 100Mbps due to an apparent typo.
 
-Fixes: fc918cbe874e ("ASoC: cs42l43: Add support for the cs42l43")
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250409120717.1294528-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f63959c7eec31 ("net: ethernet: mtk_eth_soc: implement multi-queue support for per-port queues")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/74111ba0bdb13743313999ed467ce564e8189006.1744764277.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs42l43-jack.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs42l43-jack.c b/sound/soc/codecs/cs42l43-jack.c
-index 9f5f1a92561d1..0b8e88b19888e 100644
---- a/sound/soc/codecs/cs42l43-jack.c
-+++ b/sound/soc/codecs/cs42l43-jack.c
-@@ -690,6 +690,9 @@ static void cs42l43_clear_jack(struct cs42l43_codec *priv)
- 			   CS42L43_PGA_WIDESWING_MODE_EN_MASK, 0);
- 	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CTRL,
- 			   CS42L43_JACK_STEREO_CONFIG_MASK, 0);
-+	regmap_update_bits(cs42l43->regmap, CS42L43_STEREO_MIC_CLAMP_CTRL,
-+			   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK,
-+			   CS42L43_SMIC_HPAMP_CLAMP_DIS_FRC_MASK);
- 	regmap_update_bits(cs42l43->regmap, CS42L43_HS2,
- 			   CS42L43_HSDET_MODE_MASK | CS42L43_HSDET_MANUAL_MODE_MASK,
- 			   0x2 << CS42L43_HSDET_MODE_SHIFT);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 7988de05e4ecd..6a34ad6483a14 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -734,7 +734,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 		case SPEED_100:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 103) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3);
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
+ 			break;
+ 		case SPEED_1000:
+@@ -757,7 +757,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 		case SPEED_100:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5);
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
+ 			break;
+ 		case SPEED_1000:
 -- 
 2.39.5
 
