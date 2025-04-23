@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-135690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3BCEA98FCF
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99128A992F3
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 318FF8E4056
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEDE55A3274
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEFA280CD4;
-	Wed, 23 Apr 2025 15:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B3429AAF2;
+	Wed, 23 Apr 2025 15:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKnqd5At"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnwqcWXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0931128540E;
-	Wed, 23 Apr 2025 15:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DD7298CB0;
+	Wed, 23 Apr 2025 15:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420588; cv=none; b=MKMGb+/1PZ/9OaNmYrr8+wVEFl7TYagUPMbS7D57J41i+tKHROpe9akCotwRIYrlsy169DeiXhITk20y6PznmfUTu+3t6P0505fXMl+Zd63H0fOLJs9Tk7KUJuLYK1KKC41wupEZRG9+WvRZhre1YLnkFcycYEvDFajpwyNZ7N0=
+	t=1745421801; cv=none; b=lS77d4FdBHvSj80IXZXKrAJfzgF62GoprBX7i2QgcwqOm9rT9ny7J0e4DxStfXpI2Hk8O+ziCEeuu9kuVqpSzes2lFq6v0kgoPZlvu0ZSQH+W35DWFdJbFuyOAVX5ltL9I8ub4AWRq+m0tRkVf9wHmHrzLxFtQKxnzMgUDIduBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420588; c=relaxed/simple;
-	bh=1DRMyqhgHRzttT8cCMvsEJ+P15ynU9UgvD9xiT2dY2M=;
+	s=arc-20240116; t=1745421801; c=relaxed/simple;
+	bh=YF9hJuCkZRtdpax4VgOAoN479O3l001IO7mKNj1nQ1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RwT8r4OeJaWJ7o2xwht4LPdReiHwaDioTc1QkoTu+zrFz1yrPCfnPQcoj/rHvag4GW7omyvgotfqaM6C290sWVaQJHjU8/KiHSSmhP7usZ5X4Z8wLBWXbbCcoVOW3rNXDPEa8lAGh8PgDMa1tLDCKk3HMeM7OvHd5mBwPgxFJzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKnqd5At; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F7E3C4CEEB;
-	Wed, 23 Apr 2025 15:03:07 +0000 (UTC)
+	 MIME-Version; b=T/w+RA+I+A0rqtwwjrI2eIkbsHJ4nLqstNNG8TPGarlRdrF1RrrNsH5qXEVPXyBZCkyOTT0JuUx2lXMHA3QXUltZnCiB/MkwgWJsKjyIsSi/uKo8rmOJO8Bfbzl7WXMbrTMEy/GmdMcYLcravKAwTMbNZLOW9ZXkx6LcasrBztg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnwqcWXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C21AC4CEE2;
+	Wed, 23 Apr 2025 15:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420587;
-	bh=1DRMyqhgHRzttT8cCMvsEJ+P15ynU9UgvD9xiT2dY2M=;
+	s=korg; t=1745421799;
+	bh=YF9hJuCkZRtdpax4VgOAoN479O3l001IO7mKNj1nQ1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKnqd5Atvdd/6O+2scIde9AQUNKKcdguyNmK1bO/tLtxLcpvzesZvixqXBGZdZXyW
-	 w9oc7QJUMKZsJMgM4QKvie+BDY8oMvh1SFqJpTR+pilTHxpbBlVwwbcNyba7uHtMGN
-	 8MQhlr6H5FD6GOPGQhkPLS1KKlTlnV2G8TLauVrg=
+	b=WnwqcWXBSo+8qel4AJHCoiGyGeQJcmQJg04oeSiGiGR2Dxzae0GUPjAjYT1y5EIyy
+	 E8gbnaQTGbmS98VDRuy2KssgFVeGZke+JtFGBhKe7NpXctmUeBmJIZBuMHjqxUJ2pU
+	 BxT9ioJBPhl1baS8UIryHpY/xcqbTgzTqNUFkG3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.14 105/241] ASoC: codecs:lpass-wsa-macro: Fix vi feedback rate
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Christopher S M Hall <christopher.s.hall@intel.com>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 180/291] igc: fix PTM cycle trigger logic
 Date: Wed, 23 Apr 2025 16:42:49 +0200
-Message-ID: <20250423142624.868551464@linuxfoundation.org>
+Message-ID: <20250423142631.736431278@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +68,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Christopher S M Hall <christopher.s.hall@intel.com>
 
-commit d7bff1415e85b889dc8908be6aedba8807ae5e37 upstream.
+[ Upstream commit 8e404ad95d2c10c261e2ef6992c7c12dde03df0e ]
 
-Currently the VI feedback rate is set to fixed 8K, fix this by getting
-the correct rate from params_rate.
+Writing to clear the PTM status 'valid' bit while the PTM cycle is
+triggered results in unreliable PTM operation. To fix this, clear the
+PTM 'trigger' and status after each PTM transaction.
 
-Without this patch incorrect rate will be set on the VI feedback
-recording resulting in rate miss match and audio artifacts.
+The issue can be reproduced with the following:
 
-Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
-Cc: stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250403160209.21613-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ sudo phc2sys -R 1000 -O 0 -i tsn0 -m
+
+Note: 1000 Hz (-R 1000) is unrealistically large, but provides a way to
+quickly reproduce the issue.
+
+PHC2SYS exits with:
+
+"ioctl PTP_OFFSET_PRECISE: Connection timed out" when the PTM transaction
+  fails
+
+This patch also fixes a hang in igc_probe() when loading the igc
+driver in the kdump kernel on systems supporting PTM.
+
+The igc driver running in the base kernel enables PTM trigger in
+igc_probe().  Therefore the driver is always in PTM trigger mode,
+except in brief periods when manually triggering a PTM cycle.
+
+When a crash occurs, the NIC is reset while PTM trigger is enabled.
+Due to a hardware problem, the NIC is subsequently in a bad busmaster
+state and doesn't handle register reads/writes.  When running
+igc_probe() in the kdump kernel, the first register access to a NIC
+register hangs driver probing and ultimately breaks kdump.
+
+With this patch, igc has PTM trigger disabled most of the time,
+and the trigger is only enabled for very brief (10 - 100 us) periods
+when manually triggering a PTM cycle.  Chances that a crash occurs
+during a PTM trigger are not 0, but extremely reduced.
+
+Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Christopher S M Hall <christopher.s.hall@intel.com>
+Reviewed-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Corinna Vinschen <vinschen@redhat.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/lpass-wsa-macro.c |   39 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_defines.h |  1 +
+ drivers/net/ethernet/intel/igc/igc_ptp.c     | 70 ++++++++++++--------
+ 2 files changed, 42 insertions(+), 29 deletions(-)
 
---- a/sound/soc/codecs/lpass-wsa-macro.c
-+++ b/sound/soc/codecs/lpass-wsa-macro.c
-@@ -63,6 +63,10 @@
- #define CDC_WSA_TX_SPKR_PROT_CLK_DISABLE	0
- #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK	GENMASK(3, 0)
- #define CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K	0
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K	1
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K	2
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K	3
-+#define CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K	4
- #define CDC_WSA_TX0_SPKR_PROT_PATH_CFG0		(0x0248)
- #define CDC_WSA_TX1_SPKR_PROT_PATH_CTL		(0x0264)
- #define CDC_WSA_TX1_SPKR_PROT_PATH_CFG0		(0x0268)
-@@ -407,6 +411,7 @@ struct wsa_macro {
- 	int ear_spkr_gain;
- 	int spkr_gain_offset;
- 	int spkr_mode;
-+	u32 pcm_rate_vi;
- 	int is_softclip_on[WSA_MACRO_SOFTCLIP_MAX];
- 	int softclip_clk_users[WSA_MACRO_SOFTCLIP_MAX];
- 	struct regmap *regmap;
-@@ -1280,6 +1285,7 @@ static int wsa_macro_hw_params(struct sn
- 			       struct snd_soc_dai *dai)
- {
- 	struct snd_soc_component *component = dai->component;
-+	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 	int ret;
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index 8187a658dcbd5..17a7e3c875ccb 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -574,6 +574,7 @@
+ #define IGC_PTM_STAT_T4M1_OVFL		BIT(3) /* T4 minus T1 overflow */
+ #define IGC_PTM_STAT_ADJUST_1ST		BIT(4) /* 1588 timer adjusted during 1st PTM cycle */
+ #define IGC_PTM_STAT_ADJUST_CYC		BIT(5) /* 1588 timer adjusted during non-1st PTM cycle */
++#define IGC_PTM_STAT_ALL		GENMASK(5, 0) /* Used to clear all status */
  
- 	switch (substream->stream) {
-@@ -1292,6 +1298,11 @@ static int wsa_macro_hw_params(struct sn
- 			return ret;
- 		}
- 		break;
-+	case SNDRV_PCM_STREAM_CAPTURE:
-+		if (dai->id == WSA_MACRO_AIF_VI)
-+			wsa->pcm_rate_vi = params_rate(params);
-+
-+		break;
- 	default:
- 		break;
+ /* PCIe PTM Cycle Control */
+ #define IGC_PTM_CYCLE_CTRL_CYC_TIME(msec)	((msec) & 0x3ff) /* PTM Cycle Time (msec) */
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 14cd7f995280d..b4720545191ff 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -844,13 +844,40 @@ static void igc_ptm_log_error(struct igc_adapter *adapter, u32 ptm_stat)
  	}
-@@ -1465,6 +1476,28 @@ static int wsa_macro_enable_vi_feedback(
- 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
- 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 	u32 tx_reg0, tx_reg1;
-+	u32 rate_val;
+ }
+ 
++static void igc_ptm_trigger(struct igc_hw *hw)
++{
++	u32 ctrl;
 +
-+	switch (wsa->pcm_rate_vi) {
-+	case 8000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
-+		break;
-+	case 16000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_16K;
-+		break;
-+	case 24000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_24K;
-+		break;
-+	case 32000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_32K;
-+		break;
-+	case 48000:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_48K;
-+		break;
-+	default:
-+		rate_val = CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K;
-+		break;
-+	}
++	/* To "manually" start the PTM cycle we need to set the
++	 * trigger (TRIG) bit
++	 */
++	ctrl = rd32(IGC_PTM_CTRL);
++	ctrl |= IGC_PTM_CTRL_TRIG;
++	wr32(IGC_PTM_CTRL, ctrl);
++	/* Perform flush after write to CTRL register otherwise
++	 * transaction may not start
++	 */
++	wrfl();
++}
++
++static void igc_ptm_reset(struct igc_hw *hw)
++{
++	u32 ctrl;
++
++	ctrl = rd32(IGC_PTM_CTRL);
++	ctrl &= ~IGC_PTM_CTRL_TRIG;
++	wr32(IGC_PTM_CTRL, ctrl);
++	/* Write to clear all status */
++	wr32(IGC_PTM_STAT, IGC_PTM_STAT_ALL);
++}
++
+ static int igc_phc_get_syncdevicetime(ktime_t *device,
+ 				      struct system_counterval_t *system,
+ 				      void *ctx)
+ {
+-	u32 stat, t2_curr_h, t2_curr_l, ctrl;
+ 	struct igc_adapter *adapter = ctx;
+ 	struct igc_hw *hw = &adapter->hw;
++	u32 stat, t2_curr_h, t2_curr_l;
+ 	int err, count = 100;
+ 	ktime_t t1, t2_curr;
  
- 	if (test_bit(WSA_MACRO_TX0, &wsa->active_ch_mask[WSA_MACRO_AIF_VI])) {
- 		tx_reg0 = CDC_WSA_TX0_SPKR_PROT_PATH_CTL;
-@@ -1476,7 +1509,7 @@ static int wsa_macro_enable_vi_feedback(
+@@ -864,25 +891,13 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
+ 		 * are transitory. Repeating the process returns valid
+ 		 * data eventually.
+ 		 */
+-
+-		/* To "manually" start the PTM cycle we need to clear and
+-		 * then set again the TRIG bit.
+-		 */
+-		ctrl = rd32(IGC_PTM_CTRL);
+-		ctrl &= ~IGC_PTM_CTRL_TRIG;
+-		wr32(IGC_PTM_CTRL, ctrl);
+-		ctrl |= IGC_PTM_CTRL_TRIG;
+-		wr32(IGC_PTM_CTRL, ctrl);
+-
+-		/* The cycle only starts "for real" when software notifies
+-		 * that it has read the registers, this is done by setting
+-		 * VALID bit.
+-		 */
+-		wr32(IGC_PTM_STAT, IGC_PTM_STAT_VALID);
++		igc_ptm_trigger(hw);
  
- 	switch (event) {
- 	case SND_SOC_DAPM_POST_PMU:
--			/* Enable V&I sensing */
-+		/* Enable V&I sensing */
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_RESET_MASK,
- 					      CDC_WSA_TX_SPKR_PROT_RESET);
-@@ -1485,10 +1518,10 @@ static int wsa_macro_enable_vi_feedback(
- 					      CDC_WSA_TX_SPKR_PROT_RESET);
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
-+					      rate_val);
- 		snd_soc_component_update_bits(component, tx_reg1,
- 					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_MASK,
--					      CDC_WSA_TX_SPKR_PROT_PCM_RATE_8K);
-+					      rate_val);
- 		snd_soc_component_update_bits(component, tx_reg0,
- 					      CDC_WSA_TX_SPKR_PROT_CLK_EN_MASK,
- 					      CDC_WSA_TX_SPKR_PROT_CLK_ENABLE);
+ 		err = readx_poll_timeout(rd32, IGC_PTM_STAT, stat,
+ 					 stat, IGC_PTM_STAT_SLEEP,
+ 					 IGC_PTM_STAT_TIMEOUT);
++		igc_ptm_reset(hw);
++
+ 		if (err < 0) {
+ 			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
+ 			return err;
+@@ -891,15 +906,7 @@ static int igc_phc_get_syncdevicetime(ktime_t *device,
+ 		if ((stat & IGC_PTM_STAT_VALID) == IGC_PTM_STAT_VALID)
+ 			break;
+ 
+-		if (stat & ~IGC_PTM_STAT_VALID) {
+-			/* An error occurred, log it. */
+-			igc_ptm_log_error(adapter, stat);
+-			/* The STAT register is write-1-to-clear (W1C),
+-			 * so write the previous error status to clear it.
+-			 */
+-			wr32(IGC_PTM_STAT, stat);
+-			continue;
+-		}
++		igc_ptm_log_error(adapter, stat);
+ 	} while (--count);
+ 
+ 	if (!count) {
+@@ -1081,7 +1088,7 @@ void igc_ptp_stop(struct igc_adapter *adapter)
+ void igc_ptp_reset(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
+-	u32 cycle_ctrl, ctrl;
++	u32 cycle_ctrl, ctrl, stat;
+ 	unsigned long flags;
+ 	u32 timadj;
+ 
+@@ -1116,14 +1123,19 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 		ctrl = IGC_PTM_CTRL_EN |
+ 			IGC_PTM_CTRL_START_NOW |
+ 			IGC_PTM_CTRL_SHRT_CYC(IGC_PTM_SHORT_CYC_DEFAULT) |
+-			IGC_PTM_CTRL_PTM_TO(IGC_PTM_TIMEOUT_DEFAULT) |
+-			IGC_PTM_CTRL_TRIG;
++			IGC_PTM_CTRL_PTM_TO(IGC_PTM_TIMEOUT_DEFAULT);
+ 
+ 		wr32(IGC_PTM_CTRL, ctrl);
+ 
+ 		/* Force the first cycle to run. */
+-		wr32(IGC_PTM_STAT, IGC_PTM_STAT_VALID);
++		igc_ptm_trigger(hw);
++
++		if (readx_poll_timeout_atomic(rd32, IGC_PTM_STAT, stat,
++					      stat, IGC_PTM_STAT_SLEEP,
++					      IGC_PTM_STAT_TIMEOUT))
++			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
+ 
++		igc_ptm_reset(hw);
+ 		break;
+ 	default:
+ 		/* No work to do. */
+-- 
+2.39.5
+
 
 
 
