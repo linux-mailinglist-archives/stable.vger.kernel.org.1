@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-135861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8492DA990C0
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:23:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90405A99208
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F8B53B4F34
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:15:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B3A1BA2360
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445A828CF4A;
-	Wed, 23 Apr 2025 15:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485A62957D5;
+	Wed, 23 Apr 2025 15:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcQd0bkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6YGZcsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029D3C8EB;
-	Wed, 23 Apr 2025 15:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FDD29B79B;
+	Wed, 23 Apr 2025 15:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421036; cv=none; b=C7e/L+WzBQFswde/CwaqLSDRCXMlNkH6HRAZmtCWSfTrUJMY7a/OGFudWCoDJ1e2s0hZ/2JLl/mgv4IR3oV0VlbmWiBsaMKvp5MbD/TqqkDoDI5FHHby7pyDyyjonLzy9abRDsZkgrbgqRDcP15QB3OfmMlGxSjUKV7ybu8JvjY=
+	t=1745421469; cv=none; b=kxdl9RSCYnSy3+tP1UOILfGpW1ZzQSv0amQLMnkDc0yVzuT0zLUvcUaGxfzT4XO4ywKNCqYgF4rfY0nvHImLHmQRevYQ/3qC0knms6xVidhSRFUXjIczRk6NtG2F3UpA/AHLErOc/gdOtQbM5EqeMblXsm6oogKmZ6OWTs62vGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421036; c=relaxed/simple;
-	bh=SfXzHRhkN5HAuig8Rai5osMoEh9D8AB6cSj/jhFcq0Q=;
+	s=arc-20240116; t=1745421469; c=relaxed/simple;
+	bh=Y7G7pjhdlvTQ1eUrKKkUeWnePrBtp5J5MGMO4p+8xr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N/VXtxf3OLjrLhZay1ANnAN3Q9nhEFd38ia14p/R+K03OTpxRjLZUD86K/rU/TQQOGLtzWXiSSSHoGYqiJnRCfgOkYqdB5rGcPFCwInqTdGVDqL6ZrSL8SllrykcoDUUMehWUW1KuvK2VpxpJRj8rSyV4iHXIW9oaWEZEHf0zXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcQd0bkt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C86DC4CEE2;
-	Wed, 23 Apr 2025 15:10:35 +0000 (UTC)
+	 MIME-Version; b=KYepupgd1KBvnNNeA+ahl9caLgfMOjC6PXF3+ehLK+n77SuCFRf/YxjHHPeTeCxKzWRFUlgd2vVfPen6sLPGJwHHW+iJEIvdKU3mdrygu/SfGckVMrLpADS438SZEVvZLObxo8AA0iijLI4qN31KGO92QXDSStduogF8Wxbehl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6YGZcsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D78C4CEE2;
+	Wed, 23 Apr 2025 15:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421035;
-	bh=SfXzHRhkN5HAuig8Rai5osMoEh9D8AB6cSj/jhFcq0Q=;
+	s=korg; t=1745421468;
+	bh=Y7G7pjhdlvTQ1eUrKKkUeWnePrBtp5J5MGMO4p+8xr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fcQd0bktbNzSWiuxJWKP3GS52FaKXFAWwVIcFW+WPl7g1rWZTR7+laJAU8R+g1kaH
-	 z4NJ4ByGVhWihS+NjRFBQoIlnc48RWBDxOQIrX+PfZP2N6RAcWfxb1wlxyNcgOmu5w
-	 bZZws7RS3emvZPvR4yYnSktqQSi7ey8sRagZx+sk=
+	b=u6YGZcsbLv1rwYI4Ppl3LeTUnBfzIDdjTxWAPks/xVkbShogTXI8cCVCUC8ireRnS
+	 CLSyMtYcFaOBJ7lRjezk0sGy2ZzK34woLsGINEgsrpCNUj9JfCl5gZ5hulfKitPROS
+	 vcfTJb4yVDNHpGM5Hhx2sHrpfjpTFqauhd5SNHi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	ZhenGuo Yin <zhenguo.yin@amd.com>
-Subject: [PATCH 6.12 184/223] drm/amdgpu: fix warning of drm_mm_clean
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 192/241] drm/amd/display: Add HP Elitebook 645 to the quirk list for eDP on DP1
 Date: Wed, 23 Apr 2025 16:44:16 +0200
-Message-ID: <20250423142624.665705050@linuxfoundation.org>
+Message-ID: <20250423142628.361739470@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
+References: <20250423142620.525425242@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhenGuo Yin <zhenguo.yin@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit e7afa85a0d0eba5bf2c0a446ff622ebdbc9812d6 upstream.
+commit 1c5fdef30ed120613e769a3bd2a144cfd4c688d6 upstream.
 
-Kernel doorbell BOs needs to be freed before ttm_fini.
+[Why]
+HP Elitebook 645 has DP0 and DP1 swapped.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4145
-Fixes: 54c30d2a8def ("drm/amdgpu: create kernel doorbell pages")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: ZhenGuo Yin <zhenguo.yin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 39938a8ed979e398faa3791a47e282c82bcc6f04)
+[How]
+Add HP Elitebook 645 to DP0/DP1 swap quirk list.
+
 Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3701
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3322,6 +3322,7 @@ static int amdgpu_device_ip_fini(struct
- 			amdgpu_device_mem_scratch_fini(adev);
- 			amdgpu_ib_pool_fini(adev);
- 			amdgpu_seq64_fini(adev);
-+			amdgpu_doorbell_fini(adev);
- 		}
- 
- 		r = adev->ip_blocks[i].version->funcs->sw_fini((void *)adev);
-@@ -4670,7 +4671,6 @@ void amdgpu_device_fini_sw(struct amdgpu
- 
- 		iounmap(adev->rmmio);
- 		adev->rmmio = NULL;
--		amdgpu_doorbell_fini(adev);
- 		drm_dev_exit(idx);
- 	}
- 
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1719,6 +1719,13 @@ static const struct dmi_system_id dmi_qu
+ 		.callback = edp0_on_dp1_callback,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 645 14 inch G11 Notebook PC"),
++		},
++	},
++	{
++		.callback = edp0_on_dp1_callback,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
+ 		},
+ 	},
 
 
 
