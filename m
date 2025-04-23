@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-136258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1BAA992AE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73704A98E9F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BB82466165
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:40:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683871B66281
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F182E29DB8E;
-	Wed, 23 Apr 2025 15:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AD227FD60;
+	Wed, 23 Apr 2025 14:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htB971Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuxxxUvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A632228D83D;
-	Wed, 23 Apr 2025 15:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6F3175BF;
+	Wed, 23 Apr 2025 14:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422073; cv=none; b=KFclD94D38eCKU7JLL7LE/HZqe5V2sr2lBSteHw6lNrUImOFJP/Nc6eDZCQ+5L48MjEXL1ypNSzYz8Tt7QHGKaPjsoS+PJ8fNfZ/UQqQhqW6QFEt/h9JXYK69Gc/5cBA0fL2GhltqH6KT96nTKFawzL8zgkAxBi2bvUCqjq+WQ4=
+	t=1745420071; cv=none; b=k/twwD+Ml1yFwIuE7z0PmGv8uWPdmRQWeq8XRZs+wFYMe5/LszG7HJ5VEjMEqjQwxsYIINT3vgTqf7USViiRzHJEr2vZty+8BnD/E8/SWitQq9Hwae7WJUNJaRqQOjjKgbihC1lAlUe3IjiCfQnYzBnVhhX18YUAeATE0VnyK9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422073; c=relaxed/simple;
-	bh=sSZFYT9KDWJeETVC3axn7hQ142uyp3NE9bR0ZGAP3io=;
+	s=arc-20240116; t=1745420071; c=relaxed/simple;
+	bh=zu2VGz1rcJtPXoXXLZlaMCaFjZO4ly2M2heWvx6n2eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6oCvXjJrbkVPaq2P8DgRq4QcqayBhE08aMnjaB71vjhKHa4o55gEgBNxDRCsf4pXrpa0d4bj9Hg3UXhMQKsPhzh/yUJxLB+dYjW3Zeg2vEwW1Dd9XgF1He2qVhKt9vRbnFG/QlSczRVjTmRXSVk44Oc0gyeI00dqgJMi+WiEBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htB971Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4579C4CEE2;
-	Wed, 23 Apr 2025 15:27:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MJr/mu+LL4uI+ySHGw3Lae3LJjdSasms0XFlIA5uCn/MxThmqgzXZCqQr0V8olGirUsVke7I3thUiGYE4DD+nNcPknIJJL7WhWZGK5/rFUtSY/6GEGCjfWcgYFeTpVdZXldfpajeLpb2lf0AOiy/nue89srVFW9QpK6RjDUfqII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuxxxUvE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DC8C4CEE2;
+	Wed, 23 Apr 2025 14:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422073;
-	bh=sSZFYT9KDWJeETVC3axn7hQ142uyp3NE9bR0ZGAP3io=;
+	s=korg; t=1745420071;
+	bh=zu2VGz1rcJtPXoXXLZlaMCaFjZO4ly2M2heWvx6n2eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htB971Cj9eNXE+I0jRjQbJj+1j8skC69BsZwI02A7m6tvho/HbeamhppMhDNtGAvP
-	 qx3f+Ep9FwOAmmLnc9h1OAY8dTL6FE9AuNzMMjlL6r+h0uU6LwDHgiui2E5OvrG+X/
-	 fTnrvO0CAVXs4Vgw060bnB76yLANo10PR1/39xzk=
+	b=nuxxxUvEq8daG9rHCl5azPFwhdykxJ++g7ni1/irHTEpOpHMtP63XpdTGbp6cnTP9
+	 uLtcTSoTh2S7767nYPQVrjA7yXOPYtq6yig3j7SRTbLz6AFb2SFDQr7Md7eEhqepsm
+	 krxEPtEr5/9uTNFG/q6l7L5gODU0uO5bSYLdgJak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/393] ata: libata-sata: Save all fields from sense data descriptor
+Subject: [PATCH 6.12 097/223] dma-buf/sw_sync: Decrement refcount on error in sw_sync_ioctl_get_deadline()
 Date: Wed, 23 Apr 2025 16:42:49 +0200
-Message-ID: <20250423142654.631465847@linuxfoundation.org>
+Message-ID: <20250423142621.067945029@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +60,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 399eab7f92fb73ffe621294a2d6bec8fc9f3b36b ]
+[ Upstream commit d27326a9999286fa45ad063f760e63329254f130 ]
 
-When filling the taskfile result for a successful NCQ command, we use
-the SDB FIS from the FIS Receive Area, see e.g. ahci_qc_ncq_fill_rtf().
+Call dma_fence_put(fence) before returning an error if
+dma_fence_to_sync_pt() fails.  Use an unwind ladder at the
+end of the function to do the cleanup.
 
-However, the SDB FIS only has fields STATUS and ERROR.
-
-For a successful NCQ command that has sense data, we will have a
-successful sense data descriptor, in the Sense Data for Successful NCQ
-Commands log.
-
-Since we have access to additional taskfile result fields, fill in these
-additional fields in qc->result_tf.
-
-This matches how for failing/aborted NCQ commands, we will use e.g.
-ahci_qc_fill_rtf() to fill in some fields, but then for the command that
-actually caused the NCQ error, we will use ata_eh_read_log_10h(), which
-provides additional fields, saving additional fields/overriding the
-qc->result_tf that was fetched using ahci_qc_fill_rtf().
-
-Fixes: 18bd7718b5c4 ("scsi: ata: libata: Handle completion of CDL commands using policy 0xD")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 70e67aaec2f4 ("dma-buf/sw_sync: Add fence deadline support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/a010a1ac-107b-4fc0-a052-9fd3706ad690@stanley.mountain
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-sata.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/dma-buf/sw_sync.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index a701e1538482f..be72030a500d4 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -1365,6 +1365,8 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
- 	unsigned int err_mask, tag;
- 	u8 *sense, sk = 0, asc = 0, ascq = 0;
- 	u64 sense_valid, val;
-+	u16 extended_sense;
-+	bool aux_icc_valid;
- 	int ret = 0;
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index c353029789cf1..1290886f065e3 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -444,15 +444,17 @@ static int sw_sync_ioctl_get_deadline(struct sync_timeline *obj, unsigned long a
+ 		return -EINVAL;
  
- 	err_mask = ata_read_log_page(dev, ATA_LOG_SENSE_NCQ, 0, buf, 2);
-@@ -1384,6 +1386,8 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
+ 	pt = dma_fence_to_sync_pt(fence);
+-	if (!pt)
+-		return -EINVAL;
++	if (!pt) {
++		ret = -EINVAL;
++		goto put_fence;
++	}
  
- 	sense_valid = (u64)buf[8] | ((u64)buf[9] << 8) |
- 		((u64)buf[10] << 16) | ((u64)buf[11] << 24);
-+	extended_sense = get_unaligned_le16(&buf[14]);
-+	aux_icc_valid = extended_sense & BIT(15);
+ 	spin_lock_irqsave(fence->lock, flags);
+-	if (test_bit(SW_SYNC_HAS_DEADLINE_BIT, &fence->flags)) {
+-		data.deadline_ns = ktime_to_ns(pt->deadline);
+-	} else {
++	if (!test_bit(SW_SYNC_HAS_DEADLINE_BIT, &fence->flags)) {
+ 		ret = -ENOENT;
++		goto unlock;
+ 	}
++	data.deadline_ns = ktime_to_ns(pt->deadline);
+ 	spin_unlock_irqrestore(fence->lock, flags);
  
- 	ata_qc_for_each_raw(ap, qc, tag) {
- 		if (!(qc->flags & ATA_QCFLAG_EH) ||
-@@ -1411,6 +1415,17 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
- 			continue;
- 		}
+ 	dma_fence_put(fence);
+@@ -464,6 +466,13 @@ static int sw_sync_ioctl_get_deadline(struct sync_timeline *obj, unsigned long a
+ 		return -EFAULT;
  
-+		qc->result_tf.nsect = sense[6];
-+		qc->result_tf.hob_nsect = sense[7];
-+		qc->result_tf.lbal = sense[8];
-+		qc->result_tf.lbam = sense[9];
-+		qc->result_tf.lbah = sense[10];
-+		qc->result_tf.hob_lbal = sense[11];
-+		qc->result_tf.hob_lbam = sense[12];
-+		qc->result_tf.hob_lbah = sense[13];
-+		if (aux_icc_valid)
-+			qc->result_tf.auxiliary = get_unaligned_le32(&sense[16]);
+ 	return 0;
 +
- 		/* Set sense without also setting scsicmd->result */
- 		scsi_build_sense_buffer(dev->flags & ATA_DFLAG_D_SENSE,
- 					qc->scsicmd->sense_buffer, sk,
++unlock:
++	spin_unlock_irqrestore(fence->lock, flags);
++put_fence:
++	dma_fence_put(fence);
++
++	return ret;
+ }
+ 
+ static long sw_sync_ioctl(struct file *file, unsigned int cmd,
 -- 
 2.39.5
 
