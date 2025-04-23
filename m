@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF3EA991E9
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:37:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E149BA99382
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB63445956
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:30:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2A54A5A3D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3502F2949E5;
-	Wed, 23 Apr 2025 15:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E34928BABA;
+	Wed, 23 Apr 2025 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFEBmJCm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9VfW7IE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE197284693;
-	Wed, 23 Apr 2025 15:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6E028BAB2;
+	Wed, 23 Apr 2025 15:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421656; cv=none; b=IuzaGyK/IH97XyQSawX/3suKTZ3l4h8PU+ZJAoyNAgJrMH9/fGFjdPbijjjSU6ENrC8aXG2tbxDJxWs644ZoIcEd4SlMMhJst7Kpo5PD25rHt+7EZh05eC7ZCyGdyf+bSf1iNaBmqfuwEvrd7rwr6llOiBQO86BfZyZ8o2Y/DJU=
+	t=1745422575; cv=none; b=p4zkAqenit/u+2A7jFRkdZx78LR9NlIPV27MS9nuRlfroWKLsLO53k8vWY2+av93f+UlOHQo3O20bFN9C9kplccFW4XSqysN1O0mFNAe6nH7H9XruXU20ks9xW69LB2lHURkxsZSSlHx+jH1k0ZQkpB91Xq1QQ6FqHmR26hdYKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421656; c=relaxed/simple;
-	bh=wGPd+3cV6mWVsVnmAtbyatKzw0uz+6n9PbHT7c/mAlc=;
+	s=arc-20240116; t=1745422575; c=relaxed/simple;
+	bh=jc8RLwoTAEeb6LJbNrM8BE/AFwvTGOk2LwrXvt9F94o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKX/29VFnD0DwDn/RgF9h5NS2jdICsqqlqMSJGKyDuToOmhb58Nljl+utvNNjR3ynU+wk03Ih6kDbTN3dBRJZbKog8qYt+59IQnTJiXSp9usNKGWGI0ZkxgvK9HF/Jo79t0XsMsgjIhVOORi9XYeykG52U56RBPPuTEJGln/DaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFEBmJCm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723AFC4CEE2;
-	Wed, 23 Apr 2025 15:20:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F4Ld5uz+dOhFxEuSwV9lvKjs8k0ycDzgkOwxPEekFE5IOVj/0uybFh8/CBjzKXHcEG3azviCkDMU+WsK5bh/MyZajRjTUlF5vSFNG1EUGZQza3rdWsSe6uD3tuLsfyJIAm/V4CLL94Aw/owld4gDlhtvuPaORutFTLLkv9boJnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9VfW7IE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4765C4CEE2;
+	Wed, 23 Apr 2025 15:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421655;
-	bh=wGPd+3cV6mWVsVnmAtbyatKzw0uz+6n9PbHT7c/mAlc=;
+	s=korg; t=1745422575;
+	bh=jc8RLwoTAEeb6LJbNrM8BE/AFwvTGOk2LwrXvt9F94o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFEBmJCmDjRQ/nGB6I6jglWIoLBPWf7n9yyVbe3pKzAIi132Z6LGebsJED7lClgJh
-	 fhHbNaJsuy8RRG+OQHX5t/0N6rBaxjEKNxxm+mBlQIY1wmHJrOrgArSX0K2slj/SYk
-	 +Kw8LqMfn94YUAnpSCpqozCbEvh9714alSIqCS3Q=
+	b=a9VfW7IEjoTIhb+KMSh+bzWsAgjalx+3pZoDRQAePPdLCT+Gbh95bggoFa5ONKtra
+	 8qaYPKH0X75C/PjPuMqQCnMWozCVGcqGmMtc0+QYvtBsYZoMfNhupHPqOPkS3WG9tD
+	 DIFtGmaU0gQTlo76/vAG83l27V6oFj0qAKCu8RNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.14 216/241] drm/i915/dp: Check for HAS_DSC_3ENGINES while configuring DSC slices
-Date: Wed, 23 Apr 2025 16:44:40 +0200
-Message-ID: <20250423142629.386620426@linuxfoundation.org>
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
+	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo=20Navarro?= <rcn@igalia.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.6 385/393] [PATCH stable] xdp: Reset bpf_redirect_info before running a xdps BPF prog.
+Date: Wed, 23 Apr 2025 16:44:41 +0200
+Message-ID: <20250423142659.222108420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 3a47280b768748992ee34bd52c394c60b2845af3 upstream.
+Ricardo reported a KASAN discovered use after free in v6.6-stable.
 
-DSC 12 slices configuration is used for some specific cases with
-Ultrajoiner. This can be supported only when each of the 4 joined pipes
-have 3 DSC engines each.
+The syzbot starts a BPF program via xdp_test_run_batch() which assigns
+ri->tgt_value via dev_hash_map_redirect() and the return code isn't
+XDP_REDIRECT it looks like nonsense. So the output in
+bpf_warn_invalid_xdp_action() appears once.
+Then the TUN driver runs another BPF program (on the same CPU) which
+returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
+bpf_trace_printk() to print four characters and obtain the required
+return value. This is enough to get xdp_do_redirect() invoked which
+then accesses the pointer in tgt_value which might have been already
+deallocated.
 
-Add the missing check for 3 DSC engines support before using 3 DSC
-slices per pipe.
+This problem does not affect upstream because since commit
+	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
 
-Fixes: be7f5fcdf4a0 ("drm/i915/dp: Enable 3 DSC engines for 12 slices")
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Cc: Suraj Kandpal <suraj.kandpal@intel.com>
-Cc: <stable@vger.kernel.org> # v6.14+
-Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://lore.kernel.org/r/20250414024256.2782702-3-ankit.k.nautiyal@intel.com
-(cherry picked from commit da9b1c61e7f7b327dd70c5f073ba04d419a55ef8)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+the per-CPU variable is referenced via task's task_struct and exists on
+the stack during NAPI callback. Therefore it is cleared once before the
+first invocation and remains valid within the RCU section of the NAPI
+callback.
+
+Instead of performing the huge backport of the commit (plus its fix ups)
+here is an alternative version which only resets the variable in
+question prior invoking the BPF program.
+
+Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Reported-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
+Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
+Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/net/xdp.h |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -1050,10 +1050,11 @@ u8 intel_dp_dsc_get_slice_count(const st
- 		u8 test_slice_count = valid_dsc_slicecount[i] * num_joined_pipes;
+--- a/include/net/xdp.h
++++ b/include/net/xdp.h
+@@ -486,7 +486,14 @@ static __always_inline u32 bpf_prog_run_
+ 	 * under local_bh_disable(), which provides the needed RCU protection
+ 	 * for accessing map entries.
+ 	 */
+-	u32 act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
++	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
++	u32 act;
++
++	if (ri->map_id || ri->map_type) {
++		ri->map_id = 0;
++		ri->map_type = BPF_MAP_TYPE_UNSPEC;
++	}
++	act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
  
- 		/*
--		 * 3 DSC Slices per pipe need 3 DSC engines,
--		 * which is supported only with Ultrajoiner.
-+		 * 3 DSC Slices per pipe need 3 DSC engines, which is supported only
-+		 * with Ultrajoiner only for some platforms.
- 		 */
--		if (valid_dsc_slicecount[i] == 3 && num_joined_pipes != 4)
-+		if (valid_dsc_slicecount[i] == 3 &&
-+		    (!HAS_DSC_3ENGINES(display) || num_joined_pipes != 4))
- 			continue;
- 
- 		if (test_slice_count >
+ 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
+ 		if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
 
 
 
