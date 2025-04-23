@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC766A991A1
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:33:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4332BA990A9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2289251BC
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66D5E921099
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4E829CB3C;
-	Wed, 23 Apr 2025 15:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640F327F73E;
+	Wed, 23 Apr 2025 15:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcQtnxS8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i01kSkwI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDE2629CB34;
-	Wed, 23 Apr 2025 15:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8D020D4F8;
+	Wed, 23 Apr 2025 15:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421474; cv=none; b=Mu7csc/qJbRPEPu5vmR3DLJqeNg6eLZZjh60jey2qddTztDONyeQRgQ+8VpGRiE+g4NnE8EYeRU2AlywrdkOTK32FWBJxZ73ft1AOY8JqZ7MES/AYSzFaPyMCFf5tBENCkdDiL2f7picI9rys6GkeW6N0PVXoyh98aBAuUtpmWY=
+	t=1745420882; cv=none; b=nPmaiec9bSHrFUB3R6JFpz5843HwI9AQNgD5gy0sPD8rSx0RyD6UUItNGuBj2xxxJqwx1gLc9AjbhdBNV/bNRuRvhszUzIVfpUjC9ZGIwpg39Y5kc6OfeXJupf4Z/I5S5imdq2CODNe1KEufCNV2kvbOep0YXVd/QPJT58PMbCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421474; c=relaxed/simple;
-	bh=31ALOrUkJz+Cq5ozP1FVBivQ1xaULsFld4Namq76xNc=;
+	s=arc-20240116; t=1745420882; c=relaxed/simple;
+	bh=nIbiu931ak4Wf1GsLbYTXwsvQjV7TMFaHc2tYA1qhPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwlQdp+AY/nD+qwcOFHNvm+YRaXdGadVgcS2K6BDbXuvYiTUS/1LVgDBM3ca2J0YhYnJWNGsMbxP1JWYkyiEpinSg8uM3oliiffhZXI+i451ooUG9GNapbvleeJN+CsX17QeVnuUBkd/B6kEZw32qfuckCFn+xNkFyyJic1+txs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcQtnxS8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6780CC4CEE2;
-	Wed, 23 Apr 2025 15:17:53 +0000 (UTC)
+	 MIME-Version; b=EIdw5w/3h0T/FjPJ7jK1ZkhHexoIl1xk+tOl6A7sXP9HoOMb61crGZ+HNU4727PvlkSP8SJOr61FSdaQPRVQsyZBVC/Cce1z5U2o+jx3BOtQKZO1EO8QhvgLMtqZOmpMt6lWFbypc7N0y7pp1cJOrBAaYmGEyccIjrTRvejfSXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i01kSkwI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A37FDC4CEE3;
+	Wed, 23 Apr 2025 15:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421473;
-	bh=31ALOrUkJz+Cq5ozP1FVBivQ1xaULsFld4Namq76xNc=;
+	s=korg; t=1745420882;
+	bh=nIbiu931ak4Wf1GsLbYTXwsvQjV7TMFaHc2tYA1qhPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcQtnxS83V410i5mws8C8yHpYVA8VewPXxnwp6W2h9sAP5+0lndKjQaVyVVha2ZJ+
-	 Rl0qqqvqtVm971S7G6wPcdFUK7tWoqxWWOD3Hz7lR/YDhYRTpW5YPvtwXOrn7+fbQB
-	 Czdjj79DYEIp4zgkQE6pnK4sp9Cy53/lVw9tEnsw=
+	b=i01kSkwI46bdkxo39qHP+GVi/gNMnXQUiph5kuIKLmCHcWa5XMYr0r3vGwkS49pBc
+	 +Fu7AH9g+7wL8VdcGjcmWZ4RZmjyZqbwjiWlFtOKQNpgTND0itaIG0qglOLztX3JCO
+	 mQrwvjTDLGU376eogeowjlFf2koaaKmSPC+2qyak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 182/393] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 089/291] spi: cadence-qspi: Fix probe on AM62A LP SK
 Date: Wed, 23 Apr 2025 16:41:18 +0200
-Message-ID: <20250423142650.894110157@linuxfoundation.org>
+Message-ID: <20250423142627.996981454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 276822a00db3c1061382b41e72cafc09d6a0ec30 upstream.
+commit b8665a1b49f5498edb7b21d730030c06b7348a3c upstream.
 
-Lockdep detects the following issue on led-backlight removal:
-  [  142.315935] ------------[ cut here ]------------
-  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
-  ...
-  [  142.500725] Call trace:
-  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
-  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
-  [  142.511742]  platform_remove+0x30/0x58
-  [  142.515501]  device_remove+0x54/0x90
-  ...
+In 2020, there's been an unnoticed change which rightfully attempted to
+report probe deferrals upon DMA absence by checking the return value of
+dma_request_chan_by_mask(). By doing so, it also reported errors which
+were simply ignored otherwise, likely on purpose.
 
-Indeed, led_sysfs_enable() has to be called with the led_access
-lock held.
+This change actually turned a void return into an error code. Hence, not
+only the -EPROBE_DEFER error codes but all error codes got reported to
+the callers, now failing to probe in the absence of Rx DMA channel,
+despite the fact that DMA seems to not be supported natively by many
+implementations.
 
-Hold the lock when calling led_sysfs_disable().
+Looking at the history, this change probably led to:
+ad2775dc3fc5 ("spi: cadence-quadspi: Disable the DAC for Intel LGM SoC")
+f724c296f2f2 ("spi: cadence-quadspi: fix Direct Access Mode disable for SoCFPGA")
 
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+In my case, the AM62A LP SK core octo-SPI node from TI does not
+advertise any DMA channel, hinting that there is likely no support for
+it, but yet when the support for the am654 compatible was added, DMA
+seemed to be used, so just discarding its use with the
+CQSPI_DISABLE_DAC_MODE quirk for this compatible does not seem the
+correct approach.
+
+Let's get change the return condition back to:
+- return a probe deferral error if we get one
+- ignore the return value otherwise
+The "error" log level was however likely too high for something that is
+expected to fail, so let's lower it arbitrarily to the info level.
+
+Fixes: 935da5e5100f ("mtd: spi-nor: cadence-quadspi: Handle probe deferral while requesting DMA channel")
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20250305200933.2512925-2-miquel.raynal@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/led_bl.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -229,8 +229,11 @@ static void led_bl_remove(struct platfor
- 	backlight_device_unregister(bl);
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1509,6 +1509,12 @@ static int cqspi_request_mmap_dma(struct
+ 		int ret = PTR_ERR(cqspi->rx_chan);
  
- 	led_bl_power_off(priv);
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_enable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
- }
- 
- static const struct of_device_id led_bl_of_match[] = {
+ 		cqspi->rx_chan = NULL;
++		if (ret == -ENODEV) {
++			/* DMA support is not mandatory */
++			dev_info(&cqspi->pdev->dev, "No Rx DMA available\n");
++			return 0;
++		}
++
+ 		return dev_err_probe(&cqspi->pdev->dev, ret, "No Rx DMA available\n");
+ 	}
+ 	init_completion(&cqspi->rx_dma_complete);
 
 
 
