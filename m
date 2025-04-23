@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-136189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DC0A992BD
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:48:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C33A98EF9
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4C8D1B86E82
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F101889CB8
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:57:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF23266B4B;
-	Wed, 23 Apr 2025 15:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C3A280A5F;
+	Wed, 23 Apr 2025 14:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="De1+QLKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nRwEzYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A26528CF4F;
-	Wed, 23 Apr 2025 15:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832E6263C9E;
+	Wed, 23 Apr 2025 14:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421893; cv=none; b=NIsgDgZsDUbVp3ZCVPXjLLhSIzCIqIsML7aDa6hgorpYEIIwepSLiFTrLoHrfLKcoShdUmJxehqcmQ+b1tH7R0FUHffXMlvDmcKoGR1yWAhd8npFmY56EZEHwPYzPCkdXtcLrYJj3PJnGNYEkOZC4nmpZ+zYcN/37oIC7S3VwdU=
+	t=1745420231; cv=none; b=oRmLOP+OHBIvGIJ4SqU8/6/KITV7rfusZcFfgs9WeKqLkToo5HQEpr0CyfOmg7nVQKwwJmwA3FUF3BcI0OjavjdD73r4Quq3A1tK2p3iMWgqmzxspc/1+ew3ftNJmDXLt0l2RrYgS1K8jF3M+PUL1as+7/VyhCG4N9qUuLkjS7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421893; c=relaxed/simple;
-	bh=YFErP7mXY/mUSJEWBTCK5kziebZsFLtmJIFquAQrSQw=;
+	s=arc-20240116; t=1745420231; c=relaxed/simple;
+	bh=CLX8xzo6ZoExV5f3Oc670zhqIE41x1vXqrc0Nhe6hdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cpt8LiJzlHd770OMcvMSIlRfcCWHIbHlSyNLdUxhjHytEs1tWZvH/3ugAZjFPLn7FEp5otR9SwvSRMU+94gMf6Wu5bwiKCasqRU+LF00mPA4Fgo9QIXiXTs+/LlciLD/r54bvYH6sf/GmKgvNda96Q9bEQ9NwV8ABn+RTMmA1po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=De1+QLKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9C20C4CEE2;
-	Wed, 23 Apr 2025 15:24:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fv3xdQNs4A+R1kID3DRkHnbKLcX3zyBe5+xwk2j3O3x0y7Cq1bbbwzwDz0rXB3ZoMIwDsfDdVnOv/nw/jTILaEgaztU6pAidVR0y//Siz1GAKrjluCOm2paE+OHR5VTYnXaSJv2qw1fcTe/PpXHwPDrhgJszcrFCsNKcNnCaX7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nRwEzYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18645C4CEE2;
+	Wed, 23 Apr 2025 14:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421892;
-	bh=YFErP7mXY/mUSJEWBTCK5kziebZsFLtmJIFquAQrSQw=;
+	s=korg; t=1745420231;
+	bh=CLX8xzo6ZoExV5f3Oc670zhqIE41x1vXqrc0Nhe6hdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=De1+QLKJXrX5Abyix3Fwf29dug8QWoSI8GYpI2VoxZ1R75ACeORCvLHWqVhDfIFrp
-	 7jJZJUseYbEa3DZQzpBEmEXvj1N5nPraBgzzUzupoNYgDZXOsB6kEXgnrUjsGklgoz
-	 3GGmOU3TctgpV2cY/Hf4YFArKpymVu24WsA9jtFE=
+	b=0nRwEzYr6Lbo6eTiv4h2ER4dgzCWgFk2o0h42BUxdkiDC3jvmUOYoUC9KF2sg9xMd
+	 LqfPTQqPhf8JeT8jeiTdgwWSOKawOkOA5Wv+98iH+xDp3OgH0IwFNHhO7efCPRHCB1
+	 hiEgMRlFSxDc70fmtPbc4W+YPEXG8oVF7GLdTQ8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 194/291] riscv: Properly export reserved regions in /proc/iomem
+	Sean Anderson <sean.anderson@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
+Subject: [PATCH 6.12 111/223] crypto: caam/qi - Fix drv_ctx refcount bug
 Date: Wed, 23 Apr 2025 16:43:03 +0200
-Message-ID: <20250423142632.309499230@linuxfoundation.org>
+Message-ID: <20250423142621.633423905@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +63,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit e94eb7ea6f206e229791761a5fdf9389f8dbd183 ]
+commit b7b39df7e710b0068356e4c696af07aa10e2cd3d upstream.
 
-The /proc/iomem represents the kernel's memory map. Regions marked
-with "Reserved" tells the user that the range should not be tampered
-with. Kexec-tools, when using the older kexec_load syscall relies on
-the "Reserved" regions to build the memory segments, that will be the
-target of the new kexec'd kernel.
+Ensure refcount is raised before request is enqueued since it could
+be dequeued before the call returns.
 
-The RISC-V port tries to expose all reserved regions to userland, but
-some regions were not properly exposed: Regions that resided in both
-the "regular" and reserved memory block, e.g. the EFI Memory Map. A
-missing entry could result in reserved memory being overwritten.
-
-It turns out, that arm64, and loongarch had a similar issue a while
-back:
-
-  commit d91680e687f4 ("arm64: Fix /proc/iomem for reserved but not memory regions")
-  commit 50d7ba36b916 ("arm64: export memblock_reserve()d regions via /proc/iomem")
-
-Similar to the other ports, resolve the issue by splitting the regions
-in an arch initcall, since we need a working allocator.
-
-Fixes: ffe0e5261268 ("RISC-V: Improve init_resources()")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250409182129.634415-1-bjorn@kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Sean Anderson <sean.anderson@linux.dev>
+Cc: <stable@vger.kernel.org>
+Fixes: 11144416a755 ("crypto: caam/qi - optimize frame queue cleanup")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
+Tested-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/setup.c | 36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/crypto/caam/qi.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/riscv/kernel/setup.c b/arch/riscv/kernel/setup.c
-index 2acf51c235673..f4c3252abce41 100644
---- a/arch/riscv/kernel/setup.c
-+++ b/arch/riscv/kernel/setup.c
-@@ -76,6 +76,9 @@ static struct resource bss_res = { .name = "Kernel bss", };
- static struct resource elfcorehdr_res = { .name = "ELF Core hdr", };
- #endif
+--- a/drivers/crypto/caam/qi.c
++++ b/drivers/crypto/caam/qi.c
+@@ -122,12 +122,12 @@ int caam_qi_enqueue(struct device *qidev
+ 	qm_fd_addr_set64(&fd, addr);
  
-+static int num_standard_resources;
-+static struct resource *standard_resources;
-+
- static int __init add_resource(struct resource *parent,
- 				struct resource *res)
- {
-@@ -149,7 +152,7 @@ static void __init init_resources(void)
- 	struct resource *res = NULL;
- 	struct resource *mem_res = NULL;
- 	size_t mem_res_sz = 0;
--	int num_resources = 0, res_idx = 0;
-+	int num_resources = 0, res_idx = 0, non_resv_res = 0;
- 	int ret = 0;
+ 	do {
++		refcount_inc(&req->drv_ctx->refcnt);
+ 		ret = qman_enqueue(req->drv_ctx->req_fq, &fd);
+-		if (likely(!ret)) {
+-			refcount_inc(&req->drv_ctx->refcnt);
++		if (likely(!ret))
+ 			return 0;
+-		}
  
- 	/* + 1 as memblock_alloc() might increase memblock.reserved.cnt */
-@@ -213,6 +216,7 @@ static void __init init_resources(void)
- 	/* Add /memory regions to the resource tree */
- 	for_each_mem_region(region) {
- 		res = &mem_res[res_idx--];
-+		non_resv_res++;
- 
- 		if (unlikely(memblock_is_nomap(region))) {
- 			res->name = "Reserved";
-@@ -230,6 +234,9 @@ static void __init init_resources(void)
- 			goto error;
- 	}
- 
-+	num_standard_resources = non_resv_res;
-+	standard_resources = &mem_res[res_idx + 1];
-+
- 	/* Clean-up any unused pre-allocated resources */
- 	if (res_idx >= 0)
- 		memblock_free(mem_res, (res_idx + 1) * sizeof(*mem_res));
-@@ -241,6 +248,33 @@ static void __init init_resources(void)
- 	memblock_free(mem_res, mem_res_sz);
- }
- 
-+static int __init reserve_memblock_reserved_regions(void)
-+{
-+	u64 i, j;
-+
-+	for (i = 0; i < num_standard_resources; i++) {
-+		struct resource *mem = &standard_resources[i];
-+		phys_addr_t r_start, r_end, mem_size = resource_size(mem);
-+
-+		if (!memblock_is_region_reserved(mem->start, mem_size))
-+			continue;
-+
-+		for_each_reserved_mem_range(j, &r_start, &r_end) {
-+			resource_size_t start, end;
-+
-+			start = max(PFN_PHYS(PFN_DOWN(r_start)), mem->start);
-+			end = min(PFN_PHYS(PFN_UP(r_end)) - 1, mem->end);
-+
-+			if (start > mem->end || end < mem->start)
-+				continue;
-+
-+			reserve_region_with_split(mem, start, end, "Reserved");
-+		}
-+	}
-+
-+	return 0;
-+}
-+arch_initcall(reserve_memblock_reserved_regions);
- 
- static void __init parse_dtb(void)
- {
--- 
-2.39.5
-
++		refcount_dec(&req->drv_ctx->refcnt);
+ 		if (ret != -EBUSY)
+ 			break;
+ 		num_retries++;
 
 
 
