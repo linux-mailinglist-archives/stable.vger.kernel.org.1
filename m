@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-135578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB39A98F17
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C65A98DF2
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44A8292041E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B66405A5F36
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA532820C1;
-	Wed, 23 Apr 2025 14:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E968281501;
+	Wed, 23 Apr 2025 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Terzpf6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mnemu3Jq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B023281363;
-	Wed, 23 Apr 2025 14:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD9027F4D9;
+	Wed, 23 Apr 2025 14:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420292; cv=none; b=RdBvodjKPR8wc0OivpTupE8OAcRygyac0qWMrqaBOaedy7YNO506N2sqS4XcUaymiUd1n1IVK8fIR3nP+dbR7g2znHCHSxv2tfbrxZ0C5pgysGH58tPYKWUZHF+UMxCKjlQU1Q1U/1lSkdeeWJ6gHQBUWesJa3N6aY4QY+IWuGw=
+	t=1745419780; cv=none; b=fY/5Ql4MCaJpQeAEX258AJ6LvvbZBtB/R+8fDzZD/Wnl7Ifu4b1lsRSCJjBVDy5T/MmsgvTJBbt/OdvJrRw3uYZrPTwmIe3xznA42Qq9rSe9hIcN3VMpY8PyWVBrJQMBcHUf6y02rMcyRGJv7vuT5R6AwxdwqLMrXJtMCqB283U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420292; c=relaxed/simple;
-	bh=LKVC5/eg+DQOxYqw/KHAlISdIYnYd9XPB57BNjnlrUE=;
+	s=arc-20240116; t=1745419780; c=relaxed/simple;
+	bh=sRYqjM4NHKh1QfUmJbCqYy8nRLSo42sWSc02gnSB9mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFUUL2VGMM9Y+rbvlUcHpRjN+4roL5NCl1kWff7s4k1P5T7QIGbr5abBsT0dToSQIQ9Y0QYGXx91xBVnBzi+cGt5zkxs+daurLNrsgYg41fic2TwKSSPvZ1UVrb9EdIKBjgI5kj2VIc8Ba8ojXMpF588Vy/XRT2SjW90eOCLxXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Terzpf6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2446C4CEE2;
-	Wed, 23 Apr 2025 14:58:11 +0000 (UTC)
+	 MIME-Version; b=SD1SR8ln7d58LT8LemploHcz+kCwVjMRDwqkAG5XeDTTIsc8mvexAw5faK3MrkJMn5pmGRw10mUH5j5CQWWpZpLecj/twtlwqUM3+Sm4/NChCU30holUi8/q7AGeNhUJxcw0X38yM4FqcAnXysDVZDwmO4uCkZSUFiQAjt8Y3kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mnemu3Jq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AF2C4CEE2;
+	Wed, 23 Apr 2025 14:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420292;
-	bh=LKVC5/eg+DQOxYqw/KHAlISdIYnYd9XPB57BNjnlrUE=;
+	s=korg; t=1745419779;
+	bh=sRYqjM4NHKh1QfUmJbCqYy8nRLSo42sWSc02gnSB9mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Terzpf6UltPZa+E3G1BR8EiaJcGDHt0rfWsvrquRHtwYdTIF5oggcszFTq0jYj4z1
-	 YhaO3wDnoZYaEo3Cgsil5GEJmwdoQTuCyK7g7S6oUUWtF2BN6QBdvMdk7Q0Tmknzx1
-	 QhEa49eYrGC0Urx+PXbBcaIZ1IKgjNBW3A/6FlMw=
+	b=Mnemu3Jq657QRCuzyj4aVv39k4KIbVTOxuHkbLBukdSrTfZW4IU5uxKcJwbNzPaQG
+	 cp5JlZczrQTSe0X60A0tCtyjrdh3OD+hmqiyFdtuThXQu/UC2sUKkI9PCACFvMpBg1
+	 pPKRPnBMVfDqKLaeWbdrULnNtIMQ+NAGeZ359hyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 067/241] netlink: specs: rt-link: add an attr layer around alt-ifname
-Date: Wed, 23 Apr 2025 16:42:11 +0200
-Message-ID: <20250423142623.337397597@linuxfoundation.org>
+Subject: [PATCH 6.12 060/223] net: b53: enable BPDU reception for management port
+Date: Wed, 23 Apr 2025 16:42:12 +0200
+Message-ID: <20250423142619.581103180@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit acf4da17deada7f8b120e051aa6c9cac40dbd83b ]
+[ Upstream commit 36355ddfe8955f226a88a543ed354b9f6b84cd70 ]
 
-alt-ifname attr is directly placed in requests (as an alternative
-to ifname) but in responses its wrapped up in IFLA_PROP_LIST
-and only there is may be multi-attr. See rtnl_fill_prop_list().
+For STP to work, receiving BPDUs is essential, but the appropriate bit
+was never set. Without GC_RX_BPDU_EN, the switch chip will filter all
+BPDUs, even if an appropriate PVID VLAN was setup.
 
-Fixes: b2f63d904e72 ("doc/netlink: Add spec for rt link messages")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250414211851.602096-6-kuba@kernel.org
+Fixes: ff39c2d68679 ("net: dsa: b53: Add bridge support")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Link: https://patch.msgid.link/20250414200434.194422-1-jonas.gorski@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/netlink/specs/rt_link.yaml | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/Documentation/netlink/specs/rt_link.yaml b/Documentation/netlink/specs/rt_link.yaml
-index 0d492500c7e57..1eab6aeaa2193 100644
---- a/Documentation/netlink/specs/rt_link.yaml
-+++ b/Documentation/netlink/specs/rt_link.yaml
-@@ -1101,11 +1101,10 @@ attribute-sets:
-       -
-         name: prop-list
-         type: nest
--        nested-attributes: link-attrs
-+        nested-attributes: prop-list-link-attrs
-       -
-         name: alt-ifname
-         type: string
--        multi-attr: true
-       -
-         name: perm-address
-         type: binary
-@@ -1148,6 +1147,13 @@ attribute-sets:
-         name: max-pacing-offload-horizon
-         type: uint
-         doc: EDT offload horizon supported by the device (in nsec).
-+  -
-+    name: prop-list-link-attrs
-+    subset-of: link-attrs
-+    attributes:
-+      -
-+        name: alt-ifname
-+        multi-attr: true
-   -
-     name: af-spec-attrs
-     attributes:
-@@ -2434,7 +2440,6 @@ operations:
-             - min-mtu
-             - max-mtu
-             - prop-list
--            - alt-ifname
-             - perm-address
-             - proto-down-reason
-             - parent-dev-name
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index c39cb119e760d..d4600ab0b70b3 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -737,6 +737,15 @@ static void b53_enable_mib(struct b53_device *dev)
+ 	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
+ }
+ 
++static void b53_enable_stp(struct b53_device *dev)
++{
++	u8 gc;
++
++	b53_read8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, &gc);
++	gc |= GC_RX_BPDU_EN;
++	b53_write8(dev, B53_MGMT_PAGE, B53_GLOBAL_CONFIG, gc);
++}
++
+ static u16 b53_default_pvid(struct b53_device *dev)
+ {
+ 	if (is5325(dev) || is5365(dev))
+@@ -876,6 +885,7 @@ static int b53_switch_reset(struct b53_device *dev)
+ 	}
+ 
+ 	b53_enable_mib(dev);
++	b53_enable_stp(dev);
+ 
+ 	return b53_flush_arl(dev, FAST_AGE_STATIC);
+ }
 -- 
 2.39.5
 
