@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C64A99177
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:31:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081CBA993BF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E4C0467E3D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 214551BA3940
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF61288CA2;
-	Wed, 23 Apr 2025 15:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936042BF3E7;
+	Wed, 23 Apr 2025 15:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hc5HiMLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLEF/QOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8FB284685;
-	Wed, 23 Apr 2025 15:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510D829B76A;
+	Wed, 23 Apr 2025 15:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421463; cv=none; b=TD/aS159tqGIH/ct8KklZSXVVT0poQcb3kE/DxV7D3MhRkAMFNYrpSaayu6G7IHKMEFV2mCvWftkhzqLm5ucxhpJA7cwObo5VeTaVhC0YMbwY7YEkl+ScBEIt8gGfQFVIq0vi84Cakr3kMhAyt9Zoi2llksJYnLleENCv+DPyiA=
+	t=1745422551; cv=none; b=sffy4PZS1yQbUtumfyomcRCz7ZMCKiwvbw1fEuynT1HvmqqbqTXDAXk+sFUMqOEqHnrDb2k8OA6zg9uxqoIlmkoU3Ncq0kN0CRxJBAS5zWJ+G+gjaofLIOmz4p4GeO5ljvYAIyvZ6EG1Ifm6goT7kUT5xIVCdxP3UtfwvdHlCf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421463; c=relaxed/simple;
-	bh=hObvrcN80T0pdg7hf1Aak3GIPqL/gMDr32qJY5DhXCU=;
+	s=arc-20240116; t=1745422551; c=relaxed/simple;
+	bh=NcAp+v54+vdMUXC4vYLJd3nJskzjzKvG3sKAkTAH90E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/xvh2LY0GLDFqB8X+ilh7TA+3vr5YWLtRu9ZGI3SC/o7UOZ8ypSPx+zN91xDhLb25iAGdc0MhpcCCyHT/ma6sZoYpPruKcA5NQtG4GBDOjse0sRrGg8TFC6ltGdo+3CH0D0hwAQZP8v7lpg8qh0yyntyaNodr1i74XIVPvll0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hc5HiMLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D1DC4CEE3;
-	Wed, 23 Apr 2025 15:17:42 +0000 (UTC)
+	 MIME-Version; b=AwSUNR6QC1MxJqYDdmIR9jaGi7y/0l72RyrI+fM3FNbvjOJQ5hNBKXtx7z9Zko+P5fVE+wTNK45+q/SL4gLk6AGzEXcLl1oc7dya5ngONow41YAq0tsr347lK8KgLy19tHsrO2gILk4LcDn65/Br5XErzZrfCHqtwiJ0mP2CEu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLEF/QOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BB5C4CEE3;
+	Wed, 23 Apr 2025 15:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421463;
-	bh=hObvrcN80T0pdg7hf1Aak3GIPqL/gMDr32qJY5DhXCU=;
+	s=korg; t=1745422550;
+	bh=NcAp+v54+vdMUXC4vYLJd3nJskzjzKvG3sKAkTAH90E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hc5HiMLnA2NA9Oqp5wPsbMBxGMLOehJA0NaJQEkDodRgonlNVS95Q5KjVT6M85HKE
-	 2f8LHxXmbDugsfV5YlYwYGXIgsUAifUzE0VOYJTfCH8sPR+P86krkX9p/r9PiFZMpd
-	 5zxw+lTDzYTgjSO+k02lzxdVPsOLFtyf6v7FOPxk=
+	b=pLEF/QOQKMYBGPL8PJli4HtQncT+A3dV4F03R6UUkDmjnkPHSMVbfRuOzMXVOs1/m
+	 1EGOKpaXIrv+W9+qEUz/7gUZU5NrLLmRgimmh3VzXU3PzWXse/6WC4vh5UH+87jj0r
+	 dd84oql+J12lWGFUS5MQJk2hc+OSfDVUj9/TKEYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Denis Arefev <arefev@swemel.ru>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 184/241] drm/amd/pm/smu11: Prevent division by zero
+Subject: [PATCH 6.6 352/393] drm/amd/pm/powerplay/hwmgr/smu7_thermal: Prevent division by zero
 Date: Wed, 23 Apr 2025 16:44:08 +0200
-Message-ID: <20250423142628.036580856@linuxfoundation.org>
+Message-ID: <20250423142657.874273883@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Denis Arefev <arefev@swemel.ru>
 
-commit 7ba88b5cccc1a99c1afb96e31e7eedac9907704c upstream.
+commit 7c246a05df51c52fe0852ce56ba10c41e6ed1f39 upstream.
 
 The user can set any speed value.
 If speed is greater than UINT_MAX/8, division by zero is possible.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 1e866f1fe528 ("drm/amd/pm: Prevent divide by zero")
+Fixes: c52dcf49195d ("drm/amd/pp: Avoid divide-by-zero in fan_ctrl_set_fan_speed_rpm")
 Signed-off-by: Denis Arefev <arefev@swemel.ru>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit da7dc714a8f8e1c9fc33c57cd63583779a3bef71)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/smu_v11_0.c
-@@ -1200,7 +1200,7 @@ int smu_v11_0_set_fan_speed_rpm(struct s
- 	uint32_t crystal_clock_freq = 2500;
- 	uint32_t tach_period;
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_thermal.c
+@@ -267,10 +267,10 @@ int smu7_fan_ctrl_set_fan_speed_rpm(stru
+ 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
+ 			(hwmgr->thermal_controller.fanInfo.
+ 			ucTachometerPulsesPerRevolution == 0) ||
+-			speed == 0 ||
++			(!speed || speed > UINT_MAX/8) ||
+ 			(speed < hwmgr->thermal_controller.fanInfo.ulMinRPM) ||
+ 			(speed > hwmgr->thermal_controller.fanInfo.ulMaxRPM))
+-		return 0;
++		return -EINVAL;
  
--	if (speed == 0)
-+	if (!speed || speed > UINT_MAX/8)
- 		return -EINVAL;
- 	/*
- 	 * To prevent from possible overheat, some ASICs may have requirement
+ 	if (PP_CAP(PHM_PlatformCaps_MicrocodeFanControl))
+ 		smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 
 
