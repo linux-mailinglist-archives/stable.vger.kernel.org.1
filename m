@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52023A98FD2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:14:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC687A99353
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FEE172987
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:11:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79350927CAF
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8849D28DEE4;
-	Wed, 23 Apr 2025 15:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0E126A082;
+	Wed, 23 Apr 2025 15:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k76kjkiw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTsPOPVr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413C428D85E;
-	Wed, 23 Apr 2025 15:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2BC2820AE;
+	Wed, 23 Apr 2025 15:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420767; cv=none; b=mjxvoZBxMtWcBRc7/5nqNAbIZjnCVLywcXoYbcX6gzSmb6THuflY0GMsshxUcFsbd3nWf2SWJw1jV3f4b44bIOVtvAU96PM8k/tk8yRCnSrMi4Q2YLQXxosgC3f7hJI3LzUsu5wGq7x2kiFal+fkxnHJzw44/bZlJRWmxd/KEV4=
+	t=1745422157; cv=none; b=YjwfJtVWpTirWlDTGmmPfYOPLg+uOixD0UQiLijvyiN+Er1Z3mLK4/u1jZBeFDg0o/Xv2JBASAZejQrnSS7bYpI7XNmjnQGC1Gswnn4SaL7uSkC00etkx/NCH9Nd2v40RGUItVIX6C6ndjcoEoCbB1OZFuidlPMs9+NxUXNyG3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420767; c=relaxed/simple;
-	bh=1p0uizIPmo7jQ/YZwoSu2oKbHFFiRYc2tvbdwvQ37vQ=;
+	s=arc-20240116; t=1745422157; c=relaxed/simple;
+	bh=Caqw28F119hMOT1o27R4w5r/COTo+ZFEvqjix/o/mBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCORZKfxQFmspEuMj/IKeQegoAQ3zQ2gIIf0afELv7mIvzvjfJBiD3qad8t7OCk449SVMxKwBUUeb2KhGmD+yiQ/gRaFl+fsV5V+qO87wFLIA16h4nkKtYp6YW6tUIsOyvFq/7MAJZPJc8l+fG8K+6tFEFkDWdV0LAbLbzPNoiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k76kjkiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4197C4CEE2;
-	Wed, 23 Apr 2025 15:06:06 +0000 (UTC)
+	 MIME-Version; b=ApHxxpfxcs1Dx5GGwJOrmnH6ab2BoIfGVUe+Z1R3jPuLoqt1KcfzP7ufb7MjyrM+caCOzQatqo3aJhLTJhm09itu8TshTqnnJ/fnj5hWXdG1xV5MgQ9CYRsOIY6EMaIoeSkb0AcVviWgnZF2CHeR+TvA4bvEBiSucqd5coPSdfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTsPOPVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74B1C4CEE3;
+	Wed, 23 Apr 2025 15:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420767;
-	bh=1p0uizIPmo7jQ/YZwoSu2oKbHFFiRYc2tvbdwvQ37vQ=;
+	s=korg; t=1745422157;
+	bh=Caqw28F119hMOT1o27R4w5r/COTo+ZFEvqjix/o/mBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k76kjkiwtuC/Jvx4Vo4ZuGf4z9/fbqGAISJSIcVD2jiY92A1yAquqDjpOwJ3JiTVe
-	 p6aWCZ2TqELR6K8TkTYdBudrT2kM3W/vKOPIzTL4lmw2APFo+9QZfj3RwuNU0MxpFk
-	 tMGERYCm43/6ez+nx1NSoOEG56KhEb10ZwVjK2Sg=
+	b=UTsPOPVry2XXagwd7t5zHIWKIQTVccZeT4Uw9Y3M6BwWCeihuKISdWK0gLCsRCqQ0
+	 RyuI8IdJsgp5b/Aro0njVVfaFAeTxa0//hqc/clnnXJATE9vitU/St7xXgvQrjF5cC
+	 ZKWuzCoT2DwgBrQ6UDTZXKSaX6VxG7rFqjn4Cxpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 120/241] eventpoll: abstract out ep_try_send_events() helper
+Subject: [PATCH 6.6 288/393] net: dsa: avoid refcount warnings when ds->ops->tag_8021q_vlan_del() fails
 Date: Wed, 23 Apr 2025 16:43:04 +0200
-Message-ID: <20250423142625.486032193@linuxfoundation.org>
+Message-ID: <20250423142655.238272462@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142620.525425242@linuxfoundation.org>
-References: <20250423142620.525425242@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 38d203560118a673018df5892a6555bb0aba7762 ]
+[ Upstream commit 514eff7b0aa1c5eb645ddbb8676ef3e2d88a8b99 ]
 
-In preparation for reusing this helper in another epoll setup helper,
-abstract it out.
+This is very similar to the problem and solution from commit
+232deb3f9567 ("net: dsa: avoid refcount warnings when
+->port_{fdb,mdb}_del returns error"), except for the
+dsa_port_do_tag_8021q_vlan_del() operation.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Link: https://lore.kernel.org/r/20250219172552.1565603-3-axboe@kernel.dk
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 0a65bc27bd64 ("eventpoll: Set epoll timeout if it's in the future")
+Fixes: c64b9c05045a ("net: dsa: tag_8021q: add proper cross-chip notifier support")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250414213020.2959021-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ net/dsa/tag_8021q.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 7c0980db77b31..67d1808fda0e5 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1980,6 +1980,22 @@ static int ep_autoremove_wake_function(struct wait_queue_entry *wq_entry,
- 	return ret;
- }
+diff --git a/net/dsa/tag_8021q.c b/net/dsa/tag_8021q.c
+index cbdfc392f7e0d..a5420421e462e 100644
+--- a/net/dsa/tag_8021q.c
++++ b/net/dsa/tag_8021q.c
+@@ -197,7 +197,7 @@ static int dsa_port_do_tag_8021q_vlan_del(struct dsa_port *dp, u16 vid)
  
-+static int ep_try_send_events(struct eventpoll *ep,
-+			      struct epoll_event __user *events, int maxevents)
-+{
-+	int res;
-+
-+	/*
-+	 * Try to transfer events to user space. In case we get 0 events and
-+	 * there's still timeout left over, we go trying again in search of
-+	 * more luck.
-+	 */
-+	res = ep_send_events(ep, events, maxevents);
-+	if (res > 0)
-+		ep_suspend_napi_irqs(ep);
-+	return res;
-+}
-+
- /**
-  * ep_poll - Retrieves ready events, and delivers them to the caller-supplied
-  *           event buffer.
-@@ -2031,17 +2047,9 @@ static int ep_poll(struct eventpoll *ep, struct epoll_event __user *events,
+ 	err = ds->ops->tag_8021q_vlan_del(ds, port, vid);
+ 	if (err) {
+-		refcount_inc(&v->refcount);
++		refcount_set(&v->refcount, 1);
+ 		return err;
+ 	}
  
- 	while (1) {
- 		if (eavail) {
--			/*
--			 * Try to transfer events to user space. In case we get
--			 * 0 events and there's still timeout left over, we go
--			 * trying again in search of more luck.
--			 */
--			res = ep_send_events(ep, events, maxevents);
--			if (res) {
--				if (res > 0)
--					ep_suspend_napi_irqs(ep);
-+			res = ep_try_send_events(ep, events, maxevents);
-+			if (res)
- 				return res;
--			}
- 		}
- 
- 		if (timed_out)
 -- 
 2.39.5
 
