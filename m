@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-136248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC10AA99221
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:40:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C14A98F8C
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51CAE7A8EB6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04EAA16892B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCB929DB85;
-	Wed, 23 Apr 2025 15:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2DF280CFC;
+	Wed, 23 Apr 2025 15:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGnwmUYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DF05aClW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7969129DB81;
-	Wed, 23 Apr 2025 15:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB7A57C9F;
+	Wed, 23 Apr 2025 15:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422047; cv=none; b=MaszZA1rkP5lzryrey1o14xBor+7eK4OYW8nB+lIZc6aU7/ry4NmZk20rDn4LeHa7AeebNLtUTY9O/yFfoZZuzHpDAu3tIsFnu1sChh5Z/9TR3Ty4jrjGEpElRifLOhYBpnIynosKyxPcFKBLbFe1fHjob0vTqQBVzDOz8PyOBA=
+	t=1745420569; cv=none; b=gJ9/Iqw8DVULteepvLKMqY1Vr73v0Ui9L/8jfKsp7V9OWGhtaxM0P95Oa5o3H9coB1rVrVh7pKkj4kcWBcDuHjFgEC/AHsKayFwQsbCPlllxNKp8JQLICeqgv5xVEvO2ngLYb7o1c8co1CdfYk8RrrihAnN6uaNYTrZGO/Wsork=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422047; c=relaxed/simple;
-	bh=P0mcXjs9sXgiKVZ86y/zKs3EgJiihY68QrPDNuY0y40=;
+	s=arc-20240116; t=1745420569; c=relaxed/simple;
+	bh=LKhvvbJhgwYo9lh84MCLbZeo8+MJ0BC2XVNPh3VBNUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZ27RHJAEeE4EGYWD1u+vKBIFQu0f20CAJ9CuQnpmTsBD8Pk3Qrby5NFo30f3cNqbPFlHg3ym0+LovN/9yVfq98Yoa358ApO4nYM/xMn2hsufY+WnjrZlTJaSxF8Gi0bPkfPYAJn5BodcW4RzLRD4wqXfoSOna3xE+SU40vNwgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zGnwmUYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA1DC4CEE2;
-	Wed, 23 Apr 2025 15:27:26 +0000 (UTC)
+	 MIME-Version; b=LGsql9l9XiBKSOANsLvk2AFdkKwIMBRWSj6LLJHrZ5L1tustoVJEbhtI/XXuC2AwhDJqZFQiqxQvLg7jnUo/kA7CfbiDL9fKUwONrvlomyhAeyYX/VuJ1MQhKEYaaL6V5YPa15yULoEVJ16/nBwEa0on+StLtxY1egDo7j0v79o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DF05aClW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04747C4CEEB;
+	Wed, 23 Apr 2025 15:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422047;
-	bh=P0mcXjs9sXgiKVZ86y/zKs3EgJiihY68QrPDNuY0y40=;
+	s=korg; t=1745420569;
+	bh=LKhvvbJhgwYo9lh84MCLbZeo8+MJ0BC2XVNPh3VBNUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGnwmUYgBmwY7Q+1sx/h9gQ7qdO0wAfxS8C8MySJOpB8xemXFu+H/fBdwXvP55GhL
-	 Fj+HUlfkn+Gr9PDqk4xjTh3q1staBxApRsTJCFAu9i/1iMp7gCbd/a6SiTDOc5Tj5i
-	 v78mVfY63lDhFXUiQG4hveF9suf8MxdmhcXSQIo4=
+	b=DF05aClWAYiC9bXt4H8oVG/BXHg7l316pl7CsDWeySNoV4PYxqnaEKEl2o34YyJUw
+	 JBYnKHXy/LmnhFYRTweF4jICYAKPCX1VdZdP7uA+dt9VhKgK4zh8SUbWQslLsMaMAt
+	 qoZYuhQXaukT7wDYibnRTNai85pSiGpcKJVw8ZOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-	Ryan Lahfa <ryan@lahfa.xyz>
-Subject: [PATCH 6.1 224/291] scsi: megaraid_sas: Block zero-length ATA VPD inquiry
-Date: Wed, 23 Apr 2025 16:43:33 +0200
-Message-ID: <20250423142633.577458907@linuxfoundation.org>
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.12 142/223] RAS/AMD/FMPM: Get masked address
+Date: Wed, 23 Apr 2025 16:43:34 +0200
+Message-ID: <20250423142622.971270210@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
+References: <20250423142617.120834124@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit aad9945623ab4029ae7789609fb6166c97976c62 upstream.
+commit 58029c39cdc54ac4f4dc40b4a9c05eed9f9b808a upstream.
 
-A firmware bug was observed where ATA VPD inquiry commands with a
-zero-length data payload were not handled and failed with a non-standard
-status code of 0xf0.
+Some operations require checking, or ignoring, specific bits in an address
+value. For example, this can be comparing address values to identify unique
+structures.
 
-Avoid sending ATA VPD inquiry commands without data payload by setting
-the device no_vpd_size flag to 1. In addition, if the firmware returns a
-status code of 0xf0, set scsi_cmnd->result to CHECK_CONDITION to
-facilitate proper error handling.
+Currently, the full address value is compared when filtering for duplicates.
+This results in over counting and creation of extra records.  This gives the
+impression that more unique events occurred than did in reality.
 
-Suggested-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Chandrakanth Patil <chandrakanth.patil@broadcom.com>
+Mask the address for physical rows on MI300.
+
+  [ bp: Simplify. ]
+
+Fixes: 6f15e617cc99 ("RAS: Introduce a FRU memory poison manager")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250402193735.5098-1-chandrakanth.patil@broadcom.com
-Tested-by: Ryan Lahfa <ryan@lahfa.xyz>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c   |    9 +++++++--
- drivers/scsi/megaraid/megaraid_sas_fusion.c |    5 ++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ drivers/ras/amd/atl/internal.h |    3 +++
+ drivers/ras/amd/atl/umc.c      |    2 --
+ drivers/ras/amd/fmpm.c         |    9 ++++++++-
+ 3 files changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -2101,6 +2101,9 @@ static int megasas_slave_configure(struc
- 	/* This sdev property may change post OCR */
- 	megasas_set_dynamic_target_properties(sdev, is_target_prop);
+--- a/drivers/ras/amd/atl/internal.h
++++ b/drivers/ras/amd/atl/internal.h
+@@ -361,4 +361,7 @@ static inline void atl_debug_on_bad_intl
+ 	atl_debug(ctx, "Unrecognized interleave mode: %u", ctx->map.intlv_mode);
+ }
  
-+	if (!MEGASAS_IS_LOGICAL(sdev))
-+		sdev->no_vpd_size = 1;
++#define MI300_UMC_MCA_COL	GENMASK(5, 1)
++#define MI300_UMC_MCA_ROW13	BIT(23)
 +
- 	mutex_unlock(&instance->reset_mutex);
+ #endif /* __AMD_ATL_INTERNAL_H__ */
+--- a/drivers/ras/amd/atl/umc.c
++++ b/drivers/ras/amd/atl/umc.c
+@@ -229,7 +229,6 @@ int get_umc_info_mi300(void)
+  * Additionally, the PC and Bank bits may be hashed. This must be accounted for before
+  * reconstructing the normalized address.
+  */
+-#define MI300_UMC_MCA_COL	GENMASK(5, 1)
+ #define MI300_UMC_MCA_BANK	GENMASK(9, 6)
+ #define MI300_UMC_MCA_ROW	GENMASK(24, 10)
+ #define MI300_UMC_MCA_PC	BIT(25)
+@@ -360,7 +359,6 @@ static void _retire_row_mi300(struct atl
+  *
+  * See MI300_UMC_MCA_ROW for the row bits in MCA_ADDR_UMC value.
+  */
+-#define MI300_UMC_MCA_ROW13	BIT(23)
+ static void retire_row_mi300(struct atl_err *a_err)
+ {
+ 	_retire_row_mi300(a_err);
+--- a/drivers/ras/amd/fmpm.c
++++ b/drivers/ras/amd/fmpm.c
+@@ -250,6 +250,13 @@ static bool rec_has_valid_entries(struct
+ 	return true;
+ }
  
- 	return 0;
-@@ -3661,8 +3664,10 @@ megasas_complete_cmd(struct megasas_inst
++/*
++ * Row retirement is done on MI300 systems, and some bits are 'don't
++ * care' for comparing addresses with unique physical rows.  This
++ * includes all column bits and the row[13] bit.
++ */
++#define MASK_ADDR(addr)	((addr) & ~(MI300_UMC_MCA_ROW13 | MI300_UMC_MCA_COL))
++
+ static bool fpds_equal(struct cper_fru_poison_desc *old, struct cper_fru_poison_desc *new)
+ {
+ 	/*
+@@ -258,7 +265,7 @@ static bool fpds_equal(struct cper_fru_p
+ 	 *
+ 	 * Also, order the checks from most->least likely to fail to shortcut the code.
+ 	 */
+-	if (old->addr != new->addr)
++	if (MASK_ADDR(old->addr) != MASK_ADDR(new->addr))
+ 		return false;
  
- 		case MFI_STAT_SCSI_IO_FAILED:
- 		case MFI_STAT_LD_INIT_IN_PROGRESS:
--			cmd->scmd->result =
--			    (DID_ERROR << 16) | hdr->scsi_status;
-+			if (hdr->scsi_status == 0xf0)
-+				cmd->scmd->result = (DID_ERROR << 16) | SAM_STAT_CHECK_CONDITION;
-+			else
-+				cmd->scmd->result = (DID_ERROR << 16) | hdr->scsi_status;
- 			break;
- 
- 		case MFI_STAT_SCSI_DONE_WITH_ERROR:
---- a/drivers/scsi/megaraid/megaraid_sas_fusion.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_fusion.c
-@@ -2040,7 +2040,10 @@ map_cmd_status(struct fusion_context *fu
- 
- 	case MFI_STAT_SCSI_IO_FAILED:
- 	case MFI_STAT_LD_INIT_IN_PROGRESS:
--		scmd->result = (DID_ERROR << 16) | ext_status;
-+		if (ext_status == 0xf0)
-+			scmd->result = (DID_ERROR << 16) | SAM_STAT_CHECK_CONDITION;
-+		else
-+			scmd->result = (DID_ERROR << 16) | ext_status;
- 		break;
- 
- 	case MFI_STAT_SCSI_DONE_WITH_ERROR:
+ 	if (old->hw_id != new->hw_id)
 
 
 
