@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-135359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9177A98DD2
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 16:49:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74199A9923A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:41:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE683A925E
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:49:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FAAA4A251F
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:34:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795322820AC;
-	Wed, 23 Apr 2025 14:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DA329AB1D;
+	Wed, 23 Apr 2025 15:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZ7yc3Vh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tFfqXD5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343F92820A8;
-	Wed, 23 Apr 2025 14:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845AB29AB18;
+	Wed, 23 Apr 2025 15:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745419716; cv=none; b=ioh67zqhtxmDIdcTWXJ6OL2iR3DoID3Q86lnp1+mP/zOLnl58jB4BZ7hDCPN95hvbxwLLFNPoEEhiNPIqwSNIeQ5IIWpiKqwMJiVBB5GiH2XTi6KLPpiKhXOZYNbICQstUmlxUI6jiPBvGrd9sEiRsQdbWFBUfhkqjlF5+qa3lU=
+	t=1745421807; cv=none; b=q0OQN35a5+MGXFhnJKmB3bEabpz/zjzjRjigxw2XiH0cOM1FkcG2D2KnrU6nHjp8Wn2hto46wQKwam73ztN3tGPfubv7NsccINHkIgjQ/UxSOjFBVmtaWMQjo4xSP4Gg9JxwBxVf2OSL0uU7iWrhOB8M9h9jA9J017jQs+213+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745419716; c=relaxed/simple;
-	bh=b8Phdis1FucKWwuQV7D5WXZzDo4tEYHjFAZvymAa7ZQ=;
+	s=arc-20240116; t=1745421807; c=relaxed/simple;
+	bh=tzHoeuz81eI1MsvulYa3NUphf8CdfCTu7NT/dP9DgEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7ds5VNYI34DpMwgsInfJ6Bjj6j/x8uP8PPDn5EPbcss7DB27NNPiyLaFFQCEW0L4Geqi+kmP/8YMhbgdspvEtxHENeU9TTSkoyfzW9wpBEcLbrWNTLH4xUGINU+dMhgYT9zZEiPUVzZpXo4jOmYwkakIKu2hwVpIa+tZmJaCy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZ7yc3Vh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEBEC4CEE2;
-	Wed, 23 Apr 2025 14:48:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bkqWM/TBfGloxjjFurv1nVmJg7h6/1bybakwFfcAfrA7GW8hieDY6ibmKa9SIdp2Q2A1A1bFx3zYYijLBhvjX0dQ4S+ZF9TltxZ7+nApQHaQG4YSAIrnazDSMJiHQcdhivJsHyLTzt6rvZRjAnnpmD+ABgpT1UOlpzkqZuEcBTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tFfqXD5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15F0EC4CEE3;
+	Wed, 23 Apr 2025 15:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745419715;
-	bh=b8Phdis1FucKWwuQV7D5WXZzDo4tEYHjFAZvymAa7ZQ=;
+	s=korg; t=1745421807;
+	bh=tzHoeuz81eI1MsvulYa3NUphf8CdfCTu7NT/dP9DgEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZ7yc3VhpCe6ls6KEZsFxn5vl/7hExpbovEvBoNo5uIPEBz5wHYOSvG+zxl1ZRADL
-	 q4V2cDEHxTC+Hq32VUpV0Ny9zzyytCIUcREVCvelKJyU/61Y+0y1fg8hKbaVtx5mYv
-	 WMEMvKkPJBh0euh7yLyhUNVvYLxB4v58+3rccxAA=
+	b=tFfqXD5xeqFSHk1kB93ttR4ewcErrB/uDnwafFpXV5DrYrpihT1wPzcTHPFKRh+O9
+	 dn6V4+HGwGrzxUApoRU6qn5ARn4kIFlzSqczKf7rXgOEWWcFvBJSMQT7yk3zAE28T8
+	 4rSkFO4Ejk/NmEfEx4ArmxerfksnkDaHk69Nfy6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/223] net: ngbe: fix memory leak in ngbe_probe() error path
-Date: Wed, 23 Apr 2025 16:42:01 +0200
-Message-ID: <20250423142619.131864738@linuxfoundation.org>
+	Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.6 226/393] PCI: brcmstb: Fix missing of_node_put() in brcm_pcie_probe()
+Date: Wed, 23 Apr 2025 16:42:02 +0200
+Message-ID: <20250423142652.725884922@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-References: <20250423142617.120834124@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit 88fa80021b77732bc98f73fb69d69c7cc37b9f0d ]
+commit 2df181e1aea4628a8fd257f866026625d0519627 upstream.
 
-When ngbe_sw_init() is called, memory is allocated for wx->rss_key
-in wx_init_rss_key(). However, in ngbe_probe() function, the subsequent
-error paths after ngbe_sw_init() don't free the rss_key. Fix that by
-freeing it in error path along with wx->mac_table.
+A call to of_parse_phandle() is incrementing the refcount, and as such,
+the of_node_put() must be called when the reference is no longer needed.
 
-Also change the label to which execution jumps when ngbe_sw_init()
-fails, because otherwise, it could lead to a double free for rss_key,
-when the mac_table allocation fails in wx_sw_init().
+Thus, refactor the existing code and add a missing of_node_put() call
+following the check to ensure that "msi_np" matches "pcie->np" and after
+MSI initialization, but only if the MSI support is enabled system-wide.
 
-Fixes: 02338c484ab6 ("net: ngbe: Initialize sw info and register netdev")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20250412154927.25908-1-abdun.nihaal@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: 40ca1bf580ef ("PCI: brcmstb: Add MSI support")
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20250122222955.1752778-1-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-brcmstb.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index 53aeae2f884b0..1be2a5cc4a83c 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -607,7 +607,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- 	/* setup the private structure */
- 	err = ngbe_sw_init(wx);
- 	if (err)
--		goto err_free_mac_table;
-+		goto err_pci_release_regions;
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1501,7 +1501,7 @@ static struct pci_ops brcm7425_pcie_ops
  
- 	/* check if flash load is done after hw power up */
- 	err = wx_check_flash_load(wx, NGBE_SPI_ILDR_STATUS_PERST);
-@@ -701,6 +701,7 @@ static int ngbe_probe(struct pci_dev *pdev,
- err_clear_interrupt_scheme:
- 	wx_clear_interrupt_scheme(wx);
- err_free_mac_table:
-+	kfree(wx->rss_key);
- 	kfree(wx->mac_table);
- err_pci_release_regions:
- 	pci_release_selected_regions(pdev,
--- 
-2.39.5
-
+ static int brcm_pcie_probe(struct platform_device *pdev)
+ {
+-	struct device_node *np = pdev->dev.of_node, *msi_np;
++	struct device_node *np = pdev->dev.of_node;
+ 	struct pci_host_bridge *bridge;
+ 	const struct pcie_cfg_data *data;
+ 	struct brcm_pcie *pcie;
+@@ -1576,9 +1576,14 @@ static int brcm_pcie_probe(struct platfo
+ 		goto fail;
+ 	}
+ 
+-	msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
+-	if (pci_msi_enabled() && msi_np == pcie->np) {
+-		ret = brcm_pcie_enable_msi(pcie);
++	if (pci_msi_enabled()) {
++		struct device_node *msi_np = of_parse_phandle(pcie->np, "msi-parent", 0);
++
++		if (msi_np == pcie->np)
++			ret = brcm_pcie_enable_msi(pcie);
++
++		of_node_put(msi_np);
++
+ 		if (ret) {
+ 			dev_err(pcie->dev, "probe of internal MSI failed");
+ 			goto fail;
 
 
 
