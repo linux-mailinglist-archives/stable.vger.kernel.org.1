@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-136413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017F6A9940D
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3844EA9940B
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 680061BA18BE
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5921A1BA2783
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A393D29AB18;
-	Wed, 23 Apr 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24988288C90;
+	Wed, 23 Apr 2025 15:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVoRaEFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cC1xNhfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEF128935C;
-	Wed, 23 Apr 2025 15:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53F3279345;
+	Wed, 23 Apr 2025 15:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745422480; cv=none; b=KDRjkTvexG5+U+wcOr35RxyxJZfdm1WlLyxY0jZGM/lhNvMUfJxTqNhMtivHFwJw5vQ5hJYQoB8ZvqczM8PUwbzsWYLyylgEmy9xVagUwOpRZQWoR5OhnkIYYpccIl3LINr9Ja/ejTomWa6n5ppdKDkiV+2Jnsisx1KSWh1JfuA=
+	t=1745422319; cv=none; b=OvbAkwzAekmJW8dG7gUcVHoTS/sN5zg11DWm9nEwxGX3QeKfafCpKO4cSn3Q74OXnPqA8CZyZiMT4AIzO98GvdwYhX+irCFtHmryNUZ2Uo5L/xCnatIJ+tbKzoyNdKVppT85z4ulGC9GaoMGS+HdGiaL2qXaLngN6mohqfRAK/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745422480; c=relaxed/simple;
-	bh=naX5RoI9zupu7UzJMEBsvXfDyp21nytj+DIazYbZ3fI=;
+	s=arc-20240116; t=1745422319; c=relaxed/simple;
+	bh=r+K/aRIOvf1YpC8iX1/l3Dnmx4A8TxWlSjftD/p6598=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dChuv9b3AKhHlh2PA9MyknTRinjHQI/SdAOxA+wOkrxY4Qne+bebdja2uRv+9DsuPlevPuN5vy5jqxVKT94jAo/pZneML7tRhY4ksuk8WzMGnu5CxEEKJttNOTSS6OH/V+mDfyYt4kXaGsKeTkr/EpNVUpxToqCogC8DVolN7mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVoRaEFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F2AC4CEE2;
-	Wed, 23 Apr 2025 15:34:39 +0000 (UTC)
+	 MIME-Version; b=WogvGB7OHXQ2+eo3IT+O3q4R/rMmoRh7L6UEcBfsV/eA5kFLrjMcoGdmQrOhMraG04ccWjP70zOwTgIrnIvxAXbSs5FfWOuTGivcF3aB0AeOON6+ovbR3CSW4ArRu4xfQDXSJZkxiYheqPB08XaKTLpc7YsigiTbN+PK4VWeCD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cC1xNhfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6536DC4CEE2;
+	Wed, 23 Apr 2025 15:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745422480;
-	bh=naX5RoI9zupu7UzJMEBsvXfDyp21nytj+DIazYbZ3fI=;
+	s=korg; t=1745422319;
+	bh=r+K/aRIOvf1YpC8iX1/l3Dnmx4A8TxWlSjftD/p6598=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVoRaEFPx2yX6Muw5gA8yCh02tSkNT0TNAXZOxgEyU/98BIggzUkvR2Ebr1rJ5Jh3
-	 ijuCeab1gMZW5JCE65J8EwZrYAXb/81tpCvmTcl9H794J1XwSQCxeSGU9JYZWcRHhN
-	 XHHgFOAnEs3nIsCV8s/+gVaTsV3dVYYobU7qwL+w=
+	b=cC1xNhfENkTdEBBfhYS9xpe+xVdOzjhhbWcirrATm0FgpfrtAhK3kUwk0WRK4jBo4
+	 xnM3115hhW9l73cM84Mb7IuPWABXorj5Jvwx1GX9ts6m+lL40sSEw9S+l5lPquQ+C8
+	 9Z1T6jQ3Tbm6WSzIoTWeObG4p66NjRMbLqk5tYMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 367/393] misc: pci_endpoint_test: Fix irq_type to convey the correct type
-Date: Wed, 23 Apr 2025 16:44:23 +0200
-Message-ID: <20250423142658.499399619@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 276/291] nvmet-fc: Remove unused functions
+Date: Wed, 23 Apr 2025 16:44:25 +0200
+Message-ID: <20250423142635.707619635@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
-References: <20250423142643.246005366@linuxfoundation.org>
+In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
+References: <20250423142624.409452181@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
+commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c upstream.
 
-There are two variables that indicate the interrupt type to be used
-in the next test execution, "irq_type" as global and "test->irq_type".
+The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
+unutilized.
 
-The global is referenced from pci_endpoint_test_get_irq() to preserve
-the current type for ioctl(PCITEST_GET_IRQTYPE).
+Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
+transport"), which introduced these two functions, they have not been
+used at all in practice.
 
-The type set in this function isn't reflected in the global "irq_type",
-so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+Remove them to resolve the compiler warnings.
 
-As a result, the wrong type is displayed in old version of "pcitest"
-as follows:
+Fix follow errors with clang-19 when W=1e:
+  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
+    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+        | ^~~~~~~~~~~~~~~
+  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
+    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+        | ^~~~~~~~~~~~~~~
+  2 errors generated.
+  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
+  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
+  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
+  make[6]: *** Waiting for unfinished jobs....
 
-  - Result of running "pcitest -i 0"
-
-      SET IRQ TYPE TO LEGACY:         OKAY
-
-  - Result of running "pcitest -I"
-
-      GET IRQ TYPE:           MSI
-
-Whereas running the new version of "pcitest" in kselftest results in an
-error as follows:
-
-  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
-  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
-
-Fix this issue by propagating the current type to the global "irq_type".
-
-Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/target/fc.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -711,6 +711,7 @@ static bool pci_endpoint_test_set_irq(st
- 	if (!pci_endpoint_test_request_irq(test))
- 		goto err;
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -173,20 +173,6 @@ struct nvmet_fc_tgt_assoc {
+ 	struct rcu_head			rcu;
+ };
  
-+	irq_type = test->irq_type;
- 	return true;
- 
- err:
+-
+-static inline int
+-nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
+-{
+-	return (iodptr - iodptr->tgtport->iod);
+-}
+-
+-static inline int
+-nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
+-{
+-	return (fodptr - fodptr->queue->fod);
+-}
+-
+-
+ /*
+  * Association and Connection IDs:
+  *
 
 
 
