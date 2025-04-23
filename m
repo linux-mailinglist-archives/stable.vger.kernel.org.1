@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-136200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B64A992E6
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:50:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB4E7A9938E
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 18:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2652F9A1F9C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:37:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D588B1BA547D
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8528D836;
-	Wed, 23 Apr 2025 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363A328EA43;
+	Wed, 23 Apr 2025 15:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qg1mPWQL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssM1IVtV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523E628D83C;
-	Wed, 23 Apr 2025 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94FB261573;
+	Wed, 23 Apr 2025 15:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421921; cv=none; b=t8iI9/SJIMG+jsKJ0ajrS6BBJk+g5Aa136E1F0Y4sI2iKndn8MoHRvyBVbYCea0R8DK0O9Um0y2NVnW66l4lm1653VTBH2HZKAfCz2F5LFczpWS/mtq3AHlraE/S8cnuYRbKbAsBOD1whEVyZqQFOARHEKap7i1AZRa8EaqFMCI=
+	t=1745422186; cv=none; b=BmQ/ww6RAweiB78bilP/dkM9FuGa/TNW0bfvAiS4YZhGhPxga3Xmi/y4SqC0lHEeMKnHw9NJ1lJVuvrgyilzjqA7G1prNqm6xUdtOb60Jxh+Yg8e2eMq3ItKaZbIXnGP2ndTw9IPCjfrGyvzGAyweg0g6UNukq610VE4Dmc+sP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421921; c=relaxed/simple;
-	bh=fkM7vKgMdKUPyJWOxcfuI0x06B0MhDm6W9RWsXc9MNY=;
+	s=arc-20240116; t=1745422186; c=relaxed/simple;
+	bh=8PZ5T85UIjubX7osB0/WXpP/PrQH+ym6kTYt33YFw/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5Up5712ejoWAoKgZgLfAr3lTh29jO+M2DHvjWTTBt4Zf2HTTflMfD5nBfVAMrwFWS+CkeCHWs6nUhxqEgp50D85+fwLJIVOpp0oZw4ISl8SYXLhKqqjt4Mnc0MhJlJK5ErjEDc1sbon6/rUX4qoK2aiOnyDaR/pODPYvU/iv0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qg1mPWQL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA5CC4CEE2;
-	Wed, 23 Apr 2025 15:25:20 +0000 (UTC)
+	 MIME-Version; b=og6ZC71JbG6XAwSN1YyXKhudNgHAY8D72OYDd1JfQfMSuWpShvGAHUcHlagl9L8oWhWMevY+GWBp1YjwbIu/qQIZxzyYbuYZiP+HhxnxQXL+DryXM/ooWuhylstifRgJf09FJKrvDzqstl0eWph1VuCpjXcKLgK6xw5Z5iDd7q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssM1IVtV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E10C4CEE2;
+	Wed, 23 Apr 2025 15:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745421921;
-	bh=fkM7vKgMdKUPyJWOxcfuI0x06B0MhDm6W9RWsXc9MNY=;
+	s=korg; t=1745422185;
+	bh=8PZ5T85UIjubX7osB0/WXpP/PrQH+ym6kTYt33YFw/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qg1mPWQLt4twOjsjQHvBKcHtTl98yrxRxzBij17gmOctjZq2FmIOqt05dlzNxanYc
-	 eB8t1kIU0gQFeDIm3Q07RQLs58Pa/KZ5x/rS1Fxxos0noxLfPUwslL8QY2cJ8/7ch2
-	 86zq7FUVawlyzt4BALgrkOBTZwSOQONimnIr7cCc=
+	b=ssM1IVtVwFXAuu1yZmPz5oiVErPlZfODijfZ8/d76oFEZZoCA/I8wSguyIyZSHJ7P
+	 O1zDaLANHu8lnD5UDT9rbCTjTkOJIIRwePoDEFGn97UrjyOUcFXhEkv78bslmuy57z
+	 NkoAi2853/b+h4PU1yD9z9/1gO+/ZhsZKYUccKt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cal Peake <cp@absolutedigital.net>,
-	Athul Krishna <athul.krishna.kr@protonmail.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kevin Tian <kevin.tian@intel.com>
-Subject: [PATCH 6.1 199/291] Revert "PCI: Avoid reset when disabled via sysfs"
-Date: Wed, 23 Apr 2025 16:43:08 +0200
-Message-ID: <20250423142632.516061808@linuxfoundation.org>
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 293/393] net: ethernet: mtk_eth_soc: correct the max weight of the queue limit for 100Mbps
+Date: Wed, 23 Apr 2025 16:43:09 +0200
+Message-ID: <20250423142655.442246408@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Williamson <alex.williamson@redhat.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-commit bc0b828ef6e561081ebc4c758d0c4d166bb9829c upstream.
+[ Upstream commit 6b02eb372c6776c9abb8bc81cf63f96039c24664 ]
 
-This reverts commit 479380efe1625e251008d24b2810283db60d6fcd.
+Without this patch, the maximum weight of the queue limit will be
+incorrect when linked at 100Mbps due to an apparent typo.
 
-The reset_method attribute on a PCI device is only intended to manage the
-availability of function scoped resets for a device.  It was never intended
-to restrict resets targeting the bus or slot.
-
-In introducing a restriction that each device must support function level
-reset by testing pci_reset_supported(), we essentially create a catch-22,
-that a device must have a function scope reset in order to support bus/slot
-reset, when we use bus/slot reset to effect a reset of a device that does
-not support a function scoped reset, especially multi-function devices.
-
-This breaks the majority of uses cases where vfio-pci uses bus/slot resets
-to manage multifunction devices that do not support function scoped resets.
-
-Fixes: 479380efe162 ("PCI: Avoid reset when disabled via sysfs")
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/808e1111-27b7-f35b-6d5c-5b275e73677b@absolutedigital.net
-Reported-by: Athul Krishna <athul.krishna.kr@protonmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220010
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250414211828.3530741-1-alex.williamson@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f63959c7eec31 ("net: ethernet: mtk_eth_soc: implement multi-queue support for per-port queues")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/74111ba0bdb13743313999ed467ce564e8189006.1744764277.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |    4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5578,8 +5578,6 @@ static bool pci_bus_resetable(struct pci
- 		return false;
- 
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		if (!pci_reset_supported(dev))
--			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
- 			return false;
-@@ -5656,8 +5654,6 @@ static bool pci_slot_resetable(struct pc
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		if (!pci_reset_supported(dev))
--			return false;
- 		if (dev->dev_flags & PCI_DEV_FLAGS_NO_BUS_RESET ||
- 		    (dev->subordinate && !pci_bus_resetable(dev->subordinate)))
- 			return false;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index bdc424123ee6c..a22a5bdc7ce62 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -724,7 +724,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 		case SPEED_100:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 103) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3);
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 3) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
+ 			break;
+ 		case SPEED_1000:
+@@ -747,7 +747,7 @@ static void mtk_set_queue_speed(struct mtk_eth *eth, unsigned int idx,
+ 		case SPEED_100:
+ 			val |= MTK_QTX_SCH_MAX_RATE_EN |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_MAN, 1) |
+-			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5);
++			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_EXP, 5) |
+ 			       FIELD_PREP(MTK_QTX_SCH_MAX_RATE_WEIGHT, 1);
+ 			break;
+ 		case SPEED_1000:
+-- 
+2.39.5
+
 
 
 
