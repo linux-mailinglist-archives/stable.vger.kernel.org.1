@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-135577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-135816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261E1A98ED3
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:00:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5DDA9909A
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 17:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389A846069C
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 14:58:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9E3C1B856B4
+	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 15:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E18B281524;
-	Wed, 23 Apr 2025 14:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15A928936B;
+	Wed, 23 Apr 2025 15:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jn8qt/Mu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiwzdifF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFC2281376;
-	Wed, 23 Apr 2025 14:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DA7F288CAF;
+	Wed, 23 Apr 2025 15:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745420289; cv=none; b=aqDaFQGWbFa7wnWmz0faLbgc3NNlLJF4wp05VYeVf4z+ZLs03f88qhFL0sFAVHTdDD/aXWM/Kj57Z3N9+rT7GjI7zbQhFVS7vOhBNSEOBxPAyJEKgMSw/OirQht9uwu+7KYJkTfI9IYwyByhr/wOvc0A3UKzj2y5ubLlcpoZrw8=
+	t=1745420918; cv=none; b=iwMPUEfAi8LDpMMJ0vqFF5huBEBsFghSknGhUvHO2Yo1YewzS3Jvho4rlzpV1zquWKSaHbtUg+xkioJus8Vy6/FmocTl0FRe9YSL1BKPF3d9HUNOHoRy7iEfUMjxkE4w16PEdRiFGnquig3OqhbvVQRIjZznzT0TLMoNPsZu7iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745420289; c=relaxed/simple;
-	bh=B3gMOjVve80gNTL9UEljEdLyuGmj1PKn2LgTzRve9Ik=;
+	s=arc-20240116; t=1745420918; c=relaxed/simple;
+	bh=6RyzVQrhhtbQ6GZe6jZmL3FJqh6hZGEIbecRJaMNPGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+4uLDRABySkAfyRauBtEvBfUcjLN/ZtFkXNK9NGLtnwLPLCyT23JPU1wiX4+CTCIIFBccNuN0nODj61KuZtle0DUmnPzGKr5qgmrOErblHLBFI6PoLbGp/0u5b98Qd8QdYy3kJxhV98MkGcWN0qKLaVjwwzEBqcz85D2EZ/vak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jn8qt/Mu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BC0C4CEE2;
-	Wed, 23 Apr 2025 14:58:09 +0000 (UTC)
+	 MIME-Version; b=dWduitFKljTV+4dQ7oJlYPlViKolVKUyKf/W03y+EnevOr4PJPtuqIjeEWlIYGOmu25kXz7m0ynHrcajYDt9Ai28grK6Fw7KQ4SEKd6bYYoClBcibkVxYKDAjagwTqqFRMUbimYifc+PSQDJqX/Wn3kOKLPlHzaWY3WXvPcHOfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiwzdifF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 321F8C4CEE2;
+	Wed, 23 Apr 2025 15:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745420289;
-	bh=B3gMOjVve80gNTL9UEljEdLyuGmj1PKn2LgTzRve9Ik=;
+	s=korg; t=1745420918;
+	bh=6RyzVQrhhtbQ6GZe6jZmL3FJqh6hZGEIbecRJaMNPGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jn8qt/MuIeByjn749jrMDT1cDnBVzsmuizhyklEmBhtfcWiOFYtVF5pEDPu426PC+
-	 aaQtxA6eq3+0KBe9Pq7e20MXzeCfJVjpY+Bjy7XekeGE9XWjND2yU8XG1a7iVebu0v
-	 /PtKa33UF1xyDsHZgTu2EJ4Z7BGXAIq81EbD29lY=
+	b=UiwzdifFdo2q6gwKu40IO2n7cNVEYsrLTny5TnxEg/V0O13mFr3cTQM9WkGFikixq
+	 v1RpaDp1YZJAjpBh7eEQ4sJa340Zg+TyT/wzFravt/WcGAYVAaKJn/WerzhBo+xjGo
+	 u3gklLnHj/2G++ZYSy7bHEqRevlNfhSkOZ1SW8E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	keenplify <keenplify@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/291] ASoC: amd: Add DMI quirk for ACP6X mic support
+	stable@kernel.org,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 127/393] xenfs/xensyms: respect hypervisors "next" indication
 Date: Wed, 23 Apr 2025 16:40:23 +0200
-Message-ID: <20250423142625.786195034@linuxfoundation.org>
+Message-ID: <20250423142648.604756239@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250423142624.409452181@linuxfoundation.org>
-References: <20250423142624.409452181@linuxfoundation.org>
+In-Reply-To: <20250423142643.246005366@linuxfoundation.org>
+References: <20250423142643.246005366@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: keenplify <keenplify@gmail.com>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 309b367eafc8e162603cd29189da6db770411fea ]
+commit 5c4e79e29a9fe4ea132118ac40c2bc97cfe23077 upstream.
 
-Some AMD laptops with ACP6X do not expose the DMIC properly on Linux.
-Adding a DMI quirk enables mic functionality.
+The interface specifies the symnum field as an input and output; the
+hypervisor sets it to the next sequential symbol's index. xensyms_next()
+incrementing the position explicitly (and xensyms_next_sym()
+decrementing it to "rewind") is only correct as long as the sequence of
+symbol indexes is non-sparse. Use the hypervisor-supplied value instead
+to update the position in xensyms_next(), and use the saved incoming
+index in xensyms_next_sym().
 
-Similar to Bugzilla #218402, this issue affects multiple users.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219853
-Signed-off-by: keenplify <keenplify@gmail.com>
-Link: https://patch.msgid.link/20250315111617.12194-1-keenplify@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: a11f4f0a4e18 ("xen: xensyms support")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <15d5e7fa-ec5d-422f-9319-d28bed916349@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/xen/xenfs/xensyms.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 77ea8a6c2d6d9..1f94269e121af 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -479,6 +479,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "pang13"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
-+		}
-+	},
- 	{}
- };
+--- a/drivers/xen/xenfs/xensyms.c
++++ b/drivers/xen/xenfs/xensyms.c
+@@ -48,7 +48,7 @@ static int xensyms_next_sym(struct xensy
+ 			return -ENOMEM;
  
--- 
-2.39.5
-
+ 		set_xen_guest_handle(symdata->name, xs->name);
+-		symdata->symnum--; /* Rewind */
++		symdata->symnum = symnum; /* Rewind */
+ 
+ 		ret = HYPERVISOR_platform_op(&xs->op);
+ 		if (ret < 0)
+@@ -78,7 +78,7 @@ static void *xensyms_next(struct seq_fil
+ {
+ 	struct xensyms *xs = m->private;
+ 
+-	xs->op.u.symdata.symnum = ++(*pos);
++	*pos = xs->op.u.symdata.symnum;
+ 
+ 	if (xensyms_next_sym(xs))
+ 		return NULL;
 
 
 
