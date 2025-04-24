@@ -1,138 +1,154 @@
-Return-Path: <stable+bounces-136591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69A0DA9AF83
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 15:43:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCA8A9AF9B
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 15:47:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FC9E4649DA
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 13:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 329DD9A4456
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 13:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5677C1A0B0E;
-	Thu, 24 Apr 2025 13:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E26B18E34A;
+	Thu, 24 Apr 2025 13:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpFe0eR3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cQqSZRys"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14D2189919;
-	Thu, 24 Apr 2025 13:41:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0870158858;
+	Thu, 24 Apr 2025 13:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745502085; cv=none; b=tUACv1WdjKX8iZOVw+a1zHL9wMT9FJkj5lzCPMJra02DmzEks23XbTqh0nV1KliNKs8ldwIy2PX/hRaR5Rj3o920fIxpa3cVfG3RsSFeCQf4dnsmt9jd0g6iESOPL692fKOt+9GVLBwPGGEVSJ6fqHxZdlNcqNYJCkmCII4Dk3g=
+	t=1745502467; cv=none; b=OwPRw6bINabIPSTLRfqrHB1GHltPSOUFARdnBbhbBELDFXmrYZUujmNMWr3I6YZdboezEXrBA+Dqw21Ts8VHxe6fV9eLufDJ3n4raDfE3P03I4G7suiYfjqkrLW4CfD1kfcgaaNQWGYnarjmK5WWRh1eV5sAkIVSd0bG5mUBjDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745502085; c=relaxed/simple;
-	bh=bdQNYTaUzzRiAQCmfYBaszlqWTTCoAZXMgPfghYxtTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHLDwjp0K3UVRgDMxCj1HtI2OQfflKfTOt8SaV8JHN4Ob5Zf5LLn73+k/4MubJvrtSBc7m1eFxwGM09QzFYDdRpK2zTTO5wVuvtNnMSm4KUtZPtNReB+PK04ije7raMbqch+ysNRhQSylL6cs4B5DKu8kzvatIyUUa/CFFzfoNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpFe0eR3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA10EC4CEE8;
-	Thu, 24 Apr 2025 13:41:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745502084;
-	bh=bdQNYTaUzzRiAQCmfYBaszlqWTTCoAZXMgPfghYxtTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KpFe0eR3pfCo+R4TmueP5vPRf9uXEUXBWEsFZgINejfzgcE6wDG3dNxaUjI2Dkfxe
-	 8TYZ8UrBgLEe5sQC5hbWpTVlYm5aqi2i4cAePTXQdsomwCMqkxaPCM/Syg3Ax8LWNq
-	 nUW1Mpos8LeVuuKOj5Q6K3hnsCldn51rYk56uv14=
-Date: Thu, 24 Apr 2025 15:41:22 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
-	Netdev <netdev@vger.kernel.org>,
-	clang-built-linux <llvm@lists.linux.dev>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 6.1 000/291] 6.1.135-rc1 review
-Message-ID: <2025042443-ibuprofen-scavenger-c4df@gregkh>
-References: <20250423142624.409452181@linuxfoundation.org>
- <CA+G9fYu+FEZ-3ye30Hk2sk1+LFsw7iO5AHueUa9H1Ub=JO-k2g@mail.gmail.com>
+	s=arc-20240116; t=1745502467; c=relaxed/simple;
+	bh=ZPdaq82mG+JRpwl8l1yKHK/Uc2NMfolvwuRLY9459r8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DXHndqCd1wRVkKwJ3AM3qjfthnj2otNPdIBh8p3u0q9zMwSz+jC8S+/YQ5CiSkyXyY92CCnh+qR2pmGQoaXEsz63tzha65dYBbzjDjsK0lLzCQlYi3tWji+m+f5L1Y/DoubJqYdi+ENt0ZlTMxxJ5WZTqnXegjAxX3NMwypTiOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cQqSZRys; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745502466; x=1777038466;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZPdaq82mG+JRpwl8l1yKHK/Uc2NMfolvwuRLY9459r8=;
+  b=cQqSZRysIUliate2XS55Ea0zlQy4OM33WoiwFLHMpflUEweUawcrMDSZ
+   TAOv6KqTzLmIK7G5zrUt5wbhc5VdEStWMPTJUQ0m9EMjCapqfzk8DlbFf
+   zN59+q9N+nGu8AWGtc0LQQjas9TJjeRVvaE6tdr2n0Qt0MmCK9tHzUCY9
+   Zte8x+SOSmbl+xmM/r78fJrjTL2c2L0vOel/fNdIBUWXDK7hZbf0cu/xx
+   R7nGFuSRsCLvR4MNegiLCmck3z3xUbNeGnd76i5ZvTg8I3c+wx1ZyRI1j
+   M/wP10ZAIvFlm3huZBy2gH43hTJOtBX62d38rb/dvpJPtLTi74JrY5cvY
+   A==;
+X-CSE-ConnectionGUID: pulsRbC4QQyZLPACZcqicw==
+X-CSE-MsgGUID: vChKJFoFR+u0GYOL9q3oAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58508196"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="58508196"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 06:47:44 -0700
+X-CSE-ConnectionGUID: B3bl+cM3SfCd8QF0CBMMlQ==
+X-CSE-MsgGUID: +/T9vHjtQbKiDTGombv6NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="137718958"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by fmviesa004.fm.intel.com with ESMTP; 24 Apr 2025 06:47:44 -0700
+From: kan.liang@linux.intel.com
+To: peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	irogers@google.com,
+	linux-kernel@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V2 1/5] perf/x86/intel: Only check the group flag for X86 leader
+Date: Thu, 24 Apr 2025 06:47:14 -0700
+Message-Id: <20250424134718.311934-2-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20250424134718.311934-1-kan.liang@linux.intel.com>
+References: <20250424134718.311934-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYu+FEZ-3ye30Hk2sk1+LFsw7iO5AHueUa9H1Ub=JO-k2g@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 24, 2025 at 07:01:02PM +0530, Naresh Kamboju wrote:
-> On Wed, 23 Apr 2025 at 20:16, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.1.135 release.
-> > There are 291 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Fri, 25 Apr 2025 14:25:27 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.135-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> Regressions on arm, riscv and x86_64 with following kernel configs with
-> clang-20 and clang-nightly toolchains on stable-rc 6.1.135-rc1.
-> 
-> Build regressions:
-> * arm, build
->   - clang-20-allmodconfig
-> 
-> * i386, build
->   - clang-nightly-lkftconfig-kselftest
-> 
-> * riscv, build
->   - clang-20-allmodconfig
-> 
-> * x86_64, build
->   - clang-20-allmodconfig
->   - clang-nightly-lkftconfig-kselftest
-> 
-> Regression Analysis:
->  - New regression? Yes
->  - Reproducibility? Yes
-> 
-> Build regression: arm allmodconfig variable 'is_redirect' is used
-> uninitialized whenever 'if' condition is true
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> ## Build error:
-> net/sched/act_mirred.c:265:6: error: variable 'is_redirect' is used
-> uninitialized whenever 'if' condition is true
-> [-Werror,-Wsometimes-uninitialized]
->   265 |         if (unlikely(!(dev->flags & IFF_UP)) ||
-> !netif_carrier_ok(dev)) {
->       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+From: Kan Liang <kan.liang@linux.intel.com>
 
-Odd this isn't showing up in newer releases, as this is an old commit
-and nothing has changed in this file since then (it showed up in 6.8.)
+A warning in intel_pmu_lbr_counters_reorder() may be triggered by below
+perf command.
 
-Is there some follow-up commit somewhere that I'm missing that resolved
-this issue?
+perf record -e "{cpu-clock,cycles/call-graph="lbr"/}" -- sleep 1
 
-thanks,
+It's because the group is mistakenly treated as a branch counter group.
 
-greg k-h
+The hw.flags of the leader are used to determine whether a group is a
+branch counters group. However, the hw.flags is only available for a
+hardware event. The field to store the flags is a union type. For a
+software event, it's a hrtimer. The corresponding bit may be set if the
+leader is a software event.
+
+For a branch counter group and other groups that have a group flag
+(e.g., topdown, PEBS counters snapshotting, and ACR), the leader must
+be a X86 event. Check the X86 event before checking the flag.
+The patch only fixes the issue for the branch counter group.
+The following patch will fix the other groups.
+
+There may be an alternative way to fix the issue by moving the hw.flags
+out of the union type. It should work for now. But it's still possible
+that the flags will be used by other types of events later. As long as
+that type of event is used as a leader, a similar issue will be
+triggered. So the alternative way is dropped.
+
+Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
+Reported-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Closes: https://lore.kernel.org/lkml/20250412091423.1839809-1-luogengkun@huaweicloud.com/
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ arch/x86/events/perf_event.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
+index 902bc42a6cfe..4fc61a09c30e 100644
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -110,9 +110,16 @@ static inline bool is_topdown_event(struct perf_event *event)
+ 	return is_metric_event(event) || is_slots_event(event);
+ }
+ 
++int is_x86_event(struct perf_event *event);
++
++static inline bool check_leader_group(struct perf_event *leader, int flags)
++{
++	return is_x86_event(leader) ? !!(leader->hw.flags & flags) : false;
++}
++
+ static inline bool is_branch_counters_group(struct perf_event *event)
+ {
+-	return event->group_leader->hw.flags & PERF_X86_EVENT_BRANCH_COUNTERS;
++	return check_leader_group(event->group_leader, PERF_X86_EVENT_PEBS_CNTR);
+ }
+ 
+ static inline bool is_pebs_counter_event_group(struct perf_event *event)
+@@ -1129,7 +1136,6 @@ static struct perf_pmu_format_hybrid_attr format_attr_hybrid_##_name = {\
+ 	.pmu_type	= _pmu,						\
+ }
+ 
+-int is_x86_event(struct perf_event *event);
+ struct pmu *x86_get_pmu(unsigned int cpu);
+ extern struct x86_pmu x86_pmu __read_mostly;
+ 
+-- 
+2.38.1
+
 
