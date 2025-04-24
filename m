@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-136554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7EAA9AA5A
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 12:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDBBA9AAA8
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 12:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D46B27B45C7
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 10:31:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF2587B7E89
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 10:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D022528F0;
-	Thu, 24 Apr 2025 10:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C83226D0B;
+	Thu, 24 Apr 2025 10:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw4ACHVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5jAz33o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1780B2522B5;
-	Thu, 24 Apr 2025 10:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC2A221578;
+	Thu, 24 Apr 2025 10:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745490406; cv=none; b=Tsm3KtFwGmuvCXynnflK3Uj2AZfPrh2DVY3kRiWkCxCw5udnDLN7rV8s2InkLGUjiXIONfYGVgKwdFvAnuiraWXyn93DlqGLlFD7ukMf68G6zJJqk5jAucsQto/yIKBu0CpnZC/5qT906v/bZL8kvQ+GN8XqHjuU57tFpzOFaaI=
+	t=1745490579; cv=none; b=lXbTEtU2wd8CWJrUUUpW4IuQYXfriRJwtFGcnTFNsdCs2VsQeyum0grvIWSsXhzvSmK9JKDXJkgsza+1WmUTICGIpc5wMYB9AOtyTzdzSKJKPYph4xsqjex11VX/kmJ2kdWjFUJqcqqRoe/gES8SL2ihzwBcEkCTRL9OwSHmOiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745490406; c=relaxed/simple;
-	bh=ghFZ18sDAQK79Sk1EjjWTkiCDOqMm17tDKKZSop6maU=;
+	s=arc-20240116; t=1745490579; c=relaxed/simple;
+	bh=GpPAam8sx8Fwhc1TYFoXYv/OWCx+kkItaCIPFmPWgUI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mSTFKDKNLoFmXNJd87Xqoq2fsDefWInrT1DS5+GDiEIF/uTMljc1ERQJ42pE/DI0FwVXcKtemNYizTFmehhoFMv+RSdLHzZnDGyY57aehyAhnqhzpg37mozEp2ouq4nZZosgklqS8KHJ4N3TUJ67FaALIYN3Jp8dFP01vN8T4wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw4ACHVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A04C4CEE4;
-	Thu, 24 Apr 2025 10:26:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QmvX08qpZ8HUokXtu9cBQUIN/AnVmnzBsUcnz1lCHczi0I0E50RkZOQYt9jaZ/PxD83i43yBQGlYnH42jFeBwwY/h65a+DZxMgGdVlqM4JCDF/aNAFAYVgCNs/HZGpHILPCjTThmKX2oZ9CR6Vh8cu76y9OAgSTceHVOJR5tCtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5jAz33o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F1DC4CEE3;
+	Thu, 24 Apr 2025 10:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745490405;
-	bh=ghFZ18sDAQK79Sk1EjjWTkiCDOqMm17tDKKZSop6maU=;
+	s=korg; t=1745490578;
+	bh=GpPAam8sx8Fwhc1TYFoXYv/OWCx+kkItaCIPFmPWgUI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Mw4ACHVnvd4kAS2/1CNB74VCs7txTbRXioRFOgvybQYdMtUBnomkjDDaFRmjfbZ8X
-	 OKr9qPrND0hvMSufaj6RxJTL8x/Hw2tII8Tb6DSg/GFF+AMESDwlHHz9W05CaTLfLo
-	 gKWWjDukRTZuY6y1L6WkhwRR+gs3uZtNhS9NcxK8=
-Date: Thu, 24 Apr 2025 12:26:42 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Yu Kuai <yukuai1@huaweicloud.com>, sashal@kernel.org,
-	stable@vger.kernel.org, song@kernel.org, linux-raid@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yukuai3@huawei.com,
-	yi.zhang@huawei.com, yangerkun@huawei.com, johnny.chenyi@huawei.com
-Subject: Re: [PATCH 6.1 0/2] md: fix mddev uaf while iterating all_mddevs list
-Message-ID: <2025042436-iodize-dazzler-e7b2@gregkh>
-References: <20250419012303.85554-1-yukuai1@huaweicloud.com>
- <aAkt8WLN1Gb9snv-@eldamar.lan>
- <2025042418-come-vacant-ec55@gregkh>
- <aAoFRJ_RIq6pdyn9@eldamar.lan>
+	b=v5jAz33oInu7T5Dt4ZrRsMq1KN38OkWmdEAac4ZbpBM21SXL5jFpFPVSUhuWR9gP1
+	 Ir7RsmAntZGIUgS7olHTdo5pY8o0KxKJ2i8xCFECw0T/04K7dEgrcqgPp/kRdj76sz
+	 YUkc610cAOeyja9oWyq20uZ3ujio7aV6QSGxCn/o=
+Date: Thu, 24 Apr 2025 12:29:36 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Thorsten Leemhuis <linux@leemhuis.info>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Donald Hunter <donald.hunter@gmail.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 065/241] tools: ynl-gen: individually free previous
+ values on double set
+Message-ID: <2025042428-haziness-obstruct-5f9b@gregkh>
+References: <20250423142620.525425242@linuxfoundation.org>
+ <20250423142623.257470479@linuxfoundation.org>
+ <d478c0b9-2846-496d-b345-429d98f93d38@leemhuis.info>
+ <20250423094031.16664cdd@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,51 +60,22 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aAoFRJ_RIq6pdyn9@eldamar.lan>
+In-Reply-To: <20250423094031.16664cdd@kernel.org>
 
-On Thu, Apr 24, 2025 at 11:32:52AM +0200, Salvatore Bonaccorso wrote:
-> Hi Greg,
+On Wed, Apr 23, 2025 at 09:40:31AM -0700, Jakub Kicinski wrote:
+> On Wed, 23 Apr 2025 18:27:46 +0200 Thorsten Leemhuis wrote:
+> > [note, to avoid confusion: the problem mentioned below is independent of
+> > an ynl problem I ran into with -next today:
+> > https://lore.kernel.org/all/59ba7a94-17b9-485f-aa6d-14e4f01a7a39@leemhuis.info/ ]
 > 
-> On Thu, Apr 24, 2025 at 08:40:41AM +0200, Greg KH wrote:
-> > On Wed, Apr 23, 2025 at 08:14:09PM +0200, Salvatore Bonaccorso wrote:
-> > > Hi Greg, Sasha, Yu,
-> > > 
-> > > On Sat, Apr 19, 2025 at 09:23:01AM +0800, Yu Kuai wrote:
-> > > > From: Yu Kuai <yukuai3@huawei.com>
-> > > > 
-> > > > Hi, Greg
-> > > > 
-> > > > This is the manual adaptation version for 6.1, for 6.6/6.12 commit
-> > > > 8542870237c3 ("md: fix mddev uaf while iterating all_mddevs list") can
-> > > > be applied cleanly, can you queue them as well?
-> > > > 
-> > > > Thanks!
-> > > > 
-> > > > Yu Kuai (2):
-> > > >   md: factor out a helper from mddev_put()
-> > > >   md: fix mddev uaf while iterating all_mddevs list
-> > > > 
-> > > >  drivers/md/md.c | 50 +++++++++++++++++++++++++++++--------------------
-> > > >  1 file changed, 30 insertions(+), 20 deletions(-)
-> > > 
-> > > I noticed that the change 8542870237c3 was queued for 6.6.y and 6.12.y
-> > > and is in the review now, but wonder should we do something more with
-> > > 6.1.y as this requires this series/manual adaption?
-> > > 
-> > > Or will it make for the next round of stable updates in 6.1.y? 
-> > > 
-> > > (or did it just felt through the cracks and it is actually fine that I
-> > > ping the thread on this question).
-> > 
-> > This fell through the cracks and yes, it is great that you pinged it.
-> > I'll queue it up for the next release, thanks!
+> Thanks for the report, these 4 need to be backported together:
 > 
-> Thank you! Very much appreciated! (People installing Debian will be
-> happy as it affects kernel under certiain circumstances, cf.
-> https://bugs.debian.org/1086175, https://bugs.debian.org/1089158, but
-> was longstanding already).
+> 57e7dedf2b8c tools: ynl-gen: make sure we validate subtype of array-nest
+> ce6cb8113c84 tools: ynl-gen: individually free previous values on double set
+> dfa464b4a603 tools: ynl-gen: move local vars after the opening bracket
+> 4d07bbf2d456 tools: ynl-gen: don't declare loop iterator in place
+> 
+> 
 
-Now queued up, thanks.
-
-greg k-h
+Great, all now dropped instead :)
 
