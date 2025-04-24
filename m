@@ -1,88 +1,76 @@
-Return-Path: <stable+bounces-136609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8302A9B428
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 18:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A1D9A9B43F
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 18:37:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E893BD901
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 16:31:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76F0A3BA20A
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 16:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1198428C5B9;
-	Thu, 24 Apr 2025 16:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858C6284688;
+	Thu, 24 Apr 2025 16:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rC2fYIsX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hVWrs69h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2F528BA9A
-	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 16:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7688E27F744;
+	Thu, 24 Apr 2025 16:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745512210; cv=none; b=nuL7SOUrYh81Dwv9OuDF7SENEGLeh9/6XApAJx3TrKeSsatXA15RpPaT6dv2MGtIN5QMJeyOvhxiXpNIuGBt13ff+XEslOkQqTXrcHrelR8UWG7Kp19WhFNWIEgKoFZ1MO1iMbm8RZ5Nz0Q/T+c84K3y+8p9fd+DuOnCAenBzR0=
+	t=1745512477; cv=none; b=K3TDwJzSZt60mBD2f20Fl68W4sDNfwDrR3ZcGQ1Z5oYfxIyrROL+up09tfC9wm/Pg3EP09h241VGD2pTJVzv8bZAQTLqLfwz92MzcWusaIwvBWZVMQk2e6tsf7KOvh64PMPwAeVNh3HgUbQbiQKkCb+dhHw7SeCuG0UzytJxbiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745512210; c=relaxed/simple;
-	bh=1WAOjR7sl/MSpDZ3qT3vAy9GwH/ON/SJk1Bx7Fy/GLE=;
+	s=arc-20240116; t=1745512477; c=relaxed/simple;
+	bh=/2+v4MrrIX1tru3YRH21EcKXQRarr69zuxlHYYHXpdg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ooaBMebqXW/OcY/1xoUVXjOaEbjzyVch6K7M6lEkc9F5QABo/15vULI4oBwJU59SjFYKi7VFxqW9DlRzcRLNQtN96VLB1PZHfJp98cF+dn3T/irAWeNolaGBlmTgZDVaYNI3J/P9xSHDpImf500SZ8cggjTmQ5fYuiodhxgtqBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rC2fYIsX; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac6ed4ab410so205369366b.1
-        for <stable@vger.kernel.org>; Thu, 24 Apr 2025 09:30:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745512206; x=1746117006; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jH7CEZXVUMDd3gCXVEyO4RBZjepJpKTpn2k/QUd2tFI=;
-        b=rC2fYIsXym0EvW0jtJpJhf83Ly8jYkEH8YKR4fBFgXvFxdgbmhoRQrBaw9xPo5FufS
-         4Yt3CKjUfWDi0M0V3mugP3C2dqp6lGzCS7/qEq7c7pcfhS2uELhkvQrzFupjGEYpRQo6
-         2zQscg/61PCfLADPxRT3gdm66KiRgKjJdd9D9HuD6DP8/yVNZwYImz67ODwwxGJeD95p
-         S5uj8tALG7R6xW++MHCVN7y7uv9I+hcL8XGVNC3N8SQ16xXzRuXAYUCEp5XVfRWCxf3n
-         KoXTyZvT638lp+Xw+L3ST6MdTIAyWdOKYDlxGNEMmRxBtHXDrTCN/QemwPQj7W2VkQrC
-         Xa2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745512206; x=1746117006;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jH7CEZXVUMDd3gCXVEyO4RBZjepJpKTpn2k/QUd2tFI=;
-        b=WQ5nEYdwDUQTHzmSul2P7Cs/CNUKeuCPAUkMM8z+uFFJ0G600Cn5Q5euRauQjytGMe
-         pp0fQx/eZfQbWd+SH2UiHQkq86Slo7rfG4CTGGzqISrNG/q6maCQAfSPl64+X2HWgC48
-         L50X4nvqdG6bSR58ctiCV8UoWUPBfzi/+Oh6bEl78eEo05XQkLIZPtUO2rNz0jYfvHR4
-         8eAnDiOSER44kcmilfdhrfV1txak2INxcZduoR+tFJSh0CpEKSrNl0aLAhuoBykBu7Vz
-         m5zfNM7DZZMXbNuvoJA3FM5Ply2WG2zfKhr0LNUpgl0lhkyWOuQHwi9HZLdGdA1z//rD
-         xaTA==
-X-Gm-Message-State: AOJu0YzqzyZvwaBJj5fkn7dz+9+wtmRfIc4A9vsFvY+IPReYheNKl4LT
-	rTz7ur/PNotUZ748L5XuMboEoE84JuFPKVNpUZh8BBk6uJY1RoDpjemuHBkOms0=
-X-Gm-Gg: ASbGncvftWqk31wFV+Ae2xhPtc4Qp/N1gYxgpUv/aZN435hr7iTrcv+LDRIBWuCXmic
-	ku2mUxWVRJtGfJ55p6VKvZ4JArnepOPuyHRFaGGYT5L4/TMEksWONCtUpCfweXSE9rTOYURh2qj
-	t3iFXqv+WmjFgYfpsfX8PCC8dkTtlEBdPhJAWRdE4fV3j0oz+4+yRwagTdiStKn3RDUJ5LbWXlf
-	TrmY2XVSHWzjEJIDmj2e46wVfiZ+z5fHO6s1LT9pnS+8llBL3RPFDLbDVeNvWByS/F7CgKtlO7E
-	VXsHcYunP4lqp1A49UudiAcWF5+f+4vjQzWR2oUYUJHCcxi05A==
-X-Google-Smtp-Source: AGHT+IFONF/lCYBw6vekNr7fjobWwHIWN+irjsqyTEIDQ01dOF1plQA90/ozblEmrDjY+pDgvtDc6Q==
-X-Received: by 2002:a17:907:2dab:b0:acb:85f2:f032 with SMTP id a640c23a62f3a-ace6b39eb97mr24992766b.13.1745512205811;
-        Thu, 24 Apr 2025 09:30:05 -0700 (PDT)
-Received: from linaro.org ([2a02:2454:ff21:ef30:d677:e5de:3a6:836])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace59830efdsm130857066b.32.2025.04.24.09.30.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 09:30:05 -0700 (PDT)
-Date: Thu, 24 Apr 2025 18:30:01 +0200
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: Re: [PATCH 6.14 130/241] cpufreq: Avoid using inconsistent
- policy->min and policy->max
-Message-ID: <aApnCaypsl1VWIfo@linaro.org>
-References: <20250423142620.525425242@linuxfoundation.org>
- <20250423142625.881627603@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JBaGbcB1L6jATEAkkxqbLbbq2c4BGyunTYRNCjIE5bXdOG/KcUeruQHrX1rw52z7a5Zt3u++U4GLtYCQWAm6SiHL4RUqeCsc8r/jWJApwIJIVjSenTG2y1ZCTaAUHgx+kjuOqqwPZ6loh9Jc2c6obLk3haS2eDdC1krvvx7r/d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hVWrs69h; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745512474; x=1777048474;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/2+v4MrrIX1tru3YRH21EcKXQRarr69zuxlHYYHXpdg=;
+  b=hVWrs69hUF5iUmu//q/dWbz8PiOHlomNt7M/G2aT5ekGdbj6xivahQhk
+   7vbFEf6xA3IM7Rc1qehxa8JRXuSnWV1hyOno1UYug2vU2kvb06zFNxtxZ
+   9Tf9c7qTOIXJ9u3Ejwdu4UjJTCw/dJ/mxh4qArvMXurP4GePqg+TwPpmA
+   kIMaRWVqTfqga76SuLvKwYOyzP6DMjjF4DwbuyB5UxzZk0aHIqbINeoOd
+   7G1kOV0XoGP06Nn17OpofWHb9WAHeYVVAWZzRM4oeZ3Xq2qLs2FuvLvMj
+   vSSs7dxi+X/meBXJlyES2DZALYCACKw82+rCOAEVtCnzU7byYfC1xZAqc
+   A==;
+X-CSE-ConnectionGUID: H0IhJmdLQ1aoQFWf+td8og==
+X-CSE-MsgGUID: lwNAOs58Rnm1sj6XPSHWxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="49815010"
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="49815010"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 09:34:34 -0700
+X-CSE-ConnectionGUID: riyFq7+hRgmuldfE9BonoQ==
+X-CSE-MsgGUID: 5sAVUh6aTpOxttr8Kgxhsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
+   d="scan'208";a="132657353"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 24 Apr 2025 09:34:30 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id 9D4FC1AC; Thu, 24 Apr 2025 19:34:29 +0300 (EEST)
+Date: Thu, 24 Apr 2025 19:34:29 +0300
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Cc: cl@linux.com, rientjes@google.com, vbabka@suse.cz,
+	roman.gushchin@linux.dev, harry.yoo@oracle.com, surenb@google.com,
+	pasha.tatashin@soleen.com, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	quic_tingweiz@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm, slab: clean up slab->obj_exts always
+Message-ID: <aApoFXmDE-k2KFFV@black.fi.intel.com>
+References: <20250421075232.2165527-1-quic_zhenhuah@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,56 +79,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250423142625.881627603@linuxfoundation.org>
+In-Reply-To: <20250421075232.2165527-1-quic_zhenhuah@quicinc.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Greg,
+On Mon, Apr 21, 2025 at 03:52:32PM +0800, Zhenhua Huang wrote:
+> When memory allocation profiling is disabled at runtime or due to an
+> error, shutdown_mem_profiling() is called: slab->obj_exts which
+> previously allocated remains.
+> It won't be cleared by unaccount_slab() because of
+> mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
+> should always be cleaned up in unaccount_slab() to avoid following error:
+> 
+> [...]BUG: Bad page state in process...
+> ..
+> [...]page dumped because: page still charged to cgroup
 
-On Wed, Apr 23, 2025 at 04:43:14PM +0200, Greg Kroah-Hartman wrote:
-> 6.14-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> 
-> commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
-> 
-> Since cpufreq_driver_resolve_freq() can run in parallel with
-> cpufreq_set_policy() and there is no synchronization between them,
-> the former may access policy->min and policy->max while the latter
-> is updating them and it may see intermediate values of them due
-> to the way the update is carried out.  Also the compiler is free
-> to apply any optimizations it wants both to the stores in
-> cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
-> which may result in additional inconsistencies.
-> 
-> To address this, use WRITE_ONCE() when updating policy->min and
-> policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
-> them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
-> in cpufreq_set_policy() to avoid storing intermediate values in
-> policy->min and policy->max with the help of the observation that
-> their new values are expected to be properly ordered upfront.
-> 
-> Also modify cpufreq_driver_resolve_freq() to take the possible reverse
-> ordering of policy->min and policy->max, which may happen depending on
-> the ordering of operations when this function and cpufreq_set_policy()
-> run concurrently, into account by always honoring the max when it
-> turns out to be less than the min (in case it comes from thermal
-> throttling or similar).
-> 
-> Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
-> Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-> Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Please, always compile test with `make W=1`. Since CONFIG_WERROR=y this
+effectively breaks the build with Clang.
 
-Please drop this patch from all stable queues for now. It is causing the
-CPU frequency to be stuck at minimum after temperature throttling.
-I reported this with more detail as reply to the original patch [1].
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Thanks,
-Stephan
 
-[1]: https://lore.kernel.org/linux-pm/aAplED3IA_J0eZN0@linaro.org/
 
