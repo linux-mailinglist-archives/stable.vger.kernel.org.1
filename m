@@ -1,96 +1,94 @@
-Return-Path: <stable+bounces-136490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0EBA99C8C
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 02:10:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BF8A99C9C
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 02:14:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13101940676
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 00:10:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93AA194091A
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 00:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFD42701A8;
-	Thu, 24 Apr 2025 00:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003C780B;
+	Thu, 24 Apr 2025 00:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctKKuGrI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcm4O7yd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA871361;
-	Thu, 24 Apr 2025 00:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDF03FC2;
+	Thu, 24 Apr 2025 00:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745453397; cv=none; b=goUEcnApvb68YQTvFppbSUVoxY+QpE1aeRMizigaMsKBR3jfdw5DesNm6w0jcI1CKFPa0zCBCucwsCozbiMlBJYHCmPBCTsmlp8GsGY7SPGnKsCxOIgbG0YAIelQNwcTjJyexXXIPhVX8OHZ7DBmBMm64RmiCam2iHvXPdhcIc4=
+	t=1745453673; cv=none; b=r6NCrQS2xturA6yhg3zEglMkTr75HfOstHA7SKZ1krNL/a6Zx02FdLxqp3BwHfs8wNPdSIu0SoZ6o4eBeFG8DFKNefpqg/o9BKCPLeyAjZCDInv0gbpGfj193MEKQZEAxQ4SJk6bAQbt18SjbTaFIIgzhMl9GbAwTr4ub+psGPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745453397; c=relaxed/simple;
-	bh=mTmkH8qWCLHZGcbfpRW4Dg5HQwFy7i7bs6ZQ1w+1Jn4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NWOmNx4j+AD3thY47cV0rUFgExctN+4Cq68F/nPBePXRcSu7QYEN0OZtZKAHLnfrPN6RNaY9QLbDX4Jt1AYr0DCF4dIM3KHzUKqfqfT559jdIZfgKokAsE+8TSSCCmAD+We/DM4WSBDYSXCGRBP2yAxHyemuvMBVMIKN4hq40ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctKKuGrI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1283C4CEE2;
-	Thu, 24 Apr 2025 00:09:56 +0000 (UTC)
+	s=arc-20240116; t=1745453673; c=relaxed/simple;
+	bh=n0TSJLKak1tuBbaz0EWuvr3Cm4M4taXFEVBdU8emlyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kfT9dhHt0FeO5rTBpWhXuwiBHH+1sauLGu7MfdjmGl+mBa5IJ0qnWUK3l4KtOXfnNdkT75XhkmTV5VJjoi3KKVBDnBnEWPXSV/uGYJ04gsxlS61+ynLvxoN3Pey23ijfHxERfoo+dqevbjX5cWqFegb9PHwz7bONHHQNe2o3fqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcm4O7yd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EEFC4CEE2;
+	Thu, 24 Apr 2025 00:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745453396;
-	bh=mTmkH8qWCLHZGcbfpRW4Dg5HQwFy7i7bs6ZQ1w+1Jn4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ctKKuGrI4Q1bR10O81yZ9AhOT6YE7ouBx6SbAlqZdipVgcqXeOW3gWRGF1gIdfeDo
-	 aIYDB0H8xEH3hWa96WYCm+dj6ECQvq/uBxzw+aWl4egYN790Pf2BIxaLXXpq8vZyE2
-	 Su/3Mr1JWnggl0BKDOpqwuQRvR61Ot2Zb9AsGCmv4N66q1gp1ScGkj+05h+2MqvMtG
-	 g06wPWMASGqVAEht9kkhNmBj84uqmyEaTSMkuLum6lpyfmUdcXSr+z84dFFUtkcS0T
-	 wemFj2mevtzCS/vvG/jLCogcR+WDIOd5OyE98IDDOoEYfOvOksOlgL2qpleC0urT2O
-	 vvn+etnlLD5uA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C95380CED9;
-	Thu, 24 Apr 2025 00:10:36 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1745453673;
+	bh=n0TSJLKak1tuBbaz0EWuvr3Cm4M4taXFEVBdU8emlyc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rcm4O7ydQT4lc96jG+a4lIofuzg6LA5ARUz8yLVSWh1DgytbaWGmbD2lfndX/Yzz1
+	 +o8o4LmNud0AN+34Qujb6fIIhsO+I9km0YmXThIPxDwYL3bh07Am7UUWhG0QPwxBqn
+	 NYeOjeAByZbv9QwA9073SfP+uP1lAvQU+2fAssqJ7rYyC6T+anWn941YNYLWm2Vyrt
+	 M5r1zG/1uORp6m+wnCWMuinlXwOqwYC4NLOL8kaSJchy5crHl9rOt0cF75KLL7DEFN
+	 BeCCECYc4M4laPRGILZ+3ok7EqArrJreKCM8oCnspwrABvub4HWlPz7oqal2hjbbxi
+	 DUZXSsF8iN0LA==
+Date: Wed, 23 Apr 2025 17:14:31 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: netdev@vger.kernel.org, jeroendb@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ pkaligineedi@google.com, willemb@google.com, ziweixiao@google.com,
+ shailend@google.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] gve: Add adminq lock for creating and destroying
+ multiple queues
+Message-ID: <20250423171431.2cd8ca21@kernel.org>
+In-Reply-To: <20250417204323.3902669-1-hramamurthy@google.com>
+References: <20250417204323.3902669-1-hramamurthy@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] mptcp: pm: Defer freeing userspace pm entries
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174545343523.2807189.6550009726360059159.git-patchwork-notify@kernel.org>
-Date: Thu, 24 Apr 2025 00:10:35 +0000
-References: <20250421-net-mptcp-pm-defer-freeing-v1-0-e731dc6e86b9@kernel.org>
-In-Reply-To: <20250421-net-mptcp-pm-defer-freeing-v1-0-e731dc6e86b9@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, shuah@kernel.org, yangang@kylinos.cn,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Thu, 17 Apr 2025 20:43:23 +0000 Harshitha Ramamurthy wrote:
+> Also this patch cleans up the error handling code of
+> gve_adminq_destroy_tx_queue.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+>  static int gve_adminq_destroy_tx_queue(struct gve_priv *priv, u32 queue_index)
+>  {
+>  	union gve_adminq_command cmd;
+> -	int err;
+>  
+>  	memset(&cmd, 0, sizeof(cmd));
+>  	cmd.opcode = cpu_to_be32(GVE_ADMINQ_DESTROY_TX_QUEUE);
+> @@ -808,11 +820,7 @@ static int gve_adminq_destroy_tx_queue(struct gve_priv *priv, u32 queue_index)
+>  		.queue_id = cpu_to_be32(queue_index),
+>  	};
+>  
+> -	err = gve_adminq_issue_cmd(priv, &cmd);
+> -	if (err)
+> -		return err;
+> -
+> -	return 0;
+> +	return gve_adminq_issue_cmd(priv, &cmd);
+>  }
 
-On Mon, 21 Apr 2025 19:07:12 +0200 you wrote:
-> Here are two unrelated fixes for MPTCP:
-> 
-> - Patch 1: free userspace PM entry with RCU helpers. A fix for v6.14.
-> 
-> - Patch 2: avoid a warning when running diag.sh selftest. A fix for
->   v6.15-rc1.
-> 
-> [...]
+You mean this cleanup? That's not appropriate for a stable fix...
 
-Here is the summary with links:
-  - [net,1/2] mptcp: pm: Defer freeing of MPTCP userspace path manager entries
-    https://git.kernel.org/netdev/net/c/13b4ece33cf9
-  - [net,2/2] selftests: mptcp: diag: use mptcp_lib_get_info_value
-    https://git.kernel.org/netdev/net/c/ce72fea219c1
-
-You are awesome, thank you!
+Could you also explain which callers of this core are not already
+under rtnl_lock and/pr the netdev instance lock?
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
 
