@@ -1,78 +1,205 @@
-Return-Path: <stable+bounces-136638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002C2A9BB33
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:23:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46447A9BB57
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:31:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3753B55E9
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 23:22:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E1516D8B9
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 23:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F97227E96;
-	Thu, 24 Apr 2025 23:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229F5224AE9;
+	Thu, 24 Apr 2025 23:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/Y5hJ/C"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r57LybEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E63A93D
-	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 23:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FE01F463E;
+	Thu, 24 Apr 2025 23:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745536989; cv=none; b=UcirpnKBjxunLbLhTGHVY4D6/lDUrA7tU1GBmkVjJJvZuv5YX5TuKn8NjsrjH+sfhA1Auvng4r4sJzSFOEMeqiANfNuUhB+q/00COOO9QIGwmzmz0o0POFrlhFe7jC6BBk/yKo71SB+3u6umltfU/N7234xyL4ZcgDMhMRYpGhA=
+	t=1745537502; cv=none; b=upTYuizbHne7q0tUmNIBKfe+FJFz3Fv7RfAi5CJiF6xu0jhFY6azPcMe3qfKZolLi0hsnlgD6Dlrc+0bULaO7c4yNs5QsPCVVbupIcoz7TCLtypeNgV4d9/LMp5hPxxDffCs52605PByNeQaBWY0yri1VWYcfsrLCr7lZXUa0RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745536989; c=relaxed/simple;
-	bh=0Iy7kQ6GqbLNSoJcT1QLF1JX4VA7Xe43dLgSNUPVHdM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G9TqAP91CaBWMJZFDd6pcjzjkBGpp2DUbPEK9/P49dg2ApyMv8JhPrO8YO+MTRZ+KkDivvhaREywNMtSPWeBESWfKON+hHrtgtt+q7+HM0jN/LH9wheO2pYjHNnz/6U/4sYsT8wO6ODjFrJMNwbrWUL6Io5HD0DyPvLiPXFev9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/Y5hJ/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A34C4CEE3;
-	Thu, 24 Apr 2025 23:23:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745536988;
-	bh=0Iy7kQ6GqbLNSoJcT1QLF1JX4VA7Xe43dLgSNUPVHdM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/Y5hJ/CmqipkT6yvA/pbccKK2KkOz98wSXmDwIPyTOWTF15SZDjWcg4xLBiMAl6v
-	 Sxkdi66Z3iqMCNTWHL8auF43pF8DFvxbXBqH32GLFBdye6Ag4zbfW/nXFbLjHTcwXK
-	 j9mB49OYgKIQh+uwJNXWDrywWWHxo67Gv4Sozkls5rnCEjmjVCOKliPEuRYW2e3X0I
-	 eks0+guoGTVu6FMjeh0ahIxrflX6YtRp80z7jc96ZGhGqX86TEHilvpmFIcmuOnJeb
-	 8K2jlPnYQnSZBwImBCVatAG1Gf5TU10M8TQrXGY0FcLCxMJeBYP2+OnhlsYPCeEORo
-	 LEdaQVLyyhzew==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	bigeasy@linutronix.de
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable v6.1 v5.15] xdp: Reset bpf_redirect_info before running a xdp's BPF prog.
-Date: Thu, 24 Apr 2025 19:23:05 -0400
-Message-Id: <20250424173540-e119550828e3bb7e@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250424130314.C9jOS1c5@linutronix.de>
-References: 
+	s=arc-20240116; t=1745537502; c=relaxed/simple;
+	bh=F2DfGTNOpazmkXxfgSOS3NQXZG4kg09MJr4FMkVqhpA=;
+	h=Date:To:From:Subject:Message-Id; b=j5dyNDzCuclD53q+ZUUSt42eGhc8Qy5Z/U8BWtadE6MBRVGfjCf39WArSyEyc1aWZ4PoMubSv+TFdPMwU6ptAEGKR3kqzd9sMarkzIrIQrT3SCjpRA8J6OGb2w7U3GJXM719PBnCM1OpBGuLpbYzEuV2uzSL6cs5gTuCnMbaGS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r57LybEC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF1EC4CEE3;
+	Thu, 24 Apr 2025 23:31:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745537500;
+	bh=F2DfGTNOpazmkXxfgSOS3NQXZG4kg09MJr4FMkVqhpA=;
+	h=Date:To:From:Subject:From;
+	b=r57LybECudiFKsDZmFfLkAAk3IiML3wi1zC7PxAqeQEzMQBw8IzDyrQqPSpTXqzMb
+	 yJoC3dki24KcMNZXgQ39ibH7eP+8Sg6oZhhag5maa2vEO8bw5hNJyzWgbkCoYfboF+
+	 uW+hTIVL5JBbpV+pYwPcUBDsW9GoNLfJKyaXhUYg=
+Date: Thu, 24 Apr 2025 16:31:39 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,axelrasmussen@google.com,aarcange@redhat.com,peterx@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250424233139.DEF1EC4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
 
-Hi,
+The patch titled
+     Subject: mm/userfaultfd: fix uninitialized output field for -EAGAIN race
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
 
-Summary of potential issues:
-⚠️ Could not find matching upstream commit
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
 
-No upstream commit was identified. Using temporary commit for testing.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Results of testing on various branches:
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Success   |
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Peter Xu <peterx@redhat.com>
+Subject: mm/userfaultfd: fix uninitialized output field for -EAGAIN race
+Date: Thu, 24 Apr 2025 17:57:28 -0400
+
+While discussing some userfaultfd relevant issues recently, Andrea noticed
+a potential ABI breakage with -EAGAIN on almost all userfaultfd ioctl()s.
+
+Quote from Andrea, explaining how -EAGAIN was processed, and how this
+should fix it (taking example of UFFDIO_COPY ioctl):
+
+  The "mmap_changing" and "stale pmd" conditions are already reported as
+  -EAGAIN written in the copy field, this does not change it. This change
+  removes the subnormal case that left copy.copy uninitialized and required
+  apps to explicitly set the copy field to get deterministic
+  behavior (which is a requirement contrary to the documentation in both
+  the manpage and source code). In turn there's no alteration to backwards
+  compatibility as result of this change because userland will find the
+  copy field consistently set to -EAGAIN, and not anymore sometime -EAGAIN
+  and sometime uninitialized.
+
+  Even then the change only can make a difference to non cooperative users
+  of userfaultfd, so when UFFD_FEATURE_EVENT_* is enabled, which is not
+  true for the vast majority of apps using userfaultfd or this unintended
+  uninitialized field may have been noticed sooner.
+
+Meanwhile, since this bug existed for years, it also almost affects all
+ioctl()s that was introduced later.  Besides UFFDIO_ZEROPAGE, these also
+get affected in the same way:
+
+  - UFFDIO_CONTINUE
+  - UFFDIO_POISON
+  - UFFDIO_MOVE
+
+This patch should have fixed all of them.
+
+Link: https://lkml.kernel.org/r/20250424215729.194656-2-peterx@redhat.com
+Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+Fixes: f619147104c8 ("userfaultfd: add UFFDIO_CONTINUE ioctl")
+Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: Andrea Arcangeli <aarcange@redhat.com>
+Suggested-by: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/userfaultfd.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
+
+--- a/fs/userfaultfd.c~mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race
++++ a/fs/userfaultfd.c
+@@ -1585,8 +1585,11 @@ static int userfaultfd_copy(struct userf
+ 	user_uffdio_copy = (struct uffdio_copy __user *) arg;
+ 
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_copy->copy)))
++			return -EFAULT;
+ 		goto out;
++	}
+ 
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_copy, user_uffdio_copy,
+@@ -1641,8 +1644,11 @@ static int userfaultfd_zeropage(struct u
+ 	user_uffdio_zeropage = (struct uffdio_zeropage __user *) arg;
+ 
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_zeropage->zeropage)))
++			return -EFAULT;
+ 		goto out;
++	}
+ 
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_zeropage, user_uffdio_zeropage,
+@@ -1744,8 +1750,11 @@ static int userfaultfd_continue(struct u
+ 	user_uffdio_continue = (struct uffdio_continue __user *)arg;
+ 
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_continue->mapped)))
++			return -EFAULT;
+ 		goto out;
++	}
+ 
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_continue, user_uffdio_continue,
+@@ -1801,8 +1810,11 @@ static inline int userfaultfd_poison(str
+ 	user_uffdio_poison = (struct uffdio_poison __user *)arg;
+ 
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_poison->updated)))
++			return -EFAULT;
+ 		goto out;
++	}
+ 
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_poison, user_uffdio_poison,
+@@ -1870,8 +1882,12 @@ static int userfaultfd_move(struct userf
+ 
+ 	user_uffdio_move = (struct uffdio_move __user *) arg;
+ 
+-	if (atomic_read(&ctx->mmap_changing))
+-		return -EAGAIN;
++	ret = -EAGAIN;
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_move->move)))
++			return -EFAULT;
++		goto out;
++	}
+ 
+ 	if (copy_from_user(&uffdio_move, user_uffdio_move,
+ 			   /* don't copy "move" last field */
+_
+
+Patches currently in -mm which might be from peterx@redhat.com are
+
+mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
+mm-selftests-add-a-test-to-verify-mmap_changing-race-with-eagain.patch
+
 
