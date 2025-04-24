@@ -1,552 +1,280 @@
-Return-Path: <stable+bounces-136547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FC9A9A8EA
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 11:51:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83FDA9A946
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 12:00:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63E021B8710D
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 09:51:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF05D16F778
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 10:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2ED22128F;
-	Thu, 24 Apr 2025 09:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8192147F2;
+	Thu, 24 Apr 2025 10:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b="cTFMKkXW"
+	dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b="gBaJmauJ"
 X-Original-To: stable@vger.kernel.org
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011008.outbound.protection.outlook.com [52.101.70.8])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013022.outbound.protection.outlook.com [40.107.162.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752CE215781;
-	Thu, 24 Apr 2025 09:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78904383;
+	Thu, 24 Apr 2025 10:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.22
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745487907; cv=fail; b=ewZpqd/LVpL6GPrlwwjNJXWVlrTgKu12r+X9xtEuTfE0qfn8pSB+4sM+5H++OPhiX47tzmwC1shCwNafw25nOBNjU5DpIZW42V/6J7ydhvBM/cIs2Ijgv1ET763X/I+A7JWnSdK+ASXWMjE+dbyXS289xQ80F/Pz/LMzc9mI91o=
+	t=1745488852; cv=fail; b=I3pYgI8e69BdXgurRl0RK1V+tPOWm2kxxvaUXUuKOlUhFgFTcPqVXwaVxAXxOiQyFIqgeG7BIoMfVOMnwh8eoCcq1Nm6hiEzK1ol0bQc6WMp4X8to/be2PpMFtoNQiNXB6iHF3OYmznc429cSFM/Eh7qE7hQNtn0MojiDNZPrfY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745487907; c=relaxed/simple;
-	bh=SiGgAkU/+W+BTL0Jg+terKO4DtbEkDdwvoAMYtN5k3s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RGZ6dfWy0RL7Azl2pdPMklimc7RkH/q4eCtR4exQbOzPn12gTpgt/qoahl/p3kSZKY2VTIC9CApIibshl1o/xLnrtWjWs4oEi0HG2x7jHEDxclyVghQ1hGqvW+U6W80ooXioi/7IVoOOcsRqn2eiCQUCbPPgdSZqaFs99/C6Aiw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de; spf=pass smtp.mailfrom=arri.de; dkim=pass (1024-bit key) header.d=arri.de header.i=@arri.de header.b=cTFMKkXW; arc=fail smtp.client-ip=52.101.70.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arri.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arri.de
+	s=arc-20240116; t=1745488852; c=relaxed/simple;
+	bh=MJnb6Ul6gL3ygsPQQdmyK9WJVxWgigwaO/73nwu1Z1M=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=bDzKQWbr/8h15ySDzWsWlYb0reSFeVxdvPeeCRlbLjFVjbMCfHrEHoEVU/v84y3MUO6QAxcy+KI+Fqo5sdGjPad5tmsYjORhXdpF/mkidbN/fd66ksyuryu3PNV3Ei09uKEvxPmHW0zpS5WaYLL18BqEH+EyM2MeFjXNrFmTigg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com; spf=fail smtp.mailfrom=mt.com; dkim=pass (2048-bit key) header.d=mt.com header.i=@mt.com header.b=gBaJmauJ; arc=fail smtp.client-ip=40.107.162.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=mt.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=udu18zswb3lJDn0XUE1iScSiDDrBkLoiZk/VpEZFBS/oA01yAhwiZUc/VX/oAijJD5dkQQgsU0h6rYOS9tC3V4UC+zfDlGiLwMPiP7HB2lteSh2Zd/DYMMEUg+rcr9EtOsMwgf4XvMT4Wq79TakaOPFM/2GLEGz4thVeRgyipYCZ8yXELwIORPA6PrH1PbtEUux6plBI5Wh6+fIWv6chYhPpsddU6ORNzwc4o/0iz8cEYeThk3lrQFCSR7vvXhx/PhZMjeMTXdzFGBpCxQ/DfpZdr60J/ON4K2NoH0MMJAZO9FouIBRL8GAq0w8HyCw3tUimUSrOcvRj/l0sPgYVLQ==
+ b=SrSLfWNirJE+Df8z48EZ5DprHzddB1NUEtuZU+B9kaMPnBe8e181ASkS6duq58/tkpJ8PWbyENXUUp2+/sCa39WIpSEHjcvKSOXvhBbWaYhKYsgS2Qgm/UigU08ASRr8Z6q9cAMBA/g8demWcn6ZF74kIWzh3t8WDpGpCJB3ruqQn4SZScIs9dYWQTZ0G8AGsO8RuZlQLI1SKwPcMC0mg9ZBWPu5aPXgn98rrFsc2dag1g5ZYkShGgnxUmk+kQZYh5Uq0sD0voa12IEep9utW0Z+5nsdxJgeRuCuk1a6wzAeGPIGPj8gqFvQc1/DyJ9BDkH51Oc6EuAyZ9LEv7gO9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3XsSf02t5WTDVm04SYFQMV7wy8nenThFTItJeseykGM=;
- b=YiNMalrKecO+l1/xFHmMI8YD1oUsG9ntsd05TkscXC+Ec8Ql+nJGRpv5R84vAh22DAtXC1SGK0k28xWLkr9QLfNAOtT2iCOSEXMvBImOEXSe+Co0VdWCa1FZ/m3T4v4vti72kWro8rU/88eLKmRZZfpjZDO3Sj6KVF+XCQW0JM0XB1vHfc3Q+n3OnCCacw8Nhfxjms812H9cGzhUBWeQWv2FutzpvUJjJ5jzTs7HApsunQhD6A0FtQjGiRck7Lq123D/nM1RgE9lhKQTjRFiefnN+2DIlr+01zOb9zp548T8mge3mBPabxsR9nrTAeobl9ZVOUMneUhAYFxL1K2n5A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 217.111.95.7) smtp.rcpttodomain=linuxfoundation.org smtp.mailfrom=arri.de;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=arri.de;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arri.de; s=selector1;
+ bh=J9ZIzd9hbAVCYujHJSRFWFzaoPdwapJ/LYnJaf0bMvM=;
+ b=cynGEME0fGAtDYi7qpTJWSO7o2wjCIrFDqNgWIoSDBBg+r5/IE09OE2q1aniIsqCIAAUWU4ZuMt8cBCLJmrWpgv8mho7IWsEeSBHlHpRJnxQeG1YFAB/47R/LaU8JCpwFGaVbCoM2/HrxheQzBxtUL6u7bY6GpOYDUp/CDtbYrewap04l0ddqB7GS5FKpaVdHOrj3bvLMN9EAFgHfi67WwTO1vkgEKUyuWPC4HF025LgWZmtGIguhUo2kYP2kkRBOlq6t8bRBX+AzxWJzI7zVAALXNs1Sr/b/+5N+M320diWtul8mQO5G2LAH3YZXnqv1J9DTIF1XpIRdV1tJyy+6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mt.com; dmarc=pass action=none header.from=mt.com; dkim=pass
+ header.d=mt.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt.com; s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3XsSf02t5WTDVm04SYFQMV7wy8nenThFTItJeseykGM=;
- b=cTFMKkXW8RzW2JOJRW+dN8pW2DcKf+m10G5xpPnHAbXDIahGfwIXK9FXuE2u8tmCdiO99Du7UZWhVbBfiGnkoq+hjhfoMhlTb7szbGkzZvdvB1fCJhmPHvUgDtt60c6xK6RFXGPSnECISyVq5QPw0H1GX5TMuRXAKoIXmm86bF8=
-Received: from DUZPR01CA0291.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b7::9) by PAXPR03MB8115.eurprd03.prod.outlook.com
- (2603:10a6:102:229::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.23; Thu, 24 Apr
- 2025 09:44:56 +0000
-Received: from DU2PEPF00028D09.eurprd03.prod.outlook.com
- (2603:10a6:10:4b7:cafe::5c) by DUZPR01CA0291.outlook.office365.com
- (2603:10a6:10:4b7::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.36 via Frontend Transport; Thu,
- 24 Apr 2025 09:44:54 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
- smtp.mailfrom=arri.de; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=arri.de;
-Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
- designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
- client-ip=217.111.95.7; helo=mta.arri.de;
-Received: from mta.arri.de (217.111.95.7) by
- DU2PEPF00028D09.mail.protection.outlook.com (10.167.242.169) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8655.12 via Frontend Transport; Thu, 24 Apr 2025 09:44:56 +0000
-Received: from n9w6sw14.localnet (10.30.5.38) by mta.arri.de (10.10.18.5) with
+ bh=J9ZIzd9hbAVCYujHJSRFWFzaoPdwapJ/LYnJaf0bMvM=;
+ b=gBaJmauJw8vOapdiZ5Z0VG/Apq/2AuH64D4EWYWSA/fTUh63zAm2YK3zRxSHHHCVmUHeZVtgDmsc09gD+Svyszm8tQd7Q1laLKTPf2EiIR4LWzcLPTYnuFVediF7cpC8eORiaGeMhO7NtMk6d5piLKM+oGlQ1d5LNc0Y7Qf0iAO8Gf2a1/hWGSINIUfY3ZnNB5HaZcnIUKoAoMBvqHvTX8D4R/R1QTG6dS5QC6I4oO15R4FCMmrGAZpBEtOIHTRPejSOSL/vUkiKKfnaDVteFq4Gvvvb8h7Y0/PtuBqOuQ1mwRQKY97/rCwlN33y70UkCBhHzAHCC+4DdeDyi0zLVg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=mt.com;
+Received: from VI1PR03MB3728.eurprd03.prod.outlook.com (2603:10a6:803:30::14)
+ by DBBPR03MB6763.eurprd03.prod.outlook.com (2603:10a6:10:201::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.38; Thu, 24 Apr
- 2025 11:44:55 +0200
-From: Christian Eggers <ceggers@arri.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Naresh Kamboju
-	<naresh.kamboju@linaro.org>
-CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-	<akpm@linux-foundation.org>, <linux@roeck-us.net>, <shuah@kernel.org>,
-	<patches@kernelci.org>, <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-	<jonathanh@nvidia.com>, <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
-	<srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
-	<hargar@microsoft.com>, <broonie@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>, Bjorn Andersson
-	<andersson@kernel.org>, Manivannan Sadhasivam
-	<manivannan.sadhasivam@linaro.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski@linaro.org>, Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH 6.13 000/414] 6.13.12-rc1 review
-Date: Thu, 24 Apr 2025 11:44:55 +0200
-Message-ID: <2176888.9o76ZdvQCi@n9w6sw14>
-Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
-In-Reply-To: <CA+G9fYstVDU_e27mkqEJC0O742zUb0A=wny59n2SiiH7Z_ouJg@mail.gmail.com>
-References: <20250417175111.386381660@linuxfoundation.org>
- <CA+G9fYstVDU_e27mkqEJC0O742zUb0A=wny59n2SiiH7Z_ouJg@mail.gmail.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.31; Thu, 24 Apr
+ 2025 10:00:46 +0000
+Received: from VI1PR03MB3728.eurprd03.prod.outlook.com
+ ([fe80::c7de:54b4:3ebb:88c1]) by VI1PR03MB3728.eurprd03.prod.outlook.com
+ ([fe80::c7de:54b4:3ebb:88c1%6]) with mapi id 15.20.8655.033; Thu, 24 Apr 2025
+ 10:00:45 +0000
+From: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+To: linux-kernel@vger.kernel.org
+Cc: Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Philippe Schenker <philippe.schenker@impulsing.ch>,
+	Manuel Traut <manuel.traut@mt.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v4] arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2
+Date: Thu, 24 Apr 2025 11:59:14 +0200
+Message-ID: <20250424095916.1389731-1-Wojciech.Dubowik@mt.com>
+X-Mailer: git-send-email 2.47.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: ZR0P278CA0081.CHEP278.PROD.OUTLOOK.COM
+ (2603:10a6:910:22::14) To VI1PR03MB3728.eurprd03.prod.outlook.com
+ (2603:10a6:803:30::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PEPF00028D09:EE_|PAXPR03MB8115:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25cc1391-e17e-4567-b016-08dd8314abd0
+X-MS-TrafficTypeDiagnostic: VI1PR03MB3728:EE_|DBBPR03MB6763:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a202fe1-cfa5-477e-f483-08dd8316e175
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|7416014|36860700013|7053199007;
+	BCL:0;ARA:13230040|366016|376014|52116014|7416014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?jkkCYdeJzlD1/2NB0adaPHP7Fd2Sr1IwdRjyEKQ+bvNHceVT5apwkR2cur?=
- =?iso-8859-1?Q?G7c1TcSprNECuPWgJG7onwZDUa3ZKMOpINDDngLd4LnHxgd12LkUjTNoco?=
- =?iso-8859-1?Q?QyvJCtfdtm02twkhqmjD2F1Bc6a9dl0Smb9QTqSN7AjWX0ljBnFRyM2n8n?=
- =?iso-8859-1?Q?jgRuWWtkOs+LT0eKP53Mk29SvzzOTnc7TWhxidXW/yLpvM0ekcl7mSNzC3?=
- =?iso-8859-1?Q?PeeCijQNRMIdEnM0GNwYM65ZYvXrQEaRdvySQXEOZ0Zai7UwGeeCGdvuNF?=
- =?iso-8859-1?Q?bDo5NzS+Ive5lb0RI8N57wrQDvD/IBEDHH+U1RXtsqfqtiEfukgX83+6am?=
- =?iso-8859-1?Q?NNJivqkjw91RoQEcBuyYz1euwgC9qMjIbzjkbZ7++8o5CAkM0FnpfjRk+8?=
- =?iso-8859-1?Q?7kctL4/7qzPuom0pK+aREdjWdEdSK4NgUJTQcAMwlDqgiLzrOal2lQRZEt?=
- =?iso-8859-1?Q?rC072Ur+70hOCP7QkxQ7Jp9F8saljSxDs8uxu+1pyZ6e1iRyH3NN8RauGj?=
- =?iso-8859-1?Q?6Bm/E+yY5fVM/xiGuV7NO3fLniXWfgUV4oVHne1y02fY7KWMIiXW7B0b+j?=
- =?iso-8859-1?Q?1Z54YAXRAYc0NZYqpISYQuFcdVNMRphhvs9IdtWExScxHsMdXs3uHYGZ/L?=
- =?iso-8859-1?Q?1dpPUt+ddfFSeIm/xgzRxKIPXFqbOiAqiKjxhcFhCShaZUCfjJt8aENdKl?=
- =?iso-8859-1?Q?2vR+HUgBPGxcXSBtnGeSJN1B7vMAnsIBWEmgZzIOfA8E59Mv7783YRZsEW?=
- =?iso-8859-1?Q?FlvfEErJqYN4g19Et5WkRbIiTY4qshgsE4SCnQ3NaMcG+bFP/BivgMWgze?=
- =?iso-8859-1?Q?OeqmRVMeLLL6DSHIKeAOFjQOPzRTjMl64IkPrUAgrB5NtvxY3CueGnO+P7?=
- =?iso-8859-1?Q?mzJhLp7dJNfdRvC5P5xqZlSj5t96C/sHO3iiilqoS7qR4MBB2T/edzHvvR?=
- =?iso-8859-1?Q?hwO0+/PH7lBlzhSL8BhV9OFcF4JU5NpIXTfPiAIx4hr/dg0MN62o2m/5+3?=
- =?iso-8859-1?Q?sh66I+7gw92CYybjKeZpi7ckExKq6rsbS4Dcw2kkqiU5HMAU+v6TEGiGLw?=
- =?iso-8859-1?Q?hVhfDhzqs02Jn4e43qCNr+31vWRdfAoHvT+cZDGNn5SwqfTNJ7TTctbTJL?=
- =?iso-8859-1?Q?LO4mzFVwluwvFI1SH4X7sKMrF0Tt9WQyyVeEyv0NiI2hdAPPxwsU8WqJTl?=
- =?iso-8859-1?Q?kFBb9bXFTHAAoc/ALIYoeTg3imGxybY5E7ao4BNBhCaYgna4oX7aABFmiT?=
- =?iso-8859-1?Q?5wcut889s/mUQ+WGp/PkwtSky+elCjK5T2KeXnjgSJLypNXrKDHTAgcHrS?=
- =?iso-8859-1?Q?l/g2zyzKNQZHsifMUJRVJZ5/e/qV6kvTjWoJAngy2O00j6M6DoIoVXKSvd?=
- =?iso-8859-1?Q?dZtstm2o/ZgN264BRK35w8v9Q9rvUbRiMyOVqBLAVfeHERk2M7oA4qy3wA?=
- =?iso-8859-1?Q?2edc1s7sS/gWoYMlNTuWwqE8XID+JZLEVGUZpE4KMYEXgjVWvicLNocLho?=
- =?iso-8859-1?Q?DPTDGNjIsZcsYMr+GNigz4srst2b2DUvuRSpaRxUng5g=3D=3D?=
+	=?us-ascii?Q?npDOO9vCr2C6NB7BjfqS7tc3mJMK7tfu48UPJZJPEydyWjt91uwMuNOFQks8?=
+ =?us-ascii?Q?TrLx0Riib2mU35C+6lWxXvExB6lCBiuus1K1MIKtzrK9Z89ILK4iODKpoqmU?=
+ =?us-ascii?Q?I9ZScRpH0NssMJxbPIR3W8KzZJsZVYZvu5Ka8gXLmpoxF0DQGrahHlC95dKc?=
+ =?us-ascii?Q?4juN0csEljCmjz31+T/Vlnoog7PqiF+cviCiA1DY3CgUTo0ynbxehh0X4rMF?=
+ =?us-ascii?Q?s0hT+G/aWqLeTBRVS7rQNaZIRWKLK6tYKqTQK/+22C3j3u2GwOleIiDkIeBz?=
+ =?us-ascii?Q?4IA/MIPh7KFL3dlqsSlExUUJ6WG853SHmUedofk5pNYyIqwVmuIF0XbANwU6?=
+ =?us-ascii?Q?xZeQ6MFObxg2TpiJipMoUlu4GMSRX5o7dJkdBhJb0RtRY5ukbTsodL6VLiho?=
+ =?us-ascii?Q?W8YcM+Gcz1FaLLIwyICBlcGTjvaJco0/N0n0w6SfUbD33U5UGfJuZBdwaFmN?=
+ =?us-ascii?Q?D/45MpeLpiL8IKZ7LYSr8Pn1QjCEXJhsX3VjawJr3qXODGQyIy8shgQDSn+9?=
+ =?us-ascii?Q?7nr2/6z6nlOu9bvhvjRIIPKkKQqUabq56QnOgYNlASC2ydJ+vMZLbHDyCocx?=
+ =?us-ascii?Q?4q2PKMlBTLn7L5dO2RCpKu1rboAF8cXoyQpkfW0a2FGmllHksiYjE8gN5XZX?=
+ =?us-ascii?Q?jNaq2Y6z1xYzyQcatrjh41bBFzsPBjHiVa+5XgvAjA4tEGUwIsLrtPm4cE65?=
+ =?us-ascii?Q?GIKoXq0RgwTviwP7MwrcAt/mD3gaPocHRsKOjiCdAeK5kjCaCyaFYtJDyVL5?=
+ =?us-ascii?Q?ErkRcr/ZGN1aP2AT1mEyAHzS8A4F2snY9fvNOTsqOOGLaGXdyATXaq/20ZmJ?=
+ =?us-ascii?Q?NCJ0omJ2VZiO5XiKsf0wWCnOipTJV0PRRorJd/rZ1orA7M/uEh1744OC8Zj5?=
+ =?us-ascii?Q?1gEoicaTWSL72Id26MUXaGb//t6fPqbF6cl/RA8RF9+5PxBeYN+nssURsba4?=
+ =?us-ascii?Q?AD1UiBV1nqcb/LPDIR4gB9+/R5bJuMjesQGawwjCnl4NTmw0oskFStQobM5v?=
+ =?us-ascii?Q?XxfvAm1HOyPvjotu9IRmLqqvO+HQYITS5zd1yzm7mOMvhty/v0yl8NLhd7EE?=
+ =?us-ascii?Q?cPs6qBbpYqvLSTm0TNwmAXM5eRs1KWslal/nyei+OvuSAnVQZh3pJVwJlyeA?=
+ =?us-ascii?Q?NhJKZ6sFruF+pl8KJ/kTOrVMaXqSFLqudqriKuj3BydV65HrJ2R9pYJvU6S+?=
+ =?us-ascii?Q?wqGWIaOFtHq3OoiFekQFJbg2eyQIVv8MVS2KDHIf/HjK0K4iIWJuTFvR++Ta?=
+ =?us-ascii?Q?hiFmZTn8WFIZ8YqvXLsXJJLZDZgBibmnrlofaVkUYn+0avBP+G7dTa4W10WK?=
+ =?us-ascii?Q?Of2VW8jhz/TE+SZJKQ6r1CmlQzsLZbs0AccWuG8j8paSqyUYGjeJkiJeB77a?=
+ =?us-ascii?Q?x2K9EyOi5QTJ8Pxt3WklaAH1IfFKHq+Svn0GM4KPTiLBInM4AzfeFa7cTopY?=
+ =?us-ascii?Q?GorfhCBYj0rRzjlb5nICsvO5AWfcPJ1Mi/K5wq79xHql5PLK0anQU3R6/Mqp?=
+ =?us-ascii?Q?G3wKdjpuABuM8Pw=3D?=
 X-Forefront-Antispam-Report:
-	CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(7416014)(36860700013)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arri.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2025 09:44:56.1018
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI1PR03MB3728.eurprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(7416014)(1800799024)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?UXJ9b8o8eMQiKtH/UvKVleYxIvO4ZNYTd9N56jg1xLJRl9HrFKn8MG6m2CB/?=
+ =?us-ascii?Q?RrYOWi8jd1a77AqmIHMANs6T56f9IvRVCwGNnmXjZEtIe73J7j3hEh8KCYiT?=
+ =?us-ascii?Q?idwIV9xIzfmoqcFC0SrX52y9hT9+DmnfpuJprFDXw/UMg0gMy6hc5yGft79c?=
+ =?us-ascii?Q?CtQqe4DMY3BZmYQZQWJOEHuHZj+lZA/Anpw7kLgDuNMtNVndRxg3SIGYuRtN?=
+ =?us-ascii?Q?Oo4beFEDRGyv11Pa1/EJaa7NCB4nRdsYCdPn7xAlyMDPjUdV7fmWjyhoGAuD?=
+ =?us-ascii?Q?tSZFrCH7ovVYl1w9HASg1b5rn4XxF7CilsXyzOLV0DkRG45phLprfBfPxTWG?=
+ =?us-ascii?Q?0QfT2mLHCdO0QoES/kI2B5s4Fzl0FRbimOnuN1/rda16WIJHmYCcAvtR4WxC?=
+ =?us-ascii?Q?nedK/gqLy9QjcKYeK2b801mq85NZ8exfz3TKjIEZeDKKy3J3bRu2RLrE+GNe?=
+ =?us-ascii?Q?WgbQ9fiKSOcO/pND3a7sMool48okJt+Xim/2dFFKpefWG3mpSFdR9YV82WXb?=
+ =?us-ascii?Q?D3RccJoLYn7rOmEiY74Fdlf+jzPAqGxVP7hfH6nC7m3toOPpj9YGx21BPsXX?=
+ =?us-ascii?Q?HGZcQ6PVWEHPEW9wuWxlsf25B4Kh25yi0mnXoGxY3KyzX9QeG8455M/nilt/?=
+ =?us-ascii?Q?yxad4IQhtI5OFk/hN2eBm/lndc3WAlYnxHAFOBTj18tVhzKSE1jJW9ibBs2O?=
+ =?us-ascii?Q?7r4wqkK3Hsih76E/RGq26Ek5mgpC+EoZQO6Cbqkzf0DtptP4ypAkL0i9yQM3?=
+ =?us-ascii?Q?2BBBk/IPz3QJhufWN0gq6XB6WNZdE04NmpLHxxYOCWadkZZYt7qOEO8iCw6s?=
+ =?us-ascii?Q?HJmVZJ96H5zcwFkuDa1JJi/AzgRrAGNShSQD7vVxd4PeKyk2UY31wbGOE+uo?=
+ =?us-ascii?Q?Q/ojVvCzvy5et6eWDMRfGLgq7GaFTfEGKJ70RmHhVNtn5c81N3Tzq7kb4/tk?=
+ =?us-ascii?Q?KYNI3F/wTnuppjmmy/F5lobeHJc6zG/IxMtxjmJ2hY9Bhn1xUA2/XkqMmlqc?=
+ =?us-ascii?Q?yMzW/EBGvgIKJgUpxrN0nSsXyNU3zZi6Sb/9VqiXKeYXBrI7hBAOD/Wruvkj?=
+ =?us-ascii?Q?WVxsHGKaHdJBcNDjfvZ2lui3SowrI/U0+nXZ5qBCy/V31qBbZFlhd9f/PSOQ?=
+ =?us-ascii?Q?o5QAQNpweda949yztdMh0w3ZJNC5zG6i6nsVMQ+NqfOUttlQXew4lLgv9JU6?=
+ =?us-ascii?Q?4XE72dc6Uys1r/ULej/x3yy+XjQNTBSoLlbVMJgcVo7GkXVcjPaaaSRy4eDm?=
+ =?us-ascii?Q?6HdMRAnfeyOfyJqaSGJxF/7LC+SByFhNqkIe6amYGxKibCsgOsiX357tadTb?=
+ =?us-ascii?Q?3bPLLgDX2A9pHLr9reVDWB6xtZY0NC9g1h7Bs1peolT1zM8tnIIJRlbBIZVm?=
+ =?us-ascii?Q?+3ARga61ygqlxZjSqJlxT2W3V7iQTPGo9P0EaQ5AJ/NnQBrwm6QAw0AePzYa?=
+ =?us-ascii?Q?HwpUNvb907DkPeiqJDLnl3BKT9jc5JzZCKa4wBAMCCUNA8LxVjjr0nN0StS6?=
+ =?us-ascii?Q?vK57MYT3yeDs3ujPL6IWKEFnKvgXDIoQYMSSsIY+0bqZSPn34Ukn/dF3gy5e?=
+ =?us-ascii?Q?hAlSeT49W5dtMq2PypT5Sx7vLiPKElYisg+6X9tR?=
+X-OriginatorOrg: mt.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a202fe1-cfa5-477e-f483-08dd8316e175
+X-MS-Exchange-CrossTenant-AuthSource: VI1PR03MB3728.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2025 10:00:45.2824
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25cc1391-e17e-4567-b016-08dd8314abd0
-X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF00028D09.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR03MB8115
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fb4c0aee-6cd2-482f-a1a5-717e7c02496b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Z9tx79BPcIsKSYiKM5KoF6JSpP+/GO5XlFw4G7LVVCGNF05cytrAYC28g+zo8k93FSqMQTO3flDJ8iPNRjbKfA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR03MB6763
 
-Hi all,
+Define vqmmc regulator-gpio for usdhc2 with vin-supply
+coming from LDO5.
 
-unfortunately I was away and couldn't look on this in time. Meanwhile
-the git trees have been rebased, so I am unsure whether patches have
-been dropped of other work is left.
+Without this definition LDO5 will be powered down, disabling
+SD card after bootup. This has been introduced in commit
+f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5").
 
-@Naresh: Can you please provide a pointer to the offending commit?
+Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
+Tested-by: Manuel Traut <manuel.traut@mt.com>
+Reviewed-by: Philippe Schenker <philippe.schenker@impulsing.ch>
+Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+---
+v1 -> v2: https://lore.kernel.org/all/20250417112012.785420-1-Wojciech.Dubowik@mt.com/
+ - define gpio regulator for LDO5 vin controlled by vselect signal
+v2 -> v3: https://lore.kernel.org/all/20250422130127.GA238494@francesco-nb/
+ - specify vselect as gpio
+v3 -> v4: https://lore.kernel.org/all/84dc6fdf295902044d49cafc4479eb75477bba5c.camel@impulsing.ch/
+ - add reviewed and tested by tags and changed fixes
+---
+ .../boot/dts/freescale/imx8mm-verdin.dtsi     | 25 +++++++++++++++----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-regards,
-Christian
-
-
-On Friday, 18 April 2025, 10:39:41 CEST, Naresh Kamboju wrote:
-> On Thu, 17 Apr 2025 at 23:47, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.13.12 release.
-> > There are 414 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sat, 19 Apr 2025 17:49:48 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
-h-6.13.12-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git linux-6.13.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->=20
->=20
-> The following two regressions found on stable-rc 6.13.12-rc1 review,
->=20
-> 1)
-> Regressions on arm64 allmodconfig and allyesconfig builds failed
-> on the stable rc 6.13.12-rc1.
->=20
-> 2)
-> Regressions on arm64 dragonboard 410c boot failed with lkftconfig
-> on the stable rc 6.13.12-rc1.
->=20
-> First seen on the 6.13.12-rc1
-> Good: v6.13.11
-> Bad:  v6.13.11-415-gd973e9e70c8f
->=20
-> Regressions found on arm64:
-> - build/gcc-13-allmodconfig
-> - build/gcc-13-allyesconfig
-> - build/clang-20-allmodconfig
-> - build/clang-20-allyesconfig
->=20
-> Regressions found on arm64 dragonboard-410c:
-> - boot/clang-20-lkftconfig
->=20
-> Regression Analysis:
-> - New regression? Yes
-> - Reproducibility? Yes
->=20
-> Build regression: arm64 ufs-qcom.c implicit declaration 'devm_of_qcom_ice=
-_get'
->=20
-> Boot regression: arm64 dragonboard 410c WARNING regulator core.c regulato=
-r_put
->=20
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->=20
-> ## Build log arm64
-> drivers/ufs/host/ufs-qcom.c: In function 'ufs_qcom_ice_init':
-> drivers/ufs/host/ufs-qcom.c:121:15: error: implicit declaration of
-> function 'devm_of_qcom_ice_get'; did you mean 'of_qcom_ice_get'?
-> [-Werror=3Dimplicit-function-declaration]
-> 121 |         ice =3D devm_of_qcom_ice_get(dev);
-> |               ^~~~~~~~~~~~~~~~~~~~
-> |               of_qcom_ice_get
-> drivers/ufs/host/ufs-qcom.c:121:13: error: assignment to 'struct
-> qcom_ice *' from 'int' makes pointer from integer without a cast
-> [-Werror=3Dint-conversion]
-> 121 |         ice =3D devm_of_qcom_ice_get(dev);
-> |             ^
-> cc1: all warnings being treated as errors
->=20
->=20
-> ## Boot log arm64 dragonboard 410c:
-> [    3.863371]  remoteproc:smd-edge: failed to parse smd edge
-> [    3.989304] msm_hsusb 78d9000.usb: Failed to create device link
-> (0x180) with supplier remoteproc for /soc@0/usb@78d9000/ulpi/phy
-> [    3.993079] qcom-clk-smd-rpm
-> remoteproc:smd-edge:rpm-requests:clock-controller: Error registering
-> SMD clock driver (-1431655766)
-> [    4.000071] qcom-clk-smd-rpm
-> remoteproc:smd-edge:rpm-requests:clock-controller: probe with driver
-> qcom-clk-smd-rpm failed with error -1431655766
-> [    4.028243] sdhci_msm 7864900.mmc: Got CD GPIO
-> [    4.039730] s3: Bringing 0uV into 1250000-1250000uV
-> [    4.039886] s3: failed to enable: (____ptrval____)
-> [    4.043538] ------------[ cut here ]------------
-> [    4.048299] WARNING: CPU: 0 PID: 46 at
-> drivers/regulator/core.c:2396 regulator_put
-> (drivers/regulator/core.c:2419 drivers/regulator/core.c:2417)
-> [    4.053085] Modules linked in:
-> [    4.053087] input: gpio-keys as /devices/platform/gpio-keys/input/inpu=
-t0
-> [    4.060581] sdhci_msm 7864900.mmc: Got CD GPIO
-> [    4.061476]
-> [    4.061484] CPU: 0 UID: 0 PID: 46 Comm: kworker/u16:2 Not tainted
-> 6.13.12-rc1 #1
-> [    4.061495] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (D=
-T)
-> [    4.061501] Workqueue: async async_run_entry_fn
-> [    4.069821] clk: Disabling unused clocks
-> [    4.071199]
-> [    4.071204] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYP=
-E=3D--)
-> [    4.076270] PM: genpd: Disabling unused power domains
-> [    4.077108] pc : regulator_put (drivers/regulator/core.c:2419
-> drivers/regulator/core.c:2417)
-> [    4.084640] qcom-rpmpd
-> remoteproc:smd-edge:rpm-requests:power-controller: failed to sync cx:
-> -1431655766
-> [    4.091163] lr : regulator_put (drivers/regulator/core.c:2390
-> drivers/regulator/core.c:2417)
-> [    4.091174] sp : ffff8000832eba50
-> [    4.091178] x29: ffff8000832eba50
-> [    4.095545] qcom-rpmpd
-> remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
-> cx_ao: -1431655766
-> [    4.099579]  x28: 0000000000000000 x27: ffff800081b54020
-> [    4.099592] x26: ffff800081b53fe0 x25: 0000000000000001
-> [    4.101088] qcom-rpmpd
-> remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
-> cx_vfc: -1431655766
-> [    4.107745]  x24: 00000000aaaaaaaa
-> [    4.107752] x23: ffff000004362a80 x22: ffff0000045fa800
-> [    4.112988] qcom-rpmpd
-> remoteproc:smd-edge:rpm-requests:power-controller: failed to sync mx:
-> -1431655766
-> [    4.116953]  x21: ffff0000045fa800
-> [    4.116961] x20: ffff0000038dfcc0 x19: ffff000003885d80 x18: 000000000=
-0000068
-> [    4.126432] qcom-rpmpd
-> remoteproc:smd-edge:rpm-requests:power-controller: failed to sync
-> mx_ao: -1431655766
-> [    4.130312]
-> [    4.130315] x17: 0000000000000000 x16: 0000000000000001 x15: 000000000=
-0000003
-> [    4.133541] ALSA device list:
-> [    4.136833]
-> [    4.136836] x14: ffff80008284e1f0 x13: 0000000000000003 x12: 000000000=
-0000003
-> [    4.146411]   No soundcards found.
-> [    4.151929]
-> [    4.151933] x11: 0000000000000000 x10: 0000000000000000 x9 : 000000000=
-0000000
-> [    4.230459] x8 : 0000000000000001 x7 : 0720072007200720 x6 : 072007200=
-7200720
-> [    4.230478] x5 : ffff000003201f00 x4 : 0000000000000000 x3 : 000000000=
-0000000
-> [    4.230491] x2 : 0000000000000000 x1 : ffff8000801fe6e4 x0 : ffff00000=
-3885d80
-> [    4.230506] Call trace:
-> [    4.230512] regulator_put (drivers/regulator/core.c:2419
-> drivers/regulator/core.c:2417) (P)
-> [    4.230529] regulator_register (drivers/regulator/core.c:5823)
-> [    4.230543] devm_regulator_register (drivers/regulator/devres.c:477)
-> [    4.230554] rpm_reg_probe
-> (drivers/regulator/qcom_smd-regulator.c:1425
-> drivers/regulator/qcom_smd-regulator.c:1462)
-> [    4.230569] platform_probe (drivers/base/platform.c:1405)
-> [    4.230583] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:658)
-> [    4.280941] __driver_probe_device (drivers/base/dd.c:0)
-> [    4.284581] driver_probe_device (drivers/base/dd.c:830)
-> [    4.288919] __device_attach_driver (drivers/base/dd.c:959)
-> [    4.292911] bus_for_each_drv (drivers/base/bus.c:459)
-> [    4.297426] __device_attach_async_helper
-> (arch/arm64/include/asm/jump_label.h:36 drivers/base/dd.c:988)
-> [    4.301593] async_run_entry_fn
-> (arch/arm64/include/asm/jump_label.h:36 kernel/async.c:131)
-> [    4.306626] process_scheduled_works (kernel/workqueue.c:3241
-> kernel/workqueue.c:3317)
-> [    4.310533] worker_thread (include/linux/list.h:373
-> kernel/workqueue.c:946 kernel/workqueue.c:3399)
-> [    4.315305] kthread (kernel/kthread.c:391)
-> [    4.318863] ret_from_fork (arch/arm64/kernel/entry.S:863)
-> [    4.322250] ---[ end trace 0000000000000=EF=BF=BD[    4.330596] s4:
-> failed to enable: (____ptrval____)
-> [    4.330739] ------------[ cut here ]------------
-> [    4.334298] WARNING: CPU: 3 PID: 46 at
-> drivers/regulator/core.c:2396 regulator_put
-> (drivers/regulator/core.c:2419 drivers/regulator/core.c:2417)
-> [    4.339086] Modules linked in:
-> [    4.347491] CPU: 3 UID: 0 PID: 46 Comm: kworker/u16:2 Tainted: G
->     W          6.13.12-rc1 #1
-> [    4.350372] Tainted: [W]=3DWARN
-> [    4.359293] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (D=
-T)
-> [    4.360333] sdhci_msm 7864900.mmc: Got CD GPIO
-> [    4.362242] Workqueue: async async_run_entry_fn
-> [    4.373272] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYP=
-E=3D--)
-> [    4.377705] pc : regulator_put (drivers/regulator/core.c:2419
-> drivers/regulator/core.c:2417)
-> [    4.384641] lr : regulator_put (drivers/regulator/core.c:2390
-> drivers/regulator/core.c:2417)
-> [    4.388807] sp : ffff8000832eba50
-> [    4.392711] x29: ffff8000832eba50 x28: 0000000000000000 x27: ffff80008=
-1b54040
-> [    4.395934] x26: ffff800081b53fe0 x25: 0000000000000001 x24: 00000000a=
-aaaaaaa
-> [    4.403052] x23: ffff000009d10c80 x22: ffff000009c48800 x21: ffff00000=
-9c48800
-> [    4.410170] x20: ffff0000044e2900 x19: ffff000003f90840 x18: ffff80008=
-17025c0
-> [    4.417287] x17: 0000000000000000 x16: 0000000000000001 x15: 000000000=
-0000003
-> [    4.424405] x14: ffff80008284e1f0 x13: 0000000000000003 x12: 000000000=
-0000003
-> [    4.431524] x11: 0000000000000000 x10: 0000000000000000 x9 : 000000000=
-0000000
-> [    4.438642] x8 : 0000000000000001 x7 : 0720072007200720 x6 : 072007200=
-7200720
-> [    4.445760] x5 : ffff000003201f00 x4 : 0000000000000000 x3 : 000000000=
-0000000
-> [    4.452878] x2 : 0000000000000000 x1 : ffff8000801fe6e4 x0 : ffff00000=
-3f90840
-> [    4.459997] Call trace:
-> [    4.467103] regulator_put (drivers/regulator/core.c:2419
-> drivers/regulator/core.c:2417) (P)
-> [    4.469364] regulator_register (drivers/regulator/core.c:5823)
-> [    4.473530] devm_regulator_register (drivers/regulator/devres.c:477)
-> [    4.477437] rpm_reg_probe
-> (drivers/regulator/qcom_smd-regulator.c:1425
-> drivers/regulator/qcom_smd-regulator.c:1462)
-> [    4.481948] platform_probe (drivers/base/platform.c:1405)
-> [    4.485681] really_probe (drivers/base/dd.c:581 drivers/base/dd.c:658)
-> [    4.489415] __driver_probe_device (drivers/base/dd.c:0)
-> [    4.493062] driver_probe_device (drivers/base/dd.c:830)
-> [    4.497401] __device_attach_driver (drivers/base/dd.c:959)
-> [    4.501396] bus_for_each_drv (drivers/base/bus.c:459)
-> [    4.505908] __device_attach_async_helper
-> (arch/arm64/include/asm/jump_label.h:36 drivers/base/dd.c:988)
-> [    4.510078] async_run_entry_fn
-> (arch/arm64/include/asm/jump_label.h:36 kernel/async.c:131)
-> [    4.515109] process_scheduled_works (kernel/workqueue.c:3241
-> kernel/workqueue.c:3317)
-> [    4.519017] worker_thread (include/linux/list.h:373
-> kernel/workqueue.c:946 kernel/workqueue.c:3399)
-> [    4.523790] kthread (kernel/kthread.c:391)
-> [    4.527347] ret_from_fork (arch/arm64/kernel/entry.S:863)
-> [    4.530735] ---[ end trace 0000000000000000 ]---
-> [    4.535440] l2: Bringing 0uV into 1200000-1200000uV
-> [    4.539050] qcom_rpm_smd_regulator
-> remoteproc:smd-edge:rpm-requests:regulators: l2:
-> devm_regulator_register() failed, ret=3D-517
-> [    4.544075] Unable to handle kernel paging request at virtual
-> address ffffffffaaaaae6a
-> [    4.554991] Mem abort info:
-> [    4.562869]   ESR =3D 0x0000000096000005
-> [    4.565560]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-> [    4.569384]   SET =3D 0, FnV =3D 0
-> [    4.574846]   EA =3D 0, S1PTW =3D 0
-> [    4.577710]   FSC =3D 0x05: level 1 translation fault
-> [    4.580755] Data abort info:
-> [    4.585612]   ISV =3D 0, ISS =3D 0x00000005, ISS2 =3D 0x00000000
-> [    4.588742]   CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-> [    4.594036]   GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-> [    4.599158] swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D00000000824a=
-4000
-> [    4.604544] [ffffffffaaaaae6a] pgd=3D0000000000000000,
-> p4d=3D0000000082e7d403, pud=3D0000000000000000
-> [    4.611238] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-> [    4.619631] Modules linked in:
-> [    4.625875] CPU: 3 UID: 0 PID: 46 Comm: kworker/u16:2 Tainted: G
->     W          6.13.12-rc1 #1
-> [    4.629015] Tainted: [W]=3DWARN
-> [    4.637936] Hardware name: Qualcomm Technologies, Inc. APQ 8016 SBC (D=
-T)
-> [    4.640900] Workqueue: async async_run_entry_fn
-> [    4.647664] pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYP=
-E=3D--)
-> [    4.651924] pc : regulator_unregister (drivers/regulator/core.c:5850)
-> [    4.658861] lr : devm_rdev_release (drivers/regulator/devres.c:453)
-> [    4.663721] sp : ffff8000832ebaf0
-> [    4.667974] x29: ffff8000832ebb10 x28: ffff000004520000 x27: 000000000=
-00001c8
-> [    4.671195] x26: ffff0000042c6040 x25: ffff000009d10c00 x24: ffff00000=
-4520000
-> [    4.678311] x23: ffff80008280ed00 x22: ffff8000823b07cd x21: ffff00000=
-3f90780
-> [    4.685431] x20: ffff000009c7b810 x19: ffff8000832ebbb8 x18: 000000000=
-0000068
-> [    4.692548] x17: 6f74616c75676572 x16: 3a73747365757165 x15: 00000ff00=
-003fd3a
-> [    4.699666] x14: 000000000000ffff x13: 0000000000000020 x12: 000000000=
-0000003
-> [    4.706784] x11: 0000000000000000 x10: 0000000000000000 x9 : ffff80008=
-0b52bb0
-> [    4.713901] x8 : 50dfedbf8d5fec00 x7 : 3d4e5f454c424954 x6 : 000000004=
-e514553
-> [    4.721021] x5 : 0000000000000008 x4 : ffff80008222c178 x3 : 000000000=
-0000010
-> [    4.728139] x2 : ffff8000832eba70 x1 : ffff000003f90800 x0 : ffffffffa=
-aaaaaaa
-> [    4.735257] Call trace:
-> [    4.742362] regulator_unregister (drivers/regulator/core.c:5850) (P)
-> [    4.744625] devm_rdev_release (drivers/regulator/devres.c:453)
-> [    4.749484] release_nodes (drivers/base/devres.c:506)
-> [    4.753388] devres_release_all (drivers/base/devres.c:0)
-> [    4.756950] really_probe (drivers/base/dd.c:551 drivers/base/dd.c:724)
-> [    4.760941] __driver_probe_device (drivers/base/dd.c:0)
-> [    4.764588] driver_probe_device (drivers/base/dd.c:830)
-> [    4.768842] __device_attach_driver (drivers/base/dd.c:959)
-> [    4.772836] bus_for_each_drv (drivers/base/bus.c:459)
-> [    4.777348] __device_attach_async_helper
-> (arch/arm64/include/asm/jump_label.h:36 drivers/base/dd.c:988)
-> [    4.781518] async_run_entry_fn
-> (arch/arm64/include/asm/jump_label.h:36 kernel/async.c:131)
-> [    4.786552] process_scheduled_works (kernel/workqueue.c:3241
-> kernel/workqueue.c:3317)
-> [    4.790458] worker_thread (include/linux/list.h:373
-> kernel/workqueue.c:946 kernel/workqueue.c:3399)
-> [    4.795229] kthread (kernel/kthread.c:391)
-> [    4.798788] ret_from_fork (arch/arm64/kernel/entry.S:863)
-> [ 4.802179] Code: d5384108 f9430508 f81f83a8 b4000bc0 (f941e014)
-> All code
-> =3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> Code starting with the faulting instruction
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [    4.805745] ---[ end trace 0000000000000000 ]---
-> [   14.254255] platform ci_hdrc.0: deferred probe pending: (reason unknow=
-n)
->=20
-> ## Source
-> * Kernel version: 6.13.12-rc1
-> * Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-=
-stable-rc.git
-> * Git sha: d973e9e70c8f0ad1a53a96ce48db9f3f882db4a8
-> * Git describe: v6.13.11-415-gd973e9e70c8f
-> * Project details:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.14.y/build/v6.=
-13.11-415-gd973e9e70c8f/
-> * Architectures: arm64
-> * Toolchains: clang-20, gcc-13
-> * Kconfigs: allmodconfig, allyesconfig
->=20
-> ## Build arm64
-> * Build log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1=
-3.y/build/v6.13.11-415-gd973e9e70c8f/testrun/28151211/suite/build/test/gcc-=
-13-allmodconfig/log
-> * Build history:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.=
-13.11-415-gd973e9e70c8f/testrun/28151211/suite/build/test/gcc-13-allmodconf=
-ig/history/
-> * Build details:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.=
-13.11-415-gd973e9e70c8f/testrun/28151211/suite/build/test/gcc-13-allmodconf=
-ig/details/
-> * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrt=
-UC0M5hDCMYsjZId4uKICXy7/
-> * Kernel config:
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrtUC0M5hDCMYsjZI=
-d4uKICXy7/config
->=20
-> ## Steps to reproduce on arm64
-> - tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
-> --kconfig allmodconfig
->=20
->=20
-> ## Boot arm64 dragonboard-410c
-> * Boot log: https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13=
-=2Ey/build/v6.13.11-415-gd973e9e70c8f/testrun/28155237/suite/boot/test/clan=
-g-20-lkftconfig/log
-> * Boot history:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.=
-13.11-415-gd973e9e70c8f/testrun/28149517/suite/boot/test/clang-20-lkftconfi=
-g/history/
-> * Boot details:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.13.y/build/v6.=
-13.11-415-gd973e9e70c8f/testrun/28151170/suite/boot/test/clang-20-lkftconfi=
-g/details/
-> * Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrt=
-Sg9ngthHYlLhDI9xR3a2T5K/
-> * Kernel config:
-> https://storage.tuxsuite.com/public/linaro/lkft/builds/2vrtSg9ngthHYlLhDI=
-9xR3a2T5K/config
->=20
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
->=20
-
-
-
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+index 7251ad3a0017..b46566f3ce20 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -144,6 +144,19 @@ reg_usdhc2_vmmc: regulator-usdhc2 {
+ 		startup-delay-us = <20000>;
+ 	};
+ 
++	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usdhc2_vsel>;
++		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
++		regulator-max-microvolt = <3300000>;
++		regulator-min-microvolt = <1800000>;
++		states = <1800000 0x1>,
++			 <3300000 0x0>;
++		regulator-name = "PMIC_USDHC_VSELECT";
++		vin-supply = <&reg_nvcc_sd>;
++	};
++
+ 	reserved-memory {
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+@@ -269,7 +282,7 @@ &gpio1 {
+ 			  "SODIMM_19",
+ 			  "",
+ 			  "",
+-			  "",
++			  "PMIC_USDHC_VSELECT",
+ 			  "",
+ 			  "",
+ 			  "",
+@@ -785,6 +798,7 @@ &usdhc2 {
+ 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
+ 	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_cd_sleep>;
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
++	vqmmc-supply = <&reg_usdhc2_vqmmc>;
+ };
+ 
+ &wdog1 {
+@@ -1206,13 +1220,17 @@ pinctrl_usdhc2_pwr_en: usdhc2pwrengrp {
+ 			<MX8MM_IOMUXC_NAND_CLE_GPIO3_IO5		0x6>;	/* SODIMM 76 */
+ 	};
+ 
++	pinctrl_usdhc2_vsel: usdhc2vselgrp {
++		fsl,pins =
++			<MX8MM_IOMUXC_GPIO1_IO04_GPIO1_IO4	0x10>; /* PMIC_USDHC_VSELECT */
++	};
++
+ 	/*
+ 	 * Note: Due to ERR050080 we use discrete external on-module resistors pulling-up to the
+ 	 * on-module +V3.3_1.8_SD (LDO5) rail and explicitly disable the internal pull-ups here.
+ 	 */
+ 	pinctrl_usdhc2: usdhc2grp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x10>,
+ 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x90>,	/* SODIMM 78 */
+ 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x90>,	/* SODIMM 74 */
+ 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x90>,	/* SODIMM 80 */
+@@ -1223,7 +1241,6 @@ pinctrl_usdhc2: usdhc2grp {
+ 
+ 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x10>,
+ 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x94>,
+ 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x94>,
+ 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x94>,
+@@ -1234,7 +1251,6 @@ pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+ 
+ 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x10>,
+ 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x96>,
+ 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x96>,
+ 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x96>,
+@@ -1246,7 +1262,6 @@ pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+ 	/* Avoid backfeeding with removed card power */
+ 	pinctrl_usdhc2_sleep: usdhc2slpgrp {
+ 		fsl,pins =
+-			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x0>,
+ 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x0>,
+ 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x0>,
+ 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x0>,
+-- 
+2.47.2
 
 
