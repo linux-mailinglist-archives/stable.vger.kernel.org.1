@@ -1,81 +1,56 @@
-Return-Path: <stable+bounces-136614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9906A9B51E
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 19:19:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F357A9B5D8
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 19:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D07E5A6893
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 17:19:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F6E1BA6DA0
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 17:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A098A28BA8B;
-	Thu, 24 Apr 2025 17:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A7B28DF11;
+	Thu, 24 Apr 2025 17:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PySRH5SH"
+	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="Gy8bZ2RU"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A830D284673;
-	Thu, 24 Apr 2025 17:19:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1ABD280CCE;
+	Thu, 24 Apr 2025 17:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745515166; cv=none; b=dpsD2o0pgZKf5c7hQb4phxEQVCF3uAMgrzldcHlDYfyn1LJJOA/3Vc9JYS6JsiBEyC+NHPYUxbUuNB5AjwMFyQLtkidFDO+U6t97XiZQxv7BbqpbUDxZZ+ZIj6K44ToRGy+QJ2sMfcQhTLhq+t2Prb+y1yxvsvmAHhaNNh9R/Sw=
+	t=1745517508; cv=none; b=Wj3mC2RxM8f5svANljDM8D3rRKNkSlGYAgOtagQDvsbEkTv6FfjIf2jy+7+FdvjtkVVlLr0g//Nt4cRM2zh0l63+T77/rYZx9/xL08e0DoRlrJsOp33VoUXo6GiKVTOwtwixld4qn/ht4x7JujRCw31kto72/1ZNZflbRCJLs84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745515166; c=relaxed/simple;
-	bh=ItVrLqgKGeOUFRj5iB6zphXpB+2yCMawqMR3Hb/E/W4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WVHahgbSQH2u/GuJCgEf/KDmg+lVklT97n1Ke1Iqv6E9ULGya4uH067rQGMml4kngs/dax1SKqv7RjXGw9DbLxB9VSp23Ns/lJYAEdoLa4ENQHSCEcI1xr3NRFF6DwA7NUA9pyQKiOP0wsTZBzFR8Pc5G93RLXU9SxhIwhhQzfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PySRH5SH; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745515165; x=1777051165;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ItVrLqgKGeOUFRj5iB6zphXpB+2yCMawqMR3Hb/E/W4=;
-  b=PySRH5SHNMwvHqLmAq8SbnZhhOb2/TLcwEdG3JBn2WAUNz0YysPK6/hl
-   SEJFPYZZI0dh/cWU4iE0lM9WWRczu+ith4DMAaZIcA+pTs9/3fDR3l3eV
-   vEimlijzBItehTd3d6WjtmjTZl+LtmSQ1cnDLlECMnLHkokb5+qnZ1PDE
-   +NEZB3aHAL3cddnzG+xyjJ7IfVi5hJBXCxISmSSpm85YEWLes2y565IhP
-   1ik0J8hQ4WgMoehfmgxV0Gp6nFCTT8J53iUJTsb+9APD9/Ny869IIf1PF
-   X1k8LDCSFMINNUWGYUWhcIf+mT+Sd0AdJ2s9A/f01bRwbndjkDi+wcvDH
-   A==;
-X-CSE-ConnectionGUID: dP9ug0ItSQWIvOWG/GJvfA==
-X-CSE-MsgGUID: O+7ijbfhTWugORlGGAE9/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="57802002"
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="57802002"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 10:19:24 -0700
-X-CSE-ConnectionGUID: YQmfbH4uQ+a3WDn2GGMy8Q==
-X-CSE-MsgGUID: lO9HtIHSQPO+InIyvQlNWA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="137526823"
-Received: from smile.fi.intel.com ([10.237.72.55])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 10:19:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98.2)
-	(envelope-from <andriy.shevchenko@intel.com>)
-	id 1u80EG-000000003GS-3pQ2;
-	Thu, 24 Apr 2025 20:19:16 +0300
-Date: Thu, 24 Apr 2025 20:19:16 +0300
-From: Andy Shevchenko <andriy.shevchenko@intel.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>, cl@linux.com,
-	rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
-	surenb@google.com, pasha.tatashin@soleen.com,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, quic_tingweiz@quicinc.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm, slab: clean up slab->obj_exts always
-Message-ID: <aApylNvOXzNdYRaN@smile.fi.intel.com>
-References: <20250421075232.2165527-1-quic_zhenhuah@quicinc.com>
- <aApoFXmDE-k2KFFV@black.fi.intel.com>
- <da89dcd6-9369-4a87-9794-a0bf5772509b@suse.cz>
+	s=arc-20240116; t=1745517508; c=relaxed/simple;
+	bh=AR5JKdIo+O0YR1XsiQaFGrOTyAaUZ9rKxU2HHu5lKfA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EcBohm7EPJNk0F7zRIkkVOK0uDEhVDbhy7u0lhgNTva7AvEXtXDKPm9Rz7/+avgkORLiut0XNxR02ZRYYPtH4jlcEZ2SI+qLzzej+sEI+sGqdvBHdvz2y2F41IAoy66ykfHPcKYVEXf2Rk+S8seNuLAzpwMOQ5vEtNrh8togeTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=Gy8bZ2RU; arc=none smtp.client-ip=91.227.220.155
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
+Date: Thu, 24 Apr 2025 19:58:18 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
+	s=202107; t=1745517499;
+	bh=AR5JKdIo+O0YR1XsiQaFGrOTyAaUZ9rKxU2HHu5lKfA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
+	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
+	 mime-version:references:reply-to:Sender:Subject:Subject:To:To;
+	b=Gy8bZ2RUvXROCsWo/6kkoWYEs8KNOFylD16In2E/H8XvxGaaVLpOfzbsZ722heReQ
+	 DXyVT+zdXp917ZbSE7MBF00tknM0v3Tg0LxVKjTozYwI3IDNiVI8FTb+TwL4ln9nfx
+	 Bn/Xl/GkUCzMGjFhnI8BuaNQCRplSBsM7aY9iYd1tYPksryroRX37WNKIwDHKry3UM
+	 LAKDoTmmEzf9mQB30tyBdOLD9l+Z7YSdNeSfIExqD86FhR7THr+N3uEPgMeNruHlOs
+	 hiDO78qpfUyYOlXD6GPdihj9lIBYZRclgGmwuuuEe7tispHs5uHuVzSA3aQEB0sssq
+	 HH4bpLEaPdL8g==
+From: Markus Reichelt <lkt+2023@mareichelt.com>
+To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.12 000/223] 6.12.25-rc1 review
+Message-ID: <20250424175818.GA3374@pc21.mareichelt.com>
+Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20250423142617.120834124@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,37 +59,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <da89dcd6-9369-4a87-9794-a0bf5772509b@suse.cz>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
 
-On Thu, Apr 24, 2025 at 06:48:46PM +0200, Vlastimil Babka wrote:
-> On 4/24/25 18:34, Andy Shevchenko wrote:
-> > On Mon, Apr 21, 2025 at 03:52:32PM +0800, Zhenhua Huang wrote:
-> >> When memory allocation profiling is disabled at runtime or due to an
-> >> error, shutdown_mem_profiling() is called: slab->obj_exts which
-> >> previously allocated remains.
-> >> It won't be cleared by unaccount_slab() because of
-> >> mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
-> >> should always be cleaned up in unaccount_slab() to avoid following error:
-> >> 
-> >> [...]BUG: Bad page state in process...
-> >> ..
-> >> [...]page dumped because: page still charged to cgroup
-> > 
-> > Please, always compile test with `make W=1`. Since CONFIG_WERROR=y this
-> > effectively breaks the build with Clang.
+* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+
+> This is the start of the stable review cycle for the 6.12.25 release.
+> There are 223 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> I don't see why, nor observe any W=1 warnings, can you be more specific? Thanks.
+> Responses should be made by Fri, 25 Apr 2025 14:25:27 +0000.
+> Anything received after that time might be too late.
 
-Specifics are in the fix I sent. Just a relatively new Clang and
-relatively recent enabling of warning for unused static inline functions
-in the C code. If you are insisting in seeing the exact kernel
-configuration I have, tell me where to send, I'll send it privately
-to avoid noise here.
+Hi Greg
 
--- 
-With Best Regards,
-Andy Shevchenko
+6.12.25-rc1 compiles, boots and runs here on x86_64 (AMD Ryzen 5 7520U,
+Slackware64-current).
+
+I noticed that in 2 of 3 reboots X is slow to start (but is usable) and in dmesg I found this:
+
+[Thu Apr 24 19:34:11 2025] amdgpu 0000:03:00.0: amdgpu: Dumping IP State
+[Thu Apr 24 19:34:11 2025] amdgpu 0000:03:00.0: amdgpu: Dumping IP State Completed
+[Thu Apr 24 19:34:11 2025] amdgpu 0000:03:00.0: amdgpu: ring gfx_0.0.0 timeout, signaled seq=4, emitted seq=5
+[Thu Apr 24 19:34:11 2025] amdgpu 0000:03:00.0: amdgpu: Process information: process Xorg pid 1733 thread Xorg:cs0 pid 1734
+[Thu Apr 24 19:34:11 2025] amdgpu 0000:03:00.0: amdgpu: GPU reset begin!
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: MODE2 reset
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: GPU reset succeeded, trying to resume
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: PSP is resuming...
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: reserve 0xa00000 from 0xf41e000000 for PSP TMR
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: RAS: optional ras ta ucode is not available
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: RAP: optional rap ta ucode is not available
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: SECUREDISPLAY: securedisplay ta ucode is not available
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: SMU is resuming...
+[Thu Apr 24 19:34:12 2025] amdgpu 0000:03:00.0: amdgpu: SMU is resumed successfully!
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring gfx_0.0.0 uses VM inv eng 0 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring gfx_0.1.0 uses VM inv eng 1 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.0.0 uses VM inv eng 4 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.1.0 uses VM inv eng 5 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.2.0 uses VM inv eng 6 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.3.0 uses VM inv eng 7 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.0.1 uses VM inv eng 8 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.1.1 uses VM inv eng 9 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.2.1 uses VM inv eng 10 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring comp_1.3.1 uses VM inv eng 11 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring kiq_0.2.1.0 uses VM inv eng 12 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring sdma0 uses VM inv eng 13 on hub 0
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring vcn_dec_0 uses VM inv eng 0 on hub 8
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring vcn_enc_0.0 uses VM inv eng 1 on hub 8
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring vcn_enc_0.1 uses VM inv eng 4 on hub 8
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: ring jpeg_dec uses VM inv eng 5 on hub 8
+[Thu Apr 24 19:34:13 2025] amdgpu 0000:03:00.0: amdgpu: GPU reset(2) succeeded!
+[Thu Apr 24 19:34:14 2025] [drm:amdgpu_cs_ioctl [amdgpu]] *ERROR* Failed to initialize parser -125!
 
 
+Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
 
