@@ -1,256 +1,209 @@
-Return-Path: <stable+bounces-136515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B753A9A251
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 08:34:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BDDA9A25F
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 08:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E7DD1885A69
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 06:34:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD6627ABD94
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 06:35:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E401B0439;
-	Thu, 24 Apr 2025 06:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CB21DD9AB;
+	Thu, 24 Apr 2025 06:36:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DsF+jSuj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A8C19CCEA
-	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 06:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745476464; cv=fail; b=HDY7o3y1+9L50n2FNJ+HAZrmpFUw0Mecot+IskGdh88/xF3I0WLcRUH81o0bQXxhf4NGrOVGryNnJZQoJ4qW4fHbjPn8SVzYy/r1+hhPXEWvmcNOLuNIWRmODkXYOMFmcJhOA2UH6GdwRee384y2PZ+dHiFHZvycC0VlIu4Tfkc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745476464; c=relaxed/simple;
-	bh=lPUALcIDtL7ime+Svpj/0sMOuQNByAzCCRf+OjIxMwk=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZJgfw9yBzHND9veST0G6W3HaoNE4J+rB9Jah4/05Sw5Fhw4eOW36osIx4rgY3Fsx9qAKC+qU+gMxBG2AFEWZLl2kHehZZJgD29cuoLxlT2NzgBjjKchScwLpSmfHTG4GlMUCLfU+XNBHNbMSQMRwjFYBS5ML7/6o5LQ5njIgQpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53O5o2mp019978;
-	Wed, 23 Apr 2025 23:34:07 -0700
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2176.outbound.protection.outlook.com [104.47.57.176])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 466jhasuwf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 23 Apr 2025 23:34:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d58tswPEj2Pend42wzo2JJojh0SjQN2J54wvwFDxn4oZaNcTCSiSHopYb5i4sDYZpzry9tF7LZSEy5lbWhIlZyFnSDI/Hg4WQMqIB+bvrHsnz+ozJK9bih6Q8L1WL78/Fdyoi+IAVEixa9yzqhNLJmW6u4ezUikmm2JhkWQS49mcdRgP7e+XJOfEIKWekfajSedLGirTFc3LRJvOL9gO2jXPEgcjDo2OvAHaoR5+W3HmC81C9y1VMnCeqVZK4ll1doOBUgld8fbwYt5WMU7z8Qa/5k6DpCxbqHka2mLa0Sowzd3bBAzIqNNVu+DwAsGrFQGF8Lmvsx3u9d60A0IRIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UyYgay9oTdLJDk7cITZhB6g3Oov5r2wm+I/9Xhrzaug=;
- b=W+2On3KVwUv66I+nYDI/IShaJnKiO7XLhXUnmIu9W/SrvsMh0mA6ZvvDQiOLtb3is/4GiUl6glKT/+NiK1sdjPPwsBi4mXNBtcJZn1V7KTJ7x7ymrn+Z3kYDt3NWCwiGhRaM2ihv3xEx9Uf3gx+XKKpi8bgLc9K0lS9xB8LIaIzeJwkEmwl5zwDAZqUxLt2XqqZvaNHEFMvih4mNfANZ8KB9ZrFvxwHkuuCLZ9hhDJ8pIaffZLNpWoRUmMknT79R6zFr7bJ+tH/EMBiArA20crgj5v9RjoymgdEtFB6BK+kx3tqhSkWQwQECBmbJEZq7C8gnuBpA6XJzwgh1Dr8Q0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
- by DM4PR11MB6550.namprd11.prod.outlook.com (2603:10b6:8:b4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.23; Thu, 24 Apr
- 2025 06:34:02 +0000
-Received: from MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3]) by MW4PR11MB5824.namprd11.prod.outlook.com
- ([fe80::f5f6:a389:b6fc:dbc3%6]) with mapi id 15.20.8678.021; Thu, 24 Apr 2025
- 06:34:02 +0000
-Message-ID: <741b7850-9d5f-469d-971d-c2548481651f@eng.windriver.com>
-Date: Thu, 24 Apr 2025 14:33:56 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10.y] perf: Fix perf_pending_task() UaF
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: peterz@infradead.org, elver@google.com, stable@vger.kernel.org,
-        zhe.he@windriver.com
-References: <20250408061044.3786102-1-xiangyu.chen@eng.windriver.com>
- <2025042351-glade-swimmable-97e2@gregkh>
-Content-Language: en-US
-From: Xiangyu Chen <xiangyu.chen@eng.windriver.com>
-In-Reply-To: <2025042351-glade-swimmable-97e2@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SI2PR02CA0054.apcprd02.prod.outlook.com
- (2603:1096:4:196::13) To MW4PR11MB5824.namprd11.prod.outlook.com
- (2603:10b6:303:187::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE182DF49;
+	Thu, 24 Apr 2025 06:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745476586; cv=none; b=PtBDbs3aLS1AJzoS+gtyKGPqYh6YQSz2K/ryxaxL1in6z17lBa2+9lmu9e72ZgLoLj4xyON3diXvMlOxUtQcMLPWFNGnzhFzl6RubMG2fbvna1rOwJzuo6DXkVc1U/7JHqA/oOm17waxBOmenDhf74qYZc+Q05wcOCw0Y/g0DPU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745476586; c=relaxed/simple;
+	bh=MDoN1ZK19bo6rNQIgmavzayzM4Rwo/IkSrito3ddS6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nDJuBoeYIAJh1rj4c8VWNAOO3emgu7h98hipa5Wd7ixBXc8Y65GovcJCQX8WS93eJdB3qTaF0q54p+Mn6f9MVklrg3FoWFfYxVPFgzn9QtkzJcof5nmM6R7oe1kXfQLSm28ttwEgBDVb44GWddvgx7lGMVgF+zWLMXisD1xxcGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DsF+jSuj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0FAC4CEEB;
+	Thu, 24 Apr 2025 06:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745476585;
+	bh=MDoN1ZK19bo6rNQIgmavzayzM4Rwo/IkSrito3ddS6M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DsF+jSujyWRYe/er8IF/g1XJr0Uhw2Sc0XVs6y0PKvvSojDF323NKajq2oeD65fay
+	 wbFqByffiBa/4RTnB68MpiPyLmMKduR/raVqD46hXsjChJWhopM+phdJ5CkUDcHQZ/
+	 SoSbFp+D6IdX2+FL4KbiUd5c8Z87OBi0+giQYhYUvgOrMX+vQgOGenZtF+5o0XJYV/
+	 pGSDNkqeYubj16wg80O6YI7lXOsRb1XI4DyuQ0jMifseEe2QlwMl2ctm5AWDnnFn1x
+	 kF5GIYar/VLB2ReV1m3s6Zct++sRPOsrBZz5ednM7ux6eAH1PnXtdQ9WLDhkPPZrjR
+	 fDbgRZ73XvtGg==
+Date: Thu, 24 Apr 2025 12:05:57 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: dave.hansen@linux.intel.com, x86@kernel.org, 
+	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Kirill Shutemov <kirill.shutemov@linux.intel.com>, 
+	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
+ guests
+Message-ID: <ma4odvegjsceiwccyhbsz5wn4wjdnx2sfhyigtva5zjiyfmsdw@tyq72l2zavb6>
+References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+ <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+ <y3c6mpt3w4pdx7xzaqdlsr3ci33cseuaxwdno4uh3jfb2ddvxp@kicc5stwtcto>
+ <68094f51a7b01_71fe294c6@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB5824:EE_|DM4PR11MB6550:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0fc6a68e-6919-49b9-9502-08dd82fa00bc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?b25OZXZMOG1tRHo5TnBhVTZKV3ZoQkhTSXJQYW8yS0psWi9EV0NrTFBidm5Y?=
- =?utf-8?B?QkVXUW1QSXBwaGl4TVhIQllzSTUvb2Fvb2RHLzcyZVVVNFRBRzk0bUJVSEw3?=
- =?utf-8?B?TjlNV2dKTlRUVUxFb3dGNnYvOVJrYlVvLzdLa1crbG05YnVENmUwQ21NTUtM?=
- =?utf-8?B?NGd1SUt3b2VXSWxCVnZGQW5vY2pWUUMwQ2NvUE9BL29Tem1jSUZwNGxLczhI?=
- =?utf-8?B?bE05elRWUDhxOWFEcXNOSXhBUGJPU2ZUWEkzWDU0NHhqcHBlS00rbUtia3VG?=
- =?utf-8?B?cWVjazcyYmdncldoNXIxckRhWjh0TXFRK1ZqRnlFSEVRcTd5YlR5ZzU3ZkRI?=
- =?utf-8?B?TXRCVEJubnJ1ZE9CbnE1UFR2NE9Rd1dzN29oZzNoek9rRWRpZmtsMmc5VGlQ?=
- =?utf-8?B?N0pDNEFrUjk2YkdXUUJ5aW8xUEJXTEFYTElRMXorM2FOWVRIQVVlV055L0Yr?=
- =?utf-8?B?K0k4ZEM4OWZ4a1BBbXdMaFgzdm01L0h6d0k2UTFXdTlySXBabHFhZklFTEJB?=
- =?utf-8?B?TCtiaTI0WXZMaysyRWlVZkpqUlRlZEppc3BBcktLTUlJVElrRXZ4bVRvQWxB?=
- =?utf-8?B?Yk9ERVdQYXI3eVJGYU1oSEp5ckh0QkxSbVJ1bmsxeGxZT3Q2VldSRG1iUTBu?=
- =?utf-8?B?UWNUMGY5OXh2RDFmVmhkQmkrVWtCcDJpVXJhSlp0NGphMnJUQmswVFdraGFv?=
- =?utf-8?B?MjZaSXZUQWQ2Q1A0aTB5NStiMGhJd1BKbXlyQmVISWhORzZvVkNaOXlkdWxV?=
- =?utf-8?B?UEgwVG5rWXhNaC9JdHJoTnR4YzlDTU1tVjBnaGlUaWJrQ3hSQ3RKeFRyQk5i?=
- =?utf-8?B?Y0hRdWFrRE9tdE1OOTZJYTh3OHdBK3N5S0NKbnFMcGJXTFNwOFFSSy9FZnZh?=
- =?utf-8?B?VkdFZ2dKc3pOWDc3bHl3MWRiYlJ6VngvSE5uRytUTzR6TGZZYXJuL0RsRjFu?=
- =?utf-8?B?d1NMNVZVM0x4M3RWc3owNXdpVjc0MXRMTjFCZXBVQ24xUjBkMWRFUkpNWURx?=
- =?utf-8?B?MWZGVFYvcC90a2RlZUR4eStVRUIvNDBMYUVhbmF6OFh3V210anZ2N1RCSE5G?=
- =?utf-8?B?NzBxcDZya2h4SytNRWlCMzE0ZUsxdmQxdndMdGNQVUM0djJmRERYSjNqbVF4?=
- =?utf-8?B?TUdMU2p3WjJJY3ZzZ0ZsK1VGMXJLT1JLN25WOTJWZkVRRnNNbjJGU2o2QzdC?=
- =?utf-8?B?ejZnTXBTRTZGWVJDK2Y1QUNsYTRNYjRqMUVTd0FkM2Y3dWMycStBYlN6R1B4?=
- =?utf-8?B?aUZxa0R2SDdFcVZHZFgxdGE4aTZYdmxPZ0MvZ3kxVHg5UEdwdXFuUUZOcDFz?=
- =?utf-8?B?VFUyMWx5U1Y0VWhOZkRvbmU4em1LVkV2bFF3UElqTmhOMmlrQ2hSeGpCTm4y?=
- =?utf-8?B?VDFuYjFNcDVERVdraWlnS3F0ZEY4K2FmMHZ0TVVFcFArMGhudzJldUJjWjlt?=
- =?utf-8?B?VFhvNThrWXNsOTZqbXp0Y2dJenhyNS9aN3BGaHgvcnZtL3d4bEhVcmJnSXds?=
- =?utf-8?B?OFN6Zng0VU9oQTByRVpqOWVXd2pnSThHT3M5bitOSllBQzlZeVN6enFmK25k?=
- =?utf-8?B?c2tXQjA1U2VLWGl2SUZYTktZbE02WXladE1tNW1kemRxT0IwMlMwTTVTdXlT?=
- =?utf-8?B?aFlmQnkwUVJneUMvT1pqaW42Tm1MWGtQbm1CVkI1enBiV2REVVZLWi9neElW?=
- =?utf-8?B?N2wyZmgvRk9LTWYwa2pEVUwrOUlaaVByRlB4MERvUHlyeGp2QTNiTWZGZGsw?=
- =?utf-8?B?NWtBbnJxN1dGSmJKM3VCSkZNSGpkNFBDTExHRzZkZGtpSWpXSURhZmdLSjBR?=
- =?utf-8?B?UHYxaXVUVXZUS1oyMFNVVXVEbGJJYW5VRHMvbWNpamhLN0lJVnRDb1Izd2M4?=
- =?utf-8?B?OENSRzA2T1locm9aZmZBNWJvYlVqMlRIOUZuekpWRmFwbXZmbnBSQ1pXR3NX?=
- =?utf-8?Q?eUZzZoE8/DY=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB5824.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QWlkZW5SY3c3Zll5aUZvNU1FWHNCTldmZnFCc1Y1UmI0aEdiaWVvSmJldDJz?=
- =?utf-8?B?R0xjVHhKZEJtOVhpVUVPamc2Q1IyQVk2M3ZudFpxSkNvYlFMS2hJeDU3SnJu?=
- =?utf-8?B?dDYxMzJMQytkelptS0t4dkQ2eWFHMzVaY3ZwRWo0VWg2T25EL1RzVnBmYnhi?=
- =?utf-8?B?Ty9XbE5KQW9EWERBcHRPeTNBTjlHU1VQWjRWY3VjZVBwLzVqWHBoVlpueVA5?=
- =?utf-8?B?bkdvWkpZdG5pek1PV200ZkRDMGU5RVBFS3V4ci9LdSswV2t4d2lIR0FldVJt?=
- =?utf-8?B?QmxibFo1M0QwTWtLSDhCMjRqNG5wTjU2ZExnbEt4VG5oUU8xam9XaXBCSlph?=
- =?utf-8?B?ZmlyQU0rR0tzRklEOXlra3Q3UUdPamFzeTRRQ1Z1bzZKN2h1U3lUZnc3RE50?=
- =?utf-8?B?TmNRbTlmZWtnRHNNanJxaXQ1ZUJZQnNGQms5L0pCN2hraTczYzZNMUtmTTBp?=
- =?utf-8?B?YW1CQmhPVkxVTEl3MWdHUUhUZFdvNVB2a1hSYzBMRXNnNlZ5OWI0Y0sweDEx?=
- =?utf-8?B?T3Mxbnd0NVVVdENidFg0TllYNUhhR3NNWUpYVEtSQUpoWWtnSWk0QkdYdmM0?=
- =?utf-8?B?ekdLbVF4Q001QkhNTlJuUzdvRjc5emE2Nk00WkdjTEdJTm5DQmVub2w4aWxP?=
- =?utf-8?B?SysyT1NiZURUNUR4RjEyc0VFNHE0V2paRWIvUnNKRkhiektFSExJL0FUaUI2?=
- =?utf-8?B?QVAzK2VjMW53SmY2QWFKK0w3UmtWUGNPQUoxdm1vQzhXa2lwOTVsTU56QWdZ?=
- =?utf-8?B?VXExcExIMllCSU90M1kvUjRTbUhJTGlvS28vY05OQ294MHRSSUZ5ZGowMmlF?=
- =?utf-8?B?b0padGJmS1RTK21IZ3V0L0xnemdlV1dSSWlTbDFzT3VkUHNyOFhNT3g0ZG1P?=
- =?utf-8?B?TkZ0dTBmeWk5RmtkU3kySXFHZThndGhPM0NPOUs3Kzl5UFJ6TytzYklJTkNj?=
- =?utf-8?B?T3poK3lrSjJWZVZWNzUwcjU3U0VwQ3V5azdCbWh0UnE2b2JHVTRIcnlFbmt3?=
- =?utf-8?B?S3UvcEdYZzBGcklKdDVOWVgzRkFDaUNicVVyQUlydktUS2ppcFNaZEhYNkRS?=
- =?utf-8?B?blFzR0VoaURvTE1nMmk0bk1sL1NhU2NQVGc2M3U5SC9NVjc0MmhMbGduQjA5?=
- =?utf-8?B?TkNxc0Y0SjhWeHNsWlo0Q1Y4b3BSOUc1Z2wza1IwODROdXUyQXhXRmw5d1hP?=
- =?utf-8?B?LzdSRjAvaXlURVFNa09paG1CWFlxU1lzS1pWb0F6WWZ6ellJaUZiYjduU08x?=
- =?utf-8?B?QURjZHZ4USsvbnhVellnUmxxbG1ETG5XWnc4azNTN0kvbGh5WU1mSWRaUVIy?=
- =?utf-8?B?SlNhMnF3eloydFVka29TZkhpV2I5VzRUc0FYNjRaUm0rUHBQMkk3bG5zb2FD?=
- =?utf-8?B?amVWT0hmclVYRXRrSWRNY3VmKytua2duU1czd3U2Rml0WXZkaXJmSW5ZZkdV?=
- =?utf-8?B?V2VaMkc4WUJJZEY5U0tMVnlGcVliMHpCTGpWRDRkMGlVMzFKOGJqdmtkSHlC?=
- =?utf-8?B?RDZPdmhsczdZeXRkL3hYZmVuUDdMbkFhRVFOU2xRcFpiMVNmVDhpMTFQbkhQ?=
- =?utf-8?B?R2R2OElmV28wU0pBTVhOSzgreFF5TmlIa3lqRCt1MUFGZ2xzdThBazZhenow?=
- =?utf-8?B?M0tqK3I4RXUxeUdzak5JZjVyZFpCWXhRYkZGN3pwajZtMDZQOVlUeVRkWU1p?=
- =?utf-8?B?dGpMTUhhbmNnaUgwTWVZZ01nVFdLQUkvTzlXSURwZmgzSXlHZVBjV0lHM1hx?=
- =?utf-8?B?a1BYelpuQUxFT0VzeUNla1lzcnNySktuc1BPNUJVZDgxQm5RQVRrRVU1Q2lT?=
- =?utf-8?B?eEhnejNLSHcvZkcrWDlJelRLRHRQWk1QQklmWEkralRlN3lzY1RTKytTTEVk?=
- =?utf-8?B?R2JROFM3bWdacm83RktZQW1COW0rRm9rRGkzcy9tV1o1TU9XQzBnMm9CYVFv?=
- =?utf-8?B?eC9ScHN5SFl5MG5HN05GeGxBOWFhSDlqMnRQVzdwaUdxMUZMVG5vdWVETVdJ?=
- =?utf-8?B?WGpqcDRwN0pUYkZtdnJlTDI0enVsVW9EaENHdmEvZVdTbmhrWDVLY1BYZjNV?=
- =?utf-8?B?eWQ3a1VMMmJEOVQxRDZUWk5oMVZ4RzVYSWw0RGZsNTNyYmdKNHBWL3JhckdJ?=
- =?utf-8?B?WGVJREtWbTU5aHdNQ2hUV0tUWEhwRWhtSXN5UzhzVFJDZVNRYmxJSWV0S1p6?=
- =?utf-8?B?Unc9PQ==?=
-X-OriginatorOrg: eng.windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0fc6a68e-6919-49b9-9502-08dd82fa00bc
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5824.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2025 06:34:02.4004
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N6n6yzy8mxMChqW0Olw+YJUvJHrF9NeDMW3A2VO2x9tdGEnuRIeZiL4E3GL7bcDRDEU06hDKJedcZPGwgseb0UjG5shP/80nNNDlpb43Xsg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6550
-X-Proofpoint-GUID: yXl0aFSPAbakgxN-zFlyfD5M8M08274d
-X-Proofpoint-ORIG-GUID: yXl0aFSPAbakgxN-zFlyfD5M8M08274d
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI0MDA0MSBTYWx0ZWRfX+WhM8MY/vnft Pw9vGb9WghBVYwdeGq1InEP95PSuyFCYOKcmr8ZEs9IbBsuHsk2AKwjRYeqC6GbZRIFYYkM9caW 4lrgbsd48yvQDgyNbWRlXmt9iqpf63kdD4fBnWf8moyPN4V1gtBzqSwlLIhp61Skw2L5EJIWPx6
- 081o9vgFJUf1pUvqFhHzxzsLyAaNWIWy3pnA4siud1vekgUYzupdYbSNTUrnRaLIOo6V0/d5WDK LZKldaxqDg7aYRs5ZkriLf9BlQafXlzPwDFqUNPGPZxqUu+qa4f/kplfZ09JWvYAdA9l8woVwx+ +9NEQV0Sm+ldABp0hMsiCvxdLP7/uEiawFUA1k0OCQ6mM47axYQmiwr/jRfxo1SIe+yTEiy2zYq
- 8V0eQ6H/ETXLCVoT6ph6K3oa/2XOVwPmbceG4pOJQ2Yi1mjp64W7vOTwnmxDgVIwqxUSP3RU
-X-Authority-Analysis: v=2.4 cv=Sa33duRu c=1 sm=1 tr=0 ts=6809db5e cx=c_pps a=Bc47kgIQ+uE7vzpOcRUeGA==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=XR8D0OoHHMoA:10 a=JfrnYn6hAAAA:8 a=hSkVLCK3AAAA:8 a=1XWaLZrsAAAA:8 a=t7CeM3EgAAAA:8 a=lT-utWL-DES3DCTn1ZAA:9 a=QEXdDO2ut3YA:10 a=1CNFftbPRP8L7MoqJWF3:22 a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.680,FMLib:17.12.80.40
- definitions=2025-04-24_02,2025-04-22_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- phishscore=0 bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
- mlxlogscore=999 spamscore=0 malwarescore=0 priorityscore=1501 mlxscore=0
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.21.0-2504070000
- definitions=main-2504240041
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68094f51a7b01_71fe294c6@dwillia2-xfh.jf.intel.com.notmuch>
 
-Hi Greg,
+[Actually copy Tom]
 
+On Wed, Apr 23, 2025 at 01:36:33PM -0700, Dan Williams wrote:
+> Naveen N Rao wrote:
+> > On Fri, Apr 18, 2025 at 01:04:02PM -0700, Dan Williams wrote:
+> > > Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> > > address space) via /dev/mem results in an SEPT violation.
+> > > 
+> > > The cause is ioremap() (via xlate_dev_mem_ptr()) establishes an
+> > > unencrypted mapping where the kernel had established an encrypted
+> > > mapping previously.
+> > > 
+> > > Linux traps read(2) access to the BIOS data area, and returns zero.
+> > > However, it turns out the kernel fails to enforce the same via mmap(2).
+> > > This is a hole, and unfortunately userspace has learned to exploit it
+> > > [2].
+> > > 
+> > > This means the kernel either needs a mechanism to ensure consistent
+> > > "encrypted" mappings of this /dev/mem mmap() hole, close the hole by
+> > > mapping the zero page in the mmap(2) path, block only BIOS data access
+> > > and let typical STRICT_DEVMEM protect the rest, or disable /dev/mem
+> > > altogether.
+> > > 
+> > > The simplest option for now is arrange for /dev/mem to always behave as
+> > > if lockdown is enabled for confidential guests. Require confidential
+> > > guest userspace to jettison legacy dependencies on /dev/mem similar to
+> > > how other legacy mechanisms are jettisoned for confidential operation.
+> > > Recall that modern methods for BIOS data access are available like
+> > > /sys/firmware/dmi/tables.
+> > > 
+> > > Cc: <x86@kernel.org>
+> > > Cc: Kees Cook <kees@kernel.org>
+> > > Cc: Ingo Molnar <mingo@kernel.org>
+> > > Cc: "Naveen N Rao" <naveen@kernel.org>
+> > > Cc: Vishal Annapurve <vannapurve@google.com>
+> > > Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>
+> > > Link: https://sources.debian.org/src/libdebian-installer/0.125/src/system/subarch-x86-linux.c/?hl=113#L93 [2]
+> > > Reported-by: Nikolay Borisov <nik.borisov@suse.com>
+> > > Closes: http://lore.kernel.org/20250318113604.297726-1-nik.borisov@suse.com [1]
+> > > Fixes: 9aa6ea69852c ("x86/tdx: Make pages shared in ioremap()")
+> > > Cc: <stable@vger.kernel.org>
+> > > Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> > > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> > > ---
+> > > Changes since v3
+> > > * Fix a 0day kbuild robot report about missing cc_platform.h include.
+> > > 
+> > >  arch/x86/Kconfig   |    4 ++++
+> > >  drivers/char/mem.c |   10 ++++++++++
+> > >  2 files changed, 14 insertions(+)
+> > > 
+> > > diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> > > index 4b9f378e05f6..bf4528d9fd0a 100644
+> > > --- a/arch/x86/Kconfig
+> > > +++ b/arch/x86/Kconfig
+> > > @@ -891,6 +891,8 @@ config INTEL_TDX_GUEST
+> > >  	depends on X86_X2APIC
+> > >  	depends on EFI_STUB
+> > >  	depends on PARAVIRT
+> > > +	depends on STRICT_DEVMEM
+> > > +	depends on IO_STRICT_DEVMEM
+> > >  	select ARCH_HAS_CC_PLATFORM
+> > >  	select X86_MEM_ENCRYPT
+> > >  	select X86_MCE
+> > > @@ -1510,6 +1512,8 @@ config AMD_MEM_ENCRYPT
+> > 
+> > As far as I know, AMD_MEM_ENCRYPT is for the host SME support. Since 
+> > this is for encrypted guests, should the below dependencies be added to 
+> > CONFIG_SEV_GUEST instead?
+> > 
+> > Tom?
+> 
+> The placement rationale here was to have the DEVMEM restrictions next to
+> the ARCH_HAS_CC_PLATFORM 'select' statement which is INTEL_TDX_GUEST
+> and AMD_MEM_ENCRYPT with SEV_GUEST depending on AMD_MEM_ENCRYPT.
+> 
+> > >  	bool "AMD Secure Memory Encryption (SME) support"
+> > >  	depends on X86_64 && CPU_SUP_AMD
+> > >  	depends on EFI_STUB
+> > > +	depends on STRICT_DEVMEM
+> > > +	depends on IO_STRICT_DEVMEM
+> > 
+> > Can we use 'select' for the dependency on IO_STRICT_DEVMEM, if not both 
+> > the above?
+> > 
+> > IO_STRICT_DEVMEM in particular is not enabled by default, so applying 
+> > this patch and doing a 'make olddefconfig' disabled AMD_MEM_ENCRYPT, 
+> > which is not so good. Given that IO_STRICT_DEVMEM only depends on 
+> > STRICT_DEVMEM, I think a 'select' is ok.
+> 
+> Agree, that makes sense, and I do not think it will lead to any select
+> dependency problems given STRICT_DEVMEM is "default y" for x86.
+> 
+> > 
+> > >  	select DMA_COHERENT_POOL
+> > >  	select ARCH_USE_MEMREMAP_PROT
+> > >  	select INSTRUCTION_DECODER
+> > > diff --git a/drivers/char/mem.c b/drivers/char/mem.c
+> > > index 48839958b0b1..47729606b817 100644
+> > > --- a/drivers/char/mem.c
+> > > +++ b/drivers/char/mem.c
+> > > @@ -30,6 +30,7 @@
+> > >  #include <linux/uio.h>
+> > >  #include <linux/uaccess.h>
+> > >  #include <linux/security.h>
+> > > +#include <linux/cc_platform.h>
+> > >  
+> > >  #define DEVMEM_MINOR	1
+> > >  #define DEVPORT_MINOR	4
+> > > @@ -595,6 +596,15 @@ static int open_port(struct inode *inode, struct file *filp)
+> > >  	if (rc)
+> > >  		return rc;
+> > >  
+> > > +	/*
+> > > +	 * Enforce encrypted mapping consistency and avoid unaccepted
+> > > +	 * memory conflicts, "lockdown" /dev/mem for confidential
+> > > +	 * guests.
+> > > +	 */
+> > > +	if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
+> > > +	    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> > > +		return -EPERM;
+> > > +
+> > >  	if (iminor(inode) != DEVMEM_MINOR)
+> > >  		return 0;
+> > >  
+> > > 
+> > 
+> > Otherwise, this looks good to me.
+> 
+> Thanks Naveen, can I take that as an Acked-by?
 
-On 4/23/25 22:15, Greg KH wrote:
-> CAUTION: This email comes from a non Wind River email account!
-> Do not click links or open attachments unless you recognize the sender and know the content is safe.
->
-> On Tue, Apr 08, 2025 at 02:10:44PM +0800, Xiangyu Chen wrote:
->> From: Peter Zijlstra <peterz@infradead.org>
->>
->> [ Upstream commit 517e6a301f34613bff24a8e35b5455884f2d83d8 ]
->>
->> Per syzbot it is possible for perf_pending_task() to run after the
->> event is free()'d. There are two related but distinct cases:
->>
->>   - the task_work was already queued before destroying the event;
->>   - destroying the event itself queues the task_work.
->>
->> The first cannot be solved using task_work_cancel() since
->> perf_release() itself might be called from a task_work (____fput),
->> which means the current->task_works list is already empty and
->> task_work_cancel() won't be able to find the perf_pending_task()
->> entry.
->>
->> The simplest alternative is extending the perf_event lifetime to cover
->> the task_work.
->>
->> The second is just silly, queueing a task_work while you know the
->> event is going away makes no sense and is easily avoided by
->> re-arranging how the event is marked STATE_DEAD and ensuring it goes
->> through STATE_OFF on the way down.
->>
->> Reported-by: syzbot+9228d6098455bb209ec8@syzkaller.appspotmail.com
->> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
->> Tested-by: Marco Elver <elver@google.com>
->> [ Discard the changes in event_sched_out() due to 5.10 don't have the
->> commit: 97ba62b27867 ("perf: Add support for SIGTRAP on perf events")
->> and commit: ca6c21327c6a ("perf: Fix missing SIGTRAPs") ]
->> Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
->> Signed-off-by: He Zhe <zhe.he@windriver.com>
->> ---
->> Verified the build test.
-> You missed all of the fix-up patches for this commit that happened after
-> it, fixing memory leaks and the like.  So if we applied this, we would
-> have more bugs added to the tree than fixed :(
->
-> ALWAYS check for follow-on fixes.
->
-> I'll go drop this.
-
-Thanks for your info, I have checked the full log and there is another 
-commit to fix current commit,
-
-Please ignore this patch , I will try to backport the fixes to 5.10 and 
-resend the review to list after local testing.
-
-Thanks.
+Yes. I tested this and it solves the issue we see with SEV-SNP guest 
+userspace access to video ROM range. For this patch:
+Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Tested-by: Naveen N Rao (AMD) <naveen@kernel.org>
 
 
-Br,
+Thanks,
+Naveen
 
-Xiangyu
-
->
-> greg k-h
 
