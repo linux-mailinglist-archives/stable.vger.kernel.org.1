@@ -1,108 +1,124 @@
-Return-Path: <stable+bounces-136492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67307A99E61
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:40:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD4DA99E98
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 04:03:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FE665A5510
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 01:40:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E6ED1893ADC
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 02:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76E61CDA2E;
-	Thu, 24 Apr 2025 01:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C0B17BED0;
+	Thu, 24 Apr 2025 02:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GdJSl9zL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5GPV34l"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C6A2701C3;
-	Thu, 24 Apr 2025 01:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359644A29;
+	Thu, 24 Apr 2025 02:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745458839; cv=none; b=anAR4Q+6B5aWIMnXlcN/ZhtJ+faK5MPMMAjkOYwPmiJZwimOyR1VlSQZtVrY2HoCeBQdNCBs/M8lQTkF6EJ7RQEwcyN8SxzUlunBjzVtWUAP5nw8v0oXoIeZdMmdw++KcksvXUruT6zVMnzWBi2hArfnlPRmDotRTddZgbMK2mI=
+	t=1745460213; cv=none; b=SICKQ7+saZPlCX2bFTBbi6BpdL0f+q/K7sLdr1cNeYrvxvUqUBgXVpwEhc77VpPMNbu38QU/nov4SDyKHv1DkQOH4hc2MZgihGBT6lTkNPTwcW9pSd/ahOq0VzAUfTSn/C+5EdfU50LWUiuBZyh/OjyruMaY2prkHzphXofSR8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745458839; c=relaxed/simple;
-	bh=GxcZbzXAsyopNmam3IbbTcoy0AzAFCempRRT2l3+OW8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ga8FgmgI9ESAEdtDEd7RHOM2YMwvcQqhzHbssvTp3ZJKo50/YwwFmvjXNWTBsN4o/PjBVGt+tLLmlFazIJs2LiH/ffT47g8vTZjHhAEr8j4+fVM7PopHOmNgkELjxAaMlCtPy6pJI4ku9smo9jcshku+fu/2FBPA8QbCaqQblbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GdJSl9zL; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745458838; x=1776994838;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=GxcZbzXAsyopNmam3IbbTcoy0AzAFCempRRT2l3+OW8=;
-  b=GdJSl9zLlzecN3enylysJHdd7d+K52ZttbogMYO1hN9q5JCXp6slzzEl
-   c9bjQSP0vLSg0J2bslth1TD02nWJhJl4QGdtM/7/BVyE5EunZ27DVRIpT
-   3Dn4VIPhA0tTQQYQUIAbC8oXuoElh4fuF8hrHrVDvvK/jCawTAArAJvuk
-   zru8mhdNAAtz/1SP20ELvaqPiO3eSWLLZH3K7evTREVAKWAn25tUQRm6h
-   GdAVT9XzudwddSDEaI8GHqCtEgN22K1But/EJCpXnndhZ7UX/m4/fdLKc
-   AxFD0bwB0qkxgEkBFiUhbSGqTE/YbAW/3bGfUGtxz51AY5AHEJCuIZi/Y
-   w==;
-X-CSE-ConnectionGUID: TjuD8FZkRJGgQRyM2n8/1w==
-X-CSE-MsgGUID: UjpVXT5hTa2fX+ZPwKLBPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="57718078"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="57718078"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 18:40:37 -0700
-X-CSE-ConnectionGUID: 6+oKY1WXSyKUROLt/jVNnw==
-X-CSE-MsgGUID: krdCVcNfT4+8MsuMpGylSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="132999771"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 18:40:35 -0700
-Message-ID: <d9756d68-9d40-4fa7-8d11-5a260dc4f4cd@linux.intel.com>
-Date: Thu, 24 Apr 2025 09:36:19 +0800
+	s=arc-20240116; t=1745460213; c=relaxed/simple;
+	bh=frVu7i0unayAF/vcXkdvWuD/HBqvYDiTRKb7kPsqwZ0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lsPKz3WjND+PtD5C6oxa0VY9SgPg5ftZJYCACLqEKOn3Yj0PwJ4MimpuxgrsXK8FbfwYuq3KvXGAxhhBqKIorWUNRKmTdGKsAlIXJlG9V3AEf/sK/ms2Krrq+HRMskp9cWUcelHSExa/zNAe3XgytE/bpIzjXrwb2tAtLjUuMeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5GPV34l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9512EC4CEE2;
+	Thu, 24 Apr 2025 02:03:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745460211;
+	bh=frVu7i0unayAF/vcXkdvWuD/HBqvYDiTRKb7kPsqwZ0=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=I5GPV34lkCde7VRTCkep1A6AhE40s0M2I7Od+Y67CebqFH2knsHoxGY6YpztwoZCZ
+	 8K95mM3nVAjfNuf2Cd1kSd++IaLpRIeeG5MSqlXXP2ZUBq+ZOqzzoL1M/l5yuh8DTk
+	 rLjoHLXXedcFY39t14Ifb+OKbIiFUWsE5Uxd/vC6jcISK7ycSU2FtMIXWCIzfPQ7hh
+	 kZ/t+0bR2xp/3IPb0tVlfkoDZoAjXevWgBPmsl9RG4/Pmwxg0L65qK+oPmDDaTfrKX
+	 5iQkVyVSKErWqxPcsjzPPzjoNXtOAx7ULBOXV1lJF/EDtYyR4rfJCHbUqlbfF/i2Fl
+	 WljVyTl2dtlWg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83B52C369CB;
+	Thu, 24 Apr 2025 02:03:31 +0000 (UTC)
+From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
+Date: Wed, 23 Apr 2025 21:03:03 -0500
+Subject: [PATCH] spi: tegra114: Don't fail set_cs_timing when delays are
+ zero
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] iommu: Allow attaching static domains in
- iommu_attach_device_pasid()
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- shangsong2@lenovo.com, Dave Jiang <dave.jiang@intel.com>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250423021839.2189204-1-baolu.lu@linux.intel.com>
- <20250423142102.GL1648741@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250423142102.GL1648741@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com>
+X-B4-Tracking: v=1; b=H4sIANabCWgC/x3MTQqAIBBA4avIrBP8Bekq0cJstNmYaEQg3T1p+
+ S3e69CwEjaYWYeKNzU684CcGITD54Sc9mFQQllhlOatEL8wVS+l4ZtzTrlgg4gaRlIqRnr+3bK
+ +7wfRnhCvXgAAAA==
+X-Change-ID: 20250423-spi-tegra114-b88828c5c0f3
+To: Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Jonathan Hunter <jonathanh@nvidia.com>, 
+ Mason Zhang <Mason.Zhang@mediatek.com>
+Cc: linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+ Aaron Kling <webgeek1234@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1745460211; l=1447;
+ i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
+ bh=6Ntl3heYOtSRo+SbZlaWWlJ/8sphcbur4awnUfzmiKk=;
+ b=UngeTiHC4/irfiREWVxaOQlDY8BZIa8YqVXnNAGy9+5094zQFFqJTZfL0x7LsHsqt4Xzi66Qi
+ /gjS63hepyMAYsfBK0t3ZXzr3Aqn7BW9OywpDOqR/OVYdI1zkQ1Jluu
+X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
+ pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
+X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
+ auth_id=342
+X-Original-From: Aaron Kling <webgeek1234@gmail.com>
+Reply-To: webgeek1234@gmail.com
 
-On 4/23/25 22:21, Jason Gunthorpe wrote:
-> On Wed, Apr 23, 2025 at 10:18:39AM +0800, Lu Baolu wrote:
->> @@ -3435,7 +3448,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
->>   	    !ops->blocked_domain->ops->set_dev_pasid)
->>   		return -EOPNOTSUPP;
->>   
->> -	if (ops != domain->owner || pasid == IOMMU_NO_PASID)
->> +	if (!domain_iommu_ops_compatible(ops, domain) ||
->> +	    pasid == IOMMU_NO_PASID)
->>   		return -EINVAL;
-> Convert all the places checking domain->owner to the new function..
-> 
-> static int __iommu_attach_group(struct iommu_domain *domain,
-> 				struct iommu_group *group)
-> 
-> int iommu_replace_device_pasid(struct iommu_domain *domain,
-> 			       struct device *dev, ioasid_t pasid,
-> 			       struct iommu_attach_handle *handle)
+From: Aaron Kling <webgeek1234@gmail.com>
 
-Sure. Will make it in a new version.
+The original code would skip null delay pointers, but when the pointers
+were converted to point within the spi_device struct, the check was not
+updated to skip delays of zero. Hence all spi devices that didn't set
+delays would fail to probe.
 
-Thanks,
-baolu
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+---
+ drivers/spi/spi-tegra114.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index 3822d7c8d8edb9730e937df50d1c75e095dd18ec..2a8bb798e95b954fe573f1c50445ed2e7fcbfd78 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
+ 
+-	if (setup->unit != SPI_DELAY_UNIT_SCK ||
+-	    hold->unit != SPI_DELAY_UNIT_SCK ||
+-	    inactive->unit != SPI_DELAY_UNIT_SCK) {
++	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
++	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
++	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
+
+---
+base-commit: a79be02bba5c31f967885c7f3bf3a756d77d11d9
+change-id: 20250423-spi-tegra114-b88828c5c0f3
+
+Best regards,
+-- 
+Aaron Kling <webgeek1234@gmail.com>
+
+
 
