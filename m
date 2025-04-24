@@ -1,199 +1,107 @@
-Return-Path: <stable+bounces-136502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34309A99F4F
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 05:08:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41555A99F6D
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 05:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30E111946EF0
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:09:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCB6445735
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:12:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781791CAA66;
-	Thu, 24 Apr 2025 03:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BA019A2A3;
+	Thu, 24 Apr 2025 03:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="diSciXOc"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ctgxr0x1"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2054.outbound.protection.outlook.com [40.107.92.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81EE41AA1E8
-	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 03:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745464080; cv=fail; b=hIOq4KqyjzGsiEwYlpnD1kxev2FrvKoSqqTSNGLk34jjqpmFSgbG9wsUSTlltnjoUwZlDuTSlu3+xluPLSJw9ONRNlrRDrE5N6rFH78CKah+yvvJpgvDtxl7U/USBM2yf2lX5Ondr9SMDLbq4FUgvZhjMsRczqBu6V/3Z41nLUw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745464080; c=relaxed/simple;
-	bh=xDaY5NA191gOwLZnwj1UlNJyjDKIfBXmDiXc+uCvfhI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IZF2UhgU0mocB0ySzvDgQve31JZpfHO2no/MzNY79RmkwEVfGrri68R1qlzfuolmMOCXBbEe4WC/HjqresScfwFIk71UDRx3A0rHD6Qfqw11t4WKyuH5DRdXyCj6MYG1eg7r/U//s5TFc9Fn7zZ54uETe/8uQahwr7RB562SdnQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=diSciXOc; arc=fail smtp.client-ip=40.107.92.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mLqwGCH5y/ka53nbHYc6lXh37Ra1uA+pGuEoDdefmm8sDLTdw9/XUFdWQgCqsmY07kdY3xGtDv/svqID+7y7rKbORt29ut5850yi6LC3nrtaf2v4F3PYScV/IUpjI2xvgJAyxpy5zoWtaHD2ALDrVojZmW7NwFgnROmBFu+6KNpYNhAqv91OMKVLMN7Yu6PW+w8uYehMgxRhHNFFmp5spHKluP090JbeaIuqDMz/TmtmTGKaJBpD+rcBj+ZdubICMU6QcidLstC2HXjndjMsRm3HGW3DL+QEKo1KYCAhhJwUYymjcizmIIKKpk0bHej97jBPV1l3usCEZArXur6UCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4T+flvdCKGgyYDbCLIo6sHYCTE1edwGTVzihI0+v6KY=;
- b=Bd28e0b7DSX2KADwVwCsYNgd/LvzYhIf2e2xgK85APFXCIdXP5YqYn/kDJGbK/mK2qfIenZSgaPG8fkkxZPLaL7gknXLyWqcMmAlU1XyLxPVSO28MPc/gq0Pv2jzn2yrG42AMQoxLT6P4sNV4JW+cU59QvRyeqKygzY33tG0zRYe4LnnBOq2/7avmm7uf8P9Bqn9vqGks+YtZvwIDKLLfBQyShLEfOkuU/ilr18co5QiU9qabvNzvGfw2poTtq6uKhqNOTVLpp4f9uAMsKYQmOEv5MNwJ791n2v5M19M6Jb47EhsWmUsR0T3/OdK0A1ZLl0BsoJ9HuqXo1I8TXRMJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4T+flvdCKGgyYDbCLIo6sHYCTE1edwGTVzihI0+v6KY=;
- b=diSciXOcJg4qJPkyVUThRQwzMhcW3xfsZ/H72YQ5T/J6FJRB6YHzzEO3mur4OfafRwGce3yHxAmZMZMTOJ9DDMOdKM+pXstDSH+uYukVAkthEBZTTsA5zNs6799/LfLVuzcR8mTgafKDYhjeGgTre0a//DBk91QzqwnUpi+1zU4=
-Received: from CH0PR03CA0242.namprd03.prod.outlook.com (2603:10b6:610:e5::7)
- by SN7PR12MB7105.namprd12.prod.outlook.com (2603:10b6:806:2a0::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Thu, 24 Apr
- 2025 03:07:54 +0000
-Received: from CH2PEPF0000013E.namprd02.prod.outlook.com
- (2603:10b6:610:e5:cafe::e0) by CH0PR03CA0242.outlook.office365.com
- (2603:10b6:610:e5::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.36 via Frontend Transport; Thu,
- 24 Apr 2025 03:07:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CH2PEPF0000013E.mail.protection.outlook.com (10.167.244.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8655.12 via Frontend Transport; Thu, 24 Apr 2025 03:07:53 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 23 Apr
- 2025 22:07:53 -0500
-Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 23 Apr 2025 22:07:50 -0500
-From: Wayne Lin <Wayne.Lin@amd.com>
-To: <dri-devel@lists.freedesktop.org>
-CC: <ville.syrjala@linux.intel.com>, <jani.nikula@intel.com>,
-	<mario.limonciello@amd.com>, <harry.wentland@amd.com>, Wayne Lin
-	<Wayne.Lin@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 2/2] drm/dp: Add handling for partially read under I2-readC-over-AUX
-Date: Thu, 24 Apr 2025 11:07:34 +0800
-Message-ID: <20250424030734.873693-3-Wayne.Lin@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250424030734.873693-1-Wayne.Lin@amd.com>
-References: <20250424030734.873693-1-Wayne.Lin@amd.com>
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9565444C77;
+	Thu, 24 Apr 2025 03:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745464347; cv=none; b=Ga0iHd0zJaHf/+Xe+dcqbugqA/8pyMmXWLoxLgco12RPNFseK2wKEKUGbsKq4lMxS+rkSk0QhNAAV0rb1x4CpqxrzeO544uXN5vF+70nkPQYJHRE0mejQort062AeA0+LnvMXX1HoJlgY1NgZFESqEad2SrON3EElrqiD6KvYCc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745464347; c=relaxed/simple;
+	bh=KxI7ZwwdRe9K0y2ib/3b0x21CNzXlTubOfKD4w810Nc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s0j9lwLlOc9HN7N39pPBVbo2lrhQcx0KYAAvGFbEgsXk7UzMmAeA16knWg50FUOYPooWefSU57abGSPXSa/Iu7/CIDz3DEYwOCBciC8JnekAgGoPUpXLMD/FZr5YCZIuF0JP3CZ2K9h3R5QjLWOjx0DARkiN23P718FbHm1Z6J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ctgxr0x1; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=A09Ml
+	t/Mb26VyS9VXRXqUFoJt2UqYjVyFJddK4O2fxQ=; b=ctgxr0x1JThALzXsRdeaN
+	7pkAerYCeHPIosPVi8PI4o1TwF42xWo2lXhxOLesmiq7GY365TGJYlLDWy5ZIA68
+	8KDOXv5lQ/4LT7TrFlYuDlFV17VV4CglWrpitQSy4HPeQ/YsC2mvTINGJFffXdaA
+	J3OQV8R32qvzPBUGwoYJ7M=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDnTxrBqwloZo4dCA--.57924S4;
+	Thu, 24 Apr 2025 11:10:58 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: slongerbeam@gmail.com,
+	p.zabel@pengutronix.de,
+	mchehab@kernel.org,
+	gregkh@linuxfoundation.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	hverkuil@xs4all.nl
+Cc: linux-media@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH v2 RESEND] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
+Date: Thu, 24 Apr 2025 11:10:53 +0800
+Message-Id: <20250424031053.3508137-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB03.amd.com: Wayne.Lin@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000013E:EE_|SN7PR12MB7105:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8732362c-b0b3-428a-cf40-08dd82dd34b2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QnUrenhacG1nQ0xRQncyYUZvM1IxQitWMXgyMXJHNmdGRytseU83aE9LOVov?=
- =?utf-8?B?YlpreGhTT29VWk9sS1NQdWMvRU5GeWVFSXQ2dFliOGtqVEpubXZiZk9sSDlR?=
- =?utf-8?B?cGx1K21KWktaOUhkeGxodGxTUXl0VXdlcnpnTVhVaEVjZVBZM0l3ZU1iYTNI?=
- =?utf-8?B?NHVjdmJMRFlpMVlhM3FoMUhPVlBqLzVLQWxhS213czA4akt6YVhzSmhqV1Bu?=
- =?utf-8?B?cW83R3dWN0J5WWE3NVF2Z2pDaGV3KzlESVFuZEZWaFNNbHZFclNZNVoxTXBT?=
- =?utf-8?B?TWZLWDlRaUlzQkxieCtQNTZWcEpaa3FibWFRSk95dExVbVYza0pMOFo2bFlN?=
- =?utf-8?B?TnRjSnpiMzM1WFhYT0hhR2tjZ1h1WFZXa25GMUhRSkkyQTltUjVtNFZhN2hY?=
- =?utf-8?B?Sk9MSnJVWTlEWGZSTmZZNzM3NFBFa2tTTCt1QUhHaDdyTWFPazJlQjBMT0tE?=
- =?utf-8?B?YzZzM2dreXE4aFBmSk9DMU92ay9rYlcydWdhNW5nL0JPTEZ3TUkwZlJ5d1gx?=
- =?utf-8?B?VzRZTitOOGVPcUUvYS9wWnMwZWpGOEd1aWdXcGZhSTlqKzNYbklXMjVMUkdH?=
- =?utf-8?B?ZnlScS9tdndqWkxvU094WkRrZmw3bmdndlpPdVNNWnFhYzZTM0dEcVY1MDhw?=
- =?utf-8?B?TVBveFBkL3d3L0JRaHRiVWlYaEhFem94NnQ0Y3p3TzZHV0NuWXNwZnUxakl3?=
- =?utf-8?B?NUZ2cDZlU1pqTE43eXEyS1VPZk1WeEhQbUw5aWNMQ2l3ZHdoVkxPSTM0ejZW?=
- =?utf-8?B?K0N0Y1ROU2hONnZPR20yOXc3dEkrL1Z2TXdIQU1hY0prR1VTK1dhci9pNmM2?=
- =?utf-8?B?UXloaHNTdit0aDVtMUlLOElyOWhFaVdhNXQvWXFDQzlObFQvQnRMd2Y3SytE?=
- =?utf-8?B?SVNFOVFBOXJzNjJ4VldLM1k1TmFTam9lOTRpaVNvbXE3Yzl1M2VlWVJZYjFG?=
- =?utf-8?B?b0g5LzFkbzVlOTkrUzd0ZytQaFNoREdiWmJkQzBleC9pUldpRnBGM0tBSVJM?=
- =?utf-8?B?TGMvM005SlY4MitMMkJrQjk2ZksySW42WGdJSmNZbUYwSWtrdzJKK3JGYWFB?=
- =?utf-8?B?WEcrV0hIaFFMcEE2cE5XZ0l3ZENYRm5FNEZTcVA2TENHdk4xWGxYWVVLODMz?=
- =?utf-8?B?WVpQZVc5MzdWT0pDN1pseHNtY2E3YTJPUWw2dmhGRVVlNjBkUTh1VEVKN3Q4?=
- =?utf-8?B?K0hIY3pLS2hYTXdGRVE0MGFOeGdmMWtycHNROGtic093RlZTaDRFTnN0Vm1B?=
- =?utf-8?B?Mm5XQm9zYWhyTGs5MXRVY0h0d2JiVU5vYUMrVXMrWFR6RGZvT0ZpTjVPVzhx?=
- =?utf-8?B?Nk4xQnBHVDRvZ1E1OGpHbEJrdVQ2UGlGaHJOVUx4M0d3OGtRazlvQm45Vnpa?=
- =?utf-8?B?MVM2aUVwaDAzUjM4ZGt5T082ZFdqcGh2Tkl0TmUwcnAxbC9JVkxVY1B0R0lK?=
- =?utf-8?B?NGZRWEVaU1kzNmUwQjdTRnkvayt6a05VVVI2Y1A0WVBZaFZudEFzdHlVRFlY?=
- =?utf-8?B?Z2dneGk5T0hwcXZ0SkQ0eVZ1bXQ2TURKczVobGNraWVrTFd3QmMvUmpjRUNU?=
- =?utf-8?B?ajFZbXk3N3ZxbzNMNkRWZnN0YVJIa0xVb3MxQW5ST2xqOVFTZnBUZThuZHI1?=
- =?utf-8?B?Y0RGd0ZCNittQ2FqSGtVOXJxRlhZQ2dRY2tUTlRjWDFTMmpkRlVsWExPSDg0?=
- =?utf-8?B?U2VPUEp0U3R5a0NCajFSRFhoRy9aQ3B5TkJzYkRuRXJIV2xCb2NIZ0lTN1pz?=
- =?utf-8?B?MnJiOGhkQzQ1TE5YcDI5UnJOOEhGcVhnaTFERmJxWVJ1VVFKUXFLOHNaQTlS?=
- =?utf-8?B?U2t6a2JEdzZldk4xVTMwRWhMYjkzekpCbmlyYVNGeWFnVXdidkU0SkdHNlpB?=
- =?utf-8?B?NEtNWVEyQVBnZ0VseTR0Z1hJQ1d0aXZjOHpPNWJIdk9ZcVVPMTV4QkxlQVVs?=
- =?utf-8?B?UnpaMWY5THE5NEl0TDhxVGlUY1dUai9XR3J4bHN6dCtQdEFxbGQ4am5vVXlC?=
- =?utf-8?B?RVM5RHg2d20wK1hhaWlzNWJ2clZwNDFvQWY3ejV6Q1pwUzJYbTJJSlMwQkxF?=
- =?utf-8?Q?iFmMuO?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2025 03:07:53.8943
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8732362c-b0b3-428a-cf40-08dd82dd34b2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000013E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7105
+X-CM-TRANSID:_____wDnTxrBqwloZo4dCA--.57924S4
+X-Coremail-Antispam: 1Uf129KBjvdXoW7XFyxtFWfKr15GFy5JFyxKrg_yoWkWwc_CF
+	4FqryxXrWUC3ySy3W5tF1I934Sqrs29rWFq3Z0vFZ5XFWjy3WYvr4qvws3X34jgryS9F9I
+	yr18Jr1akr12kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRtCJPDUUUUU==
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0gA5bmgJqTxwAgAAsD
 
-[Why]
-There is no handling for I2C-read-over-AUX when receive reply of
-I2C_ACK|AUX_ACK followed by the total number of data bytes Fewer
-than LEN + 1
+Add video_device_release() in label 'err_m2m' to release the memory
+allocated by video_device_alloc() and prevent potential memory leaks.
+Remove the reduntant code in label 'err_m2m'.
 
-[How]
-Refer to DP v2.1: 2.11.7.1.6.3 & 2.11.7.1.6.4, repeat the identical
-I2C-read-over-AUX transaction with the updated LEN value equal to
-the original LEN value minus the total number of data bytes received
-so far.
-
-Fixes: 68ec2a2a2481 ("drm/dp: Use I2C_WRITE_STATUS_UPDATE to drain partial I2C_WRITE requests")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
+Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Changes in v2:
+- Remove the reduntant code. Thanks, Dan!
+---
+ drivers/staging/media/imx/imx-media-csc-scaler.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index 28f0708c3b27..938214a980a9 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -1812,10 +1812,11 @@ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
- 				drm_dbg_kms(aux->drm_dev,
- 					    "%s: I2C partially ack (result=%d, size=%zu)\n",
- 					    aux->name, ret, msg->size);
--				if (!(msg->request & DP_AUX_I2C_READ)) {
--					usleep_range(AUX_RETRY_INTERVAL, AUX_RETRY_INTERVAL + 100);
-+				usleep_range(AUX_RETRY_INTERVAL, AUX_RETRY_INTERVAL + 100);
-+				if (msg->request & DP_AUX_I2C_READ)
-+					msg->size -= ret;
-+				else
- 					drm_dp_i2c_msg_write_status_update(msg);
--				}
+diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
+index e5e08c6f79f2..19fd31cb9bb0 100644
+--- a/drivers/staging/media/imx/imx-media-csc-scaler.c
++++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
+@@ -912,7 +912,7 @@ imx_media_csc_scaler_device_init(struct imx_media_dev *md)
+ 	return &priv->vdev;
  
- 				continue;
- 			}
+ err_m2m:
+-	video_set_drvdata(vfd, NULL);
++	video_device_release(vfd);
+ err_vfd:
+ 	kfree(priv);
+ 	return ERR_PTR(ret);
 -- 
-2.43.0
+2.25.1
 
 
