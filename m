@@ -1,196 +1,183 @@
-Return-Path: <stable+bounces-136593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B5EA9AFA8
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 15:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F702A9B167
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 16:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E8049A5E87
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 13:48:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3096F923A88
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 14:46:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B51119B5B1;
-	Thu, 24 Apr 2025 13:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71ECC19CC3E;
+	Thu, 24 Apr 2025 14:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uYPH8lEo"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="UiBzdblN"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2087.outbound.protection.outlook.com [40.107.101.87])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEED619993D;
-	Thu, 24 Apr 2025 13:48:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.87
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745502512; cv=fail; b=MOJLFvS4vpKyPy9jEd+iHn3dIV2nbI+57AEXzTWF+nxR+I4GFTiAzp1QrB2kBxI/7aDADOztaUOKZaR16MnvEF21ErhSlr1Ba/dpCEgdxY4K1MuGkwGdC+oPAGQcZNGOaCElAGaJjtrqczoVDNc4PZty53G7fQtY8/S2hAIrjOY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745502512; c=relaxed/simple;
-	bh=51l29vM9tM/+S2bY4lRmzJDIA8GeDPaEJGJxy4I7DDA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ksqNbjfrZV20uuhIZLFh6ezkf1lri+llwMaNFXqCx+op1DE6YrHKi3ny23HKLaT1esRn8CSbw5T5ElxHTlmsD/nTH8QlKSPu+BfihGFYprcZTtPv7gufYFbBvcOHopvQP1Cvj5v0eiEZzqyMUTMA/kd5lse123+qCMvL2IDRyyk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uYPH8lEo; arc=fail smtp.client-ip=40.107.101.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xYH8SoAZw8Ce4Uig167bButOapDworqpYqBOYUMsWTamwnAqDdnxteTM+h18l9kqyqKPAl865tb1fqprkOQQ6V515TmlKAzhp6NuMzGnJm4n13IUQdp/k4keV6zJtNVy6pkKDzvoNIv02aCvNoMUfJ1k8nW2afy3GCY/e/JHvSHkFTYQP3WmLbXlNt5PsqqM0Tqe2z+mFyJPx1M6j/WifSDbgtQ8PziFnR4rlCbs4djOJr4ehmQZgm40NzgunoITTe6rZhD4bygh/+BCppCLTr/jIpXc9PF0865MDrJVP6gwJEhej/ohEbgNM2a4Ai/sDxh0Q20N1DAsdh5BuI5W0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lBe2lCq4bGsKe2iIwuGmPLxO3cPus2MHbNCCNhiyciw=;
- b=r2NCC60+Ute5/1CqHY1XqrNAZyFlQ7Xq9jWBNIQ4LEiHn3ubW9Qj5whXvyzuFMNW+cw6IHvYqL8rhEsR5kuBpoXcSxNUSgZ3yJ5dXB//j4hVxJhOIP7DKrUbdbdZVmZKbqoFkqb+/3BakRDwvgEUrJvxYEHkFU39ryV/5iRR1F+479NZ5XldKg4d6qHOoCagzdBwRC+ujgWU1Ji9W0B/YRVEu6WJu8wirQHV8fK1DsA/MzdZHYmn4Z1dEj7AKKUr3T8yb2kjd0dzVV8Z7fSuy+J9b9ydWeNp7aZ5xLVHCJiKxzA/n0eabKQMkiGpxLCvcND7fR0qkMSdSF9czPIp8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lBe2lCq4bGsKe2iIwuGmPLxO3cPus2MHbNCCNhiyciw=;
- b=uYPH8lEoCdxiiN5mcF2svMk5FzHp18pFm62o0QkMEqz4xRdUpanVBP2XuJSoFxhj6fWKONalwqdU683Bt526VjL1dsA+Iczhgi0WtOZAsZ99vfOtdgDYe3JpQnBKOR9ZEhdFt7+/+sNRSYtNSLq4bldezrslyJm+HyxqHiJxO6EQR/mC/3hPHG2/U7Vwb1ve7yR99mjnoyRc/xL8r+I8kB6wjoK+CYUjD6ZDfA3N49BLWKxkgDx5s42Dx8WEwIfBiPjGy7+YJqy42Vk38Lr0Bfo921YGxGeBTx9Bab+Z78F7uEd26ebWTfFqtpQrgr8ub+xftQ9snVuSrqVWaXDuyg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by SN7PR12MB6814.namprd12.prod.outlook.com (2603:10b6:806:266::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.27; Thu, 24 Apr
- 2025 13:48:27 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8632.030; Thu, 24 Apr 2025
- 13:48:27 +0000
-Date: Thu, 24 Apr 2025 10:48:26 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>, shangsong2@lenovo.com,
-	Dave Jiang <dave.jiang@intel.com>, jack.vogel@oracle.com,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] iommu: Allow attaching static domains in
- iommu_attach_device_pasid()
-Message-ID: <20250424134826.GQ1648741@nvidia.com>
-References: <20250424034123.2311362-1-baolu.lu@linux.intel.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250424034123.2311362-1-baolu.lu@linux.intel.com>
-X-ClientProxiedBy: BN9PR03CA0378.namprd03.prod.outlook.com
- (2603:10b6:408:f7::23) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F38612CDA5;
+	Thu, 24 Apr 2025 14:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745506029; cv=none; b=SZtTuGSqwSeOAgkazdEtnypL3/69ofMqk3HxtkQhuxOYTNhoOErzQf4z5QwhXFd/NB57g8E9yDgHbUINTtx3M9KUJDta7CYEyf/28xwV1YFYbylqWCzj63HIyMZeACtKL8115h5iy9JM3jx8q5AkD0R4mTIhfI4cFwp6DOlMraE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745506029; c=relaxed/simple;
+	bh=Bn7qKgmVirMnL4HSoD6+ySbU242thJzaLTltDmOvM9c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YOHyrghSLKMSGgPUJ9casVPkVL8lEYrVzGLY8Bd5cU663iCxks4Gv4GeaHbM7fZTqY2ElfuAV3H7cF8pX102Kh5d/9iKpVlZeO3elRVdPhJwD47DQndKt0J3N7/lNdEWzIsnCy5oG4j30KVKWt375MxVhn0jLlskUWCReFy46As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=UiBzdblN; arc=none smtp.client-ip=212.227.126.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1745506020; x=1746110820; i=christian@heusel.eu;
+	bh=BiYoI3t07zEC8MRuyXYTtYuABNrGYYjjjTp7cv/tN5k=;
+	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:Message-Id:To:Cc:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=UiBzdblNx8SwoBGVxvk9jjILOoLWahs1kH+IM9Jg1GoFjDtyCk7d6VMXlArVRrCV
+	 cImoPPph4TrSVxDGFE4IFj2DND54y/B6fE6KDxDealrOQ8kNrQq1/YvHSSPLMxZ9I
+	 xyk6DtjWUJEpcJV3O9PZPKmD0QBFd0KESuAK0mAVObJyNaehAL43rmKHkIgsC6GQl
+	 DAYR2elgIPK/3EdTRx5hyUD4BgpERUy+gRW35H43fpfG00yTsJNKg5kEuBpcJNqEu
+	 JLz6g3bh9yLkh4i+UQrKViu6W8HiUfsubgDPrBUJ4K26vux5YRRwkMWJ0FCbbYIOV
+	 QdVGVxbZY82aIH5o/Q==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from meterpeter.localdomain ([80.187.66.147]) by
+ mrelayeu.kundenserver.de (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis)
+ id 1M7auL-1uBYB23HSf-0093Pm; Thu, 24 Apr 2025 16:01:06 +0200
+From: Christian Heusel <christian@heusel.eu>
+Date: Thu, 24 Apr 2025 16:00:28 +0200
+Subject: [PATCH] Revert "rndis_host: Flag RNDIS modems as WWAN devices"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|SN7PR12MB6814:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9cc7cfd5-f28f-4785-c5a0-08dd8336b0a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BzgUd1kVAUO3XwjYwrIwG76/IIrpBE16XOJtNIG/AEUV9xosyc+Qw9gbxsJ6?=
- =?us-ascii?Q?GAkwH9bBxo4n+XWfKVuFDVvafChZ4NUfV6ym3TJpPgGMunQvD/nV9EuJI/9c?=
- =?us-ascii?Q?0xVUvbAFo6ENtHEDkKcCwWNkhREqUrMgBsA+oma8c8/cCTiZihSZn1CkwIxt?=
- =?us-ascii?Q?o3IihAio7dZ5ZzBvRYn7xJMms7ftgX7hB9qJk2C+VnCteePN/AlwTS2VvVhZ?=
- =?us-ascii?Q?EG4rV2iEywa4zBL/zASiqQYhUArSF5RnGmCT46z+TjqJ4cRo7pGnbfzwaM+Y?=
- =?us-ascii?Q?+iGeaS1l4Hw8lrudD2NWmdy+8liBqjkgN+BDFG6EpnrJ0ZuMixA3bPBYLc/8?=
- =?us-ascii?Q?NEbVfU3c/KuJc/vMY1BYtSO+NkUkU6A0EnQSEK942zJzP8h8jagJWblNMvU+?=
- =?us-ascii?Q?iwewDNKy7ozDAV3QwaFAX/j3fjg8LtpQ0wp7Pun2oM5q+2f7hX0lcRFae1AQ?=
- =?us-ascii?Q?15NN6M6Cq8WZvX14VsuFMvZMLyIZ9zqUqxp6yK38eg0V5DccvdQORynZ+JWZ?=
- =?us-ascii?Q?6z2OnxwqVzt6K6h4E3/zBUcvIs2+69QUp2hfEWGT/IXxOOwBYOQ64jYoNC3t?=
- =?us-ascii?Q?l7EKBHg24A02GZYxgJaOaskBlqR88y9tNnolE6MxsMcmdRIy/aZDOANO9Uyq?=
- =?us-ascii?Q?0BE9ZJ/2+1lsEvtiSGnlt94VWS61ZhuM7jBf2sRyaiNUajTkzxLQZ0vS/b/K?=
- =?us-ascii?Q?l8cTz2O4cmxwjXUscmGzobawQP91Z5Fnn9V6Iv0oE2ApZ3uRPVAI4FoNrepz?=
- =?us-ascii?Q?qMCXEWu/p28ZZuYJo9xroW4OiJvGce5oALrUG+2t+jILPt8hcsQ0WYIsMqg2?=
- =?us-ascii?Q?CWM2Ifgk7dF+69KdxcQWfGR0HLY+suLaAwXCqZSfJ/4VeJ7g4BPpTvKfuc94?=
- =?us-ascii?Q?DOxqePzZaKiKePHqbAnrDvHYFVMyRVDSOyrjP/r6E8E7zZBLdvJpjksPeV2A?=
- =?us-ascii?Q?LVZhnE+gVzbapSp+qnIf6wQb+froTSrknZkprVdPM1mBiJ56+hQMEPV2VwTY?=
- =?us-ascii?Q?/mOwGzbpgNJS8vEtyOLTeCz9zZcQ1UPWxI25KmW2+YdE76yfnt2D6IwhakuU?=
- =?us-ascii?Q?FbPOzzAaHEzwdA9vN+cABPL+yyWifXa6lsTnREvyz3G54gOA6+t2G0lToqnx?=
- =?us-ascii?Q?RoVXY+9V8BMKiEySJUknauTPmAgeYMYc2nn3moxFjfIcuHTgMk19ghuS3O3X?=
- =?us-ascii?Q?sK7BTpVRb0ylLZYSIxD+dDIqrl8h8kum9ni0o7znB3RprWg57HCMHNh1gq7y?=
- =?us-ascii?Q?6bzaeF42JKWihBzM+R//Dwdj6BpFrvVAL/RZPsWQe+6Q78cBLW39Wet5S+Lt?=
- =?us-ascii?Q?sPM972sPhfScCUa1peVejdbWd60bAsEdYVUCek7Npc1PZialnH0wJZRpRpj0?=
- =?us-ascii?Q?/DSWgjZO71OfCstCM9Le8Ki/IGAB4C//yYDR/Y3BpDyymn1Ew/52eGqcHqod?=
- =?us-ascii?Q?aQOx7DbNWok=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?oXQBNV8ClbEYWrDnfXNOezSZW25Qb2LGrleDGvYxmbafS0cKVlMzb0I0Btar?=
- =?us-ascii?Q?HhCGlzvafaZDHGjyNrJjhLo3wth19pJMzK/WSC8EQR24jvsa6gOFhpMpBCBO?=
- =?us-ascii?Q?SjCAOZe172EgVwpxPDD+dr2T62oXUxi5V8glkmG7X8YSy+VSgUigAH5yNeqR?=
- =?us-ascii?Q?H3EUdYKDicNmt/Q1yAhFS3mlYVkCIVNMs2VFISu0qnNGJAGi7cQasWjLRc3h?=
- =?us-ascii?Q?BPqmZsKEGx+qTFjMqmlWF+ty4JVbEgbM6gQvw3vSjxx6fw30S+76KBCgrCaZ?=
- =?us-ascii?Q?BMM0A6/Tdy25T4zIQmhHprYFt90LuwBhZeZhr29dU8mh30gXAG+MdPc0UWhd?=
- =?us-ascii?Q?o8jgjUQKjwhSjeYsSQuVUHFInSPghWM6VVdwoGi1FQ44bVbrw8f8Fg4M/1sS?=
- =?us-ascii?Q?y6gGlgATIepXNIYFYU4okSX34aYuuwB8vWsCgdJF0QjP0i+NHXYTQ3ZGQKdx?=
- =?us-ascii?Q?0aWA654dO5XSVCRd3wJ+Qxy0Neu3tE0hnxOcwlVYtJPjuXOO3YPTSp+QUmaa?=
- =?us-ascii?Q?YyM0L3Fv6Q6h3C1GvNoPhCejtMXXVZfPr5oBa1LSIirBr938O89fOMEW2j5D?=
- =?us-ascii?Q?hvtVLYARnSnUTPLGl749lMLI12dQYWH1o171tIbCL20RMjGbilziGiaRYLaA?=
- =?us-ascii?Q?e7D/HRioQ+vaOGT3C6RutM0PXMs9o5jc7VzAO6T9ey4n9cvgDYwhV9acGt97?=
- =?us-ascii?Q?VtNykATib/8pdYXdIjz/Xe8Ii/iCVVCulrY4+BeaX993qHROHMCE/UwgeLpV?=
- =?us-ascii?Q?mjmAyBcu9Whf5woF3THP2JQJ77P+jOb6kmjc2lqE+QvJviGND6fUvfOnGUUh?=
- =?us-ascii?Q?/WteXXpU4ObSV5SNrQOkmmYanhnqN/otvrdSGPaWWOKyrSpB7ND6yA8eLqV2?=
- =?us-ascii?Q?jYB/ZEzUIV0EHJiFA+kvPtxtCYebifoym5H6WuYA9u6dLk5M7cadbtyjS0Db?=
- =?us-ascii?Q?4HRqHRQ5bl81chRqenyAg1ERBZwXvWrdWvbmVv560240eHdD1zDuK6Z3CKZ5?=
- =?us-ascii?Q?ycPPRg87NmfEOdAyfJAB1c0NK+yljf6RA7RKXMCMyc2Oz3sRXXJzD2dqhQf6?=
- =?us-ascii?Q?n3bhqzeJC76XA+E0mKtTwuBWFiWUoaCO28D8zBsrMoJvFdG0uHn1nz62/UVF?=
- =?us-ascii?Q?XaqBVBRgJTQ5hxwZ8wYvZ5eIv5kSSN8+tt5ZLT2kZ5VcOupCTWWgYNnkKUMy?=
- =?us-ascii?Q?+Ead5/AhoQyrERjUSNTCOewtNvcfsPWrK19p4mITkfpWKpHdS4w/+/9a0U6r?=
- =?us-ascii?Q?Hjp/yd33VayjO3YQ7aonE7aV5BVee24OG58XKY2nrOSNooE3Gpsa+g3SKjbV?=
- =?us-ascii?Q?DvMqxsGKIMbBr6t7SW/ZPrqaGDIel9HxJ+atRqQk2hfXGBUMo9IOiLzEOCzf?=
- =?us-ascii?Q?Afx+J60NT5fqwHmyYwHzwVrcy3Ssssd3SbauRohzLvxt01LZMralQvDmR5zK?=
- =?us-ascii?Q?kwp7cTJM85iWbciRzRpPnxz6yEGdGroRp9dlez1R8TqV4FzY7WTVEfjcFn1O?=
- =?us-ascii?Q?xMs4FejZHUMYemGaB6kHIgokj0AyF5l8xbB6Z0sO7v5qmF7fSo4cEncihfo8?=
- =?us-ascii?Q?kWEIq77u1JrJlyn774s/JBO/G/CzMsMbAEFmGu/H?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9cc7cfd5-f28f-4785-c5a0-08dd8336b0a0
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2025 13:48:27.2981
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xc9qu3na+Ar154O4i6t8yAa7qr1D8XZBRW5ZQPMlT97yO5LKvmhO/iRSITdlMBkr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB6814
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu>
+X-B4-Tracking: v=1; b=H4sIAPtDCmgC/x2MywqAIBAAf0X23ELZA+tXokPmpnux0Iog+veWj
+ jMw80CmxJRhUA8kujjzFgWqQsES5ugJ2QmDLnVbNrrBM1s86AiSRY8r31j3pjPG1trNDqTbE4n
+ +n+P0vh/8VO0nYwAAAA==
+X-Change-ID: 20250424-usb-tethering-fix-398688b32dad
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ regressions@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>, 
+ Christian Heusel <christian@heusel.eu>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2318; i=christian@heusel.eu;
+ h=from:subject:message-id; bh=uCmWJ08d3T6sqzruRhhWDBmrpAmhzZjpMdT+4kKwQso=;
+ b=owEBbQKS/ZANAwAIAcBH1PMotSWFAcsmYgBoCkQYdLRPMzkf+QHfzbvX3tEyVNKkXCfmnJZ2b
+ F3yPlBdc5+JAjMEAAEIAB0WIQRvd5reJHprig9yzBPAR9TzKLUlhQUCaApEGAAKCRDAR9TzKLUl
+ hbkUEADVFJTdIYmV70vJOafWG6Q0MJ2+D744VIi72htiDZaU5KXXnhjhgcCkc7ERzzc6EPBdfvh
+ fT0tSm0OSj5EmPxftgKRfnKpuSzgUf3JrqszWBjc3b1VS116beAeKyBSL3CDxn410Qgefxq6ONN
+ Snx4HfR6mmQMdYskMAmBfXcnhZumZbOs6E79j4Rgo9aGyhn8e5br9Wjydvdaha6ofhalKG4/noI
+ 3V1sxjlLAtItMZN6x8K/Sw//g6oOpKeUarSXzINs2jE1KE+KM9iEL0ao23V7D/Abvx5j8uIOnsH
+ Zd3XTbOumKO9MwGhRFcWscVXtTbwcwE4l08BvhjLrNQcx1CCXK4r1NDkqEvmCEQPkEs5gOCKe2s
+ KcH2umRSOXY3MdEFn6MfOaswwA9qB3GYfklyjZJ5sFsZ7B/CYK5taj4ZBdF2B2mJN+n8ZZJNOTa
+ GRQh2SZ5wcR4TfSt/UO8xGbvngKYeHzj1PVMBar79KJNDpwolwDF4Q12CUTfP0aPs2kCuWFaeTA
+ qSq8esVlTmrAYmpstcqq5ggZHK12aTwAgzo137jYyjctXFMGjwAMeHZ2/tAEHRQKYF/x0xp1J8l
+ rQvN2uVtySCduj5BGS8ibjNrLYHIy+QSEWgpYxK7DTRpQcR+TXmmojhXCma6F4AKINd9+Xit5sO
+ aVMbYywjdZ0p1AQ==
+X-Developer-Key: i=christian@heusel.eu; a=openpgp;
+ fpr=6F779ADE247A6B8A0F72CC13C047D4F328B52585
+X-Provags-ID: V03:K1:inbTguRCRiMzNvBapqeKfvNgoRAp4ykFIM+J2mJo0gamsw0VmE2
+ SCWeqUtxg/rShR/rwfRc771bqCWDaQuMi2EiSCFU/1U7cbNqcuOcfj6n03OKFnTz8PoT3Xy
+ cj3rVVGs0Lo8CPxQbCb3CxFRkiY/ojr9BH/QlvXlUFPFXIBABy3qJl/IsDYJqUiFt5Q2FTk
+ /8AdAL1xp0bS9+MPHtEHw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:PflABPEdXXQ=;RPRrPH81t1zq5AQlBJjAPtNrmDf
+ z1ri80UOQmYc4dRQUCwE5PDe/i4AuVyT68lf9t4FuUdxaA6OqAOMueSuojh8tubI4CHNBcRW7
+ 6jAjlC3xrBbdKpr26g06tMgBOivVL0NfE2FXD5NK5f4pUUFRSVczL34JXwwY2GsRLERxgRZvr
+ Xwf0Jb6vgkwENptVDqO8r7I5CZBayJBwgfnRtdvarmas+9hzEMs8sNtBMRzvwyyUQadp95qQc
+ ZjmGS9cHnh9nrzr/vfbCu5v1MNbbxhEawVbH+dNpjxl7A7hG6YUVXLGy7QjBP3XNDyC6JZnLu
+ CoTVuxEs/3aLm+6vTqVhbTO2MyCNQqvbONprbOhfckBCsJ7fLHuNdMogxphtbiCUKJ4FhuDpc
+ tfcbRormUhfG15NRrOY2pdX7iTXliAvZPdBOPJZfXehfsssLtv7VrQNcKtkecnKxc6gH2ivFd
+ DY1XrrOMyEJcVCZf6lZGyXr5BrI3xbSvCkWUwCOPHugWzsrNtLrTyw8xO9v6HJNpCx7DH4ayd
+ yKtxvKjcXLrUkyCrQoULoM2CGNamwCtEXdvpUDCfonqww/ED4jio9nURsWRRkBjcbzebweZ0H
+ /qYqskUX9VQpXLidBVBZhdirQLm5Ex049Vb50Iv+8w5fxCoWx7uMi0hRhJxKoRsu5//Zqp3/x
+ hYJMaVFao/MPUPXdId7ujlm48QFsxT7ALMXmTJtMy+1MHBoJ+u8FB12OXdmQ1lsvjoEqxb/TL
+ 8ix9TaULacjJ7hw+sWq3GDtHmZMwH81/ekfIA1SkbmwJ88ixv7HJ2Bq5H8aurUKBGDWK5s20y
+ yfrbNkEKuhlzI3Lqa/ZSTjYEJy6i/hT0DAY2xznOO4kLF5BgbJQQ38Cl+xq7Rl/0IEJmAwkKm
+ eLGCYYpUt3vXzKKMhh7eGl0j7i1uFHzfcLm0AG+6e6yAxmm0M+C/THAZg2GxZGqcowO4p2IF7
+ wsBJShEbeaBWPmfd9Jy+MJtMYboksE+8moo2SUTuPyzBFwvQFBHRNChAmt+vKXlVbw+wG3wPS
+ 1GxyDcFvAk2QbjjiTIm2pG9hrUHCLkzyXZ2COmHf787pNwXQO3oP+2w2DKA8xKxaNveeozQEo
+ ebEriHEf+7+pL2Ih0kZmk5xvpRh3GBw4FNf7WdP6z8NGsOL+fv0HdGFDtHWH4PsYq3ww/Co5i
+ CDbZuHM40lxEAIeMWLr8XzPzMzxW5GW5l/3a8Ol3TZucCEEmcI571WTcuG9Or5Jrl8BGvP/dy
+ 93ZYovJGafW889NA9VXP4Gvp9hJITNjbnLnjxMrF9UePt8x5PiIGgyBmFrNUHieqWpUZe06No
+ /q3t2GI+gAXepIrMOGveVwcKBQrjL7+gTtItIBFrZXs94+JSNsSP78Gf3Hce63EOyIYWsKe4R
+ 33jLZG0aF7F35D1DYAYsjHW+kq43b0ci7QzcE=
 
-On Thu, Apr 24, 2025 at 11:41:23AM +0800, Lu Baolu wrote:
-> The idxd driver attaches the default domain to a PASID of the device to
-> perform kernel DMA using that PASID. The domain is attached to the
-> device's PASID through iommu_attach_device_pasid(), which checks if the
-> domain->owner matches the iommu_ops retrieved from the device. If they
-> do not match, it returns a failure.
-> 
->         if (ops != domain->owner || pasid == IOMMU_NO_PASID)
->                 return -EINVAL;
-> 
-> The static identity domain implemented by the intel iommu driver doesn't
-> specify the domain owner. Therefore, kernel DMA with PASID doesn't work
-> for the idxd driver if the device translation mode is set to passthrough.
-> 
-> Generally the owner field of static domains are not set because they are
-> already part of iommu ops. Add a helper domain_iommu_ops_compatible()
-> that checks if a domain is compatible with the device's iommu ops. This
-> helper explicitly allows the static blocked and identity domains associated
-> with the device's iommu_ops to be considered compatible.
-> 
-> Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220031
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-> Link: https://lore.kernel.org/linux-iommu/20250422191554.GC1213339@ziepe.ca/
-> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  drivers/iommu/iommu.c | 21 ++++++++++++++++++---
->  1 file changed, 18 insertions(+), 3 deletions(-)
+This reverts commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8. Since this
+commit has been proven to be problematic for the setup of USB-tethered
+ethernet connections and the related breakage is very noticeable for
+users it should be reverted until a fixed version of the change can be
+rolled out.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Closes: https://lore.kernel.org/all/e0df2d85-1296-4317-b717-bd757e3ab928@h=
+eusel.eu/
+Link: https://chaos.social/@gromit/114377862699921553
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D220002
+Link: https://bugs.gentoo.org/953555
+Link: https://bbs.archlinux.org/viewtopic.php?id=3D304892
+Cc: stable@vger.kernel.org
+Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+=2D--
+ drivers/net/usb/rndis_host.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-Jason
+diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+index bb0bf1415872745aea177ce0ba7d6eb578cb4a47..7b3739b29c8f72b7b108c5f4ae=
+11fdfcf243237d 100644
+=2D-- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,16 +630,6 @@ static const struct driver_info	zte_rndis_info =3D {
+ 	.tx_fixup =3D	rndis_tx_fixup,
+ };
+=20
+-static const struct driver_info	wwan_rndis_info =3D {
+-	.description =3D	"Mobile Broadband RNDIS device",
+-	.flags =3D	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SET=
+INT,
+-	.bind =3D		rndis_bind,
+-	.unbind =3D	rndis_unbind,
+-	.status =3D	rndis_status,
+-	.rx_fixup =3D	rndis_rx_fixup,
+-	.tx_fixup =3D	rndis_tx_fixup,
+-};
+-
+ /*-----------------------------------------------------------------------=
+=2D-*/
+=20
+ static const struct usb_device_id	products [] =3D {
+@@ -676,11 +666,9 @@ static const struct usb_device_id	products [] =3D {
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info =3D (unsigned long) &rndis_info,
+ }, {
+-	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
+-	 * Telit FN990A (RNDIS)
+-	 */
++	/* Novatel Verizon USB730L */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info =3D (unsigned long)&wwan_rndis_info,
++	.driver_info =3D (unsigned long) &rndis_info,
+ },
+ 	{ },		// END
+ };
+
+=2D--
+base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+change-id: 20250424-usb-tethering-fix-398688b32dad
+
+Best regards,
+=2D-=20
+Christian Heusel <christian@heusel.eu>
+
 
