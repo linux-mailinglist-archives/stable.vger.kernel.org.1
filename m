@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F17DA9AEEA
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 15:26:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A171DA9AEEC
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 15:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B171B601E6
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 13:26:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8AA27ADD34
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 13:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5402E27BF99;
-	Thu, 24 Apr 2025 13:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B8727C17F;
+	Thu, 24 Apr 2025 13:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0DwhFFO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bchaPiyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12BE93B7A8
-	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 13:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACAE27A93E
+	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 13:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745501165; cv=none; b=Xv1iouWYj04vhlYeqmsBosysHDdCmCq1hxIQuJjADG+1AfCpEGFOlIOdfVyWk0dGyDQmhazilHJCMPVWi7V/c9kMw/QovU0FTrJJ5TDkCcoNYsWp8XVjbS/ymNx4tBeE2kX7SbJfVSDnu4T2r6E+jrVPSn/wh1MG46CCpI/ID70=
+	t=1745501166; cv=none; b=oJC53G4RzRpW+EjWuD8eQGfERDuE4hhNYRD+9L643dbG4ri0btzJH6rNsQ/NCD0d1C/dg9kF5pKjB8LTkz5oyRd4ZcOd2mYrhOc9h9W5U5dnDyg49BOSlCMfchQ897Nm/YkCV+OFoPjSE6unvHMx6xj7McJ3cfLPIkoGZKG8J6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745501165; c=relaxed/simple;
-	bh=j6kww5tyNbvIYznXTIP+QFwbp+bR8reymAgxTrZnqAw=;
+	s=arc-20240116; t=1745501166; c=relaxed/simple;
+	bh=1+6/xiQJb+n3WhBUUC/8seaW5U5wn/G2kWxijWzYsmI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Eby2x2RCvFAyagiZZbUpSJgiW0xWzY1qby6K84ku3zaTLgEIYATuTHE5OlU48ypNjOo2qall6Xd16ogEv0lfYqz7F0lv+lH4WM1nhJJCAx5F16VoY2pYUYPCyCuDWQFVS8cAdg6hpaD+LETmmbe4U2Ln0kT3FDU/+Q+WqNOQ5pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0DwhFFO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9D6C4CEE3;
-	Thu, 24 Apr 2025 13:26:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yp71lSU8qPnzaAg8F6Yh4m0BY/VPmbKDXmdaFCJM/IYP4QOz09f3uLcsAlfFNCXAQcUvqF9V4z3cESBwS5JiFX01/6DZt2Jg85SkVTpVLDRT9D8bAy31NWsas/bhuLE5wqaEqdTq/j7wwduv6P8a6Ftx0HxFdEZTzT7aiHxCmYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bchaPiyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E097BC4CEE3;
+	Thu, 24 Apr 2025 13:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745501164;
-	bh=j6kww5tyNbvIYznXTIP+QFwbp+bR8reymAgxTrZnqAw=;
+	s=k20201202; t=1745501166;
+	bh=1+6/xiQJb+n3WhBUUC/8seaW5U5wn/G2kWxijWzYsmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0DwhFFOqMzEIfBRCduwPocBkI1NualA7Gilky2jM/lIkrrS9H603h3VEYronlcQS
-	 3/pzd3sfsJv74CezqzJ4mHr5IifjXqIkS80kfHcvRswvAW0pzAK6TnlukdrYdv8kBK
-	 xj3DoezE0vHci0S+rt/EVHcoH3vWka0OoolsvNuIbTCTNjPabukERlmC+CzsUk01B5
-	 ai7GLsuagfMkdqSY7bQ12K00Gcq6ZsgfpdAf5YFXJ+/shspAqkwJmwY6Qznp3ccj2H
-	 meGLNBlGszPhTH8yE0Dy27Xzg+89DEnoi1Jfad4YDaxwc3GWYV3/9hI//tLL0YXS3s
-	 dGd+IAc0zzqlg==
+	b=bchaPiyyEGYm+ItkRQhozYXS90MQQOUtlVpFn2xNaq1YoLsnmz9SAC99X1OBs383z
+	 x06NqepD8J9bXB1PIvi+BufWbw2QH23xMQe90p8oQ0fgKGdzZs+a5mGwCO4vgAff+v
+	 ijjGaTw3QNnGMNybMoj8TZ4+LPPCcZPXdYG9UFEIdsqQu7aGTbDvMQD1sl+0A6gTql
+	 lc17lCPDnuyoDfn4HDoIUpii38BwsLjyKawNZUw3YEh5O/njmqhCiUn61/oa/Z7Um+
+	 meDin/pIUlCKvplliS/qhN+p8ltPxh+fUq67e/WfYpsQ9832TBa8+0Afv3xtUJqTe/
+	 OwB+ZcG0W7zJA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	pimenoveu12@gmail.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10/5.15/6.1] netfilter: ipt_CLUSTERIP: change mutex location
-Date: Thu, 24 Apr 2025 09:26:02 -0400
-Message-Id: <20250424004755-52bf1c86af877bf0@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 v2] lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
+Date: Thu, 24 Apr 2025 09:26:04 -0400
+Message-Id: <20250424005206-f1d978e4da95512a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250423181245.14794-1-pimenoveu12@gmail.com>
+In-Reply-To:  <20250423172504.1334237-2-nathan@kernel.org>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,16 +64,20 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Could not find matching upstream commit
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-No upstream commit was identified. Using temporary commit for testing.
+The upstream commit SHA1 provided is correct: cdc2e1d9d929d7f7009b3a5edca52388a2b0891f
+
+Note: The patch differs from the upstream commit:
+---
+1:  cdc2e1d9d929d < -:  ------------- lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
+-:  ------------- > 1:  57a6c70084dfd lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
+---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
-| stable/linux-5.15.y       |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.14.y       |  Success    |  Success   |
 
