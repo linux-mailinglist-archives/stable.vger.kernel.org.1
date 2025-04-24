@@ -1,107 +1,133 @@
-Return-Path: <stable+bounces-136503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41555A99F6D
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 05:12:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A6FA99F9B
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 05:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCB6445735
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49903ACDE4
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BA019A2A3;
-	Thu, 24 Apr 2025 03:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CCD19CD16;
+	Thu, 24 Apr 2025 03:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ctgxr0x1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vk/l1kK5"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9565444C77;
-	Thu, 24 Apr 2025 03:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D2317B506;
+	Thu, 24 Apr 2025 03:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745464347; cv=none; b=Ga0iHd0zJaHf/+Xe+dcqbugqA/8pyMmXWLoxLgco12RPNFseK2wKEKUGbsKq4lMxS+rkSk0QhNAAV0rb1x4CpqxrzeO544uXN5vF+70nkPQYJHRE0mejQort062AeA0+LnvMXX1HoJlgY1NgZFESqEad2SrON3EElrqiD6KvYCc=
+	t=1745465488; cv=none; b=GWSlbWcd5jydmhJXyvc8F24xi3Yx51F4pWKbOxdjFO+oe7ve0CvF+mQaRQ84+0xle/NZHQnKT8Lukywmj2znLysKZF8cvBIvuvwcl/KQrW0ricKN7acu11Jqy1v0f5dXCRK/f8qccEYdPCmBKp7EQgHOwqSFYMbUpKNdg696STY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745464347; c=relaxed/simple;
-	bh=KxI7ZwwdRe9K0y2ib/3b0x21CNzXlTubOfKD4w810Nc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s0j9lwLlOc9HN7N39pPBVbo2lrhQcx0KYAAvGFbEgsXk7UzMmAeA16knWg50FUOYPooWefSU57abGSPXSa/Iu7/CIDz3DEYwOCBciC8JnekAgGoPUpXLMD/FZr5YCZIuF0JP3CZ2K9h3R5QjLWOjx0DARkiN23P718FbHm1Z6J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ctgxr0x1; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=A09Ml
-	t/Mb26VyS9VXRXqUFoJt2UqYjVyFJddK4O2fxQ=; b=ctgxr0x1JThALzXsRdeaN
-	7pkAerYCeHPIosPVi8PI4o1TwF42xWo2lXhxOLesmiq7GY365TGJYlLDWy5ZIA68
-	8KDOXv5lQ/4LT7TrFlYuDlFV17VV4CglWrpitQSy4HPeQ/YsC2mvTINGJFffXdaA
-	J3OQV8R32qvzPBUGwoYJ7M=
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDnTxrBqwloZo4dCA--.57924S4;
-	Thu, 24 Apr 2025 11:10:58 +0800 (CST)
-From: Haoxiang Li <haoxiang_li2024@163.com>
-To: slongerbeam@gmail.com,
-	p.zabel@pengutronix.de,
-	mchehab@kernel.org,
-	gregkh@linuxfoundation.org,
-	shawnguo@kernel.org,
-	s.hauer@pengutronix.de,
-	kernel@pengutronix.de,
-	festevam@gmail.com,
-	hverkuil@xs4all.nl
-Cc: linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	stable@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH v2 RESEND] media: imx: fix a potential memory leak in imx_media_csc_scaler_device_init()
-Date: Thu, 24 Apr 2025 11:10:53 +0800
-Message-Id: <20250424031053.3508137-1-haoxiang_li2024@163.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1745465488; c=relaxed/simple;
+	bh=y2kLle1MrYmSqCGMWABEiUSCyaHfJ+RdhWHi3vtj+AA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KCz95+do8cwU0LK0K0HX1gosQfqc3hWxsTu54gFUe6U5O2/uaGIYUimCl34pns5TRPx0qjUHshr77bX/eLeXaG2oKKLWL+wnvoMptoLk1xdhYDdAfSlBWDy9Y9qi0AT50eWQPRRPOj/fxJx0CJJsdBSuVkPbNltKuj5LYXHH0zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vk/l1kK5; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745465488; x=1777001488;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=y2kLle1MrYmSqCGMWABEiUSCyaHfJ+RdhWHi3vtj+AA=;
+  b=Vk/l1kK51qaxm11f7KpvBGIymP2p+f+e3pfWrcTZYmWLu21uR5KR20bF
+   1buBtUnuk1zDeKCECFMzhzx8XalwYacuD6fBf+vLZucUSBGhNK6s2thX7
+   WFr2roOedZQLIW4xDV5qUczK8q+WmlT6SokYB4Fx+uLWY34H2ObqEKUSw
+   7BcCm0081WtHYDAkJLpyZQMKFk30U3Nc+v/ukHd5U0cGXGICKdokq5cqV
+   /QYxQo9+pRQdbtDdcWXnfjEBoe8VWnNg8HKl8DJ2Pzyyr2YURF31pkei1
+   jtWp0Ffsc3TpTsQn1tM5edmi1lHSskNo7wJyKAUYc/s0XVJuxF17peBLj
+   Q==;
+X-CSE-ConnectionGUID: W32yidTJStyP1Zd1upp39A==
+X-CSE-MsgGUID: 5sZjHLRVQJulK9XO5+GlIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="46787544"
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
+   d="scan'208";a="46787544"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:31:27 -0700
+X-CSE-ConnectionGUID: fEM4eomdQBSmLpVcSi364Q==
+X-CSE-MsgGUID: Yl7Nxak5TyKyrZ+wFPh+dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
+   d="scan'208";a="137488251"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:31:24 -0700
+Message-ID: <a65d90f2-b6c6-4230-af52-8f676b3605c5@linux.intel.com>
+Date: Thu, 24 Apr 2025 11:27:07 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDnTxrBqwloZo4dCA--.57924S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFyxtFWfKr15GFy5JFyxKrg_yoWkWwc_CF
-	4FqryxXrWUC3ySy3W5tF1I934Sqrs29rWFq3Z0vFZ5XFWjy3WYvr4qvws3X34jgryS9F9I
-	yr18Jr1akr12kjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRtCJPDUUUUU==
-X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbB0gA5bmgJqTxwAgAAsD
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rc] iommu: Skip PASID validation for devices without PASID
+ capability
+To: Tushar Dave <tdave@nvidia.com>, joro@8bytes.org, will@kernel.org,
+ robin.murphy@arm.com, kevin.tian@intel.com, jgg@nvidia.com,
+ yi.l.liu@intel.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: linux-pci@vger.kernel.org, stable@vger.kernel.org
+References: <20250424020626.945829-1-tdave@nvidia.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20250424020626.945829-1-tdave@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add video_device_release() in label 'err_m2m' to release the memory
-allocated by video_device_alloc() and prevent potential memory leaks.
-Remove the reduntant code in label 'err_m2m'.
+On 4/24/25 10:06, Tushar Dave wrote:
+> Generally PASID support requires ACS settings that usually create
+> single device groups, but there are some niche cases where we can get
+> multi-device groups and still have working PASID support. The primary
+> issue is that PCI switches are not required to treat PASID tagged TLPs
+> specially so appropriate ACS settings are required to route all TLPs to
+> the host bridge if PASID is going to work properly.
+> 
+> pci_enable_pasid() does check that each device that will use PASID has
+> the proper ACS settings to achieve this routing.
+> 
+> However, no-PASID devices can be combined with PASID capable devices
+> within the same topology using non-uniform ACS settings. In this case
+> the no-PASID devices may not have strict route to host ACS flags and
+> end up being grouped with the PASID devices.
+> 
+> This configuration fails to allow use of the PASID within the iommu
+> core code which wrongly checks if the no-PASID device supports PASID.
+> 
+> Fix this by ignoring no-PASID devices during the PASID validation. They
+> will never issue a PASID TLP anyhow so they can be ignored.
+> 
+> Fixes: c404f55c26fc ("iommu: Validate the PASID in iommu_attach_device_pasid()")
+> Cc:stable@vger.kernel.org
+> Signed-off-by: Tushar Dave<tdave@nvidia.com>
+> ---
+>   drivers/iommu/iommu.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+> index 4f91a740c15f..e01df4c3e709 100644
+> --- a/drivers/iommu/iommu.c
+> +++ b/drivers/iommu/iommu.c
+> @@ -3440,7 +3440,13 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
+>   
+>   	mutex_lock(&group->mutex);
+>   	for_each_group_device(group, device) {
+> -		if (pasid >= device->dev->iommu->max_pasids) {
+> +		/*
+> +		 * Skip PASID validation for devices without PASID support
+> +		 * (max_pasids = 0). These devices cannot issue transactions
+> +		 * with PASID, so they don't affect group's PASID usage.
+> +		 */
+> +		if ((device->dev->iommu->max_pasids > 0) &&
+> +		    (pasid >= device->dev->iommu->max_pasids)) {
 
-Fixes: a8ef0488cc59 ("media: imx: add csc/scaler mem2mem device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-Changes in v2:
-- Remove the reduntant code. Thanks, Dan!
----
- drivers/staging/media/imx/imx-media-csc-scaler.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-index e5e08c6f79f2..19fd31cb9bb0 100644
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -912,7 +912,7 @@ imx_media_csc_scaler_device_init(struct imx_media_dev *md)
- 	return &priv->vdev;
- 
- err_m2m:
--	video_set_drvdata(vfd, NULL);
-+	video_device_release(vfd);
- err_vfd:
- 	kfree(priv);
- 	return ERR_PTR(ret);
--- 
-2.25.1
-
+What the iommu driver should do when set_dev_pasid is called for a non-
+PASID device? The iommu driver has no sense of iommu group, hence it has
+no knowledge about this device sharing an iommu group with another PASID
+capable device.
 
