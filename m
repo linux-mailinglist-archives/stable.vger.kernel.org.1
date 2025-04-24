@@ -1,100 +1,79 @@
-Return-Path: <stable+bounces-136544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A103A9A848
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 11:39:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C808A9A84E
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 11:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76D11B8408C
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 09:39:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18E067AF40C
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 09:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57C8223335;
-	Thu, 24 Apr 2025 09:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F020E2248B8;
+	Thu, 24 Apr 2025 09:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNiXQcRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HWCGj3TI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1882222C8;
-	Thu, 24 Apr 2025 09:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE592701AA;
+	Thu, 24 Apr 2025 09:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745487113; cv=none; b=CC5m3B+ntqJoW8gU5uxd/eEiha3dxCoCASuL9/I8ArQZCDmmZFST90TZ8IbyCHachnyAiZPoyNZyAPakZmEwPKVX8dtImJuJ+GTcoIQK7ObKhD4RpQlJFyY2EFXmO8cpG46a15ff6qYK7wpZitblwzwGyxzmYo7pnKYOLQDDGIk=
+	t=1745487123; cv=none; b=iMc5kQsv7arIvS3+n6u5v9F5liDwe/lnnAwt7t//qdMviRizhJv2LZTcgpAB5b+JC4nQt1c0DC9F1vTQNk9ZZ+HRz12imK93rftr4RaUZGmuGdI01s1wSJDcaDkpCxBlvXXRKh7D0Zx0sHwuwK2mWBVCbnNhbOUD8G4VaA1Pvk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745487113; c=relaxed/simple;
-	bh=qCufCvxDi1+MqzijsET6fq/x9n2E81MIiZiD/rfpgRk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=VoWE+LdQ9CjBYr22ySwzNQ8VL7k8NTTTmhZ5pYGNibKQls8qdEmUrMTCfmDDW4xKca476+SGae+c0+cOr15VRBmFZlG0IEXdQpPkfXdJb+LWJrvYCJBiqDaPsJQKJDy+/3VbgYXTbLDMJl/0bgb9aoD4DUsSBYivbIOVCpo6p0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNiXQcRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F085C4CEE3;
-	Thu, 24 Apr 2025 09:31:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745487112;
-	bh=qCufCvxDi1+MqzijsET6fq/x9n2E81MIiZiD/rfpgRk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=tNiXQcRYE3abNCB8tT3I2WPZjSHSXQis/7GPR5re2Tl55/j7D1jxysGcXfrdRWRsb
-	 vEtgABQcd7bgXpaFmStU5vvaVgPFiRaf8IY1YRGQJF4A9VtNSpOnAlPhPmnF9hdq+x
-	 yUD2xatpyMO6hu1ehVIWDnecG94LYsywNvd13DhC5relKlk+DwD73iyotc+5j2kEd+
-	 Qpc3vHX3ivVHpUg60TXqlXH87n50QLmg8CuDpSf0Sm1UcXWKWqTFhbvKHXv83ezEws
-	 hhlgelXlovG+5lHW2bnmnLzbf+ztABNSu17futNGiD7oeQZqWIujutByW+m193AkA4
-	 5DcO1DS2aKKXA==
-Date: Thu, 24 Apr 2025 11:31:49 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Terry Junge <linuxhid@cosmicgizmosystems.com>
-cc: Benjamin Tissoires <bentiss@kernel.org>, 
-    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-    Nikita Zhandarovich <n.zhandarovich@fintech.ru>, 
-    Alan Stern <stern@rowland.harvard.edu>, Kees Cook <kees@kernel.org>, 
-    "Gustavo A. R. Silva" <gustavoars@kernel.org>, linux-input@vger.kernel.org, 
-    linux-usb@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-    linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org, 
-    syzkaller-bugs@googlegroups.com, lvc-project@linuxtesting.org, 
-    syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v2] HID: usbhid: Eliminate recurrent out-of-bounds bug
- in usbhid_parse()
-In-Reply-To: <20250312222333.2296363-1-linuxhid@cosmicgizmosystems.com>
-Message-ID: <727o0521-q24p-s0qq-66n0-sn436rpqqr1p@xreary.bet>
-References: <20250307045449.745634-1-linuxhid@cosmicgizmosystems.com> <20250312222333.2296363-1-linuxhid@cosmicgizmosystems.com>
+	s=arc-20240116; t=1745487123; c=relaxed/simple;
+	bh=hopxTHnFC8sGN3zQvrY3HTYcpbxbAukg62AeOuCEZ4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q9eEFGiQwFjH+OtayrQTRsK3xpPSwFNdIKapRla8CPuKFpqbqC+yiLEeuQZeFAALSuir091HS56IwQlHfsYhs0YOvFA9lbM6OSuh1jlP2V7dPjDi22BJfq598Zx/CEG9LwO9dbNYGF5VhzigiPwQcHRkiFL+oTinM9Cr7l95SiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HWCGj3TI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5313C4CEE3;
+	Thu, 24 Apr 2025 09:32:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745487123;
+	bh=hopxTHnFC8sGN3zQvrY3HTYcpbxbAukg62AeOuCEZ4w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HWCGj3TIPyNBpMDGAJMHzXrNpQhxmdhwS/2DBl4zHIEtt0p/5ZhRUXssoGo9W80xO
+	 7U5gw0Te+xMI5UO65MRSUYnaEYjWF++3AcbclhZ/JvO3pLxRLdQ2K+gdnCgFJgIIlI
+	 HYpN4PnC+2xuNyy+fi4FrvcMXSo0VFNyro/84LCE=
+Date: Thu, 24 Apr 2025 11:32:00 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: ffhgfv <xnxc22xnxc22@qq.com>
+Cc: stable <stable@vger.kernel.org>, peterz <peterz@infradead.org>,
+	mingo <mingo@redhat.com>, acme <acme@kernel.org>,
+	namhyung <namhyung@kernel.org>,
+	"mark.rutland" <mark.rutland@arm.com>,
+	"alexander.shishkin" <alexander.shishkin@linux.intel.com>,
+	jolsa <jolsa@kernel.org>, irogers <irogers@google.com>,
+	"adrian.hunter" <adrian.hunter@intel.com>,
+	"kan.liang" <kan.liang@linux.intel.com>,
+	linux-perf-users <linux-perf-users@vger.kernel.org>,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: Potential Linux Crash: WARNING in release_bp_slot  in
+ linux6.12.24(longterm maintenance)
+Message-ID: <2025042429-certainly-quarters-f699@gregkh>
+References: <tencent_B50959BC76205E0AE666AE21F7A07D017306@qq.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_B50959BC76205E0AE666AE21F7A07D017306@qq.com>
 
-On Wed, 12 Mar 2025, Terry Junge wrote:
+On Thu, Apr 24, 2025 at 03:50:53AM -0400, ffhgfv wrote:
+> Hello, I found a potential bug titled "  WARNING in release_bp_slot  " with modified syzkaller in the  Linux6.12.24(longterm maintenance, last updated on April 20, 2025).
+> If you fix this issue, please add the following tag to the commit:  Reported-by: Jianzhou Zhao <xnxc22xnxc22@qq.com>,    xingwei lee <xrivendell7@gmail.com>,Penglei Jiang <superman.xpt@gmail.com>
 
-> Update struct hid_descriptor to better reflect the mandatory and
-> optional parts of the HID Descriptor as per USB HID 1.11 specification.
-> Note: the kernel currently does not parse any optional HID class
-> descriptors, only the mandatory report descriptor.
-> 
-> Update all references to member element desc[0] to rpt_desc.
-> 
-> Add test to verify bLength and bNumDescriptors values are valid.
-> 
-> Replace the for loop with direct access to the mandatory HID class
-> descriptor member for the report descriptor. This eliminates the
-> possibility of getting an out-of-bounds fault.
-> 
-> Add a warning message if the HID descriptor contains any unsupported
-> optional HID class descriptors.
-> 
-> Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
-> Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+As you have a reproducer, you are in the best position to create a fix
+for this as you can test it.  Please do so, such that you can get credit
+for resolving the issue.
 
-Applied, thanks.
+thanks,
 
--- 
-Jiri Kosina
-SUSE Labs
-
+greg k-h
 
