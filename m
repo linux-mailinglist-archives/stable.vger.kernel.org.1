@@ -1,205 +1,156 @@
-Return-Path: <stable+bounces-136639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46447A9BB57
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:31:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9A7A9BB60
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:35:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82E1516D8B9
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 23:31:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A97171BA2C1A
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 23:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229F5224AE9;
-	Thu, 24 Apr 2025 23:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF57F288C8D;
+	Thu, 24 Apr 2025 23:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="r57LybEC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lFuCr5ug"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FE01F463E;
-	Thu, 24 Apr 2025 23:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90754223DDF
+	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 23:35:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745537502; cv=none; b=upTYuizbHne7q0tUmNIBKfe+FJFz3Fv7RfAi5CJiF6xu0jhFY6azPcMe3qfKZolLi0hsnlgD6Dlrc+0bULaO7c4yNs5QsPCVVbupIcoz7TCLtypeNgV4d9/LMp5hPxxDffCs52605PByNeQaBWY0yri1VWYcfsrLCr7lZXUa0RA=
+	t=1745537724; cv=none; b=eWE+gn/2LY2vojYE3waI4DQBZYjOKvds7OeY4Ef1MJD2tn9NKreFvTVF0sb4lqolh8C9ZhjPFXErs8BLoJPbYpamMlM7kG8EhJ1PEKLPir8wFwVnwjWqATVjvYzmp23se5hH8LCQTXS6+6GiI3ite5l4NOWORI0V1igMy9sEZLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745537502; c=relaxed/simple;
-	bh=F2DfGTNOpazmkXxfgSOS3NQXZG4kg09MJr4FMkVqhpA=;
-	h=Date:To:From:Subject:Message-Id; b=j5dyNDzCuclD53q+ZUUSt42eGhc8Qy5Z/U8BWtadE6MBRVGfjCf39WArSyEyc1aWZ4PoMubSv+TFdPMwU6ptAEGKR3kqzd9sMarkzIrIQrT3SCjpRA8J6OGb2w7U3GJXM719PBnCM1OpBGuLpbYzEuV2uzSL6cs5gTuCnMbaGS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=r57LybEC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF1EC4CEE3;
-	Thu, 24 Apr 2025 23:31:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745537500;
-	bh=F2DfGTNOpazmkXxfgSOS3NQXZG4kg09MJr4FMkVqhpA=;
-	h=Date:To:From:Subject:From;
-	b=r57LybECudiFKsDZmFfLkAAk3IiML3wi1zC7PxAqeQEzMQBw8IzDyrQqPSpTXqzMb
-	 yJoC3dki24KcMNZXgQ39ibH7eP+8Sg6oZhhag5maa2vEO8bw5hNJyzWgbkCoYfboF+
-	 uW+hTIVL5JBbpV+pYwPcUBDsW9GoNLfJKyaXhUYg=
-Date: Thu, 24 Apr 2025 16:31:39 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,axelrasmussen@google.com,aarcange@redhat.com,peterx@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250424233139.DEF1EC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1745537724; c=relaxed/simple;
+	bh=AJmix0PsfvPNJ4VsR4xGBp/jHApNt7wMcIBJ0cO/5jk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ccuHAH8Uu2YcmSu74wP1GfhH4Ofs9rA37nRjVGZ79pcEkdvIt2GdwspMc4wT6n/o31k5hCwe9LI+P7M/iRfXQ8qbzwxKjhzgFdXxsgF6ZxAVOg4GASanHBAMW4mSbTMa6uEd3ARQcl3VcUB3aA8spzWuTOzQQ3iNLXreORJzjN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lFuCr5ug; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745537723; x=1777073723;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=AJmix0PsfvPNJ4VsR4xGBp/jHApNt7wMcIBJ0cO/5jk=;
+  b=lFuCr5ugd9veJ6JDm2DL1DMA1PwIWm5ohdYdwVfrOoawx3R6jIEUN9b6
+   X7vSDJozzqfDtqKRMcyRUjxM2sRP6c0XfwQ2NY4xCNMUlRaLWibdgmwlY
+   3cyuhE3fOPbv5sAZPctqWoaAkeDqJR4/U8EcP7J7yBsWlHi2mBCDBNfpp
+   0vWrXoDbo505d485wVd9N5S7GnXGaMgYNurYg0nEs2qCPbI3TDEHVsb6e
+   xPh1MHckXe4zMCiGMO1a4qjn8CYrf/8wFDqOrBQhRPxQ9qTT49GdxisHm
+   bk+Qf4ObShIGPeBO5OGp9jcBsRvHuTzL8h0qrh9NbHnwHrkUol2d5PrFT
+   A==;
+X-CSE-ConnectionGUID: MmMVwk4ERhWbz+zJxQg2Hg==
+X-CSE-MsgGUID: Q68jQ+4xQH6vDGdinBE2DQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="57391450"
+X-IronPort-AV: E=Sophos;i="6.15,237,1739865600"; 
+   d="scan'208";a="57391450"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 16:35:22 -0700
+X-CSE-ConnectionGUID: ZN1JpK0iTsqy0F3xIJOREg==
+X-CSE-MsgGUID: F+ZSC1bHQIqzSMEcueRFcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,237,1739865600"; 
+   d="scan'208";a="137596446"
+Received: from kanliang-dev.jf.intel.com ([10.165.154.102])
+  by orviesa003.jf.intel.com with ESMTP; 24 Apr 2025 16:35:22 -0700
+From: kan.liang@linux.intel.com
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: Kan Liang <kan.liang@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>
+Subject: [PATCH 5.10.y] perf/x86/intel/uncore: Fix the scale of IIO free running counters on SNR
+Date: Thu, 24 Apr 2025 16:35:01 -0700
+Message-Id: <20250424233501.676485-1-kan.liang@linux.intel.com>
+X-Mailer: git-send-email 2.38.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+From: Kan Liang <kan.liang@linux.intel.com>
 
-The patch titled
-     Subject: mm/userfaultfd: fix uninitialized output field for -EAGAIN race
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
+[ Upstream commit 96a720db59ab330c8562b2437153faa45dac705f ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
+(The existing patch in queue-5.10 was wrong.
+queue-5.10/perf-x86-intel-uncore-fix-the-scale-of-iio-free-running-counters-on-snr.patch
+It's supposed to change the array snr_uncore_iio_freerunning_events[]
+rather than icx_uncore_iio_freerunning_events[]. Send the patch to
+replace the wrong one.
+With this fix the https://lore.kernel.org/stable/2025042139-protector-rickety-a72d@gregkh/
+can be applied then.)
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+There was a mistake in the SNR uncore spec. The counter increments for
+every 32 bytes of data sent from the IO agent to the SOC, not 4 bytes
+which was documented in the spec.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The event list has been updated:
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+  "EventName": "UNC_IIO_BANDWIDTH_IN.PART0_FREERUN",
+  "BriefDescription": "Free running counter that increments for every 32
+		       bytes of data sent from the IO agent to the SOC",
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+Update the scale of the IIO bandwidth in free running counters as well.
 
-------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/userfaultfd: fix uninitialized output field for -EAGAIN race
-Date: Thu, 24 Apr 2025 17:57:28 -0400
-
-While discussing some userfaultfd relevant issues recently, Andrea noticed
-a potential ABI breakage with -EAGAIN on almost all userfaultfd ioctl()s.
-
-Quote from Andrea, explaining how -EAGAIN was processed, and how this
-should fix it (taking example of UFFDIO_COPY ioctl):
-
-  The "mmap_changing" and "stale pmd" conditions are already reported as
-  -EAGAIN written in the copy field, this does not change it. This change
-  removes the subnormal case that left copy.copy uninitialized and required
-  apps to explicitly set the copy field to get deterministic
-  behavior (which is a requirement contrary to the documentation in both
-  the manpage and source code). In turn there's no alteration to backwards
-  compatibility as result of this change because userland will find the
-  copy field consistently set to -EAGAIN, and not anymore sometime -EAGAIN
-  and sometime uninitialized.
-
-  Even then the change only can make a difference to non cooperative users
-  of userfaultfd, so when UFFD_FEATURE_EVENT_* is enabled, which is not
-  true for the vast majority of apps using userfaultfd or this unintended
-  uninitialized field may have been noticed sooner.
-
-Meanwhile, since this bug existed for years, it also almost affects all
-ioctl()s that was introduced later.  Besides UFFDIO_ZEROPAGE, these also
-get affected in the same way:
-
-  - UFFDIO_CONTINUE
-  - UFFDIO_POISON
-  - UFFDIO_MOVE
-
-This patch should have fixed all of them.
-
-Link: https://lkml.kernel.org/r/20250424215729.194656-2-peterx@redhat.com
-Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Fixes: f619147104c8 ("userfaultfd: add UFFDIO_CONTINUE ioctl")
-Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: Andrea Arcangeli <aarcange@redhat.com>
-Suggested-by: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 210cc5f9db7a ("perf/x86/intel/uncore: Add uncore support for Snow Ridge server")
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250416142426.3933977-1-kan.liang@linux.intel.com
 ---
+ arch/x86/events/intel/uncore_snbep.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
- fs/userfaultfd.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
-
---- a/fs/userfaultfd.c~mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race
-+++ a/fs/userfaultfd.c
-@@ -1585,8 +1585,11 @@ static int userfaultfd_copy(struct userf
- 	user_uffdio_copy = (struct uffdio_copy __user *) arg;
- 
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_copy->copy)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_copy, user_uffdio_copy,
-@@ -1641,8 +1644,11 @@ static int userfaultfd_zeropage(struct u
- 	user_uffdio_zeropage = (struct uffdio_zeropage __user *) arg;
- 
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_zeropage->zeropage)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_zeropage, user_uffdio_zeropage,
-@@ -1744,8 +1750,11 @@ static int userfaultfd_continue(struct u
- 	user_uffdio_continue = (struct uffdio_continue __user *)arg;
- 
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_continue->mapped)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_continue, user_uffdio_continue,
-@@ -1801,8 +1810,11 @@ static inline int userfaultfd_poison(str
- 	user_uffdio_poison = (struct uffdio_poison __user *)arg;
- 
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_poison->updated)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_poison, user_uffdio_poison,
-@@ -1870,8 +1882,12 @@ static int userfaultfd_move(struct userf
- 
- 	user_uffdio_move = (struct uffdio_move __user *) arg;
- 
--	if (atomic_read(&ctx->mmap_changing))
--		return -EAGAIN;
-+	ret = -EAGAIN;
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_move->move)))
-+			return -EFAULT;
-+		goto out;
-+	}
- 
- 	if (copy_from_user(&uffdio_move, user_uffdio_move,
- 			   /* don't copy "move" last field */
-_
-
-Patches currently in -mm which might be from peterx@redhat.com are
-
-mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
-mm-selftests-add-a-test-to-verify-mmap_changing-race-with-eagain.patch
+diff --git a/arch/x86/events/intel/uncore_snbep.c b/arch/x86/events/intel/uncore_snbep.c
+index ad084a5a1463..dd70a6b7879b 100644
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -4487,28 +4487,28 @@ static struct uncore_event_desc snr_uncore_iio_freerunning_events[] = {
+ 	INTEL_UNCORE_EVENT_DESC(ioclk,			"event=0xff,umask=0x10"),
+ 	/* Free-Running IIO BANDWIDTH IN Counters */
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0,		"event=0xff,umask=0x20"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port0.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port0.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1,		"event=0xff,umask=0x21"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port1.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port1.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2,		"event=0xff,umask=0x22"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port2.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port2.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3,		"event=0xff,umask=0x23"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port3.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port3.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4,		"event=0xff,umask=0x24"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port4.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port4.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5,		"event=0xff,umask=0x25"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port5.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port5.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6,		"event=0xff,umask=0x26"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port6.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port6.unit,	"MiB"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7,		"event=0xff,umask=0x27"),
+-	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.814697266e-6"),
++	INTEL_UNCORE_EVENT_DESC(bw_in_port7.scale,	"3.0517578125e-5"),
+ 	INTEL_UNCORE_EVENT_DESC(bw_in_port7.unit,	"MiB"),
+ 	{ /* end: all zeroes */ },
+ };
+-- 
+2.38.1
 
 
