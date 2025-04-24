@@ -1,133 +1,117 @@
-Return-Path: <stable+bounces-136522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824DAA9A2BC
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 08:59:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB70A9A2C9
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 09:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 191545A006E
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 06:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96F313BF6D8
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 07:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80AC21E9B00;
-	Thu, 24 Apr 2025 06:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B1A3FF1;
+	Thu, 24 Apr 2025 07:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MeFVrQl/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PbFclHgN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBEE1E7640;
-	Thu, 24 Apr 2025 06:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E6D79F5
+	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 07:02:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745477944; cv=none; b=lVf6GsehSdEq0hOifRtg0C3HnHrlPXKRJfXwezSe+WzIzfJ3s3RpI5rK7IZDQAUegANNIraD5zgdtgZpkY8QcTYp6gt+438jga0UgLfuEO7i8gqrWMapGwbBvDlFktXtTeY8HUAu1KDAL+wXnyIAmRU9XEqFdP2emyFtj5FFSpI=
+	t=1745478168; cv=none; b=aK8MEE/Vd8skQRxxrj0O+mGjGdPuK2o6XOi1jJc+0M0JEHq+hSHGPuOU1NdogR7qNidCS7z4DB+qh+r1PIfddo+b9qQXieikMpWbhJmr8csxjfCn/H/6FJJkuLFp3o5y+DParkByY4v0CZkGzQjTwif3MDfZJtqUKkuvFnUW0jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745477944; c=relaxed/simple;
-	bh=P7a4A6x8UFXBNfXVk8wNvjijk3FZSS3WNYjyXXXW3OA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EnCHmVA16Ylgu4uwaPiMNTdu6DQG2BCSpJd/muYz1HOqxt2RIEyeDPIa8zlqHTEMOPsQ9Y94nNlVwIzdo5L223z2Dq6VuD3+zaGqgoRsrDlfMp32Exw0TcrieLsSwWJcrTf2HMqid1dtMoxGJVNXfAW17xFaWyQZhqgXhgJ7iV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MeFVrQl/; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745477941; x=1777013941;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=P7a4A6x8UFXBNfXVk8wNvjijk3FZSS3WNYjyXXXW3OA=;
-  b=MeFVrQl/CBD/6DDvQ2abVXrUzELFSLCqL7AMjxtxzcLTdoJi/9bAU2ck
-   5/V2wkiEUs6TJhsqEa0ZM0pxe77kkMjHNGjGNFRh5Zyoyp5vr7rLW1K4d
-   3gPG0jCT3u2WIdwDu0aLWnFotIwuV/jXDqCSI35stgjjdjlz3QxKZykee
-   KU4cytAE2oRgzK08Jk1f1zTx5u9Pw/LMN4Q9oWL6UQMZYR54BImvsvH+5
-   bCHMyxqB5XTczr8XCcFYgBuRpwrECG0pPeN2HACmzSkDXvf80wAWxJo45
-   xhbnv+05Tz/jqMdqpDT9BPb1bk3RVwum+q8fH+8kZq4P1tpRsux5JWGno
-   Q==;
-X-CSE-ConnectionGUID: SD02WUxbSGOsWWgs418g/w==
-X-CSE-MsgGUID: QtDYO+qLQhWfSQrgNyk8gw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="58456014"
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
-   d="scan'208";a="58456014"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 23:59:01 -0700
-X-CSE-ConnectionGUID: VmXw7/jDQp66g53tf+kJnQ==
-X-CSE-MsgGUID: QXeoSsyqQLupGp8r9+9qlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,235,1739865600"; 
-   d="scan'208";a="137323854"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 23:58:59 -0700
-Message-ID: <c6f5e533-5e60-494c-93fd-5a004a9a13a0@linux.intel.com>
-Date: Thu, 24 Apr 2025 14:54:43 +0800
+	s=arc-20240116; t=1745478168; c=relaxed/simple;
+	bh=CsVdIY8q46bTxLPbuwJ8cUP2eUiwXdsgC6RMjJcwonY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TI/0HymAjBcUzoOYnIXb5P/Uhy9gTCwarp398k/qXMgASEI+9xSrEFsf/8SBnPZ2SeRzOgiX0/bf/Vgpq8s/TFYRzig6vlyEGtbc1EnRgAHbzWDrXX3gicM4CiH7iaQyWY2FJ6Fo4aEhfgTEGw4NMeB2zQLruLblXgAbE+aTLZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PbFclHgN; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-ac345bd8e13so98026366b.0
+        for <stable@vger.kernel.org>; Thu, 24 Apr 2025 00:02:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1745478164; x=1746082964; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=atZ0zH+QTHFPwFIGyoJZTZ335IopbqtcRNNIDzNruC4=;
+        b=PbFclHgNjB6RXMecnfIP+Z73qquzU3VIwvxcMjTs4FsrIcbOh/LblRF3NUS4LZfc5y
+         ZpCZ8iSj72X1+S7rKtKjYOgzEwam5ASSq7FmFQsu6+NEUUwFI3PDrHuua6eXGQ1eENHH
+         +gUZzwTVtO4p4o8zLhYjoXOqoCTIZjdwq43dKKMkroVaj5O7OTlYMIiWPClNx9icGA/O
+         6M8yEnilRKLdmNngmnbBLtndXiezGTt++7R6Yf9ACl4E41Uq90JqzIU/pNtYPgrLHSUd
+         3DH5g+7z9OR2JE8v1AsfAXbLN5xHzWveov22VvaN38zQrDfdX6aZNyzEC6IK+/wLUwPR
+         s2dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745478164; x=1746082964;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=atZ0zH+QTHFPwFIGyoJZTZ335IopbqtcRNNIDzNruC4=;
+        b=s06QXC/68PfUNB9UhINnlU9whtpkVSgaZlLVSeA+JfpoxCFHRl5uvu3oKuUCNCu3G7
+         vDjG4K+w0eb+p1dd48Ldt8y7TFBFecrDOwfaz2mgW9PwA2y6eXbxZGhI+RPXMF5MDljC
+         EKxWXXY1b8PW/WauyDMChoP5xPCg4xXpCtOrTmWUxjFyY9/y0cQFpBy/3f1eAHiJK2KK
+         D35AQn8dPj9u5CnX1W46SCTG+OrAmiHO1mg5Ht1eBOGnWO9hknO2zZQ9Yv/RlAp+mMFa
+         J0P5O/mC2oTvuCMgpRWDMSn0qDIDd2KK6xp9UTcvF9O1JNAsgwPxHN+fuwpcd4gkRSg6
+         h15A==
+X-Forwarded-Encrypted: i=1; AJvYcCWmYKtBBJuHZoAyG19/QshXVs6M7nRzHthydojL5nElkxIp3IxMwrXBQ4a7d7ggZFqENbHw93w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwX9v5IWlLk0o5Tq2oT919wMqP/MfaVUhTpEL3flsaeZjuh7Eyi
+	HtL4ORWrief5VUCajzksL/XbMgbQW438LHjipDRcIGeyoyA8xYaLxlGigYEEJ7Q=
+X-Gm-Gg: ASbGnctaxy9pf6ihsEngys+QSDkqdW4isbjJJka69uzeRmKYOnNauitM3SqqGWknF1+
+	4dWTcNCDxiBnkkBL1r/MR1Rk2xWJzL1dQr4cdJYLZY3fBsWAr4NQ0+wRB3DNV06IUHAQgqq8k3X
+	6KZ7PzJDw2KBAX0BbexeXBOD6QL5r/w00SyAeOscymGgQ1k9NB5ARqf/NZT/6beknQirCCgPNr6
+	2MtFR+nbceXxjoA8wNCgrItfToi0/dgX1lw3RwKVkXMnz6l1B6lJqlilS0TJrJczFLiQxw165X+
+	iqJxNpYCNFL/pBofAzCQiNsPhbJ/LerWvRASdA==
+X-Google-Smtp-Source: AGHT+IHRRXGrXUDu3+rG3nESpdOVayw7JgdtjaocMACREgykhsz0BZozqMiy2x1NiHc65DNK79egqw==
+X-Received: by 2002:a17:907:97c1:b0:ac7:95b5:f5d1 with SMTP id a640c23a62f3a-ace57494ecemr146858866b.42.1745478163982;
+        Thu, 24 Apr 2025 00:02:43 -0700 (PDT)
+Received: from linaro.org ([62.231.96.41])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace598f6b97sm57765866b.75.2025.04.24.00.02.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Apr 2025 00:02:43 -0700 (PDT)
+Date: Thu, 24 Apr 2025 10:02:40 +0300
+From: Abel Vesa <abel.vesa@linaro.org>
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, Liam Girdwood <lgirdwood@gmail.com>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Marek Vasut <marex@denx.de>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH] rpmsg: qcom_smd: Fix uninitialized return variable in
+ __qcom_smd_send()
+Message-ID: <aAniEGwKKRUieo5G@linaro.org>
+References: <CA+G9fYs+z4-aCriaGHnrU=5A14cQskg=TMxzQ5MKxvjq_zCX6g@mail.gmail.com>
+ <aAkhvV0nSbrsef1P@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/1] iommu: Allow attaching static domains in
- iommu_attach_device_pasid()
-To: Vasant Hegde <vasant.hegde@amd.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
- shangsong2@lenovo.com, Dave Jiang <dave.jiang@intel.com>
-Cc: jack.vogel@oracle.com, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250424034123.2311362-1-baolu.lu@linux.intel.com>
- <6cee67bd-1bef-4b8c-96bb-da358bc2d5c3@amd.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <6cee67bd-1bef-4b8c-96bb-da358bc2d5c3@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aAkhvV0nSbrsef1P@stanley.mountain>
 
-On 4/24/25 14:49, Vasant Hegde wrote:
-> On 4/24/2025 9:11 AM, Lu Baolu wrote:
->> The idxd driver attaches the default domain to a PASID of the device to
->> perform kernel DMA using that PASID. The domain is attached to the
->> device's PASID through iommu_attach_device_pasid(), which checks if the
->> domain->owner matches the iommu_ops retrieved from the device. If they
->> do not match, it returns a failure.
->>
->>          if (ops != domain->owner || pasid == IOMMU_NO_PASID)
->>                  return -EINVAL;
->>
->> The static identity domain implemented by the intel iommu driver doesn't
->> specify the domain owner. Therefore, kernel DMA with PASID doesn't work
->> for the idxd driver if the device translation mode is set to passthrough.
->>
->> Generally the owner field of static domains are not set because they are
->> already part of iommu ops. Add a helper domain_iommu_ops_compatible()
->> that checks if a domain is compatible with the device's iommu ops. This
->> helper explicitly allows the static blocked and identity domains associated
->> with the device's iommu_ops to be considered compatible.
->>
->> Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
->> Closes:https://bugzilla.kernel.org/show_bug.cgi?id=220031
->> Cc:stable@vger.kernel.org
->> Suggested-by: Jason Gunthorpe<jgg@nvidia.com>
->> Link:https://lore.kernel.org/linux-iommu/20250422191554.GC1213339@ziepe.ca/
->> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
->> Reviewed-by: Dave Jiang<dave.jiang@intel.com>
->> Reviewed-by: Robin Murphy<robin.murphy@arm.com>
+On 25-04-23 20:22:05, Dan Carpenter wrote:
+> The "ret" variable isn't initialized if we don't enter the loop.  For
+> example,  if "channel->state" is not SMD_CHANNEL_OPENED.
 > 
-> Thanks! We have static identity domain in AMD driver as well. Some day we may
-> hit similar issue 🙂
-> 
-> Patch looks good to me.
-> 
-> Reviewed-by: Vasant Hegde<vasant.hegde@amd.com>
+> Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 
-Thank you!
-
-> 
-> W/ this change may be I should fix AMD driver like below. (No need to respin
-> patch. I can send topup patch later).
-
-I think that's a cleanup rather than a fix.
-
-Thanks,
-baolu
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
 
