@@ -1,98 +1,96 @@
-Return-Path: <stable+bounces-136489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C1BA99C4F
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 01:53:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0EBA99C8C
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 02:10:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EF411B80872
-	for <lists+stable@lfdr.de>; Wed, 23 Apr 2025 23:53:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B13101940676
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 00:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624F9223DC5;
-	Wed, 23 Apr 2025 23:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFD42701A8;
+	Thu, 24 Apr 2025 00:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEXhUi/w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ctKKuGrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A632701BF;
-	Wed, 23 Apr 2025 23:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA871361;
+	Thu, 24 Apr 2025 00:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745452397; cv=none; b=IzcnT7+0cdnZ1B/qY0JVvTJ+DoPK9y0wtIRKWt0kggbFAQbME39S+qluZnJkTWmjMcoT46Gid9uSSXjaTyFfWsYI+h2FG8P+xLMr1JGDkr2PGOZWhbbW7GnNjL560tqUKhW4J14zQ32f4G+/xA/91UtCN/73qZlVKo7lDWBbhyg=
+	t=1745453397; cv=none; b=goUEcnApvb68YQTvFppbSUVoxY+QpE1aeRMizigaMsKBR3jfdw5DesNm6w0jcI1CKFPa0zCBCucwsCozbiMlBJYHCmPBCTsmlp8GsGY7SPGnKsCxOIgbG0YAIelQNwcTjJyexXXIPhVX8OHZ7DBmBMm64RmiCam2iHvXPdhcIc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745452397; c=relaxed/simple;
-	bh=LKZ8WDVups/cSbg6PfhtjO/9jCUFWrVl4Ib2YrPjV/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BBs8VLWloogk1HJ5kuLOvwhbYwWgMhayVX7z1U9IgvgAjQ6YcVuAq2WyFytwsdNYIHUs1JZPeysBp7A6fjUlBlPg/VS0ULd8XSInpF0yBLanlfJCispciEWkvhzkOnmM9vpciBDudOLdKF6yyKKoPbvVKKvgTaUTtx8iloU5NT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEXhUi/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DDAC4CEE2;
-	Wed, 23 Apr 2025 23:53:14 +0000 (UTC)
+	s=arc-20240116; t=1745453397; c=relaxed/simple;
+	bh=mTmkH8qWCLHZGcbfpRW4Dg5HQwFy7i7bs6ZQ1w+1Jn4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NWOmNx4j+AD3thY47cV0rUFgExctN+4Cq68F/nPBePXRcSu7QYEN0OZtZKAHLnfrPN6RNaY9QLbDX4Jt1AYr0DCF4dIM3KHzUKqfqfT559jdIZfgKokAsE+8TSSCCmAD+We/DM4WSBDYSXCGRBP2yAxHyemuvMBVMIKN4hq40ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ctKKuGrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1283C4CEE2;
+	Thu, 24 Apr 2025 00:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745452396;
-	bh=LKZ8WDVups/cSbg6PfhtjO/9jCUFWrVl4Ib2YrPjV/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nEXhUi/w5lCf5ulo/WaabdxBqopRStRmUO/erZGbsfru8a97xcmIomifh0vkWYuU8
-	 VEKfhYrTnSlSd9g8IOGz4V2LkBNCbtjqc4fo58Mq3jPmMEMVVofYqm1EgW1EpmrLxG
-	 JfC07bNJkKHFvneZWdEUbrqcqRkUgb86zXqKh+5xEHtDBf6X4jaaJx527sm73jCa2n
-	 uhObi4GluyDJlTi18D44HwJUBFBez5NpoSiExcgUykbwPpnAcs04YHIp5g8fQkXkKA
-	 t1IKIl7pD0KYhwMPAosvdxBaE1EK9dkEnOj/0p/m8/vQoe/e7IQL0zLTUOoMWI5Fmz
-	 Ay+fQBSQyX4iw==
-Date: Thu, 24 Apr 2025 00:53:10 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, hargar@microsoft.com
-Subject: Re: [PATCH 6.12 000/223] 6.12.25-rc1 review
-Message-ID: <aAl9ZoXhgHJC9FIO@finisterre.sirena.org.uk>
-References: <20250423142617.120834124@linuxfoundation.org>
+	s=k20201202; t=1745453396;
+	bh=mTmkH8qWCLHZGcbfpRW4Dg5HQwFy7i7bs6ZQ1w+1Jn4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=ctKKuGrI4Q1bR10O81yZ9AhOT6YE7ouBx6SbAlqZdipVgcqXeOW3gWRGF1gIdfeDo
+	 aIYDB0H8xEH3hWa96WYCm+dj6ECQvq/uBxzw+aWl4egYN790Pf2BIxaLXXpq8vZyE2
+	 Su/3Mr1JWnggl0BKDOpqwuQRvR61Ot2Zb9AsGCmv4N66q1gp1ScGkj+05h+2MqvMtG
+	 g06wPWMASGqVAEht9kkhNmBj84uqmyEaTSMkuLum6lpyfmUdcXSr+z84dFFUtkcS0T
+	 wemFj2mevtzCS/vvG/jLCogcR+WDIOd5OyE98IDDOoEYfOvOksOlgL2qpleC0urT2O
+	 vvn+etnlLD5uA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C95380CED9;
+	Thu, 24 Apr 2025 00:10:36 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="t5fy1SBapOVoPIRn"
-Content-Disposition: inline
-In-Reply-To: <20250423142617.120834124@linuxfoundation.org>
-X-Cookie: Well begun is half done.
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] mptcp: pm: Defer freeing userspace pm entries
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174545343523.2807189.6550009726360059159.git-patchwork-notify@kernel.org>
+Date: Thu, 24 Apr 2025 00:10:35 +0000
+References: <20250421-net-mptcp-pm-defer-freeing-v1-0-e731dc6e86b9@kernel.org>
+In-Reply-To: <20250421-net-mptcp-pm-defer-freeing-v1-0-e731dc6e86b9@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, yangang@kylinos.cn,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 21 Apr 2025 19:07:12 +0200 you wrote:
+> Here are two unrelated fixes for MPTCP:
+> 
+> - Patch 1: free userspace PM entry with RCU helpers. A fix for v6.14.
+> 
+> - Patch 2: avoid a warning when running diag.sh selftest. A fix for
+>   v6.15-rc1.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/2] mptcp: pm: Defer freeing of MPTCP userspace path manager entries
+    https://git.kernel.org/netdev/net/c/13b4ece33cf9
+  - [net,2/2] selftests: mptcp: diag: use mptcp_lib_get_info_value
+    https://git.kernel.org/netdev/net/c/ce72fea219c1
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
---t5fy1SBapOVoPIRn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-On Wed, Apr 23, 2025 at 04:41:12PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.25 release.
-> There are 223 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-Tested-by: Mark Brown <broonie@kernel.org>
-
---t5fy1SBapOVoPIRn
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgJfWYACgkQJNaLcl1U
-h9ArOQgAglSXBIdE+e9TeIRpCr0m0FNKWnLt6lRXAPQk0XLRp5uavjUpTX+wqzZm
-Yb0DadxxDpPGXaoGJNRlEO9sBwa+h6xsa8w9IGgwH8pLNZWu2yUCYOg5ie29Z1/x
-LOb9dttQjUpEpm5j/Kv5EMU556cN6J6GEkiCtekjpCyphT90FU2cFPdg9Zs87pd5
-gaBQNrPx4Xh40aqcaIVDy5uYcQgGsP/BH7TgpqknDH4AxNJuWk1trhTJvjW8AWXp
-cNuXiZ4XLJBNUn44zGlo6uoQIEJWYd5jMjVZxiolBVajILGK8Lp7WuVGF1b1atsR
-b2tCHhYScpO1uuGABnttRbb5xH4+HA==
-=6gWN
------END PGP SIGNATURE-----
-
---t5fy1SBapOVoPIRn--
 
