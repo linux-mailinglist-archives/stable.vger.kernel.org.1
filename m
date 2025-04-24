@@ -1,133 +1,137 @@
-Return-Path: <stable+bounces-136505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A6FA99F9B
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 05:31:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 481CBA99F98
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 05:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D49903ACDE4
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:31:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 841733BB82F
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 03:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1CCD19CD16;
-	Thu, 24 Apr 2025 03:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55F01B0F0A;
+	Thu, 24 Apr 2025 03:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vk/l1kK5"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nPZLSXqR"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D2317B506;
-	Thu, 24 Apr 2025 03:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBFF42A82;
+	Thu, 24 Apr 2025 03:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745465488; cv=none; b=GWSlbWcd5jydmhJXyvc8F24xi3Yx51F4pWKbOxdjFO+oe7ve0CvF+mQaRQ84+0xle/NZHQnKT8Lukywmj2znLysKZF8cvBIvuvwcl/KQrW0ricKN7acu11Jqy1v0f5dXCRK/f8qccEYdPCmBKp7EQgHOwqSFYMbUpKNdg696STY=
+	t=1745465323; cv=none; b=Qi8Kv54tWTTMss7h6ghq7u0vBoGgtG5t8yYqKSrdQxPyob3xqLTWcY7gC9Lck4SnwPM1pQUPVwvXr4HRPsEfIQbm3868f5fJdlrZdR3T+KbwpUxSbqAprsCgQzk7yP1MQfLXHKjH7UhEgO4iOWAdLww4//YCD6Ybl91kydgOPlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745465488; c=relaxed/simple;
-	bh=y2kLle1MrYmSqCGMWABEiUSCyaHfJ+RdhWHi3vtj+AA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KCz95+do8cwU0LK0K0HX1gosQfqc3hWxsTu54gFUe6U5O2/uaGIYUimCl34pns5TRPx0qjUHshr77bX/eLeXaG2oKKLWL+wnvoMptoLk1xdhYDdAfSlBWDy9Y9qi0AT50eWQPRRPOj/fxJx0CJJsdBSuVkPbNltKuj5LYXHH0zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vk/l1kK5; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745465488; x=1777001488;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=y2kLle1MrYmSqCGMWABEiUSCyaHfJ+RdhWHi3vtj+AA=;
-  b=Vk/l1kK51qaxm11f7KpvBGIymP2p+f+e3pfWrcTZYmWLu21uR5KR20bF
-   1buBtUnuk1zDeKCECFMzhzx8XalwYacuD6fBf+vLZucUSBGhNK6s2thX7
-   WFr2roOedZQLIW4xDV5qUczK8q+WmlT6SokYB4Fx+uLWY34H2ObqEKUSw
-   7BcCm0081WtHYDAkJLpyZQMKFk30U3Nc+v/ukHd5U0cGXGICKdokq5cqV
-   /QYxQo9+pRQdbtDdcWXnfjEBoe8VWnNg8HKl8DJ2Pzyyr2YURF31pkei1
-   jtWp0Ffsc3TpTsQn1tM5edmi1lHSskNo7wJyKAUYc/s0XVJuxF17peBLj
-   Q==;
-X-CSE-ConnectionGUID: W32yidTJStyP1Zd1upp39A==
-X-CSE-MsgGUID: 5sZjHLRVQJulK9XO5+GlIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11412"; a="46787544"
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="46787544"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:31:27 -0700
-X-CSE-ConnectionGUID: fEM4eomdQBSmLpVcSi364Q==
-X-CSE-MsgGUID: Yl7Nxak5TyKyrZ+wFPh+dg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,233,1739865600"; 
-   d="scan'208";a="137488251"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2025 20:31:24 -0700
-Message-ID: <a65d90f2-b6c6-4230-af52-8f676b3605c5@linux.intel.com>
-Date: Thu, 24 Apr 2025 11:27:07 +0800
+	s=arc-20240116; t=1745465323; c=relaxed/simple;
+	bh=noHbPR3sLsndnulXNWyZeHg3HcciLEB7XfaZ3CZdWCg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YD9kL1InWFOLDwvfv2SrgTCJj00EczSguyaOBPk+bOlFr7nNfJGbcQ7J0pYChFl96p3jh+2QLbr6k8ikwVAcK5oB7c3BgVd/1F5VN/UTZNk1XIsCVG8usTmjJOAakBWxm2KaQ2kbSVTWUrMjdxXVoshxxf+5/vc+Qabpo849+1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nPZLSXqR; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=GI6Sp
+	yLuPvAVEE4Ld7Nf0E+xh/9cZZvxLRmeApwpMZ8=; b=nPZLSXqRi+fcf9E5WXa+X
+	DJMDd0wb/cI8WVbaniqvPscb097gdCjTELvhQsn6IO9pDuWf3mHgU4d6UaGjU8xi
+	0a9Aevm5fQU16fyC7lRbyG08XXtKji5RE7qMmCyH1Ej4q+X4Ntfknaf4RejuH19q
+	MCUQhGJMy6qGt/kYLMmOwk=
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [])
+	by gzga-smtp-mtada-g1-1 (Coremail) with SMTP id _____wAnVhS7rwloFhNACA--.42303S4;
+	Thu, 24 Apr 2025 11:27:57 +0800 (CST)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+To: robdclark@gmail.com,
+	quic_abhinavk@quicinc.com,
+	lumag@kernel.org,
+	sean@poorly.run,
+	marijn.suijten@somainline.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sumit.semwal@linaro.org,
+	christian.koenig@amd.com
+Cc: linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] drm/msm: fix a potential memory leak issue in submit_create()
+Date: Thu, 24 Apr 2025 11:27:51 +0800
+Message-Id: <20250424032751.3511768-1-haoxiang_li2024@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rc] iommu: Skip PASID validation for devices without PASID
- capability
-To: Tushar Dave <tdave@nvidia.com>, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, kevin.tian@intel.com, jgg@nvidia.com,
- yi.l.liu@intel.com, iommu@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: linux-pci@vger.kernel.org, stable@vger.kernel.org
-References: <20250424020626.945829-1-tdave@nvidia.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20250424020626.945829-1-tdave@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAnVhS7rwloFhNACA--.42303S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr13Kryxur1UKF1rJF45trb_yoW8trWkpF
+	WUW34jkr1UA3WaqwsFkF1jka45G3W8WayxKFWqv3sxuw1Yyw1UW3WUA3y2qFWUJF92yry3
+	tFs2kr1UXF10krUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zic18DUUUUU=
+X-CM-SenderInfo: xkdr5xpdqjszblsqjki6rwjhhfrp/xtbBkAk5bmgJr3YKpQAAsZ
 
-On 4/24/25 10:06, Tushar Dave wrote:
-> Generally PASID support requires ACS settings that usually create
-> single device groups, but there are some niche cases where we can get
-> multi-device groups and still have working PASID support. The primary
-> issue is that PCI switches are not required to treat PASID tagged TLPs
-> specially so appropriate ACS settings are required to route all TLPs to
-> the host bridge if PASID is going to work properly.
-> 
-> pci_enable_pasid() does check that each device that will use PASID has
-> the proper ACS settings to achieve this routing.
-> 
-> However, no-PASID devices can be combined with PASID capable devices
-> within the same topology using non-uniform ACS settings. In this case
-> the no-PASID devices may not have strict route to host ACS flags and
-> end up being grouped with the PASID devices.
-> 
-> This configuration fails to allow use of the PASID within the iommu
-> core code which wrongly checks if the no-PASID device supports PASID.
-> 
-> Fix this by ignoring no-PASID devices during the PASID validation. They
-> will never issue a PASID TLP anyhow so they can be ignored.
-> 
-> Fixes: c404f55c26fc ("iommu: Validate the PASID in iommu_attach_device_pasid()")
-> Cc:stable@vger.kernel.org
-> Signed-off-by: Tushar Dave<tdave@nvidia.com>
-> ---
->   drivers/iommu/iommu.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 4f91a740c15f..e01df4c3e709 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -3440,7 +3440,13 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
->   
->   	mutex_lock(&group->mutex);
->   	for_each_group_device(group, device) {
-> -		if (pasid >= device->dev->iommu->max_pasids) {
-> +		/*
-> +		 * Skip PASID validation for devices without PASID support
-> +		 * (max_pasids = 0). These devices cannot issue transactions
-> +		 * with PASID, so they don't affect group's PASID usage.
-> +		 */
-> +		if ((device->dev->iommu->max_pasids > 0) &&
-> +		    (pasid >= device->dev->iommu->max_pasids)) {
+The memory allocated by msm_fence_alloc() actually is the
+container of msm_fence_alloc()'s return value. Thus, just
+free its return value is not enough.
+Add a helper 'msm_fence_free()' in msm_fence.h/msm_fence.c
+to do the complete job.
 
-What the iommu driver should do when set_dev_pasid is called for a non-
-PASID device? The iommu driver has no sense of iommu group, hence it has
-no knowledge about this device sharing an iommu group with another PASID
-capable device.
+Fixes: f94e6a51e17c ("drm/msm: Pre-allocate hw_fence")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+---
+ drivers/gpu/drm/msm/msm_fence.c      | 7 +++++++
+ drivers/gpu/drm/msm/msm_fence.h      | 1 +
+ drivers/gpu/drm/msm/msm_gem_submit.c | 2 +-
+ 3 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/msm/msm_fence.c b/drivers/gpu/drm/msm/msm_fence.c
+index d41e5a6bbee0..72641e6a627d 100644
+--- a/drivers/gpu/drm/msm/msm_fence.c
++++ b/drivers/gpu/drm/msm/msm_fence.c
+@@ -183,6 +183,13 @@ msm_fence_alloc(void)
+ 	return &f->base;
+ }
+ 
++void msm_fence_free(struct dma_fence *fence)
++{
++	struct msm_fence *f = to_msm_fence(fence);
++
++	kfree(f);
++}
++
+ void
+ msm_fence_init(struct dma_fence *fence, struct msm_fence_context *fctx)
+ {
+diff --git a/drivers/gpu/drm/msm/msm_fence.h b/drivers/gpu/drm/msm/msm_fence.h
+index 148196375a0b..635c68629070 100644
+--- a/drivers/gpu/drm/msm/msm_fence.h
++++ b/drivers/gpu/drm/msm/msm_fence.h
+@@ -82,6 +82,7 @@ bool msm_fence_completed(struct msm_fence_context *fctx, uint32_t fence);
+ void msm_update_fence(struct msm_fence_context *fctx, uint32_t fence);
+ 
+ struct dma_fence * msm_fence_alloc(void);
++void msm_fence_free(struct dma_fence *fence);
+ void msm_fence_init(struct dma_fence *fence, struct msm_fence_context *fctx);
+ 
+ static inline bool
+diff --git a/drivers/gpu/drm/msm/msm_gem_submit.c b/drivers/gpu/drm/msm/msm_gem_submit.c
+index 3e9aa2cc38ef..213baa5bca5e 100644
+--- a/drivers/gpu/drm/msm/msm_gem_submit.c
++++ b/drivers/gpu/drm/msm/msm_gem_submit.c
+@@ -56,7 +56,7 @@ static struct msm_gem_submit *submit_create(struct drm_device *dev,
+ 
+ 	ret = drm_sched_job_init(&submit->base, queue->entity, 1, queue);
+ 	if (ret) {
+-		kfree(submit->hw_fence);
++		msm_fence_free(submit->hw_fence);
+ 		kfree(submit);
+ 		return ERR_PTR(ret);
+ 	}
+-- 
+2.25.1
+
 
