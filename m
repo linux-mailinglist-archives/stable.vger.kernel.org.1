@@ -1,281 +1,163 @@
-Return-Path: <stable+bounces-136626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95465A9B974
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 22:57:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DD3A9B9EB
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 23:31:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20DB0921BB6
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 20:57:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FA4344616C
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 21:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519B1281501;
-	Thu, 24 Apr 2025 20:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38EE20102B;
+	Thu, 24 Apr 2025 21:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="cSG1yOkU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="evglQcw1"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8697A26A0FF;
-	Thu, 24 Apr 2025 20:57:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469712701AC;
+	Thu, 24 Apr 2025 21:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745528270; cv=none; b=XqD48yY6eFlmTKLULlUSO0gjTVLps6XVCquQuJ8wa5e9Tg7P0QHUXZGN+MoB7vTRu1+SddCUMy5Uf/bwoC8seaIYhpgf3ddv5GSG0D31NuODxQQp7lbvYtkB8TI7xeisz2CWfGJmogItrjxvLDUusTj1cTv+3e9+hG6fp+dW2gY=
+	t=1745530271; cv=none; b=MoBdcGh5rh7JCwVIy77cPPiemkuhG2IVrHh+H6R3tpE+9QhySG8K5IP5fCc7f8lb3d+csKa8abpJQsDRfVYx8uu7IaW2S87s8asAgptysSl7+hXLZ5b8hWoDW2dASC4ZVAHc3wAkZNLRxpFzQCmprXxPuQ0lq+OdPeaRj25GDNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745528270; c=relaxed/simple;
-	bh=8bMOXeeXEuQOo5moD5D0HbnjQnWxauRQeyE+0vl0CcA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t2FmM5zOvUNel6FQX8NHJPkmejVp7ZvsxU7tYj0ZX5hiipPFxxVoE9Zm+kfvih2231h2Ac4/KOD14YNTLCZeCAzlFh7myeltQVpYTo41bYYLTNFPJU79TiAuk2wohnH9OJxRrioLspoNnXmKt+aU3RBL8MzWGbSMCp6CD38po30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; spf=pass smtp.mailfrom=gmx.com; dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b=cSG1yOkU; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
-	s=s31663417; t=1745528259; x=1746133059; i=quwenruo.btrfs@gmx.com;
-	bh=2vQYHierLiPy2KJcrXFPzN+0bisf1OYS+kvXNzLp1pA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=cSG1yOkUYFfPQWlUY7eQuZOjN8s9hGLcC00RiFfOALDz0Rn4fq67sljIZP4uTXWh
-	 qn7U/TKgEKxpEL/lWXpKigcaLdCx8ESLwZ/Dvqt8CeHhgvR8YpRpQ2fBcBOb7Mjr9
-	 29/JYPBESp2nrI4DXdBRkRQSN5Nmr92T8GQbDOIhO1tMnaOxC/GuL9fcK2G2ywPOD
-	 s0UCM7Zu2+4UsNUPd7wybOPRyag1Yd9Zm30AAh8+KxMs02mWYjGwSLA3Da3Mu+J4u
-	 4m/PCZ0HoRPf7glIDJT5KTzw11tPBAY2DaSvqDJ4hBGbXt0khqBPZxzkRNAZkHAz6
-	 3BTc6wgBmXczdp5xkw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [172.16.0.229] ([159.196.52.54]) by mail.gmx.net (mrgmx104
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MQMyf-1uUPqd2utl-00QMoC; Thu, 24
- Apr 2025 22:57:39 +0200
-Message-ID: <d874c64c-34fc-4d3a-abf9-19625bddd213@gmx.com>
-Date: Fri, 25 Apr 2025 06:27:33 +0930
+	s=arc-20240116; t=1745530271; c=relaxed/simple;
+	bh=Nyl8up2tOsjVm+IjdQA9JUKV7IhTKARROQ82LGEckIE=;
+	h=Date:To:From:Subject:Message-Id; b=q1IKWGx2mmhNU57X/QfnVSve4arfep5j5eADvZ4GuzLL6YylMF0sdmTy/m/yC0tz4miBtABpXWs/v0S+KYLQz2W3PLV1FId6oiHReym4lc2RjtoXi8uCsHOxIqGPd7RH8M0xe/cP1KOUrcb/FOgFfMK8AhP+HhE0GHhjydtBDqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=evglQcw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D62AC4CEE3;
+	Thu, 24 Apr 2025 21:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745530270;
+	bh=Nyl8up2tOsjVm+IjdQA9JUKV7IhTKARROQ82LGEckIE=;
+	h=Date:To:From:Subject:From;
+	b=evglQcw1G95nhgHGgJ1FfPG256fHKPL5zx0ZdqULUhPbeUIwGUR1HMHTZgYqNlB3w
+	 MGHVWNGsCIZ3kbt/6boJVhgqcGBpJE0rUda9oGTNm4ALwL32Rd/djXeh9viZlsygC1
+	 zvBkXRi9aYaBB1G6o58FFJ1DeE3YUoYyarnD/sVs=
+Date: Thu, 24 Apr 2025 14:31:09 -0700
+To: mm-commits@vger.kernel.org,zhanghongchen@loongson.cn,willy@infradead.org,stable@vger.kernel.org,ryan.roberts@arm.com,rientjes@google.com,osalvador@suse.de,nao.horiguchi@gmail.com,mhocko@suse.cz,joern@logfs.org,hughd@google.com,david@redhat.com,christophe.leroy@csgroup.eu,chenhuacai@kernel.org,andrii@kernel.org,wangming01@loongson.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [alternative-merged] smaps-fix-crash-in-smaps_hugetlb_range-for-non-present-hugetlb-entries.patch removed from -mm tree
+Message-Id: <20250424213110.8D62AC4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] btrfs: adjust subpage bit start based on sectorsize
-To: Daniel Vacek <neelx@suse.com>, Josef Bacik <josef@toxicpanda.com>
-Cc: linux-btrfs@vger.kernel.org, kernel-team@fb.com, stable@vger.kernel.org,
- Boris Burkov <boris@bur.io>
-References: <0914bad6138d2cfafc9cfe762bd06c1883ceb9d2.1745242535.git.josef@toxicpanda.com>
- <CAPjX3FeSOJVo=4hyPaHp3svLorWXp2SGhMEB17+Qm3OLmireSw@mail.gmail.com>
-Content-Language: en-US
-From: Qu Wenruo <quwenruo.btrfs@gmx.com>
-Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
- BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
- sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
- xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
- naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
- tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
- 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
- VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
- CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
- /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
- GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
- q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
- ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
- CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
- B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
- Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
- +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
- HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
-In-Reply-To: <CAPjX3FeSOJVo=4hyPaHp3svLorWXp2SGhMEB17+Qm3OLmireSw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:i4dQg274C6LZR5EMbadpDbV62UzPlfgsUy07fof+G3Hf3sU/Y/y
- 3g1lRPPyX6YGU6CzlLp9lalYSptFd/haHVqTrzX8FCRuff6kbFAlBKLN6s2LtLfNCiqiQGz
- sZR/iofXBPnqWu6PekGriV1T+8p4RAVPea1O7k+dflLmHnBlepZ5AB4OW/Y2/j6tqnLp2Tc
- TUB147VAFNtbaNP3S4TOQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:WLuKyEiQz58=;8kkG92mt1X+Jo/EBWV6iJabRkvm
- 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
- w==
 
 
+The quilt patch titled
+     Subject: smaps: fix crash in smaps_hugetlb_range for non-present hugetlb entries
+has been removed from the -mm tree.  Its filename was
+     smaps-fix-crash-in-smaps_hugetlb_range-for-non-present-hugetlb-entries.patch
 
-=E5=9C=A8 2025/4/24 20:10, Daniel Vacek =E5=86=99=E9=81=93:
-> On Mon, 21 Apr 2025 at 15:38, Josef Bacik <josef@toxicpanda.com> wrote:
->>
->> When running machines with 64k page size and a 16k nodesize we started
->> seeing tree log corruption in production.  This turned out to be becaus=
-e
->> we were not writing out dirty blocks sometimes, so this in fact affects
->> all metadata writes.
->>
->> When writing out a subpage EB we scan the subpage bitmap for a dirty
->> range.  If the range isn't dirty we do
->>
->> bit_start++;
->>
->> to move onto the next bit.  The problem is the bitmap is based on the
->> number of sectors that an EB has.  So in this case, we have a 64k
->> pagesize, 16k nodesize, but a 4k sectorsize.  This means our bitmap is =
-4
->> bits for every node.  With a 64k page size we end up with 4 nodes per
->> page.
->>
->> To make this easier this is how everything looks
->>
->> [0         16k       32k       48k     ] logical address
->> [0         4         8         12      ] radix tree offset
->> [               64k page               ] folio
->> [ 16k eb ][ 16k eb ][ 16k eb ][ 16k eb ] extent buffers
->> [ | | | |  | | | |   | | | |   | | | | ] bitmap
->>
->> Now we use all of our addressing based on fs_info->sectorsize_bits, so
->> as you can see the above our 16k eb->start turns into radix entry 4.
->=20
-> Btw, unrelated to this patch - but this way we're using at best only
-> 25% of the tree slots. Or in other words we're wasting 75% of the
-> memory here. We should rather use eb->start / fs_info->nodesize for
-> the tree index.
+This patch was dropped because an alternative patch was or shall be merged
 
-That requires all tree blocks to be nodesize aligned.
+------------------------------------------------------
+From: Ming Wang <wangming01@loongson.cn>
+Subject: smaps: fix crash in smaps_hugetlb_range for non-present hugetlb entries
+Date: Wed, 23 Apr 2025 09:03:59 +0800
 
-We're already working towards that direction, but we need to be cautious=
-=20
-to reject those non-nodesize aligned tree blocks, as end users won't be=20
-happy that their fsese no longer mount after a kernel update.
+When reading /proc/pid/smaps for a process that has mapped a hugetlbfs
+file with MAP_PRIVATE, the kernel might crash inside
+pfn_swap_entry_to_page.  This occurs on LoongArch under specific
+conditions.
 
-So as usual, kernel warning message first, btrfs check reports as error,=
-=20
-then experimental rejection, and finally push to end users.
+The root cause involves several steps:
 
->=20
-> And by the other way - why do we need a copy of nodesize in eb->len?
-> We can always eb->fs_info->nodesize if needed.
+1. When the hugetlbfs file is mapped (MAP_PRIVATE), the initial PMD
+   (or relevant level) entry is often populated by the kernel during
+   mmap() with a non-present entry pointing to the architecture's
+   invalid_pte_table On the affected LoongArch system, this address was
+   observed to be 0x90000000031e4000.
 
-Because there are pseudo "extent buffers" in the past, like accessing=20
-super blocks using extent buffer helpers.
+2. The smaps walker (walk_hugetlb_range -> smaps_hugetlb_range) reads
+   this entry.
 
-In that case we need a length other than node size but super block size.
+3. The generic is_swap_pte() macro checks `!pte_present() &&
+   !pte_none()`.  The entry (invalid_pte_table address) is not present. 
+   Crucially, the generic pte_none() check (`!(pte_val(pte) &
+   ~_PAGE_GLOBAL)`) returns false because the invalid_pte_table address is
+   non-zero.  Therefore, is_swap_pte() incorrectly returns true.
 
-But that is no longer the case, feel free to clean it up.
+4. The code enters the `else if (is_swap_pte(...))` block.
 
-Thanks,
-Qu
+5. Inside this block, it checks `is_pfn_swap_entry()`.  Due to a bit
+   pattern coincidence in the invalid_pte_table address on LoongArch, the
+   embedded generic `is_migration_entry()` check happens to return true
+   (misinterpreting parts of the address as a migration type).
 
->=20
->> When we find a dirty range for our eb, we correctly do bit_start +=3D
->> sectors_per_node, because if we start at bit 0, the next bit for the
->> next eb is 4, to correspond to eb->start 16k.
->>
->> However if our range is clean, we will do bit_start++, which will now
->> put us offset from our radix tree entries.
->>
->> In our case, assume that the first time we check the bitmap the block i=
-s
->> not dirty, we increment bit_start so now it =3D=3D 1, and then we loop
->> around and check again.  This time it is dirty, and we go to find that
->> start using the following equation
->>
->> start =3D folio_start + bit_start * fs_info->sectorsize;
->>
->> so in the case above, eb->start 0 is now dirty, and we calculate start
->> as
->>
->> 0 + 1 * fs_info->sectorsize =3D 4096
->> 4096 >> 12 =3D 1
->>
->> Now we're looking up the radix tree for 1, and we won't find an eb.
->> What's worse is now we're using bit_start =3D=3D 1, so we do bit_start =
-+=3D
->> sectors_per_node, which is now 5.  If that eb is dirty we will run into
->> the same thing, we will look at an offset that is not populated in the
->> radix tree, and now we're skipping the writeout of dirty extent buffers=
-.
->>
->> The best fix for this is to not use sectorsize_bits to address nodes,
->> but that's a larger change.  Since this is a fs corruption problem fix
->> it simply by always using sectors_per_node to increment the start bit.
->>
->> cc: stable@vger.kernel.org
->> Fixes: c4aec299fa8f ("btrfs: introduce submit_eb_subpage() to submit a =
-subpage metadata page")
->> Reviewed-by: Boris Burkov <boris@bur.io>
->> Signed-off-by: Josef Bacik <josef@toxicpanda.com>
->> ---
->> - Further testing indicated that the page tagging theoretical race isn'=
-t getting
->>    hit in practice, so we're going to limit the "hotfix" to this specif=
-ic patch,
->>    and then send subsequent patches to address the other issues we're h=
-itting. My
->>    simplify metadata writebback patches are the more wholistic fix.
->>
->>   fs/btrfs/extent_io.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
->> index 5f08615b334f..6cfd286b8bbc 100644
->> --- a/fs/btrfs/extent_io.c
->> +++ b/fs/btrfs/extent_io.c
->> @@ -2034,7 +2034,7 @@ static int submit_eb_subpage(struct folio *folio,=
- struct writeback_control *wbc)
->>                                subpage->bitmaps)) {
->>                          spin_unlock_irqrestore(&subpage->lock, flags);
->>                          spin_unlock(&folio->mapping->i_private_lock);
->> -                       bit_start++;
->> +                       bit_start +=3D sectors_per_node;
->>                          continue;
->>                  }
->>
->> --
->> 2.48.1
->>
->>
->=20
+6. This leads to a call to pfn_swap_entry_to_page() with the bogus
+   swap entry derived from the invalid table address.
+
+7. pfn_swap_entry_to_page() extracts a meaningless PFN, finds an
+   unrelated struct page, checks its lock status (unlocked), and hits the
+   `BUG_ON(is_migration_entry(entry) && !PageLocked(p))` assertion.
+
+The original code's intent in the `else if` block seems aimed at handling
+potential migration entries, as indicated by the inner
+`is_pfn_swap_entry()` check.  The issue arises because the outer
+`is_swap_pte()` check incorrectly includes the invalid table pointer case
+on LoongArch.
+
+This patch fixes the issue by changing the condition in
+smaps_hugetlb_range() from the broad `is_swap_pte()` to the specific
+`is_hugetlb_entry_migration()`.
+
+The `is_hugetlb_entry_migration()` helper function correctly handles this
+by first checking `huge_pte_none()`.  Architectures like LoongArch can
+provide an override for `huge_pte_none()` that specifically recognizes the
+`invalid_pte_table` address as a "none" state for HugeTLB entries.  This
+ensures `is_hugetlb_entry_migration()` returns false for the invalid
+entry, preventing the code from entering the faulty block.
+
+This change makes the code reflect the likely original intent (handling
+migration) more accurately and leverages architecture-specific helpers
+(`huge_pte_none`) to correctly interpret special PTE/PMD values in the
+HugeTLB context, fixing the crash on LoongArch without altering the
+generic is_swap_pte() behavior.
+
+Link: https://lkml.kernel.org/r/20250423010359.2030576-1-wangming01@loongson.cn
+Fixes: 25ee01a2fca0 ("mm: hugetlb: proc: add hugetlb-related fields to /proc/PID/smaps")
+Co-developed-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Ming Wang <wangming01@loongson.cn>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Joern Engel <joern@logfs.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.cz>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/task_mmu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/fs/proc/task_mmu.c~smaps-fix-crash-in-smaps_hugetlb_range-for-non-present-hugetlb-entries
++++ a/fs/proc/task_mmu.c
+@@ -1027,7 +1027,7 @@ static int smaps_hugetlb_range(pte_t *pt
+ 	if (pte_present(ptent)) {
+ 		folio = page_folio(pte_page(ptent));
+ 		present = true;
+-	} else if (is_swap_pte(ptent)) {
++	} else if (is_hugetlb_entry_migration(ptent)) {
+ 		swp_entry_t swpent = pte_to_swp_entry(ptent);
+ 
+ 		if (is_pfn_swap_entry(swpent))
+_
+
+Patches currently in -mm which might be from wangming01@loongson.cn are
+
 
 
