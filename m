@@ -1,141 +1,213 @@
-Return-Path: <stable+bounces-136629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9860CA9BAD1
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 00:34:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A927EA9BAE9
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 00:40:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B605C7B4CC8
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 22:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 325AA9A419D
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 22:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4D728B4EF;
-	Thu, 24 Apr 2025 22:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20268289342;
+	Thu, 24 Apr 2025 22:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kNnPsaXH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iZmh21Gm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CFA1F8730;
-	Thu, 24 Apr 2025 22:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8579C14E2E2;
+	Thu, 24 Apr 2025 22:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745534087; cv=none; b=QgkSfEGyf1MaGZCRptESQ4XmjRF4OnfxdDm0vITAycVC+xsdQAD5SRVONsLjter5Y2yv8cr+3XHO3RLIXhheleVzoozdbepzzXRM8F3SUkg6a0NYzWFAVVXYa5QlFi8wQkiHimd35PWg9+uRgXg+Bzp3DWQEQo5+49n/2zOfKI8=
+	t=1745534435; cv=none; b=MQTQvJyChBoiCmW1JDotdnuYfru7Jg9ckN97bO8Pr4cu4p3l+82bjxrMmHvGDhaW6PJQntWsUFTiPqnfGQRP23OtIMAlgHkxOb7GfTwSbrb6Q53d8jO9LoWwT/tGBa+mbc9UpXF8ik88LsoZeYsoQ7W4APpKuIHw0FkPq1R5i0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745534087; c=relaxed/simple;
-	bh=SMPrGfr8bTytlLMThME5gZ5a9KglEcvzpXeHtz7Oluc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3ca4SFyrMopijwN6vkkQOkl3p/T0Jxl3uucRiFyaMK0eh2TpiTesTBH+EiIq42BMvvN8SVvksvBpIqytrX3NGNVLldhYUfst+dM9B43o/gJADxwwveaOkVdM+0y0a05g5Fp6iezYokBi5ilPovgf+whra+w6zqjjnNc99rW1yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kNnPsaXH; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c542ffec37so173913585a.2;
-        Thu, 24 Apr 2025 15:34:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745534084; x=1746138884; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NmKYu+cBYor5ouArn8J8SGEMb8V+WtQZCe4d7Eom8vw=;
-        b=kNnPsaXH0lTLSaUcxl12gxFlxRsVd5XHXtVc8TA235ebYNfzYReVQOQua2nCjsL7J7
-         bBY4K1nCrbT+Uy+J2ohXusKAtT73hesfYjmrp1SNfF3oxV3nOANy7iZ3K4aq52qxTF7Y
-         AqcOi9ZPJEqyqGiQaJAC9Bs2JWx2LUggxqVuwRzRJny5nXVTQ/4UXj9fGDcoTl8PlK5U
-         e2pF8t8r46QLQ162Y7JrkhKjQda0zauEjMX/ppsTeKCyuVy89ok7y8+3Udqszt/bML1T
-         KCz6VOItL65yOC7JMtF47JcYsnTr7hjqvLiuVRA2Uv2dN0aK0dFcvUpA6k0y3O0a1jRX
-         3oEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745534084; x=1746138884;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NmKYu+cBYor5ouArn8J8SGEMb8V+WtQZCe4d7Eom8vw=;
-        b=cpX0DlpFqxro7kHCU29ghpKXIkcB8hB5tV1/T6eapM4IeX2FfcGxwAASzBFTVgVgYi
-         bH7dJ/wp7gcGdLeq+uNY+tlMUy+jJti4hQ47w/z80KWTkT33ocUWl9RQPMs5XC/DgOhM
-         j0aGNJvExdXgEamPbsGKoXVQb4wNsqRr34OkcY8BJDjniN5BUrVpelAcZgG4k5QfwGn/
-         pWvbzCXlhKVSPOCBwyn28neBDmzL1JdE8MTa7Z1DsDGvHiBy/FitVtf66+F/VyBJDDZF
-         cyjsFUdBU69liLUgP40szM7G/Et3UISFJ8P/SoaHv3syNZ8iV8QqNGUfg1vv7skBiJOc
-         7kYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUiNt13cGXTdiRuNHsCgudx9sCed/BSRkiJt/OMvPiqj67kNvSL4gkUKWOZlAL33lQv6OKorLi4gDo=@vger.kernel.org, AJvYcCVkSG8AZ1QO8XYJmwo9ayT7ySMa0471zX5d8ON7e7kBXhAkJEjvLVuhabAlvDJlC1hRcQnSkKfG@vger.kernel.org, AJvYcCW72qw8pdXP1/OwdyKDLZsm3wI+mQ3V+FIqs05Q4M0W7rHvZ2e8u1xkQrb+pEs4hVpY5/yvw1oUtlqxI2iD@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzc2tFXk/X8cGx1WZ/jFp8JDIEa/yfSdykyR5qh0nRsMYqi5sQc
-	CwRUGAT6d4Jgh9tG1lELK4sDzFmq+3cYDGvvwv4HEqfjAXVuvgAV
-X-Gm-Gg: ASbGncs56Ey32oNTHqL29bXi+4B36eaJDIbhoIa9TUPAKRpjnKHVa57oiTIp5nnlXE+
-	rozTiLy5qUy3IlhxT06q0TjLbTRYl8yYTyF576sGZpruc2627ad0EvVvTXvwnnp1XdHoCvO7Ibe
-	7sBYVsrBZWMqEP0LFInyiQVfp0PMYZ5Cfk46NTDQdXsmWKWwyJc9THzyGYb70QHzEcne92vJ+gS
-	qu4Gx4O34z1+sNNPVJ67729PmYRQ3i6s++9/I9i618TZbs3LxJ5lXqlX71Oq5H2NsmvMIJoaaqR
-	bJoh9K6zfXeF+eyLiXL20tHfbacnBR64nzRvZpBQirYejU2LN3WJjM4NtWrEjbI2G/7Ef7/VLp6
-	f/FZEUDsleH09NFtb85k=
-X-Google-Smtp-Source: AGHT+IFhWfpPaS+f5kQCG5DZsx23khz4dr2xWW/RmE/a5uwOzL06L/7GyubItr+3lo8EJrtTepz09Q==
-X-Received: by 2002:a05:620a:45a3:b0:7c5:4caa:21af with SMTP id af79cd13be357-7c9607ac638mr39876985a.53.1745534083903;
-        Thu, 24 Apr 2025 15:34:43 -0700 (PDT)
-Received: from theriatric.mshome.net (c-73-123-232-110.hsd1.ma.comcast.net. [73.123.232.110])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c958ea36eesm142986885a.111.2025.04.24.15.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Apr 2025 15:34:43 -0700 (PDT)
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-To: andy@kernel.org,
-	dlechner@baylibre.com,
-	gregkh@linuxfoundation.org,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	Michael.Hennerich@analog.com,
-	nuno.sa@analog.com
-Cc: gshahrouzi@gmail.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/2] staging: iio: frequency: ad9832: Use SLEEP bit instead of RESET to disable output
-Date: Thu, 24 Apr 2025 18:32:08 -0400
-Message-ID: <20250424223210.91317-2-gshahrouzi@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250424223210.91317-1-gshahrouzi@gmail.com>
-References: <20250424223210.91317-1-gshahrouzi@gmail.com>
+	s=arc-20240116; t=1745534435; c=relaxed/simple;
+	bh=v5/+UAKc9qT69qSy9qPG/eu0NlxYHHKNbbJhCwkRNsM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=feswkFn+DWzbMjjYMYVdsc9IrJIWbMHBt/NZwVxRMG3KeqgidQzwsi3A/rcMUDy7rSA5p4PI+wB4c0eTfzQIK7zZkCogG/jlys4uU6j1XMdCoijuSoaIlsP4BJj0QfQFMmzll82wbDiBokBH97O6vvcDY1U3Viye6jtP58TBON4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iZmh21Gm; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745534434; x=1777070434;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=v5/+UAKc9qT69qSy9qPG/eu0NlxYHHKNbbJhCwkRNsM=;
+  b=iZmh21GmZzTJPSHtrqtqV/YVSjJFOpRN/4z96x+0xt5Dc4BQFngNVfM3
+   RrvnxT3bZhrZmwe9dqp3eXEiYapotTP08eKIFBLlkppllmiOKuVD2iesS
+   rUT6JvYtR4/07xbBaN4rUbaN2kpnHI4pgDjt2FkwHrgESJSALHZvMiLaJ
+   Lc+2Bk6EmTG7eEFrr5u/nZQy616ldM3Q2TgFpNUv3/4WiRxFUUbXCZhcU
+   RhGCjVynN6SgBOYC9EFHuyQBhOCzqqUmb+SzGnECN3KAhIv4F5MxvQLfP
+   dy+VS7xwUVk/5NVb8cBIMokfkufs4cdzggAPFJ5dowAdAy7JCHLZtTBs8
+   Q==;
+X-CSE-ConnectionGUID: VL7W81txTHeYAU/lVYX3Kg==
+X-CSE-MsgGUID: FJj/6U6aTWWvuCkiqQ1hNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47204980"
+X-IronPort-AV: E=Sophos;i="6.15,237,1739865600"; 
+   d="scan'208";a="47204980"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 15:40:33 -0700
+X-CSE-ConnectionGUID: 4TX2q2ACSeq1fI3IZjbhwg==
+X-CSE-MsgGUID: /ZpJP2SFRXunevsJLKTCAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,237,1739865600"; 
+   d="scan'208";a="132482508"
+Received: from puneetse-mobl.amr.corp.intel.com (HELO [10.125.108.124]) ([10.125.108.124])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 15:40:32 -0700
+Message-ID: <a6e386bf-c9d4-4b3c-ad6e-dd1689330782@intel.com>
+Date: Thu, 24 Apr 2025 15:40:28 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] iommu: Allow attaching static domains in
+ iommu_attach_device_pasid()
+To: Jack Vogel <jack.vogel@oracle.com>, Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+ Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Jason Gunthorpe <jgg@nvidia.com>,
+ "shangsong2@lenovo.com" <shangsong2@lenovo.com>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250424034123.2311362-1-baolu.lu@linux.intel.com>
+ <4764ACC2-6D38-4CAE-8A6B-451AB3DAF3E0@oracle.com>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <4764ACC2-6D38-4CAE-8A6B-451AB3DAF3E0@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-According to the AD9832 datasheet (Table 10, D12 description), setting
-the RESET bit forces the phase accumulator to zero, which corresponds to
-a full-scale DC output, rather than disabling the output signal.
 
-The correct way to disable the output and enter a low-power state is to
-set the AD9832_SLEEP bit (Table 10, D13 description), which powers down
-the internal DAC current sources and disables internal clocks.
 
-Fixes: ea707584bac1 ("Staging: IIO: DDS: AD9832 / AD9835 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
----
-v3 -> v4:
-	- Rebase changes ontop of most recent changes.
-v2 -> v3:
-v1 -> v2:
----
- drivers/staging/iio/frequency/ad9832.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 4/24/25 3:34 PM, Jack Vogel wrote:
+> I am having test issues with this patch, test system is running OL9, basically RHEL 9.5, the kernel boots ok, and the dmesg is clean… but the tests in accel-config dont pass. Specifically the crypto tests, this is due to vfio_pci_core not loading.  Right now I’m not sure if any of this is my mistake, but at least it’s something I need to keep looking at.
+> 
+> Also, since I saw that issue on the latest I did a backport to our UEK8 kernel which is 6.12.23, and on that kernel it still exhibited  these messages on boot:
+> 
+> *idxd*0000:6a:01.0: enabling device (0144 -> 0146)
+> 
+> [   21.112733] *idxd*0000:6a:01.0: failed to attach device pasid 1, domain type 4
+> 
+> [   21.120770] *idxd*0000:6a:01.0: No in-kernel DMA with PASID. -95
+> 
+> 
+> Again, maybe an issue in my backporting… however I’d like to be sure.
 
-diff --git a/drivers/staging/iio/frequency/ad9832.c b/drivers/staging/iio/frequency/ad9832.c
-index 49388da5a684a..2e555084ff98a 100644
---- a/drivers/staging/iio/frequency/ad9832.c
-+++ b/drivers/staging/iio/frequency/ad9832.c
-@@ -236,7 +236,7 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
- 		if (val)
- 			st->ctrl_src &= ~(AD9832_RESET | AD9832_SLEEP | AD9832_CLR);
- 		else
--			st->ctrl_src |= FIELD_PREP(AD9832_RESET, 1);
-+			st->ctrl_src |= FIELD_PREP(AD9832_SLEEP, 1);
- 
- 		st->data = cpu_to_be16(FIELD_PREP(AD9832_CMD_MSK, AD9832_CMD_SLEEPRESCLR) |
- 						  st->ctrl_src);
--- 
-2.43.0
+Can you verify against latest upstream kernel plus the patch and see if you still see the error?
+
+DJ
+
+> 
+> Cheers,
+> 
+> Jack
+> 
+> 
+>> On Apr 23, 2025, at 20:41, Lu Baolu <baolu.lu@linux.intel.com> wrote:
+>>
+>> The idxd driver attaches the default domain to a PASID of the device to
+>> perform kernel DMA using that PASID. The domain is attached to the
+>> device's PASID through iommu_attach_device_pasid(), which checks if the
+>> domain->owner matches the iommu_ops retrieved from the device. If they
+>> do not match, it returns a failure.
+>>
+>>        if (ops != domain->owner || pasid == IOMMU_NO_PASID)
+>>                return -EINVAL;
+>>
+>> The static identity domain implemented by the intel iommu driver doesn't
+>> specify the domain owner. Therefore, kernel DMA with PASID doesn't work
+>> for the idxd driver if the device translation mode is set to passthrough.
+>>
+>> Generally the owner field of static domains are not set because they are
+>> already part of iommu ops. Add a helper domain_iommu_ops_compatible()
+>> that checks if a domain is compatible with the device's iommu ops. This
+>> helper explicitly allows the static blocked and identity domains associated
+>> with the device's iommu_ops to be considered compatible.
+>>
+>> Fixes: 2031c469f816 ("iommu/vt-d: Add support for static identity domain")
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220031
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
+>> Link: https://lore.kernel.org/linux-iommu/20250422191554.GC1213339@ziepe.ca/
+>> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+>> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+>> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+>> ---
+>> drivers/iommu/iommu.c | 21 ++++++++++++++++++---
+>> 1 file changed, 18 insertions(+), 3 deletions(-)
+>>
+>> Change log:
+>> v3:
+>> - Convert all places checking domain->owner to the new helper.
+>> v2: https://lore.kernel.org/linux-iommu/20250423021839.2189204-1-baolu.lu@linux.intel.com/
+>> - Make the solution generic for all static domains as suggested by
+>>   Jason.
+>> v1: https://lore.kernel.org/linux-iommu/20250422075422.2084548-1-baolu.lu@linux.intel.com/
+>>
+>> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+>> index 4f91a740c15f..b26fc3ed9f01 100644
+>> --- a/drivers/iommu/iommu.c
+>> +++ b/drivers/iommu/iommu.c
+>> @@ -2204,6 +2204,19 @@ static void *iommu_make_pasid_array_entry(struct iommu_domain *domain,
+>> return xa_tag_pointer(domain, IOMMU_PASID_ARRAY_DOMAIN);
+>> }
+>>
+>> +static bool domain_iommu_ops_compatible(const struct iommu_ops *ops,
+>> +struct iommu_domain *domain)
+>> +{
+>> +if (domain->owner == ops)
+>> +return true;
+>> +
+>> +/* For static domains, owner isn't set. */
+>> +if (domain == ops->blocked_domain || domain == ops->identity_domain)
+>> +return true;
+>> +
+>> +return false;
+>> +}
+>> +
+>> static int __iommu_attach_group(struct iommu_domain *domain,
+>> struct iommu_group *group)
+>> {
+>> @@ -2214,7 +2227,8 @@ static int __iommu_attach_group(struct iommu_domain *domain,
+>> return -EBUSY;
+>>
+>> dev = iommu_group_first_dev(group);
+>> -if (!dev_has_iommu(dev) || dev_iommu_ops(dev) != domain->owner)
+>> +if (!dev_has_iommu(dev) ||
+>> +   !domain_iommu_ops_compatible(dev_iommu_ops(dev), domain))
+>> return -EINVAL;
+>>
+>> return __iommu_group_set_domain(group, domain);
+>> @@ -3435,7 +3449,8 @@ int iommu_attach_device_pasid(struct iommu_domain *domain,
+>>    !ops->blocked_domain->ops->set_dev_pasid)
+>> return -EOPNOTSUPP;
+>>
+>> -if (ops != domain->owner || pasid == IOMMU_NO_PASID)
+>> +if (!domain_iommu_ops_compatible(ops, domain) ||
+>> +   pasid == IOMMU_NO_PASID)
+>> return -EINVAL;
+>>
+>> mutex_lock(&group->mutex);
+>> @@ -3511,7 +3526,7 @@ int iommu_replace_device_pasid(struct iommu_domain *domain,
+>> if (!domain->ops->set_dev_pasid)
+>> return -EOPNOTSUPP;
+>>
+>> -if (dev_iommu_ops(dev) != domain->owner ||
+>> +if (!domain_iommu_ops_compatible(dev_iommu_ops(dev), domain) ||
+>>    pasid == IOMMU_NO_PASID || !handle)
+>> return -EINVAL;
+>>
+>> -- 
+>> 2.43.0
+>>
+> 
 
 
