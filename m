@@ -1,150 +1,139 @@
-Return-Path: <stable+bounces-136594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE54A9B03A
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 16:10:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0041A9B0CD
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 16:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37AAF7AD3DD
-	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 14:09:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3C643BB51E
+	for <lists+stable@lfdr.de>; Thu, 24 Apr 2025 14:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A1E18A959;
-	Thu, 24 Apr 2025 14:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I7IwEsyx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE4C1A2C25;
+	Thu, 24 Apr 2025 14:17:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from shell.v3.sk (mail.v3.sk [167.172.186.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B2012CDA5
-	for <stable@vger.kernel.org>; Thu, 24 Apr 2025 14:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9AC17A2FB;
+	Thu, 24 Apr 2025 14:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.172.186.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745503817; cv=none; b=R/D7rIGNLEZevl15oRP0JDZUrE/vIfgnR5d/sk2hunNRRodKIBHT7iU8NSlDUydSqnxT9fdgRUiFNBSC/1kl+cDidAGiGB9HbUQ/1bTP1oSkphch85k/1lfRtNgxQIXW2Hf4QCSMJvVe8rTz4d+x6/84lb6I7OlBOmAlYyXVDIc=
+	t=1745504223; cv=none; b=VMCR4iiWiwEDxADDwSgg93Xp7QLD0A1jb5btgTdqBJLUXluub5gVPAcX43+x9cb1QdDAmqSoKsraxm3A4+8BTpVuU+Kb3djOZqy0lbt3aHKm4IvfNz/URFibkk4wqyEH50X8FLltnn93xSEHtt22v280ei8NJ3GdKaWOOnhtJT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745503817; c=relaxed/simple;
-	bh=HgYWa0KeSKcfGbmk47jhXCWVY/vg+Gf8SDRhG1C38DY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=inotattj4k5LPbRlIQuryU+SfOVGEMNL7EPRKwC77regM3iCeFYudI8BwnriDN/wbjJ4Qj/nncD6Lo7Ogsjkd2wqyrETqPxcohbuFDmqIk3GHCvLOM4JV3QG82h6IvjShXGkSDdufG8XGYFrUbklbFrYdqHPv3AvFuAsUbOVlK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I7IwEsyx; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745503815; x=1777039815;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=HgYWa0KeSKcfGbmk47jhXCWVY/vg+Gf8SDRhG1C38DY=;
-  b=I7IwEsyxx4Qxv08lukwtH3KuxMzo8VRNaj9Z+MYQ0QZSmlDrkT1CUQdu
-   qY2eMeXdZRiqwYJBm0kdvSRZ7wRFQETKDPoQowSytSb2KGcQHaIJBAwC1
-   zZD/kuGCWL1DJxGZSetYxU9NnPBi87wGyLgAxs8Jve+v5NiRA4tmU65ne
-   0uJ9WuPBsDKzEUwbAIG7RaBxkqExqf8SU6suIFFYgNjKgbdK2JPgibjRO
-   Ktps4aepU5OncMfHpbZMeAjFyvfyGROzaIh34oFtLJKYE0U5BXWpSAhXA
-   +zJ0uTZaTQZfJD2nkK30F++8loqim5VeZzIhmrMJ3Lq4oveH41DPiqiZY
-   w==;
-X-CSE-ConnectionGUID: Fa/9FGvGToGeK0S4/P+3pg==
-X-CSE-MsgGUID: /8vVOSkXSCCGz8VryRPeEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="47013899"
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="47013899"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 07:10:12 -0700
-X-CSE-ConnectionGUID: 4hbJSsyqQhmhnYjAK4eA/A==
-X-CSE-MsgGUID: 0UgLxu6/Tx+o26VGVaaeJA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,236,1739865600"; 
-   d="scan'208";a="137429596"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.124.221.210]) ([10.124.221.210])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2025 07:10:10 -0700
-Message-ID: <39b30d41-c073-43f9-8860-1091789a40f8@linux.intel.com>
-Date: Thu, 24 Apr 2025 07:10:10 -0700
+	s=arc-20240116; t=1745504223; c=relaxed/simple;
+	bh=zo2TnXsQYlaSKgJ4ENhrVxFq06aOKbF0z6oD6YQH70w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QWz3qE9833QRnoYbG4Xxp+CMf+KNfz2JwqlvNntmc9PKCDMU7sIMFvJBg2+cZgwyCUhuGEe5gpZNgnU/C3tXY1tdTRjhzXBvpjptAomyBCi4E33he+OWY5m7lQ4RBsFhHYiat0kT83ThhDEuHvyhRiz269Z3V5LGyePs0ybw8G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk; spf=pass smtp.mailfrom=v3.sk; arc=none smtp.client-ip=167.172.186.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=v3.sk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=v3.sk
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by zimbra.v3.sk (Postfix) with ESMTP id CF5D3DF929;
+	Thu, 24 Apr 2025 14:03:40 +0000 (UTC)
+Received: from shell.v3.sk ([127.0.0.1])
+	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id R8LejtgJeqgC; Thu, 24 Apr 2025 14:03:40 +0000 (UTC)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by zimbra.v3.sk (Postfix) with ESMTP id 4FD6ADFFFC;
+	Thu, 24 Apr 2025 14:03:40 +0000 (UTC)
+X-Virus-Scanned: amavisd-new at zimbra.v3.sk
+Received: from shell.v3.sk ([127.0.0.1])
+	by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id ttumpklmL8mi; Thu, 24 Apr 2025 14:03:40 +0000 (UTC)
+Received: from localhost (unknown [109.183.109.54])
+	by zimbra.v3.sk (Postfix) with ESMTPSA id 12E1DDF929;
+	Thu, 24 Apr 2025 14:03:40 +0000 (UTC)
+Date: Thu, 24 Apr 2025 16:10:23 +0200
+From: Lubomir Rintel <lkundrak@v3.sk>
+To: Christian Heusel <christian@heusel.eu>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "rndis_host: Flag RNDIS modems as WWAN devices"
+Message-ID: <aApGT9V9HELMrmaV@demiurge.local>
+References: <20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] configfs-tsm-report: Fix NULL dereference of tsm_ops
-To: Dan Williams <dan.j.williams@intel.com>, linux-coco@lists.linux.dev
-Cc: stable@vger.kernel.org, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Steven Price <steven.price@arm.com>, Sami Mujawar <sami.mujawar@arm.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, Cedric Xing <cedric.xing@intel.com>,
- x86@kernel.org
-References: <174544207062.2555330.2729112107050724843.stgit@dwillia2-xfh.jf.intel.com>
- <7f1c8e94-9be7-4ff7-a2a4-063edce48c96@linux.intel.com>
- <6809aaf1c7e44_71fe29494@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <6809aaf1c7e44_71fe29494@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu>
 
+On Thu, Apr 24, 2025 at 04:00:28PM +0200, Christian Heusel wrote:
+> This reverts commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8. Since this
+> commit has been proven to be problematic for the setup of USB-tethered
+> ethernet connections and the related breakage is very noticeable for
+> users it should be reverted until a fixed version of the change can be
+> rolled out.
+> 
+> Closes: https://lore.kernel.org/all/e0df2d85-1296-4317-b717-bd757e3ab928@heusel.eu/
+> Link: https://chaos.social/@gromit/114377862699921553
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220002
+> Link: https://bugs.gentoo.org/953555
+> Link: https://bbs.archlinux.org/viewtopic.php?id=304892
+> Cc: stable@vger.kernel.org
+> Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+> Signed-off-by: Christian Heusel <christian@heusel.eu>
 
-On 4/23/25 8:07 PM, Dan Williams wrote:
-> Sathyanarayanan Kuppuswamy wrote:
->> On 4/23/25 2:01 PM, Dan Williams wrote:
->>> Unlike sysfs, the lifetime of configfs objects is controlled by
->>> userspace. There is no mechanism for the kernel to find and delete all
->>> created config-items. Instead, the configfs-tsm-report mechanism has an
->>> expectation that tsm_unregister() can happen at any time and cause
->>> established config-item access to start failing.
->>>
->>> That expectation is not fully satisfied. While tsm_report_read(),
->>> tsm_report_{is,is_bin}_visible(), and tsm_report_make_item() safely fail
->>> if tsm_ops have been unregistered, tsm_report_privlevel_store()
->>> tsm_report_provider_show() fail to check for ops registration. Add the
->>> missing checks for tsm_ops having been removed.
->>>
->>> Now, in supporting the ability for tsm_unregister() to always succeed,
->>> it leaves the problem of what to do with lingering config-items. The
->>> expectation is that the admin that arranges for the ->remove() (unbind)
->>> of the ${tsm_arch}-guest driver is also responsible for deletion of all
->>> open config-items. Until that deletion happens, ->probe() (reload /
->>> bind) of the ${tsm_arch}-guest driver fails.
->>>
->>> This allows for emergency shutdown / revocation of attestation
->>> interfaces, and requires coordinated restart.
->>>
->>> Fixes: 70e6f7e2b985 ("configfs-tsm: Introduce a shared ABI for attestation reports")
->>> Cc: stable@vger.kernel.org
->>> Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
->>> Cc: Steven Price <steven.price@arm.com>
->>> Cc: Sami Mujawar <sami.mujawar@arm.com>
->>> Cc: Borislav Petkov (AMD) <bp@alien8.de>
->>> Cc: Tom Lendacky <thomas.lendacky@amd.com>
->>> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
->>> Reported-by: Cedric Xing <cedric.xing@intel.com>
->>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>> ---
->> Looks good to me
->>
->> Reviewed-by: Kuppuswamy Sathyanarayanan
->> <sathyanarayanan.kuppuswamy@linux.intel.com>
-> Thanks!
->
-> [..]
->>>    static const struct config_item_type tsm_reports_type = {
->>> @@ -459,6 +478,11 @@ int tsm_register(const struct tsm_ops *ops, void *priv)
->>>    		return -EBUSY;
->>>    	}
->>>    
->>> +	if (atomic_read(&provider.count)) {
->>> +		pr_err("configfs/tsm not empty\n");
->>
->> Nit: I think adding the provider ops name will make the debug log clear.
-> Recall though that the ->name field is a tsm_ops property. At this point
-> tsm_ops is already unregistered. Even if we kept the name around by
-> strdup() at register time the name does not help solving the conflict,
-> only rmdir of the created configs-item unblocks the next registration.
+Thanks for sending this out, it really needs a different solution.
 
-Makes sense.
+Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
 
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+> ---
+>  drivers/net/usb/rndis_host.c | 16 ++--------------
+>  1 file changed, 2 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/net/usb/rndis_host.c b/drivers/net/usb/rndis_host.c
+> index bb0bf1415872745aea177ce0ba7d6eb578cb4a47..7b3739b29c8f72b7b108c5f4ae11fdfcf243237d 100644
+> --- a/drivers/net/usb/rndis_host.c
+> +++ b/drivers/net/usb/rndis_host.c
+> @@ -630,16 +630,6 @@ static const struct driver_info	zte_rndis_info = {
+>  	.tx_fixup =	rndis_tx_fixup,
+>  };
+>  
+> -static const struct driver_info	wwan_rndis_info = {
+> -	.description =	"Mobile Broadband RNDIS device",
+> -	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
+> -	.bind =		rndis_bind,
+> -	.unbind =	rndis_unbind,
+> -	.status =	rndis_status,
+> -	.rx_fixup =	rndis_rx_fixup,
+> -	.tx_fixup =	rndis_tx_fixup,
+> -};
+> -
+>  /*-------------------------------------------------------------------------*/
+>  
+>  static const struct usb_device_id	products [] = {
+> @@ -676,11 +666,9 @@ static const struct usb_device_id	products [] = {
+>  	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+>  	.driver_info = (unsigned long) &rndis_info,
+>  }, {
+> -	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
+> -	 * Telit FN990A (RNDIS)
+> -	 */
+> +	/* Novatel Verizon USB730L */
+>  	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+> -	.driver_info = (unsigned long)&wwan_rndis_info,
+> +	.driver_info = (unsigned long) &rndis_info,
+>  },
+>  	{ },		// END
+>  };
+> 
+> ---
+> base-commit: 9c32cda43eb78f78c73aee4aa344b777714e259b
+> change-id: 20250424-usb-tethering-fix-398688b32dad
+> 
+> Best regards,
+> -- 
+> Christian Heusel <christian@heusel.eu>
+> 
 
