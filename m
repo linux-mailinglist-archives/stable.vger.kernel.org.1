@@ -1,86 +1,97 @@
-Return-Path: <stable+bounces-136674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F2CBA9C2AC
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 11:03:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04DACA9C2CB
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 11:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CE9B4C04CE
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 09:03:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EFC44C2AC0
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 09:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184AB230278;
-	Fri, 25 Apr 2025 08:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82E1230BD8;
+	Fri, 25 Apr 2025 09:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BkTyS+WD"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="PJDrg37I"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5F622367A5
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 08:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B9822A800
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 09:02:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745571585; cv=none; b=mVv8nIMzW5IiIS4DBd9e8RZdhx5H6vykVyTe0wFJtK9wL2wQeL4u1XA1XHkRZIdPObrDHMv0irAygBxIe3Gmopv66gdQJC73Onuwrn9KuAuZtI7gir8WoH4YkhwnbgUT7qGP42Pmk/JQVOWbulMluPDzfWx6Y0KGZUrphsIqvlw=
+	t=1745571738; cv=none; b=YbZLvBS8lm9CBRfwl0ICYNNog6DChninnOtDbPpBcXgRuSNqjcLSzHVktb14H9i/o3GoZ60OOu1QfBMQBK6kKAm+qe+4zy1nSTU2PHkMltg0n8OzzC7cnySkfEqSS0DWC+EEV58bF5cs1SSu5OvF4lvvlxz6g87YCSuHl/BsdG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745571585; c=relaxed/simple;
-	bh=FG52vSSqSb62eyVyg6iMFqQqyE0YYjpj12eVjme1v30=;
+	s=arc-20240116; t=1745571738; c=relaxed/simple;
+	bh=cigjLGVrA/i3iKo0ZUO3ckDz+7QoGQ7Izg/Jz2mNid8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jnmJuyLT+Rf3b5txCEl0xrt8nE1zVqHzY1cIsYiVG5R+jeyT+Nvxpl5JxIl90VdrRtoQsa62TF056lM7Wlz95IA7JDAOep6uQMZwK4tw0yD5KnrvfX7ptEho/EoJ61ofMejL3kTJzT8ROvLZW1i55soUe+GNx7G9GXsbDy78u4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BkTyS+WD; arc=none smtp.client-ip=209.85.208.68
+	 Content-Type:Content-Disposition:In-Reply-To; b=S6kRBeNfsuzXPmgoKY2G9yQFsJQqr+cyUM+xwPIsA57X2qe4gbNbJDzsa9qbqsAg9+wtR8vt4eXRH1YEbDy8Oi0gYEUFeh+emQ5Xo8lMsOCPD6+DpkozlBFbBd9fWsJDtvSGGdeWHvj/T0AokXfLa2xjm7vT7X8hKjpUoH7irpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=PJDrg37I; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f68.google.com with SMTP id 4fb4d7f45d1cf-5e5e22e6ed2so3151957a12.3
-        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 01:59:43 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso1112243f8f.2
+        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 02:02:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1745571582; x=1746176382; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1745571734; x=1746176534; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YlnA5ZbFrS4WV28dU38D6tfu/eMxlTmqrBqiOY5tPo8=;
-        b=BkTyS+WDQQ/4TL3wFlBwTXxq6N4U1s1rm2zEUEtmrVVaUMjK6vdex4MGFATBY4RMkK
-         SVfUx2Pnd2SVMBHgvxaKAgv/bbvIVFYXoltsFw5YNEGhPPkNv3BytsUd3YDlqayP0NVW
-         21WlJ/BluluSKU6oSBOVgy12dn4mqK733klJnPt70R2ngbE62sE2eGiOIqlQx9rZ3hgt
-         H9rMRo4DXxsaY7up9nyRsDITvmiyTFSJuTuVbMORqr6R1b5fJTWSRVa4ZUEecZaRhfbX
-         ET1gvzEIcY3dD+wTQXAKpNAZE1WZJdVHPoKU4MmHSFnK70sZriBlyw522okgb4pFS/WS
-         xqrQ==
+        bh=CUtCax9Xz79pqocOKSO+PWNehk8nJoFSaWWNyZR+sqk=;
+        b=PJDrg37ILkoHM0ANI0DtAkyi22HhLrHmRsQ1VyWmcUofSoVWr0ITZheUjp1G3rpFS2
+         Cl8ieJIdiRaTgQCbkVDYym7kB9xoc+LOeJFK38uYr4j5tDWKNLcgK185TSV17ujU73rU
+         z9Zv1UaE754RO2I9g33UsVZZ3WIk6rDGclbz7jt86Sruxq7uWj4H+qWPgv0XEG92frNz
+         JvfIxmeglBUBchdhZ++45OSeL/iqdatSdIzjZBW/AxPSaANrbzRkJnPS9A2RUqReBMYg
+         BCBMrm2PZw8en8NpXKlQM2eg8nBA57AWtdBGkOQ3Pk0j6qm/BKyrAW17bvn+9NUgxdfL
+         KY9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745571582; x=1746176382;
+        d=1e100.net; s=20230601; t=1745571734; x=1746176534;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YlnA5ZbFrS4WV28dU38D6tfu/eMxlTmqrBqiOY5tPo8=;
-        b=KwPwImm6lXSNW17tfc1WcI8E5waqT9ZCnmV3N9fVCPwiT8nWa87WwMHrok/2a5ZzMb
-         9CKs0EtXRJWB/7+d8wWLFkgyfa/zH9vJoPhWSXXC5dsRpY4jgkUY8S79evQK3DRwOa9y
-         McTc5pVSwNkpipoazuvoOMvUyHw85UGSH8l2O3fV9xCXgtcl4S0Ipd5iMHI6mKm63qp5
-         oqGVUkM0B+LHBONmBxsfglIImR0NIcINWPy16Yao4SFXcCV1uA23RHLqTgsP/Et0ghTW
-         SKGYNzq3Fo4MezmDMep7Oont1PlVP+Zk3CJQil3Cy8IndAPzaa8zbTjXOmgBpXuj07qN
-         OJdw==
-X-Gm-Message-State: AOJu0Yw+VnKamm7pMRObjkXzhH/HP0sIl4+cdwPRUJ7IMv/EIQ6Ig65p
-	YYDew9LFAdVBtwwULhrBcSyYEmLi9yTdMjOxlSgbNSXrYU/XHEJ2Gd7XHsw4BZM=
-X-Gm-Gg: ASbGncsN37K09eUwHghqnXCl+BSn1Amdh1sIklc8IzTSVbPQS9ybmBOTUqTNEL/Sxxd
-	tT7M8gWDcTfhmSRz1YGfrB59DFq+6kdvWwCiregCHl70r/CklftUaVO6wac/fru/sFvwN+YLIzB
-	BTOduJyA37USxQyUpxgPq/nSoCrcIYnzGrByJUxhHAEe14DankuBh0vZFurkw2cOWyMCDgPxbx0
-	vZRgMHTI19hi4CL9gJFxrbd7a7qY2QG+u7wiYX0xv0yg7DSl8IPjZCos8bWfArBRao3WBHg/ifN
-	+xrLb66qSr3syac2h5XgpHzS34tlr5p8sPSkY0uNPwITJyMeJNKF9CE+OWbKcOk=
-X-Google-Smtp-Source: AGHT+IEzawCcMf3Tx52ifJ8XqWa5OjCWgNLAL+Kos2ww4BTacpKQFiBW++4NKbWBT10u1GU4SXtO2g==
-X-Received: by 2002:a17:907:3cc3:b0:acb:34b1:4442 with SMTP id a640c23a62f3a-ace7139ce4emr145003866b.48.1745571581822;
-        Fri, 25 Apr 2025 01:59:41 -0700 (PDT)
-Received: from u94a (114-140-90-28.adsl.fetnet.net. [114.140.90.28])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6ecf7866sm99255466b.116.2025.04.25.01.59.38
+        bh=CUtCax9Xz79pqocOKSO+PWNehk8nJoFSaWWNyZR+sqk=;
+        b=t5XaWhcCDI1BtjQN76vKJimff09pu50xr6CgxIz0+xGaNS6v5LaArh9s3FJHrgziPC
+         Id48BtU1WtwDDqcZYzOQXc06ym7U6yxdKIz1SRMD/2ZCBJnZM+INkKct67nyPE+LUeRX
+         ibHa4VPTYvfZtb2+ztHRLChP1O/P5f6smQdh24oWg2ejF4Pt41UZlYDlFzoQIFJvbF1p
+         Rc+XuFZSlp7TTVgfjB86kkEzOkVQdUqkJloDc/YrdV2Zl+5XpG7QaxJFPOUqwe3Z/WEP
+         sHmsQFJnXCvLMc2KjMiJMvfgkhqdAJXl5GCzIg1zY5It7APgw6SGeEIX3rMncUnGAxvO
+         3jOA==
+X-Forwarded-Encrypted: i=1; AJvYcCW3pr8yMmU9MmCfivfszrLfdJSHE30VGJcQSZqgkLV5FSFa8xk1MupqKf5dAwz+SfqtcjVD98o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9ki6JbIv4DoS9qHwJ6Jt0TqyPPNkdy5rpA3x3QNUQMmtuuBQU
+	pUKgUgrHEo0wBZLjzgIgcHb6rrZ9X1C/kHBaJ3Xsuhh0x6cXbD+JQJQ+Q7plvD0=
+X-Gm-Gg: ASbGncsc7Aw9dBCl6CfT63X2H0KXR8FfO9f52HFcTMsimUCXUleX6BjQ5UozU4I6LjJ
+	14l6Zdq9EYis/t1sMUCujcQBWhG8LqNfpqpdich2B7otM0zGPLyci5rPGlKxX717gc7vFYNQQB5
+	5cMuV5BQKvszgKa4avK+LnnphtfIYRDHTwpULGJFWQyfh1bQJybGNKbiTpb9IZMUB6SXTlWti69
+	2OydcAi3yLNUaPGtHYVMKixnwKUtbCyxldZhfTgls5ezV4KUI/FFkX1pOIEpkpky0Vw+m2lkG7w
+	YOF2fOW2MRHtczuPRRiciI/npZJElZa5IgavhR4vJZ8=
+X-Google-Smtp-Source: AGHT+IHcaRb5pcjKTG+Y5h3Ih/yrwWqsjNfb1VbBSCFlmYmzhEmDkPcseYoWUd0DAhovc+dqSuA5vA==
+X-Received: by 2002:a05:6000:2505:b0:391:412b:e23f with SMTP id ffacd0b85a97d-3a074e1a1bfmr1145277f8f.15.1745571733688;
+        Fri, 25 Apr 2025 02:02:13 -0700 (PDT)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a073ca4f88sm1689934f8f.29.2025.04.25.02.02.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 01:59:41 -0700 (PDT)
-Date: Fri, 25 Apr 2025 16:59:33 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+        Fri, 25 Apr 2025 02:02:13 -0700 (PDT)
+Date: Fri, 25 Apr 2025 11:02:11 +0200
+From: Petr Mladek <pmladek@suse.com>
 To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Ihor Solodrai <ihor.solodrai@linux.dev>, 
-	Andrii Nakryiko <andrii@kernel.org>, Jiayuan Chen <jiayuan.chen@linux.dev>
-Subject: Re: [PATCH stable 6.12 6.14 1/1] selftests/bpf: Mitigate
- sockmap_ktls disconnect_after_delete failure
-Message-ID: <apmmx7mdgfznnzc3k2wqxpds7vpq2vy3emkuulql7u4c6uvrfm@ui7jkyfopcxh>
-References: <20250425055702.48973-1-shung-hsi.yu@suse.com>
- <aok6og6gyokth2rap7qdhtmc4saljzg43qbrvtbeopjuuq6275@hptib2h2wpac>
- <2025042523-uncheck-hazy-17a9@gregkh>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Ryo Takakura <ryotkkr98@gmail.com>,
+	alex@ghiti.fr, aou@eecs.berkeley.edu, bigeasy@linutronix.de,
+	conor.dooley@microchip.com, jirislaby@kernel.org,
+	john.ogness@linutronix.de, palmer@dabbelt.com,
+	paul.walmsley@sifive.com, samuel.holland@sifive.com,
+	u.kleine-koenig@baylibre.com, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-serial@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] serial: sifive: lock port in startup()/shutdown()
+ callbacks
+Message-ID: <aAtPk6vxmIBdp1NT@pathway.suse.cz>
+References: <20250405043833.397020-1-ryotkkr98@gmail.com>
+ <20250405044338.397237-1-ryotkkr98@gmail.com>
+ <2025040553-video-declared-7d54@gregkh>
+ <397723b7-9f04-4cb1-b718-2396ea9d1b91@suse.cz>
+ <2025042202-compare-entrap-0089@gregkh>
+ <a7cf9864-6810-43d8-a7f6-f71cc1ee081c@suse.cz>
+ <2025042252-geology-causation-a455@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,55 +100,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2025042523-uncheck-hazy-17a9@gregkh>
+In-Reply-To: <2025042252-geology-causation-a455@gregkh>
 
-On Fri, Apr 25, 2025 at 09:17:13AM +0200, Greg KH wrote:
-> On Fri, Apr 25, 2025 at 02:35:59PM +0800, Shung-Hsi Yu wrote:
-> > On Fri, Apr 25, 2025 at 01:57:01PM +0800, Shung-Hsi Yu wrote:
-> > > From: Ihor Solodrai <ihor.solodrai@linux.dev>
+On Tue 2025-04-22 15:16:21, Greg KH wrote:
+> On Tue, Apr 22, 2025 at 03:07:54PM +0200, Vlastimil Babka wrote:
+> > On 4/22/25 12:50, Greg KH wrote:
+> > > On Tue, Apr 22, 2025 at 12:20:42PM +0200, Vlastimil Babka wrote:
+> > >> 
+> > >> I admit it's surprising to see such a request as AFAIK it's normally done to
+> > >> mix stable fixes and new features in the same series (especially when the
+> > >> patches depend on each other), and ordering the fixes first and marking only
+> > >> them as stable should be sufficient. We do that all the time in -mm. I
+> > >> thought that stable works with stable marked commits primarily, not series?
 > > > 
-> > > commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 upstream.
-> > > 
-> > > "sockmap_ktls disconnect_after_delete" test has been failing on BPF CI
-> > > after recent merges from netdev:
-> > > * https://github.com/kernel-patches/bpf/actions/runs/14458537639
-> > > * https://github.com/kernel-patches/bpf/actions/runs/14457178732
-> > > 
-> > > It happens because disconnect has been disabled for TLS [1], and it
-> > > renders the test case invalid.
-> > > 
-> > > Removing all the test code creates a conflict between bpf and
-> > > bpf-next, so for now only remove the offending assert [2].
-> > > 
-> > > The test will be removed later on bpf-next.
-> > > 
-> > > [1] https://lore.kernel.org/netdev/20250404180334.3224206-1-kuba@kernel.org/
-> > > [2] https://lore.kernel.org/bpf/cfc371285323e1a3f3b006bfcf74e6cf7ad65258@linux.dev/
-> > > 
-> > > Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-> > > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> > > Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> > > Link: https://lore.kernel.org/bpf/20250416170246.2438524-1-ihor.solodrai@linux.dev
-> > > [ shung-hsi.yu: needed because upstream commit 5071a1e606b3 ("net: tls:
-> > > explicitly disallow disconnect") is backported ]
-> > > Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+> > > Yes, but when picking which "branch" to apply a series to, what would
+> > > you do if you have some "fix some bugs, then add some new features" in a
+> > > single patch series?  The one to go to -final or the one for the next
+> > > -rc1?
 > > 
-> > I missed that 5071a1e606b3 was added to 6.1 and 6.6, too. Please apply
-> > this one for 6.14, 6.12, 6.6, and 6.1.
+> > As a maintainer I could split it myself.
 > 
-> It's already queued up for the next 6.6.y, 6.1.y, 5.15.y and 5.10.y
-> releases, and is already in the 6.14.3 and 6.12.24 releases.
+> You must not have that many patches to review, remember, some of us get
+> a few more than others ;)
 > 
-> Did I miss anywhere else that it needs to go?
+> > > I see a lot of bugfixes delayed until -rc1 because of this issue, and
+> > > it's really not a good idea at all.
+> > 
+> > In my experience, most of the time these fixes are created because a dev:
+> > 
+> > - works on the code to implement the feature part
+> > - while working at the code, spots an existing bug
+> > - the bug can be old (Fixes: commit a number of releases ago)
+> > - wants to be helpful so isolates the fix separately as an early patch of
+> > the series and marks stable because the bug can be serious enough in theory
+> > - at the same time there are no known reports of the bug being hit in the wild
+> > 
+> > In that case I don't see the urgency to fix it ASAP (unless it's e.g.
+> > something obviously dangerously exploitable) so it might not be such a bad
+> > idea just to put everything towards next rc1.
+> 
+> Yes, but then look at the huge number of "bugfixes" that land in -rc1.
+> Is that ok or not?  I don't know...
+>
+> > This very thread seems to be a good example of the above. I see the later
+> > version added a
+> > Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+> > which is a v5.2 commit.
+> 
+> Agreed, but delaying a known-fix for weeks/months feels bad to me.
 
-My bad, the patches I sent and I want to have backported is
-82303a059aab, the first line in the patch
+I personally push rc1 regression fixes ASAP. But it has a cost.
+I do extra careful review, testing, and still I am nervous of causing
+a regression which might leak to a stable release.
 
-  commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 upstream.
+IMHO, it is perfectly fine to delay fixes for bugs which
+were there for months or years. For example, this patch fixes
+a bug which has been in the driver since the beginning (2019).
 
-is wrong.
+I think that the root of the problem is in the view of the stable release
+process. I am pretty conservative. My experience is that some problems
+are caught only in the -rc phase when the kernel gets more testing.
+I am not sure if stable -rc kernels get the same amount of testing.
 
-I'll send v2. Hopefully that will be easier for you.
-
-Shung-Hsi
+Best Regards,
+Petr
 
