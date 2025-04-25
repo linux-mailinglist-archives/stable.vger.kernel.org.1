@@ -1,131 +1,105 @@
-Return-Path: <stable+bounces-136649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE7AA9BC2D
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 03:15:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CA2A9BD25
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 05:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A9E892026C
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:14:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D46EE4C1CC6
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 03:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75A721348;
-	Fri, 25 Apr 2025 01:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DC0176AA1;
+	Fri, 25 Apr 2025 03:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbGLnWa+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YKerBoZi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F940101DE
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 01:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE87D2701AE
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 03:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745543696; cv=none; b=mk468ItreQIQtUaHcexECPXhZGtLKUNrYObkdk/xI8SeOJvnRSYQuMMzVzlCFEWDIvyJJ9jKlU3Uf0vrELJgN3tbaQbLOVX8/p7btvauwnv0od+UXriPghLljQg7Bjfh24B4+3E2grXRAkmcdspvgN/WEix7TdbLH4TD4bErxbE=
+	t=1745550504; cv=none; b=uSgA+bnESc7slgLdo3A1cVbCNiqNpBxeAw6vRYF8pI4DcA7D42NTnMoU45LaMdlCLZEzgQ7+o3VMVmAKk+aQe+mkaZu8YeYzVEdq+VU5++ByOVImqYf3qPazayBR+/XtCDZy0Dkv/cS9xwgarLOMsnyZoZt0huDugEQYISdUjRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745543696; c=relaxed/simple;
-	bh=PbtGp/mgoo4X9FEeJzUWhhUQlkVd18+95EXVPi+BYAU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oftLEvxoE5bCGopW/+xSca7xSXW2+RLPCm6xo48NBE+7O/130PamR3BF7N+TOt0jAlKOeZy/Fj2Hkfb/H8sgCQxPdG2UL3dcotIQTNzPvuQD3DiiFO2d9+iesC7otjMg4kGpkzVspfliz8tYTjL2UCNtos6SYJKrXAjieBgLNbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbGLnWa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4B6C4CEE3;
-	Fri, 25 Apr 2025 01:14:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745543695;
-	bh=PbtGp/mgoo4X9FEeJzUWhhUQlkVd18+95EXVPi+BYAU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbGLnWa+zb9wggsf1toQZIyetq+MSnJLTtDJn/6ClK1tX9KXanh+moni/4+yR7g6/
-	 6TY3TrQi8hKmmPMQS0mi07+7Hhb0QCqnD0LtihuqMftWiVpsdHRy2qwim1oKW2Kms5
-	 tMmccbaNfEXafz+OwLhnNRdk6Fu/HtHxyjGoz5lWWPQz+ChWx7ksk2l/bNn13dNlYF
-	 jyCcnEgjRfXJcUKlqnVJaY2qU/McODw/MPbZgrXVNPagv279LEtVEIl0NgzdS3FsQ1
-	 l1Y4jD0akPPIoATdEVP8GD+rRtz21KSzfleQut66/jJlnRobdLxWspFbnchkq/YHGV
-	 QtBHfkm8kYVRg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	hgohil@mvista.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 1/3 v5.4.y] dmaengine: ti: edma: Add support for handling reserved channels
-Date: Thu, 24 Apr 2025 21:14:51 -0400
-Message-Id: <20250424162545-6ebf98d67892969e@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250424060854.50783-1-hgohil@mvista.com>
-References: 
+	s=arc-20240116; t=1745550504; c=relaxed/simple;
+	bh=yH/Z/PRTvfA1+rSCAWGqs6hvN2TxhW2s7ozO8IADBcE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=f58fPCfw7aW98JhPXgx2j7bUk3EnFyXEwoI4epZ7mPoMqFl34TFO7CMhZjUDRsPrcS5RkA6dqeTDEZvZYihLcV9UtznDLNjjDGOrH1TQ3+DgdvMH7sPw1k4zOYVBtV4AqH2SnMBiGucd+Xu+kQ0ztaaPD79BDi8FIKZXjNF7AXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YKerBoZi; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ac2dfdf3c38so316613366b.3
+        for <stable@vger.kernel.org>; Thu, 24 Apr 2025 20:08:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1745550501; x=1746155301; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yH/Z/PRTvfA1+rSCAWGqs6hvN2TxhW2s7ozO8IADBcE=;
+        b=YKerBoZi9DVdO3np1n0cm4VqvMHGy4U86gMruMXaPp7fGO4e0L1dZmEIeZw8jHLBQK
+         1OsthZ7Jsg4z2xeX590BRO5FUmLFhnch8uD1igAK9jXlN4vtWOCr5aBH4nxsjKKHCL8r
+         0ecURn6VqohDlgT6+//H76PY+jN18mshrOOEEcDgQgs7jAswKeteYn5heBVjA0DFGxyK
+         twfCN9w0YnuKgs6nhz1QqFXNCKCi5MsbsrLBDr2UxBtjQR1kxb19D3OpXhW/CPmK7ssR
+         Ejv8um+7WFgtHNYi/xVCgYl136DdVpV6jBNvPpgtO1ygu6KDiZFibswGGSmiuxxRu1Cp
+         4yrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745550501; x=1746155301;
+        h=cc:to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yH/Z/PRTvfA1+rSCAWGqs6hvN2TxhW2s7ozO8IADBcE=;
+        b=PvqrkGBUdH4JEc3DPngQ3KCcvzT0dds66z44tdcMyN9jQBHSiKMCecWE79e3lCtOR2
+         rtupDxUXcbOJ7yUYWZqQ3Wyo7ExARL6YL8w+BKTUOfYU9y4vnfkNG5NvaDEaba91Iek8
+         FGUs7Ix7lLECA2uBjnSgywYIoZABmVX0CIzaFE2o9fgyVZkzqBU/YFTNDYzZQcIPr4AR
+         N3SB6tSkT3xxNvK0KC4SEFJCIj7AYRnRgBpq5Mv4jcINU2wljosinaA7VmU44/o8B9AM
+         hZrdFbfSHrLKZwqz9zz5zr9pdI2JjcLwjlnroBbEDbJexTcLepidM7/t6TELnMYW7aWI
+         vfUg==
+X-Forwarded-Encrypted: i=1; AJvYcCWst4cW9bDqOubx9Ks1uqFMWx4XPkNifYzcmznejKYSHiy+OlmYy3wl6cWvSUyT1rGC26Rtq3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz46kLqSPpxKZHk5G8jyHIIs/CWhDQ/0i3XL2D1P4v5jvJFN+3g
+	bXdNI9LpVtTJFB/CpWGupB8pxTm4prMOp+CnhqduhURf1GEcxo2cEnQjNSXKHH4n4T8tfYtR58L
+	sOZ/CdeeqeR8ewIz9EsGI0/9M2+s=
+X-Gm-Gg: ASbGncvjLu6gB4m60fZaUl/iGuSY7ebGW6WSrSoAAw8MMswiJwTkbOvRsiN5Q8wTKTO
+	lwfPlLUP9bzaw942ZNi9MmGEwFimdxQCsZr1XTWtuWP5LtPYHaRj8OvMl5Mxx2CEB8/Wg4vSCxQ
+	J3rrNA3rKQ72oaJhPQQQ1KEYgumuTUYCZb4VQhu3GyImpSbmx8Ff36Xg==
+X-Google-Smtp-Source: AGHT+IFTZWDxjb9CngwcWUDgClV8SVpfjCDk+u+hMOljbm5N5l1ndGMsQhhoIOof9UO1tz1CSqJqMqAD0Ef0SEAORl0=
+X-Received: by 2002:a17:907:7f0e:b0:aca:c8aa:5899 with SMTP id
+ a640c23a62f3a-ace710ee68amr56139766b.22.1745550500740; Thu, 24 Apr 2025
+ 20:08:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Reply-To: ludloff@gmail.com
+From: Christian Ludloff <ludloff@gmail.com>
+Date: Thu, 24 Apr 2025 20:08:09 -0700
+X-Gm-Features: ATxdqUE6m3tHkpqq0jp9EcZGnZ1kZGlE2YCE-EJ2hDZTw6EwZYEv9_6PKyM7xug
+Message-ID: <CAKSQd8W_+31AuMS2+yMYCMjP5QhzMtOHSmFahidR=3xOHpSdKQ@mail.gmail.com>
+Subject: Re: [PATCH] Handle Ice Lake MONITOR erratum
+To: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org, andrew.cooper3@citrix.com, Len Brown <len.brown@intel.com>, 
+	Peter Zijlstra <peterz@infradead.org>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-[ Sasha's backport helper bot ]
+> [ICX143 in https://cdrdv2.intel.com/v1/dl/getContent/637780]
 
-Hi,
+> There is no equivalent erratum for the "Xeon D" Ice Lakes so
+> INTEL_ICELAKE_D is not affected.
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+There is ICXD80 in...
 
-Found matching upstream commit: 31f4b28f6c41f734957ea66ac84c6abb69e696f0
+https://www.intel.com/content/www/us/en/content-details/714069/intel-xeon-d-1700-and-d-1800-processor-family-specification-update.html
+https://www.intel.com/content/www/us/en/content-details/714071/intel-xeon-d-2700-and-d-2800-processor-family-specification-update.html
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Hardik Gohil<hgohil@mvista.com>
-Commit author: Peter Ujfalusi<peter.ujfalusi@ti.com>
+And although the ICL spec update...
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (exact SHA1)
-6.1.y | Present (exact SHA1)
-5.15.y | Present (exact SHA1)
-5.10.y | Present (exact SHA1)
+https://edc.intel.com/content/www/us/en/design/ipla/software-development-platforms/client/platforms/ice-lake-ultra-mobile-u/10th-generation-core-processor-specification-update/errata-details/
 
-Note: The patch differs from the upstream commit:
----
-1:  31f4b28f6c41f ! 1:  f2bbef69f3dbe dmaengine: ti: edma: Add support for handling reserved channels
-    @@ Commit message
-         Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-         Link: https://lore.kernel.org/r/20191025073056.25450-4-peter.ujfalusi@ti.com
-         Signed-off-by: Vinod Koul <vkoul@kernel.org>
-    +    Signed-off-by: Hardik Gohil <hgohil@mvista.com>
-     
-      ## drivers/dma/ti/edma.c ##
-     @@ drivers/dma/ti/edma.c: struct edma_cc {
-    @@ drivers/dma/ti/edma.c: static int edma_alloc_channel(struct edma_chan *echan,
-      	edma_or_array2(ecc, EDMA_DRAE, 0, EDMA_REG_ARRAY_INDEX(channel),
-      		       EDMA_CHANNEL_BIT(channel));
-     @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
-    - {
-      	struct edma_soc_info	*info = pdev->dev.platform_data;
-      	s8			(*queue_priority_mapping)[2];
-    + 	int			i, off;
-     -	const s16		(*rsv_slots)[2];
-    -+	const s16		(*reserved)[2];
-    - 	int			i, irq;
-    ++	const s16               (*reserved)[2];
-    + 	const s16		(*xbar_chans)[2];
-    + 	int			irq;
-      	char			*irq_name;
-    - 	struct resource		*mem;
-     @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
-      	if (!ecc->slot_inuse)
-      		return -ENOMEM;
-    @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
-      
-      		ecc->tc_list = devm_kcalloc(dev, ecc->num_tc,
-     @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
-    - 				info->default_queue = i;
-      			}
-    + 			of_node_put(tc_args.np);
-      		}
-     +
-     +		/* See if we have optional dma-channel-mask array */
----
+...doesn't seem to have a MONITOR erratum, it might be a good
+idea for Intel to double check.
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+--
+Christian
 
