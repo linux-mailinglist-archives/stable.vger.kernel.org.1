@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-136669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A28A9C094
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 10:13:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A46DA9C091
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 10:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 291147B30D5
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 08:12:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C81A1BA6569
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 08:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63EB233712;
-	Fri, 25 Apr 2025 08:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFA6233715;
+	Fri, 25 Apr 2025 08:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="FiKmdExB"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Q35DK0vU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863C323370C
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 08:12:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC4A23370C
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 08:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745568781; cv=none; b=Gc9gNPVhDz0uHzmdnQSWELvdo+Fk8UBG9whosScnM+0Ai17d3bC5kfU7wS4EA+/i036WnACz2SUVBNmko2gpZW2iXvBQ34MeAzyPKPDrHIwUNIZl40CbteNE/SWAzTp3/oBBVw12OMcEbgnxYMvpzPnQowimY/+2m3ES7Sap25I=
+	t=1745568785; cv=none; b=goUK2dWKSVN88ID4d3AHBhaXUvcAXOsLEs44dEwcNGlbY2MvxFKdF8A36kjjGYNj6Bjg6HWWIOtgC0L8FseEvMhrmvLCmrHuSzZxi5QpGeHG32sbcZPtrJ6RnWbe4WnWnDKa511bniITfivWMkGCu9eNSG1imXI0ccLCKptnEA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745568781; c=relaxed/simple;
-	bh=D4gKk7mTGysx+hJDqguq3xl4kLEd/N8mWJWPqcDOXic=;
+	s=arc-20240116; t=1745568785; c=relaxed/simple;
+	bh=40gk9gK2dQiIp027AzcxwVaCixAtJngmb9rzzsojFq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tu277sc6aQtHTalbsUSAMfthqn0awR2MXkt4lMhpCgGObyjDEr8qovmvnTmHgDRWWUhfZxRf50kXZG1P64D5wWIPnC3ppJ8zsleQ/bLV5K+gumYJqUnaTNLcU20S9o39S9sasgSyrCPmbyZ3A0jgdkIGE5Rv9dpzQWSzZBVbAc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=FiKmdExB; arc=none smtp.client-ip=209.85.221.65
+	 MIME-Version:Content-Type; b=N59UFJhmZ16wTXnpaOpttB8sLZnR5BsXC/KFs16Sp+cKIqgR/+j28Fv4a/MY7X0X7YV2ERorV3llZJ5LfkWqzXXSvrTg3ppbvk8Z3KYiRIq5MisezFYEzTRfpeiIlWLr6rgMShsj4ekUnw92ICulr6Zw6XGsIJxm95ttgLSKqMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Q35DK0vU; arc=none smtp.client-ip=209.85.218.68
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-39ee57c0b8cso2073751f8f.0
-        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 01:12:59 -0700 (PDT)
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-acb39c45b4eso301325566b.1
+        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 01:13:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1745568777; x=1746173577; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1745568781; x=1746173581; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ltU84CwaqVWm5s8+q0VdsYg2VsV4ega7337dxe3KA5g=;
-        b=FiKmdExBulPeig5KcAyzFa1ive1ay1W6UECBM0y35ZfN/vfDLFln9JUTWT1j0fr2r8
-         J5Y7Afa1/SmK5B4dQii65ItMdrrPUUPUduts9oV0nJouTy8uN8xGywm6IBpkfH2OpRci
-         c2CsNvSMJbxoVYra6u+WfZyfu6DKhq8yhYz4NmJ+O5pVe4XJAABMQ3G9r27X0TqNWEpM
-         /PKoxLG9HjUSmrEdAKmVQ6U65A6JoCBUItb0F2XUkrhb1vGpfnCxu7glFAcRRYF/dJqY
-         WsHyZm4HsiCbYUnfgX412hIHb8V1NwnrSl7SwSu9WD4+mSKk7KWvsDr4YUt+P31QgL/Q
-         SfIw==
+        bh=BFAok9Yeg9GrCOyQxvjuyFDCQwIOLOpF0tGyByBNWO8=;
+        b=Q35DK0vUbVmTGAeBr7pO6eCeAM1iTkYj3clqs8nlfMz5ga25tSjtUtqhMjB4id7sR+
+         ndqhZFrYtfFLnug6Bb0/ex49GHoAM4FJxuE4UZHoTR4HmgyA7HVBz2eWbrgKO6Q6qiv6
+         GpHbmEBhE398PPID/QlmsIQhha/qV0mzW+bXsT0DCjvt/8a36miDtn6GuOv94T2HxEJP
+         ozs3F0I2Z2+jZ1lQ9/eHRPNKcrXYpl37HG0QGcaSuxLP0BA+vcSK/TcGmkDfkq+FHlOw
+         mH9HC0T/sfbxUbGm7FcwTgi/QYIov968Zvsn2AHMPPExXQY7K6MMrEcsN6pEUm/n9rrA
+         M5bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745568777; x=1746173577;
+        d=1e100.net; s=20230601; t=1745568781; x=1746173581;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ltU84CwaqVWm5s8+q0VdsYg2VsV4ega7337dxe3KA5g=;
-        b=vpHkpBt86lLRjzuQ0WeVaCinIfh1Awvp9Jp2E8ohJje2La7wR4Nfvb7fL77PDKRq+7
-         8kZ1ZMA55Sx6sk8FPWZ6eMgSMuyJBVdenHr8oSx7UL5W1E8tAIQ3Tx0gkvTdRP8ZqpBK
-         FKJUfz+KkIJ/BpFs0fsyzizOPCWPVuI2iB+eg0OYdQpPxRDn3P6/hQBA1twX0dxVOOtH
-         ZrRXsrs6UmMrDhg4JZUsBx/pl2wbyC27xtGTjnWEi7ceJ3uG8npzJvQwooaLIHisjnuQ
-         Ds6qjgvaByXjo1ZKlvfWZ1KJwVS55w7b6gq9iD4vxu61Frx89hzERXu/qfw5w9VbUCOR
-         kM5Q==
-X-Gm-Message-State: AOJu0YxGREq0UNyeWkhd9tnknh4W8R+G/bl4n0rcN7yuaFxMpgSIb2yW
-	03MJkcRel5apN7N6QgzLSBLEEfQdEgAjukTBtn7ErSoy2X8olgXS63eGR7Dx6t+Y1d3aTyCvXC7
-	9uH0Aeg==
-X-Gm-Gg: ASbGncsMsmp9kLyOuSWrqQUYiLRJRG4chGGhki40JMtkJkys7s/oxygjlK51i7EXjrG
-	4lu0yMtSwPUT3vMaHc7qvcZiYIv51vMIcYpB9KyW0aN+R50536urc6DG5FjSvEX+j4mqmnlZDQ8
-	mDll+YWF8O7OgtvsAdua18pBkqAtznhAwxmyb4D/QYJyJN65XSUPCvGWXXhCMb6CsR8120sNk5o
-	dGgJPrBkmCl3KzEsq2S9a+ECjLQrySfxsz+tuTN5tW8wQcaS6bLrVE3wNq4ZAqNmYgvUH4MwvRK
-	z4XOFIHgFszyMVRvL+wcLbqjkTLxf9uJB4e18xNXuX8jUJaO7WaqYw==
-X-Google-Smtp-Source: AGHT+IGwm5a6mioDht2IYWb/mMdqwfliVdSxK/Dwo72wJW8lQl5isY9RuCXUt5gLrnd7DBTn+wp4cg==
-X-Received: by 2002:a5d:5f44:0:b0:39c:1f0e:95af with SMTP id ffacd0b85a97d-3a074e1431amr980523f8f.3.1745568776927;
-        Fri, 25 Apr 2025 01:12:56 -0700 (PDT)
+        bh=BFAok9Yeg9GrCOyQxvjuyFDCQwIOLOpF0tGyByBNWO8=;
+        b=cfBhyA40KlBJbXhVqYwT5oto5/nO01sEuMgqBEr4YzsoMRlLUPz/9Imuhmlsc5vI9B
+         TpkRBnb9vgNEvrh3GvWmFJmgPU5bGkQLoRtv9lkbTkzaa99MkLcTePDuVgq1PyGU/pid
+         vzw1B+Ea1h/fOjY//Mjr/GjuHqJFHs1Qdcd9VSFUpqwg504F5T+joqELimxTZoaCDLAM
+         SJlqob9bAnkv+PxbOJyx/BAEJRNuY7M9fSXDFs34bph53ZRq4e0fNjJAu0DXkhme/WR2
+         AohjIJ+IOZOWhjOsrDgvpI4MNiisd4AvX+Cj0J1SYw8WQ84gX+XGLfwGrFrPLRkjLSsO
+         J85Q==
+X-Gm-Message-State: AOJu0YwlsyrgiRz2AhWqVnDdf+67pyDYefmr01S5BMySZVnPjpIfEu0z
+	ylryQtI90SOSQKA/kxedN0DVwwsKtg/DeGFNzszEZDm4Ex10zzIlt06Onfh+Jjcn0DAcgPlzpNf
+	qiR7q6g==
+X-Gm-Gg: ASbGncvJQboK2HGHgw52fFwwoE28gjfBA0ac6o3gdH/Eh7mOs1d+fC5nIQcPf/TKeK4
+	rzy1N0GRMCWjImcxgQwOsVA9RgzjJ1eHayDHyiHmAAfsNbgk2Zcbd7m1iNM+iz8rc13JkCkOAHN
+	EGXHjPfiRtT5F2hQJ0BkwYfjFidu+5ILMRnWNsWlktQuayloqlP8l8SdgEpSt1wG7rMIq+ZHuUh
+	t/0bgwhbL1L1E0cnZwhtgtSx1PX78xCfrZqi5Kv056Q1binTTtH0O0mYyzX8+7mwcQSRTtgfqSM
+	czJJQ3IGH9+pAvaJEurmlFvm42QrtZ4OtSaIjqKPtF5xEVwj/4w30A==
+X-Google-Smtp-Source: AGHT+IFSEOFuW7a9NpjHB6rH8IqR3wtV52+0GaCv/9dJhhXaARx6FE0TjSLjuieKIkSnT0Tod4rXCQ==
+X-Received: by 2002:a17:907:d90:b0:acb:ac79:12fe with SMTP id a640c23a62f3a-ace73b46296mr103911866b.50.1745568780911;
+        Fri, 25 Apr 2025 01:13:00 -0700 (PDT)
 Received: from localhost ([2401:e180:8d6c:c147:7e8d:44fa:c193:53fc])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-73e25a6b462sm2601962b3a.114.2025.04.25.01.12.54
+        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22db4d76d56sm26505505ad.4.2025.04.25.01.13.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 01:12:56 -0700 (PDT)
+        Fri, 25 Apr 2025 01:13:00 -0700 (PDT)
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: stable@vger.kernel.org
 Cc: Shigeru Yoshida <syoshida@redhat.com>,
@@ -79,9 +79,9 @@ Cc: Shigeru Yoshida <syoshida@redhat.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Martin KaFai Lau <martin.lau@kernel.org>,
 	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH stable 6.12 2/4] selftests/bpf: make xdp_cpumap_attach keep redirect prog attached
-Date: Fri, 25 Apr 2025 16:12:35 +0800
-Message-ID: <20250425081238.60710-3-shung-hsi.yu@suse.com>
+Subject: [PATCH stable 6.12 3/4] selftests/bpf: check program redirect in xdp_cpumap_attach
+Date: Fri, 25 Apr 2025 16:12:36 +0800
+Message-ID: <20250425081238.60710-4-shung-hsi.yu@suse.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250425081238.60710-1-shung-hsi.yu@suse.com>
 References: <20250425081238.60710-1-shung-hsi.yu@suse.com>
@@ -96,124 +96,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
 
-commit d5fbcf46ee82574aee443423f3e4132d1154372b upstream.
+commit d124d984c8a2d677e1cea6740a01ccdd0371a38d upstream.
 
-Current test only checks attach/detach on cpu map type program, and so
-does not check that it can be properly executed, neither that it
-redirects correctly.
+xdp_cpumap_attach, in its current form, only checks that an xdp cpumap
+program can be executed, but not that it performs correctly the cpu
+redirect as configured by userspace (bpf_prog_test_run_opts will return
+success even if the redirect program returns an error)
 
-Update the existing test to extend its coverage:
-- keep the redirected program loaded
-- try to execute it through bpf_prog_test_run_opts with some dummy
-  context
-
-While at it, bring the following minor improvements:
-- isolate test interface in its own namespace
+Add a check to ensure that the program performs the configured redirect
+as well. The check is based on a global variable incremented by a
+chained program executed only if the redirect program properly executes.
 
 Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Link: https://lore.kernel.org/r/20241009-convert_xdp_tests-v3-2-51cea913710c@bootlin.com
+Link: https://lore.kernel.org/r/20241009-convert_xdp_tests-v3-3-51cea913710c@bootlin.com
 Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Stable-dep-of: c7f2188d68c1 ("selftests/bpf: Adjust data size to have ETH_HLEN")
 Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 ---
- .../bpf/prog_tests/xdp_cpumap_attach.c        | 41 +++++++++++++++----
- 1 file changed, 33 insertions(+), 8 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c   | 5 ++++-
+ .../selftests/bpf/progs/test_xdp_with_cpumap_helpers.c       | 5 +++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-index 481626a875d1..88e8a886d1e6 100644
+index 88e8a886d1e6..c7f74f068e78 100644
 --- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
 +++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
-@@ -2,35 +2,41 @@
- #include <uapi/linux/bpf.h>
- #include <linux/if_link.h>
- #include <test_progs.h>
-+#include <network_helpers.h>
+@@ -62,8 +62,11 @@ static void test_xdp_with_cpumap_helpers(void)
+ 	err = bpf_prog_test_run_opts(prog_redir_fd, &opts);
+ 	ASSERT_OK(err, "XDP test run");
  
- #include "test_xdp_with_cpumap_frags_helpers.skel.h"
- #include "test_xdp_with_cpumap_helpers.skel.h"
+-	/* wait for the packets to be flushed */
++	/* wait for the packets to be flushed, then check that redirect has been
++	 * performed
++	 */
+ 	kern_sync_rcu();
++	ASSERT_NEQ(skel->bss->redirect_count, 0, "redirected packets");
  
- #define IFINDEX_LO	1
-+#define TEST_NS "cpu_attach_ns"
+ 	err = bpf_xdp_detach(IFINDEX_LO, XDP_FLAGS_SKB_MODE, NULL);
+ 	ASSERT_OK(err, "XDP program detach");
+diff --git a/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c b/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
+index d848fe96924e..3619239b01b7 100644
+--- a/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
++++ b/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
+@@ -12,6 +12,8 @@ struct {
+ 	__uint(max_entries, 4);
+ } cpu_map SEC(".maps");
  
- static void test_xdp_with_cpumap_helpers(void)
++__u32 redirect_count = 0;
++
+ SEC("xdp")
+ int xdp_redir_prog(struct xdp_md *ctx)
  {
--	struct test_xdp_with_cpumap_helpers *skel;
-+	struct test_xdp_with_cpumap_helpers *skel = NULL;
- 	struct bpf_prog_info info = {};
- 	__u32 len = sizeof(info);
- 	struct bpf_cpumap_val val = {
- 		.qsize = 192,
- 	};
--	int err, prog_fd, map_fd;
-+	int err, prog_fd, prog_redir_fd, map_fd;
-+	struct nstoken *nstoken = NULL;
- 	__u32 idx = 0;
- 
-+	SYS(out_close, "ip netns add %s", TEST_NS);
-+	nstoken = open_netns(TEST_NS);
-+	if (!ASSERT_OK_PTR(nstoken, "open_netns"))
-+		goto out_close;
-+	SYS(out_close, "ip link set dev lo up");
-+
- 	skel = test_xdp_with_cpumap_helpers__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "test_xdp_with_cpumap_helpers__open_and_load"))
- 		return;
- 
--	prog_fd = bpf_program__fd(skel->progs.xdp_redir_prog);
--	err = bpf_xdp_attach(IFINDEX_LO, prog_fd, XDP_FLAGS_SKB_MODE, NULL);
-+	prog_redir_fd = bpf_program__fd(skel->progs.xdp_redir_prog);
-+	err = bpf_xdp_attach(IFINDEX_LO, prog_redir_fd, XDP_FLAGS_SKB_MODE, NULL);
- 	if (!ASSERT_OK(err, "Generic attach of program with 8-byte CPUMAP"))
- 		goto out_close;
- 
--	err = bpf_xdp_detach(IFINDEX_LO, XDP_FLAGS_SKB_MODE, NULL);
--	ASSERT_OK(err, "XDP program detach");
--
- 	prog_fd = bpf_program__fd(skel->progs.xdp_dummy_cm);
- 	map_fd = bpf_map__fd(skel->maps.cpu_map);
- 	err = bpf_prog_get_info_by_fd(prog_fd, &info, &len);
-@@ -45,6 +51,23 @@ static void test_xdp_with_cpumap_helpers(void)
- 	ASSERT_OK(err, "Read cpumap entry");
- 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to cpumap entry prog_id");
- 
-+	/* send a packet to trigger any potential bugs in there */
-+	char data[10] = {};
-+	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
-+			    .data_in = &data,
-+			    .data_size_in = 10,
-+			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
-+			    .repeat = 1,
-+		);
-+	err = bpf_prog_test_run_opts(prog_redir_fd, &opts);
-+	ASSERT_OK(err, "XDP test run");
-+
-+	/* wait for the packets to be flushed */
-+	kern_sync_rcu();
-+
-+	err = bpf_xdp_detach(IFINDEX_LO, XDP_FLAGS_SKB_MODE, NULL);
-+	ASSERT_OK(err, "XDP program detach");
-+
- 	/* can not attach BPF_XDP_CPUMAP program to a device */
- 	err = bpf_xdp_attach(IFINDEX_LO, prog_fd, XDP_FLAGS_SKB_MODE, NULL);
- 	if (!ASSERT_NEQ(err, 0, "Attach of BPF_XDP_CPUMAP program"))
-@@ -65,6 +88,8 @@ static void test_xdp_with_cpumap_helpers(void)
- 	ASSERT_NEQ(err, 0, "Add BPF_XDP program with frags to cpumap entry");
- 
- out_close:
-+	close_netns(nstoken);
-+	SYS_NOFAIL("ip netns del %s", TEST_NS);
- 	test_xdp_with_cpumap_helpers__destroy(skel);
- }
- 
-@@ -111,7 +136,7 @@ static void test_xdp_with_cpumap_frags_helpers(void)
- 	test_xdp_with_cpumap_frags_helpers__destroy(skel);
- }
- 
--void serial_test_xdp_cpumap_attach(void)
-+void test_xdp_cpumap_attach(void)
+@@ -27,6 +29,9 @@ int xdp_dummy_prog(struct xdp_md *ctx)
+ SEC("xdp/cpumap")
+ int xdp_dummy_cm(struct xdp_md *ctx)
  {
- 	if (test__start_subtest("CPUMAP with programs in entries"))
- 		test_xdp_with_cpumap_helpers();
++	if (bpf_get_smp_processor_id() == 0)
++		redirect_count++;
++
+ 	if (ctx->ingress_ifindex == IFINDEX_LO)
+ 		return XDP_DROP;
+ 
 -- 
 2.49.0
 
