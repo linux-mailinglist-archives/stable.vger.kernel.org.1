@@ -1,99 +1,152 @@
-Return-Path: <stable+bounces-136695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE228A9C638
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:53:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E166A9C64E
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:55:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A72651899E58
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 10:53:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 033BE4A2F83
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 10:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8F023D289;
-	Fri, 25 Apr 2025 10:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF0723D2A0;
+	Fri, 25 Apr 2025 10:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hk1DnoS6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hpwn17Ns"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00EFE218821
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 10:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C644438B;
+	Fri, 25 Apr 2025 10:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745578328; cv=none; b=Kf35aFIl2DWLPcTw5yjZSwVE9NMnWQgKWlk6YlIvmIFuNRBTVozP/0R/brM+Fbo3Jwoj/ucC2wbDkagz1XKwdSK6y5XYekQdfkzPqdppwnwcEvCH36OA9GknICzmiQXEiN2UtNNqjGrE8bwkyEt5m0itYN3MJUFJotHCBoT8uxY=
+	t=1745578455; cv=none; b=pUNqCR2dn53t712PBlyghhuSZ2exSCZFHDUH9dYpKoQLUgu8wOue2VM/ne6d6Kr+EnCK1xoeHa/uObDLtwQhrbchic9XYJawrsO0tpkSJiJs+pkJZAYrMZiettt03pBD67ORZs2WKgR9TqxCdCcaW8d3qWRrBjJPftSujAfTZSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745578328; c=relaxed/simple;
-	bh=x1dZ5F2p+gS6/6i/04oJrPZaWxU2/E4CevnFlPspKCo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=GIs8lvLjMIMYS9ArXijht8nQr4Kr/8F0g3ouBmZiUGx8hvYdSiuLRSUP9qa0p/sev4KKZqLKeG3xLq19KbENeC3b8dpHLwOubX0r5y7gbW/7LimTmcsFAwLsO67WkiP5Ve3t56L5eqAHKyW9ZctKe+3IeY13H6yJFmrOBnQik0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hk1DnoS6; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1745578455; c=relaxed/simple;
+	bh=Q1UpatpvFGBLzYGAyyXZ93HJKBvu4YFVvySAmdpewO4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UnA/HAfcxOUOCJ8F02OLKaAluqXVuUA3jDzfA8coZ/zR507/auAg/JOpEuXTuSh7K4fekWW8Z/YjWJfuX56mT77ErQJem1omTTcrthxkKLiG32qrYoqwFh6MrAwwQr8EKeFGfBcqqarr6DKas+zAHXk6/3+PWSUwRMCFI1ZTa08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hpwn17Ns; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745578326; x=1777114326;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=x1dZ5F2p+gS6/6i/04oJrPZaWxU2/E4CevnFlPspKCo=;
-  b=Hk1DnoS62xprxgsRz15hdmms3xkrFk6OmEEbGfw8/Dwz6miV8aiUAyRx
-   r73meFXsfQ4ojDbwrqjzr6WawUoQkOv9VjXW+R4fkbiQQqfjyVZjMzFI0
-   zXHBGWxUMvbb+50MQkzapHWimgxhX5YxQ/jdKx7YbWCVQ8p+tGGh+A8nM
-   2P36JLwEiGEy5mXQLto5vTufMXosAm08hyAYCSm+GVNZ6ZJ7rdjPIwwjb
-   yTC6vNljdh/Y6Q0JOfOXFJyKSRqNclvpyzMARuUYcVUERuIjEe3QrjvFt
-   +1TSSt4bvc7ixhebMxoveNltX6UUeXgG2pSUQiU5nTWd0lEPqi9Cn/g2x
+  t=1745578454; x=1777114454;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Q1UpatpvFGBLzYGAyyXZ93HJKBvu4YFVvySAmdpewO4=;
+  b=Hpwn17Ns8VnsVqiI69GEdfw24UeQ0bO3VBhpFqOW3nNApRc/j5uEbasp
+   yXpvS1lJkGmDuG4VOgng3sUyqPaJ2LZRMfn8X3T/5xPxKpdMrthMHLFE4
+   kW78Z1rmUZNCnhoejH0c8yMPKTpnImXrwPQBHiQQGYZ/hrRgOJtq7jHS8
+   CD2c0ZbtXWxWrcq6N+7NztQ+H4uz8VcyAyN2VLst01Q5dQKc8jKddaZTO
+   xU/JJ7TGY3CZudWB1L4E7YB+4iNxu+teYDPbz2kyWqRCwh5Ofntyst85c
+   GB1qt5uzKRFvakKv5U/rXSf5FbQrNtrhqlGc+gWwSRMtGhUGXHJTiKlDb
    w==;
-X-CSE-ConnectionGUID: I5C97Bg6SvSRMyqvvN2FBg==
-X-CSE-MsgGUID: 7mm5jmYMQpmFETiMIwTBLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="72607539"
+X-CSE-ConnectionGUID: KUfNXON1TiqvDzZ9XW5GPw==
+X-CSE-MsgGUID: wEAUD2K4T9ChAF9EUVU/0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11413"; a="58609255"
 X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="72607539"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 03:52:05 -0700
-X-CSE-ConnectionGUID: v1FtvTBAT4GyZiBQhOgjZQ==
-X-CSE-MsgGUID: qq0Nmq1JTzKHHHhbZBIeoQ==
+   d="scan'208";a="58609255"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 03:54:13 -0700
+X-CSE-ConnectionGUID: G7QNP++rQ4GJv/RsJIXUWg==
+X-CSE-MsgGUID: tRlSAd2RSoK//IUddIVdDQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="137708457"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 25 Apr 2025 03:52:05 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u8Gf3-00055F-2q;
-	Fri, 25 Apr 2025 10:52:01 +0000
-Date: Fri, 25 Apr 2025 18:51:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dongcheng Yan <dongcheng.yan@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
-Message-ID: <aAtpLI6afZleU5tu@5d75f5d2dfb3>
+   d="scan'208";a="133403841"
+Received: from reyongqi-mobl.ccr.corp.intel.com (HELO [10.238.225.6]) ([10.238.225.6])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 03:54:09 -0700
+Message-ID: <3da17cf1-f489-42af-aef5-a7a9f800fe17@linux.intel.com>
+Date: Fri, 25 Apr 2025 18:54:06 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
+To: Dongcheng Yan <dongcheng.yan@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, sakari.ailus@linux.intel.com,
+ hverkuil@xs4all.nl, andriy.shevchenko@linux.intel.com, hdegoede@redhat.com,
+ u.kleine-koenig@baylibre.com, ricardo.ribalda@gmail.com,
+ bingbu.cao@linux.intel.com
+Cc: stable@vger.kernel.org, hao.yao@intel.com
+References: <20250425104331.3165876-1-dongcheng.yan@intel.com>
+Content-Language: en-US
+From: "Yan, Dongcheng" <dongcheng.yan@linux.intel.com>
 In-Reply-To: <20250425104331.3165876-1-dongcheng.yan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi reviewers,
 
-Thanks for your patch.
+I'm sorry for that I forget to rm cc:stable@vger.kernel.org in maillist
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Best Regards,
+Dongcheng
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
-Link: https://lore.kernel.org/stable/20250425104331.3165876-1-dongcheng.yan%40intel.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+On 4/25/2025 6:43 PM, Dongcheng Yan wrote:
+> Typically HDMI to MIPI CSI-2 bridges have a pin to signal image data is
+> being received. On the host side this is wired to a GPIO for polling or
+> interrupts. This includes the Lontium HDMI to MIPI CSI-2 bridges
+> lt6911uxe and lt6911uxc.
+> 
+> The GPIO "hpd" is used already by other HDMI to CSI-2 bridges, use it
+> here as well.
+> 
+> Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
+> ---
+>  drivers/platform/x86/intel/int3472/common.h   | 1 +
+>  drivers/platform/x86/intel/int3472/discrete.c | 6 ++++++
+>  2 files changed, 7 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/intel/int3472/common.h b/drivers/platform/x86/intel/int3472/common.h
+> index 51b818e62a25..4593d567caf4 100644
+> --- a/drivers/platform/x86/intel/int3472/common.h
+> +++ b/drivers/platform/x86/intel/int3472/common.h
+> @@ -23,6 +23,7 @@
+>  #define INT3472_GPIO_TYPE_CLK_ENABLE				0x0c
+>  #define INT3472_GPIO_TYPE_PRIVACY_LED				0x0d
+>  #define INT3472_GPIO_TYPE_HANDSHAKE				0x12
+> +#define INT3472_GPIO_TYPE_HOTPLUG_DETECT			0x13
+>  
+>  #define INT3472_PDEV_MAX_NAME_LEN				23
+>  #define INT3472_MAX_SENSOR_GPIOS				3
+> diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+> index 394975f55d64..efa3bc7af193 100644
+> --- a/drivers/platform/x86/intel/int3472/discrete.c
+> +++ b/drivers/platform/x86/intel/int3472/discrete.c
+> @@ -191,6 +191,10 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
+>  		*con_id = "privacy-led";
+>  		*gpio_flags = GPIO_ACTIVE_HIGH;
+>  		break;
+> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+> +		*con_id = "hpd";
+> +		*gpio_flags = GPIO_ACTIVE_HIGH;
+> +		break;
+>  	case INT3472_GPIO_TYPE_POWER_ENABLE:
+>  		*con_id = "avdd";
+>  		*gpio_flags = GPIO_ACTIVE_HIGH;
+> @@ -221,6 +225,7 @@ static void int3472_get_con_id_and_polarity(struct int3472_discrete_device *int3
+>   * 0x0b Power enable
+>   * 0x0c Clock enable
+>   * 0x0d Privacy LED
+> + * 0x13 Hotplug detect
+>   *
+>   * There are some known platform specific quirks where that does not quite
+>   * hold up; for example where a pin with type 0x01 (Power down) is mapped to
+> @@ -290,6 +295,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+>  	switch (type) {
+>  	case INT3472_GPIO_TYPE_RESET:
+>  	case INT3472_GPIO_TYPE_POWERDOWN:
+> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+>  		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, con_id, gpio_flags);
+>  		if (ret)
+>  			err_msg = "Failed to map GPIO pin to sensor\n";
+> 
+> base-commit: 4d1e8c8f11c611db5828e4bae7292bc295eea8ef
 
 
