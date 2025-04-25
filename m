@@ -1,125 +1,142 @@
-Return-Path: <stable+bounces-136708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D49AA9CB83
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 16:22:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B0DA9CB93
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 16:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3F4B1C0108E
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 14:21:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D63573BD6B0
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 14:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2707D2580F4;
-	Fri, 25 Apr 2025 14:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DD025A341;
+	Fri, 25 Apr 2025 14:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="CMPbCM5j"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E674242D99
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 14:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25422586C4;
+	Fri, 25 Apr 2025 14:19:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745590774; cv=none; b=Rn+uQjtDCqVV2O8J9QeDxVJ6mw5FlzEi8ZA2VdcBuiqPDC/xB6e+0VwQVa2sRYocGdrxLhGKMLIbjmQ2d51l6uYAojDSrcxmVIRZU/EOEb43cfJvUl6T073WbT9C1jI6nSa4Fdjg87KVsMhPCdNfKKydj+IQe0GfKsl4yFsXGJs=
+	t=1745590794; cv=none; b=tcKujb81vLm5UeX+1ilRsdI3n1fAhqV33kmT3tV8L8dLLwrEaigoMja+pz5Xb03LkrOMFeF7Pzo0H77QpgWHXYQZWpzGbdZ+6W4gAr8LjD5i3C6IHSpqmTrcG1+tAn+02K1vP7xG9bXEN14QPQYGSTcHfW3Qq5vDP+lScqkkToY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745590774; c=relaxed/simple;
-	bh=flHlgFjbJ2aziC6VPq/b/yiVn5oULLHor1ZhkvUnmzM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nM4m8arHF4s6xg2jG058NJT6R1jTTxaHUjp5J7En0P59JOx4QgxNIQ60LwTebp7cbWHZw4r6TGvyVfvwvH8jVsI1pcvXkY9F7n9K/zV9xptS+3D+mJ5FD1lpT8plzEFGLKvY2by9+GhnORx3X2cwzO+zOLTJr38lUXgtlULK1xE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E8712106F;
-	Fri, 25 Apr 2025 07:19:24 -0700 (PDT)
-Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id CFEC83F66E;
-	Fri, 25 Apr 2025 07:19:29 -0700 (PDT)
-From: Robin Murphy <robin.murphy@arm.com>
-To: stable@vger.kernel.org
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: [PATCH 6.6] iommu: Handle race with default domain setup
-Date: Fri, 25 Apr 2025 15:19:22 +0100
-Message-Id: <e1e5d56a9821b3428c561cf4b3c5017a9c41b0b5.1739903836.git.robin.murphy@arm.com>
-X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+	s=arc-20240116; t=1745590794; c=relaxed/simple;
+	bh=JQVnAF6dZO16oEBhuYTIAHl18b3ICR96jEOLGuSRRkU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NrL48uZ9ZTPnWDKTcw9xkF1y3jWZ3mHxV+9VDmoY8AVayy10N3/ueHFbeABxuSkz+ZKBqMF5t0P1OYwJRtazl2dHwv4sB3FuEgLMyGRndYYIKajT3BOX2V/bO487Fy0SkzRM8lYY6x57IDqnxxvkhsJBow9YbRMfbMnqQVfBJDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=CMPbCM5j; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53PEJYF32958153
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Apr 2025 09:19:34 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1745590774;
+	bh=K4BkpaId2cQLJVzZSSqTKt4CRWF10paVXfUx/kEGsA4=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=CMPbCM5jp4F3Yiw9uztBLruU7FwLSPkZCPZkjgPgu83Du9WlEqBsSUFSwdJRssoxx
+	 byDduY3gG7zoZlHvfRZ+X+hAjfSveFB5sYdb/Fb/61qQ4KoyUYMFjyGvNTkhGs1dB1
+	 ORfVLxKz1LC+E1C3d9M3R0gTLYVq7qklzrN7n9dc=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53PEJYuU129550
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 25 Apr 2025 09:19:34 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 25
+ Apr 2025 09:19:34 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 25 Apr 2025 09:19:34 -0500
+Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53PEJXGO019327;
+	Fri, 25 Apr 2025 09:19:33 -0500
+Message-ID: <1c657cc6-7667-4a59-85d7-a6f6b29c169b@ti.com>
+Date: Fri, 25 Apr 2025 09:19:33 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v3 1/3] dt-bindings: mmc: sdhci-am654: Add
+ ti,suppress-v1p8-ena
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: Ulf Hansson <ulf.hansson@linaro.org>, Nishanth Menon <nm@ti.com>,
+        Adrian
+ Hunter <adrian.hunter@intel.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Vignesh
+ Raghavendra <vigneshr@ti.com>,
+        Tero Kristo <kristo@kernel.org>, Josua Mayer
+	<josua@solid-run.com>,
+        <linux-mmc@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        Francesco Dolcini
+	<francesco@dolcini.it>,
+        Hiago De Franco <hiagofranco@gmail.com>, Moteen Shah
+	<m-shah@ti.com>,
+        <stable@vger.kernel.org>
+References: <20250422220512.297396-1-jm@ti.com>
+ <20250422220512.297396-2-jm@ti.com>
+ <20250425-agile-imported-inchworm-6ae257@kuoka>
+Content-Language: en-US
+From: Judith Mendez <jm@ti.com>
+In-Reply-To: <20250425-agile-imported-inchworm-6ae257@kuoka>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-[ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
+Hi Krzysztof,
 
-It turns out that deferred default domain creation leaves a subtle
-race window during iommu_device_register() wherein a client driver may
-asynchronously probe in parallel and get as far as performing DMA API
-operations with dma-direct, only to be switched to iommu-dma underfoot
-once the default domain attachment finally happens, with obviously
-disastrous consequences. Even the wonky of_iommu_configure() path is at
-risk, since iommu_fwspec_init() will no longer defer client probe as the
-instance ops are (necessarily) already registered, and the "replay"
-iommu_probe_device() call can see dev->iommu_group already set and so
-think there's nothing to do either.
+On 4/25/25 2:48 AM, Krzysztof Kozlowski wrote:
+> On Tue, Apr 22, 2025 at 05:05:10PM GMT, Judith Mendez wrote:
+>> Some Microcenter/Patriot SD cards and Kingston eMMC are failing init
+>> across Sitara K3 boards. Init failure is due to the sequence when
+>> V1P8_SIGNAL_ENA is set. The V1P8_SIGNAL_ENA has a timing component tied
+>> to it where if set, switch to full-cycle timing happens. The failing
+>> cards do not like change to full-cycle timing before changing bus
+>> width, so add flag to sdhci-am654 binding to suppress V1P8_SIGNAL_ENA
+>> before changing bus width. The switch to full-cycle timing should happen
+>> with HIGH_SPEED_ENA after change of bus width.
+>>
+>> Signed-off-by: Judith Mendez <jm@ti.com>
+>> ---
+>>   Documentation/devicetree/bindings/mmc/sdhci-am654.yaml | 5 +++++
+>>   1 file changed, 5 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
+>> index 676a74695389..0f92bbf8e13b 100644
+>> --- a/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
+>> +++ b/Documentation/devicetree/bindings/mmc/sdhci-am654.yaml
+>> @@ -201,6 +201,11 @@ properties:
+>>         and the controller is required to be forced into Test mode
+>>         to set the TESTCD bit.
+>>   
+>> +  ti,suppress-v1p8-ena:
+> 
+> Do not tell what the drivers should do, but tell what is the issue with
+> the hardware, e.g. some cards do not like full-cycle.... and this will
+> also hint you that it should be most likely generic, not specific to
+> this device.
+> 
 
-Fortunately we already have the right tool in the right place in the
-form of iommu_device_use_default_domain(), which just needs to ensure
-that said default domain is actually ready to *be* used. Deferring the
-client probe shouldn't have too much impact, given that this only
-happens while the IOMMU driver is probing, and thus due to kick the
-deferred probe list again once it finishes.
+Thanks for your review, but this patch has been dropped in v4 since
+we adopted a new implementation [0] using compatible string.
 
-[ Backport: The above is true for mainline, but here we still have
-arch_setup_dma_ops() to worry about, which is not replayed if the
-default domain happens to be allocated *between* that call and
-subsequently reaching iommu_device_use_default_domain(), so we need an
-additional earlier check to cover that case. Also we're now back before
-the nominal commit 98ac73f99bc4 so we need to tweak the logic to depend
-on IOMMU_DMA as well, to avoid falsely deferring on architectures not
-using default domains. This then serves us back as far as f188056352bc,
-where this specific form of the problem first arises. ]
+[0] 
+https://lore.kernel.org/linux-devicetree/20250423180809.l3l6sfbwquaaazar@shrank/
 
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
-Fixes: f188056352bc ("iommu: Avoid locking/unlocking for iommu_probe_device()")
-Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
----
- drivers/iommu/iommu.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+~ Judith
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 3f1029c0825e..29b48a6a0275 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -566,6 +566,17 @@ int iommu_probe_device(struct device *dev)
- 	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, NULL);
- 	mutex_unlock(&iommu_probe_device_lock);
-+
-+	/*
-+	 * The dma_configure replay paths need bus_iommu_probe() to
-+	 * finish before they can call arch_setup_dma_ops()
-+	 */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !ret && dev->iommu_group) {
-+		mutex_lock(&dev->iommu_group->mutex);
-+		if (!dev->iommu_group->default_domain)
-+			ret = -EPROBE_DEFER;
-+		mutex_unlock(&dev->iommu_group->mutex);
-+	}
- 	if (ret)
- 		return ret;
- 
-@@ -3149,6 +3160,11 @@ int iommu_device_use_default_domain(struct device *dev)
- 		return 0;
- 
- 	mutex_lock(&group->mutex);
-+	/* We may race against bus_iommu_probe() finalising groups here */
-+	if (!group->default_domain) {
-+		ret = -EPROBE_DEFER;
-+		goto unlock_out;
-+	}
- 	if (group->owner_cnt) {
- 		if (group->owner || !iommu_is_default_domain(group) ||
- 		    !xa_empty(&group->pasid_array)) {
--- 
-2.39.2.101.g768bb238c484.dirty
 
