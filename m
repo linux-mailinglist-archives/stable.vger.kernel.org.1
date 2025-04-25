@@ -1,282 +1,218 @@
-Return-Path: <stable+bounces-136645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB0BA9BBED
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 02:49:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23905A9BC0E
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 02:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8117E4A2880
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 00:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 313781BA2045
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 00:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8598BE5;
-	Fri, 25 Apr 2025 00:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9F1C8FE;
+	Fri, 25 Apr 2025 00:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="N4LQeiG3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Jqw5UnY/"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2045.outbound.protection.outlook.com [40.107.220.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D452914;
-	Fri, 25 Apr 2025 00:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745542169; cv=fail; b=kHPkxfitJbpiEVp7FMIF5Ph7hSuDzdUR0LS4xGZoZWIaCXs2qLBzCQoXuHiffwPbtPCXQ85NnRi9Mcii331452wSblrNSfLuMA8goGiW9Xkc9U+P0IHKhJ7/BxFQjj6kaGntP0KTawpRGEgrp/QyBPohigPz+zKZ0M9xgxE9m2g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745542169; c=relaxed/simple;
-	bh=l1Qn97rHAcn7M2Jh3/n4GPAf3ih4EG7hKPvxT52MpfM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Bq3V1sgg/qAxSLs3YUTvsz5xZKK68Tt2l20NmGir5OL2UTPM3qRdtdn6VjKDI6WyQP03cmRgtv3OxxMBJc3T4Po121T7sFw2Y6mBR+QivwWlTCqtnuVtgFVfX0gr7eFtbjv36/j6g7Xj6oJKa6qfLxaBluFykBIZqZYVYLcdgLM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=N4LQeiG3; arc=fail smtp.client-ip=40.107.220.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W0luDsu5xEFLqKp9vey7tprRPBIeLB6hBmMQJI/ewxWRenRo4cjodXekK6PA4lUcewLKoCjFudCoopm1grjYECiSpHwUytPPA5eBrhFguOdREV808P5IKQUdgxNp7qGD74Gk46BP1OiM+UG0fblI/jENI2zvW6wAB4/b7MKtRr3l9TPOSeryU+lR7G1XM2lD9ff1lj27wgew17lLPHg5gk7RaGtvAqSVFDl7dwnn/gry9nJ/HKkS+dW+jpxputD454Z1tPcIKy2t8A3pm72Kd/Q9XU03YfYxukPDJTUtQ5qeMMlcq2Mpukes5kn7SCcmj6tPNw9yVXoZ4N/TaCyN2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4SbWAYPTiE+MqDOHMr8g26Wj1wIKml5No4sEYAXhMcI=;
- b=XBZcFQ++AIg0Ow8CM0aH7qcF7hT9FtUgj/bMklk8rWv185YwhaO3J9PPysUp/OWxpy1AuAaJEsvL8k4N+f+37hQjAlpZ1AHnyI2n5R1C5oUzz7jR41SrsH4z2J3jrnp8w3lwhqAE7MuaAfwlnI0iCmB4lkfZ4FzO0mhH3WakzDwyun6w8tC/R/sTOGPGlfRLWjgG1BxIZRF2MvbLq6CkbKtgc9klXTGpMqc2rPi+fl0vWNNaCl4Ktim8i0Hi0L2DYGaSkTUsIbsDFb0jCnTrukwfgGNK3RvM27e6ZK7VZfxLxJj2aFmCpCT+BF3I99jSadEEwcsUdT/h9qPUm69K8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4SbWAYPTiE+MqDOHMr8g26Wj1wIKml5No4sEYAXhMcI=;
- b=N4LQeiG3Ftw0mR1+CC+S9YG752qfihu02OCl5DvTeU77TXO93OoHMNw2Uv1wdsEiQ6Rgmz3y5paoCXDpNeu25MBnr/sm+0cq2kJ7bgsspmCKDlRjSXZERjYJTfmV73F6cNqcO8/MrHr7k1h2sRLc3WOebbriJAS6OD4OQ1zmWmL8rcFaIneg1InhEC/0zFzaYnJpejmhvjOvAp+2ERyMZz8uqsc6JlZ597SKZ5W/2DE2aq+PUAgR5lr0Yzce/IDwVXsSXNfEJvsejba5EiMEuQm2+m7ZyQLTbfC7meSi0s8/k/4YVZ+KMUruNelvOEDhjt+DOTGKhrZyHA6J/VhzgA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB6657.namprd12.prod.outlook.com (2603:10b6:510:1fe::7)
- by IA1PR12MB6329.namprd12.prod.outlook.com (2603:10b6:208:3e5::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.35; Fri, 25 Apr
- 2025 00:49:23 +0000
-Received: from PH7PR12MB6657.namprd12.prod.outlook.com
- ([fe80::e1a7:eda7:8475:7e0a]) by PH7PR12MB6657.namprd12.prod.outlook.com
- ([fe80::e1a7:eda7:8475:7e0a%3]) with mapi id 15.20.8655.033; Fri, 25 Apr 2025
- 00:49:23 +0000
-Message-ID: <77be6671-e4e8-4b17-bf72-74bde325671a@nvidia.com>
-Date: Thu, 24 Apr 2025 17:49:20 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rc] iommu: Skip PASID validation for devices without PASID
- capability
-To: Jason Gunthorpe <jgg@nvidia.com>, Vasant Hegde <vasant.hegde@amd.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>, joro@8bytes.org, will@kernel.org,
- robin.murphy@arm.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, stable@vger.kernel.org
-References: <20250424020626.945829-1-tdave@nvidia.com>
- <a65d90f2-b6c6-4230-af52-8f676b3605c5@linux.intel.com>
- <8ef5da0e-f857-43a0-8cdf-b69f52b4b93a@amd.com>
- <20250424123156.GO1648741@nvidia.com>
-Content-Language: en-US
-From: Tushar Dave <tdave@nvidia.com>
-In-Reply-To: <20250424123156.GO1648741@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR03CA0231.namprd03.prod.outlook.com
- (2603:10b6:a03:39f::26) To PH7PR12MB6657.namprd12.prod.outlook.com
- (2603:10b6:510:1fe::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B178BE5;
+	Fri, 25 Apr 2025 00:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745542734; cv=none; b=HXaCN3C/3M2npvc/JCh1lA9WZN0jCOszbX7ctcWbbcAALLvTnH5xFYIdkaL6C6Qa3yic3eiKoUOgTcknTdRfxXOQugAoG908VKIAd8s8af1yJ/JqmlAnIex0WEt9XeHmQaDVSXjqljAsioB674aIgtjfzOxgRAIzRqgcuKQD9zk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745542734; c=relaxed/simple;
+	bh=JqDE5OV8P6WOTWsr+h/b5Gh5Hzv1wAao/sjJhgjV8j4=;
+	h=Date:To:From:Subject:Message-Id; b=JYc4zZUePSfQNDUQtqypGnok8sFfGjD8UouZvcAcuX4xnWGOUAkOyTeqxuUezTfYOHKBaciUImGim0v5wGsDBwlpWMywaenuiwZ0Spf0Jn4BnyWdSWiLCC57IaVmS9aGWMvtRlcCrU1UvHnLz0yNyeCP5mHLz1ppLMDXIsOcv3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Jqw5UnY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA516C4CEE3;
+	Fri, 25 Apr 2025 00:58:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745542733;
+	bh=JqDE5OV8P6WOTWsr+h/b5Gh5Hzv1wAao/sjJhgjV8j4=;
+	h=Date:To:From:Subject:From;
+	b=Jqw5UnY/kWo0pfpmA4ZbpVBzimd4iyBu2JMp1By6bbkeK/apsEllrr25b/le99Yl0
+	 lsmWII2lJP0oUFSPgjEiQ3RG5axd5jj5pjDggUJV09cySJOQkaEQ65981p2r2b1zgc
+	 Wfr1oYX7DvLGSwhiuPzD3kCgjqh5MVoqBk/dy6Hg=
+Date: Thu, 24 Apr 2025 17:58:53 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,qq282012236@gmail.com,peterx@redhat.com,hannes@cmpxchg.org,axboe@kernel.dk,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-prevent-busy-looping-for-tasks-with-signals-pending.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250425005853.CA516C4CEE3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6657:EE_|IA1PR12MB6329:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a09be55-c88b-46d7-cc30-08dd83930551
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?S24xelg1UkFSVGxISkJGa2FGZGRUdkt6c0R5L2lUVW9FR1ZGQytRYmRYTEhr?=
- =?utf-8?B?bjdHRkNhZWlxYktMbHk2Yk51N3JCdmlrVEJNaStKT1RvcjJQdm9HeDYxQUNC?=
- =?utf-8?B?SG5yamhjUXRUQmRuNXZnamdYbVhrYUE2NWlPNldLTGo1MXNTQXY3NmNQNUxq?=
- =?utf-8?B?SkFmaXBYYWNCTUJYZVdOd0kyUWtWR3VLMzhlSGJqU3k1MldWdnFZakdwdFdz?=
- =?utf-8?B?K1QzWC82Qm5ubzl0dzRrN2pqRkE2ZFJXOURPMjNYSERNcktxNW9qR0tSMVk3?=
- =?utf-8?B?RS8rUys4a3BwcFpiellZb3k1REtBSFVlZG1GQmxURjQ0VGlkZEF2bVNaMWJv?=
- =?utf-8?B?SGovWDlJZkVWdzArTi9Sa0NoOG1KNVhzRE8rUldaWE50YzZWRWs1VjhNSXpQ?=
- =?utf-8?B?aWplNFlyK2VHYzZSL0FUS2R5cDYydzVqNkVISDhvcUduMS9ERmZQZ2UxakNl?=
- =?utf-8?B?Uk5RaXZTekR2dG1PbzBmV0hZOUo2QzVQeE9kazFMdTZYOWZUbjNaMUhIb3FT?=
- =?utf-8?B?cFZ6MWpVODNCSldTTVJmRkt1Zm9od1dyUms4Wjh6S2R1SlhsUDN6K1dDV3U3?=
- =?utf-8?B?aHp4SFFWSEcyR2E3NFRxV3JuQzFyaDlXVTVBQ2EzTlZvK29yaFBZRk5naWFP?=
- =?utf-8?B?WUY3Vk55d1hmNDEzWkJtUGZWbFdWZEhZc1hEdDBJRVR3TEpDRFRlVEJhRlRC?=
- =?utf-8?B?L3FrYjFVTzZqc2JJR1hLaC9aU1lXbkRlTDZ2UkYwbTV0ay92aXpPK3UwTnM2?=
- =?utf-8?B?UXdzbXNwTlFKTkh4QWZQS0ROY09xME1aOGs5WmhsVkhob3U1TU1aYmdZQUV0?=
- =?utf-8?B?eWEvNFZaeWt5NGVBak51TGlqTmtZQjF1VG1jYmtaYm1mdHVxeTIxTzk1TFl5?=
- =?utf-8?B?UUtRQ0tOQ0lrd2ZDUU1LR0JaeHpHSk9QV2xGdUhJZ3p2c2xKRzBFQnlWcHFG?=
- =?utf-8?B?WFN4V1U2a3NnNTRSWSs4MGJMRS82MmcvRXZmR01lSWUydGtQbVI5RUVNYjEy?=
- =?utf-8?B?VFpjSEpOMS9QZDlWUjNwNyszSHd2RFYwa2dLd0R2dWZ4U1JmU1NRUUJIM1po?=
- =?utf-8?B?MXFsTHkzKzd4blZ2d0IrK1dxNy9oTE8wM2NpWkFTUUtjR2dtcFk5WWRnb0pa?=
- =?utf-8?B?dk1qTDhzeHBrWlp6ejliUEUyZ1ltNjNjWTY1bWcvWFFuZmptUGtPWHpCM3B4?=
- =?utf-8?B?Wk1LWlh4VTJCUm14UXpBMmEyMU4xSXFBYUt5amFoR0dER3dMRmNzOWVSbUJS?=
- =?utf-8?B?blc0QzNNenNEc3hNeTkrSEIvWU1ZaFdGTW5iZ04zZzhyR0tkaFNKNHIwOTFB?=
- =?utf-8?B?VUM3ODcxS05zU3FhcTBtOWh1QithelRsL2YyZjhUSDhrWGRrdVpmd0xOL3Y4?=
- =?utf-8?B?aDlRSklvUFo0bG5OQlhhVWtoYW84TFR0SElSKzBWenN6ZUsrbUZTL1lvNm13?=
- =?utf-8?B?Y014bVBYeVI1KzFnVEdpaEdUKzFYYmhEYjQxamhpWTRsTmJHYjBsOGhHcW9V?=
- =?utf-8?B?bUNJYlJnVW1IaVdYTFc1UTRINm1XZFlCVFVpYkFpOXN1QjdBU0FIcndVWEM1?=
- =?utf-8?B?SnJQemxkQndUek1oVTdBUHdkSUdtYWpFSTNGMTUrSzBoclducy9VQWN0ZnI5?=
- =?utf-8?B?NFJaRjdzMTNDYzZYNVdzK3RnR0xTd1U1UzM0UW02L09hdlZaOGdnNUtVejJL?=
- =?utf-8?B?ZjNnMWsyMEF4TEZsVlhIU29OSlp2eDNoeWhNZEUxYXJxNHh2dU10WDd1NWt2?=
- =?utf-8?B?SWpaUlI1Tk5FTkIrU0o4RDZUWVk3dDdVRFBHOFRpdXpqekd1V3RqVjVTWEVC?=
- =?utf-8?B?dXJtTmJvT1lKUVBrcEpTSlF3VEtmLytGRVFKU3NrMnJWb0RVcjNrNkdTS2JS?=
- =?utf-8?B?V3Z0NHdMYk1CNmkwaXFveGt1TEJ3VzU2T241TGNiRVVQV3N6WERGaXpFUWZt?=
- =?utf-8?Q?79pOAjioer4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6657.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eG9KSWMySUVMRUxtcTFqUmxkbVllRXZqekxYQzRncTNMS0VQVnFRWDNBRmtG?=
- =?utf-8?B?ckxrNjJSdGtlc3RwZURiMkNkV1dlMWpzMDNDa1pzMXdmSGcrbERzTEtMZmRu?=
- =?utf-8?B?b0lCZWhDRVBWSGJVZHFZb3J1Q2FYeHl2MVNpSUZOS25hWWwxTTFVSVFFTDJL?=
- =?utf-8?B?UDM4TGZjNFEvMGRFeGtobzQ4eW43ZVVYcy95MWgrUUZuRFZ1YnNRVjNGcHRx?=
- =?utf-8?B?aVQralB1aEtZUHN2NTIyV3MyNkI0bHBZTUZNbElJWTJFS3BKdzkrbmk5cEly?=
- =?utf-8?B?QU4wck4wTTFqU0RPVklRTWdiSlpZa0FtYXF1NmdWa2NoTUhveXNoZGw3a1hs?=
- =?utf-8?B?NERRVi9QZGJYZURhVFkwdGExQUh5Y3ovTm9RaUdlbk1SYU1BZWNBTmt4ejcy?=
- =?utf-8?B?SG5oRGN1U3pIRjlmUHcyelJRNGMzTzc3TW5BdnlBME1BU0ZReVVSbENIMFU5?=
- =?utf-8?B?WWRlSjh2U3hzRUxXekZMU0xSR2dsMnJydmRSWVcyZmUxVVhnVThSSU9aazRX?=
- =?utf-8?B?blJXMk5ubnNhaGZqbkFvemp0Nnc4RzhLTmZ6ZU91WkJCb0V6d3JRK1RFWWhB?=
- =?utf-8?B?T0RWZ08rSkkvaWxHbVhhTjRndjFhWU0xWGVLbmJCV2tmWDhZNUdjTi9zeHNv?=
- =?utf-8?B?QTZURGdNdThOMDJqamFpRFNkcG1USjhCNFBEeTFFL0dMcDl3K0VtUmdYWEdQ?=
- =?utf-8?B?ZGc4V09uUllQUlpmMlpnQnNsRFlLZ2Rra1ZaZWk5TDJ6WEdsVi9KUXFWMGhK?=
- =?utf-8?B?S3RBbU90Sm90TmFPWUh0ZU0xemJUV05rOUJ2MDNTNllpRjNmdHhSWlJzTkpr?=
- =?utf-8?B?c0hFZ3ZWaDN2YnpqdmpTSmxzNm4yWFpvZTV6STJGNG0reVJzd3gvdzhDUERX?=
- =?utf-8?B?b055bUhZdngvbjJBMzRBbUE2d0J2bktnOTRrNzZZRThjNlNLdi9EVnVDZXc0?=
- =?utf-8?B?NFU4SGdQZlVFd2tFQ2QvVjkvOGxzZFV4U0ppZWErNTBkUTQ2NTE2a0s1OC8w?=
- =?utf-8?B?Rmlkc3M4VUdHbVZDejgwNW5sRGwwOFpDKzZRTE90Q1dOKzFMeWFGRS9uRUxM?=
- =?utf-8?B?T2VHUXhFcXRBSkg0N21iZ3pvTE93VUk0eER4M1d2eUpIeGNRVlFrc21KTUlP?=
- =?utf-8?B?bUF3WStCaG5tSG9VNCsyUjFqaXJNSlpWYTRQTU4vaHJFSUNPZ1pBbk90NklP?=
- =?utf-8?B?NHdGVFFJUmxjbDd2Z3lIekhWREFiclNJaVM0bmJmMVduS2hDZEZreGlNRDJy?=
- =?utf-8?B?WlViOFh5R2FoK0dsbGg2MFJaVk5DbGdzT2ZEZG1kN2VxUy9BVUZLa2NwWDhW?=
- =?utf-8?B?RWQxMEJmVVNQLzRkT3VVZ0pZSkl0c3FFbU1QdCtZV1RDbFdlS0Qzb3FxRWVN?=
- =?utf-8?B?bWNSRW5YcFNXTVFlR1ppbjZNN0dvYWZDY2JITGtybU51azdYQ3ArblU0NzlO?=
- =?utf-8?B?aHJuK3pYb1JKUlFHbWxvUERFY1kyemJhbmEzK25zSDdIL29RSlZTb3RJajJo?=
- =?utf-8?B?VnRGYmNNbnBXQm1LU3pSSDE0c2hjQnN3M21RQmVqT0xjSy9qKzYvenRtOE5Y?=
- =?utf-8?B?RFBNMFhVSE9jbDR6ZUNMREcwaitwNndrbnJwRThJUWtNSkthcFczaGh3RU9y?=
- =?utf-8?B?TTlxRGk4RUtGRnduRXNRazBSTEpBOXVGZnV2U3h0M2xHUXhUVFIzMWFuQ3B1?=
- =?utf-8?B?NktFWjZuRWJyV3dUZzFnNmp5cksyNUs3NmlOc3RXVThtb3lvUFRZUjJjVXp0?=
- =?utf-8?B?WXV4eXFnV1Q5dldtbjJFNWdFQlFaM3gyT3VvR2VRVk5ueGJ3SVVLZXhzWGhG?=
- =?utf-8?B?UWJtSENJUm9nenhMVjBKbjloNzBwR2VnY1VkYjR6bkZkQ3FUcDg1b04xNkZZ?=
- =?utf-8?B?a1IwMHFpdHc4dml4SXlzVlZmSnhBbVBVeHhOcWx1aTlCMTZ3SjJhcnlqaGVh?=
- =?utf-8?B?d2tnbnFvUkRqQnVyRmlCR29wcURvOU1tNnZoMFdiWEc5aDFudlhDcFBHWmFw?=
- =?utf-8?B?NUxJWk8vTVFIcUVibm82cEkyOGd5M1gzYWpFRmtBSDcwdEdnUXlvVnBvNlUv?=
- =?utf-8?B?d1k2WEVCN01oZTFhOHRVdHFFNzVLazZoVWlYYk9yNEN6KzR5b1J0bG5nbjZI?=
- =?utf-8?Q?H7aZSWxgU1hPWtGdCRxC8qI8c?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a09be55-c88b-46d7-cc30-08dd83930551
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6657.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2025 00:49:23.1300
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AuW6pecNP8PtLMCny+7syKPhUajPxXWCo32lC6MBvsiDr26Yyvs6ugHxRulj8qzoEuOnTGWePyJ9SD3deDYwlg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6329
 
 
+The patch titled
+     Subject: mm/userfaultfd: prevent busy looping for tasks with signals pending
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-userfaultfd-prevent-busy-looping-for-tasks-with-signals-pending.patch
 
-On 4/24/25 05:31, Jason Gunthorpe wrote:
-> On Thu, Apr 24, 2025 at 12:08:56PM +0530, Vasant Hegde wrote:
-> 
->>> What the iommu driver should do when set_dev_pasid is called for a non-
->>> PASID device?
-> 
-> That's a good point, maybe the core code should filter that out based
-> on max_pasids? I think we do run into trouble here because the drivers
-> are allocating PASID table space based on max_pasids so the non-pasid
-> device should fail to add the pasid. Tushar, you should have hit this
-> in your testing???
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-prevent-busy-looping-for-tasks-with-signals-pending.patch
 
-When we have multi-device group with PASID device and non-PASID devices,
-set_dev_pasid doesn't fail in my testing for non-PASID devices.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Here is the example topology and bit more detail:
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-0008:00:00.0 root_port
-  └─0008:01:00.0 upstream_port
-     ├─0008:02:00.0 downstream_port
-     │  └─0008:03:00.0 endpoint (NIC DMA-PF)
-     └─0008:02:03.0 downstream_port
-        └─0008:04:00.0 upstream_port
-           └─0008:05:00.0 downstream_port
-              └─0008:06:00.0 endpoint (GPU)
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-In the above topology, we setup ACS flags on DSP 0008:02:03.0 and 0008:02:00.0 
-to achieve desired p2p configuration for GPU and DMA-PF.
-Apparently, this creates multi-device group with GPU being only device with 
-PASID support in that group. In this case, set_dev_pasid() ops invoked for each 
-device within the group with pasid=1 and doesn't fail.
+------------------------------------------------------
+From: Jens Axboe <axboe@kernel.dk>
+Subject: mm/userfaultfd: prevent busy looping for tasks with signals pending
+Date: Wed, 23 Apr 2025 17:37:06 -0600
 
-e.g.
+userfaultfd may use interruptible sleeps to wait on userspace filling a
+page fault, which works fine if the task can be reliably put to sleeping
+waiting for that.  However, if the task has a normal (ie non-fatal) signal
+pending, then TASK_INTERRUPTIBLE sleep will simply cause schedule() to be
+a no-op.
 
-  ...
-  ..
-  .
-  pcieport 0008:02:03.0: debug: __iommu_set_group_pasid():  pasid=1 
-dev->iommu->max_pasids=0 iommu_group 30
-  pcieport 0008:02:03.0: debug: __iommu_set_group_pasid():  ret 0
-  pcieport 0008:04:00.0: debug: __iommu_set_group_pasid():  pasid=1 
-dev->iommu->max_pasids=0 iommu_group 30
-  pcieport 0008:04:00.0: debug: __iommu_set_group_pasid():  ret 0
-  pcieport 0008:05:00.0: debug: __iommu_set_group_pasid():  pasid=1 
-dev->iommu->max_pasids=0 iommu_group 30
-  pcieport 0008:05:00.0: debug: __iommu_set_group_pasid():  ret 0
-  nvidia 0008:06:00.0: debug: __iommu_set_group_pasid():  pasid=1 
-dev->iommu->max_pasids=1048576 iommu_group 30
-  nvidia 0008:06:00.0: debug: __iommu_set_group_pasid():  ret 0
+For a task that registers a page with userfaultfd and then proceeds to do
+a write from it, if that task also has a signal pending then it'll
+essentially busy loop from do_page_fault() -> handle_userfault() until
+that fault has been filled.  Normally it'd be expected that the task would
+sleep until that happens.  Here's a trace from an application doing just
+that:
 
+handle_userfault+0x4b8/0xa00 (P)
+hugetlb_fault+0xe24/0x1060
+handle_mm_fault+0x2bc/0x318
+do_page_fault+0x1e8/0x6f0
+do_translation_fault+0x9c/0xd0
+do_mem_abort+0x44/0xa0
+el1_abort+0x3c/0x68
+el1h_64_sync_handler+0xd4/0x100
+el1h_64_sync+0x6c/0x70
+fault_in_readable+0x74/0x108 (P)
+iomap_file_buffered_write+0x14c/0x438
+blkdev_write_iter+0x1a8/0x340
+vfs_write+0x20c/0x348
+ksys_write+0x64/0x108
+__arm64_sys_write+0x1c/0x38
 
-IMO this outcome is expected. Quoting a text from commit
-https://github.com/torvalds/linux/commit/16603704559c7a68718059c4f75287886c01b20f
+where the task is looping with 100% CPU time in the above mentioned fault
+path.
 
+Since it's impossible to handle signals, or other conditions like
+TIF_NOTIFY_SIGNAL that also prevents interruptible sleeping, from the
+fault path, use TASK_UNINTERRUPTIBLE with a short timeout even for vmf
+modes that would normally ask for INTERRUPTIBLE or KILLABLE sleep.  Fatal
+signals will still be handled by the caller, and the timeout is short
+enough to hopefully not cause any issues.  If this is the first invocation
+of this fault, eg FAULT_FLAG_TRIED isn't set, then the normal sleep mode
+is used.
 
-"If multiple devices share a single group, it's fine as long the fabric
-always routes every TLP marked with a PASID to the host bridge and only
-the host bridge. For example, ACS achieves this universally and has been
-checked when pci_enable_pasid() is called. As we can't reliably tell the
-source apart in a group, all the devices in a group have to be considered
-as the same source, and mapped to the same PASID table."
+Link: https://lkml.kernel.org/r/27c3a7f5-aad8-4f2a-a66e-ff5ae98f31eb@kernel.dk
+Fixes: 4064b9827063 ("mm: allow VM_FAULT_RETRY for multiple times")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Zhiwei Jiang <qq282012236@gmail.com>
+Closes: https://lore.kernel.org/io-uring/20250422162913.1242057-1-qq282012236@gmail.com/
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
--Tushar
+ fs/userfaultfd.c |   34 ++++++++++++++++++++++++++--------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
 
+--- a/fs/userfaultfd.c~mm-userfaultfd-prevent-busy-looping-for-tasks-with-signals-pending
++++ a/fs/userfaultfd.c
+@@ -334,15 +334,29 @@ out:
+ 	return ret;
+ }
+ 
+-static inline unsigned int userfaultfd_get_blocking_state(unsigned int flags)
++struct userfault_wait {
++	unsigned int task_state;
++	bool timeout;
++};
++
++static struct userfault_wait userfaultfd_get_blocking_state(unsigned int flags)
+ {
++	/*
++	 * If the fault has already been tried AND there's a signal pending
++	 * for this task, use TASK_UNINTERRUPTIBLE with a small timeout.
++	 * This prevents busy looping where schedule() otherwise does nothing
++	 * for TASK_INTERRUPTIBLE when the task has a signal pending.
++	 */
++	if ((flags & FAULT_FLAG_TRIED) && signal_pending(current))
++		return (struct userfault_wait) { TASK_UNINTERRUPTIBLE, true };
++
+ 	if (flags & FAULT_FLAG_INTERRUPTIBLE)
+-		return TASK_INTERRUPTIBLE;
++		return (struct userfault_wait) { TASK_INTERRUPTIBLE, false };
+ 
+ 	if (flags & FAULT_FLAG_KILLABLE)
+-		return TASK_KILLABLE;
++		return (struct userfault_wait) { TASK_KILLABLE, false };
+ 
+-	return TASK_UNINTERRUPTIBLE;
++	return (struct userfault_wait) { TASK_UNINTERRUPTIBLE, false };
+ }
+ 
+ /*
+@@ -368,7 +382,7 @@ vm_fault_t handle_userfault(struct vm_fa
+ 	struct userfaultfd_wait_queue uwq;
+ 	vm_fault_t ret = VM_FAULT_SIGBUS;
+ 	bool must_wait;
+-	unsigned int blocking_state;
++	struct userfault_wait wait_mode;
+ 
+ 	/*
+ 	 * We don't do userfault handling for the final child pid update
+@@ -466,7 +480,7 @@ vm_fault_t handle_userfault(struct vm_fa
+ 	uwq.ctx = ctx;
+ 	uwq.waken = false;
+ 
+-	blocking_state = userfaultfd_get_blocking_state(vmf->flags);
++	wait_mode = userfaultfd_get_blocking_state(vmf->flags);
+ 
+         /*
+          * Take the vma lock now, in order to safely call
+@@ -488,7 +502,7 @@ vm_fault_t handle_userfault(struct vm_fa
+ 	 * following the spin_unlock to happen before the list_add in
+ 	 * __add_wait_queue.
+ 	 */
+-	set_current_state(blocking_state);
++	set_current_state(wait_mode.task_state);
+ 	spin_unlock_irq(&ctx->fault_pending_wqh.lock);
+ 
+ 	if (!is_vm_hugetlb_page(vma))
+@@ -501,7 +515,11 @@ vm_fault_t handle_userfault(struct vm_fa
+ 
+ 	if (likely(must_wait && !READ_ONCE(ctx->released))) {
+ 		wake_up_poll(&ctx->fd_wqh, EPOLLIN);
+-		schedule();
++		/* See comment in userfaultfd_get_blocking_state() */
++		if (!wait_mode.timeout)
++			schedule();
++		else
++			schedule_timeout(HZ / 10);
+ 	}
+ 
+ 	__set_current_state(TASK_RUNNING);
+_
 
-> 
-> We also have a problem setting up the default domain - it won't
-> compute IOMMU_HWPT_ALLOC_PASID properly across the group. If the
-> no-pasid device probes first then PASID will be broken on the group.
-> 
-> Tushar isn't hitting this because ARM always uses a PASID compatible
-> domain today, but it will not work on AMD.
-> 
-> That's a huge pain to deal with :\
-> 
->> Per device max_pasids check should cover that right?
-> 
-> The driver shouldn't be doing this though, if the driver is told to
-> make a pasid then it should make a pasid.. The driver can fail
-> attaching a pasid to a device that is over the device's max_pasid.
-> 
->> FYI. One example of such device is some of the AMD GPUs which has
->> both VGA and audio in same group. while VGA supports PASID, audio is
->> not. This used to work fine when we had AMD IOMMU PASID specific
->> driver. GPUs stopped using PASIDs in upstream kernel. So I didn't
->> look into this part in details.
-> 
-> Uhhh.. That sounds like a worse problem, the only way you should end
-> up with same group is if the ACS flags are missing on the GPU so Linux
-> assumes the VGA and audio can loopback to each other internally.
-> 
-> That should completely block PASID support on the GPU side due the
-> wrong routing. We can't have a hole in the PASID address space where
-> the audio BAR is.
-> 
-> I suppose the HW doesn't actually behave this way but since it doesn't
-> have the right ACS flags the SW doesn't know? Guessing..
-> 
-> Jason
+Patches currently in -mm which might be from axboe@kernel.dk are
+
+mm-userfaultfd-prevent-busy-looping-for-tasks-with-signals-pending.patch
+
 
