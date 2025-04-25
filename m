@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-136658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50528A9BEC0
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 08:41:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36289A9BF9B
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 09:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BACFF3B1374
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 06:40:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BC84188FAFB
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 07:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DECB322B8D1;
-	Fri, 25 Apr 2025 06:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7511FCCEB;
+	Fri, 25 Apr 2025 07:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfDVon5m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvxaPjjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C5F197A76;
-	Fri, 25 Apr 2025 06:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028122ACF3
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 07:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745563266; cv=none; b=XTEs6wlZsnEP2Wu0haBZcZFIlbd1g6XVwOkFvVzUC/fVCmKHYPoRHQzEnCUGt+nmPSz2cLSWfUMHoE4+fDGP9cKqzooWX23dYnCnLdZcyKnEiBy2fCx26h0hIInxWTu2ud3o7kDofOkqCXAmNOmLiMEKfZwii8UEIMJ/bGPINEE=
+	t=1745565436; cv=none; b=JOf0pXwAtKuCFBfl8GXzqTY7bNjoVgQH2xoJnvkEjLvoLdmSlIMBNNJEZonN4z6QBkOsjGnTd8Gu7AAki7Ss/V5CD1CaR2nYgJe2QsAXnYWO8L0ZHkH3fevrLHdPytUE0xy/ECgP4tDFAt+hS44RTY6+BuokvPit9BKUzXdcmzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745563266; c=relaxed/simple;
-	bh=LT2DGtZYPKsuF0uZdJr3v8Z/KrDWPxbrdFW7vwHATuo=;
+	s=arc-20240116; t=1745565436; c=relaxed/simple;
+	bh=ypREIy+0YuUA4AkexHw2yLYzX2D5W9yBuldaVskR+DI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emx3U2Zgs/BUCALBc75wdOT2gxwTW4d5LZoz3giMiBQUexfPuWNL9Kq5SnOD61f8m4+/402asoqfYOHG79zUPB6dm6J5QjNdJpKY5iJXRMZZceHL0UT/PDjsqp3+rH77VYXhvnxCR252/WQfsc++Wxt6KtvFeD3vUQkW5clnEjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfDVon5m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A181C4CEE4;
-	Fri, 25 Apr 2025 06:41:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=uJHteSQTYUyidvwjjksi2KtSxrwXOHif0clL6JYCmaZ6hT3YAoY1S/aRpCdxmdC7Znlgu6o+2il1RJTwX6fTdClbJd1rk3TJWC+E3UBJQJSgeWvumS+b80/qf8xQQ1JTh5pWc88g4hwZxCy0NAw2rwNA8sLMl+souk3LcjruMsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvxaPjjd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BC0C4CEEA;
+	Fri, 25 Apr 2025 07:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745563265;
-	bh=LT2DGtZYPKsuF0uZdJr3v8Z/KrDWPxbrdFW7vwHATuo=;
+	s=korg; t=1745565435;
+	bh=ypREIy+0YuUA4AkexHw2yLYzX2D5W9yBuldaVskR+DI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PfDVon5mDeZ1Sn/w6ixeXRDGPcwTOSW5nul1MOHUs78hvfauTvvy6Lg3M9OEdHiKw
-	 Ws4+paee+HMf8473lu2DhaTT+4LncAxaZG2lunoTgScsbXRiUd+VSH/+x51cb6e02k
-	 lxEeaDF920M8Pn2NJUzWHFlR4qqbyfGPVlSCSYEU=
-Date: Fri, 25 Apr 2025 08:41:03 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Johan Hovold <johan@kernel.org>
-Subject: Re: [PATCH 6.14 130/241] cpufreq: Avoid using inconsistent
- policy->min and policy->max
-Message-ID: <2025042552-lukewarm-sixties-cc61@gregkh>
-References: <20250423142620.525425242@linuxfoundation.org>
- <20250423142625.881627603@linuxfoundation.org>
- <aApnCaypsl1VWIfo@linaro.org>
+	b=cvxaPjjduJ8ztQrE8ab0LHzTDqo+eizfB6Ew54GXlIT+Bhs0mqYTgZag1TW3szG32
+	 igp6xOnFlpzLZKfg2rzfwsFFDh5fPwXLvUBZlJZ11T2UL3u8/0ehSO2zi3gYoDi1ep
+	 vQrTVwPUdQvQsQLFzO0Xx4jsiUJCEA6s11vk4UMo=
+Date: Fri, 25 Apr 2025 09:17:13 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: stable@vger.kernel.org, Ihor Solodrai <ihor.solodrai@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>
+Subject: Re: [PATCH stable 6.12 6.14 1/1] selftests/bpf: Mitigate
+ sockmap_ktls disconnect_after_delete failure
+Message-ID: <2025042523-uncheck-hazy-17a9@gregkh>
+References: <20250425055702.48973-1-shung-hsi.yu@suse.com>
+ <aok6og6gyokth2rap7qdhtmc4saljzg43qbrvtbeopjuuq6275@hptib2h2wpac>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,56 +57,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aApnCaypsl1VWIfo@linaro.org>
+In-Reply-To: <aok6og6gyokth2rap7qdhtmc4saljzg43qbrvtbeopjuuq6275@hptib2h2wpac>
 
-On Thu, Apr 24, 2025 at 06:30:01PM +0200, Stephan Gerhold wrote:
-> Hi Greg,
+On Fri, Apr 25, 2025 at 02:35:59PM +0800, Shung-Hsi Yu wrote:
+> On Fri, Apr 25, 2025 at 01:57:01PM +0800, Shung-Hsi Yu wrote:
+> > From: Ihor Solodrai <ihor.solodrai@linux.dev>
+> > 
+> > commit 5071a1e606b30c0c11278d3c6620cd6a24724cf6 upstream.
+> > 
+> > "sockmap_ktls disconnect_after_delete" test has been failing on BPF CI
+> > after recent merges from netdev:
+> > * https://github.com/kernel-patches/bpf/actions/runs/14458537639
+> > * https://github.com/kernel-patches/bpf/actions/runs/14457178732
+> > 
+> > It happens because disconnect has been disabled for TLS [1], and it
+> > renders the test case invalid.
+> > 
+> > Removing all the test code creates a conflict between bpf and
+> > bpf-next, so for now only remove the offending assert [2].
+> > 
+> > The test will be removed later on bpf-next.
+> > 
+> > [1] https://lore.kernel.org/netdev/20250404180334.3224206-1-kuba@kernel.org/
+> > [2] https://lore.kernel.org/bpf/cfc371285323e1a3f3b006bfcf74e6cf7ad65258@linux.dev/
+> > 
+> > Signed-off-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+> > Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+> > Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> > Link: https://lore.kernel.org/bpf/20250416170246.2438524-1-ihor.solodrai@linux.dev
+> > [ shung-hsi.yu: needed because upstream commit 5071a1e606b3 ("net: tls:
+> > explicitly disallow disconnect") is backported ]
+> > Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 > 
-> On Wed, Apr 23, 2025 at 04:43:14PM +0200, Greg Kroah-Hartman wrote:
-> > 6.14-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > 
-> > commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
-> > 
-> > Since cpufreq_driver_resolve_freq() can run in parallel with
-> > cpufreq_set_policy() and there is no synchronization between them,
-> > the former may access policy->min and policy->max while the latter
-> > is updating them and it may see intermediate values of them due
-> > to the way the update is carried out.  Also the compiler is free
-> > to apply any optimizations it wants both to the stores in
-> > cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
-> > which may result in additional inconsistencies.
-> > 
-> > To address this, use WRITE_ONCE() when updating policy->min and
-> > policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
-> > them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
-> > in cpufreq_set_policy() to avoid storing intermediate values in
-> > policy->min and policy->max with the help of the observation that
-> > their new values are expected to be properly ordered upfront.
-> > 
-> > Also modify cpufreq_driver_resolve_freq() to take the possible reverse
-> > ordering of policy->min and policy->max, which may happen depending on
-> > the ordering of operations when this function and cpufreq_set_policy()
-> > run concurrently, into account by always honoring the max when it
-> > turns out to be less than the min (in case it comes from thermal
-> > throttling or similar).
-> > 
-> > Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
-> > Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-> > Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> > Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-> > Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-> > Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> Please drop this patch from all stable queues for now. It is causing the
-> CPU frequency to be stuck at minimum after temperature throttling.
-> I reported this with more detail as reply to the original patch [1].
+> I missed that 5071a1e606b3 was added to 6.1 and 6.6, too. Please apply
+> this one for 6.14, 6.12, 6.6, and 6.1.
 
-Ok, now dropped from all queues, thanks for letting us know.
+It's already queued up for the next 6.6.y, 6.1.y, 5.15.y and 5.10.y
+releases, and is already in the 6.14.3 and 6.12.24 releases.
+
+Did I miss anywhere else that it needs to go?
+
+thanks,
 
 greg k-h
 
