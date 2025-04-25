@@ -1,147 +1,227 @@
-Return-Path: <stable+bounces-136703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16599A9C93C
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 14:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9575AA9C98B
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 14:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87AB83B00A9
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:49:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5136C9C1093
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B001247285;
-	Fri, 25 Apr 2025 12:49:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="PVa9uy1b";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8JoYq9+L"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D819E25228B;
+	Fri, 25 Apr 2025 12:53:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D37A12CD8B
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 12:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B910625178F;
+	Fri, 25 Apr 2025 12:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745585396; cv=none; b=Y9W3iT/UoJO8MuvwP/SAbp/DjzQP91/+95owu6N6d1Em8F1MG6MdyOblc2hIYFsebJeC7o2/ZsCNC05zGut1VmdgSx/ISpWT67DfOtcKTe9n0/+kL4R8oKtOwq3nxasvshCCZNWUs1iJlG8lWbLPYAjbdN0g9bDNjNCvPGy87ac=
+	t=1745585598; cv=none; b=rvq4LiSykS9AYqgQtXSu7zpLg9hsNfTMENXjc4fgd9K1bdSM1hnQ10F8y7wPPlJ15BbWYDJGMmx+UkWKFSLudnSl6EFGVrfpmzVLez2vGrmwwPHX3T5UXM26iB7OJhrCUK9LoOoZi1EY5bTQzqxyc8VrpvpnXOHnRclQ2Z1jhkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745585396; c=relaxed/simple;
-	bh=0pXx59Pnj24KBPIQ7eFkjTtGzO3GH74Bt5Tdgo4Z1PM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UvUAqd0VhC3qIGFSIuwTu8NcDo8kVS3060HdPfODWOvVSGZ9Yt3z3WYHQKu3bXC0MoV7QBGSQA8RWDGKg9j/15irqHB7zHX4TrDkvJY3AOAmbe7uB3e2C3KaoLpONF+DN3giGuiE6pG3b4gb8r0ZEiiq7ylPEF84bDZSizYfKXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=PVa9uy1b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8JoYq9+L; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Fri, 25 Apr 2025 14:49:50 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1745585392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/FyPt/SFa/8BOfuWyr6443EPo7xFnaGhBOqn6noZMkY=;
-	b=PVa9uy1bAz6z0qOVXHPCIld1bhFHa0JPJvtSFdNFtYRnQF7qW9IvyIorWO/V5Pbd2ChE4R
-	xXIx0Dvt4nTHruaoknSovQQB/2m27TI75zO50xoaXDIdz5MHSGXtvftJ1UIHcf4vKFjMRo
-	y0Z/W9jCMCbU7DwvPi30tGInWx2/qmOiCPKSOt3psUI0GzLSVgs/7A+y2rAfq69jM6uVBp
-	rFXLm/shKx5WmGbMpzuReBaExDrs6EvUlhcOcDWMbJfSzhec0fI2tmFuAyr6TFI2kGRSKR
-	UGXiamPWvxhv9Wnwph7Ik/m5h45AD4NAWwEHzJytGB5dadre805Oe/EAi/4RPw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1745585392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/FyPt/SFa/8BOfuWyr6443EPo7xFnaGhBOqn6noZMkY=;
-	b=8JoYq9+L1p49ccRTOGCL+U0nPSbGscT1EPrBszV8pWG9tRPe8UxcSNKoE1wD+q//mF2Lm9
-	9bL2BaYLNGwykfDg==
-From: Nam Cao <namcao@linutronix.de>
-To: Kai Zhang <zhangkai@iscas.ac.cn>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, stable@vger.kernel.org
-Subject: Re: [linux-6.6.y bugreport] riscv: kprobe crash as some patchs lost
-Message-ID: <20250425124950.FQzzDETT@linutronix.de>
-References: <c7e463c0-8cad-4f4e-addd-195c06b7b6de@iscas.ac.cn>
- <2025042250-backlash-shifting-89cf@gregkh>
- <72896429-e966-4f7a-b2f2-ebc33368eb12@iscas.ac.cn>
- <2025042518-craftily-coronary-b63a@gregkh>
- <2095c40a-a5a8-417a-bd0b-47e782e9f42d@iscas.ac.cn>
+	s=arc-20240116; t=1745585598; c=relaxed/simple;
+	bh=0Vv2AcoNpHwsxsDVc/KHAkPjydfEUGrPsFOSCt1cGd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oTys+9aet0xe7c/YWHKU4rXAx1Rje2W5sSlA1mW+Gz+ub0KiWBl8zu6guZpmY/8JLpRM9DRuq/ZRvTxCkHyRePaMY8Mqq3juIdFud4f3nrgjM1pN8LeQVHUlKkLtqjYhB3vJNvhP4FBsSTfGcORwPblJYULUP8MPsYWr49bqtzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A19A9168F;
+	Fri, 25 Apr 2025 05:53:10 -0700 (PDT)
+Received: from pluto.. (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF8FE3F59E;
+	Fri, 25 Apr 2025 05:53:12 -0700 (PDT)
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	arm-scmi@vger.kernel.org
+Cc: sudeep.holla@arm.com,
+	james.quinlan@broadcom.com,
+	f.fainelli@gmail.com,
+	vincent.guittot@linaro.org,
+	peng.fan@oss.nxp.com,
+	michal.simek@amd.com,
+	quic_sibis@quicinc.com,
+	dan.carpenter@linaro.org,
+	maz@kernel.org,
+	johan@kernel.org,
+	stable@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Cristian Marussi <cristian.marussi@arm.com>
+Subject: [PATCH v2 1/4] firmware: arm_scmi: Ensure that the message-id supports fastchannel
+Date: Fri, 25 Apr 2025 13:52:47 +0100
+Message-ID: <20250425125250.1847711-2-cristian.marussi@arm.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250425125250.1847711-1-cristian.marussi@arm.com>
+References: <20250425125250.1847711-1-cristian.marussi@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2095c40a-a5a8-417a-bd0b-47e782e9f42d@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Apr 25, 2025 at 08:09:21PM +0800, Kai Zhang wrote:
-> Hi Nam,
-> 
-> I reported a riscv kprobe bug of linux-6.6.y. It seems that
-> 03753bfacbc6(riscv: kprobes: Fix incorrect address calculation) should be
-> reverted. There are a lot of changes of riscv kprobe in upstream. I'm not
-> all in sure of my suggested fix. Will you kind to help?
+From: Sibi Sankar <quic_sibis@quicinc.com>
 
-Certainly.
+Currently the perf and powercap protocol relies on the protocol domain
+attributes, which just ensures that one fastchannel per domain, before
+instantiating fastchannels for all possible message-ids. Fix this by
+ensuring that each message-id supports fastchannel before initialization.
 
-> Thanks,
-> laokz
-> 
-> On 4/25/2025 4:07 PM, Greg Kroah-Hartman wrote:
-> > On Fri, Apr 25, 2025 at 04:03:41PM +0800, Kai Zhang wrote:
-> > > On 4/22/2025 4:46 PM, Greg Kroah-Hartman wrote:
-> > > > On Tue, Apr 22, 2025 at 10:58:42AM +0800, Kai Zhang wrote:
-> > > > > In most recent linux-6.6.y tree,
-> > > > > `arch/riscv/kernel/probes/kprobes.c::arch_prepare_ss_slot` still has the
-> > > > > obsolete code:
-> > > > > 
-> > > > >       u32 insn = __BUG_INSN_32;
-> > > > >       unsigned long offset = GET_INSN_LENGTH(p->opcode);
-> > > > >       p->ainsn.api.restore = (unsigned long)p->addr + offset;
-> > > > >       patch_text_nosync(p->ainsn.api.insn, &p->opcode, 1);
-> > > > >       patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, 1);
-> > > > > 
-> > > > > The last two 1s are wrong size of written instructions , which would lead to
-> > > > > kernel crash, like `insmod kprobe_example.ko` gives:
-> > > > > 
-> > > > > [  509.812815][ T2734] kprobe_init: Planted kprobe at 00000000c5c46130
-> > > > > [  509.837606][    C5] handler_pre: <kernel_clone> p->addr =
-> > > > > 0x00000000c5c46130, pc = 0xffffffff80032ee2, status = 0x200000120
-> > > > > [  509.839315][    C5] Oops - illegal instruction [#1]
-> > > > > 
-> > > > > 
-> > > > > I've tried two patchs from torvalds tree and it didn't crash again:
-> > > > > 
-> > > > > 51781ce8f448 riscv: Pass patch_text() the length in bytes (rebased)
-> > > > > 13134cc94914 riscv: kprobes: Fix incorrect address calculation
+Logs:
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:0] - ret:-95. Using regular messaging.
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:1] - ret:-95. Using regular messaging.
+scmi: Failed to get FC for protocol 13 [MSG_ID:6 / RES_ID:2] - ret:-95. Using regular messaging.
 
-Please don't revert this patch. It fixes another issue.
+CC: stable@vger.kernel.org
+Reported-by: Johan Hovold <johan+linaro@kernel.org>
+Closes: https://lore.kernel.org/lkml/ZoQjAWse2YxwyRJv@hovoldconsulting.com/
+Fixes: 6f9ea4dabd2d ("firmware: arm_scmi: Generalize the fast channel support")
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Sibi Sankar <quic_sibis@quicinc.com>
+[Cristian: Modified the condition checked to establish support or not]
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+---
+RFC -> V1
+ - picked up a few tags
 
-You are correct that the sizes of the instructions are wrong. It can still
-happen to work if only one instruction is patched.
+Since PROTOCOL_MESSAGE_ATTRIBUTES, used to check if message_id is supported,
+is a mandatory command, it cannot fail so we must bail-out NOT only if FC was
+not supported for that command but also if the query fails as a whole; so the
+condition checked for bailing out is modified to:
 
-This bug is not specific to v6.6. It is in mainline as well. Therefore fix
-patch should be sent to mainline, and then backport to v6.6.
+	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
+---
+ drivers/firmware/arm_scmi/driver.c    | 76 +++++++++++++++------------
+ drivers/firmware/arm_scmi/protocols.h |  2 +
+ 2 files changed, 45 insertions(+), 33 deletions(-)
 
-Can you please verify if the below patch fixes your crash?
-
-Best regards,
-Nam
-
-diff --git a/arch/riscv/kernel/probes/kprobes.c b/arch/riscv/kernel/probes/kprobes.c
-index 4fbc70e823f0..dc431b965bc3 100644
---- a/arch/riscv/kernel/probes/kprobes.c
-+++ b/arch/riscv/kernel/probes/kprobes.c
-@@ -28,8 +28,8 @@ static void __kprobes arch_prepare_ss_slot(struct kprobe *p)
- 
- 	p->ainsn.api.restore = (unsigned long)p->addr + offset;
- 
--	patch_text_nosync(p->ainsn.api.insn, &p->opcode, 1);
--	patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, 1);
-+	patch_text_nosync(p->ainsn.api.insn, &p->opcode, offset);
-+	patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, sizeof(insn));
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1cf18cc8e63f..0e281fca0a38 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1738,6 +1738,39 @@ static int scmi_common_get_max_msg_size(const struct scmi_protocol_handle *ph)
+ 	return info->desc->max_msg_size;
  }
  
- static void __kprobes arch_prepare_simulate(struct kprobe *p)
++/**
++ * scmi_protocol_msg_check  - Check protocol message attributes
++ *
++ * @ph: A reference to the protocol handle.
++ * @message_id: The ID of the message to check.
++ * @attributes: A parameter to optionally return the retrieved message
++ *		attributes, in case of Success.
++ *
++ * An helper to check protocol message attributes for a specific protocol
++ * and message pair.
++ *
++ * Return: 0 on SUCCESS
++ */
++static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
++				   u32 message_id, u32 *attributes)
++{
++	int ret;
++	struct scmi_xfer *t;
++
++	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
++			    sizeof(__le32), 0, &t);
++	if (ret)
++		return ret;
++
++	put_unaligned_le32(message_id, t->tx.buf);
++	ret = do_xfer(ph, t);
++	if (!ret && attributes)
++		*attributes = get_unaligned_le32(t->rx.buf);
++	xfer_put(ph, t);
++
++	return ret;
++}
++
+ /**
+  * struct scmi_iterator  - Iterator descriptor
+  * @msg: A reference to the message TX buffer; filled by @prepare_message with
+@@ -1879,6 +1912,7 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	int ret;
+ 	u32 flags;
+ 	u64 phys_addr;
++	u32 attributes;
+ 	u8 size;
+ 	void __iomem *addr;
+ 	struct scmi_xfer *t;
+@@ -1887,6 +1921,15 @@ scmi_common_fastchannel_init(const struct scmi_protocol_handle *ph,
+ 	struct scmi_msg_resp_desc_fc *resp;
+ 	const struct scmi_protocol_instance *pi = ph_to_pi(ph);
+ 
++	/* Check if the MSG_ID supports fastchannel */
++	ret = scmi_protocol_msg_check(ph, message_id, &attributes);
++	if (ret || !MSG_SUPPORTS_FASTCHANNEL(attributes)) {
++		dev_dbg(ph->dev,
++			"Skip FC init for 0x%02X/%d  domain:%d - ret:%d\n",
++			pi->proto->id, message_id, domain, ret);
++		return;
++	}
++
+ 	if (!p_addr) {
+ 		ret = -EINVAL;
+ 		goto err_out;
+@@ -2004,39 +2047,6 @@ static void scmi_common_fastchannel_db_ring(struct scmi_fc_db_info *db)
+ 		SCMI_PROTO_FC_RING_DB(64);
+ }
+ 
+-/**
+- * scmi_protocol_msg_check  - Check protocol message attributes
+- *
+- * @ph: A reference to the protocol handle.
+- * @message_id: The ID of the message to check.
+- * @attributes: A parameter to optionally return the retrieved message
+- *		attributes, in case of Success.
+- *
+- * An helper to check protocol message attributes for a specific protocol
+- * and message pair.
+- *
+- * Return: 0 on SUCCESS
+- */
+-static int scmi_protocol_msg_check(const struct scmi_protocol_handle *ph,
+-				   u32 message_id, u32 *attributes)
+-{
+-	int ret;
+-	struct scmi_xfer *t;
+-
+-	ret = xfer_get_init(ph, PROTOCOL_MESSAGE_ATTRIBUTES,
+-			    sizeof(__le32), 0, &t);
+-	if (ret)
+-		return ret;
+-
+-	put_unaligned_le32(message_id, t->tx.buf);
+-	ret = do_xfer(ph, t);
+-	if (!ret && attributes)
+-		*attributes = get_unaligned_le32(t->rx.buf);
+-	xfer_put(ph, t);
+-
+-	return ret;
+-}
+-
+ static const struct scmi_proto_helpers_ops helpers_ops = {
+ 	.extended_name_get = scmi_common_extended_name_get,
+ 	.get_max_msg_size = scmi_common_get_max_msg_size,
+diff --git a/drivers/firmware/arm_scmi/protocols.h b/drivers/firmware/arm_scmi/protocols.h
+index aaee57cdcd55..d62c4469d1fd 100644
+--- a/drivers/firmware/arm_scmi/protocols.h
++++ b/drivers/firmware/arm_scmi/protocols.h
+@@ -31,6 +31,8 @@
+ 
+ #define SCMI_PROTOCOL_VENDOR_BASE	0x80
+ 
++#define MSG_SUPPORTS_FASTCHANNEL(x)	((x) & BIT(0))
++
+ enum scmi_common_cmd {
+ 	PROTOCOL_VERSION = 0x0,
+ 	PROTOCOL_ATTRIBUTES = 0x1,
+-- 
+2.47.0
+
 
