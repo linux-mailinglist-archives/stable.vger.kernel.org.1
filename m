@@ -1,100 +1,121 @@
-Return-Path: <stable+bounces-136733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3760A9D168
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 21:22:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900AEA9D3F1
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 23:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67FF69A7421
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 19:22:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C974E1934
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 21:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF652192E4;
-	Fri, 25 Apr 2025 19:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5A9224AFE;
+	Fri, 25 Apr 2025 21:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I2wjDky8"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="DUtOiIFy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from lelvem-ot02.ext.ti.com (lelvem-ot02.ext.ti.com [198.47.23.235])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E021F4C8E
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 19:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AF12248AC;
+	Fri, 25 Apr 2025 21:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745608972; cv=none; b=PDsNW4CLn82KuEO5hoLqYig8vZdEVhn06n2RhaBwKxj+vQLxmjWuUBys0HY44LsjLr/Ir2K9b09au2Bh+H9ZSFVvYc/6NTwcqBnJ7sTV/RwFPxETEpUow7/bwjSmEWi+wPZui0oaAsqzTkmeTG6gxGB990B37tznjOta4nJOwKM=
+	t=1745615405; cv=none; b=gwpjdVyNj/M/v+u3OfavQvlZL1D736XNvBFN9EheYUAMGoxExhZEy/H3sfrtU35kxCgNvpk9yjjJWDatFUGBxfS3PYbvdXZoh151ixMZW16St4hNOym44Nl3YWZuBGdHyATvs5L46drT/D6I8E59fhY31AoNR9yBock1eCFSIWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745608972; c=relaxed/simple;
-	bh=9BvFmVp8DmeeJl6201aZQJYIzF67zLXNEaTgcZq/U2g=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=c2VBh446Jivkgrja8IOdFh6jrd7JUWe1yQarxgyjJqnWEf1B+BDBZOaLcn5JTu5aOo7fsh7OchP34tSs93ScPZ87cCUXaBxsN7XgT6uHQQ7i0EaPk5I7qoZGVnFfd7zRjHERFKNK3wVWXuK4GDkzRL7xG2JX1nyPnm3yb8nxAgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I2wjDky8; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745608969; x=1777144969;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=9BvFmVp8DmeeJl6201aZQJYIzF67zLXNEaTgcZq/U2g=;
-  b=I2wjDky8q8Vuyel4LknqB7jMpmdrn1GIhd5Hy6O5QSf2HItWqVVMt3Q3
-   bhMaDF9TJCRabpveqvHqZPvK5f9bzzyv3R6bqrFW41rNIX2C1aqKYiDtm
-   rPYXQ/o20QBi+AB2wq4sX6SXWdCMXG2PLvSPTODtw7o4sTHMUC4glPDu1
-   AD34cUGJmx8JDcSvLoeJZVutvcQwJTyDM2zkq3t+a0ZWJHyTOt4AvSpdc
-   5LwOO0gf/kyDIPjQTER/bWCKJJ/UHZehpRvSq581vl60gEu46HnZO7Ad2
-   rZGIWt2mIKR6hW3hhh1IIFkjkc9kdFqD1YzIxPkWgLmD2dAvFOJqV19vY
-   A==;
-X-CSE-ConnectionGUID: EWcHCYKnTwuSsdvk++XN7Q==
-X-CSE-MsgGUID: pXhYECYER9OiigdXPX8ySg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11414"; a="58264539"
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="58264539"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Apr 2025 12:22:49 -0700
-X-CSE-ConnectionGUID: TUc8kGz+SsWIBDVo4Y/2NQ==
-X-CSE-MsgGUID: Y2X6qhiiRyynf3vY2++RjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,238,1739865600"; 
-   d="scan'208";a="133505399"
-Received: from lkp-server01.sh.intel.com (HELO 050dd05385d1) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 25 Apr 2025 12:22:47 -0700
-Received: from kbuild by 050dd05385d1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u8OdJ-0005Sb-16;
-	Fri, 25 Apr 2025 19:22:45 +0000
-Date: Sat, 26 Apr 2025 03:22:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Da Xue <da@libre.computer>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v3] net: mdio: mux-meson-gxl: set reversed bit when using
- internal phy
-Message-ID: <aAvg4E047o0fFgUh@5d75f5d2dfb3>
+	s=arc-20240116; t=1745615405; c=relaxed/simple;
+	bh=MOO/CzWZ0YIgmolaHheEdxVd28uNvBFXtKwYoeaf2Ss=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iH34K1TRRsItY3vPc/eYp16RsXpWTOH1hfv/tgvmgswo6RgLqhKtMJQerw16aw5SJkv700BHlqhsXofmjdxBgB55eRxl9/qwqCOnqaUtA29y/KCafH+rE+1Z+pUWB1WzCNKdtvCLNhG6+VFBjLpAJsIlOA4pCdtE97ng0WVWKJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=DUtOiIFy; arc=none smtp.client-ip=198.47.23.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelvem-ot02.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 53PL9wjg3026995
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 25 Apr 2025 16:09:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1745615398;
+	bh=MGjIDaoDelEvuWIMDJx6V82b37fg2WOb7gjvoptL2H8=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References;
+	b=DUtOiIFyvXc6ibkd4jJuM34QBlefujhLmFU7NW0JoehrfrBFdnG2Dzyw7gZ2yMUuK
+	 DfLhgnTX4L8l0Gz97ctURjQO0kwEudFZanfburcc3n7rxMRdzC/5nixiW4kZffcdAy
+	 WodjIyxfS6eaL8J7LjRhURVDgCY+7E3H/WA5ainw=
+Received: from DLEE106.ent.ti.com (dlee106.ent.ti.com [157.170.170.36])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 53PL9wUe078487
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 25 Apr 2025 16:09:58 -0500
+Received: from DLEE100.ent.ti.com (157.170.170.30) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 25
+ Apr 2025 16:09:57 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 25 Apr 2025 16:09:57 -0500
+Received: from localhost (uda0133052.dhcp.ti.com [128.247.81.232])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 53PL9vdF093546;
+	Fri, 25 Apr 2025 16:09:57 -0500
+From: Nishanth Menon <nm@ti.com>
+To: <vigneshr@ti.com>, <kristo@kernel.org>, <robh@kernel.org>,
+        <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+        Siddharth Vadapalli
+	<s-vadapalli@ti.com>
+CC: Nishanth Menon <nm@ti.com>, <stable@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <srk@ti.com>
+Subject: Re: [PATCH] arm64: dts: ti: k3-j784s4-j742s2-main-common: fix length of serdes_ln_ctrl
+Date: Fri, 25 Apr 2025 16:09:56 -0500
+Message-ID: <174561535469.210207.12728695761860472816.b4-ty@ti.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250423151612.48848-1-s-vadapalli@ti.com>
+References: <20250423151612.48848-1-s-vadapalli@ti.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250425192009.1439508-1-da@libre.computer>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Hi,
+Hi Siddharth Vadapalli,
 
-Thanks for your patch.
+On Wed, 23 Apr 2025 20:46:12 +0530, Siddharth Vadapalli wrote:
+> Commit under Fixes corrected the "mux-reg-masks" property but did not
+> update the "length" field of the "reg" property to account for the newly
+> added register offsets which extend the region. Fix this.
+> 
+> 
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+I have applied the following to branch ti-k3-dts-next on [1].
+Thank you!
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+[1/1] arm64: dts: ti: k3-j784s4-j742s2-main-common: fix length of serdes_ln_ctrl
+      commit: 3b62bd1fde50d54cc59015e14869e6cc3d6899e0
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v3] net: mdio: mux-meson-gxl: set reversed bit when using internal phy
-Link: https://lore.kernel.org/stable/20250425192009.1439508-1-da%40libre.computer
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent up the chain during
+the next merge window (or sooner if it is a relevant bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/ti/linux.git
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+Regards,
+Nishanth Menon
+Key (0xDDB5849D1736249D) / Fingerprint: F8A2 8693 54EB 8232 17A3  1A34 DDB5 849D 1736 249D
 
 
