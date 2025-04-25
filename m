@@ -1,108 +1,190 @@
-Return-Path: <stable+bounces-136690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96491A9C4FC
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:15:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3656A9C4FA
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC1E4615BB
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 10:14:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE433A8A72
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 10:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466C5243364;
-	Fri, 25 Apr 2025 10:13:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437C224468B;
+	Fri, 25 Apr 2025 10:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jPo8XGzK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gVmXPmUD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AE323FC49;
-	Fri, 25 Apr 2025 10:13:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6769823BD1D
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 10:13:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745576003; cv=none; b=dGecezmpSFMSdnnG/m875AYm2AwthmDXx94YqAyOFuTcvqxIGMo+F/QJIi0wcCuTPMu0aLYVLoxlPwnUM9F3sB+B9xk65uxDGOIfuSFnbe26lrIDzFd0eAvKCRxgUT646QxrYNGZRdWmCG9CFeF/XKFwOQiW1FLGh+w53WCO6Uc=
+	t=1745576008; cv=none; b=FcL4pjytlXrqa/NVWD0du3VivvbKSHhWFqPmh5kS5uWfbEYS0CDs2Caz5UxPm0Af6m414OJyOijzPqaPKXkdQ3SDCBt0dTysXBsIDUJx/bh4xLv58UVsRG3ViAvneuPx0+Ir2NRdI5xI4AgA4uSgQUsjfzopkV880yjs1+1AfIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745576003; c=relaxed/simple;
-	bh=leQ7yhAu9noiNiGYZltHvb58booqg1uL4Zo2ckgH484=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R92U2WK/hHeBJpn8PbbTUHNEgh6xJl9EEYRuxzCKW7FZDUVPwjbOe8M0lezZwIvvOzbQ+pTfuPKhtVKcHdJeFnHXB/0uNCLH9LcN6u3cpmNfz+he3YgykiJKjGqsUbWyGVtajb5VPgqIvM2bymTA2z2YG0/MhS5q8cZyLOYg/YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jPo8XGzK; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43cfa7e7f54so13569095e9.1;
-        Fri, 25 Apr 2025 03:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745576000; x=1746180800; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=leQ7yhAu9noiNiGYZltHvb58booqg1uL4Zo2ckgH484=;
-        b=jPo8XGzKOhDrNgkbDp8amVvcCzMj0/4D5TtImkK3PJLzI4GsODp28rEp/DkA6khCXT
-         JRiIs2n5UtJYrkIq0R9IHa6y6y9DhGEg/nnCotYSHaV+HQgfhDHG5rkfMw/x9ACivF1/
-         guPubQQAwmgojz77Seq+5vIx1GanPECppjFq7KS2d+a1AdNXVsGTo7vzz27jbaMK14Rz
-         nfwk8c/hc3NRKz09lMB5rlgwIn5j4Tsck8dzNToX41WNB4rdxa0hZ7ms7bNAIUwNdJkB
-         syhtF6byBwZaadvk43IEQ3rFdjYyi40EwIY5cJ3RKA9CKUYa3b5aHeLGqB3USOmVk0zI
-         lPCw==
+	s=arc-20240116; t=1745576008; c=relaxed/simple;
+	bh=G/slIN/YQejFKxJKe0AEMCbMJu1x7O2oA2+moybJ5hI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=METtVHvRTMwuAHKG96yt7S7uYFn4/w+lfcW3973xJzO+qOpMZ6Xk34/lzJlZPv/THCR8xNuX9PK4EfyXsPXJKD9xRwV9dfkhpQA2m1hdb/CwvNpnM5rRid0Y+BX1YiRIZYfszf0dO2J9q47S8QoOYWa9gbnIjdNxA1RJLfShS5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gVmXPmUD; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745576005;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c3mmkWVGcSdiSfH6kfLgKeVG303ccg/Ai5NqIFewYeI=;
+	b=gVmXPmUDSevHRLEHPrmN6dDIT+qpbIS2/y4sn8tQPifqKzE8MCeNAjpyjKy6/nQ7AuMc1r
+	lCfA4OrIQ2SYZTNm3SW+KFIjSKlo+SNFsOIJWopauCdrqadTu1qI81oiXPr1l7qRwgzB3g
+	n5v+ydIqKqYlOfejcJBAFrARtInciAY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-675-wAeWe3I3O_-bRaAvUFdIoQ-1; Fri, 25 Apr 2025 06:13:24 -0400
+X-MC-Unique: wAeWe3I3O_-bRaAvUFdIoQ-1
+X-Mimecast-MFC-AGG-ID: wAeWe3I3O_-bRaAvUFdIoQ_1745576003
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-acb8f9f58ebso154128666b.2
+        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 03:13:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745576000; x=1746180800;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=leQ7yhAu9noiNiGYZltHvb58booqg1uL4Zo2ckgH484=;
-        b=MwH2xlT9yxBt2/aoOjwGTytfMQ/k1Nfd3VTyokypdO9ABAQsss+BucAjth+pyrV2wC
-         BcYNEP7MVfgiE0ldKoMbq3PUqPmUhgvmGiLlqBpke6nFMw/aPgMEAYZ+EBTVhGQwLWFj
-         rfc0TzeVBGF+dUOi+SWWJ9qvSNGLVFYPlnuKduV9wab6cbGS5AhnJMG8stYx6u0UuCCV
-         Po9RJlT1Jm4LDaz3cMef5ZFmbibLWKWQpyN1ql0IzG30gTOsOIviyf9aqnmPgf6Vv8cq
-         dlRtrTKbmiZ0s4NjrCyUZsgQ3tQmTo28dXbmNgBbMG6JyFxcJa4sCXHmJAZdYr+ZKSKF
-         oXgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW7+uhKbGli4jyVT0Hj18q3lIovVYZ/EmIefqEmGhQ9UKfkZb3Dx+K5k7sckJ7OUHP3IneWtbjgWxaQ7e8=@vger.kernel.org, AJvYcCW7HONWCKSvR+XDKWFR7e0TaM5XAyFViLXNVHuco78W6cm1g4tN3TC/7prWAsfppGXZRKARfFiJiKfc@vger.kernel.org, AJvYcCWgJB05Jal3xB2aFi++bHbk4UVdpSsOko8XHrY/XG4KPPHzajEwfcVcG2Q7V2PCsTXJkZ96tvEt@vger.kernel.org, AJvYcCXiQgWsHbLapbOe3xowG1QFNo8J9dcq0NTEa1vmes/n56N1TEyyoA3fCeXEVRtu2hLstJUK6k8M@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjNuU2OZKApQj0bnPBbeXqUJF2cgd2GJg5ohfWOHafckbXBdNu
-	hSfz5nsn0VrALpHP9zkFyMXQkEgmiryj9yQNdxjoDUF5cK9VAGol
-X-Gm-Gg: ASbGnctmRLMtGEWtbJnazBXpfModndRYhtNJdnh0dCAGj/JtefPqsPjWeM/WiMVZWNK
-	Dk6Ask5fOMVHx7ivWSonT636H81WVJR2i8Jv6q+qCH1HtgR71HounyKS7Ug1DMAqSu504HxeCL4
-	7bVngwORndVDUOgbA49HNivGrAuLYFGg8GyKSVNmUjx4q8DmlobKeRP8og7i+hx4zrEL5gPvkYp
-	oIhGRPbkdnMfXHd4WVqz8CPptc5Gces3v8SURDYcUEv3qxBscxkolt5fschMqEMam24tu4sJhik
-	clnuCbI9xZNhf+eyceevJZrKvTvxwD4UaD2/Lzk=
-X-Google-Smtp-Source: AGHT+IETfuGeLDMAZxnrCqaBW3NFu5fzExXuY2mpnZTRfDsZm6SbJttDkP7GFTyNTPBz8Vw8yxZkrw==
-X-Received: by 2002:a05:600c:1c1e:b0:43b:ca8c:fca3 with SMTP id 5b1f17b1804b1-440a6693ad8mr13041395e9.11.1745575999354;
-        Fri, 25 Apr 2025 03:13:19 -0700 (PDT)
-Received: from gmail.com ([2a02:c7c:6696:8300:ae46:ea89:950b:a804])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a53044besm19768875e9.14.2025.04.25.03.13.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 03:13:19 -0700 (PDT)
-Date: Fri, 25 Apr 2025 11:13:12 +0100
-From: Qasim Ijaz <qasdev00@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	horms@kernel.org, linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 5/5] net: ch9200: avoid triggering NWay restart on
- non-zero PHY ID
-Message-ID: <aAtgOLMnsmuukU42@gmail.com>
-References: <20250412183829.41342-1-qasdev00@gmail.com>
- <20250412183829.41342-6-qasdev00@gmail.com>
- <b49e6c21-8e0a-4e54-86eb-c18f1446c430@lunn.ch>
- <20250415205230.01f56679@kernel.org>
- <20250415205648.4aa937c9@kernel.org>
- <aAD-RDUdJaL_sIqQ@gmail.com>
- <b492cef9-7cdd-464e-80fe-8ce3276395a4@lunn.ch>
+        d=1e100.net; s=20230601; t=1745576003; x=1746180803;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c3mmkWVGcSdiSfH6kfLgKeVG303ccg/Ai5NqIFewYeI=;
+        b=LNKvz5hgjNGMG6Pjz61QbZWVIZbm+b0Hiv9waI6QGOQlvFiI8/TF1JM2+Yp2KBbVg7
+         9RMjpRx6HIB4tbNPg9qb/0Ggj0UYvlp/b/Rm0hpWKYNejBfpx/amqimMsLWOviKcDfYr
+         O69M6cHi8fqV4et/8qye20udXO8nE6cunIvfM6/iCUbWgxUZD3Mv+hYyWJGtRMQXlknY
+         LC2oyd+w6MDpM5S8lgBzvaneErnh0QFO9hd3at9L1tuLcqCScS6VEO5+mkcffTygz9ot
+         Qwvtqn+GANQCCRi1TwwNV6K9pilQTlBkop+477Jc5hFwh0zLFuG7NgN3Oz9Y3Ths4+Ys
+         3dKA==
+X-Gm-Message-State: AOJu0YwchVYVHi8YHLoODJTsD29gO9nyQKlQWa3f6sVXbO4/ojWA/b52
+	1aq1iaU/jD3WRpxmj13iTbFz+aU+hrsBTCfQyYmyFlU7BpIUTSkizdXTCINfUE/0BGwKTlBzZ0u
+	ZYIR/WK+VbrvAtwMej/HJISkCsvG2xepQ36K89OhypnffT/dLee+apg==
+X-Gm-Gg: ASbGncsv2nSz6pECriDv5uZ1BTR3t32PsBsjVJX4tEtjYI9x2xmz1JaR9NDSbOXCAbY
+	v5m2oL2oD6+wuqNSXBsz2gOqWsUt+IWqL2VBqVVEtLntZJk7rQEXL3sDGfXn1lph8B/uCexjYm5
+	VumCmWTThV6cwpOk2455yx6Z4p9titXt3fOo6HliOnV8IfiP78akdzy2SY0OxhJ8p3t+FMuvn3z
+	dtsH9Qh+n7O82u9KTKxY1jJLJ5vNwJiSdKOrjYGGHlokr6Lvq6/rqZc4SeISuQ5ULyW5TBhTQT9
+	SyZHlX4qrubV4scVgQwWHZyEtySGnfJYRP8Tn0ax5lO7BEAo1TOn9RP1ND1kK1egktGNLP5BOQA
+	6CLzRUumO/lbbmzenDmgH69VKgTRH7AwRiIfvKAuJQdaPAKBnufsYuVtk7V4Z8Q==
+X-Received: by 2002:a17:907:1b22:b0:acb:94d6:a841 with SMTP id a640c23a62f3a-ace7108a209mr151850066b.16.1745576003155;
+        Fri, 25 Apr 2025 03:13:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7hpa0BS6PG9ebdCJ6WIapt6vCC/k4yEO6v7ADZBdEUPa6WQN3zZ/a7svwpaovIE6s9cT1Bw==
+X-Received: by 2002:a17:907:1b22:b0:acb:94d6:a841 with SMTP id a640c23a62f3a-ace7108a209mr151848466b.16.1745576002717;
+        Fri, 25 Apr 2025 03:13:22 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e41c898sm112354166b.7.2025.04.25.03.13.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Apr 2025 03:13:22 -0700 (PDT)
+Message-ID: <0db6de06-9d74-47d5-8625-7875bc376ecd@redhat.com>
+Date: Fri, 25 Apr 2025 12:13:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b492cef9-7cdd-464e-80fe-8ce3276395a4@lunn.ch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] platform/x86: int3472: add hpd pin support
+To: Dongcheng Yan <dongcheng.yan@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, sakari.ailus@linux.intel.com,
+ hverkuil@xs4all.nl, andriy.shevchenko@linux.intel.com,
+ u.kleine-koenig@baylibre.com, ricardo.ribalda@gmail.com,
+ bingbu.cao@linux.intel.com
+Cc: stable@vger.kernel.org, dongcheng.yan@linux.intel.com, hao.yao@intel.com
+References: <20250425100739.3099535-1-dongcheng.yan@intel.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20250425100739.3099535-1-dongcheng.yan@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Andrew, Jakub
+Hi Doncheng,
 
-Just pinging on my last message. Any thoughts on how to proceed with this patch series, I left my thoughts in the previous message.
+On 25-Apr-25 12:07 PM, Dongcheng Yan wrote:
+> Typically HDMI to MIPI CSI-2 bridges have a pin to signal image data is
+> being received. On the host side this is wired to a GPIO for polling or
+> interrupts. This includes the Lontium HDMI to MIPI CSI-2 bridges
+> lt6911uxe and lt6911uxc.
+> 
+> The GPIO "hpd" is used already by other HDMI to CSI-2 bridges, use it
+> here as well.
+> 
+> Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
 
-Thanks,
-Qasim
+Thanks, patch looks good to me:
+
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+
+Note my handshake control series has just landed / is on its
+way to next, see:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git/log/?h=review-ilpo-next
+
+Please send a v3 rebased on top of this to resolve the conflict
+we now have.
+
+Regards,
+
+Hans
+
+
+
+
+
+
+> ---
+>  drivers/platform/x86/intel/int3472/common.h   | 1 +
+>  drivers/platform/x86/intel/int3472/discrete.c | 6 ++++++
+>  2 files changed, 7 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/intel/int3472/common.h b/drivers/platform/x86/intel/int3472/common.h
+> index 145dec66df64..db4cd3720e24 100644
+> --- a/drivers/platform/x86/intel/int3472/common.h
+> +++ b/drivers/platform/x86/intel/int3472/common.h
+> @@ -22,6 +22,7 @@
+>  #define INT3472_GPIO_TYPE_POWER_ENABLE				0x0b
+>  #define INT3472_GPIO_TYPE_CLK_ENABLE				0x0c
+>  #define INT3472_GPIO_TYPE_PRIVACY_LED				0x0d
+> +#define INT3472_GPIO_TYPE_HOTPLUG_DETECT			0x13
+>  
+>  #define INT3472_PDEV_MAX_NAME_LEN				23
+>  #define INT3472_MAX_SENSOR_GPIOS				3
+> diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+> index 30ff8f3ea1f5..26215d1b63a2 100644
+> --- a/drivers/platform/x86/intel/int3472/discrete.c
+> +++ b/drivers/platform/x86/intel/int3472/discrete.c
+> @@ -186,6 +186,10 @@ static void int3472_get_con_id_and_polarity(struct acpi_device *adev, u8 *type,
+>  		*con_id = "privacy-led";
+>  		*gpio_flags = GPIO_ACTIVE_HIGH;
+>  		break;
+> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+> +		*con_id = "hpd";
+> +		*gpio_flags = GPIO_ACTIVE_HIGH;
+> +		break;
+>  	case INT3472_GPIO_TYPE_POWER_ENABLE:
+>  		*con_id = "power-enable";
+>  		*gpio_flags = GPIO_ACTIVE_HIGH;
+> @@ -212,6 +216,7 @@ static void int3472_get_con_id_and_polarity(struct acpi_device *adev, u8 *type,
+>   * 0x0b Power enable
+>   * 0x0c Clock enable
+>   * 0x0d Privacy LED
+> + * 0x13 Hotplug detect
+>   *
+>   * There are some known platform specific quirks where that does not quite
+>   * hold up; for example where a pin with type 0x01 (Power down) is mapped to
+> @@ -281,6 +286,7 @@ static int skl_int3472_handle_gpio_resources(struct acpi_resource *ares,
+>  	switch (type) {
+>  	case INT3472_GPIO_TYPE_RESET:
+>  	case INT3472_GPIO_TYPE_POWERDOWN:
+> +	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+>  		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, con_id, gpio_flags);
+>  		if (ret)
+>  			err_msg = "Failed to map GPIO pin to sensor\n";
+> 
+> base-commit: 01c6df60d5d4ae00cd5c1648818744838bba7763
+
 
