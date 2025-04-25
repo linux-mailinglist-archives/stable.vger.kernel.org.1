@@ -1,129 +1,241 @@
-Return-Path: <stable+bounces-136726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21545A9CDCE
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 18:08:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 110C3A9CDD0
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 18:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052034A6EAC
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 16:08:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA2B3B1353
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 16:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF9918DB24;
-	Fri, 25 Apr 2025 16:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60A018C322;
+	Fri, 25 Apr 2025 16:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R7fyJsID"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ibKzPxUx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E889618D649;
-	Fri, 25 Apr 2025 16:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDEF12C544
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 16:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745597314; cv=none; b=DfiP/c6qewc6weVBil6pcVGj1kdgWtS3KoBw3zRLezg1CXlQT6b3QjQjvX2HZwv6gQRDCDF+CgUICkCz9UnqQM1scIKPoNTuIXRo1ez2+NukUDSY8IDM7r/czNIoTSF53ktoi6iizWCx0ozew5G+c8o8NNHCD1uputeOKQVCSG0=
+	t=1745597363; cv=none; b=tb58F8Px8iR1af6mpA330eCgPmWTX57St2J19cckifj5ZP9rzwft3PsnHEPXJ1txWmic1Bf8HDgRuIsztrgZNeE3Nai/SZb1+i2pBfrtmovZBCu8eElQwgcFTh3xbyjYwtHisJf+N8YZNbIy1gcISmhWPrTjX1/EltGcdaQPXdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745597314; c=relaxed/simple;
-	bh=L2GzxIA56nfM+cDgMgMMSOWe5dN+/yidKvdmYvhSKfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QU/DvNZJmGfkwMDG1mxQN753pNH0TWia6/ldFdgOwFoujIVf4eVZMKTpu0xbfB41mKACc89ZTPRQELdHUF0/ePIW8yYoQDdsyyMV4qDgP/Dk8oqVZwdJavVslLP9Yp42VNVdX3G7j7ryRJ8zd0QTI63YhH3oEmY8W6GB0paCPN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R7fyJsID; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-22da3b26532so24062545ad.0;
-        Fri, 25 Apr 2025 09:08:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745597312; x=1746202112; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=i5pNyASVzOvo7de5opodmAAp0f24p09fWkyNMVBg/4c=;
-        b=R7fyJsIDs1QPKdRZvJ3njPzf5SV+F50V9xH8x1hWbOecp0acNV7sSvwr+XKRmIkG7R
-         w6OPApiBYiidHzBxUTIpl7EwZvO1hXD1BnRAVXjPwSdOLMbDJ08LhwyhthR7xhLn9l9i
-         hgQPPnrtNXCZ7na2W4dZG5Pes8TWyJNCiA4r405/dcdJqrXJBKSwfbH4HXEPOKDRKMbd
-         zr/DvRSUx9LvuLMCJNI7fEmnEF5e589I/v0QFPPvoc+tGIvPmnjbnNfsUrAdXwtQPWwK
-         kkHYyGT6H4a8Fg685ZC1gjlli2kiX+cMbTqkzguZJnlI3x/jxYOCsjxhdIZyov3/h2mT
-         IosQ==
+	s=arc-20240116; t=1745597363; c=relaxed/simple;
+	bh=WJGUq1gw3BgUkoKK4+PTl4UDQy0n0VVCsfcSoYDyWIc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WXqN5bgMA6AoXpv6djdHNSsn6dRGAZDGSX39Ii6zlBuS6gq4LsWXp3agjwqUVJcnmfSwenpMIr5eExb6UK1lrDKitoIBpuV9CiqIlgOIMGsorR5n0hyCfXH7wGDmzNZhTFyjCdDGR/tO34CQk9ey2Mso1Y+RRKquochndrOuZF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ibKzPxUx; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745597360;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3soF/qLye5dVIQOQ9JLSIx6TABEciUGof6ZbxtO4oKI=;
+	b=ibKzPxUx1Vjlwt1raNs7ZJ7Uca9LAIpSsX4R5cKzEYCWOTtlxxkWedH1F8w/2N+PTgD7AS
+	QwBGY7jqhUVum2hxn+q2J9DCAWndyxfOI0GwIbqsmx4YBozVFQyPaKsyxaDRsK1IG2Xhq5
+	9D2HcMWzDM17ScZztWqpgL8VCF54rhM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-uimT9dO_PoWhyOjFc06bEA-1; Fri, 25 Apr 2025 12:09:19 -0400
+X-MC-Unique: uimT9dO_PoWhyOjFc06bEA-1
+X-Mimecast-MFC-AGG-ID: uimT9dO_PoWhyOjFc06bEA_1745597358
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43cf5196c25so12632685e9.0
+        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 09:09:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745597312; x=1746202112;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i5pNyASVzOvo7de5opodmAAp0f24p09fWkyNMVBg/4c=;
-        b=sSMH1VaarqqpPec28ikcjewuw+zf/WtjzZUUyqizPGFbozHHi9l0Y+1nDFiEwoeDN1
-         yb9bFEqY0LGcG+VyQU+ELNN8yPfgSMq+lDIKO5Uk/cSiT+Runyt+Tk+tJRiJUxhzc2+7
-         WzqjUbsVnAG+EJbap1f/ROgIVECcJ9Ze1z9Qzw8JqYwStszoPHRt+bt6/EYJxN69YUHa
-         qJ64H4k57boZesMC3p449NSc7Zx1zPlBezeVajZKAumWQ7JcpvODdWaXIcdBmSwNaX2g
-         icft3kCURgF6GZdm1gW6hl1ozWYizwzoz7Hb0z9i0S6iyioxRpASiRZ6T8OWTZYtJJij
-         893Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV29vZEM49wiBFSXP55wwQVCBwzmYUTe6REp1gHJlZUG4Cw5KtCBzWEOpt3WLL3PWzGUFhg+RnE@vger.kernel.org, AJvYcCVn6Q+dkqaZSJXdGOEMvmOlNBvqCTDGHsCYEciGFgfYd9KcOqJjlzLHroMp52QiFGBdpfsVOOXFQ5CoDA0=@vger.kernel.org, AJvYcCWKeCyRZ/3PuwbI9QR8gsLjXO5qQuwkxWBT+sfJ8lOG0+DRmZ84CATJ3yF5M1hVuptQSPupLcLm@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu2ljge6V0PGL6au7Ok/BfVMbQf+/rZWUFPcL+pq+g7jBD3kYx
-	/dxIQ8or6GzwUi72R7xrIJcYO9CRPFtwTCt6DNrFq/EyvrFNzINA
-X-Gm-Gg: ASbGncujxH7nJ5H4wOqzu/AV007pX0JP/GMJcgi40YMZYA2jzvCJfvY9LjCkfem70rY
-	XL60uveyIWrOypgV2AUwl9IOXvp/tEqdMcYg95VwaCi+X8m5YrmOCTU5G5S2nJj3cw/yr0X3o6Y
-	pz7gOf00e44rfU/v1hHcTm3UNotbKcB8NCjXf+0dYtHjJm9zQCfdATdvk9g4tqivikJkxFL4hSe
-	h9J8eIOpGuY3goFs1dCKeXjZq+XVEi1ChlVI5DdF0vlWdZsP8yptEQjKMzCnCotsezYleyVbMVK
-	VjjFxusyvBrqjWqaBUGBEBaY0PhT+q8qmJAgVlJnBb2mmJ8=
-X-Google-Smtp-Source: AGHT+IEDnCojjqBFupUvzzEwiunkDr1ppd44q2OkPVWtrj2YUpLPC11441r/ohtaDxUPakVfJZSnow==
-X-Received: by 2002:a17:902:f683:b0:223:62f5:fd44 with SMTP id d9443c01a7336-22dbf62c38emr46955105ad.40.1745597311720;
-        Fri, 25 Apr 2025 09:08:31 -0700 (PDT)
-Received: from localhost ([2601:647:6881:9060:e00f:8820:97a7:c371])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db50e7b08sm34009365ad.114.2025.04.25.09.08.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Apr 2025 09:08:30 -0700 (PDT)
-Date: Fri, 25 Apr 2025 09:08:29 -0700
-From: Cong Wang <xiyou.wangcong@gmail.com>
-To: "Alan J. Wylie" <alan@wylie.me.uk>
-Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
-	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
-	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
-	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <aAuzfQe08tFJclNJ@pop-os.localdomain>
-References: <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
- <20250421210927.50d6a355@frodo.int.wylie.me.uk>
- <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
- <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
- <aAf/K7F9TmCJIT+N@pop-os.localdomain>
- <20250422214716.5e181523@frodo.int.wylie.me.uk>
- <aAgO59L0ccXl6kUs@pop-os.localdomain>
- <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
- <aAlAakEUu4XSEdXF@pop-os.localdomain>
- <20250424135331.02511131@frodo.int.wylie.me.uk>
+        d=1e100.net; s=20230601; t=1745597358; x=1746202158;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3soF/qLye5dVIQOQ9JLSIx6TABEciUGof6ZbxtO4oKI=;
+        b=www9ZE9WJxvT8AB1Hok1eaH3BWnTmYMZqRJDf1uQ4sllcaxojAkdvbDFXFE1C/hv4v
+         ZxAV0a/2ezaWBCZe7ysA+Jk7upjg2Ie+/cL+5T4rM/HJ6zvgXejIlkRguMts/q0OwfAg
+         HUiExwemV1VWG66ybug0qjMKmQ1cBS9X2Av8Cfnx5ZKHbq5LBxOurJciz0MuhpA1g8gX
+         /LJi0Iy8sNF4Ara5rPd4L+lsy5ljRY6og8hdVq+9wEHnXjnHzfrI5dNYRlkGnsFTpKdF
+         Crnw36b+Qd8xThcRXxyVAbH8z0kekJQ9lSQWbL2q9bO8dBdLOEDnD/XXcTubAd2cb90C
+         P8Xg==
+X-Gm-Message-State: AOJu0YyclyJehaloe1kc8qhUf65pmD3jrjOTa30Xc/zd2lqfyGg1RtVp
+	BfyU+CkO/59cry556UEjFgVZ/zicIfV/5dthJLv42FueMR0RkYwXsqAakOeZZxLWy3kazVX4oc2
+	tUWTwHObGDO62T6Q2Qdm2HgG7M1Q/Skv/nVwqc9ouG/UU59W4ZDMbcDEo6V5XaMGc23mhV2qCDw
+	oeD7nVA3a5qGtHbibIF5D4VVuZsp3oZk1pmSp1
+X-Gm-Gg: ASbGnctBfEE6wMYeSS55atlEg0uze3bZ/uCHEg7c0zbQ4UDiiUTAhyU7FY3pnIyFIyT
+	4Rcs2yB2ekl8cNRgzpOvd85Uj+EzsrOST65J77ezoTqVvTQzCG3oqV5WND3+2LCLhVr9BMH/yuy
+	25UG2m9MSp16mwIEdkyPuCcySiGjKaHFdoJA6lxVzdh2gXpaClzMPrT7twk543OYCWfWwM6eo7z
+	d56ayQFajjhD31ZNMzB66oad+QFqTS9aErDJoypU9ut7XZ0dDGJgtVkXOzN9inM1C16eFDg4WmI
+	2VP7RpW1IGrrUjFuX1vvPc+oELK31b/t1sCIVzEFO6jMCG7IZagriJYiV1yRsA04FXNWsDM=
+X-Received: by 2002:a05:600c:524f:b0:43c:eec7:eabb with SMTP id 5b1f17b1804b1-440a65dcddfmr20915285e9.8.1745597357672;
+        Fri, 25 Apr 2025 09:09:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyj6tdfGfrgXOgn54Y/UusnMa8435YXE2xJIFvr2Bf6EG64f7FjjB2ysvvvjHzBph/9vgerQ==
+X-Received: by 2002:a05:600c:524f:b0:43c:eec7:eabb with SMTP id 5b1f17b1804b1-440a65dcddfmr20914655e9.8.1745597357081;
+        Fri, 25 Apr 2025 09:09:17 -0700 (PDT)
+Received: from localhost (p200300cbc70f69006c5680f80c146d2a.dip0.t-ipconnect.de. [2003:cb:c70f:6900:6c56:80f8:c14:6d2a])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-440a52f8909sm30396725e9.2.2025.04.25.09.09.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Apr 2025 09:09:16 -0700 (PDT)
+From: David Hildenbrand <david@redhat.com>
+To: stable@vger.kernel.org
+Cc: David Hildenbrand <david@redhat.com>,
+	Chandra Merla <cmerla@redhat.com>,
+	Thomas Huth <thuth@redhat.com>,
+	Cornelia Huck <cohuck@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: [PATCH 5.15.y] s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
+Date: Fri, 25 Apr 2025 18:09:15 +0200
+Message-ID: <20250425160915.2178126-1-david@redhat.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2025041734-deport-antennae-d763@gregkh>
+References: <2025041734-deport-antennae-d763@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250424135331.02511131@frodo.int.wylie.me.uk>
 
-On Thu, Apr 24, 2025 at 01:53:31PM +0100, Alan J. Wylie wrote:
-> > On Tue, Apr 22, 2025 at 07:20:24PM +0200, Holger Hoffstätte wrote:
-> 
-> > Meanwhile, if you could provide a reliable (and ideally minimum)
-> > reproducer, it would help me a lot to debug.
-> 
-> I've found a reproducer. Below is a stripped down version of the shell script
-> that I posted in my initial report.
-> 
-> Running this in a 1 second loop is enough to cause the panic very quickly.
-> 
-> It seems a bit of network traffic is needed, too.
+If we finds a vq without a name in our input array in
+virtio_ccw_find_vqs(), we treat it as "non-existing" and set the vq pointer
+to NULL; we will not call virtio_ccw_setup_vq() to allocate/setup a vq.
 
-Excellent! Now I can try it on my side instead of bothering you. :)
+Consequently, we create only a queue if it actually exists (name != NULL)
+and assign an incremental queue index to each such existing queue.
 
-I will check if applying all patches here could make crash and warning
-go away. And of course, I need to really understand why the crash still
-happened even after the qlen check adding to htb_qlen_notify(), which is
-unexpected to me.
+However, in virtio_ccw_register_adapter_ind()->get_airq_indicator() we
+will not ignore these "non-existing queues", but instead assign an airq
+indicator to them.
 
-Thanks a lot!
+Besides never releasing them in virtio_ccw_drop_indicators() (because
+there is no virtqueue), the bigger issue seems to be that there will be a
+disagreement between the device and the Linux guest about the airq
+indicator to be used for notifying a queue, because the indicator bit
+for adapter I/O interrupt is derived from the queue index.
+
+The virtio spec states under "Setting Up Two-Stage Queue Indicators":
+
+	... indicator contains the guest address of an area wherein the
+	indicators for the devices are contained, starting at bit_nr, one
+	bit per virtqueue of the device.
+
+And further in "Notification via Adapter I/O Interrupts":
+
+	For notifying the driver of virtqueue buffers, the device sets the
+	bit in the guest-provided indicator area at the corresponding
+	offset.
+
+For example, QEMU uses in virtio_ccw_notify() the queue index (passed as
+"vector") to select the relevant indicator bit. If a queue does not exist,
+it does not have a corresponding indicator bit assigned, because it
+effectively doesn't have a queue index.
+
+Using a virtio-balloon-ccw device under QEMU with free-page-hinting
+disabled ("free-page-hint=off") but free-page-reporting enabled
+("free-page-reporting=on") will result in free page reporting
+not working as expected: in the virtio_balloon driver, we'll be stuck
+forever in virtballoon_free_page_report()->wait_event(), because the
+waitqueue will not be woken up as the notification from the device is
+lost: it would use the wrong indicator bit.
+
+Free page reporting stops working and we get splats (when configured to
+detect hung wqs) like:
+
+ INFO: task kworker/1:3:463 blocked for more than 61 seconds.
+       Not tainted 6.14.0 #4
+ "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+ task:kworker/1:3 [...]
+ Workqueue: events page_reporting_process
+ Call Trace:
+  [<000002f404e6dfb2>] __schedule+0x402/0x1640
+  [<000002f404e6f22e>] schedule+0x3e/0xe0
+  [<000002f3846a88fa>] virtballoon_free_page_report+0xaa/0x110 [virtio_balloon]
+  [<000002f40435c8a4>] page_reporting_process+0x2e4/0x740
+  [<000002f403fd3ee2>] process_one_work+0x1c2/0x400
+  [<000002f403fd4b96>] worker_thread+0x296/0x420
+  [<000002f403fe10b4>] kthread+0x124/0x290
+  [<000002f403f4e0dc>] __ret_from_fork+0x3c/0x60
+  [<000002f404e77272>] ret_from_fork+0xa/0x38
+
+There was recently a discussion [1] whether the "holes" should be
+treated differently again, effectively assigning also non-existing
+queues a queue index: that should also fix the issue, but requires other
+workarounds to not break existing setups.
+
+Let's fix it without affecting existing setups for now by properly ignoring
+the non-existing queues, so the indicator bits will match the queue
+indexes.
+
+[1] https://lore.kernel.org/all/cover.1720611677.git.mst@redhat.com/
+
+Fixes: a229989d975e ("virtio: don't allocate vqs when names[i] = NULL")
+Reported-by: Chandra Merla <cmerla@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+(cherry picked from commit 2ccd42b959aaf490333dbd3b9b102eaf295c036a)
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ drivers/s390/virtio/virtio_ccw.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virtio_ccw.c
+index d35e7a3f7067b..2febb4c56e06b 100644
+--- a/drivers/s390/virtio/virtio_ccw.c
++++ b/drivers/s390/virtio/virtio_ccw.c
+@@ -261,11 +261,17 @@ static struct airq_info *new_airq_info(int index)
+ static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 					u64 *first, void **airq_info)
+ {
+-	int i, j;
++	int i, j, queue_idx, highest_queue_idx = -1;
+ 	struct airq_info *info;
+ 	unsigned long indicator_addr = 0;
+ 	unsigned long bit, flags;
+ 
++	/* Array entries without an actual queue pointer must be ignored. */
++	for (i = 0; i < nvqs; i++) {
++		if (vqs[i])
++			highest_queue_idx++;
++	}
++
+ 	for (i = 0; i < MAX_AIRQ_AREAS && !indicator_addr; i++) {
+ 		mutex_lock(&airq_areas_lock);
+ 		if (!airq_areas[i])
+@@ -275,7 +281,7 @@ static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 		if (!info)
+ 			return 0;
+ 		write_lock_irqsave(&info->lock, flags);
+-		bit = airq_iv_alloc(info->aiv, nvqs);
++		bit = airq_iv_alloc(info->aiv, highest_queue_idx + 1);
+ 		if (bit == -1UL) {
+ 			/* Not enough vacancies. */
+ 			write_unlock_irqrestore(&info->lock, flags);
+@@ -284,8 +290,10 @@ static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
+ 		*first = bit;
+ 		*airq_info = info;
+ 		indicator_addr = (unsigned long)info->aiv->vector;
+-		for (j = 0; j < nvqs; j++) {
+-			airq_iv_set_ptr(info->aiv, bit + j,
++		for (j = 0, queue_idx = 0; j < nvqs; j++) {
++			if (!vqs[j])
++				continue;
++			airq_iv_set_ptr(info->aiv, bit + queue_idx++,
+ 					(unsigned long)vqs[j]);
+ 		}
+ 		write_unlock_irqrestore(&info->lock, flags);
+-- 
+2.49.0
+
 
