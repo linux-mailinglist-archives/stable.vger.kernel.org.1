@@ -1,196 +1,132 @@
-Return-Path: <stable+bounces-136699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3677A9C874
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 14:01:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE83A9C893
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 14:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF2767AE069
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 11:59:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824BA4A758A
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 12:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2382A24C084;
-	Fri, 25 Apr 2025 12:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="qjAcK3HJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4852472AA;
+	Fri, 25 Apr 2025 12:09:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2063.outbound.protection.outlook.com [40.107.223.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF20218EBA;
-	Fri, 25 Apr 2025 12:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745582440; cv=fail; b=qHaAOquTTSRpwUobJ2GwAAnb9j8cDVrXNleyCYUJcc/x4ykccMurskGU4bwfK8rXAC6wUzadM71C9NJGN06NC15X4Jc7gEjXMcYt8cb0kItlyHagvhJhrgsqrqSnWJZkvoYa6H2CIJXxMUDV/dS8kArxXfffjeCNPHiuGmgftqk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745582440; c=relaxed/simple;
-	bh=F1YkcS4E35F57wrsnWWYyKHj6uPVFFjSIEKtGUCTUSg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=N/dqnRtJzyL5hyQG96sTF0U5dpr+YO/CdxJ37dZZChhWrkbLzfl2erkLPVEvWlw9ElpFCCsvH/y5dzzZMCIrg2ro6UTZmqIYYluRrdXPw7Qr3UFhpWZSq3JJW2E+ZsC4BNtVJIvCeEx6ds9WCvuAGdUsxX5hgIQoZcXu7qHIZfM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=qjAcK3HJ; arc=fail smtp.client-ip=40.107.223.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x0fW/0kKayyG63nBQ3awHgf2tIeLUInkTcCpHJoBxiTEuEdr6cgaG94UKvIujhFMnC6B1m3QNX8Nl4O0dxD29UOoLKLVoRu+tjvDsUSg0u3Ivw/BZ3D/TL/lIwb6CBZp2cXUXcfspcReOaeWDNN1Til7cTVImub+2fnGBotKdLU2DK7Z5YkpET2gy/0bcwGKWGGhIyTStKRIUINN23wj7TH4naWFwiEH0zntSTHLw5YvK0dz60fht9Y51YIcK8GDMA7m9bM74B/H+6Y97cJ0MbkI7c19oKgp4W4bqgqu6i1zmcqLEq0UCicunzCugnmIODSYiPpL8P85hBwPwlMTBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D18TzGv9if4t3GXNk+F3xJFoyM7AekSIZ99DKJoYyUs=;
- b=PFPWdNlCpJkhBTJBlArVIL7FHj9sL8rK8drRp2K4rgDa1EOjAUAgxc2rJaxqglphHugJ4fUMa3xpm/Lmhq33CT4TZfpfq+BTUB3XEDhMMo1WS3TgYzknRPeCKVma44Q3MJF9G2J3CWm3zYXGY4NrJUf0UWTKpTCNRWRAZBh4pHATjcj2YXFj//r/0Nn/WkZEFSeNgtggrcnoVBUCSM+qzVOax6H1S1N7t5MPWIZFULmJIdJom2FsldihPKY4LK2a4HpkV9yk78ACb+590t5Pko8BqiX2p702LuS0v7oA7VYJOQ7/xA0SbE9j4PCz3OEwQUbwRF49bjlfQruIuVSqaA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D18TzGv9if4t3GXNk+F3xJFoyM7AekSIZ99DKJoYyUs=;
- b=qjAcK3HJTFVzkEEW1oiIZm4AJyQuyFcCy2qhYkouQWTP5Dfx2SPeqL8UObmxRhbwTEQYw8/WumbCL0MjuNMYSCy0MNG5u729beqblGqJfw2AhYU3mhX+7ury/wHF/f5TUEZjX7lyCipXjW+CwzZhkvoPDJ5yFFhTBW+TbH0VOe0aie95LSZj+S3dHj2uBOEfTY+lLK0R2Ws7lEKXNkQ3MY5EAJKUhOf5sJY6fuWoj7OTwqLCLt1jU/ArUWp1PXYUuY5Ymm764hB9GaCpWPxfpd8dyhAGWDYAsug8o541hrdKZEyAtskRNHOMIaeH5Am/DqU2SDvWG3VsgKaYmb3ivg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com (2603:10b6:610:17c::13)
- by DS0PR12MB8441.namprd12.prod.outlook.com (2603:10b6:8:123::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.33; Fri, 25 Apr
- 2025 12:00:36 +0000
-Received: from CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732]) by CH3PR12MB8659.namprd12.prod.outlook.com
- ([fe80::6eb6:7d37:7b4b:1732%4]) with mapi id 15.20.8678.025; Fri, 25 Apr 2025
- 12:00:36 +0000
-Date: Fri, 25 Apr 2025 09:00:35 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Tushar Dave <tdave@nvidia.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>,
-	Baolu Lu <baolu.lu@linux.intel.com>, joro@8bytes.org,
-	will@kernel.org, robin.murphy@arm.com, kevin.tian@intel.com,
-	yi.l.liu@intel.com, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH rc] iommu: Skip PASID validation for devices without
- PASID capability
-Message-ID: <20250425120035.GA1804142@nvidia.com>
-References: <20250424020626.945829-1-tdave@nvidia.com>
- <a65d90f2-b6c6-4230-af52-8f676b3605c5@linux.intel.com>
- <8ef5da0e-f857-43a0-8cdf-b69f52b4b93a@amd.com>
- <20250424123156.GO1648741@nvidia.com>
- <77be6671-e4e8-4b17-bf72-74bde325671a@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <77be6671-e4e8-4b17-bf72-74bde325671a@nvidia.com>
-X-ClientProxiedBy: MN0P222CA0011.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:208:531::17) To CH3PR12MB8659.namprd12.prod.outlook.com
- (2603:10b6:610:17c::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C2922126C
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 12:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745582982; cv=none; b=oJv3UIVae9mFp9d404U8qzYzOHIsiV2bdXqdS+12e8zhYrYMRNzVvhhHtv5pcmanq43T2Ete//QkAz0xVuCOvvxEAcTO2H7iD55Pbq5HKajZya2/G5mx65e2uqjCekVD7C+xfVwfq785EmAzBSaAqZpJXrejdrSgAHMUCunPCeg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745582982; c=relaxed/simple;
+	bh=2Lye6I09UjQ2Ll914mTstGjOi0Og1+hrL9gMzx56bsM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VCoqq7GZ9uYj0e9/pi4kupHL6qo5uMBZB0c6tP4El2m0p+6m0XHqv60E/EqCteeFSuQ7RRvyftRS4erck9xRVhJROaL4LvTXINyk17UkVM7t+PUiTOBpWhrshPe7jDcdmq7YSaWZ7OWi6qfYF0Ka+Za0H4464FOvLdqK7dS7oN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [192.168.3.9] (unknown [221.200.12.197])
+	by APP-05 (Coremail) with SMTP id zQCowACHuwNwewto+MMBDA--.60615S2;
+	Fri, 25 Apr 2025 20:09:22 +0800 (CST)
+Message-ID: <2095c40a-a5a8-417a-bd0b-47e782e9f42d@iscas.ac.cn>
+Date: Fri, 25 Apr 2025 20:09:21 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8659:EE_|DS0PR12MB8441:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ae23855-f43b-4631-17c4-08dd83f0ca1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?guB0CZe14il9TlvuxsX+d+uzp52zWJ0x3PKJbG4p5LcZ3KFUD0Utg+47QCr4?=
- =?us-ascii?Q?GAeIxq1VZd5uJchQFO9Qx5G+kifdHm2pdRNgi12gG+7id9j5dN6yqNeVsqHo?=
- =?us-ascii?Q?BbEMe/f++AvZh2d1M7J4Yo4pkyz98xbqkcaI7xFCIR6Kwgu4+CPXqffUkwYK?=
- =?us-ascii?Q?g0NKV1eyCKbi7UdwlCVXEssrgeZI80sLfSG6OcRkxEcv8Udom7xPxezFFMo9?=
- =?us-ascii?Q?iuP37DkzcjiLfoSPipNQoR7zBloL4G+QH+LGp52t3NEI/xXMFAmgiEF2Q1Z4?=
- =?us-ascii?Q?rXcCfXiNCGRxIfunPn8GdmcdZfa7yO1H5x89JMgfSgEzDfr/DxMJjUHdvcKQ?=
- =?us-ascii?Q?VogOKJLdpRHUbO80fdKoZDUt3sYptF6dLETyxBdjShVSP49dDbTbx+9R4Y4e?=
- =?us-ascii?Q?3JZePO6CKuemwzfFy7bh1kyInlgvKJaggp2n7CZJGqBZpEN35KEkIkmepsne?=
- =?us-ascii?Q?sXcP0SI2fM1CUm8sDz3PaRaxU11oU9cjlNTSNkk8DiM2lmGI4WLlR3XtGSji?=
- =?us-ascii?Q?jmHHz98521aJkpPVJ9+oYDD/0qgtQzExyLUMbZrvt+lWajnz/5j+AXKCZLr7?=
- =?us-ascii?Q?d0IoW/89mI1zzkhKFL0tkNkjJ94t02G5mLxixqMo0iDeRnYhDgiAEfn1GTP0?=
- =?us-ascii?Q?qmVd+abcj8xNhiakj/4UVgwAOjExvLVkvvtGmeXmBGW4xbwg+o03BL3wLWQ8?=
- =?us-ascii?Q?Ie0qhV34LblWamocjbDmDrLgeDHm9zFB9UfxB7AoS85E00YqRhzVL8zMjrvN?=
- =?us-ascii?Q?93CAq2ytnZeATRMG/GB3BFs6ACLdNXVt/q0xUdIzHik276kcU53rsGhIpOeG?=
- =?us-ascii?Q?nqKoYrdLt5ODzXnCLFRtcE1GWMnxHj02kNxolxi0k2fL4WYr0ygGWSVy5tNT?=
- =?us-ascii?Q?Rgu38N4BOG3RbyCp2t6ejrSM66fp07SunXJc3RZvgUm4mtkstoVDGYlXK146?=
- =?us-ascii?Q?jz9uWjwsoLon0WjriZKDzCaajjvF9C06AVO/cbYs53ppZvkO1DlJwz+zXWMC?=
- =?us-ascii?Q?JToF5/l4M6mQ5bYIMzotebqbSqW71Qrd/r9JKlomU233Hccn/ziUqNWOhjMh?=
- =?us-ascii?Q?fCsR/OJ4fXtSNBGK7e5GmWNqwTnfngp6pohvDCOgkk5uQrq+24gOvi/DzOus?=
- =?us-ascii?Q?iI8PL0gvPX+v5YQEtexXXWImWYhFOwuCSPmH/3EwdZNK66jGI+jrn0rXSyp1?=
- =?us-ascii?Q?RRu5IlT95xFZwANL67FQ/jPbusTQlAwcWpbj5ZkF3h8xoUTiI5czAwEwDQiE?=
- =?us-ascii?Q?y/wF/YPE+hM9VqqOxnxYm2gLoPqoX/GyeLrGA50c37JiOcFrAVIQZRMW1vCS?=
- =?us-ascii?Q?Q+OZYEgPCrNmIfdaX9UhSU8RKkbi9hOCMeSbT36Yl44yEProbw8ID7xnoRFx?=
- =?us-ascii?Q?a6B/QuCK6zrAZfC+em0bKGtXdisrKD9wc6PUQsVp/PPiPbGgbi8lT5nfzCw1?=
- =?us-ascii?Q?B9cUCmXVcS0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8659.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?C5b+v5eI37Y8OUa+t7g8CpO5y6nLttssGSlM88p5v9cWSOHxtgVINrbvBx/l?=
- =?us-ascii?Q?aN+bDzPvzcpsykhnKZyWeSG41r+JdCZ0lrjwGG0G6NoLEfaeFJimYqv5pLOk?=
- =?us-ascii?Q?vb9T086amP6JZaJ5PljM0A+mv+3neRXen48tM38NB2elPlSH8+DwfwBHkCKa?=
- =?us-ascii?Q?XtKjRiP8snIWWhO1xeEU2pZ+R65/N0TSDLSXgJ/ZXut0pDLN4ntxVswTFdH6?=
- =?us-ascii?Q?I9cYx+mLi/K01+ms5JZw5PQVfsA427yEFlIxzWqaRqtcFFVVXd6LgyBxbeHr?=
- =?us-ascii?Q?NwhhI/Wzxwg1y5VonCRvw0XXtpU50gTSAgEYwp105RaFH0xXXXygW/ARF6o6?=
- =?us-ascii?Q?IrP3nu8sM27xK7TKFlZxJlKx5TLJIHTdp1fVkj5Bk9aqB/7ncl29IITdGTuy?=
- =?us-ascii?Q?LbEWhOK0plL82BbcDInnDpHrFvpcDl+mf54AFrBBmgYY7DC4IpTwCcWy+eaM?=
- =?us-ascii?Q?GX53mviBocTSBrfQFqar4r4i9cv1Wq35m8wTUU0sOlEsPy/d/ujrm0lzbDVN?=
- =?us-ascii?Q?OSBAyMPMaDGB2kp9pXqOsDZF+CJrvk1uUJgVcBBKCwJ37DhlsHnaaJcQefph?=
- =?us-ascii?Q?1+xFfcom3GQiUP7tqjTG/w5b2AC6cX5Rx2jzbF8+LGqxucbCkvioKW88KpsS?=
- =?us-ascii?Q?CZKQyFQD1CRxgiAI9SM7blsftKJTYbWmsILlPPZRJ5LrG8D2d7oh86a0vj51?=
- =?us-ascii?Q?RPvPMM5VqWbvhrk0urRd9O6GjIa3sdgGXQD7ZVFyTPfdECAK7mXG6nUADSlx?=
- =?us-ascii?Q?muN70wNtX/++05E93OcuKu64pokrGgCJIqpEafhZWmwspLfnYbGmvzOd32Ea?=
- =?us-ascii?Q?A7fTwKqqTpZRuzDGBhrSreVF5k5P6PqlV5BbmKut55jhoi9roCVAo9h8qdHh?=
- =?us-ascii?Q?j6Oc8FfWcOTPom0kXasSouwGadBfgJSFd4oNk325e2QWniUza3m/evWlGm3j?=
- =?us-ascii?Q?dWN5plt2ORf6x8wT3GiaJj+Ff3PuTx/DPp0ZDvHTr+omlv9r8qu1irGnJoDD?=
- =?us-ascii?Q?N2bZfBk+b0BhEG72pFdh+zHS/GJTta4KuTGW61+4U7MFOKY8sf3R3pSK9jOr?=
- =?us-ascii?Q?W8/MWPhDjV5lJUs319EV5d0RLOctK3/cMjNY5J9fpvcn3sS/yo/q6CUFQXkh?=
- =?us-ascii?Q?4Wq1aOXcm43VZDA8r0SeJtDbMGmtbYKqyptCPSbbVju1CwVhTIipNnTlHeCF?=
- =?us-ascii?Q?sdPyzftZYFajNXzfUqXxPZgWdjNs96NJOnCFiCMGUz3xlD0rIA96wOwiiSMI?=
- =?us-ascii?Q?AD2JA9sYTuM1Bs5U4DQqq+sDCdHg2wxtYiy9xK3qUaey9iTcVSZabTyRegeU?=
- =?us-ascii?Q?Emf01mkLXpuSei9/Pp/5GdAExbr1Q5phw5VuD/Zba7S34LTyH+t+ijVIhjr7?=
- =?us-ascii?Q?ACAgyb72KTyZZzLBgR3l4mD/Aaaw6y41fEsI2id4p57Bsmv0psknX/hRC7NC?=
- =?us-ascii?Q?TpKX85Bu2jvVtSMvpaCIOi8Ls4NHIFomLCPW/ZyQBMvpEL1Dxbv/8i3ZICOG?=
- =?us-ascii?Q?Ur/jMgiU2i3ofzLKrZoqwoIT9L4vFxw9wNIv8A2D791mPXjr938h+PU9N38y?=
- =?us-ascii?Q?zZ1NzueG11PgPNBtD7OzJHObZ4RvlBxLfqbUA7OW?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ae23855-f43b-4631-17c4-08dd83f0ca1c
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8659.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Apr 2025 12:00:36.5815
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VJ6I87cg5P0tMTCcKE+aBdd1c6OVr/Bwi6JpUkBcpw7xoeBNFqAvoS4AJVfju64n
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8441
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-6.6.y bugreport] riscv: kprobe crash as some patchs lost
+To: Nam Cao <namcao@linutronix.de>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ stable@vger.kernel.org
+References: <c7e463c0-8cad-4f4e-addd-195c06b7b6de@iscas.ac.cn>
+ <2025042250-backlash-shifting-89cf@gregkh>
+ <72896429-e966-4f7a-b2f2-ebc33368eb12@iscas.ac.cn>
+ <2025042518-craftily-coronary-b63a@gregkh>
+Content-Language: en-US
+From: Kai Zhang <zhangkai@iscas.ac.cn>
+In-Reply-To: <2025042518-craftily-coronary-b63a@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:zQCowACHuwNwewto+MMBDA--.60615S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZF1DKryDKryxAF4xZF18Zrb_yoW8ZFy5pF
+	95Ja1Yyr40qr4FyFZ2vw4rWr1rtw1vy3yagr4DJay5Krn09F1aqF1Ig3yUC3ZrWr1ruF1a
+	vFnY9a9F93y5AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUk2b7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
+	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK
+	82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGw
+	C20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48J
+	MIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMI
+	IF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E
+	87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUyv38DUUUU
+X-CM-SenderInfo: x2kd0wxndlqxpvfd2hldfou0/1tbiDAgDBmgLT8ibeQABsG
 
-On Thu, Apr 24, 2025 at 05:49:20PM -0700, Tushar Dave wrote:
+Hi Nam,
 
-> In the above topology, we setup ACS flags on DSP 0008:02:03.0 and
-> 0008:02:00.0 to achieve desired p2p configuration for GPU and DMA-PF.
-> Apparently, this creates multi-device group with GPU being only device with
-> PASID support in that group. In this case, set_dev_pasid() ops invoked for
-> each device within the group with pasid=1 and doesn't fail.
+I reported a riscv kprobe bug of linux-6.6.y. It seems that 
+03753bfacbc6(riscv: kprobes: Fix incorrect address calculation) should 
+be reverted. There are a lot of changes of riscv kprobe in upstream. I'm 
+not all in sure of my suggested fix. Will you kind to help?
 
-Hurm, it doesn't fail, but it corrupts memory in the driver :\
+Thanks,
+laokz
 
-int arm_smmu_set_pasid(struct arm_smmu_master *master,
-		       struct arm_smmu_domain *smmu_domain, ioasid_t pasid,
-		       struct arm_smmu_cd *cd, struct iommu_domain *old)
-{
-	struct iommu_domain *sid_domain = iommu_get_domain_for_dev(master->dev);
-	struct arm_smmu_attach_state state = {
-		.master = master,
-		.ssid = pasid,
-		.old_domain = old,
-	};
-	struct arm_smmu_cd *cdptr;
-	int ret;
+On 4/25/2025 4:07 PM, Greg Kroah-Hartman wrote:
+> On Fri, Apr 25, 2025 at 04:03:41PM +0800, Kai Zhang wrote:
+>> On 4/22/2025 4:46 PM, Greg Kroah-Hartman wrote:
+>>> On Tue, Apr 22, 2025 at 10:58:42AM +0800, Kai Zhang wrote:
+>>>> In most recent linux-6.6.y tree,
+>>>> `arch/riscv/kernel/probes/kprobes.c::arch_prepare_ss_slot` still has the
+>>>> obsolete code:
+>>>>
+>>>>       u32 insn = __BUG_INSN_32;
+>>>>       unsigned long offset = GET_INSN_LENGTH(p->opcode);
+>>>>       p->ainsn.api.restore = (unsigned long)p->addr + offset;
+>>>>       patch_text_nosync(p->ainsn.api.insn, &p->opcode, 1);
+>>>>       patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, 1);
+>>>>
+>>>> The last two 1s are wrong size of written instructions , which would lead to
+>>>> kernel crash, like `insmod kprobe_example.ko` gives:
+>>>>
+>>>> [  509.812815][ T2734] kprobe_init: Planted kprobe at 00000000c5c46130
+>>>> [  509.837606][    C5] handler_pre: <kernel_clone> p->addr =
+>>>> 0x00000000c5c46130, pc = 0xffffffff80032ee2, status = 0x200000120
+>>>> [  509.839315][    C5] Oops - illegal instruction [#1]
+>>>>
+>>>>
+>>>> I've tried two patchs from torvalds tree and it didn't crash again:
+>>>>
+>>>> 51781ce8f448 riscv: Pass patch_text() the length in bytes (rebased)
+>>>> 13134cc94914 riscv: kprobes: Fix incorrect address calculation
+>>>
+>>> Neither of these apply cleanly.  Please provide working backports if you
+>>> wish to see them added to the tree.
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>> revert 03753bfacbc6
+>> apply  51781ce8f448
+>> apply  13134cc94914
+> 
+> Thanks, but that's not how we take patches for the stable tree.  Please
+> submit these all in a tested patch series and we will be glad to queue
+> them up.
+> 
+> greg k-h
 
-	/* The core code validates pasid */
-                ^^^^^^^^^^
-
-Which is not true after this patch.
-
-The core code may not call the driver's set_pasid() function with a PASID
-larger than that specific device's device->dev->iommu->max_pasids
-
-Jason
 
