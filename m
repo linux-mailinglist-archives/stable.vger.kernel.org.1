@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFFCA9BC2C
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 03:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE7AA9BC2D
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 03:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBEDE920AF4
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:14:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A9E892026C
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 01:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6045520DF4;
-	Fri, 25 Apr 2025 01:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75A721348;
+	Fri, 25 Apr 2025 01:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FEHu8FNy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KbGLnWa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4C02C859
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 01:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F940101DE
+	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 01:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745543691; cv=none; b=ejqfkexg3LXmfrdX/wTW/7ri+f7WRIyPTsSOIqDIS2xpuXPF6QLViq4nNCfBKRuET2p6bfWal3/gj/jGEoX/EkQbAtdy8FYuMWTNO2ZS16maEHUU5vw4f94xoDsx/rxaoNGdkV8PQTqYqb5qK/lgXsOBhCcDH6f8BV9ZRmR894g=
+	t=1745543696; cv=none; b=mk468ItreQIQtUaHcexECPXhZGtLKUNrYObkdk/xI8SeOJvnRSYQuMMzVzlCFEWDIvyJJ9jKlU3Uf0vrELJgN3tbaQbLOVX8/p7btvauwnv0od+UXriPghLljQg7Bjfh24B4+3E2grXRAkmcdspvgN/WEix7TdbLH4TD4bErxbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745543691; c=relaxed/simple;
-	bh=lR7uorPCYKo58hh8nyymmzhOWq1gw8idymf0cG+5cjQ=;
+	s=arc-20240116; t=1745543696; c=relaxed/simple;
+	bh=PbtGp/mgoo4X9FEeJzUWhhUQlkVd18+95EXVPi+BYAU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JpEg4ALD3lb0hyKSoGyALhhZ6HmhKY4jkkADmXl+aJmGgCJgaJ4x9d5uwq3ASgirAy9VYlTVRKOQzoF8rLMxtPBvdPwzEwYFGUK+pHZAYPGZ2Cf1uOy34Ran9qwtc6snHMaVQ4m0B17nl0GU6vs//hRQ64nX+0JUTegUobX1ekw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FEHu8FNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7343DC4CEE3;
-	Fri, 25 Apr 2025 01:14:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oftLEvxoE5bCGopW/+xSca7xSXW2+RLPCm6xo48NBE+7O/130PamR3BF7N+TOt0jAlKOeZy/Fj2Hkfb/H8sgCQxPdG2UL3dcotIQTNzPvuQD3DiiFO2d9+iesC7otjMg4kGpkzVspfliz8tYTjL2UCNtos6SYJKrXAjieBgLNbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KbGLnWa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4B6C4CEE3;
+	Fri, 25 Apr 2025 01:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745543691;
-	bh=lR7uorPCYKo58hh8nyymmzhOWq1gw8idymf0cG+5cjQ=;
+	s=k20201202; t=1745543695;
+	bh=PbtGp/mgoo4X9FEeJzUWhhUQlkVd18+95EXVPi+BYAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEHu8FNyQergROrvZgxo4ypf7BRjjFrxEPJEiX+7WSv1lXp8AH89CjkYqrX7QGhIF
-	 xTm4BRA/IKmlYXWKcU/EvSuVdkSufjNeIiDmfbVJvOuS2FgddhUJOOHXvsDsSMQHwF
-	 ogoe740cUs8w/AOBSUQ0TQOHJPMBpCrteSYbnXxG92D+xXeMUeU9fD/B1rdHVFPsc6
-	 G7OtgC9RnzKXsOcwbN/5Ee1HOb0u8kKP3tu6GTTQZ433BwoVKR0S/62DP41Csbowfn
-	 /UgBIFXuNnvueUV7IHTvvIDeYDhetRVW6zf44+JCO9jUPbea4wCiRtA22BoJXZwLAM
-	 FJQcL0XmbrhVQ==
+	b=KbGLnWa+zb9wggsf1toQZIyetq+MSnJLTtDJn/6ClK1tX9KXanh+moni/4+yR7g6/
+	 6TY3TrQi8hKmmPMQS0mi07+7Hhb0QCqnD0LtihuqMftWiVpsdHRy2qwim1oKW2Kms5
+	 tMmccbaNfEXafz+OwLhnNRdk6Fu/HtHxyjGoz5lWWPQz+ChWx7ksk2l/bNn13dNlYF
+	 jyCcnEgjRfXJcUKlqnVJaY2qU/McODw/MPbZgrXVNPagv279LEtVEIl0NgzdS3FsQ1
+	 l1Y4jD0akPPIoATdEVP8GD+rRtz21KSzfleQut66/jJlnRobdLxWspFbnchkq/YHGV
+	 QtBHfkm8kYVRg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	oss-lists@triops.cz
+	hgohil@mvista.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH] wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
-Date: Thu, 24 Apr 2025 21:14:46 -0400
-Message-Id: <20250424161853-e0ead2eb3d14df4c@stable.kernel.org>
+Subject: Re: [PATCH 1/3 v5.4.y] dmaengine: ti: edma: Add support for handling reserved channels
+Date: Thu, 24 Apr 2025 21:14:51 -0400
+Message-Id: <20250424162545-6ebf98d67892969e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <aAowy1C3tCewoMDT@lenoch>
+In-Reply-To:  <20250424060854.50783-1-hgohil@mvista.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,85 +65,67 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-❌ Build failures detected
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: 3e5e4a801aaf4283390cc34959c6c48f910ca5ea
+Found matching upstream commit: 31f4b28f6c41f734957ea66ac84c6abb69e696f0
 
 WARNING: Author mismatch between patch and found commit:
-Backport author: Ladislav Michl<oss-lists@triops.cz>
-Commit author: Ping-Ke Shih<pkshih@realtek.com>
+Backport author: Hardik Gohil<hgohil@mvista.com>
+Commit author: Peter Ujfalusi<peter.ujfalusi@ti.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
+5.15.y | Present (exact SHA1)
+5.10.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  3e5e4a801aaf4 < -:  ------------- wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
--:  ------------- > 1:  d12acd7bc3d4c Linux 6.14.3
+1:  31f4b28f6c41f ! 1:  f2bbef69f3dbe dmaengine: ti: edma: Add support for handling reserved channels
+    @@ Commit message
+         Signed-off-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+         Link: https://lore.kernel.org/r/20191025073056.25450-4-peter.ujfalusi@ti.com
+         Signed-off-by: Vinod Koul <vkoul@kernel.org>
+    +    Signed-off-by: Hardik Gohil <hgohil@mvista.com>
+     
+      ## drivers/dma/ti/edma.c ##
+     @@ drivers/dma/ti/edma.c: struct edma_cc {
+    @@ drivers/dma/ti/edma.c: static int edma_alloc_channel(struct edma_chan *echan,
+      	edma_or_array2(ecc, EDMA_DRAE, 0, EDMA_REG_ARRAY_INDEX(channel),
+      		       EDMA_CHANNEL_BIT(channel));
+     @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
+    - {
+      	struct edma_soc_info	*info = pdev->dev.platform_data;
+      	s8			(*queue_priority_mapping)[2];
+    + 	int			i, off;
+     -	const s16		(*rsv_slots)[2];
+    -+	const s16		(*reserved)[2];
+    - 	int			i, irq;
+    ++	const s16               (*reserved)[2];
+    + 	const s16		(*xbar_chans)[2];
+    + 	int			irq;
+      	char			*irq_name;
+    - 	struct resource		*mem;
+     @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
+      	if (!ecc->slot_inuse)
+      		return -ENOMEM;
+    @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
+      
+      		ecc->tc_list = devm_kcalloc(dev, ecc->num_tc,
+     @@ drivers/dma/ti/edma.c: static int edma_probe(struct platform_device *pdev)
+    - 				info->default_queue = i;
+      			}
+    + 			of_node_put(tc_args.np);
+      		}
+     +
+     +		/* See if we have optional dma-channel-mask array */
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.14.y       |  Success    |  Success   |
-| stable/linux-6.12.y       |  Success    |  Success   |
-| stable/linux-6.6.y        |  Success    |  Success   |
-| stable/linux-6.1.y        |  Success    |  Failed    |
-| stable/linux-5.15.y       |  Success    |  Failed    |
-| stable/linux-5.10.y       |  Success    |  Success   |
 | stable/linux-5.4.y        |  Success    |  Success   |
-
-Build Errors:
-Build error for stable/linux-6.1.y:
-    drivers/net/wireless/realtek/rtw88/main.c: In function 'rtw_core_deinit':
-    drivers/net/wireless/realtek/rtw88/main.c:2149:9: error: implicit declaration of function 'ieee80211_purge_tx_queue'; did you mean 'ieee80211_wake_queue'? [-Wimplicit-function-declaration]
-     2149 |         ieee80211_purge_tx_queue(rtwdev->hw, &rtwdev->tx_report.queue);
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~
-          |         ieee80211_wake_queue
-    make[6]: *** [scripts/Makefile.build:250: drivers/net/wireless/realtek/rtw88/main.o] Error 1
-    drivers/net/wireless/realtek/rtw88/tx.c: In function 'rtw_tx_report_purge_timer':
-    drivers/net/wireless/realtek/rtw88/tx.c:172:9: error: implicit declaration of function 'ieee80211_purge_tx_queue'; did you mean 'ieee80211_wake_queue'? [-Wimplicit-function-declaration]
-      172 |         ieee80211_purge_tx_queue(rtwdev->hw, &tx_report->queue);
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~
-          |         ieee80211_wake_queue
-    make[6]: *** [scripts/Makefile.build:250: drivers/net/wireless/realtek/rtw88/tx.o] Error 1
-    make[6]: Target 'drivers/net/wireless/realtek/rtw88/' not remade because of errors.
-    make[5]: *** [scripts/Makefile.build:503: drivers/net/wireless/realtek/rtw88] Error 2
-    make[5]: Target 'drivers/net/wireless/realtek/' not remade because of errors.
-    make[4]: *** [scripts/Makefile.build:503: drivers/net/wireless/realtek] Error 2
-    make[4]: Target 'drivers/net/wireless/' not remade because of errors.
-    make[3]: *** [scripts/Makefile.build:503: drivers/net/wireless] Error 2
-    make[3]: Target 'drivers/net/' not remade because of errors.
-    make[2]: *** [scripts/Makefile.build:503: drivers/net] Error 2
-    make[2]: Target 'drivers/' not remade because of errors.
-    make[1]: *** [scripts/Makefile.build:503: drivers] Error 2
-    make[1]: Target './' not remade because of errors.
-    make: *** [Makefile:2010: .] Error 2
-    make: Target '__all' not remade because of errors.
-
-Build error for stable/linux-5.15.y:
-    drivers/net/wireless/realtek/rtw88/main.c: In function 'rtw_core_deinit':
-    drivers/net/wireless/realtek/rtw88/main.c:1912:9: error: implicit declaration of function 'ieee80211_purge_tx_queue'; did you mean 'ieee80211_wake_queue'? [-Werror=implicit-function-declaration]
-     1912 |         ieee80211_purge_tx_queue(rtwdev->hw, &rtwdev->tx_report.queue);
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~
-          |         ieee80211_wake_queue
-    cc1: some warnings being treated as errors
-    make[5]: *** [scripts/Makefile.build:289: drivers/net/wireless/realtek/rtw88/main.o] Error 1
-    drivers/net/wireless/realtek/rtw88/tx.c: In function 'rtw_tx_report_purge_timer':
-    drivers/net/wireless/realtek/rtw88/tx.c:168:9: error: implicit declaration of function 'ieee80211_purge_tx_queue'; did you mean 'ieee80211_wake_queue'? [-Werror=implicit-function-declaration]
-      168 |         ieee80211_purge_tx_queue(rtwdev->hw, &tx_report->queue);
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~
-          |         ieee80211_wake_queue
-    cc1: some warnings being treated as errors
-    make[5]: *** [scripts/Makefile.build:289: drivers/net/wireless/realtek/rtw88/tx.o] Error 1
-    make[5]: Target '__build' not remade because of errors.
-    make[4]: *** [scripts/Makefile.build:552: drivers/net/wireless/realtek/rtw88] Error 2
-    make[4]: Target '__build' not remade because of errors.
-    make[3]: *** [scripts/Makefile.build:552: drivers/net/wireless/realtek] Error 2
-    make[3]: Target '__build' not remade because of errors.
-    make[2]: *** [scripts/Makefile.build:552: drivers/net/wireless] Error 2
-    make[2]: Target '__build' not remade because of errors.
-    make[1]: *** [scripts/Makefile.build:552: drivers/net] Error 2
-    make[1]: Target '__build' not remade because of errors.
-    make: *** [Makefile:1911: drivers] Error 2
-    make: Target '__all' not remade because of errors.
 
