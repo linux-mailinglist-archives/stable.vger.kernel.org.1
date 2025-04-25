@@ -1,116 +1,151 @@
-Return-Path: <stable+bounces-136736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0A4A9D52D
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 00:10:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66788A9D640
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 01:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5F41C016B3
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 22:10:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6FE09E16FC
+	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 23:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10038233736;
-	Fri, 25 Apr 2025 22:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091F1238D27;
+	Fri, 25 Apr 2025 23:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BNkQVFtp"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nzmpPx+B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA83233140
-	for <stable@vger.kernel.org>; Fri, 25 Apr 2025 22:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E3A226183;
+	Fri, 25 Apr 2025 23:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745619012; cv=none; b=XIrSznsS8UHEFAH4Tej7dyI6BCCYDES3cbXn+bw496VDQS00Q4ecyJJXpBj7BXed7ZHQSy65jovqkWSo+KCIyc2g7Jus0eZnktZv2zUYEif8FkBQqA1+4R0rxFQIsaz3kolgQkzDOGZqKaIUzB8HCm0JzkFK8KJ0Ooaet3sBEZQ=
+	t=1745623905; cv=none; b=PtbmKqUo8TFgbiaOvrTMc/RBHXZFmFP6FBXjU1r9sD0yJV9Py1T67JJCcpU9sfWZSkG4vXtFgG8byuSna1ysmUfd4inXhQQ/n1Ed+OiUJFscZqSX5CU55U/5cQayOmjkPDiuWlR3VgDAUckoXRE/2at1KgDuJhJYTiFwKHyM7gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745619012; c=relaxed/simple;
-	bh=QDpNpdZSVvNzvd5MLR7pzG4I1iT2a6SWMqrV4UoqPjM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Lix5etY4MvrrgYjSTNbkLnGCgu0+Efpd1YKk+pY4VcaSvTTz/d3hrs8Ra1VlZNABKZzO2mf5RKJq9agcUjB1ePwkpDVke0oyiKHziiPFuWC6wH2H1dfzh1saAtTctyiwb049RBFqBKiI7OoD550HV66R0MZvfDRhoIGA0GQXW0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BNkQVFtp; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-736bf7eb149so1799739b3a.0
-        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 15:10:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745619011; x=1746223811; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KP7SMXC0UpOU8ebuPaD2r2QZRSGge8gBq4uVn0V+Tno=;
-        b=BNkQVFtpvyp7q0DXrtG/tzkoggY7rb9JzVNmzL8BKY92NjvTOA5URmkJLsFET1MJNa
-         n88iMENOP1nWyojYhtxzWzG/bKcS+i8LBl9hNQ/4TE3Q8i5iX0tAA6V7AAANUuFagonZ
-         CFgFpCWbYFjsgGwm4TWvbu9/gVGNYmLBGGtrGhrx66ZHpcCncp6HClw2R42MIzh1YG0H
-         4dETiKWlPY6QmtR5r4SmYm0iqUzMqCy1iQpko16YupF725TyV93TVKv7PJIgsc6zPS7t
-         zgJsMKXd8ytsUiHtcDYLIdaSypWmtz8deT89LILGCC/mM1Rbe8h4TgvuvWszHtd97r59
-         nF8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745619011; x=1746223811;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KP7SMXC0UpOU8ebuPaD2r2QZRSGge8gBq4uVn0V+Tno=;
-        b=U7JxhjHlUIRGKk1CvrOS8cr4UYzAYzpfE86/37N2pLZxSSQYXMw5dGa1YJmuCva+qK
-         yDYKj3Vs3nt+mnPKumncLXHFmLsWqENnmggW/+jtMQb3Rr/0NdmWiebummM53dyrInkl
-         pTY7lTfFPoP+cFCGOhj+LpASt6TsBBIvbk9mBJt7z6tP4J6yinswdswgBN5FKXNcK2v0
-         E4PPF0lGrGHuR1w0hFZG5ChifwEcd7ADGrnDnhDNuzHknk/zxoDzRiDfmK28ydmTI8zy
-         F6ZtXPtvyXIQG6djexQuUDSnpX1QTU0847Y+VmERNvChYcCnWcHHpXmiaegWVc4W7hLZ
-         9H8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUtACcXJraalk8+AZXld28p83RQw1IJO2kMdkJn+b6gCANcH++LBBcpSm+PIsO0fMzpCqiqDvU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySEP14H4gCAiB14WaiyEboLmH4DsNniM5ticW3ld3NvgUjp6Gr
-	Z+n6l0bG86ilskP6LXe1IbQR0zFiNFK83ylWZ9elCXcFydGT88N3U4nl1m6wH3vZUK0tUhkH0lh
-	arA==
-X-Google-Smtp-Source: AGHT+IHlxsqOZTM+LSrc0NBMmc8B9QyOShS3ixyiaGAbKud07pM591093aslJMz7+/hiacjkdUWS8cPxxuk=
-X-Received: from pfbhx20.prod.google.com ([2002:a05:6a00:8994:b0:73b:c271:ad40])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:179e:b0:736:476b:fcd3
- with SMTP id d2e1a72fcca58-73fd9145c92mr6310645b3a.24.1745619010562; Fri, 25
- Apr 2025 15:10:10 -0700 (PDT)
-Date: Fri, 25 Apr 2025 15:08:58 -0700
-In-Reply-To: <20250414171207.155121-1-m.lobanov@rosa.ru>
+	s=arc-20240116; t=1745623905; c=relaxed/simple;
+	bh=yysLB0MwDSTEJW0odRZr/Y6pQfcBm0g6rSH/F6gEzbE=;
+	h=Date:To:From:Subject:Message-Id; b=ATFX1VJ0oHO51beZcMVDNcmRgTRK/qfQ/fDTuQEFswtBHunh6bQaTcSi4svcJE5pW7Ihq3mRqXwv/6L0x4q2yDBUFcsDqrLYXkEbDYkmYP1qzBog2N/juJDFl/4nb9FzCI1Gg62oezHhIXl5Gxl3PYVsuRqyliznbUBo0eA5Q4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nzmpPx+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A933C4CEE4;
+	Fri, 25 Apr 2025 23:31:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745623905;
+	bh=yysLB0MwDSTEJW0odRZr/Y6pQfcBm0g6rSH/F6gEzbE=;
+	h=Date:To:From:Subject:From;
+	b=nzmpPx+BiR/q8u+ICk/By+IN9jcj5FkICpzNGprF6TD3WiBZp49LaGoKU8nB2FHVZ
+	 N1zFeQAUMd9+EJ3yueNmLrvctXzpMdu1GZu+GaRnTn+VQZOxbfKd+cHHpIfmhxqCsB
+	 JfJ2iH8En5kP7a6wSD+ZSVpCAsGwZYIZyuexELJQ=
+Date: Fri, 25 Apr 2025 16:31:44 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250425233145.1A933C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250414171207.155121-1-m.lobanov@rosa.ru>
-X-Mailer: git-send-email 2.49.0.850.g28803427d3-goog
-Message-ID: <174559665447.890486.10602051835802598167.b4-ty@google.com>
-Subject: Re: [PATCH v3] KVM: SVM: forcibly leave SMM mode on vCPU reset
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Mikhail Lobanov <m.lobanov@rosa.ru>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
 
-On Mon, 14 Apr 2025 20:12:06 +0300, Mikhail Lobanov wrote:
-> Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
-> on vCPU reset") addressed an issue where a triple fault occurring in
-> nested mode could lead to use-after-free scenarios. However, the commit
-> did not handle the analogous situation for System Management Mode (SMM).
-> 
-> This omission results in triggering a WARN when a vCPU reset occurs
-> while still in SMM mode, due to the check in kvm_vcpu_reset(). This
-> situation was reprodused using Syzkaller by:
-> 1) Creating a KVM VM and vCPU
-> 2) Sending a KVM_SMI ioctl to explicitly enter SMM
-> 3) Executing invalid instructions causing consecutive exceptions and
-> eventually a triple fault
-> 
-> [...]
 
-Applied to kvm-x86 fixes.  I massaged the shortlog+changelog, as firing INIT
-isn't architectural behavior, it's simply the least awful option, and more
-importantly, it's KVM's existing behavior.
+The patch titled
+     Subject: tools/testing/selftests: fix guard region test tmpfs assumption
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch
 
-Thanks!
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch
 
-[1/1] KVM: SVM: forcibly leave SMM mode on vCPU reset
-      commit: a2620f8932fa9fdabc3d78ed6efb004ca409019f
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
---
-https://github.com/kvm-x86/linux/tree/next
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: tools/testing/selftests: fix guard region test tmpfs assumption
+Date: Fri, 25 Apr 2025 17:24:36 +0100
+
+The current implementation of the guard region tests assume that /tmp is
+mounted as tmpfs, that is shmem.
+
+This isn't always the case, and at least one instance of a spurious test
+failure has been reported as a result.
+
+This assumption is unsafe, rushed and silly - and easily remedied by
+simply using memfd, so do so.
+
+We also have to fixup the readonly_file test to explicitly only be
+applicable to file-backed cases.
+
+Link: https://lkml.kernel.org/r/20250425162436.564002-1-lorenzo.stoakes@oracle.com
+Fixes: 272f37d3e99a ("tools/selftests: expand all guard region tests to file-backed")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Closes: https://lore.kernel.org/linux-mm/a2d2766b-0ab4-437b-951a-8595a7506fe9@arm.com/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/guard-regions.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+--- a/tools/testing/selftests/mm/guard-regions.c~tools-testing-selftests-fix-guard-region-test-tmpfs-assumption
++++ a/tools/testing/selftests/mm/guard-regions.c
+@@ -271,12 +271,16 @@ FIXTURE_SETUP(guard_regions)
+ 	self->page_size = (unsigned long)sysconf(_SC_PAGESIZE);
+ 	setup_sighandler();
+ 
+-	if (variant->backing == ANON_BACKED)
++	switch (variant->backing) {
++	case ANON_BACKED:
+ 		return;
+-
+-	self->fd = open_file(
+-		variant->backing == SHMEM_BACKED ? "/tmp/" : "",
+-		self->path);
++	case LOCAL_FILE_BACKED:
++		self->fd = open_file("", self->path);
++		break;
++	case SHMEM_BACKED:
++		self->fd = memfd_create(self->path, 0);
++		break;
++	}
+ 
+ 	/* We truncate file to at least 100 pages, tests can modify as needed. */
+ 	ASSERT_EQ(ftruncate(self->fd, 100 * self->page_size), 0);
+@@ -1696,7 +1700,7 @@ TEST_F(guard_regions, readonly_file)
+ 	char *ptr;
+ 	int i;
+ 
+-	if (variant->backing == ANON_BACKED)
++	if (variant->backing != LOCAL_FILE_BACKED)
+ 		SKIP(return, "Read-only test specific to file-backed");
+ 
+ 	/* Map shared so we can populate with pattern, populate it, unmap. */
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+maintainers-add-reverse-mapping-section.patch
+maintainers-add-core-mm-section.patch
+maintainers-add-mm-thp-section.patch
+maintainers-add-mm-thp-section-fix.patch
+tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch
+mm-vma-fix-incorrectly-disallowed-anonymous-vma-merges.patch
+tools-testing-add-procmap_query-helper-functions-in-mm-self-tests.patch
+tools-testing-selftests-assert-that-anon-merge-cases-behave-as-expected.patch
+mm-move-mmap-vma-locking-logic-into-specific-files.patch
+
 
