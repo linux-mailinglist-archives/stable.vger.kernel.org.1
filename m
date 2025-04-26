@@ -1,93 +1,110 @@
-Return-Path: <stable+bounces-136762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A607A9DB30
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 36700A9DB4C
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB88E5A85F0
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 13:34:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B67E5A735C
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 13:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6DB3594E;
-	Sat, 26 Apr 2025 13:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D667E25333E;
+	Sat, 26 Apr 2025 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAa5v0MC"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="K+bpHxuT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC78F22098;
-	Sat, 26 Apr 2025 13:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC04828373;
+	Sat, 26 Apr 2025 13:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745674505; cv=none; b=AI+PP1Eox+7liYfleYfpTeVD0PYNLw1FWNgXJ5Drl2t0j863yDwPgQDrFJxRkm3L3qfQ4aRQEXb1yb1V5Zo6qd8+4L5PEZFg/Mg+YKkjgiqKQ01J4VNv8qrklMSQOqgvps7ihNsIv7VV9LPGQqYWJ8dx36du6nrjRqeflmWc5sw=
+	t=1745675307; cv=none; b=E4S/VTizPzpTQCyk/HyR7IlQs2WoXCG4l9NPdnEBPjelqncTE443xb2fn9N+nA6tcU1cY718zMbtXiZYos1u4P0GsOfpV/O38joOzymIco5bYk22t89/a/waO7PfuCyAJFSVgJwobaCh+xiZr2lwxGe+JL8TXYF+bGeiVNaz6AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745674505; c=relaxed/simple;
-	bh=nb98Ro92DzSyr6/blONXFO3srenjbjeU/NXfh80k0dM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=kOHOm2zyOkeTqrBVbyydroYgJslPPIMssNruthjQKMmXnawn3ufQ6PymObbZ+7I4Eglwbu87c76EbdYPqGOD0bninDOx46cG9p9sh6nT35Q1OFeEIzDlYZdDqkfy+ehG0/m+uh4dl1ZaDRitvThTF6WmAy0VYvPmEf425LEM0q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAa5v0MC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE2BC4CEE2;
-	Sat, 26 Apr 2025 13:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745674505;
-	bh=nb98Ro92DzSyr6/blONXFO3srenjbjeU/NXfh80k0dM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=jAa5v0MCmFcGwyBDK65yhfCxfFW/F6WsBc5kWQ8mj0TPa4t9EmLOyhpwMpbclF/mr
-	 ++zoPePtzsdUw5uHIqphSd4b/nlybzHwT0KprJ3Wd6x9VFAPCbqL/aR1oC3xScmh4E
-	 bXwtG00Jr194JYVv+0+KJk0tuPWX37Mo6V81rzRWmWW+g0g/6fqn/uG8TfikdCzJIH
-	 B0Q3QskoRMi8jjroJF7LBe8ZROj0IPUxR3sWJthqx8OP10KEUb8yxQtiYzP3VfHsJE
-	 Bn+lRoj385lK5YtSiio56hD1G8gC1Wu0tuzcLqZU3pIWwQ/HPnqYCF+9sf98D5sNLf
-	 +PDWd8L+8sFsA==
-Date: Sat, 26 Apr 2025 06:35:03 -0700
-From: Kees Cook <kees@kernel.org>
-To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
- stable-commits@vger.kernel.org, nathan@kernel.org
-CC: Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>,
- Andrey Konovalov <andreyknvl@gmail.com>,
- Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Subject: =?US-ASCII?Q?Re=3A_Patch_=22lib/Kconfig=2Eubsan=3A?=
- =?US-ASCII?Q?_Remove_=27default_UBSAN=27_from_?=
- =?US-ASCII?Q?UBSAN=5FINTEGER=5FWRAP=22_has_been_?=
- =?US-ASCII?Q?added_to_the_6=2E12-stable_tree?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20250426132711.810341-1-sashal@kernel.org>
-References: <20250426132711.810341-1-sashal@kernel.org>
-Message-ID: <10E8E371-735B-4C1F-B510-64CC3AC85708@kernel.org>
+	s=arc-20240116; t=1745675307; c=relaxed/simple;
+	bh=nrZSCfPbnk5nx5eNvJ+bauiybIFi8fpp8A71FO4JFzg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SsA6Eb9DJvoR6p6yZsXVFxlt///Q4ESQT4mUdgrUzzEWizJTirWSgGCKgF+giUVHXgtJbVz0gcuguLvuONc35IZ03bukRA6kOXcvOAnYpexoDE13mSX/Mg8AOWre/yZzHy4wQUHlVBrJSMrxatUZa272kjG0Mzm7DmZb0yAXYW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=K+bpHxuT; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fedora.intra.ispras.ru (unknown [10.10.165.5])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 63D7B40737DD;
+	Sat, 26 Apr 2025 13:48:22 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 63D7B40737DD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1745675302;
+	bh=IUpEVYdhOlEyZsxKVHyuvQMfByNjhpVm12RTwE2N+Zk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=K+bpHxuTfxmPSkqnNRFn+jcirmWbEDHJg5vwzMyvfIdHQWtVLXTMenJSmmA3y9DrG
+	 LOohz1Lqz3JwwFHYFw8/UTZL4vMau8JdpJQRYieLrhsNCL5kRq7RNj7VqiZaVb1rv3
+	 cvP5q3XxNrDPBS8uWkbJGgvRkBdVAjcQsYRs2cHA=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Carlos Maiolino <cem@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Brian Foster <bfoster@redhat.com>,
+	linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	stable@vger.kernel.org
+Subject: [PATCH] xfs: fix diff_two_keys calculation for cnt btree
+Date: Sat, 26 Apr 2025 16:42:31 +0300
+Message-ID: <20250426134232.128864-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
+Currently the difference is computed on 32-bit unsigned values although
+eventually it is stored in a variable of int64_t type. This gives awkward
+results, e.g. when the diff _should_ be negative, it is represented as
+some large positive int64_t value.
 
+Perform the calculations directly in int64_t as all other diff_two_keys
+routines actually do.
 
-On April 26, 2025 6:27:11 AM PDT, Sasha Levin <sashal@kernel=2Eorg> wrote:
->This is a note to let you know that I've just added the patch titled
->
->    lib/Kconfig=2Eubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
->
->to the 6=2E12-stable tree which can be found at:
->    http://www=2Ekernel=2Eorg/git/?p=3Dlinux/kernel/git/stable/stable-que=
-ue=2Egit;a=3Dsummary
->
->The filename of the patch is:
->     lib-kconfig=2Eubsan-remove-default-ubsan-from-ubsan_in=2Epatch
->and it can be found in the queue-6=2E12 subdirectory=2E
->
->If you, or anyone else, feels it should not be added to the stable tree,
->please let <stable@vger=2Ekernel=2Eorg> know about it=2E
+Found by Linux Verification Center (linuxtesting.org) with Svace static
+analysis tool.
 
-And this too; please drop=2E :)
+Fixes: 08438b1e386b ("xfs: plumb in needed functions for range querying of the freespace btrees")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ fs/xfs/libxfs/xfs_alloc_btree.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
--Kees
+diff --git a/fs/xfs/libxfs/xfs_alloc_btree.c b/fs/xfs/libxfs/xfs_alloc_btree.c
+index a4ac37ba5d51..b3c54ae90e25 100644
+--- a/fs/xfs/libxfs/xfs_alloc_btree.c
++++ b/fs/xfs/libxfs/xfs_alloc_btree.c
+@@ -238,13 +238,13 @@ xfs_cntbt_diff_two_keys(
+ 	ASSERT(!mask || (mask->alloc.ar_blockcount &&
+ 			 mask->alloc.ar_startblock));
+ 
+-	diff =  be32_to_cpu(k1->alloc.ar_blockcount) -
+-		be32_to_cpu(k2->alloc.ar_blockcount);
++	diff = (int64_t)be32_to_cpu(k1->alloc.ar_blockcount) -
++			be32_to_cpu(k2->alloc.ar_blockcount);
+ 	if (diff)
+ 		return diff;
+ 
+-	return  be32_to_cpu(k1->alloc.ar_startblock) -
+-		be32_to_cpu(k2->alloc.ar_startblock);
++	return (int64_t)be32_to_cpu(k1->alloc.ar_startblock) -
++			be32_to_cpu(k2->alloc.ar_startblock);
+ }
+ 
+ static xfs_failaddr_t
+-- 
+2.49.0
 
---=20
-Kees Cook
 
