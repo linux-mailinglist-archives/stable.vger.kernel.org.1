@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060B5A9DB10
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:22:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18417A9DB11
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 637159A0FDC
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 13:22:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCE24A3DDB
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 13:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9B014375D;
-	Sat, 26 Apr 2025 13:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DE91465BA;
+	Sat, 26 Apr 2025 13:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RKRtNqyb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBpRKJMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3833208
-	for <stable@vger.kernel.org>; Sat, 26 Apr 2025 13:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F9E3208
+	for <stable@vger.kernel.org>; Sat, 26 Apr 2025 13:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745673775; cv=none; b=UuGgKVp0VbevwP4js4OCY+v2F6dLAcJuB905rZvp4MwU6/2CN+o0dqjHnGHlhBuM9TmrgpdAo3l3MD0RmMjQwiQaPNKxGkz+MkiYuPnzQfxm90cbtdCjYPrlb6jP0DufRnr0wr7qStNvAxwDNeUWs/GV2jQ6yrODWHzWBghJOSc=
+	t=1745673777; cv=none; b=pHxrXl3rVB6doMcvHwe/fmevgdufT6HWTCC3PhA46/xI5NqkxEJNTZedBCGCDJskMxnvVKc6cBbTWn58Twm2+fn1LdbwhAR+8gqTimqCsPUxMgfJSmYKWMw5j5gJGTPFZijzrzcyYi6x+f/Tqb35pCZwa//PoliI0/W2OY1y1kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745673775; c=relaxed/simple;
-	bh=ufxR0jemOvPy3ks1sRExsYnNDrKTENHcqF9mnnmWHOI=;
+	s=arc-20240116; t=1745673777; c=relaxed/simple;
+	bh=JgF+pDl7r/EyqjBcF8cT3gE/ELy8xMcUR/0j75o2v4Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kwrpyaoqhRBPj3E+yTEVPFGss71nYRngL0NR0I0yvwOmjXK7HXpL5Shsb4TqlqAu1zGHK1/w8KykexVsa/1CpF2My7NMe8+iZQdFZgVuTl9hZZHZQul/OCirg9BGghxFZCqNMndCIHXoZVNwuGeOF4EhWEwNoRaXiIwIF9NlL3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RKRtNqyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AF4C4CEE2;
-	Sat, 26 Apr 2025 13:22:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GKEI8scskxskFDHBszL9kQ7XInIRVZfIyBugxCKKALtBnYY6nJdc+VLbdK5q2T/lbq6W2/3uqUkA41LGz0s4dGvoNU2LoqlwAvwNjhC8sJ9rmsZQFaeE034yZnrlPpQFqMxMhPEZjrG0aZ6cnfvAKjA5M49hwJD7/c45+MP51zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBpRKJMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF3FC4CEE2;
+	Sat, 26 Apr 2025 13:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745673774;
-	bh=ufxR0jemOvPy3ks1sRExsYnNDrKTENHcqF9mnnmWHOI=;
+	s=k20201202; t=1745673776;
+	bh=JgF+pDl7r/EyqjBcF8cT3gE/ELy8xMcUR/0j75o2v4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKRtNqybuSpfKU4YwdDm+SghTZT/Kp9MQcj2MxAn1ich+gGX2dR1qWYgkp1EKxx7b
-	 QpEvPI+yxnmoMCSzKLa4XT8ha1eUtK3Kmr4kFt/AJ+oBe3GEWpvcQabpgAETOrhY0f
-	 /637q27xhJX3wt5oHmfW9rTltZyVr3k3VsTNmhTmMRVRk8XEOmcRvzqotFituh+zLH
-	 5i9PwEcXTrAAW1euAmT52iRXjOGqi3itnYgHZaWD5Hng0NYwPGK9nVSXK+RVIXJVyy
-	 0KAqUnr8FpE8rIpSK/9/kqCtz/LnJnkmDLF/u/UwitKEnt8o1y0F2nZ7+mOH3g3y+V
-	 k2nFS8JrB0ETA==
+	b=iBpRKJMdI4fzWAVX+i17FesAVU8NRCAW1RhfTW4FyVjO8BgMuMc+ImOEsLrropHR6
+	 TVAr0AA8ahHIPv8xjaCSoq1fwBDFfjI73ZLCKH1xk4SkXrVRMfzvzhwNsSC/k+P6D8
+	 KEZDUCJOR5DKlTdYe0qUDx/GWjK+fzOpiZ6ROElA3+8qvsbPKnfHEeWbGmUDQU3YI1
+	 BOj43odvJOMHRBGVGP5tr45io1TYr72c1ZAkclWq8SSr6PTTrJVfKEFItn8MuR7aKs
+	 69naO7IhH3L+2ctHovdKRog3g/H8FjkKkPXvi6sQjzPoqQJJqs0pm0T5ym3viIk3kT
+	 /U8ARACjardpQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	david@redhat.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
-Date: Sat, 26 Apr 2025 09:22:52 -0400
-Message-Id: <20250426040717-91bbf4a4f20e0c23@stable.kernel.org>
+Subject: Re: [PATCH 5.15.y] s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
+Date: Sat, 26 Apr 2025 09:22:54 -0400
+Message-Id: <20250426043702-4ddc88fdf92f9441@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250425155916.2160562-1-david@redhat.com>
+In-Reply-To:  <20250425160915.2178126-1-david@redhat.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -72,10 +72,12 @@ Found matching upstream commit: 2ccd42b959aaf490333dbd3b9b102eaf295c036a
 Status in newer kernel trees:
 6.14.y | Present (different SHA1: fc90e2379125)
 6.12.y | Present (different SHA1: f268ee2fbb53)
+6.6.y | Present (different SHA1: 3867566eb8a4)
+6.1.y | Present (different SHA1: 355715264917)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2ccd42b959aaf ! 1:  cd826c933bdc0 s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
+1:  2ccd42b959aaf ! 1:  ba3c1791061b2 s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
     @@ Commit message
          Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
          Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
@@ -128,5 +130,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
