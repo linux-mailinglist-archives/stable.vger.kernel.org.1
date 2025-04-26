@@ -1,199 +1,101 @@
-Return-Path: <stable+bounces-136740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E4AA9D717
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 03:59:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220EDA9D721
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 04:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145A71BC198B
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 02:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D50E74A3452
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 02:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26531FBCB0;
-	Sat, 26 Apr 2025 01:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8F0205AB1;
+	Sat, 26 Apr 2025 02:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qmTJiR3H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxC8ce/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B7213B284;
-	Sat, 26 Apr 2025 01:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCAA9204C0F;
+	Sat, 26 Apr 2025 02:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745632785; cv=none; b=kC1D96fZeaCNCtayhlDPFuHkYa/gnjw977o8MO0pvO0qwQsvcXf+hRbI3wVyDwJWW37LhVQenivkkllriHrSdWcPI5/Y9d16xv7RS4CUBV8QWVolygVk/4ILHeyVF4WVi20vwcEiuHUO4MZfMRYpZIo5HD28GySNclJmWFxEkxc=
+	t=1745632800; cv=none; b=nW+iOrcbFshNsGAHk3xmgLQJSZiCdIP99NSjwymlszPm3i/uvWIo26LUgkZLi/mgre0SFI3hoX6tOtCjc/khq1AD1PhjbAlrjLIQ/nWdJHozNParnXdPS1P7qFDKJW5yXjSVdtq/PUoEEavgoUb/bPxKI+xiTRJIHdlyNSh3o/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745632785; c=relaxed/simple;
-	bh=8Or1dD90mFtgUKp0lVsuOKbDOlgiixo5kCZ7CLMijnA=;
-	h=Date:To:From:Subject:Message-Id; b=WnNwruq/uiCBaQp3p0DYcMzqdJT/UIDeULtMPejuRCVBXWPsnyv5w5D1R4rEmetCWA7KWoZPEl/JdglB2/J3LixLI6vlPrF2AaJv//UJKsSBWg3NsQA3YiDVnI3/K86ems7iaHkncaGzLFg5ROsCDa0JTb9NNCTPPhpMYH1qjSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qmTJiR3H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8415C4CEE4;
-	Sat, 26 Apr 2025 01:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745632784;
-	bh=8Or1dD90mFtgUKp0lVsuOKbDOlgiixo5kCZ7CLMijnA=;
-	h=Date:To:From:Subject:From;
-	b=qmTJiR3HRpa21WGwDchuxe2tfnMtDQz4ShSTSVQf6DANN+hP1qeqqfv4P3OF2nqZQ
-	 fTR8qyAEyqkx+GColr9uiDnaiYRoFy/9ZUYXI4iLXDp68B3BPAUUuFkh+yu9b6TeeK
-	 r4czI2wcnRtzXaNqfwzeB6wnOdMpqIRWYApQExoY=
-Date: Fri, 25 Apr 2025 18:59:44 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,urezki@gmail.com,stable@vger.kernel.org,mhocko@suse.com,erhard_f@mailbox.org,dakr@kernel.org,kees@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmalloc-support-more-granular-vrealloc-sizing.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250426015944.B8415C4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1745632800; c=relaxed/simple;
+	bh=RYL8C4Y5ne48VhiH6iHbk3yOFuT7Zq4jtWwMf4+QlcY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=IgbT4ub1S4F805Bmq2rGk3B7AhzTwOVn/MjpCoylitTCcF981jMKDER119vFSK+6zLEvprvAiaGKfAnQjLCYS+T8hhT94vugkSBAZt5TRuy+1R6TWtFLn/LJ3ynfvpBS0yhrKvFtCK61eJMPcYTVYDY+5TPmEq12pxg3/Hch6yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxC8ce/+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FF3C4CEEB;
+	Sat, 26 Apr 2025 02:00:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745632800;
+	bh=RYL8C4Y5ne48VhiH6iHbk3yOFuT7Zq4jtWwMf4+QlcY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=cxC8ce/+qVwaAt6BiZsX4Kbj3dhAXHmXu+zd5AGQlmIwOcu3TfQfjoFC5ALv27noc
+	 wvVc/P654otdIG2OAIN+wHlLqfYasW5IeoNDQXlJWoKIQsu8VaEPVU4Rk5sB/hp2Wq
+	 zeLghLXAxPyxRXn0LHYxq2ey4TaY2C14UR8KWx9ykGkVZR4mz8iuX7ehph3cOPPCU/
+	 0T8glxLXFD+3KEmQW4mKwtDmbMUcvrfR3KpeomF361YAmn3WvupnIzqphGfYowB1Zp
+	 8A1a4IGVaEUJ8MEdJR7SJNvpDatSKrCLKIfYfqNa/6OY+Z5IIHJcKow5WJyHkswCUS
+	 hvsncrKEPXX2A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33D56380CFDC;
+	Sat, 26 Apr 2025 02:00:40 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] Revert "rndis_host: Flag RNDIS modems as WWAN devices"
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <174563283875.3899759.2142163669811028144.git-patchwork-notify@kernel.org>
+Date: Sat, 26 Apr 2025 02:00:38 +0000
+References: <20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu>
+In-Reply-To: <20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu>
+To: Christian Heusel <christian@heusel.eu>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, regressions@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, lkundrak@v3.sk
 
+Hello:
 
-The patch titled
-     Subject: mm: vmalloc: support more granular vrealloc() sizing
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmalloc-support-more-granular-vrealloc-sizing.patch
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-support-more-granular-vrealloc-sizing.patch
+On Thu, 24 Apr 2025 16:00:28 +0200 you wrote:
+> This reverts commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8. Since this
+> commit has been proven to be problematic for the setup of USB-tethered
+> ethernet connections and the related breakage is very noticeable for
+> users it should be reverted until a fixed version of the change can be
+> rolled out.
+> 
+> Closes: https://lore.kernel.org/all/e0df2d85-1296-4317-b717-bd757e3ab928@heusel.eu/
+> Link: https://chaos.social/@gromit/114377862699921553
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=220002
+> Link: https://bugs.gentoo.org/953555
+> Link: https://bbs.archlinux.org/viewtopic.php?id=304892
+> Cc: stable@vger.kernel.org
+> Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+> Signed-off-by: Christian Heusel <christian@heusel.eu>
+> 
+> [...]
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Here is the summary with links:
+  - Revert "rndis_host: Flag RNDIS modems as WWAN devices"
+    https://git.kernel.org/netdev/net/c/765f253e2890
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Kees Cook <kees@kernel.org>
-Subject: mm: vmalloc: support more granular vrealloc() sizing
-Date: Fri, 25 Apr 2025 17:11:07 -0700
-
-Introduce struct vm_struct::requested_size so that the requested
-(re)allocation size is retained separately from the allocated area size. 
-This means that KASAN will correctly poison the correct spans of requested
-bytes.  This also means we can support growing the usable portion of an
-allocation that can already be supported by the existing area's existing
-allocation.
-
-Link: https://lkml.kernel.org/r/20250426001105.it.679-kees@kernel.org
-Fixes: 3ddc2fefe6f3 ("mm: vmalloc: implement vrealloc()")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/20250408192503.6149a816@outsider.home/
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: "Uladzislau Rezki (Sony)" <urezki@gmail.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- include/linux/vmalloc.h |    1 +
- mm/vmalloc.c            |   31 ++++++++++++++++++++++++-------
- 2 files changed, 25 insertions(+), 7 deletions(-)
-
---- a/include/linux/vmalloc.h~mm-vmalloc-support-more-granular-vrealloc-sizing
-+++ a/include/linux/vmalloc.h
-@@ -61,6 +61,7 @@ struct vm_struct {
- 	unsigned int		nr_pages;
- 	phys_addr_t		phys_addr;
- 	const void		*caller;
-+	unsigned long		requested_size;
- };
- 
- struct vmap_area {
---- a/mm/vmalloc.c~mm-vmalloc-support-more-granular-vrealloc-sizing
-+++ a/mm/vmalloc.c
-@@ -1940,7 +1940,7 @@ static inline void setup_vmalloc_vm(stru
- {
- 	vm->flags = flags;
- 	vm->addr = (void *)va->va_start;
--	vm->size = va_size(va);
-+	vm->size = vm->requested_size = va_size(va);
- 	vm->caller = caller;
- 	va->vm = vm;
- }
-@@ -3133,6 +3133,7 @@ struct vm_struct *__get_vm_area_node(uns
- 
- 	area->flags = flags;
- 	area->caller = caller;
-+	area->requested_size = requested_size;
- 
- 	va = alloc_vmap_area(size, align, start, end, node, gfp_mask, 0, area);
- 	if (IS_ERR(va)) {
-@@ -4063,6 +4064,8 @@ EXPORT_SYMBOL(vzalloc_node_noprof);
-  */
- void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
- {
-+	struct vm_struct *vm = NULL;
-+	size_t alloced_size = 0;
- 	size_t old_size = 0;
- 	void *n;
- 
-@@ -4072,15 +4075,17 @@ void *vrealloc_noprof(const void *p, siz
- 	}
- 
- 	if (p) {
--		struct vm_struct *vm;
--
- 		vm = find_vm_area(p);
- 		if (unlikely(!vm)) {
- 			WARN(1, "Trying to vrealloc() nonexistent vm area (%p)\n", p);
- 			return NULL;
- 		}
- 
--		old_size = get_vm_area_size(vm);
-+		alloced_size = get_vm_area_size(vm);
-+		old_size = vm->requested_size;
-+		if (WARN(alloced_size < old_size,
-+			 "vrealloc() has mismatched area vs requested sizes (%p)\n", p))
-+			return NULL;
- 	}
- 
- 	/*
-@@ -4088,14 +4093,26 @@ void *vrealloc_noprof(const void *p, siz
- 	 * would be a good heuristic for when to shrink the vm_area?
- 	 */
- 	if (size <= old_size) {
--		/* Zero out spare memory. */
--		if (want_init_on_alloc(flags))
-+		/* Zero out "freed" memory. */
-+		if (want_init_on_free())
- 			memset((void *)p + size, 0, old_size - size);
-+		vm->requested_size = size;
- 		kasan_poison_vmalloc(p + size, old_size - size);
--		kasan_unpoison_vmalloc(p, size, KASAN_VMALLOC_PROT_NORMAL);
- 		return (void *)p;
- 	}
- 
-+	/*
-+	 * We already have the bytes available in the allocation; use them.
-+	 */
-+	if (size <= alloced_size) {
-+		kasan_unpoison_vmalloc(p + old_size, size - old_size,
-+				       KASAN_VMALLOC_PROT_NORMAL);
-+		/* Zero out "alloced" memory. */
-+		if (want_init_on_alloc(flags))
-+			memset((void *)p + old_size, 0, size - old_size);
-+		vm->requested_size = size;
-+	}
-+
- 	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
- 	n = __vmalloc_noprof(size, flags);
- 	if (!n)
-_
-
-Patches currently in -mm which might be from kees@kernel.org are
-
-mm-vmalloc-support-more-granular-vrealloc-sizing.patch
 
 
