@@ -1,123 +1,118 @@
-Return-Path: <stable+bounces-136766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53604A9DB8F
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 16:52:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FBAA9DBAB
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 17:04:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CF851BA5205
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 14:52:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAA0C3BE039
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776A122FE08;
-	Sat, 26 Apr 2025 14:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C9725CC60;
+	Sat, 26 Apr 2025 15:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFAZjiVp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q3EuQCHM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350E9256D;
-	Sat, 26 Apr 2025 14:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A10253F3D;
+	Sat, 26 Apr 2025 15:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745679154; cv=none; b=VDbOzE093UbxI7PKqf/21YLGtEJMwR6q+69EMOV4UX1B8FfKcpVgsmgE0cDP0LkX9lrWs2GB63lZI3qPbG7avAplfCpoFIlqobbhi5gfoAkb3/yF0m5/SyEEWaxyctj6d2z4GZlxB/sxbZephNmg90a6+W2xJeHRtzjAyuoLpNk=
+	t=1745679842; cv=none; b=YbcbyH0C/coxk1+LBUYStpQNT6Vtfeh1tBkSyVoNiDGhFuhHd/E6R0quc0JKJhgul2cl4c5+mYQPiAYjBM231ODbvU3P4edkgXLV+TTuAOvGgZ7CWk6Anlk0YBPiFMe84YoaDfde954I1t3O4DQJpYReEl8elCIS/wiTnb3Mm2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745679154; c=relaxed/simple;
-	bh=xhA3xutVcMuTudYCDtZHLjJghvPLYqZI6l6Yrxkvbtg=;
+	s=arc-20240116; t=1745679842; c=relaxed/simple;
+	bh=EsdfWq/03VH/7vUnJi9OSrJooU9ae5/pyus4e935ACw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gi4UCVsdTbzUZfAXrUUBaU5owJg79pUBSGSq/AugiGjsWDGYMo4y8g28yG/u7HHO7fDcZJXACzYUkQF+xC8mNTh+LIzCYhHVZ+YUeVsH+3BXQ+FaxnArbu/K7KqvwrJdkBxlEtS5AC8/i+DaTganWbhphcwW9KBEVMNulA+i7j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFAZjiVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74940C4CEE2;
-	Sat, 26 Apr 2025 14:52:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=BLtIIB5175AD97/AmFXw7Gl+y4KEfOnf6PAl678eFidq+o7M8wjFCpoj7VBMW6rHrC7J7XL8jikJYB2bCaLtTdEVyT1ImICzFVaSkwWXxUrQ+556qQV16jdmiKqcof/eGeyHCwy7/b1DBZ/xSppwCFd1QJE/T71+c72hIpcyB+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q3EuQCHM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88541C4CEE2;
+	Sat, 26 Apr 2025 15:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745679153;
-	bh=xhA3xutVcMuTudYCDtZHLjJghvPLYqZI6l6Yrxkvbtg=;
+	s=k20201202; t=1745679840;
+	bh=EsdfWq/03VH/7vUnJi9OSrJooU9ae5/pyus4e935ACw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qFAZjiVpzoi/SiL84jr1kKNV5/oRMqhcY9ZcG5zdiNc4lBNIPuUPRvWHp1sZJQsU+
-	 H/5oa2zuYXoSQJ3w/LIeTnsduxntwZZojJWL6Fg2lKHd+CbOJkLS7VXSzoIULNkn2/
-	 nweIHKGfXqSC2mx0lGCk2JT2E9LTGczLbpiZ0HirNf2+CWftKWxTa2oCDGsHv6XF3v
-	 Zm1JeYwt9TyHAYGlr9Va6S7HaPbrtT7rXNP5cCi3dNzpqrA0uvG/ySXkbeEqc2oIij
-	 RLUFTMCfmSBIHECTcycf6ZxjsFTAn+N6FUpYT3trGd9WkMYSmfmhUfsMjAhrflJ+9V
-	 S1D+B7IDw745w==
-Date: Sat, 26 Apr 2025 10:52:32 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Kees Cook <kees@kernel.org>, stable@vger.kernel.org,
-	stable-commits@vger.kernel.org, Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: Patch "lib/Kconfig.ubsan: Remove 'default UBSAN' from
- UBSAN_INTEGER_WRAP" has been added to the 6.14-stable tree
-Message-ID: <aAzzMJUz8Gh1uGnr@lappy>
-References: <20250426132510.808646-1-sashal@kernel.org>
- <71399E4C-AAD6-4ACF-8256-8866394F3895@kernel.org>
- <20250426141107.GA3689756@ax162>
+	b=q3EuQCHMRYSPpqegHCYU2IFPfFXdS6YSAHrM1gpGedw9q8zDrIge4QyAiScxBkko6
+	 pP6Ba8SvJAigshqWctLxy49l/mYDV7A1zzC/7Ek5Dxpb1hBRGUg6wrMIH2axI6r7pM
+	 /JMy8Go8XCRn8Il297fPsNJlf5C9Juo+vewGDjSTbFHTpHJRKoNBwgwhXtrsjR7Wqu
+	 tAdP1ftPicSjrl7OAMi22fbOJJjvM08Cef5VL32tXZp9qiqJ0PODyiUSlkx2EILF1V
+	 +MdEFdsyjGFTYBW9GX5/xxuyPzrwk1IK9TjtpXQG3FInkdzbRrJ7IFiunIdaX6ZaJB
+	 oMrf5pZatoUbA==
+Date: Sat, 26 Apr 2025 08:03:59 -0700
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Carlos Maiolino <cem@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Brian Foster <bfoster@redhat.com>, linux-xfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+	Alexey Nepomnyashih <sdl@nppct.ru>, stable@vger.kernel.org
+Subject: Re: [PATCH] xfs: fix diff_two_keys calculation for cnt btree
+Message-ID: <20250426150359.GQ25675@frogsfrogsfrogs>
+References: <20250426134232.128864-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250426141107.GA3689756@ax162>
+In-Reply-To: <20250426134232.128864-1-pchelkin@ispras.ru>
 
-On Sat, Apr 26, 2025 at 10:11:07AM -0400, Nathan Chancellor wrote:
->On Sat, Apr 26, 2025 at 06:33:24AM -0700, Kees Cook wrote:
->>
->>
->> On April 26, 2025 6:25:09 AM PDT, Sasha Levin <sashal@kernel.org> wrote:
->> >This is a note to let you know that I've just added the patch titled
->> >
->> >    lib/Kconfig.ubsan: Remove 'default UBSAN' from UBSAN_INTEGER_WRAP
->> >
->> >to the 6.14-stable tree which can be found at:
->> >    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->> >
->> >The filename of the patch is:
->> >     lib-kconfig.ubsan-remove-default-ubsan-from-ubsan_in.patch
->> >and it can be found in the queue-6.14 subdirectory.
->> >
->> >If you, or anyone else, feels it should not be added to the stable tree,
->> >please let <stable@vger.kernel.org> know about it.
->>
->> Please drop this; it's fixing the other patch that should not be backported. :)
->
->This one is still technically needed but I already sent a manual
->backport for this...
->
->https://lore.kernel.org/stable/20250423172241.1135309-2-nathan@kernel.org/
->https://lore.kernel.org/stable/20250423172504.1334237-2-nathan@kernel.org/
->
->Sasha, it is a little insulting to me to have my manual backports
->ignored while you pull in extra unnecessary changes to make them apply
+On Sat, Apr 26, 2025 at 04:42:31PM +0300, Fedor Pchelkin wrote:
+> Currently the difference is computed on 32-bit unsigned values although
+> eventually it is stored in a variable of int64_t type. This gives awkward
+> results, e.g. when the diff _should_ be negative, it is represented as
+> some large positive int64_t value.
+> 
+> Perform the calculations directly in int64_t as all other diff_two_keys
+> routines actually do.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Svace static
+> analysis tool.
+> 
+> Fixes: 08438b1e386b ("xfs: plumb in needed functions for range querying of the freespace btrees")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> ---
+>  fs/xfs/libxfs/xfs_alloc_btree.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/xfs/libxfs/xfs_alloc_btree.c b/fs/xfs/libxfs/xfs_alloc_btree.c
+> index a4ac37ba5d51..b3c54ae90e25 100644
+> --- a/fs/xfs/libxfs/xfs_alloc_btree.c
+> +++ b/fs/xfs/libxfs/xfs_alloc_btree.c
+> @@ -238,13 +238,13 @@ xfs_cntbt_diff_two_keys(
+>  	ASSERT(!mask || (mask->alloc.ar_blockcount &&
+>  			 mask->alloc.ar_startblock));
+>  
+> -	diff =  be32_to_cpu(k1->alloc.ar_blockcount) -
+> -		be32_to_cpu(k2->alloc.ar_blockcount);
+> +	diff = (int64_t)be32_to_cpu(k1->alloc.ar_blockcount) -
+> +			be32_to_cpu(k2->alloc.ar_blockcount);
 
-Appologies: this is a case where some things falls through the cracks
-between Greg and myself. Let me explain...
+Perhaps it's time to hoist cmp_int to include/ and refactor all these
+things to use it?
 
-Greg is usually picking up patches from the mailing list. I have the
-annoying bot (which you might have seen) that tests backports folks send
-over, but in reality I would rarely apply a backport someone sent over
-(even if only so we won't step on each other's toes).
+#define cmp_int(l, r)          ((l > r) - (l < r))
 
-On the other hand, I have some automation in place that after a few
-days, it combs through the FAILED: mails that Greg sends out and will
-attempt to automatically resolve conflicts by bringing in dependencies
-and build testing the code.
+--D
 
-I promise I haven't "manually" ignored your backports :)
-
->cleanly, especially since I sent them straight to you. I already spent
->the effort to account for the conflict, which was not big or nasty
->enough to justify pulling in the upstream solution, especially when it
->is still not ready for prime time, hence this change...
-
-I'll go drop my backports and queue up yours.
-
--- 
-Thanks,
-Sasha
+>  	if (diff)
+>  		return diff;
+>  
+> -	return  be32_to_cpu(k1->alloc.ar_startblock) -
+> -		be32_to_cpu(k2->alloc.ar_startblock);
+> +	return (int64_t)be32_to_cpu(k1->alloc.ar_startblock) -
+> +			be32_to_cpu(k2->alloc.ar_startblock);
+>  }
+>  
+>  static xfs_failaddr_t
+> -- 
+> 2.49.0
+> 
+> 
 
