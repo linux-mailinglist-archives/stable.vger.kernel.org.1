@@ -1,151 +1,151 @@
-Return-Path: <stable+bounces-136737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66788A9D640
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 01:31:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69564A9D688
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 02:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6FE09E16FC
-	for <lists+stable@lfdr.de>; Fri, 25 Apr 2025 23:31:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE004C2E6C
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 00:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091F1238D27;
-	Fri, 25 Apr 2025 23:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD9E2B9BB;
+	Sat, 26 Apr 2025 00:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nzmpPx+B"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eMf/jT/9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E3A226183;
-	Fri, 25 Apr 2025 23:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1D5182D2
+	for <stable@vger.kernel.org>; Sat, 26 Apr 2025 00:08:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745623905; cv=none; b=PtbmKqUo8TFgbiaOvrTMc/RBHXZFmFP6FBXjU1r9sD0yJV9Py1T67JJCcpU9sfWZSkG4vXtFgG8byuSna1ysmUfd4inXhQQ/n1Ed+OiUJFscZqSX5CU55U/5cQayOmjkPDiuWlR3VgDAUckoXRE/2at1KgDuJhJYTiFwKHyM7gs=
+	t=1745626113; cv=none; b=b0k91Ygm3zaDxfUai1ETZYJxqFljQz8AdTHko7Ty9a8XLU17n1bU+NaLXqJGo+rpVvQloaogDmEriKjE8TUpguPINciFIbhVgcdmoqHAHBb+w8PkQqPWiK7M7loT3DWgsfpLz8UQXB+PnjdzV+q8pDNTq/uWgsRTNWzUbFGuffE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745623905; c=relaxed/simple;
-	bh=yysLB0MwDSTEJW0odRZr/Y6pQfcBm0g6rSH/F6gEzbE=;
-	h=Date:To:From:Subject:Message-Id; b=ATFX1VJ0oHO51beZcMVDNcmRgTRK/qfQ/fDTuQEFswtBHunh6bQaTcSi4svcJE5pW7Ihq3mRqXwv/6L0x4q2yDBUFcsDqrLYXkEbDYkmYP1qzBog2N/juJDFl/4nb9FzCI1Gg62oezHhIXl5Gxl3PYVsuRqyliznbUBo0eA5Q4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nzmpPx+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A933C4CEE4;
-	Fri, 25 Apr 2025 23:31:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745623905;
-	bh=yysLB0MwDSTEJW0odRZr/Y6pQfcBm0g6rSH/F6gEzbE=;
-	h=Date:To:From:Subject:From;
-	b=nzmpPx+BiR/q8u+ICk/By+IN9jcj5FkICpzNGprF6TD3WiBZp49LaGoKU8nB2FHVZ
-	 N1zFeQAUMd9+EJ3yueNmLrvctXzpMdu1GZu+GaRnTn+VQZOxbfKd+cHHpIfmhxqCsB
-	 JfJ2iH8En5kP7a6wSD+ZSVpCAsGwZYIZyuexELJQ=
-Date: Fri, 25 Apr 2025 16:31:44 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250425233145.1A933C4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1745626113; c=relaxed/simple;
+	bh=dj0bfGtxPUBCB2BN99s57agY71aeiXn0r0ZVEZYdc64=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dsuR5JZ9Jl75RkTRFxbIuqUVLRX3XihGx/0FCWB6xaogkNXEcyaeTCqaqBOPA3ucNF+NcJfpcQRG8SDPAmyA7v3gdHeSH3FvIcd/nHa3ChvUXfhO7TtshGezEv5BasbF6w5xTnQH/mLQr81CGuSaRizoSKnIePJXOkeDCLm+h4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eMf/jT/9; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-2ff7cf599beso2588059a91.0
+        for <stable@vger.kernel.org>; Fri, 25 Apr 2025 17:08:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1745626110; x=1746230910; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XVHrYIn93XRhYMir9nGcWzyn52V+i4Le0QPx96O+Ok=;
+        b=eMf/jT/9OdpEhzXFfDlsLmJo616/a4dZ/HNZDhgNAEi7GNAj/41EfZHgAvORFaiOmU
+         6z0O1Y7/nDRJq77a6aoCyetujAS2a+4KPz+RQvdM2r1zJOHy0sFmTUrzgyK7hW/0Caza
+         O92Zp2z8MpbJ9VCPKv5HBj5tPeiYHPYmSDsEobwCX8AG8qILbZnyJeXHFDdjEYww9KUi
+         k5J4CHfCLQjvLer+T813+JSZvUpqnGtZIi70scCJslTww0E+o+Om7LAg/mu642LzaDD7
+         oOP6LWvcGt5GMYuzhQbS7zbjzAeI8KVIWPdPvPLimmX2Cr7jVvl3tu6yAE5djw+eb+e1
+         qN4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745626110; x=1746230910;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8XVHrYIn93XRhYMir9nGcWzyn52V+i4Le0QPx96O+Ok=;
+        b=lVS/9EktapC6uusnxPp6n3dmAFmtZRAA98nDduztN2YSs6rUXv60MekEl8HmquITLL
+         woCtuGRVndmchdoVET+j224iXkPwVm8gbWfmWx9ymGw2TDcufWt6MZ7D81gLAMjPOdPI
+         AFrClyAZ4XNfeVyfJERlJwh2OiUFk2aSBliKItzIJxrQgN+g4v2YAeNHxMAdtnTxly1H
+         tW4vhigEigr7g8S/tfb/4Xnq+FSLgBV2L7HIXI8HO0M4fueVttz8vy5ImHfVTfC64Q5m
+         1O+2Igbe1ORnB/Ow5Bg0Xd6oI5+szn+DrKrmZyWluhIP/fniQFz7VgpP9xx1xzNZmOtH
+         NAow==
+X-Forwarded-Encrypted: i=1; AJvYcCWtQLd09PyMYBGj1lgEatxWNO0AZ4pkGYcfillqygZO73tWRr+Slrwcv0zdER7M1xYCBISPdL4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzMIpNmSnWJUSNdGU92Grx+QTzI/LITj6fKhYE0oalp/MdcK6M
+	r/V5wuohw6iIvr1r9yrXkbO1q/N5CZFZngResUOlTM8xAvbcBE4jxtEYQ6moKdqYG8wwO5FQQzC
+	bCw==
+X-Google-Smtp-Source: AGHT+IG839ZjiQvqwW0BTxpqFP/CgujLrvPhmCLViZ6YlkA3FlFXD8cwWJB/77igEcMr1jgFTr5u7o8tB9Q=
+X-Received: from pjm7.prod.google.com ([2002:a17:90b:2fc7:b0:2fa:a101:743])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:35c5:b0:2ee:c6c8:d89f
+ with SMTP id 98e67ed59e1d1-309f7df0012mr7564718a91.14.1745626110633; Fri, 25
+ Apr 2025 17:08:30 -0700 (PDT)
+Date: Fri, 25 Apr 2025 17:08:29 -0700
+In-Reply-To: <20250424203110.GCaAqfjnr-fogRgnt7@renoirsky.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <aAKaf1liTsIA81r_@google.com> <20250418191224.GFaAKkGBnb01tGUVhW@fat_crate.local>
+ <aAfQbiqp_yIV3OOC@google.com> <20250422173355.GDaAfTA8GqnGBfDk7G@renoirsky.local>
+ <aAfynEK3wcfQa1qQ@google.com> <20250423072017.GAaAiUsYzDOdt7cmp2@renoirsky.local>
+ <aAj0ySpCnHf_SX2J@google.com> <20250423184326.GCaAk0zinljkNHa_M7@renoirsky.local>
+ <aAqOmjQ_bNy8NhDh@google.com> <20250424203110.GCaAqfjnr-fogRgnt7@renoirsky.local>
+Message-ID: <aAwj_Tkqj4GtywDe@google.com>
+Subject: Re: CONFIG_X86_HYPERVISOR (was: Re: [PATCH AUTOSEL 5.10 2/6] x86/cpu:
+ Don't clear X86_FEATURE_LAHF_LM flag in init_amd_k8() on AMD when running in
+ a virtual machine)
+From: Sean Christopherson <seanjc@google.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Pavel Machek <pavel@denx.de>, Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Max Grobecker <max@grobecker.info>, Ingo Molnar <mingo@kernel.org>, 
+	tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com, 
+	x86@kernel.org, thomas.lendacky@amd.com, perry.yuan@amd.com, 
+	mario.limonciello@amd.com, riel@surriel.com, mjguzik@gmail.com, 
+	darwi@linutronix.de, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
+On Thu, Apr 24, 2025, Borislav Petkov wrote:
+> On Thu, Apr 24, 2025 at 12:18:50PM -0700, Sean Christopherson wrote:
+> > Not quite.  KVM supports all of those seamlessly, with some caveats.  E.g. if
+> > host userspace and guest kernel are trying to use the same DRx, the guest will
+> > "lose" and not get its #DBs.
+> 
+> Pff, so cloud providers have big fat signs over their workstations
+> saying: you're not allowed to use breakpoints on production systems?
 
-The patch titled
-     Subject: tools/testing/selftests: fix guard region test tmpfs assumption
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch
+Heh, it's a bit more than a sign.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch
+> With my silly thinking, I'd prefer to reglement this more explicitly and
+> actually have the kernel enforce policy:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The kernel already can enforce policy.  Setting host breakpoints on guest code
+is done through a dedicated ioctl(), and access to said ioctl() can be restricted
+through various sandboxing methods, e.g. seccomp.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+> HV userspace has higher prio with #DB or guests do. But the "losing" bit
+> sounds weird and not nice.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Yeah, it's weird and not nice.  But if a human is interactive debugging a guest,
+odds are very, very good that a missing breakpoint in the guest is not at all a
+concern.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+> > Definitely not.  All I was thinking was something like:
+> > 
+> > diff --git a/arch/x86/include/asm/debugreg.h b/arch/x86/include/asm/debugreg.h
+> > index fdbbbfec745a..a218c5170ecd 100644
+> > --- a/arch/x86/include/asm/debugreg.h
+> > +++ b/arch/x86/include/asm/debugreg.h
+> > @@ -121,7 +121,7 @@ static __always_inline unsigned long local_db_save(void)
+> >  {
+> >         unsigned long dr7;
+> >  
+> > -       if (static_cpu_has(X86_FEATURE_HYPERVISOR) && !hw_breakpoint_active())
+> > +       if (static_cpu_has(X86_FEATURE_DRS_MAY_VMEXIT) && !hw_breakpoint_active())
+> >                 return 0;
+> >  
+> >         get_debugreg(dr7, 7);
+> > 
+> > Where X86_FEATURE_DRS_MAY_VMEXIT is set if HYPERVISOR is detected, but then
+> > cleared by SEV-ES+ and TDX guests with guaranteed access to DRs.  That said,
+> > even that much infrastructure probably isn't worth the marginal benefits.
+> 
+> Btw you can replace that X86_FEATURE_DRS_MAY_VMEXIT with a cc_platform
+> flag which gets properly set on all those coco guest types as those
+> flags are exactly for that stuff.
 
-------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: tools/testing/selftests: fix guard region test tmpfs assumption
-Date: Fri, 25 Apr 2025 17:24:36 +0100
+No, that would defeat the purpose of the check.  The X86_FEATURE_HYPERVISOR has
+nothing to do with correctness, it's all about performance.  Critically, it's a
+static check that gets patched at runtime.  It's a micro-optimization for bare
+metal to avoid a single cache miss (the __this_cpu_read(cpu_dr7)).  Routing
+through cc_platform_has() would be far, far heavier than calling hw_breakpoint_active().
 
-The current implementation of the guard region tests assume that /tmp is
-mounted as tmpfs, that is shmem.
-
-This isn't always the case, and at least one instance of a spurious test
-failure has been reported as a result.
-
-This assumption is unsafe, rushed and silly - and easily remedied by
-simply using memfd, so do so.
-
-We also have to fixup the readonly_file test to explicitly only be
-applicable to file-backed cases.
-
-Link: https://lkml.kernel.org/r/20250425162436.564002-1-lorenzo.stoakes@oracle.com
-Fixes: 272f37d3e99a ("tools/selftests: expand all guard region tests to file-backed")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Closes: https://lore.kernel.org/linux-mm/a2d2766b-0ab4-437b-951a-8595a7506fe9@arm.com/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/guard-regions.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
---- a/tools/testing/selftests/mm/guard-regions.c~tools-testing-selftests-fix-guard-region-test-tmpfs-assumption
-+++ a/tools/testing/selftests/mm/guard-regions.c
-@@ -271,12 +271,16 @@ FIXTURE_SETUP(guard_regions)
- 	self->page_size = (unsigned long)sysconf(_SC_PAGESIZE);
- 	setup_sighandler();
- 
--	if (variant->backing == ANON_BACKED)
-+	switch (variant->backing) {
-+	case ANON_BACKED:
- 		return;
--
--	self->fd = open_file(
--		variant->backing == SHMEM_BACKED ? "/tmp/" : "",
--		self->path);
-+	case LOCAL_FILE_BACKED:
-+		self->fd = open_file("", self->path);
-+		break;
-+	case SHMEM_BACKED:
-+		self->fd = memfd_create(self->path, 0);
-+		break;
-+	}
- 
- 	/* We truncate file to at least 100 pages, tests can modify as needed. */
- 	ASSERT_EQ(ftruncate(self->fd, 100 * self->page_size), 0);
-@@ -1696,7 +1700,7 @@ TEST_F(guard_regions, readonly_file)
- 	char *ptr;
- 	int i;
- 
--	if (variant->backing == ANON_BACKED)
-+	if (variant->backing != LOCAL_FILE_BACKED)
- 		SKIP(return, "Read-only test specific to file-backed");
- 
- 	/* Map shared so we can populate with pattern, populate it, unmap. */
-_
-
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
-
-maintainers-add-reverse-mapping-section.patch
-maintainers-add-core-mm-section.patch
-maintainers-add-mm-thp-section.patch
-maintainers-add-mm-thp-section-fix.patch
-tools-testing-selftests-fix-guard-region-test-tmpfs-assumption.patch
-mm-vma-fix-incorrectly-disallowed-anonymous-vma-merges.patch
-tools-testing-add-procmap_query-helper-functions-in-mm-self-tests.patch
-tools-testing-selftests-assert-that-anon-merge-cases-behave-as-expected.patch
-mm-move-mmap-vma-locking-logic-into-specific-files.patch
-
+I pointed out the SEV-ES+/TDX cases because they likely would benefit from that
+same micro-optimization, i.e. by avoiding the call to hw_breakpoint_active().
 
