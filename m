@@ -1,202 +1,101 @@
-Return-Path: <stable+bounces-136768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C175AA9DBB3
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 17:09:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD25A9DBBD
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 17:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12FA4461025
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32C594A07EB
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66DF625C83E;
-	Sat, 26 Apr 2025 15:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B3A25CC54;
+	Sat, 26 Apr 2025 15:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FoFcCDA/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mp6sUUIB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4DA13E41A;
-	Sat, 26 Apr 2025 15:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9AC613E41A;
+	Sat, 26 Apr 2025 15:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745680176; cv=none; b=RXdULS3ufu3ORs6puuKU6BoVRYYUK1vUB8iAo7pXCObm/k959796Xwtrl5CIdFdlm3LQ9t6zNuAz7CQvSpK3g9M9Len9av2fU5gv0jq1GWDdQMs85uGLyXrhIlF9hEw7HMQSSpFsrQSDXmUyr5cC1Ke688V/P9D3w7n4LQiOV7k=
+	t=1745680373; cv=none; b=ojmREYrP6XBcg4T3sWmJGH6YlbxAKwmL7D8WP53Cf5Z5RfIjNn8g+CQXoNEPIRBytGkUQKQulnKTC7+jeAEo3DsEzAjAntx0CUhXq5R2vPNUAzOGGIjG9SO9hB3lE2AlYih6vdONJu7/4E80eyzBe1CUJ/VgdHhYs5nx22Btmd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745680176; c=relaxed/simple;
-	bh=dIJQCfly37yJJb55F7nZvqhj0sWzo07/GmJoBmU9rWQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F2EOau8k3gKltDM1lfATiYkkn4zDaKd96ddM4Nv8xbnpyGgh/p6TJ+udASiI5dj5cpvfFc6wVfOstQj7NPcYx1+Ckkr/8HSXm/qp/36SomjvVJuePghwKcmi0uHxSOeU7sysT4R7yZVibfaiwifIwUuenvQjF7kHBiDLWIXz2i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FoFcCDA/; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-22435603572so38583495ad.1;
-        Sat, 26 Apr 2025 08:09:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745680174; x=1746284974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vC5wgcHdVfrww8xne54WZgEIJ58desjmSpFYHafJJ6o=;
-        b=FoFcCDA/qtWSSwg+vfx7HouEYzKJAUgVrAltBJ2oxvIgCCwE2dU2TU8hvwrPBDFhp3
-         i5QNEbCO0Bi4rSVxDcvWBm8oOE79oUzoOtV4BmsSbMEQ9DeS4Nh6ZTcuwBj1FjHYWTdS
-         kepi+sJMZS1pnvCslKXOAxuJCPTa041WQdxji/YepKzVdoBXjKfVfAo439ue8d92YHMe
-         T7tFW4H5Ya7DGTvPWG2qnye0tNB4o74eOjQmdAThvRLDoZqQlfTj3AYbieojGuDbCkQg
-         q7i36mwiB/DJDodnuLMqvaAwYWAw4cmrbQulDpjYlNElvrWQVrfZZmTGzhJhqwvCT4Qe
-         oTtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745680174; x=1746284974;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vC5wgcHdVfrww8xne54WZgEIJ58desjmSpFYHafJJ6o=;
-        b=Si+1ChJI/8t8v9s/0TIpOvNUIRb4+sgE4nLeOSqmcrEoNIHO+57/HMM231aNNnUgy4
-         Alwy+BAGlh3YM2COfRx4q1rHCVUJuV2RxFUZr7O6C8DkEjvuo+a7fIDxdG6MCCdgzFrz
-         43KGGXZxZcvXGh6YnuagxMAkTk02J/auvkGqGYzEV0vvCFyt28q+A/vcDp5llmux4glA
-         jk0jvvi3TVO28pF8ic8q7+wOBxnUGauf/rYUHrxoOcAhrMRCPhPdu/IwK0SzC+oZzgM1
-         p481lxge3bJOjQgl/WTqVYYTX9e/hsLhINTg8VmNxki7/NJnyybXKHynqJNpuOaTsyw1
-         3NUg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9YATuwBZZs10/kf3dU/IWCjBXfepV4bJmmHaCAyVsardFTOZ5eRC0JuPx8HX7Ck3v/nitKXSsGDCAvlr57kcpNg0YOCXK@vger.kernel.org, AJvYcCVHk1wknoY+MLbk0r2l9zh9HPJ4qK59iLR/8geGmaPVun+OdlyrSud4wqF2wqEvhfSeexNBkgUM@vger.kernel.org, AJvYcCX/msPdzXwyNqa1zo0UooYIly8OiB8gfn9C53zWAltsa9KHQY4CgeJ1ZQaTNET5uoUuAFo/z6Q2eWdEs7k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzKTh6ay+fCq8RXRj14/lAwX4Cs2egbp090ZJxvbyTkDvlwQaw
-	m4X3I3H/qGlmV/UNa6jGmBnRiYQ5y5XWxMWJhmchbRbja19onUaJ
-X-Gm-Gg: ASbGncu/JKDvuMrA0QBvzOf/9HiSMZuVZ/uPg7qiWCK89gagus7R8y5+FpF6tqCU2VX
-	vY4C/J9xMVrYA8y6GeD1oSj9hV82/e8Zglf+sd8SNYMYfg9jU3U+3fi9eOTManjCsJgmH8e6NE4
-	1WhRc7IKTGKG+AjXOT2p8c0Mz+6vZe1FEhG24cnX+Tk6YooDb6chFxXOzCMVwoveiaizKOI4Aj6
-	+4PcZJ36ADwhdGGRN3RHlatpl/YZWMMBxOIR+6Os40DKVJBCKp4UmQlUobu9tOSxnOWR2QqJLRA
-	hAjyP9DHfAU0iCY5IDMk3wiXr/tzrNw1TCOVbyBrqy4tcFMVhZU=
-X-Google-Smtp-Source: AGHT+IHkmkhpvvi4d6Fkcw3am8Io+arHKaPgDsEECl09AsYacM7KJy7vLa8HbySZyQmB7nAtExrfmA==
-X-Received: by 2002:a17:903:41d0:b0:220:cb1a:da5 with SMTP id d9443c01a7336-22dbf636a78mr95100985ad.40.1745680173780;
-        Sat, 26 Apr 2025 08:09:33 -0700 (PDT)
-Received: from VM-16-38-fedora.. ([43.135.149.86])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4dbd230sm50575075ad.77.2025.04.26.08.09.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Apr 2025 08:09:33 -0700 (PDT)
-From: Jinliang Zheng <alexjlzheng@gmail.com>
-X-Google-Original-From: Jinliang Zheng <alexjlzheng@tencent.com>
-To: wufan@kernel.org
-Cc: alexjlzheng@gmail.com,
-	alexjlzheng@tencent.com,
-	chrisw@osdl.org,
-	greg@kroah.com,
-	jmorris@namei.org,
-	linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	paul@paul-moore.com,
-	serge@hallyn.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] securityfs: fix missing of d_delete() in securityfs_remove()
-Date: Sat, 26 Apr 2025 23:09:30 +0800
-Message-ID: <20250426150931.2840-1-alexjlzheng@tencent.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <CAKtyLkGyaoHr_xVGrWCTSFkqyf8b+hkOX1A0vyOpZUkTcTGtvQ@mail.gmail.com>
-References: <CAKtyLkGyaoHr_xVGrWCTSFkqyf8b+hkOX1A0vyOpZUkTcTGtvQ@mail.gmail.com>
+	s=arc-20240116; t=1745680373; c=relaxed/simple;
+	bh=RSTyDXmnY5NvI87lLbVOCtacxZJwYpD7DTZvdyNBZlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kEhwPQUF+mtd9rQx0SeszxrswUMLLUaSQU90iLOtBl8gq6/84gOhnilVef5pRSgxBIM+s2MihWweOq+yQd4+rwGlv8Kc+VbjB4x5M1GdyVlINOB5XB3WfamSgYspveAYbwbpauYi7YwdVWfIGGfVvXku9d9yYbEZ1wN1E7yCFNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mp6sUUIB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793B0C4CEE2;
+	Sat, 26 Apr 2025 15:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745680373;
+	bh=RSTyDXmnY5NvI87lLbVOCtacxZJwYpD7DTZvdyNBZlQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Mp6sUUIBPI3S/RmOtqTDlK168MPlbakc3Qzbb/AVGbqMHqM8L1R23JF03hhR15Ala
+	 03xIc3XqMOp+JO9XMhG213evvv8ORPzg00iVnIZ8YgmiNCqm03uukc8Jh6iei3BStU
+	 8JsUSotWyJxV3G0k/zHRCZmO/NnRdeOR9rcwVfRonBELc14o6vLqGWGO3UT/bAtjlQ
+	 tx9F4XUOpZ0CyPQ0A3pSCzL7Wmn6CUKT+e6wB1OL+LCaeFPAEESuYt8VaghBRA5B1g
+	 nLgIne7tA8ugidE7YKxzTjRJk4LSlIDLxJkUBSUj0wk8XMTJJiaBctBTbh7CTStUaJ
+	 3THtgzfC7R/+w==
+Date: Sat, 26 Apr 2025 11:12:48 -0400
+From: Nathan Chancellor <nathan@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, stable@vger.kernel.org,
+	stable-commits@vger.kernel.org, Marco Elver <elver@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: Patch "lib/Kconfig.ubsan: Remove 'default UBSAN' from
+ UBSAN_INTEGER_WRAP" has been added to the 6.14-stable tree
+Message-ID: <20250426151248.GA2377568@ax162>
+References: <20250426132510.808646-1-sashal@kernel.org>
+ <71399E4C-AAD6-4ACF-8256-8866394F3895@kernel.org>
+ <20250426141107.GA3689756@ax162>
+ <aAzzMJUz8Gh1uGnr@lappy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aAzzMJUz8Gh1uGnr@lappy>
 
-On Fri, 25 Apr 2025 22:57:08 -0700, Fan Wu <wufan@kernel.org> wrote:
-> On Fri, Apr 25, 2025 at 9:15 PM Jinliang Zheng <alexjlzheng@gmail.com> wrote:
-> >
-> > On Fri, 25 Apr 2025 18:06:32 -0400, Paul Moore wrote:
-> > > On Fri, Apr 25, 2025 at 5:25 AM <alexjlzheng@gmail.com> wrote:
-> > > >
-> > > > From: Jinliang Zheng <alexjlzheng@tencent.com>
-> > > >
-> > > > Consider the following module code:
-> > > >
-> > > >   static struct dentry *dentry;
-> > > >
-> > > >   static int __init securityfs_test_init(void)
-> > > >   {
-> > > >           dentry = securityfs_create_dir("standon", NULL);
-> > > >           return PTR_ERR(dentry);
-> > > >   }
-> > > >
-> > > >   static void __exit securityfs_test_exit(void)
-> > > >   {
-> > > >           securityfs_remove(dentry);
-> > > >   }
-> > > >
-> > > >   module_init(securityfs_test_init);
-> > > >   module_exit(securityfs_test_exit);
-> > > >
-> > > > and then:
-> > > >
-> > > >   insmod /path/to/thismodule
-> > > >   cd /sys/kernel/security/standon     <- we hold 'standon'
-> > > >   rmmod thismodule                    <- 'standon' don't go away
-> > > >   insmod /path/to/thismodule          <- Failed: File exists!
-> >
-> > Thank you for your reply. :)
-> >
-> > >
-> > > A quick procedural note, and you may have gotten an email about this
-> > > from the stable kernel folks already, you generally shouldn't add the
-> > > stable alias to your emails directly.  You may want to look at the
-> > > kernel docs on the stable kernel if you haven't already:
-> > >
-> > > * https://docs.kernel.org/process/stable-kernel-rules.html
-> >
-> > Sorry for that, I will read it. And thank you for your pointing it out.
-> >
-> > >
-> > > Beyond that, we don't currently support dynamically loading or
-> > > unloading LSMs so the immediate response to the reproducer above is
-> > > "don't do that, we don't support it" :)  However, if you see a similar
-> > > problem with a LSM properly registered with the running kernel please
-> > > let us know.
-> >
-> > I don't think that not supporting dynamic loading/unloading of LSMs means
-> > that directories/files under securityfs cannot be dynamically added/deleted.
-> >
-> > The example code in the commit message is just to quickly show the problem,
-> > not the actual usage scenario.
-> >
-> > I'm not sure whether existing LSMs have dynamic addition/deletion of files,
-> > but I don't think we should prohibit these operations.
-> >
-> > Moreover, since securityfs provides the securityfs_remove() interface, it
-> > is necessary to handle the deletion of dentry whenever it is used. What's
-> > more, we have EXPORT_SYMBOL_GPL(securityfs_remove).
-> >
-> > (By the way, the reason why I noticed this problem is because I needed to
-> > dynamically create/delete configuration directories/files when implementing
-> > an LSM. Of course, I am not dynamically loading/unloading LSM, but
-> > dynamically adding/deleting directories/files under securityfs according to
-> > the status during LSM operation.)
-> >
-> > Therefore, I think we need this patch and strongly recommend it. At least,
-> > it has no harm. Hahahaha
-> >
-> > thanks,
-> > Jinliang Zheng :)
-> >
+On Sat, Apr 26, 2025 at 10:52:32AM -0400, Sasha Levin wrote:
+> On Sat, Apr 26, 2025 at 10:11:07AM -0400, Nathan Chancellor wrote:
+> > Sasha, it is a little insulting to me to have my manual backports
+> > ignored while you pull in extra unnecessary changes to make them apply
 > 
-> We have added securityfs_recursive_remove() for this purpose.
-
-Thank you for your reply. :)
-
-Yes, but I think securityfs_recursive_remove() is not equal to
-securityfs_remove() + d_delete(), it has its own extra work. Therefore, I
-think it is better to add the work of d_delete() directly in
-securityfs_remove().
-
-There is no reason to do __d_drop() only when deleting files recursively
-and not do __d_drop() when deleting files non-recursively, which seems a
-bit strange.
-
-thanks,
-Jinliang Zheng. :)
-
+> Appologies: this is a case where some things falls through the cracks
+> between Greg and myself. Let me explain...
 > 
-> To the best of my knowledge, IPE is the only LSM that will delete
-> dentry during normal operation.
+> Greg is usually picking up patches from the mailing list. I have the
+> annoying bot (which you might have seen) that tests backports folks send
+> over, but in reality I would rarely apply a backport someone sent over
+> (even if only so we won't step on each other's toes).
 > 
-> -Fan
+> On the other hand, I have some automation in place that after a few
+> days, it combs through the FAILED: mails that Greg sends out and will
+> attempt to automatically resolve conflicts by bringing in dependencies
+> and build testing the code.
+
+Maybe that automation could look to see if a patch has already been sent
+to the FAILED thread? Greg's instructions tell people to use
+'--in-reply-to' with the FAILED message ID so it would probably cover
+the vast majority of cases of manually backport.
+
+> I promise I haven't "manually" ignored your backports :)
+
+Sorry, I did not mean for that to sound as harsh and accusatory as it
+was and I appreciate the additional clarification around the process so
+that it can potentially be improved :) thanks for all the work you and
+Greg do.
+
+Cheers,
+Nathan
 
