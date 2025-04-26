@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-136748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18417A9DB11
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3B2A9DB12
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 15:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCE24A3DDB
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 13:23:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEFAE9A1045
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 13:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DE91465BA;
-	Sat, 26 Apr 2025 13:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B66813E41A;
+	Sat, 26 Apr 2025 13:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBpRKJMd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BKBQUt6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F9E3208
-	for <stable@vger.kernel.org>; Sat, 26 Apr 2025 13:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01EC3208
+	for <stable@vger.kernel.org>; Sat, 26 Apr 2025 13:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745673777; cv=none; b=pHxrXl3rVB6doMcvHwe/fmevgdufT6HWTCC3PhA46/xI5NqkxEJNTZedBCGCDJskMxnvVKc6cBbTWn58Twm2+fn1LdbwhAR+8gqTimqCsPUxMgfJSmYKWMw5j5gJGTPFZijzrzcyYi6x+f/Tqb35pCZwa//PoliI0/W2OY1y1kM=
+	t=1745673778; cv=none; b=IFlohhISocuZMNlrmGPZMjXgqTgf0v9SKXlq6T1Gc0SN8pzzBldytm+SQDG8Q5giBetbPw3rPkM8v1mLMAqsu12SOeavapP6gCrS63t/YvjXcSCGNR8AQJWwlJxlzKwwI08BTxAVmLDvQuYW+rhGaDZ0tMCoTavQIiSSEv6rInM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745673777; c=relaxed/simple;
-	bh=JgF+pDl7r/EyqjBcF8cT3gE/ELy8xMcUR/0j75o2v4Q=;
+	s=arc-20240116; t=1745673778; c=relaxed/simple;
+	bh=wafDkoGpdVlBPSNhMOagVu5gp0f4Gdso2pZfuQg7Naw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GKEI8scskxskFDHBszL9kQ7XInIRVZfIyBugxCKKALtBnYY6nJdc+VLbdK5q2T/lbq6W2/3uqUkA41LGz0s4dGvoNU2LoqlwAvwNjhC8sJ9rmsZQFaeE034yZnrlPpQFqMxMhPEZjrG0aZ6cnfvAKjA5M49hwJD7/c45+MP51zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBpRKJMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF3FC4CEE2;
-	Sat, 26 Apr 2025 13:22:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fgXGYtzcAqe+k99vYSxPuY8Xofd2GpQydIkY1vyoHhi8VDwyTvwCZ9/wX+0oExQZcYt0eu+BPQd+Aa5Z4zjB0S/Z6QHxTN9rLtXttDurcuqR+PQYhk7pa+HfeGkm5O5a3ycpz7QV8ljjD9iuqtfbPCopTwodlp65CY12z2TSsw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BKBQUt6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F851C4CEEA;
+	Sat, 26 Apr 2025 13:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745673776;
-	bh=JgF+pDl7r/EyqjBcF8cT3gE/ELy8xMcUR/0j75o2v4Q=;
+	s=k20201202; t=1745673778;
+	bh=wafDkoGpdVlBPSNhMOagVu5gp0f4Gdso2pZfuQg7Naw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBpRKJMdI4fzWAVX+i17FesAVU8NRCAW1RhfTW4FyVjO8BgMuMc+ImOEsLrropHR6
-	 TVAr0AA8ahHIPv8xjaCSoq1fwBDFfjI73ZLCKH1xk4SkXrVRMfzvzhwNsSC/k+P6D8
-	 KEZDUCJOR5DKlTdYe0qUDx/GWjK+fzOpiZ6ROElA3+8qvsbPKnfHEeWbGmUDQU3YI1
-	 BOj43odvJOMHRBGVGP5tr45io1TYr72c1ZAkclWq8SSr6PTTrJVfKEFItn8MuR7aKs
-	 69naO7IhH3L+2ctHovdKRog3g/H8FjkKkPXvi6sQjzPoqQJJqs0pm0T5ym3viIk3kT
-	 /U8ARACjardpQ==
+	b=BKBQUt6wFvGhINIsXNup+2YGFw62vqnKWvND/8paw8lYX34xtO5QTyI/T2h/jcnht
+	 Gs4ey+35Biu02Hg2+Y9Evs/olaky1LctFTxvvV2lqoVgGZvWQ0WLJZse6fTcFpnu/p
+	 HzSCeV4yeiSJvkf69U03rGhn15k+ehVz9gkTgVM3qxs07pjTzheS/mnJgtP5uHqg9m
+	 NPiCY1/QhkiBvFrs+rXqtkTS0ku7Ryl0mmBMYoh2+hdMpEeXzCDVsPOLMvkDd6pwlf
+	 /ZYRvpDdRDPuBoyAVGptc/JxcEDugW/DA03ysURm0z6UTHqC6Kv5A+UrkFia9vkVEV
+	 h4IYCvXAJiqsw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	david@redhat.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
-Date: Sat, 26 Apr 2025 09:22:54 -0400
-Message-Id: <20250426043702-4ddc88fdf92f9441@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH stable 6.12 2/4] selftests/bpf: make xdp_cpumap_attach keep redirect prog attached
+Date: Sat, 26 Apr 2025 09:22:56 -0400
+Message-Id: <20250426045935-045396e7c606a23e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250425160915.2178126-1-david@redhat.com>
+In-Reply-To:  <20250425081238.60710-3-shung-hsi.yu@suse.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,71 +64,44 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 2ccd42b959aaf490333dbd3b9b102eaf295c036a
+The upstream commit SHA1 provided is correct: d5fbcf46ee82574aee443423f3e4132d1154372b
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Shung-Hsi Yu<shung-hsi.yu@suse.com>
+Commit author: Alexis Lothoré (eBPF Foundation)<alexis.lothore@bootlin.com>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: fc90e2379125)
-6.12.y | Present (different SHA1: f268ee2fbb53)
-6.6.y | Present (different SHA1: 3867566eb8a4)
-6.1.y | Present (different SHA1: 355715264917)
+6.14.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2ccd42b959aaf ! 1:  ba3c1791061b2 s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues
-    @@ Commit message
-         Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-         Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
-         Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-    +    (cherry picked from commit 2ccd42b959aaf490333dbd3b9b102eaf295c036a)
-    +    Signed-off-by: David Hildenbrand <david@redhat.com>
+1:  d5fbcf46ee825 ! 1:  25fd958b2c307 selftests/bpf: make xdp_cpumap_attach keep redirect prog attached
+    @@ Metadata
+      ## Commit message ##
+         selftests/bpf: make xdp_cpumap_attach keep redirect prog attached
      
-      ## drivers/s390/virtio/virtio_ccw.c ##
-     @@ drivers/s390/virtio/virtio_ccw.c: static struct airq_info *new_airq_info(int index)
-    - static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
-    - 					 u64 *first, void **airq_info)
-    + static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
-    + 					u64 *first, void **airq_info)
-      {
-     -	int i, j;
-     +	int i, j, queue_idx, highest_queue_idx = -1;
-      	struct airq_info *info;
-    - 	unsigned long *indicator_addr = NULL;
-    + 	unsigned long indicator_addr = 0;
-      	unsigned long bit, flags;
-      
-     +	/* Array entries without an actual queue pointer must be ignored. */
-    @@ drivers/s390/virtio/virtio_ccw.c: static struct airq_info *new_airq_info(int ind
-      	for (i = 0; i < MAX_AIRQ_AREAS && !indicator_addr; i++) {
-      		mutex_lock(&airq_areas_lock);
-      		if (!airq_areas[i])
-    -@@ drivers/s390/virtio/virtio_ccw.c: static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
-    +@@ drivers/s390/virtio/virtio_ccw.c: static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
-      		if (!info)
-    - 			return NULL;
-    + 			return 0;
-      		write_lock_irqsave(&info->lock, flags);
-     -		bit = airq_iv_alloc(info->aiv, nvqs);
-     +		bit = airq_iv_alloc(info->aiv, highest_queue_idx + 1);
-      		if (bit == -1UL) {
-      			/* Not enough vacancies. */
-      			write_unlock_irqrestore(&info->lock, flags);
-    -@@ drivers/s390/virtio/virtio_ccw.c: static unsigned long *get_airq_indicator(struct virtqueue *vqs[], int nvqs,
-    +@@ drivers/s390/virtio/virtio_ccw.c: static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
-      		*first = bit;
-      		*airq_info = info;
-    - 		indicator_addr = info->aiv->vector;
-    + 		indicator_addr = (unsigned long)info->aiv->vector;
-     -		for (j = 0; j < nvqs; j++) {
-     -			airq_iv_set_ptr(info->aiv, bit + j,
-     +		for (j = 0, queue_idx = 0; j < nvqs; j++) {
+    +    commit d5fbcf46ee82574aee443423f3e4132d1154372b upstream.
+    +
+         Current test only checks attach/detach on cpu map type program, and so
+         does not check that it can be properly executed, neither that it
+         redirects correctly.
+    @@ Commit message
+         Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+         Link: https://lore.kernel.org/r/20241009-convert_xdp_tests-v3-2-51cea913710c@bootlin.com
+         Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+    +    Stable-dep-of: c7f2188d68c1 ("selftests/bpf: Adjust data size to have ETH_HLEN")
+    +    Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+     
+      ## tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c ##
+     @@
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.14.y       |  Success    |  Success   |
 
