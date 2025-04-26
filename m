@@ -1,167 +1,127 @@
-Return-Path: <stable+bounces-136743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8D1A9D7B4
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 07:57:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E77A9D953
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 10:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91A9A1BC111F
-	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 05:57:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FDE5466B64
+	for <lists+stable@lfdr.de>; Sat, 26 Apr 2025 08:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981E11A3163;
-	Sat, 26 Apr 2025 05:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512D924C66F;
+	Sat, 26 Apr 2025 08:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g1vec6Pi"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3zeK7mJo";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uLdT5WYn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4766A22F01;
-	Sat, 26 Apr 2025 05:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E8115574E;
+	Sat, 26 Apr 2025 08:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745647040; cv=none; b=oGQZR5GoKX8rLUNYHKp/Wew82VTIP/YaMz3Se0W3CPoAr8wAZoHMdfCAV2ubfntjQG/rZrZDEFsu5gdSCUjH2NIzVOOKbVTzRWmPOHDem+PbQ+2eMM5SFcWv5jDo4JOxDXTW3EA0hMeyU7wjlo4uF87IgD/DBpr5o5HSva1RIaQ=
+	t=1745655799; cv=none; b=Zx//5TWAEMd5gR84sswiCaIPj5XyNnfaAw7N1vS0kIETrcsaqPtikSvzXmRX0nmpLYcI8Oto7yTQxuNOBCV9TBZWALwT5LdQLJeo0zQ+B8t70THaDiYOlJQhyBn6qZHEY2POqF2rZ2K3WVhnV+MKXmgVjvo3JGt+CGU2wU5RjGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745647040; c=relaxed/simple;
-	bh=EuGaXO4AUfqge9aIu3U3/cXrkwZjHu3A2QfX97QhXTw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VwM0WXUbdGlZA5LqLooNYQouKuMssI2tg00gysxP7BpcimnBl63V0M/YgIa9K3a80Coh3sRTWM/lAPnqWA6tP+MLpsivO9uSfQEz64IiCoN1nym4S/hBD1W4ShG6WRaR402KX7gwg96TtGCelCHu5JBHoEQ+EEP87EMM537anZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g1vec6Pi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95909C4CEEC;
-	Sat, 26 Apr 2025 05:57:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745647039;
-	bh=EuGaXO4AUfqge9aIu3U3/cXrkwZjHu3A2QfX97QhXTw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=g1vec6PiTS5hnnXT5+r1D22bj9uzumUJtcPUoYAjcMwIevE5RjOFuS0ef2RkRoX+H
-	 4h9LpQ6ferxW5CZXoF68fvy4KmHJ0e+8U70sPYI7i1HsiKisubQqpymvTyetIVcnMb
-	 /2W5hElxfilWLx+/g5Y7lMtowN/5OvP21KU12saGFehoSt8fIiNahuZv7uemKN4O9w
-	 U0E6AmOuQFOQ3ZFOgWNtfO31PGj8NIFC7/o8RQn/b94aAYGQRwJJwZPOomtqQCQw1W
-	 +vGMm8AfZ3htGUDKNX4zXawK14inor8mBkXhzBm4ERN9HYJwKXTad2fh+eL4F1mODB
-	 2++IMnXgojzlA==
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e6405e4ab4dso3397549276.0;
-        Fri, 25 Apr 2025 22:57:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV3YKh9/pWl2bBaeS8QZvGYdVMcNaV7c8Rq8wDmsgN3f4vrgFV9c5+S0WSNANQQvP7GnvpD3zr7Z/W1DIjGu/06BhAC9/c4@vger.kernel.org, AJvYcCW+E16WFhzDiCDebPxTUG5Px4qtKrz44fDrFwPRmY6Gop5+H/oLtoOM82GW4hagmnko4Ch6oxf+beZen3Q=@vger.kernel.org, AJvYcCWrc8QDoJn49p9ZBbfJp2vleZ2GFL2XXjmEWDVZYgmtt1J3bIkhXjT0G2MWoyHibgTxgwYyV4m7@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUOaD+0QP2sv55XEb9x4i9D1/76BlPmlJ8tL1sfNo9jXS7lr1q
-	r7eAynRMXOoD2hBSeMAw4/Rs4V+xegrKd8IZKCGh7rkcLwXDeQtRghhhFdk4qvTTqQmHXGjJDHV
-	VAU+fshseNOI5G40lvaR7t2in/OM=
-X-Google-Smtp-Source: AGHT+IEAUrMAb4lbk41X/zXeOwV5Q9goltln/OCwQoil3huO4u47ZZisUzs7Nl6JphjqqoIjeypLZ9IginYBDCo+fNs=
-X-Received: by 2002:a05:6902:908:b0:e5d:f98f:6f33 with SMTP id
- 3f1490d57ef6-e73051a07cbmr13356033276.10.1745647038911; Fri, 25 Apr 2025
- 22:57:18 -0700 (PDT)
+	s=arc-20240116; t=1745655799; c=relaxed/simple;
+	bh=T/0xTqND7PjkXvzjFIewwatpFzxkpl5LjaRGjg/Ft2M=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=XFIeCnRO5DXRtgOzHu2Itz5iN1K+9P99jjRqwBhOeUVh7+IKuwNaa29WmNwFmOqa285uzL26w8FWLJRjNlhnlKCJeOXUmlTSb150/Oo7BpQpsxvF/RYQlgRzAv6zeJlZ3XJsdxXCRTxyub3hE0rWMCwKDj1DDdijnQdlwxq9xR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3zeK7mJo; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uLdT5WYn; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sat, 26 Apr 2025 08:23:02 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1745655789;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=RtykLyqSPHAkwQ6ztUn4+zSx9nu7whQ+1FHXMP8EBzw=;
+	b=3zeK7mJozIYwyEnFeOZTQfO8qJPxevDiJo5cBah0a6hr8S+xq+hZ/qRhVTBQkTyn9kKoIm
+	g9IeibbUfPwdokmiLmP0yiYLqIIHcAj6GETipOTZLsNXDbhAR0rAIwOs6GGgv2O04bZD2b
+	cN0Uz7MNUzRFmP0KfXnz4sTdDazCWs2hKxbWD6noPGFyg/bBJfrL4YDV4hrWhEI4H+tKfB
+	NbAZ/S5UKnOkf/q91u8tZJPaVXLV6dpT0Nc3wWwOBAjv3em+fjzHmDn2bqbhXilutuwSzD
+	QzFfvNaFmAEW/LEFGxE5M3bTbq90hLwcLm1vXaCVm2m/9Gq+DNKaPyXyt7mAuA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1745655789;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=RtykLyqSPHAkwQ6ztUn4+zSx9nu7whQ+1FHXMP8EBzw=;
+	b=uLdT5WYn7IIMK9xcm8rI0egTtl9QAa36osfAKRjfhFT3HqGl7QoomJvLUep4hRSwGKoCtc
+	mQUjvrs/VCiQeVDw==
+From: "tip-bot2 for Suzuki K Poulose" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/urgent] irqchip/gic-v2m: Prevent use after free of
+ gicv2m_get_fwnode()
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHC9VhROjCvwaEJ1-Vc9SQU-x3wmZjeFknxkFGJcpPL28fGm1w@mail.gmail.com>
- <20250426041542.23444-1-alexjlzheng@tencent.com>
-In-Reply-To: <20250426041542.23444-1-alexjlzheng@tencent.com>
-From: Fan Wu <wufan@kernel.org>
-Date: Fri, 25 Apr 2025 22:57:08 -0700
-X-Gmail-Original-Message-ID: <CAKtyLkGyaoHr_xVGrWCTSFkqyf8b+hkOX1A0vyOpZUkTcTGtvQ@mail.gmail.com>
-X-Gm-Features: ATxdqUG7hYlINfjIqdbRB9oRJuRhxFnLUSnkOZ7MgMMeCIUrNqeNgZQcEfySDso
-Message-ID: <CAKtyLkGyaoHr_xVGrWCTSFkqyf8b+hkOX1A0vyOpZUkTcTGtvQ@mail.gmail.com>
-Subject: Re: [PATCH] securityfs: fix missing of d_delete() in securityfs_remove()
-To: Jinliang Zheng <alexjlzheng@gmail.com>
-Cc: paul@paul-moore.com, alexjlzheng@tencent.com, chrisw@osdl.org, 
-	greg@kroah.com, jmorris@namei.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, serge@hallyn.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <174565578285.31282.8068570844383766961.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Apr 25, 2025 at 9:15=E2=80=AFPM Jinliang Zheng <alexjlzheng@gmail.c=
-om> wrote:
->
-> On Fri, 25 Apr 2025 18:06:32 -0400, Paul Moore wrote:
-> > On Fri, Apr 25, 2025 at 5:25=E2=80=AFAM <alexjlzheng@gmail.com> wrote:
-> > >
-> > > From: Jinliang Zheng <alexjlzheng@tencent.com>
-> > >
-> > > Consider the following module code:
-> > >
-> > >   static struct dentry *dentry;
-> > >
-> > >   static int __init securityfs_test_init(void)
-> > >   {
-> > >           dentry =3D securityfs_create_dir("standon", NULL);
-> > >           return PTR_ERR(dentry);
-> > >   }
-> > >
-> > >   static void __exit securityfs_test_exit(void)
-> > >   {
-> > >           securityfs_remove(dentry);
-> > >   }
-> > >
-> > >   module_init(securityfs_test_init);
-> > >   module_exit(securityfs_test_exit);
-> > >
-> > > and then:
-> > >
-> > >   insmod /path/to/thismodule
-> > >   cd /sys/kernel/security/standon     <- we hold 'standon'
-> > >   rmmod thismodule                    <- 'standon' don't go away
-> > >   insmod /path/to/thismodule          <- Failed: File exists!
->
-> Thank you for your reply. :)
->
-> >
-> > A quick procedural note, and you may have gotten an email about this
-> > from the stable kernel folks already, you generally shouldn't add the
-> > stable alias to your emails directly.  You may want to look at the
-> > kernel docs on the stable kernel if you haven't already:
-> >
-> > * https://docs.kernel.org/process/stable-kernel-rules.html
->
-> Sorry for that, I will read it. And thank you for your pointing it out.
->
-> >
-> > Beyond that, we don't currently support dynamically loading or
-> > unloading LSMs so the immediate response to the reproducer above is
-> > "don't do that, we don't support it" :)  However, if you see a similar
-> > problem with a LSM properly registered with the running kernel please
-> > let us know.
->
-> I don't think that not supporting dynamic loading/unloading of LSMs means
-> that directories/files under securityfs cannot be dynamically added/delet=
-ed.
->
-> The example code in the commit message is just to quickly show the proble=
-m,
-> not the actual usage scenario.
->
-> I'm not sure whether existing LSMs have dynamic addition/deletion of file=
-s,
-> but I don't think we should prohibit these operations.
->
-> Moreover, since securityfs provides the securityfs_remove() interface, it
-> is necessary to handle the deletion of dentry whenever it is used. What's
-> more, we have EXPORT_SYMBOL_GPL(securityfs_remove).
->
-> (By the way, the reason why I noticed this problem is because I needed to
-> dynamically create/delete configuration directories/files when implementi=
-ng
-> an LSM. Of course, I am not dynamically loading/unloading LSM, but
-> dynamically adding/deleting directories/files under securityfs according =
-to
-> the status during LSM operation.)
->
-> Therefore, I think we need this patch and strongly recommend it. At least=
-,
-> it has no harm. Hahahaha
->
-> thanks,
-> Jinliang Zheng :)
->
+The following commit has been merged into the irq/urgent branch of tip:
 
-We have added securityfs_recursive_remove() for this purpose.
+Commit-ID:     3318dc299b072a0511d6dfd8367f3304fb6d9827
+Gitweb:        https://git.kernel.org/tip/3318dc299b072a0511d6dfd8367f3304fb6d9827
+Author:        Suzuki K Poulose <suzuki.poulose@arm.com>
+AuthorDate:    Tue, 22 Apr 2025 17:16:16 +01:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Sat, 26 Apr 2025 10:17:24 +02:00
 
-To the best of my knowledge, IPE is the only LSM that will delete
-dentry during normal operation.
+irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
 
--Fan
+With ACPI in place, gicv2m_get_fwnode() is registered with the pci
+subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
+during a PCI host bridge probe. But, the call back is wrongly marked as
+__init, causing it to be freed, while being registered with the PCI
+subsystem and could trigger:
+
+ Unable to handle kernel paging request at virtual address ffff8000816c0400
+  gicv2m_get_fwnode+0x0/0x58 (P)
+  pci_set_bus_msi_domain+0x74/0x88
+  pci_register_host_bridge+0x194/0x548
+
+This is easily reproducible on a Juno board with ACPI boot.
+
+Retain the function for later use.
+
+Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/irqchip/irq-gic-v2m.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index c698948..dc98c39 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -421,7 +421,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
+ #ifdef CONFIG_ACPI
+ static int acpi_num_msi;
+ 
+-static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
++static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ {
+ 	struct v2m_data *data;
+ 
 
