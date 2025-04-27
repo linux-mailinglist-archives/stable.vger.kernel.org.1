@@ -1,90 +1,86 @@
-Return-Path: <stable+bounces-136779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 897BEA9E072
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 09:31:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2991A9E095
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 09:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FE8717EA0C
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 07:31:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C37D3B8562
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 07:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 100A41DE2CF;
-	Sun, 27 Apr 2025 07:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CFF1F463A;
+	Sun, 27 Apr 2025 07:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VwQqVh78"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zpnxmehx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E1D2459F0;
-	Sun, 27 Apr 2025 07:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5CA10E0;
+	Sun, 27 Apr 2025 07:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745739053; cv=none; b=aoQ1rCIIk0MU3ZMav+UByx3Zsa1CQQgndYOyfJGrV7FezbSg6vmWxo/+ZuxY4c/XE2TkJjpGvItJthFbgiG2HLSNBzto6zCtFEC8CuClnkdSV87M3ed1b22Dc5gqeG0KOyZRYMYq1pveYx05rVuWIjIqUpKsdg/dNCey6jMAsak=
+	t=1745740078; cv=none; b=K0C9/yQelypi0FDN9R8mccvZP2IApLBVvhV3lXF6IArAXZggTg+lM2cfjNmgrrvunCuugqe8l+/QSdELAkAG94K2EzkLzVXEW9qLd5BxDrxRHFZ6vlg4koPJrr2zFwIgaJ3Rq8qtMSCVfDWEQRJO95gPMjojkSupj7jPFVwcY88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745739053; c=relaxed/simple;
-	bh=uzVjkm7xuS851VrFWNmL0auSaJTNbIuq8hK/utJoN/8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cm5S71zZHK1olm4sZYXsed7l6yQ27e3tsydkDSTAjunTLTyho6pdsaWndrJ87Z8vDOs/9VA0cTbq5VKg/Q+93Qf3L/2XewK9Jzb63KGqpJRCOJRCPWykZhPbBNzuiXzMJzEJsS+Iolbh1tLUKzLe21dkIXasTof5OWROgv/zP+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VwQqVh78; arc=none smtp.client-ip=209.85.128.53
+	s=arc-20240116; t=1745740078; c=relaxed/simple;
+	bh=Zv9UkLIihex6h6uTzkv6W5mgHkrreKRyi05a5WoLInI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TALxscnTsAP5ImfWyDDibGMAkZre1o8KAPYmiT+A4WOJF2bHbJbZqC4tfjDOkw8cedJriT5JFXTwlCXqUq/aNZTSAiLlF8PU2vFPvAQKx0RShKDIRczHHfEkSS/8B9/SNy+XI5acRRgzRUzZDmIHMoccJJS+iD7UPdK1okBPmC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zpnxmehx; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43d04ea9d9aso16373575e9.3;
-        Sun, 27 Apr 2025 00:30:51 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cfa7e7f54so24302555e9.1;
+        Sun, 27 Apr 2025 00:47:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745739050; x=1746343850; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bzt4aSgxAuWrJytcX/gjPBd3APIFdgE8OTpFBrBgGjo=;
-        b=VwQqVh78m6RR7Obqp4EY0lcR/qZjFAQSeRtgCFu8nka4ZlaYp5mY/dAliHdWVXeHLd
-         Fz1pugk/I7eN/b2PvwT5ltSo8m6MyLEoTrfQkNXB32LbQfSCdjXJ2JZ36bSvuPAmYO/G
-         5fGmsCMl037ZQiP3sapU1RQXIIyY56+XPDkZhzcsrZ1Xqbc/Hb7jV212tlqHe2i6lYXf
-         ivMei8UCW7GQSvxGXan1DqixFCWHKGsGQdlDEtEW8czBAEgDBsMUzQ5UwlLgx6j5T8xs
-         h5HNUZ3i98Ngwe14wTzBmTjvUj/BLZOhzfJ4L1erKVswiMzWQUeKDzYnykdqBN9pZSuW
-         iLVg==
+        d=gmail.com; s=20230601; t=1745740074; x=1746344874; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ep7HI99e/tGud544tNPRZD7MzU2VMMJjX/Q3bJALYng=;
+        b=ZpnxmehxZsjv4IzefgcYPbrMgLwChKJ4Q4aKRgWuxTGOcLFfsEmGtliaRC+SVdOyW+
+         fBI8WsJj/c30rX904oeEIN3V6vpPIFAHqp2iRjwCaCH3e8Ro/ZFOyc4Rw77PJXI5Cbdm
+         wVB1m6wyPSJQ/j58mjhbBKoJTaG8+5ot0eA8O6cW9BdEQMKluECXCVwjJlCckqQEooPW
+         lhCQSb5/bLsWlVcDc7P0gUDQaHV2OuMuKy2nFPaRCQBARVR63c+DXlRjH3u3lbSzz9N1
+         oPrf8t6kRkhMjGjN3fLbMUr93EajIlNpAsKjd9vsRty7gvmjqHW1sLM6oyXTS02Xy7Aa
+         0sOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745739050; x=1746343850;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bzt4aSgxAuWrJytcX/gjPBd3APIFdgE8OTpFBrBgGjo=;
-        b=nmpJ6gvnLLpfRXG3uKv91dYkgllhhE0fjSMuoDUv71bexFM2vzVubv6Aiz5F8qJESd
-         lU/U7a7MHv/u4m7OHuYcDkJ0wL61YWw3XFzKwjIoQLikVzc4l7DhX/zhXRM31EBPa3vP
-         9rE2ivtcEZD9kZRV0XZES4+HIp2yCsH2qo9EwsBx2rn6GlwTqq4KPGt35ZK0hI1cIkER
-         USR05cOT+Jjv68AzAY/awUUd6zI8z9FHXrp87mkwoSIcoXxIwg9TK7lIW3rZ8LfCmS0x
-         KEO/cY7gcEELGGoLpZJtYtqdOT8W9Ud8nSWDpzjl/LR4KHr9f+nkmw0MEy9VppZVVGoJ
-         ichA==
-X-Forwarded-Encrypted: i=1; AJvYcCVfV9N0ge1GwmHJKHxn6LYWjS6+KS0d9a6SqMTei9TNuXEv8vnJ5aLofOADqL97peGdHYh6ysf2@vger.kernel.org, AJvYcCWEaxiS/4CDqrnBHeXjOZnFtm/1aNZ1MErTrJTi3nOKWSiRbuuKmYwmDW82xHKrDdWxGeu9bIQRdac=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPBO0TZFtIulic8vvCMmL/2AI9zLwfZ6Ja/Mzss2yyhkLCSgz4
-	zf8A+df7Xqp4GWLJcd1knPs714hoOQrxSryFBbLdrnlUWrdlFisi
-X-Gm-Gg: ASbGncvHG7O/gt8nr9KEA+/eU02phMoTzLVTNIBTOCrWH8Tw4qj7WgqbgbRwBDH5jrn
-	2ms7nGExgk/I/JBJzvWXjT09mslBCd9yMItovJhj08oKZxJ400pdQpeGCAB5oPJePTFl1b4l2Qg
-	TSP++a0AFJmvsR7iXMApDkC9Wv6kCv/VDidEWrAx1A/tEw2gow2uKCH9X3gOfQs9m3Y8pv7+A4x
-	q2FfxJ008UTYFTK/lbRKLRqbrvDXaqKVWJAz0q3g2/W/1jb4V8RnOApFoxZ14DPW3A9lp4MuOhn
-	ci0YT0O0SHTwcZVo2GV8nYRdisioLyN6gJe50rRNDOokc+Kvur6dKDRHymijW92pRgBDu0QeHJE
-	u
-X-Google-Smtp-Source: AGHT+IFGIj4SyOW93HmptYHTXMCgPsTVJ1spoXKh8WcrgQXDedBpI8Zjc5j/BSd2cbwiVs8eBQuqUw==
-X-Received: by 2002:a05:600c:1e8d:b0:43c:f597:d584 with SMTP id 5b1f17b1804b1-440ab872053mr38535405e9.29.1745739050206;
-        Sun, 27 Apr 2025 00:30:50 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745740074; x=1746344874;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ep7HI99e/tGud544tNPRZD7MzU2VMMJjX/Q3bJALYng=;
+        b=hr/Da9N9R/Vm2xfGWqM1L3P4hZ43Vs7OmiV86/Q7DqiZNpYrxoO3TXBIQHr58ETkVE
+         FDBl/0xzjxJb63xDnEUAEXPW2oBqbO+2aCJe3AAX9/kzwwEPsPIYu5G//AgPG2pjKPiG
+         y1F+UH1xGlI0pH85u9mvMC88ydKiTrwO297JTP9zCSiQVpeookEOqzFVh7ehwUWz5kMa
+         EI+qva7RtKCMwWKgS2kTSlOGWdCKP1QuCB7NPhBOUy8htdo+flrNCOkV7gavpimUfRUl
+         i90aLCqxn/NVNEFpWJODqvgZ/8M2bJ9YLhNrCUq8NjcQGrVharNLWXCPBoIRnamQNbgR
+         HZeg==
+X-Forwarded-Encrypted: i=1; AJvYcCWj/ldd9Rxy6OD6E5yJuS+GgpC0JhS64Bm3S8KZBB3AsVNdOqgekiPYpzqxgU3QmqiDzMUqUu8X8eY=@vger.kernel.org, AJvYcCX7SdSXGkTMhGdhNuHxQ/sH11E6spZFnOq92B6qPmPcausCpunKddhkJDPqjW1jiBxz4BiceYGg@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJfejYc3UldEhPYMNwMMvxj3Gg0msFVgX/j7yw22ag82LQ9Brf
+	iA3JQt6kC4oJinMO3YhVES0jImx6zoVdaW7fh4rp4YRZYej50XTn
+X-Gm-Gg: ASbGncvWS14ZLwj64brNBib8SuuXlGkDXns4LpjOtlqUAnTp5hoOo72PqI/dAKvShoH
+	r/1MhHk/Hq0TZVPejADPv1GGugr+9k3aP6yBPqxLuI11JxvDZ2Jo5QkAbplaAwZUohNRrPkGxiN
+	Ofc0leSbKxnG498uTrRWIUtn8NJbDH5DViXYbgzz5DkRX5peElTBpwqCGdYlm2KD3WaoTi0fHv9
+	avPIP1OkAAzzGCwcpqVf0sQAW5Klb0uR9Frc6AhNsC/zdLBcwq/8PvnwzaCr9xAnYsNj8o91TfA
+	WW/mnjEbKUF4RsZzp2pa1yIXB01goq/lXhWzMTpsBkovZzxtuK3qPuJf6s8Ty9kTyrDJOmL1ftM
+	v
+X-Google-Smtp-Source: AGHT+IHuLsA8CHbCmxeHV3GAcZ+vmQwXwyb5kGgaVUUzbsCSaucWEw8NINf+yf7jJY/b8kbPUjvnew==
+X-Received: by 2002:a7b:c384:0:b0:43c:f3e1:a729 with SMTP id 5b1f17b1804b1-4409c4dfb60mr85412155e9.12.1745740074577;
+        Sun, 27 Apr 2025 00:47:54 -0700 (PDT)
 Received: from localhost.localdomain (82-64-73-52.subs.proxad.net. [82.64.73.52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a531072csm83924145e9.18.2025.04.27.00.30.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-440a53044besm84930655e9.14.2025.04.27.00.47.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Apr 2025 00:30:49 -0700 (PDT)
+        Sun, 27 Apr 2025 00:47:53 -0700 (PDT)
 From: Dave Penkler <dpenkler@gmail.com>
 To: gregkh@linuxfoundation.org,
 	linux-usb@vger.kernel.org
 Cc: guido.kiener@rohde-schwarz.com,
 	stable@vger.kernel.org,
 	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 3/3 V2] usb: usbtmc: Fix erroneous generic_read ioctl return
-Date: Sun, 27 Apr 2025 09:30:15 +0200
-Message-ID: <20250427073015.25950-4-dpenkler@gmail.com>
+Subject: [PATCH 0/3 V3] usb: usbtmc: Fix erroneous ioctl returns
+Date: Sun, 27 Apr 2025 09:47:50 +0200
+Message-ID: <20250427074750.26447-1-dpenkler@gmail.com>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250427073015.25950-1-dpenkler@gmail.com>
-References: <20250427073015.25950-1-dpenkler@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,67 +89,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-wait_event_interruptible_timeout returns a long
-The return value was being assigned to an int causing an integer overflow
-when the remaining jiffies > INT_MAX which resulted in random error
-returns.
+Recent tests with timeouts > INT_MAX produced random error returns
+with usbtmc_get_stb. This was caused by assigning the return value
+of wait_event_interruptible_timeout to an int which overflowed to
+negative values. Also return value on success was the remaining
+number of jiffies instead of 0.
 
-Use a long return value, converting to the int ioctl return only on error.
+These patches fix all the cases where the return of
+wait_event_interruptible_timeout was assigned to an int and
+the case of the remaining jiffies return in usbtmc_get_stb.
 
-Fixes: bb99794a4792 ("usb: usbtmc: Add ioctl for vendor specific read")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
----
-Change V1 -> V2
-  Acc cc to stable line
+Patch 1: Fixes usbtmc_get_stb 
+Patch 2: Fixes usbtmc488_ioctl_wait_srq
+Patch 3: Fixes usbtmc_generic_read
 
- drivers/usb/class/usbtmc.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+Dave Penkler (3):
+  usb: usbtmc: Fix erroneous get_stb ioctl error returns
+  usb: usbtmc: Fix erroneous wait_srq ioctl return
+  usb: usbtmc: Fix erroneous generic_read ioctl return
 
-diff --git a/drivers/usb/class/usbtmc.c b/drivers/usb/class/usbtmc.c
-index b3ca89b0dab7..025a7aa795e3 100644
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -833,6 +833,7 @@ static ssize_t usbtmc_generic_read(struct usbtmc_file_data *file_data,
- 	unsigned long expire;
- 	int bufcount = 1;
- 	int again = 0;
-+	long wait_rv;
- 
- 	/* mutex already locked */
- 
-@@ -945,19 +946,24 @@ static ssize_t usbtmc_generic_read(struct usbtmc_file_data *file_data,
- 		if (!(flags & USBTMC_FLAG_ASYNC)) {
- 			dev_dbg(dev, "%s: before wait time %lu\n",
- 				__func__, expire);
--			retval = wait_event_interruptible_timeout(
-+			wait_rv = wait_event_interruptible_timeout(
- 				file_data->wait_bulk_in,
- 				usbtmc_do_transfer(file_data),
- 				expire);
- 
--			dev_dbg(dev, "%s: wait returned %d\n",
--				__func__, retval);
-+			dev_dbg(dev, "%s: wait returned %ld\n",
-+				__func__, wait_rv);
-+
-+			if (wait_rv < 0) {
-+				retval = wait_rv;
-+				goto error;
-+			}
- 
--			if (retval <= 0) {
--				if (retval == 0)
--					retval = -ETIMEDOUT;
-+			if (wait_rv == 0) {
-+				retval = -ETIMEDOUT;
- 				goto error;
- 			}
-+
- 		}
- 
- 		urb = usb_get_from_anchor(&file_data->in_anchor);
--- 
+ drivers/usb/class/usbtmc.c | 53 ++++++++++++++++++++++----------------
+ 1 file changed, 31 insertions(+), 22 deletions(-)
+
+--
+Changes V1 => V2 Add cc to stable line
+        V2 => V3 Add susbsystem to cover letter
 2.49.0
 
 
