@@ -1,75 +1,75 @@
-Return-Path: <stable+bounces-136788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD869A9E3C1
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 17:31:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E22A9E3CB
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 17:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 307D8177B63
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 15:31:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D90FA3B3E9A
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 15:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6551A5BA6;
-	Sun, 27 Apr 2025 15:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327C61C862E;
+	Sun, 27 Apr 2025 15:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hv9oeUZ/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SjhlHiwn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4412635280;
-	Sun, 27 Apr 2025 15:30:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72716155C97;
+	Sun, 27 Apr 2025 15:45:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745767860; cv=none; b=jwLRE9dGLi8g2PVLOi5iDk6mN0XguIYrvL/m5Owvn4gWziZdnI7kABFhsUFMue+EckVjnJtz/pbQv4m5bnPiSNd+WjHgBaxwgvtW6H4M0LsFJb64T4Pa4ItQjMPCngfLWu9J6vWABVRlaoiR1xkdOY976NkYCusU4jWlU8yI9ww=
+	t=1745768754; cv=none; b=Sl7HP+oQtysoDDCQ/9NbuEPqmxKSBKEJehcnDQqOXkH6I6tBg5581Wnvnz9Qt9GO20bcFr1vTFbEF+rCxcmOI/BpVbMQz30B/4bEXf5SxKPP8t0/Xp/uahc6AO8OqVNSWJfs7MK4RJi5q4KvAOlnvjjlT6ha+4HItTbSBMSYKa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745767860; c=relaxed/simple;
-	bh=edPLn501f0ij89POdqKIVj6Bny2sztnFljJiPHHgJ2Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XY+szBotRd05K3LLkJogolr7hqb6d4G2S20T3yz0QZtQNx41lBu0KHtmnHzOBLDgxtfwKfzk65hkvZzhC7Gs2wByLdn89DLOva2QAKzwx2ICwk0ymDyxV1BDg+pWll3osV3juSl8WPQtTmKl3sWhOb2T8id+aPxYu8CRgALLkQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hv9oeUZ/; arc=none smtp.client-ip=209.85.215.178
+	s=arc-20240116; t=1745768754; c=relaxed/simple;
+	bh=LufHX8cplyfE6bc3Dn2Ou09jkpw5XXBf57Zw6V2jIiA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R0WIyApAfBaujMdWSFp22f5RNOrJ4jsa9YAeqD2XD86XW/6B8oG55x0eToOlmnSTHDi365UnxxgxOio2yW+L1EzqV4oUpAd5nbmm/NDWg2jEXIkJRhABDVoWrO3DDzhK2OO0hNfoQWVxiauQkaYwvIAvoGCxv3P0RrftcNwJusM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SjhlHiwn; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-af590aea813so4760002a12.0;
-        Sun, 27 Apr 2025 08:30:59 -0700 (PDT)
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-30572effb26so3439542a91.0;
+        Sun, 27 Apr 2025 08:45:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745767858; x=1746372658; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1745768751; x=1746373551; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Lu0Qpy32cRnk6C00xSOjQCLbKsFc+72PU0/zEKOJ4OM=;
-        b=Hv9oeUZ/hFJhHeGXxkkwYxgHOdILUjo4k7Y6YMoIV7zcrNVyYBBu73b2iQV7co/Amt
-         sHX/+3TqbJIXG6pR8IS747T9+3vDFzKT6W3DIFw69CamHgG/xuJHvP/QVwpNmogvd8Dx
-         fiJbQkAU/ktDtpVLt19Yx7X+A/+9/nBtLo9bAxQa1TJl+f72v8rRyiz4Kwdjga6WNXxz
-         gQia5ALBnIxyd7AD8dMBDnLSwMBlF79ISDEXxNMkq7AUQ6/yCslPwoUg3bPdwftjSwZh
-         m4pKpyOQA/gp0GkqMTd76KBES0MrT/L5AWEL4HAcd59zdsz8oXhoZ8t+hqE24UwI9A+4
-         84bw==
+        bh=7H3CGfdKeQmA85O5UdRYRS4BFpY8FBaukpxGzuJa2pw=;
+        b=SjhlHiwn7mRUazhZbkRyR3rAct5zo/dqCmun/QeXos/V6ltI75pUHtWCDL5DL5i0hJ
+         qhEDZqpqNrUKufuzjgOjtTq8AixYo44UpaEy2ne6zbsUqua26B7MkkeB64ZQyCTfdbB1
+         NO3v6BXWmcQeJkUhIP/C03R6jC4aKR90Q8vic5CG6n1W4YedCKYPoECq4zlwVHVeeaei
+         m/nwEfPU4LqHhRuOg01pnnP7Ul3k7chVc3umgu69nRoSZFw7w4C7tCAemYmR77cIFHPf
+         cUEqjkU36BFDNnTtNDa/B3hh17/+FgaCzjbH9iYRd1u3DAXOyvYOqDvgdizhQZZYedvk
+         reCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745767858; x=1746372658;
+        d=1e100.net; s=20230601; t=1745768751; x=1746373551;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Lu0Qpy32cRnk6C00xSOjQCLbKsFc+72PU0/zEKOJ4OM=;
-        b=XS+mWxRiynx3O++D284jRtiOJ+07dSQtN0wXZQ1mUMEb9FfZKca0HBzjIxn+4K8DWM
-         1vdzEq8fmt/3bb7s+9ttaab8+vrAauP0QjDAQMAwif/iilUGbI7PyoEzlK4Iex9UrmEi
-         1LCwJ0IFHdbRboEE6mUhmlShxn54wSpRWibmJDpBM/3c5pHpcZvZaM4u3zACDObqvsWR
-         lHqLnBuDzpF+lES5K7sa6PkUW9iV64WTQ/RGK3du51SKbkEol1dsacPA5y8H1UVWNsWp
-         B7kj64p6hLuK2WQhkyzP6aWDgcmEudY+qs2TjehEnrUDAjajJwKfrGhcWKYSO/Ovxp/X
-         zIxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJYj4UJTe649DCZZUNXDe30X+uoKiTMSMZahjq4Bio2UBe6dJkq1wzpverz5VQPVPUkxd4cPm/Yt8uzzo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyu59xGwmIV7G5h0lQ01/V3rhOjMVXJThDbaQi4/Z+gfrPI/sOC
-	JzyzS+obtHRzMyujFgDAzjgx8LJE/mYu4U3Kj4acPbj0Kcgh66QjogIjDsxp
-X-Gm-Gg: ASbGnct0syVP6tWyEZ26zmOFz7cKPtWrPa08m2XCrmH2fIBZOkeKgs4FZZMCGQBtzUN
-	NXXqpFlW5jJ0epJeMpC5mBfpbkKA2vOwUzxOC9hfPiPZOvZL4Zo23fSJzBNmSakqD1YTd1VGLo7
-	IZ9EoV8kODZ01F11iwIdVpfRD9cqqYlE/ge4uLxmKHexHYoy8ttm5jSJsldvjZXAOt6xv1pY9e5
-	qpjeE0Mi9JEYjvCBYscLUzfR+3gi9SDOCiGOxO5zLHxnOVb0EzuzelgIxHbMYBazREJctgKli1W
-	wKSpcYXniJYWwfrNwdy3p8tX3P7DHh9ItQsx9EAX
-X-Google-Smtp-Source: AGHT+IE/AIPDBZfGFz35irHOS6OjtJ7DIKKb7ayqgzlXDAwBQDxaFEfBWXiyKUieJQy7r8AAx0p9Cw==
-X-Received: by 2002:a17:903:985:b0:221:751f:cfbe with SMTP id d9443c01a7336-22dbf95a2b7mr150173215ad.19.1745767858142;
-        Sun, 27 Apr 2025 08:30:58 -0700 (PDT)
+        bh=7H3CGfdKeQmA85O5UdRYRS4BFpY8FBaukpxGzuJa2pw=;
+        b=IvcRtM4ohXei5lx8oNGgh/f2jseaaDpIj6a5WgRd9xfSQmR7/Z7P3E/I79i31sSEtQ
+         2vnFDHcVgFzcUcjML0gBPqY/EUBYpzwLpCKDoxj6+YHOiq8WxGytykoQxmeNKrNfzDqW
+         xgtPYcxclzdXzQ1CBmkW2FkBRomKiPz/o2Pl8Qc7wKnrLDzia7PLCSI2uHcjI6taqMtf
+         z5EhZfyXUmIyIke59Ze5F3tY7CjxAwiaJnk6CEOvULhQFahI08qVXICQVAHKIhA5a0cy
+         19R1+ZV3lOKVTqGZjL4qks6SWZs0Ue4uK2045MqEDC6Cd15KTT700MFT7+baEmQo41Gk
+         SV8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUxo8WzlNMfJE/1waDgptJ5apY5ESZJSGmnt85QtsbcWpaO/yTPON8/pHLEK6KdH53itnYzorWwhVpEt80=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxz9DmGnk7YlpfjeZ0BMmhpSkB3kvOa5IYMUb1vkLWjuiZDBmnT
+	5sA52sLDcZxtz/7Pq+xZQgsn21aWn7Dv6bIWycIFecYqiCKwyIdC1dXj04cu
+X-Gm-Gg: ASbGnctK8wLd6rRjBqEOQHIJDWAJIdq8KgWp49+NYUQBaye6m/IONzB4AyNVvGfzV76
+	6z4Nlj3OnsPKrHVdug7oBn7rl8vOaCCeK9IUWeViZVBgXbfsww4rY9OFjaUjQb3Lp3F45Z7Z1K3
+	pJXkyQHrQMtQs9D/TAmueByLFfmqh/exbevbOPEqRV4KrTUvV/y2C6ZYAOYAmjvXvq7SOj7bNRC
+	cK+w3Mw1BaghCH1K09LAhr1ln/M4hPRnKIuAiCcE1HSOH3nMqKYPdCe6i7FFlxZ454zDiVfHaaU
+	skYv4iIC96uOXHRrCHMLF74dZie1vKO6e1jCyDw1
+X-Google-Smtp-Source: AGHT+IHq2GiUl5vh/UvTDKS1xTbiflFzANxoGSTrV8i3Ib/1ucPJH61yRREAPJwoNXjzQr/QYwNVuA==
+X-Received: by 2002:a17:90b:520f:b0:2f9:c139:b61f with SMTP id 98e67ed59e1d1-309f8d9b077mr14393324a91.14.1745768751500;
+        Sun, 27 Apr 2025 08:45:51 -0700 (PDT)
 Received: from pop-os.. ([49.207.200.116])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4db99d3sm65549225ad.53.2025.04.27.08.30.54
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309ef061acdsm7150108a91.16.2025.04.27.08.45.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Apr 2025 08:30:57 -0700 (PDT)
+        Sun, 27 Apr 2025 08:45:51 -0700 (PDT)
 From: Aditya Dutt <duttaditya18@gmail.com>
 To: stable@vger.kernel.org
 Cc: Dave Kleikamp <dave.kleikamp@oracle.com>,
@@ -79,14 +79,11 @@ Cc: Dave Kleikamp <dave.kleikamp@oracle.com>,
 	jfs-discussion@lists.sourceforge.net,
 	skhan@linuxfoundation.org,
 	Manas Ghandat <ghandatmanas@gmail.com>,
-	syzbot+7cb897779f3c479d0615@syzkaller.appspotmail.com,
-	syzbot+6b1d79dad6cc6b3eef41@syzkaller.appspotmail.com,
-	syzbot+67f714a53ce18d5b542e@syzkaller.appspotmail.com,
-	syzbot+e829cfdd0de521302df4@syzkaller.appspotmail.com,
+	syzbot+ccb458b6679845ee0bae@syzkaller.appspotmail.com,
 	Aditya Dutt <duttaditya18@gmail.com>
-Subject: [PATCH 6.1.y] jfs: define xtree root and page independently
-Date: Sun, 27 Apr 2025 21:00:45 +0530
-Message-Id: <20250427153045.90396-1-duttaditya18@gmail.com>
+Subject: [PATCH 5.15.y] jfs: define xtree root and page independently
+Date: Sun, 27 Apr 2025 21:15:39 +0530
+Message-Id: <20250427154539.96678-1-duttaditya18@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -106,30 +103,21 @@ definition of the in-inode xtree root and the external xtree page.
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Tested-by: Manas Ghandat <ghandatmanas@gmail.com>
 (cherry picked from commit a779ed754e52d582b8c0e17959df063108bd0656)
-Closes: https://syzkaller.appspot.com/bug?extid=7cb897779f3c479d0615
-Closes: https://syzkaller.appspot.com/bug?extid=6b1d79dad6cc6b3eef41
-Closes: https://syzkaller.appspot.com/bug?extid=67f714a53ce18d5b542e
-Closes: https://syzkaller.appspot.com/bug?extid=e829cfdd0de521302df4
-Reported-by: syzbot+7cb897779f3c479d0615@syzkaller.appspotmail.com
-Reported-by: syzbot+6b1d79dad6cc6b3eef41@syzkaller.appspotmail.com
-Reported-by: syzbot+67f714a53ce18d5b542e@syzkaller.appspotmail.com
-Reported-by: syzbot+e829cfdd0de521302df4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ccb458b6679845ee0bae
+Reported-by: syzbot+ccb458b6679845ee0bae@syzkaller.appspotmail.com
 Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
 ---
 I am sending this as per the suggestion by Greg to submit backports for
 all the relevant stable trees:
 https://lore.kernel.org/stable/2025042210-stylized-nearest-ea59@gregkh/
-I will send one more mail for 5.15.
 This patch has been applied in >= 6.12
 and has been backported to 6.6: 2ff51719ec615e1b373c1811443efe93594c41a9
+I have already sent a mail for 6.1:
+https://lore.kernel.org/stable/20250427153045.90396-1-duttaditya18@gmail.com/
 
-syzbot checked the patch against 6.1.y and confirmed that the
+syzbot checked the patch against 5.15.y and confirmed that the
 reproducer did not trigger any issues. check here:
-https://lore.kernel.org/all/680e4455.050a0220.3b8549.0082.GAE@google.com/
-
-I also tested the patch manually using the C reproducer:
-https://syzkaller.appspot.com/text?tag=ReproC&x=15b291ef680000
-(given in the syzkaller dashboard link)
+https://lore.kernel.org/lkml/67fea0bf.050a0220.186b78.0006.GAE@google.com/
 
  fs/jfs/jfs_dinode.h |  2 +-
  fs/jfs/jfs_imap.c   |  6 +++---
@@ -153,7 +141,7 @@ index 6b231d0d0071..603aae17a693 100644
  					u8 unused[16];	/* 16: */
  					dxd_t _dxd;	/* 16: */
 diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 155f66812934..9adb29e7862c 100644
+index c72e97f06579..0e7d2662f202 100644
 --- a/fs/jfs/jfs_imap.c
 +++ b/fs/jfs/jfs_imap.c
 @@ -673,7 +673,7 @@ int diWrite(tid_t tid, struct inode *ip)
@@ -197,7 +185,7 @@ index 721def69e732..dd4264aa9bed 100644
  		} file;
  		struct {
 diff --git a/fs/jfs/jfs_txnmgr.c b/fs/jfs/jfs_txnmgr.c
-index ce4b4760fcb1..dccc8b3f1045 100644
+index 6c8680d3907a..3a547e0b934f 100644
 --- a/fs/jfs/jfs_txnmgr.c
 +++ b/fs/jfs/jfs_txnmgr.c
 @@ -783,7 +783,7 @@ struct tlock *txLock(tid_t tid, struct inode *ip, struct metapage * mp,
@@ -209,7 +197,7 @@ index ce4b4760fcb1..dccc8b3f1045 100644
  			xtlck->lwm.offset =
  			    le16_to_cpu(p->header.nextindex);
  		}
-@@ -1676,7 +1676,7 @@ static void xtLog(struct jfs_log * log, struct tblock * tblk, struct lrd * lrd,
+@@ -1710,7 +1710,7 @@ static void xtLog(struct jfs_log * log, struct tblock * tblk, struct lrd * lrd,
  
  	if (tlck->type & tlckBTROOT) {
  		lrd->log.redopage.type |= cpu_to_le16(LOG_BTROOT);
@@ -219,10 +207,10 @@ index ce4b4760fcb1..dccc8b3f1045 100644
  			lrd->log.redopage.type |=
  			    cpu_to_le16(LOG_DIR_XTREE);
 diff --git a/fs/jfs/jfs_xtree.c b/fs/jfs/jfs_xtree.c
-index 2d304cee884c..5ee618d17e77 100644
+index 3148e9b35f3b..34db519933b4 100644
 --- a/fs/jfs/jfs_xtree.c
 +++ b/fs/jfs/jfs_xtree.c
-@@ -1213,7 +1213,7 @@ xtSplitRoot(tid_t tid,
+@@ -1224,7 +1224,7 @@ xtSplitRoot(tid_t tid,
  	struct xtlock *xtlck;
  	int rc;
  
@@ -231,7 +219,7 @@ index 2d304cee884c..5ee618d17e77 100644
  
  	INCREMENT(xtStat.split);
  
-@@ -2098,7 +2098,7 @@ int xtAppend(tid_t tid,		/* transaction id */
+@@ -3059,7 +3059,7 @@ static int xtRelink(tid_t tid, struct inode *ip, xtpage_t * p)
   */
  void xtInitRoot(tid_t tid, struct inode *ip)
  {
@@ -241,7 +229,7 @@ index 2d304cee884c..5ee618d17e77 100644
  	/*
  	 * acquire a transaction lock on the root
 diff --git a/fs/jfs/jfs_xtree.h b/fs/jfs/jfs_xtree.h
-index 142caafc73b1..15da4e16d8b2 100644
+index 5f51be8596b3..dc9b5f8d6385 100644
 --- a/fs/jfs/jfs_xtree.h
 +++ b/fs/jfs/jfs_xtree.h
 @@ -65,24 +65,33 @@ struct xadlist {
