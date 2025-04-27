@@ -1,125 +1,134 @@
-Return-Path: <stable+bounces-136790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2084EA9E41F
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 19:39:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED805A9E457
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 21:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3521894215
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 17:39:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 750F93B1452
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 19:11:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C387A1EF39B;
-	Sun, 27 Apr 2025 17:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D861F1EB194;
+	Sun, 27 Apr 2025 19:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Mj8FXkbf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jsi+w+bS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0F1DD0F6
-	for <stable@vger.kernel.org>; Sun, 27 Apr 2025 17:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9431F941;
+	Sun, 27 Apr 2025 19:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745775541; cv=none; b=MR3G0eaY934BNjaS5P91yI8hJFmFaCzprnGB8yECg2bl1TR3e7TQ5W87lzUVuZXCT5OaxbUojK+mqz3wxr1mroSyEcyBnaXXqwm6I+N2VC13BIT8FVuXUjOKVieqIFOIxkirqUYjGHPFk1a2ma27KcHhmjtvq4kndWK/smQ68D4=
+	t=1745781108; cv=none; b=gZ3JAJFv2Cn2RJS/f6gcaoxtX7pCIrTtEdebnY6AeDf2csqDOmS5t/8ZtU1ECjNRfYqPvm0FLF9vJvZYIbVHc/QMkCs3JdNU743MUW4o12YnQTNhk34lfzMjLOzARVo+KXO63YBHvvGbRZjdOutFFQb71+CWm86KaN8KZ3Jhwq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745775541; c=relaxed/simple;
-	bh=xlOkb+AA7EeoOdc+SBv2SlUBLZ444ktBXbA5itkBKrM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mgFgJ5+FNjXxvcTu2vGH7wQTmnTahdQQbSBlUAUcMYNwfQUlZfngM5vPVI8tnuJ41oOX8YHGaeWOvh4xirfNj0ctZAYSgBgIwQx8a7lwIGbSL+E73un3M2pI/OAEfKl8Ag3Gp7X9PapV16gT1NMG9AIXXsMhWDWNNZbQUOLzOsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Mj8FXkbf; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-225df540edcso50467255ad.0
-        for <stable@vger.kernel.org>; Sun, 27 Apr 2025 10:38:59 -0700 (PDT)
+	s=arc-20240116; t=1745781108; c=relaxed/simple;
+	bh=ha+CD/QWZdr/qEctAEVQgT/2LNKeTiY01reuxChdQPg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fsO8thC9+MHKr9uaxGJWubpbda/z3QyCTBi+c0X2p/KQDRl1I3ZG5L5ONASm3IouZj4Jkyi0w49cYSqUoSp1OTRlEPwAbQw4SvEEaisSWORm1YYCvYlTmRKtBDRAfUz1LIxGJubag6oq8kKxFrh1ZBz9Hv7veMiO4nSoQ78jKnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jsi+w+bS; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22c33e4fdb8so42283995ad.2;
+        Sun, 27 Apr 2025 12:11:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745775539; x=1746380339; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vQlOF7pnuoHcV4tUzU9FAAnsi+yiSpTmFNxdSuCGH2w=;
-        b=Mj8FXkbfunkSE18HhuzSHu4wNXue46L4eyK1um4fP0zZA+/wZIxQtCehMiy3k8HWK5
-         zTr6skiGx8KaOMWhEPCIcbZYvp4qWAS2N6hgeSf3J7hlEr6HphBMtXj40hClGxVe3PWi
-         2hyKdt4hg98/OceoiFc49UwHcVR++anQVqQ341lwGAKZVgfdjbz39dTyizOMXh8X2Pe4
-         h3kdal2AMuWC7EKs6GbcJt8XoHrxcni9W77GGcjb6tfmk/xQxNNk2UpEUTMBUa+VX6fc
-         Knm+RaCnAFhxW98wwbYvD4npZ2u0yQLpsdnm+QmFym2g4htklIQq8RhgIcpcn1TAENoj
-         LOuw==
+        d=gmail.com; s=20230601; t=1745781106; x=1746385906; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Xq9WjFUkY/jJtaOUyR07QLAr3NdXDaHUkVXWwbHPAjg=;
+        b=jsi+w+bSJy9E/QU6tFtTNHz2ahPlNUV3SRIUFthQMdCa1T08oLDgLlFEmVFx96dSnc
+         yjFNnyRBmP9F8ib5EAHPRmzGkhBqsYmTBqpgzSqE8m3P9g0/BCZRiKQckHd+HXUgPidf
+         sNEPOCFRfnSF9+Bn27zUL0gcfv6CJ29pIvVugZXurFOKnPkExO+XsJ4lJZGvoH6klheM
+         ykmRy8RLTSL0BO7I3iFn8zdgIbyx9n4GnEdCaCraCWBtjJZp3EtLY5zQvLZd5MNrUH5o
+         48Spkld5h8vfuuD5uH61nkequIWQ1GTuAG6XCZrKJ24t9J0iPx8yH7G5wA6pvWBId8zl
+         3PUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745775539; x=1746380339;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vQlOF7pnuoHcV4tUzU9FAAnsi+yiSpTmFNxdSuCGH2w=;
-        b=Xm+xUom64iBORp21j5LdKuMcOBC745It3hMSQCwk6ldEzhDPzCZ9jJFCks+DOvdOB4
-         7LSIcZBZaz2xLwW3wUoH7qJdHA1GhyaktARhS1vEYY7nHA52ni3G1sr2A6Pf27Vd49nn
-         KuyYJ6q2MVa7luv7xDznF79VkoD63zLm6wCZK5uww0M2qKtfMDue70/Dk3OBlQB99sv8
-         FV7xo2wel5P/BvaNHhHQWQJdZAVPvk9/U4xw3Hr+ztPuwrw8VTitQ4gRFCsj29cTXE2j
-         JkxdQus++jVWmMhg/73ip1ojYt0QRDosAZfnJTquf6wUQeRC7KTaPcNrJYyidUvF94Fa
-         Xklg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDmamF6oOdHL2zjuhLLREHIoblB6M3QghzK9j6F820eaaw7yGS86zbMGXXOZj4h3WYZA8mNhU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGYnqNeUgWSP6Nr4YAG865cvTIbcWB08zYPYYb8DUHDKf+1pGI
-	FX0TWcjhpR6NltDUFTcSbXbwYgPl0EoiHD/nwMdujNHPZDZ464LHrzxJe2QgGA==
-X-Gm-Gg: ASbGncsZRBYQshXM+iPKnYeUNvg787w8+oT9jfQkbbfVckvC0FxwwEFaaS1UK5DgWyt
-	Gu8Jz7TkhNe8knA3hrqbFLIyBT425Ax3Pwkjb4GYjogeGAWPV+VTnfvjNE6ja2fUlBiwZfmFJvM
-	4b0033VvX661ytWeuT8+hW/sY04ymf+HKPDI7ZXzu8JJ+M7kdbSadLZe1EUNFKq9EOZwysN1uqj
-	fH1LzMLChbOrzz/or7o/W9vhVZe7p793Jm96odFOD2YdZMKTgpLPE13g+b7qI619bCLaDopFHBP
-	it0oWDfTnZ0ESVFV5EfMFNbDMgLedVOj+Wcm6ydTW3VxeoWgzgYa
-X-Google-Smtp-Source: AGHT+IEU5IH9SCIsyt0qXj4mqk3Sr5u/bdn7eIkZRJYO1TNJJ8pz73ALG1a7lc4tKhheycKSRkIO8A==
-X-Received: by 2002:a17:902:d4c2:b0:220:ff82:1c60 with SMTP id d9443c01a7336-22db481b546mr195207145ad.14.1745775539333;
-        Sun, 27 Apr 2025 10:38:59 -0700 (PDT)
-Received: from thinkpad.. ([120.60.52.11])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4dbad7dsm66569285ad.60.2025.04.27.10.38.54
+        d=1e100.net; s=20230601; t=1745781106; x=1746385906;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xq9WjFUkY/jJtaOUyR07QLAr3NdXDaHUkVXWwbHPAjg=;
+        b=MbbOk1zVi79RppC313dbVjovmwAs8qlCYXEPJgu5X6HMNLzqQofAbpF35xGv2OdzUY
+         cj8y0n8RaYWMUnKdR9i1k1COSmKjqISRs3sRc1Mq5fboLDebVMQogs7oCVkPvvCuP9mu
+         2o2n/tTGjEPy36fAr8pBuqqcVOLBDrkmgqqflpKU7xy1Bhiz47bvWEyUATN1njl9VzkU
+         JZZb7ITyYgF+mkD7MOmB6btgI+vMX2lfpxSj7cCCe++/aqMKmc7E+Iz/uzIZzBuvyxTR
+         cOGtJ0GsPQfGnzzb1GyAR8yFJInZDLSefodWvZDNCrtEEjObW/sRw/QC70DsTftSi8A/
+         Nc+g==
+X-Forwarded-Encrypted: i=1; AJvYcCWIMuljywc4CX6ngtDshd4sJqlXno75pBZsPoE/YkZjeiXQTXFwf27AuEODwOlBsT9T56e2sEOOU2/FRiY=@vger.kernel.org, AJvYcCXIGOwRGdydxoXIbyvFltMollfdGXvWO5G38RMEvJFzqfXPzgdSK1UQa6HtT3s9QX4wtUFDQae0@vger.kernel.org, AJvYcCXThHd4rcb3r/yySlxqEUDaZ4c3YJWXyVbBSOnj/fFbWDirPvHpvXgmj9JK4uBLA+ZRyjm9+68q@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs2jXI8UWIUS/+uhhcNEzliNi9FNxFoW5JUp8G+gBiFRecHMAw
+	wyzZ+udoAc7o5ZY0jkqJ+6BbDG42ptDpPuxPDPXampR2tMGP4NwB
+X-Gm-Gg: ASbGncuo+VBQvc3FWLDcpPeRh3m/NPILbT5al+3VoVTVvjBcGGL5Wbr71dIl1DGJ396
+	020UEemtAcRhQAIrxkdFAIOPJ8QnpBP38TqVK5AmDCAJBuEdXYYWyESfUbt0jOCwFv8FT+zGrqX
+	ANJDZkEkPAWC3l/REJpRbK+45RCg9/XVa0YwZunf9ZEokIfSzcZ9cbY7BGQQYAdNWZd5IazC7Mp
+	ehUTjwduTiqpfSpsA5j/4umO9Yqz8cMsrYKhc/gHmmYlKMXBILxARKCVEbe5aXBlRgWX8XWGCnT
+	R5MPWb8eyTcZTDCPDUqihdiLA6M+OJf88TRMBKtSNIlde2Y=
+X-Google-Smtp-Source: AGHT+IHWw4FLxxfNF5W3Sze3kOT43PHacUq2v0g0M9nT54cm3v8n2ibQ9X8LDKKBv52lTDeX2ALI4w==
+X-Received: by 2002:a17:903:184:b0:223:3630:cd32 with SMTP id d9443c01a7336-22dbf73e790mr143727105ad.53.1745781106559;
+        Sun, 27 Apr 2025 12:11:46 -0700 (PDT)
+Received: from localhost ([2601:647:6881:9060:19f0:8ab0:4510:f0a3])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22db4d76c96sm67142215ad.38.2025.04.27.12.11.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Apr 2025 10:38:58 -0700 (PDT)
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Diederik de Haas <didi.debian@cknow.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	linux-pci@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] PCI: dw-rockchip: Fix function call sequence in rockchip_pcie_phy_deinit
-Date: Sun, 27 Apr 2025 23:08:49 +0530
-Message-ID: <174577552237.92328.3418257212908173284.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250417142138.1377451-1-didi.debian@cknow.org>
-References: <20250417142138.1377451-1-didi.debian@cknow.org>
+        Sun, 27 Apr 2025 12:11:46 -0700 (PDT)
+Date: Sun, 27 Apr 2025 12:11:45 -0700
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: "Alan J. Wylie" <alan@wylie.me.uk>
+Cc: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev,
+	Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+	stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
+ htb_dequeue
+Message-ID: <aA6BcLENWhE4pQCa@pop-os.localdomain>
+References: <89301960-1758-5b2e-6d91-81ef06843e14@applied-asynchrony.com>
+ <20250421210927.50d6a355@frodo.int.wylie.me.uk>
+ <20250422175145.1cb0bd98@frodo.int.wylie.me.uk>
+ <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
+ <aAf/K7F9TmCJIT+N@pop-os.localdomain>
+ <20250422214716.5e181523@frodo.int.wylie.me.uk>
+ <aAgO59L0ccXl6kUs@pop-os.localdomain>
+ <20250423105131.7ab46a47@frodo.int.wylie.me.uk>
+ <aAlAakEUu4XSEdXF@pop-os.localdomain>
+ <20250424135331.02511131@frodo.int.wylie.me.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250424135331.02511131@frodo.int.wylie.me.uk>
 
+Hi Alan,
 
-On Thu, 17 Apr 2025 16:21:18 +0200, Diederik de Haas wrote:
-> The documentation for the phy_power_off() function explicitly says
+On Thu, Apr 24, 2025 at 01:53:31PM +0100, Alan J. Wylie wrote:
+> > On Tue, Apr 22, 2025 at 07:20:24PM +0200, Holger Hoffstätte wrote:
 > 
->   Must be called before phy_exit().
+> > Meanwhile, if you could provide a reliable (and ideally minimum)
+> > reproducer, it would help me a lot to debug.
 > 
-> So let's follow that instruction.
+> I've found a reproducer. Below is a stripped down version of the shell script
+> that I posted in my initial report.
 > 
+> Running this in a 1 second loop is enough to cause the panic very quickly.
 > 
-> [...]
+> It seems a bit of network traffic is needed, too.
+> 
 
-Applied, thanks!
+I just tried your reproducer in my VM since I don't have pppoe setup,
+after running ping flood (ping -f) bidirectionally for ~10 minutes, I
+still didn't get any warning or crash.
 
-[1/1] PCI: dw-rockchip: Fix function call sequence in rockchip_pcie_phy_deinit
-      commit: 286ed198b899739862456f451eda884558526a9d
+I also tried to reduce the bandwidth limit you set in your script to get
+traffic throttled, still no crash/warning.
 
-Best regards,
--- 
-Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Note, I just used the latest -net, without applying any extra patch.
+
+Thanks!
 
