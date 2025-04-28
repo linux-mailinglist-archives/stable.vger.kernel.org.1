@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-136914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D804A9F6F5
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:12:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B8FA9F6F7
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:12:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FB357AB8B3
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:11:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85E75189B8C1
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CE328F526;
-	Mon, 28 Apr 2025 17:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B9628BA9E;
+	Mon, 28 Apr 2025 17:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1p6OK4La"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYq6PHRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A59728E61D
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F814CB5B
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745860316; cv=none; b=iMCspwEIs7WBRt3Ur1m8/cRd1+OeM3QLO3TMDJOlaA4509+VRTQ3mh+k+DQJkKY51CggK0e6U1dQRsSJCNRVm93D8Ho5UF7b7XcH7+cYKBwQQSQw2Qu0KpgwimGSAYwGcfswvr90QiMA4uAYUD9NfTkC/P+6zhWrls4kinZoMcg=
+	t=1745860328; cv=none; b=IOv/x2fTVJkTuwCcjJ0zU8xqcfoxmOshzbmBsF0Y+cMDTbhxHJ5H1cBzbDAN+dqqCjEkr9ESbSUkeXm4Rkeyt8/QgMsV2Qdfbqo7v6r3mxnXae8mNVW67xo7IjegPYReMTL7TkC/d/ZSzs6w4oqox4NpJt1zL9nnJfV05dljG58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745860316; c=relaxed/simple;
-	bh=9B3LU56YziNcjQb1ITHEtJt/B0072OvYXLby2yJuApM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qvxaj8P+GStm31GpA7bsi+AV+OefOpi3+zzzMKvlqC6ffABKnn2QGFFR5/hyNZp/DRHuhMy+Njahf4/Y0PR8rEDD5nNtcxCCKfXv7GpJQe1+OuWrmrGD4rHfvK8mRiK7EwChIf+0xkRBw3cwcw9WRxqOSDYUnAX7d/bNkcVOXgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1p6OK4La; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78B8C4CEEE;
-	Mon, 28 Apr 2025 17:11:53 +0000 (UTC)
+	s=arc-20240116; t=1745860328; c=relaxed/simple;
+	bh=xBYZzhGbyuCwoRv1qxZjTqRmVdOS4IcAcDs/GtKLEx8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U3HuQQgSd/PCBYtRZKqeRqFYHp0JNKmFFD8goMe/uqW0sIHL/HgMFVte0X4EuWnbUzP+SkKxhlyT5gXbVET0dCKx3gfaqzI1bZbAnlfm7pW1cgAuqpubpG5I+ymmSZRf+VM4gIz7zLQq0DPzRBFXe9bi3orrAmXfAdsxXKtJfUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYq6PHRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3C0C4CEE4;
+	Mon, 28 Apr 2025 17:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745860314;
-	bh=9B3LU56YziNcjQb1ITHEtJt/B0072OvYXLby2yJuApM=;
+	s=korg; t=1745860328;
+	bh=xBYZzhGbyuCwoRv1qxZjTqRmVdOS4IcAcDs/GtKLEx8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1p6OK4LagMnUBzsHAyIheGYfQM3V5YgS+qqQRzKp66gC/1PqSH5xS6PRSDvGCzobp
-	 hu8j1Qj8BSeCdg8zneipj5fVb+DbJEPD80uTePeam8DYi7SNwZ6QDC1bmUruonn6kJ
-	 LbaKc4ZASg2eilaqTc2DJ9Bdyv1yp575CmQfce88=
-Subject: FAILED: patch "[PATCH] KVM: x86: Reset IRTE to host control if *new* route isn't" failed to apply to 5.4-stable tree
+	b=QYq6PHRvYY7P8KUR1OQQhSnHUGrNvGwarkQGYLnd5aUkHyU52wNbiubSbsWW/ruwW
+	 O+S/T5ww+UfvKT2fDynfG/dq1Q1MShjasXUvfGq8vKvs+ZZpaDAaLKlihAUm882+Ua
+	 IdgWX5SP7kmQAaGAoQNcEyEGRL62s/SnJ212NkQ4=
+Subject: FAILED: patch "[PATCH] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass" failed to apply to 6.6-stable tree
 To: seanjc@google.com,pbonzini@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Apr 2025 19:11:51 +0200
-Message-ID: <2025042851-tasting-pushup-f190@gregkh>
+Date: Mon, 28 Apr 2025 19:12:05 +0200
+Message-ID: <2025042805-occupier-decibel-a03d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2
+git cherry-pick -x f1fb088d9cecde5c3066d8ff8846789667519b7d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042851-tasting-pushup-f190@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042805-occupier-decibel-a03d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,179 +77,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2 Mon Sep 17 00:00:00 2001
+From f1fb088d9cecde5c3066d8ff8846789667519b7d Mon Sep 17 00:00:00 2001
 From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 4 Apr 2025 12:38:17 -0700
-Subject: [PATCH] KVM: x86: Reset IRTE to host control if *new* route isn't
- postable
+Date: Fri, 4 Apr 2025 12:38:19 -0700
+Subject: [PATCH] KVM: x86: Take irqfds.lock when adding/deleting IRQ bypass
+ producer
 
-Restore an IRTE back to host control (remapped or posted MSI mode) if the
-*new* GSI route prevents posting the IRQ directly to a vCPU, regardless of
-the GSI routing type.  Updating the IRTE if and only if the new GSI is an
-MSI results in KVM leaving an IRTE posting to a vCPU.
+Take irqfds.lock when adding/deleting an IRQ bypass producer to ensure
+irqfd->producer isn't modified while kvm_irq_routing_update() is running.
+The only lock held when a producer is added/removed is irqbypass's mutex.
 
-The dangling IRTE can result in interrupts being incorrectly delivered to
-the guest, and in the worst case scenario can result in use-after-free,
-e.g. if the VM is torn down, but the underlying host IRQ isn't freed.
-
-Fixes: efc644048ecd ("KVM: x86: Update IRTE for posted-interrupts")
-Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Fixes: 872768800652 ("KVM: x86: select IRQ_BYPASS_MANAGER")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-3-seanjc@google.com>
+Message-ID: <20250404193923.1413163-5-seanjc@google.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index a961e6e67050..8e09f6ae98fd 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -896,6 +896,7 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 9c98b77b7dc1..a6829a370e6a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13561,15 +13561,22 @@ int kvm_arch_irq_bypass_add_producer(struct irq_bypass_consumer *cons,
  {
- 	struct kvm_kernel_irq_routing_entry *e;
- 	struct kvm_irq_routing_table *irq_rt;
-+	bool enable_remapped_mode = true;
- 	int idx, ret = 0;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
+ 	int ret;
  
- 	if (!kvm_arch_has_assigned_device(kvm) || !kvm_arch_has_irq_bypass())
-@@ -932,6 +933,8 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- 		    kvm_vcpu_apicv_active(&svm->vcpu)) {
- 			struct amd_iommu_pi_data pi;
+-	irqfd->producer = prod;
+ 	kvm_arch_start_assignment(irqfd->kvm);
++
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = prod;
++
+ 	ret = kvm_x86_call(pi_update_irte)(irqfd->kvm,
+ 					   prod->irq, irqfd->gsi, 1);
+ 	if (ret)
+ 		kvm_arch_end_assignment(irqfd->kvm);
  
-+			enable_remapped_mode = false;
++	spin_unlock_irq(&kvm->irqfds.lock);
 +
- 			/* Try to enable guest_mode in IRTE */
- 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
- 					    AVIC_HPA_MASK);
-@@ -950,33 +953,6 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- 			 */
- 			if (!ret && pi.is_guest_mode)
- 				svm_ir_list_add(svm, &pi);
--		} else {
--			/* Use legacy mode in IRTE */
--			struct amd_iommu_pi_data pi;
--
--			/**
--			 * Here, pi is used to:
--			 * - Tell IOMMU to use legacy mode for this interrupt.
--			 * - Retrieve ga_tag of prior interrupt remapping data.
--			 */
--			pi.prev_ga_tag = 0;
--			pi.is_guest_mode = false;
--			ret = irq_set_vcpu_affinity(host_irq, &pi);
--
--			/**
--			 * Check if the posted interrupt was previously
--			 * setup with the guest_mode by checking if the ga_tag
--			 * was cached. If so, we need to clean up the per-vcpu
--			 * ir_list.
--			 */
--			if (!ret && pi.prev_ga_tag) {
--				int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
--				struct kvm_vcpu *vcpu;
--
--				vcpu = kvm_get_vcpu_by_id(kvm, id);
--				if (vcpu)
--					svm_ir_list_del(to_svm(vcpu), &pi);
--			}
- 		}
- 
- 		if (!ret && svm) {
-@@ -992,6 +968,34 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- 	}
- 
- 	ret = 0;
-+	if (enable_remapped_mode) {
-+		/* Use legacy mode in IRTE */
-+		struct amd_iommu_pi_data pi;
 +
-+		/**
-+		 * Here, pi is used to:
-+		 * - Tell IOMMU to use legacy mode for this interrupt.
-+		 * - Retrieve ga_tag of prior interrupt remapping data.
-+		 */
-+		pi.prev_ga_tag = 0;
-+		pi.is_guest_mode = false;
-+		ret = irq_set_vcpu_affinity(host_irq, &pi);
-+
-+		/**
-+		 * Check if the posted interrupt was previously
-+		 * setup with the guest_mode by checking if the ga_tag
-+		 * was cached. If so, we need to clean up the per-vcpu
-+		 * ir_list.
-+		 */
-+		if (!ret && pi.prev_ga_tag) {
-+			int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
-+			struct kvm_vcpu *vcpu;
-+
-+			vcpu = kvm_get_vcpu_by_id(kvm, id);
-+			if (vcpu)
-+				svm_ir_list_del(to_svm(vcpu), &pi);
-+		}
-+	}
- out:
- 	srcu_read_unlock(&kvm->irq_srcu, idx);
  	return ret;
-diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
-index 51116fe69a50..d70e5b90087d 100644
---- a/arch/x86/kvm/vmx/posted_intr.c
-+++ b/arch/x86/kvm/vmx/posted_intr.c
-@@ -297,6 +297,7 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- {
- 	struct kvm_kernel_irq_routing_entry *e;
- 	struct kvm_irq_routing_table *irq_rt;
-+	bool enable_remapped_mode = true;
- 	struct kvm_lapic_irq irq;
- 	struct kvm_vcpu *vcpu;
- 	struct vcpu_data vcpu_info;
-@@ -335,21 +336,8 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ }
  
- 		kvm_set_msi_irq(kvm, e, &irq);
- 		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
--		    !kvm_irq_is_postable(&irq)) {
--			/*
--			 * Make sure the IRTE is in remapped mode if
--			 * we don't handle it in posted mode.
--			 */
--			ret = irq_set_vcpu_affinity(host_irq, NULL);
--			if (ret < 0) {
--				printk(KERN_INFO
--				   "failed to back to remapped mode, irq: %u\n",
--				   host_irq);
--				goto out;
--			}
--
-+		    !kvm_irq_is_postable(&irq))
- 			continue;
--		}
+@@ -13579,9 +13586,9 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
+ 	int ret;
+ 	struct kvm_kernel_irqfd *irqfd =
+ 		container_of(cons, struct kvm_kernel_irqfd, consumer);
++	struct kvm *kvm = irqfd->kvm;
  
- 		vcpu_info.pi_desc_addr = __pa(vcpu_to_pi_desc(vcpu));
- 		vcpu_info.vector = irq.vector;
-@@ -357,11 +345,12 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- 		trace_kvm_pi_irte_update(host_irq, vcpu->vcpu_id, e->gsi,
- 				vcpu_info.vector, vcpu_info.pi_desc_addr, set);
+ 	WARN_ON(irqfd->producer != prod);
+-	irqfd->producer = NULL;
  
--		if (set)
--			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
--		else
--			ret = irq_set_vcpu_affinity(host_irq, NULL);
-+		if (!set)
-+			continue;
- 
-+		enable_remapped_mode = false;
+ 	/*
+ 	 * When producer of consumer is unregistered, we change back to
+@@ -13589,12 +13596,18 @@ void kvm_arch_irq_bypass_del_producer(struct irq_bypass_consumer *cons,
+ 	 * when the irq is masked/disabled or the consumer side (KVM
+ 	 * int this case doesn't want to receive the interrupts.
+ 	*/
++	spin_lock_irq(&kvm->irqfds.lock);
++	irqfd->producer = NULL;
 +
-+		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
- 		if (ret < 0) {
- 			printk(KERN_INFO "%s: failed to update PI IRTE\n",
- 					__func__);
-@@ -369,6 +358,9 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
- 		}
- 	}
+ 	ret = kvm_x86_call(pi_update_irte)(irqfd->kvm,
+ 					   prod->irq, irqfd->gsi, 0);
+ 	if (ret)
+ 		printk(KERN_INFO "irq bypass consumer (token %p) unregistration"
+ 		       " fails: %d\n", irqfd->consumer.token, ret);
  
-+	if (enable_remapped_mode)
-+		ret = irq_set_vcpu_affinity(host_irq, NULL);
++	spin_unlock_irq(&kvm->irqfds.lock);
 +
- 	ret = 0;
- out:
- 	srcu_read_unlock(&kvm->irq_srcu, idx);
++
+ 	kvm_arch_end_assignment(irqfd->kvm);
+ }
+ 
 
 
