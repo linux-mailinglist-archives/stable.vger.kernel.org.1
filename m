@@ -1,53 +1,65 @@
-Return-Path: <stable+bounces-136911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BB9A9F621
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:47:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB9A9F638
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:51:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E47FF1890166
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 16:48:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA543B8A6B
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 16:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F166927C862;
-	Mon, 28 Apr 2025 16:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B8E27FD7E;
+	Mon, 28 Apr 2025 16:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4n7zcBn"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BqdlwEzT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0A627D794
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 16:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D741262FCE;
+	Mon, 28 Apr 2025 16:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745858865; cv=none; b=TLrS9fGfOh2qws8Lb1afgkGlyPNU3tHunEd0gID0xEEAk5nNeb/bwVmq7HoFVARI0JSmD4CNHS70Z4WGcwzyhz2GH+GBcbkk/rbje8H6yvuuDbDlGwotJuwtTvyQN3j9g8kWQG3AbJU2VMrDL1CaTLl+bBSJvfklEVK8ss5fRWA=
+	t=1745859098; cv=none; b=m0PonB+72TkJC7wvX8bkiQOroZW+tXL3VWHnvDNjcV60B06FF0/jC4Soj/tcQUQU0vyIh1ByhH2yjbnExiB/rEXq9ECq2zhmLjc9CtS63G3JLKM5v1fqQlzbWTgYuP4mEaU0E6aux44WR0SDJnzRwixCA+MF3anJHc4dAE1wRpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745858865; c=relaxed/simple;
-	bh=pLIKPkYkAYFWjul/dixDmB/IX+Ra49x6GttopOloGGc=;
+	s=arc-20240116; t=1745859098; c=relaxed/simple;
+	bh=oEmUhIZbZAiYMOXn+vdBkUJvA4KYj2yAlYhV5SRxVNA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jJhnkE7hJDzsQlc0xVKOVgmYgGAx9vsR698uSW+lw5yUXJQ+MbwJDomNKkyN8Dk1iKl5gAe0r2ih8ki7TUspz3ytbhqK+jUr4ZE5KFLRVjVEeV8bh/AahBizSot5MKJyMnEYkmBbmbZ7D+YnM4Mrg1yy2ho6fpl0NZL19H8MUtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4n7zcBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CDAC4CEE4;
-	Mon, 28 Apr 2025 16:47:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745858865;
-	bh=pLIKPkYkAYFWjul/dixDmB/IX+Ra49x6GttopOloGGc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W4n7zcBnJTOfNREiujSG5JRLOwv9Wz0RHy4U+fu8Uo1i9pc5KbX8XdMGZL7VQa35N
-	 jC21Ep0iMBai2Gdkk3PIjmbvK1VIE/GxYp3lswRM6xBUT8IqiKCiF/dGBmftsOs6wr
-	 vC6SlJnKj4GBywGXYTJneSN14YMga40EqFbTSOSM=
-Date: Mon, 28 Apr 2025 18:47:41 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Chris Clayton <chris2553@googlemail.com>
-Cc: stable@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
-	adobriyan@gmail.com
-Subject: Re: GCC 15 and stable kernels
-Message-ID: <2025042802-cozily-caddy-8625@gregkh>
-References: <fb4cce81-1e36-4887-a1e0-0cfd1a26693e@googlemail.com>
- <2025042814-sly-caring-8f38@gregkh>
- <c6867c6c-bc47-4e3c-9676-70184baf21db@googlemail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=s+H6q+lF60pEeJ1Cg8lyago5lFkHwidK9fZWTjVsbTM41JWet3knWt72CDLJRItcw+sqUEFW2ugV5EjtkkvEYyl/9Vff1bSMXpGJIAH6zrXNCoQtYpI7dawLquGrITtwfbJj/aR48geF48vq7WKgC8IlhRM7czguGMkNcbihoiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BqdlwEzT; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=CJS+qSb/Irxv/rV6XyY0hXCjZ08w1k6CYeop3aogqes=; b=BqdlwEzTD2qxPrV8XyBSf510EI
+	H6+ZmHFaMJNLkJnpgpZ3mA00kK3Y8ob+ge9ZTgdkHPGS16Fw5UOx5O1fYeu7mA/SsHzLcZAAWea5W
+	zomDoyTf7Sp2FvqiDc2/3ITWP6FywZrDC+FTd6fmzJF2w7UJLG/BQ6FsEph8pt7TM2DI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1u9RhP-00ArGQ-9B; Mon, 28 Apr 2025 18:51:19 +0200
+Date: Mon, 28 Apr 2025 18:51:19 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>, stable@vger.kernel.org,
+	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH net v1 1/2] net: dsa: microchip: let phylink manage PHY
+ EEE configuration on KSZ switches
+Message-ID: <4d8a3e79-f454-4e2f-9362-c842354b123a@lunn.ch>
+References: <20250428125119.3414046-1-o.rempel@pengutronix.de>
+ <20250428125119.3414046-2-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,37 +68,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c6867c6c-bc47-4e3c-9676-70184baf21db@googlemail.com>
+In-Reply-To: <20250428125119.3414046-2-o.rempel@pengutronix.de>
 
-On Mon, Apr 28, 2025 at 04:08:27PM +0100, Chris Clayton wrote:
-> On 28/04/2025 12:22, Greg Kroah-Hartman wrote:
-> > On Mon, Apr 28, 2025 at 12:14:09PM +0100, Chris Clayton wrote:
-> >> Hi Greg,
-> >>
-> >> I've built the four stable kernels that were released on 25 April. I found that to successfully build with GCC-15, each
-> >> of them required backports of one or both of two upstream commits. Those commits are:
-> >>
-> >> Title		Commit						Author	
-> >> nonstring 	9d7a0577c9db35c4cc52db90bc415ea248446472  	Linus
-> >> gnu11		b3bee1e7c3f2b1b77182302c7b2131c804175870	Alexey Dobriyan
-> >>
-> >> 6.14.4 and 6.12.25 required only nonstring. 6.6.87 required only gnu11, 6.1.35 required both.
-> >>
-> >> Additionally, chasing down why my new Bluetooth mouse doesn't work, I also had cause to build 5.15.180 and found that it
-> >> needed gnull.
-> >>
-> >> I have TO dash out now, but I could send you a zip archive of the patches later today, if that would help.
-> > 
-> > Please send backported patches of the above, as they do not apply
-> > 
-> 
-> The patches are in the attached tarball.
+> +/**
+> + * ksz_phylink_mac_disable_tx_lpi() - Dummy handler to disable TX LPI
+> + * @config: phylink config structure
+> + *
+> + * For ports with integrated PHYs, LPI is managed internally by hardware.
 
-Please submit them as a proper patch, with the original changelog and
-authorship information intact.  We have thousands of examples of this on
-the stable mailing list for how this should be done.
+Could you expand that.
 
-thanks,
+Does it mean the hardware will look at the results of the autoneg and
+disable/enable LPI depending on those results? I also assume this
+means it is not possible to force LPI on/off, independent of autoneg?
 
-greg k-h
+	Andrew
 
