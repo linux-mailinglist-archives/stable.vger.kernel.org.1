@@ -1,143 +1,101 @@
-Return-Path: <stable+bounces-136808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 306B3A9EA0E
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:53:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DE1A9EA22
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:58:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92CCB7A7B74
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 07:52:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27AB71720ED
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 07:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0214622DF91;
-	Mon, 28 Apr 2025 07:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6536A1DEFDC;
+	Mon, 28 Apr 2025 07:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J0/7aSPx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFQLFkGA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F29E22CBFE
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 07:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26364212B3F
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 07:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745826772; cv=none; b=Pfu6GLqZx1enPQWuQ19AwPvjA7qbqMUEKVqlDI72yUP9x5gaFCYg0H97q7clDdTAjBidLmHZEH27JPVBj6MYN/UTDNJWNmkpKJeLR3xmIQ125XlEG5V1JZKuI5HiGw8gQiWPIeZHTzLr6jvAqiADPwYvZo3f/UzNXIRlZMclKeE=
+	t=1745827099; cv=none; b=IG++egXz8FVJQ7qkfQ1xgNaPvEGiJ8AKVn4qriTHnrhS3ibBw88D2HGYES+ROX5MfXSqFW1ieNlsyouRqbBad+MgDpA6NTBqj2G+9z2j3r2yYplJb0j+lr4gXh1ODbV/eOmERmiOYCt2d7qoyrSTtnFHy18BWv5acIihJxHAsMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745826772; c=relaxed/simple;
-	bh=a2q8227S7IVaFeHAdaSJ94I6tLSiVXiu9D8/iCz3E2Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LW0YFQGa3UMIyzJILVwhyt4FdwhYjz9ZGTDgMxuP8ErJ3C1lT90ps6NfIGBEw3BsgsEWSXiOaU8aHldiuvFIGLsHg3eHPnjsZKL0OT3Kb7Z+LAQ2VPhb+Y5XDeJxv8KDlRxU0Haw4EyMPrQ8xYgBXX1+NacGQYQPoW+ypSxV+qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J0/7aSPx; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-acb94bf7897so43700366b.3
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 00:52:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745826769; x=1746431569; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=++CyndwUisWgWH/S4dHSTfV3pOj95NuarysuXxNeUys=;
-        b=J0/7aSPx9Fzar86FtLC5mfXMq41kzabU7D+MbU0K6zdsOJ8knuYQYwBDfWbhG7ayOV
-         POUhBJ6YLuF9rXm2wlsPbTn0Stn+jje0LMnMqVzOJLTcAZjbNkgDyQ113/4Crr18sGBJ
-         hqy9fy7OPLMRU2UQuT+5yXnclw4zK88YvRpKsTWQZUuLnmkKnuFbJ92d/Uoj6ZbBkYXe
-         VROnnxFYWDztkmoEYsmqkeuva8VJIXa8OTPeWdJa2TDp+Z/Hku4i8CFtcKiCSgsfSjTH
-         Fl2C5ltxDiKn7p9wjq8EJIGwtvwmcf6+Tt8fT3w7vfq39Sug73cAWfXiaSVft+kcOeBU
-         GV1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745826769; x=1746431569;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=++CyndwUisWgWH/S4dHSTfV3pOj95NuarysuXxNeUys=;
-        b=mxYE5uhSySaqm8hdkyk2mzs2rPT0vv6oD1g5che/D3Wk8tqiIDMtWD+Fkbb6mKuI25
-         ycDVyYoqXfvi5LaKjOwqeWDox/Fep9d+lWHvjnnDBVKPcAsDsnEctLHOVNthgbt7itXf
-         TGOLUJxJqPchUmoysqHPfVmlFSbRhbPQJAqibv9wDmPubQhpCf9aGt4jnNY10wFRuW0X
-         9kMVD1EFZNaO3aYDa3orIghnoGgaKhG3Dg81KJ18HxqUqjr68GRFMZ0R5njqR8XcIFLA
-         L6cnaOA0LwnLChBFqWXDcdCK30ZbKLnqmUtqJ3/tpd5ig4BbBWSNX+iYNB6vIzFdBZek
-         H25Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWsDLXzGgRHc5t7Kcj56hRKbmFxJIeXaTnoZmjIuJAUI/AfCf2/bwjQ2Tg21GlCuGxSdgQkVK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUHOq8/0wNHA5iGOP+hVE3hS3ls1+Tqn6sZC1a5CRAtL1pqo+a
-	O/xt5NlruHbbrrSkmWSnEqas+/Dx56LB0Emqvf+7WfRkolJBMaoMnWsnsnuQIeE=
-X-Gm-Gg: ASbGncsI+nl+hW9N4pGv1gbOqUYpZJWf195CTHAe17IvXeZ1XCb7G8lSzD6h0Q5NdQP
-	t7RehPU/H1EU1J/HRNQFpkoMcZEKFdTeSdDLS2I22Yz47HvRVvx0jK/te8z2gYmfVUh/bsW1Vpr
-	eaWNDCpfiiCNhEM+cBri2NsAhwRDVfE35UltW/PFk54oIBSVxf/SRXzeFHvVrrrlW126l7BHxm/
-	vcAQNeu33aKK5ZsgwZxmR0Eyv+/n0IT+G9nlubQNilN9uQx39f4fqezNyrdZVxrMQfS1UC7wzdW
-	/HTI+v1qRfURlbEiAbpOA7H9ZwtEUqv2XbaW460AE8NvmW54BQ==
-X-Google-Smtp-Source: AGHT+IEGTZVZiJqfJ5HX9QPHWnLpx/E8XElCGd6Od8tueakLMxHqw2Flou9h+m1FaZ7wEavBKyTctw==
-X-Received: by 2002:a17:907:1b10:b0:ac0:b71e:44e0 with SMTP id a640c23a62f3a-ace7110745fmr364254166b.9.1745826768533;
-        Mon, 28 Apr 2025 00:52:48 -0700 (PDT)
-Received: from kuoka.. ([178.197.207.88])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6ecf73a2sm574036866b.114.2025.04.28.00.52.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 00:52:47 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org,
-	linux-remoteproc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] dt-bindings: remoteproc: qcom,sm8150-pas: Add missing SC8180X compatible
-Date: Mon, 28 Apr 2025 09:52:44 +0200
-Message-ID: <20250428075243.44256-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1745827099; c=relaxed/simple;
+	bh=GiNIZpAiooM4WvBLlhadc5kWXXq8ISi3k+90qXppeZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tfRseR72JizY7LTBPziArn1c6uoOM0tcFCbJmXDlGVu81n6kzHzuoSp6GbI3/5cDlIF9rjmkwjSz+d5jdjowYgTKOvJna2HZnOLI63wQba+toPza8Cq6acHL4QTkPt16aPzckP+0VYBJkT8NsjF6oWABT4aJRsXIV4co8oPBksY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFQLFkGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3404EC4CEE4;
+	Mon, 28 Apr 2025 07:58:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745827098;
+	bh=GiNIZpAiooM4WvBLlhadc5kWXXq8ISi3k+90qXppeZA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rFQLFkGA/RSG5sAK5MYU1x2fk4QktVJ60EahK/jNzWHT2lG11h4vB9a8PRrFRtXrX
+	 Ws13QtWL81VlwQjOe7gBRTYpqhZ+yD0X5WmrWxMsko+0flYPjlSfovLJsBmcbdGVBE
+	 r+UecPEPIWW9O+WvGDAwdOurOhIz8PvAFjS7Yxrf/mVf3uCA3QVxuHfHh3s/yBORIW
+	 SOVHj5jYocN4bj5OmN1/jn9RUpMLnb5R26SWLRLa/Ii5xDicbO5I4DiWDPRT7qvOMh
+	 xLRsklcPGu/hjnZhjiVeNT5Dlrbc16AZjwbteoAWq5r8k4p775zl+w+VoIHBgzNN8t
+	 Unxi82D/pb8fg==
+From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
+Subject: [PATCH 6.12.y 1/5] Revert "net: dsa: mv88e6xxx: fix internal PHYs for 6320 family"
+Date: Mon, 28 Apr 2025 09:58:09 +0200
+Message-ID: <20250428075813.530-1-kabel@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1205; i=krzysztof.kozlowski@linaro.org;
- h=from:subject; bh=a2q8227S7IVaFeHAdaSJ94I6tLSiVXiu9D8/iCz3E2Q=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBoDzPLrwtfBdFg7DRuVbMa3eXN3qGCKlYj2Hb2v
- 5JF0WZv9B+JAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaA8zywAKCRDBN2bmhouD
- 1xNdEACCfDg4cenrjMEuYZSPid+RtrHlHDfmvB3y6qJw3UkferBfwYrKfsuY/YEXdZLiQpBiH6z
- n+NZ9RmBze3OXQvX/XbAFMzDTWiEfIIafzpBsn9iChkXxCFz+6fPi5fY7Znf7vg4Iz72gHU4VIb
- d7McqqNy52zQSpQyH9Za4zRM9BN9BSpRRQ8uCk1oPj0bHZp3EsIa2zUohIrgdoUiwxVUgS/l+I5
- VXAcNLbe4YQVb5gxn0D9Bm6I6bJ5DTGuRuyaxod2Ek+NS/wZT+marX012rGtF9gVsckzRYC7NqI
- cUepxVvh2Q6umX3hTmbWGlIXRQbqGlk+kqUdTJ5F5xl1UyxfThzCoLX3NthXg3/M+xmN2oAlIdF
- BjC6Zsg/Ik6hRVNNs163S5ikj5muJgxbdmsD6M8wJ0t3IBycjOAVcMl8dqrZWj5spc9+NGiHH9z
- i8Xo6jCSs8c/t78EO1pI8YZLh9KaWvlcc9l95YHNZhxjK8pvx8edVSsyOP7KfbDqw88BnhVu5H3
- yOD5FkDzSeTiHc9eK5keu5d4+ryTML0wpx4OJzwkIKxwX66ZyHI8EYfpS0WgeYmIHOY3pz2IP2M
- b45vbG8Q4hFCdHKmXOXyREDDOXIaIpZDVo5a95TNDTp76bI3Yro7Uvs3CasHWuDJNW1o+Cr8MAq 78ytQgYEaiOOFiQ==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Commit 4b4ab93ddc5f ("dt-bindings: remoteproc: Consolidate SC8180X and
-SM8150 PAS files") moved SC8180X bindings from separate file into this
-one, but it forgot to add actual compatibles in top-level properties
-section making the entire binding un-selectable (no-op) for SC8180X PAS.
+This reverts commit 2b27df6852444b76724f5d425826a38581d63407.
 
-Fixes: 4b4ab93ddc5f ("dt-bindings: remoteproc: Consolidate SC8180X and SM8150 PAS files")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+For stable 6.12 it was misapplied to wrong entries of the
+`mv88e6xxx_table` array: instead of the MV88E6320 and MV88E6321 entries
+it was applied to the MV88E6240 and MV88E6352 entries.
+
+Signed-off-by: Marek Behún <kabel@kernel.org>
 ---
- .../devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml        | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml b/Documentation/devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml
-index 56ff6386534d..5dcc2a32c080 100644
---- a/Documentation/devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml
-+++ b/Documentation/devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml
-@@ -16,6 +16,9 @@ description:
- properties:
-   compatible:
-     enum:
-+      - qcom,sc8180x-adsp-pas
-+      - qcom,sc8180x-cdsp-pas
-+      - qcom,sc8180x-slpi-pas
-       - qcom,sm8150-adsp-pas
-       - qcom,sm8150-cdsp-pas
-       - qcom,sm8150-mpss-pas
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 28967a338aa9..720ff57c854d 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -6182,8 +6182,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 2,
+-		.internal_phys_offset = 3,
++		.num_internal_phys = 5,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
+@@ -6377,8 +6376,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.num_databases = 4096,
+ 		.num_macs = 8192,
+ 		.num_ports = 7,
+-		.num_internal_phys = 2,
+-		.internal_phys_offset = 3,
++		.num_internal_phys = 5,
+ 		.num_gpio = 15,
+ 		.max_vid = 4095,
+ 		.max_sid = 63,
 -- 
-2.45.2
+2.49.0
 
 
