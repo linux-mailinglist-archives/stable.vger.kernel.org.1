@@ -1,418 +1,152 @@
-Return-Path: <stable+bounces-136957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD2A2A9F9CB
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:41:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F98A9FA0A
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B953F189D4F4
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:41:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729BB3A54DF
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D002973C6;
-	Mon, 28 Apr 2025 19:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10DC296D3B;
+	Mon, 28 Apr 2025 19:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WjjYRwHC"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="px3dXfPP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC9F42AA6
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 19:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5CA18DF62;
+	Mon, 28 Apr 2025 19:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745869299; cv=none; b=Hmc8vS3sz1C+5xRsmOTRI+IUE0w0KdwZ2DzBlA1cCOfXTWkFTBoD1w2RhJUdQq/8VxY1UKB9jsXdcMpgdVx43zyyqVT/dGq0yld600gCM3OWuoTwiMdgg/zOSum2Vz9FOeAagVYGGSef7MD2DJbXBqumBXPgZ67tSSxJKvEq9tg=
+	t=1745870290; cv=none; b=WNZsW/btqR0G6bNfaspB7m+UEbXDka9MMnGQ6wYMgbww3DcPCDPV8fWCbEfn969SuEKuWNiWqX60z32YfI6gFQYlBs2KuJegRGGq7XMzwG9WEBHC62KLU3ixYmgeRmEqvIyPWYI+1/EU2KZpCeg6mp2HdEoSpFN+RjnwxQBGSNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745869299; c=relaxed/simple;
-	bh=3pvkFQ8g4boXkvIWB8jDh9QF4pYMLHjNV7YjF0sO8hk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qe9TAyTUdcD8Z/ntT7nWpSRY7dridOx4ebFkQfg1FNna/6zbJFTTJG3XrbkNhC5DrnBEZUXDzJ+6XG1Fu/dvFTg0FLTZgGMu7RovcVJWGg/AVlnQQcdWsws+YGmp2S20uhEjJYOAbyZKjRHKdMwbMZppHC30vQpuXwKelhXrufs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WjjYRwHC; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-47666573242so79511cf.0
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 12:41:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1745869296; x=1746474096; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wKWfssF+u5OUQugx4NcnkN6zDxuj94azMg1svC/t3H0=;
-        b=WjjYRwHC/qZSZVAactDgZXhFc0Xw8lCBYMygy9YzWvi4y4zUZkYGN/bFC+TuvyqmPw
-         ZHZckhskYZ0GDnqxcPsx9m2xxVxaTnM+7lYH8gvXC6L/x2jXHREZINXsypMKdejHoqUH
-         b2C/fkcMRB0aoEmyKIjB3ZJOa9SzgmT+CDPaz7/3FmwymiWU6zdFNBOGC0kjdPi/GOuT
-         AmNMjM96x2eeiHySUMgdVj2qKp3QfQyXG2GZ4C7JkpQ/nw/3tFEbDWL5p76EDzKEhCTb
-         qPtH2h1dWcmouVBOyIovm3SCiLytS5pt9yPcgYtsTFrSGVR9XesGZ+PTIgMamaM2E/zd
-         rvow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745869296; x=1746474096;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wKWfssF+u5OUQugx4NcnkN6zDxuj94azMg1svC/t3H0=;
-        b=cr12T+xQ+dw0cSX6X5WDmc3pgE5MonyzQd3pVffMfcs7xMTrzp7q0FyxYYl0150+DF
-         kDTFVr/jY683dMLY92bEe8HA2FCAvlKEi+loLZi9DYhxSbsVT3fJKZ37epdtAqDw0nPF
-         0aUqUT/tAJ7S101yRS/yNpRlJxw9dAkqnEygcp4/Ba53qnPjlK29+X/OSgIV9WaTXsuj
-         c9H1b3smFbLPSzar+LEQc8aKfYwydkVy8H0T5K+EEUrWVBFmhkCJHF0Mk4WlsltmuEOI
-         Tg5woc1e4mK460GzGQ35wgYKTq2/3le/e0w3MDki9KgHZPwWTO6fbx7iFCQWrM6K0CpV
-         W4UQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXXwEWr0hNVgqqnp3UjD+VMfRRPZvj4rNmucR8kM6j/EwPat1l4O3StOiz6oL7r7yntWX6GfcQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0h+mkXEuKePODhSP1kmfLiEgVClJWga+TIwVutPeYH5aV4sJ7
-	Zx9/6x5X73AG6nkkgEqEDEXAjVDaQSEuDYswOJHIrbxZ7RQYshR+xhnx1c7H9z8afoLxvXXK+TY
-	u60KwyN8OBYGYZXjvUSvsDHYZnIXSm8VKQ+FM
-X-Gm-Gg: ASbGncveBSrXNGVOtBrBI8gAFbnwiS6fHTO0oIvDT7ZCVmjm0mBQP2MGZu2b0tS9pJA
-	+VEygl9Ia5mw1DsM/LIFEjdYLECZa1j45DatK+NvcXJWDcmwrKndxBnarLuyeL31DxGrYIQyIvj
-	sBzgcOcDEDc80k4aJ5tPeh3BqqZlQSPqY=
-X-Google-Smtp-Source: AGHT+IEAb9/CWKiFOrSPayRnBgtZa1u8k/Ptg2eV385V48qOG0DWCp5CYFLMT8RoDHirI5xvzEF77DD/lGFLx92h63g=
-X-Received: by 2002:ac8:5a8b:0:b0:477:2c12:9253 with SMTP id
- d75a77b69052e-4885b57a7e0mr788161cf.16.1745869296193; Mon, 28 Apr 2025
- 12:41:36 -0700 (PDT)
+	s=arc-20240116; t=1745870290; c=relaxed/simple;
+	bh=vvZSZRK0LkFXl0VRlVlqIOkD+W4s0lXSGjjSfD6mYUw=;
+	h=Date:To:From:Subject:Message-Id; b=dI0/JTsjrfQG0IuklCqZjtRG6BjRq1Vpt1ZxrDGGaD+eOVJAMoMYK98XlcY1Bw5qb0wBljweQr47YgCKKYNRUNQ92MrxUKJrhMkudkxHYGNNIxaJH714dheTzfvvBwmlT4ExH8jjGt5yJlSVi4TJoJkw3zzSTecBQ1DsNFdwvXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=px3dXfPP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28449C4CEE4;
+	Mon, 28 Apr 2025 19:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1745870290;
+	bh=vvZSZRK0LkFXl0VRlVlqIOkD+W4s0lXSGjjSfD6mYUw=;
+	h=Date:To:From:Subject:From;
+	b=px3dXfPPg1LUYYLc/DeB8ohW11W3uDT3J/xZRnT+qeeK2TedH26voWDSJem4K+JUY
+	 QOxNXJ7icnwhdYNnzR8/FMp8v+PERznGOFNFIrxNTpXQrHpeggxW+/o9lT9BS0tn5h
+	 Fg2GnrfdcwjjFesCSLOnEjbwTtNqbXf/Rd85eASQ=
+Date: Mon, 28 Apr 2025 12:58:09 -0700
+To: mm-commits@vger.kernel.org,venkat88@linux.ibm.com,stable@vger.kernel.org,nysal@linux.ibm.com,maddy@linux.ibm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-fix-build-break-when-compiling-pkey_utilc.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250428195810.28449C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250330164229.2174672-1-varadgautam@google.com> <CAOLDJO+=+hcz498KRc+95dF5y3hZdtm+3y35o2rBC9qAOF-vDg@mail.gmail.com>
-In-Reply-To: <CAOLDJO+=+hcz498KRc+95dF5y3hZdtm+3y35o2rBC9qAOF-vDg@mail.gmail.com>
-From: Varad Gautam <varadgautam@google.com>
-Date: Mon, 28 Apr 2025 21:41:24 +0200
-X-Gm-Features: ATxdqUFuTivxUUQ8V8ic_I5aXx6zoGkrsdP9Pi1LrRBFnss-Olz0Mr2pZPcUuEY
-Message-ID: <CAOLDJOKiEmde5Max0BnTBVpNmfpm-wwYLJ4Etv8D2KZKPHyFzw@mail.gmail.com>
-Subject: Re: [PATCH] asm-generic/io.h: Skip trace helpers if rwmmio events are disabled
-To: linux-arch@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>, Sai Prakash Ranjan <quic_saipraka@quicinc.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 7, 2025 at 6:13=E2=80=AFPM Varad Gautam <varadgautam@google.com=
-> wrote:
->
-> On Sun, Mar 30, 2025 at 6:42=E2=80=AFPM Varad Gautam <varadgautam@google.=
-com> wrote:
-> >
-> > With `CONFIG_TRACE_MMIO_ACCESS=3Dy`, the `{read,write}{b,w,l,q}{_relaxe=
-d}()`
-> > mmio accessors unconditionally call `log_{post_}{read,write}_mmio()`
-> > helpers, which in turn call the ftrace ops for `rwmmio` trace events
-> >
-> > This adds a performance penalty per mmio accessor call, even when
-> > `rwmmio` events are disabled at runtime (~80% overhead on local
-> > measurement).
-> >
-> > Guard these with `tracepoint_enabled()`.
-> >
-> > Signed-off-by: Varad Gautam <varadgautam@google.com>
-> > Fixes: 210031971cdd ("asm-generic/io: Add logging support for MMIO acce=
-ssors")
-> > Cc: <stable@vger.kernel.org>
->
-> Ping.
->
 
-Ping.
+The patch titled
+     Subject: selftests/mm: fix build break when compiling pkey_util.c
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-build-break-when-compiling-pkey_utilc.patch
 
-> > ---
-> >  include/asm-generic/io.h | 98 +++++++++++++++++++++++++++-------------
-> >  1 file changed, 66 insertions(+), 32 deletions(-)
-> >
-> > diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-> > index 3c61c29ff6ab..a9b5da547523 100644
-> > --- a/include/asm-generic/io.h
-> > +++ b/include/asm-generic/io.h
-> > @@ -75,6 +75,7 @@
-> >  #if IS_ENABLED(CONFIG_TRACE_MMIO_ACCESS) && !(defined(__DISABLE_TRACE_=
-MMIO__))
-> >  #include <linux/tracepoint-defs.h>
-> >
-> > +#define rwmmio_tracepoint_enabled(tracepoint) tracepoint_enabled(trace=
-point)
-> >  DECLARE_TRACEPOINT(rwmmio_write);
-> >  DECLARE_TRACEPOINT(rwmmio_post_write);
-> >  DECLARE_TRACEPOINT(rwmmio_read);
-> > @@ -91,6 +92,7 @@ void log_post_read_mmio(u64 val, u8 width, const vola=
-tile void __iomem *addr,
-> >
-> >  #else
-> >
-> > +#define rwmmio_tracepoint_enabled(tracepoint) false
-> >  static inline void log_write_mmio(u64 val, u8 width, volatile void __i=
-omem *addr,
-> >                                   unsigned long caller_addr, unsigned l=
-ong caller_addr0) {}
-> >  static inline void log_post_write_mmio(u64 val, u8 width, volatile voi=
-d __iomem *addr,
-> > @@ -189,11 +191,13 @@ static inline u8 readb(const volatile void __iome=
-m *addr)
-> >  {
-> >         u8 val;
-> >
-> > -       log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-> >         __io_br();
-> >         val =3D __raw_readb(addr);
-> >         __io_ar(val);
-> > -       log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -204,11 +208,13 @@ static inline u16 readw(const volatile void __iom=
-em *addr)
-> >  {
-> >         u16 val;
-> >
-> > -       log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-> >         __io_br();
-> >         val =3D __le16_to_cpu((__le16 __force)__raw_readw(addr));
-> >         __io_ar(val);
-> > -       log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -219,11 +225,13 @@ static inline u32 readl(const volatile void __iom=
-em *addr)
-> >  {
-> >         u32 val;
-> >
-> > -       log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-> >         __io_br();
-> >         val =3D __le32_to_cpu((__le32 __force)__raw_readl(addr));
-> >         __io_ar(val);
-> > -       log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -235,11 +243,13 @@ static inline u64 readq(const volatile void __iom=
-em *addr)
-> >  {
-> >         u64 val;
-> >
-> > -       log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-> >         __io_br();
-> >         val =3D __le64_to_cpu((__le64 __force)__raw_readq(addr));
-> >         __io_ar(val);
-> > -       log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -249,11 +259,13 @@ static inline u64 readq(const volatile void __iom=
-em *addr)
-> >  #define writeb writeb
-> >  static inline void writeb(u8 value, volatile void __iomem *addr)
-> >  {
-> > -       log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-> >         __io_bw();
-> >         __raw_writeb(value, addr);
-> >         __io_aw();
-> > -       log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_=
-);
-> >  }
-> >  #endif
-> >
-> > @@ -261,11 +273,13 @@ static inline void writeb(u8 value, volatile void=
- __iomem *addr)
-> >  #define writew writew
-> >  static inline void writew(u16 value, volatile void __iomem *addr)
-> >  {
-> > -       log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-> >         __io_bw();
-> >         __raw_writew((u16 __force)cpu_to_le16(value), addr);
-> >         __io_aw();
-> > -       log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP=
-_);
-> >  }
-> >  #endif
-> >
-> > @@ -273,11 +287,13 @@ static inline void writew(u16 value, volatile voi=
-d __iomem *addr)
-> >  #define writel writel
-> >  static inline void writel(u32 value, volatile void __iomem *addr)
-> >  {
-> > -       log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-> >         __io_bw();
-> >         __raw_writel((u32 __force)__cpu_to_le32(value), addr);
-> >         __io_aw();
-> > -       log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP=
-_);
-> >  }
-> >  #endif
-> >
-> > @@ -286,11 +302,13 @@ static inline void writel(u32 value, volatile voi=
-d __iomem *addr)
-> >  #define writeq writeq
-> >  static inline void writeq(u64 value, volatile void __iomem *addr)
-> >  {
-> > -       log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-> >         __io_bw();
-> >         __raw_writeq((u64 __force)__cpu_to_le64(value), addr);
-> >         __io_aw();
-> > -       log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP=
-_);
-> >  }
-> >  #endif
-> >  #endif /* CONFIG_64BIT */
-> > @@ -306,9 +324,11 @@ static inline u8 readb_relaxed(const volatile void=
- __iomem *addr)
-> >  {
-> >         u8 val;
-> >
-> > -       log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-> >         val =3D __raw_readb(addr);
-> > -       log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -319,9 +339,11 @@ static inline u16 readw_relaxed(const volatile voi=
-d __iomem *addr)
-> >  {
-> >         u16 val;
-> >
-> > -       log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-> >         val =3D __le16_to_cpu((__le16 __force)__raw_readw(addr));
-> > -       log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -332,9 +354,11 @@ static inline u32 readl_relaxed(const volatile voi=
-d __iomem *addr)
-> >  {
-> >         u32 val;
-> >
-> > -       log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-> >         val =3D __le32_to_cpu((__le32 __force)__raw_readl(addr));
-> > -       log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -345,9 +369,11 @@ static inline u64 readq_relaxed(const volatile voi=
-d __iomem *addr)
-> >  {
-> >         u64 val;
-> >
-> > -       log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_read))
-> > +               log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-> >         val =3D __le64_to_cpu((__le64 __force)__raw_readq(addr));
-> > -       log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_read))
-> > +               log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-> >         return val;
-> >  }
-> >  #endif
-> > @@ -356,9 +382,11 @@ static inline u64 readq_relaxed(const volatile voi=
-d __iomem *addr)
-> >  #define writeb_relaxed writeb_relaxed
-> >  static inline void writeb_relaxed(u8 value, volatile void __iomem *add=
-r)
-> >  {
-> > -       log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-> >         __raw_writeb(value, addr);
-> > -       log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_=
-);
-> >  }
-> >  #endif
-> >
-> > @@ -366,9 +394,11 @@ static inline void writeb_relaxed(u8 value, volati=
-le void __iomem *addr)
-> >  #define writew_relaxed writew_relaxed
-> >  static inline void writew_relaxed(u16 value, volatile void __iomem *ad=
-dr)
-> >  {
-> > -       log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-> >         __raw_writew((u16 __force)cpu_to_le16(value), addr);
-> > -       log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP=
-_);
-> >  }
-> >  #endif
-> >
-> > @@ -376,9 +406,11 @@ static inline void writew_relaxed(u16 value, volat=
-ile void __iomem *addr)
-> >  #define writel_relaxed writel_relaxed
-> >  static inline void writel_relaxed(u32 value, volatile void __iomem *ad=
-dr)
-> >  {
-> > -       log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-> >         __raw_writel((u32 __force)__cpu_to_le32(value), addr);
-> > -       log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP=
-_);
-> >  }
-> >  #endif
-> >
-> > @@ -386,9 +418,11 @@ static inline void writel_relaxed(u32 value, volat=
-ile void __iomem *addr)
-> >  #define writeq_relaxed writeq_relaxed
-> >  static inline void writeq_relaxed(u64 value, volatile void __iomem *ad=
-dr)
-> >  {
-> > -       log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_write))
-> > +               log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-> >         __raw_writeq((u64 __force)__cpu_to_le64(value), addr);
-> > -       log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-> > +       if (rwmmio_tracepoint_enabled(rwmmio_post_write))
-> > +               log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP=
-_);
-> >  }
-> >  #endif
-> >
-> > --
-> > 2.49.0.472.ge94155a9ec-goog
-> >
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-build-break-when-compiling-pkey_utilc.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: selftests/mm: fix build break when compiling pkey_util.c
+Date: Mon, 28 Apr 2025 18:49:34 +0530
+
+Commit 50910acd6f615 ("selftests/mm: use sys_pkey helpers consistently")
+added a pkey_util.c to refactor some of the protection_keys functions
+accessible by other tests.  But this broken the build in powerpc in two
+ways,
+
+pkey-powerpc.h: In function `arch_is_powervm':
+pkey-powerpc.h:73:21: error: storage size of `buf' isn't known
+   73 |         struct stat buf;
+      |                     ^~~
+pkey-powerpc.h:75:14: error: implicit declaration of function `stat'; did you mean `strcat'? [-Wimplicit-function-declaration]
+   75 |         if ((stat("/sys/firmware/devicetree/base/ibm,partition-name", &buf) == 0) &&
+      |              ^~~~
+      |              strcat
+
+Since pkey_util.c includes pkeys-helper.h, which in turn includes pkeys-powerpc.h,
+stat.h including is missing for "struct stat". This is fixed by adding "sys/stat.h"
+in pkeys-powerpc.h
+
+Secondly,
+
+pkey-powerpc.h:55:18: warning: format `%llx' expects argument of type `long long unsigned int', but argument 3 has type `u64' {aka `long unsigned int'} [-Wformat=]
+   55 |         dprintf4("%s() changing %016llx to %016llx\n",
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   56 |                          __func__, __read_pkey_reg(), pkey_reg);
+      |                                    ~~~~~~~~~~~~~~~~~
+      |                                    |
+      |                                    u64 {aka long unsigned int}
+pkey-helpers.h:63:32: note: in definition of macro `dprintf_level'
+   63 |                 sigsafe_printf(args);           \
+      |                                ^~~~
+
+These format specifier related warning are removed by adding
+"__SANE_USERSPACE_TYPES__" to pkeys_utils.c.
+
+Link: https://lkml.kernel.org/r/20250428131937.641989-1-nysal@linux.ibm.com
+Fixes: 50910acd6f615 ("selftests/mm: use sys_pkey helpers consistently")
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/pkey-powerpc.h |    2 ++
+ tools/testing/selftests/mm/pkey_util.c    |    1 +
+ 2 files changed, 3 insertions(+)
+
+--- a/tools/testing/selftests/mm/pkey-powerpc.h~selftests-mm-fix-build-break-when-compiling-pkey_utilc
++++ a/tools/testing/selftests/mm/pkey-powerpc.h
+@@ -3,6 +3,8 @@
+ #ifndef _PKEYS_POWERPC_H
+ #define _PKEYS_POWERPC_H
+ 
++#include <sys/stat.h>
++
+ #ifndef SYS_pkey_alloc
+ # define SYS_pkey_alloc		384
+ # define SYS_pkey_free		385
+--- a/tools/testing/selftests/mm/pkey_util.c~selftests-mm-fix-build-break-when-compiling-pkey_utilc
++++ a/tools/testing/selftests/mm/pkey_util.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
++#define __SANE_USERSPACE_TYPES__
+ #include <sys/syscall.h>
+ #include <unistd.h>
+ 
+_
+
+Patches currently in -mm which might be from maddy@linux.ibm.com are
+
+selftests-mm-fix-build-break-when-compiling-pkey_utilc.patch
+
 
