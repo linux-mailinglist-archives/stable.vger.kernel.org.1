@@ -1,136 +1,216 @@
-Return-Path: <stable+bounces-136959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D68AA9FA0B
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:58:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BC1A9FA0E
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090291A82447
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:58:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D563A61BD
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D922973D9;
-	Mon, 28 Apr 2025 19:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FFF1DE2AD;
+	Mon, 28 Apr 2025 19:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="lmMFOekF"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="YW6gTFsw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07CD18DF62;
-	Mon, 28 Apr 2025 19:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6A318DB0A
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 19:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745870292; cv=none; b=SNu18l8vC6AyhScdyqkf9+wDFpFDrzyjCjgcKa6cQGDA6Or/k9enbot/uc0vs5Rk9MgBb33saDey6+UQ0TL90URjM1aeQsdyR8x/ojloOeaSSX3RnABGWZIob3wGzU1XHVQpNkUWGqGJevvKM21tkqw4+Px9Hcp48OudFBcDedY=
+	t=1745870349; cv=none; b=oT2RZnAiZTkUaDulpf3wzyMgCiiS2cUKfeWv3/pibZSZQKaaLZM9TZhOk4E+s2UPFkJfVIIHeVyRdo9GUTT/kdTAFqIyF+dz3aJ3bZ00kGc3GGGu/+xXV5jsYlCl+5LdSi3vv7T+ZcKa72wX6dv+9Q07YV6gMnIlYbG3+SvWnac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745870292; c=relaxed/simple;
-	bh=ED4AGlOpY2ePHZB75cwYnuInlVQaXvlnovM9B6UgUT4=;
-	h=Date:To:From:Subject:Message-Id; b=LsAOYYRBBKXo+TPz4tjKlgpGDuZ5jTtChjotLhhPXy4tCMDByXbOFJHC9N5uVscBcQlwbh5MChr0nCrNtODSY6QzT+xhA3Oo8WO4/fUv+6m/DQWciF9JawDI3hgKNWvcyQWn5FoSZMox7NqmaW/PeDPvwF+gmzhlZ2B5HpD4+Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=lmMFOekF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D26C4CEE4;
-	Mon, 28 Apr 2025 19:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1745870292;
-	bh=ED4AGlOpY2ePHZB75cwYnuInlVQaXvlnovM9B6UgUT4=;
-	h=Date:To:From:Subject:From;
-	b=lmMFOekFHq3nxXiKy43o4TSG9AhtXy4LZq1NZIAL9X6D/UN6K1oG4+lbHsx0h/zyW
-	 ymy7xL0KyiQi7DDih+PjvS5wVsRE6D2JN2pV09vk+iyInXFgoZJyaVhOysU1dw2FbR
-	 iSVmDhDSmYPsj4uekYqZbUl445yfNmUWm/f23Nsg=
-Date: Mon, 28 Apr 2025 12:58:11 -0700
-To: mm-commits@vger.kernel.org,venkat88@linux.ibm.com,stable@vger.kernel.org,maddy@linux.ibm.com,donettom@linux.ibm.com,nysal@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-fix-a-build-failure-on-powerpc.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250428195812.75D26C4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1745870349; c=relaxed/simple;
+	bh=6RhdtTZjwbviIehBSPuYM9eQhYldWKEYVupVRPkoFh4=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=WK9+XIefIZri2sG9OxFkMmjfb6f0o0d2dz5KA2miswmXbgnQjtY2qgkFKXBzfdBgdjbG44XS/x2mXoqMpfkTldEZU9/HPYIPwBjFlADA3OTDOHZ/bG9DY5sAOuo1BF1sUQlsHjhLtaSdDKbm8vYgKtq0p1tBX79ClKm3uURqnKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=YW6gTFsw; arc=none smtp.client-ip=209.85.219.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e733e22505fso1358010276.3
+        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 12:59:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1745870346; x=1746475146; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=aem06mHQx9lNIN0bxhyyhLGyW9ZOHOkghAgATL/g7uY=;
+        b=YW6gTFswnBPNR+gi6Nn7HBBr/zIzHix7Z0ev7Mv9R/qoifwJx8VcUIem1wi22lVK1c
+         lsp9xpwhpUJC5/zkc6XObBcpisN5mh7LBilLcbEb5KLCTZpZU73LBk/dp/rIPh0/Sikh
+         uBiH9mV3Ek//afyATNs5JgqNU2/QaGSK8pQYige/laivgYWuoYEbUIk44cH2MZZRM1Pc
+         fRiXhynMxdlWn67weMxI5BP2kqwinDhJRFedw7ofUDMUSJypzRl/2yoHhmp8bA5+Jww3
+         ZMgPNsvcga0Tfp5vQKuI66aPnXlm2K3wqvU2dJRoVe92vRwGXowP8eWjbs+DzO8YUu4e
+         fPoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745870346; x=1746475146;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
+         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aem06mHQx9lNIN0bxhyyhLGyW9ZOHOkghAgATL/g7uY=;
+        b=TXxdVPgXLQsddRW3U14ln92GByCHQEpGgagBTohQYTFrSRM9mR67QBKk998P+KFgFq
+         sCQrCM7wScVSBPKdH1o+SVJky88Y+oT1Tvb+yqW/mjK7kaWYP1hFGS28O6DGwC0yFfHT
+         4s57CMvj5McoDfa9IrFGN2pIq9YbrLxdpAYe/a4T/WD0J+KMK8roPl+qVTvecdbQGAEE
+         vhkKSTVLQ9avlrLo/Kruf2t2fLKFQ7pHnRdluRA1//pAPwjmD1awjHqepyumU8g/z7+t
+         MIGVUnq+Z0oVF7FGx68DR8SFYVylodknjVO0jZfzqb6uBFFT88wocK2ToI1E0n28+b9H
+         NzTg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8Ob4BTkeZiNc4FB6ILbo21s7f4Prv3q+BnTq8aAwPShp7RzJs92L8KCmcCHMzixhDickoBrI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzsG3qCpWePQgPUSyzqF6HCTIaWxKfLUNqDpc1/uyUxURZPoUx/
+	1Q8Vd0aqhHbDLqnZcAbLZj2vg+Q1Q1VoE1NhUhN9YsCCw3zw71BWHKYuSe05YM2SSJHVPMRh+2B
+	EL3v3UoUWMxjeqe1M91x/PE4S6rSYlbAaz42CYnuBHODfppxE1EQ=
+X-Gm-Gg: ASbGncsushAgWTX6cit6cM3jZhA6WJjx8RyybpXp6LCrpeUGJVlTeYnzl3xbcKpmNY0
+	zsGk4+BYruznhEeeV/iLbAtQ8HK1I8XQ6xxR6Hovr8PZeR/NELERj23lPjKrTN2qCm4tgXDK2o9
+	T+niQFpnD2f/TxFG9F8Zas
+X-Google-Smtp-Source: AGHT+IHle5FhpD+AuJUqjCBYqcOT0p8K+PiOiQ+icmdwKLr89dtT9UxTEWVr9p4wsqgHDDUiS4nAMnQn9Q/LW42ONYE=
+X-Received: by 2002:a05:6902:1146:b0:e6b:834d:f0f5 with SMTP id
+ 3f1490d57ef6-e7351a7c6a4mr356280276.39.1745870345622; Mon, 28 Apr 2025
+ 12:59:05 -0700 (PDT)
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 28 Apr 2025 12:59:04 -0700
+Received: from 415818378487 named unknown by gmailapi.google.com with
+ HTTPREST; Mon, 28 Apr 2025 12:59:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+from: KernelCI bot <bot@kernelci.org>
+Reply-To: kernelci@lists.linux.dev
+Date: Mon, 28 Apr 2025 12:59:04 -0700
+X-Gm-Features: ATxdqUEzdigqe7GIpNes4FBxCwxmz0hCjMEZmBHjHw72859Na1dvBnvHDU0DeQQ
+Message-ID: <CACo-S-2c4+gCCzKFOWE8VSfP40y5mMiq3rRRJerBrRfKODi4kw@mail.gmail.com>
+Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjEyLnk6IChidWlsZCkgZXhwZWN0ZQ==?=
+	=?UTF-8?B?ZCDigJgp4oCZIGJlZm9yZSDigJhCUEZfSU5URVJOQUzigJkgaW4gLnZtbGludXguZXhwb3J0Lm8gKC52?=
+	=?UTF-8?B?bWxpbnV4Li4uLg==?=
+To: kernelci-results@groups.io
+Cc: gus@collabora.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hello,
 
-The patch titled
-     Subject: selftests/mm: fix a build failure on powerpc
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-fix-a-build-failure-on-powerpc.patch
+New build issue found on stable-rc/linux-6.12.y:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-a-build-failure-on-powerpc.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "Nysal Jan K.A." <nysal@linux.ibm.com>
-Subject: selftests/mm: fix a build failure on powerpc
-Date: Mon, 28 Apr 2025 18:49:35 +0530
-
-The compiler is unaware of the size of code generated by the ".rept"
-assembler directive.  This results in the compiler emitting branch
-instructions where the offset to branch to exceeds the maximum allowed
-value, resulting in build failures like the following:
-
-  CC       protection_keys
-  /tmp/ccypKWAE.s: Assembler messages:
-  /tmp/ccypKWAE.s:2073: Error: operand out of range (0x0000000000020158
-  is not between 0xffffffffffff8000 and 0x0000000000007ffc)
-  /tmp/ccypKWAE.s:2509: Error: operand out of range (0x0000000000020130
-  is not between 0xffffffffffff8000 and 0x0000000000007ffc)
-
-Fix the issue by manually adding nop instructions using the preprocessor.
-
-Link: https://lkml.kernel.org/r/20250428131937.641989-2-nysal@linux.ibm.com
-Fixes: 46036188ea1f5 ("selftests/mm: build with -O2")
-Reported-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by:Donet Tom <donettom@linux.ibm.com>
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ expected =E2=80=98)=E2=80=99 before =E2=80=98BPF_INTERNAL=E2=80=99 in .vml=
+inux.export.o
+(.vmlinux.export.c) [logspec:kbuild,kbuild.compiler.error]
 ---
 
- tools/testing/selftests/mm/pkey-powerpc.h |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+- dashboard: https://d.kernelci.org/i/maestro:481ef3f3cd91fcd1e324a4727e4de=
+3d82e365420
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git
+- commit HEAD:  0f114e4705bd70a1aade95111161a0a24a597879
 
---- a/tools/testing/selftests/mm/pkey-powerpc.h~selftests-mm-fix-a-build-failure-on-powerpc
-+++ a/tools/testing/selftests/mm/pkey-powerpc.h
-@@ -104,8 +104,18 @@ static inline void expect_fault_on_read_
- 	return;
- }
- 
-+#define REPEAT_8(s) s s s s s s s s
-+#define REPEAT_64(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) \
-+		     REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s)
-+#define REPEAT_512(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) \
-+		      REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s)
-+#define REPEAT_4096(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) \
-+		       REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s)
-+#define REPEAT_16384(s) REPEAT_4096(s) REPEAT_4096(s) \
-+			REPEAT_4096(s) REPEAT_4096(s)
-+
- /* 4-byte instructions * 16384 = 64K page */
--#define __page_o_noops() asm(".rept 16384 ; nop; .endr")
-+#define __page_o_noops() asm(REPEAT_16384("nop\n"))
- 
- static inline void *malloc_pkey_with_mprotect_subpage(long size, int prot, u16 pkey)
- {
-_
 
-Patches currently in -mm which might be from nysal@linux.ibm.com are
+Log excerpt:
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+.vmlinux.export.c:1126:33: error: expected =E2=80=98)=E2=80=99 before =E2=
+=80=98BPF_INTERNAL=E2=80=99
+ 1126 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
+      |                                 ^~~~~~~~~~~~
+./include/linux/export-internal.h:45:28: note: in definition of macro
+=E2=80=98__KSYMTAB=E2=80=99
+   45 |             "   .asciz \"" ns "\""
+         "\n"    \
+      |                            ^~
+.vmlinux.export.c:1126:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
+=E2=80=99
+ 1126 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
+      | ^~~~~~~~~~~~
+./include/linux/export-internal.h:41:12: note: to match this =E2=80=98(=E2=
+=80=99
+   41 |         asm("   .section
+\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
+      |            ^
+./include/linux/export-internal.h:62:41: note: in expansion of macro =E2=80=
+=98__KSYMTAB=E2=80=99
+   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
+KSYM_FUNC(name), sec, ns)
+      |                                         ^~~~~~~~~
+.vmlinux.export.c:1126:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
+=E2=80=99
+ 1126 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
+      | ^~~~~~~~~~~~
+.vmlinux.export.c:1135:42: error: expected =E2=80=98)=E2=80=99 before =E2=
+=80=98BPF_INTERNAL=E2=80=99
+ 1135 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
+      |                                          ^~~~~~~~~~~~
+./include/linux/export-internal.h:45:28: note: in definition of macro
+=E2=80=98__KSYMTAB=E2=80=99
+   45 |             "   .asciz \"" ns "\""
+         "\n"    \
+      |                            ^~
+.vmlinux.export.c:1135:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
+=E2=80=99
+ 1135 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
+      | ^~~~~~~~~~~~
+./include/linux/export-internal.h:41:12: note: to match this =E2=80=98(=E2=
+=80=99
+   41 |         asm("   .section
+\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
+      |            ^
+./include/linux/export-internal.h:62:41: note: in expansion of macro =E2=80=
+=98__KSYMTAB=E2=80=99
+   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
+KSYM_FUNC(name), sec, ns)
+      |                                         ^~~~~~~~~
+.vmlinux.export.c:1135:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
+=E2=80=99
+ 1135 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
+      | ^~~~~~~~~~~~
+.vmlinux.export.c:1137:34: error: expected =E2=80=98)=E2=80=99 before =E2=
+=80=98BPF_INTERNAL=E2=80=99
+ 1137 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
+      |                                  ^~~~~~~~~~~~
+./include/linux/export-internal.h:45:28: note: in definition of macro
+=E2=80=98__KSYMTAB=E2=80=99
+   45 |             "   .asciz \"" ns "\""
+         "\n"    \
+      |                            ^~
+.vmlinux.export.c:1137:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
+=E2=80=99
+ 1137 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
+      | ^~~~~~~~~~~~
+./include/linux/export-internal.h:41:12: note: to match this =E2=80=98(=E2=
+=80=99
+   41 |         asm("   .section
+\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
+      |            ^
+./include/linux/export-internal.h:62:41: note: in expansion of macro =E2=80=
+=98__KSYMTAB=E2=80=99
+   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
+KSYM_FUNC(name), sec, ns)
+      |                                         ^~~~~~~~~
+.vmlinux.export.c:1137:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
+=E2=80=99
+ 1137 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
+      | ^~~~~~~~~~~~
 
-selftests-mm-fix-a-build-failure-on-powerpc.patch
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
 
+
+# Builds where the incident occurred:
+
+## defconfig on (riscv):
+- compiler: gcc-12
+- dashboard: https://d.kernelci.org/build/maestro:680fc2ee43948caad95c16b4
+
+
+#kernelci issue maestro:481ef3f3cd91fcd1e324a4727e4de3d82e365420
+
+Reported-by: kernelci.org bot <bot@kernelci.org>
+
+--
+This is an experimental report format. Please send feedback in!
+Talk to us at kernelci@lists.linux.dev
+
+Made with love by the KernelCI team - https://kernelci.org
 
