@@ -1,247 +1,262 @@
-Return-Path: <stable+bounces-136891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179F4A9F218
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC0AA9F253
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:28:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1C73AC00A
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD56F3A90E9
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E11B265CA3;
-	Mon, 28 Apr 2025 13:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E7926C3AB;
+	Mon, 28 Apr 2025 13:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n+VNtlt7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iVi8Av7u"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4897B70810;
-	Mon, 28 Apr 2025 13:23:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB7E26B946
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 13:28:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745846614; cv=none; b=k+wYGHzrmb5QqpACKxtObagVFSJwusgOaTnQ5lf5AOKgV3NAXPa8ykMtGTcHpIH+6CKPXSADCKX++vZiYvtdxxRwRTxsh/lTkyafZlVBYymlUchKgf1xapNOunzScT9aqWXS3TqNDHjKzBnOEmUCDHO5EgpWhTGVajAbAPD9VFo=
+	t=1745846906; cv=none; b=BTdMFzjTMFE86v2alNV9LS+wAjGVVv3ui3QzGo490/kAyMyfowP8o8FBAc6uilB4cxxGbQ1nEZKVxOD6KKlA3BFBDaO7BM4aQ36UH8yZg5z+e3Rrxyq4sXwSojRsSUaB4ySQPhNlqR7eciHMpxpF0n1ubuQltUFDQ528LS7QpFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745846614; c=relaxed/simple;
-	bh=335MrcHvnvENFyHo54UTERg/dHu7eoyK/wd1W1y27ug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SI6OfGZORkp4G7N1Jri9Irdb7y8quC5uPlNLDPJ4EudkuoN38RSZ/Zf72tsXyrdT7wwZx6jYm49qeAMZf4B8I8Kp0sxeVCTikzKcu/KufAJiMtIiGlGJ+ZBkkSd3Z08Isvr2+aMKS8cH69fkluRxmuGVY7zNiETjUs7YNuRb9Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n+VNtlt7; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745846612; x=1777382612;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=335MrcHvnvENFyHo54UTERg/dHu7eoyK/wd1W1y27ug=;
-  b=n+VNtlt7ZACCOGriZCkXBVlMtobkdKKBJWDkonwcpymNhbLd1B/qX2Hv
-   GJtc9wgnDO4e+m2mGNsb6wJLyEEiE4MFICeZrBvluIXZpeAHadEfLVu6Y
-   icDV5XiTyL0UsmKD2avru8hNAyaAdhF/HkrV5dPhRQb8X/LyP6nQh4m0w
-   Iws5rO2QfX/kNFufN0uj8qIHDj3QKlWFWGMk++qMQkVSx6qnIWKZMZcYt
-   XKuy/C4IzbGc463q4l29m74OIEPQ35Km9MMicHxvOg0Ki+U8wmekFpDm+
-   xjj+sbrNpWr8fSElLYgfzpVQdzLqXF8Jd1tAtv0ibKqJOtNQNphOUlKXT
-   w==;
-X-CSE-ConnectionGUID: DBAqw15jTKGSzPy1AGGHQA==
-X-CSE-MsgGUID: ASY64+tcQSWG4NvVzZ5Z6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11416"; a="58422018"
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="58422018"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 06:23:31 -0700
-X-CSE-ConnectionGUID: CcSuqomNR++Tkv1FqcBimw==
-X-CSE-MsgGUID: qUzk6fo9TuKy8UWhQBuc7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="164483064"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by orviesa002.jf.intel.com with SMTP; 28 Apr 2025 06:23:28 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 28 Apr 2025 16:23:26 +0300
-Date: Mon, 28 Apr 2025 16:23:26 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Andrei Kuchynski <akuchynski@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jameson Thies <jthies@google.com>,
-	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
-	Benson Leung <bleung@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>,
-	Pooja Katiyar <pooja.katiyar@intel.com>,
-	Madhu M <madhu.m@intel.com>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] usb: typec: ucsi: displayport: Fix deadlock
-Message-ID: <aA-BTrunTaYxtrps@kuha.fi.intel.com>
-References: <20250424084429.3220757-1-akuchynski@chromium.org>
- <20250424084429.3220757-2-akuchynski@chromium.org>
+	s=arc-20240116; t=1745846906; c=relaxed/simple;
+	bh=l3dVdh9wzuSTOKDHUFz0b9/AIs71l6IsH7JSLxyvWm4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PqeHoWL9tOwbEnMFJtfWFdNFqMhfPlNbGjurysz/ZvOrWWYHgQJ5gvVQMZWizq4U0yq9HgYBThDm1C9uIyfQVHuBKrdFkJNGZsajF0Fmja4ul9RE6+T3CfwB9JY2GssDNDirY2v2BxQXljZX5hz18pQCoFeuGpzsGmKkKmGd+u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iVi8Av7u; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745846904;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Lg0xq41qt97xR3ZvTPk2wgbDhcDx4hFTu+2DD4oLNRw=;
+	b=iVi8Av7uHVfGW1fSlfk+zyoNsCLbHtXhSqjAJu+n+YgTsdz3h1euthxLsNq++oXf+ZAeO6
+	t3zULdHvPUKgd0F+tx+AvvOiwokRzRkg99s0RfP/eO9VGuqSZtD4mB/f1Z7xSD6FzgDH+T
+	SlNZhjycucsYgATorKxVDLCX3mhW7gI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-ZDiY6cSTMYeZT_G61CIHfA-1; Mon, 28 Apr 2025 09:28:19 -0400
+X-MC-Unique: ZDiY6cSTMYeZT_G61CIHfA-1
+X-Mimecast-MFC-AGG-ID: ZDiY6cSTMYeZT_G61CIHfA_1745846898
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ac3db5469fbso403223666b.0
+        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 06:28:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1745846898; x=1746451698;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Lg0xq41qt97xR3ZvTPk2wgbDhcDx4hFTu+2DD4oLNRw=;
+        b=p8FlY09Zpii+fOijhyzzoT85p7jv0yUF/8XJjGZZFH/kS8LHoiEdLblDsgNRdZG2Uu
+         JpmpNJcTNiMXKsjN7cErNUwMw3eT+IwERLRzrbx/Bp/ir+KtJ7SDMHLoiTJJtta8DHS1
+         Xp/2LZClq8TCsq6K/VqKQZoGJOOpKV7XTURqYmc1/+mbqTzcN5KhClYhM4gm34sZGsOU
+         Qn1IWJ2zAr4rk2XUCMRVzuoMM1uwV5yK+NLwla1aYsQsMh66uJ9SuO1g8FBQSBZR0oTC
+         HrbFBSBTj46GCAXHH+GuLABMVj/XFDl+duYluibxEb4XoV6Dc+y2ZQfzLumdl4l8yVH3
+         tq9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXBfrEAQIaLG6O6BC6fuTtzShK9uUkklfwaHnOPU+FBBTdEDA18dK962K3v5eTKNU5FTNw4/fU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvnAPC15XOYXsPWHXzmQSCL3YECnRzk7llVyMmM49w9KalWcEU
+	8wmsePM3rNmzyKdrZrtA4vKJGX+8uET3qyOE0ZuUwfzjk3ZDdpIdjMdybmCUtJcqGArOlzHX5oZ
+	I73/43NrzKKmCBuuDZp2ywXpv0x68epxuXAPuSzBedpCiaT4gmhfGuQ==
+X-Gm-Gg: ASbGnctWE/8RYjrThlZS2iVTsTew4PnuvsI/DD+OrKytvXymt8e8c6SMc0IIrKVStmS
+	5Rww+xsYUPiCmUAMnCYRstvuLV6i1woSlBbuTunYmVkuzLKYDte65RcMckotGrWZzKbowo2Nhlw
+	JkK76vc91LB0uUahCcutOlS9m9AaOrrtVoJ7udjd0rPM6A8/upCBI0S9asDUwJ4BVVrVYipXsTn
+	sHuxQDBp1cG/P/qlHUnBVlQewAk2cq/Oy8Hn3B2i/yfgQT6uokk3+INo/pa5ZUOx8XXzmtbR5hf
+	YCINf5xKuFTdZsQ=
+X-Received: by 2002:a17:907:9812:b0:acb:5070:dd19 with SMTP id a640c23a62f3a-ace7140871emr986957066b.61.1745846898402;
+        Mon, 28 Apr 2025 06:28:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGtlXu0jsASJ3MeiUP+hMifoEhEfHok+6uVTbLwLAPDU6I6D9W4QXDaUyIpZvionOFT+g0NGQ==
+X-Received: by 2002:a17:907:9812:b0:acb:5070:dd19 with SMTP id a640c23a62f3a-ace7140871emr986954566b.61.1745846897877;
+        Mon, 28 Apr 2025 06:28:17 -0700 (PDT)
+Received: from [10.40.98.122] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6ed705e5sm628164366b.145.2025.04.28.06.28.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 28 Apr 2025 06:28:17 -0700 (PDT)
+Message-ID: <5e8025a1-63f2-4120-8160-8848a5cf34ec@redhat.com>
+Date: Mon, 28 Apr 2025 15:28:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250424084429.3220757-2-akuchynski@chromium.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] media: uvcvideo: Fix deferred probing error
+To: Ricardo Ribalda <ribalda@chromium.org>,
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Douglas Anderson <dianders@chromium.org>
+References: <20250313-uvc-eprobedefer-v3-0-a1d312708eef@chromium.org>
+ <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
+ <20250422180630.GJ17813@pendragon.ideasonboard.com>
+ <CANiDSCuO+dHOBtW4yvy1n25QWEs-WdQ9H8Lh2rUtcPbUq3hBkQ@mail.gmail.com>
+ <20250422230513.GX17813@pendragon.ideasonboard.com>
+ <CANiDSCssyAVoyvsiO8thGwUFc_boA_jhBxYDif32Hxh40fhf-Q@mail.gmail.com>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <CANiDSCssyAVoyvsiO8thGwUFc_boA_jhBxYDif32Hxh40fhf-Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 24, 2025 at 08:44:28AM +0000, Andrei Kuchynski wrote:
-> This patch introduces the ucsi_con_mutex_lock / ucsi_con_mutex_unlock
-> functions to the UCSI driver. ucsi_con_mutex_lock ensures the connector
-> mutex is only locked if a connection is established and the partner pointer
-> is valid. This resolves a deadlock scenario where
-> ucsi_displayport_remove_partner holds con->mutex waiting for
-> dp_altmode_work to complete while dp_altmode_work attempts to acquire it.
+Hi Ricardo,
+
+On 23-Apr-25 01:18, Ricardo Ribalda wrote:
+> On Wed, 23 Apr 2025 at 07:05, Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+>>
+>> On Wed, Apr 23, 2025 at 06:50:10AM +0800, Ricardo Ribalda wrote:
+>>> On Wed, 23 Apr 2025 at 02:06, Laurent Pinchart wrote:
+>>>> On Thu, Mar 13, 2025 at 12:20:39PM +0000, Ricardo Ribalda wrote:
+>>>>> uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
+>>>>> have not yet been probed. This return code should be propagated to the
+>>>>> caller of uvc_probe() to ensure that probing is retried when the required
+>>>>> GPIOs become available.
+>>>>>
+>>>>> Currently, this error code is incorrectly converted to -ENODEV,
+>>>>> causing some internal cameras to be ignored.
+>>>>>
+>>>>> This commit fixes this issue by propagating the -EPROBE_DEFER error.
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+>>>>> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+>>>>> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+>>>>> ---
+>>>>>  drivers/media/usb/uvc/uvc_driver.c | 27 +++++++++++++++++++--------
+>>>>>  1 file changed, 19 insertions(+), 8 deletions(-)
+>>>>>
+>>>>> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+>>>>> index deadbcea5e227c832976fd176c7cdbfd7809c608..e966bdb9239f345fd157588ebdad2b3ebe45168d 100644
+>>>>> --- a/drivers/media/usb/uvc/uvc_driver.c
+>>>>> +++ b/drivers/media/usb/uvc/uvc_driver.c
+>>>>> @@ -2231,13 +2231,16 @@ static int uvc_probe(struct usb_interface *intf,
+>>>>>  #endif
+>>>>>
+>>>>>       /* Parse the Video Class control descriptor. */
+>>>>> -     if (uvc_parse_control(dev) < 0) {
+>>>>> +     ret = uvc_parse_control(dev);
+>>>>> +     if (ret < 0) {
+>>>>> +             ret = -ENODEV;
+>>>>
+>>>> Why do you set ret to -ENODEV here...
+>>>>
+>>>>>               uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
+>>>>>               goto error;
+>>>>>       }
+>>>>>
+>>>>>       /* Parse the associated GPIOs. */
+>>>>> -     if (uvc_gpio_parse(dev) < 0) {
+>>>>> +     ret = uvc_gpio_parse(dev);
+>>>>> +     if (ret < 0) {
+>>>>>               uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
+>>>>>               goto error;
+>>>>>       }
+>>>>> @@ -2263,24 +2266,32 @@ static int uvc_probe(struct usb_interface *intf,
+>>>>>       }
+>>>>>
+>>>>>       /* Register the V4L2 device. */
+>>>>> -     if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
+>>>>> +     ret = v4l2_device_register(&intf->dev, &dev->vdev);
+>>>>> +     if (ret < 0)
+>>>>
+>>>> ... but not here ? The code below is also not very consistant.
+>>>
+>>> For all the "external" functions I was looking into populating their
+>>> error code to probe(). Other drivers (check vivid for example) do
+>>> exactly this.
+>>>
+>>> There is more value in returning the real cause of the error (ENOMEM,
+>>> EINVAL) that the plain ENODEV.
+>>
+>> Yes, I got that, my question was why you override the return value of
+>> e.g. uvc_parse_control() or uvc_scan_device() with -ENODEV, but not for
+>> e.g. uvc_gpio_parse() or v4l2_device_register(). There's no explanation
+>> in the commit message regarding why they're treated differently.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-> Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
->  drivers/usb/typec/ucsi/displayport.c | 19 +++++++++-------
->  drivers/usb/typec/ucsi/ucsi.c        | 34 ++++++++++++++++++++++++++++
->  drivers/usb/typec/ucsi/ucsi.h        |  2 ++
->  3 files changed, 47 insertions(+), 8 deletions(-)
+> Because it is less risky that way. There are plenty of examples where
+> the framework functions return code is passed to probe().
 > 
-> diff --git a/drivers/usb/typec/ucsi/displayport.c b/drivers/usb/typec/ucsi/displayport.c
-> index 420af5139c70..acd053d4e38c 100644
-> --- a/drivers/usb/typec/ucsi/displayport.c
-> +++ b/drivers/usb/typec/ucsi/displayport.c
-> @@ -54,7 +54,8 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
->  	u8 cur = 0;
->  	int ret;
->  
-> -	mutex_lock(&dp->con->lock);
-> +	if (!ucsi_con_mutex_lock(dp->con))
-> +		return -ENOTCONN;
->  
->  	if (!dp->override && dp->initialized) {
->  		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-> @@ -100,7 +101,7 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
->  	schedule_work(&dp->work);
->  	ret = 0;
->  err_unlock:
-> -	mutex_unlock(&dp->con->lock);
-> +	ucsi_con_mutex_unlock(dp->con);
->  
->  	return ret;
->  }
-> @@ -112,7 +113,8 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
->  	u64 command;
->  	int ret = 0;
->  
-> -	mutex_lock(&dp->con->lock);
-> +	if (!ucsi_con_mutex_lock(dp->con))
-> +		return -ENOTCONN;
->  
->  	if (!dp->override) {
->  		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-> @@ -144,7 +146,7 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
->  	schedule_work(&dp->work);
->  
->  out_unlock:
-> -	mutex_unlock(&dp->con->lock);
-> +	ucsi_con_mutex_unlock(dp->con);
->  
->  	return ret;
->  }
-> @@ -202,20 +204,21 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
->  	int cmd = PD_VDO_CMD(header);
->  	int svdm_version;
->  
-> -	mutex_lock(&dp->con->lock);
-> +	if (!ucsi_con_mutex_lock(dp->con))
-> +		return -ENOTCONN;
->  
->  	if (!dp->override && dp->initialized) {
->  		const struct typec_altmode *p = typec_altmode_get_partner(alt);
->  
->  		dev_warn(&p->dev,
->  			 "firmware doesn't support alternate mode overriding\n");
-> -		mutex_unlock(&dp->con->lock);
-> +		ucsi_con_mutex_unlock(dp->con);
->  		return -EOPNOTSUPP;
->  	}
->  
->  	svdm_version = typec_altmode_get_svdm_version(alt);
->  	if (svdm_version < 0) {
-> -		mutex_unlock(&dp->con->lock);
-> +		ucsi_con_mutex_unlock(dp->con);
->  		return svdm_version;
->  	}
->  
-> @@ -259,7 +262,7 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
->  		break;
->  	}
->  
-> -	mutex_unlock(&dp->con->lock);
-> +	ucsi_con_mutex_unlock(dp->con);
->  
->  	return 0;
->  }
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index e8c7e9dc4930..01ce858a1a2b 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -1922,6 +1922,40 @@ void ucsi_set_drvdata(struct ucsi *ucsi, void *data)
->  }
->  EXPORT_SYMBOL_GPL(ucsi_set_drvdata);
->  
-> +/**
-> + * ucsi_con_mutex_lock - Acquire the connector mutex
-> + * @con: The connector interface to lock
-> + *
-> + * Returns true on success, false if the connector is disconnected
-> + */
-> +bool ucsi_con_mutex_lock(struct ucsi_connector *con)
-> +{
-> +	bool mutex_locked = false;
-> +	bool connected = true;
-> +
-> +	while (connected && !mutex_locked) {
-> +		mutex_locked = mutex_trylock(&con->lock) != 0;
-> +		connected = UCSI_CONSTAT(con, CONNECTED);
-> +		if (connected && !mutex_locked)
-> +			msleep(20);
-> +	}
-> +
-> +	connected = connected && con->partner;
-> +	if (!connected && mutex_locked)
-> +		mutex_unlock(&con->lock);
-> +
-> +	return connected;
-> +}
-> +
-> +/**
-> + * ucsi_con_mutex_unlock - Release the connector mutex
-> + * @con: The connector interface to unlock
-> + */
-> +void ucsi_con_mutex_unlock(struct ucsi_connector *con)
-> +{
-> +	mutex_unlock(&con->lock);
-> +}
-> +
->  /**
->   * ucsi_create - Allocate UCSI instance
->   * @dev: Device interface to the PPM (Platform Policy Manager)
-> diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-> index 3a2c1762bec1..9c5278a0c5d4 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.h
-> +++ b/drivers/usb/typec/ucsi/ucsi.h
-> @@ -94,6 +94,8 @@ int ucsi_register(struct ucsi *ucsi);
->  void ucsi_unregister(struct ucsi *ucsi);
->  void *ucsi_get_drvdata(struct ucsi *ucsi);
->  void ucsi_set_drvdata(struct ucsi *ucsi, void *data);
-> +bool ucsi_con_mutex_lock(struct ucsi_connector *con);
-> +void ucsi_con_mutex_unlock(struct ucsi_connector *con);
->  
->  void ucsi_connector_change(struct ucsi *ucsi, u8 num);
->  
-> -- 
-> 2.49.0.805.g082f7c87e0-goog
+> The uvc_* functions might or might not work this way. When I do that
+> assessment for every function I can post a different patch. I thought
+> that this approach was safer, especially if we are cc-ing stable.
+> 
+> A note in the commit message would have been a nice thing to have I agree :).
 
--- 
-heikki
+I agree with Laurent that just properly propagating the error code of
+all functions, without overriding the return value with another -EXXXX code
+in some places seems a better and cleaner way to handle this.
+
+In the end the return value of uvc_probe() does not matter that much,
+the only difference is that for errors other then -ENODEV the driver-core
+will print an extra error message. But we should not fail to probe anyways.
+
+If we get bug reports about this we can revisit, but for simplicity and
+consistency reasons I would prefer to just always return the error of
+the called function as is.
+
+Regards,
+
+Hans
+
+
+
+
+>>>>>               goto error;
+>>>>>
+>>>>>       /* Scan the device for video chains. */
+>>>>> -     if (uvc_scan_device(dev) < 0)
+>>>>> +     if (uvc_scan_device(dev) < 0) {
+>>>>> +             ret = -ENODEV;
+>>>>>               goto error;
+>>>>> +     }
+>>>>>
+>>>>>       /* Initialize controls. */
+>>>>> -     if (uvc_ctrl_init_device(dev) < 0)
+>>>>> +     if (uvc_ctrl_init_device(dev) < 0) {
+>>>>> +             ret = -ENODEV;
+>>>>>               goto error;
+>>>>> +     }
+>>>>>
+>>>>>       /* Register video device nodes. */
+>>>>> -     if (uvc_register_chains(dev) < 0)
+>>>>> +     if (uvc_register_chains(dev) < 0) {
+>>>>> +             ret = -ENODEV;
+>>>>>               goto error;
+>>>>> +     }
+>>>>>
+>>>>>  #ifdef CONFIG_MEDIA_CONTROLLER
+>>>>>       /* Register the media device node */
+>>>>> -     if (media_device_register(&dev->mdev) < 0)
+>>>>> +     ret = media_device_register(&dev->mdev);
+>>>>> +     if (ret < 0)
+>>>>>               goto error;
+>>>>>  #endif
+>>>>>       /* Save our data pointer in the interface data. */
+>>>>> @@ -2314,7 +2325,7 @@ static int uvc_probe(struct usb_interface *intf,
+>>>>>  error:
+>>>>>       uvc_unregister_video(dev);
+>>>>>       kref_put(&dev->ref, uvc_delete);
+>>>>> -     return -ENODEV;
+>>>>> +     return ret;
+>>>>>  }
+>>>>>
+>>>>>  static void uvc_disconnect(struct usb_interface *intf)
+>>
+>> --
+>> Regards,
+>>
+>> Laurent Pinchart
+> 
+> 
+> 
+
 
