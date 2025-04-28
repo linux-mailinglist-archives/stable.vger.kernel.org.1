@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-136937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2986A9F8B5
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 20:39:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11065A9F8B7
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 20:39:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3458D17E41F
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:39:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83CC51A8515A
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1855227A92F;
-	Mon, 28 Apr 2025 18:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA8727A92F;
+	Mon, 28 Apr 2025 18:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pDGjTvAg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t+w3Dpb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76751BBBFD;
-	Mon, 28 Apr 2025 18:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD961BBBFD;
+	Mon, 28 Apr 2025 18:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745865554; cv=none; b=ftqny2NbNHUaAtW8NsbRR1IQf6enR6Euz5/h9LH2FhyB+NFrKk9JH2311lymhvwbrfrnaX51JyHGF3R7iK7XiswXmdipdUoXTnrt0v0ig9P6euNj9THV7tjs+JCf4QeXAOchpNNvhyp0Z7XiMFcxWs3z/A0a9swkQ6spXi4+lO4=
+	t=1745865561; cv=none; b=lPF4gLuQfnoNmICxdzpntofOn3Gpd4QKW5I84zNCg4ocb9V9VIBNdQfEri/SVZxkEEt+SwFIopwVxfKJWyn1HvdLuJs4svDpjS309C3QGS03SX0j+JjHVFGS/1jUQ/tTep4pUCb6lJsr9zJo6fH0eCUH+0xLBmF+Cts4rR/zK9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745865554; c=relaxed/simple;
-	bh=79PAJBEhak912MvDV8PI/M2GPtFL7LcrihkAXFYnE14=;
-	h=Date:Subject:From:To:Cc:Message-ID:MIME-Version:Content-Type; b=ZVX+V09u0TdVMvpm9Ju2V1tkwHK5Xw2Z6KdMYSZx+tB0L/+CXNHbiZeVL6xFhpchBXGv/LdPkU9O+Y+iiE8tpsAcA8BCzuIpkzX7fPhCLVGm8HzD481tl0ers/r1inA5XvwnZ3hy6PvPwhTVIGtIc5mjt1+O8qjSPN/ou8Ld1/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pDGjTvAg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F71C4CEE4;
-	Mon, 28 Apr 2025 18:39:14 +0000 (UTC)
+	s=arc-20240116; t=1745865561; c=relaxed/simple;
+	bh=mYzNm7dvSwQcGW9FeZcx/ZqsvYu8Skq5g/8/uxIr28s=;
+	h=Date:Subject:From:To:Cc:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GNkZQ/NFhFLWDRWrlvTvgOSIYqu0I0YTH1dXiB4ISUHDnyv3uD55rE3RmSFiXKfLL46ONTCRoWr6nzo4ZXOtpvtVjebvsdFAJTn8Dm7vE4iPZDW4XsSdu732RTF5yv2eaPiZPi0dnPQEbESXOVnzHOzs023ZbDQrNY8Md35BUbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t+w3Dpb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E04DC4CEE4;
+	Mon, 28 Apr 2025 18:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745865554;
-	bh=79PAJBEhak912MvDV8PI/M2GPtFL7LcrihkAXFYnE14=;
-	h=Date:Subject:From:To:Cc:From;
-	b=pDGjTvAghGqZ86OZJ3+7bbtB2EU0N+xaiYPQ5yfvqLX/LHYVgrfac2px35Rm3SemU
-	 zvXJLcthGpIPvq3wYLqDjhikExs1/fhIyo7L705gb1xy2i4eRRjiz5HM0VdklfIGFm
-	 BxOa0FquMV543Vu5NLJA2o+/FYJSL1DA9MBrVqdoE9uWdFQjQiZ7OT34VTMo3MpQ7+
-	 Xv9kcPIG1iduXx4TRGkzg71GcmZq/aHqgE5g1w5XMqGCNTp1hOCYMA6uMwQMZj5NTn
-	 KJpjz3RNbFxdYt+aWOCGOwY7k/SRcpv2ZjDzmYljS3+u7rqb4hjIhXPBYk15U4ipUV
-	 MTLelo2mrAztA==
-Date: Mon, 28 Apr 2025 11:39:14 -0700
-Subject: [PATCHSET 6.12] xfs: backported fixes from upstream
+	s=k20201202; t=1745865560;
+	bh=mYzNm7dvSwQcGW9FeZcx/ZqsvYu8Skq5g/8/uxIr28s=;
+	h=Date:Subject:From:To:Cc:In-Reply-To:References:From;
+	b=t+w3Dpb2/KDR16EmpkIrX61/hzbLklUTU8fwNqsA9fxl5DQ1GocPh40vKdIupn8Uz
+	 FjhWfhyQ2DbUez2eOLe3soNh/JJz/y7/+zNNL3vKrre1mZWUoBcwQq+e8qpeee4NyJ
+	 TUUHsv8dH5sPCWmFnJpvJoqPat/pkpdIQvlchLjif0vcBJv2utbCIPn4OfSPeHnaBI
+	 4oQq81VmxCdQXRTNl9s4/eBrlrkau4H9ZG4DDVooQpIEvtarw8ThPsiZC3xEg/tyg/
+	 nOi3ckSOJ+CVEu+w/ekLkGerP/DRJj6Zdn6WeTWULTfHf7vxuo/ldjz3usn1uA4e82
+	 KF+aa/Efbrbgg==
+Date: Mon, 28 Apr 2025 11:39:19 -0700
+Subject: [PATCH 1/4] xfs: do not check NEEDSREPAIR if ro,norecovery mount.
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: djwong@kernel.org, xfs-stable@lists.linux.dev
-Cc: sandeen@redhat.com, cmaiolino@redhat.com, lukas@herbolt.com, hch@lst.de,
- cem@kernel.org, dchinner@redhat.com, stable@vger.kernel.org
-Message-ID: <174586545357.480536.7498456094082551730.stgit@frogsfrogsfrogs>
+Cc: cem@kernel.org, dchinner@redhat.com, lukas@herbolt.com,
+ sandeen@redhat.com, stable@vger.kernel.org
+Message-ID: <174586545399.480536.11556523767440235148.stgit@frogsfrogsfrogs>
+In-Reply-To: <174586545357.480536.7498456094082551730.stgit@frogsfrogsfrogs>
+References: <174586545357.480536.7498456094082551730.stgit@frogsfrogsfrogs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,30 +59,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 
-Hi all,
+From: Lukas Herbolt <lukas@herbolt.com>
 
-Here's a bunch of hand-ported bug fixes for 6.12 LTS.
+Commit 9e00163c31676c6b43d2334fdf5b406232f42dee upstream
 
-If you're going to start using this code, I strongly recommend pulling
-from my git trees, which are linked below.
+If there is corrutpion on the filesystem andxfs_repair
+fails to repair it. The last resort of getting the data
+is to use norecovery,ro mount. But if the NEEDSREPAIR is
+set the filesystem cannot be mounted. The flag must be
+cleared out manually using xfs_db, to get access to what
+left over of the corrupted fs.
 
-With a bit of luck, this should all go splendidly.
-Comments and questions are, as always, welcome.
-
---D
-
-kernel git tree:
-https://git.kernel.org/cgit/linux/kernel/git/djwong/xfs-linux.git/log/?h=next-6.12.y
+Signed-off-by: Lukas Herbolt <lukas@herbolt.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Eric Sandeen <sandeen@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 ---
-Commits in this patchset:
- * xfs: do not check NEEDSREPAIR if ro,norecovery mount.
- * xfs: Do not allow norecovery mount with quotacheck
- * xfs: rename xfs_iomap_swapfile_activate to xfs_vm_swap_activate
- * xfs: flush inodegc before swapon
----
- fs/xfs/xfs_aops.c   |   41 +++++++++++++++++++++++++++++++++++++----
- fs/xfs/xfs_qm_bhv.c |   49 ++++++++++++++++++++++++++++++++++---------------
- fs/xfs/xfs_super.c  |    8 ++++++--
- 3 files changed, 77 insertions(+), 21 deletions(-)
+ fs/xfs/xfs_super.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index 8f7c9eaeb36090..201a86b3574da5 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1619,8 +1619,12 @@ xfs_fs_fill_super(
+ #endif
+ 	}
+ 
+-	/* Filesystem claims it needs repair, so refuse the mount. */
+-	if (xfs_has_needsrepair(mp)) {
++	/*
++	 * Filesystem claims it needs repair, so refuse the mount unless
++	 * norecovery is also specified, in which case the filesystem can
++	 * be mounted with no risk of further damage.
++	 */
++	if (xfs_has_needsrepair(mp) && !xfs_has_norecovery(mp)) {
+ 		xfs_warn(mp, "Filesystem needs repair.  Please run xfs_repair.");
+ 		error = -EFSCORRUPTED;
+ 		goto out_free_sb;
 
 
