@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-136867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEA2A9EFD8
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:57:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D0FA9EFDB
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A0523BE710
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D87B57A660E
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9283326739D;
-	Mon, 28 Apr 2025 11:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7802266595;
+	Mon, 28 Apr 2025 11:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8fyQeZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTk/q4vl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBF225DB1A
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7713E1CD213
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745841413; cv=none; b=K0RqG5Ite9aOrF6stBk21um1MLJOvIDPY7YQ224hEuSnHffPgNiHym7oKTxJW/qot/irR81v/ICgD9M9/fC4M1GjvKK1YnTuZGiIoKKkxW53P2xyNnQhqvdoafWib6xgdEhWX05xDf6gMNV91TBVvOqMY804Epde+r+9VokgZJY=
+	t=1745841428; cv=none; b=kOJFD77Or4GaG+fMeAaIK+f2tf+r2Hkm0OmQX5chOo9wCay4hcgIIqGjhb6Yua0wCAQy1TveEvI6jNdRA+zBJoMVDI76iNJ4RxFkRTfZo6kNgiphborsT99VP3zlMKtRca3Z6s0Ci2zUHIAabpToxmrE2fKdw+JKt6LDV6kslaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745841413; c=relaxed/simple;
-	bh=daAqBOfr/kHrnGoJn1EU38a3pSVOkdc2OFJpPspKosE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ow9v8faLDzsEtbPuCNUJhXNXEV6sOL1JDceMSCbHP+Hjb5AsbsSmZoJZpMBgonMGuXxCA2nNm4s3KubAFwBCsJ3H77FxCwAKU7LPWo3XA0BhEF1+/4lo7A+85VOyvwQAx4hwDRwtzlHRiVGYtWuDuR+VWGJXEUHEKUU/bGxPD00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8fyQeZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFFBC4CEE4;
-	Mon, 28 Apr 2025 11:56:52 +0000 (UTC)
+	s=arc-20240116; t=1745841428; c=relaxed/simple;
+	bh=dej61vIEzS6vb3cBIKSoCpqcRixK85NgkTkutz5V380=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VNzmRWcnq1KrMcHSKBhRLcEBkeUYyaZN/7eplMYpWbuTnbCwG1rFZ0V/vRJ8igw9hRRiWAUrmh9aFz6AUuA7pvk1yeBvO8E/lmGef6zaRaUoKLMhkxSR5jN2B8kM21AHimiL+DXtLJRMN94XPxw7jgW4w/6uADcVoG9PpZE4Ryk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTk/q4vl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D633C4CEE4;
+	Mon, 28 Apr 2025 11:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745841412;
-	bh=daAqBOfr/kHrnGoJn1EU38a3pSVOkdc2OFJpPspKosE=;
+	s=korg; t=1745841428;
+	bh=dej61vIEzS6vb3cBIKSoCpqcRixK85NgkTkutz5V380=;
 	h=Subject:To:Cc:From:Date:From;
-	b=T8fyQeZdXs2VwC7CPiL9bjY44ONUa/AKcX/2gKxcZRQcQ8xA6mqjYninWViIKAnD5
-	 hg5uOxC41TiwN/K74TrTYeEx+DJLNRvKJwqJXUztiVSSwSCZLN37JNLaYedO7YVlfR
-	 SRmKtItg6IWi1WTiXOozztAkaXQjLbSRe6hGZJS8=
-Subject: FAILED: patch "[PATCH] Revert "drm/meson: vclk: fix calculation of 59.94 fractional" failed to apply to 6.14-stable tree
+	b=JTk/q4vlv66IyASul79dKyppR76RTw/b7QUHIBEqu3BLzu6/3KR5KlTpvr/AaOcgq
+	 /Ie4D8v9q/QfU9AKVAPAw3fHOGjJLjq1Vxb4SylymgaW1EW9oVLausTbQmvNvaSAaj
+	 RLczytWAWRRLqPXCS3LYchKAucdMWeqMNBAbUXFs=
+Subject: FAILED: patch "[PATCH] Revert "drm/meson: vclk: fix calculation of 59.94 fractional" failed to apply to 6.6-stable tree
 To: christianshewitt@gmail.com,martin.blumenstingl@googlemail.com,neil.armstrong@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Apr 2025 13:56:50 +0200
-Message-ID: <2025042850-crown-ample-85db@gregkh>
+Date: Mon, 28 Apr 2025 13:56:51 +0200
+Message-ID: <2025042851-wimp-glandular-c623@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.14-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x f37bb5486ea536c1d61df89feeaeff3f84f0b560
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042850-crown-ample-85db@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042851-wimp-glandular-c623@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
