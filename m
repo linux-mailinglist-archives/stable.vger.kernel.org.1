@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-136863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4138BA9EFBE
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:54:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD00A9EFCD
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 068087ABA33
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:53:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC1533B60D4
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38A7263F2F;
-	Mon, 28 Apr 2025 11:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A9D265CD2;
+	Mon, 28 Apr 2025 11:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5Y5x7bA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXhdw9TW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A187216A94A
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1711EDA13
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745841276; cv=none; b=Lu7tpe+dzq/8bJj0b1vYTemDn3+IvfpodIbiHTJgDOyOKUrqKLEEIr9HvWNOSJLRdEoiWEo5LN5qNMZEExirTERSxsvYCWtaonZ5Iuk6b8bANVSJnAY2mar8Q/ollp9cMXvnKdZjw+YyQDjakCizajay8mcaETwKmRrsiVKzgkY=
+	t=1745841364; cv=none; b=kLj3F4hFt4TDKszFZrV7HVkzvOyLbOrBO0TPKh/uorOb3DSkHEmwHLf2RJpUbhpCgDjAM8p3lf3ZAzSwDqJ3ygphGsiUOYrYJ5SU797s42ybH3jkCOtnH7QtrjQy/OOaklr3FiVVLoC7pLIokXDopmmS3N2EtkdiMEGZIWh7Cjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745841276; c=relaxed/simple;
-	bh=nX36fWFCQURNPC7AvnmNd6punI91LeNDk0XWXRvFQ5U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VkxYtpXN5RYf6MkWnp8evfJ2JUajtfnS5Geck9gPC4KMQ1iD7uai54S5yZw1oWHA82EZJ7sK7hu+ecEvFP2t8KUCo3eTh8oIDH++rtel8AisJD7lqROQ9CH1VwVldlr60e6LLWDV7PwJjRDhhsJAQVGOa7hiqE9vEyfq+rHuh84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5Y5x7bA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CE1C4CEE4;
-	Mon, 28 Apr 2025 11:54:35 +0000 (UTC)
+	s=arc-20240116; t=1745841364; c=relaxed/simple;
+	bh=YKZHP2qAmH4LZ1lF0RnIv9445I2pdvEIrY/vVa3pcoU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mL61WktuJ1ym9EJbYAod2Z+ee3MtXTLOsmJDkqQkfwvPKgCvKb0zgg/a3lVfaj7RYxhlGju+usjG4F07EOswTn3Q8hUV5pihQ+rb0ax1XnjF+jqmUvUAfXUA32didPw6oQdJIvKD+Y8VgXxDqmpLiPW4IWfW5EL804E6NT25sU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXhdw9TW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE849C4CEE4;
+	Mon, 28 Apr 2025 11:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745841276;
-	bh=nX36fWFCQURNPC7AvnmNd6punI91LeNDk0XWXRvFQ5U=;
+	s=korg; t=1745841364;
+	bh=YKZHP2qAmH4LZ1lF0RnIv9445I2pdvEIrY/vVa3pcoU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=O5Y5x7bAoOdOFEkOS36ztRIQkBwblKIsCz14qhIhTUgtrtojbVu1QNBw+YPGXXYVf
-	 bNMdH3MFkE818lhN37zPZf8x0rBtZXEfETjVihmoW5vu7C8SFNbArk0FDxhWpReTPy
-	 LQTgppX/aX8CfeL4RonzojtaXPezvvbX5lBRVH58=
-Subject: FAILED: patch "[PATCH] net: phy: microchip: force IRQ polling mode for lan88xx" failed to apply to 5.4-stable tree
-To: fiona.klute@gmx.de,andrew@lunn.ch,pabeni@redhat.com
+	b=YXhdw9TWn6Fn5jwWzso5mopT3QFqz9lw8QZdox68LvcbojzWeUlFfkeNd13CRg9aq
+	 zBaWoT/6CXnwdG2F27qic7y2OPX2Ii8Hs1wiBSgqHF84uy0LfdNDtyMmJnRrwunDKW
+	 37HwauG8VUpzNARw+01jNCu2YrajNKQQegh9luls=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix gpu reset in multidisplay config" failed to apply to 5.10-stable tree
+To: Roman.Li@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com,mario.limonciello@amd.com,mark.broadworth@amd.com,zaeem.mohamed@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Apr 2025 13:54:25 +0200
-Message-ID: <2025042825-unreal-nature-7581@gregkh>
+Date: Mon, 28 Apr 2025 13:56:01 +0200
+Message-ID: <2025042801-bucktooth-unstopped-52b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 30a41ed32d3088cd0d682a13d7f30b23baed7e93
+git cherry-pick -x 7eb287beeb60be1e4437be2b4e4e9f0da89aab97
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042825-unreal-nature-7581@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042801-bucktooth-unstopped-52b8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,105 +77,52 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 30a41ed32d3088cd0d682a13d7f30b23baed7e93 Mon Sep 17 00:00:00 2001
-From: Fiona Klute <fiona.klute@gmx.de>
-Date: Wed, 16 Apr 2025 12:24:13 +0200
-Subject: [PATCH] net: phy: microchip: force IRQ polling mode for lan88xx
+From 7eb287beeb60be1e4437be2b4e4e9f0da89aab97 Mon Sep 17 00:00:00 2001
+From: Roman Li <Roman.Li@amd.com>
+Date: Tue, 1 Apr 2025 17:05:10 -0400
+Subject: [PATCH] drm/amd/display: Fix gpu reset in multidisplay config
 
-With lan88xx based devices the lan78xx driver can get stuck in an
-interrupt loop while bringing the device up, flooding the kernel log
-with messages like the following:
+[Why]
+The indexing of stream_status in dm_gpureset_commit_state() is incorrect.
+That leads to asserts in multi-display configuration after gpu reset.
 
-lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+[How]
+Adjust the indexing logic to align stream_status with surface_updates.
 
-Removing interrupt support from the lan88xx PHY driver forces the
-driver to use polling instead, which avoids the problem.
-
-The issue has been observed with Raspberry Pi devices at least since
-4.14 (see [1], bug report for their downstream kernel), as well as
-with Nvidia devices [2] in 2020, where disabling interrupts was the
-vendor-suggested workaround (together with the claim that phylib
-changes in 4.9 made the interrupt handling in lan78xx incompatible).
-
-Iperf reports well over 900Mbits/sec per direction with client in
---dualtest mode, so there does not seem to be a significant impact on
-throughput (lan88xx device connected via switch to the peer).
-
-[1] https://github.com/raspberrypi/linux/issues/2447
-[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
-
-Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
-Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Cc: kernel-list@raspberrypi.com
+Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3808
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d91bc901398741d317d9b55c59ca949d4bc7394b)
 Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 0e17cc458efd..93de88c1c8fd 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -37,47 +37,6 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
- 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
- }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 9fed4471405f..8f3a778df646 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3355,16 +3355,16 @@ static void dm_gpureset_commit_state(struct dc_state *dc_state,
+ 	for (k = 0; k < dc_state->stream_count; k++) {
+ 		bundle->stream_update.stream = dc_state->streams[k];
  
--static int lan88xx_phy_config_intr(struct phy_device *phydev)
--{
--	int rc;
--
--	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* unmask all source and clear them before enable */
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--		rc = phy_write(phydev, LAN88XX_INT_MASK,
--			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
--			       LAN88XX_INT_MASK_LINK_CHANGE_);
--	} else {
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--		if (rc)
--			return rc;
--
--		/* Ack interrupts after they have been disabled */
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--	}
--
--	return rc < 0 ? rc : 0;
--}
--
--static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
--{
--	int irq_status;
--
--	irq_status = phy_read(phydev, LAN88XX_INT_STS);
--	if (irq_status < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	}
--
--	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
--		return IRQ_NONE;
--
--	phy_trigger_machine(phydev);
--
--	return IRQ_HANDLED;
--}
--
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -528,8 +487,9 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
+-		for (m = 0; m < dc_state->stream_status->plane_count; m++) {
++		for (m = 0; m < dc_state->stream_status[k].plane_count; m++) {
+ 			bundle->surface_updates[m].surface =
+-				dc_state->stream_status->plane_states[m];
++				dc_state->stream_status[k].plane_states[m];
+ 			bundle->surface_updates[m].surface->force_full_update =
+ 				true;
+ 		}
  
--	.config_intr	= lan88xx_phy_config_intr,
--	.handle_interrupt = lan88xx_handle_interrupt,
-+	/* Interrupt handling is broken, do not define related
-+	 * functions to force polling.
-+	 */
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
+ 		update_planes_and_stream_adapter(dm->dc,
+ 					 UPDATE_TYPE_FULL,
+-					 dc_state->stream_status->plane_count,
++					 dc_state->stream_status[k].plane_count,
+ 					 dc_state->streams[k],
+ 					 &bundle->stream_update,
+ 					 bundle->surface_updates);
 
 
