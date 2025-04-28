@@ -1,164 +1,108 @@
-Return-Path: <stable+bounces-136900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E91DA9F417
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:08:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C7FA9F471
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DD1B169B9D
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:08:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CC86189DBBD
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06282797B3;
-	Mon, 28 Apr 2025 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2887D26E17F;
+	Mon, 28 Apr 2025 15:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="WfYOF8MY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Mec72dAV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19132797A1
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 15:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E2529D0D;
+	Mon, 28 Apr 2025 15:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745852919; cv=none; b=h1f8h8FbkRgH7ccTujLF2Ad1VAPwkfVPhI/pOzapZPf5rdYtGc6xVJHp2ympUCPW8dHtRBCWYepoFKrTD1YfszoCfOtRiymtZm/jXaOP+K2TRTsczT/e+FIWiY7EkNZ6g1fTXLNJ9o1/k6Qb5MLGYVp64dCCzy0Ze+UN/k2SBfg=
+	t=1745854179; cv=none; b=rVP0E5Fkr44dwxmtCxAro+w4n0nPzVrqi+UuOWMUTUSZb8oZDSS2LQs3kNHNZ6c0HavPDna046laJXhDY9D3c/XtNveAk9tfvn32vYZzXBtB93Ro7huzLlFl2Ws9VXsGOBTlLiGdx4axxDUN6K21o6GYi3rNuxTXhZGmBqdNFJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745852919; c=relaxed/simple;
-	bh=FCzZHV86sVHHYDKPJ0Lwcisils3t+8q6ZghFwsN3puU=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=Vg1VeWCEQOssNn4kVSXelg5zNEec4KbuCvGtIN2WEswxqhSApMyIQeBVd9Jyv/Nr2O83K0qvL7q/KpQMvWD4maICgtsX+le60K29frPT87zPn/OEtLcjeYdX4aJb5/3gUkCIs4rlrbKDGpA3YDwUIey8E4hAC/RNg8MRMMU9yDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=WfYOF8MY; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7c9376c4dbaso560092685a.0
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 08:08:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1745852917; x=1746457717; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P6QvaUKEc64ZBq4JcxkJ+sgN35RTDPZcQh5DR7A39sE=;
-        b=WfYOF8MYjZRBl0xIaNQ9trVlfrARyRCKtdGbgOyl45BcM8RQsbNAhFX5FHJ7ekOhL5
-         jeKw07rQKfpkVd+XC2nBi+obtFXGnhOKKRKc0RZxrq2h/ekoZY2XPuFxkR9fXcXll0iW
-         fIJ0YgkrystzKG7c+RzYqbr5vhPOXn6q2f4CusReaKc8W19oaXwF1/68RQZ7O1DM9GtL
-         5fZeRB0MlFR7CUxbubdsnlxjgK4BpeU+hMpUhQLHBeBCJtgv3GG8BL/MWrodgQ6bBckF
-         y6Q0ZSPbURfpChjYlTmRxVgkNQuoRW01mQ//Ff4OmtSIAuYCaTaqMsOCDrOeEyB3dWOe
-         wrIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745852917; x=1746457717;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=P6QvaUKEc64ZBq4JcxkJ+sgN35RTDPZcQh5DR7A39sE=;
-        b=VpFAZqpfEHCZ3straLkDECFHTfcf6CN4wNbM4QSGmNVYEAxLzoOsAmaAJMSrYZDdxn
-         b6j0RJThElMQqGvE/o9GN5jh008pU8u4AIb+Hk8Zk5UsZ8aeG8BFNwh5JwlhR/5ht92g
-         z4pRnoIOYJatTU4ZkplNh/m1VSIUKiCuBVVxTG8hjMXA72V66i58YCHzpHdxVnfonIN3
-         mO2ZmjQLNBOAGfrOWG2X8LpL+Mrj2XZksFaD0GCCbO1RQNHj7WL9RwrX6gBIf+fxx9ab
-         19w/XWenCH6gUkZ0OvyuMXx0evsscuu1E6aAKm8nch4pfqHvEtEmrIlBZuR1L5+Ktprf
-         /mRw==
-X-Gm-Message-State: AOJu0Yxu7BIp2shvC7NOpoWnO/XcbGUrFLOlBkTGUgJtrIzzye8Q53KB
-	ugGsghbs7Ahb1EemA3MfZnQPvW2HY+tjsVGZn3lfiTka0SL0eUe8
-X-Gm-Gg: ASbGncufzCMVBEyDui0jzJOTL+nvpe7vNeZOeukMOcTqbgSBhkH2f1K+GCNkfFy66Mf
-	YgRVpS45Dvd45ZSxURYDNrHV8kB3JlKsGoxhZBiXNYFXVB36Tdo72SHv1F8hwPy/FRcMY9aYC7/
-	TiofC07N/BM//mqclbRKkSFNR51Zfr/R7CJaB95aLzMBAaAPCp+smSp8X5fYwwHSEXCGDWkwqLF
-	AyFuKDqHAiDJNqj4IuTtSHGO/IfUuV0MaaZ80xXVIR3qMIuL8MA+la/z65kLB3Yu4yOsiTDYaqp
-	vpNrKw34RKtV5lhmqasIJPhu1mXGiZvY1DsM8AcpiSfbrwJ17zI=
-X-Google-Smtp-Source: AGHT+IHGjZz4gjYEqIQksSKLic8If7GrSkdYXsDxALTpalldIzj8dbAhIvdHTVu73Qot72HmED+5Rw==
-X-Received: by 2002:a05:620a:4250:b0:7c4:c38a:ca24 with SMTP id af79cd13be357-7c9612d18a5mr1760377685a.1.1745852914626;
-        Mon, 28 Apr 2025 08:08:34 -0700 (PDT)
-Received: from [192.168.1.10] ([176.25.125.185])
-        by smtp.googlemail.com with ESMTPSA id af79cd13be357-7c958caacbfsm629161185a.25.2025.04.28.08.08.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 08:08:31 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------88ptD6nb4etpblEza5C7H0FR"
-Message-ID: <c6867c6c-bc47-4e3c-9676-70184baf21db@googlemail.com>
-Date: Mon, 28 Apr 2025 16:08:27 +0100
+	s=arc-20240116; t=1745854179; c=relaxed/simple;
+	bh=3qPKbJj/vgOBUPJepC6lSWcEMTN36+KodSuGvFHFbUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YiK9x/pFHVxnr6hEkMctk21MjbZM62F5Mwdty9yeujNnNUNa4vMURR0rxBAY1G7WYUV82SeQXBCuA0DKTIsbbswdVnBUbc5x6xlXf1zL2WIKNlr5qObJgy25RKO63VQvBexmS53P2ioZbpCqf0zGlQXTBoScCz5POW1DyvrCyto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Mec72dAV; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745854178; x=1777390178;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3qPKbJj/vgOBUPJepC6lSWcEMTN36+KodSuGvFHFbUA=;
+  b=Mec72dAVaUaszIiSMNdBtRWSE8Yky7mEmCn8xqGHm+jiwJPF8nRfWJCJ
+   Y4sbn0W+P0vm+M0iE+AhuLmzHwwoY8BHqbV0K2sYNMIC6IIzTSpGd3Tuu
+   z6eBCoVRpF/Zjt04mOF4xQmhHxTg+fz5zPhIFIL3rUo9wkh28CvDP+ugf
+   6pYhQeXTrFEAWx6BjKB9ZycNRbSTycZ9sV/zGUtcqL93RSnIN7QC1lXg+
+   qRtiJw4a+Cp2RbdAszq2KAB6IeD6rC/G1bYNmBUb+GRD6Xqu54Cl/QF3q
+   2ohYOtWf6kod40j0sadjpzIqND9dOP5U6yvjHUNwuY9fvA5dp5NWpsh9/
+   w==;
+X-CSE-ConnectionGUID: H670ZN/jSp6y3Zh3foyfew==
+X-CSE-MsgGUID: C1kGOTOLS+a/1cjOHhByoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47590175"
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
+   d="scan'208";a="47590175"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:29:37 -0700
+X-CSE-ConnectionGUID: iquNtVCcRkuv0DkXBphH9Q==
+X-CSE-MsgGUID: +okzcWZDQIeWwZTTyYBLUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
+   d="scan'208";a="138731777"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:29:34 -0700
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 1145C1208E5;
+	Mon, 28 Apr 2025 18:29:31 +0300 (EEST)
+Date: Mon, 28 Apr 2025 15:29:31 +0000
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Dongcheng Yan <dongcheng.yan@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	hverkuil@xs4all.nl, andriy.shevchenko@linux.intel.com,
+	hdegoede@redhat.com, u.kleine-koenig@baylibre.com,
+	ricardo.ribalda@gmail.com, bingbu.cao@linux.intel.com,
+	stable@vger.kernel.org, dongcheng.yan@linux.intel.com,
+	hao.yao@intel.com
+Subject: Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
+Message-ID: <aA-e2zBMgb1OF-8U@kekkonen.localdomain>
+References: <20250425104331.3165876-1-dongcheng.yan@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Linux)
-Subject: Re: GCC 15 and stable kernels
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Linus Torvalds <torvalds@linux-foundation.org>,
- adobriyan@gmail.com
-References: <fb4cce81-1e36-4887-a1e0-0cfd1a26693e@googlemail.com>
- <2025042814-sly-caring-8f38@gregkh>
-Content-Language: en-GB
-From: Chris Clayton <chris2553@googlemail.com>
-In-Reply-To: <2025042814-sly-caring-8f38@gregkh>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250425104331.3165876-1-dongcheng.yan@intel.com>
 
-This is a multi-part message in MIME format.
---------------88ptD6nb4etpblEza5C7H0FR
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Hi Dongcheng,
 
-On 28/04/2025 12:22, Greg Kroah-Hartman wrote:
-> On Mon, Apr 28, 2025 at 12:14:09PM +0100, Chris Clayton wrote:
->> Hi Greg,
->>
->> I've built the four stable kernels that were released on 25 April. I found that to successfully build with GCC-15, each
->> of them required backports of one or both of two upstream commits. Those commits are:
->>
->> Title		Commit						Author	
->> nonstring 	9d7a0577c9db35c4cc52db90bc415ea248446472  	Linus
->> gnu11		b3bee1e7c3f2b1b77182302c7b2131c804175870	Alexey Dobriyan
->>
->> 6.14.4 and 6.12.25 required only nonstring. 6.6.87 required only gnu11, 6.1.35 required both.
->>
->> Additionally, chasing down why my new Bluetooth mouse doesn't work, I also had cause to build 5.15.180 and found that it
->> needed gnull.
->>
->> I have TO dash out now, but I could send you a zip archive of the patches later today, if that would help.
+On Fri, Apr 25, 2025 at 06:43:30PM +0800, Dongcheng Yan wrote:
+> Typically HDMI to MIPI CSI-2 bridges have a pin to signal image data is
+> being received. On the host side this is wired to a GPIO for polling or
+> interrupts. This includes the Lontium HDMI to MIPI CSI-2 bridges
+> lt6911uxe and lt6911uxc.
 > 
-> Please send backported patches of the above, as they do not apply
+> The GPIO "hpd" is used already by other HDMI to CSI-2 bridges, use it
+> here as well.
 > 
+> Signed-off-by: Dongcheng Yan <dongcheng.yan@intel.com>
 
-The patches are in the attached tarball.
+Thanks for the update.
 
-cleanly as-is, and we will be glad to review and apply them.
-> 
-> thanks,
-> 
-> greg k-h
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 
---------------88ptD6nb4etpblEza5C7H0FR
-Content-Type: application/x-xz; name="backported-gcc15-patches.tar.xz"
-Content-Disposition: attachment; filename="backported-gcc15-patches.tar.xz"
-Content-Transfer-Encoding: base64
+-- 
+Regards,
 
-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
-AARZWg==
-
---------------88ptD6nb4etpblEza5C7H0FR--
+Sakari Ailus
 
