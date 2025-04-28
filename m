@@ -1,104 +1,72 @@
-Return-Path: <stable+bounces-136831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF1EA9EB47
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 10:58:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B72CA9EB6F
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F2E07A49C5
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 08:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5923A6A2C
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBD025E81C;
-	Mon, 28 Apr 2025 08:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3F24EAAB;
+	Mon, 28 Apr 2025 09:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MOseDqzK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cf0mTGVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF2218CC15
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 08:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AF8B672
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 09:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745830675; cv=none; b=ICxuqs7JNVTH+j19P55q2bTrvlubL8EbFL9JSmYffupUxZM0GTPjsMBzaV/DIL8IsCc/O0IU569fN2AFVJn0nlVHj9FX+Ju1jzR59i4jpHNMVS6fqASISmStMFCqvnyVfwP+KYjQmrF8QBeSEDTfpv2iDE7Q+CXzfqEsJ4zWmzU=
+	t=1745831163; cv=none; b=UqsZQYhvAjxw1X5tH7UOYINIalHdEa4OZ+ARzAwtwQAwcxeCdyEakEYot8fDNjPqfNjcXJwTDtS9lt8PxE1wqSW+S8rHpz+A6TMt8mg6EAbguSOSyxM8AQbQbtsr+4Wm9/YvV/tb5I9IVQsDNa/NUQB7xNBGYSbqODs2TpTFGpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745830675; c=relaxed/simple;
-	bh=NYbjMJQWi6j4iho6BrxZHAeyI4ktuWUC8DmVPyIrvG8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XFhXeJ+4xAWUyEZfOI8VCQJp4U9qzjwipn7Bro5b9RYAihszjr15JsXKQnXJDaXGUPRm77WBd47TRwjfgrWT7xwUbnBvtFmOHzrhxVapXLIL2GG8q/fBRaKYM7QQsGOlVKzstqSiy57JrHWz1K6hUnEhRwXogWWHm6Wo+khYI6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MOseDqzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB96C4CEEF;
-	Mon, 28 Apr 2025 08:57:52 +0000 (UTC)
+	s=arc-20240116; t=1745831163; c=relaxed/simple;
+	bh=1h/9ckQWf9Pc4Md7/Yqbc8mEeGIe4ns3eSc4++bxm+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OLaMWn0figGu0X5dRr78Z5P+gXZsq+O0A869FbpclNkMxLCJTWvXFdltY5RCwmXmxrNWw0URuLI5F1Mm7OEbDHkOLP0d5J1AGLSdo8+AE6oXy/TSPp6x5hm+2NwqklKZjkliG7TfWOAg4iPWqBF5kUSKeXNdBeMOhgPxk0R6uOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cf0mTGVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E508DC4CEE4;
+	Mon, 28 Apr 2025 09:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745830674;
-	bh=NYbjMJQWi6j4iho6BrxZHAeyI4ktuWUC8DmVPyIrvG8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MOseDqzK4FS0TEiTjaaGdDm8XBE3yT1aL8CP4c9x55E8aRYRLe7fa+XNicQjH40lt
-	 p1fDuXnJIftUtHG20tEe/zkxj68xTS+Sx49PpHKrGq+6b11Z/jmi8zS64P5VkdxFRe
-	 L2eZczdVY1eqAa2ggVei6OyyAhUgwWWQvCImHJWVzkjp0+rpGWTc1ZI1zhKZvGG3nj
-	 rKPB3ojMhumlVQKB15rA0lhhX6og2FGc7E5KMIo7v8bn7Pq07rcTYni6MxJymOjanb
-	 8nsgqHkYvhsKsfSP0Kg68ElSZxYSo04rIMHVuRXuKf+g2BLNSK9AYBMtuUY5FB1T0W
-	 JcSJql3BWrNfA==
-From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
-To: stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y 3/3] net: dsa: mv88e6xxx: enable .port_set_policy() for 6320 family
-Date: Mon, 28 Apr 2025 10:57:44 +0200
-Message-ID: <20250428085744.19762-3-kabel@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250428085744.19762-1-kabel@kernel.org>
-References: <20250428085744.19762-1-kabel@kernel.org>
+	s=k20201202; t=1745831162;
+	bh=1h/9ckQWf9Pc4Md7/Yqbc8mEeGIe4ns3eSc4++bxm+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Cf0mTGVw6SK1Y7NkoO73eL74TXwsKGiFA6Q+O2C4fwrAMDaPSlDiQYHNcXwIuBFYV
+	 zT0nSsv00LFE5iqP2Kf9nznopwdAPhC9C75lDmntZmRulHRZr0Vh3YG/MsGbu9Pfxn
+	 3uaYnt2wKcT9DUS5MLLH9sIZI8HdAtV9fsraVwtvATfkkvyUd5xZuPMaWPSIHE4gkA
+	 naBSfsoofYEvTS9LNyOnPNy3hjPGubPOS+yJQoaFcw28QFPrtNMz0BjzIgGpVQbCju
+	 eRBM+XCibzsjJmOwLqkIOtp+faTDxaVQJe52xxHocE0/nKs8D9ohyftr8OKz1UOXFM
+	 0sHxqZamRN8Dg==
+Date: Mon, 28 Apr 2025 11:05:58 +0200
+From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+To: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Cc: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH 6.12.y 1/5] Revert "net: dsa: mv88e6xxx: fix internal
+ PHYs for 6320 family"
+Message-ID: <mzyqlyur5bqrdu6l2sm4dqidumor7efsuzflok5drjbn7fmcge@hfb2k3xnmymx>
+References: <20250428075813.530-1-kabel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250428075813.530-1-kabel@kernel.org>
 
-commit a2ef58e2c4aea4de166fc9832eb2b621e88c98d5 upstream.
+Sigh.
 
-Commit f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
-did not add the .port_set_policy() method for the 6320 family. Fix it.
+I used my local versions of these patches, without upstream tags
+(reviewed-by, signed-off-by, link).
 
-Fixes: f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-5-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 2 ++
- 1 file changed, 2 insertions(+)
+Should I resend as v2?
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 819a03693412..170d2e28c2b4 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -4149,6 +4149,7 @@ static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	.port_set_link = mv88e6xxx_port_set_link,
- 	.port_set_speed_duplex = mv88e6185_port_set_speed_duplex,
- 	.port_tag_remap = mv88e6095_port_tag_remap,
-+	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
- 	.port_set_egress_floods = mv88e6352_port_set_egress_floods,
- 	.port_set_ether_type = mv88e6351_port_set_ether_type,
-@@ -4192,6 +4193,7 @@ static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	.port_set_link = mv88e6xxx_port_set_link,
- 	.port_set_speed_duplex = mv88e6185_port_set_speed_duplex,
- 	.port_tag_remap = mv88e6095_port_tag_remap,
-+	.port_set_policy = mv88e6352_port_set_policy,
- 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
- 	.port_set_egress_floods = mv88e6352_port_set_egress_floods,
- 	.port_set_ether_type = mv88e6351_port_set_ether_type,
--- 
-2.49.0
-
+Marek
 
