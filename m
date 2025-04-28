@@ -1,225 +1,173 @@
-Return-Path: <stable+bounces-136798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13492A9E5EA
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 03:47:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464FFA9E7D3
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 07:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 372303A9749
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 01:47:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8458F3A2931
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 05:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F644152E02;
-	Mon, 28 Apr 2025 01:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3902A757EA;
+	Mon, 28 Apr 2025 05:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Xv3WRdrU"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="LAgdQ1bn"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7178F51;
-	Mon, 28 Apr 2025 01:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745804839; cv=fail; b=hUoYz9zxpMcD0XS6jHYNGP17GibNyMnPfS2+RI6PHcVVRKsiVu2/fpsaazrlbY0iwl7bMbOvE77VhodZiNHCH2ti01+Mo9qr+O6pLA57373My0xPpeRBJeMoRHi2aemP3hQUqnhBaHZcSb77GyHK/iuvwKO0ZuYsXyyAK2h8+Ps=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745804839; c=relaxed/simple;
-	bh=QZEhsdUEBVFvpXgio2L703x5K3JTXtWSsxFXo6QhZwQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=AXROtQHotpDV18eKdgrInwSZv0wJ9bpXSOshkESBizhSWJcjK6uVCwTRpvIb/Wf/kvhd0AqXEOLjcJjdz5lmUheG66PjeBuckBY1tSonMOAYoUxuJlr2Wab+sHKDAXk2kT7cIAmcI2QaCFB/8mpJlVvV9oN+4I8x9zZJSB5FM6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Xv3WRdrU; arc=fail smtp.client-ip=40.107.237.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ONEfrdNlzWbx16XDJyE0Dnrwvg8A4Kf5YjNfIma3JZUMfnBH9EYrMS0woBBB38Tb5Hz9fIa1d3FFvSSiTQ74zF/eGN3XTtki4zhuORcI0A3GUW2hmT8+VwmIoYcIUaGI8qDFVU3HaS1Vp9R9weMAWxzsazUCkViT4q+I1BZYIIej28TGtz0DkKwkoPdkjtzqRSI1MzflGkPOEYqY3Oo4ubMuQT5Bk//ywedAXS/mFvfkEXmfIQRecpVBfe2tlterZgIDIY4rVeARSueIoUNCVfJNWIS/8cCSZd4md3xdvvUFXlfmTdRI9PONJXfqfV77eSTDQ5IumUSMlWm3eDjnYQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aCnE1p4lO54s19ZnhHjOYRbKY3NutnTGNhQ6EtEHs34=;
- b=wdTGgTJumhdgyzUGMAL7WC6mfyg8DPV1Knc5CzBP+04t8lK20Lp8pF7vJver6VVwZHJ5XDMCNI1ccvJMw37mTdtjm8iaiBcKHBjdtU0cMimHopnhIikdZEgk9XgS3TUKxLRYQ4EMoioDZghfLK+/trIBEAgzvOewiAEA9Eh1McBx9jpdbGkQuvvmnc/Z5iaSv0HLYvltqNvFufn0D3H6gc5yeCTqrjzIPRL+zF6xWuElcrhlPfUnb3uxfhx+DMV+1uNvdKVCw0MQgUtWCq44aPWNs/SORmpougBm86LhDRo/LOTTUUIao8LTDHgjnzlCnvB79e518nYzvw2cJs4A6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aCnE1p4lO54s19ZnhHjOYRbKY3NutnTGNhQ6EtEHs34=;
- b=Xv3WRdrUnbEISzUXBDqKvgHBGPM9nEDJbSJbogiFPNFtJjUO2SkqYrOQkwAsL7J/NJhfvEMQSkD8YYr+0ZKTwMrcVX8SU+eW0osdHAOYX2wftlPkNmC62Tt6nYiM4hvXJTyFjyLrIl04MM9fUtiagm2Y3SqAOcAVQ2ddMZ78dCl7Z4yMjRMS5o1j0oVZWZyIIrJj9o4OfD3mBY8KArVuels8os7NjRVfIz187nOB3cr3N6rsYRAQy33rtOxMOstQaYRWmIxd11Yvhv/ju/pKpGse5GpVuDp4vQb9jyUD/UHE5SgG5TUw65CzdDL1iBm1COjjZgKlcEA57UWanLajCA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH7PR12MB6657.namprd12.prod.outlook.com (2603:10b6:510:1fe::7)
- by CH3PR12MB9251.namprd12.prod.outlook.com (2603:10b6:610:1bd::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.28; Mon, 28 Apr
- 2025 01:47:12 +0000
-Received: from PH7PR12MB6657.namprd12.prod.outlook.com
- ([fe80::e1a7:eda7:8475:7e0a]) by PH7PR12MB6657.namprd12.prod.outlook.com
- ([fe80::e1a7:eda7:8475:7e0a%3]) with mapi id 15.20.8678.025; Mon, 28 Apr 2025
- 01:47:12 +0000
-Message-ID: <6c2193a3-02f7-4374-bc64-e9dde471da44@nvidia.com>
-Date: Sun, 27 Apr 2025 18:47:09 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH rc] iommu: Skip PASID validation for devices without PASID
- capability
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Vasant Hegde <vasant.hegde@amd.com>, Baolu Lu <baolu.lu@linux.intel.com>,
- joro@8bytes.org, will@kernel.org, robin.murphy@arm.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250424020626.945829-1-tdave@nvidia.com>
- <a65d90f2-b6c6-4230-af52-8f676b3605c5@linux.intel.com>
- <8ef5da0e-f857-43a0-8cdf-b69f52b4b93a@amd.com>
- <20250424123156.GO1648741@nvidia.com>
- <77be6671-e4e8-4b17-bf72-74bde325671a@nvidia.com>
- <20250425120035.GA1804142@nvidia.com>
-Content-Language: en-US
-From: Tushar Dave <tdave@nvidia.com>
-In-Reply-To: <20250425120035.GA1804142@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0304.namprd04.prod.outlook.com
- (2603:10b6:303:82::9) To PH7PR12MB6657.namprd12.prod.outlook.com
- (2603:10b6:510:1fe::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92C446B5
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 05:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745819157; cv=none; b=o3NIMwBhu0zpf9jBDbL6FcdoAcr5HXMdD/Ws1Bf8C5RzEZfOgJjF53MR2n0c9ZC7hmyfpuoxPyd1/FVWiQyW3W9Q6H+gt5wC6gWxkGd9GuLWuo3VLnjylEynKo7Py8bJHEvBXM5CAhgu88Xt6JZMF9tkpQFA9+zrhtBhDy2TCSw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745819157; c=relaxed/simple;
+	bh=R5zz80FNVb1GeGFUEaHAIznnHcRMTjfAH3LRhMshWQU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=C9is+46uyBpKaJIZHqZpIVwHBVOC4GGb8eYSDVKTzY/Gw4sKjtQso7C+TJpwQJ0nGglk//V+wSs15D4N3l/Reg8ktZfL+I9NcfrLZ8Wwvg9CKNQoapdOmJtcBsHI++l9HkNtMku3jMkjBviiJdyLfjAfUOBTAWJiScQnfrk0w/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=LAgdQ1bn; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=MIME-Version:Content-Transfer-Encoding:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=1k1pJaFY2vinDCz5f7Qz2btimtbywPDOiib+3gnfllI=; b=LAgdQ1bnXSMyDAxS7iTYI+rFG7
+	uSrK+4xNrjzdLVXGbG0oGIIXbSwtkauqbXLgKMA0bE2HqNeleytvugMeStMP1eiact6BhS8PX8X3W
+	5RQnRxKgYwgKYEHq1j544SVcAQzgViFWrh+unmkLL7j/kT1q/quNNt6lvzkw2Mx5XkFcMWQ0rrNAX
+	7ZiQag80/jQVq7NuXmuKQ5DWQScTUwTRAlyg3ToKacwRqcX+vm8lvQd5wawaKr3Ndn9mhki5TjvYx
+	L1fZ3Li+frukEoOl3UiBBTawTzrg/l4gyEyGQZZwkt+ovdQcTkkYq2PGm+EVVWR7IsaOygzQnPkJA
+	QGSIdhMw==;
+Received: from [159.147.214.238] (helo=[192.168.0.17])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1u9HJM-009dAc-4Q; Mon, 28 Apr 2025 07:45:48 +0200
+Message-ID: <ace509ac67221d5a3e7215ea132c8155179850e4.camel@igalia.com>
+Subject: Re: [PATCH] drm/v3d: Add job to pending list if the reset was
+ skipped
+From: Iago Toral <itoral@igalia.com>
+To: =?ISO-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>, Melissa Wen
+	 <mwen@igalia.com>, Jose Maria Casanova Crespo <jmcasanova@igalia.com>, 
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: dri-devel@lists.freedesktop.org, kernel-dev@igalia.com, 
+	stable@vger.kernel.org, Daivik Bhatia <dtgs1208@gmail.com>
+Date: Mon, 28 Apr 2025 07:45:37 +0200
+In-Reply-To: <20250427202907.94415-2-mcanal@igalia.com>
+References: <20250427202907.94415-2-mcanal@igalia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6657:EE_|CH3PR12MB9251:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03cdf2e1-549c-4818-0da6-08dd85f6982c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TERNUnIvSnFzWUxUaWFBbDQ3U2s2RjdMTzhwYm5ZL0VMZVF5bExyYUZJVmp2?=
- =?utf-8?B?RWFxdE9NTFE0encyUmNDSk1PekVmemg5VnhWR2EwWXd0Y01BSE90eDJXVFps?=
- =?utf-8?B?SEVnbWoySHNPNVEzd0NtNlpvSm5wQWNVa3R3MERiMFJhWHBPSzFVSVoxbU0w?=
- =?utf-8?B?TkpseEVlVGNFZmMrQi9CS2NlenRaOHAvdlRmZ1RodWd6Vy9FaGtuREl6dXZY?=
- =?utf-8?B?MTFZZ0ZMRFdLRlhnSDFjc3k5b2h3bVhHSnMyVkNtc0NTUTU2dmZtNXBKWnpk?=
- =?utf-8?B?dmFYT2lzdTBQSGUrYUdrTWZSQ0ROMFZsRnZ0Ny9KaXJyWG9YYlZaTGx5Z3gw?=
- =?utf-8?B?SjVoN1RBNlBub0c0SHlON3d6NFJ4djcvelhOdUV3eHRIQUdGNld1VGZURkMy?=
- =?utf-8?B?UHRQczhBWGwwTkN2R01xbUFNSFdjeXVrdkhPRXltMzh2RENNSmtsRVhlajVU?=
- =?utf-8?B?SVM2Q2FsS0laN0s1aVk1WTRmdEtsa282ZVB3TEIwbzNLaUV1S3lLYVc2dGRY?=
- =?utf-8?B?M2JSOExuTlBOQWhyZXhwY2hpMU5zUXhGc1pvRi90OGo4MXB6eWJwaEhDR0pJ?=
- =?utf-8?B?dE1LSDg5c1IyYjV6VjdIQ0tSRlE1R2FVejF1a2pCRjltbGtkVzI3enQwdXBE?=
- =?utf-8?B?bmFZVXVtWUdlaktrYStVQlVrUTNOeHpCenRickpsTGVSN3pkdmdtNEVNSGZr?=
- =?utf-8?B?RG5ZVFA2REZVek55Ymh3QmorcVg3bzFaTStXSmdkaVp6WGhyc085VDdQci9y?=
- =?utf-8?B?SFF0b3Nib2xiekxRc0tlTzFYMXNLVVo3WHM3QXM4V0hiNDljeWpsOG9rcEVD?=
- =?utf-8?B?SUh6QXBXcWhYRmlpYjhqRVVXV0h2QjRMUXd2TWJIZGdvcDV1Mko2T0IrbDcy?=
- =?utf-8?B?aTVZK3RueHc2Q3JGWHhGWjBicW13R1hlTitkV1Bhdmw1TythWW1rUk54ejU5?=
- =?utf-8?B?SmRPMG53eUNuazNvMXpzeE5jU0FPY1lUTFZVNFhzdTNjMm41UGJoKzI2eDhZ?=
- =?utf-8?B?VVA3YU1GRDYvVWhNbkhtN1F2Z3pYVXFyclRQQjE0a1V0OTVNdk9DSmQrdkZz?=
- =?utf-8?B?Zm1kWGo0Y2taRGNINmo4RmFQOU15ZzRoRWc0SUZST1Y2aEoweStCdEFBblZw?=
- =?utf-8?B?NVRUNGtSMXBPbmNNS2krV1JIMFNSQmdKbnNMd2taOG9yTlVOL01VMzNyOHln?=
- =?utf-8?B?alI4cDNELzd5T2h1ZXdXL2d2cUVUSTNtS3ZySGVIRTJvaW1aWjcwc0N2QzBH?=
- =?utf-8?B?TWduVDBqOE91Vm5ieFBBQ3N3ZllmTlFmSlVOY2dqMXF0RkJmcms3d1p0VVBG?=
- =?utf-8?B?amh4RTU1MU1WRHNLRDR3WUZyQjNEb0Q2SGpEdmRMWVdHcFFjSXhjYnAwVVBK?=
- =?utf-8?B?UGlpMldsZjI0TS92YXUxNnhWdUY4cVZZdmtVTVhIRVBEcWFXcnErS0VDdy8v?=
- =?utf-8?B?bHlIN3BrSUxlL2hELzc1REowK3J5SGZlY2hXKzNsNnhLaVNMc0tORm8wWjIx?=
- =?utf-8?B?TUVnM3VxQTVYaFZOdGRnc2RFVFFNVHlOWmVveExiYUczMnRiZm1xa1dydTBx?=
- =?utf-8?B?d2NaSm83a2pZMUdGUXFNMHRvMUZhNzZUZTk5Ty9KcVRWUXRtWC8vTjdNWTNZ?=
- =?utf-8?B?a3dhQ202VzF4ZUdCYkZqb0VvK0kyZ05UQW9YZ1FLd2dsWS82SFpjMnVTUlZv?=
- =?utf-8?B?d0RnVHNqSkNaZ3JYazFKbzFJNkV4cnRwbk9yem5yVHU4T3k1dTg1L0V0QTVN?=
- =?utf-8?B?eEVoRWljQ3I3SHlBM0xZMEFSaXN4b0MwUnZkYzFQVTNUNDBCZHNKOVpVdVNa?=
- =?utf-8?B?UDgzY2xDRk9nTCtXQzJ3YitUekZVeXBrWWk4aFYxckQyOW1IUk5tSTBTMW1x?=
- =?utf-8?B?eUR4akNzZ3lkcjMzcnZ0bHArSTFOU1ordWxlSjF5WEtjU3Ryb29Yc3FVb092?=
- =?utf-8?Q?Bj8KVxVv2u4=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB6657.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?TnJCWnB5TFY1dS8wL2IzZlpRTUdBZ1NVVjRGenFKZkJDbmZHY242RDRjQmVv?=
- =?utf-8?B?VzlVN0hLejNXZ29IcHpjeVIzMmo2ZGptRzM2ZmhhUS90Tlp5OG1WV2tKZncz?=
- =?utf-8?B?bWdEamRNUUtTQlNzeUtlQkN2akU2MnBOazlLMHVrM3hkd0dpSEt4U3BLdzJq?=
- =?utf-8?B?dXVDcmx3LzlSMmNCVk9DeGN5RDFncUlCUEwrVDN4ZEJwbGgvTURSNDdBQUdr?=
- =?utf-8?B?dWx1c2hYWWp1UUF6RDFWS2Q1ZTNTSThVV0o4UVV2dTZTZjVWTlpoZThMb0Nh?=
- =?utf-8?B?K3hCUGhhODNPUkZhWTNUa3dPYkpHVUNHV2VxYis0Z1RralF1T3dKbmQwUDRX?=
- =?utf-8?B?aHhjVUMrZEFzTlJHYjVrRWMxcjNZdEczQ09zb3NyOTN5a0p6ck93bEpwMXVJ?=
- =?utf-8?B?OXE2c3MyNG92UUxWSU1Ia3hKTjRFVzVEd01KY215aS9id2lkZUFoOWs3UXNj?=
- =?utf-8?B?NXZzamt5aUtKamNCeGdNOWlZdzBaZnIzZWJHNStKTVF5Z3JnODVvSGNPbUt3?=
- =?utf-8?B?YWVtK04vMHNvc1VOUFlQQXJ0US9tbUt6Um4vVU1yOWNScGMrT0ZDOTFtYnhN?=
- =?utf-8?B?V0xTc1dqengzTkJ6Z00yR2psQVpYT3FsK1pxTi9CdHNFdmpEZXVTZi85U2dS?=
- =?utf-8?B?ZTBIOGk2bXJrNzBtd3ZRODFWby9qdnRLVmVheU1RS3pMNyttS0k2TGxJT0Fm?=
- =?utf-8?B?d3ZFdkR6Q2VtWG9nbFd6Q2s2UXFpclcwd25TZTdvUy92QmZieDRqUFYvUkpX?=
- =?utf-8?B?Ni9HazJIY0ZFOTFGeGUvdzR0UDRhY0crYWpiN3kzVmVaamczRjIwZTY1RWIv?=
- =?utf-8?B?YU9DYjhra0dUWEpoaGtLK0hoYUxLS0VNYjV5aXlWaHFoSm05NWEybmg2QmRu?=
- =?utf-8?B?TkJ4YXovN2hmVjVnR0tjOGhHaHYwMS91MnMvWHVSNlRzN3Vwb05NbVY2SHpV?=
- =?utf-8?B?SlE2Wm5WMjM0QTVFcTdhbWpiQzkzY2RNeTlRdWdPWWQrY3ZYOFJFbmtyQUto?=
- =?utf-8?B?NElIcDZ1dWdreFBVSHdKVnVsQWdQY0tFZjJ1WVYwQU4yYlAzUUM5R21QMXo5?=
- =?utf-8?B?cktmNVJCZWVYdHgvdjZ0K0w1TTZZRXU1czVya3J5aWFWdzAyYnF2RmxBMUpa?=
- =?utf-8?B?cE1qdzcvWEx1anBXMmRFL25zb05GNXVsVzVMSnU5WXFFOW1hVG1MRENseHl0?=
- =?utf-8?B?RE9TYjJndVB6ZWhoWUtnQ2ZES01Vc0dCY3dISm9SNTBiR0YraEhVRW1YWlhY?=
- =?utf-8?B?VE9ObnNwNkQwZWg2ZHphK2JQNFZNK0JhYXhsWUdQamRQOFBlNGhkMnlmb3do?=
- =?utf-8?B?NWhwbVM0dC8vL1JHZm91VExrdk9xUGFMTkpMRlBOQ3pWUWl4cU5LTVdDK3BK?=
- =?utf-8?B?STRQdGNBTlNySS85dVJZanNUMlNXclliYkY1U3FPWTltUFh2Z1NydE13TU1k?=
- =?utf-8?B?aVpDVTJNUGY5aVoxY1lZMjRGWjVHSFpYM25LVUVtMXY5aXI1dlpHeXphaFY1?=
- =?utf-8?B?ekdBRXNFVEZuUkc5ZzN5Mkd5VEtXdlZBdWlkQ3h5MmQ5eUNmTXJYYVJiSXVi?=
- =?utf-8?B?MUJwK09iUStTdGFXZjdWdVgvZ1ZKWlJibExKdFBMNFVHdmJiUHpybm9IRUFr?=
- =?utf-8?B?cmdoRGdwTk5aQTVCSWlsbHVtd005N0ZHeDdvS3I1eitqV0dIOXV3eSs3Ukdy?=
- =?utf-8?B?R2U3N2JqWTJNdy9zNzNOWTh6bHN0K0NSb1hQelZ4MVhQRG4yTWs4bkVGM25s?=
- =?utf-8?B?dEJvKzg3NmV2cGkxeEw3dlRFVUxpcnhueFcrUjdDeFZHWExRWHF1OUpXR0lk?=
- =?utf-8?B?MnlyNkZKbUVtY1ljcVB5YVpaMFpIMU10L1RDZ0VqdklPV053SnA1Z3pISEE4?=
- =?utf-8?B?Uld5OUhYTUFwNE1ieGcrVGJXYVFLUGtrOXNXc29zZlVEOFRTWTcwbnNpenY4?=
- =?utf-8?B?d1VSbzZDa2VCbVhmYmFOZjJHZlIxY0dQMVBvSUIrQm80WHBuTHZOOFROa1l0?=
- =?utf-8?B?STZaMmJvSWUvdUQwMEo0cjhwUTNPaVM4bmlhbm1GaFVQS1JhQ0VacTZxcVpU?=
- =?utf-8?B?bGJoa1ZEM2E2NnFxMkxxUXRUNkNpQ0Rua0llbzNsMUNkWFZYT0doOXlSVnZR?=
- =?utf-8?Q?gfzTz8BlrKnCxuBXAcfklUh9R?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03cdf2e1-549c-4818-0da6-08dd85f6982c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6657.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 01:47:11.9625
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VYupOXGfCFAbft0N6P6VR8G2qkPiP5cmA45wlNFIFlXHMweoBWj6Z3cDowyTJSuzByNHzG3D93XmOfsGuhMRdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9251
 
+Hi Maira,
 
+Looks good to me, but don't we need to do the same in
+v3d_csd_job_timedout?
 
-On 4/25/25 05:00, Jason Gunthorpe wrote:
-> On Thu, Apr 24, 2025 at 05:49:20PM -0700, Tushar Dave wrote:
-> 
->> In the above topology, we setup ACS flags on DSP 0008:02:03.0 and
->> 0008:02:00.0 to achieve desired p2p configuration for GPU and DMA-PF.
->> Apparently, this creates multi-device group with GPU being only device with
->> PASID support in that group. In this case, set_dev_pasid() ops invoked for
->> each device within the group with pasid=1 and doesn't fail.
-> 
-> Hurm, it doesn't fail, but it corrupts memory in the driver :\
-> 
-> int arm_smmu_set_pasid(struct arm_smmu_master *master,
-> 		       struct arm_smmu_domain *smmu_domain, ioasid_t pasid,
-> 		       struct arm_smmu_cd *cd, struct iommu_domain *old)
-> {
-> 	struct iommu_domain *sid_domain = iommu_get_domain_for_dev(master->dev);
-> 	struct arm_smmu_attach_state state = {
-> 		.master = master,
-> 		.ssid = pasid,
-> 		.old_domain = old,
-> 	};
-> 	struct arm_smmu_cd *cdptr;
-> 	int ret;
-> 
-> 	/* The core code validates pasid */
->                  ^^^^^^^^^^
-> 
-> Which is not true after this patch.
-> 
-> The core code may not call the driver's set_pasid() function with a PASID
-> larger than that specific device's device->dev->iommu->max_pasids
+Iago
 
-Yup. And I should be adding similar check (i.e. max_pasid > 0 ) before invoking 
-set_dev_pasid and remove_dev_pasid (as Kevin already asked earlier).
-I can do that in v2.
+El dom, 27-04-2025 a las 17:28 -0300, Ma=C3=ADra Canal escribi=C3=B3:
+> When a CL/CSD job times out, we check if the GPU has made any
+> progress
+> since the last timeout. If so, instead of resetting the hardware, we
+> skip
+> the reset and let the timer get rearmed. This gives long-running jobs
+> a
+> chance to complete.
+>=20
+> However, when `timedout_job()` is called, the job in question is
+> removed
+> from the pending list, which means it won't be automatically freed
+> through
+> `free_job()`. Consequently, when we skip the reset and keep the job
+> running, the job won't be freed when it finally completes.
+>=20
+> This situation leads to a memory leak, as exposed in [1].
+>=20
+> Similarly to commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler
+> when
+> GPU is still active"), this patch ensures the job is put back on the
+> pending list when extending the timeout.
+>=20
+> Cc: stable@vger.kernel.org=C2=A0# 6.0
+> Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12227=C2=A0[1]
+> Reported-by: Daivik Bhatia <dtgs1208@gmail.com>
+> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> ---
+> =C2=A0drivers/gpu/drm/v3d/v3d_sched.c | 18 +++++++++++-------
+> =C2=A01 file changed, 11 insertions(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/gpu/drm/v3d/v3d_sched.c
+> b/drivers/gpu/drm/v3d/v3d_sched.c
+> index b3be08b0ca91..a98dcf9d75b1 100644
+> --- a/drivers/gpu/drm/v3d/v3d_sched.c
+> +++ b/drivers/gpu/drm/v3d/v3d_sched.c
+> @@ -734,11 +734,6 @@ v3d_gpu_reset_for_timeout(struct v3d_dev *v3d,
+> struct drm_sched_job *sched_job)
+> =C2=A0	return DRM_GPU_SCHED_STAT_NOMINAL;
+> =C2=A0}
+> =C2=A0
+> -/* If the current address or return address have changed, then the
+> GPU
+> - * has probably made progress and we should delay the reset.=C2=A0 This
+> - * could fail if the GPU got in an infinite loop in the CL, but that
+> - * is pretty unlikely outside of an i-g-t testcase.
+> - */
+> =C2=A0static enum drm_gpu_sched_stat
+> =C2=A0v3d_cl_job_timedout(struct drm_sched_job *sched_job, enum v3d_queue
+> q,
+> =C2=A0		=C2=A0=C2=A0=C2=A0 u32 *timedout_ctca, u32 *timedout_ctra)
+> @@ -748,9 +743,16 @@ v3d_cl_job_timedout(struct drm_sched_job
+> *sched_job, enum v3d_queue q,
+> =C2=A0	u32 ctca =3D V3D_CORE_READ(0, V3D_CLE_CTNCA(q));
+> =C2=A0	u32 ctra =3D V3D_CORE_READ(0, V3D_CLE_CTNRA(q));
+> =C2=A0
+> +	/* If the current address or return address have changed,
+> then the GPU
+> +	 * has probably made progress and we should delay the reset.
+> This
+> +	 * could fail if the GPU got in an infinite loop in the CL,
+> but that
+> +	 * is pretty unlikely outside of an i-g-t testcase.
+> +	 */
+> =C2=A0	if (*timedout_ctca !=3D ctca || *timedout_ctra !=3D ctra) {
+> =C2=A0		*timedout_ctca =3D ctca;
+> =C2=A0		*timedout_ctra =3D ctra;
+> +
+> +		list_add(&sched_job->list, &sched_job->sched-
+> >pending_list);
+> =C2=A0		return DRM_GPU_SCHED_STAT_NOMINAL;
+> =C2=A0	}
+> =C2=A0
+> @@ -790,11 +792,13 @@ v3d_csd_job_timedout(struct drm_sched_job
+> *sched_job)
+> =C2=A0	struct v3d_dev *v3d =3D job->base.v3d;
+> =C2=A0	u32 batches =3D V3D_CORE_READ(0, V3D_CSD_CURRENT_CFG4(v3d-
+> >ver));
+> =C2=A0
+> -	/* If we've made progress, skip reset and let the timer get
+> -	 * rearmed.
+> +	/* If we've made progress, skip reset, add the job to the
+> pending
+> +	 * list, and let the timer get rearmed.
+> =C2=A0	 */
+> =C2=A0	if (job->timedout_batches !=3D batches) {
+> =C2=A0		job->timedout_batches =3D batches;
+> +
+> +		list_add(&sched_job->list, &sched_job->sched-
+> >pending_list);
+> =C2=A0		return DRM_GPU_SCHED_STAT_NOMINAL;
+> =C2=A0	}
+> =C2=A0
 
--Tushar
-
-> 
-> Jason
 
