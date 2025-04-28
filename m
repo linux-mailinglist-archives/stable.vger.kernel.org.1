@@ -1,75 +1,74 @@
-Return-Path: <stable+bounces-136970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFCF0A9FC9B
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 23:59:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3D3A9FC9C
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 23:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABF033A9495
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C3F23A8C66
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764AE20B21F;
-	Mon, 28 Apr 2025 21:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9AD20CCF4;
+	Mon, 28 Apr 2025 21:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="uFr7kxvE"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="UvQulCF4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB8C1A5BBA
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 21:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6771F872D
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 21:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745877548; cv=none; b=N1JXGYXYJoyqvvrbV6wemcQd6aGKsrzABdsVsb04qqpOpJ2/WV+AmNFtDWS1J88917E8sK8S5rKFc8Q4nq0rGEOVoAhK22pe6tCVcwGquXUlDiuOM25ajEarUvy+MrOnDv8pca5/iI8j2dhWnR8FgDLu9vxq3u5F3DQvMfXaPNo=
+	t=1745877549; cv=none; b=T+EwXgUoEzairL4B8+lHnnijFFFwDnkkLQdDFuU1FkTIZC+tfLRIrP+7Au/sYr1dN+/fK6VAE7gN2Kaa9Px9FV/r4/2T2pDEe2UXPrjCu3aVkMrkBGuiiL1AMke4xc/IZxDKorMgkEsAX4jAGJ4sC7B5ob5WX8xOsrfbd1nPTzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745877548; c=relaxed/simple;
-	bh=sWeFbzlFU165XMCDLpcjlJULL0aFblS3VOU9QPt1Qyw=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=CQHKvfDE7z31GPlz5dUZJeRIb0+HKKtBpcAVNJKty9+7ASW2EveuKsjhpZ2698cFS7Yx+c+vJYrOlabdWJIK5TZ85kA3keFU6eMI96zWrwkXAnUVDQGmK+LWuy1j81D8Rd9iLJloMeCkYTN+JI5X/Zyi42x3Tb++wAZFk0U82L4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=uFr7kxvE; arc=none smtp.client-ip=209.85.219.172
+	s=arc-20240116; t=1745877549; c=relaxed/simple;
+	bh=53Vnm9hvK3khkxEnThEFfsRSKQm2C6bKgIF34oGKA7A=;
+	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=P47ErYKPXDHGtHHtY6igfRT8Oeej5o4OnBlG28TuM89WlOi1Y/AaMAg3ibD/mhdpF2OdGdEs5LnXbmIVSkfOxpzmgNa6ZClYoEWN7d7A1uZY/JCBK3tTvM9Yvy9k4YVc14/P465pylWxRTyr1nJ/vflnrzw5hEU7nCYVn15h4pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=UvQulCF4; arc=none smtp.client-ip=209.85.219.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e732fadd0ebso2021799276.3
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 14:59:05 -0700 (PDT)
+Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e730ea57804so3883669276.1
+        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 14:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1745877544; x=1746482344; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zxFrdDneqpz3d9d7DbJCg3RQ5dCC9e821iv+YtMl/pg=;
-        b=uFr7kxvE2nEN5Niued+sKk3QjVm+751VNwDQ6/bZAHKoTfr8oWioVUHGr0hkyHCn11
-         +GCmk4GCzxCFVIxEehpP/fwPht1w+f1pLuqZNI2BI9DQtBRKJu0YVhi1ABNjKqvK9Fn7
-         B9ENg5J6hpUDwnQeG5M/zlXDwwkpqjYXHk5n/cP7XCdhByPmj2i19BLaySPQSYj/9KCO
-         KiSJ36WahNZiLoiDJ52V+Oeqo2TsSpDRaQfqvV6Ud125D8rNvXwCwxBmwAg93SiRA+9K
-         Ohm+NKZjk9TN7V9a4EMlHt3Mgh/wmeP/L+x7KRbgWTTTI4/IDkywULRPPBJfMvHlk2Qb
-         ElCw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1745877546; x=1746482346; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0FE4dKVoW8moTlKoFNRtvp32RdPrHjumPK5vEbrjDXw=;
+        b=UvQulCF4/a0QrV7RNU88/ZoV1x2w+Xr9TYsTgdKO9HTMPr87xTMq+IIVg8dtzBwBxb
+         QNkjGzsfTv3YVifY5fULtsczX2cSUf349U9Yip2IYIpab8sVpgmHfAEPzFrlbJXhsVZk
+         y7gW+/gC34BHF8fC2mvtDa6WO3K/JITnzKVmP8rqLysEfx0pJff/+qsKDDkaW1czufAQ
+         8HPrZ/egeUr5uiqKcXMxB6gX5MeayboKAmshQeR6DF2QtvHZoRlA94fHAsd4zXiVjsDP
+         NCElY04KV0Pg24/fsJMEA76P+2eIQ5u2svGEEDHfcqFXmfdSLVlJhSicWxSedExLLsYy
+         H5AA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745877544; x=1746482344;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zxFrdDneqpz3d9d7DbJCg3RQ5dCC9e821iv+YtMl/pg=;
-        b=ic79tdN8PT5CH3FBxHaXj7kHgHiVMq0bI+rjYx1NS4o5YYUz0dDrzBWCRHYkE1etrn
-         /vPsj02AuMtf4ucRtA5FAianJtRQp2e+Ed5C9wQGdNeiPrYgLKOjSV0uz3JJTm5/EPXL
-         3VssBJ+iFClA89udCVpl1WdU5GsmpXd9DNMgECEBIss6a00ZqFK/8J2h84vuzJxIoxKY
-         MnjerWv7mXe8eezwh/35jEYTyqFWRtRBZsjzaMmaGNJEyPtBC1ZWINfLC3MURcz3vi1M
-         9C/ZtKn8vUUS6L8DWGxmev2hL8BLjBxHZZIcKoB1YpwG8E5Yeim6B1aCwW14R1Zc0Qxo
-         iCmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVah1LoCj8Xy6Sz3o0uImiZJLrzbj8E8PK0Z69rSIacF3NoDkuOg2moC0dnMUghmzFDxmGsdb8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0rigp921hUrrq31vQz8h1ETjbS/CJnL28k6RzdcmBNmdqG/v+
-	0XvsEL1+qSICuolXsVSCYVnLieglrHGQT7fCBTf435Q/8M+GNAKpta6tTW/HsVZXiZZTCKYER11
-	hj1yTljm+RvIZzmBF5WUP0DWyk/QAVWusqBccbA==
-X-Gm-Gg: ASbGncvrD7p94FdYEW/bYy//Ke/1NUcTTiZy6jH+V2coKbKsj2rf04/0y8tgAGKFshH
-	Lz8HOaxD2CaC8FQx8h5LREFggZvrsDVpintB/UbRHWRifXdadIpLK1aoBdHdd7Sl6FsD3RCe74N
-	VjBC0iIjkn0Ctm0rfwn7Iv
-X-Google-Smtp-Source: AGHT+IFkA9xAPum1MB3Ys8cfw/0sWdmGkzDXDyZOhMeKW5Rku5xqiFZDHH5EZJG6i/6o8Z/0p6fd9ZhwXGZ5RSBAMo0=
-X-Received: by 2002:a05:6902:e07:b0:e73:29b4:d563 with SMTP id
- 3f1490d57ef6-e7350021210mr2117518276.15.1745877544497; Mon, 28 Apr 2025
- 14:59:04 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1745877546; x=1746482346;
+        h=cc:to:subject:message-id:date:reply-to:from:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0FE4dKVoW8moTlKoFNRtvp32RdPrHjumPK5vEbrjDXw=;
+        b=RRWco5fHN/yT4F4NqKTjGN+K2Y2yf9hG5BOJycjujxfiIdhuj1gFzQi22PkErUHbCA
+         ssOJzWqsfskafb+mE4wK54zQrrIKTeDNWNQEZQiMDZ5aBWQmR7fvznvSWXToAposg5A0
+         yzSHHoQvXMD4BTOel6O6Irx5AmdQbkKte9mt7TI4eutwRBkRN/MuLwe9pxyFNSRcgPFH
+         njn/gTnwW77NVPuuidW/wCXZZP3RT2qS0pXzKIfnmDi4OGMtweABTnt1X29CZpumOQ/5
+         55Y9EJVRJZmxZVA5E0QDRr9n9YrAANRp9SpL5Yq0PkPr7WKLsa4wx0HwclTJsv8HinPr
+         zMrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlhNPOG8tb5MW7NfV0vXbVT5OyjsPxE23ktjVDk1PX9gvbhRXAlh+28RthICoLu43S9t42OvM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGKlUsoITfKGZcMpSP2rW3/5jezEuWQE2q87g4d3klH492CYWy
+	jRuKkcv4UYwYtFyYGaemsN/Fi2Lt2avSPIX13jd1je7+YiZrJWBI7eqMwg+YM05nuUEGHGThh/J
+	g93XiqllePghZcNnFyyojaMYV458qddg/+5WZbQ==
+X-Gm-Gg: ASbGncteKzFZbsvW7l+fxshpyzm1Xx6POnrPaZ4YPnfUmLl8mKFV9BEonF2/q+u5TD3
+	cbJoNinksbc31qEUbG1GlAHlY3yKYIxgjRDe2ylHqmtKzS9mbyzcGeIgq2hpsrgRVvkdMO6Kx2k
+	I/GPAuwz3NuqoaSP/5cvU7
+X-Google-Smtp-Source: AGHT+IGoo4Thch6otrDJcJBCA5eRAGcyv67+L2i1kHhZpfwgD9CsJWQkJknQjFDucjgCz4wU1VmVjeMAFQX1BRSYHXw=
+X-Received: by 2002:a05:6902:20c6:b0:e72:81b7:bf80 with SMTP id
+ 3f1490d57ef6-e73510f3336mr1344797276.8.1745877546491; Mon, 28 Apr 2025
+ 14:59:06 -0700 (PDT)
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 28 Apr 2025 14:59:03 -0700
+ HTTPREST; Mon, 28 Apr 2025 14:59:04 -0700
 Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 28 Apr 2025 14:59:03 -0700
+ HTTPREST; Mon, 28 Apr 2025 14:59:04 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,135 +77,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 from: KernelCI bot <bot@kernelci.org>
 Reply-To: kernelci@lists.linux.dev
-Date: Mon, 28 Apr 2025 14:59:03 -0700
-X-Gm-Features: ATxdqUFIUO2tglmhDV45C2nCTp-oFupAu8LN5N9_f_seN3vW6TE6CBVImG3pbFA
-Message-ID: <CACo-S-3iKzZ7HbZh41G0iShLhNKy3sHUnxhEEs8TDR356TAxow@mail.gmail.com>
-Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC02LjEyLnk6IChidWlsZCkgZXhwZWN0ZQ==?=
-	=?UTF-8?B?ZCDigJgp4oCZIGJlZm9yZSDigJhCUEZfSU5URVJOQUzigJkgaW4gLnZtbGludXguZXhwb3J0Lm8gKC52?=
-	=?UTF-8?B?bWxpbnV4Li4uLg==?=
+Date: Mon, 28 Apr 2025 14:59:04 -0700
+X-Gm-Features: ATxdqUH_E6L4jyJAJRP9VibVG23kVBKHb7i5dI-2GZ6cRg_yOBcDfLJ3KCVrjCs
+Message-ID: <CACo-S-0kuwkXsWp5cGVuQcJBiVpnY+qxrmMSYGUpjwYFYj4nkg@mail.gmail.com>
+Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) use of undeclared
+ identifier 'MSM_UART_CR_CMD_RESET_RX' in drivers...
 To: kernelci-results@groups.io
 Cc: gus@collabora.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
 Hello,
 
-New build issue found on stable-rc/linux-6.12.y:
+New build issue found on stable-rc/linux-5.10.y:
 
 ---
- expected =E2=80=98)=E2=80=99 before =E2=80=98BPF_INTERNAL=E2=80=99 in .vml=
-inux.export.o
-(.vmlinux.export.c) [logspec:kbuild,kbuild.compiler.error]
+ use of undeclared identifier 'MSM_UART_CR_CMD_RESET_RX' in
+drivers/tty/serial/msm_serial.o (drivers/tty/serial/msm_serial.c)
+[logspec:kbuild,kbuild.compiler.error]
 ---
 
-- dashboard: https://d.kernelci.org/i/maestro:bf938601ba6b379bbb6d272604bf0=
-b09f4c945df
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  0f114e4705bd70a1aade95111161a0a24a597879
+- dashboard: https://d.kernelci.org/i/maestro:5e7d4ac9b1bb62b7ce4e9d81fe31aa0726357a6d
+- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+- commit HEAD:  bcf9e2b721c5e719f339b23ddfb5b0a0c0727cc9
 
 
 Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-.vmlinux.export.c:2020:33: error: expected =E2=80=98)=E2=80=99 before =E2=
-=80=98BPF_INTERNAL=E2=80=99
- 2020 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
-      |                                 ^~~~~~~~~~~~
-./include/linux/export-internal.h:45:28: note: in definition of macro
-=E2=80=98__KSYMTAB=E2=80=99
-   45 |             "   .asciz \"" ns "\""
-         "\n"    \
-      |                            ^~
-.vmlinux.export.c:2020:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
-=E2=80=99
- 2020 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
-      | ^~~~~~~~~~~~
-./include/linux/export-internal.h:41:12: note: to match this =E2=80=98(=E2=
-=80=99
-   41 |         asm("   .section
-\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
-      |            ^
-./include/linux/export-internal.h:62:41: note: in expansion of macro =E2=80=
-=98__KSYMTAB=E2=80=99
-   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
-KSYM_FUNC(name), sec, ns)
-      |                                         ^~~~~~~~~
-.vmlinux.export.c:2020:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
-=E2=80=99
- 2020 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
-      | ^~~~~~~~~~~~
-.vmlinux.export.c:2029:42: error: expected =E2=80=98)=E2=80=99 before =E2=
-=80=98BPF_INTERNAL=E2=80=99
- 2029 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
-      |                                          ^~~~~~~~~~~~
-./include/linux/export-internal.h:45:28: note: in definition of macro
-=E2=80=98__KSYMTAB=E2=80=99
-   45 |             "   .asciz \"" ns "\""
-         "\n"    \
-      |                            ^~
-.vmlinux.export.c:2029:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
-=E2=80=99
- 2029 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
-      | ^~~~~~~~~~~~
-./include/linux/export-internal.h:41:12: note: to match this =E2=80=98(=E2=
-=80=99
-   41 |         asm("   .section
-\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
-      |            ^
-./include/linux/export-internal.h:62:41: note: in expansion of macro =E2=80=
-=98__KSYMTAB=E2=80=99
-   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
-KSYM_FUNC(name), sec, ns)
-      |                                         ^~~~~~~~~
-.vmlinux.export.c:2029:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
-=E2=80=99
- 2029 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
-      | ^~~~~~~~~~~~
-.vmlinux.export.c:2031:34: error: expected =E2=80=98)=E2=80=99 before =E2=
-=80=98BPF_INTERNAL=E2=80=99
- 2031 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
-      |                                  ^~~~~~~~~~~~
-./include/linux/export-internal.h:45:28: note: in definition of macro
-=E2=80=98__KSYMTAB=E2=80=99
-   45 |             "   .asciz \"" ns "\""
-         "\n"    \
-      |                            ^~
-.vmlinux.export.c:2031:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
-=E2=80=99
- 2031 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
-      | ^~~~~~~~~~~~
-./include/linux/export-internal.h:41:12: note: to match this =E2=80=98(=E2=
-=80=99
-   41 |         asm("   .section
-\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
-      |            ^
-./include/linux/export-internal.h:62:41: note: in expansion of macro =E2=80=
-=98__KSYMTAB=E2=80=99
-   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
-KSYM_FUNC(name), sec, ns)
-      |                                         ^~~~~~~~~
-.vmlinux.export.c:2031:1: note: in expansion of macro =E2=80=98KSYMTAB_FUNC=
-=E2=80=99
- 2031 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
-      | ^~~~~~~~~~~~
+=====================================================
+drivers/tty/serial/msm_serial.c:1742:27: error: use of undeclared
+identifier 'MSM_UART_CR_CMD_RESET_RX'
+ 1742 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
+      |                                  ^
+drivers/tty/serial/msm_serial.c:1742:53: error: use of undeclared
+identifier 'MSM_UART_CR'
+ 1742 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
+      |                                                            ^
+drivers/tty/serial/msm_serial.c:1743:27: error: use of undeclared
+identifier 'MSM_UART_CR_CMD_RESET_TX'
+ 1743 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
+      |                                  ^
+drivers/tty/serial/msm_serial.c:1743:53: error: use of undeclared
+identifier 'MSM_UART_CR'
+ 1743 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
+      |                                                            ^
+drivers/tty/serial/msm_serial.c:1744:27: error: use of undeclared
+identifier 'MSM_UART_CR_TX_ENABLE'
+ 1744 |         msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
+      |                                  ^
+drivers/tty/serial/msm_serial.c:1744:50: error: use of undeclared
+identifier 'MSM_UART_CR'
+ 1744 |         msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
+      |                                                         ^
+6 errors generated.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
+=====================================================
 
 
 # Builds where the incident occurred:
 
-## cros://chromeos-6.6/x86_64/chromeos-amd-stoneyridge.flavour.config+lab-s=
-etup+x86-board+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_MODULE_COMPRESS_NONE=3Dy
-on (x86_64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:680fc27743948caad95c148f
+## defconfig+arm64-chromebook+kselftest on (arm64):
+- compiler: clang-17
+- dashboard: https://d.kernelci.org/build/maestro:680fc02043948caad95c0cfb
 
 
-#kernelci issue maestro:bf938601ba6b379bbb6d272604bf0b09f4c945df
+#kernelci issue maestro:5e7d4ac9b1bb62b7ce4e9d81fe31aa0726357a6d
 
 Reported-by: kernelci.org bot <bot@kernelci.org>
 
