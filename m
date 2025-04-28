@@ -1,185 +1,128 @@
-Return-Path: <stable+bounces-136846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06AC5A9ED2F
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:50:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B0BA9EDBC
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 12:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCA13AE440
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:46:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1ED174759
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 10:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706DC38F9C;
-	Mon, 28 Apr 2025 09:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h04g84a7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C1AC25F7A2;
+	Mon, 28 Apr 2025 10:20:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7409E1AC88A;
-	Mon, 28 Apr 2025 09:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FD61AC44D;
+	Mon, 28 Apr 2025 10:20:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.236.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745833258; cv=none; b=SHgOI6G1lYrcV4AbBWwSY9YxIZNkYD4ocgMwWKAiPhUabuFBP9hw24Rn+Nn4XhPsJZ7G+EEscYgidiOmACbvNIIuL5UwGIQmd/9zcj2CbMTcZjdBWu4JYwkMHKqnxM+FDAUqrhWfukrJg2e3JJusu+TkMA12+sxbHnKw8dMqRxg=
+	t=1745835636; cv=none; b=q60TGXVeFhf2llCatX0hsLvJcQK7BZe5VqSLKQVq/nv6ShMiX2i+Wa3kof/q4ZyQHokGmWbg4ZGawqgPIB8pRGYR4UooEwttIgAaD1ZrHrjpfmkCPsXIh3nKQJE31UFKfGsY/Sd31l5NQt6sC2PEwkJjJPg+XjEj0usmC5DhBSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745833258; c=relaxed/simple;
-	bh=QtEl+2m1eYszmz+3dFc2Lm7goH/HtdUxHXhZ2+8CrUM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NKvWhx0YLDzmuewLO/yze02j1BrcA7KT258LKoOadsrclwx/ZTC6mFmZpxfB5ub0OSxkDQZriVC/SXWKws9ZZKAwZkzBGZKu3c22QppTsmViq2Rig8jfJJqq9IzJ8HNNE3gcxQyxp+ay8mLrr9SZC/0EZAfC7txlnYbT8gCdyZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h04g84a7; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso43521375e9.1;
-        Mon, 28 Apr 2025 02:40:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745833255; x=1746438055; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eWdl+Kqq58dT2qY6KpY9tsh+8ZNojmQ7ty0C+vUxAbM=;
-        b=h04g84a7jpDGBhGPaigWQdk+0AID4S7B5+IZlsA6oUG6xwpYXj46ejvglURbvLoRSz
-         bdcmHOwE7s+UW8hgnUYXTyGe3Rb3vwqCiVttmTBztuZrkmXSQ1hrAtAopw+yI+Q3yKcT
-         IqJk+ct3QXORxteNrljBBu4rn4Wm1qUHQcXbKjA+ryPOil90RVJNxvfJKeKyrh+pFOzT
-         YJy3NGBtNgayTRxOmi+sKyI1bn0+uq90Um7qgnanLZ2/nOo1pHwCMgdlO6TzvmZmj/3I
-         aNfNUp7GqBiJmHM3srjsA+6AaEsAVICTUyY36hOsafaTDqzvolLhXmBZdaGJuQeSdYNS
-         4Syg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745833255; x=1746438055;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eWdl+Kqq58dT2qY6KpY9tsh+8ZNojmQ7ty0C+vUxAbM=;
-        b=DyrFa31jEGUnR5mB1QS+ZDB1/5KmXeoAJsybq2YXP6c5Fdchv6InETI0VB/tTOh2rM
-         DFU07aWH0eMbpJu75AZsytgebU2V/LlTctOXu9TmDljOwE+EhLifPdkY2ae2ShoQ7Yjp
-         WrVj3j9tSpRRa7UsPVOcLQG7Nz1hVn9oo5asazcP8cBmZrDyFieWSnWWZSV6ZhJnf2Q2
-         Q0IT4gslXOt/y4x8ZKP02OL6Ita6V0wmVGcrbYTGkb55aodHDyZwbT70SNtPxTGkpRw0
-         Sdfhr5b5dOr0qoNQm5E9va277InoDbVjzvXvpAWNOfCrWWUO8y4BUsuZRVLZ5N10OAnA
-         XQbA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnvkd40E9wf0tPiIxJkr1C3ptmzqV5rrqVwC3RcLQ90M5yptgy0FsPE6THJrLskbkPyNxCI2Db@vger.kernel.org, AJvYcCVyYp+/0Apniner+prjqnYRuhbiyLqUuKfakHDWWFwGr0MQ/fDf//keIcpZgz+5A8Bo224+Aq/XqubnOc0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIQRnHOffK7pzDQ1GD+WoTrsNaNIHmBRsRP1vnYGt+PVArKxK/
-	Q8CtIvfM6hhoTf2GpWpkuUpUf+tsIFumSZtFdnvZwGi1iJK3kQbP
-X-Gm-Gg: ASbGncu158dVv/QmOq9uMrdX6HNeta3BTBs6KmQT9vRGwvMkiBNJM98sLGNUrSrNeON
-	wgiWy861ysMLPo6cCCzzFxgXLzPqsarzerCUMaM/NZmspnNADnRVtiH23R3mqttUYqGVks2ciIc
-	OFye1w3/11OTkMdb/XclPrH8qBfyS5IK7p51wJaUSLzDat4/LPdjuJJqv36nwd+VQ5lnzdGAPlw
-	grtNyZHBIl/mQ1y0GNt2HvdlWHoDt1FyPDxR+pciudqoExyfwEGqkjwPdyDHAIqSMZnn814SyXz
-	r/3ZBxt0i1uILo9kgIFUzsrw3NiRrOdSSzd0MA==
-X-Google-Smtp-Source: AGHT+IH5WZ2I2b6xONMXmkTLp55tTW8AkFEOLovibWPPY96a7fFSfSjudvpq3AXJ+RQ8zoo5DYpahA==
-X-Received: by 2002:a05:600c:5120:b0:43d:22d9:4b8e with SMTP id 5b1f17b1804b1-440a65d8e5bmr109031545e9.10.1745833254418;
-        Mon, 28 Apr 2025 02:40:54 -0700 (PDT)
-Received: from vitor-nb.. ([2001:8a0:e602:d900:4f54:7a4f:dfe1:ebb6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2d8343sm152687785e9.28.2025.04.28.02.40.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 02:40:54 -0700 (PDT)
-From: Vitor Soares <ivitro@gmail.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
-	Jayesh Choudhary <j-choudhary@ti.com>,
-	ivitro@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v1] drm/bridge: cdns-dsi: Replace deprecated UNIVERSAL_DEV_PM_OPS()
-Date: Mon, 28 Apr 2025 10:40:48 +0100
-Message-Id: <20250428094048.1459620-1-ivitro@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1745835636; c=relaxed/simple;
+	bh=awsLbnE+lM4r/IQKorSBx0YVy7B01bk3OUhbrujOP+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=szaDd1b+NQOUb3TybwMTPMkLeduiAhPx2F/k5R8nv27kFIp8tHQR7TQgAZ46yQlMXe0xANQnw5bMtqylg/ynrl1fsBl0g6MwoL/i8idhlee2yXXBAOFvEP+MFMTRS5eBwpOUoDp1SbfzmsKzP1MltkNarb4/YFjdn7FuaThEWwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.236.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
+	by localhost (Postfix) with ESMTP id 4ZmHx70jzTz9s2l;
+	Mon, 28 Apr 2025 11:20:43 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id vzOENPXM0yv2; Mon, 28 Apr 2025 11:20:43 +0200 (CEST)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase1.c-s.fr (Postfix) with ESMTP id 4ZmHx6757fz9s28;
+	Mon, 28 Apr 2025 11:20:42 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id ED06D8B766;
+	Mon, 28 Apr 2025 11:20:42 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id txsmwIS9nDw7; Mon, 28 Apr 2025 11:20:42 +0200 (CEST)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7E6FD8B763;
+	Mon, 28 Apr 2025 11:20:42 +0200 (CEST)
+Message-ID: <4b42c00a-0ef5-4121-9e40-9214bf9a1197@csgroup.eu>
+Date: Mon, 28 Apr 2025 11:20:42 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: fsl: fsl_qmc_audio: Reset audio data pointers on
+ TRIGGER_START event
+To: Mark Brown <broonie@kernel.org>, Shengjiu Wang <shengjiu.wang@gmail.com>,
+ Xiubo Li <Xiubo.Lee@gmail.com>, Fabio Estevam <festevam@gmail.com>,
+ Nicolin Chen <nicoleotsuka@gmail.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Herve Codina <herve.codina@bootlin.com>
+Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
+References: <20250410091643.535627-1-herve.codina@bootlin.com>
+ <174429282080.80887.6648935549042489213.b4-ty@kernel.org>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <174429282080.80887.6648935549042489213.b4-ty@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Vitor Soares <vitor.soares@toradex.com>
+Hi Mark,
 
-The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
-for both runtime PM and system sleep. This causes the DSI clocks to be
-disabled twice: once during runtime suspend and again during system
-suspend, resulting in a WARN message from the clock framework when
-attempting to disable already-disabled clocks.
 
-[   84.384540] clk:231:5 already disabled
-[   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
-...
-[   84.579183] Call trace:
-[   84.581624]  clk_core_disable+0xa4/0xac
-[   84.585457]  clk_disable+0x30/0x4c
-[   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
-[   84.593651]  pm_generic_suspend+0x2c/0x44
-[   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
-[   84.601670]  dpm_run_callback+0x8c/0x14c
-[   84.605588]  __device_suspend+0x1a0/0x56c
-[   84.609594]  dpm_suspend+0x17c/0x21c
-[   84.613165]  dpm_suspend_start+0xa0/0xa8
-[   84.617083]  suspend_devices_and_enter+0x12c/0x634
-[   84.621872]  pm_suspend+0x1fc/0x368
+Le 10/04/2025 à 15:47, Mark Brown a écrit :
+> On Thu, 10 Apr 2025 11:16:43 +0200, Herve Codina wrote:
+>> On SNDRV_PCM_TRIGGER_START event, audio data pointers are not reset.
+>>
+>> This leads to wrong data buffer usage when multiple TRIGGER_START are
+>> received and ends to incorrect buffer usage between the user-space and
+>> the driver. Indeed, the driver can read data that are not already set by
+>> the user-space or the user-space and the driver are writing and reading
+>> the same area.
+>>
+>> [...]
+> 
+> Applied to
+> 
+>     https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fbroonie%2Fsound.git&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C438de093b4c04d4c0a8f08dd78362e30%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638798896267382068%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=d%2FuL%2FFAOcpRY2v9YtxTMdiX%2B3GgHKDE7y5TMTc9cK94%3D&reserved=0 for-next
 
-To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
-DEFINE_RUNTIME_DEV_PM_OPS(), which avoids redundant suspend/resume calls
-by checking if the device is already runtime suspended.
+Would it be possible to get this patch into one of the v6.15 rc as it is 
+a bug fix ?
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
- drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Thanks
+Christophe
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-index b022dd6e6b6e..62179e55e032 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
-@@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_ops = {
- 	.transfer = cdns_dsi_transfer,
- };
- 
--static int __maybe_unused cdns_dsi_resume(struct device *dev)
-+static int cdns_dsi_resume(struct device *dev)
- {
- 	struct cdns_dsi *dsi = dev_get_drvdata(dev);
- 
-@@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused cdns_dsi_suspend(struct device *dev)
-+static int cdns_dsi_suspend(struct device *dev)
- {
- 	struct cdns_dsi *dsi = dev_get_drvdata(dev);
- 
-@@ -1279,8 +1279,8 @@ static int __maybe_unused cdns_dsi_suspend(struct device *dev)
- 	return 0;
- }
- 
--static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend, cdns_dsi_resume,
--			    NULL);
-+static DEFINE_RUNTIME_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
-+				 cdns_dsi_resume, NULL);
- 
- static int cdns_dsi_drm_probe(struct platform_device *pdev)
- {
-@@ -1427,7 +1427,7 @@ static struct platform_driver cdns_dsi_platform_driver = {
- 	.driver = {
- 		.name   = "cdns-dsi",
- 		.of_match_table = cdns_dsi_of_match,
--		.pm = &cdns_dsi_pm_ops,
-+		.pm = pm_ptr(&cdns_dsi_pm_ops),
- 	},
- };
- module_platform_driver(cdns_dsi_platform_driver);
--- 
-2.34.1
+> 
+> Thanks!
+> 
+> [1/1] ASoC: fsl: fsl_qmc_audio: Reset audio data pointers on TRIGGER_START event
+>        commit: 9aa33d5b4a53a1945dd2aee45c09282248d3c98b
+> 
+> All being well this means that it will be integrated into the linux-next
+> tree (usually sometime in the next 24 hours) and sent to Linus during
+> the next merge window (or sooner if it is a bug fix), however if
+> problems are discovered then the patch may be dropped or reverted.
+> 
+> You may get further e-mails resulting from automated or manual testing
+> and review of the tree, please engage with people reporting problems and
+> send followup patches addressing any issues that are reported if needed.
+> 
+> If any updates are required or you are submitting further changes they
+> should be sent as incremental updates against current git, existing
+> patches will not be replaced.
+> 
+> Please add any relevant lists and maintainers to the CCs when replying
+> to this mail.
+> 
+> Thanks,
+> Mark
+> 
 
 
