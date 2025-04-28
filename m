@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-136913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FB84A9F668
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:01:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D804A9F6F5
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40D941A84AA0
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:01:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FB357AB8B3
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC391AD3E1;
-	Mon, 28 Apr 2025 17:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90CE328F526;
+	Mon, 28 Apr 2025 17:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zlP3Kj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1p6OK4La"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DD27A128
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A59728E61D
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745859662; cv=none; b=dNvAGUH7GKQTM5KQgRVrLBoR1YuEH96RsxVIqUdJpJ8FhIUIN18kl9V75s3cGPT6bGbZMvURkEns903THDK6phzmRmrsh8wdktNS14I7qSq1abeVwz6BZwox3By04kZpXlnuxeQBaIywhSKmDiyqhUhicBBmVklVgVj4/CEm4Sc=
+	t=1745860316; cv=none; b=iMCspwEIs7WBRt3Ur1m8/cRd1+OeM3QLO3TMDJOlaA4509+VRTQ3mh+k+DQJkKY51CggK0e6U1dQRsSJCNRVm93D8Ho5UF7b7XcH7+cYKBwQQSQw2Qu0KpgwimGSAYwGcfswvr90QiMA4uAYUD9NfTkC/P+6zhWrls4kinZoMcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745859662; c=relaxed/simple;
-	bh=NnlL+m7/DwY4Mhl2ZKMrtcWD4S9GHB49TBHf+WLt0qA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bZKEezRNIGDqI/M8xqZXz6i95s0Cn1tMf7EmORV6uZwS1FAhXyKTg3cN8arUJe/UL230+d8cx8+gG+7sqs4uQp2cF8TBT8xRxfdAF+lShWrEstUeNx6uu84rmOz9diGZzmqgwao1nXqAvaoChWoa6WObMwwqs0gTthT7ePq/OfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zlP3Kj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89D9C4CEEC;
-	Mon, 28 Apr 2025 17:01:01 +0000 (UTC)
+	s=arc-20240116; t=1745860316; c=relaxed/simple;
+	bh=9B3LU56YziNcjQb1ITHEtJt/B0072OvYXLby2yJuApM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qvxaj8P+GStm31GpA7bsi+AV+OefOpi3+zzzMKvlqC6ffABKnn2QGFFR5/hyNZp/DRHuhMy+Njahf4/Y0PR8rEDD5nNtcxCCKfXv7GpJQe1+OuWrmrGD4rHfvK8mRiK7EwChIf+0xkRBw3cwcw9WRxqOSDYUnAX7d/bNkcVOXgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1p6OK4La; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78B8C4CEEE;
+	Mon, 28 Apr 2025 17:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745859662;
-	bh=NnlL+m7/DwY4Mhl2ZKMrtcWD4S9GHB49TBHf+WLt0qA=;
+	s=korg; t=1745860314;
+	bh=9B3LU56YziNcjQb1ITHEtJt/B0072OvYXLby2yJuApM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1zlP3Kj6cvKQGbvluPTV9ZECDf4UT94vaRxlotizpRcmZxGLcZM5YZ43jJLYtMNZQ
-	 3DACuqxcwL911cLtTTEgbivygtrKpti3slX4ctS+gw1myg/v5cbQ1xWPDlnp+u+Mf+
-	 RuKc6UeOIxNC9vBd+TjC/dlog83ivMMVFfWzO9pk=
-Subject: FAILED: patch "[PATCH] xen-netfront: handle NULL returned by" failed to apply to 5.15-stable tree
-To: sdl@nppct.ru,kuba@kernel.org
+	b=1p6OK4LagMnUBzsHAyIheGYfQM3V5YgS+qqQRzKp66gC/1PqSH5xS6PRSDvGCzobp
+	 hu8j1Qj8BSeCdg8zneipj5fVb+DbJEPD80uTePeam8DYi7SNwZ6QDC1bmUruonn6kJ
+	 LbaKc4ZASg2eilaqTc2DJ9Bdyv1yp575CmQfce88=
+Subject: FAILED: patch "[PATCH] KVM: x86: Reset IRTE to host control if *new* route isn't" failed to apply to 5.4-stable tree
+To: seanjc@google.com,pbonzini@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Apr 2025 19:00:59 +0200
-Message-ID: <2025042858-guacamole-ozone-ac80@gregkh>
+Date: Mon, 28 Apr 2025 19:11:51 +0200
+Message-ID: <2025042851-tasting-pushup-f190@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x cc3628dcd851ddd8d418bf0c897024b4621ddc92
+git cherry-pick -x 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042858-guacamole-ozone-ac80@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042851-tasting-pushup-f190@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,66 +77,179 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cc3628dcd851ddd8d418bf0c897024b4621ddc92 Mon Sep 17 00:00:00 2001
-From: Alexey Nepomnyashih <sdl@nppct.ru>
-Date: Thu, 17 Apr 2025 12:21:17 +0000
-Subject: [PATCH] xen-netfront: handle NULL returned by
- xdp_convert_buff_to_frame()
+From 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2 Mon Sep 17 00:00:00 2001
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 4 Apr 2025 12:38:17 -0700
+Subject: [PATCH] KVM: x86: Reset IRTE to host control if *new* route isn't
+ postable
 
-The function xdp_convert_buff_to_frame() may return NULL if it fails
-to correctly convert the XDP buffer into an XDP frame due to memory
-constraints, internal errors, or invalid data. Failing to check for NULL
-may lead to a NULL pointer dereference if the result is used later in
-processing, potentially causing crashes, data corruption, or undefined
-behavior.
+Restore an IRTE back to host control (remapped or posted MSI mode) if the
+*new* GSI route prevents posting the IRQ directly to a vCPU, regardless of
+the GSI routing type.  Updating the IRTE if and only if the new GSI is an
+MSI results in KVM leaving an IRTE posting to a vCPU.
 
-On XDP redirect failure, the associated page must be released explicitly
-if it was previously retained via get_page(). Failing to do so may result
-in a memory leak, as the pages reference count is not decremented.
+The dangling IRTE can result in interrupts being incorrectly delivered to
+the guest, and in the worst case scenario can result in use-after-free,
+e.g. if the VM is torn down, but the underlying host IRQ isn't freed.
 
-Cc: stable@vger.kernel.org # v5.9+
-Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: efc644048ecd ("KVM: x86: Update IRTE for posted-interrupts")
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
-index fc52d5c4c69b..5091e1fa4a0d 100644
---- a/drivers/net/xen-netfront.c
-+++ b/drivers/net/xen-netfront.c
-@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfront_queue *queue, struct page *pdata,
- 	act = bpf_prog_run_xdp(prog, xdp);
- 	switch (act) {
- 	case XDP_TX:
--		get_page(pdata);
- 		xdpf = xdp_convert_buff_to_frame(xdp);
--		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
--		if (unlikely(!err))
--			xdp_return_frame_rx_napi(xdpf);
--		else if (unlikely(err < 0))
-+		if (unlikely(!xdpf)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			break;
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index a961e6e67050..8e09f6ae98fd 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -896,6 +896,7 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ {
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	int idx, ret = 0;
+ 
+ 	if (!kvm_arch_has_assigned_device(kvm) || !kvm_arch_has_irq_bypass())
+@@ -932,6 +933,8 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 		    kvm_vcpu_apicv_active(&svm->vcpu)) {
+ 			struct amd_iommu_pi_data pi;
+ 
++			enable_remapped_mode = false;
++
+ 			/* Try to enable guest_mode in IRTE */
+ 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
+ 					    AVIC_HPA_MASK);
+@@ -950,33 +953,6 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 			 */
+ 			if (!ret && pi.is_guest_mode)
+ 				svm_ir_list_add(svm, &pi);
+-		} else {
+-			/* Use legacy mode in IRTE */
+-			struct amd_iommu_pi_data pi;
+-
+-			/**
+-			 * Here, pi is used to:
+-			 * - Tell IOMMU to use legacy mode for this interrupt.
+-			 * - Retrieve ga_tag of prior interrupt remapping data.
+-			 */
+-			pi.prev_ga_tag = 0;
+-			pi.is_guest_mode = false;
+-			ret = irq_set_vcpu_affinity(host_irq, &pi);
+-
+-			/**
+-			 * Check if the posted interrupt was previously
+-			 * setup with the guest_mode by checking if the ga_tag
+-			 * was cached. If so, we need to clean up the per-vcpu
+-			 * ir_list.
+-			 */
+-			if (!ret && pi.prev_ga_tag) {
+-				int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
+-				struct kvm_vcpu *vcpu;
+-
+-				vcpu = kvm_get_vcpu_by_id(kvm, id);
+-				if (vcpu)
+-					svm_ir_list_del(to_svm(vcpu), &pi);
+-			}
+ 		}
+ 
+ 		if (!ret && svm) {
+@@ -992,6 +968,34 @@ int avic_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 	}
+ 
+ 	ret = 0;
++	if (enable_remapped_mode) {
++		/* Use legacy mode in IRTE */
++		struct amd_iommu_pi_data pi;
++
++		/**
++		 * Here, pi is used to:
++		 * - Tell IOMMU to use legacy mode for this interrupt.
++		 * - Retrieve ga_tag of prior interrupt remapping data.
++		 */
++		pi.prev_ga_tag = 0;
++		pi.is_guest_mode = false;
++		ret = irq_set_vcpu_affinity(host_irq, &pi);
++
++		/**
++		 * Check if the posted interrupt was previously
++		 * setup with the guest_mode by checking if the ga_tag
++		 * was cached. If so, we need to clean up the per-vcpu
++		 * ir_list.
++		 */
++		if (!ret && pi.prev_ga_tag) {
++			int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
++			struct kvm_vcpu *vcpu;
++
++			vcpu = kvm_get_vcpu_by_id(kvm, id);
++			if (vcpu)
++				svm_ir_list_del(to_svm(vcpu), &pi);
 +		}
-+		get_page(pdata);
-+		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
-+		if (unlikely(err <= 0)) {
-+			if (err < 0)
-+				trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_frame_rx_napi(xdpf);
-+		}
- 		break;
- 	case XDP_REDIRECT:
- 		get_page(pdata);
- 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
- 		*need_xdp_flush = true;
--		if (unlikely(err))
-+		if (unlikely(err)) {
- 			trace_xdp_exception(queue->info->netdev, prog, act);
-+			xdp_return_buff(xdp);
-+		}
- 		break;
- 	case XDP_PASS:
- 	case XDP_DROP:
++	}
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
+ 	return ret;
+diff --git a/arch/x86/kvm/vmx/posted_intr.c b/arch/x86/kvm/vmx/posted_intr.c
+index 51116fe69a50..d70e5b90087d 100644
+--- a/arch/x86/kvm/vmx/posted_intr.c
++++ b/arch/x86/kvm/vmx/posted_intr.c
+@@ -297,6 +297,7 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ {
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	struct kvm_lapic_irq irq;
+ 	struct kvm_vcpu *vcpu;
+ 	struct vcpu_data vcpu_info;
+@@ -335,21 +336,8 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 
+ 		kvm_set_msi_irq(kvm, e, &irq);
+ 		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
+-		    !kvm_irq_is_postable(&irq)) {
+-			/*
+-			 * Make sure the IRTE is in remapped mode if
+-			 * we don't handle it in posted mode.
+-			 */
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
+-			if (ret < 0) {
+-				printk(KERN_INFO
+-				   "failed to back to remapped mode, irq: %u\n",
+-				   host_irq);
+-				goto out;
+-			}
+-
++		    !kvm_irq_is_postable(&irq))
+ 			continue;
+-		}
+ 
+ 		vcpu_info.pi_desc_addr = __pa(vcpu_to_pi_desc(vcpu));
+ 		vcpu_info.vector = irq.vector;
+@@ -357,11 +345,12 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 		trace_kvm_pi_irte_update(host_irq, vcpu->vcpu_id, e->gsi,
+ 				vcpu_info.vector, vcpu_info.pi_desc_addr, set);
+ 
+-		if (set)
+-			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+-		else
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
++		if (!set)
++			continue;
+ 
++		enable_remapped_mode = false;
++
++		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+ 		if (ret < 0) {
+ 			printk(KERN_INFO "%s: failed to update PI IRTE\n",
+ 					__func__);
+@@ -369,6 +358,9 @@ int vmx_pi_update_irte(struct kvm *kvm, unsigned int host_irq,
+ 		}
+ 	}
+ 
++	if (enable_remapped_mode)
++		ret = irq_set_vcpu_affinity(host_irq, NULL);
++
+ 	ret = 0;
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
 
 
