@@ -1,37 +1,37 @@
-Return-Path: <stable+bounces-136803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CB9A9E998
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:40:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336D4A9E9A7
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E8A18954C7
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 07:40:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5A723B3B14
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 07:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3161DE4F1;
-	Mon, 28 Apr 2025 07:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867321DE8BE;
+	Mon, 28 Apr 2025 07:40:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE911DE4E5;
-	Mon, 28 Apr 2025 07:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2FA1A7045;
+	Mon, 28 Apr 2025 07:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745826028; cv=none; b=T6gUr2uQu95qGSCii8ebZAF9j6+Rz2CF7U9hRbQXLBwT82xA6enOcfB3DypSk0LEZlXW6vs/ZtYiE7SwTZIculR1uQpZWhgL9iEPdYbFDWFkKRApzXH8K+P5vZ+XRuyszUGfvrjzrRV7WY8BI0wmvKzbBnbMSBYeDBNXB92xxPs=
+	t=1745826051; cv=none; b=ZRtzocXSOQ+u9ePxSFTn7wgWWVW2FJoSljeNUVh5b9LFhqxbTlOvHKWQprzhIyJidI/PHh72ku70SpUiEy/cYxIrlwCLLoxtpr9CnTip0UrMLrfOZt153hGCI3AQTccJ6x0VXfiDtMsFE/djsD+hNyvFFNLfo2pGjodI1j0AS5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745826028; c=relaxed/simple;
-	bh=V5EpiItOzlDSnQKf6oZg8W8MZoLzwDPhROtMAgJ9DEg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cK7EFoKprEKUs6n8mJsrg2JJNh5lIrOllHRlv3VzltLfsjBg0Uzkdl6s1Ajte726gJMTLI6GMTyXBcZejMx62r5Td1aLtuQ1fPQRm7P3XAeu2g8muIU8KRlYP3j0ei/j6UfMcMefYprm8SP0DPzQrhGkd7mZ/vQBwp3uBC/jOto=
+	s=arc-20240116; t=1745826051; c=relaxed/simple;
+	bh=0bOL3cl7CbTN3wJxtbvcoOrllSFRUARYP/dr+7W+fl8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pkcyUo2ZsAel2hBaea0alAGbdCOoxreVUFD6DF+E8RQnIsNPlCRT9UTJsds7I3hVdkqmPGx27e/8pdeAdbQAKKSK7IdU6n/dLMGfaeT8fYkfu2/MjdGyq+iHj32V3paCgjzlta9BVyng2jg2sw6UwVI5bLJ4uBBZd3Uzc/fmXDI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.238])
-	by gateway (Coremail) with SMTP id _____8DxbKzkMA9obzDIAA--.4158S3;
-	Mon, 28 Apr 2025 15:40:20 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8AxaeH+MA9oujDIAA--.26038S3;
+	Mon, 28 Apr 2025 15:40:46 +0800 (CST)
 Received: from localhost.localdomain (unknown [223.64.68.238])
-	by front1 (Coremail) with SMTP id qMiowMCxLBvfMA9orvKaAA--.7101S2;
-	Mon, 28 Apr 2025 15:40:18 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowMAxSsT1MA9o7vKaAA--.40441S2;
+	Mon, 28 Apr 2025 15:40:45 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: loongarch@lists.linux.dev,
@@ -43,9 +43,9 @@ Cc: loongarch@lists.linux.dev,
 	loongson-kernel@lists.loongnix.cn,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Move __arch_cpu_idle() to .cpuidle.text section
-Date: Mon, 28 Apr 2025 15:40:02 +0800
-Message-ID: <20250428074002.4166499-1-chenhuacai@loongson.cn>
+Subject: [PATCH] LoongArch: Fix MAX_REG_OFFSET calculation
+Date: Mon, 28 Apr 2025 15:40:29 +0800
+Message-ID: <20250428074029.4166974-1-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -54,71 +54,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMCxLBvfMA9orvKaAA--.7101S2
+X-CM-TRANSID:qMiowMAxSsT1MA9o7vKaAA--.40441S2
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kr1rCry5CF1rWryDZryUCFX_yoW8GF17pF
-	WUCwnIgr4DJFyfAayDtw1kur98AwnrG34a9ay5tayfAa1UXF1kXr4vv3yqgFyvg3y8Gr10
-	gFWkJ3Z2qFyUA3XCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUU9jb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+X-Coremail-Antispam: 1Uk129KBj9xXoWrKF4xZw1fGryfXr45tw4rXrc_yoWkCrX_u3
+	W7ta18Cw1fGw4fWwn8C348Jr1jga18WFnIkF4ktFy7X345JrW5Cws7Zw17Zr4q9w47ZFs3
+	uF93Kry3u342gosvyTuYvTs0mTUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbS8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	WxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
 	6F4UJVW0owAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0c
-	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_
-	JF1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
-	xGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWU
-	XVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-	kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kfnx
-	nUUI43ZEXa7IU8hiSPUUUUU==
+	Ia020Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_
+	WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwI
+	xGrwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwCFI7km07C267AKxVWUXVWUAwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j2MKZUUUUU=
 
-Now arch_cpu_idle() is annotated with __cpuidle which means it is in
-the .cpuidle.text section, but __arch_cpu_idle() isn't. Thus, fix the
-missing .cpuidle.text section assignment for __arch_cpu_idle() in order
-to correct backtracing with nmi_backtrace().
-
-The principle is similar to the commit 97c8580e85cf81c ("MIPS: Annotate
-cpu_wait implementations with __cpuidle")
+Fix MAX_REG_OFFSET calculation, make it point to the last register
+in 'struct pt_regs' and not to the marker itself, which could allow
+regs_get_register() to return an invalid offset.
 
 Cc: stable@vger.kernel.org
+Fixes: 803b0fc5c3f2baa6e5 ("LoongArch: Add process management")
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- arch/loongarch/kernel/genex.S | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/ptrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kernel/genex.S b/arch/loongarch/kernel/genex.S
-index 4f0912141781..733a7665e434 100644
---- a/arch/loongarch/kernel/genex.S
-+++ b/arch/loongarch/kernel/genex.S
-@@ -16,6 +16,7 @@
- #include <asm/stackframe.h>
- #include <asm/thread_info.h>
+diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
+index a5b63c84f854..e5d21e836d99 100644
+--- a/arch/loongarch/include/asm/ptrace.h
++++ b/arch/loongarch/include/asm/ptrace.h
+@@ -55,7 +55,7 @@ static inline void instruction_pointer_set(struct pt_regs *regs, unsigned long v
  
-+	.section .cpuidle.text, "ax"
- 	.align	5
- SYM_FUNC_START(__arch_cpu_idle)
- 	/* start of idle interrupt region */
-@@ -31,14 +32,16 @@ SYM_FUNC_START(__arch_cpu_idle)
- 	 */
- 	idle	0
- 	/* end of idle interrupt region */
--1:	jr	ra
-+idle_exit:
-+	jr	ra
- SYM_FUNC_END(__arch_cpu_idle)
-+	.previous
+ /* Query offset/name of register from its name/offset */
+ extern int regs_query_register_offset(const char *name);
+-#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
++#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last) - sizeof(unsigned long))
  
- SYM_CODE_START(handle_vint)
- 	UNWIND_HINT_UNDEFINED
- 	BACKUP_T0T1
- 	SAVE_ALL
--	la_abs	t1, 1b
-+	la_abs	t1, idle_exit
- 	LONG_L	t0, sp, PT_ERA
- 	/* 3 instructions idle interrupt region */
- 	ori	t0, t0, 0b1100
+ /**
+  * regs_get_register() - get register value from its offset
 -- 
 2.47.1
 
