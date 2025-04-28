@@ -1,180 +1,99 @@
-Return-Path: <stable+bounces-136817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE78A9EA50
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 10:08:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6977CA9EA8C
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 10:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DD971897759
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 08:08:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F8C17A8D4F
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 08:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52896253335;
-	Mon, 28 Apr 2025 08:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A48F20D4E9;
+	Mon, 28 Apr 2025 08:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KL5Nu8RM"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F9484D02;
-	Mon, 28 Apr 2025 08:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A501A94A
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 08:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745827681; cv=none; b=J/SkfnFljwKikRpN50zhFizKI0D70XY22sAGTdA9YIZU0PTY4AnkO3f/G3JObGMf8vYYCT4QsmKo3vQiPeLyLK2WcmHanmy8/iAvUMA7LS8gMLHJN7cL5rPuoYB5oHrAFT3HREGP/razN6gxisZ0gkTU3bZzV2nJM/zI2DoffXY=
+	t=1745828341; cv=none; b=JoHnjgaKj1YIvRUr7heyO20CTzZnf+WScmMStmrssTReEZfSSfkIeHMZRkBaXhKxUfBymper9u1iT3tyOSyu//xSs4KclCjsBef1UXj9XN6L853auGnc3dEnHQwqsrIafwa6hHt0JHeJQjyrhTk8YqF9ypki3faxmv9LZ/Ij4xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745827681; c=relaxed/simple;
-	bh=iI9w2LUJP9/D8xqcLWnbjZYYpS7O/CpHWLiIN/z7vak=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O4ocqQSd2+QJnzqUCClAazKetDmeeajIfTvj9PQLjaqCdr3+A8REdJ1gQGwDi7BtdnDAPx3FvaYTFZSkz1QdbJ2JrviaMHqiVvJWSlntZKWqJbHKwcLACulfHpxcILYvZVGZ2LcByDtH+2JLizBmtMyCGkWw71Q15AR+i+rZKcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53RNUbtv001813;
-	Mon, 28 Apr 2025 08:07:47 GMT
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 468mq1aqfr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 28 Apr 2025 08:07:46 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Mon, 28 Apr 2025 01:07:45 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Mon, 28 Apr 2025 01:07:42 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <jianqi.ren.cn@windriver.com>, <jhs@mojatatu.com>,
-        <xiyou.wangcong@gmail.com>, <jiri@resnulli.us>, <davem@davemloft.net>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
-        <michal.swiatkowski@linux.intel.com>, <zhe.he@windriver.com>
-Subject: [PATCH 5.10.y v2] net/sched: act_mirred: don't override retval if we already lost the skb
-Date: Mon, 28 Apr 2025 16:07:41 +0800
-Message-ID: <20250428080741.4159918-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1745828341; c=relaxed/simple;
+	bh=x9VCrzurYpKyndnvXnf4lznNDWo8D6rPdzPvPvXbuvg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TdHuBXPzGNaWB+poGEgPXZ2saWi2V0gLSU/DFsClIAnCGzUPeMdpLCAmBDZ70luSFkTI957KvTZnc8IyIDYXRzyQ5HvimIvsUsGYXEz4loMTbgfU0tEqDpvV8LIX5UOlpXCy6SB4m3/dfhQ5aqYx7Poov492azF9xztUAPF0C+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KL5Nu8RM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EFAC4CEE4;
+	Mon, 28 Apr 2025 08:18:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745828340;
+	bh=x9VCrzurYpKyndnvXnf4lznNDWo8D6rPdzPvPvXbuvg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=KL5Nu8RM0EwyKFF1tFVh5OyRtf+BQ1G2/eJKfZQq+3dHWxsRRVAmk8cfvq6PPJCxG
+	 veE7WqSNmF2JakSjg8vRedEY9oRzlGq1dUYQjR2m9gP9rfOjLkDQoiqrfN+vwRvbdH
+	 Xzna8dg+pQo1vceTW2DVvi+MWUwGhWRbTpZNb+a6zTM2jCx/2CocTaTf+qpLdgEmOi
+	 BLCxvUjpW/TC4PHLD1ojTdVvFie4jB9shSph3OTmX4z4XgA4gaC6oPxYFhI+bWHgFg
+	 ZW3KM9bE2SB840UV3mV0spX4LaQkcvh3OF0DTdnO1gaNDGeMasLj1E0ZYMcAH9q96Y
+	 5nzTKMenY6syQ==
+From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
+Subject: [PATCH 6.6.y 1/4] net: dsa: mv88e6xxx: fix atu_move_port_mask for 6341 family
+Date: Mon, 28 Apr 2025 10:18:51 +0200
+Message-ID: <20250428081854.3641-1-kabel@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=KsNN2XWN c=1 sm=1 tr=0 ts=680f3752 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=QyXUC8HyAAAA:8 a=A7XncKjpAAAA:8 a=J1Y8HTJGAAAA:8 a=t7CeM3EgAAAA:8
- a=46DbhiKqDBczhwNKROYA:9 a=R9rPLQDAdC6-Ub70kJmZ:22 a=y1Q9-5lHfBjTkpIzbSAN:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: Q_3c9YaTO_1GngxGEQjKKdfSlsEeK2WC
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI4MDA2NiBTYWx0ZWRfX5wINlRwzs71G hLGO+zOFpc4GivLst9z8ySfulkJYg2sObR8+GzODWjc3lqavcXke+gh6FE2yLHoMOUkizs/1Noy h1cbdoQO5QlLCzRBKIaUWaqKx/IqLH1bvbFSL3jtg/PQeAedisxuXy5CJLrGJqSs2s/UtzkKcMg
- fEimZZ5g7wOGXmmlsgiUeaC3zMMRLilCV33foEraG5jJGmwcYpQr8xazD2cxV06DvHTRWNoGOvd ia+rs4xS3VyA8Kzx5gtN8bSPwEpoBn+CvkVAtK6XdvW0vW2+dpPiZPr2/AQyCzS+cXdnKg+9dgh TVTjUCMxdVWVqFuJCmpphiffm7XVx5yU2MEdKxDs7GVCCw4Jxygt938+N2TC1SDQ0zN4SBapgGD
- PS4DG7c3jfmOQUiuFU2lVweflTVdNNpzFYOCh9PrYN42U0iT8Lct9XSkQYwBxmFCcp9JAFnC
-X-Proofpoint-GUID: Q_3c9YaTO_1GngxGEQjKKdfSlsEeK2WC
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-04-28_03,2025-04-24_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 spamscore=0 bulkscore=0 lowpriorityscore=0 adultscore=0
- mlxscore=0 phishscore=0 malwarescore=0 clxscore=1015 suspectscore=0
- impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
- definitions=main-2504280066
 
-From: Jakub Kicinski <kuba@kernel.org>
+commit 4ae01ec007716986e1a20f1285eb013cbf188830 upstream.
 
-[ Upstream commit 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210 ]
+The atu_move_port_mask for 6341 family (Topaz) is 0xf, not 0x1f. The
+PortVec field is 8 bits wide, not 11 as in 6390 family. Fix this.
 
-If we're redirecting the skb, and haven't called tcf_mirred_forward(),
-yet, we need to tell the core to drop the skb by setting the retcode
-to SHOT. If we have called tcf_mirred_forward(), however, the skb
-is out of our hands and returning SHOT will lead to UaF.
-
-Move the retval override to the error path which actually need it.
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Fixes: e5cf1baf92cb ("act_mirred: use TC_ACT_REINSERT when possible")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: e606ca36bbf2 ("net: dsa: mv88e6xxx: rework ATU Remove")
+Signed-off-by: Marek Behún <kabel@kernel.org>
 ---
-v2: Fix the following issue
-net/sched/act_mirred.c:265:6: error: variable 'is_redirect' is used
-uninitialized whenever 'if' condition is true
-found by the following tuxmake
-(https://lore.kernel.org/stable/CA+G9fYu+FEZ-3ye30Hk2sk1+LFsw7iO5AHueUa9H1Ub=JO-k2g@mail.gmail.com/)
-tuxmake --runtime podman --target-arch arm --toolchain clang-20 --kconfig allmodconfig LLVM=1 LLVM_IAS=1
-The above command line couldn't pass for some other issue unrelated
-to this patch, but we're sure that the above "is_redirect" issue
-has been fixed.
----
- net/sched/act_mirred.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 91a19460cb57..07b9f8335f05 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -256,31 +256,31 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
- 	m_eaction = READ_ONCE(m->tcfm_eaction);
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	retval = READ_ONCE(m->tcf_action);
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	/* we could easily avoid the clone only if called by ingress and clsact;
- 	 * since we can't easily detect the clsact caller, skip clone only for
- 	 * ingress - that covers the TC S/W datapath.
- 	 */
--	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	at_ingress = skb_at_tc_ingress(skb);
- 	use_reinsert = at_ingress && is_redirect &&
- 		       tcf_mirred_can_reinsert(retval);
- 	if (!use_reinsert) {
- 		skb2 = skb_clone(skb, GFP_ATOMIC);
- 		if (!skb2)
--			goto out;
-+			goto err_cant_do;
- 	}
- 
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-@@ -323,12 +323,16 @@ static int tcf_mirred_act(struct sk_buff *skb, const struct tc_action *a,
- 	}
- 
- 	err = tcf_mirred_forward(want_ingress, skb2);
--	if (err) {
--out:
-+	if (err)
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
--			retval = TC_ACT_SHOT;
--	}
-+	__this_cpu_dec(mirred_nest_level);
-+
-+	return retval;
-+
-+err_cant_do:
-+	if (is_redirect)
-+		retval = TC_ACT_SHOT;
-+	tcf_action_inc_overlimit_qstats(&m->common);
- 	__this_cpu_dec(mirred_nest_level);
- 
- 	return retval;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index bf93d700802b..be42de54e7df 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5713,7 +5713,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 3750,
+-		.atu_move_port_mask = 0x1f,
++		.atu_move_port_mask = 0xf,
+ 		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.pvt = true,
+@@ -6174,7 +6174,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 3750,
+-		.atu_move_port_mask = 0x1f,
++		.atu_move_port_mask = 0xf,
+ 		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.pvt = true,
 -- 
-2.34.1
+2.49.0
 
 
