@@ -1,99 +1,101 @@
-Return-Path: <stable+bounces-136795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C584BA9E52F
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 01:59:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E52A9E536
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 02:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE7DD3B56F3
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 23:59:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A29797AB802
+	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 23:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B2520A5EB;
-	Sun, 27 Apr 2025 23:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764CE1D6AA;
+	Mon, 28 Apr 2025 00:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gVjBze3i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toQxu9oO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4282746A;
-	Sun, 27 Apr 2025 23:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305488F77;
+	Mon, 28 Apr 2025 00:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745798363; cv=none; b=uAHJCTb17F/ImD25wgli7qpayJ2HWG/dVjwWuumxMSjpiW8s8uJcqluyK2siXih+k5ejxTYlyCcbSJRA4Em6DD+FYD5aSa8Bcg7idMlHoeA3knw2/oBgRFt8a2+yJ6J9Xpu7T3UCG3/Y09gxieguALe1N7DHqkIQq0cK1FHP66A=
+	t=1745798423; cv=none; b=nYP3TzMLX5y8lNdQBLN3vIvJ7B/pnq9mG/yeIzRm19b3roOGivsK5D71nPDy46GEo5Y68zF2v9N4V5Z+NUR6em7E5wxFhWpP2mddxclAGN+hYB46gE+zDvR2jaS1RQMYB8Kk08Av9Bpe7zSOkQW4SrCHJXlLBsQwkZPoKGGCSTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745798363; c=relaxed/simple;
-	bh=nKi5Y2SiC5tgA1MVYV4fNEhrtxgNgfPSqVe2MnMmmSo=;
+	s=arc-20240116; t=1745798423; c=relaxed/simple;
+	bh=IU7HSUz+UthbAhhEiD8ZYvTSvQYphVH7wCBb1yhsLQ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vwr8EdTcfj5TarSRTlFP81H1bYh1UyUApgHPDPNJ1BFKbcyJIjbVgqzgmVhxUUuxEO3WL31teNO7VgNFU0zffY4y1dl7acs6gTAXNOXHxKmc6q2h0U7qLjUK3sFer1hFoew1l9sOcZeuMkXOYLhFxMglmQpzeOXMlaZcxS/Tg94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gVjBze3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2464C4CEE3;
-	Sun, 27 Apr 2025 23:59:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=jRD26qhcOPjFpXGzKQ7f5PXLpHKB+tyDQ1cmrIz9uW/V7OsK8cRQJNwBEpiGSrBJvs51bqBpjJfCr7QjWqbSIJqG74f83qj0Wtwj7M/Cuk6SWc3MtKvCrUPsWGN2xXBSGA7fdXFBBxtpp9H/oowQo5FL13e09QtO/jcPVYZj6T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toQxu9oO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC53C4CEE3;
+	Mon, 28 Apr 2025 00:00:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745798363;
-	bh=nKi5Y2SiC5tgA1MVYV4fNEhrtxgNgfPSqVe2MnMmmSo=;
+	s=k20201202; t=1745798422;
+	bh=IU7HSUz+UthbAhhEiD8ZYvTSvQYphVH7wCBb1yhsLQ0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gVjBze3irjBqAqcHoP+FTN6a5j06A3tosXjkGZSyBiN6CN2m/ZfJ98yZZXimUQKFg
-	 l7/f6EtFP9t2EZyVJx3o86fnmvkkSdZ1fESaG7ALfukpnS6lt9W6HLNYLbWwrvc9Xn
-	 uDGhybUUVbVS7k+FtnJU2rh0Qdd1XOtPz4Jx+Wj3xzR3KxhFfiFIt7+7LWbRodctSz
-	 m0joEaurwkqTJVel6bisQuLb+hif08oqDIeETVCtzOdjbIUv8rV2nGBapbmxmHM7Gu
-	 Qb5AM7wq3Y15K56jPrt3cQLxldRrteYILgeqGM1D3Ien8CGamssyZnRkFaHmapDFQC
-	 0juqFNYdmY6cg==
-Date: Sun, 27 Apr 2025 19:59:21 -0400
+	b=toQxu9oOpoZ2jxuhyxYqhFAv/OeiU6bydfBfy5nkt93/5a/lXDWuLb0ZavnBmXNhh
+	 jgFLlKoazsLK/L1H68iK8iuXOfVeMI2S3tMLp73haqwPfxYWxT4gLYLvCeQF9CmXwA
+	 Qt4jUOxqZIhG8gM4DJZ8jmxnvgvNo5hRslkrmhBoEv6fp/2jWdukpaQxncgqkaxkl6
+	 vT2bYqcMqM2ChPCPQuNYypyNYcejXTtiNMmlgTMy96cmCuiO3ZhAUi/sl2J/kj1AIs
+	 YIEDDMWelNMWfu/gXWSz07QTBBfWGRfZN/ArNH3XjenU3n+DvMQkSm+B1wSkcEkKa9
+	 5etLPvEUCiWTQ==
+Date: Sun, 27 Apr 2025 20:00:21 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Alex Deucher <alexdeucher@gmail.com>
+To: Tiwei Bie <tiwei.btw@antgroup.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Pak Nin Lui <pak.lui@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, simona@ffwll.ch,
-	sumit.semwal@linaro.org, Yunxiang.Li@amd.com,
-	tvrtko.ursulin@igalia.com, matthew.auld@intel.com,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org
-Subject: Re: [Linaro-mm-sig] [PATCH AUTOSEL 6.13 15/34] drm/amdgpu: allow
- pinning DMA-bufs into VRAM if all importers can do P2P
-Message-ID: <aA7E2ZKr_5rOpmWM@lappy>
-References: <20250414132729.679254-1-sashal@kernel.org>
- <20250414132729.679254-15-sashal@kernel.org>
- <CADnq5_OyrpJL3fnbyiueyddkNZ2B-uRO9pyrRVqBTeY5AnepYw@mail.gmail.com>
+	Johannes Berg <johannes.berg@intel.com>, richard@nod.at,
+	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+	benjamin.berg@intel.com, linux-um@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.13 23/28] um: Rewrite the sigio workaround
+ based on epoll and tgkill
+Message-ID: <aA7FFcn6gjIC8jCe@lappy>
+References: <20250407181224.3180941-1-sashal@kernel.org>
+ <20250407181224.3180941-23-sashal@kernel.org>
+ <621e867f-5427-4062-8783-e474e3dcdb3f@antgroup.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_OyrpJL3fnbyiueyddkNZ2B-uRO9pyrRVqBTeY5AnepYw@mail.gmail.com>
+In-Reply-To: <621e867f-5427-4062-8783-e474e3dcdb3f@antgroup.com>
 
-On Mon, Apr 14, 2025 at 09:48:10AM -0400, Alex Deucher wrote:
->On Mon, Apr 14, 2025 at 9:28 AM Sasha Levin <sashal@kernel.org> wrote:
+On Tue, Apr 08, 2025 at 12:38:12PM +0800, Tiwei Bie wrote:
+>On 2025/4/8 02:12, Sasha Levin wrote:
+>> From: Tiwei Bie <tiwei.btw@antgroup.com>
 >>
->> From: Christian König <christian.koenig@amd.com>
+>> [ Upstream commit 33c9da5dfb18c2ff5a88d01aca2cf253cd0ac3bc ]
 >>
->> [ Upstream commit f5e7fabd1f5c65b2e077efcdb118cfa67eae7311 ]
+>> The existing sigio workaround implementation removes FDs from the
+>> poll when events are triggered, requiring users to re-add them via
+>> add_sigio_fd() after processing. This introduces a potential race
+>> condition between FD removal in write_sigio_thread() and next_poll
+>> update in __add_sigio_fd(), and is inefficient due to frequent FD
+>> removal and re-addition. Rewrite the implementation based on epoll
+>> and tgkill for improved efficiency and reliability.
 >>
->> Try pinning into VRAM to allow P2P with RDMA NICs without ODP
->> support if all attachments can do P2P. If any attachment can't do
->> P2P just pin into GTT instead.
->>
->> Acked-by: Simona Vetter <simona.vetter@ffwll.ch>
->> Signed-off-by: Christian König <christian.koenig@amd.com>
->> Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
->> Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
->> Tested-by: Pak Nin Lui <pak.lui@amd.com>
->> Cc: Simona Vetter <simona.vetter@ffwll.ch>
->> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>> Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
+>> Link: https://patch.msgid.link/20250315161910.4082396-2-tiwei.btw@antgroup.com
+>> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>>  arch/um/drivers/random.c       |   2 +-
+>>  arch/um/drivers/rtc_user.c     |   2 +-
+>>  arch/um/include/shared/os.h    |   2 +-
+>>  arch/um/include/shared/sigio.h |   1 -
+>>  arch/um/kernel/sigio.c         |  26 ---
+>>  arch/um/os-Linux/sigio.c       | 330 +++++----------------------------
+>>  6 files changed, 47 insertions(+), 316 deletions(-)
 >
->This should not go to stable.  It depends on dmem cgroups.
+>Please drop this patch. Thanks! Details can be found here:
+>
+>https://lore.kernel.org/linux-um/ffa0b6af-523d-4e3e-9952-92f5b04b82b3@antgroup.com/
 
-I'll drop it.
+Dropped, thanks.
 
 -- 
 Thanks,
