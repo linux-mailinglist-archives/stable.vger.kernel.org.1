@@ -1,244 +1,462 @@
-Return-Path: <stable+bounces-136968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3960BA9FC49
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 23:36:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5B7A9FC61
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 23:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131A5188BFCD
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:36:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40093A8C4B
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864062101B7;
-	Mon, 28 Apr 2025 21:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3C420D4F9;
+	Mon, 28 Apr 2025 21:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b="iBx5lyIc"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TKKccxUd"
 X-Original-To: stable@vger.kernel.org
-Received: from wylie.me.uk (wylie.me.uk [82.68.155.94])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2089.outbound.protection.outlook.com [40.107.243.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C4220B7FD;
-	Mon, 28 Apr 2025 21:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.68.155.94
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745876101; cv=none; b=M2hxj2Qb7948wIQNKjLjL9Xikupd7H/7cODubV/N6OFFs+wQCzRBiJ2fG9wIzDQYDkYmgbgITOaLykNnIaKnqcARKpG5yw2TeOMCy4Bn86ol42/zMm2wB7YpCqrE9DryalmEE0IykgoZoHywfQTTXatGGZrZZTIUIDxB5RBxlXE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745876101; c=relaxed/simple;
-	bh=vnWp8P/f82zW/1bRdFMUriUFJlEc3dQM6Nbaofozku4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rnc6pyRuRP9U+52FRKSaeZaorDWPROB5oGXCQeN1U9C62vezi00KghV0DTa5yWWegUnHIbfd5WFDP4xUqduOh/yEMQH9b12VMYx1qK4ltl7dOrrCvrv0D/5WhzPGbc+/aWMf9y9OjiNILRE1wqxdT9pHzmMJm6H/6A4mWk7FskI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk; spf=pass smtp.mailfrom=wylie.me.uk; dkim=pass (2048-bit key) header.d=wylie.me.uk header.i=@wylie.me.uk header.b=iBx5lyIc; arc=none smtp.client-ip=82.68.155.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wylie.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wylie.me.uk
-Received: from frodo.int.wylie.me.uk (frodo.int.wylie.me.uk [192.168.21.2])
-	by wylie.me.uk (Postfix) with ESMTP id 6963212085B;
-	Mon, 28 Apr 2025 22:34:37 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wylie.me.uk;
-	s=mydkim006; t=1745876077;
-	bh=vnWp8P/f82zW/1bRdFMUriUFJlEc3dQM6Nbaofozku4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=iBx5lyIcqldvfXJaDXiTx+hvApXWmAYoweADubDhW6wYf9f/8syoyYBMdrqj/14P2
-	 BWZlcUR9FSeQjiZWxvgj6RcePHMcEcTRvo+HUE6HzfUmaCO5Q35SXyQvuX/DcZfztg
-	 KnCei2lK4zXGIpptU0C1OYkZuFRq90p5L+uUoGx5IDZ6c4/+537p9/UPpmJdqDiZUi
-	 V0wWjhmxhl888BJxeFUPBHKnOGEWRaZul3jFuE7XLDG8sAWGTVKoeFZ4e4PWU8ynNj
-	 +i84o351vnt2qyC5JwiXCj8no6q2yGYv5+6TTySXMwHttjn+80Hn96VNzud9ksGhQ0
-	 tWZPEv/1I+Y7A==
-Date: Mon, 28 Apr 2025 22:34:36 +0100
-From: "Alan J. Wylie" <alan@wylie.me.uk>
-To: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Holger =?UTF-8?B?SG9mZnN0w6R0dGU=?= <holger@applied-asynchrony.com>,
- Jamal Hadi Salim <jhs@mojatatu.com>, regressions@lists.linux.dev, Jiri
- Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Octavian Purdila <tavip@google.com>, Toke
- =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?= <toke@redhat.com>,
- stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION] 6.14.3 panic - kernel NULL pointer dereference in
- htb_dequeue
-Message-ID: <20250428223436.48529979@frodo.int.wylie.me.uk>
-In-Reply-To: <aA/s3GBuDc5t1nY5@pop-os.localdomain>
-References: <4e2a6522-d455-f0ce-c77d-b430c3047d7c@applied-asynchrony.com>
-	<aAf/K7F9TmCJIT+N@pop-os.localdomain>
-	<20250422214716.5e181523@frodo.int.wylie.me.uk>
-	<aAgO59L0ccXl6kUs@pop-os.localdomain>
-	<20250423105131.7ab46a47@frodo.int.wylie.me.uk>
-	<aAlAakEUu4XSEdXF@pop-os.localdomain>
-	<20250424135331.02511131@frodo.int.wylie.me.uk>
-	<aA6BcLENWhE4pQCa@pop-os.localdomain>
-	<20250427204254.6ae5cd4a@frodo.int.wylie.me.uk>
-	<20250427213548.73efc7b9@frodo.int.wylie.me.uk>
-	<aA/s3GBuDc5t1nY5@pop-os.localdomain>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
-X-Clacks-Overhead: GNU Terry Pratchett
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2CFA94A;
+	Mon, 28 Apr 2025 21:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.89
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1745876533; cv=fail; b=EfQ2s/CKuiHSmwq0k7KmK7ob9y2P7SI28bz2kuXxfBaJU7CrZq9W5sDWjbYciMkle9J30lfamxtoZCTcCy+GU/rwRBv/gb8l+wlBxIk2vE4xq7WqFkmUrjcMLI3bhrCycmdAus06oRIkqqcKXkhqy5ynLVT3zOPtIaoM17t93ek=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1745876533; c=relaxed/simple;
+	bh=NBlmFerCCl2hF4YON7Xn0RLQw7+PAYMA6OLsjbUcQMQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dXTKOR+im+EDHCINicq2XQQ2YN6Q91GKaKUsuFb9sUFBccTS8GZITmq+pHUST/+fUIL27cGU5Lcj78sVOXg4r1qbr14mP+4KKvV/11PYswyHWl73mov9/bnV7MrAGwXLZ/AebHr7FRxF57RqCq1Z2bZL672CJcY+GqX86qSLhnc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TKKccxUd; arc=fail smtp.client-ip=40.107.243.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uF6fVgcd+AcxQvmgXnY9XrCT1Gfm3ae3ex55mPMS34UIx7uU6kVs/ffSSMmWxJH0YxCTYEmHXxrx+zejvLsha/Dp4zg7lSgzav0nNjy3RX/IFyeWqchMq3JGm1QMiT8PpWx/rPNyCOu+JYrAxZsHptNfdT0LQBRf42d/g3E6LkbY1gBFSmBO9tbEQtWBldcfvW2VJ19JYKyPB3A53qZBvUWyXlYXblSH8/T79L5BrLdywAwy/FrBCrkYEYgJC6ajEP8Ni5Cxfi4etJcLyfuxLAhefjxsmQWjUmBQuOiq098hwPYvCV80Bfl/95rTmpT4m3mo/U1dTOhZy/w1qoz4Pw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WGaDKsU76PUZQdKN9pEr4car2ehPDnzIQ5pZ5crExJk=;
+ b=xJA5g5GD/pfKPgATRCadwMkCoP4BHasgfy/LhFFQJqf6a0l/9eJ0KiVOZVX0QGd29UtNYzR/6aKYRbWjogIFpOJI3ZhbWbA+P1u6tnlO7BFd1qD89dLuFUEzamYYpIzrvlIOH60jEZBEk7Aebs1Q8JEinGzSlJS5v9iCeZWIpNAz4TI2HfRGqrlv9f4PBkOk+zZ983ZoVIxHSKtSk7ogCdDAms9zlC+ig4Zg1gBXOyty/ZBs+2D3M16U04YSxfYGGXoqv8FZX5TZztCi2JgyVGr5LJA56DBR/ge92XmWXS7+NPJWXTo/0O5SueivbQ1WkhJe4DPzZWGz57bwKXBHJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linutronix.de smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WGaDKsU76PUZQdKN9pEr4car2ehPDnzIQ5pZ5crExJk=;
+ b=TKKccxUdWEpWAkHXX7mQdFqg5ghMk1expmKWJ4nzEgRo7rv4E8Id8xeKX9JrdngMInHSQChzZLYW7eHtD9thOBFTvQHnuEjPAbt2yLJ2cuv8b9gcXyprNnoG1l+d7e+WuJWZUC7lSZGBciwC1IXbeSInzybdVK39xlVDVNSzqyA=
+Received: from BN9PR03CA0895.namprd03.prod.outlook.com (2603:10b6:408:13c::30)
+ by PH8PR12MB6844.namprd12.prod.outlook.com (2603:10b6:510:1cb::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.33; Mon, 28 Apr
+ 2025 21:42:06 +0000
+Received: from BN3PEPF0000B36D.namprd21.prod.outlook.com
+ (2603:10b6:408:13c:cafe::3d) by BN9PR03CA0895.outlook.office365.com
+ (2603:10b6:408:13c::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8655.37 via Frontend Transport; Mon,
+ 28 Apr 2025 21:42:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN3PEPF0000B36D.mail.protection.outlook.com (10.167.243.164) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.2 via Frontend Transport; Mon, 28 Apr 2025 21:42:05 +0000
+Received: from ethanolx7e2ehost.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 28 Apr
+ 2025 16:42:04 -0500
+From: Ashish Kalra <Ashish.Kalra@amd.com>
+To: <tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<x86@kernel.org>, <bp@alien8.de>, <thomas.lendacky@amd.com>, <hpa@zytor.com>
+CC: <kees@kernel.org>, <michael.roth@amd.com>, <nikunj@amd.com>,
+	<seanjc@google.com>, <ardb@kernel.org>, <gustavoars@kernel.org>,
+	<sgarzare@redhat.com>, <stable@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+	<kexec@lists.infradead.org>, <linux-coco@lists.linux.dev>
+Subject: [PATCH v3] x86/sev: Do not touch VMSA pages during kdump of SNP guest memory
+Date: Mon, 28 Apr 2025 21:41:51 +0000
+Message-ID: <20250428214151.155464-1-Ashish.Kalra@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B36D:EE_|PH8PR12MB6844:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ac92e29-721b-4a4c-7fdc-08dd869d8512
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|36860700013|7416014|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zKza91aqYfloM5yY6pPuevkCd2MD/nwAovfeQ7gbuOll0mqTdSb2YFRS8ugL?=
+ =?us-ascii?Q?GrzYVkux4eaJQRqHhPT0BoNEgLINZMXYvnmjtsR3M+Cu9s7gwSkyheI+yFU5?=
+ =?us-ascii?Q?vcUIfIabBddD1ebx+58oSuLqe4PTOa355ktckBD89UxkadWutSjnvMTS6O7R?=
+ =?us-ascii?Q?wZkiMQquzC/8wnSFtXnHzc3C2P160QZOELASVZG8VM8HLKXXzCizT00SjD+q?=
+ =?us-ascii?Q?X8yL5frMVFWNnQlix7GPOb7z/8Tq5VUJmPoJFtoyy5gvm6JqA8oqknesKxw7?=
+ =?us-ascii?Q?GA2c51d/Ps+m/hV7YuEUUZ3FAFdGHx92QhngGM1B/2pe0fQ533zRnc638FFn?=
+ =?us-ascii?Q?VxC+v+hA+KmF6k9+oyYR+OlDlZ90ENWQ2JpDuSyI5k5z2Ofm1sD20lA/5kfW?=
+ =?us-ascii?Q?yY40JiQjZHyJVdaTp3RecLhsQI1+5CN2qYLsOQYQvzGHNkKHqdVIZo4AtStA?=
+ =?us-ascii?Q?bJ21kn1IGFGw0GYKdY3cNV8PZAOIcac94+ABJ7ktO589/ARcJZYkH/PFQk4w?=
+ =?us-ascii?Q?5vByGRp4TNbVLlpeBAfZ915pQsC9QNykg2Ytemu9cVisfWtjJUGHCJVZaycw?=
+ =?us-ascii?Q?rRtA+v6hzs3r+vVJzW1OMLayMoN/E+fYMtS7WI29jMt48MkEsrAf6yUVAsAp?=
+ =?us-ascii?Q?9F/jCug2KG8Dk1qa7lOnyVicpIO0X588HHSHizxiB89zJMK8Q9njxDk1Ae4v?=
+ =?us-ascii?Q?EG88hhScItOcyE+Yt9Dysf6AEpAEmE1LJn0Nw6OTs12cuvbeOK8wTR+ERIcn?=
+ =?us-ascii?Q?UUsauZJRau1GrLlXVnZetLPnzrQT6sgfRAuDh1EHRDUl2Wq15x5puvsjgDX7?=
+ =?us-ascii?Q?uWJ56k6C2oKj1j3zhzb0QASyDhkp6eQTgVmtjMNzwjAm+NEzXhpWL0czyQcP?=
+ =?us-ascii?Q?k3dh4AfShWgRnnyRJGr9HMf1+FU3zAsi/d//Mu/XvkUhsMGEHMahfmehePOR?=
+ =?us-ascii?Q?q2HqHV3Y1aP7/WVyL+Gfl74gwT+ZhueOMtlMrUZaiZU+25IpkPrD5qOdnP6V?=
+ =?us-ascii?Q?xLQj0OBSO3PfJI3Fw++vlbv9iAFecD+JzJBnxWdyjt13F5Ejj4Ouu76woU/n?=
+ =?us-ascii?Q?75t0I/iLfWOd2dzfEe1AKVjzrtBuUbMXVKNtK5wB76UEpWF8qUqvHz8Yph+c?=
+ =?us-ascii?Q?/wyycufkpiTX76+8u8Li1IGoz76Z41eJGGOtnNlaVUU+EJfuI79rPEtCTsI+?=
+ =?us-ascii?Q?ollAcg/vxWvhzleqzsEwcOlbzfWzO5jpmlYn6Ir5NEfrWsVZMuRZVSa88NN2?=
+ =?us-ascii?Q?exfpunRDCq8CvXos59YBG0my3bLEG9rDE2lVf1TocP6QJb9lTTJFfgN5JAsh?=
+ =?us-ascii?Q?RQzych55cGtzXOVP1Ap+ugBuTWc03TrfeFBCANXDmSRESe0b22DRrsu94zr0?=
+ =?us-ascii?Q?a5jPbe11RGApnWb5gjZ0QwaH9O1iqh67biyZvNkwU8hSxGLEv5Qu/9cFz2EU?=
+ =?us-ascii?Q?1sDcrw7NLH3NrGgCFDv82miSCMNPiAZTaH9741ZhH9EWmZ3vnbepI5pHghxU?=
+ =?us-ascii?Q?QrmFuHNIXet9XC4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(36860700013)(7416014)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2025 21:42:05.6625
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ac92e29-721b-4a4c-7fdc-08dd869d8512
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN3PEPF0000B36D.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6844
 
-On Mon, 28 Apr 2025 14:02:20 -0700
-Cong Wang <xiyou.wangcong@gmail.com> wrote:
+From: Ashish Kalra <ashish.kalra@amd.com>
 
-> I doubt it is related to iptables. I will try some TCP traffic on my
-> side later, but I suspect this is related to the type of packets.
-> 
-> Meanwhile, since I still can't reproduce it here, do you mind applying
-> both of my patches on top of -net and test again?
-> 
-> For your convenience, below is the combined patch of the previous two
-> patches, which can be applied on -net.
-> 
-> Thanks!
-> 
-> ----->
-> 
-> diff --git a/net/sched/sch_htb.c b/net/sched/sch_htb.c
-> index 4b9a639b642e..9d88fff120bc 100644
-> --- a/net/sched/sch_htb.c
-> +++ b/net/sched/sch_htb.c
-> @@ -348,7 +348,8 @@ static void htb_add_to_wait_tree(struct htb_sched *q,
->   */
->  static inline void htb_next_rb_node(struct rb_node **n)
->  {
-> -	*n = rb_next(*n);
-> +	if (*n)
-> +		*n = rb_next(*n);
->  }
->  
->  /**
-> @@ -1487,7 +1488,8 @@ static void htb_qlen_notify(struct Qdisc *sch, unsigned long arg)
->  
->  	if (!cl->prio_activity)
->  		return;
-> -	htb_deactivate(qdisc_priv(sch), cl);
-> +	if (!cl->leaf.q->q.qlen)
-> +		htb_deactivate(qdisc_priv(sch), cl);
->  }
->  
->  static inline int htb_parent_last_child(struct htb_class *cl)
+When kdump is running makedumpfile to generate vmcore and dumping SNP
+guest memory it touches the VMSA page of the vCPU executing kdump which
+then results in unrecoverable #NPF/RMP faults as the VMSA page is
+marked busy/in-use when the vCPU is running and subsequently causes
+guest softlockup/hang.
 
+Additionally other APs may be halted in guest mode and their VMSA pages
+are marked busy and touching these VMSA pages during guest memory dump
+will also cause #NPF.
 
-With those patches applied, I've run 5 or 6 SpeedTests, no panics.
+Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
+of guest mode and then clear the VMSA bit on their VMSA pages.
 
-There's several WARNINGS in the log, though, about one per run.
+If the vCPU running kdump is an AP, mark it's VMSA page as offline to
+ensure that makedumpfile excludes that page while dumping guest memory.
 
-I'm away from the keyboard tomorrow morning.
+Cc: stable@vger.kernel.org
+Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
+Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+---
+ arch/x86/coco/sev/core.c | 241 +++++++++++++++++++++++++--------------
+ 1 file changed, 155 insertions(+), 86 deletions(-)
 
-Hoping this has helped
-Alan
-
-$ ./scripts/decode_stacktrace.sh < bar vmlinux
-Apr 28 22:22:20 bilbo kernel: ------------[ cut here ]------------
-Apr 28 22:22:20 bilbo kernel: WARNING: CPU: 1 PID: 0 at htb_deactivate (net/sched/sch_htb.c:613 (discriminator 1)) sch_htb 
-Apr 28 22:22:20 bilbo kernel: Modules linked in: sch_htb cls_u32 sch_ingress sch_cake ifb act_mirred xt_hl xt_nat ts_bm xt_string xt_TARPIT(O) xt_CT xt_tcpudp xt_helper nf_nat_ftp nf_conntrack_f>
-Apr 28 22:22:20 bilbo kernel:  fb_io_fops snd_pcm cfbcopyarea crypto_simd i2c_algo_bit cdc_acm cryptd snd_timer fb at24 e1000 snd k10temp regmap_i2c font acpi_cpufreq soundcore fam15h_power liba>
-Apr 28 22:22:20 bilbo kernel: CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G           O        6.15.0-rc3-00109-gf73f05c6f711-dirty #2 PREEMPT(lazy)
-Apr 28 22:22:20 bilbo kernel: Tainted: [O]=OOT_MODULE
-Apr 28 22:22:20 bilbo kernel: Hardware name: Gigabyte Technology Co., Ltd. To be filled by O.E.M./970A-DS3P, BIOS FD 02/26/2016
-Apr 28 22:22:20 bilbo kernel: RIP: 0010:htb_deactivate (net/sched/sch_htb.c:613 (discriminator 1)) sch_htb 
-Apr 28 22:22:20 bilbo kernel: Code: d4 45 21 a4 87 08 01 00 00 48 83 c4 18 5b 5d 41 5c 41 5d 41 5e 41 5f e9 81 8c ae e0 90 53 83 be a8 01 00 00 00 48 89 f3 75 02 <0f> 0b 48 89 de e8 29 fe ff ff >
-All code
-========
-   0:	d4                   	(bad)
-   1:	45 21 a4 87 08 01 00 	and    %r12d,0x108(%r15,%rax,4)
-   8:	00 
-   9:	48 83 c4 18          	add    $0x18,%rsp
-   d:	5b                   	pop    %rbx
-   e:	5d                   	pop    %rbp
-   f:	41 5c                	pop    %r12
-  11:	41 5d                	pop    %r13
-  13:	41 5e                	pop    %r14
-  15:	41 5f                	pop    %r15
-  17:	e9 81 8c ae e0       	jmp    0xffffffffe0ae8c9d
-  1c:	90                   	nop
-  1d:	53                   	push   %rbx
-  1e:	83 be a8 01 00 00 00 	cmpl   $0x0,0x1a8(%rsi)
-  25:	48 89 f3             	mov    %rsi,%rbx
-  28:	75 02                	jne    0x2c
-  2a:*	0f 0b                	ud2		<-- trapping instruction
-  2c:	48 89 de             	mov    %rbx,%rsi
-  2f:	e8 29 fe ff ff       	call   0xfffffffffffffe5d
-	...
-
-Code starting with the faulting instruction
-===========================================
-   0:	0f 0b                	ud2
-   2:	48 89 de             	mov    %rbx,%rsi
-   5:	e8 29 fe ff ff       	call   0xfffffffffffffe33
-	...
-Apr 28 22:22:20 bilbo kernel: RSP: 0018:ffffc900000f4e50 EFLAGS: 00010246
-Apr 28 22:22:20 bilbo kernel: RAX: ffff888148f88000 RBX: ffff888148f89000 RCX: ffff888148f891c8
-Apr 28 22:22:20 bilbo kernel: RDX: ffff888148f89000 RSI: ffff888148f89000 RDI: ffff88811ce07180
-Apr 28 22:22:20 bilbo kernel: RBP: 0000000000000000 R08: ffff88811ce072b0 R09: 000000000d22f2d3
-Apr 28 22:22:20 bilbo kernel: R10: 0000000000001dad R11: ffffc900000f4ff8 R12: 0000000000000000
-Apr 28 22:22:20 bilbo kernel: R13: ffff888148f89000 R14: 00000034c76615a5 R15: 0000000000000000
-Apr 28 22:22:20 bilbo kernel: FS:  0000000000000000(0000) GS:ffff8884ac7df000(0000) knlGS:0000000000000000
-Apr 28 22:22:20 bilbo kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-Apr 28 22:22:20 bilbo kernel: CR2: 00007fb66c09f000 CR3: 0000000138968000 CR4: 00000000000406f0
-Apr 28 22:22:20 bilbo kernel: Call Trace:
-Apr 28 22:22:20 bilbo kernel:  <IRQ>
-Apr 28 22:22:20 bilbo kernel: htb_dequeue (./include/net/sch_generic.h:821 (discriminator 1) net/sched/sch_htb.c:702 (discriminator 1) net/sched/sch_htb.c:933 (discriminator 1) net/sched/sch_htb.c:983 (discriminator 1)) sch_htb 
-Apr 28 22:22:20 bilbo kernel: __qdisc_run (net/sched/sch_generic.c:293 net/sched/sch_generic.c:398 net/sched/sch_generic.c:416) 
-Apr 28 22:22:20 bilbo kernel: ? timerqueue_del (lib/timerqueue.c:58) 
-Apr 28 22:22:20 bilbo kernel: qdisc_run (./include/net/pkt_sched.h:128 ./include/net/pkt_sched.h:124) 
-Apr 28 22:22:20 bilbo kernel: net_tx_action (net/core/dev.c:5535) 
-Apr 28 22:22:20 bilbo kernel: handle_softirqs (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:457 ./include/linux/jump_label.h:262 ./include/trace/events/irq.h:142 kernel/softirq.c:580) 
-Apr 28 22:22:20 bilbo kernel: __irq_exit_rcu (kernel/softirq.c:453 kernel/softirq.c:680) 
-Apr 28 22:22:20 bilbo kernel: sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1049 (discriminator 35) arch/x86/kernel/apic/apic.c:1049 (discriminator 35)) 
-Apr 28 22:22:20 bilbo kernel:  </IRQ>
-Apr 28 22:22:20 bilbo kernel:  <TASK>
-Apr 28 22:22:20 bilbo kernel: asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:574) 
-Apr 28 22:22:20 bilbo kernel: RIP: 0010:cpuidle_enter_state (drivers/cpuidle/cpuidle.c:292) 
-Apr 28 22:22:20 bilbo kernel: Code: 08 58 6e 00 85 c0 7e 0b 8b 73 04 83 cf ff e8 b1 fd e4 ff 31 ff e8 9a 1a 97 ff 45 84 ff 74 07 31 ff e8 7e 3f 9c ff fb 45 85 ed <0f> 88 cc 00 00 00 49 63 c5 48 >
-All code
-========
-   0:	08 58 6e             	or     %bl,0x6e(%rax)
-   3:	00 85 c0 7e 0b 8b    	add    %al,-0x74f48140(%rbp)
-   9:	73 04                	jae    0xf
-   b:	83 cf ff             	or     $0xffffffff,%edi
-   e:	e8 b1 fd e4 ff       	call   0xffffffffffe4fdc4
-  13:	31 ff                	xor    %edi,%edi
-  15:	e8 9a 1a 97 ff       	call   0xffffffffff971ab4
-  1a:	45 84 ff             	test   %r15b,%r15b
-  1d:	74 07                	je     0x26
-  1f:	31 ff                	xor    %edi,%edi
-  21:	e8 7e 3f 9c ff       	call   0xffffffffff9c3fa4
-  26:	fb                   	sti
-  27:	45 85 ed             	test   %r13d,%r13d
-  2a:*	0f 88 cc 00 00 00    	js     0xfc		<-- trapping instruction
-  30:	49 63 c5             	movslq %r13d,%rax
-  33:	48                   	rex.W
-	...
-
-Code starting with the faulting instruction
-===========================================
-   0:	0f 88 cc 00 00 00    	js     0xd2
-   6:	49 63 c5             	movslq %r13d,%rax
-   9:	48                   	rex.W
-	...
-Apr 28 22:22:20 bilbo kernel: RSP: 0018:ffffc900000afe98 EFLAGS: 00000202
-Apr 28 22:22:20 bilbo kernel: RAX: ffff8884ac7df000 RBX: ffff888101f0c000 RCX: 0000000000000000
-Apr 28 22:22:20 bilbo kernel: RDX: 000000348d3ee395 RSI: fffffff068159bd4 RDI: 0000000000000000
-Apr 28 22:22:20 bilbo kernel: RBP: 0000000000000002 R08: 0000000000000002 R09: 0000000000000013
-Apr 28 22:22:20 bilbo kernel: R10: 0000000000000006 R11: 0000000000000671 R12: ffffffff81f9b660
-Apr 28 22:22:20 bilbo kernel: R13: 0000000000000002 R14: 000000348d3ee395 R15: 0000000000000000
-Apr 28 22:22:20 bilbo kernel: ? cpuidle_enter_state (drivers/cpuidle/cpuidle.c:286) 
-Apr 28 22:22:20 bilbo kernel: cpuidle_enter (drivers/cpuidle/cpuidle.c:391 (discriminator 2)) 
-Apr 28 22:22:20 bilbo kernel: do_idle (kernel/sched/idle.c:234 kernel/sched/idle.c:325) 
-Apr 28 22:22:20 bilbo kernel: cpu_startup_entry (kernel/sched/idle.c:422) 
-Apr 28 22:22:20 bilbo kernel: start_secondary (arch/x86/kernel/smpboot.c:315) 
-Apr 28 22:22:20 bilbo kernel: common_startup_64 (arch/x86/kernel/head_64.S:419) 
-Apr 28 22:22:20 bilbo kernel:  </TASK>
-Apr 28 22:22:20 bilbo kernel: ---[ end trace 0000000000000000 ]---
-
-
-
+diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
+index dcfaa698d6cf..f4eb5b645239 100644
+--- a/arch/x86/coco/sev/core.c
++++ b/arch/x86/coco/sev/core.c
+@@ -877,6 +877,99 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
+ 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
+ }
+ 
++static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
++{
++	struct ghcb_state state;
++	unsigned long flags;
++	struct ghcb *ghcb;
++	int ret = 0;
++
++	local_irq_save(flags);
++
++	ghcb = __sev_get_ghcb(&state);
++
++	vc_ghcb_invalidate(ghcb);
++	if (event == SVM_VMGEXIT_AP_CREATE)
++		ghcb_set_rax(ghcb, vmsa->sev_features);
++	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
++	ghcb_set_sw_exit_info_1(ghcb,
++				((u64)apic_id << 32)	|
++				((u64)snp_vmpl << 16)	|
++				event);
++	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
++
++	sev_es_wr_ghcb_msr(__pa(ghcb));
++	VMGEXIT();
++
++	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
++	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
++		pr_err("SNP AP %s error\n", (event == SVM_VMGEXIT_AP_CREATE ? "CREATE" : "DESTROY"));
++		ret = -EINVAL;
++	}
++
++	__sev_put_ghcb(&state);
++
++	local_irq_restore(flags);
++
++	return ret;
++}
++
++static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
++{
++	int ret;
++
++	if (snp_vmpl) {
++		struct svsm_call call = {};
++		unsigned long flags;
++
++		local_irq_save(flags);
++
++		call.caa = this_cpu_read(svsm_caa);
++		call.rcx = __pa(va);
++
++		if (make_vmsa) {
++			/* Protocol 0, Call ID 2 */
++			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
++			call.rdx = __pa(caa);
++			call.r8  = apic_id;
++		} else {
++			/* Protocol 0, Call ID 3 */
++			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
++		}
++
++		ret = svsm_perform_call_protocol(&call);
++
++		local_irq_restore(flags);
++	} else {
++		/*
++		 * If the kernel runs at VMPL0, it can change the VMSA
++		 * bit for a page using the RMPADJUST instruction.
++		 * However, for the instruction to succeed it must
++		 * target the permissions of a lesser privileged (higher
++		 * numbered) VMPL level, so use VMPL1.
++		 */
++		u64 attrs = 1;
++
++		if (make_vmsa)
++			attrs |= RMPADJUST_VMSA_PAGE_BIT;
++
++		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
++	}
++
++	return ret;
++}
++
++static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
++{
++	int err;
++
++	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
++	if (err)
++		pr_err("clear VMSA page failed (%u), leaking page\n", err);
++	else
++		free_page((unsigned long)vmsa);
++}
++
+ static void set_pte_enc(pte_t *kpte, int level, void *va)
+ {
+ 	struct pte_enc_desc d = {
+@@ -973,6 +1066,65 @@ void snp_kexec_begin(void)
+ 		pr_warn("Failed to stop shared<->private conversions\n");
+ }
+ 
++/*
++ * Shutdown all APs except the one handling kexec/kdump and clearing
++ * the VMSA tag on AP's VMSA pages as they are not being used as
++ * VMSA page anymore.
++ */
++static void shutdown_all_aps(void)
++{
++	struct sev_es_save_area *vmsa;
++	int apic_id, this_cpu, cpu;
++
++	this_cpu = get_cpu();
++
++	/*
++	 * APs are already in HLT loop when enc_kexec_finish() callback
++	 * is invoked.
++	 */
++	for_each_present_cpu(cpu) {
++		vmsa = per_cpu(sev_vmsa, cpu);
++
++		/*
++		 * BSP does not have guest allocated VMSA and there is no need
++		 * to clear the VMSA tag for this page.
++		 */
++		if (!vmsa)
++			continue;
++
++		/*
++		 * Cannot clear the VMSA tag for the currently running vCPU.
++		 */
++		if (this_cpu == cpu) {
++			unsigned long pa;
++			struct page *p;
++
++			pa = __pa(vmsa);
++			/*
++			 * Mark the VMSA page of the running vCPU as offline
++			 * so that is excluded and not touched by makedumpfile
++			 * while generating vmcore during kdump.
++			 */
++			p = pfn_to_online_page(pa >> PAGE_SHIFT);
++			if (p)
++				__SetPageOffline(p);
++			continue;
++		}
++
++		apic_id = cpuid_to_apicid[cpu];
++
++		/*
++		 * Issue AP destroy to ensure AP gets kicked out of guest mode
++		 * to allow using RMPADJUST to remove the VMSA tag on it's
++		 * VMSA page.
++		 */
++		vmgexit_ap_control(SVM_VMGEXIT_AP_DESTROY, vmsa, apic_id);
++		snp_cleanup_vmsa(vmsa, apic_id);
++	}
++
++	put_cpu();
++}
++
+ void snp_kexec_finish(void)
+ {
+ 	struct sev_es_runtime_data *data;
+@@ -987,6 +1139,8 @@ void snp_kexec_finish(void)
+ 	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
+ 		return;
+ 
++	shutdown_all_aps();
++
+ 	unshare_all_memory();
+ 
+ 	/*
+@@ -1008,51 +1162,6 @@ void snp_kexec_finish(void)
+ 	}
+ }
+ 
+-static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
+-{
+-	int ret;
+-
+-	if (snp_vmpl) {
+-		struct svsm_call call = {};
+-		unsigned long flags;
+-
+-		local_irq_save(flags);
+-
+-		call.caa = this_cpu_read(svsm_caa);
+-		call.rcx = __pa(va);
+-
+-		if (make_vmsa) {
+-			/* Protocol 0, Call ID 2 */
+-			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
+-			call.rdx = __pa(caa);
+-			call.r8  = apic_id;
+-		} else {
+-			/* Protocol 0, Call ID 3 */
+-			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
+-		}
+-
+-		ret = svsm_perform_call_protocol(&call);
+-
+-		local_irq_restore(flags);
+-	} else {
+-		/*
+-		 * If the kernel runs at VMPL0, it can change the VMSA
+-		 * bit for a page using the RMPADJUST instruction.
+-		 * However, for the instruction to succeed it must
+-		 * target the permissions of a lesser privileged (higher
+-		 * numbered) VMPL level, so use VMPL1.
+-		 */
+-		u64 attrs = 1;
+-
+-		if (make_vmsa)
+-			attrs |= RMPADJUST_VMSA_PAGE_BIT;
+-
+-		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
+-	}
+-
+-	return ret;
+-}
+-
+ #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
+ #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
+ #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
+@@ -1084,24 +1193,10 @@ static void *snp_alloc_vmsa_page(int cpu)
+ 	return page_address(p + 1);
+ }
+ 
+-static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
+-{
+-	int err;
+-
+-	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
+-	if (err)
+-		pr_err("clear VMSA page failed (%u), leaking page\n", err);
+-	else
+-		free_page((unsigned long)vmsa);
+-}
+-
+ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+ {
+ 	struct sev_es_save_area *cur_vmsa, *vmsa;
+-	struct ghcb_state state;
+ 	struct svsm_ca *caa;
+-	unsigned long flags;
+-	struct ghcb *ghcb;
+ 	u8 sipi_vector;
+ 	int cpu, ret;
+ 	u64 cr4;
+@@ -1215,33 +1310,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
+ 	}
+ 
+ 	/* Issue VMGEXIT AP Creation NAE event */
+-	local_irq_save(flags);
+-
+-	ghcb = __sev_get_ghcb(&state);
+-
+-	vc_ghcb_invalidate(ghcb);
+-	ghcb_set_rax(ghcb, vmsa->sev_features);
+-	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
+-	ghcb_set_sw_exit_info_1(ghcb,
+-				((u64)apic_id << 32)	|
+-				((u64)snp_vmpl << 16)	|
+-				SVM_VMGEXIT_AP_CREATE);
+-	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
+-
+-	sev_es_wr_ghcb_msr(__pa(ghcb));
+-	VMGEXIT();
+-
+-	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
+-	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
+-		pr_err("SNP AP Creation error\n");
+-		ret = -EINVAL;
+-	}
+-
+-	__sev_put_ghcb(&state);
+-
+-	local_irq_restore(flags);
+-
+-	/* Perform cleanup if there was an error */
++	ret = vmgexit_ap_control(SVM_VMGEXIT_AP_CREATE, vmsa, apic_id);
+ 	if (ret) {
+ 		snp_cleanup_vmsa(vmsa, apic_id);
+ 		vmsa = NULL;
 -- 
-Alan J. Wylie     https://www.wylie.me.uk/     mailto:<alan@wylie.me.uk>
+2.34.1
 
-Dance like no-one's watching. / Encrypt like everyone is.
-Security is inversely proportional to convenience
 
