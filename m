@@ -1,356 +1,169 @@
-Return-Path: <stable+bounces-136881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E032A9F02F
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 14:04:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6DDA9F053
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 14:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3CAF3B9589
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 12:04:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C65BF3B71B7
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 12:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC991FFC45;
-	Mon, 28 Apr 2025 12:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73C7268681;
+	Mon, 28 Apr 2025 12:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFsyOrLw"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eqxRQRqC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4291DED76
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 12:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEA1267F4B;
+	Mon, 28 Apr 2025 12:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745841879; cv=none; b=Mrw25zAyY5mEDBp7C5eejGm4aoBX4+HYJ7CIEac9NXxA8IkGtBPK9xVgGmElC3weomizHOd5+CZ5YA2RxAAxim9nDLD8ATq5xsth4ZJSeva2eP3HJEoGXCUFDgf+JJjL1UVueDELQ4f/Yi2x454Uoq9iNw2IjoI39Dmo5yhR49s=
+	t=1745842222; cv=none; b=ZSxR0S2jm0JdKSf0zR2T1lkFVVXVTPGvZhE/RPJn+KiNkN0wq5JjU568QHvI7uzoADimkUSezx/nw67dBzEZ2qSe/TuhrVBRRsDTfLnlVrJPWWWiHCig27oEt104qGVu2nu+08jVhH5Hc6/bgbOGaV+9LVbSVomXAw02Y+Qhpko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745841879; c=relaxed/simple;
-	bh=H4hwuf7PmSOQRuxTibU8FnEUJmstAjciSWfPFxJzWL4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sWT6jY76CEzRxOq4PqeymssZ/fTHPxL25stEygUbk96UaOhxslXZ/KACHy3LYfGnEPcT1Sp542i75uYdMCxbz7U231RU2WpUVst8e1heMq9j9FsI+erlQhmkgviqsQZ9BcIGZhNgoTY2NAx10yYon0PcUWoZ3OIqfiPmWUURcO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFsyOrLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C599DC4CEE9;
-	Mon, 28 Apr 2025 12:04:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745841879;
-	bh=H4hwuf7PmSOQRuxTibU8FnEUJmstAjciSWfPFxJzWL4=;
-	h=Subject:To:Cc:From:Date:From;
-	b=BFsyOrLwAp6Hax/q5axDHRfswckn0ClSXFmn5sLyz6CxmRAOKwVp5HEbC5+qNerD+
-	 VmGDdGhCsDsx7xEnCMOmMRCCl9cBDvOGkL+iKaulaML7swU1T0cpnpzcMALNAX/lbW
-	 Z0jp/6j5tsL4qElvr2D/PVLg+4e3jrvTIbn9g4Dw=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: skip reporting zone for new block group" failed to apply to 6.14-stable tree
-To: naohiro.aota@wdc.com,dlemoal@kernel.org,dsterba@suse.com,johannes.thumshirn@wdc.com,shinichiro.kawasaki@wdc.com,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Apr 2025 14:04:36 +0200
-Message-ID: <2025042836-balance-molehill-5c30@gregkh>
+	s=arc-20240116; t=1745842222; c=relaxed/simple;
+	bh=tihlxCw9xow20KLzV+QRCQ0j3IZPQ5YvvZyBkopd9ro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HoTdRgrBkAKmsuQvokZKF+U7Xs8duHAoyMuTtrajaLL6MM/JRSn5C8yyB4c86ppX27+HeYeaWk03Lf9LUJr9sqGjO0Jk18TlICmcUstphCA5kOu/ka4E+e0bFlt2svlKXMZv5D8rrGqQGISSLxRbeCNJt9B+zMOc7KM0uAJT+dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eqxRQRqC; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53SACxFH009165;
+	Mon, 28 Apr 2025 12:10:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	RXuJJ+2KCuTh5goOcqcW9zknJ6CINhYX33RHPc2p+80=; b=eqxRQRqCYRQXclXb
+	gPSeQOh2uIYGkn0LezOTv9ZKQTN7EbdFh2NphCT7v1Z7vyxTL1lmNLhkacitFb7a
+	kLV0KwK3fpHtLqT38dkJqMQrFsNI2TjzfWKq/aIwUD7PBU/ZQGIirxb9dHNE85xn
+	+5DSsNGjhnkEjfhLtZR2rE9KqLNuDBhSE/GZrPaqd7Fo4G/qIHJCdkgooNHBMyHS
+	yUfA4WEeINhQpEDsyl/0q2pE+li6VTP3KA1fF31Soqs797j60MpSefETSQOtc/YD
+	0SlsdS/plvR7sphkvpzi0FVCzZW0b4xnQBXBUeBUOR4y0crW1LSe4Vaa+YbRlTmQ
+	VpuFWw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 468muqh976-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Apr 2025 12:10:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 53SCAEpt000745
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 28 Apr 2025 12:10:14 GMT
+Received: from [10.50.5.200] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 28 Apr
+ 2025 05:10:05 -0700
+Message-ID: <7ef2daa2-a6fa-2285-6619-b2f25baabc55@quicinc.com>
+Date: Mon, 28 Apr 2025 17:40:01 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 14/23] media: iris: Fix NULL pointer dereference
+Content-Language: en-US
+To: Dan Carpenter <dan.carpenter@linaro.org>
+CC: Vikash Garodia <quic_vgarodia@quicinc.com>,
+        Abhinav Kumar
+	<quic_abhinavk@quicinc.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Stefan Schmidt <stefan.schmidt@linaro.org>,
+        Hans Verkuil
+	<hverkuil@xs4all.nl>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio
+	<konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Bryan O'Donoghue
+	<bryan.odonoghue@linaro.org>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@oss.qualcomm.com>,
+        Neil Armstrong
+	<neil.armstrong@linaro.org>,
+        Nicolas Dufresne
+	<nicolas.dufresne@collabora.com>,
+        <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org>,
+        <20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com>,
+        <stable@vger.kernel.org>
+References: <20250428-qcom-iris-hevc-vp9-v2-0-3a6013ecb8a5@quicinc.com>
+ <20250428-qcom-iris-hevc-vp9-v2-14-3a6013ecb8a5@quicinc.com>
+ <7f37ec27-0221-4bb2-91f9-182244014b5a@stanley.mountain>
+From: Dikshita Agarwal <quic_dikshita@quicinc.com>
+In-Reply-To: <7f37ec27-0221-4bb2-91f9-182244014b5a@stanley.mountain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI4MDEwMCBTYWx0ZWRfX9qTkxysjzOdX vbYKg9wW/B3oUy+7fBGpN0NI67mY9XNaBkA53O+OkCTFiS7cEaUQQEhG+634TbuBODeq1xsAqHI bWf65H2cgRFx3CCKZ2L7bNZKn8VKoBnr4R1AGBCEZy9tjpHw0rg5puu3swVed8WZg6nTe7GPFFU
+ qw9UjyPmuk52YEVxZJJXP8qoWn6w7/sTyVZLD+qbFo5kK+Q5CzUOOMxUsNzo5i0CKHLgefOov9R f20r2DpOVyttJXiuLzjQ7//KAYeXkgRVo7uiciLxqxQDWQhlSSKg6QO9G6EScWcsV+GboD4SUCy fkj3Vm1OfkNlLomgTCrwTm01CwqSIt0lDLhSRrIhzt3g4ehZPw2b5IdDyHwMTZWx0+iJydOBRqU
+ 16P80vqRh263y0R+QsS/+iJ9xW3EPAgnJjojTBg/heNWpv/mWt2dJfuHMbHz/YVknReDrXDJ
+X-Proofpoint-GUID: uqIE7-Tc042rMp5myf4w9S68coRbWEF_
+X-Proofpoint-ORIG-GUID: uqIE7-Tc042rMp5myf4w9S68coRbWEF_
+X-Authority-Analysis: v=2.4 cv=M/5NKzws c=1 sm=1 tr=0 ts=680f7027 cx=c_pps a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17 a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=COk6AnOGAAAA:8
+ a=VLf8UrQIVRTUJMQaSbwA:9 a=QEXdDO2ut3YA:10 a=cvBusfyB2V15izCimMoJ:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-28_04,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 malwarescore=0 mlxlogscore=999
+ adultscore=0 bulkscore=0 phishscore=0 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504280100
 
 
-The patch below does not apply to the 6.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On 4/28/2025 3:10 PM, Dan Carpenter wrote:
+> On Mon, Apr 28, 2025 at 02:59:02PM +0530, Dikshita Agarwal wrote:
+>> A warning reported by smatch indicated a possible null pointer
+>> dereference where one of the arguments to API
+>> "iris_hfi_gen2_handle_system_error" could sometimes be null.
+>>
+>> To fix this, add a check to validate that the argument passed is not
+>> null before accessing its members.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: fb583a214337 ("media: iris: introduce host firmware interface with necessary hooks")
+>> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+>> Closes: https://lore.kernel.org/linux-media/634cc9b8-f099-4b54-8556-d879fb2b5169@stanley.mountain/
+>> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+>> ---
+>>  drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
+>> index 1ed798d31a3f..cba71b5db943 100644
+>> --- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
+>> +++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
+>> @@ -267,7 +267,8 @@ static int iris_hfi_gen2_handle_system_error(struct iris_core *core,
+>>  {
+>>  	struct iris_inst *instance;
+>>  
+>> -	dev_err(core->dev, "received system error of type %#x\n", pkt->type);
+>> +	if (pkt)
+>> +		dev_err(core->dev, "received system error of type %#x\n", pkt->type);
+> 
+> I feel like it would be better to do:
+> 
+> 	dev_err(core->dev, "received system error of type %#x\n", pkt ? pkt->type: -1);
+we don't need to print anything if pkt is NULL.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 866bafae59ecffcf1840d846cd79740be29f21d6
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042836-balance-molehill-5c30@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 866bafae59ecffcf1840d846cd79740be29f21d6 Mon Sep 17 00:00:00 2001
-From: Naohiro Aota <naohiro.aota@wdc.com>
-Date: Wed, 19 Mar 2025 10:49:17 +0900
-Subject: [PATCH] btrfs: zoned: skip reporting zone for new block group
-
-There is a potential deadlock if we do report zones in an IO context, detailed
-in below lockdep report. When one process do a report zones and another process
-freezes the block device, the report zones side cannot allocate a tag because
-the freeze is already started. This can thus result in new block group creation
-to hang forever, blocking the write path.
-
-Thankfully, a new block group should be created on empty zones. So, reporting
-the zones is not necessary and we can set the write pointer = 0 and load the
-zone capacity from the block layer using bdev_zone_capacity() helper.
-
- ======================================================
- WARNING: possible circular locking dependency detected
- 6.14.0-rc1 #252 Not tainted
- ------------------------------------------------------
- modprobe/1110 is trying to acquire lock:
- ffff888100ac83e0 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: __flush_work+0x38f/0xb60
-
- but task is already holding lock:
- ffff8881205b6f20 (&q->q_usage_counter(queue)#16){++++}-{0:0}, at: sd_remove+0x85/0x130
-
- which lock already depends on the new lock.
-
- the existing dependency chain (in reverse order) is:
-
- -> #3 (&q->q_usage_counter(queue)#16){++++}-{0:0}:
-        blk_queue_enter+0x3d9/0x500
-        blk_mq_alloc_request+0x47d/0x8e0
-        scsi_execute_cmd+0x14f/0xb80
-        sd_zbc_do_report_zones+0x1c1/0x470
-        sd_zbc_report_zones+0x362/0xd60
-        blkdev_report_zones+0x1b1/0x2e0
-        btrfs_get_dev_zones+0x215/0x7e0 [btrfs]
-        btrfs_load_block_group_zone_info+0x6d2/0x2c10 [btrfs]
-        btrfs_make_block_group+0x36b/0x870 [btrfs]
-        btrfs_create_chunk+0x147d/0x2320 [btrfs]
-        btrfs_chunk_alloc+0x2ce/0xcf0 [btrfs]
-        start_transaction+0xce6/0x1620 [btrfs]
-        btrfs_uuid_scan_kthread+0x4ee/0x5b0 [btrfs]
-        kthread+0x39d/0x750
-        ret_from_fork+0x30/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #2 (&fs_info->dev_replace.rwsem){++++}-{4:4}:
-        down_read+0x9b/0x470
-        btrfs_map_block+0x2ce/0x2ce0 [btrfs]
-        btrfs_submit_chunk+0x2d4/0x16c0 [btrfs]
-        btrfs_submit_bbio+0x16/0x30 [btrfs]
-        btree_write_cache_pages+0xb5a/0xf90 [btrfs]
-        do_writepages+0x17f/0x7b0
-        __writeback_single_inode+0x114/0xb00
-        writeback_sb_inodes+0x52b/0xe00
-        wb_writeback+0x1a7/0x800
-        wb_workfn+0x12a/0xbd0
-        process_one_work+0x85a/0x1460
-        worker_thread+0x5e2/0xfc0
-        kthread+0x39d/0x750
-        ret_from_fork+0x30/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #1 (&fs_info->zoned_meta_io_lock){+.+.}-{4:4}:
-        __mutex_lock+0x1aa/0x1360
-        btree_write_cache_pages+0x252/0xf90 [btrfs]
-        do_writepages+0x17f/0x7b0
-        __writeback_single_inode+0x114/0xb00
-        writeback_sb_inodes+0x52b/0xe00
-        wb_writeback+0x1a7/0x800
-        wb_workfn+0x12a/0xbd0
-        process_one_work+0x85a/0x1460
-        worker_thread+0x5e2/0xfc0
-        kthread+0x39d/0x750
-        ret_from_fork+0x30/0x70
-        ret_from_fork_asm+0x1a/0x30
-
- -> #0 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}:
-        __lock_acquire+0x2f52/0x5ea0
-        lock_acquire+0x1b1/0x540
-        __flush_work+0x3ac/0xb60
-        wb_shutdown+0x15b/0x1f0
-        bdi_unregister+0x172/0x5b0
-        del_gendisk+0x841/0xa20
-        sd_remove+0x85/0x130
-        device_release_driver_internal+0x368/0x520
-        bus_remove_device+0x1f1/0x3f0
-        device_del+0x3bd/0x9c0
-        __scsi_remove_device+0x272/0x340
-        scsi_forget_host+0xf7/0x170
-        scsi_remove_host+0xd2/0x2a0
-        sdebug_driver_remove+0x52/0x2f0 [scsi_debug]
-        device_release_driver_internal+0x368/0x520
-        bus_remove_device+0x1f1/0x3f0
-        device_del+0x3bd/0x9c0
-        device_unregister+0x13/0xa0
-        sdebug_do_remove_host+0x1fb/0x290 [scsi_debug]
-        scsi_debug_exit+0x17/0x70 [scsi_debug]
-        __do_sys_delete_module.isra.0+0x321/0x520
-        do_syscall_64+0x93/0x180
-        entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
- other info that might help us debug this:
-
- Chain exists of:
-   (work_completion)(&(&wb->dwork)->work) --> &fs_info->dev_replace.rwsem --> &q->q_usage_counter(queue)#16
-
-  Possible unsafe locking scenario:
-
-        CPU0                    CPU1
-        ----                    ----
-   lock(&q->q_usage_counter(queue)#16);
-                                lock(&fs_info->dev_replace.rwsem);
-                                lock(&q->q_usage_counter(queue)#16);
-   lock((work_completion)(&(&wb->dwork)->work));
-
-  *** DEADLOCK ***
-
- 5 locks held by modprobe/1110:
-  #0: ffff88811f7bc108 (&dev->mutex){....}-{4:4}, at: device_release_driver_internal+0x8f/0x520
-  #1: ffff8881022ee0e0 (&shost->scan_mutex){+.+.}-{4:4}, at: scsi_remove_host+0x20/0x2a0
-  #2: ffff88811b4c4378 (&dev->mutex){....}-{4:4}, at: device_release_driver_internal+0x8f/0x520
-  #3: ffff8881205b6f20 (&q->q_usage_counter(queue)#16){++++}-{0:0}, at: sd_remove+0x85/0x130
-  #4: ffffffffa3284360 (rcu_read_lock){....}-{1:3}, at: __flush_work+0xda/0xb60
-
- stack backtrace:
- CPU: 0 UID: 0 PID: 1110 Comm: modprobe Not tainted 6.14.0-rc1 #252
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x6a/0x90
-  print_circular_bug.cold+0x1e0/0x274
-  check_noncircular+0x306/0x3f0
-  ? __pfx_check_noncircular+0x10/0x10
-  ? mark_lock+0xf5/0x1650
-  ? __pfx_check_irq_usage+0x10/0x10
-  ? lockdep_lock+0xca/0x1c0
-  ? __pfx_lockdep_lock+0x10/0x10
-  __lock_acquire+0x2f52/0x5ea0
-  ? __pfx___lock_acquire+0x10/0x10
-  ? __pfx_mark_lock+0x10/0x10
-  lock_acquire+0x1b1/0x540
-  ? __flush_work+0x38f/0xb60
-  ? __pfx_lock_acquire+0x10/0x10
-  ? __pfx_lock_release+0x10/0x10
-  ? mark_held_locks+0x94/0xe0
-  ? __flush_work+0x38f/0xb60
-  __flush_work+0x3ac/0xb60
-  ? __flush_work+0x38f/0xb60
-  ? __pfx_mark_lock+0x10/0x10
-  ? __pfx___flush_work+0x10/0x10
-  ? __pfx_wq_barrier_func+0x10/0x10
-  ? __pfx___might_resched+0x10/0x10
-  ? mark_held_locks+0x94/0xe0
-  wb_shutdown+0x15b/0x1f0
-  bdi_unregister+0x172/0x5b0
-  ? __pfx_bdi_unregister+0x10/0x10
-  ? up_write+0x1ba/0x510
-  del_gendisk+0x841/0xa20
-  ? __pfx_del_gendisk+0x10/0x10
-  ? _raw_spin_unlock_irqrestore+0x35/0x60
-  ? __pm_runtime_resume+0x79/0x110
-  sd_remove+0x85/0x130
-  device_release_driver_internal+0x368/0x520
-  ? kobject_put+0x5d/0x4a0
-  bus_remove_device+0x1f1/0x3f0
-  device_del+0x3bd/0x9c0
-  ? __pfx_device_del+0x10/0x10
-  __scsi_remove_device+0x272/0x340
-  scsi_forget_host+0xf7/0x170
-  scsi_remove_host+0xd2/0x2a0
-  sdebug_driver_remove+0x52/0x2f0 [scsi_debug]
-  ? kernfs_remove_by_name_ns+0xc0/0xf0
-  device_release_driver_internal+0x368/0x520
-  ? kobject_put+0x5d/0x4a0
-  bus_remove_device+0x1f1/0x3f0
-  device_del+0x3bd/0x9c0
-  ? __pfx_device_del+0x10/0x10
-  ? __pfx___mutex_unlock_slowpath+0x10/0x10
-  device_unregister+0x13/0xa0
-  sdebug_do_remove_host+0x1fb/0x290 [scsi_debug]
-  scsi_debug_exit+0x17/0x70 [scsi_debug]
-  __do_sys_delete_module.isra.0+0x321/0x520
-  ? __pfx___do_sys_delete_module.isra.0+0x10/0x10
-  ? __pfx_slab_free_after_rcu_debug+0x10/0x10
-  ? kasan_save_stack+0x2c/0x50
-  ? kasan_record_aux_stack+0xa3/0xb0
-  ? __call_rcu_common.constprop.0+0xc4/0xfb0
-  ? kmem_cache_free+0x3a0/0x590
-  ? __x64_sys_close+0x78/0xd0
-  do_syscall_64+0x93/0x180
-  ? lock_is_held_type+0xd5/0x130
-  ? __call_rcu_common.constprop.0+0x3c0/0xfb0
-  ? lockdep_hardirqs_on+0x78/0x100
-  ? __call_rcu_common.constprop.0+0x3c0/0xfb0
-  ? __pfx___call_rcu_common.constprop.0+0x10/0x10
-  ? kmem_cache_free+0x3a0/0x590
-  ? lockdep_hardirqs_on_prepare+0x16d/0x400
-  ? do_syscall_64+0x9f/0x180
-  ? lockdep_hardirqs_on+0x78/0x100
-  ? do_syscall_64+0x9f/0x180
-  ? __pfx___x64_sys_openat+0x10/0x10
-  ? lockdep_hardirqs_on_prepare+0x16d/0x400
-  ? do_syscall_64+0x9f/0x180
-  ? lockdep_hardirqs_on+0x78/0x100
-  ? do_syscall_64+0x9f/0x180
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
- RIP: 0033:0x7f436712b68b
- RSP: 002b:00007ffe9f1a8658 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
- RAX: ffffffffffffffda RBX: 00005559b367fd80 RCX: 00007f436712b68b
- RDX: 0000000000000000 RSI: 0000000000000800 RDI: 00005559b367fde8
- RBP: 00007ffe9f1a8680 R08: 1999999999999999 R09: 0000000000000000
- R10: 00007f43671a5fe0 R11: 0000000000000206 R12: 0000000000000000
- R13: 00007ffe9f1a86b0 R14: 0000000000000000 R15: 0000000000000000
-  </TASK>
-
-Reported-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-CC: <stable@vger.kernel.org> # 6.13+
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 7c502192cd6b..4a3e02b49f29 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1277,7 +1277,7 @@ struct zone_info {
- 
- static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
- 				struct zone_info *info, unsigned long *active,
--				struct btrfs_chunk_map *map)
-+				struct btrfs_chunk_map *map, bool new)
- {
- 	struct btrfs_dev_replace *dev_replace = &fs_info->dev_replace;
- 	struct btrfs_device *device;
-@@ -1307,6 +1307,8 @@ static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
- 		return 0;
- 	}
- 
-+	ASSERT(!new || btrfs_dev_is_empty_zone(device, info->physical));
-+
- 	/* This zone will be used for allocation, so mark this zone non-empty. */
- 	btrfs_dev_clear_zone_empty(device, info->physical);
- 
-@@ -1319,6 +1321,18 @@ static int btrfs_load_zone_info(struct btrfs_fs_info *fs_info, int zone_idx,
- 	 * to determine the allocation offset within the zone.
- 	 */
- 	WARN_ON(!IS_ALIGNED(info->physical, fs_info->zone_size));
-+
-+	if (new) {
-+		sector_t capacity;
-+
-+		capacity = bdev_zone_capacity(device->bdev, info->physical >> SECTOR_SHIFT);
-+		up_read(&dev_replace->rwsem);
-+		info->alloc_offset = 0;
-+		info->capacity = capacity << SECTOR_SHIFT;
-+
-+		return 0;
-+	}
-+
- 	nofs_flag = memalloc_nofs_save();
- 	ret = btrfs_get_dev_zone(device, info->physical, &zone);
- 	memalloc_nofs_restore(nofs_flag);
-@@ -1588,7 +1602,7 @@ int btrfs_load_block_group_zone_info(struct btrfs_block_group *cache, bool new)
- 	}
- 
- 	for (i = 0; i < map->num_stripes; i++) {
--		ret = btrfs_load_zone_info(fs_info, i, &zone_info[i], active, map);
-+		ret = btrfs_load_zone_info(fs_info, i, &zone_info[i], active, map, new);
- 		if (ret)
- 			goto out;
- 
-
+Thanks,
+Dikshita
+> 
+> regards,
+> dan carpenter
+> 
 
