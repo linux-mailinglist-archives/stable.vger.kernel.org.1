@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-136904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFC3A9F4EE
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77988A9F4F6
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:53:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9965189957B
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:51:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7FDD189EDBC
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FB925E80A;
-	Mon, 28 Apr 2025 15:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFD426B2D2;
+	Mon, 28 Apr 2025 15:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BFIUOir0"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AjI8LMxA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536661FDE3D;
-	Mon, 28 Apr 2025 15:50:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE48078F54;
+	Mon, 28 Apr 2025 15:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745855458; cv=none; b=RKKWaMW/uqu0R6Os9ogatc/72f9lOV3ph4x9qptvaE8db3H4DRte7ILSdXm50AlDmJSZHeSjW1Pig7X11H40UxvclYDIFSt3UAXrobBjyXsZegjWpdalss/5huESsfUNc1WdWhEt+9OkBe917mCd/x82LdbDWqsQTQhJIToyBo8=
+	t=1745855631; cv=none; b=lf1Fj2YhTZ6dGInvDEWi3JL3B1ZvU0jVwToRVvVZ446/xOaj3avfL/xWb72vxGNyw119MouQZD7xsWpq/d7We/lB9nZflfZ6/hUXk4F6LEEcFhSPQSiuqEr6kqQKXOHSwfbqR5Lpp1IX6ZjaorYHEdisWQ/+pdod2fP309tqoSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745855458; c=relaxed/simple;
-	bh=HPzTibUimbKCKSaMHfkVi7iFxMCrYt8zearjdhZcOGY=;
+	s=arc-20240116; t=1745855631; c=relaxed/simple;
+	bh=B2y1+QxYf7rk0CFLRxjX2EEpZWEepC5pVNNibzK5yyE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sXg88ydf53/nASCYGYKdKrurgDJyg022gyxknsLERwiSN1XDJv/d7hxfWoudlm53AUtJwEcRBq01w8+rSUe0qTUJ6RyVuvznFnO6mk+9yc9VxB4AGHBeX4ZQ9sO6LBHHDXrotKMW4NS92bvCXnnbEW6CqEw4CF4W3Ujwrkkbvww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BFIUOir0; arc=none smtp.client-ip=198.175.65.13
+	 In-Reply-To:Content-Type; b=LkyANk4gqDyWksS98BUVqILfPY3EGEwQZxCeaBDiqi48yyx51zXi3BlwfM3Fx1qmBI0EkdDox6WE4NnzWxkxs3c/LBEsiuG+M+1qFlVJdGi3SN9Zpeygrlo0Prn2yu6piomiQuTyjCObDal/yA/aH7hnAvSTVbXNiCAoQ9/zrSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AjI8LMxA; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1745855457; x=1777391457;
+  t=1745855630; x=1777391630;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=HPzTibUimbKCKSaMHfkVi7iFxMCrYt8zearjdhZcOGY=;
-  b=BFIUOir0bI0rpNRT3TucLKHA7x8vFjNrOxSAKgeqRHdZPmYdHw2XLRqW
-   nLAZHoTsCbBeVVerlhqFMo2t5M0UkvAbyFqYPRU1xt7Kwh0YYD2JFVhE5
-   z2INaqlh6Vqfy9nyEpahCjDXZztD2QaM0hriGLKO7ZpU2YEdRmC7PBXxW
-   lMvnzpcRciKSMZOyvec/+RtCjhoA4rrsA9yvsKz47Q4/gHNxkpF0rl1sr
-   k+/j4Y1ev5E+V1zWTHE1zp/RyQOno9uhHkln8cvdFL/EXLBqj+tQ0f0WB
-   qzA8bvLFK2kS38lNFXdqwA3S0DU+mOxeR9MqY6sFH6nGAO09QT8liBsNr
-   A==;
-X-CSE-ConnectionGUID: WM1VOATCS9CqQjY6TMRqxA==
-X-CSE-MsgGUID: NP8Jf1w9TdGk5DkpfvExZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="58442024"
+  bh=B2y1+QxYf7rk0CFLRxjX2EEpZWEepC5pVNNibzK5yyE=;
+  b=AjI8LMxARwyXfNcKrv7ZntyhZ7lhdaBMlD0lQlXTjoKqv/4uHap2OjOt
+   cyYK5sltRGeeL1tUn8uFSfUB7MFGseCDjRI31EwGKJULG/zKrMbQsTfHx
+   gN5CjhUao7HgQAbS3Wn9CWD+M2jG0MrwPykcLoOnGhjfgkgOemOwAJgYs
+   W6i9vCL9kot+cWMX0flLXZw/wQQ5+6K3zUEn+P3BOMGV27ruJR7IHJM/u
+   tsJhVWtOOeNBelZ4t/PISdc0XuF4/N5K0NA6XctyMGItSeBA0KaBDNCmP
+   /XbDQO+vcJDHr/cexTeFyVqNiztKW9+lzCAxcYtzffcFw3kVdXzGUPZmX
+   w==;
+X-CSE-ConnectionGUID: iZ0Hi9bPRrSU93WsOUl4wQ==
+X-CSE-MsgGUID: wQAFxSOCTsyOTyG2NPFyrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="51123249"
 X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="58442024"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:50:54 -0700
-X-CSE-ConnectionGUID: qR6VQAIKRr6xAaclZE+sOA==
-X-CSE-MsgGUID: nGZrgAQdQcWHh4jMryuyZQ==
+   d="scan'208";a="51123249"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:53:50 -0700
+X-CSE-ConnectionGUID: nHgEBM0pRMuANucrr0hEBw==
+X-CSE-MsgGUID: qOSliL3yQ8a6JcL8sVp4YQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
-   d="scan'208";a="170779782"
+   d="scan'208";a="156788783"
 Received: from mdroper-mobl2.amr.corp.intel.com (HELO [10.124.222.199]) ([10.124.222.199])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:50:53 -0700
-Message-ID: <63bb3383-de43-4638-b229-28c33c1582be@intel.com>
-Date: Mon, 28 Apr 2025 08:50:50 -0700
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 08:53:49 -0700
+Message-ID: <9a4b347f-9a18-4578-9031-0d1bc98e668d@intel.com>
+Date: Mon, 28 Apr 2025 08:53:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,16 +67,17 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] Restrict devmem for confidential VMs
+Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
+ guests
 To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: Kirill Shutemov <kirill.shutemov@linux.intel.com>,
- Vishal Annapurve <vannapurve@google.com>, Kees Cook <kees@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org,
- Nikolay Borisov <nik.borisov@suse.com>, Naveen N Rao <naveen@kernel.org>,
- Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
- linux-coco@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
+Cc: x86@kernel.org, Kees Cook <kees@kernel.org>,
+ Ingo Molnar <mingo@kernel.org>, Naveen N Rao <naveen@kernel.org>,
+ Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+ <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -122,28 +123,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <174491711228.1395340.3647010925173796093.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/17/25 12:11, Dan Williams wrote:
->  arch/x86/Kconfig          |    4 ++++
->  arch/x86/mm/pat/memtype.c |   31 ++++---------------------------
->  drivers/char/mem.c        |   27 +++++++++------------------
->  include/linux/io.h        |   21 +++++++++++++++++++++
->  4 files changed, 38 insertions(+), 45 deletions(-)
+On 4/18/25 13:04, Dan Williams wrote:
+> Nikolay reports [1] that accessing BIOS data (first 1MB of the physical
+> address space) via /dev/mem results in an SEPT violation.
 
-This looks like a good idea on multiple levels. We can take it through
-tip, but one things that makes me nervous is that neither of the "CHAR
-and MISC DRIVERS" supporters are even on cc.
+Would most developers reading this know what an "SEPT violation" is or
+what its implications are?
 
-> Arnd Bergmann <arnd@arndb.de> (supporter:CHAR and MISC DRIVERS)
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> (supporter:CHAR and MISC DRIVERS)
-
-I guess arm and powerpc have cc_platform_has() so it's not _completely_
-x86 only, either. Acks from those folks would also be appreciated since
-it's going to affect them most immediately.
-
-Also, just to confirm, patch 2 can go to stable@ without _any_
-dependency on patch 1, right?
+This results in an immediate exit from and termination of the TDX guest,
+right?
 
