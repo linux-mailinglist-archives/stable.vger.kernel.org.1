@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-136796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E52A9E536
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 02:00:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CF1A9E539
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 02:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A29797AB802
-	for <lists+stable@lfdr.de>; Sun, 27 Apr 2025 23:59:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3B53A69F0
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 00:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764CE1D6AA;
-	Mon, 28 Apr 2025 00:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE3028691;
+	Mon, 28 Apr 2025 00:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="toQxu9oO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fNIe+crx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305488F77;
-	Mon, 28 Apr 2025 00:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AF6747F;
+	Mon, 28 Apr 2025 00:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745798423; cv=none; b=nYP3TzMLX5y8lNdQBLN3vIvJ7B/pnq9mG/yeIzRm19b3roOGivsK5D71nPDy46GEo5Y68zF2v9N4V5Z+NUR6em7E5wxFhWpP2mddxclAGN+hYB46gE+zDvR2jaS1RQMYB8Kk08Av9Bpe7zSOkQW4SrCHJXlLBsQwkZPoKGGCSTI=
+	t=1745798456; cv=none; b=PBAvgLz6FOuur6ZZe6Umdv0G4maHD9kg2TUG97MEUeloTaoWnME+4xaCrwQhCMUKyFL2p4JjWiPAsxncXtnI6Y+tqTtFb0eZ42sJFC30WxzwLffyhocUUvOhtwdmcpbffdVcJkB9M3p4NcgflVzsPmUAGJdkZgvCtuR8lpTt95g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745798423; c=relaxed/simple;
-	bh=IU7HSUz+UthbAhhEiD8ZYvTSvQYphVH7wCBb1yhsLQ0=;
+	s=arc-20240116; t=1745798456; c=relaxed/simple;
+	bh=W5vRtCF/3ch2I435tyzUXFE8e9gPD0WPo89DsXN3yFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jRD26qhcOPjFpXGzKQ7f5PXLpHKB+tyDQ1cmrIz9uW/V7OsK8cRQJNwBEpiGSrBJvs51bqBpjJfCr7QjWqbSIJqG74f83qj0Wtwj7M/Cuk6SWc3MtKvCrUPsWGN2xXBSGA7fdXFBBxtpp9H/oowQo5FL13e09QtO/jcPVYZj6T4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=toQxu9oO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC53C4CEE3;
-	Mon, 28 Apr 2025 00:00:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aIl/d7fT7TBul/X4IDYKDQtWuB7J2ras3NfixkI884OGQJ7BEq8CGMfOmrUsHA/W7pS/TVbqhG+l40IrvmcC7XLOGhS2d8KVeUFofI5cc3wYIylGEo7Vce0Haom/zOgN0zMMu4dAr6n4nGShwt2goDJPuvFou8xr1wWimvSQfgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fNIe+crx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27541C4CEE3;
+	Mon, 28 Apr 2025 00:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745798422;
-	bh=IU7HSUz+UthbAhhEiD8ZYvTSvQYphVH7wCBb1yhsLQ0=;
+	s=k20201202; t=1745798455;
+	bh=W5vRtCF/3ch2I435tyzUXFE8e9gPD0WPo89DsXN3yFk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=toQxu9oOpoZ2jxuhyxYqhFAv/OeiU6bydfBfy5nkt93/5a/lXDWuLb0ZavnBmXNhh
-	 jgFLlKoazsLK/L1H68iK8iuXOfVeMI2S3tMLp73haqwPfxYWxT4gLYLvCeQF9CmXwA
-	 Qt4jUOxqZIhG8gM4DJZ8jmxnvgvNo5hRslkrmhBoEv6fp/2jWdukpaQxncgqkaxkl6
-	 vT2bYqcMqM2ChPCPQuNYypyNYcejXTtiNMmlgTMy96cmCuiO3ZhAUi/sl2J/kj1AIs
-	 YIEDDMWelNMWfu/gXWSz07QTBBfWGRfZN/ArNH3XjenU3n+DvMQkSm+B1wSkcEkKa9
-	 5etLPvEUCiWTQ==
-Date: Sun, 27 Apr 2025 20:00:21 -0400
+	b=fNIe+crxuzWWQRBF09HOLl0icswmAE5ZEhB1btylcw3BdeE0++Wn6ufkvXhoPdvtC
+	 rsZuelEPoRGVas5xWrkiOY92X3+In1cuEQYEiSaA9Ijfc8QYN6gJJ2VT1saTaTSPJF
+	 XpJMeO0FqTTs7K9QBVygu/cSbE4EoXn3kWS3wLxeD5xAMqoBrDVJRP4SiXyJEEUbZP
+	 ER9CFd4/S9bPByfXXwsyTeySFfDN5gxF3fvAcvq1Wnijpq7kAjujMu/lEc1wPnSKDf
+	 n/mIT+CFvlO0z4WvORTyHw2bLE2iqIILGi4yiqzMmqKsB+3WPh37669kw4KvELhCvB
+	 xDtwN7hFdA0Nw==
+Date: Sun, 27 Apr 2025 20:00:53 -0400
 From: Sasha Levin <sashal@kernel.org>
-To: Tiwei Bie <tiwei.btw@antgroup.com>
+To: Johan Hovold <johan@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>, richard@nod.at,
-	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
-	benjamin.berg@intel.com, linux-um@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.13 23/28] um: Rewrite the sigio workaround
- based on epoll and tgkill
-Message-ID: <aA7FFcn6gjIC8jCe@lappy>
-References: <20250407181224.3180941-1-sashal@kernel.org>
- <20250407181224.3180941-23-sashal@kernel.org>
- <621e867f-5427-4062-8783-e474e3dcdb3f@antgroup.com>
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+	Vinod Koul <vkoul@kernel.org>, kishon@kernel.org, lumag@kernel.org,
+	abel.vesa@linaro.org, neil.armstrong@linaro.org,
+	quic_qianyu@quicinc.com, quic_ziyuzhan@quicinc.com,
+	quic_devipriy@quicinc.com, quic_krichai@quicinc.com,
+	manivannan.sadhasivam@linaro.org, johan+linaro@kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.14 08/31] phy: qcom: qmp-pcie: Add X1P42100
+ Gen4x4 PHY
+Message-ID: <aA7FNcDNbb1H4Jis@lappy>
+References: <20250407181054.3177479-1-sashal@kernel.org>
+ <20250407181054.3177479-8-sashal@kernel.org>
+ <Z_dt0F-XzGIJWhnz@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,40 +68,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <621e867f-5427-4062-8783-e474e3dcdb3f@antgroup.com>
+In-Reply-To: <Z_dt0F-XzGIJWhnz@hovoldconsulting.com>
 
-On Tue, Apr 08, 2025 at 12:38:12PM +0800, Tiwei Bie wrote:
->On 2025/4/8 02:12, Sasha Levin wrote:
->> From: Tiwei Bie <tiwei.btw@antgroup.com>
+On Thu, Apr 10, 2025 at 09:05:52AM +0200, Johan Hovold wrote:
+>On Mon, Apr 07, 2025 at 02:10:24PM -0400, Sasha Levin wrote:
+>> From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 >>
->> [ Upstream commit 33c9da5dfb18c2ff5a88d01aca2cf253cd0ac3bc ]
+>> [ Upstream commit 0d8db251dd15d2e284f5a6a53bc2b869f3eca711 ]
 >>
->> The existing sigio workaround implementation removes FDs from the
->> poll when events are triggered, requiring users to re-add them via
->> add_sigio_fd() after processing. This introduces a potential race
->> condition between FD removal in write_sigio_thread() and next_poll
->> update in __add_sigio_fd(), and is inefficient due to frequent FD
->> removal and re-addition. Rewrite the implementation based on epoll
->> and tgkill for improved efficiency and reliability.
+>> Add a new, common configuration for Gen4x4 V6 PHYs without an init
+>> sequence.
 >>
->> Signed-off-by: Tiwei Bie <tiwei.btw@antgroup.com>
->> Link: https://patch.msgid.link/20250315161910.4082396-2-tiwei.btw@antgroup.com
->> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+>> The bootloader configures the hardware once and the OS retains that
+>> configuration by using the NOCSR reset line (which doesn't drop
+>> register state on assert) in place of the "full reset" one.
+>>
+>> Use this new configuration for X1P42100's Gen4x4 PHY.
+>>
+>> Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+>> Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+>> Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+>> Link: https://lore.kernel.org/r/20250203-topic-x1p4_dts-v2-3-72cd4cdc767b@oss.qualcomm.com
+>> Signed-off-by: Vinod Koul <vkoul@kernel.org>
 >> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  arch/um/drivers/random.c       |   2 +-
->>  arch/um/drivers/rtc_user.c     |   2 +-
->>  arch/um/include/shared/os.h    |   2 +-
->>  arch/um/include/shared/sigio.h |   1 -
->>  arch/um/kernel/sigio.c         |  26 ---
->>  arch/um/os-Linux/sigio.c       | 330 +++++----------------------------
->>  6 files changed, 47 insertions(+), 316 deletions(-)
 >
->Please drop this patch. Thanks! Details can be found here:
+>Support for this SoC is not even in mainline yet so there is really no
+>need to backport this one.
 >
->https://lore.kernel.org/linux-um/ffa0b6af-523d-4e3e-9952-92f5b04b82b3@antgroup.com/
+>Please drop from all stable queues.
 
-Dropped, thanks.
+Will do, thanks!
 
 -- 
 Thanks,
