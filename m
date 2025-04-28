@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-136902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649B0A9F4BC
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:41:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F21A1A9F4BB
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0DF93B804E
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:41:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9450C178FE2
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 15:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8619C26A0F8;
-	Mon, 28 Apr 2025 15:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060A427A11A;
+	Mon, 28 Apr 2025 15:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="d8C8pdi3"
+	dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b="GD3zPOXU"
 X-Original-To: stable@vger.kernel.org
 Received: from ksmg02.maxima.ru (ksmg02.mt-integration.ru [81.200.124.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FD425DAFE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F7525D8F7;
 	Mon, 28 Apr 2025 15:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745854890; cv=none; b=YROt4wB0K2PfaoTvv7VWvnxFSzVSMxMZCiQBeCnzIxsaC6Se806qQF/ANau3JGv0vljn9FMjXSQl8wHx6t5aXcJwd6mhZBwxuG7CxeWDU0eGOn38p+jfgMH3KHji2SEnt7nkK1wNaT0nD86Q+soaoO/HTnfP9CxXDPzZXFFZFc8=
+	t=1745854891; cv=none; b=ez0JNkGF7p6a/n8SnOy8z+LBg5rmTiIiFyRYxNzmE/o0TUYgq7pf0v4zyXj0DHu1G03dO2MjT8wkHzYYgaKLy/SQqYxB7Ml2pG/1ZbDYDIZvz0VQeXHlRoGMNKtcKHIRA3cH/55BkYRNP3Rm+WG3WwHOY8QyA1l7CBEaBpa7cEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745854890; c=relaxed/simple;
-	bh=i8VCXy5LAQ/b9qJfkNbLBLXFN7g+rtSKoij3L20XNI4=;
+	s=arc-20240116; t=1745854891; c=relaxed/simple;
+	bh=MmonudeGDz60/8aF+AqdCoHsM+H7XLBAynEvf1Xu4ZE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b1Pn30/a9VYdO492x7sFyx+KLlTdVMtUdCVfw+hxns8UnSovjiRyzq1BSdQoYBQeMxxF7RHDi8ON9Klxkzoc29XTi7cJMKCP5VLPNHNOqlVqrQTaXUWSXU1x0dQpv0G5U4wkSOC6ItLtuDFgH0dE+EzQcS7anQurWLaXfDnNFFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=d8C8pdi3; arc=none smtp.client-ip=81.200.124.39
+	 MIME-Version:Content-Type; b=VwovR3ibwuqnHYYR6r8oqVHg/Ob1Qt/h683+WuOeGosvNIkeWsm/n70msJJbipiEO+tcbirbaW3/lezFRzqNKZQHdRj8jJoGZDxpL7/2d0/IFmRO3yQVMZ6jfuIv8QHctqOXiFm/BzvQje4NAxEBP9tTPkV9JW5t2GwftzZF+ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru; spf=pass smtp.mailfrom=mt-integration.ru; dkim=pass (2048-bit key) header.d=mt-integration.ru header.i=@mt-integration.ru header.b=GD3zPOXU; arc=none smtp.client-ip=81.200.124.39
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mt-integration.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mt-integration.ru
 Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
-	by ksmg02.maxima.ru (Postfix) with ESMTP id 2715B1E00F2;
+	by ksmg02.maxima.ru (Postfix) with ESMTP id 52AEF1E0129;
 	Mon, 28 Apr 2025 18:34:58 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru 2715B1E00F2
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru 52AEF1E0129
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mt-integration.ru;
-	s=sl; t=1745854498; bh=+n+eGEbFGzc/bT9tVeanhiC6miBZ/CHfMbZh2/TH8kc=;
+	s=sl; t=1745854498; bh=bSsb8CFpXWK3m/gCcsHrngA9NoDgWQTFnJpm4oEfKY0=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=d8C8pdi3s5qCwAc/bOWSrFkZWGLJg1at6kZgMPwBaM+NxnxKTVQ544NQ/hqk6bPRE
-	 lURayV5G1OF74p9VsiEOTxcbXTWamNBEx9YcN/krc/mqBG/Y9++qXtlKQ56ImCszcu
-	 YNoHGA9+7PeErDPjM8RiMi8UmAZsD3IJxi53QfbXknnqPJ4GnI2o4e1Z2vveTh19T6
-	 mOwIJ+xKnHCGz66msha4iaKKf1g1Jy5ldFA9cD0xscUq/hC46ZVyPWyeqydpic/fnS
-	 ogIfh2ZPTeXNu/4ydVblCKWR/PxE1Pdb5iMGfPaF4OwCqPofm9jUyocpw8q/d5OWgJ
-	 WbbX/Lnc8/D6A==
+	b=GD3zPOXUgkRK1H2BPxcjDPBVy21HWE0LU6+Iy20vLHB5NoLASB+oabLP//xhs8YyD
+	 B8U7k5Qwe+K80k9Mi4OjMUvZwGOY/KG+g3hWEZHmy/zfHaqCEBYpqq0kvxDTLCoC/K
+	 eFi8UewREpeEyos74L+SX1Mk/tnPe2uthU7g3D24SxDcz0LNTkhNnn7nloTKmOt/R0
+	 5cXOPCvLf+7j4mGZalaPpOCgQTswe/uKBqJJZx+HBQ3YdIKEFelwTdENahe/kCKzG5
+	 xp8esyQKGeMfyJHbDntQfTpMxJgLMt7RzxV38/p0T1QMDslO7KN02NU8M+60i+iYzT
+	 gg57sLeeHN9Ig==
 Received: from ksmg02.maxima.ru (autodiscover.maxima.ru [81.200.124.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (not verified))
@@ -60,9 +60,9 @@ CC: Helge Deller <deller@gmx.de>, Murad Masimov <m.masimov@mt-integration.ru>,
 	<linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
 	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
 	<stable@vger.kernel.org>
-Subject: [PATCH 1/2] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var
-Date: Mon, 28 Apr 2025 18:34:06 +0300
-Message-ID: <20250428153407.3743416-2-m.masimov@mt-integration.ru>
+Subject: [PATCH 2/2] fbdev: Fix fb_ser_var to prevent null-ptr-deref in fb_videomode_to_var
+Date: Mon, 28 Apr 2025 18:34:07 +0300
+Message-ID: <20250428153407.3743416-3-m.masimov@mt-integration.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20250428153407.3743416-1-m.masimov@mt-integration.ru>
 References: <20250428153407.3743416-1-m.masimov@mt-integration.ru>
@@ -92,8 +92,8 @@ X-KSMG-LinksScanning: NotDetected
 X-KSMG-Message-Action: skipped
 X-KSMG-Rule-ID: 7
 
-If fb_add_videomode() in do_register_framebuffer() fails to allocate
-memory for fb_videomode, it will later lead to a null-ptr dereference in
+If fb_add_videomode() in fb_set_var() fails to allocate memory for
+fb_videomode, later it may lead to a null-ptr dereference in
 fb_videomode_to_var(), as the fb_info is registered while not having the
 mode in modelist that is expected to be there, i.e. the one that is
 described in fb_info->var.
@@ -121,13 +121,11 @@ Call Trace:
  entry_SYSCALL_64_after_hwframe+0x67/0xd1
 ================================================================
 
-Even though fbcon_init() checks beforehand if fb_match_mode() in
-var_to_display() fails, it can not prevent the panic because fbcon_init()
-does not return error code. Considering this and the comment in the code
-about fb_match_mode() returning NULL - "This should not happen" - it is
-better to prevent registering the fb_info if its mode was not set
-successfully. Also move fb_add_videomode() closer to the beginning of
-do_register_framebuffer() to avoid having to do the cleanup on fail.
+The reason is that fb_info->var is being modified in fb_set_var(), and
+then fb_videomode_to_var() is called. If it fails to add the mode to
+fb_info->modelist, fb_set_var() returns error, but does not restore the
+old value of fb_info->var. Restore fb_info->var on fail the same way it
+is done earlier in the function.
 
 Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
@@ -135,60 +133,25 @@ Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
 ---
- drivers/video/fbdev/core/fbmem.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/video/fbdev/core/fbmem.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 3c568cff2913..e1557d80768f 100644
+index e1557d80768f..eca2498f2436 100644
 --- a/drivers/video/fbdev/core/fbmem.c
 +++ b/drivers/video/fbdev/core/fbmem.c
-@@ -388,7 +388,7 @@ static int fb_check_foreignness(struct fb_info *fi)
+@@ -328,8 +328,10 @@ fb_set_var(struct fb_info *info, struct fb_var_screeninfo *var)
+ 	    !list_empty(&info->modelist))
+ 		ret = fb_add_videomode(&mode, &info->modelist);
 
- static int do_register_framebuffer(struct fb_info *fb_info)
- {
--	int i;
-+	int i, err = 0;
- 	struct fb_videomode mode;
+-	if (ret)
++	if (ret) {
++		info->var = old_var;
+ 		return ret;
++	}
 
- 	if (fb_check_foreignness(fb_info))
-@@ -397,10 +397,18 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	if (num_registered_fb == FB_MAX)
- 		return -ENXIO;
-
--	num_registered_fb++;
- 	for (i = 0 ; i < FB_MAX; i++)
- 		if (!registered_fb[i])
- 			break;
-+
-+	if (!fb_info->modelist.prev || !fb_info->modelist.next)
-+		INIT_LIST_HEAD(&fb_info->modelist);
-+
-+	fb_var_to_videomode(&mode, &fb_info->var);
-+	err = fb_add_videomode(&mode, &fb_info->modelist);
-+	if (err < 0)
-+		return err;
-+
- 	fb_info->node = i;
- 	refcount_set(&fb_info->count, 1);
- 	mutex_init(&fb_info->lock);
-@@ -426,16 +434,12 @@ static int do_register_framebuffer(struct fb_info *fb_info)
- 	if (bitmap_empty(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT))
- 		bitmap_fill(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT);
-
--	if (!fb_info->modelist.prev || !fb_info->modelist.next)
--		INIT_LIST_HEAD(&fb_info->modelist);
--
- 	if (fb_info->skip_vt_switch)
- 		pm_vt_switch_required(fb_info->device, false);
- 	else
- 		pm_vt_switch_required(fb_info->device, true);
-
--	fb_var_to_videomode(&mode, &fb_info->var);
--	fb_add_videomode(&mode, &fb_info->modelist);
-+	num_registered_fb++;
- 	registered_fb[i] = fb_info;
-
- #ifdef CONFIG_GUMSTIX_AM200EPD
+ 	event.info = info;
+ 	event.data = &mode;
 --
 2.39.2
 
