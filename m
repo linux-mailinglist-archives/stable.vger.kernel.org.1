@@ -1,146 +1,185 @@
-Return-Path: <stable+bounces-136845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0E2A9ED10
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:47:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AC5A9ED2F
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5D06178A8D
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:46:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCA13AE440
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 09:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EDF25FA2A;
-	Mon, 28 Apr 2025 09:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 706DC38F9C;
+	Mon, 28 Apr 2025 09:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KfL2A6KF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h04g84a7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546D325F986
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 09:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7409E1AC88A;
+	Mon, 28 Apr 2025 09:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745833220; cv=none; b=Xu+bpX8tskgPFGfOszkjnzrWd3RR5e6FC4qIEyXArFZVXEw2maS2lW7dvmFv+nBQCgyHveMIG0r1b8+qDqdOPBlNEkC4wb0k22t3OHAMiSSGcTjZO21o7eaB+312fjvEYw2UroQ0YRMzSTRAhZba+x+yIFPgXpRUEY7oLrD9lco=
+	t=1745833258; cv=none; b=SHgOI6G1lYrcV4AbBWwSY9YxIZNkYD4ocgMwWKAiPhUabuFBP9hw24Rn+Nn4XhPsJZ7G+EEscYgidiOmACbvNIIuL5UwGIQmd/9zcj2CbMTcZjdBWu4JYwkMHKqnxM+FDAUqrhWfukrJg2e3JJusu+TkMA12+sxbHnKw8dMqRxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745833220; c=relaxed/simple;
-	bh=p4kNQdwzmDnZta4PbgZFZq/U7oDnPl8MzQlY6H2Scpg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T1aW2dhgI8j+tHuvJhzPv+Sn7zcOXhSQOgdvjML7QjnX423H3Az8mJSelWLmkeaApVAouPN/SLkcMUedNbT0efKX46hqbIOYHfyYAxCKsc2EavbGC3LvmMfhkdI7rLRjnPezVQ7ujh2wz5TVYmgkJqU4BB7hhRJIHCjiAMY7ftc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KfL2A6KF; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-39c13fa05ebso2943146f8f.0
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 02:40:18 -0700 (PDT)
+	s=arc-20240116; t=1745833258; c=relaxed/simple;
+	bh=QtEl+2m1eYszmz+3dFc2Lm7goH/HtdUxHXhZ2+8CrUM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NKvWhx0YLDzmuewLO/yze02j1BrcA7KT258LKoOadsrclwx/ZTC6mFmZpxfB5ub0OSxkDQZriVC/SXWKws9ZZKAwZkzBGZKu3c22QppTsmViq2Rig8jfJJqq9IzJ8HNNE3gcxQyxp+ay8mLrr9SZC/0EZAfC7txlnYbT8gCdyZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h04g84a7; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43cf3192f3bso43521375e9.1;
+        Mon, 28 Apr 2025 02:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745833216; x=1746438016; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/tZd4Ypk5BJk00OTo7JvTXUhxLykKpGhTfHWhdUsfHI=;
-        b=KfL2A6KFL3AMx8D59wiXmSEln9e363SZI7GhY2v0eq0EjdfZk2Ru6wFuUIFTmv6yFV
-         B3NXKlGnXjtPBtp/kaFtMVovlJ1xbqOY9V28wpsZh/+YSMgScR+4GkGkDtqSt29dqrSX
-         MK4eXdXV7s86RvywP+QLar1+/rOHHe52egXH/hcJZFl/E7mmoowGtBDmMe5imkx8shl6
-         rmN3kr8hLVJTSbMi1ajwQl1cPkjkRzE3T6ljayNsdJA0nwkGHjYhbV+pcPJqFazMB2Qa
-         BbzSZOnGcn8OFmDMQHvOHW6JCeA8dRXc5V9V/UMrXh0xxHq5XzsgngPJLXoTDXgTAqdp
-         pUZw==
+        d=gmail.com; s=20230601; t=1745833255; x=1746438055; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eWdl+Kqq58dT2qY6KpY9tsh+8ZNojmQ7ty0C+vUxAbM=;
+        b=h04g84a7jpDGBhGPaigWQdk+0AID4S7B5+IZlsA6oUG6xwpYXj46ejvglURbvLoRSz
+         bdcmHOwE7s+UW8hgnUYXTyGe3Rb3vwqCiVttmTBztuZrkmXSQ1hrAtAopw+yI+Q3yKcT
+         IqJk+ct3QXORxteNrljBBu4rn4Wm1qUHQcXbKjA+ryPOil90RVJNxvfJKeKyrh+pFOzT
+         YJy3NGBtNgayTRxOmi+sKyI1bn0+uq90Um7qgnanLZ2/nOo1pHwCMgdlO6TzvmZmj/3I
+         aNfNUp7GqBiJmHM3srjsA+6AaEsAVICTUyY36hOsafaTDqzvolLhXmBZdaGJuQeSdYNS
+         4Syg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745833216; x=1746438016;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/tZd4Ypk5BJk00OTo7JvTXUhxLykKpGhTfHWhdUsfHI=;
-        b=hXkKa4L7BMo1aWAcqNeIJCY3vHd8cKOOTtVoFhpvl5pjvCgUC3nIz2TpPcu0l0FsYC
-         wGwMHJtOKyJsiW0YMbd7u+KGsxv5v4HVftBspcG3CijWSsmmv5dt0S1O0W/lbZ87DBC/
-         zwJhzTDyPVEE4PDtiwrrigPJWSVdBv/LYb3NOfOoOPUmu2BX0SC30lK9PNd/Cwi43aGm
-         ILQ6K+blTpOkYTDOJJylJJEeC6mSin4EJzsa1WBJqN1/1+dWJbahKBpBn1k1yIUYG7xk
-         6wDqqM5dUWoi70uRfa2y9Me2HzxWa7M/3V5ZVNwEcLO3q3lRcKJU9M+sC3XGYEXxAmDA
-         8SAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUjJvnCPdc0HiRtdlW4laop6tLlANbgAQuuoFuB8AQi92Xhe4embDh97/1cXvEhHS/pLsSTZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yysic23xYOlxxEM8UtLvVck5ZM4mVAlF8QyTVsPvYr4IuBNHuXi
-	r2BJ5G7aoqQ+8I6WPw6q+XxWQ3mKiFpSb09EIhTSyGtizDRcaVMpZ8ZGs12c8D0=
-X-Gm-Gg: ASbGnctNYZnwDZDzCfVTvtBMNekwEBOApvMsqX5Ij0GPpl8/+FdJdBSXEdIBRj/XiMH
-	6weLC1v4HRjYfOrjyfR6JJLronUTI6BH5ngplxYOmrFoDvpaMr35d1OAs9UH+ESTCBDcUuMOUjy
-	CPjUHFvRipIwmC+XWxxI5fmYmrASJuPpo8+VOEJiWvDnWgscBCdUn6RaM8T+1TOeQHjpMo668Jz
-	eFHcublqWvBKxzL5yEWTwVLM9M8LJgV08RP/QtSy/bUqLMcazA2zv2fbM0s3wrNp9wEqacOlrzw
-	+xG3PScZWkBg/fuOarlz78bUntBkwJ/xM9uj1IMWorvZmg==
-X-Google-Smtp-Source: AGHT+IEmllBzyXjLLf+kiGyB+WclUcZwpuBSk7Lzu0+1JVWeTqkNy2mJ6U8hjuYfUNsLgR1qBxihEA==
-X-Received: by 2002:adf:ec87:0:b0:39c:1257:c96f with SMTP id ffacd0b85a97d-3a07adb1766mr4500559f8f.59.1745833216549;
-        Mon, 28 Apr 2025 02:40:16 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a073ca543bsm10716844f8f.34.2025.04.28.02.40.15
+        d=1e100.net; s=20230601; t=1745833255; x=1746438055;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eWdl+Kqq58dT2qY6KpY9tsh+8ZNojmQ7ty0C+vUxAbM=;
+        b=DyrFa31jEGUnR5mB1QS+ZDB1/5KmXeoAJsybq2YXP6c5Fdchv6InETI0VB/tTOh2rM
+         DFU07aWH0eMbpJu75AZsytgebU2V/LlTctOXu9TmDljOwE+EhLifPdkY2ae2ShoQ7Yjp
+         WrVj3j9tSpRRa7UsPVOcLQG7Nz1hVn9oo5asazcP8cBmZrDyFieWSnWWZSV6ZhJnf2Q2
+         Q0IT4gslXOt/y4x8ZKP02OL6Ita6V0wmVGcrbYTGkb55aodHDyZwbT70SNtPxTGkpRw0
+         Sdfhr5b5dOr0qoNQm5E9va277InoDbVjzvXvpAWNOfCrWWUO8y4BUsuZRVLZ5N10OAnA
+         XQbA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnvkd40E9wf0tPiIxJkr1C3ptmzqV5rrqVwC3RcLQ90M5yptgy0FsPE6THJrLskbkPyNxCI2Db@vger.kernel.org, AJvYcCVyYp+/0Apniner+prjqnYRuhbiyLqUuKfakHDWWFwGr0MQ/fDf//keIcpZgz+5A8Bo224+Aq/XqubnOc0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIQRnHOffK7pzDQ1GD+WoTrsNaNIHmBRsRP1vnYGt+PVArKxK/
+	Q8CtIvfM6hhoTf2GpWpkuUpUf+tsIFumSZtFdnvZwGi1iJK3kQbP
+X-Gm-Gg: ASbGncu158dVv/QmOq9uMrdX6HNeta3BTBs6KmQT9vRGwvMkiBNJM98sLGNUrSrNeON
+	wgiWy861ysMLPo6cCCzzFxgXLzPqsarzerCUMaM/NZmspnNADnRVtiH23R3mqttUYqGVks2ciIc
+	OFye1w3/11OTkMdb/XclPrH8qBfyS5IK7p51wJaUSLzDat4/LPdjuJJqv36nwd+VQ5lnzdGAPlw
+	grtNyZHBIl/mQ1y0GNt2HvdlWHoDt1FyPDxR+pciudqoExyfwEGqkjwPdyDHAIqSMZnn814SyXz
+	r/3ZBxt0i1uILo9kgIFUzsrw3NiRrOdSSzd0MA==
+X-Google-Smtp-Source: AGHT+IH5WZ2I2b6xONMXmkTLp55tTW8AkFEOLovibWPPY96a7fFSfSjudvpq3AXJ+RQ8zoo5DYpahA==
+X-Received: by 2002:a05:600c:5120:b0:43d:22d9:4b8e with SMTP id 5b1f17b1804b1-440a65d8e5bmr109031545e9.10.1745833254418;
+        Mon, 28 Apr 2025 02:40:54 -0700 (PDT)
+Received: from vitor-nb.. ([2001:8a0:e602:d900:4f54:7a4f:dfe1:ebb6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4409d2d8343sm152687785e9.28.2025.04.28.02.40.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Apr 2025 02:40:16 -0700 (PDT)
-Date: Mon, 28 Apr 2025 12:40:12 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Cc: Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Stefan Schmidt <stefan.schmidt@linaro.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Mon, 28 Apr 2025 02:40:54 -0700 (PDT)
+From: Vitor Soares <ivitro@gmail.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-	20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org,
-	20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Vitor Soares <vitor.soares@toradex.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	ivitro@gmail.com,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v2 14/23] media: iris: Fix NULL pointer dereference
-Message-ID: <7f37ec27-0221-4bb2-91f9-182244014b5a@stanley.mountain>
-References: <20250428-qcom-iris-hevc-vp9-v2-0-3a6013ecb8a5@quicinc.com>
- <20250428-qcom-iris-hevc-vp9-v2-14-3a6013ecb8a5@quicinc.com>
+Subject: [PATCH v1] drm/bridge: cdns-dsi: Replace deprecated UNIVERSAL_DEV_PM_OPS()
+Date: Mon, 28 Apr 2025 10:40:48 +0100
+Message-Id: <20250428094048.1459620-1-ivitro@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250428-qcom-iris-hevc-vp9-v2-14-3a6013ecb8a5@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 28, 2025 at 02:59:02PM +0530, Dikshita Agarwal wrote:
-> A warning reported by smatch indicated a possible null pointer
-> dereference where one of the arguments to API
-> "iris_hfi_gen2_handle_system_error" could sometimes be null.
-> 
-> To fix this, add a check to validate that the argument passed is not
-> null before accessing its members.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: fb583a214337 ("media: iris: introduce host firmware interface with necessary hooks")
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/linux-media/634cc9b8-f099-4b54-8556-d879fb2b5169@stanley.mountain/
-> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-> ---
->  drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-> index 1ed798d31a3f..cba71b5db943 100644
-> --- a/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-> +++ b/drivers/media/platform/qcom/iris/iris_hfi_gen2_response.c
-> @@ -267,7 +267,8 @@ static int iris_hfi_gen2_handle_system_error(struct iris_core *core,
->  {
->  	struct iris_inst *instance;
->  
-> -	dev_err(core->dev, "received system error of type %#x\n", pkt->type);
-> +	if (pkt)
-> +		dev_err(core->dev, "received system error of type %#x\n", pkt->type);
+From: Vitor Soares <vitor.soares@toradex.com>
 
-I feel like it would be better to do:
+The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
+for both runtime PM and system sleep. This causes the DSI clocks to be
+disabled twice: once during runtime suspend and again during system
+suspend, resulting in a WARN message from the clock framework when
+attempting to disable already-disabled clocks.
 
-	dev_err(core->dev, "received system error of type %#x\n", pkt ? pkt->type: -1);
+[   84.384540] clk:231:5 already disabled
+[   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
+...
+[   84.579183] Call trace:
+[   84.581624]  clk_core_disable+0xa4/0xac
+[   84.585457]  clk_disable+0x30/0x4c
+[   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
+[   84.593651]  pm_generic_suspend+0x2c/0x44
+[   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
+[   84.601670]  dpm_run_callback+0x8c/0x14c
+[   84.605588]  __device_suspend+0x1a0/0x56c
+[   84.609594]  dpm_suspend+0x17c/0x21c
+[   84.613165]  dpm_suspend_start+0xa0/0xa8
+[   84.617083]  suspend_devices_and_enter+0x12c/0x634
+[   84.621872]  pm_suspend+0x1fc/0x368
 
-regards,
-dan carpenter
+To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
+DEFINE_RUNTIME_DEV_PM_OPS(), which avoids redundant suspend/resume calls
+by checking if the device is already runtime suspended.
+
+Cc: <stable@vger.kernel.org> # 6.1.x
+Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+---
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index b022dd6e6b6e..62179e55e032 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_ops = {
+ 	.transfer = cdns_dsi_transfer,
+ };
+ 
+-static int __maybe_unused cdns_dsi_resume(struct device *dev)
++static int cdns_dsi_resume(struct device *dev)
+ {
+ 	struct cdns_dsi *dsi = dev_get_drvdata(dev);
+ 
+@@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int __maybe_unused cdns_dsi_suspend(struct device *dev)
++static int cdns_dsi_suspend(struct device *dev)
+ {
+ 	struct cdns_dsi *dsi = dev_get_drvdata(dev);
+ 
+@@ -1279,8 +1279,8 @@ static int __maybe_unused cdns_dsi_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
+-static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend, cdns_dsi_resume,
+-			    NULL);
++static DEFINE_RUNTIME_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
++				 cdns_dsi_resume, NULL);
+ 
+ static int cdns_dsi_drm_probe(struct platform_device *pdev)
+ {
+@@ -1427,7 +1427,7 @@ static struct platform_driver cdns_dsi_platform_driver = {
+ 	.driver = {
+ 		.name   = "cdns-dsi",
+ 		.of_match_table = cdns_dsi_of_match,
+-		.pm = &cdns_dsi_pm_ops,
++		.pm = pm_ptr(&cdns_dsi_pm_ops),
+ 	},
+ };
+ module_platform_driver(cdns_dsi_platform_driver);
+-- 
+2.34.1
 
 
