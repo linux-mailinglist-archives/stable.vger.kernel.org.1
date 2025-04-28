@@ -1,86 +1,142 @@
-Return-Path: <stable+bounces-136912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB9A9F638
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:51:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FB84A9F668
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA543B8A6B
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 16:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40D941A84AA0
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B8E27FD7E;
-	Mon, 28 Apr 2025 16:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC391AD3E1;
+	Mon, 28 Apr 2025 17:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BqdlwEzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zlP3Kj6"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D741262FCE;
-	Mon, 28 Apr 2025 16:51:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DD27A128
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745859098; cv=none; b=m0PonB+72TkJC7wvX8bkiQOroZW+tXL3VWHnvDNjcV60B06FF0/jC4Soj/tcQUQU0vyIh1ByhH2yjbnExiB/rEXq9ECq2zhmLjc9CtS63G3JLKM5v1fqQlzbWTgYuP4mEaU0E6aux44WR0SDJnzRwixCA+MF3anJHc4dAE1wRpo=
+	t=1745859662; cv=none; b=dNvAGUH7GKQTM5KQgRVrLBoR1YuEH96RsxVIqUdJpJ8FhIUIN18kl9V75s3cGPT6bGbZMvURkEns903THDK6phzmRmrsh8wdktNS14I7qSq1abeVwz6BZwox3By04kZpXlnuxeQBaIywhSKmDiyqhUhicBBmVklVgVj4/CEm4Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745859098; c=relaxed/simple;
-	bh=oEmUhIZbZAiYMOXn+vdBkUJvA4KYj2yAlYhV5SRxVNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s+H6q+lF60pEeJ1Cg8lyago5lFkHwidK9fZWTjVsbTM41JWet3knWt72CDLJRItcw+sqUEFW2ugV5EjtkkvEYyl/9Vff1bSMXpGJIAH6zrXNCoQtYpI7dawLquGrITtwfbJj/aR48geF48vq7WKgC8IlhRM7czguGMkNcbihoiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BqdlwEzT; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=CJS+qSb/Irxv/rV6XyY0hXCjZ08w1k6CYeop3aogqes=; b=BqdlwEzTD2qxPrV8XyBSf510EI
-	H6+ZmHFaMJNLkJnpgpZ3mA00kK3Y8ob+ge9ZTgdkHPGS16Fw5UOx5O1fYeu7mA/SsHzLcZAAWea5W
-	zomDoyTf7Sp2FvqiDc2/3ITWP6FywZrDC+FTd6fmzJF2w7UJLG/BQ6FsEph8pt7TM2DI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1u9RhP-00ArGQ-9B; Mon, 28 Apr 2025 18:51:19 +0200
-Date: Mon, 28 Apr 2025 18:51:19 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	"Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>, stable@vger.kernel.org,
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, UNGLinuxDriver@microchip.com
-Subject: Re: [PATCH net v1 1/2] net: dsa: microchip: let phylink manage PHY
- EEE configuration on KSZ switches
-Message-ID: <4d8a3e79-f454-4e2f-9362-c842354b123a@lunn.ch>
-References: <20250428125119.3414046-1-o.rempel@pengutronix.de>
- <20250428125119.3414046-2-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1745859662; c=relaxed/simple;
+	bh=NnlL+m7/DwY4Mhl2ZKMrtcWD4S9GHB49TBHf+WLt0qA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bZKEezRNIGDqI/M8xqZXz6i95s0Cn1tMf7EmORV6uZwS1FAhXyKTg3cN8arUJe/UL230+d8cx8+gG+7sqs4uQp2cF8TBT8xRxfdAF+lShWrEstUeNx6uu84rmOz9diGZzmqgwao1nXqAvaoChWoa6WObMwwqs0gTthT7ePq/OfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zlP3Kj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89D9C4CEEC;
+	Mon, 28 Apr 2025 17:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745859662;
+	bh=NnlL+m7/DwY4Mhl2ZKMrtcWD4S9GHB49TBHf+WLt0qA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=1zlP3Kj6cvKQGbvluPTV9ZECDf4UT94vaRxlotizpRcmZxGLcZM5YZ43jJLYtMNZQ
+	 3DACuqxcwL911cLtTTEgbivygtrKpti3slX4ctS+gw1myg/v5cbQ1xWPDlnp+u+Mf+
+	 RuKc6UeOIxNC9vBd+TjC/dlog83ivMMVFfWzO9pk=
+Subject: FAILED: patch "[PATCH] xen-netfront: handle NULL returned by" failed to apply to 5.15-stable tree
+To: sdl@nppct.ru,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 28 Apr 2025 19:00:59 +0200
+Message-ID: <2025042858-guacamole-ozone-ac80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250428125119.3414046-2-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-> +/**
-> + * ksz_phylink_mac_disable_tx_lpi() - Dummy handler to disable TX LPI
-> + * @config: phylink config structure
-> + *
-> + * For ports with integrated PHYs, LPI is managed internally by hardware.
 
-Could you expand that.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Does it mean the hardware will look at the results of the autoneg and
-disable/enable LPI depending on those results? I also assume this
-means it is not possible to force LPI on/off, independent of autoneg?
+To reproduce the conflict and resubmit, you may use the following commands:
 
-	Andrew
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x cc3628dcd851ddd8d418bf0c897024b4621ddc92
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042858-guacamole-ozone-ac80@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From cc3628dcd851ddd8d418bf0c897024b4621ddc92 Mon Sep 17 00:00:00 2001
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+Date: Thu, 17 Apr 2025 12:21:17 +0000
+Subject: [PATCH] xen-netfront: handle NULL returned by
+ xdp_convert_buff_to_frame()
+
+The function xdp_convert_buff_to_frame() may return NULL if it fails
+to correctly convert the XDP buffer into an XDP frame due to memory
+constraints, internal errors, or invalid data. Failing to check for NULL
+may lead to a NULL pointer dereference if the result is used later in
+processing, potentially causing crashes, data corruption, or undefined
+behavior.
+
+On XDP redirect failure, the associated page must be released explicitly
+if it was previously retained via get_page(). Failing to do so may result
+in a memory leak, as the pages reference count is not decremented.
+
+Cc: stable@vger.kernel.org # v5.9+
+Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index fc52d5c4c69b..5091e1fa4a0d 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfront_queue *queue, struct page *pdata,
+ 	act = bpf_prog_run_xdp(prog, xdp);
+ 	switch (act) {
+ 	case XDP_TX:
+-		get_page(pdata);
+ 		xdpf = xdp_convert_buff_to_frame(xdp);
+-		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
+-		if (unlikely(!err))
+-			xdp_return_frame_rx_napi(xdpf);
+-		else if (unlikely(err < 0))
++		if (unlikely(!xdpf)) {
+ 			trace_xdp_exception(queue->info->netdev, prog, act);
++			break;
++		}
++		get_page(pdata);
++		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
++		if (unlikely(err <= 0)) {
++			if (err < 0)
++				trace_xdp_exception(queue->info->netdev, prog, act);
++			xdp_return_frame_rx_napi(xdpf);
++		}
+ 		break;
+ 	case XDP_REDIRECT:
+ 		get_page(pdata);
+ 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
+ 		*need_xdp_flush = true;
+-		if (unlikely(err))
++		if (unlikely(err)) {
+ 			trace_xdp_exception(queue->info->netdev, prog, act);
++			xdp_return_buff(xdp);
++		}
+ 		break;
+ 	case XDP_PASS:
+ 	case XDP_DROP:
+
 
