@@ -1,132 +1,142 @@
-Return-Path: <stable+bounces-136860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0336EA9EFA7
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF21DA9EFB8
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 13:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E7623AECF7
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:49:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA34E3B50ED
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 11:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C600159B71;
-	Mon, 28 Apr 2025 11:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE3E263F45;
+	Mon, 28 Apr 2025 11:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="F+wDp3PJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nm1HzUA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDO2w4ZC"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a4-smtp.messagingengine.com (fout-a4-smtp.messagingengine.com [103.168.172.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C88E4A21
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:50:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2391FDA8A
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745841010; cv=none; b=opY1+gO0kVO+NmmxVQLwMaePQQ8KqkHzxtn5F6G2Q0lQVIo9RKOur2GuiWNbq7UXr/ylAZyCb9zx69WkCpdInFTo0T7N9eBblcm2gMB69/wB+2TZjSZrvbofeb8u5b9gna1lML0pokw9BfDjqtRnth/w7hIL7+PwW6my4ZFwCRA=
+	t=1745841243; cv=none; b=MVLGuZ4E6jGbG0zMMu3LjPZChmMR0gMG+bQs/m0hETJ+2b27tKa81TvTIjmUtoHLz46z1e43HBMJ/DEQ1JRr5kJ/FRWDmfYG3ub23a8crOjGNv1U+ROj1az/CTLuA+KzzEH4q75PF05HLry+IoXCooy0tAarF2juj7OcaSxDgrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745841010; c=relaxed/simple;
-	bh=72Y9mMqiW4+aTUHANvGRIu+qQU1TD9NX6ZfCeMAkMGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hjN7j0T/El3h5Zi2zPdkG4hJopbITPiS295irORXexYvTxREWP9za0XNJBfSBJhX+tx2wDf9X3s/pIgwWHnO21xgQd9rfDmadGFny8pABp8zE8IjzrzOESrW3zaEhGto6EtVgHxNvEEc1dyc2gP6ymdw9VBkfr/qwUIXCc05EHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=F+wDp3PJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=nm1HzUA9; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-11.internal (phl-compute-11.phl.internal [10.202.2.51])
-	by mailfout.phl.internal (Postfix) with ESMTP id 0F13913801CB;
-	Mon, 28 Apr 2025 07:50:06 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-11.internal (MEProxy); Mon, 28 Apr 2025 07:50:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1745841006; x=1745927406; bh=bR0Udwdu2C
-	TPDC3iJi3jJ5bNAIV6jrJ3l81y2pVMUeo=; b=F+wDp3PJPW6KGRR8tQQ3t6FUbi
-	0lSJNNmuTsMtImP1B0+KbFq3snBbtsMIEqo0t+a8EPLMoqW5aZjRpkx03hr5QUIA
-	YxS7Hg0xjw58hu1BWRa5pXyIoJ788lu1k60nYapsfZICSFnv7qJLt7c2Dc08cgdE
-	Pr5yhyHnfzA5RQNp1Bj7HXMokP+o2tBtfep8aM2W4UMFrvveOx4A5BdJhnzTaRpB
-	1T6Z+M7TMCu4nVqKJEY5lEBpodJ8hvM0UgKtMOUXQAUKvRag8b9+EgOKFp0KNd+h
-	DhwZeb+Fi7abQQUAiF/kHDfLR2nYYXzcI75Cioq1O7kvUur/lNgDclttVtyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1745841006; x=1745927406; bh=bR0Udwdu2CTPDC3iJi3jJ5bNAIV6jrJ3l81
-	y2pVMUeo=; b=nm1HzUA9stacQg/NfnM156B8aBMBLx0zKadx8si+F10LUpZLDCf
-	X9DyuZufOY+NRAyK+l2xHOhbiQ/3CtQ1vW1VaXCwO+SkGf1R+D62X1mY5b/jKxh1
-	S/ulzPCtDIoTCXSX6rCBRCINjL2fn3XN0iDGuvQcbIkfXIz0LZUU6y6QDjQkgwh4
-	HniwIHPXMPjADOXLLaRxJ3wSkuACN9U2BShXTsMpLIz2VX1lbNTQSB3oGpBhjaoG
-	sZqVqulYLp/preru7PI6OYRmf2VAKkKIsAKbgz0YthlMH0OYSOnQXleJsn8Sx7Pp
-	DPnGNlUQhfxK6FpUEy9a1q3CTSIBJqSbgTg==
-X-ME-Sender: <xms:bGsPaFx1SRslGDt-8VfhUpstyc0HKRUWOnYKvF26-YMLfFot5bS6Nw>
-    <xme:bGsPaFS8fd4I7zmkYKsyqAMEf8QMO1L4lfqWGX8Yl_x5HTMkIUNGAAEqsfqJVJAXh
-    6AHTWtVV3pHpQ>
-X-ME-Received: <xmr:bGsPaPX_jB_lwNPwZHEYI2-U8lbFcnCkfwyvZh9ZFZ6z9TDEh-brCDzGuPnSufwgxj08E-MmLYAEBqeKg9VizQcy6uijcqY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddviedtkeejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecugg
-    ftrfgrthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvudef
-    feelvedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
-    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtgho
-    mhdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfh
-    ifsehsthhrlhgvnhdruggvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhn
-    vghlrdhorhhgpdhrtghpthhtohepphgrsghlohesnhgvthhfihhlthgvrhdrohhrghdprh
-    gtphhtthhopehlihhnuhigsehslhgrvhhinhhordhskh
-X-ME-Proxy: <xmx:bGsPaHiFvs2RVDspGJfph4FSv0dvTPd134jLUOmCEHqr2k7v_9OPiQ>
-    <xmx:bGsPaHBo7BzsxguPo4ZmYkbNKSZygH6foMi_mF_FEzmCFZpSpUUabQ>
-    <xmx:bGsPaAK0o57cWP-QugU1treZrnECYIY-Ch0dzH4RA05f82HQOsPGdQ>
-    <xmx:bGsPaGAC479yEUw5_BfPW0iaeL1f8FXetAv1ehNOGIJdYW2RvlJ7Iw>
-    <xmx:bmsPaHbJJIpxGQRCXgkHwN5wyan10U2UnMkrMcpAkEkHDt7aBUWFKN1P>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Apr 2025 07:50:03 -0400 (EDT)
-Date: Mon, 28 Apr 2025 13:50:01 +0200
-From: Greg KH <greg@kroah.com>
-To: Florian Westphal <fw@strlen.de>
-Cc: stable@vger.kernel.org, pablo@netfilter.org, linux@slavino.sk
-Subject: Re: stable request: eaaff9b6702e ("netfilter: fib: avoid lookup if
- socket is available")
-Message-ID: <2025042856-skimming-storm-a49b@gregkh>
-References: <20250424183306.GA24548@breakpoint.cc>
+	s=arc-20240116; t=1745841243; c=relaxed/simple;
+	bh=2pvbIR5CaEbzYS+MzUu6DFG5r12BaG8Qcw/eqnK3i60=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DWEARozaCdRFwfLRaXUJgBLvkTdwckmMFpAI9qnfiij2KcSrfDHPm52CZKz8kUW4RAd6yNrVRucyFDk3Q4z88zQwlXFZriCymWwXx1G8jjINrnNpSqsEG2FU4fHc8fwgQ4hPoF65eTKhHqW2ui7Vcw8KqV2315E+qMbqnk8dZYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDO2w4ZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA124C4CEE9;
+	Mon, 28 Apr 2025 11:54:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1745841243;
+	bh=2pvbIR5CaEbzYS+MzUu6DFG5r12BaG8Qcw/eqnK3i60=;
+	h=Subject:To:Cc:From:Date:From;
+	b=bDO2w4ZCmlQBNHO6NTONkEwcu/7/Ot0R7TjIms3CLxxSrl6YzhThMBbBgBj+RTdaX
+	 rBnEH0/P6qV+z+1mSb5FsgP1OjLMJ50LbhqPCqnsrnk5YyaMIenq82hOOWVY1cAV8i
+	 6+2ot07V4tANxSGGz5b7EfY71bQyWgI/Qj11XiuM=
+Subject: FAILED: patch "[PATCH] xen-netfront: handle NULL returned by" failed to apply to 5.10-stable tree
+To: sdl@nppct.ru,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 28 Apr 2025 13:54:00 +0200
+Message-ID: <2025042800-convene-bless-ce4b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250424183306.GA24548@breakpoint.cc>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 24, 2025 at 08:33:06PM +0200, Florian Westphal wrote:
-> Hi Greg, hi Sasha,
-> 
-> Could you please queue up
-> 
-> eaaff9b6702e ("netfilter: fib: avoid lookup if socket is available")
-> 
-> for 6.14 and 6.12?
-> 
-> Unfortunately I did not realize that the missing handling of
-> 'input' is not just a missing optimization but an actual bug fix, else
-> I would have split this patch in two.
-> 
-> The bug exists since 5.19, but its not a regression ('never worked').
-> 
-> Given noone noticed/reported this until this week
-> (https://lore.kernel.org/netfilter/20250422114352.GA2092@breakpoint.cc/),
-> we think it makes sense to only apply this to the two most recent trees
-> and keep the rest as-is, users of those trees evidently don't use the
-> b0rken configuration or they would have complained long ago.
-> 
-> The commit cherry-picks cleanly to both.
-> If you disagree let me know, I could also make a stable-only patch that
-> only contains the bug fix part of the mentioned commit.
 
-Now queued up, thanks.
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x cc3628dcd851ddd8d418bf0c897024b4621ddc92
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042800-convene-bless-ce4b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From cc3628dcd851ddd8d418bf0c897024b4621ddc92 Mon Sep 17 00:00:00 2001
+From: Alexey Nepomnyashih <sdl@nppct.ru>
+Date: Thu, 17 Apr 2025 12:21:17 +0000
+Subject: [PATCH] xen-netfront: handle NULL returned by
+ xdp_convert_buff_to_frame()
+
+The function xdp_convert_buff_to_frame() may return NULL if it fails
+to correctly convert the XDP buffer into an XDP frame due to memory
+constraints, internal errors, or invalid data. Failing to check for NULL
+may lead to a NULL pointer dereference if the result is used later in
+processing, potentially causing crashes, data corruption, or undefined
+behavior.
+
+On XDP redirect failure, the associated page must be released explicitly
+if it was previously retained via get_page(). Failing to do so may result
+in a memory leak, as the pages reference count is not decremented.
+
+Cc: stable@vger.kernel.org # v5.9+
+Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
+Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+index fc52d5c4c69b..5091e1fa4a0d 100644
+--- a/drivers/net/xen-netfront.c
++++ b/drivers/net/xen-netfront.c
+@@ -985,20 +985,27 @@ static u32 xennet_run_xdp(struct netfront_queue *queue, struct page *pdata,
+ 	act = bpf_prog_run_xdp(prog, xdp);
+ 	switch (act) {
+ 	case XDP_TX:
+-		get_page(pdata);
+ 		xdpf = xdp_convert_buff_to_frame(xdp);
+-		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
+-		if (unlikely(!err))
+-			xdp_return_frame_rx_napi(xdpf);
+-		else if (unlikely(err < 0))
++		if (unlikely(!xdpf)) {
+ 			trace_xdp_exception(queue->info->netdev, prog, act);
++			break;
++		}
++		get_page(pdata);
++		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
++		if (unlikely(err <= 0)) {
++			if (err < 0)
++				trace_xdp_exception(queue->info->netdev, prog, act);
++			xdp_return_frame_rx_napi(xdpf);
++		}
+ 		break;
+ 	case XDP_REDIRECT:
+ 		get_page(pdata);
+ 		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
+ 		*need_xdp_flush = true;
+-		if (unlikely(err))
++		if (unlikely(err)) {
+ 			trace_xdp_exception(queue->info->netdev, prog, act);
++			xdp_return_buff(xdp);
++		}
+ 		break;
+ 	case XDP_PASS:
+ 	case XDP_DROP:
+
 
