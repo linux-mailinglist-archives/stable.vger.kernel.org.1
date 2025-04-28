@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-136926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFD8A9F712
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:14:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF16A9F717
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2903A0F71
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C9C9170DA8
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 17:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C5A323370C;
-	Mon, 28 Apr 2025 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BD5288C94;
+	Mon, 28 Apr 2025 17:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qo/zR5LD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjPeGtl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1392223338
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:13:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC7917B418
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 17:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745860414; cv=none; b=rfu4XRHja/RG8Dta2zeehkJ2ISMW5/gRXfqNzWpPITrdopx8TFbVpUQPkcwMD3NpYXZl250ee4odZO1lYkZIBWBSuMHzgSYdv2eNtSty3uamxs5PyzrpcYy9A8pN5yc9PMOANgDGhELIVPEuhUIZkNfhW0aTbqfx7XAYpb0SLZk=
+	t=1745860556; cv=none; b=TXaN+X5tGaD7x8Rws9iKczX/ANALWo9WT97AKum75R7iWrUgr/x/DVgyA3DnA8grieyJZ1Zg16y3DhMB4tEOGTZz/5sH5Cnq9cc8f8kOlwyJW4p8lToPaCej739ZM0xkkh/M5Zcg3mVqbczkjpTe+S+YuOiTK1p4WXz9gSeT4Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745860414; c=relaxed/simple;
-	bh=2b22GBJiLT/M1X94JUYQjBg2dDUjj/ueYOKfiEsYRS4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S0QDsmfzUPHv+Q7NKHEkean2i8y/J6peC3oX/zfaJvoz/cTw6K7cPI8v4+Iv49YWbChL57mXIgk5HYQY4K4yD28Nh66ZuE4GrHOIURXvZVmOvC6o8E3s23fYNO0hmeQmnDd+YRc1lhFaWZ59fVEExnObjc5RrwdC5+IlviiU++k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qo/zR5LD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07CF6C4CEE4;
-	Mon, 28 Apr 2025 17:13:32 +0000 (UTC)
+	s=arc-20240116; t=1745860556; c=relaxed/simple;
+	bh=B5CmBtlAGbFf31C+vMbvMhmxz+JWNBxZ1DK83qcCFr8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=B9NWRd/C/jkVucO584IZ/mcrDh/pC5VQ0OZbT3LirRLzoB4kQaE6KjILVqGyQxeI1w9SMfDqYWAOyzgXyzJjMhwiuIRhqLJHVk1y574Y7hFeX3xghoczozheLQ/Q57szYpplcmRlLhKNxKR7T9aeYNjx64jEPsO2YHjT47IqgLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjPeGtl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A3BC4CEE4;
+	Mon, 28 Apr 2025 17:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745860413;
-	bh=2b22GBJiLT/M1X94JUYQjBg2dDUjj/ueYOKfiEsYRS4=;
+	s=korg; t=1745860554;
+	bh=B5CmBtlAGbFf31C+vMbvMhmxz+JWNBxZ1DK83qcCFr8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qo/zR5LDQnRa669t9ngqT3X+o+9llY88/SGmD4SnQf7Y6Ay22CFjUnNxWegHhWGJz
-	 q/SIix7OvwG9pn316EZmf6xKD6h3TdkQGfej9T8uOEQ+Yams6PNaqELSTQz8zpy2g9
-	 mg5u22JykBcmrE/ihwrg+sU8SCRokyQawbYpeTEE=
-Subject: FAILED: patch "[PATCH] comedi: jr3_pci: Fix synchronous deletion of timer" failed to apply to 5.10-stable tree
-To: abbotti@mev.co.uk,gregkh@linuxfoundation.org,stable@kernel.org
+	b=AjPeGtl5fK9QcKPw1xDCKXyPzJrSjIx3qPZaFhfVDOok/rkePFGJZjREdEFej3mnC
+	 CwrwQkFTYZXJZpvfSR5SeWt6tXT8KfWylpisBO/l0BEZ1FBUjterUSUTKQqboncFHI
+	 NK4irsx+yoxB0v3kh8IxQyQBm0liZ3RM5RDJZKZ4=
+Subject: FAILED: patch "[PATCH] xhci: Limit time spent with xHC interrupts disabled during" failed to apply to 6.6-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org,liudingyuan@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 28 Apr 2025 19:13:08 +0200
-Message-ID: <2025042808-difficult-germicide-075a@gregkh>
+Date: Mon, 28 Apr 2025 19:15:51 +0200
+Message-ID: <2025042851-improvise-serrated-1343@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 44d9b3f584c59a606b521e7274e658d5b866c699
+git cherry-pick -x bea5892d0ed274e03655223d1977cf59f9aff2f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042808-difficult-germicide-075a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025042851-improvise-serrated-1343@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,36 +77,143 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 44d9b3f584c59a606b521e7274e658d5b866c699 Mon Sep 17 00:00:00 2001
-From: Ian Abbott <abbotti@mev.co.uk>
-Date: Tue, 15 Apr 2025 13:39:01 +0100
-Subject: [PATCH] comedi: jr3_pci: Fix synchronous deletion of timer
+From bea5892d0ed274e03655223d1977cf59f9aff2f2 Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Thu, 10 Apr 2025 18:18:27 +0300
+Subject: [PATCH] xhci: Limit time spent with xHC interrupts disabled during
+ bus resume
 
-When `jr3_pci_detach()` is called during device removal, it calls
-`timer_delete_sync()` to stop the timer, but the timer expiry function
-always reschedules the timer, so the synchronization is ineffective.
+Current xhci bus resume implementation prevents xHC host from generating
+interrupts during high-speed USB 2 and super-speed USB 3 bus resume.
 
-Call `timer_shutdown_sync()` instead.  It does not matter that the timer
-expiry function pointer is cleared, because the device is being removed.
+Only reason to disable interrupts during bus resume would be to prevent
+the interrupt handler from interfering with the resume process of USB 2
+ports.
 
-Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
+Host initiated resume of USB 2 ports is done in two stages.
+
+The xhci driver first transitions the port from 'U3' to 'Resume' state,
+then wait in Resume for 20ms, and finally moves port to U0 state.
+xhci driver can't prevent interrupts by keeping the xhci spinlock
+due to this 20ms sleep.
+
+Limit interrupt disabling to the USB 2 port resume case only.
+resuming USB 2 ports in bus resume is only done in special cases where
+USB 2 ports had to be forced to suspend during bus suspend.
+
+The current way of preventing interrupts by clearing the 'Interrupt
+Enable' (INTE) bit in USBCMD register won't prevent the Interrupter
+registers 'Interrupt Pending' (IP), 'Event Handler Busy' (EHB) and
+USBSTS register Event Interrupt (EINT) bits from being set.
+
+New interrupts can't be issued before those bits are properly clered.
+
+Disable interrupts by clearing the interrupter register 'Interrupt
+Enable' (IE) bit instead. This way IP, EHB and INTE won't be set
+before IE is enabled again and a new interrupt is triggered.
+
+Reported-by: Devyn Liu <liudingyuan@huawei.com>
+Closes: https://lore.kernel.org/linux-usb/b1a9e2d51b4d4ff7a304f77c5be8164e@huawei.com/
+Cc: stable@vger.kernel.org
+Tested-by: Devyn Liu <liudingyuan@huawei.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250410151828.2868740-6-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/comedi/drivers/jr3_pci.c b/drivers/comedi/drivers/jr3_pci.c
-index cdc842b32bab..75dce1ff2419 100644
---- a/drivers/comedi/drivers/jr3_pci.c
-+++ b/drivers/comedi/drivers/jr3_pci.c
-@@ -758,7 +758,7 @@ static void jr3_pci_detach(struct comedi_device *dev)
- 	struct jr3_pci_dev_private *devpriv = dev->private;
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index c0f226584a40..486347776cb2 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1878,9 +1878,10 @@ int xhci_bus_resume(struct usb_hcd *hcd)
+ 	int max_ports, port_index;
+ 	int sret;
+ 	u32 next_state;
+-	u32 temp, portsc;
++	u32 portsc;
+ 	struct xhci_hub *rhub;
+ 	struct xhci_port **ports;
++	bool disabled_irq = false;
  
- 	if (devpriv)
--		timer_delete_sync(&devpriv->timer);
-+		timer_shutdown_sync(&devpriv->timer);
+ 	rhub = xhci_get_rhub(hcd);
+ 	ports = rhub->ports;
+@@ -1896,17 +1897,20 @@ int xhci_bus_resume(struct usb_hcd *hcd)
+ 		return -ESHUTDOWN;
+ 	}
  
- 	comedi_pci_detach(dev);
+-	/* delay the irqs */
+-	temp = readl(&xhci->op_regs->command);
+-	temp &= ~CMD_EIE;
+-	writel(temp, &xhci->op_regs->command);
+-
+ 	/* bus specific resume for ports we suspended at bus_suspend */
+-	if (hcd->speed >= HCD_USB3)
++	if (hcd->speed >= HCD_USB3) {
+ 		next_state = XDEV_U0;
+-	else
++	} else {
+ 		next_state = XDEV_RESUME;
+-
++		if (bus_state->bus_suspended) {
++			/*
++			 * prevent port event interrupts from interfering
++			 * with usb2 port resume process
++			 */
++			xhci_disable_interrupter(xhci->interrupters[0]);
++			disabled_irq = true;
++		}
++	}
+ 	port_index = max_ports;
+ 	while (port_index--) {
+ 		portsc = readl(ports[port_index]->addr);
+@@ -1974,11 +1978,9 @@ int xhci_bus_resume(struct usb_hcd *hcd)
+ 	(void) readl(&xhci->op_regs->command);
+ 
+ 	bus_state->next_statechange = jiffies + msecs_to_jiffies(5);
+-	/* re-enable irqs */
+-	temp = readl(&xhci->op_regs->command);
+-	temp |= CMD_EIE;
+-	writel(temp, &xhci->op_regs->command);
+-	temp = readl(&xhci->op_regs->command);
++	/* re-enable interrupter */
++	if (disabled_irq)
++		xhci_enable_interrupter(xhci->interrupters[0]);
+ 
+ 	spin_unlock_irqrestore(&xhci->lock, flags);
+ 	return 0;
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index ca390beda85b..90eb491267b5 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -322,7 +322,7 @@ static void xhci_zero_64b_regs(struct xhci_hcd *xhci)
+ 		xhci_info(xhci, "Fault detected\n");
  }
+ 
+-static int xhci_enable_interrupter(struct xhci_interrupter *ir)
++int xhci_enable_interrupter(struct xhci_interrupter *ir)
+ {
+ 	u32 iman;
+ 
+@@ -335,7 +335,7 @@ static int xhci_enable_interrupter(struct xhci_interrupter *ir)
+ 	return 0;
+ }
+ 
+-static int xhci_disable_interrupter(struct xhci_interrupter *ir)
++int xhci_disable_interrupter(struct xhci_interrupter *ir)
+ {
+ 	u32 iman;
+ 
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 28b6264f8b87..242ab9fbc8ae 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1890,6 +1890,8 @@ int xhci_alloc_tt_info(struct xhci_hcd *xhci,
+ 		struct usb_tt *tt, gfp_t mem_flags);
+ int xhci_set_interrupter_moderation(struct xhci_interrupter *ir,
+ 				    u32 imod_interval);
++int xhci_enable_interrupter(struct xhci_interrupter *ir);
++int xhci_disable_interrupter(struct xhci_interrupter *ir);
+ 
+ /* xHCI ring, segment, TRB, and TD functions */
+ dma_addr_t xhci_trb_virt_to_dma(struct xhci_segment *seg, union xhci_trb *trb);
 
 
