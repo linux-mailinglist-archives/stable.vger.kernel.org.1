@@ -1,171 +1,152 @@
-Return-Path: <stable+bounces-136974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51086A9FD53
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 00:59:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5BD8A9FD89
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 01:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D63C3467E05
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 22:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF6A13A60D5
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 23:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91D9212B1E;
-	Mon, 28 Apr 2025 22:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A17212FA0;
+	Mon, 28 Apr 2025 23:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="f0XmO6Je"
+	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="Fb6v8nNZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C8F155333
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 22:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA6F1FDE33
+	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 23:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745881149; cv=none; b=rhGLMrI9Lznc7/XJiO8kc+Zwkjxp8vR6Q2XPQX6a7g+euhvIpIihIs5efyXrJgJ6KmD4cuQlArBQH3tR52wXt0Q9STRvkmwyJCdBvJQrZX1ZQugEirv67tKFzc3u/aiRbv+9AypIghV8GysF1VQOaqG3tgc6zDYfA3V23UOY1w0=
+	t=1745881779; cv=none; b=qzF+nbg2kx0i4mL6/P1KdRVZ8qNFO9Pkt48A1iGun869PdP2rwlo16ARhRdSLz1x/ZNNy//o66ZWjYnReJft3ojqa9eBXB17xlcHSU14gt3H6u4X1P0Zv/9iGDbIuTYr5vgCZirEJVZ/prb5Tu7VJqtIB/i6oj4frsPzTNOBtDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745881149; c=relaxed/simple;
-	bh=uLj8m0an7X3JmS30zmyg5dTwqXXsCIoVqw+IGLy6HE8=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=M+D0qa8M+an3Jh2KtvRrGCzGpLnAxYcIwi5/vELFQ23+dFSY9PbMJS+jWahbPxYr4sQyZ2yZvgQNe61Al7LWR/W+VxZA5FaKzYuPRFv4wGvzOd3PofaQyjCtAj8VkEvQqYZLLSLH0abWVJbA5eL4wyIUe5OpnZvl1Ye2esTBZoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=f0XmO6Je; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e733e25bfc7so1773934276.3
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 15:59:06 -0700 (PDT)
+	s=arc-20240116; t=1745881779; c=relaxed/simple;
+	bh=89vT0Sf2P1UCl2hR+GVT3KeUEojLgSDAWizbeGcX9VE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jDEjuaXcHnJpJHpKyYA21PD76GVmbChDeSxGlPp5AsaiSNPChWt4yyuzPkmSV0otenbJlmgsZ2UZLAIppMBjUyB2Bn85xXICROXnXsLMbiQ2rrlqhjBK2Q4iAMP+HlRbSedtfqPdn9SgRIYervlg5Q8M3n4/s3/OWDGQPmMS+fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=Fb6v8nNZ; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-ac29fd22163so771671766b.3
+        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 16:09:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1745881145; x=1746485945; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r+IVWIn2UXhSLa8laKq98wli33u3+zcQ483Tm3cmHgg=;
-        b=f0XmO6Jee1njMxoTSIiFGsN1b4Opz6QCK8obq3KffDNRxUAx6WoZdkFLQEPyqcRwyP
-         zEhpDMOJVOJKbjbd88y+WZj5WwakzXh8q0T49htB1lMb+98wTKu8Y7Gc5EO+SaCRWzYU
-         i+HAgVW4LpCbzJcs5ZRuBWpubiMUei6x9BLEBto7OK2NSLnCP2U305KhC04BsGfYWOrO
-         fEXMjJB9lv0cGGqrUI6v92hZtsZedug6/wV2ECFlduszGpjAuSqxH7RsK4Ws+//fw9Tj
-         SNe7W+s0xRcr4TJDD+4VUPZgip3Ppy63UIJcUuQt/zUYcBlgrANm6UWpbTcyCFKtV8iN
-         Anmw==
+        d=ionos.com; s=google; t=1745881775; x=1746486575; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vuwPRT6I+AQPMIHK3FEvwFoI62Ft+AE7bxY+V5erSDY=;
+        b=Fb6v8nNZ0KSGR+BY6+B7xDWz0OXP3+1Cd6O2g1fQc6HI2BRfuOH4czYGV2db+/QzVb
+         BQybResJHRTjsZ8GgvabFPXcuh01RdnzGZTha0RYsSDjippDO3u/Ik/qL0bwLPtD+Obc
+         mUpbYnzmZMSVTBJ0A3jZWWKXqSXZ88gkJeV7rRSer1vvO7ktAbOZ/QUTPV1KgYT2C7Jn
+         eSEkk5GpaGaiN46VYmA8K1/N7mP0p2YLrwxQiy5Z5cytUPMbdLRlQ3P/7exrUiODNa6r
+         t0u+yM348fCRwKvmF8bqSjRQsOi8uJIBDLWAiDXGI90jRf7NNEpNvszabHcW/ini6KKo
+         DF8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745881145; x=1746485945;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+IVWIn2UXhSLa8laKq98wli33u3+zcQ483Tm3cmHgg=;
-        b=X6spvmELKnTsnf0+s6Jr90YU5DChmUF4IoiI5bLEKo2PwKMNzwu9/T0hRbmqBF98Rf
-         RwymXLVIkGq+1+SQi5YFc07UexGTPGaRsnBNMb3+OOey3Yx4yNbVY//vDVVG3DY0prQa
-         KAIAC+qR/qZ6gUO1lFvMrDH+KSUutgtnZcLIcU7bPvTDdZXWpHF0ByQYK8jAaqCpVAnZ
-         /+wm+cXC/YdoV5sOefsp7zg0QDgGjeFXwXwixysWA44GIPeaqWdmi6i360QY3wsMq4pb
-         Kt/AA2/0hsk+yC62twbjZS2WIt/IYNdTDcqf+OTya24ORg5EX7Dwa5Ecyt6naruesNBX
-         wxKA==
-X-Forwarded-Encrypted: i=1; AJvYcCUeLy6RP74ErQGx3oDxTTG38MNqMtGD7nko+6kV9AQ0ZURtU+i099e70lbpE7ggJySVDwp9W1k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxo5y1Ru8MmzXLuhRFuAcnpRohAtPh68P8CnAfPKxcV3PwQL2pV
-	9l7uJUSd+oCRbkWdf2OQTRk03L8jJAeragRpjXs+EZ87uwUr333MY+uXoozuXakYjzvFSFGyekj
-	7ELcmvFUS8Dd87jdLEifAaBiRMl211SszmIzjCKeYzhV/WALkl9s=
-X-Gm-Gg: ASbGncuJqEfV2d0gtGnTjusD72XzQ+oJHlU2dZCJM4hgDGCdX8Zv7l2nNv3zKjl4ulN
-	FuHDzcgPeOb+8+s0TkBjidkS6amrMzNphkrj9oc5Dn5T+Kflyz7q4n2+f8h60vzs8i6zhu8WKaa
-	MU8g4bPMCK+PWLmiC+NvRI
-X-Google-Smtp-Source: AGHT+IHH22Yb8vVDM2GGMpfWIKMlVaV8rrihJ5/TH2x0MBmduq7CAxPeilPSBt/GNCVtS2VjgzgODkD1S3YT2CswIyk=
-X-Received: by 2002:a05:6902:12ce:b0:e6d:fd2f:2b41 with SMTP id
- 3f1490d57ef6-e732344caffmr15747582276.35.1745881145551; Mon, 28 Apr 2025
- 15:59:05 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 28 Apr 2025 15:59:04 -0700
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 28 Apr 2025 15:59:04 -0700
+        d=1e100.net; s=20230601; t=1745881775; x=1746486575;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vuwPRT6I+AQPMIHK3FEvwFoI62Ft+AE7bxY+V5erSDY=;
+        b=gaZMAok4VYSX3zQtqjVWmJzTIsV4uXBuVOJeqCggNUQ3oPQGHxGQ/a7E+NP7fMoY0W
+         /bRbMsaHG3S0xtDVNROdrD65d19sJoDCogaEKq8M/bxT0cmQwOWpB8AMBaXmLUo6LsKg
+         R5h/EsV1IjI76kS4eOCmtMIn1M75ksA87rScOln7RTK0BXwiRXSDi6Y6AVZ/JuY/1+QL
+         ZVkIiia3SUDCjvTfupHtZnkItZlivNoXMWZmq9OfwQ0h+I2z8YMx/p613b3KU6KU/EAl
+         fTcwFxs5Ef2RYIKOvzaA1besEXD1pw85Vnf6v/h97XnYz4namegF7Sghs35mizhzPm5v
+         EODw==
+X-Forwarded-Encrypted: i=1; AJvYcCWAFyJzjue+XWg3HAYsRq04OGVh/KuxZ3gUG3+xitfRsJRtlaTOZFFrNrIMxS32akG1hSemwgo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxhIDckJ/RxGDnPw4PbRRbMxVviVxkrABe3qIaghJ+xZ/gGMBPI
+	NX4+U3gTqA5udMLG7aUP5YKiLOiWa9KOw6LVqL3POYXPWPEIjKIl3qU8c/vKxaY=
+X-Gm-Gg: ASbGncsLh9Xy2XkGnZbygXEzcy9xMvjVwyYApClk000QOChEqPKwSV1asfHc1Vl6Feh
+	pNmj5zvaCgKcFCNLH12CWCO3SeHu1wQWeIpdEUxZzpYbNCE6p/9pE3jOBhPH+1zSKWkzReY20ng
+	a2HRgsBZS77ikKZyR66yLBAOytGxDBVnpdfTODVi7Fyl0NgbjXUFJlBUi51ofXSi4BzkpiiJiSe
+	JQ+5VOKPOer3GZbOXPhaAUcYl1L2yik+ozAlbxTYhs/zuw15w46LUzYxh/iUKUw/cSTZUE+eV4e
+	4324V8eDWCSfMSLqNiCUM5tNBRcVuwPYqTEtynifdLD+sZ7XUhqJA+sO2u1Ut2DvdBZ6cLweKUa
+	6J3IdN7XvTV9W/IrY1bCtY4hucXfsHC5NbSBzg5Co
+X-Google-Smtp-Source: AGHT+IE5dJK+12G6ixtMDx/8QmYuexDS2b/NTuouKDmQ+p4y/0Up7a/b/rL1ILFQJAuAfI+CdQ8jOw==
+X-Received: by 2002:a17:907:940d:b0:ac7:b368:b193 with SMTP id a640c23a62f3a-acec4cdf8a0mr160727866b.27.1745881775464;
+        Mon, 28 Apr 2025 16:09:35 -0700 (PDT)
+Received: from raven.intern.cm-ag (p200300dc6f46c100023064fffe740809.dip0.t-ipconnect.de. [2003:dc:6f46:c100:230:64ff:fe74:809])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ace6e595abfsm687547266b.86.2025.04.28.16.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 16:09:35 -0700 (PDT)
+From: Max Kellermann <max.kellermann@ionos.com>
+To: xiang@kernel.org,
+	chao@kernel.org,
+	zbestahu@gmail.com,
+	jefflexu@linux.alibaba.com,
+	dhavale@google.com,
+	linux-erofs@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Max Kellermann <max.kellermann@ionos.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/erofs/fileio: call erofs_onlinefolio_split() after bio_add_folio()
+Date: Tue, 29 Apr 2025 01:09:33 +0200
+Message-ID: <20250428230933.3422273-1-max.kellermann@ionos.com>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Mon, 28 Apr 2025 15:59:04 -0700
-X-Gm-Features: ATxdqUF097B9OzWHJJVLI5kpRP6ioIsGmz8U98FMG3tkguVAGQdA0cDCiU5TH3Y
-Message-ID: <CACo-S-0Kai+-oJcTcp-2PDtH5nem_L8Xd44Yj646KrvnAEEEjA@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-6.12.y: (build) expected ')' in
- .vmlinux.export.o (.vmlinux.export.c) [logspec:kbu...
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+If bio_add_folio() fails (because it is full),
+erofs_fileio_scan_folio() needs to submit the I/O request via
+erofs_fileio_rq_submit() and allocate a new I/O request with an empty
+`struct bio`.  Then it retries the bio_add_folio() call.
 
-New build issue found on stable-rc/linux-6.12.y:
+However, at this point, erofs_onlinefolio_split() has already been
+called which increments `folio->private`; the retry will call
+erofs_onlinefolio_split() again, but there will never be a matching
+erofs_onlinefolio_end() call.  This leaves the folio locked forever
+and all waiters will be stuck in folio_wait_bit_common().
 
+This bug has been added by commit ce63cb62d794 ("erofs: support
+unencoded inodes for fileio"), but was practically unreachable because
+there was room for 256 folios in the `struct bio` - until commit
+9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts") which
+reduced the array capacity to 16 folios.
+
+It was now trivial to trigger the bug by manually invoking readahead
+from userspace, e.g.:
+
+ posix_fadvise(fd, 0, st.st_size, POSIX_FADV_WILLNEED);
+
+This should be fixed by invoking erofs_onlinefolio_split() only after
+bio_add_folio() has succeeded.  This is safe: asynchronous completions
+invoking erofs_onlinefolio_end() will not unlock the folio because
+erofs_fileio_scan_folio() is still holding a reference to be released
+by erofs_onlinefolio_end() at the end.
+
+Fixes: ce63cb62d794 ("erofs: support unencoded inodes for fileio")
+Fixes: 9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
 ---
- expected ')' in .vmlinux.export.o (.vmlinux.export.c)
-[logspec:kbuild,kbuild.compiler.error]
----
+ fs/erofs/fileio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-- dashboard: https://d.kernelci.org/i/maestro:2e17160abef3cb44a707a6b2dac8d873f29c593c
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  0f114e4705bd70a1aade95111161a0a24a597879
+diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
+index 4fa0a0121288..60c7cc4c105c 100644
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -150,10 +150,10 @@ static int erofs_fileio_scan_folio(struct erofs_fileio *io, struct folio *folio)
+ 				io->rq->bio.bi_iter.bi_sector = io->dev.m_pa >> 9;
+ 				attached = 0;
+ 			}
+-			if (!attached++)
+-				erofs_onlinefolio_split(folio);
+ 			if (!bio_add_folio(&io->rq->bio, folio, len, cur))
+ 				goto io_retry;
++			if (!attached++)
++				erofs_onlinefolio_split(folio);
+ 			io->dev.m_pa += len;
+ 		}
+ 		cur += len;
+-- 
+2.47.2
 
-
-Log excerpt:
-=====================================================
-.vmlinux.export.c:1260:33: error: expected ')'
- 1260 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
-      |                                 ^
-.vmlinux.export.c:1260:1: note: to match this '('
- 1260 | KSYMTAB_FUNC(bpf_map_get, "", ""BPF_INTERNAL"");
-      | ^
-./include/linux/export-internal.h:62:37: note: expanded from macro
-'KSYMTAB_FUNC'
-   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
-KSYM_FUNC(name), sec, ns)
-      |                                         ^
-./include/linux/export-internal.h:41:5: note: expanded from macro '__KSYMTAB'
-   41 |         asm("   .section
-\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
-      |            ^
-.vmlinux.export.c:1269:42: error: expected ')'
- 1269 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
-      |                                          ^
-.vmlinux.export.c:1269:1: note: to match this '('
- 1269 | KSYMTAB_FUNC(bpf_link_get_from_fd, "", ""BPF_INTERNAL"");
-      | ^
-./include/linux/export-internal.h:62:37: note: expanded from macro
-'KSYMTAB_FUNC'
-   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
-KSYM_FUNC(name), sec, ns)
-      |                                         ^
-./include/linux/export-internal.h:41:5: note: expanded from macro '__KSYMTAB'
-   41 |         asm("   .section
-\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
-      |            ^
-.vmlinux.export.c:1271:34: error: expected ')'
- 1271 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
-      |                                  ^
-.vmlinux.export.c:1271:1: note: to match this '('
- 1271 | KSYMTAB_FUNC(kern_sys_bpf, "", ""BPF_INTERNAL"");
-      | ^
-./include/linux/export-internal.h:62:37: note: expanded from macro
-'KSYMTAB_FUNC'
-   62 | #define KSYMTAB_FUNC(name, sec, ns)     __KSYMTAB(name,
-KSYM_FUNC(name), sec, ns)
-      |                                         ^
-./include/linux/export-internal.h:41:5: note: expanded from macro '__KSYMTAB'
-   41 |         asm("   .section
-\"__ksymtab_strings\",\"aMS\",%progbits,1"     "\n"    \
-      |            ^
-3 errors generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+arm64-chromebook+kselftest on (arm64):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:680fc28a43948caad95c14a3
-
-
-#kernelci issue maestro:2e17160abef3cb44a707a6b2dac8d873f29c593c
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
