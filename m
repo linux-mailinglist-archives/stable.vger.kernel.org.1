@@ -1,191 +1,113 @@
-Return-Path: <stable+bounces-136954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0ECCA9F90A
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 20:59:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFE3A9F950
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 21:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC7EF17CEBC
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:59:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E4733BF06D
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 19:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72A8296160;
-	Mon, 28 Apr 2025 18:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1198293B6A;
+	Mon, 28 Apr 2025 19:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="bvAsSsgD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IrhGKyt/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E7E3296D33
-	for <stable@vger.kernel.org>; Mon, 28 Apr 2025 18:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED01FECB4;
+	Mon, 28 Apr 2025 19:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745866760; cv=none; b=dCLt9ROqGy2ZdYsokYy7UCpAXtVsNSXH2U/WpQ18MsuS1CVAnB+G4126lXJ6/I6Mq4kmQsPJzqkc45F4lRPE/am9vVEhDtXFNL5Y7BNjC/Ucld4pDJbnbKWbpiwYGi3x5sAHoBy48W+uBrc+dzudb7g36nb2mZYdbCpqEsPpsR4=
+	t=1745867960; cv=none; b=TQlAnd7+PAiJXR9VE4FjNcbt1ybqgneB8hkUsZGqJ7cl8qCdeXlkIYZlsuaP/ruzod0hBwne8akx71cwz+4L61lbNqaq3d+vrnLF0v87z+L3Z4FVO28/L4dY3Y+Yu91hTE6RUcARhtFR5EzJG8ftZpazLD/C47ZxHcaQtDIh3+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745866760; c=relaxed/simple;
-	bh=y/IymF4WrJDwtmcryo8C+7wE9dyO+4mLdsKywMD/pnc=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=P/MOmeDqfNhRF1GEEdJKUQN9VmBJR9rXZCfEYJ2vHiVe5iio3O7xtGDY6cNcij16Lkh+MGKtvwL32zmwMMuBwgUL6XWFmOQqJXlNnfGVmrfKgvHwqcPqVdme36UAKacZ29o2RvaIBcB8JYAD6v+08rMvqSqhdOgMNoStoavVx6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=bvAsSsgD; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ff07872097so49324007b3.3
-        for <stable@vger.kernel.org>; Mon, 28 Apr 2025 11:59:18 -0700 (PDT)
+	s=arc-20240116; t=1745867960; c=relaxed/simple;
+	bh=BrUp0nJxKY420p1grOxNlEERiDw8TRzTT9xqyvtD2fA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KO4ihk1U4akqPnAVrXgw7g7XGDRtaDncctI+D89oaaqKLYUX74TjEq2zOvmJctTiNBb+CpVORZaGSjgR4G5cxz9waoL57r6oD7j3yRH3vU6NGV8r1It09cauVcTFYZJzPI/Sp2cMHjaQ+rDwyOS2k2jvV53IdQpUqsG5jjz9S/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IrhGKyt/; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3035858c687so4358278a91.2;
+        Mon, 28 Apr 2025 12:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1745866758; x=1746471558; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WI0LuGWqbU4Lt6CpKLpcjsN+w0pP1OH5RkUkYpjmnRg=;
-        b=bvAsSsgDkJ6414i8qZvdktghj4geUtWzoFDXeeZt8Fpnp7YwzS9VV1VMm7CgGP4oT2
-         xvx/xQO7zzttHLVkh1NAGd+3BaUsYaM2AOPjyWcNeKl9n8g+MpHpnqFHmpciRvFm1y+k
-         T9GFRMPKeX4fPVJT6nvIw8zRZfpwVRxQesBe/NBMQFSoqPjpVyLTKsV+ZubSn6He5qiI
-         AhwT0IwBRY9JVf2X5S956b5LwDptNzLXZ8CBKcCJpqmv4DYGYs+VcT0CdxH27TzZwi3F
-         U1EQ3xtP9SIYtwjPGrebpcR3RkqmlJ6KjRO7LCcZgeNjaxdec3FUtfTmLZdUNrvQq3Nd
-         7wNw==
+        d=gmail.com; s=20230601; t=1745867958; x=1746472758; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BgCtF609xcKndtg2owySEhQv7l/vQGYnhH9MvvsxaGk=;
+        b=IrhGKyt/I+dzCrXRLTvOvN1CWb63qrIoRiIo24Gt7RcqJfm8czS0xjfNoycQD9ZteT
+         pKXTV7KChLjcxWdwt/jz7V0Gq08oblOODWhcgfrJMxEu30ZdO0fe9e2jvWh3ZQk+HWl+
+         83hti2vseXF/ryRA9+Lf9qZVcjvj/JBlgb4tMO/7uWz5XgUEnFfQXjepmBTUWqW1l8To
+         Jok59D5MmxQE+JT0aeqrhemgOJB5SpOSaBUAFJWIRRRfLVBmwHY5uGxBYTgfm8iah0C0
+         hPTBE4JpSjxxoUS5XuJcdWjHyVPJXllcomoHcOeDnPzB9UdED/UJAtOPamSidrxew5t0
+         e0Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745866758; x=1746471558;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:reply-to
-         :from:mime-version:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1745867958; x=1746472758;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WI0LuGWqbU4Lt6CpKLpcjsN+w0pP1OH5RkUkYpjmnRg=;
-        b=lgPQFLbpwBCYElFZ0rDypwqtPIccMY/i6pAWxSLmZkaEb/lZDK7OKjdcl79uIsXy7z
-         tlBUbKNbhDpORi/kLvb74sH1dLDLk/HNZOERwGXAa4CiaNrmyDeehLlynxAQVSUZXzMU
-         XE4HG0Sti4Oq2w2vOOBM7yLG0x3+tHcYCXosyQzWjRQ8CMOnV7Z0GE0ItZAOgbYcKnmv
-         R3v8Fnum1Ewzwxufke1Dfq9FAWMszQR/IeE6enOe3s8S3XOOx0KpqZEzkE9aSdi5y4ai
-         OU168iXjKWEdnVCwC94ry2aV5X0CnAHtjGFJ3NaPGuGx7XmQL5hLGcMCx151iAu7K9vb
-         ex3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWYJqqyWX/oASHoUIJkJytei08DGmDHhjNKq/sB243/ZSiD5FwZvNWkKWstiZWwyXIJiAX2Tjk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR4LgGhHJC4fO4KxiurMXPI54qey1Zlerkgjtqz/QRtI8CIYKc
-	TU3lCLjDUIcAuGG56PR4HY9z2UuNbX/lSepffYfrVJ89SaEHIKVN6YMraGM4cz0elfpbUfXH0Et
-	71Yqddb2ZnnngJNMeu+gLN8r76/TxwbXHrGO4SVcXrY3zoFFFLF0=
-X-Gm-Gg: ASbGncvEGpsARBez94/WUFk9GtTZjAtzfd4pxCCH3RWXeCN9QctrDOYuW+HZbMnU357
-	J2HuzWF4OK5p5mfpKs9rdseuqxS/KCocExUJwzY7iy1Fnaoa6q70RnlRINFvHB3GLgzWMLdHnuP
-	frFUhIy10emLv1Fj6Mllmn
-X-Google-Smtp-Source: AGHT+IEKRuxFmF3rtthFEan+9S9Wml7IMu1nLO4uPTz5IUWRztokKRdf6JqLo0OTVkfyFYnuBZ7cVcG9prlCkYQ2igc=
-X-Received: by 2002:a05:6902:274a:b0:e73:71b:72dd with SMTP id
- 3f1490d57ef6-e7323354df7mr12632045276.10.1745866758239; Mon, 28 Apr 2025
- 11:59:18 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 28 Apr 2025 11:59:16 -0700
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 28 Apr 2025 11:59:16 -0700
+        bh=BgCtF609xcKndtg2owySEhQv7l/vQGYnhH9MvvsxaGk=;
+        b=Typcl0tTF9J/buX2ILxHECZBD8ozikZ43w8BlZVJhXsM2FR7IYNI9eJh70bStD8YUK
+         /6QteVYyf34Ibou1uscUob6I5CJg3sAhbCdY68BsbQlWKhQkDXYbb1YPohtimBAbI3VP
+         s2WhGK6u0YcXiIIvbQARq8m5yjviY+m6TQNkb+PFcbIy6HZtDaHC+KOPda69fKQOMcIx
+         Zc3WDi7raQEEv/FzpRivAJd0uwYfRAXgkr6E+Hk5Kpedno1jdmeHMf9m9lsb2DgVJzc8
+         zJMozYQ/6ZkpY7lqRzeIzmbXxVYaglKcI6AzIwGo8OhaaSe4bPAlIQOF/QQ9vx9AjYWV
+         tmCA==
+X-Forwarded-Encrypted: i=1; AJvYcCXO5Cipxe+1qBnyxhDHK7hEuEhKvU/wvP4lt72iyQFnI+1eV8K/pe1JUGfHkl1jlI6XJyNlS7ek@vger.kernel.org, AJvYcCXZAHzVn/UBvowFWSrVDFI4xG9X4yBGWyERBcY1F3DLTwll7hNIiJQkTzR18J1PieVcFWJKCh9AJZXVOA==@vger.kernel.org, AJvYcCXsQdg9eQNIocxRZoOl0WAh13wVx5N7SpOtoeG+tVyProdQpUzP++RXRV5Almm64i4shgbuJMaHlFpfsbzY@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywzx8g98XAHpc4fOpEI2dDNG3uqTPJQALRt9EGH9i+Q5JrA46T+
+	QATDQRRxwJJvvafxHWayKrR5q6+Hstzkssbdcnp9MzP+uIZiwGJo
+X-Gm-Gg: ASbGncv72cIVuS4SLwSwsq9wRqM7Likgvrf+p2DtkkQmceVNvqGT3++sBFS3FsNTJY6
+	Jr65z03vXLcVc5JbjtffvgX0LLzeUtHlRUojBXlQwSJqifWvREUk5B+fkUVuF6TlP7l95AktGqa
+	gFFl71b1EjraFRbjLzs0TSrxDxoJUKsTGk0hA7qPEY2amu5hzr07f+h2D/qyhqeS7frtTgYZFWo
+	liy1FsTJ0VkObOvfgP59RZkNRyOqKB/BXo3GWLZzRFXPHF/a5HGZD3j41DxKjrtAsKNSpVDWtuE
+	IocOCnpotq81xAgMHyux8DB9T52YOwE3mbWKt2fJ
+X-Google-Smtp-Source: AGHT+IGAjdKlZf7vr+mPAgNIF99JKmJUUGWr/DLExKdSgaX8/yizgBS5OVmBzIQD1SJYTXSWMF9CCg==
+X-Received: by 2002:a17:90b:384f:b0:2fc:ec7c:d371 with SMTP id 98e67ed59e1d1-30a215416b8mr1416965a91.3.1745867958254;
+        Mon, 28 Apr 2025 12:19:18 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:67d:4372:d1e6:def0])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-309ef03bb7fsm9424189a91.9.2025.04.28.12.19.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Apr 2025 12:19:17 -0700 (PDT)
+Date: Mon, 28 Apr 2025 12:19:14 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+	Maximilian Weigand <mweigand@mweigand.net>, Alistair Francis <alistair@alistair23.me>, 
+	Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>, stable@vger.kernel.org, 
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] Input: cyttsp5 - fix power control issue on wakeup
+Message-ID: <4yohupeiamzt7sw3qvuj427xsulpk7jcwyixtljhmbih3mzos3@nwyuv6hbxvzz>
+References: <20250423135243.1261460-1-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Mon, 28 Apr 2025 11:59:16 -0700
-X-Gm-Features: ATxdqUFUTM3GPoa-GdDwmGgqKt5_H5EFqzgOSOXMtgbRx-uRnD45qXLyCNJ5O6c
-Message-ID: <CACo-S-1w_c=X+VathvPf=DuJDXALUs=Zhi_9-Z4RsAuuOVaDxg@mail.gmail.com>
-Subject: =?UTF-8?B?W1JFR1JFU1NJT05dIHN0YWJsZS1yYy9saW51eC01LjQueTogKGJ1aWxkKSDigJhNU01fVQ==?=
-	=?UTF-8?B?QVJUX0NSX0NNRF9SRVNFVF9SWOKAmSB1bmRlY2xhcmVkIChmaXJzdCB1c2UgaW4gdGhpcyBmdW5jdGlv?=
-	=?UTF-8?B?bikuLi4=?=
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250423135243.1261460-1-hugo@hugovil.com>
 
-Hello,
+On Wed, Apr 23, 2025 at 09:52:43AM -0400, Hugo Villeneuve wrote:
+> From: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+> 
+> The power control function ignores the "on" argument when setting the
+> report ID, and thus is always sending HID_POWER_SLEEP. This causes a
+> problem when trying to wakeup.
+> 
+> Fix by sending the state variable, which contains the proper HID_POWER_ON or
+> HID_POWER_SLEEP based on the "on" argument.
+> 
+> Fixes: 3c98b8dbdced ("Input: cyttsp5 - implement proper sleep and wakeup procedures")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> Signed-off-by: Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
 
-New build issue found on stable-rc/linux-5.4.y:
+Applied, thank you.
 
----
- =E2=80=98MSM_UART_CR_CMD_RESET_RX=E2=80=99 undeclared (first use in this f=
-unction);
-did you mean =E2=80=98UART_CR_CMD_RESET_RX=E2=80=99? in
-drivers/tty/serial/msm_serial.o (drivers/tty/serial/msm_serial.c)
-[logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:d940d725a86576ad87109055564f7=
-d1508cedf2a
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
-le-rc.git
-- commit HEAD:  e110b4519e01628bc31ba22c9111554d8944c82a
-
-
-Log excerpt:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-drivers/tty/serial/msm_serial.c:1728:34: error:
-=E2=80=98MSM_UART_CR_CMD_RESET_RX=E2=80=99 undeclared (first use in this fu=
-nction);
-did you mean =E2=80=98UART_CR_CMD_RESET_RX=E2=80=99?
- 1728 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART=
-_CR);
-      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~
-      |                                  UART_CR_CMD_RESET_RX
-drivers/tty/serial/msm_serial.c:1728:34: note: each undeclared
-identifier is reported only once for each function it appears in
-drivers/tty/serial/msm_serial.c:1728:60: error: =E2=80=98MSM_UART_CR=E2=80=
-=99
-undeclared (first use in this function); did you mean =E2=80=98UART_CR=E2=
-=80=99?
- 1728 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART=
-_CR);
-      |                                                            ^~~~~~~~=
-~~~
-      |                                                            UART_CR
-  AR      drivers/video/fbdev/built-in.a
-  CC      drivers/video/of_display_timing.o
-drivers/tty/serial/msm_serial.c:1729:34: error:
-=E2=80=98MSM_UART_CR_CMD_RESET_TX=E2=80=99 undeclared (first use in this fu=
-nction);
-did you mean =E2=80=98UART_CR_CMD_RESET_TX=E2=80=99?
- 1729 |         msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART=
-_CR);
-      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~
-      |                                  UART_CR_CMD_RESET_TX
-drivers/tty/serial/msm_serial.c:1730:34: error:
-=E2=80=98MSM_UART_CR_TX_ENABLE=E2=80=99 undeclared (first use in this funct=
-ion); did
-you mean =E2=80=98UART_CR_TX_ENABLE=E2=80=99?
- 1730 |         msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR=
-);
-      |                                  ^~~~~~~~~~~~~~~~~~~~~
-      |                                  UART_CR_TX_ENABLE
-  CC      drivers/video/of_videomode.o
-  CC      drivers/tty/serial/xilinx_uartps.o
-  AR      drivers/usb/core/built-in.a
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-
-
-# Builds where the incident occurred:
-
-## defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=3Dn+CONFIG_M=
-ODULE_COMPRESS_NONE=3Dy
-on (arm64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:680fbf8443948caad95c0b94
-
-## defconfig+lab-setup+kselftest on (arm64):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:680fbfc943948caad95c0c27
-
-## multi_v7_defconfig on (arm):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:680fbfae43948caad95c0bf1
-
-## multi_v7_defconfig+kselftest on (arm):
-- compiler: gcc-12
-- dashboard: https://d.kernelci.org/build/maestro:680fbfb643948caad95c0bfc
-
-
-#kernelci issue maestro:d940d725a86576ad87109055564f7d1508cedf2a
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+-- 
+Dmitry
 
