@@ -1,82 +1,65 @@
-Return-Path: <stable+bounces-136909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-136910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29CDA9F5D8
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:31:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 858C7A9F5F2
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 18:36:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B40281899479
-	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 16:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0173BC87B
+	for <lists+stable@lfdr.de>; Mon, 28 Apr 2025 16:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05E527A130;
-	Mon, 28 Apr 2025 16:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA8C27A10B;
+	Mon, 28 Apr 2025 16:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DUjkMvC+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LenyeSmo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E055B199E9A;
-	Mon, 28 Apr 2025 16:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7AD320ED;
+	Mon, 28 Apr 2025 16:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745857876; cv=none; b=cHkZ+g6cvICkoKa5lGadEEXvwgc7FnQpgxdzae3aRGyWONGVO58TdhOZ/1wP9VnKpMYwtdrL6kplrZ2mtexldjzkKet8uepkTKPPre1UYRHuEI7cKNexVuR1TigKevmI7hyk5qQElbPLyF2IOGAj9Xt0dx8ijZIyzJ4x0n2N1l0=
+	t=1745858207; cv=none; b=mqO5CETi+i10rpe6lP1iqns2527SZs7Tns9oaY5zdu9bwzAZKFtF7FPKdy+zH6KF6Gh40CvGcL2hOZ4Nkn0/4fw1I5W0Lor8h1nE9MYnAbYlafo4NkZTyaFNuX1sQSs6lsu5McPc5DVeZqzUmTtFNEUQrysUxnXIS5Fj0985Iv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745857876; c=relaxed/simple;
-	bh=XoHO3hXFTm90wQdVfiTx7lJNABIj/qSyodbgxEJXrwU=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HJxi/+sFLWTBsEeybY9Rlk/Cfv9/IaEWBD7ABvzzTLbs9b2t3Fev+4nc3wsphBq7Gxefb74B+06+Y7V5wn4xSlsPiYm8CQjJN6AF8nY4faCgA00ouccNo1t1A/R7OIy1k2NWzCVAaVNf3eAWAZSQJfdTDVN0llR1tkxDysVSJUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DUjkMvC+; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43cf861f936so8727885e9.3;
-        Mon, 28 Apr 2025 09:31:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745857873; x=1746462673; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:disposition-notification-to
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7rpLoGS47sE5MLiLABPtEKiVLu5JTrAcQvnYc7S0qkE=;
-        b=DUjkMvC+p49KAzNwPX1pCwl0UW2IznxosN9GkK88VMqBrVrHRPEbdCbL/JbKoRqKLt
-         sS4mnyjhmOs7vf3nUJwA9sB7G9AMtfk/Pj2PtczeEVJUJJfJpKzbpnFnGwWA1W/AU/WK
-         rQoe/BHDYItMd8E9b09FaalKvTXlDTz9dTAy8B/BKM0Fc6Ty3HTTTd4Og3smQmQPfGKM
-         1qBxCnKTQKJ5TIrkWpxYWCe+JGsXsw4wmcjYnglDd/6taGMi7meDZ8+ju+96zv2GLsbd
-         +evt84lVMsicfoC+YMrdJbH7P4KFWwJl3u6wyXcddBTcQgp7Ab6FsRj9m2AnrFqIx1y/
-         P+yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745857873; x=1746462673;
-        h=content-transfer-encoding:in-reply-to:disposition-notification-to
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7rpLoGS47sE5MLiLABPtEKiVLu5JTrAcQvnYc7S0qkE=;
-        b=kujAL+EFt1bxajm2/w+Y0JLrM2RtvUWuhpxZFACd2IlC29+1b8Yp053iPBM+mfV5kQ
-         p60JeYZ2ZTmIjG6WZhVRiEkH691fBeWLstJf8iT56LIQ0Pz041tIl6KHxvMwVQitxY3/
-         xpvYyH5egh9BlqR0XB93DEdaYwikgHIxrRGZbL3yivIemitI+FyajmAPa7WzemwvUYHW
-         8/izGPZjI5IYpeoFTFrYlYcVSLdyp0pZHeub+tzmIwqR8ieTweMETeCeq595UQVZlhHq
-         2wqrzTeKuH7P6FjT17yFv3+Ie4QV4CQVdtCW4u6Le0R9kxki4HVUlETUnDxcUvYRqlPg
-         LNbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUsbDPxjtZFAdBYs56lyRulSEIgmsBuxdp+aTxW5WiRQxHj75YGz+QISrOJAOlMPEHzAr4aEa8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/FMc8EpS8GGnyhs7wiyKet7HNUUBNqCKZ2LZfGL3UQCVZm5ww
-	1e/ikauOAR7huWlrUR2juEqubzL5jwkhpjRcuIuj4qGSPLj/XFknFI3RMaA/
-X-Gm-Gg: ASbGncvJPnERc4ArnNjCIXrY7omckB5VANwPdbGktPt/4Jkx0nFV9VQve3nvF6DQSpz
-	wUKVjk+Aa7UetYg80mFkkO1VIXNa3kXV6O/pXigZ/QwfO6pGexDZgyzE171vpp/T6HUdo78xxEg
-	oMWffY+2kRzvUCI5kUoLDjYT3aEHhHmgiU1QPm3E+LTVK8j/hhJ47R0TE8//+jvJ0+M2g37uNWP
-	2sh9sKywoGzLDWDu1Zp1sk2PA+Cd7CZZxuyxAXFlsv32V1UjjzSFYRslv+dyxeIGOJCCz9p1GfL
-	az7fS8hP/CdVl/6hY+nQbJvUYFtvEbMvb729CpLK6ti+hrMg6yt52QgPFQ==
-X-Google-Smtp-Source: AGHT+IHmjNe3scTe8qIdIgHxl5WlUB1dX8XR8Fa4lJ29b14HLel6DUXMTEQxxoDEsqw4QywjAo8agw==
-X-Received: by 2002:a05:600c:4685:b0:43b:cab3:1fd1 with SMTP id 5b1f17b1804b1-440a65bb7d5mr41472465e9.1.1745857872642;
-        Mon, 28 Apr 2025 09:31:12 -0700 (PDT)
-Received: from [192.168.36.152] ([82.66.27.2])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4409d2ad112sm161000125e9.24.2025.04.28.09.31.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Apr 2025 09:31:12 -0700 (PDT)
-From: "=?UTF-8?Q?Jean-Fran=C3=A7ois_Ingelaere?=" <masterprenium@gmail.com>
-X-Google-Original-From: =?UTF-8?Q?Jean-Fran=C3=A7ois_Ingelaere?= <MasterPrenium@gmail.com>
-Message-ID: <bb95fe33-bc31-4aa3-a93d-3deadbcb4973@gmail.com>
-Date: Mon, 28 Apr 2025 18:31:11 +0200
+	s=arc-20240116; t=1745858207; c=relaxed/simple;
+	bh=UySdE4TPlecqxBiv4V8h6ZcS2TekfFhhH3Gx4Ou6UC8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Db9p5ZkRmVkWRsy+Ez6YmbC4SZLDrTLOdhhHPICRyiK2DBz0RxEf4n5J4IPU37JbixQC9PALrKrErSxHKOcGvFot4HMNEsjOIvs/K5Tyfl/0B4rKtLs8H9AiGw8xQxrflkMn8s1M68cx4WxcnVR8aobipqeKhZP63+tgGt73DAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LenyeSmo; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745858206; x=1777394206;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=UySdE4TPlecqxBiv4V8h6ZcS2TekfFhhH3Gx4Ou6UC8=;
+  b=LenyeSmomUCzKgAYlvkEav8NLPDtVv2nsmwqyAbzBAGTvFCQApoV22Fj
+   Uu0mhtrcm1tsEeYJg+yInVBnk+z+3+2KrlDNnu1avpEjidKKQBN0tV8EY
+   SulNTB/CmYQPR8pTpIzg++SvlZu17cqVlf79dm4GY4V4TaGQcsmqEig9J
+   p/yumRSV4Azd4Cl0kDGSV9VEpTPxzRlPByC5HYVnf0x6JpB1hj3I+uVDK
+   e1A0huH/kd78/x+g28mOMVJr2EUp0V4xEjx1rAroSn4aff7Y2FDAH2r45
+   LW6WwpqlFypWvZOzBoB7RnWQfeQsRJ3yJzHWbi+n6skvxhDMt/B3l0UXs
+   w==;
+X-CSE-ConnectionGUID: sEKz1XoORQekLuhWpQip5A==
+X-CSE-MsgGUID: UfDnRSz7SWuoq6cIsIT/iw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11417"; a="47590507"
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
+   d="scan'208";a="47590507"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 09:36:45 -0700
+X-CSE-ConnectionGUID: dxFdpX51SrCzWcLbYI5D4g==
+X-CSE-MsgGUID: SCbQKQ0QTkibrdRRjPlpew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,246,1739865600"; 
+   d="scan'208";a="134521731"
+Received: from mdroper-mobl2.amr.corp.intel.com (HELO [10.124.222.199]) ([10.124.222.199])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2025 09:36:43 -0700
+Message-ID: <74d7d392-82ce-46b1-81ad-a5f1c1bdf62c@intel.com>
+Date: Mon, 28 Apr 2025 09:36:42 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,134 +67,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FW: Wireless speed regression issue with >6.12.12/6.13.x +
- firmware update for mediatek MT7925
-To: =?UTF-8?B?TWluZ3llbiBIc2llaCAo6Kyd5piO6Ku6KQ==?=
- <Mingyen.Hsieh@mediatek.com>, "stable@vger.kernel.org"
- <stable@vger.kernel.org>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "kvalo@kernel.org" <kvalo@kernel.org>,
- =?UTF-8?B?QWxsYW4gV2FuZyAo546L5a625YGJKQ==?= <Allan.Wang@mediatek.com>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-References: <CACr2tqu10_mXiXw-Q3VSqYBJhQU1s_m77_uhvjpe0j3H3jhbgA@mail.gmail.com>
- <TYZPR03MB61644B8F34946A73E2C16E27F4DF2@TYZPR03MB6164.apcprd03.prod.outlook.com>
- <5a07aea2090532682c8cd4df3ab1b9026f2e1cd5.camel@mediatek.com>
- <04dca014-881c-46b4-a084-2001c62b466e@gmail.com>
- <6cebf6265f5f981dd951851d0832633292a60a46.camel@mediatek.com>
- <28ff58dc-72f3-4b71-817c-ccb4ff5f777d@gmail.com>
- <bc09e1613e1dd31489d1d2290a67da987481f03d.camel@mediatek.com>
-Content-Language: fr-FR
-Disposition-Notification-To: =?UTF-8?Q?Jean-Fran=C3=A7ois_Ingelaere?=
- <MasterPrenium@gmail.com>
-In-Reply-To: <bc09e1613e1dd31489d1d2290a67da987481f03d.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v4 2/2] x86/devmem: Drop /dev/mem access for confidential
+ guests
+To: Jianxiong Gao <jxgao@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com,
+ x86@kernel.org, Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+ Naveen N Rao <naveen@kernel.org>, Vishal Annapurve <vannapurve@google.com>,
+ Kirill Shutemov <kirill.shutemov@linux.intel.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+ <174500659632.1583227.11220240508166521765.stgit@dwillia2-xfh.jf.intel.com>
+ <9a4b347f-9a18-4578-9031-0d1bc98e668d@intel.com>
+ <CAMGD6P0ORZF6Tbkuedv99jEpk+6HjG=pyqCwTHKU5dVxt+kRCQ@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CAMGD6P0ORZF6Tbkuedv99jEpk+6HjG=pyqCwTHKU5dVxt+kRCQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hello,
+On 4/28/25 09:30, Jianxiong Gao wrote:
+> On Mon, Apr 28, 2025 at 8:53 AM Dave Hansen <dave.hansen@intel.com> wrote:
+>> Would most developers reading this know what an "SEPT violation" is or
+>> what its implications are?
+>>
+>> This results in an immediate exit from and termination of the TDX guest,
+>> right?
+>>
+> In most cases yes but it depends on the settings.
 
-The Cisco Catalyst C9120AXI (not Meraki), is running in Lightweight 
-mode, connected  to the Cisco Virtual Wireless Controller.
+There's also disable_sept_ve() in the kernel.
 
-I was running tests in 5Ghz, WPA2 + 160Mhz Channel width, not 80 (+all  
-supported rates enabled, RRM+DCA enabled, 802.11h enabled, BSS enabled). 
-As tested previously 20Mhz channel width gives better performances than 
-160Mhz after regression.
+So perhaps I should have said:
 
-Following speed are observed with highest steams as I can (multi thread 
-iperf/nperf ect). Speed test isn't run in perfect conditions but it 
-doesn't really mind.
+	This <normally*> results in an immediate exit from and
+	termination of the TDX guest right?
 
-With 6.14.3 + latest firmware 20Mhz channel width (DL/UL) : 
-130mbps/160mbps (ch36)
-With 6.14.3 + latest firmware 40Mhz channel width : 230mbps/330mbps (36,40)
-With 6.14.3 + latest firmware 80Mhz channel width : 340mbps/6mbps 
-(36,40,44,48)
-With 6.14.3 + latest firmware 160Mhz channel width : 640mbps/7mbps 
-(36,40,44,48,52,56,60,64)
-
-As you can see, Upload speed is dropping with 80Mhz channel width. Can 
-you please try in your setup with 160Mhz ? As a check.
-
--> With 6.14.3 + latest firmware 160Mhz in 802.11AC (Cisco 2802E): 
-800mbps/380mbps (52,56,60,64,36,40,44,48)
-
-As a debug/comparison :
-
-With 6.14.3 + 202412 firmware 20Mhz channel width (DL/UL) : 
-130mbps/170mbps (ch36)
-With 6.14.3 + 202412 firmware 40Mhz channel width : 130mbps/280mbps (36,40)
-With 6.14.3 + 202412 firmware 80Mhz channel width : 390mbps/580mbps 
-(36,40,44,48)
-With 6.14.3 + 202412 firmware 160Mhz channel width : 630mbps/950mbps 
-(36,40,44,48,52,56,60,64)
+	 * Ignoring debug and other non-production silliness
 
 
-I don't have any other 802.11ax AP at the moment. Remember : no issue 
-with 802.11ac.
-
-Best regards,
-Jeff
-
-Le 28/04/2025 à 13:00, Mingyen Hsieh (謝明諺) a écrit :
->
-> On Thu, 2025-04-24 at 13:20 +0200, Jean-François Ingelaere wrote:
-> > 
-> > External email : Please do not click links or open attachments until
-> > you have verified the sender or the content.
-> > 
-> > 
-> > Hello,
-> > 
-> > I hoped you had previous messages. Firmware is the released from my
-> > distro (Gentoo Linux) 20240410, but yes you're right, the firmware
-> > used
-> > in this case for mt76 is 20240305, sorry.
-> > 
-> > [74734.459451] Loading firmware:
-> > mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
-> > [74734.463449] mt7925e 0000:73:00.0: ASIC revision: 79250000
-> > [74734.539692] Loading firmware:
-> > mediatek/mt7925/WIFI_MT7925_PATCH_MCU_1_1_hdr.bin
-> > [74734.539760] mt7925e 0000:73:00.0: HW/SW Version: 0x8a108a10, Build
-> > Time: 20250305132908a
-> > 
-> > [74734.878892] Loading firmware:
-> > mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
-> > [74734.879069] mt7925e 0000:73:00.0: WM Firmware Version: ____000000,
-> > Build Time: 20250305133013
-> > [74734.974255] Loading firmware:
-> > mediatek/mt7925/WIFI_RAM_CODE_MT7925_1_1.bin
-> > 
-> > 
-> > The AP used is a Cisco C9120AXI-E.
-> > 
-> > 
-> > Best regards,
-> > 
->
-> Hi,
->
-> I had tested with this AP (5G HE80 & WPA2), and my setting is v6.14.3 +
-> latest firmware. It looked good for me.
->
-> Could you give me your AP setting and could you test with another AP?
->
-> Best Regards,
-> Yen.
->
->
-> *********** MEDIATEK Confidentiality Notice
->   ***********
-> The information contained in this e-mail message (including any
-> attachments) may be confidential, proprietary, privileged, or
-> otherwise exempt from disclosure under applicable laws. It is
-> intended to be conveyed only to the designated recipient(s). Any
-> use, dissemination, distribution, printing, retaining or copying
-> of this e-mail (including its attachments) by unintended recipient(s)
-> is strictly prohibited and may be unlawful. If you are not an
-> intended recipient of this e-mail, or believe that you have received
-> this e-mail in error, please notify the sender immediately
-> (by replying to this e-mail), delete any and all copies of this
-> e-mail (including any attachments) from your system, and do not
-> disclose the content of this e-mail to any other person. Thank you!
 
