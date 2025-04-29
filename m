@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D990CAA17DC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E5AAA1600
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E85227B1F54
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AC307AA607
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6815E24EAB2;
-	Tue, 29 Apr 2025 17:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB337E110;
+	Tue, 29 Apr 2025 17:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5M8Lf8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QcAIECW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E98243364;
-	Tue, 29 Apr 2025 17:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA28243958;
+	Tue, 29 Apr 2025 17:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949141; cv=none; b=Af57DYFeM70QXIVWcnESSaFBGxhGo/Lur2jIk1FN2Vxx7IcnfzDzdrszUmw237IKXEnxrjtYfDP3C4J4x6ddDWE08sfni/iT+tpMxFpfgAv39ORnDC613f7FdbQDHPJv03R4s8h9zq7OFDO1UK0ONncGM/8+ysTFrSnXGF8Yv9g=
+	t=1745947988; cv=none; b=g7Zffv1NQGnGi/Lm7SR/8+1CKQEe4LIqkDVNFeGHls+Ms1ddoHdEFSYNaVp9h7JDNOZotQ0RZahivPm73cLbgcz7j0eQUBLGN7EoMn/nCtoNFwtPbV51Sbv7bTWiSgpT86sUwo5Iln4H6jEZt77Z/r9TxTB2xnYIlZSFTJ7V5Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949141; c=relaxed/simple;
-	bh=uDQ0F3Dair9U8TST7jnRXOnk4wJ1QYBpWtP95A/5aDI=;
+	s=arc-20240116; t=1745947988; c=relaxed/simple;
+	bh=Q9mme9p6v7sDySFJriLxkf7slpWuSLL75n/TiFJGYKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7yw2Y2jYhdLclpUo9JNkGdTE5JWHDHjYjPPEy4Oo0pxpFuGqq9zgZExiFY8ka5kvO6siYk5g2jiFZgtyxOR63196Qfs6w3zsSmcK2Q3/OsEN+JpzYejDewS/uMVsOR2lhKrYlyrFp7RodWDVmqTb9Jen9ebTdvpicwRq4vlYkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5M8Lf8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0D6C4CEE3;
-	Tue, 29 Apr 2025 17:52:19 +0000 (UTC)
+	 MIME-Version; b=JFjy1ma2lcGWaY9rn3Z237ffFwZ3KLzV6MdYV6m14nbBCB1HTEwDC6c8i83Ya5oBKL42oyXDe2EJx90O9JA7YLIUSwKwswIG1+QZmMY2nr3tKeZWP3GEQayCMsgUCpPOGPhGLPuI9+0/az5lIOW6HU5WmrL1xbxPkyq8QHaGr4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QcAIECW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43218C4CEE3;
+	Tue, 29 Apr 2025 17:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949140;
-	bh=uDQ0F3Dair9U8TST7jnRXOnk4wJ1QYBpWtP95A/5aDI=;
+	s=korg; t=1745947988;
+	bh=Q9mme9p6v7sDySFJriLxkf7slpWuSLL75n/TiFJGYKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5M8Lf8c+1OmmqOeZnlVJSShErw61Soz0P8Xh5OoZD+VZ/EzxYcj23PlHIQ2EMeJl
-	 dD0QrZv0hTE+k/jB2ZlME7cVlAXHbPLF8ZyW8E/XKI5Tg5UMh9KF4oB6wuou3J77zA
-	 0RltnxR4CBbeWuln8i94Oi7uHzubdCGcg86TqLKY=
+	b=2QcAIECWTyut3POwo0Z4io+bGicC/J/o2TdfqQMVEEXenQfEtgPphl2YqffA9LM/L
+	 HSL0yU6yOER8zwSrxI5qzUOcgSejPw0AojVJfYZzSUWH6unFb1PZw+srDXli7f9neF
+	 RwO+0K/KIdD0utr9PsEJFdTHfcdEGjVcMSLsYmHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 226/373] smb/server: fix potential null-ptr-deref of lease_ctx_info in smb2_open()
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 162/280] parisc: PDT: Fix missing prototype warning
 Date: Tue, 29 Apr 2025 18:41:43 +0200
-Message-ID: <20250429161132.444308683@linuxfoundation.org>
+Message-ID: <20250429161121.743720680@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-commit 4e8771a3666c8f216eefd6bd2fd50121c6c437db upstream.
+[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
 
-null-ptr-deref will occur when (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
-and parse_lease_state() return NULL.
+As reported by the kernel test robot, the following error occurs:
 
-Fix this by check if 'lease_ctx_info' is NULL.
+arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+      65 | void arch_report_meminfo(struct seq_file *m)
+         |      ^~~~~~~~~~~~~~~~~~~
 
-Additionally, remove the redundant parentheses in
-parse_durable_handle_context().
+arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Drop the parentheses clean-up since the parentheses was introduced by
-  c8efcc786146 ("ksmbd: add support for durable handles v1/v2") in v6.9
-  Minor context change fixed ]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/oplock.c  |    2 +-
- fs/ksmbd/smb2pdu.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/parisc/kernel/pdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -1498,7 +1498,7 @@ void create_lease_buf(u8 *rbuf, struct l
-  * @open_req:	buffer containing smb2 file open(create) request
-  * @is_dir:	whether leasing file is directory
-  *
-- * Return:  oplock state, -ENOENT if create lease context not found
-+ * Return: allocated lease context object on success, otherwise NULL
-  */
- struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index 0f9b3b5914cf6..b70b67adb855f 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -63,6 +63,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
+ #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
+ #define PDT_ADDR_SINGLE_ERR	1UL
+ 
++#ifdef CONFIG_PROC_FS
+ /* report PDT entries via /proc/meminfo */
+ void arch_report_meminfo(struct seq_file *m)
  {
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -3230,7 +3230,7 @@ int smb2_open(struct ksmbd_work *work)
- 			goto err_out1;
- 		}
- 	} else {
--		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
-+		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE && lc) {
- 			/*
- 			 * Compare parent lease using parent key. If there is no
- 			 * a lease that has same parent key, Send lease break
+@@ -74,6 +75,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "PDT_cur_entries: %7lu\n",
+ 			pdt_status.pdt_entries);
+ }
++#endif
+ 
+ static int get_info_pat_new(void)
+ {
+-- 
+2.39.5
+
 
 
 
