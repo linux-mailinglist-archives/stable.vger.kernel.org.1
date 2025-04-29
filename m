@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E8DAA19A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DB21AA1A73
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 969F53AC5B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88EC03AE3E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DF82475CB;
-	Tue, 29 Apr 2025 18:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B8425332D;
+	Tue, 29 Apr 2025 18:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ5vnhoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyLLpf7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A246D20C488;
-	Tue, 29 Apr 2025 18:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5AD42517A8;
+	Tue, 29 Apr 2025 18:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950146; cv=none; b=WK0DvIEwtX3mp/+iw7n2aUPN7KQnPOXK96dWCsmhzk/s64r104mo0klF9u/a1wpj68lUnfea65p8kEIo0jyY1RfoTOMUdHGPfoObz+rsHL96U0DWSFToogKwfyLNrYlw5ripsMNrhJneD2ilJVms1xatc7Uq3frJFJuDnaS8lc0=
+	t=1745950708; cv=none; b=FjwZnT+NRXdaOLG+KxjVwvPdIUOMuLXZf/9icA8ESsm0vQeifzpekJnbvQ8pehUtrorD9qZg5fgb5NZG3vgjpV0TEsFA22RtNZl3K/tME1AcwkuzBcS1cEcnNPFeqQQ8jNJxm9e5HV8ItuQ22turZxw/81vthzs8CsyCcajBHyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950146; c=relaxed/simple;
-	bh=+pOsFKOQjCadx5T0vSOi+b2R+O4z8XXkSTTy1LtT0do=;
+	s=arc-20240116; t=1745950708; c=relaxed/simple;
+	bh=tDnr/S2bUhwXrmkCTWmyu8nAGjFfqhJZ+WYgm54Iu2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BMaVoylpjcKcOyM2MJNaYZA+LVH+bkVbJY5CX6Q3wX3bNUF8KGdb89CU88nPGAbxw7mW3jAPHr1mEQjl5/P3QPvA7r/t9FWOgWU3DyvKL51prSsMPix9xkOPtwOCWOxCW0P4tvhSWCmAXQBpe51Jm3mJaKU0le65bhJ80lsBbvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ5vnhoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F12DC4CEE9;
-	Tue, 29 Apr 2025 18:09:05 +0000 (UTC)
+	 MIME-Version; b=KkntbcbzwdmuAH6Pz1xpDiEGUAES/KdiwdsOpxN76rdSoY5FcPBC8lKj2DU5PM4suk24bglbBjqYcl3+u0nWKt/QwAtJrQCEgKkFJDEcODTiOe6a+69tUyUq9xPf65RJaAIcR32Q6IeX+ELsvvCIfx44A7JBkcBkUDGxF557g9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyLLpf7/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2322AC4CEE3;
+	Tue, 29 Apr 2025 18:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950146;
-	bh=+pOsFKOQjCadx5T0vSOi+b2R+O4z8XXkSTTy1LtT0do=;
+	s=korg; t=1745950708;
+	bh=tDnr/S2bUhwXrmkCTWmyu8nAGjFfqhJZ+WYgm54Iu2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZ5vnhoDsn5xbyUbB4BgAt8tdjqmg0ksZDsnfbQE6UXWgyWsPIjqaneCIzR9TsAGR
-	 QUa7Ktvmb2LFe6rMoewG5lDs8+DLAwwszj3d9uF2rCBF8FDXjQDBrlNiqMI6tJP+T/
-	 t/5BBHgZJvTwfsNvVfroPfdZxf3WHss2eCY99nBI=
+	b=fyLLpf7/eG46SLhS7dppi8if4YrhwC9es41DYU10fuwBF9di+xCFuDe5OJyw3zAjd
+	 lp4sAua+S/qXfu16HH5p8BWKNLyc1knE8IBhcvYejvcnt9rh+n1Tv8tOC+MpBRpmAQ
+	 Q/5g2tfUDHOo8RtBwU0heGGe5Lvbb70YJJ32K55E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@kernel.org>,
-	=?UTF-8?q?Ricardo=20Ca=F1uelo=20Navarro?= <rcn@igalia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 6.1 159/167] xdp: Reset bpf_redirect_info before running a xdps BPF prog.
+	Thomas Gleixner <tglx@linutronix.de>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/204] x86/i8253: Call clockevent_i8253_disable() with interrupts disabled
 Date: Tue, 29 Apr 2025 18:44:27 +0200
-Message-ID: <20250429161058.159265365@linuxfoundation.org>
+Message-ID: <20250429161106.720471296@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Fernando Fernandez Mancera <ffmancera@riseup.net>
 
-Ricardo reported a KASAN discovered use after free in v6.6-stable.
+[ Upstream commit 3940f5349b476197fb079c5aa19c9a988de64efb ]
 
-The syzbot starts a BPF program via xdp_test_run_batch() which assigns
-ri->tgt_value via dev_hash_map_redirect() and the return code isn't
-XDP_REDIRECT it looks like nonsense. So the output in
-bpf_warn_invalid_xdp_action() appears once.
-Then the TUN driver runs another BPF program (on the same CPU) which
-returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
-bpf_trace_printk() to print four characters and obtain the required
-return value. This is enough to get xdp_do_redirect() invoked which
-then accesses the pointer in tgt_value which might have been already
-deallocated.
+There's a lockdep false positive warning related to i8253_lock:
 
-This problem does not affect upstream because since commit
-	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
+  WARNING: HARDIRQ-safe -> HARDIRQ-unsafe lock order detected
+  ...
+  systemd-sleep/3324 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
+  ffffffffb2c23398 (i8253_lock){+.+.}-{2:2}, at: pcspkr_event+0x3f/0xe0 [pcspkr]
 
-the per-CPU variable is referenced via task's task_struct and exists on
-the stack during NAPI callback. Therefore it is cleared once before the
-first invocation and remains valid within the RCU section of the NAPI
-callback.
+  ...
+  ... which became HARDIRQ-irq-unsafe at:
+  ...
+    lock_acquire+0xd0/0x2f0
+    _raw_spin_lock+0x30/0x40
+    clockevent_i8253_disable+0x1c/0x60
+    pit_timer_init+0x25/0x50
+    hpet_time_init+0x46/0x50
+    x86_late_time_init+0x1b/0x40
+    start_kernel+0x962/0xa00
+    x86_64_start_reservations+0x24/0x30
+    x86_64_start_kernel+0xed/0xf0
+    common_startup_64+0x13e/0x141
+  ...
 
-Instead of performing the huge backport of the commit (plus its fix ups)
-here is an alternative version which only resets the variable in
-question prior invoking the BPF program.
+Lockdep complains due pit_timer_init() using the lock in an IRQ-unsafe
+fashion, but it's a false positive, because there is no deadlock
+possible at that point due to init ordering: at the point where
+pit_timer_init() is called there is no other possible usage of
+i8253_lock because the system is still in the very early boot stage
+with no interrupts.
 
-Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Reported-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
-Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+But in any case, pit_timer_init() should disable interrupts before
+calling clockevent_i8253_disable() out of general principle, and to
+keep lockdep working even in this scenario.
+
+Use scoped_guard() for that, as suggested by Thomas Gleixner.
+
+[ mingo: Cleaned up the changelog. ]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/Z-uwd4Bnn7FcCShX@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/x86/kernel/i8253.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -775,7 +775,14 @@ static __always_inline u32 bpf_prog_run_
- 	 * under local_bh_disable(), which provides the needed RCU protection
- 	 * for accessing map entries.
- 	 */
--	u32 act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
-+	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
-+	u32 act;
-+
-+	if (ri->map_id || ri->map_type) {
-+		ri->map_id = 0;
-+		ri->map_type = BPF_MAP_TYPE_UNSPEC;
-+	}
-+	act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
- 
- 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
- 		if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
+diff --git a/arch/x86/kernel/i8253.c b/arch/x86/kernel/i8253.c
+index 80e262bb627fe..cb9852ad60989 100644
+--- a/arch/x86/kernel/i8253.c
++++ b/arch/x86/kernel/i8253.c
+@@ -46,7 +46,8 @@ bool __init pit_timer_init(void)
+ 		 * VMMs otherwise steal CPU time just to pointlessly waggle
+ 		 * the (masked) IRQ.
+ 		 */
+-		clockevent_i8253_disable();
++		scoped_guard(irq)
++			clockevent_i8253_disable();
+ 		return false;
+ 	}
+ 	clockevent_i8253_init(true);
+-- 
+2.39.5
+
 
 
 
