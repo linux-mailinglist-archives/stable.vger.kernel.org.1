@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9A5AA1200
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F58AA1392
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12ABC4A5D75
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2991890B4C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F8624466C;
-	Tue, 29 Apr 2025 16:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D32250C15;
+	Tue, 29 Apr 2025 17:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6xd1qWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaP0cpZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DE7216E30;
-	Tue, 29 Apr 2025 16:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276D0250BFE;
+	Tue, 29 Apr 2025 17:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945288; cv=none; b=UnOCt7UkIuVusdTzgHpBzGCN4/9QPL45KCxQGuVc7ENjA0eBOpyEDiIDVinXyYSiiaObNRM5anZTVZYIDOxFN4hBAV+z//GFbpldJo4M0gTRfAOyXJ+Ehz5XMtQyYayDF/pY9eYN0riX808axoHzqwjDnoHrEdYjD7kn+Lz0LAM=
+	t=1745946134; cv=none; b=S8yQ6+GLKTB4YjLYKGPlJHGMGGpMQdET1lsylCOE2uerACALm8ErO62fNLNvP1UpmO4tz+SGC2cOyt8IizP/KFx1bZvfkegjE87qp200iQs6MCWfV2B+YScd3jW9ZzomOxdYawXHqtDQYkeLNMdiyGBaN6Hn4xRML55cYQZjllQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945288; c=relaxed/simple;
-	bh=ShnDHtMu9urA8zNhVJKZDmBGLEvJZS9/4Dni8pMaQ58=;
+	s=arc-20240116; t=1745946134; c=relaxed/simple;
+	bh=6eQWRJbDXYFM6pwJdEOAByDjBbPFrqoE51sB0p0xc7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHV8DVzd9ZM8Hw5JLBnA4iznfvTk191vSPWHtO3j11weA0Pvln4jT7Gdve0jFZ6I6+6S/f+ltircjSRhkfPzkX/NM+XgA1tBTWMg3bnjtAOe+DwO+iUCibieAKjozl6tOcl/j8yVYwas3634r5M5qZ4usTW0r6bG7ZqiMoBi6ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6xd1qWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF41C4CEE3;
-	Tue, 29 Apr 2025 16:48:07 +0000 (UTC)
+	 MIME-Version; b=kF8lw7bmoOROXwldudlKixP3LpRX9B1npXjm+HpkEry1Tr6bTtlLpygZzeGsfxSuiPw81dfsofTn6P5RSAArqSDtg+dDg+vJqJF2tWovLPBGDM81grCVU53kFaNQfVfDrKt/tii/BM5AHfi+u5AMQccaQLTbTTm8LSThTSDJwW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaP0cpZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EE90C4CEE3;
+	Tue, 29 Apr 2025 17:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945287;
-	bh=ShnDHtMu9urA8zNhVJKZDmBGLEvJZS9/4Dni8pMaQ58=;
+	s=korg; t=1745946134;
+	bh=6eQWRJbDXYFM6pwJdEOAByDjBbPFrqoE51sB0p0xc7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6xd1qWSrVoa6SfPWuDxxyAOlQGMoosg0cWBS6jrH8pe3Sc9iI5WH9zgWWuF2FQzw
-	 +lzYzyI3WedvyRsnQKflcG6dRlBRkEpCrnZ1w8utd9ptZUOBKk18QxNuCSkEek9Ks+
-	 lEOc/EVq1aez/n8SOlG/v14zahTkeycTgMSm6PRA=
+	b=IaP0cpZdTAT/FWvb+h+jgssvMHk+RGaEOMxReHAF88Qrv65hcoLIMC+iny6Oab0De
+	 cXSDK2v0ZSFqGSCocFSGVp8HwTjD0JDGDngPOh6z0MiU59YYhekV7FXHjF8QwV2yfD
+	 qjD3rLYq/5OmCmUpxOAm+x5ZEkdU3bkBS+dNNOTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.4 063/179] mtd: inftlcore: Add error check for inftl_read_oob()
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.14 167/311] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
 Date: Tue, 29 Apr 2025 18:40:04 +0200
-Message-ID: <20250429161051.954472013@linuxfoundation.org>
+Message-ID: <20250429161127.880499510@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Miao Li <limiao@kylinos.cn>
 
-commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
+commit 2932b6b547ec36ad2ed60fbf2117c0e46bb7d40a upstream.
 
-In INFTL_findwriteunit(), the return value of inftl_read_oob()
-need to be checked. A proper implementation can be
-found in INFTL_deleteblock(). The status will be set as
-SECTOR_IGNORE to break from the while-loop correctly
-if the inftl_read_oob() fails.
+Silicon Motion Flash Drive connects to Huawei hisi platforms and
+performs a system reboot test for two thousand circles, it will
+randomly work incorrectly on boot, set DELAY_INIT quirk can workaround
+this issue.
 
-Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/inftlcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/inftlcore.c
-+++ b/drivers/mtd/inftlcore.c
-@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
- 		silly = MAX_LOOPS;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -383,6 +383,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0904, 0x6103), .driver_info =
+ 			USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL },
  
- 		while (thisEUN <= inftl->lastEUN) {
--			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
--				       blockofs, 8, &retlen, (char *)&bci);
--
--			status = bci.Status | bci.Status1;
-+			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
-+				       blockofs, 8, &retlen, (char *)&bci) < 0)
-+				status = SECTOR_IGNORE;
-+			else
-+				status = bci.Status | bci.Status1;
- 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
- 					block , writeEUN, status);
- 
++	/* Silicon Motion Flash Drive */
++	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
++
+ 	/* Sound Devices USBPre2 */
+ 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
+ 			USB_QUIRK_ENDPOINT_IGNORE },
 
 
 
