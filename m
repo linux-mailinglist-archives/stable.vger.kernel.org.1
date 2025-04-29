@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-138086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C1EAA1680
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3975AA1884
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C36188C9FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE8F69C107F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978B324E000;
-	Tue, 29 Apr 2025 17:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59703253949;
+	Tue, 29 Apr 2025 17:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LMqIvNqY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obGhETch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55583215F7C;
-	Tue, 29 Apr 2025 17:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3C12AE96;
+	Tue, 29 Apr 2025 17:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948101; cv=none; b=gkFSrF/9byKnMmQRejK8N1MjhsNx1p3UzOXCDdJjuK6NAE8wKFHkMMS3tzEiN49+Ehw3bOyd/1QT6nne1jWSgcrTHedELiKPBUr47PoQ3NzDO30F2+76mDpauDGZIUK1US7r0RCdwLvEB4yWF6JG7oGn3+KbOCudjRZeF+3xnJo=
+	t=1745949327; cv=none; b=Siz1UrtHAVDb6/9TMb3nlWJH5QGqyeE+6u6a/UjF2m9OpZZ/GrglQVZn7ktG/kZ8TxZNIvSqsZiSdPMozQOw56P259kWDd6huFVWbPfnSBSWvhpX2E/vIw03DqjusuddTBVS8VZ1SowskojY2H9oANMKQOiVdpyfcnlCRZZhhT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948101; c=relaxed/simple;
-	bh=kqmDVQuijlVa0SMwCQB1Du9/fVIQo1qLjbAXw+msrTQ=;
+	s=arc-20240116; t=1745949327; c=relaxed/simple;
+	bh=9/08yOQGA2WbyVpYT2KwDowlBfjzBdvAV7MqBwt1FpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwYR81ewLXwwik+PMtwyILduCbxg2o4slLHBabW8CyZW0BOqC67O3oAfC2MYS0gdQhNTz5ioDPKCOi7RIvzZQHtkyP+wixb1TspR69OLeYalOqCNpLa/mxoIGIazgWC+4y/wk6u06dZVx1DJQRSIN/8og+CrRcEOeEuZUt/UfUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LMqIvNqY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC619C4CEE3;
-	Tue, 29 Apr 2025 17:35:00 +0000 (UTC)
+	 MIME-Version; b=HlohfJ0FrXaBWguO03u5OCBdvDGDTN8+cPvrjq0n5z3LgkyNq3Str9VS9HkL/RNc/zZbgFQc/0TPAXXc4MV3JHEnoQ3NOGyNjjqlk5TQHKyj7W1A0tGgrEfur5Q8qwC4qFiwBwZNcFCvsoNwQ93hZVDh080RAmkD6uDP7l6D8I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obGhETch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66982C4CEE3;
+	Tue, 29 Apr 2025 17:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948101;
-	bh=kqmDVQuijlVa0SMwCQB1Du9/fVIQo1qLjbAXw+msrTQ=;
+	s=korg; t=1745949326;
+	bh=9/08yOQGA2WbyVpYT2KwDowlBfjzBdvAV7MqBwt1FpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LMqIvNqYZav2xh5hVhSFii/tB2xSk57IOB/9qEvDbdHoM99dvStyPQW5tnu9RN+MF
-	 iRbCna9qV2dul1Ekz2ZHT9NdeBffr/KPB2MtduIoBGUDSCgRik66h93ogaDdf3XLrm
-	 RdpR1KSeBj1zVHfzooZAOkVQLKOUpTjJDQjUYZ8I=
+	b=obGhETchEiD+a1DXjYn5Bi8zoQw8J/1R9ZDkNRRnwx3TtxQ+JYW0NOGA4t3zCk17a
+	 /U/zlzFVvkiwHKRxP6O9kibJaXiQgXgYCOLabD9oNtSChhF1FUZnU7j+jfaI7L+iSD
+	 lc4/Mz3L3wdd+Jx827EpxkfazJf2Qch+nzPmd/Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 190/280] objtool, regulator: rk808: Remove potential undefined behavior in rk806_set_mode_dcdc()
+	Thorsten Leemhuis <linux@leemhuis.info>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	kdevops <kdevops@lists.linux.dev>
+Subject: [PATCH 5.15 254/373] module: sign with sha512 instead of sha1 by default
 Date: Tue, 29 Apr 2025 18:42:11 +0200
-Message-ID: <20250429161122.879763233@linuxfoundation.org>
+Message-ID: <20250429161133.572818107@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Thorsten Leemhuis <linux@leemhuis.info>
 
-[ Upstream commit 29c578c848402a34e8c8e115bf66cb6008b77062 ]
+commit f3b93547b91ad849b58eb5ab2dd070950ad7beb3 upstream.
 
-If 'ctr_bit' is negative, the shift counts become negative, causing a
-shift of bounds and undefined behavior.
+Switch away from using sha1 for module signing by default and use the
+more modern sha512 instead, which is what among others Arch, Fedora,
+RHEL, and Ubuntu are currently using for their kernels.
 
-Presumably that's not possible in normal operation, but the code
-generation isn't optimal.  And undefined behavior should be avoided
-regardless.
+Sha1 has not been considered secure against well-funded opponents since
+2005[1]; since 2011 the NIST and other organizations furthermore
+recommended its replacement[2]. This is why OpenSSL on RHEL9, Fedora
+Linux 41+[3], and likely some other current and future distributions
+reject the creation of sha1 signatures, which leads to a build error of
+allmodconfig configurations:
 
-Improve code generation and remove the undefined behavior by converting
-the signed variables to unsigned.
+  80A20474797F0000:error:03000098:digital envelope routines:do_sigver_init:invalid digest:crypto/evp/m_sigver.c:342:
+  make[4]: *** [.../certs/Makefile:53: certs/signing_key.pem] Error 1
+  make[4]: *** Deleting file 'certs/signing_key.pem'
+  make[4]: *** Waiting for unfinished jobs....
+  make[3]: *** [.../scripts/Makefile.build:478: certs] Error 2
+  make[2]: *** [.../Makefile:1936: .] Error 2
+  make[1]: *** [.../Makefile:224: __sub-make] Error 2
+  make[1]: Leaving directory '...'
+  make: *** [Makefile:224: __sub-make] Error 2
 
-Fixes the following warning with an UBSAN kernel:
+This change makes allmodconfig work again and sets a default that is
+more appropriate for current and future users, too.
 
-  vmlinux.o: warning: objtool: rk806_set_mode_dcdc() falls through to next function rk806_get_mode_dcdc()
-  vmlinux.o: warning: objtool: .text.rk806_set_mode_dcdc: unexpected end of section
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/2023abcddf3f524ba478d64339996f25dc4097d2.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503182350.52KeHGD4-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://www.schneier.com/blog/archives/2005/02/cryptanalysis_o.html [1]
+Link: https://csrc.nist.gov/projects/hash-functions [2]
+Link: https://fedoraproject.org/wiki/Changes/OpenSSLDistrustsha1SigVer [3]
+Signed-off-by: Thorsten Leemhuis <linux@leemhuis.info>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Tested-by: kdevops <kdevops@lists.linux.dev> [0]
+Link: https://github.com/linux-kdevops/linux-modules-kpd/actions/runs/11420092929/job/31775404330 [0]
+Link: https://lore.kernel.org/r/52ee32c0c92afc4d3263cea1f8a1cdc809728aff.1729088288.git.linux@leemhuis.info
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/rk808-regulator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ init/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/regulator/rk808-regulator.c b/drivers/regulator/rk808-regulator.c
-index 37476d2558fda..72df554b6375b 100644
---- a/drivers/regulator/rk808-regulator.c
-+++ b/drivers/regulator/rk808-regulator.c
-@@ -270,8 +270,8 @@ static const unsigned int rk817_buck1_4_ramp_table[] = {
- 
- static int rk806_set_mode_dcdc(struct regulator_dev *rdev, unsigned int mode)
- {
--	int rid = rdev_get_id(rdev);
--	int ctr_bit, reg;
-+	unsigned int rid = rdev_get_id(rdev);
-+	unsigned int ctr_bit, reg;
- 
- 	reg = RK806_POWER_FPWM_EN0 + rid / 8;
- 	ctr_bit = rid % 8;
--- 
-2.39.5
-
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -2194,6 +2194,7 @@ comment "Do not forget to sign required
+ choice
+ 	prompt "Which hash algorithm should modules be signed with?"
+ 	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
++	default MODULE_SIG_SHA512
+ 	help
+ 	  This determines which sort of hashing algorithm will be used during
+ 	  signature generation.  This algorithm _must_ be built into the kernel
 
 
 
