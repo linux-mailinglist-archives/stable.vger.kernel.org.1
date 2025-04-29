@@ -1,63 +1,54 @@
-Return-Path: <stable+bounces-138514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC0DAA1867
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EB2AA16CE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D04E8163F6C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B7F67AEEF7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A875243964;
-	Tue, 29 Apr 2025 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300B2251780;
+	Tue, 29 Apr 2025 17:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlUkZxnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+T2qJM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1EE216605;
-	Tue, 29 Apr 2025 17:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E4F227E95;
+	Tue, 29 Apr 2025 17:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949494; cv=none; b=rkMQQCGSRHcIdmqK6Cw++dclgjAUhqGuX+rtxu/0l5Hz7E45eO9WBsuNJSTXC3fiLLwLnSOMvg3Mag3CQPU+JyBjNB+NiyorZI2OcOSf0W8labZ+Q/gx3LIfRAMgoBmta2E/kyH2eGfjuEvxHQfmZdrZmuZubeN7Q/NVU4V3vd4=
+	t=1745948433; cv=none; b=Kh5/7Egp+09sbSBQTgIqrmJ18z0xREOH6zaZZ6kzPqi1zkUQ//2lbD+aB++zVNF5FlPCnBf+DsPxi3yu9VOtGjDUuNYzeYcYE3xOYLySoi/5KgUk9eWirlmtZnkwU4uK/inz32qskwMMFDG8v9iNCF/fVfnpUb4iUHpjDqjAKd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949494; c=relaxed/simple;
-	bh=hkmBjnoiDdGng+yyTrrhVU/wv0PDeyzG9QqYQdsK4dg=;
+	s=arc-20240116; t=1745948433; c=relaxed/simple;
+	bh=RRrprCwxF8GRnjKhD9csKnWYuOUb93lNsHau9O2PS4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prcr3dAjH6PgqOz35HeeA3pJx+64R6sIHqWXbs7BjUTzFAp6XxC/W0e/bn8hepBmAXpl/bmkidZ29NqdCEXsyzgYtOPB67WcbhFrE8kDLcN7ekE4vOqY6CHel9jNM8BsBa95H/wkFYQx1V7ahhqwUMkfxUEL1o3j9BY89g0b3RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlUkZxnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A75FC4CEE3;
-	Tue, 29 Apr 2025 17:58:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y6ahVHfbiuCkit+SGsJ/hMSIUIWIQK3yVfiGbRQnAsg2otpVds19iavOSw9uVB+0ZfB5DlYiVv7L6EDsKnP4D/Q12/ctZLkkZQAH0FpdSnDTxAdH63NfGXQKns0Udw4yb6MD9/PIuuJ85DGKzYAJsHrFGLurKMxv/CUH33PPXrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+T2qJM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63010C4CEE3;
+	Tue, 29 Apr 2025 17:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949494;
-	bh=hkmBjnoiDdGng+yyTrrhVU/wv0PDeyzG9QqYQdsK4dg=;
+	s=korg; t=1745948432;
+	bh=RRrprCwxF8GRnjKhD9csKnWYuOUb93lNsHau9O2PS4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zlUkZxnUXybUopn5WERu8gtNbkS6+AfkeveXSCF7S0A8jFKGz4KzPrk02+nUr1In/
-	 NWO2iPkTmtrEir3yhT6JYqd4jSGpS4nGzvD+9sLjVHVDbUHYoF5VD+dRIVaiLpnXLk
-	 h0dZdHlhIh2ibb4kHju6iZI8qWaXzrfTlprx00lU=
+	b=Y+T2qJM8YSKhE+Kuj3EaqlDzZHybTdFgYBorluNUCvhFo/IaGiopLuoay1bk3KfMS
+	 vglftJfgL57yPs9XKOKZljk8YjRwcHbLUiWs6Gz+iB0U+7INpgXljPxpxP3hMJcNfp
+	 0foW0mYELIvgNL5EphPyyn0SAkDwL6NAKcHr1Tv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 336/373] objtool, ASoC: codecs: wcd934x: Remove potential undefined behavior in wcd934x_slim_irq_handler()
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.12 272/280] MIPS: cm: Fix warning if MIPS_CM is disabled
 Date: Tue, 29 Apr 2025 18:43:33 +0200
-Message-ID: <20250429161136.948704791@linuxfoundation.org>
+Message-ID: <20250429161126.264624775@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,64 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-[ Upstream commit 060aed9c0093b341480770457093449771cf1496 ]
+commit b73c3ccdca95c237750c981054997c71d33e09d7 upstream.
 
-If 'port_id' is negative, the shift counts in wcd934x_slim_irq_handler()
-also become negative, resulting in undefined behavior due to shift out
-of bounds.
+Commit e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
+introduced
 
-If I'm reading the code correctly, that appears to be not possible, but
-with KCOV enabled, Clang's range analysis isn't always able to determine
-that and generates undefined behavior.
+arch/mips/include/asm/mips-cm.h:119:13: error: ‘mips_cm_update_property’
+	defined but not used [-Werror=unused-function]
 
-As a result the code generation isn't optimal, and undefined behavior
-should be avoided regardless.  Improve code generation and remove the
-undefined behavior by converting the signed variables to unsigned.
+Fix this by making empty function implementation inline
 
-Fixes the following warning with UBSAN:
-
-  sound/soc/codecs/snd-soc-wcd934x.o: warning: objtool: .text.wcd934x_slim_irq_handler: unexpected end of section
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/7e863839ec7301bf9c0f429a03873d44e484c31c.1742852847.git.jpoimboe@kernel.org
-Closes: https://lore.kernel.org/oe-kbuild-all/202503180044.oH9gyPeg-lkp@intel.com/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wcd934x.c | 2 +-
+ arch/mips/include/asm/mips-cm.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
-index 94ffd2ba29aef..765ac2a3e9638 100644
---- a/sound/soc/codecs/wcd934x.c
-+++ b/sound/soc/codecs/wcd934x.c
-@@ -2281,7 +2281,7 @@ static irqreturn_t wcd934x_slim_irq_handler(int irq, void *data)
- {
- 	struct wcd934x_codec *wcd = data;
- 	unsigned long status = 0;
--	int i, j, port_id;
-+	unsigned int i, j, port_id;
- 	unsigned int val, int_val = 0;
- 	irqreturn_t ret = IRQ_NONE;
- 	bool tx;
--- 
-2.39.5
-
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -116,7 +116,7 @@ static inline bool mips_cm_present(void)
+ #ifdef CONFIG_MIPS_CM
+ extern void mips_cm_update_property(void);
+ #else
+-static void mips_cm_update_property(void) {}
++static inline void mips_cm_update_property(void) {}
+ #endif
+ 
+ /**
 
 
 
