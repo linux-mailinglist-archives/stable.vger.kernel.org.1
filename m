@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57825AA1769
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDC1AA161F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E79D9189B184
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E04B9A28B7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5946A24DFF3;
-	Tue, 29 Apr 2025 17:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5DA82459C9;
+	Tue, 29 Apr 2025 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i1eI+VPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVTxRgoK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F539221DA7;
-	Tue, 29 Apr 2025 17:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A056324503E;
+	Tue, 29 Apr 2025 17:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948831; cv=none; b=nEpLkBcR/rZJxPpmg4+5kxmRhi0Mc+ZoPXAYRQUrPJtpNjym9XkG9DGKdv15TQkJNstdbtHwtfq4OvWVnPB7lEvqaZwCDl3sWvFLH49+wCRyCrUXRX4nCLDHHSm5yonJPmNXRy3BrrNayrSreS381Lcr6KsAYILeICj6RqIjSx8=
+	t=1745947660; cv=none; b=Y9p8HGgJiXOcWxCu6uWOSER0jYs/m2C1Dq/5R2vva17Y0ob86Behicva24x+CvSIE1ccngs0WfOgfPkGNczRbmDO1kShiQ9sY8EgmZx/uGTAjhLHsVFyNdXsu8+0q0RL931yf6+LUujOQ/CAOMfCwAx/FpVJMYA7mqDAOc/b8g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948831; c=relaxed/simple;
-	bh=QjJe3PCLPRiBtmMBmU1KE3MTtGewLXlKUxPHfLyYerw=;
+	s=arc-20240116; t=1745947660; c=relaxed/simple;
+	bh=M2nH/BDMCIAKyMBKg+9yXthNM196KwHY+cjxOY42CxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjVaBZ+jCfNDSBPlXFqTcs+mou0GKRJ9i40VUhVpZQosuF5f1tbU93CgoCdc+chJtxXjd0w+1Fcqv9mpRxXKk6igkKeIw5S8au1dlShWmVU6jZ2oYaqvwKzkVMGtPd0QSE2Z5xvPmoV1m4Isgv7e4N01Pt79sXevK5Df04KwqJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i1eI+VPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D098C4CEE3;
-	Tue, 29 Apr 2025 17:47:10 +0000 (UTC)
+	 MIME-Version; b=Mrdbu7wVXkfSUcQQ75SJqYj72YIqCIdVsqCtVYVXpVq7Cexy75BbcQuywrRdoV4d4IqzwrNRZpV9n0snShSE0qtwov+hdn+LSgTgR2IqjXedQNs8WwcEOArdvx9tJ4F1g6+QRN+2fx499bRMIIC/qutK/tVUg1eThH7XcR1ALj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVTxRgoK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F490C4CEE3;
+	Tue, 29 Apr 2025 17:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948830;
-	bh=QjJe3PCLPRiBtmMBmU1KE3MTtGewLXlKUxPHfLyYerw=;
+	s=korg; t=1745947660;
+	bh=M2nH/BDMCIAKyMBKg+9yXthNM196KwHY+cjxOY42CxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i1eI+VPvci4K5ib/enip5w0seKrb6DjJ78he1uVgsYdVZ/+zrQ4ZqM8DlXGu4D2Wn
-	 jaig6/66JKOX0S2rWcXICKo22A3U7RCB249wvGjuqUISpzpLa6TgNgG/9OYU1KTMD6
-	 xWGIgMo1gr5zTgK1QfU1WcmvbhizBl9iTsEzCWD4=
+	b=YVTxRgoKlP+zABwdRZ/YOyDaKZt3Fv5j36IGNx444JPh1yBxZEwoU/U99AIiik5A4
+	 p155rRUWvLCd9GmGacXDl4tczvpF+KtYn0xV+KN9qjuEKPOS3465zMK9hZdRpXivbe
+	 ak4E7EfQQSE7mvG5EqyBGL2+0atS5nApB/Wx6tPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <abdun.nihaal@gmail.com>,
-	Michael Nemanov <michael.nemanov@ti.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/373] wifi: wl1251: fix memory leak in wl1251_tx_work
+Subject: [PATCH 6.12 066/280] net/mlx5: Fix null-ptr-deref in mlx5_create_{inner_,}ttc_table()
 Date: Tue, 29 Apr 2025 18:40:07 +0200
-Message-ID: <20250429161128.516026947@linuxfoundation.org>
+Message-ID: <20250429161117.811841849@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <abdun.nihaal@gmail.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit a0f0dc96de03ffeefc2a177b7f8acde565cb77f4 ]
+[ Upstream commit 91037037ee3d611ce17f39d75f79c7de394b122a ]
 
-The skb dequeued from tx_queue is lost when wl1251_ps_elp_wakeup fails
-with a -ETIMEDOUT error. Fix that by queueing the skb back to tx_queue.
+Add NULL check for mlx5_get_flow_namespace() returns in
+mlx5_create_inner_ttc_table() and mlx5_create_ttc_table() to prevent
+NULL pointer dereference.
 
-Fixes: c5483b719363 ("wl12xx: check if elp wakeup failed")
-Signed-off-by: Abdun Nihaal <abdun.nihaal@gmail.com>
-Reviewed-by: Michael Nemanov <michael.nemanov@ti.com>
-Link: https://patch.msgid.link/20250330104532.44935-1-abdun.nihaal@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250418023814.71789-2-bsdhenrymartin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index 98cd39619d579..5771f61392efb 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -342,8 +342,10 @@ void wl1251_tx_work(struct work_struct *work)
- 	while ((skb = skb_dequeue(&wl->tx_queue))) {
- 		if (!woken_up) {
- 			ret = wl1251_ps_elp_wakeup(wl);
--			if (ret < 0)
-+			if (ret < 0) {
-+				skb_queue_head(&wl->tx_queue, skb);
- 				goto out;
-+			}
- 			woken_up = true;
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+index 9f13cea164465..510879e1ba30e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+@@ -636,6 +636,11 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 	}
+ 
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
++	if (!ns) {
++		kvfree(ttc);
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	groups = use_l4_type ? &inner_ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
+ 			       &inner_ttc_groups[TTC_GROUPS_DEFAULT];
+ 
+@@ -709,6 +714,11 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 	}
+ 
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
++	if (!ns) {
++		kvfree(ttc);
++		return ERR_PTR(-EOPNOTSUPP);
++	}
++
+ 	groups = use_l4_type ? &ttc_groups[TTC_GROUPS_USE_L4_TYPE] :
+ 			       &ttc_groups[TTC_GROUPS_DEFAULT];
  
 -- 
 2.39.5
