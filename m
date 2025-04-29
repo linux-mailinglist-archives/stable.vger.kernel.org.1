@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2E14AA13A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC56AA176D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C35CD5A601E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BB924C202D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5C7250BFE;
-	Tue, 29 Apr 2025 17:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8036824DFF3;
+	Tue, 29 Apr 2025 17:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neppbEOy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWg0D5eI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5748246326;
-	Tue, 29 Apr 2025 17:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D34F221DA7;
+	Tue, 29 Apr 2025 17:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946155; cv=none; b=Uj4/6tCgQOcAYTzrXuGG8GeXjuPigoX+Mdpy+G5OxDsHSwWahHNCA3wSbLG/mHk9gt6/bxZKjWl6RkyZcCP7ccdXkXB/Ymh4GDZdX+wm0dC5+HjTcpeNCsfRIBfDBIClPLde03XrsTSXNu1abBE8eJKu20NTR5XkAnCGPxD68lY=
+	t=1745948839; cv=none; b=XvAoLqeQCJEvihOxAFhlF6ka9JraBEfvE+9CPpiNXluSY93ui4O0vGxfF/Tn11AfiHLcPtgEiEnSdwhizlhSmeo+rfwxNp/jrmeA1LUmb+oTYuSO1jqChuiWoCcdmF/ixGh8/qe0sOp9LmRRW4tuZxRR8deq9hpiimwGlH4Lor4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946155; c=relaxed/simple;
-	bh=uBgtejF6uvw19pZzQ9fDS7CLi8laSvrdpwBs10JCmis=;
+	s=arc-20240116; t=1745948839; c=relaxed/simple;
+	bh=/3Yi5gIBDz5vVSjVUL2M7/YfcNEhL7xCHGM70e4/L18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KM2JwcOUngcGUPxmWD+Sx/6D8cRh8mI3AzRvbhgHRPYRESrIe7iC6TaTLbV0drZO3mLgorVjPKek1khZPqVrx52iCARRSj8MGqHZG+uitzi58WNELUYXhV942HLeN13XRMNoHzjcqFtvojB+OBC6u2/RpDxlX/g/LN1QIY8iWIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neppbEOy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64215C4CEEE;
-	Tue, 29 Apr 2025 17:02:34 +0000 (UTC)
+	 MIME-Version; b=s0KdJRBXU/u67fJ1AQfXQpKPr3QgJoJWUSvQYhw86p0uUiL40I83LnP9GMLhtbp+4D/wXFFjWVJkYu66Ec91MZ4bxA/NxWY7UqwLWFBE7++rVMiHnt8/3kCRYOzYj7lNwCifDjZNsX0HH0JKNhHI7nGIjiX3uCZnlFDgk4ch/oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWg0D5eI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31C3C4CEE3;
+	Tue, 29 Apr 2025 17:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946154;
-	bh=uBgtejF6uvw19pZzQ9fDS7CLi8laSvrdpwBs10JCmis=;
+	s=korg; t=1745948839;
+	bh=/3Yi5gIBDz5vVSjVUL2M7/YfcNEhL7xCHGM70e4/L18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neppbEOyxsZvhMucqUHlZq9L8xONtD/isZMfGzeItPO3dEcK2Ukekxt3u6WjXq2LK
-	 c+6waM65cXwwPc3GRuJ9w4I4E2XaW9NlhdOw4A1jWhLcca0MHKcOH/7Xim7g8bdwyr
-	 W9Ol0sTkuIu5ETpYfGx0KL0lda4JmhixT5T04P+I=
+	b=MWg0D5eI8b89DkzrCKysB2orNuqNYqDj9XNPHcl2wQ39ueQ+kT9zQ99IShX5qQXmk
+	 nzHEExZarhwGzUpFDjMqLbchrvVRg//7879TZbgBwHwoO5FrSOX/Y/enVNqtFImMXU
+	 DxsD1OG3BL9Ws9IoGhqmwBt7vq2SDUSI+73BqNjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.14 173/311] USB: wdm: handle IO errors in wdm_wwan_port_start
+	Yue Haibing <yuehaibing@huawei.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 133/373] RDMA/usnic: Fix passing zero to PTR_ERR in usnic_ib_pci_probe()
 Date: Tue, 29 Apr 2025 18:40:10 +0200
-Message-ID: <20250429161128.118385834@linuxfoundation.org>
+Message-ID: <20250429161128.639263466@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-commit 9697f5efcf5fdea65b8390b5eb81bebe746ceedc upstream.
+[ Upstream commit 95ba3850fed03e01b422ab5d7943aeba130c9723 ]
 
-In case submitting the URB fails we must undo
-what we've done so far.
+drivers/infiniband/hw/usnic/usnic_ib_main.c:590
+ usnic_ib_pci_probe() warn: passing zero to 'PTR_ERR'
 
-Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-2-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Make usnic_ib_device_add() return NULL on fail path, also remove
+useless NULL check for usnic_ib_discover_pf()
+
+Fixes: e3cf00d0a87f ("IB/usnic: Add Cisco VIC low-level hardware driver")
+Link: https://patch.msgid.link/r/20250324123132.2392077-1-yuehaibing@huawei.com
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/usnic/usnic_ib_main.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -829,6 +829,7 @@ static struct usb_class_driver wdm_class
- static int wdm_wwan_port_start(struct wwan_port *port)
- {
- 	struct wdm_device *desc = wwan_port_get_drvdata(port);
-+	int rv;
+diff --git a/drivers/infiniband/hw/usnic/usnic_ib_main.c b/drivers/infiniband/hw/usnic/usnic_ib_main.c
+index d346dd48e731b..9bb78918e52aa 100644
+--- a/drivers/infiniband/hw/usnic/usnic_ib_main.c
++++ b/drivers/infiniband/hw/usnic/usnic_ib_main.c
+@@ -380,7 +380,7 @@ static void *usnic_ib_device_add(struct pci_dev *dev)
+ 	if (!us_ibdev) {
+ 		usnic_err("Device %s context alloc failed\n",
+ 				netdev_name(pci_get_drvdata(dev)));
+-		return ERR_PTR(-EFAULT);
++		return NULL;
+ 	}
  
- 	/* The interface is both exposed via the WWAN framework and as a
- 	 * legacy usbmisc chardev. If chardev is already open, just fail
-@@ -848,7 +849,15 @@ static int wdm_wwan_port_start(struct ww
- 	wwan_port_txon(port);
+ 	us_ibdev->ufdev = usnic_fwd_dev_alloc(dev);
+@@ -500,8 +500,8 @@ static struct usnic_ib_dev *usnic_ib_discover_pf(struct usnic_vnic *vnic)
+ 	}
  
- 	/* Start getting events */
--	return usb_submit_urb(desc->validity, GFP_KERNEL);
-+	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
-+	if (rv < 0) {
-+		wwan_port_txoff(port);
-+		desc->manage_power(desc->intf, 0);
-+		/* this must be last lest we race with chardev open */
-+		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
-+	}
-+
-+	return rv;
- }
+ 	us_ibdev = usnic_ib_device_add(parent_pci);
+-	if (IS_ERR_OR_NULL(us_ibdev)) {
+-		us_ibdev = us_ibdev ? us_ibdev : ERR_PTR(-EFAULT);
++	if (!us_ibdev) {
++		us_ibdev = ERR_PTR(-EFAULT);
+ 		goto out;
+ 	}
  
- static void wdm_wwan_port_stop(struct wwan_port *port)
+@@ -564,10 +564,10 @@ static int usnic_ib_pci_probe(struct pci_dev *pdev,
+ 	}
+ 
+ 	pf = usnic_ib_discover_pf(vf->vnic);
+-	if (IS_ERR_OR_NULL(pf)) {
+-		usnic_err("Failed to discover pf of vnic %s with err%ld\n",
+-				pci_name(pdev), PTR_ERR(pf));
+-		err = pf ? PTR_ERR(pf) : -EFAULT;
++	if (IS_ERR(pf)) {
++		err = PTR_ERR(pf);
++		usnic_err("Failed to discover pf of vnic %s with err%d\n",
++				pci_name(pdev), err);
+ 		goto out_clean_vnic;
+ 	}
+ 
+-- 
+2.39.5
+
 
 
 
