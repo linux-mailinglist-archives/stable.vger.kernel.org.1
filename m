@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 324F8AA1876
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E649AA155F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C17589A7452
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCA01724D5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81812517AF;
-	Tue, 29 Apr 2025 17:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5142517BE;
+	Tue, 29 Apr 2025 17:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxixMpTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qN56ZU0S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BE8233735;
-	Tue, 29 Apr 2025 17:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5929F2459EC;
+	Tue, 29 Apr 2025 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949283; cv=none; b=SJWR+tnfWNqeiGNj2at0iCmCqz9e31xA4iwe6jrOLqfBztGmoAvDdvnPAvkj+8eAmCsEmN+o9FD20qtNDUeVfbVP8nxBg0RTRzuuY2vlyG2MtXpztDpObEKvctYMRNOuxPycmyXXd0PNu61NQS/wixUOfj/fhkwCFaDXKjg8jUQ=
+	t=1745947317; cv=none; b=qmC/Vjc7rjk6IQpP2i5ITbVVFBW+VwTIDhWRYeHwgDxNOKqG8CXziOiC1HMmQNApcSKFkN8icYACNxdFeFD9WVcw/OqCJ3b+c879tUlttsjBbXjGipwFS8bVoUiaUzTk/464UzM7v4NB0gtYRDuo4INjpBt1gGSiyqy8UjeGicI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949283; c=relaxed/simple;
-	bh=QVLKmQATUUHhW0bYkpGih3rOCjp+LWK4CTlmAThMzUk=;
+	s=arc-20240116; t=1745947317; c=relaxed/simple;
+	bh=+OIy3H3qUket8mn1JKZaBaf/m/A/zKPv5kaHRzMlBn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CynkeMxCePuA8e4lmOCXKXuMQaSdhLR2ZFb8avJff9zlf8gkzkuZFObYwWTlcBOciKqAI2EpHCClK1RjVAV4Jkhy9yM6hw7D161PVR+oGBVwkd7+v/FckEPIiKKQyRg7TuryTLqM3R66qL0WXvqfK2olIDYQqtirsiSPJsylxnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxixMpTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37831C4CEE3;
-	Tue, 29 Apr 2025 17:54:42 +0000 (UTC)
+	 MIME-Version; b=fljc6nYo02Kj9X9IeT/x3Ic0zoQl/3e2aiy90k3Y7GYaSTnxAw4WWbpaBW43A7Y2hX0lIIWMHc32WMaAbtkJ8tO/Gmn0aYCmEPypxIuISeCRgYijdm7qsT5rlpKH8sFbXTJmHEqrHBdlJKovLqT79E1iyMoioABnYobeI0SdSdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qN56ZU0S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536F8C4CEE3;
+	Tue, 29 Apr 2025 17:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949283;
-	bh=QVLKmQATUUHhW0bYkpGih3rOCjp+LWK4CTlmAThMzUk=;
+	s=korg; t=1745947316;
+	bh=+OIy3H3qUket8mn1JKZaBaf/m/A/zKPv5kaHRzMlBn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxixMpTFfv6PtXnkgSkBl+czJjomkiz+UA0yaVF8LD+h3T3Qh8LqFd7KdsbDo+coT
-	 oc114wrtmQxD14S74nW403q2RcQRatVCku67Mct+f4DcQeKN6L+02/dzV0bKoo0cjr
-	 20Cu9+DhxHQCqOC7NS5HEG6HT9nfdSGelY8KZSDU=
+	b=qN56ZU0S13T+ZEaREXIA1jSVVoPJUN92OZQlYF3DOftLyQgPlZi+nvKkTMScOJSym
+	 Clpxz2/u5A4iCQt9GU9RmDfT1LOQ2JRqdEZ+DS1b8fCKRvwKPFkCo2oMAJLIHM/Su9
+	 y3GCePasZcgcSVzHqv19I3dDG+t2UzAUGDzzhETU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 269/373] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
-Date: Tue, 29 Apr 2025 18:42:26 +0200
-Message-ID: <20250429161134.185051478@linuxfoundation.org>
+	Ryo Takakura <ryotkkr98@gmail.com>,
+	Petr Mladek <pmladek@suse.com>,
+	John Ogness <john.ogness@linutronix.de>
+Subject: [PATCH 5.10 243/286] serial: sifive: lock port in startup()/shutdown() callbacks
+Date: Tue, 29 Apr 2025 18:42:27 +0200
+Message-ID: <20250429161117.919285452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Ryo Takakura <ryotkkr98@gmail.com>
 
-[ Upstream commit 276822a00db3c1061382b41e72cafc09d6a0ec30 ]
+commit e1ca3ff28ab1e2c1e70713ef3fa7943c725742c3 upstream.
 
-Lockdep detects the following issue on led-backlight removal:
-  [  142.315935] ------------[ cut here ]------------
-  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
-  ...
-  [  142.500725] Call trace:
-  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
-  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
-  [  142.511742]  platform_remove+0x30/0x58
-  [  142.515501]  device_remove+0x54/0x90
-  ...
+startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
+The register is also accessed from write() callback.
 
-Indeed, led_sysfs_enable() has to be called with the led_access
-lock held.
+If console were printing and startup()/shutdown() callback
+gets called, its access to the register could be overwritten.
 
-Hold the lock when calling led_sysfs_disable().
+Add port->lock to startup()/shutdown() callbacks to make sure
+their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
+write() callback.
 
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
+Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Rule: add
+Link: https://lore.kernel.org/stable/20250330003522.386632-1-ryotkkr98%40gmail.com
+Link: https://lore.kernel.org/r/20250412001847.183221-1-ryotkkr98@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/led_bl.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/tty/serial/sifive.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index a1b6a2ad73a07..589dae9ebb638 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -226,8 +226,11 @@ static void led_bl_remove(struct platform_device *pdev)
- 	backlight_device_unregister(bl);
+--- a/drivers/tty/serial/sifive.c
++++ b/drivers/tty/serial/sifive.c
+@@ -596,8 +596,11 @@ static void sifive_serial_break_ctl(stru
+ static int sifive_serial_startup(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
  
- 	led_bl_power_off(priv);
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_enable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_enable_rxwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
+ 
+ 	return 0;
+ }
+@@ -605,9 +608,12 @@ static int sifive_serial_startup(struct
+ static void sifive_serial_shutdown(struct uart_port *port)
+ {
+ 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
++	unsigned long flags;
+ 
++	uart_port_lock_irqsave(&ssp->port, &flags);
+ 	__ssp_disable_rxwm(ssp);
+ 	__ssp_disable_txwm(ssp);
++	uart_port_unlock_irqrestore(&ssp->port, flags);
  }
  
- static const struct of_device_id led_bl_of_match[] = {
--- 
-2.39.5
-
+ /**
 
 
 
