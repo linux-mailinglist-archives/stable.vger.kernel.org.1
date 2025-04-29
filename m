@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06207AA16D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74199AA18C1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 289B218891BE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1B943AB93A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6FD22DF91;
-	Tue, 29 Apr 2025 17:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD44C247280;
+	Tue, 29 Apr 2025 17:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdgycj58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQC3RQ31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992B92459FA;
-	Tue, 29 Apr 2025 17:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2A938FB0;
+	Tue, 29 Apr 2025 17:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948401; cv=none; b=qcn8K81P4ADeNTRZmQOvZW6rG5YxFIzcNt+Dqzr3ADCN9Xxem5L/5z5IOSjFSFUlB4FuEMNdK2NrJe0ztARYkk+U6NTBhUe/X00yECv6cvvGl9owts78G0XIgbOW1JP3QRrvZuC9g7iRLHMLDfcY/IRS+u1JnycWFnPQRS86DhY=
+	t=1745949513; cv=none; b=uZK3GZVfJPGt8dfuSWlybYfgKyMFJ4EhGpjN6QHUhESTnKOy9OnkbOdt+3iFaY6Jv8G8MelSy/QdBXxOnX2qZJsIR76spLqZIUkhwM5YLJ6Su3yYSdlNK3EMs9LMaBuXnZg7DIv87PqB8+UDSGubgJfY/c20Kt8D1GZHLo7Wszo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948401; c=relaxed/simple;
-	bh=6l6/8lIaV30cEsf2xDJMY4cAhCB2BagjTaNWHetHp2M=;
+	s=arc-20240116; t=1745949513; c=relaxed/simple;
+	bh=9IKS9le3tDWV1h3w88mSJAD9oMVSdgCA6arRyEHiFW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I9s3kiMHM8+b34U+cUUeaEK2wfcBl6JEgNhW8xVngr1bharhtq0JKTVfjGXNppfUL0MGWww8BfhnUZSWL497WRFm1xaG4kx69GbiD1GjcSBs3vvHK84yNXQLM5py57xwLg0q9xKiJ30Qms66YrMyCKXh7RifFlxExMyklRmvXYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdgycj58; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 015CFC4CEE3;
-	Tue, 29 Apr 2025 17:40:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IluIVyg9Wgpl2+CctUNty1iBn0seV07Yn5u4Snc49rKdsIi6I4hriDQ3Q4PC9gs9x1S/0EELbtxwB/TirlI7WOx/VpOzy8W9juRgA3hmy0LgMv0d1eR9sdx/bOovVR7ePj4SJ041+wvkCuSez+rneWiY90adLJcVXpsApzS3p2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQC3RQ31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707A1C4CEE3;
+	Tue, 29 Apr 2025 17:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948401;
-	bh=6l6/8lIaV30cEsf2xDJMY4cAhCB2BagjTaNWHetHp2M=;
+	s=korg; t=1745949512;
+	bh=9IKS9le3tDWV1h3w88mSJAD9oMVSdgCA6arRyEHiFW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fdgycj58mGIWQUTJyJ891rYPjhTZMNG3dZfjpoaWwYTGRzEWGdScT+DCd5nIFDoKB
-	 mnDHXaElA92p0r2lDAoOq1HJZvnd+IrOlWWTl0bCgXtmFwfwCMJxRLtEckgeBDmo6Q
-	 eLAHNit4rZTTCpwHGDSB2Hht1W17eBCyK8vKpySs=
+	b=zQC3RQ31TRgUiSWLaH8+R3EkUj0sXQ6ifd5Un3P0M3CsksXW78zCa8Ci7I4cdLXhJ
+	 qBT4Q2wD2RCOkNaNUEF6wANYF4OPLz4mSKh6SUhSwVqokTgb1bVMk73Zy0hOVE19+X
+	 DoeIwY9RHcuJFfccvGDgqurIqQxKWHk9IltyxL9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 277/280] usb: typec: class: Unlocked on error in typec_register_partner()
+	Xiaogang Chen <Xiaogang.Chen@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 341/373] udmabuf: fix a buf size overflow issue during udmabuf creation
 Date: Tue, 29 Apr 2025 18:43:38 +0200
-Message-ID: <20250429161126.465452362@linuxfoundation.org>
+Message-ID: <20250429161137.167448901@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Xiaogang Chen <xiaogang.chen@amd.com>
 
-commit 429a98abfc01d3d4378b7a00969437dc3e8f647c upstream.
+[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
 
-We recently added some locking to this function but this error path
-was accidentally missed.  Unlock before returning.
+by casting size_limit_mb to u64  when calculate pglimit.
 
-Fixes: ec27386de23a ("usb: typec: class: Fix NULL pointer access")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/Z_44tOtmml89wQcM@stanley.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma-buf/udmabuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -936,6 +936,7 @@ struct typec_partner *typec_register_par
- 	ret = device_register(&partner->dev);
- 	if (ret) {
- 		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
-+		mutex_unlock(&port->partner_link_lock);
- 		put_device(&partner->dev);
- 		return ERR_PTR(ret);
- 	}
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index a8094d57d2d06..84f7611c765b9 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -186,7 +186,7 @@ static long udmabuf_create(struct miscdevice *device,
+ 	if (!ubuf)
+ 		return -ENOMEM;
+ 
+-	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
++	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
+ 	for (i = 0; i < head->count; i++) {
+ 		if (!IS_ALIGNED(list[i].offset, PAGE_SIZE))
+ 			goto err;
+-- 
+2.39.5
+
 
 
 
