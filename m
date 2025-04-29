@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A568AA184A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED54AA16A3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B9A11BC4B3E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:57:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8B817A5F73
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B76251793;
-	Tue, 29 Apr 2025 17:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB2424E000;
+	Tue, 29 Apr 2025 17:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAsFPQJ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjfm3IKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7663215F6C;
-	Tue, 29 Apr 2025 17:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 991381917E3;
+	Tue, 29 Apr 2025 17:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949445; cv=none; b=fziEJDzZzTwaxnbl8p92Xr2RHNuUSL/99ouBORj39lJUNcnWGXT2D0f6QZAgTpOD237gD41i4AtwTbNXZueGNp5cf/0kQhJKORrpdtbG+P0Qp14h2A5j3M4xdhsj1eLrEXwTkeOjijFxDbuP1n+A68f61HQFTvh8Nk3MNaRWpq8=
+	t=1745948341; cv=none; b=Sp0G49GsnQQTV5alMHDMRXtBwLxohU92a3M8dYjnJEXTa4TV94sID9fafb587AcDpnKIgroAJL6gEmNzQTnZmEvk8mkBZ7m7Fdx4pKyyLDAcJVhWXQQqReNhaTMaO+G2i29bmemvgdtLhaGmdXIddeQ9/12de5DBOI7j088UKQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949445; c=relaxed/simple;
-	bh=W/+O7G1JzfKMsDI6U+kLiSZ3MoHxFoQrBBsYl5/TVOo=;
+	s=arc-20240116; t=1745948341; c=relaxed/simple;
+	bh=btiMqlBeaDLWUmgVNatogn4k41fZt+YMvUCq+3hCg4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YsM0U2WgPQiDs0RLpBrEjBWY1VnwCVhFlB7Gq1tngSNVD58Tww3d8axDg1KGpfRUzS1JbW9xb7BxpPMlSBb0mUPA9z9u2xjvWWkNUdIBnxo0RHt2C0UDjnlZDhBZrNIY/K1sUZ0PdkqK3MPGGIHPaltbWYs35uDfMoSeEA9Qvgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAsFPQJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDB9C4CEE3;
-	Tue, 29 Apr 2025 17:57:25 +0000 (UTC)
+	 MIME-Version; b=NJyNt910sllhI3nmw50AJ7CkrH+QqPo7f3XP2oKfBqXF3wDfwE9LVJ56BzM3jdOSDuzNCACITZ/8ZkvCDp6lUJH8Rb3RjpFkztS7nIzTzWmQtIu8b0ql8APrM9N69fWeGVbnryInkzxqyJwO3x1GkE4WpKSW5d5AYxlcZLGBoYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjfm3IKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20817C4CEE3;
+	Tue, 29 Apr 2025 17:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949445;
-	bh=W/+O7G1JzfKMsDI6U+kLiSZ3MoHxFoQrBBsYl5/TVOo=;
+	s=korg; t=1745948341;
+	bh=btiMqlBeaDLWUmgVNatogn4k41fZt+YMvUCq+3hCg4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAsFPQJ8+YFjucppj4wAsfLXVAiGvNW+DgAj6/wXabQiTqnUtAIfK0MHPbMFU0T3E
-	 lqy3ptMfoiqbKrvzh+FnBW3MKigB4rOCMXJ/9WfTrqNPvNsDAx/uEU6QiO3CMeFo3D
-	 Cp7MSNIOrpv/FHM9I2SCDUKZtrdZwZjo6tk4oweI=
+	b=vjfm3IKg16QxKqWEg5ZkqXMzjZVF41P4aPfUXpSgzHrokbOtLbyGl5PW3aiuCc3PM
+	 iinP7PH6kV+Zu8jjLHhqiYeuemYMHk6OAH7+xg16500qGElESSNzEhrFvQLsVP1aYf
+	 C7xU1HTX6m/ZynQC9RZFd2xfTvIaMvhVNFW7w+UA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 5.15 322/373] USB: wdm: add annotation
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.12 258/280] selftests/bpf: Adjust data size to have ETH_HLEN
 Date: Tue, 29 Apr 2025 18:43:19 +0200
-Message-ID: <20250429161136.370661404@linuxfoundation.org>
+Message-ID: <20250429161125.691511677@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 73e9cc1ffd3650b12c4eb059dfdafd56e725ceda upstream.
+commit c7f2188d68c114095660a950b7e880a1e5a71c8f upstream.
 
-This is not understandable without a comment on endianness
+The function bpf_test_init() now returns an error if user_size
+(.data_size_in) is less than ETH_HLEN, causing the tests to
+fail. Adjust the data size to ensure it meets the requirement of
+ETH_HLEN.
 
-Fixes: afba937e540c9 ("USB: CDC WDM driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-5-oneukum@suse.com
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250121150643.671650-2-syoshida@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 972bafed67ca ("bpf, test_run: Fix use-after-free issue in eth_skb_pkt_type()")
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-wdm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c |    4 ++--
+ tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -909,7 +909,7 @@ static int wdm_wwan_port_tx(struct wwan_
- 	req->bRequestType = (USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE);
- 	req->bRequest = USB_CDC_SEND_ENCAPSULATED_COMMAND;
- 	req->wValue = 0;
--	req->wIndex = desc->inum;
-+	req->wIndex = desc->inum; /* already converted */
- 	req->wLength = cpu_to_le16(skb->len);
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_cpumap_attach.c
+@@ -52,10 +52,10 @@ static void test_xdp_with_cpumap_helpers
+ 	ASSERT_EQ(info.id, val.bpf_prog.id, "Match program id to cpumap entry prog_id");
  
- 	skb_shinfo(skb)->destructor_arg = desc;
+ 	/* send a packet to trigger any potential bugs in there */
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_devmap_attach.c
+@@ -23,7 +23,7 @@ static void test_xdp_with_devmap_helpers
+ 	__u32 len = sizeof(info);
+ 	int err, dm_fd, dm_fd_redir, map_fd;
+ 	struct nstoken *nstoken = NULL;
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	__u32 idx = 0;
+ 
+ 	SYS(out_close, "ip netns add %s", TEST_NS);
+@@ -58,7 +58,7 @@ static void test_xdp_with_devmap_helpers
+ 	/* send a packet to trigger any potential bugs in there */
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
+@@ -158,7 +158,7 @@ static void test_xdp_with_devmap_helpers
+ 	struct nstoken *nstoken = NULL;
+ 	__u32 len = sizeof(info);
+ 	int err, dm_fd, dm_fd_redir, map_fd, ifindex_dst;
+-	char data[10] = {};
++	char data[ETH_HLEN] = {};
+ 	__u32 idx = 0;
+ 
+ 	SYS(out_close, "ip netns add %s", TEST_NS);
+@@ -208,7 +208,7 @@ static void test_xdp_with_devmap_helpers
+ 	/* send a packet to trigger any potential bugs in there */
+ 	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
+ 			    .data_in = &data,
+-			    .data_size_in = 10,
++			    .data_size_in = sizeof(data),
+ 			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
+ 			    .repeat = 1,
+ 		);
 
 
 
