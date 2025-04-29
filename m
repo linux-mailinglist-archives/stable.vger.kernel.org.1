@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-138139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D951BAA16B9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77FDAA18A3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3C9F1888A83
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5A049C2849
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04A02517A8;
-	Tue, 29 Apr 2025 17:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B4125393E;
+	Tue, 29 Apr 2025 17:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKJDPGfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvBAP/6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1F522172E;
-	Tue, 29 Apr 2025 17:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA152243371;
+	Tue, 29 Apr 2025 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948285; cv=none; b=fP2LZvgoRsAmeNKkxUxkVfBIASypVvujyReu4DtrVzUIec5RFglsFIHBPyeUyDtzwihINYH53ihxIgc+Za+3u/U/jhfFgbWS5FhrYw+xbqV045b+/nGaqY1QBKy5iJuqh7gNCQGRzrhdpks4NGzRG2mfmPMYuSStSQC3nbII7OU=
+	t=1745949402; cv=none; b=YLnfYCcyQS7D9GgSCGTYmgmISGS4JL9RzUL+rr+ahFqjrMeyTEqSgvuuKXME/dRhySxBcIRfaHn1Oyciaoa+geA++LylJP/KDJjafLpstZ/wAX9eNIlJDNvqLZXOGMvgM06IlFbrbaO7PGoZgW/+xy+9gsGVr7MuNqcQuS17ilw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948285; c=relaxed/simple;
-	bh=aEYiLVbh2ed90V5BDtcW2W8Phq0xyY8YxSxuiuVm8lw=;
+	s=arc-20240116; t=1745949402; c=relaxed/simple;
+	bh=3zF6LXlrUL2fjCKF8goNIzJl+OvWIVk6ico+tS5PK4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPj/MnApWGzoMW04d2O+PM6v92aAWdadFJbO/nb0npgT5B4X9m/KBDNmOiOa2xs4mAkumPJwQOfc+OIRpMrkfcCsYaHkspt/iT5ikgsdFLBzQBFQrpWVT8+5l2tIQbdNgQcp7hLlKvOimwWthfY21fJ25pHBJW2BdcNBJoKnJ3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKJDPGfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88496C4CEE3;
-	Tue, 29 Apr 2025 17:38:04 +0000 (UTC)
+	 MIME-Version; b=WSaBqW7sc88ipqcluzMKKsWQdEDme7nCOKq1vlKa4qy9eQqZgHXVY83I9Cs/+KnTaUUglEBVBYaRmA2ue4BxkaJZfnBA9mTcF7SAP+FcwWag15Fz7GYGrL4i6jNcuVwhAk7qncoRz7BGXhOi86V128dIS7BvhhH6Cw7hIEYWwzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvBAP/6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4A6C4CEE3;
+	Tue, 29 Apr 2025 17:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948285;
-	bh=aEYiLVbh2ed90V5BDtcW2W8Phq0xyY8YxSxuiuVm8lw=;
+	s=korg; t=1745949402;
+	bh=3zF6LXlrUL2fjCKF8goNIzJl+OvWIVk6ico+tS5PK4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKJDPGfDl7y3w6cc9X8GwzGS0AbHcPikr2EV+ukpRl9btrK9H//qGVjG/p+Wjqcfh
-	 PWIX/oUCX2JVHZh99GlmL4qcbomimAgYP/Pbfpaak4GYl8LF8+mcbBdzqEmDPCMlBG
-	 aEu3u40sovQ7g2YEzy35XUtK6g8+TF0hIPt3bQ6U=
+	b=wvBAP/6ZRXVIhkRWXPP/1W7iCbHFzMdnjthEocBkJE4Ntsxe7/9JECBfb2l4gzdMx
+	 Kr9TgJssgSiiLQRa3fRKXQLExCTQ8qG34qQLcW4GfmXowD/pEE5WukPw4lhD1eOyuh
+	 wDyRlGShvBF+FUVxtogRCNnufVorq9aNSJm+N04g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pi Xiange <xiange.pi@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Christian Ludloff <ludloff@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	x86-cpuid@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 243/280] x86/cpu: Add CPU model number for Bartlett Lake CPUs with Raptor Cove cores
+	Michael Ehrenreich <michideep@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 307/373] USB: serial: ftdi_sio: add support for Abacus Electrics Optical Probe
 Date: Tue, 29 Apr 2025 18:43:04 +0200
-Message-ID: <20250429161125.069445280@linuxfoundation.org>
+Message-ID: <20250429161135.744676224@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,51 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pi Xiange <xiange.pi@intel.com>
+From: Michael Ehrenreich <michideep@gmail.com>
 
-[ Upstream commit d466304c4322ad391797437cd84cca7ce1660de0 ]
+commit b399078f882b6e5d32da18b6c696cc84b12f90d5 upstream.
 
-Bartlett Lake has a P-core only product with Raptor Cove.
+Abacus Electrics makes optical probes for interacting with smart meters
+over an optical interface.
 
-[ mingo: Switch around the define as pointed out by Christian Ludloff:
-         Ratpr Cove is the core, Bartlett Lake is the product.
+At least one version uses an FT232B chip (as detected by ftdi_sio) with
+a custom USB PID, which needs to be added to the list to make the device
+work in a plug-and-play fashion.
 
-Signed-off-by: Pi Xiange <xiange.pi@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Christian Ludloff <ludloff@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: "Ahmed S. Darwish" <darwi@linutronix.de>
-Cc: x86-cpuid@lists.linux.dev
-Link: https://lore.kernel.org/r/20250414032839.5368-1-xiange.pi@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Michael Ehrenreich <michideep@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/intel-family.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/ftdi_sio.c     |    2 ++
+ drivers/usb/serial/ftdi_sio_ids.h |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 1a42f829667a3..62d8b9448dc5c 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -115,6 +115,8 @@
- #define INTEL_GRANITERAPIDS_X		IFM(6, 0xAD)
- #define INTEL_GRANITERAPIDS_D		IFM(6, 0xAE)
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -1071,6 +1071,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 2) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ALTERA_VID, ALTERA_UB3_602E_PID, 3) },
++	/* Abacus Electrics */
++	{ USB_DEVICE(FTDI_VID, ABACUS_OPTICAL_PROBE_PID) },
+ 	{ }					/* Terminating entry */
+ };
  
-+#define INTEL_BARTLETTLAKE		IFM(6, 0xD7) /* Raptor Cove */
+--- a/drivers/usb/serial/ftdi_sio_ids.h
++++ b/drivers/usb/serial/ftdi_sio_ids.h
+@@ -436,6 +436,11 @@
+ #define LINX_FUTURE_2_PID   0xF44C	/* Linx future device */
+ 
+ /*
++ * Abacus Electrics
++ */
++#define ABACUS_OPTICAL_PROBE_PID	0xf458 /* ABACUS ELECTRICS Optical Probe */
 +
- /* "Hybrid" Processors (P-Core/E-Core) */
- 
- #define INTEL_LAKEFIELD			IFM(6, 0x8A) /* Sunny Cove / Tremont */
--- 
-2.39.5
-
++/*
+  * Oceanic product ids
+  */
+ #define FTDI_OCEANIC_PID	0xF460  /* Oceanic dive instrument */
 
 
 
