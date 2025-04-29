@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F291EAA145B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3883EAA171D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C19A4A3374
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 493E11604A3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A62827453;
-	Tue, 29 Apr 2025 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3632924C067;
+	Tue, 29 Apr 2025 17:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhtNmeWk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GlzIGADi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CF7244686;
-	Tue, 29 Apr 2025 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A7C22A81D;
+	Tue, 29 Apr 2025 17:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946787; cv=none; b=OzMobTu6Z3PkCAEhFmZlZE5kgyBzaMFiW9ysyI1FAIwP+bipYuuZXV2kYmtVlEg4LUl0QC/7+gTeAx2fW8CApDJQU2NL6HeXw0D1Uarj3fWTZOrwJTUR5wLRgSB+kyRVlingD3IsyvSrg1eMK3XwFyJLi47MaPv2WyAiYYq4Vnc=
+	t=1745948634; cv=none; b=pjSKazTH3cRtfNV4qmBjVNV9Vdx1wd3jN2e2lFmM8Fj5z0VLjm+g06tYzB7Xlqznj3WMa53y5NcD8IkNawG8ACAQYbVKI/wKHSlDgsJbulcSp6aPdtQTvMdyWO5XXQPaE7UGhhkkMHlLsWrMVZIsM6kSuoPCRxoo7l+ZVkx28/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946787; c=relaxed/simple;
-	bh=RztB95tFo77dIC4eNVzTOD66rnVGWHptJ6w0GQsXrwo=;
+	s=arc-20240116; t=1745948634; c=relaxed/simple;
+	bh=PEwswlwlZvTdB77H/socxRDAfTqeyiDFxobOmAARZtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWjOgGpMvUw3/MLqMeqNApRAv8eIThGbioG4Zt9qMMkS+OKNsvvlxPAAqlXV6dGZhZxq9C4vTP5sV23302Q7HzYywhv0TU9DI5nX8yGiR3FVe8q/tShORjy3MRgpvWuR0HRHxDo2C82e4bGmSmBF1yLnJgmBKzGpgfmG1ainBFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhtNmeWk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D16CC4CEE3;
-	Tue, 29 Apr 2025 17:13:06 +0000 (UTC)
+	 MIME-Version; b=kDxa/KGtp58/IOLwfZHu6k+Itujpzl4E6AGOC+MboDLwnsA6xuJv5wvtxC7mlYJ4ewqS6cXcH6JuaLVZ7QQGDP0BX1Xa90S4pNBotd2W1MbHJIs7lWnZLxqUg0rqag2l9ck5P2hLyhZ2BphqS1U/8idxq4bb/ISc/756mbcmIh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GlzIGADi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D8DC4CEE3;
+	Tue, 29 Apr 2025 17:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946787;
-	bh=RztB95tFo77dIC4eNVzTOD66rnVGWHptJ6w0GQsXrwo=;
+	s=korg; t=1745948633;
+	bh=PEwswlwlZvTdB77H/socxRDAfTqeyiDFxobOmAARZtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhtNmeWkUlMfaTjBtASt8tU9MG7bVE/qzhabB9uDmipGS4e0LbLpcgQRL2teuAraK
-	 nILxdx7+FFZtVcjfxSUoSIw7S/IUDSkikwYT1yrMjKmqV6GmPfeLCathzG4lUpl3oY
-	 OzTQ/XSDGdBsrw6piL4fyRXRST5WaZnhz8+yqdeg=
+	b=GlzIGADiPu5MmUOSL9uQxp0It37zry2bXFqZBljxt0tIFIExn5fxIrXgB/4xItmzM
+	 rEbp1zgeaUHd9sbwfmdlFQEvqcnJW9//xCgb0sdpC/n+Hq72sM+jizriNjbeP5D4Ut
+	 iTn4686im3dfLsTGSJH+Exl1mqRwDqNXxQE/G1HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Yat Sin <David.YatSin@amd.com>,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/286] drm/amdkfd: clamp queue size to minimum
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 067/373] arm64: errata: Add KRYO 2XX/3XX/4XX silver cores to Spectre BHB safe list
 Date: Tue, 29 Apr 2025 18:39:04 +0200
-Message-ID: <20250429161109.512321429@linuxfoundation.org>
+Message-ID: <20250429161125.890531447@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Yat Sin <David.YatSin@amd.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit e90711946b53590371ecce32e8fcc381a99d6333 ]
+commit 0c9fc6e652cd5aed48c5f700c32b7642bea7f453 upstream.
 
-If queue size is less than minimum, clamp it to minimum to prevent
-underflow when writing queue mqd.
+Qualcomm has confirmed that, much like Cortex A53 and A55, KRYO
+2XX/3XX/4XX silver cores are unaffected by Spectre BHB. Add them to
+the safe list.
 
-Signed-off-by: David Yat Sin <David.YatSin@amd.com>
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
+Cc: stable@vger.kernel.org
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.3.Iab8dbfb5c9b1e143e7a29f410bce5f9525a0ba32@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 10 ++++++++++
- include/uapi/linux/kfd_ioctl.h           |  2 ++
- 2 files changed, 12 insertions(+)
+ arch/arm64/kernel/proton-pack.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 9a444b17530a4..869c8786df5c9 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -190,6 +190,11 @@ static int set_queue_properties_from_user(struct queue_properties *q_properties,
- 		return -EINVAL;
- 	}
- 
-+	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
-+		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
-+		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
-+	}
-+
- 	if (!access_ok((const void __user *) args->read_pointer_address,
- 			sizeof(uint32_t))) {
- 		pr_err("Can't access read pointer\n");
-@@ -394,6 +399,11 @@ static int kfd_ioctl_update_queue(struct file *filp, struct kfd_process *p,
- 		return -EINVAL;
- 	}
- 
-+	if (args->ring_size < KFD_MIN_QUEUE_RING_SIZE) {
-+		args->ring_size = KFD_MIN_QUEUE_RING_SIZE;
-+		pr_debug("Size lower. clamped to KFD_MIN_QUEUE_RING_SIZE");
-+	}
-+
- 	properties.queue_address = args->ring_base_address;
- 	properties.queue_size = args->ring_size;
- 	properties.queue_percent = args->queue_percentage;
-diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
-index 695b606da4b15..94af84e845549 100644
---- a/include/uapi/linux/kfd_ioctl.h
-+++ b/include/uapi/linux/kfd_ioctl.h
-@@ -47,6 +47,8 @@ struct kfd_ioctl_get_version_args {
- #define KFD_MAX_QUEUE_PERCENTAGE	100
- #define KFD_MAX_QUEUE_PRIORITY		15
- 
-+#define KFD_MIN_QUEUE_RING_SIZE		1024
-+
- struct kfd_ioctl_create_queue_args {
- 	__u64 ring_base_address;	/* to KFD */
- 	__u64 write_pointer_address;	/* from KFD */
--- 
-2.39.5
-
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -854,6 +854,9 @@ static bool is_spectre_bhb_safe(int scop
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A510),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A520),
+ 		MIDR_ALL_VERSIONS(MIDR_BRAHMA_B53),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_2XX_SILVER),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_3XX_SILVER),
++		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_SILVER),
+ 		{},
+ 	};
+ 	static bool all_safe = true;
 
 
 
