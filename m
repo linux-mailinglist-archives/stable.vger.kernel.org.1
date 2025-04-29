@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D758DAA18E4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:05:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D8B9AA191F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 539C79A3823
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D50CF1BA3C5C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14890248883;
-	Tue, 29 Apr 2025 17:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BD124397A;
+	Tue, 29 Apr 2025 18:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nQoBLmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tIhPevMZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65FC252284;
-	Tue, 29 Apr 2025 17:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F30F40C03;
+	Tue, 29 Apr 2025 18:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949594; cv=none; b=sEM7bYsfv6oAjznL7B142MTwHKpZzBWq0jcYZmMdIe6w5DZJeoMfr/G4pV5HSqAOrFp6j+Ic4ffbW6IgBb8A4Rwr86ywDjHZiDB96DhmW37QlQFYq7St9+hCiJdnHzmD/HbBS2jnFHdYF+SALQOIjhqvSjcbyBflZXJSwdUrZKg=
+	t=1745950040; cv=none; b=njG3F6ad+mTPI1Cpe2lGV19kqKHmZrEIfb6ZYZNXcsnyolNZEEgnR0VbPrjz8G9rNHbD3QtkGg2dyDogCgi614XHcZi9IEbmAm3SBs98mVfIPiQZBOmAHhisxflTK1nqj7Sx2Cjm3balh3Fz1y8kxVbKwhyQ9QhFx4olKiVK1Yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949594; c=relaxed/simple;
-	bh=6U0FyAaThMMvevzNemwdUcptYXZNxDBUGV5rn+CWjpo=;
+	s=arc-20240116; t=1745950040; c=relaxed/simple;
+	bh=MLZ32R8dqj19H184XbTIA+MhLmtmzCTmee7gIi10zLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0g8qOsL0ccVPAIF00tJXGg3o2P5dwfE3xF5QrDtd1foa9s14G/iNQvn/j2K9D4kpjtumBEl6Fl6AwG0shdpg72i4+k20EMTzrVuN5mpHdxOGlg/2LI27+Vnfo+ogZWrxipC1noW5DMEboLMGbUU5yF3+Gm+J8dyay+CoeHnnT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nQoBLmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C6CC4CEE3;
-	Tue, 29 Apr 2025 17:59:54 +0000 (UTC)
+	 MIME-Version; b=WckZZRcCSUFEqSSmpVphhL8hRSLUbedP5PB303Yqkctxews7RIlijuPjWq6gQ6hSXRBqE7gWbkjOAkLnxlWTVhNPtkazsFMlb7KjjofYze2rwsGP1C44cvFrkZ8M40vEUT0JqU2mMQ5/2JXpszOjwkuvCz7RNX1JwZfWug9PhDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tIhPevMZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E65C4CEEA;
+	Tue, 29 Apr 2025 18:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949594;
-	bh=6U0FyAaThMMvevzNemwdUcptYXZNxDBUGV5rn+CWjpo=;
+	s=korg; t=1745950040;
+	bh=MLZ32R8dqj19H184XbTIA+MhLmtmzCTmee7gIi10zLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1nQoBLmzWzzHYc/lcFhlw76qU5q4v1a00Tzbk8o+M4xdDczTIxH8b98GFUlJphoR9
-	 vJMdu62ZszBKJGLo70yvw5nIXN3Wxy63jgZDgeGXBtPXdH86Uru4kr4TUw4rJMkphu
-	 IPLOSKn9RDjtHJva4xMb0G6S0LHFxyg+UX9cgoC8=
+	b=tIhPevMZURHbBgqvzW4Re+Ok6ec6kgUy9C1aRJD2MKUtKwrGepUPK6s/QN292WTzZ
+	 lSUD0cPom+85eVwdH/iY9+Ov5b4DsjlDCVchF554pjKFm8N0AFP+hPDQ13EKZ+rsWA
+	 aLJGHGyqdCNzA8rny/sy3wsX/t7ZBkyls+e0OkmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@kernel.org>,
-	=?UTF-8?q?Ricardo=20Ca=F1uelo=20Navarro?= <rcn@igalia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.15 368/373] xdp: Reset bpf_redirect_info before running a xdps BPF prog.
-Date: Tue, 29 Apr 2025 18:44:05 +0200
-Message-ID: <20250429161138.267799200@linuxfoundation.org>
+	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 138/167] nvmet-fc: put ref when assoc->del_work is already scheduled
+Date: Tue, 29 Apr 2025 18:44:06 +0200
+Message-ID: <20250429161057.312006062@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Daniel Wagner <wagi@kernel.org>
 
-Ricardo reported a KASAN discovered use after free in v6.6-stable.
+[ Upstream commit 70289ae5cac4d3a39575405aaf63330486cea030 ]
 
-The syzbot starts a BPF program via xdp_test_run_batch() which assigns
-ri->tgt_value via dev_hash_map_redirect() and the return code isn't
-XDP_REDIRECT it looks like nonsense. So the output in
-bpf_warn_invalid_xdp_action() appears once.
-Then the TUN driver runs another BPF program (on the same CPU) which
-returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
-bpf_trace_printk() to print four characters and obtain the required
-return value. This is enough to get xdp_do_redirect() invoked which
-then accesses the pointer in tgt_value which might have been already
-deallocated.
+Do not leak the tgtport reference when the work is already scheduled.
 
-This problem does not affect upstream because since commit
-	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
-
-the per-CPU variable is referenced via task's task_struct and exists on
-the stack during NAPI callback. Therefore it is cleared once before the
-first invocation and remains valid within the RCU section of the NAPI
-callback.
-
-Instead of performing the huge backport of the commit (plus its fix ups)
-here is an alternative version which only resets the variable in
-question prior invoking the BPF program.
-
-Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Reported-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
-Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/nvme/target/fc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -800,7 +800,14 @@ static __always_inline u32 bpf_prog_run_
- 	 * under local_bh_disable(), which provides the needed RCU protection
- 	 * for accessing map entries.
- 	 */
--	u32 act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
-+	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
-+	u32 act;
-+
-+	if (ri->map_id || ri->map_type) {
-+		ri->map_id = 0;
-+		ri->map_type = BPF_MAP_TYPE_UNSPEC;
-+	}
-+	act = __bpf_prog_run(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 68ff9540e2d13..570c58d2b5a58 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1091,7 +1091,8 @@ static void
+ nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
+ {
+ 	nvmet_fc_tgtport_get(assoc->tgtport);
+-	queue_work(nvmet_wq, &assoc->del_work);
++	if (!queue_work(nvmet_wq, &assoc->del_work))
++		nvmet_fc_tgtport_put(assoc->tgtport);
+ }
  
- 	if (static_branch_unlikely(&bpf_master_redirect_enabled_key)) {
- 		if (act == XDP_TX && netif_is_bond_slave(xdp->rxq->dev))
+ static struct nvmet_fc_tgt_assoc *
+-- 
+2.39.5
+
 
 
 
