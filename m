@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A476AA1285
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF17EAA155C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97B967B3254
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ADB33B299E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B67250C08;
-	Tue, 29 Apr 2025 16:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B792459EA;
+	Tue, 29 Apr 2025 17:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJpKMsTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4mclVRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9724215060;
-	Tue, 29 Apr 2025 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0C824466C;
+	Tue, 29 Apr 2025 17:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945628; cv=none; b=PofBlNBsTasJvTmrvxNJo1PhOmY289gGQoQne0gT0aY1q98TsOVIyxgpCNOhQO4C3J+aZL1Zlb7IbiDf6SjR8jDaH+CiaasabOQDMLJTh8gl33rDcelYDgaQ+BBmlg9kZJwmGjBOJHbpEi5h5IDo/nUYE79nsPau00yDfJDmReQ=
+	t=1745947230; cv=none; b=eQiU/2tuEmOjR9Y4E8fcVP5qDHAza0t1/2KNptYCGnDvfhSRZRsGCmWO/EEUuc+o/yawMLAh1ThcpOBaVwsLNVnRIaPLWJ1yr+3I33xvQj74GaETBnNgG0w5d1ZIcxNZ+zgLVPdEf0wlbiYSXUPPrXcewijNy1fk5vRE/fVkIq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945628; c=relaxed/simple;
-	bh=VXKViB5YazvydlJ4PnsizOffhgOy2jyK0C+XDnniNLg=;
+	s=arc-20240116; t=1745947230; c=relaxed/simple;
+	bh=XGZFgJ3IuGuA1PELuqpb7AGS0jR+nywRwNGlbQCEE9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=axv/Tm6F8XmQ+muCJv16EF7b2laDLkMmDp5rjcliQayPhIQKDbQOp+MXqK7FFQr0ZHNP0LaPjoqDemhOJv7P4RuSrClW/fLNRbQrypLZReBGIIpxhV6m3NAD6GdrIxv9dsW/3xPnrJ4aF8fH6dsoRnaNvm4CiYkMpZ0+RQJ3txw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sJpKMsTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D65FC4CEE3;
-	Tue, 29 Apr 2025 16:53:48 +0000 (UTC)
+	 MIME-Version; b=TN4OPxMX/M2dYA4Wlp+rxrbS4dc1wiNsESnx9eug2hw63GWEgmFfa0v75IbDoJzc9MAo7ut3rCoVcyu1aCsGr6d7RaKOu3DXOyZL6jUbv6oUOzDqBg6nR3zaprmP4CILrkh3SSEnRmk4lKrogVC+hbPxtc+zrqvp2nuogmlk/mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4mclVRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3ACCC4CEE3;
+	Tue, 29 Apr 2025 17:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945628;
-	bh=VXKViB5YazvydlJ4PnsizOffhgOy2jyK0C+XDnniNLg=;
+	s=korg; t=1745947230;
+	bh=XGZFgJ3IuGuA1PELuqpb7AGS0jR+nywRwNGlbQCEE9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJpKMsTYLRk5ryMhQK9uGyiqsGboxW+ngeOtuxTrX8bloL2RJNjg5C9Ra/zxpRM5p
-	 o0Juoke4YWvflh3XBzN7HtqdrJt2L1NoP33R3MHYC3mQxDvDRE8HKqh8r+v5rbCMg0
-	 b4W8XZuAZZxI+mW/kjU2o+rIGNPmXEG/88dkay90=
+	b=C4mclVRkKPx2AXXJF36UmqJ2vEU9k7m8IW6IkbFtnvvo0ifiRAEWDNXTetkxM+rBQ
+	 S4VxzkdWdoAaw7yhTaYuHiTAkPs4cR8ilx70CrTctOnc7TjQQIqapFkbEeJCWJB/QG
+	 Q4enXnQqbh1gha5CzMmY+lEcSRt1JtEjFnrVPgaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandra Merla <cmerla@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Thomas Huth <thuth@redhat.com>,
-	Cornelia Huck <cohuck@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.4 176/179] s390/virtio_ccw: Dont allocate/assign airqs for non-existing queues
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Pankaj Dubey <pankaj.dubey@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 213/286] soc: samsung: exynos-chipid: convert to driver and merge exynos-asv
 Date: Tue, 29 Apr 2025 18:41:57 +0200
-Message-ID: <20250429161056.514995859@linuxfoundation.org>
+Message-ID: <20250429161116.711114025@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,146 +62,375 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 
-commit 2ccd42b959aaf490333dbd3b9b102eaf295c036a upstream.
+[ Upstream commit 352bfbb3e0230c96b2bce00d2ac3f0de303cc7b6 ]
 
-If we finds a vq without a name in our input array in
-virtio_ccw_find_vqs(), we treat it as "non-existing" and set the vq pointer
-to NULL; we will not call virtio_ccw_setup_vq() to allocate/setup a vq.
+The Exynos Chip ID driver on Exynos SoCs has so far only informational
+purpose - to expose the SoC device in sysfs.  No other drivers depend on
+it so there is really no benefit of initializing it early.
 
-Consequently, we create only a queue if it actually exists (name != NULL)
-and assign an incremental queue index to each such existing queue.
+The code would be the most flexible if converted to a regular driver.
+However there is already another driver - Exynos ASV (Adaptive Supply
+Voltage) - which binds to the device node of Chip ID.
 
-However, in virtio_ccw_register_adapter_ind()->get_airq_indicator() we
-will not ignore these "non-existing queues", but instead assign an airq
-indicator to them.
+The solution is to convert the Exynos Chip ID to a built in driver and
+merge the Exynos ASV into it.
 
-Besides never releasing them in virtio_ccw_drop_indicators() (because
-there is no virtqueue), the bigger issue seems to be that there will be a
-disagreement between the device and the Linux guest about the airq
-indicator to be used for notifying a queue, because the indicator bit
-for adapter I/O interrupt is derived from the queue index.
+This has several benefits:
+1. Although the Exynos ASV driver binds to a device node present in all
+   Exynos DTS (generic compatible), it fails to probe except on the
+   supported ones (only Exynos5422).  This means that the regular boot
+   process has a planned/normal device probe failure.
 
-The virtio spec states under "Setting Up Two-Stage Queue Indicators":
+   Merging the ASV into Chip ID will remove this probe failure because
+   the final driver will always bind, just with disabled ASV features.
 
-	... indicator contains the guest address of an area wherein the
-	indicators for the devices are contained, starting at bit_nr, one
-	bit per virtqueue of the device.
+2. Allows to use dev_info() as the SoC bus is present (since
+   core_initcall).
 
-And further in "Notification via Adapter I/O Interrupts":
+3. Could speed things up because of execution of Chip ID code in a SMP
+   environment (after bringing up secondary CPUs, unlike early_initcall),
+   This reduces the amount of work to be done early, when the kernel has
+   to bring up critical devices.
 
-	For notifying the driver of virtqueue buffers, the device sets the
-	bit in the guest-provided indicator area at the corresponding
-	offset.
+5. Makes the Chip ID code defer-probe friendly,
 
-For example, QEMU uses in virtio_ccw_notify() the queue index (passed as
-"vector") to select the relevant indicator bit. If a queue does not exist,
-it does not have a corresponding indicator bit assigned, because it
-effectively doesn't have a queue index.
-
-Using a virtio-balloon-ccw device under QEMU with free-page-hinting
-disabled ("free-page-hint=off") but free-page-reporting enabled
-("free-page-reporting=on") will result in free page reporting
-not working as expected: in the virtio_balloon driver, we'll be stuck
-forever in virtballoon_free_page_report()->wait_event(), because the
-waitqueue will not be woken up as the notification from the device is
-lost: it would use the wrong indicator bit.
-
-Free page reporting stops working and we get splats (when configured to
-detect hung wqs) like:
-
- INFO: task kworker/1:3:463 blocked for more than 61 seconds.
-       Not tainted 6.14.0 #4
- "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
- task:kworker/1:3 [...]
- Workqueue: events page_reporting_process
- Call Trace:
-  [<000002f404e6dfb2>] __schedule+0x402/0x1640
-  [<000002f404e6f22e>] schedule+0x3e/0xe0
-  [<000002f3846a88fa>] virtballoon_free_page_report+0xaa/0x110 [virtio_balloon]
-  [<000002f40435c8a4>] page_reporting_process+0x2e4/0x740
-  [<000002f403fd3ee2>] process_one_work+0x1c2/0x400
-  [<000002f403fd4b96>] worker_thread+0x296/0x420
-  [<000002f403fe10b4>] kthread+0x124/0x290
-  [<000002f403f4e0dc>] __ret_from_fork+0x3c/0x60
-  [<000002f404e77272>] ret_from_fork+0xa/0x38
-
-There was recently a discussion [1] whether the "holes" should be
-treated differently again, effectively assigning also non-existing
-queues a queue index: that should also fix the issue, but requires other
-workarounds to not break existing setups.
-
-Let's fix it without affecting existing setups for now by properly ignoring
-the non-existing queues, so the indicator bits will match the queue
-indexes.
-
-[1] https://lore.kernel.org/all/cover.1720611677.git.mst@redhat.com/
-
-Fixes: a229989d975e ("virtio: don't allocate vqs when names[i] = NULL")
-Reported-by: Chandra Merla <cmerla@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Thomas Huth <thuth@redhat.com>
-Reviewed-by: Cornelia Huck <cohuck@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250402203621.940090-1-david@redhat.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20201207190517.262051-5-krzk@kernel.org
+Reviewed-by: Pankaj Dubey <pankaj.dubey@samsung.com>
+Stable-dep-of: c8222ef6cf29 ("soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/virtio/virtio_ccw.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ arch/arm/mach-exynos/Kconfig        |  1 -
+ drivers/soc/samsung/Kconfig         | 12 +++--
+ drivers/soc/samsung/Makefile        |  3 +-
+ drivers/soc/samsung/exynos-asv.c    | 45 +++++--------------
+ drivers/soc/samsung/exynos-asv.h    |  2 +
+ drivers/soc/samsung/exynos-chipid.c | 69 ++++++++++++++++++++---------
+ 6 files changed, 67 insertions(+), 65 deletions(-)
 
---- a/drivers/s390/virtio/virtio_ccw.c
-+++ b/drivers/s390/virtio/virtio_ccw.c
-@@ -261,11 +261,17 @@ static struct airq_info *new_airq_info(i
- static unsigned long get_airq_indicator(struct virtqueue *vqs[], int nvqs,
- 					u64 *first, void **airq_info)
- {
--	int i, j;
-+	int i, j, queue_idx, highest_queue_idx = -1;
- 	struct airq_info *info;
- 	unsigned long indicator_addr = 0;
- 	unsigned long bit, flags;
+diff --git a/arch/arm/mach-exynos/Kconfig b/arch/arm/mach-exynos/Kconfig
+index b5df98ee5d176..4b554cc8fa58a 100644
+--- a/arch/arm/mach-exynos/Kconfig
++++ b/arch/arm/mach-exynos/Kconfig
+@@ -13,7 +13,6 @@ menuconfig ARCH_EXYNOS
+ 	select ARM_GIC
+ 	select EXYNOS_IRQ_COMBINER
+ 	select COMMON_CLK_SAMSUNG
+-	select EXYNOS_ASV
+ 	select EXYNOS_CHIPID
+ 	select EXYNOS_THERMAL
+ 	select EXYNOS_PMU
+diff --git a/drivers/soc/samsung/Kconfig b/drivers/soc/samsung/Kconfig
+index fc7f48a922881..5745d7e5908e9 100644
+--- a/drivers/soc/samsung/Kconfig
++++ b/drivers/soc/samsung/Kconfig
+@@ -7,21 +7,19 @@ menuconfig SOC_SAMSUNG
  
-+	/* Array entries without an actual queue pointer must be ignored. */
-+	for (i = 0; i < nvqs; i++) {
-+		if (vqs[i])
-+			highest_queue_idx++;
-+	}
+ if SOC_SAMSUNG
+ 
+-config EXYNOS_ASV
+-	bool "Exynos Adaptive Supply Voltage support" if COMPILE_TEST
+-	depends on (ARCH_EXYNOS && EXYNOS_CHIPID) || COMPILE_TEST
+-	select EXYNOS_ASV_ARM if ARM && ARCH_EXYNOS
+-
+ # There is no need to enable these drivers for ARMv8
+ config EXYNOS_ASV_ARM
+ 	bool "Exynos ASV ARMv7-specific driver extensions" if COMPILE_TEST
+-	depends on EXYNOS_ASV
++	depends on EXYNOS_CHIPID
+ 
+ config EXYNOS_CHIPID
+-	bool "Exynos Chipid controller driver" if COMPILE_TEST
++	bool "Exynos ChipID controller and ASV driver" if COMPILE_TEST
+ 	depends on ARCH_EXYNOS || COMPILE_TEST
++	select EXYNOS_ASV_ARM if ARM && ARCH_EXYNOS
+ 	select MFD_SYSCON
+ 	select SOC_BUS
++	help
++	  Support for Samsung Exynos SoC ChipID and Adaptive Supply Voltage.
+ 
+ config EXYNOS_PMU
+ 	bool "Exynos PMU controller driver" if COMPILE_TEST
+diff --git a/drivers/soc/samsung/Makefile b/drivers/soc/samsung/Makefile
+index 59e8e9453f27c..0c523a8de4ebf 100644
+--- a/drivers/soc/samsung/Makefile
++++ b/drivers/soc/samsung/Makefile
+@@ -1,9 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-$(CONFIG_EXYNOS_ASV)	+= exynos-asv.o
+ obj-$(CONFIG_EXYNOS_ASV_ARM)	+= exynos5422-asv.o
+ 
+-obj-$(CONFIG_EXYNOS_CHIPID)	+= exynos-chipid.o
++obj-$(CONFIG_EXYNOS_CHIPID)	+= exynos-chipid.o exynos-asv.o
+ obj-$(CONFIG_EXYNOS_PMU)	+= exynos-pmu.o
+ 
+ obj-$(CONFIG_EXYNOS_PMU_ARM_DRIVERS)	+= exynos3250-pmu.o exynos4-pmu.o \
+diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
+index 5daeadc363829..d60af8acc3916 100644
+--- a/drivers/soc/samsung/exynos-asv.c
++++ b/drivers/soc/samsung/exynos-asv.c
+@@ -2,7 +2,9 @@
+ /*
+  * Copyright (c) 2019 Samsung Electronics Co., Ltd.
+  *	      http://www.samsung.com/
++ * Copyright (c) 2020 Krzysztof Kozlowski <krzk@kernel.org>
+  * Author: Sylwester Nawrocki <s.nawrocki@samsung.com>
++ * Author: Krzysztof Kozlowski <krzk@kernel.org>
+  *
+  * Samsung Exynos SoC Adaptive Supply Voltage support
+  */
+@@ -10,12 +12,7 @@
+ #include <linux/cpu.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+-#include <linux/init.h>
+-#include <linux/mfd/syscon.h>
+-#include <linux/module.h>
+ #include <linux/of.h>
+-#include <linux/of_device.h>
+-#include <linux/platform_device.h>
+ #include <linux/pm_opp.h>
+ #include <linux/regmap.h>
+ #include <linux/soc/samsung/exynos-chipid.h>
+@@ -111,7 +108,7 @@ static int exynos_asv_update_opps(struct exynos_asv *asv)
+ 	return	0;
+ }
+ 
+-static int exynos_asv_probe(struct platform_device *pdev)
++int exynos_asv_init(struct device *dev, struct regmap *regmap)
+ {
+ 	int (*probe_func)(struct exynos_asv *asv);
+ 	struct exynos_asv *asv;
+@@ -119,21 +116,16 @@ static int exynos_asv_probe(struct platform_device *pdev)
+ 	u32 product_id = 0;
+ 	int ret, i;
+ 
+-	asv = devm_kzalloc(&pdev->dev, sizeof(*asv), GFP_KERNEL);
++	asv = devm_kzalloc(dev, sizeof(*asv), GFP_KERNEL);
+ 	if (!asv)
+ 		return -ENOMEM;
+ 
+-	asv->chipid_regmap = device_node_to_regmap(pdev->dev.of_node);
+-	if (IS_ERR(asv->chipid_regmap)) {
+-		dev_err(&pdev->dev, "Could not find syscon regmap\n");
+-		return PTR_ERR(asv->chipid_regmap);
+-	}
+-
++	asv->chipid_regmap = regmap;
++	asv->dev = dev;
+ 	ret = regmap_read(asv->chipid_regmap, EXYNOS_CHIPID_REG_PRO_ID,
+ 			  &product_id);
+ 	if (ret < 0) {
+-		dev_err(&pdev->dev, "Cannot read revision from ChipID: %d\n",
+-			ret);
++		dev_err(dev, "Cannot read revision from ChipID: %d\n", ret);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -142,7 +134,9 @@ static int exynos_asv_probe(struct platform_device *pdev)
+ 		probe_func = exynos5422_asv_init;
+ 		break;
+ 	default:
+-		return -ENODEV;
++		dev_dbg(dev, "No ASV support for this SoC\n");
++		devm_kfree(dev, asv);
++		return 0;
+ 	}
+ 
+ 	cpu_dev = get_cpu_device(0);
+@@ -150,14 +144,11 @@ static int exynos_asv_probe(struct platform_device *pdev)
+ 	if (ret < 0)
+ 		return -EPROBE_DEFER;
+ 
+-	ret = of_property_read_u32(pdev->dev.of_node, "samsung,asv-bin",
++	ret = of_property_read_u32(dev->of_node, "samsung,asv-bin",
+ 				   &asv->of_bin);
+ 	if (ret < 0)
+ 		asv->of_bin = -EINVAL;
+ 
+-	asv->dev = &pdev->dev;
+-	dev_set_drvdata(&pdev->dev, asv);
+-
+ 	for (i = 0; i < ARRAY_SIZE(asv->subsys); i++)
+ 		asv->subsys[i].asv = asv;
+ 
+@@ -167,17 +158,3 @@ static int exynos_asv_probe(struct platform_device *pdev)
+ 
+ 	return exynos_asv_update_opps(asv);
+ }
+-
+-static const struct of_device_id exynos_asv_of_device_ids[] = {
+-	{ .compatible = "samsung,exynos4210-chipid" },
+-	{}
+-};
+-
+-static struct platform_driver exynos_asv_driver = {
+-	.driver = {
+-		.name = "exynos-asv",
+-		.of_match_table = exynos_asv_of_device_ids,
+-	},
+-	.probe	= exynos_asv_probe,
+-};
+-module_platform_driver(exynos_asv_driver);
+diff --git a/drivers/soc/samsung/exynos-asv.h b/drivers/soc/samsung/exynos-asv.h
+index 3fd1f2acd9995..dcbe154db31e0 100644
+--- a/drivers/soc/samsung/exynos-asv.h
++++ b/drivers/soc/samsung/exynos-asv.h
+@@ -68,4 +68,6 @@ static inline u32 exynos_asv_opp_get_frequency(const struct exynos_asv_subsys *s
+ 	return __asv_get_table_entry(&subsys->table, level, 0);
+ }
+ 
++int exynos_asv_init(struct device *dev, struct regmap *regmap);
 +
- 	for (i = 0; i < MAX_AIRQ_AREAS && !indicator_addr; i++) {
- 		mutex_lock(&airq_areas_lock);
- 		if (!airq_areas[i])
-@@ -275,7 +281,7 @@ static unsigned long get_airq_indicator(
- 		if (!info)
- 			return 0;
- 		write_lock_irqsave(&info->lock, flags);
--		bit = airq_iv_alloc(info->aiv, nvqs);
-+		bit = airq_iv_alloc(info->aiv, highest_queue_idx + 1);
- 		if (bit == -1UL) {
- 			/* Not enough vacancies. */
- 			write_unlock_irqrestore(&info->lock, flags);
-@@ -284,8 +290,10 @@ static unsigned long get_airq_indicator(
- 		*first = bit;
- 		*airq_info = info;
- 		indicator_addr = (unsigned long)info->aiv->vector;
--		for (j = 0; j < nvqs; j++) {
--			airq_iv_set_ptr(info->aiv, bit + j,
-+		for (j = 0, queue_idx = 0; j < nvqs; j++) {
-+			if (!vqs[j])
-+				continue;
-+			airq_iv_set_ptr(info->aiv, bit + queue_idx++,
- 					(unsigned long)vqs[j]);
- 		}
- 		write_unlock_irqrestore(&info->lock, flags);
+ #endif /* __LINUX_SOC_EXYNOS_ASV_H */
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index 0f2de1b016a59..2ab6ce71e9be5 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -2,20 +2,28 @@
+ /*
+  * Copyright (c) 2019 Samsung Electronics Co., Ltd.
+  *	      http://www.samsung.com/
++ * Copyright (c) 2020 Krzysztof Kozlowski <krzk@kernel.org>
+  *
+  * Exynos - CHIP ID support
+  * Author: Pankaj Dubey <pankaj.dubey@samsung.com>
+  * Author: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
++ * Author: Krzysztof Kozlowski <krzk@kernel.org>
++ *
++ * Samsung Exynos SoC Adaptive Supply Voltage and Chip ID support
+  */
+ 
+-#include <linux/io.h>
++#include <linux/device.h>
++#include <linux/errno.h>
+ #include <linux/mfd/syscon.h>
+ #include <linux/of.h>
++#include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+ #include <linux/soc/samsung/exynos-chipid.h>
+ #include <linux/sys_soc.h>
+ 
++#include "exynos-asv.h"
++
+ static const struct exynos_soc_id {
+ 	const char *name;
+ 	unsigned int id;
+@@ -45,25 +53,17 @@ static const char * __init product_id_to_soc_id(unsigned int product_id)
+ 	return NULL;
+ }
+ 
+-static int __init exynos_chipid_early_init(void)
++static int exynos_chipid_probe(struct platform_device *pdev)
+ {
+ 	struct soc_device_attribute *soc_dev_attr;
+ 	struct soc_device *soc_dev;
+ 	struct device_node *root;
+-	struct device_node *syscon;
+ 	struct regmap *regmap;
+ 	u32 product_id;
+ 	u32 revision;
+ 	int ret;
+ 
+-	syscon = of_find_compatible_node(NULL, NULL,
+-					 "samsung,exynos4210-chipid");
+-	if (!syscon)
+-		return -ENODEV;
+-
+-	regmap = device_node_to_regmap(syscon);
+-	of_node_put(syscon);
+-
++	regmap = device_node_to_regmap(pdev->dev.of_node);
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
+ 
+@@ -73,7 +73,8 @@ static int __init exynos_chipid_early_init(void)
+ 
+ 	revision = product_id & EXYNOS_REV_MASK;
+ 
+-	soc_dev_attr = kzalloc(sizeof(*soc_dev_attr), GFP_KERNEL);
++	soc_dev_attr = devm_kzalloc(&pdev->dev, sizeof(*soc_dev_attr),
++				    GFP_KERNEL);
+ 	if (!soc_dev_attr)
+ 		return -ENOMEM;
+ 
+@@ -83,20 +84,24 @@ static int __init exynos_chipid_early_init(void)
+ 	of_property_read_string(root, "model", &soc_dev_attr->machine);
+ 	of_node_put(root);
+ 
+-	soc_dev_attr->revision = kasprintf(GFP_KERNEL, "%x", revision);
++	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
++						"%x", revision);
+ 	soc_dev_attr->soc_id = product_id_to_soc_id(product_id);
+ 	if (!soc_dev_attr->soc_id) {
+ 		pr_err("Unknown SoC\n");
+-		ret = -ENODEV;
+-		goto err;
++		return -ENODEV;
+ 	}
+ 
+ 	/* please note that the actual registration will be deferred */
+ 	soc_dev = soc_device_register(soc_dev_attr);
+-	if (IS_ERR(soc_dev)) {
+-		ret = PTR_ERR(soc_dev);
++	if (IS_ERR(soc_dev))
++		return PTR_ERR(soc_dev);
++
++	ret = exynos_asv_init(&pdev->dev, regmap);
++	if (ret)
+ 		goto err;
+-	}
++
++	platform_set_drvdata(pdev, soc_dev);
+ 
+ 	dev_info(soc_device_to_device(soc_dev),
+ 		 "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
+@@ -105,9 +110,31 @@ static int __init exynos_chipid_early_init(void)
+ 	return 0;
+ 
+ err:
+-	kfree(soc_dev_attr->revision);
+-	kfree(soc_dev_attr);
++	soc_device_unregister(soc_dev);
++
+ 	return ret;
+ }
+ 
+-arch_initcall(exynos_chipid_early_init);
++static int exynos_chipid_remove(struct platform_device *pdev)
++{
++	struct soc_device *soc_dev = platform_get_drvdata(pdev);
++
++	soc_device_unregister(soc_dev);
++
++	return 0;
++}
++
++static const struct of_device_id exynos_chipid_of_device_ids[] = {
++	{ .compatible = "samsung,exynos4210-chipid" },
++	{}
++};
++
++static struct platform_driver exynos_chipid_driver = {
++	.driver = {
++		.name = "exynos-chipid",
++		.of_match_table = exynos_chipid_of_device_ids,
++	},
++	.probe	= exynos_chipid_probe,
++	.remove	= exynos_chipid_remove,
++};
++builtin_platform_driver(exynos_chipid_driver);
+-- 
+2.39.5
+
 
 
 
