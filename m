@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0E8AA1839
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C425AA150E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E43F13A7AB6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BA2171335
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4821024DFF3;
-	Tue, 29 Apr 2025 17:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954C8245007;
+	Tue, 29 Apr 2025 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gkvl+4pk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzDUES4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052962B2DA;
-	Tue, 29 Apr 2025 17:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5240524113C;
+	Tue, 29 Apr 2025 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949201; cv=none; b=jBekPVXP+GF44K8e9RqVeadg71DWHGxlW3XZOS/KZ6OIihDg4knBh0SP241/wlZ9jSBLNNxq6Yq3Or6jgFqhck9c+NguxGLCFAYUxeOGM6j+yRW0bh3fJoprvGocQ2t9eEuJs0Uc35oSS5/W6PjyFEG5GASXfCcv0Zm4O0k+eEo=
+	t=1745947239; cv=none; b=FUK/9AQVLH8pne5g9HDX62c2gdultei7WyDrmphBiEruDFPweOjrPzftOw+K1wakx1HaNz0GY666/PArySoErUazBTkz5sX+8zgf/hWPEPLzqczVXKZDLAIRVLBkXuI6VzXZ3+AmVe/T+4TmBswZXAVBrtHQMOPEqdPBpwG+/1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949201; c=relaxed/simple;
-	bh=PtYj6urQWA7XV+0nVgQ+JJPviaNnz4jJcVptHtTpMCk=;
+	s=arc-20240116; t=1745947239; c=relaxed/simple;
+	bh=GuhuKodNICHJfXiPjbq1adYIKgwmaCu3z0QX/yHggjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gVt5/roEEdAuh9Ri38Mtfs9j/w1V+OSa6L7WUzN+/iNmGZukgftUBkO3oWJeAKYKnyiD9/fp44XrR8WKw7+Y17qO9H3gBdbr8+mrkao7GbsWKPr6Hg18Qbl3nMIGEA/+19Lt6fSjqn54wgwl5QL+HCVX97/QzyilycF+MTHjhqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gkvl+4pk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD15C4CEE3;
-	Tue, 29 Apr 2025 17:53:20 +0000 (UTC)
+	 MIME-Version; b=fn3sKxrzJE+jxfZnSNb2eFew5OdEzO8JPenN5YlWQldnKUtHSAjgmhvj0RM2NHoPLrrQqbVfLMTbe4rSPX2nZjl2U1yRBtnYaWHqx6wo/lj1a/mAK1g/lFNDNN/7ki5a+z0Rb6xPaaj0hP/06VXi3U5QTP4vWaWCSMHZRHbl4Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzDUES4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B82C4CEE3;
+	Tue, 29 Apr 2025 17:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949200;
-	bh=PtYj6urQWA7XV+0nVgQ+JJPviaNnz4jJcVptHtTpMCk=;
+	s=korg; t=1745947239;
+	bh=GuhuKodNICHJfXiPjbq1adYIKgwmaCu3z0QX/yHggjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gkvl+4pkoZD2NQw7nVeG0tku5ovwr6grYPvww3nCMsAsxrTtF+DyuYaktMBiGIh8B
-	 ZAx9AkFnKucZnMjyvUNYHGA7D9yvxFMZkLJXFnN3DJT1BnuCydUZ4bFLakTD0ZRxkG
-	 rHJhITufwHmXuIp4QA3W8N1QHPhKuGywxNfCgVKk=
+	b=vzDUES4oKbcMG8RUKlnw1z5359p60exiRKlTJnuD2DCcUp0dIVAt8rC0IMaOUODvf
+	 0oFGWffJ9x/fWt8kjDleKyutuAVVAPkPQrF4CnNablhADjljL+rwraUqZrIV65WguX
+	 MMFD4B9Fd7gK7XUx58E6XV32e1PJbH4iE6+nmIKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 243/373] MIPS: ds1287: Match ds1287_set_base_clock() function types
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 216/286] soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()
 Date: Tue, 29 Apr 2025 18:42:00 +0200
-Message-ID: <20250429161133.125314672@linuxfoundation.org>
+Message-ID: <20250429161116.832819383@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit a759109b234385b74d2f5f4c86b5f59b3201ec12 upstream.
+[ Upstream commit c8222ef6cf29dd7cad21643228f96535cc02b327 ]
 
-Synchronize the declaration of ds1287_set_base_clock() between
-cevt-ds1287.c and ds1287.h.
+soc_dev_attr->revision could be NULL, thus,
+a pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-Fix follow error with gcc-14 when -Werror:
+This issue is found by our static analysis tool.
 
-arch/mips/kernel/cevt-ds1287.c:21:5: error: conflicting types for ‘ds1287_set_base_clock’; have ‘int(unsigned int)’
-   21 | int ds1287_set_base_clock(unsigned int hz)
-      |     ^~~~~~~~~~~~~~~~~~~~~
-In file included from arch/mips/kernel/cevt-ds1287.c:13:
-./arch/mips/include/asm/ds1287.h:11:13: note: previous declaration of ‘ds1287_set_base_clock’ with type ‘void(unsigned int)’
-   11 | extern void ds1287_set_base_clock(unsigned int clock);
-      |             ^~~~~~~~~~~~~~~~~~~~~
-make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
-make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
-make[6]: *** Waiting for unfinished jobs....
-
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250212213518.69432-1-chenyuan0y@gmail.com
+Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ds1287.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/samsung/exynos-chipid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/mips/include/asm/ds1287.h
-+++ b/arch/mips/include/asm/ds1287.h
-@@ -8,7 +8,7 @@
- #define __ASM_DS1287_H
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index a2d163a1b4e11..fb9e80b63b917 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -124,6 +124,8 @@ static int exynos_chipid_probe(struct platform_device *pdev)
  
- extern int ds1287_timer_state(void);
--extern void ds1287_set_base_clock(unsigned int clock);
-+extern int ds1287_set_base_clock(unsigned int hz);
- extern int ds1287_clockevent_init(int irq);
- 
- #endif
+ 	soc_dev_attr->revision = devm_kasprintf(&pdev->dev, GFP_KERNEL,
+ 						"%x", soc_info.revision);
++	if (!soc_dev_attr->revision)
++		return -ENOMEM;
+ 	soc_dev_attr->soc_id = product_id_to_soc_id(soc_info.product_id);
+ 	if (!soc_dev_attr->soc_id) {
+ 		pr_err("Unknown SoC\n");
+-- 
+2.39.5
+
 
 
 
