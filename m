@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB1FAA11F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D83AA175F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A0C47B56B7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 846A91896867
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73823244679;
-	Tue, 29 Apr 2025 16:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382EB24C083;
+	Tue, 29 Apr 2025 17:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGhL/u2e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJP3nKOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D452244668;
-	Tue, 29 Apr 2025 16:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E934B221DA7;
+	Tue, 29 Apr 2025 17:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945273; cv=none; b=O9OwdW3Ldqt8U1D8uJlZJ+KDfoIWD0YonmclkSZhx0xqqk53El+7th+/52yY4HFJkpbBp3viNnxgfQPIwLHsv2Mt09vwzCL+zQqL5/DDqR6GsMNcbV51DXDdkXvVDEgwApuCLX4N36roz35F/8b9lgQihRbL4KvjsHV0KQk0QMg=
+	t=1745948802; cv=none; b=r8eFNNlBKK0eSfPUBiSaIa2lcNkQb5ixCNZf9AxFVzVU20s7QFa07mr0U+2NRj7JGq/94beawLtGCTCMvNS1yBFX6HI78CAEXMQFItbk9JeeBU3KZS6ssSeFesMnvDd2L+cbd0Ds04CJ/8eEce+6Lwrod1WPUim5kf8EtG8m4Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945273; c=relaxed/simple;
-	bh=9hqd7ShrhsZWSrgn/KPrjXYQz8LzV2U/gtsUMQe7x0k=;
+	s=arc-20240116; t=1745948802; c=relaxed/simple;
+	bh=AgC5GTJseNshcFaWeYgHMm4sRLmdG8gPXuQitfYw9Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErwsjvRSewu0lWggDYJvZ361xKdt8uiRhIjplSiBiFMxpjE/YzR3HPNU0HB70hsIH5XwR+PbEQDzsJ3z8FAceqS0oWSOeHqNgyzGPFpqPBGtKV6ya2vdMnuipHX+MkkHQ0EXcdViLEM7yiYVL/356BvKR0aGaWA8Cl50zeqe3+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGhL/u2e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3DBC4CEE3;
-	Tue, 29 Apr 2025 16:47:52 +0000 (UTC)
+	 MIME-Version; b=AACgeKzJLInFXdBcbp5XNASnea5WWkmios/lLH1Gzyg5f6fIJ+D3sSMGQ8NhXe9rHo+ojjZyig914hJMp/ou4sOVARe6YxB64QMSeDqghWuwZ9b6w3zyyzS3hZiWO9OYZA4Hs6ym01eg/rVffVRErwDqjGizzSlXyMd61H0yf5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJP3nKOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB3FC4CEE3;
+	Tue, 29 Apr 2025 17:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945272;
-	bh=9hqd7ShrhsZWSrgn/KPrjXYQz8LzV2U/gtsUMQe7x0k=;
+	s=korg; t=1745948801;
+	bh=AgC5GTJseNshcFaWeYgHMm4sRLmdG8gPXuQitfYw9Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGhL/u2eJGS/hRZkJtJXAaLM8AwSAk6mfB23tG3ATBMbmSe+L/ZvhC6Y+MxEPB01C
-	 MWbQvscJl5Ng3ZqYJL3u4UOoiXM0WWT5AtsRz7p+FIuoA1ZY6TZIQ/oQIrx3xkTtuS
-	 Ra/Z7vlkypKS6tiXYdt33NZUAKqJPLk5iKTv0yOc=
+	b=XJP3nKOjH5UxeVr54357SMxh1ZH8aEM2e25iiBukmiTu2PQ0prWzPgj+tRPJKo+MS
+	 xvECETrg8b1I69cYP+YgCSqIPrW+AnecTwf5RQQ9+XCsPw54cCp3FduG40KYIm/TY6
+	 MPWfefoGlWzV0lr86w2atI1e1/DoqLkLiuP1f2a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b0c03d76056ef6cd12a6@syzkaller.appspotmail.com,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/179] net: vlan: dont propagate flags on open
+	Lee Jones <lee@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH 5.15 091/373] mfd: ene-kb3930: Fix a potential NULL pointer dereference
 Date: Tue, 29 Apr 2025 18:39:28 +0200
-Message-ID: <20250429161050.513762209@linuxfoundation.org>
+Message-ID: <20250429161126.903404330@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,187 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@fomichev.me>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit 27b918007d96402aba10ed52a6af8015230f1793 ]
+commit 4cdf1d2a816a93fa02f7b6b5492dc7f55af2a199 upstream.
 
-With the device instance lock, there is now a possibility of a deadlock:
+The off_gpios could be NULL. Add missing check in the kb3930_probe().
+This is similar to the issue fixed in commit b1ba8bcb2d1f
+("backlight: hx8357: Fix potential NULL pointer dereference").
 
-[    1.211455] ============================================
-[    1.211571] WARNING: possible recursive locking detected
-[    1.211687] 6.14.0-rc5-01215-g032756b4ca7a-dirty #5 Not tainted
-[    1.211823] --------------------------------------------
-[    1.211936] ip/184 is trying to acquire lock:
-[    1.212032] ffff8881024a4c30 (&dev->lock){+.+.}-{4:4}, at: dev_set_allmulti+0x4e/0xb0
-[    1.212207]
-[    1.212207] but task is already holding lock:
-[    1.212332] ffff8881024a4c30 (&dev->lock){+.+.}-{4:4}, at: dev_open+0x50/0xb0
-[    1.212487]
-[    1.212487] other info that might help us debug this:
-[    1.212626]  Possible unsafe locking scenario:
-[    1.212626]
-[    1.212751]        CPU0
-[    1.212815]        ----
-[    1.212871]   lock(&dev->lock);
-[    1.212944]   lock(&dev->lock);
-[    1.213016]
-[    1.213016]  *** DEADLOCK ***
-[    1.213016]
-[    1.213143]  May be due to missing lock nesting notation
-[    1.213143]
-[    1.213294] 3 locks held by ip/184:
-[    1.213371]  #0: ffffffff838b53e0 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock+0x1b/0xa0
-[    1.213543]  #1: ffffffff84e5fc70 (&net->rtnl_mutex){+.+.}-{4:4}, at: rtnl_nets_lock+0x37/0xa0
-[    1.213727]  #2: ffff8881024a4c30 (&dev->lock){+.+.}-{4:4}, at: dev_open+0x50/0xb0
-[    1.213895]
-[    1.213895] stack backtrace:
-[    1.213991] CPU: 0 UID: 0 PID: 184 Comm: ip Not tainted 6.14.0-rc5-01215-g032756b4ca7a-dirty #5
-[    1.213993] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Arch Linux 1.16.3-1-1 04/01/2014
-[    1.213994] Call Trace:
-[    1.213995]  <TASK>
-[    1.213996]  dump_stack_lvl+0x8e/0xd0
-[    1.214000]  print_deadlock_bug+0x28b/0x2a0
-[    1.214020]  lock_acquire+0xea/0x2a0
-[    1.214027]  __mutex_lock+0xbf/0xd40
-[    1.214038]  dev_set_allmulti+0x4e/0xb0 # real_dev->flags & IFF_ALLMULTI
-[    1.214040]  vlan_dev_open+0xa5/0x170 # ndo_open on vlandev
-[    1.214042]  __dev_open+0x145/0x270
-[    1.214046]  __dev_change_flags+0xb0/0x1e0
-[    1.214051]  netif_change_flags+0x22/0x60 # IFF_UP vlandev
-[    1.214053]  dev_change_flags+0x61/0xb0 # for each device in group from dev->vlan_info
-[    1.214055]  vlan_device_event+0x766/0x7c0 # on netdevsim0
-[    1.214058]  notifier_call_chain+0x78/0x120
-[    1.214062]  netif_open+0x6d/0x90
-[    1.214064]  dev_open+0x5b/0xb0 # locks netdevsim0
-[    1.214066]  bond_enslave+0x64c/0x1230
-[    1.214075]  do_set_master+0x175/0x1e0 # on netdevsim0
-[    1.214077]  do_setlink+0x516/0x13b0
-[    1.214094]  rtnl_newlink+0xaba/0xb80
-[    1.214132]  rtnetlink_rcv_msg+0x440/0x490
-[    1.214144]  netlink_rcv_skb+0xeb/0x120
-[    1.214150]  netlink_unicast+0x1f9/0x320
-[    1.214153]  netlink_sendmsg+0x346/0x3f0
-[    1.214157]  __sock_sendmsg+0x86/0xb0
-[    1.214160]  ____sys_sendmsg+0x1c8/0x220
-[    1.214164]  ___sys_sendmsg+0x28f/0x2d0
-[    1.214179]  __x64_sys_sendmsg+0xef/0x140
-[    1.214184]  do_syscall_64+0xec/0x1d0
-[    1.214190]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-[    1.214191] RIP: 0033:0x7f2d1b4a7e56
+This was detected by our static analysis tool.
 
-Device setup:
-
-     netdevsim0 (down)
-     ^        ^
-  bond        netdevsim1.100@netdevsim1 allmulticast=on (down)
-
-When we enslave the lower device (netdevsim0) which has a vlan, we
-propagate vlan's allmuti/promisc flags during ndo_open. This causes
-(re)locking on of the real_dev.
-
-Propagate allmulti/promisc on flags change, not on the open. There
-is a slight semantics change that vlans that are down now propagate
-the flags, but this seems unlikely to result in the real issues.
-
-Reproducer:
-
-  echo 0 1 > /sys/bus/netdevsim/new_device
-
-  dev_path=$(ls -d /sys/bus/netdevsim/devices/netdevsim0/net/*)
-  dev=$(echo $dev_path | rev | cut -d/ -f1 | rev)
-
-  ip link set dev $dev name netdevsim0
-  ip link set dev netdevsim0 up
-
-  ip link add link netdevsim0 name netdevsim0.100 type vlan id 100
-  ip link set dev netdevsim0.100 allmulticast on down
-  ip link add name bond1 type bond mode 802.3ad
-  ip link set dev netdevsim0 down
-  ip link set dev netdevsim0 master bond1
-  ip link set dev bond1 up
-  ip link show
-
-Reported-by: syzbot+b0c03d76056ef6cd12a6@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/Z9CfXjLMKn6VLG5d@mini-arch/T/#m15ba130f53227c883e79fb969687d69d670337a0
-Signed-off-by: Stanislav Fomichev <sdf@fomichev.me>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250313100657.2287455-1-sdf@fomichev.me
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ede6b2d1dfc0 ("mfd: ene-kb3930: Add driver for ENE KB3930 Embedded Controller")
+Suggested-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250224233736.1919739-1-chenyuan0y@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/8021q/vlan_dev.c | 31 ++++---------------------------
- 1 file changed, 4 insertions(+), 27 deletions(-)
+ drivers/mfd/ene-kb3930.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-index b5384e5fb781d..67bedd3a5128d 100644
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -273,17 +273,6 @@ static int vlan_dev_open(struct net_device *dev)
- 			goto out;
- 	}
- 
--	if (dev->flags & IFF_ALLMULTI) {
--		err = dev_set_allmulti(real_dev, 1);
--		if (err < 0)
--			goto del_unicast;
--	}
--	if (dev->flags & IFF_PROMISC) {
--		err = dev_set_promiscuity(real_dev, 1);
--		if (err < 0)
--			goto clear_allmulti;
--	}
--
- 	ether_addr_copy(vlan->real_dev_addr, real_dev->dev_addr);
- 
- 	if (vlan->flags & VLAN_FLAG_GVRP)
-@@ -297,12 +286,6 @@ static int vlan_dev_open(struct net_device *dev)
- 		netif_carrier_on(dev);
- 	return 0;
- 
--clear_allmulti:
--	if (dev->flags & IFF_ALLMULTI)
--		dev_set_allmulti(real_dev, -1);
--del_unicast:
--	if (!ether_addr_equal(dev->dev_addr, real_dev->dev_addr))
--		dev_uc_del(real_dev, dev->dev_addr);
- out:
- 	netif_carrier_off(dev);
- 	return err;
-@@ -315,10 +298,6 @@ static int vlan_dev_stop(struct net_device *dev)
- 
- 	dev_mc_unsync(real_dev, dev);
- 	dev_uc_unsync(real_dev, dev);
--	if (dev->flags & IFF_ALLMULTI)
--		dev_set_allmulti(real_dev, -1);
--	if (dev->flags & IFF_PROMISC)
--		dev_set_promiscuity(real_dev, -1);
- 
- 	if (!ether_addr_equal(dev->dev_addr, real_dev->dev_addr))
- 		dev_uc_del(real_dev, dev->dev_addr);
-@@ -475,12 +454,10 @@ static void vlan_dev_change_rx_flags(struct net_device *dev, int change)
- {
- 	struct net_device *real_dev = vlan_dev_priv(dev)->real_dev;
- 
--	if (dev->flags & IFF_UP) {
--		if (change & IFF_ALLMULTI)
--			dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
--		if (change & IFF_PROMISC)
--			dev_set_promiscuity(real_dev, dev->flags & IFF_PROMISC ? 1 : -1);
--	}
-+	if (change & IFF_ALLMULTI)
-+		dev_set_allmulti(real_dev, dev->flags & IFF_ALLMULTI ? 1 : -1);
-+	if (change & IFF_PROMISC)
-+		dev_set_promiscuity(real_dev, dev->flags & IFF_PROMISC ? 1 : -1);
- }
- 
- static void vlan_dev_set_rx_mode(struct net_device *vlan_dev)
--- 
-2.39.5
-
+--- a/drivers/mfd/ene-kb3930.c
++++ b/drivers/mfd/ene-kb3930.c
+@@ -162,7 +162,7 @@ static int kb3930_probe(struct i2c_clien
+ 			devm_gpiod_get_array_optional(dev, "off", GPIOD_IN);
+ 		if (IS_ERR(ddata->off_gpios))
+ 			return PTR_ERR(ddata->off_gpios);
+-		if (ddata->off_gpios->ndescs < 2) {
++		if (ddata->off_gpios && ddata->off_gpios->ndescs < 2) {
+ 			dev_err(dev, "invalid off-gpios property\n");
+ 			return -EINVAL;
+ 		}
 
 
 
