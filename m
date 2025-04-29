@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1327AA17EE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3057CAA160B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BA669A57A3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF2318834E5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEF682517AF;
-	Tue, 29 Apr 2025 17:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D25221570;
+	Tue, 29 Apr 2025 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daP8g8La"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmZsOID5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1ECC148;
-	Tue, 29 Apr 2025 17:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8993421ABDB;
+	Tue, 29 Apr 2025 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948916; cv=none; b=WH5j6oKo5UZJAS+Ms67jOrB11qvM7I37jE743QmiiHt+3hJ2XjSoxOiiDN+LXm1247rCNWaheoYfh8r8godwkcrNTiMfmRYMyqZb1E9XgUjtcyzb1BrlSsLOVc9Q8zqSdq7W8/16q4PRD3jvYqyhSMm1X0Cs1evvQSZahz8Cicc=
+	t=1745947778; cv=none; b=NSfWj7elF8JU+AtuS4nWxsKBi4EkOk60yef1orINV+xXGoQtE7+rzDGwXQgjmDacp9MsQWZtgzkm+rwmIE6KM3LnNZssbp/T+jr3NOT7Y4u4jct/3/N7BFg+VdyR4mYLu37EA/s9CnD21jJu0P0gwdTA2Bss82mxQfGytPlORVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948916; c=relaxed/simple;
-	bh=W44X0iwujwBhbpfdB1Q1pRqIoq8Jf3L+/H12n/lh6NA=;
+	s=arc-20240116; t=1745947778; c=relaxed/simple;
+	bh=EtztFZOfDygbVXJDExWb1XxB8Xz1fWAXV3bps7lOxlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Vm/QNYjNwTWM5dzS23oy7HV0L9DjkLYwrAeouTHLs+zRxhPg2kV93/DJy7uq29BM04OhYW/+Eio21rmyI7cME01Esjs0O6kn6/tYpvXeYCSEhmWRo7Y6zN3zdNgn25TFD3fXkvV+wsGZC4qISNsrrQU18H0oFPpV8Rrn6bVZXA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=daP8g8La; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A281C4CEE3;
-	Tue, 29 Apr 2025 17:48:35 +0000 (UTC)
+	 MIME-Version; b=fjjmwHxhIZML4ZDOMK9YK8fvVsokdIRb/MYBIMAN3DHb+ZtWB42LyOfVrr3g7ONf19yt2Ftym+WAJ2Adbx+L6s4Yaedbb7EORq8m/IlEMG8Au0yK3tUuZVR1QXzVyemoydLveL27P0Ug+S4ILBvAkL59uWs3Eh+cg1WHuUu+Y/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmZsOID5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0374C4CEE9;
+	Tue, 29 Apr 2025 17:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948916;
-	bh=W44X0iwujwBhbpfdB1Q1pRqIoq8Jf3L+/H12n/lh6NA=;
+	s=korg; t=1745947778;
+	bh=EtztFZOfDygbVXJDExWb1XxB8Xz1fWAXV3bps7lOxlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=daP8g8La7fcocGK55rd17UvlePdttQE1ZnPwr3W/VHFRknjFJoEv8RyaXhYmst5/T
-	 35nBCwL76uuv2n1k9htf6DJH3N8xNQJA7orn559yHEGOOkCswJjAuvpQW9FwomxsAH
-	 w9y1/02iQcJWrXdomxZ+spA/ijoAdVZAkOyeglZ4=
+	b=MmZsOID5ppByCMzG5raZjFchq7rhfNI6v2azF5DDDU/0KE57WxDUYg56WzFSBh9UE
+	 VMvr/jQzSUdCVWHofRQC6VefVzdqnoOH5Cqx/FKhFPTHVzZcWrxj3T7irsChlFA67U
+	 BaWJ8Rmva1yBjGohYWUqBq0eViZsZ2Z8EyCJWkeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	=?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>
-Subject: [PATCH 5.15 163/373] crypto: caam/qi - Fix drv_ctx refcount bug
-Date: Tue, 29 Apr 2025 18:40:40 +0200
-Message-ID: <20250429161129.844905332@linuxfoundation.org>
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 100/280] scsi: mpi3mr: Fix pending I/O counter
+Date: Tue, 29 Apr 2025 18:40:41 +0200
+Message-ID: <20250429161119.204611271@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit b7b39df7e710b0068356e4c696af07aa10e2cd3d upstream.
+commit cdd445258db9919e9dde497a6d5c3477ea7faf4d upstream.
 
-Ensure refcount is raised before request is enqueued since it could
-be dequeued before the call returns.
+Commit 199510e33dea ("scsi: mpi3mr: Update consumer index of reply
+queues after every 100 replies") introduced a regression with the
+per-reply queue pending I/O counter which was erroneously decremented,
+leading to the counter going negative.
 
-Reported-by: Sean Anderson <sean.anderson@linux.dev>
-Cc: <stable@vger.kernel.org>
-Fixes: 11144416a755 ("crypto: caam/qi - optimize frame queue cleanup")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewed-by: Horia Geantă <horia.geanta@nxp.com>
-Tested-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Drop the incorrect atomic decrement for the pending I/O counter.
+
+Fixes: 199510e33dea ("scsi: mpi3mr: Update consumer index of reply queues after every 100 replies")
+Cc: stable@vger.kernel.org
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250411111419.135485-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/qi.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/caam/qi.c
-+++ b/drivers/crypto/caam/qi.c
-@@ -115,12 +115,12 @@ int caam_qi_enqueue(struct device *qidev
- 	qm_fd_addr_set64(&fd, addr);
- 
- 	do {
-+		refcount_inc(&req->drv_ctx->refcnt);
- 		ret = qman_enqueue(req->drv_ctx->req_fq, &fd);
--		if (likely(!ret)) {
--			refcount_inc(&req->drv_ctx->refcnt);
-+		if (likely(!ret))
- 			return 0;
--		}
- 
-+		refcount_dec(&req->drv_ctx->refcnt);
- 		if (ret != -EBUSY)
- 			break;
- 		num_retries++;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -563,7 +563,7 @@ int mpi3mr_process_op_reply_q(struct mpi
+ 		WRITE_ONCE(op_req_q->ci, le16_to_cpu(reply_desc->request_queue_ci));
+ 		mpi3mr_process_op_reply_desc(mrioc, reply_desc, &reply_dma,
+ 		    reply_qidx);
+-		atomic_dec(&op_reply_q->pend_ios);
++
+ 		if (reply_dma)
+ 			mpi3mr_repost_reply_buf(mrioc, reply_dma);
+ 		num_op_reply++;
 
 
 
