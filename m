@@ -1,31 +1,31 @@
-Return-Path: <stable+bounces-137002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BD8AA0448
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 09:23:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41BFAA045C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 09:25:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADE874805AA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:23:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEA117A33F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE9A274655;
-	Tue, 29 Apr 2025 07:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C8426F47F;
+	Tue, 29 Apr 2025 07:23:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A316275844
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 07:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D7C27A11E
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 07:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745911410; cv=none; b=TCC1Af40mAXQ76qwhZZcbGvJgyic+tR5q+hTIvwfac16fcvGMoTCmSqcq8Lq5WjpJeyhCoZEkRnqnHjoKmZbSYp4bt7E7v4fXt1Mgh1KFrUVm/UFjXqmseGWuAQ4kdhnGZPe3Jp1H1O/hjZgdvtsTJb8d37qNC9WSQ4OEkv92iw=
+	t=1745911416; cv=none; b=lxhYAxoTtk91W5IAqn3LUL4JQ1XM0vXkH0xCRum0DhyYN5h6l6nlPSnKdSdtKBEKuRMU+GK969Zvx/D67u27cwCjjd4Qn284j1CYQdLWmj0fE68vmTYWFT8Smv47cwzqIoydf3wttfsFn6J52DAgdJmgg9WZA3EZqXyGeW7X3d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745911410; c=relaxed/simple;
-	bh=+Aj0IkwXCDg4PLX2HNVQlSOEB5kV+Em80qoKSxhmsbU=;
+	s=arc-20240116; t=1745911416; c=relaxed/simple;
+	bh=MA/A3nmXg69JhrSAyeqHKYK+cYF11kKs5O0rd6Fajuw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BNGKc0VplI+iwehMKTcytfoAReKFKqxsxCLcHPrunAEif1gam1504IbE8kTvl46Ff84AFgH+m6u4wQJ5Wkl4RHDNONHsMuM20WEvgYsbT1GLS54KaJ7b0G9+gOWHmXv+nHMWZR3wS+eLXoPpJap+TwWHTb0+MR8OQSTXMPE7soI=
+	 MIME-Version; b=EAI8yaCYOSy19yAVZar8zjP0k5W702MTX/QIE4wX7UMZt3fOAS82w44s3iiEAdwLVpef+Rt2zJlOqsQK61eyE4Y4FDXXmSypU3t9Ab2s7MCMD7Dl0CpTbeO8iUorwU6Wgtup3RPkQRerTHw8OUOeVORgoso7z50oOBMN4oWDueY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,16 +33,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9fJH-0005zM-D1; Tue, 29 Apr 2025 09:23:19 +0200
+	id 1u9fJH-0005zN-D8; Tue, 29 Apr 2025 09:23:19 +0200
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9fJG-000DwS-1c;
+	id 1u9fJG-000DwT-1h;
 	Tue, 29 Apr 2025 09:23:18 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1u9fJG-00CVpR-1M;
+	id 1u9fJG-00CVpb-1R;
 	Tue, 29 Apr 2025 09:23:18 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -56,14 +56,14 @@ To: "David S. Miller" <davem@davemloft.net>,
 	"Russell King (Oracle)" <linux@armlinux.org.uk>,
 	Heiner Kallweit <hkallweit1@gmail.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
-	stable@vger.kernel.org,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	UNGLinuxDriver@microchip.com
-Subject: [PATCH net v2 1/2] net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ switches
-Date: Tue, 29 Apr 2025 09:23:16 +0200
-Message-Id: <20250429072317.2982256-2-o.rempel@pengutronix.de>
+	UNGLinuxDriver@microchip.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 2/2] net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
+Date: Tue, 29 Apr 2025 09:23:17 +0200
+Message-Id: <20250429072317.2982256-3-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429072317.2982256-1-o.rempel@pengutronix.de>
 References: <20250429072317.2982256-1-o.rempel@pengutronix.de>
@@ -79,237 +79,59 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Phylink expects MAC drivers to provide LPI callbacks to properly manage
-Energy Efficient Ethernet (EEE) configuration. On KSZ switches with
-integrated PHYs, LPI is internally handled by hardware, while ports
-without integrated PHYs have no documented MAC-level LPI support.
+The KSZ9477 PHY driver contained workarounds for broken EEE capability
+advertisements by manually masking supported EEE modes and forcibly
+disabling EEE if MICREL_NO_EEE was set.
 
-Provide dummy mac_disable_tx_lpi() and mac_enable_tx_lpi() callbacks to
-satisfy phylink requirements. Also, set default EEE capabilities during
-phylink initialization where applicable.
+With proper MAC-side EEE handling implemented via phylink, these quirks
+are no longer necessary. Remove MICREL_NO_EEE handling and the use of
+ksz9477_get_features().
 
-Since phylink can now gracefully handle optional EEE configuration,
-remove the need for the MICREL_NO_EEE PHY flag.
+This simplifies the PHY driver and avoids duplicated EEE management logic.
 
-This change addresses issues caused by incomplete EEE refactoring
-introduced in commit fe0d4fd9285e ("net: phy: Keep track of EEE
-configuration"). It is not easily possible to fix all older kernels, but
-this patch ensures proper behavior on latest kernels and can be
-considered for backporting to stable kernels starting from v6.14.
-
-Fixes: fe0d4fd9285e ("net: phy: Keep track of EEE configuration")
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: stable@vger.kernel.org # v6.14+
 ---
-changes v2:
-- add extend function comments
+ drivers/net/phy/micrel.c   | 7 -------
+ include/linux/micrel_phy.h | 1 -
+ 2 files changed, 8 deletions(-)
 
- drivers/net/dsa/microchip/ksz_common.c | 134 +++++++++++++++++++------
- 1 file changed, 106 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index b45052497f8a..a0e144a04ea9 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -265,16 +265,70 @@ static void ksz_phylink_mac_link_down(struct phylink_config *config,
- 				      unsigned int mode,
- 				      phy_interface_t interface);
-
-+/**
-+ * ksz_phylink_mac_disable_tx_lpi() - Callback to signal LPI support (Dummy)
-+ * @config: phylink config structure
-+ *
-+ * This function is a dummy handler. See ksz_phylink_mac_enable_tx_lpi() for
-+ * a detailed explanation of EEE/LPI handling in KSZ switches.
-+ */
-+static void ksz_phylink_mac_disable_tx_lpi(struct phylink_config *config)
-+{
-+}
-+
-+/**
-+ * ksz_phylink_mac_enable_tx_lpi() - Callback to signal LPI support (Dummy)
-+ * @config: phylink config structure
-+ * @timer: timer value before entering LPI (unused)
-+ * @tx_clock_stop: whether to stop the TX clock in LPI mode (unused)
-+ *
-+ * This function signals to phylink that the driver architecture supports
-+ * LPI management, enabling phylink to control EEE advertisement during
-+ * negotiation according to IEEE Std 802.3 (Clause 78).
-+ *
-+ * Hardware Management of EEE/LPI State:
-+ * For KSZ switch ports with integrated PHYs (e.g., KSZ9893R ports 1-2),
-+ * observation and testing suggest that the actual EEE / Low Power Idle (LPI)
-+ * state transitions are managed autonomously by the hardware based on
-+ * the auto-negotiation results. (Note: While the datasheet describes EEE
-+ * operation based on negotiation, it doesn't explicitly detail the internal
-+ * MAC/PHY interaction, so autonomous hardware management of the MAC state
-+ * for LPI is inferred from observed behavior).
-+ * This hardware control, consistent with the switch's ability to operate
-+ * autonomously via strapping, means MAC-level software intervention is not
-+ * required or exposed for managing the LPI state once EEE is negotiated.
-+ * (Ref: KSZ9893R Data Sheet DS00002420D, primarily Section 4.7.5 explaining
-+ * EEE, also Sections 4.1.7 on Auto-Negotiation and 3.2.1 on Configuration
-+ * Straps).
-+ *
-+ * Additionally, ports configured as MAC interfaces (e.g., KSZ9893R port 3)
-+ * lack documented MAC-level LPI control.
-+ *
-+ * Therefore, this callback performs no action and serves primarily to inform
-+ * phylink of LPI awareness and to document the inferred hardware behavior.
-+ *
-+ * Returns: 0 (Always success)
-+ */
-+static int ksz_phylink_mac_enable_tx_lpi(struct phylink_config *config,
-+					 u32 timer, bool tx_clock_stop)
-+{
-+	return 0;
-+}
-+
- static const struct phylink_mac_ops ksz88x3_phylink_mac_ops = {
- 	.mac_config	= ksz88x3_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz8_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
-
- static const struct phylink_mac_ops ksz8_phylink_mac_ops = {
- 	.mac_config	= ksz_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz8_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
-
- static const struct ksz_dev_ops ksz88xx_dev_ops = {
-@@ -358,6 +412,8 @@ static const struct phylink_mac_ops ksz9477_phylink_mac_ops = {
- 	.mac_config	= ksz_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz9477_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
-
- static const struct ksz_dev_ops ksz9477_dev_ops = {
-@@ -401,6 +457,8 @@ static const struct phylink_mac_ops lan937x_phylink_mac_ops = {
- 	.mac_config	= ksz_phylink_mac_config,
- 	.mac_link_down	= ksz_phylink_mac_link_down,
- 	.mac_link_up	= ksz9477_phylink_mac_link_up,
-+	.mac_disable_tx_lpi = ksz_phylink_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = ksz_phylink_mac_enable_tx_lpi,
- };
-
- static const struct ksz_dev_ops lan937x_dev_ops = {
-@@ -2016,6 +2074,18 @@ static void ksz_phylink_get_caps(struct dsa_switch *ds, int port,
-
- 	if (dev->dev_ops->get_caps)
- 		dev->dev_ops->get_caps(dev, port, config);
-+
-+	if (ds->ops->support_eee && ds->ops->support_eee(ds, port)) {
-+		memcpy(config->lpi_interfaces, config->supported_interfaces,
-+		       sizeof(config->lpi_interfaces));
-+
-+		config->lpi_capabilities = MAC_100FD;
-+		if (dev->info->gbit_capable[port])
-+			config->lpi_capabilities |= MAC_1000FD;
-+
-+		/* EEE is fully operational */
-+		config->eee_enabled_default = true;
-+	}
- }
-
- void ksz_r_mib_stats64(struct ksz_device *dev, int port)
-@@ -3008,31 +3078,6 @@ static u32 ksz_get_phy_flags(struct dsa_switch *ds, int port)
- 		if (!port)
- 			return MICREL_KSZ8_P1_ERRATA;
- 		break;
--	case KSZ8567_CHIP_ID:
--		/* KSZ8567R Errata DS80000752C Module 4 */
--	case KSZ8765_CHIP_ID:
--	case KSZ8794_CHIP_ID:
--	case KSZ8795_CHIP_ID:
--		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
--	case KSZ9477_CHIP_ID:
--		/* KSZ9477S Errata DS80000754A Module 4 */
--	case KSZ9567_CHIP_ID:
--		/* KSZ9567S Errata DS80000756A Module 4 */
--	case KSZ9896_CHIP_ID:
--		/* KSZ9896C Errata DS80000757A Module 3 */
--	case KSZ9897_CHIP_ID:
--	case LAN9646_CHIP_ID:
--		/* KSZ9897R Errata DS80000758C Module 4 */
--		/* Energy Efficient Ethernet (EEE) feature select must be manually disabled
--		 *   The EEE feature is enabled by default, but it is not fully
--		 *   operational. It must be manually disabled through register
--		 *   controls. If not disabled, the PHY ports can auto-negotiate
--		 *   to enable EEE, and this feature can cause link drops when
--		 *   linked to another device supporting EEE.
--		 *
--		 * The same item appears in the errata for all switches above.
--		 */
--		return MICREL_NO_EEE;
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 71fb4410c31b..c2e5be404f07 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -2027,12 +2027,6 @@ static int ksz9477_config_init(struct phy_device *phydev)
+ 			return err;
  	}
 
- 	return 0;
-@@ -3466,6 +3511,20 @@ static int ksz_max_mtu(struct dsa_switch *ds, int port)
- 	return -EOPNOTSUPP;
+-	/* According to KSZ9477 Errata DS80000754C (Module 4) all EEE modes
+-	 * in this switch shall be regarded as broken.
+-	 */
+-	if (phydev->dev_flags & MICREL_NO_EEE)
+-		phy_disable_eee(phydev);
+-
+ 	return kszphy_config_init(phydev);
  }
 
-+/**
-+ * ksz_support_eee - Determine Energy Efficient Ethernet (EEE) support for a
-+ *                   port
-+ * @ds: Pointer to the DSA switch structure
-+ * @port: Port number to check
-+ *
-+ * This function also documents devices where EEE was initially advertised but
-+ * later withdrawn due to reliability issues, as described in official errata
-+ * documents. These devices are explicitly listed to record known limitations,
-+ * even if there is no technical necessity for runtime checks.
-+ *
-+ * Returns: true if the internal PHY on the given port supports fully
-+ * operational EEE, false otherwise.
-+ */
- static bool ksz_support_eee(struct dsa_switch *ds, int port)
- {
- 	struct ksz_device *dev = ds->priv;
-@@ -3475,15 +3534,34 @@ static bool ksz_support_eee(struct dsa_switch *ds, int port)
+@@ -5698,7 +5692,6 @@ static struct phy_driver ksphy_driver[] = {
+ 	.handle_interrupt = kszphy_handle_interrupt,
+ 	.suspend	= genphy_suspend,
+ 	.resume		= ksz9477_resume,
+-	.get_features	= ksz9477_get_features,
+ } };
 
- 	switch (dev->chip_id) {
- 	case KSZ8563_CHIP_ID:
-+	case KSZ9563_CHIP_ID:
-+	case KSZ9893_CHIP_ID:
-+		return true;
- 	case KSZ8567_CHIP_ID:
-+		/* KSZ8567R Errata DS80000752C Module 4 */
-+	case KSZ8765_CHIP_ID:
-+	case KSZ8794_CHIP_ID:
-+	case KSZ8795_CHIP_ID:
-+		/* KSZ879x/KSZ877x/KSZ876x Errata DS80000687C Module 2 */
- 	case KSZ9477_CHIP_ID:
--	case KSZ9563_CHIP_ID:
-+		/* KSZ9477S Errata DS80000754A Module 4 */
- 	case KSZ9567_CHIP_ID:
--	case KSZ9893_CHIP_ID:
-+		/* KSZ9567S Errata DS80000756A Module 4 */
- 	case KSZ9896_CHIP_ID:
-+		/* KSZ9896C Errata DS80000757A Module 3 */
- 	case KSZ9897_CHIP_ID:
- 	case LAN9646_CHIP_ID:
--		return true;
-+		/* KSZ9897R Errata DS80000758C Module 4 */
-+		/* Energy Efficient Ethernet (EEE) feature select must be
-+		 * manually disabled
-+		 *   The EEE feature is enabled by default, but it is not fully
-+		 *   operational. It must be manually disabled through register
-+		 *   controls. If not disabled, the PHY ports can auto-negotiate
-+		 *   to enable EEE, and this feature can cause link drops when
-+		 *   linked to another device supporting EEE.
-+		 *
-+		 * The same item appears in the errata for all switches above.
-+		 */
- 	}
+ module_phy_driver(ksphy_driver);
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index 591bf5b5e8dc..9af01bdd86d2 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -44,7 +44,6 @@
+ #define MICREL_PHY_50MHZ_CLK	BIT(0)
+ #define MICREL_PHY_FXEN		BIT(1)
+ #define MICREL_KSZ8_P1_ERRATA	BIT(2)
+-#define MICREL_NO_EEE		BIT(3)
 
- 	return false;
+ #define MICREL_KSZ9021_EXTREG_CTRL	0xB
+ #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
 --
 2.39.5
 
