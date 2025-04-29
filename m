@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-138696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBC9AA1988
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4490AA1A85
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F96D3A9DA3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58DA09A40FF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FBC243964;
-	Tue, 29 Apr 2025 18:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B955253351;
+	Tue, 29 Apr 2025 18:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLD9cuGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/OlJrTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EAFA1A5BBB;
-	Tue, 29 Apr 2025 18:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C65240611;
+	Tue, 29 Apr 2025 18:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950062; cv=none; b=IPtLOgh/1OH6GuqOpCTD3hlblMXnK0Zp375GhRRjamrqR9V0oWrOMxFVup69gkW9hLU06/BOuGEJzpPDZ3NaVaImRv3HPH3CaPIsbQcnjIZZgFO21qV4jHu4+wv9TLzNhwIFDqc6shHEY4B03K797UEOFjd1gPfurjk65djtx7Q=
+	t=1745950756; cv=none; b=f5mezaIieCHOYjPilWQ3MuSNVYbRUUX70GySCmSbTLoI+FlifAuP6YYvtnQlPa4yp5cH+V0I+b2dxCwW57wRpNK71kKdqRMQzHIZ7lT0EP2R7xI9HfHkStfLIURrqUmH2rHFCubElOQ27zAi7Gmz3EMlk6kAZkgh6VeQU5E2Dpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950062; c=relaxed/simple;
-	bh=nO3L2PydrM0enigGStsefidPSefGt6MY0Fwk4limnck=;
+	s=arc-20240116; t=1745950756; c=relaxed/simple;
+	bh=AvmAVe+PPoVMFRSvbv/d92BmKVF9eF9TNQrPNZZawDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7rAFQNuZvRJjNoalTwGnEKDG2IRyTcVXuiXkeIIlrDQQCifAgZKLUny60KFHTrdqUUQOaNrGqQ4Wi9YLQYII7RN/jCALGnBmcVDIgpO9TNRC2pD/ZSPFauKwgO87DjLNxB3kZBCCc+As4AsyCjnSUEAs1Perxxj68+D1NFvGhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLD9cuGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEF5C4CEE3;
-	Tue, 29 Apr 2025 18:07:41 +0000 (UTC)
+	 MIME-Version; b=ujaD77+KyMXD5TzA90WX/8bNEmCCg6lPwByH6CeMA0l9POgtEb/9UBwZOftSJqQi0W2ICwcrwlgUGVR6Ka6DIBkmUu0d2vSD0SR4g2xJv+KrivDH0YVPR2KH7wcBcZ5de+/AyyRlTerK7GvWQqvjICHwjyuH9GPhUK5ZhpdsgSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/OlJrTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F00C4CEEE;
+	Tue, 29 Apr 2025 18:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950062;
-	bh=nO3L2PydrM0enigGStsefidPSefGt6MY0Fwk4limnck=;
+	s=korg; t=1745950756;
+	bh=AvmAVe+PPoVMFRSvbv/d92BmKVF9eF9TNQrPNZZawDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLD9cuGMDd4y9Ep6wpJgY5Hja5//ufE+xvqhSwMI2UHvskEsHtPGzuWWdsXtz23zK
-	 2sqalOiiA4ZuF7o0oZUgH2m0rdeG0mip+T1LTnDBY/obaelEvX0gRj2OsMUaIqbqhf
-	 UZzgyV//beNTtITEd7uW+8js1Ae/LjxrpIwWZttU=
+	b=q/OlJrTb3k2DtdRP7zwI/i63E7L8X5zMlhvZHytQH3lxTKl/rjYSA/LpLl+5u73Sr
+	 qnI3MiKIa84HCGnykE6YsoNvxiwQx5im45a2+3A3JwF5MaKYJpQX80JQfN+Bb2J18s
+	 3epenvLsdwIW8gfabKFuI9J0nbKpelG/WYbaIk7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunlong Xing <yunlong.xing@unisoc.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/167] loop: aio inherit the ioprio of original request
-Date: Tue, 29 Apr 2025 18:44:12 +0200
-Message-ID: <20250429161057.555341330@linuxfoundation.org>
+Subject: [PATCH 6.6 165/204] gpiolib: of: Move Atmel HSMCI quirk up out of the regulator comment
+Date: Tue, 29 Apr 2025 18:44:13 +0200
+Message-ID: <20250429161106.156392660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunlong Xing <yunlong.xing@unisoc.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1fdb8188c3d505452b40cdb365b1bb32be533a8e ]
+[ Upstream commit b8c7a1ac884cc267d1031f8de07f1a689a69fbab ]
 
-Set cmd->iocb.ki_ioprio to the ioprio of loop device's request.
-The purpose is to inherit the original request ioprio in the aio
-flow.
+The regulator comment in of_gpio_set_polarity_by_property()
+made on top of a couple of the cases, while Atmel HSMCI quirk
+is not related to that. Make it clear by moving Atmel HSMCI
+quirk up out of the scope of the regulator comment.
 
-Signed-off-by: Yunlong Xing <yunlong.xing@unisoc.com>
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250414030159.501180-1-yunlong.xing@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250402122058.1517393-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib-of.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 1c356bda9dfa8..e3e5d533a7eca 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -441,7 +441,7 @@ static int lo_rw_aio(struct loop_device *lo, struct loop_cmd *cmd,
- 	cmd->iocb.ki_filp = file;
- 	cmd->iocb.ki_complete = lo_rw_aio_complete;
- 	cmd->iocb.ki_flags = IOCB_DIRECT;
--	cmd->iocb.ki_ioprio = IOPRIO_PRIO_VALUE(IOPRIO_CLASS_NONE, 0);
-+	cmd->iocb.ki_ioprio = req_get_ioprio(rq);
- 
- 	if (rw == ITER_SOURCE)
- 		ret = call_write_iter(file, &cmd->iocb, &iter);
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index cec9e8f29bbdf..a0a2a0f75bba4 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -247,6 +247,9 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
+ 		{ "fsl,imx8qm-fec",  "phy-reset-gpios", "phy-reset-active-high" },
+ 		{ "fsl,s32v234-fec", "phy-reset-gpios", "phy-reset-active-high" },
+ #endif
++#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
++		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
++#endif
+ #if IS_ENABLED(CONFIG_PCI_IMX6)
+ 		{ "fsl,imx6q-pcie",  "reset-gpio", "reset-gpio-active-high" },
+ 		{ "fsl,imx6sx-pcie", "reset-gpio", "reset-gpio-active-high" },
+@@ -272,9 +275,6 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
+ #if IS_ENABLED(CONFIG_REGULATOR_GPIO)
+ 		{ "regulator-gpio",    "enable-gpio",  "enable-active-high" },
+ 		{ "regulator-gpio",    "enable-gpios", "enable-active-high" },
+-#endif
+-#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
+-		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
+ #endif
+ 	};
+ 	unsigned int i;
 -- 
 2.39.5
 
