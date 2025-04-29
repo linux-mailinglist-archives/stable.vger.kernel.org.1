@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5B3AA15D9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A58DAA139C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AEAA1653DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB0481897575
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF63821ADC7;
-	Tue, 29 Apr 2025 17:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA242528ED;
+	Tue, 29 Apr 2025 17:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmILPTxt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijbxhPSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C15A1FE468;
-	Tue, 29 Apr 2025 17:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE724C067;
+	Tue, 29 Apr 2025 17:02:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947657; cv=none; b=IcLsMgoyzRXmR3tObHW3S81H6w1g/ryiMjaycmwK2uAk3EWJKmc7Sr/jb5r5hzXrYkJ/6aOtZBOpxqHtJxBfL99Q6Gky0jW1Q2ptXnWNCneoN6TI8KDCciGTFGCfVgBewczQmq7ZQih4QleYlbH+9NKedPaSp0biT1QVgjVF7O4=
+	t=1745946146; cv=none; b=hv+BoR3aWqbitFLQMxAY3h/YhucVCUhU8SsgbR9acXzr6Yvy4bNCtu3V7ARdzYvLGlnJbPtlu58PDa7Eh6vHp0KT03zXHDOsQX3LEpbxwvsCYV8qskpCqe4fWjCv5yVqvDwnLNBmIQgRi6QKQPj1DI0uVu528pgTnwTxRQjdeKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947657; c=relaxed/simple;
-	bh=2qw5ztrW8HChDrkuEz7Fwiuc/PAgHVrK/mXLZKIUJGc=;
+	s=arc-20240116; t=1745946146; c=relaxed/simple;
+	bh=KnRgxKU+TPgpiFI1UtnaMQJhB3ZXUiEDLBGbFToESI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AaXMUKf/PdqcKc0/XtgoFyCpDmc4CG8lk3P70tGPFviq/CuATN6riW3zk3/P+R2SLe2Bya+3Wuz7hBBv2IjkDaamesJb7lbK1TQgbuA6m7i3p8QkjxAHoH8h1og7X6ylSq5g+mouOhWT2DnBHyGf2Q1xUViPuhtzix0ZKNarXSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmILPTxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E64C4CEE3;
-	Tue, 29 Apr 2025 17:27:36 +0000 (UTC)
+	 MIME-Version; b=Lj6sdF+P/Q+CFVoHGL3lednJt160y9NvlkZAjnkAS90QBpH0lbLxpp7DjmuxS0N9Ma+YdaI4CWM4Z53JcxuygS5S8Q28yZtc2HxOFhgaA6TEmZxX3riZDcqThYNfeXsFiBWLUmRUTyvfPmjaJ4Xff1PrlO1Kq0ZPleyKeI8Qmtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijbxhPSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3FAC4CEE3;
+	Tue, 29 Apr 2025 17:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947657;
-	bh=2qw5ztrW8HChDrkuEz7Fwiuc/PAgHVrK/mXLZKIUJGc=;
+	s=korg; t=1745946145;
+	bh=KnRgxKU+TPgpiFI1UtnaMQJhB3ZXUiEDLBGbFToESI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmILPTxtD0pvYV1fmTJEDfr6iM4/BSnpGsXdLpRIsA+cMq5TX8rv+jKhM+bZn6CSV
-	 WnaT0L11BiIPRYrbFPjgjlZqrMlKCsUwQYjnvz7iuKMgDbpAvOldQT3WmVxTl1FgAw
-	 zGi+92PUVK8Cc0pA9/YZpYWzEFYTbS6zG/q1yssM=
+	b=ijbxhPSm1JRFP4cqeWGueOBJlzuecq0IWlUyNEZog6B3ePRJlsShTdOQmlyca6tCX
+	 VHDA1+yhQjO+MG9QWWkPCzPIFlDD72r3tUCLuyQlrCl4kh6nGhq+8a/5JWeTwx3rFk
+	 tml3K92xMtgGAhfjmACxL8RNB/KuZX6uahLiacik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/280] vhost-scsi: Fix vhost_scsi_send_status()
-Date: Tue, 29 Apr 2025 18:40:06 +0200
-Message-ID: <20250429161117.772963675@linuxfoundation.org>
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Benson Leung <bleung@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.14 170/311] usb: typec: class: Fix NULL pointer access
+Date: Tue, 29 Apr 2025 18:40:07 +0200
+Message-ID: <20250429161127.999088659@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-[ Upstream commit 58465d86071b61415e25fb054201f61e83d21465 ]
+commit ec27386de23a511008c53aa2f3434ad180a3ca9a upstream.
 
-Although the support of VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 was
-signaled by the commit 664ed90e621c ("vhost/scsi: Set
-VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits"),
-vhost_scsi_send_bad_target() still assumes the response in a single
-descriptor.
+Concurrent calls to typec_partner_unlink_device can lead to a NULL pointer
+dereference. This patch adds a mutex to protect USB device pointers and
+prevent this issue. The same mutex protects both the device pointers and
+the partner device registration.
 
-Similar issue in vhost_scsi_send_bad_target() has been fixed in previous
-commit. In addition, similar issue for vhost_scsi_complete_cmd_work() has
-been fixed by the commit 6dd88fd59da8 ("vhost-scsi: unbreak any layout for
-response").
-
-Fixes: 3ca51662f818 ("vhost-scsi: Add better resource allocation failure handling")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20250403063028.16045-4-dongli.zhang@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 59de2a56d127 ("usb: typec: Link enumerated USB devices with Type-C partner")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250321143728.4092417-2-akuchynski@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/scsi.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/usb/typec/class.c |   15 +++++++++++++--
+ drivers/usb/typec/class.h |    1 +
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 7bfe5e5865fe9..35a03306d1345 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -931,18 +931,22 @@ static void vhost_scsi_target_queue_cmd(struct vhost_scsi_cmd *cmd)
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -1052,6 +1052,7 @@ struct typec_partner *typec_register_par
+ 		partner->usb_mode = USB_MODE_USB3;
+ 	}
  
- static void
- vhost_scsi_send_status(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
--		       int head, unsigned int out, u8 status)
-+		       struct vhost_scsi_ctx *vc, u8 status)
- {
--	struct virtio_scsi_cmd_resp __user *resp;
- 	struct virtio_scsi_cmd_resp rsp;
-+	struct iov_iter iov_iter;
- 	int ret;
++	mutex_lock(&port->partner_link_lock);
+ 	ret = device_register(&partner->dev);
+ 	if (ret) {
+ 		dev_err(&port->dev, "failed to register partner (%d)\n", ret);
+@@ -1063,6 +1064,7 @@ struct typec_partner *typec_register_par
+ 		typec_partner_link_device(partner, port->usb2_dev);
+ 	if (port->usb3_dev)
+ 		typec_partner_link_device(partner, port->usb3_dev);
++	mutex_unlock(&port->partner_link_lock);
  
- 	memset(&rsp, 0, sizeof(rsp));
- 	rsp.status = status;
--	resp = vq->iov[out].iov_base;
--	ret = __copy_to_user(resp, &rsp, sizeof(rsp));
--	if (!ret)
--		vhost_add_used_and_signal(&vs->dev, vq, head, 0);
-+
-+	iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[vc->out], vc->in,
-+		      sizeof(rsp));
-+
-+	ret = copy_to_iter(&rsp, sizeof(rsp), &iov_iter);
-+
-+	if (likely(ret == sizeof(rsp)))
-+		vhost_add_used_and_signal(&vs->dev, vq, vc->head, 0);
- 	else
- 		pr_err("Faulted on virtio_scsi_cmd_resp\n");
+ 	return partner;
  }
-@@ -1302,7 +1306,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		else if (ret == -EIO)
- 			vhost_scsi_send_bad_target(vs, vq, &vc, TYPE_IO_CMD);
- 		else if (ret == -ENOMEM)
--			vhost_scsi_send_status(vs, vq, vc.head, vc.out,
-+			vhost_scsi_send_status(vs, vq, &vc,
- 					       SAM_STAT_TASK_SET_FULL);
- 	} while (likely(!vhost_exceeds_weight(vq, ++c, 0)));
- out:
--- 
-2.39.5
-
+@@ -1083,12 +1085,14 @@ void typec_unregister_partner(struct typ
+ 
+ 	port = to_typec_port(partner->dev.parent);
+ 
++	mutex_lock(&port->partner_link_lock);
+ 	if (port->usb2_dev)
+ 		typec_partner_unlink_device(partner, port->usb2_dev);
+ 	if (port->usb3_dev)
+ 		typec_partner_unlink_device(partner, port->usb3_dev);
+ 
+ 	device_unregister(&partner->dev);
++	mutex_unlock(&port->partner_link_lock);
+ }
+ EXPORT_SYMBOL_GPL(typec_unregister_partner);
+ 
+@@ -2041,10 +2045,11 @@ static struct typec_partner *typec_get_p
+ static void typec_partner_attach(struct typec_connector *con, struct device *dev)
+ {
+ 	struct typec_port *port = container_of(con, struct typec_port, con);
+-	struct typec_partner *partner = typec_get_partner(port);
++	struct typec_partner *partner;
+ 	struct usb_device *udev = to_usb_device(dev);
+ 	enum usb_mode usb_mode;
+ 
++	mutex_lock(&port->partner_link_lock);
+ 	if (udev->speed < USB_SPEED_SUPER) {
+ 		usb_mode = USB_MODE_USB2;
+ 		port->usb2_dev = dev;
+@@ -2053,18 +2058,22 @@ static void typec_partner_attach(struct
+ 		port->usb3_dev = dev;
+ 	}
+ 
++	partner = typec_get_partner(port);
+ 	if (partner) {
+ 		typec_partner_set_usb_mode(partner, usb_mode);
+ 		typec_partner_link_device(partner, dev);
+ 		put_device(&partner->dev);
+ 	}
++	mutex_unlock(&port->partner_link_lock);
+ }
+ 
+ static void typec_partner_deattach(struct typec_connector *con, struct device *dev)
+ {
+ 	struct typec_port *port = container_of(con, struct typec_port, con);
+-	struct typec_partner *partner = typec_get_partner(port);
++	struct typec_partner *partner;
+ 
++	mutex_lock(&port->partner_link_lock);
++	partner = typec_get_partner(port);
+ 	if (partner) {
+ 		typec_partner_unlink_device(partner, dev);
+ 		put_device(&partner->dev);
+@@ -2074,6 +2083,7 @@ static void typec_partner_deattach(struc
+ 		port->usb2_dev = NULL;
+ 	else if (port->usb3_dev == dev)
+ 		port->usb3_dev = NULL;
++	mutex_unlock(&port->partner_link_lock);
+ }
+ 
+ /**
+@@ -2614,6 +2624,7 @@ struct typec_port *typec_register_port(s
+ 
+ 	ida_init(&port->mode_ids);
+ 	mutex_init(&port->port_type_lock);
++	mutex_init(&port->partner_link_lock);
+ 
+ 	port->id = id;
+ 	port->ops = cap->ops;
+--- a/drivers/usb/typec/class.h
++++ b/drivers/usb/typec/class.h
+@@ -59,6 +59,7 @@ struct typec_port {
+ 	enum typec_port_type		port_type;
+ 	enum usb_mode			usb_mode;
+ 	struct mutex			port_type_lock;
++	struct mutex			partner_link_lock;
+ 
+ 	enum typec_orientation		orientation;
+ 	struct typec_switch		*sw;
 
 
 
