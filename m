@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B17AAA11E8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DD0AA1364
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFDC23A6C82
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:45:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558BB4C04A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75E824889B;
-	Tue, 29 Apr 2025 16:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8400424A06A;
+	Tue, 29 Apr 2025 17:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgAJvSvK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJ6tL/L4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B16244668;
-	Tue, 29 Apr 2025 16:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4042722A81D;
+	Tue, 29 Apr 2025 17:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945143; cv=none; b=H2zgEU9WTn+PYSXxHscT5ztXG9YVoqWPG/BJAeNCGejghJ3R/J+Ft5Japki1lNb0j0m2hXdkTmBlxoVS6QHrBd1aUY4yptyPuNEQ1yyeJlDpmnhJc8sbe/jANjFWVcmJVsjrvHex74w8gq3wcSLSEpFI3zE5ua0brz5DqAT8smI=
+	t=1745946088; cv=none; b=R5+b6UiAk6JJiuBBaAciQ30BkKh1nWe6/eyjq/L1LfJXWOpeWur90BMIkESZ7Lk+SqVB2hso+gvaaVh1R3v7D73qUv8SBvadqqdpdrieYXxIBGw6VzV/mtLa5f8Ga5Xm1Vk+BQ7prDY+gceDWpeXHugaImX37fIVy5haAVxTzeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945143; c=relaxed/simple;
-	bh=R6yIhyZBR+aNznR4+fWgHZ9jn/PK06myxcxcgmwTNZU=;
+	s=arc-20240116; t=1745946088; c=relaxed/simple;
+	bh=OX5U2rDACrjax5emk+xZxqAw2SqOkINEZNEYPsWlqjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yo5Mp8wxaDz9+f5+GU0IfiFBkrnmK3gC7gxudNsUYXDtJxUIM84g+VMdUewZkpxoVE1Nz92b2JAsG7FY3beE8s8iDUIjP5JeXBgv1Kmp78Wgv31Ri/G1YvOO+cMdKGw6JdbrBQKg1jfTJaPFuwMRc8pHk9vqlmbafkLIoQwR47I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgAJvSvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A875EC4CEE3;
-	Tue, 29 Apr 2025 16:45:42 +0000 (UTC)
+	 MIME-Version; b=iM5C8zxBbWc3FBbCDecV4DRN0Wq+PDMGWBn6U7F5svqzXojCQ6PhaNY6+PirtKyNiGQlSu+pBvDl6Lpgtzr0e+keW6go0nUYtZYFjsqVyCEdZBxAw6QSuc3JqwNT55NHBt7BF0ygkqvdrHtlx+U3uCFH+EBgkujJLrLB2knma1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJ6tL/L4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F47C4CEEA;
+	Tue, 29 Apr 2025 17:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945143;
-	bh=R6yIhyZBR+aNznR4+fWgHZ9jn/PK06myxcxcgmwTNZU=;
+	s=korg; t=1745946088;
+	bh=OX5U2rDACrjax5emk+xZxqAw2SqOkINEZNEYPsWlqjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgAJvSvKZP1OT5adioLED3zf5rjGX6KDN6FhZtzuJEsLMsENxEWSWZnKHGE87Ewbt
-	 MIxV5DT3FIz3KM9aNd7fPY7T/VD54Bld1XLAdQqGf7SjzF8h+6djYeQSE7fDcpMVPt
-	 bx6h3OUFrHbx3d5H0GlNmjuA+3QxbFuWzmQa4fzs=
+	b=MJ6tL/L48zZ5xtpDuCNbu/AmcDI20uGgF+M5qyjY+RdllJ1bZtugeDDCiR+DLLGn3
+	 WbxF4spCa24KFske1ysJv7Vun5hu8RJ4bEuyRFNTspKZQbOAL/vq8UVdpfxNzqfY9+
+	 lWcYyy5g6fXgMgkbjuGw6loU7yq28mQwtUnmjmm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/179] page_pool: avoid infinite loop to schedule delayed worker
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Roman Li <Roman.Li@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 120/311] drm/amd/display: Fix gpu reset in multidisplay config
 Date: Tue, 29 Apr 2025 18:39:17 +0200
-Message-ID: <20250429161050.066904931@linuxfoundation.org>
+Message-ID: <20250429161125.952996956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kerneljasonxing@gmail.com>
+From: Roman Li <Roman.Li@amd.com>
 
-[ Upstream commit 43130d02baa137033c25297aaae95fd0edc41654 ]
+commit 7eb287beeb60be1e4437be2b4e4e9f0da89aab97 upstream.
 
-We noticed the kworker in page_pool_release_retry() was waken
-up repeatedly and infinitely in production because of the
-buggy driver causing the inflight less than 0 and warning
-us in page_pool_inflight()[1].
+[Why]
+The indexing of stream_status in dm_gpureset_commit_state() is incorrect.
+That leads to asserts in multi-display configuration after gpu reset.
 
-Since the inflight value goes negative, it means we should
-not expect the whole page_pool to get back to work normally.
+[How]
+Adjust the indexing logic to align stream_status with surface_updates.
 
-This patch mitigates the adverse effect by not rescheduling
-the kworker when detecting the inflight negative in
-page_pool_release_retry().
-
-[1]
-[Mon Feb 10 20:36:11 2025] ------------[ cut here ]------------
-[Mon Feb 10 20:36:11 2025] Negative(-51446) inflight packet-pages
-...
-[Mon Feb 10 20:36:11 2025] Call Trace:
-[Mon Feb 10 20:36:11 2025]  page_pool_release_retry+0x23/0x70
-[Mon Feb 10 20:36:11 2025]  process_one_work+0x1b1/0x370
-[Mon Feb 10 20:36:11 2025]  worker_thread+0x37/0x3a0
-[Mon Feb 10 20:36:11 2025]  kthread+0x11a/0x140
-[Mon Feb 10 20:36:11 2025]  ? process_one_work+0x370/0x370
-[Mon Feb 10 20:36:11 2025]  ? __kthread_cancel_work+0x40/0x40
-[Mon Feb 10 20:36:11 2025]  ret_from_fork+0x35/0x40
-[Mon Feb 10 20:36:11 2025] ---[ end trace ebffe800f33e7e34 ]---
-Note: before this patch, the above calltrace would flood the
-dmesg due to repeated reschedule of release_dw kworker.
-
-Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250214064250.85987-1-kerneljasonxing@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cdaae8371aa9 ("drm/amd/display: Handle GPU reset for DC block")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3808
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Roman Li <Roman.Li@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d91bc901398741d317d9b55c59ca949d4bc7394b)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/page_pool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 335f68eaaa05c..dbe0489e46035 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -387,7 +387,13 @@ static void page_pool_release_retry(struct work_struct *wq)
- 	int inflight;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -3293,16 +3293,16 @@ static void dm_gpureset_commit_state(str
+ 	for (k = 0; k < dc_state->stream_count; k++) {
+ 		bundle->stream_update.stream = dc_state->streams[k];
  
- 	inflight = page_pool_release(pool);
--	if (!inflight)
-+	/* In rare cases, a driver bug may cause inflight to go negative.
-+	 * Don't reschedule release if inflight is 0 or negative.
-+	 * - If 0, the page_pool has been destroyed
-+	 * - if negative, we will never recover
-+	 * in both cases no reschedule is necessary.
-+	 */
-+	if (inflight <= 0)
- 		return;
+-		for (m = 0; m < dc_state->stream_status->plane_count; m++) {
++		for (m = 0; m < dc_state->stream_status[k].plane_count; m++) {
+ 			bundle->surface_updates[m].surface =
+-				dc_state->stream_status->plane_states[m];
++				dc_state->stream_status[k].plane_states[m];
+ 			bundle->surface_updates[m].surface->force_full_update =
+ 				true;
+ 		}
  
- 	/* Periodic warning */
--- 
-2.39.5
-
+ 		update_planes_and_stream_adapter(dm->dc,
+ 					 UPDATE_TYPE_FULL,
+-					 dc_state->stream_status->plane_count,
++					 dc_state->stream_status[k].plane_count,
+ 					 dc_state->streams[k],
+ 					 &bundle->stream_update,
+ 					 bundle->surface_updates);
 
 
 
