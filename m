@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-138039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F7FAA164C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C069EAA17CC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9D218843E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24FC54C61CA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC94238C21;
-	Tue, 29 Apr 2025 17:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E71824EAB2;
+	Tue, 29 Apr 2025 17:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxRaFM68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APnsfyDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E987E110;
-	Tue, 29 Apr 2025 17:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B122472B9;
+	Tue, 29 Apr 2025 17:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947921; cv=none; b=oR2wbFjmM9jpVRby7EQn+i91zxHWHzzP7eTQb0DyNCfYcvXewnSP+qaClqYAkpo+KnDq1jXtWHCCHd/e2bl0BdDAkkFqcCG5f6yyxsMr4tdbFSa30R+SqxiqFz6QkDHpfW4hbYFbGkvYZakUcGN0QUVmGrZAW+T04k4MC3ymb1Y=
+	t=1745949089; cv=none; b=d+avFzaJVd0d7TDWs4080Rj8gALtN90XR22sOJCy1bFKYSRLoKGIqiW37um9XhKcvj9/as6j3s4iCetHlBK0mIJNP3vACpVE7v7BER3o+9mzw7C/wap3VG8eVXZQJ27nVgxs1cMgoH3V/1SkUGcCLUPGv2oXDh4UR5mZ1WVXrmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947921; c=relaxed/simple;
-	bh=cH8vP567O8DyDXEP2qOsDb9/QzYvlnXQQ9F0ZNyyiNg=;
+	s=arc-20240116; t=1745949089; c=relaxed/simple;
+	bh=wogJ+Ds91KAvssFspM3aMszO4fUbX+i/Hmcpomg2BMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J9kUX/TSZ8lhbnRXbUuxjG3yxg9/j8djEd3Zarz6liWTC/OJpaHsjIlPEk19ha2DkztgwnjwU6N1TLr7vtXq2NLj2845HYu3uzQS3r7ko8HP4TtTiTHjNbXwIIYktgPiSM5yu4OH6GX8fU8nXO6A72h0QDEvDoBQ5zikspeeuxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxRaFM68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C500C4CEE3;
-	Tue, 29 Apr 2025 17:32:00 +0000 (UTC)
+	 MIME-Version; b=fuE+jIm6XG3bStJzfPiTNvL2V8hCExI8iybC/GLfu1Z4hTk7ByaTE+UcYTHjWhNPO5ghvwwPU9Vzn8CU5JP2K/iU1/CKrT15raSSdjYMAcGWYmX8ivzEfvtqLmEHSMmBAuczZK8Z85OihOuxlbjbuGNS2uog7AR1OwIH1FqExoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APnsfyDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53EDC4CEE3;
+	Tue, 29 Apr 2025 17:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947920;
-	bh=cH8vP567O8DyDXEP2qOsDb9/QzYvlnXQQ9F0ZNyyiNg=;
+	s=korg; t=1745949089;
+	bh=wogJ+Ds91KAvssFspM3aMszO4fUbX+i/Hmcpomg2BMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxRaFM68b29a+wJoICChS5AmginZyWWeJJGasQg3jPz+KRik1m92zoqIn++dwWWN8
-	 joGkp69sxRIYSMb2QZOI+JSXyDosm1BIBDWzX0dU53aaRgAl5NujuUBHesEp77NKYR
-	 45vmEIbMB6vSJ2Em9EH510Cr9O+AYV2LhUVJLE9I=
+	b=APnsfyDgPt5Yt3L8ceTOA61+k2PkCiufJ3nSOfyCWHMKvQgMENtwQCYObrYy05i97
+	 Xnhx+fczzR5iY70bIb9Cq4UEBcG0M3wm76q3Mq8DJ8S+KJ/bQOyv0KM+Ff3aIMfY+e
+	 JSs3ZNF+vrygwqjZuqZ9W43yGkf1PH8u8pwwEqJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miao Li <limiao@kylinos.cn>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 145/280] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
-Date: Tue, 29 Apr 2025 18:41:26 +0200
-Message-ID: <20250429161121.059919320@linuxfoundation.org>
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.15 210/373] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
+Date: Tue, 29 Apr 2025 18:41:27 +0200
+Message-ID: <20250429161131.801562074@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miao Li <limiao@kylinos.cn>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-commit 2932b6b547ec36ad2ed60fbf2117c0e46bb7d40a upstream.
+commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
 
-Silicon Motion Flash Drive connects to Huawei hisi platforms and
-performs a system reboot test for two thousand circles, it will
-randomly work incorrectly on boot, set DELAY_INIT quirk can workaround
-this issue.
+Smatch warns:
 
-Signed-off-by: Miao Li <limiao@kylinos.cn>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
+
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
+
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+[Minor context change fixed]
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kernel/rtas.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -383,6 +383,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0904, 0x6103), .driver_info =
- 			USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL },
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -16,6 +16,7 @@
+ #include <linux/capability.h>
+ #include <linux/delay.h>
+ #include <linux/cpu.h>
++#include <linux/nospec.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+ #include <linux/completion.h>
+@@ -1076,6 +1077,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
+ 		return -EINVAL;
  
-+	/* Silicon Motion Flash Drive */
-+	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
 +
- 	/* Sound Devices USBPre2 */
- 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
- 			USB_QUIRK_ENDPOINT_IGNORE },
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
 
 
 
