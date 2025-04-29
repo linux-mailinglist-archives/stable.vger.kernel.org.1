@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-137174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08E6AA1214
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:49:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF416AA1781
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CA191BA3340
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:48:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 433B84C346B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5223D244679;
-	Tue, 29 Apr 2025 16:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13AC25178C;
+	Tue, 29 Apr 2025 17:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ut9H1QzI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvmTKkRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D57B126BF7;
-	Tue, 29 Apr 2025 16:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBA624E4A9;
+	Tue, 29 Apr 2025 17:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945285; cv=none; b=E+9yPEL2RKlsCxi2Xr5b/syDHtI+C60IWxE7Lgew0UJjPi2oWP/21aNeiY3goZP48xQ4PRUEEOlCpdrv7JrPFv+q8wACHy+P2rw3FlTotiPeYRQNzbkdCF3L9dke1IJNl6C65LFVwSbMwUHDdnNfGIio92KJSpZkPNEerB0+7/Y=
+	t=1745948898; cv=none; b=tjrrEBWRqvCWfQwaVCzvxAnalYDnVnntikHk4cClXs8xk6bSTIDVbG9z7CnlcZ1WmhFStsj9bHz+c9iJ4hritUNdEdwqQNuZ5Xf1kw7dqS7RtRHCoGQcMP6P2DamdizfVTZ7Ew6Q31cFJ1+8X07ypTPrMLP+p3QTSMoocHmThFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945285; c=relaxed/simple;
-	bh=vfCyC3hZaubR3BIFY0RPmn3hPrF5fw1A/JS3B/DPpUs=;
+	s=arc-20240116; t=1745948898; c=relaxed/simple;
+	bh=RRWuxxDbrIrK68dJJJ6Tds0RjuJnI+j3+3jUo5BPpBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H8xg1aMK18X3hAodntDRBCucymw+klf2YUDvK5W7cRYXawEhoyDs0sU2KayHfAqu0JL9CNDk+Crhn3iPQSlvz5r3gnlpzQP3H1c0+0mltKsByQ5kc5PBy5aAtcIz1ar4u/0Y6E7+8oAtWy3IowBGVnxHg/6L3LMK9jhKcrScv5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ut9H1QzI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E345C4CEE3;
-	Tue, 29 Apr 2025 16:48:04 +0000 (UTC)
+	 MIME-Version; b=tEMaIjm8BRXOvkte5sxBTq6TyUH/Pv0DZIVZe4peL5ZZHXF+8WAQy6b8nEOv2Ve+kQUcXc3LA+yQzkNSRLnTqPXG+phAK7+KVcs/bkpcPtgu5kVPc7qzCVUOuBxODLcqd4yBAtacEzGuLK3c9k74PA1fm+Lsk9i814XCHUduYnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvmTKkRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1173BC4CEE9;
+	Tue, 29 Apr 2025 17:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945284;
-	bh=vfCyC3hZaubR3BIFY0RPmn3hPrF5fw1A/JS3B/DPpUs=;
+	s=korg; t=1745948898;
+	bh=RRWuxxDbrIrK68dJJJ6Tds0RjuJnI+j3+3jUo5BPpBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ut9H1QzIM0qODMcVaoS9QDVUktEUBT+Ejq4obe+AomYHz38mPaC+yhBbYqgf8Uszy
-	 Sgg4bVymCxQc6M7OKHMVR7+904ZvJQUVB6+zMfMbyEz6FoW47gUKkZZ3kBJJoYHice
-	 lDu7eFLRcb/yGnmGx/X+eSnx4gFrVPhavOcMW8yI=
+	b=ZvmTKkRQ2asSWAhZshEd4kmXfg5yWPFJSX7nEOY1/qVUIcEPN611kfNUccSUv/kw/
+	 9QsnMN1dVMligkKxLZEETgy4Wvwx25T5syy3HKZlIor0W6/2gvRH3Hp3CKnP/OLbEz
+	 7ZsUbYY6u5S6dEHwWiOjB/JhilgxhG8HAU508/Yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	T Pratham <t-pratham@ti.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kamlesh Gurudasani <kamlesh@ti.com>,
-	Praneeth Bajjuri <praneeth@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 062/179] lib: scatterlist: fix sg_split_phys to preserve original scatterlist offsets
+	Xingui Yang <yangxingui@huawei.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 126/373] scsi: hisi_sas: Enable force phy when SATA disk directly connected
 Date: Tue, 29 Apr 2025 18:40:03 +0200
-Message-ID: <20250429161051.914743495@linuxfoundation.org>
+Message-ID: <20250429161128.357642120@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T Pratham <t-pratham@ti.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-commit 8b46fdaea819a679da176b879e7b0674a1161a5e upstream.
+[ Upstream commit 8aa580cd92843b60d4d6331f3b0a9e8409bb70eb ]
 
-The split_sg_phys function was incorrectly setting the offsets of all
-scatterlist entries (except the first) to 0.  Only the first scatterlist
-entry's offset and length needs to be modified to account for the skip.
-Setting the rest entries' offsets to 0 could lead to incorrect data
-access.
+when a SATA disk is directly connected the SAS controller determines the
+disk to which I/Os are delivered based on the port ID in the DQ entry.
 
-I am using this function in a crypto driver that I'm currently developing
-(not yet sent to mailing list).  During testing, it was observed that the
-output scatterlists (except the first one) contained incorrect garbage
-data.
+When many phys are disconnected and reconnect, the port ID of phys were
+changed and used by other link, resulting in I/O being sent to incorrect
+disk. Data inconsistency on the SATA disk may occur during I/O retries
+using the old port ID. So enable force phy, then force the command to be
+executed in a certain phy, and if the actual phy ID of the port does not
+match the phy configured in the command, the chip will stop delivering the
+I/O to disk.
 
-I narrowed this issue down to the call of sg_split().  Upon debugging
-inside this function, I found that this resetting of offset is the cause
-of the problem, causing the subsequent scatterlists to point to incorrect
-memory locations in a page.  By removing this code, I am obtaining
-expected data in all the split output scatterlists.  Thus, this was indeed
-causing observable runtime effects!
-
-This patch removes the offending code, ensuring that the page offsets in
-the input scatterlist are preserved in the output scatterlist.
-
-Link: https://lkml.kernel.org/r/20250319111437.1969903-1-t-pratham@ti.com
-Fixes: f8bcbe62acd0 ("lib: scatterlist: add sg splitting function")
-Signed-off-by: T Pratham <t-pratham@ti.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Kamlesh Gurudasani <kamlesh@ti.com>
-Cc: Praneeth Bajjuri <praneeth@ti.com>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ce60689e12dd ("scsi: hisi_sas: add v3 code to send ATA frame")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20250312095135.3048379-2-yangxingui@huawei.com
+Reviewed-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/sg_split.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |  9 +++++++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 14 ++++++++++++--
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
---- a/lib/sg_split.c
-+++ b/lib/sg_split.c
-@@ -88,8 +88,6 @@ static void sg_split_phys(struct sg_spli
- 			if (!j) {
- 				out_sg->offset += split->skip_sg0;
- 				out_sg->length -= split->skip_sg0;
--			} else {
--				out_sg->offset = 0;
- 			}
- 			sg_dma_address(out_sg) = 0;
- 			sg_dma_len(out_sg) = 0;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+index 9a8009fc3f206..0582737b1d30a 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+@@ -2500,6 +2500,7 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
+ 	struct asd_sas_port *sas_port = device->port;
+ 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
+ 	struct sas_tmf_task *tmf = slot->tmf;
++	int phy_id;
+ 	u8 *buf_cmd;
+ 	int has_data = 0, hdr_tag = 0;
+ 	u32 dw0, dw1 = 0, dw2 = 0;
+@@ -2507,10 +2508,14 @@ static void prep_ata_v2_hw(struct hisi_hba *hisi_hba,
+ 	/* create header */
+ 	/* dw0 */
+ 	dw0 = port->id << CMD_HDR_PORT_OFF;
+-	if (parent_dev && dev_is_expander(parent_dev->dev_type))
++	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
+ 		dw0 |= 3 << CMD_HDR_CMD_OFF;
+-	else
++	} else {
++		phy_id = device->phy->identify.phy_identifier;
++		dw0 |= (1U << phy_id) << CMD_HDR_PHY_ID_OFF;
++		dw0 |= CMD_HDR_FORCE_PHY_MSK;
+ 		dw0 |= 4 << CMD_HDR_CMD_OFF;
++	}
+ 
+ 	if (tmf && tmf->force_phy) {
+ 		dw0 |= CMD_HDR_FORCE_PHY_MSK;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 2fce1c0a54635..6d467ae9d337c 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -356,6 +356,10 @@
+ #define CMD_HDR_RESP_REPORT_MSK		(0x1 << CMD_HDR_RESP_REPORT_OFF)
+ #define CMD_HDR_TLR_CTRL_OFF		6
+ #define CMD_HDR_TLR_CTRL_MSK		(0x3 << CMD_HDR_TLR_CTRL_OFF)
++#define CMD_HDR_PHY_ID_OFF		8
++#define CMD_HDR_PHY_ID_MSK		(0x1ff << CMD_HDR_PHY_ID_OFF)
++#define CMD_HDR_FORCE_PHY_OFF		17
++#define CMD_HDR_FORCE_PHY_MSK		(0x1U << CMD_HDR_FORCE_PHY_OFF)
+ #define CMD_HDR_PORT_OFF		18
+ #define CMD_HDR_PORT_MSK		(0xf << CMD_HDR_PORT_OFF)
+ #define CMD_HDR_PRIORITY_OFF		27
+@@ -1384,15 +1388,21 @@ static void prep_ata_v3_hw(struct hisi_hba *hisi_hba,
+ 	struct hisi_sas_cmd_hdr *hdr = slot->cmd_hdr;
+ 	struct asd_sas_port *sas_port = device->port;
+ 	struct hisi_sas_port *port = to_hisi_sas_port(sas_port);
++	int phy_id;
+ 	u8 *buf_cmd;
+ 	int has_data = 0, hdr_tag = 0;
+ 	u32 dw1 = 0, dw2 = 0;
+ 
+ 	hdr->dw0 = cpu_to_le32(port->id << CMD_HDR_PORT_OFF);
+-	if (parent_dev && dev_is_expander(parent_dev->dev_type))
++	if (parent_dev && dev_is_expander(parent_dev->dev_type)) {
+ 		hdr->dw0 |= cpu_to_le32(3 << CMD_HDR_CMD_OFF);
+-	else
++	} else {
++		phy_id = device->phy->identify.phy_identifier;
++		hdr->dw0 |= cpu_to_le32((1U << phy_id)
++				<< CMD_HDR_PHY_ID_OFF);
++		hdr->dw0 |= CMD_HDR_FORCE_PHY_MSK;
+ 		hdr->dw0 |= cpu_to_le32(4U << CMD_HDR_CMD_OFF);
++	}
+ 
+ 	switch (task->data_dir) {
+ 	case DMA_TO_DEVICE:
+-- 
+2.39.5
+
 
 
 
