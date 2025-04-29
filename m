@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D55EAAA193B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1329AA1A6F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:22:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A0EF188EA75
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:09:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E55B3AFFFD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3070121ABBD;
-	Tue, 29 Apr 2025 18:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9305D25332D;
+	Tue, 29 Apr 2025 18:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXuMy4S7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ0BxJtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C8D40C03;
-	Tue, 29 Apr 2025 18:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50293155A4E;
+	Tue, 29 Apr 2025 18:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950137; cv=none; b=UwQjqWdZnRJfboxA6PYRE6ayAYDm9Rv5Cx6lnvmBZvLkZ7NXCO0D0DkPW+xOtpZePBO7dUH6wzDh2H8USX8gwXBvsVzzx6XMERRbLV3XiPvBupS50TdKXwGz7H5dr83EZeaLlfeDz7ELyE1csVG4Wj1nmnaY242A6xyDnoNgmXk=
+	t=1745950699; cv=none; b=Flb4eVoWChpYlJgpNHydpIsmIig4eXtaPBjTikBzeo8ehcAFpYUfhWabk9uvJHtQ8GngOLYJu0RhKHGvDn6mdcbEybXmkbptfyfCavstusSBKPeKU2moQ4egO0qhbxh9o/uPN1Wq8fxJ/5rme39kqJ7ZqyChWFzah5fQTjnNVOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950137; c=relaxed/simple;
-	bh=R7cwTCPQJ+/LjwI8oiHdLIV4i1v/tXflHxQWF7Ozlng=;
+	s=arc-20240116; t=1745950699; c=relaxed/simple;
+	bh=yIxrS9BYN7x+QnLSjHuOtEFyPRlIyd1qYHusHeXsDRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eFDuq3c3oPgoRbMHt+8JtfKuYSTYaAmSyIzC7jc30fd/wWHSPNJp4wjby3izIvWH0lSNMcuRvcMS21P8JTmFfyd+0rR54d/bphJJPO5N/MmeCiZeCHJHEqDxvkOaRwRdsoK96hS0e0YGhZDemmRCp01W+HwXCxHjJWSlHzP9tAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXuMy4S7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5231BC4CEE3;
-	Tue, 29 Apr 2025 18:08:56 +0000 (UTC)
+	 MIME-Version; b=u5HsANLZFY8PTPH1PCuLpzw3EUecpC0JKbLBtcEebKAVxe8YP2mV1gIFMcja4xBz/hLM/MtMLWE/2iHU6wpCCGyNnkv2qZqKzNdX4Xstxkvw/vBRZbbIISLDE4DWqdP6VTpdtMLpkUyjFuMI1rUSB1MgeynM+r/CAEYvG3Mb/bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ0BxJtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0575C4CEE3;
+	Tue, 29 Apr 2025 18:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950136;
-	bh=R7cwTCPQJ+/LjwI8oiHdLIV4i1v/tXflHxQWF7Ozlng=;
+	s=korg; t=1745950699;
+	bh=yIxrS9BYN7x+QnLSjHuOtEFyPRlIyd1qYHusHeXsDRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXuMy4S7yUVSYe0aTVGvTeKeephHuCds0Q30ifqIiZNEfIjOUGfNXTz1vqsrvU/p0
-	 sVXLKwX2lggGgsZjT8mhbN15JzAeOtXkCZgAuNf63Cf8NtOPfLFEHUzvZsRxLIR725
-	 ox4dNtkobUAcbXOSB/7GkZA6ItCW8Z5so1pjlGbg=
+	b=jZ0BxJtbuvQN2uBnvQeekk95ClP92xEDnod3oolv5iFKvWeNSGm2Et7gULUE9dy7l
+	 NwGVGyoHY068Nv5jsGN4I+pHwmPE6DpRtcovsOn3eI5Z9iCwMasswKb7iG+NjRrUMl
+	 OWpgtEToQlICYORK9FB8wdjAsZ2MrZgdR5C1LETE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 156/167] net: dsa: mv88e6xxx: enable PVT for 6321 switch
-Date: Tue, 29 Apr 2025 18:44:24 +0200
-Message-ID: <20250429161058.037540126@linuxfoundation.org>
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 177/204] scsi: ufs: exynos: Ensure pre_link() executes before exynos_ufs_phy_init()
+Date: Tue, 29 Apr 2025 18:44:25 +0200
+Message-ID: <20250429161106.641454817@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Marek Behún" <kabel@kernel.org>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit f85c69369854a43af2c5d3b3896da0908d713133 upstream.
+[ Upstream commit 3d101165e72316775947d71321d97194f03dfef3 ]
 
-Commit f36456522168 ("net: dsa: mv88e6xxx: move PVT description in
-info") did not enable PVT for 6321 switch. Fix it.
+Ensure clocks are enabled before configuring unipro. Additionally move
+the pre_link() hook before the exynos_ufs_phy_init() calls. This means
+the register write sequence more closely resembles the ordering of the
+downstream driver.
 
-Fixes: f36456522168 ("net: dsa: mv88e6xxx: move PVT description in info")
-Signed-off-by: Marek BehÃºn <kabel@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-4-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-1-96722cc2ba1b@linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ufs/host/ufs-exynos.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -6250,6 +6250,7 @@ static const struct mv88e6xxx_info mv88e
- 		.g1_irqs = 8,
- 		.g2_irqs = 10,
- 		.atu_move_port_mask = 0xf,
-+		.pvt = true,
- 		.multi_chip = true,
- 		.edsa_support = MV88E6XXX_EDSA_SUPPORTED,
- 		.ptp_support = true,
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index d138b66d5e350..f61126189876e 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -990,9 +990,14 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
+ 	exynos_ufs_config_intr(ufs, DFES_DEF_L4_ERRS, UNIPRO_L4);
+ 	exynos_ufs_set_unipro_pclk_div(ufs);
+ 
++	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
++
+ 	/* unipro */
+ 	exynos_ufs_config_unipro(ufs);
+ 
++	if (ufs->drv_data->pre_link)
++		ufs->drv_data->pre_link(ufs);
++
+ 	/* m-phy */
+ 	exynos_ufs_phy_init(ufs);
+ 	if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR)) {
+@@ -1000,11 +1005,6 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
+ 		exynos_ufs_config_phy_cap_attr(ufs);
+ 	}
+ 
+-	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
+-
+-	if (ufs->drv_data->pre_link)
+-		ufs->drv_data->pre_link(ufs);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
