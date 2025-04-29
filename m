@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30AC0AA1228
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83409AA151E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AAC44A71EA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A059863F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6321F243364;
-	Tue, 29 Apr 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE862251791;
+	Tue, 29 Apr 2025 17:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFFomEsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtZ74xOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F146215060;
-	Tue, 29 Apr 2025 16:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A37D23F405;
+	Tue, 29 Apr 2025 17:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945384; cv=none; b=IxUpGfy4ksGp7znu5j295A7ISnCqfmUSgviw35wkqV/1c6psGU/+2mCHaSU6WX9r47/ea2QFjEOkLsX8NZDmZm1xsCpUy66N6RpN+G2NY1s5DrocvJ6p/C0P11CW1Poc6AAeqttSLS5Yv+1jJj/rZZkIFkcwAoomjteH8RhEWcM=
+	t=1745947063; cv=none; b=OPY+CoH7yvmNy374WhgrsQXbb3978F4Ht5c6DkKrtJI+XiRDcGzwBchbjnxzcF0QU4RXp8+SLsJ3/hIUsqUbSDLm7mDvR9HQhDJmddyaP2FzVuY3lefDxOXIqLyVhIH/3hnbPNhm6p23P9u+TgW/Iw3iJkP3hwNhcWiiKQGzwUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945384; c=relaxed/simple;
-	bh=kSFBW/O1q9p8ooGvUb1D8cz9AIqU7nPaimmUBEUItA4=;
+	s=arc-20240116; t=1745947063; c=relaxed/simple;
+	bh=JG0lGrz+i2oFMSkEiiFlbEjA08gJi83v8KWmGI/f9So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGCC6pIYf7/XfJMxriXmovmWLioeuMOHAGv8ynRoKB/HAsWTqScwKhEmT8IU0Q2pufGHnRY6hT/PolK6LJR/t9OTPRDwfm4VWFcYf0gcCNDuMAtF3tnXpdT+eQ1Hm0pgFOYf6QokL3Uz76Li4gURmfIp8sCa+AD7eU7qheSpBTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFFomEsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67BFC4CEE3;
-	Tue, 29 Apr 2025 16:49:43 +0000 (UTC)
+	 MIME-Version; b=nmB1IKLzK+WkbSAugKFXxmGQPbNw4R2589cdNfWD6LxioCq/jmVhD/5aSLGwTW9YwiPW5qSARbI+zi56+WUU9rbagREV019gJl4q9msupBOg7c/HF4iExyplbP8nnBZngGAMwrGmZlAbeZyMtraMnnJjvGtA7WB9geiJJTftWXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtZ74xOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDA5C4CEE3;
+	Tue, 29 Apr 2025 17:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945384;
-	bh=kSFBW/O1q9p8ooGvUb1D8cz9AIqU7nPaimmUBEUItA4=;
+	s=korg; t=1745947063;
+	bh=JG0lGrz+i2oFMSkEiiFlbEjA08gJi83v8KWmGI/f9So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFFomEsh76NbsQgLN10OtiIYMf5DhAdm35Jqk/jVEv9lbJ45US6T7MHd7ilcpM+7L
-	 R+w2PUxYr/Qe6ob4P5vp29G3OOoQaLuDNik81C1KhbrNUJpwIv0998gPHo4OxTYblP
-	 WWtv+QTdlrzkpmqLf1UHT5R/Kt/TTmgv1YpctFK8=
+	b=xtZ74xOCeSzIWzSSwFl1P9wfHXMwWYLnp0MAH6iGI0m10gYvm0w7c8SKQYS/iBJYr
+	 ZO4kcY2QVW0zCLeVenaS6b5GrTDB1SlDDxIYROQxI/je2IUd7lTUGdL0+F4huLqE8i
+	 2VrSjC9kNmP0rB2lEYN3VTpRqvgYPJKvvVXuL6mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 094/179] writeback: fix false warning in inode_to_wb()
-Date: Tue, 29 Apr 2025 18:40:35 +0200
-Message-ID: <20250429161053.201318164@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 132/286] tracing: Fix filter string testing
+Date: Tue, 29 Apr 2025 18:40:36 +0200
+Message-ID: <20250429161113.298794695@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 9e888998ea4d22257b07ce911576509486fa0667 upstream.
+commit a8c5b0ed89a3f2c81c6ae0b041394e6eea0e7024 upstream.
 
-inode_to_wb() is used also for filesystems that don't support cgroup
-writeback.  For these filesystems inode->i_wb is stable during the
-lifetime of the inode (it points to bdi->wb) and there's no need to hold
-locks protecting the inode->i_wb dereference.  Improve the warning in
-inode_to_wb() to not trigger for these filesystems.
+The filter string testing uses strncpy_from_kernel/user_nofault() to
+retrieve the string to test the filter against. The if() statement was
+incorrect as it considered 0 as a fault, when it is only negative that it
+faulted.
 
-Link: https://lkml.kernel.org/r/20250412163914.3773459-3-agruenba@redhat.com
-Fixes: aaa2cacf8184 ("writeback: add lockdep annotation to inode_to_wb()")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Reviewed-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Running the following commands:
+
+  # cd /sys/kernel/tracing
+  # echo "filename.ustring ~ \"/proc*\"" > events/syscalls/sys_enter_openat/filter
+  # echo 1 > events/syscalls/sys_enter_openat/enable
+  # ls /proc/$$/maps
+  # cat trace
+
+Would produce nothing, but with the fix it will produce something like:
+
+      ls-1192    [007] .....  8169.828333: sys_openat(dfd: ffffffffffffff9c, filename: 7efc18359904, flags: 80000, mode: 0)
+
+Link: https://lore.kernel.org/all/CAEf4BzbVPQ=BjWztmEwBPRKHUwNfKBkS3kce-Rzka6zvbQeVpg@mail.gmail.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250417183003.505835fb@gandalf.local.home
+Fixes: 77360f9bbc7e5 ("tracing: Add test for user space strings when filtering on string pointers")
+Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Reported-by: Mykyta Yatsenko <mykyta.yatsenko5@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/backing-dev.h |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_events_filter.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/backing-dev.h
-+++ b/include/linux/backing-dev.h
-@@ -344,6 +344,7 @@ static inline struct bdi_writeback *inod
- {
- #ifdef CONFIG_LOCKDEP
- 	WARN_ON_ONCE(debug_locks &&
-+		     (inode->i_sb->s_iflags & SB_I_CGROUPWB) &&
- 		     (!lockdep_is_held(&inode->i_lock) &&
- 		      !lockdep_is_held(&inode->i_mapping->i_pages.xa_lock) &&
- 		      !lockdep_is_held(&inode->i_wb->list_lock)));
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -676,7 +676,7 @@ static __always_inline char *test_string
+ 	kstr = ubuf->buffer;
+ 
+ 	/* For safety, do not trust the string pointer */
+-	if (!strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE))
++	if (strncpy_from_kernel_nofault(kstr, str, USTRING_BUF_SIZE) < 0)
+ 		return NULL;
+ 	return kstr;
+ }
+@@ -695,7 +695,7 @@ static __always_inline char *test_ustrin
+ 
+ 	/* user space address? */
+ 	ustr = (char __user *)str;
+-	if (!strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE))
++	if (strncpy_from_user_nofault(kstr, ustr, USTRING_BUF_SIZE) < 0)
+ 		return NULL;
+ 
+ 	return kstr;
 
 
 
