@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E72FAA14AA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F4FDAA15D6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8CA63AC590
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6529188DCE9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E2A2459E1;
-	Tue, 29 Apr 2025 17:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCE121ABDB;
+	Tue, 29 Apr 2025 17:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7FtsOSS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BctC1lKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2ACA1C6B4;
-	Tue, 29 Apr 2025 17:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592AD38FB0;
+	Tue, 29 Apr 2025 17:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946820; cv=none; b=MvUdQRcCMcMAY4W7ZPWro5vHW4xUu/3rH9Pqp5MsQ0O6K+aglGNF+P5fga/UNdJYVaoIhUmGcnSyhRhsqTj0Nit8KoV6n9Il0oY/EFQmIBHfPl3Skef69bHKhFLuzCFU6RUqthB0osjZEInPjiF4RCttR0H4axfQ6ghWlDtzUao=
+	t=1745947678; cv=none; b=dNA2IhjhwDVaF3CmhG0pOs5OQsx+73xIOn2WOpKXfODf2Kp5Uhs4/SoVOAEt3Gz7qGmo906iIBY31KejBwDVfKafEMNPDs6+FVmQ76YPn/AOtjank3ZRczlmPFupTkGKqH+IzQxllhVz1Fck6lfiR7q4SWZI6yjB08DJdjmk16g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946820; c=relaxed/simple;
-	bh=RLHjf1OnwxE1P/Z+ZdefD1WmtJLI0mBSDTp8SBM/fJo=;
+	s=arc-20240116; t=1745947678; c=relaxed/simple;
+	bh=abKK81F+pHpjyDr9XSVLyX1jnGVNqG7W8xaAvcwOt6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1ib1+bmEH4wAZXggGMAVMXXRUCharV6GvQ0a8BbuFwah1rCpaBIm3H3XkWpCsWd7QjGPf6EssS5w6Z6qU2iaZnP7gUlif6WBysmW7QJh/gI4VSwiniNub6bSQR2XWU0QKncFSFKSX0rl6qs1pr6Lgpxn1peKzQxeLkW1Qcsaz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7FtsOSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D23C4CEE3;
-	Tue, 29 Apr 2025 17:13:38 +0000 (UTC)
+	 MIME-Version; b=sIxNLh1O/ocBYTA8vxvtYxDVTxnH7Vx0v9VHmiUihlIhU52ssL5JURbR9kZGx/AkmERd9ji0VaD2HOlqdt/p6dNmnlY22A/xLsUjHAPw6A8iS5EmItLrcVpFQOWlWjxYNIxBvm9fu+jLRI54ooaTxZG/fmjUm5TS5Dvfl0ptbAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BctC1lKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE505C4CEE9;
+	Tue, 29 Apr 2025 17:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946819;
-	bh=RLHjf1OnwxE1P/Z+ZdefD1WmtJLI0mBSDTp8SBM/fJo=;
+	s=korg; t=1745947678;
+	bh=abKK81F+pHpjyDr9XSVLyX1jnGVNqG7W8xaAvcwOt6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7FtsOSSaqVvq2XNa8O0wmMPoRL5jc9cAQ0p0o4RSuc2H+89kuq9vSgJ1U+TkpxpV
-	 NPvqB4T6YPjNdRSEdom7mgSCt7oVaRjYclFy51Ws5HVwBxsVeN49UHgtb9P2cKhlYu
-	 SSJbG7l7dUNTRbqDxzCyZDT2qXirHwHNj0Pae36I=
+	b=BctC1lKEZbKMw8/2kcSacI2Vn8q6qYZ7/iwrvvhAT+JDQm+uHU2mhKDJHoLHN5Uxi
+	 7avHNbSBX7AKfmvUd/Zi2i1cltpI7op8dwdfDwTaYH+mic1ouhVifqsoid/WEXpNJd
+	 mKBeGmn8tfx9W0VyaIq5SkBwDzL8thEZ02+OVeNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 080/286] mtd: inftlcore: Add error check for inftl_read_oob()
+	Peter Griffin <peter.griffin@linaro.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 043/280] scsi: ufs: exynos: Move UFS shareability value to drvdata
 Date: Tue, 29 Apr 2025 18:39:44 +0200
-Message-ID: <20250429161111.141980111@linuxfoundation.org>
+Message-ID: <20250429161116.883530379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-commit d027951dc85cb2e15924c980dc22a6754d100c7c upstream.
+[ Upstream commit 68f5ef7eebf0f41df4d38ea55a54c2462af1e3d6 ]
 
-In INFTL_findwriteunit(), the return value of inftl_read_oob()
-need to be checked. A proper implementation can be
-found in INFTL_deleteblock(). The status will be set as
-SECTOR_IGNORE to break from the while-loop correctly
-if the inftl_read_oob() fails.
+gs101 I/O coherency shareability bits differ from exynosauto SoC. To
+support both SoCs move this info the SoC drvdata.
 
-Fixes: 8593fbc68b0d ("[MTD] Rework the out of band handling completely")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently both the value and mask are the same for both gs101 and
+exynosauto, thus we use the same value.
+
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-2-96722cc2ba1b@linaro.org
+Fixes: d11e0a318df8 ("scsi: ufs: exynos: Add support for Tensor gs101 SoC")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/inftlcore.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/ufs/host/ufs-exynos.c | 20 ++++++++++++++------
+ drivers/ufs/host/ufs-exynos.h |  2 ++
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
---- a/drivers/mtd/inftlcore.c
-+++ b/drivers/mtd/inftlcore.c
-@@ -482,10 +482,11 @@ static inline u16 INFTL_findwriteunit(st
- 		silly = MAX_LOOPS;
+diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
+index 149c8127cf556..453f1dee103c8 100644
+--- a/drivers/ufs/host/ufs-exynos.c
++++ b/drivers/ufs/host/ufs-exynos.c
+@@ -86,11 +86,16 @@
+ 				 UIC_TRANSPORT_NO_CONNECTION_RX |\
+ 				 UIC_TRANSPORT_BAD_TC)
  
- 		while (thisEUN <= inftl->lastEUN) {
--			inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
--				       blockofs, 8, &retlen, (char *)&bci);
--
--			status = bci.Status | bci.Status1;
-+			if (inftl_read_oob(mtd, (thisEUN * inftl->EraseSize) +
-+				       blockofs, 8, &retlen, (char *)&bci) < 0)
-+				status = SECTOR_IGNORE;
-+			else
-+				status = bci.Status | bci.Status1;
- 			pr_debug("INFTL: status of block %d in EUN %d is %x\n",
- 					block , writeEUN, status);
+-/* FSYS UFS Shareability */
+-#define UFS_WR_SHARABLE		BIT(2)
+-#define UFS_RD_SHARABLE		BIT(1)
+-#define UFS_SHARABLE		(UFS_WR_SHARABLE | UFS_RD_SHARABLE)
+-#define UFS_SHAREABILITY_OFFSET	0x710
++/* UFS Shareability */
++#define UFS_EXYNOSAUTO_WR_SHARABLE	BIT(2)
++#define UFS_EXYNOSAUTO_RD_SHARABLE	BIT(1)
++#define UFS_EXYNOSAUTO_SHARABLE		(UFS_EXYNOSAUTO_WR_SHARABLE | \
++					 UFS_EXYNOSAUTO_RD_SHARABLE)
++#define UFS_GS101_WR_SHARABLE		BIT(1)
++#define UFS_GS101_RD_SHARABLE		BIT(0)
++#define UFS_GS101_SHARABLE		(UFS_GS101_WR_SHARABLE | \
++					 UFS_GS101_RD_SHARABLE)
++#define UFS_SHAREABILITY_OFFSET		0x710
  
+ /* Multi-host registers */
+ #define MHCTRL			0xC4
+@@ -206,7 +211,7 @@ static int exynos_ufs_shareability(struct exynos_ufs *ufs)
+ 	if (ufs->sysreg) {
+ 		return regmap_update_bits(ufs->sysreg,
+ 					  ufs->shareability_reg_offset,
+-					  UFS_SHARABLE, UFS_SHARABLE);
++					  ufs->iocc_mask, ufs->iocc_mask);
+ 	}
+ 
+ 	attr->tx_dif_p_nsec = 3200000;
+@@ -1148,6 +1153,7 @@ static int exynos_ufs_parse_dt(struct device *dev, struct exynos_ufs *ufs)
+ 		}
+ 	}
+ 
++	ufs->iocc_mask = ufs->drv_data->iocc_mask;
+ 	ufs->pclk_avail_min = PCLK_AVAIL_MIN;
+ 	ufs->pclk_avail_max = PCLK_AVAIL_MAX;
+ 
+@@ -2021,6 +2027,7 @@ static const struct exynos_ufs_drv_data exynosauto_ufs_drvs = {
+ 	.opts			= EXYNOS_UFS_OPT_BROKEN_AUTO_CLK_CTRL |
+ 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
+ 				  EXYNOS_UFS_OPT_BROKEN_RX_SEL_IDX,
++	.iocc_mask		= UFS_EXYNOSAUTO_SHARABLE,
+ 	.drv_init		= exynosauto_ufs_drv_init,
+ 	.post_hce_enable	= exynosauto_ufs_post_hce_enable,
+ 	.pre_link		= exynosauto_ufs_pre_link,
+@@ -2143,6 +2150,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
+ 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
+ 				  EXYNOS_UFS_OPT_UFSPR_SECURE |
+ 				  EXYNOS_UFS_OPT_TIMER_TICK_SELECT,
++	.iocc_mask		= UFS_GS101_SHARABLE,
+ 	.drv_init		= gs101_ufs_drv_init,
+ 	.pre_link		= gs101_ufs_pre_link,
+ 	.post_link		= gs101_ufs_post_link,
+diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+index 9670dc138d1e4..ad49d9cdd5c12 100644
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -181,6 +181,7 @@ struct exynos_ufs_drv_data {
+ 	struct exynos_ufs_uic_attr *uic_attr;
+ 	unsigned int quirks;
+ 	unsigned int opts;
++	u32 iocc_mask;
+ 	/* SoC's specific operations */
+ 	int (*drv_init)(struct exynos_ufs *ufs);
+ 	int (*pre_link)(struct exynos_ufs *ufs);
+@@ -231,6 +232,7 @@ struct exynos_ufs {
+ 	const struct exynos_ufs_drv_data *drv_data;
+ 	struct regmap *sysreg;
+ 	u32 shareability_reg_offset;
++	u32 iocc_mask;
+ 
+ 	u32 opts;
+ #define EXYNOS_UFS_OPT_HAS_APB_CLK_CTRL		BIT(0)
+-- 
+2.39.5
+
 
 
 
