@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F419AA14CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F92AA137D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8AD4C2D9D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD9557B187B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7B7253329;
-	Tue, 29 Apr 2025 17:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58BD23F413;
+	Tue, 29 Apr 2025 17:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lS0+WqCL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hp2ClIgi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E1724466C;
-	Tue, 29 Apr 2025 17:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F71211A0B;
+	Tue, 29 Apr 2025 17:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947045; cv=none; b=F+jK8J8mvfqFlehVDewxRJb1Nnp9id40tCRslknk5BJWNrczaJaP/GHTvA5uKCltV/bYYwAISsddeFk6SAbJHiLcL77DkNueVsPn5zv3Rwrrlz/9rs2OAkb4oo0JkKFdo/ffQF+IlSCzmcBBAXq1l3si6JvQp+5qNQDKJFsCP0Y=
+	t=1745946388; cv=none; b=XeqJU+bLn5MakMusbw0S2qRTCp85ESgozW7R/TmGdq4aXfB6YW2lUVK9g2NJscz7z3A6jl20y0UX3mZSqeT2N0M/l6vQXnWqpypaOeTw3ivIvrnh1YQlT8bjzFJTwTVsqPvAc08j+BNTyaSOuyyZLuRH6alRjT58YXaFzs5qyMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947045; c=relaxed/simple;
-	bh=BIIWGJgQ2ZZ1dPO3m2d+RJSmB90nVucH7ZZaIVPZTtk=;
+	s=arc-20240116; t=1745946388; c=relaxed/simple;
+	bh=flDUYLgVDQ8Oqy4mCugBshXGxVUcIFLx7AsxP0gZKqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=br90f2G0E0Pt5cJ32WsAOJkEDz0ev4XN0ZQ2Zbr2XMjgzXUHBBAnvrjI8kjEtWW7wkehZ61/bZ8EA0UmKYbI9Pjwi0BE0kZtdLWTwgdzQg9LJ0/Rmm5KdOPE/0RqpcQCQ30ZBMeLZQ2R6JlcVmNHo1oRd3l0cs4+WoXmMZGbF0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lS0+WqCL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FA8C4CEE3;
-	Tue, 29 Apr 2025 17:17:24 +0000 (UTC)
+	 MIME-Version; b=i843uR34SMydg99JupWVgLOsaauZflGAfX/j605Wj2yf6+S7mynSocfnQc0s1f+yIJ5sMDWGc5NoCbVLC0ZhD8nPjop7TVa3LwgtgVXs6u/m1H/EAnPdVlXIf+bQh59wscOlGXVON9sb6XkQ/vOpSPbOWf9TkrbfT9mHp0EU4uU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hp2ClIgi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00B3C4CEE3;
+	Tue, 29 Apr 2025 17:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947045;
-	bh=BIIWGJgQ2ZZ1dPO3m2d+RJSmB90nVucH7ZZaIVPZTtk=;
+	s=korg; t=1745946388;
+	bh=flDUYLgVDQ8Oqy4mCugBshXGxVUcIFLx7AsxP0gZKqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lS0+WqCLP/tbkryiWqVUDoOQ5wT0SlVS4J8HHr9BKkyHc41vC+bIHObaVNSUw+xzx
-	 e0cTMfd4oIqA6wvC3VxCHSt8jwwZULe2zmHwvqaiGmjeKBJRf0VDA1wdsojzddwWYC
-	 GZN2KKWNvrzHJPsfPQvFR0rbscOeF1jh5quO1wcI=
+	b=Hp2ClIgiTRSUFdh0CN5kJRl3EPqNXAkK7KD/3QQlmYaqRJBCYC1FaEUg/PpABBkNJ
+	 J7ikKmvFxygUFOIy/3yjLsQ3RCb3p5a12vptaFTMv3xeKBNN1tBV8IT37NTsvQam65
+	 F7gFti1hG41S+oJZUHekwiSuwcHHfwoSgBszEcR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 153/286] x86/pvh: Call C code via the kernel virtual mapping
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Will Deacon <will@kernel.org>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 220/311] iommu/arm-smmu-v3: Set MEV bit in nested STE for DoS mitigations
 Date: Tue, 29 Apr 2025 18:40:57 +0200
-Message-ID: <20250429161114.177813719@linuxfoundation.org>
+Message-ID: <20250429161130.030879058@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit e8fbc0d9cab6c1ee6403f42c0991b0c1d5dbc092 upstream.
+[ Upstream commit da0c56520e880441d0503d0cf0d6853dcfb5f1a4 ]
 
-Calling C code via a different mapping than it was linked at is
-problematic, because the compiler assumes that RIP-relative and absolute
-symbol references are interchangeable. GCC in particular may use
-RIP-relative per-CPU variable references even when not using -fpic.
+There is a DoS concern on the shared hardware event queue among devices
+passed through to VMs, that too many translation failures that belong to
+VMs could overflow the shared hardware event queue if those VMs or their
+VMMs don't handle/recover the devices properly.
 
-So call xen_prepare_pvh() via its kernel virtual mapping on x86_64, so
-that those RIP-relative references produce the correct values. This
-matches the pre-existing behavior for i386, which also invokes
-xen_prepare_pvh() via the kernel virtual mapping before invoking
-startup_32 with paging disabled again.
+The MEV bit in the STE allows to configure the SMMU HW to merge similar
+event records, though there is no guarantee. Set it in a nested STE for
+DoS mitigations.
 
-Fixes: 7243b93345f7 ("xen/pvh: Bootstrap PVH guest")
-Tested-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Message-ID: <20241009160438.3884381-8-ardb+git@google.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-[ Stable context update ]
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the future, we might want to enable the MEV for non-nested cases too
+such as domain->type == IOMMU_DOMAIN_UNMANAGED or even IOMMU_DOMAIN_DMA.
+
+Link: https://patch.msgid.link/r/8ed12feef67fc65273d0f5925f401a81f56acebe.1741719725.git.nicolinc@nvidia.com
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Acked-by: Will Deacon <will@kernel.org>
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/platform/pvh/head.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c | 2 ++
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c         | 4 ++--
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h         | 1 +
+ 3 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/x86/platform/pvh/head.S
-+++ b/arch/x86/platform/pvh/head.S
-@@ -99,7 +99,12 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
- 	xor %edx, %edx
- 	wrmsr
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+index 5aa2e7af58b47..34a0be59cd919 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-iommufd.c
+@@ -43,6 +43,8 @@ static void arm_smmu_make_nested_cd_table_ste(
+ 	target->data[0] |= nested_domain->ste[0] &
+ 			   ~cpu_to_le64(STRTAB_STE_0_CFG);
+ 	target->data[1] |= nested_domain->ste[1];
++	/* Merge events for DoS mitigations on eventq */
++	target->data[1] |= cpu_to_le64(STRTAB_STE_1_MEV);
+ }
  
--	call xen_prepare_pvh
-+	/* Call xen_prepare_pvh() via the kernel virtual mapping */
-+	leaq xen_prepare_pvh(%rip), %rax
-+	subq phys_base(%rip), %rax
-+	addq $__START_KERNEL_map, %rax
-+	ANNOTATE_RETPOLINE_SAFE
-+	call *%rax
+ /*
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index 358072b4e293e..59749e8180afc 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -1052,7 +1052,7 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
+ 			cpu_to_le64(STRTAB_STE_1_S1DSS | STRTAB_STE_1_S1CIR |
+ 				    STRTAB_STE_1_S1COR | STRTAB_STE_1_S1CSH |
+ 				    STRTAB_STE_1_S1STALLD | STRTAB_STE_1_STRW |
+-				    STRTAB_STE_1_EATS);
++				    STRTAB_STE_1_EATS | STRTAB_STE_1_MEV);
+ 		used_bits[2] |= cpu_to_le64(STRTAB_STE_2_S2VMID);
  
- 	/* startup_64 expects boot_params in %rsi. */
- 	mov $_pa(pvh_bootparams), %rsi
+ 		/*
+@@ -1068,7 +1068,7 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
+ 	if (cfg & BIT(1)) {
+ 		used_bits[1] |=
+ 			cpu_to_le64(STRTAB_STE_1_S2FWB | STRTAB_STE_1_EATS |
+-				    STRTAB_STE_1_SHCFG);
++				    STRTAB_STE_1_SHCFG | STRTAB_STE_1_MEV);
+ 		used_bits[2] |=
+ 			cpu_to_le64(STRTAB_STE_2_S2VMID | STRTAB_STE_2_VTCR |
+ 				    STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2ENDI |
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+index bd9d7c85576a2..7290bd4c2bb0a 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
+@@ -266,6 +266,7 @@ static inline u32 arm_smmu_strtab_l2_idx(u32 sid)
+ #define STRTAB_STE_1_S1COR		GENMASK_ULL(5, 4)
+ #define STRTAB_STE_1_S1CSH		GENMASK_ULL(7, 6)
+ 
++#define STRTAB_STE_1_MEV		(1UL << 19)
+ #define STRTAB_STE_1_S2FWB		(1UL << 25)
+ #define STRTAB_STE_1_S1STALLD		(1UL << 27)
+ 
+-- 
+2.39.5
+
 
 
 
