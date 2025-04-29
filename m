@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-137539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE49AA13C1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8622BAA17C7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C41517A987
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C73E54C5F91
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880E182C60;
-	Tue, 29 Apr 2025 17:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77334253949;
+	Tue, 29 Apr 2025 17:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdCIoKl2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybAeFssN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A34211A0B;
-	Tue, 29 Apr 2025 17:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B4825393F;
+	Tue, 29 Apr 2025 17:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946371; cv=none; b=EcV5uEiXjSDDPBFcoGalM4d5p4gYW8+ASXprQQeJ+ObmgvULnPQmpedTxdO/K1cwegvCEm56UtVSOVN0wZU4TFM4rePZKIld8VBFUpWKgO+ce/oVTuBSUuAPdXjy+hAZPoIJv5xrg3MOTzv2fXuCPKt5NciZX9wlB0ljw8slHL0=
+	t=1745949065; cv=none; b=IPqbIYVUlKIa4o3VP4cgkjAyph4pV8PBhfa1tSnfIpWGbJGUdrY1sR247VMZWd4rCg31rGQWHBssMdf4f6LpR7Kp9yTu5762ng8izlyzqK8wm+DAdcX3bKCXz6KjJE/PpYWPohgFiSpYkYUOiCKpXF/GDhFE1aaWe+6Ht1Vhuyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946371; c=relaxed/simple;
-	bh=2SLbZ/88Adf+qgJQK5sohBYultp0dJrPMrr1+LjJKlU=;
+	s=arc-20240116; t=1745949065; c=relaxed/simple;
+	bh=wTD+AZaHWYLgycpG0MmeHb4DKma3YNjtiJr44/QqZzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r5gEoZjPafCINgJcyg77hRnkxuzU7DSwePF7H7hmOd0drzJQsfRCdNuY75E3MouIBu4x0vE56+3YXlQmX6Y3YO/q6ahgoL6oNMiKFl80cVYvhWaE14gnztJtFuZq0lO23ud0DLUOyGrL7FHEHF9lK36WiQ1zgl1P2upyH115F/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OdCIoKl2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB702C4CEE3;
-	Tue, 29 Apr 2025 17:06:10 +0000 (UTC)
+	 MIME-Version; b=uU+sscHEcX3q7PNXVchkIWBjF1l32fQyPggUcU54T6HnThdUnRQRaBNlWQauaAyiX4DepPk/PpN/yE7hncxEQZ1rFQlIsM0VyqW6u8SnQ1UvF4e+6dgI1e+Y93Vi9/Wb7GnmnzRJtNDMm63P51FFm9yqzUDyt7OU4bmn5frgot8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybAeFssN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FA3C4CEE9;
+	Tue, 29 Apr 2025 17:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946371;
-	bh=2SLbZ/88Adf+qgJQK5sohBYultp0dJrPMrr1+LjJKlU=;
+	s=korg; t=1745949065;
+	bh=wTD+AZaHWYLgycpG0MmeHb4DKma3YNjtiJr44/QqZzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OdCIoKl2MYatjLWKbpNHcRpMfbc4uMCmGNaEo827sUha4TD/VBFZ1qTuHY0Fzu144
-	 cpVYax4mZm7prbAtRXDkDx0w9kD99NL5OyRMN7fZxTNQ4YvAbmq8CXAxob4vH6silg
-	 SeWAg16O41yv4LYfuIPSw10ZPI+8KHn54Mx2ht6E=
+	b=ybAeFssNLnS82sccIpzkLtyTUSgAtvSKxRfJAtMxv1Btm1GYlt0I9WjOxPstAP4Kf
+	 snE933NFznaCtXRyJqItasyxcjwH3PFJnfDLm8GZvK3dq/BiCZD5ScKZbwWyNn9jY9
+	 ewcdqBnwD4YyMzzZ2yH0tFgBPJmJ/imXw3gCWzjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 243/311] perf/core: Fix WARN_ON(!ctx) in __free_event() for partial init
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 203/373] ipv6: release nexthop on device removal
 Date: Tue, 29 Apr 2025 18:41:20 +0200
-Message-ID: <20250429161130.975253883@linuxfoundation.org>
+Message-ID: <20250429161131.514501753@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,95 +64,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 0ba3a4ab76fd3367b9cb680cad70182c896c795c ]
+[ Upstream commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe ]
 
-Move the get_ctx(child_ctx) call and the child_event->ctx assignment to
-occur immediately after the child event is allocated. Ensure that
-child_event->ctx is non-NULL before any subsequent error path within
-inherit_event calls free_event(), satisfying the assumptions of the
-cleanup code.
+The CI is hitting some aperiodic hangup at device removal time in the
+pmtu.sh self-test:
 
-Details:
+unregister_netdevice: waiting for veth_A-R1 to become free. Usage count = 6
+ref_tracker: veth_A-R1@ffff888013df15d8 has 1/5 users at
+	dst_init+0x84/0x4a0
+	dst_alloc+0x97/0x150
+	ip6_dst_alloc+0x23/0x90
+	ip6_rt_pcpu_alloc+0x1e6/0x520
+	ip6_pol_route+0x56f/0x840
+	fib6_rule_lookup+0x334/0x630
+	ip6_route_output_flags+0x259/0x480
+	ip6_dst_lookup_tail.constprop.0+0x5c2/0x940
+	ip6_dst_lookup_flow+0x88/0x190
+	udp_tunnel6_dst_lookup+0x2a7/0x4c0
+	vxlan_xmit_one+0xbde/0x4a50 [vxlan]
+	vxlan_xmit+0x9ad/0xf20 [vxlan]
+	dev_hard_start_xmit+0x10e/0x360
+	__dev_queue_xmit+0xf95/0x18c0
+	arp_solicit+0x4a2/0xe00
+	neigh_probe+0xaa/0xf0
 
-There's no clear Fixes tag, because this bug is a side-effect of
-multiple interacting commits over time (up to 15 years old), not
-a single regression.
+While the first suspect is the dst_cache, explicitly tracking the dst
+owing the last device reference via probes proved such dst is held by
+the nexthop in the originating fib6_info.
 
-The code initially incremented refcount then assigned context
-immediately after the child_event was created. Later, an early
-validity check for child_event was added before the
-refcount/assignment. Even later, a WARN_ON_ONCE() cleanup check was
-added, assuming event->ctx is valid if the pmu_ctx is valid.
-The problem is that the WARN_ON_ONCE() could trigger after the initial
-check passed but before child_event->ctx was assigned, violating its
-precondition. The solution is to assign child_event->ctx right after
-its initial validation. This ensures the context exists for any
-subsequent checks or cleanup routines, resolving the WARN_ON_ONCE().
+Similar to commit f5b51fe804ec ("ipv6: route: purge exception on
+removal"), we need to explicitly release the originating fib info when
+disconnecting a to-be-removed device from a live ipv6 dst: move the
+fib6_info cleanup into ip6_dst_ifdown().
 
-To resolve it, defer the refcount update and child_event->ctx assignment
-directly after child_event->pmu_ctx is set but before checking if the
-parent event is orphaned. The cleanup routine depends on
-event->pmu_ctx being non-NULL before it verifies event->ctx is
-non-NULL. This also maintains the author's original intent of passing
-in child_ctx to find_get_pmu_context before its refcount/assignment.
+Tested running:
 
-[ mingo: Expanded the changelog from another email by Gabriel Shahrouzi. ]
+./pmtu.sh cleanup_ipv6_exception
 
-Reported-by: syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Link: https://lore.kernel.org/r/20250405203036.582721-1-gshahrouzi@gmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ff3aa851d46ab82953a3
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+in a tight loop for more than 400 iterations with no spat, running an
+unpatched kernel  I observed a splat every ~10 iterations.
+
+Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/604c45c188c609b732286b47ac2a451a40f6cf6d.1730828007.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit eb02688c5c45c3e7af7e71f036a7144f5639cbfe)
+[Harshit: Resolved conflict due to missing commit: e5f80fcf869a ("ipv6:
+give an IPv6 dev to blackhole_netdev") and commit: b4cb4a1391dc ("net:
+use unrcu_pointer() helper") in linux-5.15.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 6 +++---
+ net/ipv6/route.c |    6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ee6b7281a1994..93ce810384c92 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -13701,6 +13701,9 @@ inherit_event(struct perf_event *parent_event,
- 	if (IS_ERR(child_event))
- 		return child_event;
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -377,6 +377,7 @@ static void ip6_dst_ifdown(struct dst_en
+ 	struct inet6_dev *idev = rt->rt6i_idev;
+ 	struct net_device *loopback_dev =
+ 		dev_net(dev)->loopback_dev;
++	struct fib6_info *from;
  
-+	get_ctx(child_ctx);
-+	child_event->ctx = child_ctx;
-+
- 	pmu_ctx = find_get_pmu_context(child_event->pmu, child_ctx, child_event);
- 	if (IS_ERR(pmu_ctx)) {
- 		free_event(child_event);
-@@ -13723,8 +13726,6 @@ inherit_event(struct perf_event *parent_event,
- 		return NULL;
+ 	if (idev && idev->dev != loopback_dev) {
+ 		struct inet6_dev *loopback_idev = in6_dev_get(loopback_dev);
+@@ -385,6 +386,8 @@ static void ip6_dst_ifdown(struct dst_en
+ 			in6_dev_put(idev);
+ 		}
  	}
++	from = xchg((__force struct fib6_info **)&rt->from, NULL);
++	fib6_info_release(from);
+ }
  
--	get_ctx(child_ctx);
--
- 	/*
- 	 * Make the child state follow the state of the parent event,
- 	 * not its attr.disabled bit.  We hold the parent's mutex,
-@@ -13745,7 +13746,6 @@ inherit_event(struct perf_event *parent_event,
- 		local64_set(&hwc->period_left, sample_period);
- 	}
+ static bool __rt6_check_expired(const struct rt6_info *rt)
+@@ -1443,7 +1446,6 @@ static DEFINE_SPINLOCK(rt6_exception_loc
+ static void rt6_remove_exception(struct rt6_exception_bucket *bucket,
+ 				 struct rt6_exception *rt6_ex)
+ {
+-	struct fib6_info *from;
+ 	struct net *net;
  
--	child_event->ctx = child_ctx;
- 	child_event->overflow_handler = parent_event->overflow_handler;
- 	child_event->overflow_handler_context
- 		= parent_event->overflow_handler_context;
--- 
-2.39.5
-
+ 	if (!bucket || !rt6_ex)
+@@ -1455,8 +1457,6 @@ static void rt6_remove_exception(struct
+ 	/* purge completely the exception to allow releasing the held resources:
+ 	 * some [sk] cache may keep the dst around for unlimited time
+ 	 */
+-	from = xchg((__force struct fib6_info **)&rt6_ex->rt6i->from, NULL);
+-	fib6_info_release(from);
+ 	dst_dev_put(&rt6_ex->rt6i->dst);
+ 
+ 	hlist_del_rcu(&rt6_ex->hlist);
 
 
 
