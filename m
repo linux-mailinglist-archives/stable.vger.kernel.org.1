@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5817AA1819
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2E6AA140E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145A31BC58DE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB16188D315
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3539F24DFF3;
-	Tue, 29 Apr 2025 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A85924728A;
+	Tue, 29 Apr 2025 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWEhR/1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zleVXSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A8C253F0C;
-	Tue, 29 Apr 2025 17:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E561DF73C;
+	Tue, 29 Apr 2025 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949320; cv=none; b=eyYYIT/ITRp7hkavMDDZM8pqlythztYtvh5qhmGlWvg4KslajMuQDCfejIzfUbhuOeA8p680WnHih7L/Wn4ACeIbR2f1Y1Dx1nm7lEbcufuSeUi+SvuQ0nR4Amsuwrw9ZonD48e99PhJ8+l6H2hcPi0jLbzLr1douR3SGVjCYJI=
+	t=1745946516; cv=none; b=D3J15TNbjOAiQw0bH5ytddQGGhrTlP++86QtF1FDTun32pzDpgDnuYBk8JLEwnB2pWTbl/aZ14Hw8R3Iq28O1W/yYo5XuXwzlGZefyuJSc0ggNBKrRtvQqZl0kFq46Fwtrr5Z1Qex1kwHfeo24EwSfyMOIE1zIGrMi9tlG0M5S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949320; c=relaxed/simple;
-	bh=urJ94jng/aUwoDd+uNH+dd63Q+howVAJPsiu04TavDo=;
+	s=arc-20240116; t=1745946516; c=relaxed/simple;
+	bh=WeCn5EdczkLJ8vkQCmrd5cznGiBxrZ74QYqFcGD/Jyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQs2Nmr9FNu3KXSpffObwew3jqKnE20na58bb4CIiiPgKoqhuALWSsQGCMGYIwu/riSxuSFOAr+RUENXoPfz8hNlLiliO57Us07ORGuHWeDADsgOJvmu2wTdvkKT2YajmVvlaaffYZz1ATrqu7eQwQJfqTPz7s+LMCg6EJCxqcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWEhR/1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BDBC4CEE3;
-	Tue, 29 Apr 2025 17:55:20 +0000 (UTC)
+	 MIME-Version; b=miB7Mvjk/IEq/rRPRnFQXRiRe7ITU5vskGX/9Yb7DnsBlC5bG3jjcJQeYK3mHEslb3m98tr0RDXCyAm5pAT4BHIB4okj/dJ53/o9v1o8BDmQpxeAYKcMhKrpGM4Hys8zLcEiDmDWI4FHeFxhFGeZ4iQZ+0eNghXErMjGQY9FF9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zleVXSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66524C4CEE3;
+	Tue, 29 Apr 2025 17:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949320;
-	bh=urJ94jng/aUwoDd+uNH+dd63Q+howVAJPsiu04TavDo=;
+	s=korg; t=1745946515;
+	bh=WeCn5EdczkLJ8vkQCmrd5cznGiBxrZ74QYqFcGD/Jyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWEhR/1mm+8OAZs6FqDENDEAPPWYiZvobiGfA0t76x322x3RONwwlwsOU6wiuNMdc
-	 JoIDjHtQd1PxHFK1pN+pE1I/izuBgceawsISpGJTDpyVI/YeD4bWVrxQXgy114l0CG
-	 0E7vJ6mkcYZuhPD9He7U+WpQaIx4A6o7vS5dHJFU=
+	b=1zleVXSnHtxx3O5TbNYf+ct0bzcJ5kurfzY07wV6QF7efH06JEQZ7KoPE2f/v/85D
+	 9ls7LKrVSsiQs5xt+B78CG2gedi629jYRGFrG0Hl0afOWO1PLoWUyLcPCd7kWhmZpW
+	 IOXBQGvZoZ8EzvDvU66dwrhehucRLSqJ4TH6AUeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15 252/373] f2fs: Add inline to f2fs_build_fault_attr() stub
-Date: Tue, 29 Apr 2025 18:42:09 +0200
-Message-ID: <20250429161133.491704661@linuxfoundation.org>
+	Uday Shankar <ushankar@purestorage.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 293/311] ublk: add ublk_force_abort_dev()
+Date: Tue, 29 Apr 2025 18:42:10 +0200
+Message-ID: <20250429161133.001470287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 0d8968287a1cf7b03d07387dc871de3861b9f6b9 upstream.
+[ Upstream commit 00b3b0d7cb454d614117c93f33351cdcd20b5b93 ]
 
-When building without CONFIG_F2FS_FAULT_INJECTION, there is a warning
-from each file that includes f2fs.h because the stub for
-f2fs_build_fault_attr() is missing inline:
+Add ublk_force_abort_dev() for handling ublk_nosrv_dev_should_queue_io()
+in ublk_stop_dev(). Then queue quiesce and unquiesce can be paired in
+single function.
 
-  In file included from fs/f2fs/segment.c:21:
-  fs/f2fs/f2fs.h:4605:12: warning: 'f2fs_build_fault_attr' defined but not used [-Wunused-function]
-   4605 | static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
-        |            ^~~~~~~~~~~~~~~~~~~~~
+Meantime not change device state to QUIESCED any more, since the disk is
+going to be removed soon.
 
-Add the missing inline to resolve all of the warnings for this
-configuration.
-
-Fixes: 4ed886b187f4 ("f2fs: check validation of fault attrs in f2fs_build_fault_attr()")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250416035444.99569-3-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/ublk_drv.c | 21 ++++++++-------------
+ 1 file changed, 8 insertions(+), 13 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4376,8 +4376,8 @@ static inline bool f2fs_need_verity(cons
- extern int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
- 							unsigned long type);
- #else
--static int f2fs_build_fault_attr(struct f2fs_sb_info *sbi, unsigned long rate,
--							unsigned long type)
-+static inline int f2fs_build_fault_attr(struct f2fs_sb_info *sbi,
-+					unsigned long rate, unsigned long type)
- {
- 	return 0;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index c7761a5cfeec0..7bb7276f14c60 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1707,22 +1707,20 @@ static void __ublk_quiesce_dev(struct ublk_device *ub)
+ 	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
  }
+ 
+-static void ublk_unquiesce_dev(struct ublk_device *ub)
++static void ublk_force_abort_dev(struct ublk_device *ub)
+ {
+ 	int i;
+ 
+-	pr_devel("%s: unquiesce ub: dev_id %d state %s\n",
++	pr_devel("%s: force abort ub: dev_id %d state %s\n",
+ 			__func__, ub->dev_info.dev_id,
+ 			ub->dev_info.state == UBLK_S_DEV_LIVE ?
+ 			"LIVE" : "QUIESCED");
+-	/* quiesce_work has run. We let requeued rqs be aborted
+-	 * before running fallback_wq. "force_abort" must be seen
+-	 * after request queue is unqiuesced. Then del_gendisk()
+-	 * can move on.
+-	 */
++	blk_mq_quiesce_queue(ub->ub_disk->queue);
++	if (ub->dev_info.state == UBLK_S_DEV_LIVE)
++		ublk_wait_tagset_rqs_idle(ub);
++
+ 	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
+ 		ublk_get_queue(ub, i)->force_abort = true;
+-
+ 	blk_mq_unquiesce_queue(ub->ub_disk->queue);
+ 	/* We may have requeued some rqs in ublk_quiesce_queue() */
+ 	blk_mq_kick_requeue_list(ub->ub_disk->queue);
+@@ -1750,11 +1748,8 @@ static void ublk_stop_dev(struct ublk_device *ub)
+ 	mutex_lock(&ub->mutex);
+ 	if (ub->dev_info.state == UBLK_S_DEV_DEAD)
+ 		goto unlock;
+-	if (ublk_nosrv_dev_should_queue_io(ub)) {
+-		if (ub->dev_info.state == UBLK_S_DEV_LIVE)
+-			__ublk_quiesce_dev(ub);
+-		ublk_unquiesce_dev(ub);
+-	}
++	if (ublk_nosrv_dev_should_queue_io(ub))
++		ublk_force_abort_dev(ub);
+ 	del_gendisk(ub->ub_disk);
+ 	disk = ublk_detach_disk(ub);
+ 	put_disk(disk);
+-- 
+2.39.5
+
 
 
 
