@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C39AA1833
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D382AA16AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E055A7A63D7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DAE5178ADF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B338F252284;
-	Tue, 29 Apr 2025 17:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C68216605;
+	Tue, 29 Apr 2025 17:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZMq78KP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3nKMf68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2F9251783;
-	Tue, 29 Apr 2025 17:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166F5238C21;
+	Tue, 29 Apr 2025 17:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949421; cv=none; b=MMyNMMGGVC1H5xAyhjiNEHxv8YBb/UGEYIMnlDaZd86ktg433KviDIuibnZEpwD0qsVjqdvwkk9jMEWskYznE3LlQohB1TrKYq8424TSqf6hAvx9Az86Pm1hUncldTG8I3TRbKmjZ62WLt0FBu2vhmoFx7qDmGojMoQ4CDL4sGo=
+	t=1745948212; cv=none; b=GInqtEU0MtbxLiIO6AQHpot4KaymebfhtCBFoewdXr88eo910DhKmNjl2m/tmOXGDh21CE0+z7gxpKwZAhZpaDTrOMob7Pl+g/1/scRNDy5xPFlibvzubVN2rVFgdsjpHq+gDTlhmZsTbprjHOE/1gida1rLWycUGuNm/73x8ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949421; c=relaxed/simple;
-	bh=CzQ1O7fAW5VGQTMa9XailTYjKR+gvwxE6Px/UnRzs2c=;
+	s=arc-20240116; t=1745948212; c=relaxed/simple;
+	bh=p16gotB4ufRFlHzPVIiXs4QVtbQWXMBq7ON5pAR6AvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9BhcaRBQBf3rNgW2ooPr9/R1IcQr/3bSetKpO2vWaIwU8RDm2Kkr3o5TAECzvSF7SslqUSWzNjs5Hcp2OWbnwAcOWQU28WiYFQZaOfWyIuIvKH/jbCdWS4IFG2Ze9NbZpNuV5Y8IrHyQUMKBehV8qIBUbFx3M1KzSlmrbyRI4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZMq78KP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6F8C4CEE3;
-	Tue, 29 Apr 2025 17:57:00 +0000 (UTC)
+	 MIME-Version; b=EUWv0y99DXglT6WX7psP4sskVENd4rBdmgx15guhzGJa7oxim8P0xBTyK4Q3pKBIFd0bKE8lBZfEP7mbp25meNljnp8ySAqRiOaNRj6zKKgUhWx3CFZJIeV2CsWzXCmvcMuHtWOKyK1gYN9+BrGrMts+q18EU5UOFu0PBuP2nos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3nKMf68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85940C4CEE3;
+	Tue, 29 Apr 2025 17:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949420;
-	bh=CzQ1O7fAW5VGQTMa9XailTYjKR+gvwxE6Px/UnRzs2c=;
+	s=korg; t=1745948212;
+	bh=p16gotB4ufRFlHzPVIiXs4QVtbQWXMBq7ON5pAR6AvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZMq78KPRtZkMBX3pj703M/xMBJknexqcSGPWP4EZI++1JbAiJW1bjjEKUDu2mUq7
-	 QTNcBa7tuuNdgTtkQxB+3AcfMXrtEgusUZPq8x6YgMgyQpMKoBjX7Sgf4ikAlKpl0p
-	 uomxNbYywo0a9eyP9D3Rfugnt+pl69+IaSW6Ip9A=
+	b=h3nKMf68F0XCKSQa/FveKp9sDsX8nj4ybY+7uuq747jO870cNRfBYjiIHEAhpltie
+	 vw6s9DS14ObfQHNV/nzrNrL3gMKbkOTnYysda/1WqXa6DkUQ9cjixog0BaH9VbF5Sr
+	 ai7sIkn6floGjuW8sjNxNGjzqJu3wmUQu4HRPEMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Rob Clark <robdclark@chromium.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 285/373] drm/msm/a6xx: Fix stale rpmh votes from GPU
+Subject: [PATCH 6.12 221/280] nvmet-fc: take tgtport reference only once
 Date: Tue, 29 Apr 2025 18:42:42 +0200
-Message-ID: <20250429161134.832663216@linuxfoundation.org>
+Message-ID: <20250429161124.163472384@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <quic_akhilpo@quicinc.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit f561db72a663f8a73c2250bf3244ce1ce221bed7 ]
+[ Upstream commit b0b26ad0e1943de25ce82a7e5af3574f31b1cf99 ]
 
-It was observed on sc7180 (A618 gpu) that GPU votes for GX rail and CNOC
-BCM nodes were not removed after GPU suspend. This was because we
-skipped sending 'prepare-slumber' request to gmu during suspend sequence
-in some cases. So, make sure we always call prepare-slumber hfi during
-suspend. Also, calling prepare-slumber without a prior oob-gpu handshake
-messes up gmu firmware's internal state. So, do that when required.
+The reference counting code can be simplified. Instead taking a tgtport
+refrerence at the beginning of nvmet_fc_alloc_hostport and put it back
+if not a new hostport object is allocated, only take it when a new
+hostport object is allocated.
 
-Fixes: 4b565ca5a2cb ("drm/msm: Add A6XX device support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/639569/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gmu.c | 72 +++++++++++++++------------
- 1 file changed, 39 insertions(+), 33 deletions(-)
+ drivers/nvme/target/fc.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-index ea59c54437dec..f1daa923f3469 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gmu.c
-@@ -1066,49 +1066,50 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
- 	struct a6xx_gpu *a6xx_gpu = container_of(gmu, struct a6xx_gpu, gmu);
- 	struct adreno_gpu *adreno_gpu = &a6xx_gpu->base;
- 	u32 val;
-+	int ret;
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 7318b736d4141..78c4a417f477e 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1028,33 +1028,24 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 	struct nvmet_fc_hostport *newhost, *match = NULL;
+ 	unsigned long flags;
  
- 	/*
--	 * The GMU may still be in slumber unless the GPU started so check and
--	 * skip putting it back into slumber if so
-+	 * GMU firmware's internal power state gets messed up if we send "prepare_slumber" hfi when
-+	 * oob_gpu handshake wasn't done after the last wake up. So do a dummy handshake here when
-+	 * required
- 	 */
--	val = gmu_read(gmu, REG_A6XX_GPU_GMU_CX_GMU_RPMH_POWER_STATE);
-+	if (adreno_gpu->base.needs_hw_init) {
-+		if (a6xx_gmu_set_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET))
-+			goto force_off;
- 
--	if (val != 0xf) {
--		int ret = a6xx_gmu_wait_for_idle(gmu);
-+		a6xx_gmu_clear_oob(&a6xx_gpu->gmu, GMU_OOB_GPU_SET);
-+	}
- 
--		/* If the GMU isn't responding assume it is hung */
--		if (ret) {
--			a6xx_gmu_force_off(gmu);
--			return;
--		}
-+	ret = a6xx_gmu_wait_for_idle(gmu);
- 
--		a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
-+	/* If the GMU isn't responding assume it is hung */
-+	if (ret)
-+		goto force_off;
- 
--		/* tell the GMU we want to slumber */
--		ret = a6xx_gmu_notify_slumber(gmu);
--		if (ret) {
--			a6xx_gmu_force_off(gmu);
--			return;
--		}
-+	a6xx_bus_clear_pending_transactions(adreno_gpu, a6xx_gpu->hung);
- 
--		ret = gmu_poll_timeout(gmu,
--			REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
--			!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
--			100, 10000);
-+	/* tell the GMU we want to slumber */
-+	ret = a6xx_gmu_notify_slumber(gmu);
-+	if (ret)
-+		goto force_off;
- 
--		/*
--		 * Let the user know we failed to slumber but don't worry too
--		 * much because we are powering down anyway
--		 */
-+	ret = gmu_poll_timeout(gmu,
-+		REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS, val,
-+		!(val & A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS_GPUBUSYIGNAHB),
-+		100, 10000);
- 
--		if (ret)
--			DRM_DEV_ERROR(gmu->dev,
--				"Unable to slumber GMU: status = 0%x/0%x\n",
--				gmu_read(gmu,
--					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
--				gmu_read(gmu,
--					REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
--	}
 +	/*
-+	 * Let the user know we failed to slumber but don't worry too
-+	 * much because we are powering down anyway
++	 * Caller holds a reference on tgtport.
 +	 */
 +
-+	if (ret)
-+		DRM_DEV_ERROR(gmu->dev,
-+			"Unable to slumber GMU: status = 0%x/0%x\n",
-+			gmu_read(gmu,
-+				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS),
-+			gmu_read(gmu,
-+				REG_A6XX_GPU_GMU_AO_GPU_CX_BUSY_STATUS2));
+ 	/* if LLDD not implemented, leave as NULL */
+ 	if (!hosthandle)
+ 		return NULL;
  
- 	/* Turn off HFI */
- 	a6xx_hfi_stop(gmu);
-@@ -1118,6 +1119,11 @@ static void a6xx_gmu_shutdown(struct a6xx_gmu *gmu)
+-	/*
+-	 * take reference for what will be the newly allocated hostport if
+-	 * we end up using a new allocation
+-	 */
+-	if (!nvmet_fc_tgtport_get(tgtport))
+-		return ERR_PTR(-EINVAL);
+-
+ 	spin_lock_irqsave(&tgtport->lock, flags);
+ 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
+ 	spin_unlock_irqrestore(&tgtport->lock, flags);
  
- 	/* Tell RPMh to power off the GPU */
- 	a6xx_rpmh_stop(gmu);
-+
-+	return;
-+
-+force_off:
-+	a6xx_gmu_force_off(gmu);
- }
+-	if (match) {
+-		/* no new allocation - release reference */
+-		nvmet_fc_tgtport_put(tgtport);
++	if (match)
+ 		return match;
+-	}
  
+ 	newhost = kzalloc(sizeof(*newhost), GFP_KERNEL);
+-	if (!newhost) {
+-		/* no new allocation - release reference */
+-		nvmet_fc_tgtport_put(tgtport);
++	if (!newhost)
+ 		return ERR_PTR(-ENOMEM);
+-	}
  
+ 	spin_lock_irqsave(&tgtport->lock, flags);
+ 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
+@@ -1063,6 +1054,7 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 		kfree(newhost);
+ 		newhost = match;
+ 	} else {
++		nvmet_fc_tgtport_get(tgtport);
+ 		newhost->tgtport = tgtport;
+ 		newhost->hosthandle = hosthandle;
+ 		INIT_LIST_HEAD(&newhost->host_list);
 -- 
 2.39.5
 
