@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F863AA144B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F04AA1710
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3486189C5E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15DD21A86EA5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3082472AA;
-	Tue, 29 Apr 2025 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98454242D68;
+	Tue, 29 Apr 2025 17:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="reRYfzEa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwEHzbYZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88550241664;
-	Tue, 29 Apr 2025 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55ADB227E95;
+	Tue, 29 Apr 2025 17:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946654; cv=none; b=up/MvC2WzDblj2lhLk/8dX1UdWFbrREOV1kB1/K0gv/18d73K5IApZobUIGAKjDYDqCCbaLXNvnfd3/OrvszIrIZiZncxD26CbcTx1mJNrAP6BXnnejFmZGOBLML/olIelQqvqqZTyZJjRig+tcqCyDxVklU1OHteGNb5y1P2kY=
+	t=1745948590; cv=none; b=gCTeFPmjTz3aZgAysktPnqsoBHAVwJbbx9HxsXow9EbAL8PZpsz7qzfZEuiU23AsnE/HTTAL+wdtUIhTHlyJi4xf9KuLSuqGXd76N2X4N/2ml+cQzFIhaKGA3OALTk2iDAk3Hcs4n/nNfcWmwk5Apsp5mRoawo+v/UXcc1LUPUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946654; c=relaxed/simple;
-	bh=75Lyl9qHlfmarw9LTIwH4wXuo8taYrct8RHzN0iiaYQ=;
+	s=arc-20240116; t=1745948590; c=relaxed/simple;
+	bh=Adwne7St3VzpSVAMhVvLzUnX7Q3xKCDCmMffzG+JIOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igjFc6lZBSQPbDoLYsEzUzxdkzIfcitDNDIltK2A4jaCvQC2moUirEymP11RNdiXlAPvj1qwZj450cSkQCVCthqwLYs59NRnSsQDmRxGtI7f6nLnv5oEoqxEwAQzMATnSKpqowVz8GFhABOLiuYMZUx2MCR63PXS+FW0ddSoVDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=reRYfzEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC89BC4CEE3;
-	Tue, 29 Apr 2025 17:10:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SLkTqXvaw2iWCKVqf/V89bKB3H3e6RVQvWTz72Xn3TykdEDM+FDCeFMoEYWxUcbB4PgKp1rtHMU8WoXDIioKU9pAGQrb2X+dP0aR5K9CysUoERA8gaj0/AK5D6BMOVpqSeqmWGj424fHtplK8c6vsohgXgX35lWmNROyOJ2NzrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwEHzbYZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84664C4CEE3;
+	Tue, 29 Apr 2025 17:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946654;
-	bh=75Lyl9qHlfmarw9LTIwH4wXuo8taYrct8RHzN0iiaYQ=;
+	s=korg; t=1745948590;
+	bh=Adwne7St3VzpSVAMhVvLzUnX7Q3xKCDCmMffzG+JIOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=reRYfzEaxzrNLfu8NHiQok6L7uyv3yl1WGvwfCcxC8LZk1dYXYW8MwvWN9IJ79J53
-	 5VNCQZrcmAXxPFfFoqstVZKMOkmWUdwiZtoEmWtQ+6q+y/a5JXUi5JAaa4s7md2WqQ
-	 Ifur9pWi0BhKPvkRZT0MpYQOgrMmTem6sgP19nkI=
+	b=LwEHzbYZMAC3tY3No3O11aNYQiTFBFC/nBLulCT7rpuDOHe/0lzylp/BhIkWjmfX0
+	 Cw4KKVffVqlgLfY/qS5AFKb8DiWrRTfiVjzIdx+LC5VeYTaIlHv+B4aU1XqdeKjFt3
+	 V0cPnRCC4y77vtXGYKvqMbAEnFpRUkBpxublSxbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 025/286] jfs: add sanity check for agwidth in dbMount
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 052/373] pwm: rcar: Simplify multiplication/shift logic
 Date: Tue, 29 Apr 2025 18:38:49 +0200
-Message-ID: <20250429161108.887759560@linuxfoundation.org>
+Message-ID: <20250429161125.270916315@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit ddf2846f22e8575d6b4b6a66f2100f168b8cd73d ]
+[ Upstream commit ed14d36498c8d15be098df4af9ca324f96e9de74 ]
 
-The width in dmapctl of the AG is zero, it trigger a divide error when
-calculating the control page level in dbAllocAG.
+- Remove the superfluous cast; the multiplication will yield a 64-bit
+    result due to the "100ULL" anyway,
+  - "a * (1 << b)" == "a << b".
 
-To avoid this issue, add a check for agwidth in dbAllocAG.
-
-Reported-and-tested-by: syzbot+7c808908291a569281a9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7c808908291a569281a9
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: e7327c193014 ("pwm: rcar: Improve register calculation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pwm/pwm-rcar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 3cc10f9bf9f8b..8f4c55c711ba0 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -204,6 +204,10 @@ int dbMount(struct inode *ipbmap)
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
-+	if (!bmp->db_agwidth) {
-+		err = -EINVAL;
-+		goto err_release_metapage;
-+	}
- 	bmp->db_agstart = le32_to_cpu(dbmp_le->dn_agstart);
- 	bmp->db_agl2size = le32_to_cpu(dbmp_le->dn_agl2size);
- 	if (bmp->db_agl2size > L2MAXL2SIZE - L2MAXAG ||
+diff --git a/drivers/pwm/pwm-rcar.c b/drivers/pwm/pwm-rcar.c
+index b437192380e23..55f46d09602b1 100644
+--- a/drivers/pwm/pwm-rcar.c
++++ b/drivers/pwm/pwm-rcar.c
+@@ -110,7 +110,7 @@ static int rcar_pwm_set_counter(struct rcar_pwm_chip *rp, int div, int duty_ns,
+ 	unsigned long clk_rate = clk_get_rate(rp->clk);
+ 	u32 cyc, ph;
+ 
+-	one_cycle = (unsigned long long)NSEC_PER_SEC * 100ULL * (1 << div);
++	one_cycle = NSEC_PER_SEC * 100ULL << div;
+ 	do_div(one_cycle, clk_rate);
+ 
+ 	tmp = period_ns * 100ULL;
 -- 
 2.39.5
 
