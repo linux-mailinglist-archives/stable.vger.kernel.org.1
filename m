@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5B5AA1994
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9103AA1A5B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 158D49A204C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 800F59C0FFA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9D925228D;
-	Tue, 29 Apr 2025 18:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB38253F12;
+	Tue, 29 Apr 2025 18:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7V9/zb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7q+H5LP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881932528ED;
-	Tue, 29 Apr 2025 18:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9749E253334;
+	Tue, 29 Apr 2025 18:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950089; cv=none; b=KGKCgX8EvEfkHEmfBq3YVq68V7AE/9tDcpONOiIajOa3p2h+cvYRywBfRbyA8AxGXcEWl7+vVQVwUe5vdMw3K0wfilBi6mu+Zl+4he9MIwQ+NFlrHn4HU5lWNOCVxaS0A79yn9dGSMmAa1Ms4PmIz//psZBkwMhI2jP8OWWDsHo=
+	t=1745950596; cv=none; b=SsNG8VwmqFW1Af8+fK77GIkPgmLk3S6KKep4oFt3s7jFEMpk4Ixog5F0qeZZfbqpSZAWDgyiR96+R49VBsxC8+g/Rd+5/63dEGjrAS9Z4bDem1f9j6JWkubjznpTuBwmgXUnzqz/lkUbyHp2QSqZnbPNy8FQprc2+/CSLMQsPz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950089; c=relaxed/simple;
-	bh=cittUK7G9jMsPDX9/wtIYccY8cycqbRl0/ak7TajJm4=;
+	s=arc-20240116; t=1745950596; c=relaxed/simple;
+	bh=bBJmSuIzi7X5t+Q7SBv/lGZJut5cA71cLiiTO+BlXxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rTA9AgJXdNX/qx+lYAw7x+WNhzo18/pbGPvvbqpRtNESy5yxYUbbmnmKLLYUHrPHdWpa9FvWyWtgNOlX7WXQOtx1IRjiduqt2c75VEUjas2wGTca/LVLkS8DA5rgvHSXqbtpwwdPRlCLEFD04+VSDIVY58MgycBcbRHvu/U2ikQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7V9/zb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1025C4CEE3;
-	Tue, 29 Apr 2025 18:08:08 +0000 (UTC)
+	 MIME-Version; b=fVL/NaCT5UoE4OiADxjCz3D59mmH4nJXw9Jqmbdko4QctPMBbu1sy+ySftV6vYGVRypZ5aPU9WWCRAqGIkm8HLt4o+LLcYAbgLUjmRz5/rCSUpebIrp0L7BZhfip1/G4LOpDtnk3t1rUDxktVULtW+qhKvYaz4YkPvMmoTFT+y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7q+H5LP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2016AC4CEE9;
+	Tue, 29 Apr 2025 18:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950089;
-	bh=cittUK7G9jMsPDX9/wtIYccY8cycqbRl0/ak7TajJm4=;
+	s=korg; t=1745950596;
+	bh=bBJmSuIzi7X5t+Q7SBv/lGZJut5cA71cLiiTO+BlXxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7V9/zb4H3PPO1X+wYlzxY8unCK+/EBlzPwboDaOE+diXiYEkLl/awot0uYmIrRx5
-	 vOmu/FFcXjuGH1Mu8i51N2I9r2lHEKJ5u+ASCrvcNzZL3nHVDdYGjNI+qb5hEpbKTS
-	 ZtrFuQlkTRvZhQruKRCLJs73U3E76O0X1PWAXwC0=
+	b=O7q+H5LP4tmJVkv5cU+Qnr/2ckl0R/HkJUNphxVZJyeNFbLUnmd6sFgLycT6B+X7X
+	 OOMNa49QneYQSjuNXwrwwLObqFRi3GPNxTDSwRrvlK71Mm5IBZ4lfFuZ9kTA4Ala11
+	 h2VlTg3ey3oKpGsgG+l1rJdE9KHo7Wfa5dpEUAdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <Xiaogang.Chen@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/167] udmabuf: fix a buf size overflow issue during udmabuf creation
-Date: Tue, 29 Apr 2025 18:43:53 +0200
-Message-ID: <20250429161056.799057359@linuxfoundation.org>
+Subject: [PATCH 6.6 146/204] qibfs: fix _another_ leak
+Date: Tue, 29 Apr 2025 18:43:54 +0200
+Message-ID: <20250429161105.397950483@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 021ba7f1babd029e714d13a6bf2571b08af96d0f ]
+[ Upstream commit bdb43af4fdb39f844ede401bdb1258f67a580a27 ]
 
-by casting size_limit_mb to u64  when calculate pglimit.
+failure to allocate inode => leaked dentry...
 
-Signed-off-by: Xiaogang Chen<Xiaogang.Chen@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250321164126.329638-1-xiaogang.chen@amd.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+this one had been there since the initial merge; to be fair,
+if we are that far OOM, the odds of failing at that particular
+allocation are low...
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/udmabuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/qib/qib_fs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
-index ef99174d81ced..546bba502fbc1 100644
---- a/drivers/dma-buf/udmabuf.c
-+++ b/drivers/dma-buf/udmabuf.c
-@@ -186,7 +186,7 @@ static long udmabuf_create(struct miscdevice *device,
- 	if (!ubuf)
- 		return -ENOMEM;
+diff --git a/drivers/infiniband/hw/qib/qib_fs.c b/drivers/infiniband/hw/qib/qib_fs.c
+index 11155e0fb8395..35d777976c295 100644
+--- a/drivers/infiniband/hw/qib/qib_fs.c
++++ b/drivers/infiniband/hw/qib/qib_fs.c
+@@ -55,6 +55,7 @@ static int qibfs_mknod(struct inode *dir, struct dentry *dentry,
+ 	struct inode *inode = new_inode(dir->i_sb);
  
--	pglimit = (size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
-+	pglimit = ((u64)size_limit_mb * 1024 * 1024) >> PAGE_SHIFT;
- 	for (i = 0; i < head->count; i++) {
- 		if (!IS_ALIGNED(list[i].offset, PAGE_SIZE))
- 			goto err;
+ 	if (!inode) {
++		dput(dentry);
+ 		error = -EPERM;
+ 		goto bail;
+ 	}
 -- 
 2.39.5
 
