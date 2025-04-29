@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91543AA17D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6D3AA14AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41C019A4D68
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F0211BA54BE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949F0243964;
-	Tue, 29 Apr 2025 17:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36F825178B;
+	Tue, 29 Apr 2025 17:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l8Xo7SFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA7A2qKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA87C148;
-	Tue, 29 Apr 2025 17:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613BD2517AF;
+	Tue, 29 Apr 2025 17:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948857; cv=none; b=mzvUTYRgJ/aWZQUxz+98GhAwxr77ORfBuN+xDpDYG+FiUGDjvCfXi0V7ZHaAi2uHRzgH1Qa7vua5MLNTh31zFOehKjMaLm1aG2DypNxSMzZZIL0GsYXltO8FlMc57UPXYP7tMkpb3zBne1Hk1TbVxlagDQ2UqNGXNtGK0INMjdk=
+	t=1745946918; cv=none; b=r+WhoIS8jQwBqeFwgQ7zjAe7MCNl6aQdsQS1JI9O76Y+c3cJMsuG96bpMOSrLnPmE/IpykarcZEiJfToHT4+fGuuw4iCuSk8BFLfEiBxxp/Ndb1fh28Rn5JJ1isqXgBH0AJWL5kGkvpCh6/sdgjuydJzbsCs0mGNqpLHoeElviU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948857; c=relaxed/simple;
-	bh=I1EaBKrjgHZAj5j0L4hvhLGhMCUomZmMwQ187dymnHs=;
+	s=arc-20240116; t=1745946918; c=relaxed/simple;
+	bh=sIkPlYtV5I/n6zj5OJrXDKljUFOADv0I2H4c1ELmbjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYY4mtoqqA9zoINMM5tgrbQuLcuRDKbH2iNI6bQ5pM95qIJfkas4fs1EBFoV+raszWgfJGEU4SuVn5co0sZEFAxrNS40ZNrYNiMBJ85FAJMfnl7P5O/TMxO5fozqGd4Z1kh2moNhuxMeXCGs1JUWhuHB7h0eGy4NKcyOObD52f0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l8Xo7SFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C877CC4CEEA;
-	Tue, 29 Apr 2025 17:47:36 +0000 (UTC)
+	 MIME-Version; b=fDjf6mqQkyFYlQKEHkYXfjDKhCnQr5wLR48IkqSv9Va7sBkZitmFFLxd9zFZgwKxtcQtenEP3Tc84aJ65TwU3POq+rqsiPsbBQr3ET7b9D5VzyQKCl6iHuF8BCqBsG8bGyJ/AttSRH24kSJWiD+pNUDBpnGnE8Dgk+P/16qw198=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA7A2qKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0E3C4CEE3;
+	Tue, 29 Apr 2025 17:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948857;
-	bh=I1EaBKrjgHZAj5j0L4hvhLGhMCUomZmMwQ187dymnHs=;
+	s=korg; t=1745946918;
+	bh=sIkPlYtV5I/n6zj5OJrXDKljUFOADv0I2H4c1ELmbjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l8Xo7SFI/z51jhhlwpmCUgObYMQAr/mmKNGbvTKQVmEKj/KUefcCkAq3ffKeyPNJv
-	 ASiUH2B4mo56M4NOvNTnZRRuVqXMfDsKFVIM+ZMN6JeDKKThulq5Duy/AZdoIarrZ1
-	 IpuFNnbSfcfWAHyX64qdNX4k3xYlkO3S03459/hE=
+	b=lA7A2qKouH3hD2m7+BJGVvArOSi+fvT7Fh3u2ecudkUSeX2u4kEiF/Us5ZjCz7WJi
+	 vSSFlSsp5mKxu+d/Z/C1ifdcUZWjBlFfC2jECW2J5uR0L6h1DxTUhQnZWc0xVJhnQ+
+	 DTwvQQYSr2SxVEDFrBUHBUWDfnX+ZFWvQcMaFVII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Bert Karwatzki <spasswolf@web.de>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/373] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
+Subject: [PATCH 5.10 112/286] Revert "wifi: mac80211: Update skbs control block key in ieee80211_tx_dequeue()"
 Date: Tue, 29 Apr 2025 18:40:16 +0200
-Message-ID: <20250429161128.886432829@linuxfoundation.org>
+Message-ID: <20250429161112.467286378@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 deletion(-)
 
 diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 0a658e747798b..c4e6fbe4343ee 100644
+index 5615575595efb..0d6d12fc3c07e 100644
 --- a/net/mac80211/tx.c
 +++ b/net/mac80211/tx.c
-@@ -3704,7 +3704,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
+@@ -3691,7 +3691,6 @@ struct sk_buff *ieee80211_tx_dequeue(struct ieee80211_hw *hw,
  	 * The key can be removed while the packet was queued, so need to call
  	 * this here to get the current key.
  	 */
