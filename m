@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649BDAA149F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07390AA178A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A57E37B083C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 095001BC41B4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0E524C098;
-	Tue, 29 Apr 2025 17:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5D225178C;
+	Tue, 29 Apr 2025 17:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM1EQLzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/Tbl/vz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98972206AA;
-	Tue, 29 Apr 2025 17:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FC5242D73;
+	Tue, 29 Apr 2025 17:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947075; cv=none; b=J7v8/RHYYPuWzmiIPgi0ywegu8E0fCa1LLdnQRvxDLQ0p30oN8phmHC/jqa4ShPqs9fDhI+l0HHOWcqB83nduFdijSev5AvTI1YUIXz8GJyVvo1pCG9MLpTkuMs6grQpXmrYikHghW4+Cffj7eJCcwn5KAg8GUc/hznZ8eKrXkc=
+	t=1745948911; cv=none; b=bxtepDf75Hr4aMtixph/H9w3tBGcKP7MBDPtrJ3FKJ8AQHVUV91T/LXb8cCJxn5Eyo11LcJJ17ZvZI3Gp/hE8i9auKVwJOLzYikQUTzS22TR6mPNUk/YjOTxFPOYivlFDaR0wK/mq/ltnc1NF/OgVtsUoJd7tNWmQq9Qkods0hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947075; c=relaxed/simple;
-	bh=1SAJyvFRXfG3A55dgAeTEed+HJYYneDGgPYiroAWRKc=;
+	s=arc-20240116; t=1745948911; c=relaxed/simple;
+	bh=6dueBsiFMLXg+5OTKLmgjYfNsHoj0UU6GHAiZgUSijw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1eGHRaCgRQQXGiPWiu/9cHpzZ5LR4tSwJcpyv8AXxXp4/hFQfqxHajK6SGBNesIJ2P/8ptFUxNflGlucJSmSVZIbF1olaaXRcCuDOEOmKzAe4eaowPMxm3aQEA4c9kumRrVxERscxwj2i7LSRMSLSkcFBtPIfQ7MbE9aFpuCdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM1EQLzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CA90C4CEE3;
-	Tue, 29 Apr 2025 17:17:55 +0000 (UTC)
+	 MIME-Version; b=PIA9wKXh9f7jeOWf6iegWJPQx63JSuPENn/P9aHJaWmZMF8mwJtw7Zp/fMqcvxvOPGuhFdhyXyZIhjY/Xa/8JBRXuJ/aO4y02PYXMwt0X4C9X31oGySXSwPPWjMPMre2TTzn6i14bsHb1JbRbvHiJ+Jdgi2Wr3HMJcvi6GMQ6Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/Tbl/vz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF409C4CEE3;
+	Tue, 29 Apr 2025 17:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947075;
-	bh=1SAJyvFRXfG3A55dgAeTEed+HJYYneDGgPYiroAWRKc=;
+	s=korg; t=1745948911;
+	bh=6dueBsiFMLXg+5OTKLmgjYfNsHoj0UU6GHAiZgUSijw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tM1EQLzqA2SHCyx9ewYrjOJQ7a7eRCxbCnqayHY2AI1yL2qqyvPBTrNmE9Y97mXw3
-	 saKdVZTZIl2pEw4YW71cGKOFxlhskSHeg5He+U37XUsc0NT0Fk6/pmcd4wDOJu7hNi
-	 omIZ+OslVx8vTCcq78dSeZaout0YzZFN2J3IDmq4=
+	b=A/Tbl/vzKDWtLfU5vZFDCeGkHLyy3IRhQCvDMseGZcsGde0Ktu54MElKeez9qEfIU
+	 vzWxdZKIW/F16+4NYQTD6Q/Pb4tQ3cnXf8XPFBvNrLP9kHI3Z6shbWAjPYcNzLM9/M
+	 Mx5rQI7HvWYdLXBAPtyNbAP07GmrIUeDb61fN9lM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.10 134/286] perf/x86/intel: Allow to update user space GPRs from PEBS records
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 161/373] nfsd: decrease sc_count directly if fail to queue dl_recall
 Date: Tue, 29 Apr 2025 18:40:38 +0200
-Message-ID: <20250429161113.380384558@linuxfoundation.org>
+Message-ID: <20250429161129.763265328@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 71dcc11c2cd9e434c34a63154ecadca21c135ddd upstream.
+[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
 
-Currently when a user samples user space GPRs (--user-regs option) with
-PEBS, the user space GPRs actually always come from software PMI
-instead of from PEBS hardware. This leads to the sampled GPRs to
-possibly be inaccurate for single PEBS record case because of the
-skid between counter overflow and GPRs sampling on PMI.
+A deadlock warning occurred when invoking nfs4_put_stid following a failed
+dl_recall queue operation:
+            T1                            T2
+                                nfs4_laundromat
+                                 nfs4_get_client_reaplist
+                                  nfs4_anylock_blockers
+__break_lease
+ spin_lock // ctx->flc_lock
+                                   spin_lock // clp->cl_lock
+                                   nfs4_lockowner_has_blockers
+                                    locks_owner_has_blockers
+                                     spin_lock // flctx->flc_lock
+ nfsd_break_deleg_cb
+  nfsd_break_one_deleg
+   nfs4_put_stid
+    refcount_dec_and_lock
+     spin_lock // clp->cl_lock
 
-For the large PEBS case, it is even worse. If user sets the
-exclude_kernel attribute, large PEBS would be used to sample user space
-GPRs, but since PEBS GPRs group is not really enabled, it leads to all
-samples in the large PEBS record to share the same piece of user space
-GPRs, like this reproducer shows:
+When a file is opened, an nfs4_delegation is allocated with sc_count
+initialized to 1, and the file_lease holds a reference to the delegation.
+The file_lease is then associated with the file through kernel_setlease.
 
-  $ perf record -e branches:pu --user-regs=ip,ax -c 100000 ./foo
-  $ perf report -D | grep "AX"
+The disassociation is performed in nfsd4_delegreturn via the following
+call chain:
+nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
+nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
+The corresponding sc_count reference will be released after this
+disassociation.
 
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
-  .... AX    0x000000003a0d4ead
+Since nfsd_break_one_deleg executes while holding the flc_lock, the
+disassociation process becomes blocked when attempting to acquire flc_lock
+in generic_delete_lease. This means:
+1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
+2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
+acquire cl_lock;
+3) Consequently, no deadlock condition is created.
 
-So enable GPRs group for user space GPRs sampling and prioritize reading
-GPRs from PEBS. If the PEBS sampled GPRs is not user space GPRs (single
-PEBS record case), perf_sample_regs_user() modifies them to user space
-GPRs.
+Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
+safely perform refcount_dec on sc_count directly. This approach
+effectively avoids triggering deadlock warnings.
 
-[ mingo: Clarified the changelog. ]
-
-Fixes: c22497f5838c ("perf/x86/intel: Support adaptive PEBS v4")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250415104135.318169-2-dapeng1.mi@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/ds.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4state.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/ds.c
-+++ b/arch/x86/events/intel/ds.c
-@@ -988,8 +988,10 @@ static u64 pebs_update_adaptive_cfg(stru
- 	 * + precise_ip < 2 for the non event IP
- 	 * + For RTM TSX weight we need GPRs for the abort code.
- 	 */
--	gprs = (sample_type & PERF_SAMPLE_REGS_INTR) &&
--	       (attr->sample_regs_intr & PEBS_GP_REGS);
-+	gprs = ((sample_type & PERF_SAMPLE_REGS_INTR) &&
-+		(attr->sample_regs_intr & PEBS_GP_REGS)) ||
-+	       ((sample_type & PERF_SAMPLE_REGS_USER) &&
-+		(attr->sample_regs_user & PEBS_GP_REGS));
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 5e576b1f46c79..1d09fb4ff5a5e 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4944,7 +4944,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
+ 	queued = nfsd4_run_cb(&dp->dl_recall);
+ 	WARN_ON_ONCE(!queued);
+ 	if (!queued)
+-		nfs4_put_stid(&dp->dl_stid);
++		refcount_dec(&dp->dl_stid.sc_count);
+ }
  
- 	tsx_weight = (sample_type & PERF_SAMPLE_WEIGHT) &&
- 		     ((attr->config & INTEL_ARCH_EVENT_MASK) ==
-@@ -1572,7 +1574,7 @@ static void setup_pebs_adaptive_sample_d
- 			regs->flags &= ~PERF_EFLAGS_EXACT;
- 		}
- 
--		if (sample_type & PERF_SAMPLE_REGS_INTR)
-+		if (sample_type & (PERF_SAMPLE_REGS_INTR | PERF_SAMPLE_REGS_USER))
- 			adaptive_pebs_save_regs(regs, gprs);
- 	}
- 
+ /* Called from break_lease() with flc_lock held. */
+-- 
+2.39.5
+
 
 
 
