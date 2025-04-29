@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B62FAA1282
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3414FAA1664
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CDF4C042B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B87221885538
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E78224E016;
-	Tue, 29 Apr 2025 16:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DB9243958;
+	Tue, 29 Apr 2025 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fleh3uZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loh7JU1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDD624C098;
-	Tue, 29 Apr 2025 16:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109922A81D;
+	Tue, 29 Apr 2025 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945589; cv=none; b=CtV6/a11q/ILW5phFQdA9fTbYY5HtvY01Rxb1tk307JRReI7xrfZZeKJCtQlO43TJ1Fk+wAWT2XdIwwyAZq9i/ObIr0A7fOF6zSmUhKbUkdW0iwcFBSCPg3Fah1Jy6vcYKN2imPMVEgT6YfO5/Vm0q4UJFWcUBzldntrOpuziW4=
+	t=1745948001; cv=none; b=jY63wvtW/rkV2LJ/U2oJtBhM+0ujWTag3vTbySZRZoUYth87C1ymYhVW5Ua5px8tgzn9MF6OldUBh6tLhT6HExzb4MOg6XOZErqdD9C4uvlCIwAyodIYhX5nVfZlAFohm8ibq6XK8jAwaiDX8Qx3U/tIC+MZFQRutx8tjazk5rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945589; c=relaxed/simple;
-	bh=VHCNBK2d2HIbiJ1MO2eS0gOrioQRdZqav36uUIclAbg=;
+	s=arc-20240116; t=1745948001; c=relaxed/simple;
+	bh=xK/wiORcLVLGhGjWek1Rht56vkfZFJccagcy0nftktY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SaXb8K6yRq4Lbp1IWLA5VbwMpouLyOuVU5ccXC5zx3ELEGoa0qQ35OSy21RLgUEn34T7bTo4IUbovNGCCOau0YoASAbxJyfJ6fSQEogt/NIvIAebPMlitYkQP7QTdlL0lVTQBWhrPYduKht85xqcserIGB+niue2ehZWgRI11wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fleh3uZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE8FC4CEE3;
-	Tue, 29 Apr 2025 16:53:08 +0000 (UTC)
+	 MIME-Version; b=PgHyX+472+JP2rG1MmKEavHbYWRlq7To1HZI3nEzAgBgaNx16GHJQ1v7TXTb3iCHwliqUGNvna/qkCq4BySa2zt1/Np+Bl8DnLWnxlk/RxpPNdot7DSfz5mw+SCNl+LA7yNUGPCA8GQ/kFrwappJIZ5qBbia0bZUb5S+zqptd0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loh7JU1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C3BC4CEE3;
+	Tue, 29 Apr 2025 17:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945589;
-	bh=VHCNBK2d2HIbiJ1MO2eS0gOrioQRdZqav36uUIclAbg=;
+	s=korg; t=1745948001;
+	bh=xK/wiORcLVLGhGjWek1Rht56vkfZFJccagcy0nftktY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fleh3uZ5jyzOLlEp1ILZwYoVXPb8lUIARGGADih34x5Cflhm1NzeLk1t/nSny8wdS
-	 T7wmfvuqDQGJEzEJ4PCvjgyhZoqcD5wt/Sc+m5M5lJtUk13crPRhPJ+Q8F2XAiQkQ6
-	 zUd2BZIJL8fdf4103mKZmFfhi7ZidLkHdPdfhlZk=
+	b=loh7JU1zonV0pX8M2PqYxs+QpXoOhS1PyuQLYFlYqqn+mBWynl3i79LhD9mMGzipd
+	 wAx9v9ApPmckbWAQM0M5AwsjoaS+fo4MrU+DJG1LbOHblDIwyc2k49UjlPNLlWeeZj
+	 tkb17fftHU2nlL4ae/XEhC1U4ir3bdMCSD/8hIYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/179] dmaengine: dmatest: Fix dmatest waiting less when interrupted
+Subject: [PATCH 6.12 164/280] s390/tty: Fix a potential memory leak bug
 Date: Tue, 29 Apr 2025 18:41:45 +0200
-Message-ID: <20250429161056.015179249@linuxfoundation.org>
+Message-ID: <20250429161121.823897561@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
+[ Upstream commit ad9bb8f049717d64c5e62b2a44954be9f681c65b ]
 
-Change the "wait for operation finish" logic to take interrupts into
-account.
+The check for get_zeroed_page() leads to a direct return
+and overlooked the memory leak caused by loop allocation.
+Add a free helper to free spaces allocated by get_zeroed_page().
 
-When using dmatest with idxd DMA engine, it's possible that during
-longer tests, the interrupt notifying the finish of an operation
-happens during wait_event_freezable_timeout(), which causes dmatest to
-cleanup all the resources, some of which might still be in use.
-
-This fix ensures that the wait logic correctly handles interrupts,
-preventing premature cleanup of resources.
-
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218034104.2436469-1-haoxiang_li2024@163.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmatest.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/s390/char/sclp_tty.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
-index 238936e2dfe2d..6dfa1e038726a 100644
---- a/drivers/dma/dmatest.c
-+++ b/drivers/dma/dmatest.c
-@@ -809,9 +809,9 @@ static int dmatest_func(void *data)
- 		} else {
- 			dma_async_issue_pending(chan);
+diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
+index 892c18d2f87e9..d3edacb6ee148 100644
+--- a/drivers/s390/char/sclp_tty.c
++++ b/drivers/s390/char/sclp_tty.c
+@@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
+ 	.flush_buffer = sclp_tty_flush_buffer,
+ };
  
--			wait_event_freezable_timeout(thread->done_wait,
--					done->done,
--					msecs_to_jiffies(params->timeout));
-+			wait_event_timeout(thread->done_wait,
-+					   done->done,
-+					   msecs_to_jiffies(params->timeout));
- 
- 			status = dma_async_is_tx_complete(chan, cookie, NULL,
- 							  NULL);
++/* Release allocated pages. */
++static void __init __sclp_tty_free_pages(void)
++{
++	struct list_head *page, *p;
++
++	list_for_each_safe(page, p, &sclp_tty_pages) {
++		list_del(page);
++		free_page((unsigned long)page);
++	}
++}
++
+ static int __init
+ sclp_tty_init(void)
+ {
+@@ -516,6 +527,7 @@ sclp_tty_init(void)
+ 	for (i = 0; i < MAX_KMEM_PAGES; i++) {
+ 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
+ 		if (page == NULL) {
++			__sclp_tty_free_pages();
+ 			tty_driver_kref_put(driver);
+ 			return -ENOMEM;
+ 		}
 -- 
 2.39.5
 
