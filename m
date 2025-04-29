@@ -1,98 +1,103 @@
-Return-Path: <stable+bounces-137056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CEA9AA09A6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 13:33:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CF7AA0842
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 12:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C57251B66189
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 11:33:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D53462FE2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 10:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F0C2C17BB;
-	Tue, 29 Apr 2025 11:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BA129DB76;
+	Tue, 29 Apr 2025 10:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="L51LcWUS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRXsVqB3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp102.iad3a.emailsrvr.com (smtp102.iad3a.emailsrvr.com [173.203.187.102])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108AC253F1E
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 11:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363112798E6
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 10:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745926312; cv=none; b=WFI3cLgwkyo9j7rOqsLZEDdbHkkpxIOK68/IpGAEGVf3OgzYcClMZtFkm5F92FHHRMd0bQaDBKeziwrebamLrtYKKB3cbUE0ICMlvgGYtR5/KHSD7MqkbeVLigL07jB5nAcNM7ySFY+p2eYalIGn67K4uGmB/xAoxPYXa0SAE/s=
+	t=1745921684; cv=none; b=KqjXf6dCvR+3xzMjZ+3b7vPi/fF8shZd68p5MPso8+qcann7iqbQZkdevgWcnWbClhUPSg+0Skz7AUMXPo0MpvTBkm2i6CtnNmU1lJG8aHce/2nfAskOURvX2YvKsdbmIdRbtzujtgFCm27WTD164Jq85WeskfQpaDavherFEGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745926312; c=relaxed/simple;
-	bh=yzdtvQHd66YpVgJhqctghd5lhSNMCX1l7GfnmiRrRZo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLg0VxMqyTj2Ci8D+qEQDU5CdlYyG/iX3yI1lTIFCASxpu8i/JVUAdxxF1z7+aZxPD6nTCmWIjQmdL8MnEModtWGNYx4csYm9wxaqi1LlvBv8mmC0iKqsRvFctmZd1JbEf2yH/m8IoGuFHtwFK30Qznlr06sbX0aJDC/17VBiFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=L51LcWUS; arc=none smtp.client-ip=173.203.187.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1745921656;
-	bh=yzdtvQHd66YpVgJhqctghd5lhSNMCX1l7GfnmiRrRZo=;
-	h=From:To:Subject:Date:From;
-	b=L51LcWUSBUW61BMtMCUL5KS569NDSOOZO2PZ0p2LPhyk2a+XH8x+FukliNu7CEnA7
-	 V1g1T7jzXzjG92i3M5ZarFKapgD3GxILzNKJ9PVWnw2fKHnQWrUjMkuTiwooF7pfnZ
-	 cyJlBYrvHDpmklfI5d3nS6L5Kk775VVwCyUadYqo=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp29.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 8213E24CCA;
-	Tue, 29 Apr 2025 06:14:15 -0400 (EDT)
-From: Ian Abbott <abbotti@mev.co.uk>
-To: stable@vger.kernel.org
-Cc: Ian Abbott <abbotti@mev.co.uk>,
-	stable <stable@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.6.y] comedi: jr3_pci: Fix synchronous deletion of timer
-Date: Tue, 29 Apr 2025 11:14:04 +0100
-Message-ID: <20250429101404.98379-1-abbotti@mev.co.uk>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <2025042806-speculate-arose-b5b8@gregkh>
-References: <2025042806-speculate-arose-b5b8@gregkh>
+	s=arc-20240116; t=1745921684; c=relaxed/simple;
+	bh=gTeEyiZrpuZIuaQnS796B6UyODl/TdPoeYvjjqe6S1g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aDeUrwisGPRwqyABxSmmadOUiuJ6arDwQxpuR+5ocU1/jp1kTe8/8tIh2BERrrsFXP1oexM/+pQhplMKnpvZcrbcfrI2tdALsRANa+DHrRHBp48PeqdqO2ch+5qJj7O3VNocvANdDc/llBDuNMtMkeTwDF03Yufhp5nHF1EUqos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRXsVqB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD0CC4CEE3;
+	Tue, 29 Apr 2025 10:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1745921682;
+	bh=gTeEyiZrpuZIuaQnS796B6UyODl/TdPoeYvjjqe6S1g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WRXsVqB3+sMJ0jN+rJSvFR/HtQmUL91S6AZqH8+pLhPZSOkvwuBk6a0ThdeWFof8Q
+	 NRENyZ+SjqWVlVSR8FXK9b1ejp0gIq6lCMqnzlz5PiPZANIHNBUN98abFpT1PQ9HxJ
+	 sTCzywjG0pEoZJiEY9xxlXCozKj8FKjGSNHZk4Vj2b+k2cdN78iM9o/KH5KNPhgaYK
+	 F2MLnshuj3GMDnZI9i+NigiGccyDTv0QjwJvOKiQQdQKn1nwuzliFD1YFrDHbDyid2
+	 PjvcJMd8JHIv3Rq0jjJ4gB3FW94Gu7qkNXrP5g3iJ4+4IOh1M9PXZ5/WcWZWxKKta5
+	 8AVVH8+FtRvLg==
+From: =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15.y v2 1/3] net: dsa: mv88e6xxx: fix atu_move_port_mask for 6341 family
+Date: Tue, 29 Apr 2025 12:14:34 +0200
+Message-ID: <20250429101436.18669-1-kabel@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Classification-ID: ef4a0d5e-acb2-4263-8f11-5f6fbaf3f2ff-1-1
 
-commit 44d9b3f584c59a606b521e7274e658d5b866c699 upstream.
+commit 4ae01ec007716986e1a20f1285eb013cbf188830 upstream.
 
-When `jr3_pci_detach()` is called during device removal, it calls
-`timer_delete_sync()` to stop the timer, but the timer expiry function
-always reschedules the timer, so the synchronization is ineffective.
+The atu_move_port_mask for 6341 family (Topaz) is 0xf, not 0x1f. The
+PortVec field is 8 bits wide, not 11 as in 6390 family. Fix this.
 
-Call `timer_shutdown_sync()` instead.  It does not matter that the timer
-expiry function pointer is cleared, because the device is being removed.
-
-Fixes: 07b509e6584a5 ("Staging: comedi: add jr3_pci driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://lore.kernel.org/r/20250415123901.13483-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e606ca36bbf2 ("net: dsa: mv88e6xxx: rework ATU Remove")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-3-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/comedi/drivers/jr3_pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/comedi/drivers/jr3_pci.c b/drivers/comedi/drivers/jr3_pci.c
-index 951c23fa0369..75dce1ff2419 100644
---- a/drivers/comedi/drivers/jr3_pci.c
-+++ b/drivers/comedi/drivers/jr3_pci.c
-@@ -758,7 +758,7 @@ static void jr3_pci_detach(struct comedi_device *dev)
- 	struct jr3_pci_dev_private *devpriv = dev->private;
- 
- 	if (devpriv)
--		del_timer_sync(&devpriv->timer);
-+		timer_shutdown_sync(&devpriv->timer);
- 
- 	comedi_pci_detach(dev);
- }
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 9f7ff54894d4..02bcf5a4b073 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5217,7 +5217,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 3750,
+-		.atu_move_port_mask = 0x1f,
++		.atu_move_port_mask = 0xf,
+ 		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.pvt = true,
+@@ -5660,7 +5660,7 @@ static const struct mv88e6xxx_info mv88e6xxx_table[] = {
+ 		.global1_addr = 0x1b,
+ 		.global2_addr = 0x1c,
+ 		.age_time_coeff = 3750,
+-		.atu_move_port_mask = 0x1f,
++		.atu_move_port_mask = 0xf,
+ 		.g1_irqs = 9,
+ 		.g2_irqs = 10,
+ 		.pvt = true,
 -- 
-2.47.2
+2.49.0
 
 
