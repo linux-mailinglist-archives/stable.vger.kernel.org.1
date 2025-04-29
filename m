@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D9FAA174B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB74AA1315
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AC619A05C3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B59123B4F1E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD7E244664;
-	Tue, 29 Apr 2025 17:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5F724EF7F;
+	Tue, 29 Apr 2025 16:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFbUcKIr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flTfbie7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C77A1917E3;
-	Tue, 29 Apr 2025 17:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5C4229B05;
+	Tue, 29 Apr 2025 16:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948482; cv=none; b=Vgr8KffPkyEkqwkW0vmTmKwP57v66nu45xbyxUvYc8PFvPXQN8DYR1rh0Jgj7J5GgF/fngUqrUFPscvLFN2/SA6A9hoDZvRqWd0s889mJ3y6aXWpm6ELpEG2RqY2h5RnVze+7VBrGxDijjQpUa5giZKiolswlspsr6RuEYtJqrM=
+	t=1745945820; cv=none; b=WtbxYyHcrgkNgG7oUueMkusl7/YMDD/oKNkra4x7nMhjpcysQA+6Y1oC81g3XjAX5PflqB1frDt8SFvtR4DEzciqpYCjzgUirvxAcBfl0gP6ut2pK6hWsT7r0JRahup1erm1pK0bcrBA70ZUL5TcNDbOG6t9vBX9pRLUI/CC1GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948482; c=relaxed/simple;
-	bh=XA+DIS2XCPPdh3KLx0qE35R4jSy0vBJCyDyhsp3waEE=;
+	s=arc-20240116; t=1745945820; c=relaxed/simple;
+	bh=/jRTUUD44EpXmIXHI8iZ+IxQ996YXn5dQOYQ7BAuRFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NkE1UAFbPV3qWZDS4KDzmSdHZknLMj3EKBjE1aBAPiFVgTC73xpnIrzshm17+1Z9fuML4uAZInEfQNnU8qIgWQkKWVq41BII55HKgCB4jMCwUHPaUE16JW2bfwky9GFaT+ckTBLxXUbfaKyfk9zyKYeT7Njz6Cn3LVrshJT7FWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFbUcKIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C93C4CEE3;
-	Tue, 29 Apr 2025 17:41:21 +0000 (UTC)
+	 MIME-Version; b=JSysorQB6xSDeV3K2nwC44v6zePQtrsy1k2hEHLPypeQND7XfynCrAfCnxNjrhwj1X4KycVLU7wOg+h69UxCry8aiq4HEXd0h7YCYxi30BM9N6H89mNVInMWla05M44Q7bR2+jp+d+Hj4Mj3koGBxEYHTOu2UCCKmJWp8FvtzbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flTfbie7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A93C4CEE3;
+	Tue, 29 Apr 2025 16:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948482;
-	bh=XA+DIS2XCPPdh3KLx0qE35R4jSy0vBJCyDyhsp3waEE=;
+	s=korg; t=1745945820;
+	bh=/jRTUUD44EpXmIXHI8iZ+IxQ996YXn5dQOYQ7BAuRFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dFbUcKIrgg31TztJxev8lhiZP98dypeY7IvYtRw5rwxzMGfq37tclYpENQxvEn50F
-	 uw83Sq7jPz15Vd3MHRM1D5hEAPv8YUTGGlz4K2IqYoNzqb+3sCTtckgL9gMXe3DVC9
-	 ZbDGWjrWqHgOJQgV4bG1ZJBdVLRnyod/P5DPxkVY=
+	b=flTfbie72xOeB8FI5kMUj4fCpmAjdltrrYk8Dt4pe9ckP9ZhjVNN7VrJW+o4rEuZK
+	 Gd1h9WJatds7v/MV9I4v7gQ1kHigqCzDCUdsUVmiAUrwwRUGvEhJzeBXv4scYwoYyP
+	 Ade81TFfwQ83/nmSIkTjlfmWvjqOwqpOuBWwoaWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hao Guan <hao.guan@siflower.com.cn>,
+	Qingfang Deng <qingfang.deng@siflower.com.cn>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/373] ASoC: fsl_audmix: register card device depends on dais property
+Subject: [PATCH 6.14 061/311] net: phy: leds: fix memory leak
 Date: Tue, 29 Apr 2025 18:38:18 +0200
-Message-ID: <20250429161124.005182825@linuxfoundation.org>
+Message-ID: <20250429161123.540202626@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Qingfang Deng <qingfang.deng@siflower.com.cn>
 
-[ Upstream commit 294a60e5e9830045c161181286d44ce669f88833 ]
+[ Upstream commit b7f0ee992adf601aa00c252418266177eb7ac2bc ]
 
-In order to make the audmix device linked by audio graph card, make
-'dais' property to be optional.
+A network restart test on a router led to an out-of-memory condition,
+which was traced to a memory leak in the PHY LED trigger code.
 
-If 'dais' property exists, then register the imx-audmix card driver.
-otherwise, it should be linked by audio graph card.
+The root cause is misuse of the devm API. The registration function
+(phy_led_triggers_register) is called from phy_attach_direct, not
+phy_probe, and the unregister function (phy_led_triggers_unregister)
+is called from phy_detach, not phy_remove. This means the register and
+unregister functions can be called multiple times for the same PHY
+device, but devm-allocated memory is not freed until the driver is
+unbound.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250226100508.2352568-5-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This also prevents kmemleak from detecting the leak, as the devm API
+internally stores the allocated pointer.
+
+Fix this by replacing devm_kzalloc/devm_kcalloc with standard
+kzalloc/kcalloc, and add the corresponding kfree calls in the unregister
+path.
+
+Fixes: 3928ee6485a3 ("net: phy: leds: Add support for "link" trigger")
+Fixes: 2e0bc452f472 ("net: phy: leds: add support for led triggers on phy link state change")
+Signed-off-by: Hao Guan <hao.guan@siflower.com.cn>
+Signed-off-by: Qingfang Deng <qingfang.deng@siflower.com.cn>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250417032557.2929427-1-dqfext@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_audmix.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/net/phy/phy_led_triggers.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_audmix.c b/sound/soc/fsl/fsl_audmix.c
-index f931288e256ca..9c46b25cc6541 100644
---- a/sound/soc/fsl/fsl_audmix.c
-+++ b/sound/soc/fsl/fsl_audmix.c
-@@ -500,11 +500,17 @@ static int fsl_audmix_probe(struct platform_device *pdev)
- 		goto err_disable_pm;
- 	}
+diff --git a/drivers/net/phy/phy_led_triggers.c b/drivers/net/phy/phy_led_triggers.c
+index f550576eb9dae..6f9d8da76c4df 100644
+--- a/drivers/net/phy/phy_led_triggers.c
++++ b/drivers/net/phy/phy_led_triggers.c
+@@ -91,9 +91,8 @@ int phy_led_triggers_register(struct phy_device *phy)
+ 	if (!phy->phy_num_led_triggers)
+ 		return 0;
  
--	priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
--	if (IS_ERR(priv->pdev)) {
--		ret = PTR_ERR(priv->pdev);
--		dev_err(dev, "failed to register platform: %d\n", ret);
--		goto err_disable_pm;
-+	/*
-+	 * If dais property exist, then register the imx-audmix card driver.
-+	 * otherwise, it should be linked by audio graph card.
-+	 */
-+	if (of_find_property(pdev->dev.of_node, "dais", NULL)) {
-+		priv->pdev = platform_device_register_data(dev, "imx-audmix", 0, NULL, 0);
-+		if (IS_ERR(priv->pdev)) {
-+			ret = PTR_ERR(priv->pdev);
-+			dev_err(dev, "failed to register platform: %d\n", ret);
-+			goto err_disable_pm;
-+		}
- 	}
+-	phy->led_link_trigger = devm_kzalloc(&phy->mdio.dev,
+-					     sizeof(*phy->led_link_trigger),
+-					     GFP_KERNEL);
++	phy->led_link_trigger = kzalloc(sizeof(*phy->led_link_trigger),
++					GFP_KERNEL);
+ 	if (!phy->led_link_trigger) {
+ 		err = -ENOMEM;
+ 		goto out_clear;
+@@ -103,10 +102,9 @@ int phy_led_triggers_register(struct phy_device *phy)
+ 	if (err)
+ 		goto out_free_link;
  
- 	return 0;
+-	phy->phy_led_triggers = devm_kcalloc(&phy->mdio.dev,
+-					    phy->phy_num_led_triggers,
+-					    sizeof(struct phy_led_trigger),
+-					    GFP_KERNEL);
++	phy->phy_led_triggers = kcalloc(phy->phy_num_led_triggers,
++					sizeof(struct phy_led_trigger),
++					GFP_KERNEL);
+ 	if (!phy->phy_led_triggers) {
+ 		err = -ENOMEM;
+ 		goto out_unreg_link;
+@@ -127,11 +125,11 @@ int phy_led_triggers_register(struct phy_device *phy)
+ out_unreg:
+ 	while (i--)
+ 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
+-	devm_kfree(&phy->mdio.dev, phy->phy_led_triggers);
++	kfree(phy->phy_led_triggers);
+ out_unreg_link:
+ 	phy_led_trigger_unregister(phy->led_link_trigger);
+ out_free_link:
+-	devm_kfree(&phy->mdio.dev, phy->led_link_trigger);
++	kfree(phy->led_link_trigger);
+ 	phy->led_link_trigger = NULL;
+ out_clear:
+ 	phy->phy_num_led_triggers = 0;
+@@ -145,8 +143,13 @@ void phy_led_triggers_unregister(struct phy_device *phy)
+ 
+ 	for (i = 0; i < phy->phy_num_led_triggers; i++)
+ 		phy_led_trigger_unregister(&phy->phy_led_triggers[i]);
++	kfree(phy->phy_led_triggers);
++	phy->phy_led_triggers = NULL;
+ 
+-	if (phy->led_link_trigger)
++	if (phy->led_link_trigger) {
+ 		phy_led_trigger_unregister(phy->led_link_trigger);
++		kfree(phy->led_link_trigger);
++		phy->led_link_trigger = NULL;
++	}
+ }
+ EXPORT_SYMBOL_GPL(phy_led_triggers_unregister);
 -- 
 2.39.5
 
