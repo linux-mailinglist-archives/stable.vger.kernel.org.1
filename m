@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-138193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F56AA16F1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7689FAA131A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18A014A5EC4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E36A16D306
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73727244664;
-	Tue, 29 Apr 2025 17:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1377251783;
+	Tue, 29 Apr 2025 16:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBsDac/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow5pySf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FB41917E3;
-	Tue, 29 Apr 2025 17:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF312512E8;
+	Tue, 29 Apr 2025 16:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948464; cv=none; b=inkfGi6ASeJEcIKqVQll1ZyKrqhZAr73XpzDiCJsRRBWaBiX1GB91GGpb8ph+1RGU/m/RTgeEwd56VE62OmBmGGvQ9lvSuHC4OBN23O19lWSlE//4J1+CNt8u9klSsmT8hm/If2H8ziziLF+Q4QicyznaIAFMUIJyMnNzxg6ffM=
+	t=1745945896; cv=none; b=W+xZXBBG1NqAPfw9Yf5FVFVVKn8JCawB/UEz7PsFjoHutx3Q0IGE8VDwMZAxC7XHArJc91hkcIBN1rNEZN1/M2c+xgpL0UNXyszS0tR8FYkpz+L+ttxqvyi74vN05W/JEBRW+VmopWtXSUqXfJGiKLzkc+y2NFh/wUwKa1esxVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948464; c=relaxed/simple;
-	bh=BOK0QXSoho3dbFB9Mjjl/1owMmFzongpvyKigN7MaJs=;
+	s=arc-20240116; t=1745945896; c=relaxed/simple;
+	bh=ma4wY5pYTEj0UmXrOfJ2XIU4GA7R12fmiMi7i6WchMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNJU8FpMRABiAveA8oSygvqNA1QUSVHnxJZEAntKZakFAMbeotaMq2VLTrEREEgP4sm3jYn5EupAzF4xgrZARnG8D360BnbMdcon8ZaopVjm5RIBbeehHKygb0AGKIWOl2n2j8fEowtiBfshzBnd2XyoAlwkTFQSyBw4QbG1S6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBsDac/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93E2C4CEE9;
-	Tue, 29 Apr 2025 17:41:03 +0000 (UTC)
+	 MIME-Version; b=PszxBGU2TF2SD3pIeu5X+9t+NkpmS5f/aE07/cC92rbE6qwOw65y+XcC0tWop2AMoVYs6pdhnWi5OR6rrTnza70lSDYazYzShD3y+l9cffdfciV1MSfJ7/nwL+TNs0TYnjpe8g2ivMwqpo2YnH2oTnn7xfU6C2q2Vb5h9YhLBmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ow5pySf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF782C4CEE9;
+	Tue, 29 Apr 2025 16:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948464;
-	bh=BOK0QXSoho3dbFB9Mjjl/1owMmFzongpvyKigN7MaJs=;
+	s=korg; t=1745945896;
+	bh=ma4wY5pYTEj0UmXrOfJ2XIU4GA7R12fmiMi7i6WchMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBsDac/DipxLJve5APZFVfL+IiziCQ26urXPLdEsvZxBq/RZwtlNo7jcAh9IV4dJm
-	 8VKR8KsCLqS+MSN+TOerTVA1cCWrUy/YFfCetFw7XUMjuHEF27LcF+z0dUlTYNVy1s
-	 x7PtEF757Vgp2cDeh+M7ZiZXpQsMM7YmCkzycmF4=
+	b=Ow5pySf3UWfJwTL4I36wd7Xo3OeoLUvfSRUOCbpCR/RbnTfEDgbpl6xNbLDpRjyEq
+	 3IcC6LYMwamZwHZTofIj0GfzKcc2bAuNSg0vpvKaygwBjQnFGW25bheN8w+7OTB1O2
+	 MpA8KjHrmQMlBgCzkqX5yuDDc/iq1eV4gnsRpf4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	xen-devel@lists.xenproject.org,
-	Kees Cook <kees@kernel.org>,
+	Vlatko Markovikj <vlatko.markovikj@etas.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/373] xen/mcelog: Add __nonstring annotations for unterminated strings
+Subject: [PATCH 6.14 056/311] net: enetc: fix frame corruption on bpf_xdp_adjust_head/tail() and XDP_PASS
 Date: Tue, 29 Apr 2025 18:38:13 +0200
-Message-ID: <20250429161123.800570162@linuxfoundation.org>
+Message-ID: <20250429161123.336066509@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +64,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 1c3dfc7c6b0f551fdca3f7c1f1e4c73be8adb17d ]
+[ Upstream commit 020f0c8b3d396ec8190948f86063e1c45133f839 ]
 
-When a character array without a terminating NUL character has a static
-initializer, GCC 15's -Wunterminated-string-initialization will only
-warn if the array lacks the "nonstring" attribute[1]. Mark the arrays
-with __nonstring to and correctly identify the char array as "not a C
-string" and thereby eliminate the warning.
+Vlatko Markovikj reported that XDP programs attached to ENETC do not
+work well if they use bpf_xdp_adjust_head() or bpf_xdp_adjust_tail(),
+combined with the XDP_PASS verdict. A typical use case is to add or
+remove a VLAN tag.
 
-Link: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117178 [1]
-Cc: Juergen Gross <jgross@suse.com>
-Cc: Stefano Stabellini <sstabellini@kernel.org>
-Cc: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Cc: xen-devel@lists.xenproject.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250310222234.work.473-kees@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+The resulting sk_buff passed to the stack is corrupted, because the
+algorithm used by the driver for XDP_PASS is to unwind the current
+buffer pointer in the RX ring and to re-process the current frame with
+enetc_build_skb() as if XDP hadn't run. That is incorrect because XDP
+may have modified the geometry of the buffer, which we then are
+completely unaware of. We are looking at a modified buffer with the
+original geometry.
+
+The initial reaction, both from me and from Vlatko, was to shop around
+the kernel for code to steal that would calculate a delta between the
+old and the new XDP buffer geometry, and apply that to the sk_buff too.
+We noticed that veth and generic xdp have such code.
+
+The headroom adjustment is pretty uncontroversial, but what turned out
+severely problematic is the tailroom.
+
+veth has this snippet:
+
+		__skb_put(skb, off); /* positive on grow, negative on shrink */
+
+which on first sight looks decent enough, except __skb_put() takes an
+"unsigned int" for the second argument, and the arithmetic seems to only
+work correctly by coincidence. Second issue, __skb_put() contains a
+SKB_LINEAR_ASSERT(). It's not a great pattern to make more widespread.
+The skb may still be nonlinear at that point - it only becomes linear
+later when resetting skb->data_len to zero.
+
+To avoid the above, bpf_prog_run_generic_xdp() does this instead:
+
+		skb_set_tail_pointer(skb, xdp->data_end - xdp->data);
+		skb->len += off; /* positive on grow, negative on shrink */
+
+which is more open-coded, uses lower-level functions and is in general a
+bit too much to spread around in driver code.
+
+Then there is the snippet:
+
+	if (xdp_buff_has_frags(xdp))
+		skb->data_len = skb_shinfo(skb)->xdp_frags_size;
+	else
+		skb->data_len = 0;
+
+One would have expected __pskb_trim() to be the function of choice for
+this task. But it's not used in veth/xdpgeneric because the extraneous
+fragments were _already_ freed by bpf_xdp_adjust_tail() ->
+bpf_xdp_frags_shrink_tail() -> ... -> __xdp_return() - the backing
+memory for the skb frags and the xdp frags is the same, but they don't
+keep individual references.
+
+In fact, that is the biggest reason why this snippet cannot be reused
+as-is, because ENETC temporarily constructs an skb with the original len
+and the original number of frags. Because the extraneous frags are
+already freed by bpf_xdp_adjust_tail() and returned to the page
+allocator, it means the entire approach of using enetc_build_skb() is
+questionable for XDP_PASS. To avoid that, one would need to elevate the
+page refcount of all frags before calling bpf_prog_run_xdp() and drop it
+after XDP_PASS.
+
+There are other things that are missing in ENETC's handling of XDP_PASS,
+like for example updating skb_shinfo(skb)->meta_len.
+
+These are all handled correctly and cleanly in commit 539c1fba1ac7
+("xdp: add generic xdp_build_skb_from_buff()"), added to net-next in
+Dec 2024, and in addition might even be quicker that way. I have a very
+strong preference towards backporting that commit for "stable", and that
+is what is used to fix the handling bugs. It is way too messy to go
+this deep into the guts of an sk_buff from the code of a device driver.
+
+Fixes: d1b15102dd16 ("net: enetc: add support for XDP_DROP and XDP_PASS")
+Reported-by: Vlatko Markovikj <vlatko.markovikj@etas.com>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Wei Fang <wei.fang@nxp.com>
+Link: https://patch.msgid.link/20250417120005.3288549-4-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/xen/interface/xen-mca.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 26 +++++++++++---------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/include/xen/interface/xen-mca.h b/include/xen/interface/xen-mca.h
-index 7483a78d24251..20a3b320d1a58 100644
---- a/include/xen/interface/xen-mca.h
-+++ b/include/xen/interface/xen-mca.h
-@@ -371,7 +371,7 @@ struct xen_mce {
- #define XEN_MCE_LOG_LEN 32
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 74721995cb1f9..3ee52f4b11660 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1878,11 +1878,10 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
  
- struct xen_mce_log {
--	char signature[12]; /* "MACHINECHECK" */
-+	char signature[12] __nonstring; /* "MACHINECHECK" */
- 	unsigned len;	    /* = XEN_MCE_LOG_LEN */
- 	unsigned next;
- 	unsigned flags;
+ 	while (likely(rx_frm_cnt < work_limit)) {
+ 		union enetc_rx_bd *rxbd, *orig_rxbd;
+-		int orig_i, orig_cleaned_cnt;
+ 		struct xdp_buff xdp_buff;
+ 		struct sk_buff *skb;
++		int orig_i, err;
+ 		u32 bd_status;
+-		int err;
+ 
+ 		rxbd = enetc_rxbd(rx_ring, i);
+ 		bd_status = le32_to_cpu(rxbd->r.lstatus);
+@@ -1897,7 +1896,6 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			break;
+ 
+ 		orig_rxbd = rxbd;
+-		orig_cleaned_cnt = cleaned_cnt;
+ 		orig_i = i;
+ 
+ 		enetc_build_xdp_buff(rx_ring, bd_status, &rxbd, &i,
+@@ -1925,15 +1923,21 @@ static int enetc_clean_rx_ring_xdp(struct enetc_bdr *rx_ring,
+ 			rx_ring->stats.xdp_drops++;
+ 			break;
+ 		case XDP_PASS:
+-			rxbd = orig_rxbd;
+-			cleaned_cnt = orig_cleaned_cnt;
+-			i = orig_i;
+-
+-			skb = enetc_build_skb(rx_ring, bd_status, &rxbd,
+-					      &i, &cleaned_cnt,
+-					      ENETC_RXB_DMA_SIZE_XDP);
+-			if (unlikely(!skb))
++			skb = xdp_build_skb_from_buff(&xdp_buff);
++			/* Probably under memory pressure, stop NAPI */
++			if (unlikely(!skb)) {
++				enetc_xdp_drop(rx_ring, orig_i, i);
++				rx_ring->stats.xdp_drops++;
+ 				goto out;
++			}
++
++			enetc_get_offloads(rx_ring, orig_rxbd, skb);
++
++			/* These buffers are about to be owned by the stack.
++			 * Update our buffer cache (the rx_swbd array elements)
++			 * with their other page halves.
++			 */
++			enetc_bulk_flip_buff(rx_ring, orig_i, i);
+ 
+ 			napi_gro_receive(napi, skb);
+ 			break;
 -- 
 2.39.5
 
