@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9AFAA15E0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7E6AA1356
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EFCE169E05
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21774A7660
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033DC24BC1A;
-	Tue, 29 Apr 2025 17:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F2C82C60;
+	Tue, 29 Apr 2025 17:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkiJlnIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irIpSMVa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FFA24A07B;
-	Tue, 29 Apr 2025 17:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B524E21A43D;
+	Tue, 29 Apr 2025 17:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947675; cv=none; b=ZZzg8m9WkTQItP8C7CVbzt4qxHwyvzUv+BxTNXYAbwulbBWTU1GalhIPyD+zN7TBpS0QZ7oHTQRfzXH3L1zk4MoiKtkmtWgxdu673TX6bGVQKs8vIVwuJgiiJ8AedHoWWwWYz1/ws9OzjbUsS2DKJdwNQInnDsK0qCGvyNg1XAQ=
+	t=1745946079; cv=none; b=EnGrV/mz+E6U1d/kr3GDobPbpNTbwAjix//tPh/0c5CJ0IGDRFPSA8JuVUEWMrsFYgMmMet78XFYaI8An4NfIFYxYE+vk6Gmyed0cvJq06wv4ic4F1+LsxdGTjkIEvqht9lhXJGy15cqStcc4NDu98yehxjYb+j2V1Oq/2XHzas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947675; c=relaxed/simple;
-	bh=YYjN2cqQnnPjmG5/Et03wK/qfGw3f7CNa765I2TU2NY=;
+	s=arc-20240116; t=1745946079; c=relaxed/simple;
+	bh=gPg99ikBQSk15+HsIcMeKWuD5djhdhW0X2eh02oOuN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/tWJC6mpHQveC+frc4Jxj4lB9csXkzlJQ5OwDLxFCzt52+/VW8NfCPiRwL3MP1HyJ7CC93nl9kbMYA33H/XoN30PNTKtYkFJQirdvGCjjDm6XjIj4KrnlL9XPhiZGjJRQdpboZ4Lq1APe862CI7XxluqJterWk6QzCwCO1S0pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rkiJlnIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D265EC4CEE9;
-	Tue, 29 Apr 2025 17:27:54 +0000 (UTC)
+	 MIME-Version; b=Q11eN/qdVH7MqWtl6g/ixWc0hIXrlL6YPPCQ89AMtFvTJKWI0btHXGB/9k9JeFKpWhSTvDx617kF2uM7WPn+6Y7NRykfQ+W3W73hV7Wnb2UyO8aFtpp5PjNMPTz3vcTyepnvVyl1jwzhZLG96Qqbjeh1dF38FonVvYw+Eop+y/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irIpSMVa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E41EC4CEEE;
+	Tue, 29 Apr 2025 17:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947675;
-	bh=YYjN2cqQnnPjmG5/Et03wK/qfGw3f7CNa765I2TU2NY=;
+	s=korg; t=1745946079;
+	bh=gPg99ikBQSk15+HsIcMeKWuD5djhdhW0X2eh02oOuN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rkiJlnIjKzPopkdTa17jSElR2S7PeCWH1mKokyS5bNwbhan3fm9mpavO+j3o7Y3Qg
-	 g3/PfrJ5cmhXha/HD/UvafHRrOGO7X8bTRYO+BMfoP19nw2cWHxfCXbz7eGsOEmkou
-	 9yIpXG1u3f+yJXeX4GLRr35PLErBuz4i8M7Aux7U=
+	b=irIpSMVatd3ndZaiCKuO4TwWRpDKunZn5nf9Q2McIe+8UjV04fAMLkzlNXNKLVXuj
+	 l+TuE3LKBi0RUzHNWEPr+4QfVHm3zfBcDV4NcujnFvjFnj+W3+WxBh/+mXPDBKoJ0w
+	 RiNJlwPO41JgOGYjof8IzX56jAWsBdRUy1zAUYjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 042/280] scsi: ufs: exynos: Add gs101_ufs_drv_init() hook and enable WriteBooster
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.14 146/311] KVM: x86: Reset IRTE to host control if *new* route isnt postable
 Date: Tue, 29 Apr 2025 18:39:43 +0200
-Message-ID: <20250429161116.844193868@linuxfoundation.org>
+Message-ID: <20250429161127.014568108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +61,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 9cc4a4a5767756b1ebe45a76c4673432545ea70e ]
+commit 9bcac97dc42d2f4da8229d18feb0fe2b1ce523a2 upstream.
 
-Factor out the common code into a new exynos_ufs_shareability() function
-and provide a dedicated gs101_drv_init() hook.
+Restore an IRTE back to host control (remapped or posted MSI mode) if the
+*new* GSI route prevents posting the IRQ directly to a vCPU, regardless of
+the GSI routing type.  Updating the IRTE if and only if the new GSI is an
+MSI results in KVM leaving an IRTE posting to a vCPU.
 
-This allows us to enable WriteBooster capability (UFSHCD_CAP_WB_EN) in a
-way that doesn't effect other SoCs supported in this driver.
+The dangling IRTE can result in interrupts being incorrectly delivered to
+the guest, and in the worst case scenario can result in use-after-free,
+e.g. if the VM is torn down, but the underlying host IRQ isn't freed.
 
-WriteBooster improves write speeds by enabling a pseudo SLC cache. Using
-the 'fio seqwrite' test we can achieve speeds of 945MB/s with this
-feature enabled (until the cache is exhausted) before dropping back to
-~260MB/s (which are the speeds we see without the WriteBooster feature
-enabled).
-
-Assuming the UFSHCD_CAP_WB_EN capability is set by the host then
-WriteBooster can also be enabled and disabled via sysfs so it is
-possible for the system to only enable it when extra write performance
-is required.
-
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20241031150033.3440894-10-peter.griffin@linaro.org
-Reviewed-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 68f5ef7eebf0 ("scsi: ufs: exynos: Move UFS shareability value to drvdata")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: efc644048ecd ("KVM: x86: Update IRTE for posted-interrupts")
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/avic.c        |   58 +++++++++++++++++++++--------------------
+ arch/x86/kvm/vmx/posted_intr.c |   28 +++++++------------
+ 2 files changed, 41 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 8adf11f37c0d7..149c8127cf556 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -198,7 +198,7 @@ static inline void exynos_ufs_ungate_clks(struct exynos_ufs *ufs)
- 	exynos_ufs_ctrl_clkstop(ufs, false);
- }
- 
--static int exynosauto_ufs_drv_init(struct exynos_ufs *ufs)
-+static int exynos_ufs_shareability(struct exynos_ufs *ufs)
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -896,6 +896,7 @@ int avic_pi_update_irte(struct kvm *kvm,
  {
- 	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	int idx, ret = 0;
  
-@@ -214,6 +214,21 @@ static int exynosauto_ufs_drv_init(struct exynos_ufs *ufs)
- 	return 0;
- }
+ 	if (!kvm_arch_has_assigned_device(kvm) ||
+@@ -933,6 +934,8 @@ int avic_pi_update_irte(struct kvm *kvm,
+ 		    kvm_vcpu_apicv_active(&svm->vcpu)) {
+ 			struct amd_iommu_pi_data pi;
  
-+static int gs101_ufs_drv_init(struct exynos_ufs *ufs)
-+{
-+	struct ufs_hba *hba = ufs->hba;
++			enable_remapped_mode = false;
 +
-+	/* Enable WriteBooster */
-+	hba->caps |= UFSHCD_CAP_WB_EN;
+ 			/* Try to enable guest_mode in IRTE */
+ 			pi.base = __sme_set(page_to_phys(svm->avic_backing_page) &
+ 					    AVIC_HPA_MASK);
+@@ -951,33 +954,6 @@ int avic_pi_update_irte(struct kvm *kvm,
+ 			 */
+ 			if (!ret && pi.is_guest_mode)
+ 				svm_ir_list_add(svm, &pi);
+-		} else {
+-			/* Use legacy mode in IRTE */
+-			struct amd_iommu_pi_data pi;
+-
+-			/**
+-			 * Here, pi is used to:
+-			 * - Tell IOMMU to use legacy mode for this interrupt.
+-			 * - Retrieve ga_tag of prior interrupt remapping data.
+-			 */
+-			pi.prev_ga_tag = 0;
+-			pi.is_guest_mode = false;
+-			ret = irq_set_vcpu_affinity(host_irq, &pi);
+-
+-			/**
+-			 * Check if the posted interrupt was previously
+-			 * setup with the guest_mode by checking if the ga_tag
+-			 * was cached. If so, we need to clean up the per-vcpu
+-			 * ir_list.
+-			 */
+-			if (!ret && pi.prev_ga_tag) {
+-				int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
+-				struct kvm_vcpu *vcpu;
+-
+-				vcpu = kvm_get_vcpu_by_id(kvm, id);
+-				if (vcpu)
+-					svm_ir_list_del(to_svm(vcpu), &pi);
+-			}
+ 		}
+ 
+ 		if (!ret && svm) {
+@@ -993,6 +969,34 @@ int avic_pi_update_irte(struct kvm *kvm,
+ 	}
+ 
+ 	ret = 0;
++	if (enable_remapped_mode) {
++		/* Use legacy mode in IRTE */
++		struct amd_iommu_pi_data pi;
 +
-+	return exynos_ufs_shareability(ufs);
-+}
++		/**
++		 * Here, pi is used to:
++		 * - Tell IOMMU to use legacy mode for this interrupt.
++		 * - Retrieve ga_tag of prior interrupt remapping data.
++		 */
++		pi.prev_ga_tag = 0;
++		pi.is_guest_mode = false;
++		ret = irq_set_vcpu_affinity(host_irq, &pi);
 +
-+static int exynosauto_ufs_drv_init(struct exynos_ufs *ufs)
-+{
-+	return exynos_ufs_shareability(ufs);
-+}
++		/**
++		 * Check if the posted interrupt was previously
++		 * setup with the guest_mode by checking if the ga_tag
++		 * was cached. If so, we need to clean up the per-vcpu
++		 * ir_list.
++		 */
++		if (!ret && pi.prev_ga_tag) {
++			int id = AVIC_GATAG_TO_VCPUID(pi.prev_ga_tag);
++			struct kvm_vcpu *vcpu;
 +
- static int exynosauto_ufs_post_hce_enable(struct exynos_ufs *ufs)
++			vcpu = kvm_get_vcpu_by_id(kvm, id);
++			if (vcpu)
++				svm_ir_list_del(to_svm(vcpu), &pi);
++		}
++	}
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
+ 	return ret;
+--- a/arch/x86/kvm/vmx/posted_intr.c
++++ b/arch/x86/kvm/vmx/posted_intr.c
+@@ -274,6 +274,7 @@ int vmx_pi_update_irte(struct kvm *kvm,
  {
- 	struct ufs_hba *hba = ufs->hba;
-@@ -2128,7 +2143,7 @@ static const struct exynos_ufs_drv_data gs101_ufs_drvs = {
- 				  EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR |
- 				  EXYNOS_UFS_OPT_UFSPR_SECURE |
- 				  EXYNOS_UFS_OPT_TIMER_TICK_SELECT,
--	.drv_init		= exynosauto_ufs_drv_init,
-+	.drv_init		= gs101_ufs_drv_init,
- 	.pre_link		= gs101_ufs_pre_link,
- 	.post_link		= gs101_ufs_post_link,
- 	.pre_pwr_change		= gs101_ufs_pre_pwr_change,
--- 
-2.39.5
-
+ 	struct kvm_kernel_irq_routing_entry *e;
+ 	struct kvm_irq_routing_table *irq_rt;
++	bool enable_remapped_mode = true;
+ 	struct kvm_lapic_irq irq;
+ 	struct kvm_vcpu *vcpu;
+ 	struct vcpu_data vcpu_info;
+@@ -312,21 +313,8 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ 
+ 		kvm_set_msi_irq(kvm, e, &irq);
+ 		if (!kvm_intr_is_single_vcpu(kvm, &irq, &vcpu) ||
+-		    !kvm_irq_is_postable(&irq)) {
+-			/*
+-			 * Make sure the IRTE is in remapped mode if
+-			 * we don't handle it in posted mode.
+-			 */
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
+-			if (ret < 0) {
+-				printk(KERN_INFO
+-				   "failed to back to remapped mode, irq: %u\n",
+-				   host_irq);
+-				goto out;
+-			}
+-
++		    !kvm_irq_is_postable(&irq))
+ 			continue;
+-		}
+ 
+ 		vcpu_info.pi_desc_addr = __pa(vcpu_to_pi_desc(vcpu));
+ 		vcpu_info.vector = irq.vector;
+@@ -334,11 +322,12 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ 		trace_kvm_pi_irte_update(host_irq, vcpu->vcpu_id, e->gsi,
+ 				vcpu_info.vector, vcpu_info.pi_desc_addr, set);
+ 
+-		if (set)
+-			ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+-		else
+-			ret = irq_set_vcpu_affinity(host_irq, NULL);
++		if (!set)
++			continue;
+ 
++		enable_remapped_mode = false;
++
++		ret = irq_set_vcpu_affinity(host_irq, &vcpu_info);
+ 		if (ret < 0) {
+ 			printk(KERN_INFO "%s: failed to update PI IRTE\n",
+ 					__func__);
+@@ -346,6 +335,9 @@ int vmx_pi_update_irte(struct kvm *kvm,
+ 		}
+ 	}
+ 
++	if (enable_remapped_mode)
++		ret = irq_set_vcpu_affinity(host_irq, NULL);
++
+ 	ret = 0;
+ out:
+ 	srcu_read_unlock(&kvm->irq_srcu, idx);
 
 
 
