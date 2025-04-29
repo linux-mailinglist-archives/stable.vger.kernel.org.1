@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF5BAA196B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63FFDAA1A4B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B983498571B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB1A9A7C7A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058012451C8;
-	Tue, 29 Apr 2025 18:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BE625333F;
+	Tue, 29 Apr 2025 18:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+8RUyCb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pwb6XoqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EAB40C03;
-	Tue, 29 Apr 2025 18:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8221E221FAE;
+	Tue, 29 Apr 2025 18:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949932; cv=none; b=hm7ne0d15RNDP4aaJ3TaMMzrJSa/kns+JocAG+KCeZJCpATxDCL10Pf2ok9Hjqpj4dfMShpgyV5AOQPhXTt/Acr78El5oBOE6HBCkqeln4dOBlEiD8dILjXckcocF49HnenUaZ7/JGF0NoZWcqAgtnTbCmtu1FeP5TOD8xN/Ve4=
+	t=1745950529; cv=none; b=iB00cRXXeRBdwKM5kD+PXRTtG3QxMQmb3xxCckh7XwPJUw7YEO6oCQkw/Va1SpjbTbbbht2rIq1wAToA8p8nHluEhoxbV1b70rQdq8GUR0LXe4KHh28XnaHgQloFBFgfiX3AnKvbR6FuYEzAL/gi6PL8aUF+ybh2F5Q5jR8wmsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949932; c=relaxed/simple;
-	bh=0gGfRtHWroCvRP+gVINOQq/xilZ/1T2fq6u2nbtiQkU=;
+	s=arc-20240116; t=1745950529; c=relaxed/simple;
+	bh=BIsGH4QlOjjNX5N+V+4pyljaIsijj2x87RKuU2BaCCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBgDASnFHerM9BibC91TY1BMm7wcOYcPpqgCtaYiq8ezk8rdF/AiiWEdLZRNERavV6lTPsTWyaP1Ae/3mPdOKoeiA+/Ylcu5ajfm1kRJXBTBXpnbQVL3ujpmwMzUVRZHca5R35GYUNZSPBsXlFo1XPzUATST+F9buEtgytNEOXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+8RUyCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD373C4CEE3;
-	Tue, 29 Apr 2025 18:05:31 +0000 (UTC)
+	 MIME-Version; b=WRtYYX9DZlqfzQ6R3lFJ/U3c5Y5zQzJAtCmh5dH30MPqX5uvFK4oWQymt9W5aSWBkNZGQ3UJj+63069LJZQxTBmJpJqrOyUB05V8dqckgvEyQ28Mgujw6A6q7zx08HMSpJXcse27sAsSjn9XbOLsnWveb1q06MQQeA7GCDlRkDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pwb6XoqO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B4DC4CEE3;
+	Tue, 29 Apr 2025 18:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949932;
-	bh=0gGfRtHWroCvRP+gVINOQq/xilZ/1T2fq6u2nbtiQkU=;
+	s=korg; t=1745950529;
+	bh=BIsGH4QlOjjNX5N+V+4pyljaIsijj2x87RKuU2BaCCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+8RUyCb+lW4GHPcPaTYXxR3b9nzXqUSEtizBdmhqATVWeTufc1c4uhUsQHZsAKHc
-	 Dv9t6fjAdvPhg6MBcCFNjm98HxEEpTkXTcXzARxM/9j19QJVjFxaoWdZju5vYHvA1g
-	 glzZ7acBZPv44zYOnzgNvTbhvaJ4uNtorlnUkvNM=
+	b=Pwb6XoqOPEKvY5B3JRiyXqXVcjWuvyWpGIY3znKiQAOHhfqJ78WqwTHtIRbfqVnHb
+	 zy+kSe/ajZ32FPHuDK0fQji0Pw5+Mqiv6E6u9C651UaRqWRNcq7jwcansyJYD/3Lkb
+	 rN0pahPvmFHWOF4S7wGOy/Xg/z/0Pm/sN3RvV0cE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Yu-Chun Lin <eleanor15x@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/167] s390/sclp: Add check for get_zeroed_page()
+Subject: [PATCH 6.6 123/204] parisc: PDT: Fix missing prototype warning
 Date: Tue, 29 Apr 2025 18:43:31 +0200
-Message-ID: <20250429161055.916021733@linuxfoundation.org>
+Message-ID: <20250429161104.465143423@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Yu-Chun Lin <eleanor15x@gmail.com>
 
-[ Upstream commit 3db42c75a921854a99db0a2775814fef97415bac ]
+[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
 
-Add check for the return value of get_zeroed_page() in
-sclp_console_init() to prevent null pointer dereference.
-Furthermore, to solve the memory leak caused by the loop
-allocation, add a free helper to do the free job.
+As reported by the kernel test robot, the following error occurs:
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218025216.2421548-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
+      65 | void arch_report_meminfo(struct seq_file *m)
+         |      ^~~~~~~~~~~~~~~~~~~
+
+arch_report_meminfo() is declared in include/linux/proc_fs.h and only
+defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
+CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
+Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/parisc/kernel/pdt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
-index e5d947c763ea5..6a030ba38bf36 100644
---- a/drivers/s390/char/sclp_con.c
-+++ b/drivers/s390/char/sclp_con.c
-@@ -263,6 +263,19 @@ static struct console sclp_console =
- 	.index = 0 /* ttyS0 */
- };
+diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
+index 0f9b3b5914cf6..b70b67adb855f 100644
+--- a/arch/parisc/kernel/pdt.c
++++ b/arch/parisc/kernel/pdt.c
+@@ -63,6 +63,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
+ #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
+ #define PDT_ADDR_SINGLE_ERR	1UL
  
-+/*
-+ *  Release allocated pages.
-+ */
-+static void __init __sclp_console_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_con_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- /*
-  * called by console_init() in drivers/char/tty_io.c at boot-time.
-  */
-@@ -282,6 +295,10 @@ sclp_console_init(void)
- 	/* Allocate pages for output buffering */
- 	for (i = 0; i < sclp_console_pages; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+		if (!page) {
-+			__sclp_console_free_pages();
-+			return -ENOMEM;
-+		}
- 		list_add_tail(page, &sclp_con_pages);
- 	}
- 	sclp_conbuf = NULL;
++#ifdef CONFIG_PROC_FS
+ /* report PDT entries via /proc/meminfo */
+ void arch_report_meminfo(struct seq_file *m)
+ {
+@@ -74,6 +75,7 @@ void arch_report_meminfo(struct seq_file *m)
+ 	seq_printf(m, "PDT_cur_entries: %7lu\n",
+ 			pdt_status.pdt_entries);
+ }
++#endif
+ 
+ static int get_info_pat_new(void)
+ {
 -- 
 2.39.5
 
