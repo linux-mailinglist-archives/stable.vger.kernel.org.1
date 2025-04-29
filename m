@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D76AA1362
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BB2AA1442
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81636982D8D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 746881898521
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABED8242934;
-	Tue, 29 Apr 2025 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B8024728A;
+	Tue, 29 Apr 2025 17:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmtSEKfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4ftkgv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3721EB5CE;
-	Tue, 29 Apr 2025 16:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47FD22A81D;
+	Tue, 29 Apr 2025 17:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945975; cv=none; b=MYu6vtoEakZsj5Gc6mixVfSBa0b93fMkxxmVv3k9z+QPC8KQ4hLOy4pVe2K4XC0VJJu1r6B/FxnyyS8X+slz+BenzFiVs71tyZ5hPSpXsUpOxoxhC8pmrXfE0bwb4GDqyhDqfzaKNKsV20E0/JLeNcia4rssUII7qPByrvwdcyM=
+	t=1745946631; cv=none; b=G8xq90abZHXoQHIPVSUr2Slz1ikNOJDpL7fUCr5T5rch/iMY6GBzgyXaGe/O4D24lG5RrKIGhCNNvVWk9qV+ieFkZRFpWeLruHWqSBfrOr8fmHkb4ml+Awj8+QVqipBGTaTApfwVotkmK7ekB51IrcMBV8fbZ8bsM9HBwtBYoX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945975; c=relaxed/simple;
-	bh=QGj3qBjWTxNKrzuhk6+BKv6UTBlaVktivtbxpJcmedw=;
+	s=arc-20240116; t=1745946631; c=relaxed/simple;
+	bh=uo+MZJir+orZ5aSQgwyIybWqGYZGjuktkBV8oxUO3QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQKzLMvSDUzCH1AsuQlQIuQadAu1RmZXk5mfIpPOKPDYtZOTQTd8so7qOV9kRrbYVgBDCKdVXLvstGcEoIGe34hi2BYmOmHiXmtk/cg2qoAzg+rJirQza+glNUEGRY4q7Qf4JRRprSS282iMKvc6T26sC64c6kDfPH1/V17n+A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmtSEKfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA4FC4CEE3;
-	Tue, 29 Apr 2025 16:59:34 +0000 (UTC)
+	 MIME-Version; b=Q1l3lfS5WtTPm4/r/SBkC5tRSrVYrmkOugQ8d19HMsBHg6hROSRRu5+/nnUwIK98LnZUWCKJJdzusAFfzMktzX0rz0Y/jO2Y5Dj2DorhjkRUyPl0Ozi1J+QV9O2TWQTo7VAAawUr/TJhbyWK5iRp0DCnX0CJwl7XLUyZ+5n+SxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4ftkgv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BD8C4CEE3;
+	Tue, 29 Apr 2025 17:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945975;
-	bh=QGj3qBjWTxNKrzuhk6+BKv6UTBlaVktivtbxpJcmedw=;
+	s=korg; t=1745946631;
+	bh=uo+MZJir+orZ5aSQgwyIybWqGYZGjuktkBV8oxUO3QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmtSEKfrcPyg4zq6Hk2fJB7MKLK0BoERltMqbDyqIrB3zpwX9x9KvPD83/NjYufhU
-	 gzkGKLk37QtGDtJEALcW/jQrTw3VxVOMt03CyBUsGbk7m9eSVGPH0uAypUK0tIqTHx
-	 gLGYX9YkfgNtQ2/DzJ+2sFjh8WXyJsESjJaHoawU=
+	b=W4ftkgv99TuH5ndGOF13H29oWRdCNq2bMwCBQfXowUbc6xMPfUi/bnYfiYQ6ROYio
+	 wRT5PgFoL8iPA0tQJMGwrLDNzeQGKdFTpUmn/asWBquPf9y2Zqz6Jxe9CgUy/IlHSH
+	 MVNVEI/jpVnAcmrwPGSgn5YR9km9vlievhu8284s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Maxim Mikityanskiy <maxtram95@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 085/311] iommu/amd: Return an error if vCPU affinity is set for non-vCPU IRTE
-Date: Tue, 29 Apr 2025 18:38:42 +0200
-Message-ID: <20250429161124.534215524@linuxfoundation.org>
+Subject: [PATCH 5.10 019/286] ALSA: hda: intel: Fix Optimus when GPU has no sound
+Date: Tue, 29 Apr 2025 18:38:43 +0200
+Message-ID: <20250429161108.644576751@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Maxim Mikityanskiy <maxtram95@gmail.com>
 
-[ Upstream commit 07172206a26dcf3f0bf7c3ecaadd4242b008ea54 ]
+[ Upstream commit 2b360ba9a4936486380bc30d1eabceb40a714d98 ]
 
-Return -EINVAL instead of success if amd_ir_set_vcpu_affinity() is
-invoked without use_vapic; lying to KVM about whether or not the IRTE was
-configured to post IRQs is all kinds of bad.
+quirk_nvidia_hda() forcefully enables HDA controller on all NVIDIA GPUs,
+because some buggy BIOSes leave it disabled. However, some dual-GPU
+laptops do not have a functional HDA controller in DGPU, and BIOS
+disables it on purpose. After quirk_nvidia_hda() reenables this dummy
+HDA controller, attempting to probe it fails at azx_first_init(), which
+is too late to cancel the probe, as it happens in azx_probe_continue().
 
-Fixes: d98de49a53e4 ("iommu/amd: Enable vAPIC interrupt remapping mode by default")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-ID: <20250404193923.1413163-6-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+The sna_hda_intel driver calls azx_free() and stops the chip, however,
+it stays probed, and from the runtime PM point of view, the device
+remains active (it was set as active by the PCI subsystem on probe). It
+prevents vga_switcheroo from turning off the DGPU, because
+pci_create_device_link() syncs power management for video and audio
+devices.
+
+Affected devices should be added to driver_denylist to prevent them from
+probing early. This patch helps identify such devices by printing a
+warning, and also forces the device to the suspended state to allow
+vga_switcheroo turn off DGPU.
+
+Signed-off-by: Maxim Mikityanskiy <maxtram95@gmail.com>
+Link: https://patch.msgid.link/20250208214602.39607-2-maxtram95@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/hda_intel.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index cd5116d8c3b28..b3a01b7757ee1 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -3850,7 +3850,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
- 	 * we should not modify the IRTE
- 	 */
- 	if (!dev_data || !dev_data->use_vapic)
--		return 0;
-+		return -EINVAL;
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index fad3e8853be02..407bbf9264ac4 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1399,8 +1399,21 @@ static void azx_free(struct azx *chip)
+ 	if (use_vga_switcheroo(hda)) {
+ 		if (chip->disabled && hda->probe_continued)
+ 			snd_hda_unlock_devices(&chip->bus);
+-		if (hda->vga_switcheroo_registered)
++		if (hda->vga_switcheroo_registered) {
+ 			vga_switcheroo_unregister_client(chip->pci);
++
++			/* Some GPUs don't have sound, and azx_first_init fails,
++			 * leaving the device probed but non-functional. As long
++			 * as it's probed, the PCI subsystem keeps its runtime
++			 * PM status as active. Force it to suspended (as we
++			 * actually stop the chip) to allow GPU to suspend via
++			 * vga_switcheroo, and print a warning.
++			 */
++			dev_warn(&pci->dev, "GPU sound probed, but not operational: please add a quirk to driver_denylist\n");
++			pm_runtime_disable(&pci->dev);
++			pm_runtime_set_suspended(&pci->dev);
++			pm_runtime_enable(&pci->dev);
++		}
+ 	}
  
- 	ir_data->cfg = irqd_cfg(data);
- 	pi_data->ir_data = ir_data;
+ 	if (bus->chip_init) {
 -- 
 2.39.5
 
