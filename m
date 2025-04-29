@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-138529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95800AA1879
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2900AA1869
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125711661BA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D204188A9D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF7B243964;
-	Tue, 29 Apr 2025 17:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 962E424DFF3;
+	Tue, 29 Apr 2025 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/mkgMAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDKRNMBJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FC92AE96;
-	Tue, 29 Apr 2025 17:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BA81DC988;
+	Tue, 29 Apr 2025 17:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949541; cv=none; b=t25GLDRXE9kjVRDvfqIGkVdGgGEvqbhjXEJ+dN4gR2scL29K0BXR17F7l+/cemp08MMSqy+agzj4AFJFnFh6TSApY8HP4EElImnpaqr6TVgW8x2R/qHRSqqiPeSEI4KKRbQUtAxD2kpKdnrTGOPZw1D8xr/CHlpc17uXGoNXSuM=
+	t=1745949576; cv=none; b=CjS7iWkC6uMAhQAUbnOLOl2v3YFx16e+0mE4TcOhIsem8RKAPMUf9SmEWNFavFDPfV7/kszXo60WxSfqkErWT2/J4hq7it/MAQ7KQiyCVrEG0vdkr6Y+4cBNPFL+7zAuKn5xKaxBz4URMU8vLez2wcFM1QTnSvLlfRl8GenxyDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949541; c=relaxed/simple;
-	bh=dU9fsw8+iVQv92k0of37Cr0C3KpHm/ElnoDVCEUJVt4=;
+	s=arc-20240116; t=1745949576; c=relaxed/simple;
+	bh=8ODipu/U0eBM60j7KsfmFX1A4mRTW5oppLUN6ffkJpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzriClG9LiCJz5V8lBzczo74vBJ868iMmwM5jpjlNBDbV54Xptv2K1F8Oi5cOJa2H5tnDIJdcZybYi7OcQNEOazPvRHNUrqrogZQtHJxQitv/vL86pRUwKb//Xs86Ot1PYbP1he4OmKuf3QDVjnJDg/NL7Yi5jEZOgetiyKhOKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/mkgMAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573A0C4CEE9;
-	Tue, 29 Apr 2025 17:59:00 +0000 (UTC)
+	 MIME-Version; b=ctBbCuJSrR2fGR2GAWVkMvW/KyODJe79pvumgJN84Sx/6iaEG9mvlQ9oV2ekzgwcNVomNh4K/Nhz5YnFyg1W8MBwzt/8BSIKMC6V3AAglZaw+hr81HECooCK1doEu0Pn1pVSBZ/phBMuzdXoJ0Cpn6QlNm8ozseZWJ1ulSlFmhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDKRNMBJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1125C4CEE3;
+	Tue, 29 Apr 2025 17:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949540;
-	bh=dU9fsw8+iVQv92k0of37Cr0C3KpHm/ElnoDVCEUJVt4=;
+	s=korg; t=1745949576;
+	bh=8ODipu/U0eBM60j7KsfmFX1A4mRTW5oppLUN6ffkJpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/mkgMALHiCLrDeCVOL/y8Wiien74NX60TDddpYV+z6ZnZeampdiy3FpEGk5N4mXv
-	 iEwcs8x9X29e6TS/TAv4sBLUuMrc60wQaXMgA4gzvJoJrrfAGTZMYSDk7Dtr4GpUSH
-	 ZXIY+nSq0mtWCLLHjtWwAdzmn1L0sfaE/iaGKW9c=
+	b=oDKRNMBJLn5xXLaD7hqfzoUuAqimpYj8/9pBbwtXpJtbnBr4emeSov0OrNM5QWw2z
+	 uugTkuOJiacL0hWiFRP9D/Jo54URRETHDM+Jw6BEyg1hSS/0WRssRBBXRlXXhaw+NT
+	 pXKKepL2RHZ/WdUzpqD71168AU5cdWHVV7ylBves=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Jean-Marc Eurin <jmeurin@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 344/373] nvme: requeue namespace scan on missed AENs
-Date: Tue, 29 Apr 2025 18:43:41 +0200
-Message-ID: <20250429161137.286448628@linuxfoundation.org>
+Subject: [PATCH 5.15 345/373] ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls
+Date: Tue, 29 Apr 2025 18:43:42 +0200
+Message-ID: <20250429161137.326261735@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
 References: <20250429161123.119104857@linuxfoundation.org>
@@ -67,40 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hannes Reinecke <hare@kernel.org>
+From: Jean-Marc Eurin <jmeurin@google.com>
 
-[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
+[ Upstream commit 7ab4f0e37a0f4207e742a8de69be03984db6ebf0 ]
 
-Scanning for namespaces can take some time, so if the target is
-reconfigured while the scan is running we may miss a Attached Namespace
-Attribute Changed AEN.
+The end of table checks should be done with the structure size,
+but 2 of the 3 similar calls use the pointer size.
 
-Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
-finished, and requeue scanning to pick up any missed change.
-
-Signed-off-by: Hannes Reinecke <hare@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jean-Marc Eurin <jmeurin@google.com>
+Link: https://patch.msgid.link/20250402001542.2600671-1-jmeurin@google.com
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/pptt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 6748532c776b8..85d965fe8838c 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4221,6 +4221,10 @@ static void nvme_scan_work(struct work_struct *work)
- 	if (nvme_scan_ns_list(ctrl) != 0)
- 		nvme_scan_ns_sequential(ctrl);
- 	mutex_unlock(&ctrl->scan_lock);
-+
-+	/* Requeue if we have missed AENs */
-+	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
-+		nvme_queue_scan(ctrl);
- }
+diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+index fe69dc518f31e..9fa339639d0c0 100644
+--- a/drivers/acpi/pptt.c
++++ b/drivers/acpi/pptt.c
+@@ -217,7 +217,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+ 	node_entry = ACPI_PTR_DIFF(node, table_hdr);
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
  
- /*
+ 	while ((unsigned long)entry + proc_sz < table_end) {
+ 		cpu_node = (struct acpi_pptt_processor *)entry;
+@@ -258,7 +258,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+ 	table_end = (unsigned long)table_hdr + table_hdr->length;
+ 	entry = ACPI_ADD_PTR(struct acpi_subtable_header, table_hdr,
+ 			     sizeof(struct acpi_table_pptt));
+-	proc_sz = sizeof(struct acpi_pptt_processor *);
++	proc_sz = sizeof(struct acpi_pptt_processor);
+ 
+ 	/* find the processor structure associated with this cpuid */
+ 	while ((unsigned long)entry + proc_sz < table_end) {
 -- 
 2.39.5
 
