@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBD27AA1775
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE54AA14A5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D77A54C1CB9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B83DA4C4160
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0644F221DA7;
-	Tue, 29 Apr 2025 17:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20642528EC;
+	Tue, 29 Apr 2025 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLcG5bn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bl2dbHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63A6243964;
-	Tue, 29 Apr 2025 17:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB10251793;
+	Tue, 29 Apr 2025 17:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948872; cv=none; b=u+2Lam4lDq7Ebwi68Nxev2xCQ0qtNNfECqY3h5c9/OWD0rtbNqxoMUvUsrlY05cBARJ1m4gxvWEQFIMRwiijI80/42JAKB4di7/YH/4jobC6gSkl0xwMFJx0Y3CoZcBGIwSe8rxx/uBIGGCx48Mx5XSYtAm8VYoLKQ1kX01xz7M=
+	t=1745946939; cv=none; b=TlPbDljjVATcB0eokM8v2oCnfjoQiK92r0gZuAeK3Tl73VRU+YsXktrWq+ahty70k2tDbHvCgKfMbkLgfuPErwadQ0RVxR1KbfR0OMwaa7EaTdEkazHAKGvVM4ShIQxik8qx+BaV7CUeXDJiUOQUBsKshVknX77o1Tlu7pBGDVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948872; c=relaxed/simple;
-	bh=Lwl147XR4aVPA9t5vU7+7kipt6a5mVnQp3yaBNGJEK0=;
+	s=arc-20240116; t=1745946939; c=relaxed/simple;
+	bh=f1ZLX+9VfERdMEgMFxNaAgOp/YzeYmUXgpeTTbyRJ9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2rfm1xBAqWPTEZrkUCHfcSk/vnjN2IRtomH2x9gdrNIMrZSLrzrqn+XFIchbw9gOWMLRJHqhCSrV7rxj7tjRIMXRNsYQ8vf0WtJLxqHTxuCewljKP1b8xkE0oW0UmHonAuRtzJw8Rd4V7jrrGW+KtgHZfbeB44QVQBc7JkH12s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLcG5bn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4876FC4CEE9;
-	Tue, 29 Apr 2025 17:47:52 +0000 (UTC)
+	 MIME-Version; b=nlZ+ve8rqiD423yR5E4U5S7tQqyLgUviGTLYco5nt/xw/5w7bEbrymQWpdAxeIn09VsDdw+y/uyOfT06cM2+7uWl760/z/On2IeIRzz8/JZQh+J1W3UCvD53qSEhlkhdFYvdTlV7UWtGAqJFSaUDFiXLzFjP3K82sjkqvSaH/ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bl2dbHg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150C0C4CEE3;
+	Tue, 29 Apr 2025 17:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948872;
-	bh=Lwl147XR4aVPA9t5vU7+7kipt6a5mVnQp3yaBNGJEK0=;
+	s=korg; t=1745946939;
+	bh=f1ZLX+9VfERdMEgMFxNaAgOp/YzeYmUXgpeTTbyRJ9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLcG5bn4v6y7DHT0Ie4U6BqT3ulmQvN2utE/jGJnZAAfil0C44AXjrK+HqH5RD7bG
-	 Gm4aFABryDlJxYed8sUA31jtBTGWsKfcC+oLfLTOe7wU4NqLWHZTcgagIQDzJVemA/
-	 LUBKj5E+gheVFFJ5eF/cAmIkf1YIWfg4jAIU9D2I=
+	b=0bl2dbHgzZMRHqzvwuISfRbD2KuR/OttAvyBpGVsSfHippaZSx+RXdMKgCny4lu53
+	 UHWLyp4pmjJJR3LSsu+LL+vBTllDxAgGgSISxZILAsyCNGxE1z3ULPY5bBZPKsg9Vm
+	 yYxKhUY+Yges7g2b2ALEJYHXpdVvRKdVEagdek9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	WangYuli <wangyuli@uniontech.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 145/373] net: openvswitch: fix nested key length validation in the set() action
+Subject: [PATCH 5.10 118/286] riscv: KGDB: Do not inline arch_kgdb_breakpoint()
 Date: Tue, 29 Apr 2025 18:40:22 +0200
-Message-ID: <20250429161129.127572982@linuxfoundation.org>
+Message-ID: <20250429161112.711564041@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 65d91192aa66f05710cfddf6a14b5a25ee554dba ]
+[ Upstream commit 3af4bec9c1db3f003be4d5ae09b6a737e4be1612 ]
 
-It's not safe to access nla_len(ovs_key) if the data is smaller than
-the netlink header.  Check that the attribute is OK first.
+The arch_kgdb_breakpoint() function defines the kgdb_compiled_break
+symbol using inline assembly.
 
-Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-Reported-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b07a9da40df1576b8048
-Tested-by: syzbot+b07a9da40df1576b8048@syzkaller.appspotmail.com
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Reviewed-by: Eelco Chaudron <echaudro@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20250412104052.2073688-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+There's a potential issue where the compiler might inline
+arch_kgdb_breakpoint(), which would then define the kgdb_compiled_break
+symbol multiple times, leading to fail to link vmlinux.o.
+
+This isn't merely a potential compilation problem. The intent here
+is to determine the global symbol address of kgdb_compiled_break,
+and if this function is inlined multiple times, it would logically
+be a grave error.
+
+Link: https://lore.kernel.org/all/4b4187c1-77e5-44b7-885f-d6826723dd9a@sifive.com/
+Link: https://lore.kernel.org/all/5b0adf9b-2b22-43fe-ab74-68df94115b9a@ghiti.fr/
+Link: https://lore.kernel.org/all/23693e7f-4fff-40f3-a437-e06d827278a5@ghiti.fr/
+Fixes: fe89bd2be866 ("riscv: Add KGDB support")
+Co-developed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/F22359AFB6FF9FD8+20250411073222.56820-1-wangyuli@uniontech.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/kgdb.h | 9 +--------
+ arch/riscv/kernel/kgdb.c      | 8 ++++++++
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index d9bef3decd70c..7db0f8938c145 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2831,7 +2831,8 @@ static int validate_set(const struct nlattr *a,
- 	size_t key_len;
+diff --git a/arch/riscv/include/asm/kgdb.h b/arch/riscv/include/asm/kgdb.h
+index 46677daf708bd..cc11c4544cffd 100644
+--- a/arch/riscv/include/asm/kgdb.h
++++ b/arch/riscv/include/asm/kgdb.h
+@@ -19,16 +19,9 @@
  
- 	/* There can be only one key in a action */
--	if (nla_total_size(nla_len(ovs_key)) != nla_len(a))
-+	if (!nla_ok(ovs_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(ovs_key)) != nla_len(a))
- 		return -EINVAL;
+ #ifndef	__ASSEMBLY__
  
- 	key_len = nla_len(ovs_key);
++void arch_kgdb_breakpoint(void);
+ extern unsigned long kgdb_compiled_break;
+ 
+-static inline void arch_kgdb_breakpoint(void)
+-{
+-	asm(".global kgdb_compiled_break\n"
+-	    ".option norvc\n"
+-	    "kgdb_compiled_break: ebreak\n"
+-	    ".option rvc\n");
+-}
+-
+ #endif /* !__ASSEMBLY__ */
+ 
+ #define DBG_REG_ZERO "zero"
+diff --git a/arch/riscv/kernel/kgdb.c b/arch/riscv/kernel/kgdb.c
+index 963ed7edcff26..b0db3350d243b 100644
+--- a/arch/riscv/kernel/kgdb.c
++++ b/arch/riscv/kernel/kgdb.c
+@@ -273,6 +273,14 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
+ 	regs->epc = pc;
+ }
+ 
++noinline void arch_kgdb_breakpoint(void)
++{
++	asm(".global kgdb_compiled_break\n"
++	    ".option norvc\n"
++	    "kgdb_compiled_break: ebreak\n"
++	    ".option rvc\n");
++}
++
+ void kgdb_arch_handle_qxfer_pkt(char *remcom_in_buffer,
+ 				char *remcom_out_buffer)
+ {
 -- 
 2.39.5
 
