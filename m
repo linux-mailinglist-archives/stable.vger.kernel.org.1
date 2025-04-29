@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81AEAA170D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4743AAA133A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2246216BD1F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:43:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FC784A0971
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7E7244664;
-	Tue, 29 Apr 2025 17:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEF423F413;
+	Tue, 29 Apr 2025 16:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rE2/2s3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHQv7AWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D3D227E95;
-	Tue, 29 Apr 2025 17:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE3424A047;
+	Tue, 29 Apr 2025 16:59:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948578; cv=none; b=oqm8gXl4z+UdvhwweQvnj5WdJpZiZPNFd1v/XQpgT3fSLTy30SIy8o3DCs4QFcun0vH9X7T3mFJHqJ9uGu/ZmUvWeL3cJrBe2a4LVXl/07M2X018vcafoTilv5u+sI64TA9LN4gNy+/9wPk7q93SIBrttPPg8M+SSiOXR3gv0IA=
+	t=1745945996; cv=none; b=SL7yPkOWrxsZab/QuVi05Ekekqn2LIdGVM3zM7p4SSPPX/8zAdXLumSMdXsCL50TZuQGJ5B7vXSv7v9EqElLF7XXnkpUvXC5XbuJ3ao9bOK6mo7OfNKnAKQVakvZM47vXpZafrkoJKrRtcHQawehEuKzDF890AsZw2rK+hq33/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948578; c=relaxed/simple;
-	bh=rpkdutMEKqOjlj+RveO9jeNzxNVlHbTo80k/GBw7es4=;
+	s=arc-20240116; t=1745945996; c=relaxed/simple;
+	bh=7tokVgwYApARNbfAynqbXIGa8m1Lf517gz0sh808bpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbDvIu7OyVe8DIAwf4A3wHzVkKZgN8NUVi9vBZbDOcRxtFdH8qeLLk4nA0CrlJ5ZL2Ha1v/9LWcQZpjWfmmhitfo/w/bzo+VlBvAjr6MgEsalzmcdyjIAABHRaSoM4s4PimH4nQ5+RI6QhbA/dKv7G2Iw0IcJCL33fdttUnWs9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rE2/2s3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E14C4CEE3;
-	Tue, 29 Apr 2025 17:42:56 +0000 (UTC)
+	 MIME-Version; b=i5CWbjaTTxH5RmtkpCwWDvqecKnfKoIyZMKJmjiauJyV9+2RCrqWlGbT1CaW2u4P4epzK7BpMjmX8ofbU62XTTBBcRh4qw8dfXQ6jOjcgVJ4PMa5cd9w7hw7NrBsyobffY//cB50snt01yOOJ3UV1ytldmA1EeEnLxgOwQje4KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHQv7AWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3099C4CEE3;
+	Tue, 29 Apr 2025 16:59:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948577;
-	bh=rpkdutMEKqOjlj+RveO9jeNzxNVlHbTo80k/GBw7es4=;
+	s=korg; t=1745945996;
+	bh=7tokVgwYApARNbfAynqbXIGa8m1Lf517gz0sh808bpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rE2/2s3hXQCKpcQkVcwr5RYJG3i6DeBkJrCkqSrwq/1U7Uxpeh9T9daUhFa27pFSI
-	 p/auVY0WjIRH66CqOgkyz26lMFNoOguOXhvkDtZR7F7o8Ai/rPPUwgtFwrSrGaldaD
-	 qhVdgw5XAgJniE9XpPDyFE1Xxe1WP0B/mjsAv27M=
+	b=gHQv7AWX7Sk2W91UW9xu/U2IqlMX/a+8mpQul1tj5wEqi00VKVGP9j8u0/Qg2hI2I
+	 F12fkKPesJyz/pyNOi11ytASHMXXZx1i1BWQQr6pbDyTHGZeYN1MJx+LpgdrORH08+
+	 HvJAUQXQakpluCXqp9ZaQIAWjOJCgGXkZXdUWVVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leonid Arapov <arapovl839@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/373] fbdev: omapfb: Add plane value check
+Subject: [PATCH 6.14 089/311] ublk: comment on ubq->canceling handling in ublk_queue_rq()
 Date: Tue, 29 Apr 2025 18:38:46 +0200
-Message-ID: <20250429161125.148858038@linuxfoundation.org>
+Message-ID: <20250429161124.692198974@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leonid Arapov <arapovl839@gmail.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
+[ Upstream commit 7e2fe01a69f6be3e284b38cfd2e4e0598a3b0a8f ]
 
-Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
-of the enum parameter plane.
+In ublk_queue_rq(), ubq->canceling has to be handled after ->fail_io and
+->force_abort are dealt with, otherwise the request may not be failed
+when deleting disk.
 
-The value of this parameter is initialized in dss_init_overlays and in the
-current state of the code it cannot take this value so it's not a real
-problem.
+Add comment on this usage.
 
-For the purposes of defensive coding it wouldn't be superfluous to check
-the parameter value, because some functions down the call stack process
-this value correctly and some not.
-
-For example, in dispc_ovl_setup_global_alpha it may lead to buffer
-overflow.
-
-Add check for this value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE static
-analysis tool.
-
-Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20250327095123.179113-3-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: d6aa0c178bf8 ("ublk: call ublk_dispatch_req() for handling UBLK_U_IO_NEED_GET_DATA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-index b2d6e6df21615..d852bef1d507f 100644
---- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-+++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
-@@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
- 		bool mem_to_mem)
- {
- 	int r;
--	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
-+	enum omap_overlay_caps caps;
- 	enum omap_channel channel;
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index f615b9bd82f5f..fbc397efff175 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -1314,6 +1314,11 @@ static blk_status_t ublk_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	if (ublk_nosrv_should_queue_io(ubq) && unlikely(ubq->force_abort))
+ 		return BLK_STS_IOERR;
  
-+	if (plane == OMAP_DSS_WB)
-+		return -EINVAL;
-+
-+	caps = dss_feat_get_overlay_caps(plane);
- 	channel = dispc_ovl_get_channel_out(plane);
- 
- 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
++	/*
++	 * ->canceling has to be handled after ->force_abort and ->fail_io
++	 * is dealt with, otherwise this request may not be failed in case
++	 * of recovery, and cause hang when deleting disk
++	 */
+ 	if (unlikely(ubq->canceling)) {
+ 		__ublk_abort_rq(ubq, rq);
+ 		return BLK_STS_OK;
 -- 
 2.39.5
 
