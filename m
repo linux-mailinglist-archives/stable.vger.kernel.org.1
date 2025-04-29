@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-138586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8FCAAA18B9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44D4DAA180D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA3944E197C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA6B91BC56EB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5543B25393F;
-	Tue, 29 Apr 2025 18:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031D925334E;
+	Tue, 29 Apr 2025 17:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxDsJ7Bn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4BPN0Qt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CDF25332E;
-	Tue, 29 Apr 2025 18:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B35227E95;
+	Tue, 29 Apr 2025 17:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949718; cv=none; b=N/QaKsu4i1DxinRHsYSTzrzTHL1jkEIgBiyjbr+tBa3FngBVw0X9T/GoAfhpzV2upqfRt5cJC8/kNZ+pmBIS/Hv74GwdEnSS3uplwznteUavn+0+SMCd12rljGZDwqZQTXLDpVObAMigBWFZmH5Ggw0l6FBGkA2qhB3k8Mzys8U=
+	t=1745949271; cv=none; b=hs2ddWtWJiFyYSPkPrD3hAgR78deg9PFbgN4i1oBhaFkfebZ2VyLR4dD5G5hSFOHWkEDeMLxnnjbgxz4SBf+L7VfKcAhoRAIGooVZNNXmRJU8r3xV5B1eDZD7o0dC7rDLdl6oBAjJ29oxxOyMl3OdgQpPfuV4QZyw3Lb/zW5Ib8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949718; c=relaxed/simple;
-	bh=Uvklg8GafiDFfYQbrQnY2wJafV4dfA/PFCtcKrppmSk=;
+	s=arc-20240116; t=1745949271; c=relaxed/simple;
+	bh=JCYi8IlQ9+Kv0WRkdeuWLGRGnM3oO3fawsyisr4Kqds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxUeN0SjDiNEJFJ9e2iAH1Traph36ywRJW1gW7GyCywQB37hIo3zMeTEIgobDvKYcTdS90ARlNpCdrORrHC4wvW3dRlp4t5EHBxVP2HauZdgayYlQni+cmREWoRxagKY/LFr7OPkUbvUwmy6VIsK2FmIPTYc8YA1MwOiKbSWTkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxDsJ7Bn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3B5C4CEE3;
-	Tue, 29 Apr 2025 18:01:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cj6G+4eQinUP8pEcNqqQwwog4Tj9sO2ftXuP8dze/OqHvvG3XQlOoG6xHWYM7RngJmeDc+RuHeXbW32OJqD4sT8759nJiCLA1cWfDNp0p5VuRZ1y0TTAOFK477xUJFUyt/mvSTzO8SqTaNTb9I5tn+O0fNfShWheQabMqH783qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4BPN0Qt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEC4C4CEE3;
+	Tue, 29 Apr 2025 17:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949717;
-	bh=Uvklg8GafiDFfYQbrQnY2wJafV4dfA/PFCtcKrppmSk=;
+	s=korg; t=1745949271;
+	bh=JCYi8IlQ9+Kv0WRkdeuWLGRGnM3oO3fawsyisr4Kqds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxDsJ7BnOKgjbDR01cwThr7x0hY6EG8Gm3tL6khZjPEsMHCk3Kh4GyHMzyilMvvg+
-	 iGUplkPvkBMFeFH/9nDStBrHvfBJ2hO7p8vkvIgp/bbquegecYUpi7Af1igMg2UCzh
-	 TCqC0MoDrcQ7uIhEntT2XdKj8qcj1YWJGXtdcjoU=
+	b=x4BPN0Qt7MkJmGM14hDkab/KTaB9+85cKrOBKMQB3vJhYe9jyO6BhXCEfhlkfBNQd
+	 FKNGhPOU6z4AlDW63HTQRreme2ssNd+64UJsU7cJuzlZyTLtIg15hhJNynlNYmdCPq
+	 SVgl5lG6mcJerGJep4OkWW95HcHYA65fhRoZT1lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marek Vasut <marex@denx.de>,
-	Richard Leitner <richard.leitner@skidata.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Vinod Koul <vkoul@kernel.org>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/167] phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support
+Subject: [PATCH 5.15 266/373] iio: adc: ad7768-1: Move setting of val a bit later to avoid unnecessary return value check
 Date: Tue, 29 Apr 2025 18:42:23 +0200
-Message-ID: <20250429161053.176069961@linuxfoundation.org>
+Message-ID: <20250429161134.061735879@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,116 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit dce9edff16ee8df20e791e82e0704c4667cc3908 ]
+[ Upstream commit 0af1c801a15225304a6328258efbf2bee245c654 ]
 
-Add i.MX8MP PCIe PHY support.
+The data used is all in local variables so there is no advantage
+in setting *val = ret with the direct mode claim held.
+Move it later to after error check.
 
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Tested-by: Marek Vasut <marex@denx.de>
-Tested-by: Richard Leitner <richard.leitner@skidata.com>
-Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/1665625622-20551-5-git-send-email-hongxing.zhu@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: aecb63e88c5e ("phy: freescale: imx8m-pcie: assert phy reset and perst in power off")
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250217141630.897334-13-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 8236644f5ecb ("iio: adc: ad7768-1: Fix conversion result sign")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 25 ++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-index 211ce84d980f9..0082de17cf4de 100644
---- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
-@@ -50,6 +50,7 @@
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index aa42ba759fa1a..22c0303587b07 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -370,12 +370,11 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+ 			return ret;
  
- enum imx8_pcie_phy_type {
- 	IMX8MM,
-+	IMX8MP,
- };
+ 		ret = ad7768_scan_direct(indio_dev);
+-		if (ret >= 0)
+-			*val = ret;
  
- struct imx8_pcie_phy_drvdata {
-@@ -62,6 +63,7 @@ struct imx8_pcie_phy {
- 	struct clk		*clk;
- 	struct phy		*phy;
- 	struct regmap		*iomuxc_gpr;
-+	struct reset_control	*perst;
- 	struct reset_control	*reset;
- 	u32			refclk_pad_mode;
- 	u32			tx_deemph_gen1;
-@@ -76,11 +78,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 	u32 val, pad_mode;
- 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
+ 		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
++		*val = ret;
  
--	reset_control_assert(imx8_phy->reset);
--
- 	pad_mode = imx8_phy->refclk_pad_mode;
- 	switch (imx8_phy->drvdata->variant) {
- 	case IMX8MM:
-+		reset_control_assert(imx8_phy->reset);
-+
- 		/* Tune PHY de-emphasis setting to pass PCIe compliance. */
- 		if (imx8_phy->tx_deemph_gen1)
- 			writel(imx8_phy->tx_deemph_gen1,
-@@ -89,6 +91,8 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 			writel(imx8_phy->tx_deemph_gen2,
- 			       imx8_phy->base + PCIE_PHY_TRSV_REG6);
- 		break;
-+	case IMX8MP: /* Do nothing. */
-+		break;
- 	}
+ 		return IIO_VAL_INT;
  
- 	if (pad_mode == IMX8_PCIE_REFCLK_PAD_INPUT ||
-@@ -145,6 +149,9 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
- 			   IMX8MM_GPR_PCIE_CMN_RST);
- 
- 	switch (imx8_phy->drvdata->variant) {
-+	case IMX8MP:
-+		reset_control_deassert(imx8_phy->perst);
-+		fallthrough;
- 	case IMX8MM:
- 		reset_control_deassert(imx8_phy->reset);
- 		usleep_range(200, 500);
-@@ -186,8 +193,14 @@ static const struct imx8_pcie_phy_drvdata imx8mm_drvdata = {
- 	.variant = IMX8MM,
- };
- 
-+static const struct imx8_pcie_phy_drvdata imx8mp_drvdata = {
-+	.gpr = "fsl,imx8mp-iomuxc-gpr",
-+	.variant = IMX8MP,
-+};
-+
- static const struct of_device_id imx8_pcie_phy_of_match[] = {
- 	{.compatible = "fsl,imx8mm-pcie-phy", .data = &imx8mm_drvdata, },
-+	{.compatible = "fsl,imx8mp-pcie-phy", .data = &imx8mp_drvdata, },
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, imx8_pcie_phy_of_match);
-@@ -243,6 +256,14 @@ static int imx8_pcie_phy_probe(struct platform_device *pdev)
- 		return PTR_ERR(imx8_phy->reset);
- 	}
- 
-+	if (imx8_phy->drvdata->variant == IMX8MP) {
-+		imx8_phy->perst =
-+			devm_reset_control_get_exclusive(dev, "perst");
-+		if (IS_ERR(imx8_phy->perst))
-+			dev_err_probe(dev, PTR_ERR(imx8_phy->perst),
-+				      "Failed to get PCIE PHY PERST control\n");
-+	}
-+
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	imx8_phy->base = devm_ioremap_resource(dev, res);
- 	if (IS_ERR(imx8_phy->base))
 -- 
 2.39.5
 
