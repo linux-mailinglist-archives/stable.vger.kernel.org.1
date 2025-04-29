@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-138738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E60AA1977
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:12:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65C1AA196C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CF84165E76
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:10:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25F7D1BC80FB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3551C2550A2;
-	Tue, 29 Apr 2025 18:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1F6253930;
+	Tue, 29 Apr 2025 18:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlD4evRJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9EMqlJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E283A254B19;
-	Tue, 29 Apr 2025 18:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085C325228D;
+	Tue, 29 Apr 2025 18:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950198; cv=none; b=DKAW7cWZTOWwI5WYS7FsHBhZ4K6YxAADVASJ1RDdM30of3KjwdTw6kbX/nQLX708w28sf1WuOrxgWQ73a/PoKstSVAG9zO9tZJE+rZKahAbl+5G0u03cHq55qyavq6xwULe3XRJ1HNYjuVLgcJ74VbmpAiWYqbbHfzT0naIhW0I=
+	t=1745950204; cv=none; b=h9M+98SXr81d5jUGeHoVeswonFww9/SgYYltHn0jaHKhzUjaWVcb98KRxJF9BD0lRP9lSa5WGl8sBu50GFmUmeNXWjzOLDn7gIdy+RsSUR4UKmy5/DFABymgMo1Q/dwBf0JE66s/UwooNv41mJpjYdycSpXGg9XH/4DObd3c38s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950198; c=relaxed/simple;
-	bh=jMOExkdAgV94XL0UAdQT19C7/t2T0K9gjqTmrNX9AKo=;
+	s=arc-20240116; t=1745950204; c=relaxed/simple;
+	bh=VO0UV7c+SRZ8HNICxN0KaF5/jjzosiQCSiyOGZD3qGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n1lTvp1PAEzWDkr+1sH6i1x3npx2lw5OBRQeu1Cc+Mgu9SN6lnzq1ZbcrkUxzy6KJIuofqhE+vEihgoODm8ktfSmjMMe3XiPKXpEYBnWig6y5IqE645LBmiUHaUx+4wNMzbVfkVdJbkfiElCDXqSqyplSE09THaFBDSzPsC7GFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlD4evRJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05713C4CEF0;
-	Tue, 29 Apr 2025 18:09:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TsGAAtSLM0QcqTRk+//qGaExnmiqrCBCs/7HI+LPusP/Uucxnek2ZK4sVXlB454/T9HxhMo6Y8QVrSw+8WA3Z21t4kp8rjxIDxi9X8ITcLGqbdWRW9geLC2jXZ9tpEyctEOA9YAhH8kUYl/NMApChTBEBh2qwscl0SeCkxHRQgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9EMqlJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32209C4CEE3;
+	Tue, 29 Apr 2025 18:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950197;
-	bh=jMOExkdAgV94XL0UAdQT19C7/t2T0K9gjqTmrNX9AKo=;
+	s=korg; t=1745950203;
+	bh=VO0UV7c+SRZ8HNICxN0KaF5/jjzosiQCSiyOGZD3qGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlD4evRJ77cbQ/4UsdtqS4QeUdfOO6olLc12F5zBXxDQ0XP4iFLs2BKze5dhdcKbh
-	 ly9yDGrOlVSOmdSuAtw8p9TAxJ47GhKsDPFFxvtf7skBDlo5k6n27H/CUBw1wkaMQp
-	 oOlCg5RpzJbpM+9LsxSX5CjsnUC4oTTApvmorvjs=
+	b=N9EMqlJ+r0vv2DbguTquejnrTBW3DhF1vvJtjnjmiUEhG9f3gSiKJ+7Uo2RkScOwc
+	 n3jVGimvyFruZNcwT/ofKxBnwzMMano8cuBoFmqVPLFm0YicLvtOZ6S21vIgCZL7CU
+	 T9ox7GsQr0nqSipO1Httt4ATj+h+9Z78T+9KRKlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/204] ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs
-Date: Tue, 29 Apr 2025 18:41:47 +0200
-Message-ID: <20250429161100.212265110@linuxfoundation.org>
+Subject: [PATCH 6.6 020/204] ASoC: qcom: lpass: Make asoc_qcom_lpass_cpu_platform_remove() return void
+Date: Tue, 29 Apr 2025 18:41:48 +0200
+Message-ID: <20250429161100.253501778@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -62,104 +60,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 3d4a4411aa8bbc3653ff22a1ff0432eb93d22ae0 ]
+[ Upstream commit d0cc676c426d1958989fac2a0d45179fb9992f0a ]
 
-With the existing code, we are only setting up one period at a time, in a
-ping-pong buffer style. This triggers lot of underruns in the dsp
-leading to jitter noise during audio playback.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code.  However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Fix this by scheduling all available periods, this will ensure that the dsp
-has enough buffer feed and ultimatley fixing the underruns and audio
-distortion.
+asoc_qcom_lpass_cpu_platform_remove() returned zero unconditionally.
+Make it return void instead and convert all users to struct
+platform_device::remove_new().
 
-Fixes: 9b4fe0f1cd79 ("ASoC: qdsp6: audioreach: add q6apm-dai support")
-Cc: stable@vger.kernel.org
-Reported-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://patch.msgid.link/20250314174800.10142-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231013221945.1489203-15-u.kleine-koenig@pengutronix.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: a93dad6f4e6a ("ASoC: q6apm-dai: make use of q6apm_get_hw_pointer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6apm-dai.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ sound/soc/qcom/lpass-apq8016.c | 2 +-
+ sound/soc/qcom/lpass-cpu.c     | 5 +----
+ sound/soc/qcom/lpass-ipq806x.c | 2 +-
+ sound/soc/qcom/lpass-sc7180.c  | 2 +-
+ sound/soc/qcom/lpass-sc7280.c  | 2 +-
+ sound/soc/qcom/lpass.h         | 2 +-
+ 6 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/qcom/qdsp6/q6apm-dai.c b/sound/soc/qcom/qdsp6/q6apm-dai.c
-index 5573802e480ba..f188d00825c03 100644
---- a/sound/soc/qcom/qdsp6/q6apm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
-@@ -70,6 +70,7 @@ struct q6apm_dai_rtd {
- 	unsigned int bytes_received;
- 	unsigned int copied_total;
- 	uint16_t bits_per_sample;
-+	snd_pcm_uframes_t queue_ptr;
- 	bool next_track;
- 	enum stream_state state;
- 	struct q6apm_graph *graph;
-@@ -134,8 +135,6 @@ static void event_handler(uint32_t opcode, uint32_t token, uint32_t *payload, vo
- 		prtd->pos += prtd->pcm_count;
- 		spin_unlock_irqrestore(&prtd->lock, flags);
- 		snd_pcm_period_elapsed(substream);
--		if (prtd->state == Q6APM_STREAM_RUNNING)
--			q6apm_write_async(prtd->graph, prtd->pcm_count, 0, 0, 0);
- 
- 		break;
- 	case APM_CLIENT_EVENT_DATA_READ_DONE:
-@@ -293,6 +292,27 @@ static int q6apm_dai_prepare(struct snd_soc_component *component,
- 	return 0;
- }
- 
-+static int q6apm_dai_ack(struct snd_soc_component *component, struct snd_pcm_substream *substream)
-+{
-+	struct snd_pcm_runtime *runtime = substream->runtime;
-+	struct q6apm_dai_rtd *prtd = runtime->private_data;
-+	int i, ret = 0, avail_periods;
-+
-+	if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
-+		avail_periods = (runtime->control->appl_ptr - prtd->queue_ptr)/runtime->period_size;
-+		for (i = 0; i < avail_periods; i++) {
-+			ret = q6apm_write_async(prtd->graph, prtd->pcm_count, 0, 0, NO_TIMESTAMP);
-+			if (ret < 0) {
-+				dev_err(component->dev, "Error queuing playback buffer %d\n", ret);
-+				return ret;
-+			}
-+			prtd->queue_ptr += runtime->period_size;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
- static int q6apm_dai_trigger(struct snd_soc_component *component,
- 			     struct snd_pcm_substream *substream, int cmd)
- {
-@@ -304,9 +324,6 @@ static int q6apm_dai_trigger(struct snd_soc_component *component,
- 	case SNDRV_PCM_TRIGGER_START:
- 	case SNDRV_PCM_TRIGGER_RESUME:
- 	case SNDRV_PCM_TRIGGER_PAUSE_RELEASE:
--		 /* start writing buffers for playback only as we already queued capture buffers */
--		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK)
--			ret = q6apm_write_async(prtd->graph, prtd->pcm_count, 0, 0, 0);
- 		break;
- 	case SNDRV_PCM_TRIGGER_STOP:
- 		/* TODO support be handled via SoftPause Module */
-@@ -834,6 +851,7 @@ static const struct snd_soc_component_driver q6apm_fe_dai_component = {
- 	.hw_params	= q6apm_dai_hw_params,
- 	.pointer	= q6apm_dai_pointer,
- 	.trigger	= q6apm_dai_trigger,
-+	.ack		= q6apm_dai_ack,
- 	.compress_ops	= &q6apm_dai_compress_ops,
- 	.use_dai_pcm_id = true,
+diff --git a/sound/soc/qcom/lpass-apq8016.c b/sound/soc/qcom/lpass-apq8016.c
+index f919d46e18caa..06a4faae50875 100644
+--- a/sound/soc/qcom/lpass-apq8016.c
++++ b/sound/soc/qcom/lpass-apq8016.c
+@@ -300,7 +300,7 @@ static struct platform_driver apq8016_lpass_cpu_platform_driver = {
+ 		.of_match_table	= of_match_ptr(apq8016_lpass_cpu_device_id),
+ 	},
+ 	.probe	= asoc_qcom_lpass_cpu_platform_probe,
+-	.remove	= asoc_qcom_lpass_cpu_platform_remove,
++	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
  };
+ module_platform_driver(apq8016_lpass_cpu_platform_driver);
+ 
+diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
+index e587455dc40a0..92316768011ae 100644
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -1284,15 +1284,12 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
+ }
+ EXPORT_SYMBOL_GPL(asoc_qcom_lpass_cpu_platform_probe);
+ 
+-int asoc_qcom_lpass_cpu_platform_remove(struct platform_device *pdev)
++void asoc_qcom_lpass_cpu_platform_remove(struct platform_device *pdev)
+ {
+ 	struct lpass_data *drvdata = platform_get_drvdata(pdev);
+ 
+ 	if (drvdata->variant->exit)
+ 		drvdata->variant->exit(pdev);
+-
+-
+-	return 0;
+ }
+ EXPORT_SYMBOL_GPL(asoc_qcom_lpass_cpu_platform_remove);
+ 
+diff --git a/sound/soc/qcom/lpass-ipq806x.c b/sound/soc/qcom/lpass-ipq806x.c
+index 2c97f295e3940..10f7e2639c423 100644
+--- a/sound/soc/qcom/lpass-ipq806x.c
++++ b/sound/soc/qcom/lpass-ipq806x.c
+@@ -172,7 +172,7 @@ static struct platform_driver ipq806x_lpass_cpu_platform_driver = {
+ 		.of_match_table	= of_match_ptr(ipq806x_lpass_cpu_device_id),
+ 	},
+ 	.probe	= asoc_qcom_lpass_cpu_platform_probe,
+-	.remove	= asoc_qcom_lpass_cpu_platform_remove,
++	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
+ };
+ module_platform_driver(ipq806x_lpass_cpu_platform_driver);
+ 
+diff --git a/sound/soc/qcom/lpass-sc7180.c b/sound/soc/qcom/lpass-sc7180.c
+index d16c0d83aaad9..62e49a0d27ba2 100644
+--- a/sound/soc/qcom/lpass-sc7180.c
++++ b/sound/soc/qcom/lpass-sc7180.c
+@@ -315,7 +315,7 @@ static struct platform_driver sc7180_lpass_cpu_platform_driver = {
+ 		.pm = &sc7180_lpass_pm_ops,
+ 	},
+ 	.probe = asoc_qcom_lpass_cpu_platform_probe,
+-	.remove = asoc_qcom_lpass_cpu_platform_remove,
++	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
+ 	.shutdown = asoc_qcom_lpass_cpu_platform_shutdown,
+ };
+ 
+diff --git a/sound/soc/qcom/lpass-sc7280.c b/sound/soc/qcom/lpass-sc7280.c
+index 6b2eb25ed9390..97b9053ed3b02 100644
+--- a/sound/soc/qcom/lpass-sc7280.c
++++ b/sound/soc/qcom/lpass-sc7280.c
+@@ -445,7 +445,7 @@ static struct platform_driver sc7280_lpass_cpu_platform_driver = {
+ 		.pm = &sc7280_lpass_pm_ops,
+ 	},
+ 	.probe = asoc_qcom_lpass_cpu_platform_probe,
+-	.remove = asoc_qcom_lpass_cpu_platform_remove,
++	.remove_new = asoc_qcom_lpass_cpu_platform_remove,
+ 	.shutdown = asoc_qcom_lpass_cpu_platform_shutdown,
+ };
+ 
+diff --git a/sound/soc/qcom/lpass.h b/sound/soc/qcom/lpass.h
+index ea12f02eca55f..f821271a11467 100644
+--- a/sound/soc/qcom/lpass.h
++++ b/sound/soc/qcom/lpass.h
+@@ -400,7 +400,7 @@ struct lpass_pcm_data {
+ 
+ /* register the platform driver from the CPU DAI driver */
+ int asoc_qcom_lpass_platform_register(struct platform_device *);
+-int asoc_qcom_lpass_cpu_platform_remove(struct platform_device *pdev);
++void asoc_qcom_lpass_cpu_platform_remove(struct platform_device *pdev);
+ void asoc_qcom_lpass_cpu_platform_shutdown(struct platform_device *pdev);
+ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev);
+ extern const struct snd_soc_dai_ops asoc_qcom_lpass_cpu_dai_ops;
 -- 
 2.39.5
 
