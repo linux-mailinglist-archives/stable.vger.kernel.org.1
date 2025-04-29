@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-137962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55ED7AA15DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D841DAA15D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA6F3165DBB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41B118910EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA32224503E;
-	Tue, 29 Apr 2025 17:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699D1247280;
+	Tue, 29 Apr 2025 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoKaoseh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf+PFeXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C8F38FB0;
-	Tue, 29 Apr 2025 17:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262A7244694;
+	Tue, 29 Apr 2025 17:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947663; cv=none; b=VqcR9xaSfdFKZ+uFc6azTrHsbKWlCGCMXpanUJ94p18gD3Jg9yN8EO0Y8wT7g4MQAd2GWPx4oU5fZGyWU4liSKcd/cB6jxyRrKrEp04XCSqctFkmL7QrWOiGizHVedRdWTiWrQYAZtF1MRuHVmlFmmkDZAf3Oj8AgcySuzoDBkg=
+	t=1745947673; cv=none; b=QjCQfhUFNMM5UhrSVUB6PLH/huPlUktFr0Ri98a8wnNDZW2NLlbYMJZwGc443RUE0ZBjAvWn4cYD2UbuFRvZNKnOkVZVcYsCa+xjO8vZ24dORS3jCoV+DGYD3DEMtNk2N+uYjIrxodc15Cpu97raJ6ovGQ4g61Ntq7Ri5i7YK1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947663; c=relaxed/simple;
-	bh=b+fHEg+70uEbGKyfrcHRFgqDa6yb800pW7HtK2MD9MM=;
+	s=arc-20240116; t=1745947673; c=relaxed/simple;
+	bh=nfxLTBgaFr/6JZhAw+F2CVAjyECw45L20wsDn9qMcaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwaGD8d9eaWujdfOkrskDIHNMxzcPB5CL2MYYWlu3mgU7g41KPJPbR57CZ+MtJROWe3jYr2QsCJM07ClwnJcj5EWNWvycnXr6R20V1lk58WBu6xUHyG6FHUFB9Cw3z0qSiO0Q4lLseG3B2ZKkM5qkvWEeYOvnqABwezbZp2XOUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoKaoseh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF03C4CEE9;
-	Tue, 29 Apr 2025 17:27:42 +0000 (UTC)
+	 MIME-Version; b=DZPH9q3UOmoRpGauQmgs83SQP+lJEaXny5/u6N85JW8tDZnAz6d2rWYEARk7vkJlp6MihOYTmmC+SwFyu2t6ty8LmLlX+a3N7IoFgMoT1wuSXrusYIYpMzEmgh38u3mDdzoGZfK653tR0NiJwCHzM/WqaQ92ayBlcbpWJVjbP4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf+PFeXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47471C4CEE3;
+	Tue, 29 Apr 2025 17:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947663;
-	bh=b+fHEg+70uEbGKyfrcHRFgqDa6yb800pW7HtK2MD9MM=;
+	s=korg; t=1745947672;
+	bh=nfxLTBgaFr/6JZhAw+F2CVAjyECw45L20wsDn9qMcaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xoKaosehJ8maAuvYjBh6xg8etpGmPL+E+a2Yk+mmLraBfk1b6ZQ1VIC+Jg5i9kqHt
-	 qy6DZ7QHIc2HkTcKZE8QdIv8b3YN+cHsEH9eCg8hap9SU4+CCvwf7az+oWDPpgL4/R
-	 uY2RwiBld2hX8N497P/iyZEa+5uukP62ENKSjPNk=
+	b=Qf+PFeXLGdeUgTsBabVDoiKCsS74sOfAEZ/TBxbpiQaq8dlUMKQCRn+aFUqf5uAiY
+	 aSlck9EkO61qvD0ZatqtYiDlUrIU0EaZMPM9iSOOKAR5NddBgTHE/RToHVtzKkpYp4
+	 TuzA63VQVUIeJShXvlcCyHwUidcTigBhNRwdVNe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peter Griffin <peter.griffin@linaro.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/280] scsi: ufs: exynos: Remove empty drv_init method
-Date: Tue, 29 Apr 2025 18:39:41 +0200
-Message-ID: <20250429161116.762920673@linuxfoundation.org>
+Subject: [PATCH 6.12 041/280] scsi: ufs: exynos: Remove superfluous function parameter
+Date: Tue, 29 Apr 2025 18:39:42 +0200
+Message-ID: <20250429161116.804960977@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
 References: <20250429161115.008747050@linuxfoundation.org>
@@ -69,45 +69,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 07c2a737504457c41678c5c30abe9107cd28dce6 ]
+[ Upstream commit afd613ca2c60d0a970d434bc73e1ddcdb925c799 ]
 
-Remove empty method. When the method is not set, the call is not made,
-saving a few cycles.
+The pointer to device can be obtained from ufs->hba->dev, remove
+superfluous function parameter.
 
 Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20241031150033.3440894-2-peter.griffin@linaro.org
+Link: https://lore.kernel.org/r/20241031150033.3440894-3-peter.griffin@linaro.org
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Stable-dep-of: 68f5ef7eebf0 ("scsi: ufs: exynos: Move UFS shareability value to drvdata")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/ufs/host/ufs-exynos.c | 4 ++--
+ drivers/ufs/host/ufs-exynos.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index f2cbfc2d399cd..69fcfffb1c89d 100644
+index 69fcfffb1c89d..8adf11f37c0d7 100644
 --- a/drivers/ufs/host/ufs-exynos.c
 +++ b/drivers/ufs/host/ufs-exynos.c
-@@ -198,11 +198,6 @@ static inline void exynos_ufs_ungate_clks(struct exynos_ufs *ufs)
+@@ -198,7 +198,7 @@ static inline void exynos_ufs_ungate_clks(struct exynos_ufs *ufs)
  	exynos_ufs_ctrl_clkstop(ufs, false);
  }
  
--static int exynos7_ufs_drv_init(struct device *dev, struct exynos_ufs *ufs)
--{
--	return 0;
--}
--
- static int exynosauto_ufs_drv_init(struct device *dev, struct exynos_ufs *ufs)
+-static int exynosauto_ufs_drv_init(struct device *dev, struct exynos_ufs *ufs)
++static int exynosauto_ufs_drv_init(struct exynos_ufs *ufs)
  {
  	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
-@@ -2044,7 +2039,6 @@ static const struct exynos_ufs_drv_data exynos_ufs_drvs = {
- 				  EXYNOS_UFS_OPT_BROKEN_RX_SEL_IDX |
- 				  EXYNOS_UFS_OPT_SKIP_CONNECTION_ESTAB |
- 				  EXYNOS_UFS_OPT_USE_SW_HIBERN8_TIMER,
--	.drv_init		= exynos7_ufs_drv_init,
- 	.pre_link		= exynos7_ufs_pre_link,
- 	.post_link		= exynos7_ufs_post_link,
- 	.pre_pwr_change		= exynos7_ufs_pre_pwr_change,
+ 
+@@ -1433,7 +1433,7 @@ static int exynos_ufs_init(struct ufs_hba *hba)
+ 	exynos_ufs_fmp_init(hba, ufs);
+ 
+ 	if (ufs->drv_data->drv_init) {
+-		ret = ufs->drv_data->drv_init(dev, ufs);
++		ret = ufs->drv_data->drv_init(ufs);
+ 		if (ret) {
+ 			dev_err(dev, "failed to init drv-data\n");
+ 			goto out;
+diff --git a/drivers/ufs/host/ufs-exynos.h b/drivers/ufs/host/ufs-exynos.h
+index 1646c4a9bb088..9670dc138d1e4 100644
+--- a/drivers/ufs/host/ufs-exynos.h
++++ b/drivers/ufs/host/ufs-exynos.h
+@@ -182,7 +182,7 @@ struct exynos_ufs_drv_data {
+ 	unsigned int quirks;
+ 	unsigned int opts;
+ 	/* SoC's specific operations */
+-	int (*drv_init)(struct device *dev, struct exynos_ufs *ufs);
++	int (*drv_init)(struct exynos_ufs *ufs);
+ 	int (*pre_link)(struct exynos_ufs *ufs);
+ 	int (*post_link)(struct exynos_ufs *ufs);
+ 	int (*pre_pwr_change)(struct exynos_ufs *ufs,
 -- 
 2.39.5
 
