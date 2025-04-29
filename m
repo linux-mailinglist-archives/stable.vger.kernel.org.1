@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697DCAA1A67
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:22:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B533AA1972
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1F9C3B04E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BB1C9A409C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9EE253358;
-	Tue, 29 Apr 2025 18:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7978522AE68;
+	Tue, 29 Apr 2025 18:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOu91pQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6tkc8rF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0D12517A8;
-	Tue, 29 Apr 2025 18:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E5240C03;
+	Tue, 29 Apr 2025 18:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950654; cv=none; b=O6+hIxWurvz326kOBqM0WyRQYnxKu7FNdRL8XuaubbXrK7ZQr5JupvClV/UEmFwlfUiq0ZCxMyJrLy+uRIhgsse9XUzUyQSUz9gaw/RKxYITS80BhmW4TxwuiW3rsJOXIwZs2EN4iLt7vMx/T8H/qFJVHw1Y68efvRFJ0Oddfx4=
+	t=1745949970; cv=none; b=WlTn0jGGBvsJVSFp5hEydMA8q0AP2Mr/f32VIJ3nYXH4JNHfdblGgk88aiGyPZ0VGLc69Kcq4J2tbgSTCPYZF8+qmafoVddcKhmxpgmhShaNwwAXUF0iCVMC2zp/jwlbd+dC3szDWHaOjgggLoy+bDgvMiRc4TdnRO61sOb0D+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950654; c=relaxed/simple;
-	bh=CZHn7+hdH69O3XikzSJVHfO8+IvFIZzOhKeMMhEkHy8=;
+	s=arc-20240116; t=1745949970; c=relaxed/simple;
+	bh=rB2+jNARo4qHbCMhqm1OhL6QPde4khc9NPJp8hIhngI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i9XI7+6ljx2iFY7iY8+0P19eek1kvT9/XU594IibFf0W3mTamC1P2YjIyxVxADxvowZDXgIkJU3HyG5xGf5Ve0EEyHxKYKvDv51usijQaWsU3HPDgjVr6keDrvh525nz+jmSJx1gTUokTXDBiMcaLwUTiELYNCZKtiRKiy/zzFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOu91pQ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70690C4CEE3;
-	Tue, 29 Apr 2025 18:17:33 +0000 (UTC)
+	 MIME-Version; b=dsuwK+iA0ly77nr6SDov+IjaepieOt1655wbjS1/AGwja8BYHHZdvf8eSMyPq5FLTmUwl6xAxnbDaNEypYN7YAGpbINE5tzS/xGOH9whUG9Z9+H99FJXbOPk4qBZP6Vnx2dXwhSWGpSytr0DjGCsn7mfHjIbtbQn+7u2U4no3T8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6tkc8rF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1516C4CEE9;
+	Tue, 29 Apr 2025 18:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950653;
-	bh=CZHn7+hdH69O3XikzSJVHfO8+IvFIZzOhKeMMhEkHy8=;
+	s=korg; t=1745949970;
+	bh=rB2+jNARo4qHbCMhqm1OhL6QPde4khc9NPJp8hIhngI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOu91pQ6eeJSBGUHzRiEzhoj7Qe1WZSKmfjyv8h8lgwstSKLjZdMJEnaYRM48A7LF
-	 mY0KsuLlBJKMjMqf9qVaRyUp/qfWArpp3YK46hi5SQg0HhvJi+ilwWitoNkfqfv94x
-	 rspApM/Oq2wXlfZwtMbhKmq2WiVBA690V3diSfBU=
+	b=z6tkc8rFT4UaegwCdkaAFs+5GzotDQwcO3aB44xRwyqE5++oO4nmVQukvRC+Dzviu
+	 WchpiE3HkPdWulMhzINL6jH8WdZ+64TX0+rv2cpAcz9mp3EUw/j4ne7mDGBWbOEzYD
+	 8xppgpQ00QNidDL6oO5eZXo1wHz5uuZhADCgcEjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ferry Toth <fntoth@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Thomas Lynema <lyz27@yahoo.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/204] usb: dwc3: gadget: Avoid using reserved endpoints on Intel Merrifield
+Subject: [PATCH 6.1 114/167] thunderbolt: Scan retimers after device router has been enumerated
 Date: Tue, 29 Apr 2025 18:43:42 +0200
-Message-ID: <20250429161104.909284979@linuxfoundation.org>
+Message-ID: <20250429161056.351216157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 461f24bff86808ee5fbfe74751a825f8a7ab24e0 ]
+[ Upstream commit 75749d2c1d8cef439f8b69fa1f4f36d0fc3193e6 ]
 
-Intel Merrifield SoC uses these endpoints for tracing and they cannot
-be re-allocated if being used because the side band flow control signals
-are hard wired to certain endpoints:
+Thomas reported connection issues on AMD system with Pluggable UD-4VPD
+dock. After some experiments it looks like the device has some sort of
+internal timeout that triggers reconnect. This is completely against the
+USB4 spec, as there is no requirement for the host to enumerate the
+device right away or even at all.
 
-• 1 High BW Bulk IN (IN#1) (RTIT)
-• 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
+In Linux case the delay is caused by scanning of retimers on the link so
+we can work this around by doing the scanning after the device router
+has been enumerated.
 
-In device mode, since RTIT (EP#1) and EXI/RunControl (EP#8) uses
-External Buffer Control (EBC) mode, these endpoints are to be mapped to
-EBC mode (to be done by EXI target driver). Additionally TRB for RTIT
-and EXI are maintained in STM (System Trace Module) unit and the EXI
-target driver will as well configure the TRB location for EP #1 IN
-and EP#8 (IN and OUT). Since STM/PTI and EXI hardware blocks manage
-these endpoints and interface to OTG3 controller through EBC interface,
-there is no need to enable any events (such as XferComplete etc)
-for these end points.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Tested-by: Ferry Toth <fntoth@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250212193116.2487289-5-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Thomas Lynema <lyz27@yahoo.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219748
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/thunderbolt/tb.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-index 052852f801467..54a4ee2b90b7f 100644
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -148,11 +148,21 @@ static const struct property_entry dwc3_pci_intel_byt_properties[] = {
- 	{}
- };
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index c592032657a1e..0668e1645bc50 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -640,11 +640,15 @@ static void tb_scan_port(struct tb_port *port)
+ 		goto out_rpm_put;
+ 	}
  
-+/*
-+ * Intel Merrifield SoC uses these endpoints for tracing and they cannot
-+ * be re-allocated if being used because the side band flow control signals
-+ * are hard wired to certain endpoints:
-+ * - 1 High BW Bulk IN (IN#1) (RTIT)
-+ * - 1 1KB BW Bulk IN (IN#8) + 1 1KB BW Bulk OUT (Run Control) (OUT#8)
-+ */
-+static const u8 dwc3_pci_mrfld_reserved_endpoints[] = { 3, 16, 17 };
+-	tb_retimer_scan(port, true);
+-
+ 	sw = tb_switch_alloc(port->sw->tb, &port->sw->dev,
+ 			     tb_downstream_route(port));
+ 	if (IS_ERR(sw)) {
++		/*
++		 * Make the downstream retimers available even if there
++		 * is no router connected.
++		 */
++		tb_retimer_scan(port, true);
 +
- static const struct property_entry dwc3_pci_mrfld_properties[] = {
- 	PROPERTY_ENTRY_STRING("dr_mode", "otg"),
- 	PROPERTY_ENTRY_STRING("linux,extcon-name", "mrfld_bcove_pwrsrc"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u3_susphy_quirk"),
- 	PROPERTY_ENTRY_BOOL("snps,dis_u2_susphy_quirk"),
-+	PROPERTY_ENTRY_U8_ARRAY("snps,reserved-endpoints", dwc3_pci_mrfld_reserved_endpoints),
- 	PROPERTY_ENTRY_BOOL("snps,usb2-gadget-lpm-disable"),
- 	PROPERTY_ENTRY_BOOL("linux,sysdev_is_parent"),
- 	{}
+ 		/*
+ 		 * If there is an error accessing the connected switch
+ 		 * it may be connected to another domain. Also we allow
+@@ -704,6 +708,14 @@ static void tb_scan_port(struct tb_port *port)
+ 	tb_switch_lane_bonding_enable(sw);
+ 	/* Set the link configured */
+ 	tb_switch_configure_link(sw);
++	/*
++	 * Scan for downstream retimers. We only scan them after the
++	 * router has been enumerated to avoid issues with certain
++	 * Pluggable devices that expect the host to enumerate them
++	 * within certain timeout.
++	 */
++	tb_retimer_scan(port, true);
++
+ 	/*
+ 	 * CL0s and CL1 are enabled and supported together.
+ 	 * Silently ignore CLx enabling in case CLx is not supported.
 -- 
 2.39.5
 
