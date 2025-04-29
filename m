@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1336AA1507
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EACEEAA1426
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD8A016EFF1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 045553A8E11
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89CB242D94;
-	Tue, 29 Apr 2025 17:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560AB248878;
+	Tue, 29 Apr 2025 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UV0hCc5e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNWb4v9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 779BD21ABDB;
-	Tue, 29 Apr 2025 17:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1209C242902;
+	Tue, 29 Apr 2025 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947214; cv=none; b=W3V+vfYJalgbmNXiMMhUO4RcUhNmwz+gc7Ish0Dt7igejaix+v53HZX0oBRChjw7q66q9ZtYKcpuFNqpMkwSXlytHveaS1uyhf/9d8oEn7lxazvs7aew2jmepKJLi+HlfKMA5o4Rf88Fazzq3ZGZsu5LTAB9z0c3Q0GVl/V6oSA=
+	t=1745946470; cv=none; b=rgtxN7XXSUHxnzKVwuceXuMe1AQ+lEZPhaDzY/YdtQf/EQv8s5D326OkRYsrtWwppKR27n5nHocsF/Pn2MAG9P+SeOZ8tPXXBaSFGxApa7Dgfjn4EW8T1NAXFwLE9EwpWWWmU0KEc8O4ovaORZsK023+9OyhTyTD2xmU/DMPzfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947214; c=relaxed/simple;
-	bh=x6ZilYUKeLZ1r6iKlLYNXZbQ2xRpXpQTKUXWLlDFOic=;
+	s=arc-20240116; t=1745946470; c=relaxed/simple;
+	bh=KyFtS04/tkpnh7ehqZJcn6nUMhp7cKCn7gBmA4BSGek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+pXRMfQI2cG/nKuab7K8K5trvUrjXc6OD6Q40CE6Huz6L7aQu0JxVQdB6gPTuVbZ8C03XRzP5X/2XLNUFBRLQHSQbJR0CKweaNG+hcBhvR3T6jy33fpytqIkQbhwN4pWh4AXwzdvbFTmuQk+G/OpmPQ17Iqa/Xr5tjZdmru3/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UV0hCc5e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8E3C4CEE9;
-	Tue, 29 Apr 2025 17:20:13 +0000 (UTC)
+	 MIME-Version; b=hx3gJ7hDBBeEifVGKWxnwLpVPIEDByEQF82U0M/L/rNnfT1vjRlMIhuXDU+an+2yD2fkePKr83QYeWzp7dUH3U7tWp6vXdccT7LTztASgI9y2CVAelTINn3UcWZZMjumpgLwGNCxbUjFZc/EcYAlyLZiFNXCDftyHOCEwnmB9UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNWb4v9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B901C4CEE3;
+	Tue, 29 Apr 2025 17:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947214;
-	bh=x6ZilYUKeLZ1r6iKlLYNXZbQ2xRpXpQTKUXWLlDFOic=;
+	s=korg; t=1745946469;
+	bh=KyFtS04/tkpnh7ehqZJcn6nUMhp7cKCn7gBmA4BSGek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UV0hCc5ep5cAAjnLoSmVP3oaf3Fy3rx85A21+/hGix1IanewKD3eHafsQ/4ZeCgVV
-	 RKKNQxSd3A2SsplfrPxotCvWWAXc0JvU3RxxUX4XamlLADrw5V671wvlSYKkRegwt9
-	 a5UaJxvM/ZMO69quCCd360LWZ0R0XUC4Klw/BGD0=
+	b=rNWb4v9Hn5Zb5yZ+Yo9jVbYZD0Dw1jBJEemNGFq4530kzkKi3lS5jcrmleh9dQS5B
+	 9IkD4TFoDTeyB+oK2aDQh9i47PGuAgNM+XcCRaWm7RrNFQELG2aVvwSIeRBNC/uXLd
+	 PU2S3H8pGGiz40+hJMt+rDU0lWWiSKXhnEBLkzZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Weidong Wang <wangweidong.a@awinic.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 209/286] media: venus: Get codecs and capabilities from hfi platform
+Subject: [PATCH 6.14 276/311] ASoC: codecs: Add of_match_table for aw888081 driver
 Date: Tue, 29 Apr 2025 18:41:53 +0200
-Message-ID: <20250429161116.549426789@linuxfoundation.org>
+Message-ID: <20250429161132.323426350@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+From: Weidong Wang <wangweidong.a@awinic.com>
 
-[ Upstream commit e29929266be1ac0e40121f56b5c13b52c281db06 ]
+[ Upstream commit 6bbb2b1286f437b45ccf4828a537429153cd1096 ]
 
-Wire up hfi platform codec and capabilities instead of
-getting them from firmware.
+Add of_match_table for aw88081 driver to make matching
+between dts and driver more flexible
 
-Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
+Signed-off-by: Weidong Wang <wangweidong.a@awinic.com>
+Link: https://patch.msgid.link/20250410024953.26565-1-wangweidong.a@awinic.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/qcom/venus/hfi_parser.c    | 38 +++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ sound/soc/codecs/aw88081.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_parser.c b/drivers/media/platform/qcom/venus/hfi_parser.c
-index be9a58ef04d86..7a2915befdb83 100644
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -245,11 +245,49 @@ static void parser_fini(struct venus_inst *inst, u32 codecs, u32 domain)
- 	}
+diff --git a/sound/soc/codecs/aw88081.c b/sound/soc/codecs/aw88081.c
+index ad16ab6812cd3..3dd8428f08cce 100644
+--- a/sound/soc/codecs/aw88081.c
++++ b/sound/soc/codecs/aw88081.c
+@@ -1295,9 +1295,19 @@ static int aw88081_i2c_probe(struct i2c_client *i2c)
+ 			aw88081_dai, ARRAY_SIZE(aw88081_dai));
  }
  
-+static int hfi_platform_parser(struct venus_core *core, struct venus_inst *inst)
-+{
-+	const struct hfi_platform *plat;
-+	const struct hfi_plat_caps *caps = NULL;
-+	u32 enc_codecs, dec_codecs, count;
-+	unsigned int entries;
++#if defined(CONFIG_OF)
++static const struct of_device_id aw88081_of_match[] = {
++	{ .compatible = "awinic,aw88081" },
++	{ .compatible = "awinic,aw88083" },
++	{ }
++};
++MODULE_DEVICE_TABLE(of, aw88081_of_match);
++#endif
 +
-+	if (inst)
-+		return 0;
-+
-+	plat = hfi_platform_get(core->res->hfi_version);
-+	if (!plat)
-+		return -EINVAL;
-+
-+	if (plat->codecs)
-+		plat->codecs(&enc_codecs, &dec_codecs, &count);
-+
-+	if (plat->capabilities)
-+		caps = plat->capabilities(&entries);
-+
-+	if (!caps || !entries || !count)
-+		return -EINVAL;
-+
-+	core->enc_codecs = enc_codecs;
-+	core->dec_codecs = dec_codecs;
-+	core->codecs_count = count;
-+	core->max_sessions_supported = MAX_SESSIONS;
-+	memset(core->caps, 0, sizeof(*caps) * MAX_CODEC_NUM);
-+	memcpy(core->caps, caps, sizeof(*caps) * entries);
-+
-+	return 0;
-+}
-+
- u32 hfi_parser(struct venus_core *core, struct venus_inst *inst, void *buf,
- 	       u32 size)
- {
- 	unsigned int words_count = size >> 2;
- 	u32 *word = buf, *data, codecs = 0, domain = 0;
-+	int ret;
-+
-+	ret = hfi_platform_parser(core, inst);
-+	if (!ret)
-+		return HFI_ERR_NONE;
- 
- 	if (size % 4)
- 		return HFI_ERR_SYS_INSUFFICIENT_RESOURCES;
+ static struct i2c_driver aw88081_i2c_driver = {
+ 	.driver = {
+ 		.name = AW88081_I2C_NAME,
++		.of_match_table = of_match_ptr(aw88081_of_match),
+ 	},
+ 	.probe = aw88081_i2c_probe,
+ 	.id_table = aw88081_i2c_id,
 -- 
 2.39.5
 
