@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEA9AA15C7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CC4AA1492
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D92E4C6ACC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62DF898310A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10D425332E;
-	Tue, 29 Apr 2025 17:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684871DF73C;
+	Tue, 29 Apr 2025 17:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MqIUVgU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h91gDzEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92D421ABDB;
-	Tue, 29 Apr 2025 17:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247182472B0;
+	Tue, 29 Apr 2025 17:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947594; cv=none; b=sWWqDGuHKj3t4coCSgH9/3pH04l2jhB4xhg+OOYDI432Z+++QQ9l3qUzhTafNy6jEom+MVomDk/WXnwgxrqikjQbBGBPncstyFW17yx4yuQ9ok18k2wkYV6nwJuX2rTg/mySc00idbDWUNJGNlW5sQLScZD94lRIZkd2fuccWyk=
+	t=1745946707; cv=none; b=j9lTYw7/s+efJRzHTXjPk3U7slSCKZodPsYIVzFMAJa0P6FAd2xjNtNqsId+l/bfMwdHvrvCP19CyKu17M8lncC6xlTdGwdDLKDGdJFRLHSMVYSM8Y3aCYb09mjU8fYIkeRJTt9Z0KYcyAUS3K+wopCNgY1xk8oBRCYPr6muZ3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947594; c=relaxed/simple;
-	bh=6dw+ADfUYdche8BEgm/fSptyp44UDnsvFpjyuMaVIlI=;
+	s=arc-20240116; t=1745946707; c=relaxed/simple;
+	bh=nLkDthn5TOxyDdpRo5pqEYpx533z6eUQv/iTfavCvJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr+fblsbCWzoITP+f8KEaDmOM6JAI3qxrrr7tn8l822xDHgaVFPwYTKfLZQJV5EHEt8CkuC8kceFjk6sVEdYO0XXKWKPTKbSUkgveTUOM4qyZYFT7Ku7auh6qUoDoMtM5gIO7bdldAJ6jbcjST/Qc6xlalB6pOw3EpOnAClgBPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MqIUVgU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C850FC4CEEA;
-	Tue, 29 Apr 2025 17:26:33 +0000 (UTC)
+	 MIME-Version; b=bmc51y2rDcOF832GFmQnQQLi6EToaEY7qMpi2MzkxKjON4l8lH4MtLOWzhqnIaTU0meWcsHxPiHvmOdXaYY69bUKLIsxvkFidP2Qfp5vEhtSuRVPtmmTvZgAJBLA0n10qQYOSv6KsexsTWiQthNFXbcpT3a32VB/fjIRiWvQW4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h91gDzEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377E2C4CEE3;
+	Tue, 29 Apr 2025 17:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947594;
-	bh=6dw+ADfUYdche8BEgm/fSptyp44UDnsvFpjyuMaVIlI=;
+	s=korg; t=1745946706;
+	bh=nLkDthn5TOxyDdpRo5pqEYpx533z6eUQv/iTfavCvJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MqIUVgU6Q4hGDS2YGepG7WHOhKKHZHJHK88Bd6UdbbTk1V06nKBBeD1oGHQ2hnSJL
-	 vi/Gq5+btN15+yjKnD+RMOnbJuyThLDbiUi3r7x/Vy9DhHuFcbG8IctMtsnz4r+JuC
-	 ZHIczFdaKBXIaEZHRb0tBY2TGmWqBxHFNVkZ3dX8=
+	b=h91gDzEPapueXIpJaNbm+my8Tl6NeYbNjd/WIKK4L+apqNODL6fVJ4pop6OUFAXiD
+	 G6fMmEKiIbPM7wbJkAEc3LHXneMwlDx//7vNuYSEZEDYwZEME94bKU7cfZpVDmIQY+
+	 F25xbEU+MVrbGCoCI+QgAWui8cZxioviQ++ylB0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Leonid Arapov <arapovl839@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 006/280] mmc: sdhci-msm: fix dev reference leaked through of_qcom_ice_get
+Subject: [PATCH 5.10 043/286] fbdev: omapfb: Add plane value check
 Date: Tue, 29 Apr 2025 18:39:07 +0200
-Message-ID: <20250429161115.274250672@linuxfoundation.org>
+Message-ID: <20250429161109.632380708@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,44 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Leonid Arapov <arapovl839@gmail.com>
 
-[ Upstream commit cbef7442fba510b7eb229dcc9f39d3dde4a159a4 ]
+[ Upstream commit 3e411827f31db7f938a30a3c7a7599839401ec30 ]
 
-The driver leaks the device reference taken with
-of_find_device_by_node(). Fix the leak by using devm_of_qcom_ice_get().
+Function dispc_ovl_setup is not intended to work with the value OMAP_DSS_WB
+of the enum parameter plane.
 
-Fixes: c7eed31e235c ("mmc: sdhci-msm: Switch to the new ICE API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20250117-qcom-ice-fix-dev-leak-v2-2-1ffa5b6884cb@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The value of this parameter is initialized in dss_init_overlays and in the
+current state of the code it cannot take this value so it's not a real
+problem.
+
+For the purposes of defensive coding it wouldn't be superfluous to check
+the parameter value, because some functions down the call stack process
+this value correctly and some not.
+
+For example, in dispc_ovl_setup_global_alpha it may lead to buffer
+overflow.
+
+Add check for this value.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE static
+analysis tool.
+
+Signed-off-by: Leonid Arapov <arapovl839@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/omap2/omapfb/dss/dispc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-msm.c b/drivers/mmc/host/sdhci-msm.c
-index 945d08531de37..82808cc373f68 100644
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -1866,7 +1866,7 @@ static int sdhci_msm_ice_init(struct sdhci_msm_host *msm_host,
- 	if (!(cqhci_readl(cq_host, CQHCI_CAP) & CQHCI_CAP_CS))
- 		return 0;
+diff --git a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+index b2d6e6df21615..d852bef1d507f 100644
+--- a/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
++++ b/drivers/video/fbdev/omap2/omapfb/dss/dispc.c
+@@ -2751,9 +2751,13 @@ int dispc_ovl_setup(enum omap_plane plane, const struct omap_overlay_info *oi,
+ 		bool mem_to_mem)
+ {
+ 	int r;
+-	enum omap_overlay_caps caps = dss_feat_get_overlay_caps(plane);
++	enum omap_overlay_caps caps;
+ 	enum omap_channel channel;
  
--	ice = of_qcom_ice_get(dev);
-+	ice = devm_of_qcom_ice_get(dev);
- 	if (ice == ERR_PTR(-EOPNOTSUPP)) {
- 		dev_warn(dev, "Disabling inline encryption support\n");
- 		ice = NULL;
++	if (plane == OMAP_DSS_WB)
++		return -EINVAL;
++
++	caps = dss_feat_get_overlay_caps(plane);
+ 	channel = dispc_ovl_get_channel_out(plane);
+ 
+ 	DSSDBG("dispc_ovl_setup %d, pa %pad, pa_uv %pad, sw %d, %d,%d, %dx%d ->"
 -- 
 2.39.5
 
