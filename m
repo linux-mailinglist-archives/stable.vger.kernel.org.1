@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-138116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89C4AA16A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8FCAAA18B9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 514FC188A50D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA3944E197C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1148624E000;
-	Tue, 29 Apr 2025 17:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5543B25393F;
+	Tue, 29 Apr 2025 18:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOsuL5ad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxDsJ7Bn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E391C6B4;
-	Tue, 29 Apr 2025 17:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CDF25332E;
+	Tue, 29 Apr 2025 18:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948205; cv=none; b=SkMXcU6Llzu4wdgYm2uQbtUBJ908ZubAqWZOcbVvLYVlW9hsQxRP0fk8/+Cd86JFdLoNOc+DfdBPm+p0us5igGsRa6n62Y6AwBPzfLxAFRekYk8BeCQJ785Y6OpdzH27/gaQQxR1GVCWZi1zN6PsmqJJZpVrpETmfrdqigb+Vz0=
+	t=1745949718; cv=none; b=N/QaKsu4i1DxinRHsYSTzrzTHL1jkEIgBiyjbr+tBa3FngBVw0X9T/GoAfhpzV2upqfRt5cJC8/kNZ+pmBIS/Hv74GwdEnSS3uplwznteUavn+0+SMCd12rljGZDwqZQTXLDpVObAMigBWFZmH5Ggw0l6FBGkA2qhB3k8Mzys8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948205; c=relaxed/simple;
-	bh=VxRuh/BlPsyw6ttDLYWKx+k4H45TwFIyM9yU4xZyPkg=;
+	s=arc-20240116; t=1745949718; c=relaxed/simple;
+	bh=Uvklg8GafiDFfYQbrQnY2wJafV4dfA/PFCtcKrppmSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PMacNVe+bpz5SwS8bHDfOdy8zEQ4exH0yWcvdRLUK0Gf/MMZa0D2uY292ff707WxeAsz4JqStXpS+wLk1luaTi6DlzGcyAAgfbnB4BQW45YBMKyxMcbZLfSsLlZsOF1+vo2rrkXpJumbqqueqQuLnBqrwL68IWJhAvBMNtpskxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOsuL5ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E62C4CEE3;
-	Tue, 29 Apr 2025 17:36:45 +0000 (UTC)
+	 MIME-Version; b=dxUeN0SjDiNEJFJ9e2iAH1Traph36ywRJW1gW7GyCywQB37hIo3zMeTEIgobDvKYcTdS90ARlNpCdrORrHC4wvW3dRlp4t5EHBxVP2HauZdgayYlQni+cmREWoRxagKY/LFr7OPkUbvUwmy6VIsK2FmIPTYc8YA1MwOiKbSWTkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxDsJ7Bn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3B5C4CEE3;
+	Tue, 29 Apr 2025 18:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948205;
-	bh=VxRuh/BlPsyw6ttDLYWKx+k4H45TwFIyM9yU4xZyPkg=;
+	s=korg; t=1745949717;
+	bh=Uvklg8GafiDFfYQbrQnY2wJafV4dfA/PFCtcKrppmSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iOsuL5addOZuwOeACn61I++ImL39gMvKQsN6DnD27jn6ttKVLs3WtVhiEZmLAx0Qy
-	 rno1pdzo4rlL5FESaimyn1nKS6L+LVIDM55ffp+Ha7CQGFSWZ60TKoQrZDm5Snwjzi
-	 e8QybkpdJfkWHuoM597nQ/Yue0ai7+kE/ruj4shc=
+	b=UxDsJ7BnOKgjbDR01cwThr7x0hY6EG8Gm3tL6khZjPEsMHCk3Kh4GyHMzyilMvvg+
+	 iGUplkPvkBMFeFH/9nDStBrHvfBJ2hO7p8vkvIgp/bbquegecYUpi7Af1igMg2UCzh
+	 TCqC0MoDrcQ7uIhEntT2XdKj8qcj1YWJGXtdcjoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Marek Vasut <marex@denx.de>,
+	Richard Leitner <richard.leitner@skidata.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/280] KVM: s390: Dont use %pK through debug printing
+Subject: [PATCH 6.1 035/167] phy: freescale: imx8m-pcie: Add i.MX8MP PCIe PHY support
 Date: Tue, 29 Apr 2025 18:42:23 +0200
-Message-ID: <20250429161123.397820213@linuxfoundation.org>
+Message-ID: <20250429161053.176069961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +65,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 0c7fbae5bc782429c97d68dc40fb126748d7e352 ]
+[ Upstream commit dce9edff16ee8df20e791e82e0704c4667cc3908 ]
 
-Restricted pointers ("%pK") are only meant to be used when directly
-printing to a file from task context.
-Otherwise it can unintentionally expose security sensitive,
-raw pointer values.
+Add i.MX8MP PCIe PHY support.
 
-Use regular pointer formatting instead.
-
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Michael Mueller <mimu@linux.ibm.com>
-Tested-by: Michael Mueller <mimu@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Message-ID: <20250217-restricted-pointers-s390-v1-2-0e4ace75d8aa@linutronix.de>
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Tested-by: Marek Vasut <marex@denx.de>
+Tested-by: Richard Leitner <richard.leitner@skidata.com>
+Tested-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.kernel.org/r/1665625622-20551-5-git-send-email-hongxing.zhu@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: aecb63e88c5e ("phy: freescale: imx8m-pcie: assert phy reset and perst in power off")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/intercept.c |  2 +-
- arch/s390/kvm/interrupt.c |  8 ++++----
- arch/s390/kvm/kvm-s390.c  | 10 +++++-----
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/phy/freescale/phy-fsl-imx8m-pcie.c | 25 ++++++++++++++++++++--
+ 1 file changed, 23 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kvm/intercept.c b/arch/s390/kvm/intercept.c
-index b16352083ff98..f0be263b334ce 100644
---- a/arch/s390/kvm/intercept.c
-+++ b/arch/s390/kvm/intercept.c
-@@ -94,7 +94,7 @@ static int handle_validity(struct kvm_vcpu *vcpu)
+diff --git a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+index 211ce84d980f9..0082de17cf4de 100644
+--- a/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
++++ b/drivers/phy/freescale/phy-fsl-imx8m-pcie.c
+@@ -50,6 +50,7 @@
  
- 	vcpu->stat.exit_validity++;
- 	trace_kvm_s390_intercept_validity(vcpu, viwhy);
--	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%pK)", viwhy,
-+	KVM_EVENT(3, "validity intercept 0x%x for pid %u (kvm 0x%p)", viwhy,
- 		  current->pid, vcpu->kvm);
+ enum imx8_pcie_phy_type {
+ 	IMX8MM,
++	IMX8MP,
+ };
  
- 	/* do not warn on invalid runtime instrumentation mode */
-diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-index 4f0e7f61edf78..bc65fa6dc1555 100644
---- a/arch/s390/kvm/interrupt.c
-+++ b/arch/s390/kvm/interrupt.c
-@@ -3161,7 +3161,7 @@ void kvm_s390_gisa_clear(struct kvm *kvm)
- 	if (!gi->origin)
- 		return;
- 	gisa_clear_ipm(gi->origin);
--	VM_EVENT(kvm, 3, "gisa 0x%pK cleared", gi->origin);
-+	VM_EVENT(kvm, 3, "gisa 0x%p cleared", gi->origin);
- }
+ struct imx8_pcie_phy_drvdata {
+@@ -62,6 +63,7 @@ struct imx8_pcie_phy {
+ 	struct clk		*clk;
+ 	struct phy		*phy;
+ 	struct regmap		*iomuxc_gpr;
++	struct reset_control	*perst;
+ 	struct reset_control	*reset;
+ 	u32			refclk_pad_mode;
+ 	u32			tx_deemph_gen1;
+@@ -76,11 +78,11 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 	u32 val, pad_mode;
+ 	struct imx8_pcie_phy *imx8_phy = phy_get_drvdata(phy);
  
- void kvm_s390_gisa_init(struct kvm *kvm)
-@@ -3178,7 +3178,7 @@ void kvm_s390_gisa_init(struct kvm *kvm)
- 	gi->timer.function = gisa_vcpu_kicker;
- 	memset(gi->origin, 0, sizeof(struct kvm_s390_gisa));
- 	gi->origin->next_alert = (u32)virt_to_phys(gi->origin);
--	VM_EVENT(kvm, 3, "gisa 0x%pK initialized", gi->origin);
-+	VM_EVENT(kvm, 3, "gisa 0x%p initialized", gi->origin);
- }
- 
- void kvm_s390_gisa_enable(struct kvm *kvm)
-@@ -3219,7 +3219,7 @@ void kvm_s390_gisa_destroy(struct kvm *kvm)
- 		process_gib_alert_list();
- 	hrtimer_cancel(&gi->timer);
- 	gi->origin = NULL;
--	VM_EVENT(kvm, 3, "gisa 0x%pK destroyed", gisa);
-+	VM_EVENT(kvm, 3, "gisa 0x%p destroyed", gisa);
- }
- 
- void kvm_s390_gisa_disable(struct kvm *kvm)
-@@ -3468,7 +3468,7 @@ int __init kvm_s390_gib_init(u8 nisc)
- 		}
- 	}
- 
--	KVM_EVENT(3, "gib 0x%pK (nisc=%d) initialized", gib, gib->nisc);
-+	KVM_EVENT(3, "gib 0x%p (nisc=%d) initialized", gib, gib->nisc);
- 	goto out;
- 
- out_unreg_gal:
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index bb7134faaebff..286a224c81ee4 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -998,7 +998,7 @@ static int kvm_s390_set_mem_control(struct kvm *kvm, struct kvm_device_attr *att
- 		}
- 		mutex_unlock(&kvm->lock);
- 		VM_EVENT(kvm, 3, "SET: max guest address: %lu", new_limit);
--		VM_EVENT(kvm, 3, "New guest asce: 0x%pK",
-+		VM_EVENT(kvm, 3, "New guest asce: 0x%p",
- 			 (void *) kvm->arch.gmap->asce);
+-	reset_control_assert(imx8_phy->reset);
+-
+ 	pad_mode = imx8_phy->refclk_pad_mode;
+ 	switch (imx8_phy->drvdata->variant) {
+ 	case IMX8MM:
++		reset_control_assert(imx8_phy->reset);
++
+ 		/* Tune PHY de-emphasis setting to pass PCIe compliance. */
+ 		if (imx8_phy->tx_deemph_gen1)
+ 			writel(imx8_phy->tx_deemph_gen1,
+@@ -89,6 +91,8 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 			writel(imx8_phy->tx_deemph_gen2,
+ 			       imx8_phy->base + PCIE_PHY_TRSV_REG6);
  		break;
- 	}
-@@ -3421,7 +3421,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 		kvm_s390_gisa_init(kvm);
- 	INIT_LIST_HEAD(&kvm->arch.pv.need_cleanup);
- 	kvm->arch.pv.set_aside = NULL;
--	KVM_EVENT(3, "vm 0x%pK created by pid %u", kvm, current->pid);
-+	KVM_EVENT(3, "vm 0x%p created by pid %u", kvm, current->pid);
- 
- 	return 0;
- out_err:
-@@ -3484,7 +3484,7 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 	kvm_s390_destroy_adapters(kvm);
- 	kvm_s390_clear_float_irqs(kvm);
- 	kvm_s390_vsie_destroy(kvm);
--	KVM_EVENT(3, "vm 0x%pK destroyed", kvm);
-+	KVM_EVENT(3, "vm 0x%p destroyed", kvm);
- }
- 
- /* Section: vcpu related */
-@@ -3605,7 +3605,7 @@ static int sca_switch_to_extended(struct kvm *kvm)
- 
- 	free_page((unsigned long)old_sca);
- 
--	VM_EVENT(kvm, 2, "Switched to ESCA (0x%pK -> 0x%pK)",
-+	VM_EVENT(kvm, 2, "Switched to ESCA (0x%p -> 0x%p)",
- 		 old_sca, kvm->arch.sca);
- 	return 0;
- }
-@@ -3978,7 +3978,7 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
- 			goto out_free_sie_block;
++	case IMX8MP: /* Do nothing. */
++		break;
  	}
  
--	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%pK, sie block at 0x%pK",
-+	VM_EVENT(vcpu->kvm, 3, "create cpu %d at 0x%p, sie block at 0x%p",
- 		 vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
- 	trace_kvm_s390_create_vcpu(vcpu->vcpu_id, vcpu, vcpu->arch.sie_block);
+ 	if (pad_mode == IMX8_PCIE_REFCLK_PAD_INPUT ||
+@@ -145,6 +149,9 @@ static int imx8_pcie_phy_power_on(struct phy *phy)
+ 			   IMX8MM_GPR_PCIE_CMN_RST);
  
+ 	switch (imx8_phy->drvdata->variant) {
++	case IMX8MP:
++		reset_control_deassert(imx8_phy->perst);
++		fallthrough;
+ 	case IMX8MM:
+ 		reset_control_deassert(imx8_phy->reset);
+ 		usleep_range(200, 500);
+@@ -186,8 +193,14 @@ static const struct imx8_pcie_phy_drvdata imx8mm_drvdata = {
+ 	.variant = IMX8MM,
+ };
+ 
++static const struct imx8_pcie_phy_drvdata imx8mp_drvdata = {
++	.gpr = "fsl,imx8mp-iomuxc-gpr",
++	.variant = IMX8MP,
++};
++
+ static const struct of_device_id imx8_pcie_phy_of_match[] = {
+ 	{.compatible = "fsl,imx8mm-pcie-phy", .data = &imx8mm_drvdata, },
++	{.compatible = "fsl,imx8mp-pcie-phy", .data = &imx8mp_drvdata, },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(of, imx8_pcie_phy_of_match);
+@@ -243,6 +256,14 @@ static int imx8_pcie_phy_probe(struct platform_device *pdev)
+ 		return PTR_ERR(imx8_phy->reset);
+ 	}
+ 
++	if (imx8_phy->drvdata->variant == IMX8MP) {
++		imx8_phy->perst =
++			devm_reset_control_get_exclusive(dev, "perst");
++		if (IS_ERR(imx8_phy->perst))
++			dev_err_probe(dev, PTR_ERR(imx8_phy->perst),
++				      "Failed to get PCIE PHY PERST control\n");
++	}
++
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	imx8_phy->base = devm_ioremap_resource(dev, res);
+ 	if (IS_ERR(imx8_phy->base))
 -- 
 2.39.5
 
