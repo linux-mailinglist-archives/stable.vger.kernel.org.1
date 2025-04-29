@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F381AA141D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5B0AA17E4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C68D3A4315
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 856647B2B83
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAACD248191;
-	Tue, 29 Apr 2025 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E3F2517AF;
+	Tue, 29 Apr 2025 17:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byLOr82O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jv3xAmfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981D024728A;
-	Tue, 29 Apr 2025 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A771F2459C5;
+	Tue, 29 Apr 2025 17:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946445; cv=none; b=AFgmNDHOD2xskz5onoPYQCh8sfdvdj6qCBa4dk6m1f2EUa8SQv6oHcTCNHWrWKvHkCmvuEg1FXf+71i8d3zALoyvriUW3RxxrqgApZufgPtV/iVz2If9cHH+jIeOTP0hdWsevS6LpV7YcvRMEbm00HJVLrg4TvO1+IbskzPOBcA=
+	t=1745949152; cv=none; b=BPDX3luvgKzaMVs4h2UInMxu2pHzNpOpHiqmDjaddG1Q1Ah1AyO3LGcC6YTuZij/TIphO57TMFbBLV6xONeawZZXVmPx9z09n2B5nRJAs8i4t2qCTJRvL8gZIaQU1U8zaVcHJFc/K5mSJdaZvsFA1i0oZTC56Z7BWZIgwUZBqBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946445; c=relaxed/simple;
-	bh=YNnzAL0I6nYg79d2KWfMmExX8TsK4rKVHE5Saoock8o=;
+	s=arc-20240116; t=1745949152; c=relaxed/simple;
+	bh=2Bdrm9XwhJCvqcSFBZ651oKhFZq/wkmqa8XYPl96BbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUs8eUn364n8exs8x31hG1UayryO2tFKPiE6tH38DeOVHLwqf3X8BmU1FBPXDMoNZ81DqKpt9/zbU/pXgiCAt0CmxRNXTNIs+4+M9pfl+qgo3ZNWRBxcwrWzrNdqbBK3DoQXplAewzo4PPQASM5ZagNHfEmPQZ1S6j84R9igcSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byLOr82O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F10C4CEE3;
-	Tue, 29 Apr 2025 17:07:24 +0000 (UTC)
+	 MIME-Version; b=cFfk5H67r6/tFo9UbVR4P+47r1FqKkPxPw4V+rKDynx1kLmADX5qOp+dKHCnxoTLg7dWJCsBgnXZJxlujsoiYPcPUrYoBv3rzkzEO2AntkjHIYkZwUSZqUKIW78x0fw8KdDtYMuaGOZ8vbBwqZw5UGJ7/Kapx5D1O/fw0g4tDug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jv3xAmfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0EAC4CEE3;
+	Tue, 29 Apr 2025 17:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946445;
-	bh=YNnzAL0I6nYg79d2KWfMmExX8TsK4rKVHE5Saoock8o=;
+	s=korg; t=1745949152;
+	bh=2Bdrm9XwhJCvqcSFBZ651oKhFZq/wkmqa8XYPl96BbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byLOr82O9Uezo62T+F2A21zPe5nnTgRrDR8F6GIJWDyqgTiL3dY/VhSUYIuV7Y1VU
-	 ECIT40oMM/D9EiRhDONWg3dcwAT82mSbvsZtM3+JOOwgRBoOwZkPB27+UpQwBCKt1X
-	 vQVYsa54AQ2Al3tk78bRPwTp2Qz4hmTWQUOoh/Go=
+	b=Jv3xAmfk6vMvErTKShXgqKS7PxOVKfMijqwIewEsN90+DpF37o2IhQ+TLir4lgC94
+	 fTRKndkaDyWaER4FslDWUsKUYWxxt4nZdrvKOufnY/Ur8cv6va/U349z07G6wTWkdm
+	 3YrbhcuLDMjNsUCy7nPgHdnvP2UEnBvuJQIr6cXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 269/311] scsi: hisi_sas: Fix I/O errors caused by hardware port ID changes
-Date: Tue, 29 Apr 2025 18:41:46 +0200
-Message-ID: <20250429161132.044807414@linuxfoundation.org>
+	syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	David Sauerwein <dssauerw@amazon.de>
+Subject: [PATCH 5.15 230/373] bpf: avoid holding freeze_mutex during mmap operation
+Date: Tue, 29 Apr 2025 18:41:47 +0200
+Message-ID: <20250429161132.605370924@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit daff37f00c7506ca322ccfce95d342022f06ec58 ]
+commit bc27c52eea189e8f7492d40739b7746d67b65beb upstream.
 
-The hw port ID of phy may change when inserting disks in batches, causing
-the port ID in hisi_sas_port and itct to be inconsistent with the hardware,
-resulting in I/O errors. The solution is to set the device state to gone to
-intercept I/O sent to the device, and then execute linkreset to discard and
-find the disk to re-update its information.
+We use map->freeze_mutex to prevent races between map_freeze() and
+memory mapping BPF map contents with writable permissions. The way we
+naively do this means we'll hold freeze_mutex for entire duration of all
+the mm and VMA manipulations, which is completely unnecessary. This can
+potentially also lead to deadlocks, as reported by syzbot in [0].
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20250312095135.3048379-3-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So, instead, hold freeze_mutex only during writeability checks, bump
+(proactively) "write active" count for the map, unlock the mutex and
+proceed with mmap logic. And only if something went wrong during mmap
+logic, then undo that "write active" counter increment.
+
+  [0] https://lore.kernel.org/bpf/678dcbc9.050a0220.303755.0066.GAE@google.com/
+
+Fixes: fc9702273e2e ("bpf: Add mmap() support for BPF_MAP_TYPE_ARRAY")
+Reported-by: syzbot+4dc041c686b7c816a71e@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20250129012246.1515826-2-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: David Sauerwein <dssauerw@amazon.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ kernel/bpf/syscall.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 3596414d970b2..7a484ad0f9abe 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -935,8 +935,28 @@ static void hisi_sas_phyup_work_common(struct work_struct *work,
- 		container_of(work, typeof(*phy), works[event]);
- 	struct hisi_hba *hisi_hba = phy->hisi_hba;
- 	struct asd_sas_phy *sas_phy = &phy->sas_phy;
-+	struct asd_sas_port *sas_port = sas_phy->port;
-+	struct hisi_sas_port *port = phy->port;
-+	struct device *dev = hisi_hba->dev;
-+	struct domain_device *port_dev;
- 	int phy_no = sas_phy->id;
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -654,7 +654,7 @@ static const struct vm_operations_struct
+ static int bpf_map_mmap(struct file *filp, struct vm_area_struct *vma)
+ {
+ 	struct bpf_map *map = filp->private_data;
+-	int err;
++	int err = 0;
  
-+	if (!test_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags) &&
-+	    sas_port && port && (port->id != phy->port_id)) {
-+		dev_info(dev, "phy%d's hw port id changed from %d to %llu\n",
-+				phy_no, port->id, phy->port_id);
-+		port_dev = sas_port->port_dev;
-+		if (port_dev && !dev_is_expander(port_dev->dev_type)) {
-+			/*
-+			 * Set the device state to gone to block
-+			 * sending IO to the device.
-+			 */
-+			set_bit(SAS_DEV_GONE, &port_dev->state);
-+			hisi_sas_notify_phy_event(phy, HISI_PHYE_LINK_RESET);
-+			return;
-+		}
+ 	if (!map->ops->map_mmap || map_value_has_spin_lock(map) ||
+ 	    map_value_has_timer(map))
+@@ -679,7 +679,12 @@ static int bpf_map_mmap(struct file *fil
+ 			err = -EACCES;
+ 			goto out;
+ 		}
++		bpf_map_write_active_inc(map);
+ 	}
++out:
++	mutex_unlock(&map->freeze_mutex);
++	if (err)
++		return err;
+ 
+ 	/* set default open/close callbacks */
+ 	vma->vm_ops = &bpf_map_default_vmops;
+@@ -690,13 +695,11 @@ static int bpf_map_mmap(struct file *fil
+ 		vma->vm_flags &= ~VM_MAYWRITE;
+ 
+ 	err = map->ops->map_mmap(map, vma);
+-	if (err)
+-		goto out;
++	if (err) {
++		if (vma->vm_flags & VM_WRITE)
++			bpf_map_write_active_dec(map);
 +	}
-+
- 	phy->wait_phyup_cnt = 0;
- 	if (phy->identify.target_port_protocols == SAS_PROTOCOL_SSP)
- 		hisi_hba->hw->sl_notify_ssp(hisi_hba, phy_no);
--- 
-2.39.5
-
+ 
+-	if (vma->vm_flags & VM_MAYWRITE)
+-		bpf_map_write_active_inc(map);
+-out:
+-	mutex_unlock(&map->freeze_mutex);
+ 	return err;
+ }
+ 
 
 
 
