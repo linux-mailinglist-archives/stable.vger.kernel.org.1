@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-138588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8808AA191D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2875AA19AF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 507F09A534F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28581C003C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17B7253F2C;
-	Tue, 29 Apr 2025 18:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D826D25334D;
+	Tue, 29 Apr 2025 18:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2MlgYHpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLr0fVfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7001A248889;
-	Tue, 29 Apr 2025 18:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945D819F424;
+	Tue, 29 Apr 2025 18:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949724; cv=none; b=XV9KetTgdrrzODuxX/hJO6AFITUvXOdjbgwtXNQhCHmNJe/4jBrjhx7cExlMfCG+T9ab9GgbBtj3E0OdMkSAbDAfa54NrNkMOYXl6vmL+ZBrjAU593t8tXADJFEICItWDL5EuVg8VQBzZAEhJc9YgqIAJZMKVrzVWU3qzUFJsvY=
+	t=1745950318; cv=none; b=bo0n4Atsbt8bGS9+Noy/D2/nDgW/vpeT9s/MzFPZjwWCTC9MXuSWo2nQpSNAk0ohIo8W7rgcvgWu8boPGg/5rsRamA30wzKj5X4/ImVU2rWNStkC5sPcf50jeCP1s76/OHvt/C+Jbxd0ppUU1HCFani4wVLDi2sJDdbFiWzePaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949724; c=relaxed/simple;
-	bh=kKSsabTdQ2kC9z0xZMX2XTcfMYOWpnMyyABinqLRokA=;
+	s=arc-20240116; t=1745950318; c=relaxed/simple;
+	bh=gqrbT2CqmOZBAfqzI1c7E2N53jfvTZ/Or4WSCwktDTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvZTvd5UX2f7Qyfxd8jeqaB4OUFDPKzLW+UYmcuhFceoY/u1wPILXw2MyKk/5WZOkEuU3b8NbI3A+EkMk7qe02TyVzEK0uGtJDhUe6IAQ+FSBkQF9xWEypSNSK773/jmuVpvnjtyR4yYLz69w1mRsifdpNuuzq7rQG5pt4uYoqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2MlgYHpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2578C4CEE3;
-	Tue, 29 Apr 2025 18:02:03 +0000 (UTC)
+	 MIME-Version; b=WDP1z2iGFuCu5bl6nplh8f1hswxQhC6ZZoXevWNi/3fCgct6X2nURpBBCwhz6CelCZj43VtFdZI4HhLTxDT3echXNqNCNHMsiS48Zf5+vj7Md9C30oLh+Sus1oqajYcmgur92oBTxRdkrA5IRMgZJ34Mq2WxDxGySf/l0B5uYbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLr0fVfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F750C4CEE3;
+	Tue, 29 Apr 2025 18:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949724;
-	bh=kKSsabTdQ2kC9z0xZMX2XTcfMYOWpnMyyABinqLRokA=;
+	s=korg; t=1745950318;
+	bh=gqrbT2CqmOZBAfqzI1c7E2N53jfvTZ/Or4WSCwktDTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2MlgYHpk/PaT92HHX1Xua6lNqtpwIHdIId/b+nkjBxYed1X8ZMbEAuXA743OAVsJt
-	 2SiDFWIzdBv16SzHz4/1TlOpZnfPTrIMypT/z+65iTH43u1VBuZ7IB5prp6aT8d1Le
-	 gFLqkeC7UbCuYpx4KNBwVzI64jONJIAqjjHbiSC8=
+	b=iLr0fVfGpSTYt7sb9A79KQRem+8RjXqNwgxQ7DiQvT81fHXj7Uk8rZRPn8gAT4ZUZ
+	 uwKOTFr8cCzvh2ALSm6u8UEeAAaYumlGFoSByjJ3OoPWkKMDGb2ykAi5iDOaOkJ3iS
+	 8Ml1JPVqBffLOOaeYkolqjBOhsrP1ZE4IHZqvOH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Bo-Cun Chen <bc-bocun.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/167] s390/sclp: Allow user-space to provide PCI reports for optical modules
+Subject: [PATCH 6.6 057/204] net: ethernet: mtk_eth_soc: net: revise NETSYSv3 hardware configuration
 Date: Tue, 29 Apr 2025 18:42:25 +0200
-Message-ID: <20250429161053.255937285@linuxfoundation.org>
+Message-ID: <20250429161101.761189123@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
 
-[ Upstream commit e9ab04490667249633fb397be17db46a8fa6d130 ]
+[ Upstream commit 491ef1117c56476f199b481f8c68820fe4c3a7c2 ]
 
-The new SCLP action qualifier 3 is used by user-space code to provide
-optical module monitoring data to the platform.
+Change hardware configuration for the NETSYSv3.
+ - Enable PSE dummy page mechanism for the GDM1/2/3
+ - Enable PSE drop mechanism when the WDMA Rx ring full
+ - Enable PSE no-drop mechanism for packets from the WDMA Tx
+ - Correct PSE free drop threshold
+ - Correct PSE CDMA high threshold
 
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: aa9f168d55dc ("s390/pci: Support mmap() of PCI resources except for ISM devices")
+Fixes: 1953f134a1a8b ("net: ethernet: mtk_eth_soc: add NETSYS_V3 version support")
+Signed-off-by: Bo-Cun Chen <bc-bocun.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/b71f8fd9d4bb69c646c4d558f9331dd965068606.1744907886.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 24 +++++++++++++++++----
+ drivers/net/ethernet/mediatek/mtk_eth_soc.h | 10 ++++++++-
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_pci.c b/drivers/s390/char/sclp_pci.c
-index a3e5a5fb0c1e7..c3466a8c56bb5 100644
---- a/drivers/s390/char/sclp_pci.c
-+++ b/drivers/s390/char/sclp_pci.c
-@@ -27,6 +27,7 @@
- #define SCLP_ERRNOTIFY_AQ_RESET			0
- #define SCLP_ERRNOTIFY_AQ_REPAIR		1
- #define SCLP_ERRNOTIFY_AQ_INFO_LOG		2
-+#define SCLP_ERRNOTIFY_AQ_OPTICS_DATA		3
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index c201ea20e4047..dc89dbc13b251 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3949,11 +3949,27 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
+ 	mtk_w32(eth, 0x21021000, MTK_FE_INT_GRP);
  
- static DEFINE_MUTEX(sclp_pci_mutex);
- static struct sclp_register sclp_pci_event = {
-@@ -116,6 +117,7 @@ static int sclp_pci_check_report(struct zpci_report_error_header *report)
- 	case SCLP_ERRNOTIFY_AQ_RESET:
- 	case SCLP_ERRNOTIFY_AQ_REPAIR:
- 	case SCLP_ERRNOTIFY_AQ_INFO_LOG:
-+	case SCLP_ERRNOTIFY_AQ_OPTICS_DATA:
- 		break;
- 	default:
- 		return -EINVAL;
+ 	if (mtk_is_netsys_v3_or_greater(eth)) {
+-		/* PSE should not drop port1, port8 and port9 packets */
+-		mtk_w32(eth, 0x00000302, PSE_DROP_CFG);
++		/* PSE dummy page mechanism */
++		mtk_w32(eth, PSE_DUMMY_WORK_GDM(1) | PSE_DUMMY_WORK_GDM(2) |
++			PSE_DUMMY_WORK_GDM(3) | DUMMY_PAGE_THR, PSE_DUMY_REQ);
++
++		/* PSE free buffer drop threshold */
++		mtk_w32(eth, 0x00600009, PSE_IQ_REV(8));
++
++		/* PSE should not drop port8, port9 and port13 packets from
++		 * WDMA Tx
++		 */
++		mtk_w32(eth, 0x00002300, PSE_DROP_CFG);
++
++		/* PSE should drop packets to port8, port9 and port13 on WDMA Rx
++		 * ring full
++		 */
++		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(0));
++		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(1));
++		mtk_w32(eth, 0x00002300, PSE_PPE_DROP(2));
+ 
+ 		/* GDM and CDM Threshold */
+-		mtk_w32(eth, 0x00000707, MTK_CDMW0_THRES);
++		mtk_w32(eth, 0x08000707, MTK_CDMW0_THRES);
+ 		mtk_w32(eth, 0x00000077, MTK_CDMW1_THRES);
+ 
+ 		/* Disable GDM1 RX CRC stripping */
+@@ -3970,7 +3986,7 @@ static int mtk_hw_init(struct mtk_eth *eth, bool reset)
+ 		mtk_w32(eth, 0x00000300, PSE_DROP_CFG);
+ 
+ 		/* PSE should drop packets to port 8/9 on WDMA Rx ring full */
+-		mtk_w32(eth, 0x00000300, PSE_PPE0_DROP);
++		mtk_w32(eth, 0x00000300, PSE_PPE_DROP(0));
+ 
+ 		/* PSE Free Queue Flow Control  */
+ 		mtk_w32(eth, 0x01fa01f4, PSE_FQFC_CFG2);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.h b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+index 403219d987eff..d1c7b5f1ee4a9 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
+@@ -149,7 +149,15 @@
+ #define PSE_FQFC_CFG1		0x100
+ #define PSE_FQFC_CFG2		0x104
+ #define PSE_DROP_CFG		0x108
+-#define PSE_PPE0_DROP		0x110
++#define PSE_PPE_DROP(x)		(0x110 + ((x) * 0x4))
++
++/* PSE Last FreeQ Page Request Control */
++#define PSE_DUMY_REQ		0x10C
++/* PSE_DUMY_REQ is not a typo but actually called like that also in
++ * MediaTek's datasheet
++ */
++#define PSE_DUMMY_WORK_GDM(x)	BIT(16 + (x))
++#define DUMMY_PAGE_THR		0x1
+ 
+ /* PSE Input Queue Reservation Register*/
+ #define PSE_IQ_REV(x)		(0x140 + (((x) - 1) << 2))
 -- 
 2.39.5
 
