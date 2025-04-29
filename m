@@ -1,119 +1,132 @@
-Return-Path: <stable+bounces-137115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93856AA10E9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2A14AA1146
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEBB47A238D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 15:48:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E09716415E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C9D23E35E;
-	Tue, 29 Apr 2025 15:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411D0242917;
+	Tue, 29 Apr 2025 16:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Voz75BMs"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gbNW+wZh"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D6B21771B;
-	Tue, 29 Apr 2025 15:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588C7218AA5;
+	Tue, 29 Apr 2025 16:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745941800; cv=none; b=Hkvctj+KvOB9zKaxnjv7Ewl1lfztvePACCU1SGdjR2vUtREteDXfNDi7Z0jw6QotL7VMxy+RNNCBM03N+Gaz4i4vYifVIh1EY6OVyK3fgvVAnXpeUX/BO2LEwDJK6C2+4XJtPmEuNWHhAEh5symDRTnuMjDAzI3FJs0Ftkq9E/I=
+	t=1745942933; cv=none; b=ABiLzVAkRmEDoaJZKB2uTnEI6mcMRRr4/cgyS0VKX3BpqPI2Kl0EOGQgQZCVF0bOAECjM1yJCEppFOAqpb/ZebhyL7nkLW9cfxNEKHWji4niVH0wzaPEMFJ7Uu6bkwMTzGEwCW1HpURqp0CbTUn3UnDrTXyf30xs7RTcsKF15TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745941800; c=relaxed/simple;
-	bh=SWA30VtLEsbKUxXYuBVojhQkeXIFkAjMhnPUSK81HNk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ThKqCPI6M5WQXUBMupaFZ36Eqs9audP549NWWTyN2OSxrVTCQPoclFvamaaWtXFHgRA+0IV/NO6lSy1SMG/i1A2n5q6DDHyWAscMLVSROa70FSiQS2jgsdQwbsDpxMweiF977kJidAEcLOaXqVnuEDn/q/sbbkme5Cb12qRhz7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Voz75BMs; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HzDcT6NzZ8VkLqeQVpl0smJGiuB7wxJtJRI/zTXIq3o=; b=Voz75BMsteZL0PPUQ+gTkryk1w
-	BTron6lHlau6SX4sgZF045B6msd1Entzv7YViyHTQi6mIWw+zC8g+xCk2qofpU5AHKKZ84egJ8PCf
-	yjRsR088SEdlP3X/a6G7CsLmv1ZSbDA2j64AAqTpcIAl6c85+T5cksz/NNQY1EdXTUi7eW4SqMSnS
-	tgr03i5IRKr5JGpPNVVOXm1PcN1BtHeDqKDZ+nXbv/U5VoK/JEgzfLZrqGu8cOIjU9RLfJiHCniid
-	JcyOmD53lTuzS8RZNDQrwbP4anvInd14bqybm4Ac7I0OZ4QzwaUM3bsoUAcJu+lhAVvUh1iiQgp9P
-	y0fgdVdg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1u9nDP-0000000DSQz-2ynT;
-	Tue, 29 Apr 2025 15:49:47 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 26DD730057C; Tue, 29 Apr 2025 17:49:47 +0200 (CEST)
-Date: Tue, 29 Apr 2025 17:49:46 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Jianzhou Zhao <luckd0g@163.com>
-Cc: stable@vger.kernel.org, alexander.shishkin@linux.intel.com,
-	mingo@redhat.com, acme@kernel.org, namhyung@kernel.org,
-	mark.rutland@arm.com, jolsa@kernel.org, irogers@google.com,
-	adrian.hunter@intel.com, kan.liang@linux.intel.com,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: possible deadlock in perf_ctx_lock  in  linux6.12.25(longterm
- maintenance)
-Message-ID: <20250429154946.GA4439@noisy.programming.kicks-ass.net>
-References: <77c2ee24.b63e.19681e979ea.Coremail.luckd0g@163.com>
+	s=arc-20240116; t=1745942933; c=relaxed/simple;
+	bh=xNEIfHJKcyOb2oWk92IBpklWB6rBC+6xUQ/NvTDr8kI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LiUZuxIolzRXD8mLsqGTjYKzvWJvxlX9ObUs/DhwioYkO9NMiGG+lTiVyMLCD4lq+VoY2PGltSOEfpjH1cq4jSGDWXkDKRFJQPU1tiwUJF9qOlxp/4mHqFE4XkfIbr+2IT5VgECZrGeR6er5OKg9m9Hn/0TT1frUK3qM/dFqoGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gbNW+wZh; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53TAf99I009668;
+	Tue, 29 Apr 2025 16:08:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=vNOzSBSOSEnG/goQiLTZesHUpOBG2VowETXI+5leB
+	H0=; b=gbNW+wZhrZwdnCPC0WOmb4LBo6NvePpFGj3kI0rnmXKQ9R77Y7+BvK2j1
+	x1wrr9vQiFWqZnBjXrJMr+Xx7IYAOPca0/qpGC1noyJQNmI9mlvZgnxZzObFp6Tg
+	tLYK4Frkl6YOUQrr2ESTdDMLSzrSOZuDTN0E95bgXoiUX4gysQiueDebIspifkuc
+	mipXEmxWDBlCdCXVeULBkW8s0oiF6uNWL+AMTb9AaQ1wAe6gHq51DwTs0YnHz1JH
+	/6U0kKuTqoaRuu9ZcYGzsDyNdhYzgSzd2cOXtkmTZncYLL1yj7Qu76kVAdQkux+7
+	gXqZnjuB+0+9xc7m9WU+Nh4lc8kRw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46aw7t1hxj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 16:08:44 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53TG8iis007753;
+	Tue, 29 Apr 2025 16:08:44 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46aw7t1hxg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 16:08:44 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53TDXUel000717;
+	Tue, 29 Apr 2025 16:08:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 469atpc0jw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Apr 2025 16:08:43 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53TG8f9o52625900
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 29 Apr 2025 16:08:41 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A9DBD20049;
+	Tue, 29 Apr 2025 16:08:41 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96B1220040;
+	Tue, 29 Apr 2025 16:08:41 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 29 Apr 2025 16:08:41 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 4D4F5E05FF; Tue, 29 Apr 2025 18:08:41 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Daniel Axtens <dja@axtens.net>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v3 0/1] kasan: Avoid sleepable page allocation from atomic context
+Date: Tue, 29 Apr 2025 18:08:40 +0200
+Message-ID: <cover.1745940843.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <77c2ee24.b63e.19681e979ea.Coremail.luckd0g@163.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNDI5MDEyMCBTYWx0ZWRfX6b2AMYNSl2Qj whmcHnWA2LOtwMkhM1ZGagtfNeXgKHA3/XAeqegiBht+FHwH9U5rcd0CBy9wu/VDJ4XNgUMbXn+ fDKVBUOzUH+zbhfkybKBO0eol93PXaax7ZLZJAt14imrORL8cZtVLtQZlP4S4hn3hV/WuoMVNG3
+ WWn+aJGKlnIvDuF1S01X+DeQFUh6jFA9QKRkDg7fSNrL2ZRq8H3yBSjFt47vfzMHM5nJjKo291h 4I69VCZa2kvA6qcxLa0Le/BO8HqKmhE5SCu7EEWJp/PREUuJB/raZ39oPHGH8a3PSgvGPrODOTz 86kQGvbOYiRqLxTf/lE5fQgr1DCB6XXgwExiby59qF2j48O6rfECHjs3cYD+lRGXZZZET0LTJAB
+ 8L4rhs3KMR7kv7Lb6REj4WHWsooNw3V++PaSNpjmcHpWDBgRYuoNF9E2eu2SwBLJHcgDa0hM
+X-Proofpoint-GUID: NsphRUiY2q1Gr5aRWLKjtKe-3YuLzCiX
+X-Authority-Analysis: v=2.4 cv=MJRgmNZl c=1 sm=1 tr=0 ts=6810f98c cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=XR8D0OoHHMoA:10 a=Jfx5KTgcOMEgCse_l18A:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: aTUTgI_UqpX2h7jR88zO9b2BtzhZz50p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-04-29_06,2025-04-24_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ suspectscore=0 priorityscore=1501 phishscore=0 adultscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 mlxlogscore=539
+ mlxscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2504290120
 
-On Tue, Apr 29, 2025 at 10:18:04PM +0800, Jianzhou Zhao wrote:
-> Hello, I found a potential bug titled "   possible deadlock in perf_ctx_lock " with modified syzkaller in the Linux6.12.25(longterm maintenance, last updated on April 25, 2025)
+Hi All,
 
-Nah, you hit a WARN and then printk being lousy made it explode worse.
+Chages since v2:
+- page allocation moved out of the atomic context
 
-> WARNING: CPU: 0 PID: 15835 at kernel/trace/trace_event_perf.c:375 perf_trace_add+0x2da/0x390 kernel/trace/trace_event_perf.c:375
-> Modules linked in:
-> CPU: 0 UID: 0 PID: 15835 Comm: syz.9.499 Not tainted 6.12.25 #3
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> RIP: 0010:perf_trace_add+0x2da/0x390 kernel/trace/trace_event_perf.c:375
-> Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 64 48 89 ab f8 01 00 00 48 89 df e8 b1 ab 26 00 e9 f3 fd ff ff e8 37 87 f6 ff 90 <0f> 0b 90 41 bc ea ff ff ff e9 77 ff ff ff e8 23 c5 56 00 e9 8a fd
-> RSP: 0018:ffffc9000713f7f0 EFLAGS: 00010006
-> RAX: 0000000040000002 RBX: ffff88802a069880 RCX: ffffffff8195a68e
-> RDX: ffff888045ec2500 RSI: ffffffff8195a839 RDI: ffffffff8deabf48
-> RBP: 0000000000000000 R08: 0000000000000001 R09: fffff52000e27eef
-> R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-> R13: ffffffff8deabee0 R14: ffff88802a069928 R15: ffff888051237200
-> FS:  00007fe4fec1c640(0000) GS:ffff88802b800000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00007f50219e7bac CR3: 00000000743bc000 CR4: 0000000000752ef0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> PKRU: 80000000
-> Call Trace:
->  <TASK>
->  event_sched_in+0x434/0xac0 kernel/events/core.c:2629
->  group_sched_in kernel/events/core.c:2662 [inline]
->  merge_sched_in+0x895/0x1570 kernel/events/core.c:3940
->  visit_groups_merge.constprop.0.isra.0+0x6d2/0x1250 kernel/events/core.c:3885
->  pmu_groups_sched_in kernel/events/core.c:3967 [inline]
->  __pmu_ctx_sched_in kernel/events/core.c:3979 [inline]
->  ctx_sched_in+0x5c1/0xa30 kernel/events/core.c:4030
->  perf_event_sched_in+0x5d/0x90 kernel/events/core.c:2760
->  perf_event_context_sched_in kernel/events/core.c:4077 [inline]
->  __perf_event_task_sched_in+0x33a/0x6f0 kernel/events/core.c:4106
->  perf_event_task_sched_in include/linux/perf_event.h:1524 [inline]
->  finish_task_switch.isra.0+0x5f9/0xcb0 kernel/sched/core.c:5201
->  context_switch kernel/sched/core.c:5335 [inline]
->  __schedule+0x1156/0x5b20 kernel/sched/core.c:6710
->  preempt_schedule_irq+0x51/0x90 kernel/sched/core.c:7032
->  irqentry_exit+0x36/0x90 kernel/entry/common.c:354
->  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+Chages since v1:
+- Fixes: and -stable tags added to the patch description
 
-Not quite sure which of the WARNs that is, as I don't keep the stable
-trees around and .12 is quite old by now.
+Thanks!
 
-Anyway, if you can reproduce I'll take a look.
+Alexander Gordeev (1):
+  kasan: Avoid sleepable page allocation from atomic context
+
+ mm/kasan/shadow.c | 65 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 49 insertions(+), 16 deletions(-)
+
+-- 
+2.45.2
+
 
