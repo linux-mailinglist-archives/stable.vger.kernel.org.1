@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC59AA1907
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A41AA19E9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:16:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADA221729AC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38882173DBD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A41824633C;
-	Tue, 29 Apr 2025 18:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5F8227E95;
+	Tue, 29 Apr 2025 18:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYmlqQPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGxjKCI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD9C224222;
-	Tue, 29 Apr 2025 18:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ACD40C03;
+	Tue, 29 Apr 2025 18:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949847; cv=none; b=uq4GleRJwYXPsvjIbUkzi9xXjjJPJacTCo67/Ykq5KhGhSH/P7GZtRMJkqdwB1NwVaCXSxVdT4XsX5BioNEqZ8BuL++6H48tqBQM9XA7reIOYsIQHcjg7l3srRzRErljw60Mf+xlh4VDxX4SBnpqNd4D3O3djWMJh78oGLbWFXw=
+	t=1745950498; cv=none; b=AF8EwARu1x4nnfflHmvi7HA230hVu6+Pj0FyGpvC2d8IR88mL2ag9y9MneCp4h+XFJWGjTrVHpBuFu1fCrHUfV8wQdA4a+t/ibtV48kbOSDE1bvBCx2T4l6QVvL2ddITO6tG1uPdx2yPAVQ+HLvoR6meo2+xcFce7a/TtUCB+pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949847; c=relaxed/simple;
-	bh=QCIW8QTCoAPJDg9CjD9HeYmvuNbb+sRCLyM1TgtF3HE=;
+	s=arc-20240116; t=1745950498; c=relaxed/simple;
+	bh=llpKlTk8qKJ697HB6dtHaWw65IC7skUjncQRnMfK7hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZMGMArDFh/Jt3kzF9SGoUChIfkntLz27pHieTICC4wIucvIpo2yNo+CsYiZ1qlHMykffQAqmu440HcMj8oJ1wraOQj1E+t/g0TnoKjLXnO44MCGw9Qp0u3H1PqDRijoOFF+RhRR0svWAiGk/4kqzsaBjdxGlYJc93emXG9Lfxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYmlqQPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 064A8C4CEE3;
-	Tue, 29 Apr 2025 18:04:05 +0000 (UTC)
+	 MIME-Version; b=tZ5Fe9M3oLxyNvjQAt5NqFcopJqUlLqCdIuYNQtH3hWlYcwMkv9Z5hUp0kRdgHAoCnXO6vUcPYHqv5D8kP1iSVYGG8fFdj+6WxrnwMFk3JRBdAGNWOm56dokDNc4BM/FWRVC+zPOH/o04+v9OdvNE20WTza4xfVQA6oy7boeoUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGxjKCI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F43C4CEE3;
+	Tue, 29 Apr 2025 18:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949846;
-	bh=QCIW8QTCoAPJDg9CjD9HeYmvuNbb+sRCLyM1TgtF3HE=;
+	s=korg; t=1745950497;
+	bh=llpKlTk8qKJ697HB6dtHaWw65IC7skUjncQRnMfK7hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYmlqQPLoC94RN7RDE94MBlCsphqcS8zd8BmhHeMzJv9AbtX2ydUncEZjZW7jpjyp
-	 9hdDTdF/xxOlHAiN967U47j0B5AH6meMM7pTSY4kz0sUS1uj3RH1StqM0zVOkz0zpx
-	 peX8/Vca8PYns/NMSrXiEHEVqg7eI2fBWIdpFfcg=
+	b=VGxjKCI0ovSzK7fQ9ckH3DO2dEti8v9SF6iUR/c+QdRkK6JmP+q5FIYuU7AqR3Pcm
+	 QzJQ8yOvuCTUefnArYGPmnHOnjAf8+1n5jRMSwTt+cH8zEreCoQTswPrmmR2xmyJD5
+	 slajasu7dADFtwpgHZcKojI/o9GcXNByPOGpkXBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Rengarajan S <rengarajan.s@microchip.com>
-Subject: [PATCH 6.1 076/167] misc: microchip: pci1xxxx: Fix Kernel panic during IRQ handler registration
-Date: Tue, 29 Apr 2025 18:43:04 +0200
-Message-ID: <20250429161054.837446053@linuxfoundation.org>
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.6 097/204] serial: msm: Configure correct working mode before starting earlycon
+Date: Tue, 29 Apr 2025 18:43:05 +0200
+Message-ID: <20250429161103.404751023@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rengarajan S <rengarajan.s@microchip.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit 18eb77c75ed01439f96ae5c0f33461eb5134b907 upstream.
+commit 7094832b5ac861b0bd7ed8866c93cb15ef619996 upstream.
 
-Resolve kernel panic while accessing IRQ handler associated with the
-generated IRQ. This is done by acquiring the spinlock and storing the
-current interrupt state before handling the interrupt request using
-generic_handle_irq.
+The MSM UART DM controller supports different working modes, e.g. DMA or
+the "single-character mode", where all reads/writes operate on a single
+character rather than 4 chars (32-bit) at once. When using earlycon,
+__msm_console_write() always writes 4 characters at a time, but we don't
+know which mode the bootloader was using and we don't set the mode either.
 
-A previous fix patch was submitted where 'generic_handle_irq' was
-replaced with 'handle_nested_irq'. However, this change also causes
-the kernel panic where after determining which GPIO triggered the
-interrupt and attempting to call handle_nested_irq with the mapped
-IRQ number, leads to a failure in locating the registered handler.
+This causes garbled output if the bootloader was using the single-character
+mode, because only every 4th character appears in the serial console, e.g.
 
-Fixes: 194f9f94a516 ("misc: microchip: pci1xxxx: Resolve kernel panic during GPIO IRQ handling")
+  "[ 00oni pi  000xf0[ 00i s 5rm9(l)l s 1  1 SPMTA 7:C 5[ 00A ade k d[
+   00ano:ameoi .Q1B[ 00ac _idaM00080oo'"
+
+If the bootloader was using the DMA ("DM") mode, output would likely fail
+entirely. Later, when the full serial driver probes, the port is
+re-initialized and output works as expected.
+
+Fix this also for earlycon by clearing the DMEN register and
+reset+re-enable the transmitter to apply the change. This ensures the
+transmitter is in the expected state before writing any output.
+
 Cc: stable <stable@kernel.org>
-Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
-Link: https://lore.kernel.org/r/20250313170856.20868-2-rengarajan.s@microchip.com
+Fixes: 0efe72963409 ("tty: serial: msm: Add earlycon support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250408-msm-serial-earlycon-v1-1-429080127530@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/tty/serial/msm_serial.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
-@@ -37,6 +37,7 @@
- struct pci1xxxx_gpio {
- 	struct auxiliary_device *aux_dev;
- 	void __iomem *reg_base;
-+	raw_spinlock_t wa_lock;
- 	struct gpio_chip gpio;
- 	spinlock_t lock;
- 	int irq_base;
-@@ -250,6 +251,7 @@ static irqreturn_t pci1xxxx_gpio_irq_han
- 	struct pci1xxxx_gpio *priv = dev_id;
- 	struct gpio_chip *gc =  &priv->gpio;
- 	unsigned long int_status = 0;
-+	unsigned long wa_flags;
- 	unsigned long flags;
- 	u8 pincount;
- 	int bit;
-@@ -273,7 +275,9 @@ static irqreturn_t pci1xxxx_gpio_irq_han
- 			writel(BIT(bit), priv->reg_base + INTR_STATUS_OFFSET(gpiobank));
- 			spin_unlock_irqrestore(&priv->lock, flags);
- 			irq = irq_find_mapping(gc->irq.domain, (bit + (gpiobank * 32)));
--			handle_nested_irq(irq);
-+			raw_spin_lock_irqsave(&priv->wa_lock, wa_flags);
-+			generic_handle_irq(irq);
-+			raw_spin_unlock_irqrestore(&priv->wa_lock, wa_flags);
- 		}
- 	}
- 	spin_lock_irqsave(&priv->lock, flags);
+--- a/drivers/tty/serial/msm_serial.c
++++ b/drivers/tty/serial/msm_serial.c
+@@ -1741,6 +1741,12 @@ msm_serial_early_console_setup_dm(struct
+ 	if (!device->port.membase)
+ 		return -ENODEV;
+ 
++	/* Disable DM / single-character modes */
++	msm_write(&device->port, 0, UARTDM_DMEN);
++	msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
++	msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
++	msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
++
+ 	device->con->write = msm_serial_early_write_dm;
+ 	return 0;
+ }
 
 
 
