@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-138382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09B9AA1815
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 422CDAA16B1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B6B99A76FB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C42B25A6257
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517D9252905;
-	Tue, 29 Apr 2025 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B392528FC;
+	Tue, 29 Apr 2025 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbgz9YjN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN3yuwXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105CA2517A6;
-	Tue, 29 Apr 2025 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D72A2517AB;
+	Tue, 29 Apr 2025 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949068; cv=none; b=Dq9/zywrbdHWGGa3T1Rfe/KubMCv1Nc4M9lF5RBrQPxipUc7UU1iAUPkw1RDeixqkU7GFtcHFTo0RIuUDB2uTbxnNmin4v/G/7QR5Tq+g2w9A4XZLqYqyNT2gzIdIfliIYa2MMxY+Nb33iIaCBPKOf9KGgpbcW8aZzFWokPDnV8=
+	t=1745948024; cv=none; b=W9B3+pe+vVB/g7jhEyiPbVvI1GwEJ0tTJVWxt28wA8QZJc+6LeoTfOOl14UdulV1SX8qn69GNO4vOiy6T5NsD6pVgjVT9hSo/X6v77uuJI/aiBI1d624gWYD07JsbXjfkMxeUfQhUFMJtMLGXs1Gy73vqOmK3uQB577BgoCrVuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949068; c=relaxed/simple;
-	bh=uCBLZ4nU5hTq08akN5YnnvLO4lsKa0bYK9+SRvjDPHo=;
+	s=arc-20240116; t=1745948024; c=relaxed/simple;
+	bh=uB515YeIVJUzRhImaKnMJ2ggGVqu3UY2EcMkEBOiKHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isE2+PUCkVy8rctdZkV1Wnwc9wON4f+B/LZ/qNiJjyVB3DSep8ClK7o/kYIe22W8HFUYosHggwLOyHJVkyQxt/eRv/hVeqKAGHGgdOTdHyiXgPDhX1AgPufPGVMfT59+Fp5+LNkIfeJcgVClVQAKI5qhHZA8CbOiGJMcVwWzTog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbgz9YjN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B99CC4CEE3;
-	Tue, 29 Apr 2025 17:51:07 +0000 (UTC)
+	 MIME-Version; b=nlhhQGPq+2rbvUYQYAfnDBdhVXDXEHZ5WXeI3gqf99t6fvkx5egTtMfLxfI9NBrI9EWsvgjkPyiskfD2W/PMG/un2fQzZwlUN5EV82fF/hBhbzhbMhqew5g/3Ql6ZEjz/JWx5KZ1peRe0Lk0xNh/sv2+Ks4VUwsmS4xpAWjSw3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN3yuwXM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB154C4CEF1;
+	Tue, 29 Apr 2025 17:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949067;
-	bh=uCBLZ4nU5hTq08akN5YnnvLO4lsKa0bYK9+SRvjDPHo=;
+	s=korg; t=1745948024;
+	bh=uB515YeIVJUzRhImaKnMJ2ggGVqu3UY2EcMkEBOiKHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbgz9YjNnRPGEJGwpu9C0DEjrLZ4dkMCYF3pE3vsB22ncJ3ApGd0AP9o5XE/Dz5qV
-	 JXgwepkFAjSlT+bsmK3UTIJ28ND2qZyQggtTqlQGSsuBny9v07HniNmUu5mcbp2MDd
-	 2c2Hb3KcxOWFgQbrE0x+0zlIayqe1U9oAnaORYeA=
+	b=TN3yuwXMmGiEu2WhZXA8B181NbK1lBFX265Nty+qa8WCEISkk6iontK8/d9hi83m0
+	 tp4fZkHuD11h2fnCzZQkH3Vr0KC7RG9h5SxAc8G5Rb/RbUqVIlbQb/ucpvqkn3vj9t
+	 fXuDzb4r6FzdwdF/6yeT8QuJbMH4ST4qbl87TMmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Liang <wangliang74@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 204/373] net: fix crash when config small gso_max_size/gso_ipv4_max_size
-Date: Tue, 29 Apr 2025 18:41:21 +0200
-Message-ID: <20250429161131.555999310@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.12 141/280] usb: chipidea: ci_hdrc_imx: implement usb_phy_init() error handling
+Date: Tue, 29 Apr 2025 18:41:22 +0200
+Message-ID: <20250429161120.895571482@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,55 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 9ab5cf19fb0e4680f95e506d6c544259bf1111c4 ]
+commit 8c531e0a8c2d82509ad97c6d3a1e6217c7ed136d upstream.
 
-Config a small gso_max_size/gso_ipv4_max_size will lead to an underflow
-in sk_dst_gso_max_size(), which may trigger a BUG_ON crash,
-because sk->sk_gso_max_size would be much bigger than device limits.
-Call Trace:
-tcp_write_xmit
-    tso_segs = tcp_init_tso_segs(skb, mss_now);
-        tcp_set_skb_tso_segs
-            tcp_skb_pcount_set
-                // skb->len = 524288, mss_now = 8
-                // u16 tso_segs = 524288/8 = 65535 -> 0
-                tso_segs = DIV_ROUND_UP(skb->len, mss_now)
-    BUG_ON(!tso_segs)
-Add check for the minimum value of gso_max_size and gso_ipv4_max_size.
+usb_phy_init() may return an error code if e.g. its implementation fails
+to prepare/enable some clocks. And properly rollback on probe error path
+by calling the counterpart usb_phy_shutdown().
 
-Fixes: 46e6b992c250 ("rtnetlink: allow GSO maximums to be set on device creation")
-Fixes: 9eefedd58ae1 ("net: add gso_ipv4_max_size and gro_ipv4_max_size per device")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241023035213.517386-1-wangliang74@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Resolve minor conflicts to fix CVE-2024-50258 ]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Harshit: Clean cherrypick from 6.1.y commit]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: be9cae2479f4 ("usb: chipidea: imx: Fix ULPI on imx53")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-4-pchelkin@ispras.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/chipidea/ci_hdrc_imx.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -1899,7 +1899,7 @@ static const struct nla_policy ifla_poli
- 	[IFLA_NUM_TX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_NUM_RX_QUEUES]	= { .type = NLA_U32 },
- 	[IFLA_GSO_MAX_SEGS]	= { .type = NLA_U32 },
--	[IFLA_GSO_MAX_SIZE]	= { .type = NLA_U32 },
-+	[IFLA_GSO_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
- 	[IFLA_PHYS_PORT_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
- 	[IFLA_CARRIER_CHANGES]	= { .type = NLA_U32 },  /* ignored */
- 	[IFLA_PHYS_SWITCH_ID]	= { .type = NLA_BINARY, .len = MAX_PHYS_ITEM_ID_LEN },
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -484,7 +484,11 @@ static int ci_hdrc_imx_probe(struct plat
+ 	    of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI) {
+ 		pdata.flags |= CI_HDRC_OVERRIDE_PHY_CONTROL;
+ 		data->override_phy_control = true;
+-		usb_phy_init(pdata.usb_phy);
++		ret = usb_phy_init(pdata.usb_phy);
++		if (ret) {
++			dev_err(dev, "Failed to init phy\n");
++			goto err_clk;
++		}
+ 	}
+ 
+ 	if (pdata.flags & CI_HDRC_SUPPORTS_RUNTIME_PM)
+@@ -493,7 +497,7 @@ static int ci_hdrc_imx_probe(struct plat
+ 	ret = imx_usbmisc_init(data->usbmisc_data);
+ 	if (ret) {
+ 		dev_err(dev, "usbmisc init failed, ret=%d\n", ret);
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
+ 
+ 	data->ci_pdev = ci_hdrc_add_device(dev,
+@@ -502,7 +506,7 @@ static int ci_hdrc_imx_probe(struct plat
+ 	if (IS_ERR(data->ci_pdev)) {
+ 		ret = PTR_ERR(data->ci_pdev);
+ 		dev_err_probe(dev, ret, "ci_hdrc_add_device failed\n");
+-		goto err_clk;
++		goto phy_shutdown;
+ 	}
+ 
+ 	if (data->usbmisc_data) {
+@@ -536,6 +540,9 @@ static int ci_hdrc_imx_probe(struct plat
+ 
+ disable_device:
+ 	ci_hdrc_remove_device(data->ci_pdev);
++phy_shutdown:
++	if (data->override_phy_control)
++		usb_phy_shutdown(data->phy);
+ err_clk:
+ 	clk_disable_unprepare(data->clk_wakeup);
+ err_wakeup_clk:
 
 
 
