@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9A7AA138F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A2EAA17D2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B51403BF321
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A4A9A4CC0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C3723F413;
-	Tue, 29 Apr 2025 17:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9452242D73;
+	Tue, 29 Apr 2025 17:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgU0u9Co"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzIWLtN+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0D6243371;
-	Tue, 29 Apr 2025 17:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7424221DA7;
+	Tue, 29 Apr 2025 17:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946117; cv=none; b=ooAZhpr39gN71LGGNSS4eReKWo8hAcPiQGmfv8oNSGHmHMEj20kutC3teLqwPRiz8VMjoLSYeTjBg7T7utfVNdoUIXEvqqyI1MBJoy1DPJFJRgfniCu2KeOVnFMCXPeE1Jf5/w1UjCz5vyCJKar5PoALr/+APT0ZIr6nlZOPVh8=
+	t=1745948854; cv=none; b=VyFGkmxHRnfD6lU7lbl9aaK8hJ2hmop9MS2pdJ5gAQLGhKZ+Fn25egFTMwOdDdmoFd9m5IjPt8XyEV82cuEkqDizNZ2hEqPv7RExKOEyOfDcGF7HrV2FZlqM+Q0XY4e7NKg4O2knnweWM0PCGHl3wVU+XRTZjYtCBWvI7QrCZws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946117; c=relaxed/simple;
-	bh=6v2zDcFKcU8VuP2mM2d7BL29Cp8qHqH9tURyzs4TA98=;
+	s=arc-20240116; t=1745948854; c=relaxed/simple;
+	bh=gm0DBgfve22zdTraMYcf6ZMZDGwwklbLN9D0BRKNP60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PQ5ckrzAUoUu/l7jjcYUkkUcmcEr8QwToUnxXKgWU5umhIKhKBDN8PUvt2FKu4mVGb5HHybhZnvuuLf5chzneeLD5U6SUPRKvg+Fl7CkRlZCUVINqIsTcZlm3duR+/jjK2iS/8K6UfZIaDlNVNBELEPkWBBP3aaeFAfdJ8XgVeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgU0u9Co; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47289C4CEE3;
-	Tue, 29 Apr 2025 17:01:56 +0000 (UTC)
+	 MIME-Version; b=TFlxiq6zwdrytuuI+uw3FYoVswwoTSdEBC1dnXOjp2JePvkjJR8ovrU94hdl6udc+2AiaEGJ1UWLHFTDzwuussqJF/7bPK+Zu+ReH0pfwPUD4Nu5c2H2fLyUtYVFDTFw6MPQ7epG3dibtEZlopFHS1yRVMKr22VSkcNnql5lXXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzIWLtN+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38AFAC4CEE3;
+	Tue, 29 Apr 2025 17:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946116;
-	bh=6v2zDcFKcU8VuP2mM2d7BL29Cp8qHqH9tURyzs4TA98=;
+	s=korg; t=1745948854;
+	bh=gm0DBgfve22zdTraMYcf6ZMZDGwwklbLN9D0BRKNP60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mgU0u9CokTmH8uuRej5mqd1NCL9KzozC8jN5FtG1wml7EDdL2DtPMbla1+n9xAWlV
-	 E5Q3QYCVBGHGDjpFuT7QEBOTI0aQ4KQJF/3TJfglADpcDpX+wXwP1H9gaPdZtRm+VZ
-	 tfI8NjslfVUK5b5gMnJ5KFK2cHYwmsXsXytpMYvA=
+	b=WzIWLtN+SKADmvumnyo+TUF56YdL+h5waad8V/blce+JoREhXZv6BLvV82BwURlmW
+	 Jov8zckC/BHEinxYUF+DHsE2A9Z9f0LILLT2jDGFHBwFvHnk5UjpVhCo+QBUIWTQxb
+	 9eEt9B6EfJMa4NqXz7j4frIkqsfci/8hqrUpm2ug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.14 161/311] usb: chipidea: ci_hdrc_imx: fix usbmisc handling
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	John Garry <john.garry@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 121/373] scsi: hisi_sas: Pass abort structure for internal abort
 Date: Tue, 29 Apr 2025 18:39:58 +0200
-Message-ID: <20250429161127.637492249@linuxfoundation.org>
+Message-ID: <20250429161128.151820584@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: John Garry <john.garry@huawei.com>
 
-commit 4e28f79e3dffa52d327b46d1a78dac16efb5810b upstream.
+[ Upstream commit 08c61b5d902b70180b517e9f2616ad70b7a98dcf ]
 
-usbmisc is an optional device property so it is totally valid for the
-corresponding data->usbmisc_data to have a NULL value.
+To help factor out code in future, it's useful to know if we're executing
+an internal abort, so pass a pointer to the structure. The idea is that a
+NULL pointer means not an internal abort.
 
-Check that before dereferencing the pointer.
-
-Found by Linux Verification Center (linuxtesting.org) with Svace static
-analysis tool.
-
-Fixes: 74adad500346 ("usb: chipidea: ci_hdrc_imx: decrement device's refcount in .remove() and in the error path of .probe()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20250316102658.490340-2-pchelkin@ispras.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/1639579061-179473-4-git-send-email-john.garry@huawei.com
+Reviewed-by: Xiang Chen <chenxiang66@hisilicon.com>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 8aa580cd9284 ("scsi: hisi_sas: Enable force phy when SATA disk directly connected")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas.h      |  5 +++++
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 21 ++++++++++++---------
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -534,7 +534,8 @@ disable_hsic_regulator:
- 		cpu_latency_qos_remove_request(&data->pm_qos_req);
- 	data->ci_pdev = NULL;
- err_put:
--	put_device(data->usbmisc_data->dev);
-+	if (data->usbmisc_data)
-+		put_device(data->usbmisc_data->dev);
- 	return ret;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
+index 57be32ba0109f..39da9f1645135 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas.h
++++ b/drivers/scsi/hisi_sas/hisi_sas.h
+@@ -134,6 +134,11 @@ struct hisi_sas_rst {
+ 	bool done;
+ };
+ 
++struct hisi_sas_internal_abort {
++	unsigned int flag;
++	unsigned int tag;
++};
++
+ #define HISI_SAS_RST_WORK_INIT(r, c) \
+ 	{	.hisi_hba = hisi_hba, \
+ 		.completion = &c, \
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index ff6b6868cd955..321e6fae03adc 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -273,11 +273,11 @@ static void hisi_sas_task_prep_ata(struct hisi_hba *hisi_hba,
  }
  
-@@ -559,7 +560,8 @@ static void ci_hdrc_imx_remove(struct pl
- 		if (data->hsic_pad_regulator)
- 			regulator_disable(data->hsic_pad_regulator);
- 	}
--	put_device(data->usbmisc_data->dev);
-+	if (data->usbmisc_data)
-+		put_device(data->usbmisc_data->dev);
+ static void hisi_sas_task_prep_abort(struct hisi_hba *hisi_hba,
+-		struct hisi_sas_slot *slot,
+-		int device_id, int abort_flag, int tag_to_abort)
++		struct hisi_sas_internal_abort *abort,
++		struct hisi_sas_slot *slot, int device_id)
+ {
+ 	hisi_hba->hw->prep_abort(hisi_hba, slot,
+-			device_id, abort_flag, tag_to_abort);
++			device_id, abort->flag, abort->tag);
  }
  
- static void ci_hdrc_imx_shutdown(struct platform_device *pdev)
+ static void hisi_sas_dma_unmap(struct hisi_hba *hisi_hba,
+@@ -1968,8 +1968,9 @@ static int hisi_sas_query_task(struct sas_task *task)
+ 
+ static int
+ hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
+-				  struct sas_task *task, int abort_flag,
+-				  int task_tag, struct hisi_sas_dq *dq)
++				  struct hisi_sas_internal_abort *abort,
++				  struct sas_task *task,
++				  struct hisi_sas_dq *dq)
+ {
+ 	struct domain_device *device = task->dev;
+ 	struct hisi_sas_device *sas_dev = device->lldd_dev;
+@@ -2026,8 +2027,7 @@ hisi_sas_internal_abort_task_exec(struct hisi_hba *hisi_hba, int device_id,
+ 	memset(hisi_sas_status_buf_addr_mem(slot), 0,
+ 	       sizeof(struct hisi_sas_err_record));
+ 
+-	hisi_sas_task_prep_abort(hisi_hba, slot, device_id,
+-				      abort_flag, task_tag);
++	hisi_sas_task_prep_abort(hisi_hba, abort, slot, device_id);
+ 
+ 	spin_lock_irqsave(&task->task_state_lock, flags);
+ 	task->task_state_flags |= SAS_TASK_AT_INITIATOR;
+@@ -2065,9 +2065,12 @@ _hisi_sas_internal_task_abort(struct hisi_hba *hisi_hba,
+ {
+ 	struct sas_task *task;
+ 	struct hisi_sas_device *sas_dev = device->lldd_dev;
++	struct hisi_sas_internal_abort abort = {
++		.flag = abort_flag,
++		.tag = tag,
++	};
+ 	struct device *dev = hisi_hba->dev;
+ 	int res;
+-
+ 	/*
+ 	 * The interface is not realized means this HW don't support internal
+ 	 * abort, or don't need to do internal abort. Then here, we return
+@@ -2092,7 +2095,7 @@ _hisi_sas_internal_task_abort(struct hisi_hba *hisi_hba,
+ 	add_timer(&task->slow_task->timer);
+ 
+ 	res = hisi_sas_internal_abort_task_exec(hisi_hba, sas_dev->device_id,
+-						task, abort_flag, tag, dq);
++						&abort, task, dq);
+ 	if (res) {
+ 		del_timer(&task->slow_task->timer);
+ 		dev_err(dev, "internal task abort: executing internal task failed: %d\n",
+-- 
+2.39.5
+
 
 
 
