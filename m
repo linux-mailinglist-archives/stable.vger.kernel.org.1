@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53BAAA1244
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE038AA1383
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF7B6980224
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F73C18872FA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A811924A07B;
-	Tue, 29 Apr 2025 16:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC5222A81D;
+	Tue, 29 Apr 2025 17:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4yWsNgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiRKogrv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E60248878;
-	Tue, 29 Apr 2025 16:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD4282C60;
+	Tue, 29 Apr 2025 17:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945360; cv=none; b=IuytwWLFrV1QXdU+JGXl77cRs58X5pW49PFqAtQ2/vH7JpXsIE/pmXhCzFyu0z91xZNq/tvcbngrwLlvDNTXimDURxIElpoOAA1dlLRdztHNsR9wMRoVUeTxrxtxMqTJ0/2BAa/1KFT1wH78OhFr/kZXxVDMhMyb297OSjEcjlQ=
+	t=1745946114; cv=none; b=r/gtXZ89ozHG2WFTb16y3fxGqkMWT1gOnw9P1RCDVrkNiq6t3iBVl5Fa9oaelgINmRioU6gOVhKDrLPOcwvsKihizXX29Huw8IZkCYx3CNAn1zbWh/w3PiR+sWA6HQONuG3hItp4mqckePJXQHbQsgAQuKxtgvBkdrt8ip2oqbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945360; c=relaxed/simple;
-	bh=ZK6uIxKg+/toJ6SA91/loP44i1p5ND9EWDw5Nr2RlG4=;
+	s=arc-20240116; t=1745946114; c=relaxed/simple;
+	bh=qtTh5sAPpqOr74OhPJi1PFIwvpg5UwU1zlm+WpLVXj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=secgTjxv1X10e4fAVRhGwBBAOcUTecNXHBrbima4NYf1SbMQoftd3bTZD80NC1+Qya41ihvhaR9QSYS3PL1c9THPBoZXgRB/bDexaAu/a96XR52rAexFEPl7U8rMsEBcvDsniwLsZJ6I91e/3QoFY5nsM2OC5s3J+lw3K+TfGxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4yWsNgX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB77C4CEE3;
-	Tue, 29 Apr 2025 16:49:19 +0000 (UTC)
+	 MIME-Version; b=FvdxiBxfYzI/CdfrkEtrYKtlaef9RGWqaFwLfqkTjCn+JCKERkvoTHmISLL7fVi3cywrbUAF0qfIYKd3n+aZn25BpIGEEtjUDZy7YG65Y/AlEOxO37/0OHHs4LEUOzd4rfMVyYQ7Xkwx0KRKQtIC/g9H+N7Esn+hO+lqzU0MaqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiRKogrv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41521C4CEE3;
+	Tue, 29 Apr 2025 17:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945359;
-	bh=ZK6uIxKg+/toJ6SA91/loP44i1p5ND9EWDw5Nr2RlG4=;
+	s=korg; t=1745946113;
+	bh=qtTh5sAPpqOr74OhPJi1PFIwvpg5UwU1zlm+WpLVXj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4yWsNgXbU9sjmM52hrL43qzjh1gj4ugshaJRJn+4Ez125GOI7FmRFGNuLmqM2Hkb
-	 rUtr7ACdeDAl0wwM/KTGc9GttXkVEywdZMZ9aGjuhVVvaloPDt0aRyAbeRGYBCTeRa
-	 oJPulms1kkG2F6eN+vZ48GF8IHtEZC5bi9YCmDuE=
+	b=wiRKogrvpCct6hXdgwRWPM77YJJAwfheX1tcv4cu3+ZBsM8htKZGrgfKmjCCBcqwO
+	 O+d+dL68R4V0OkVNiWF8xb8XMx1vmrwYCeLogJ+KKkwDsj+zuDDsGM84dvdHe7H0fo
+	 bRGVVjmjXXXzP8KvboMs7mlA/MtD1+2xzBnkJAFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 056/179] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
+	stable <stable@kernel.org>,
+	Ralph Siemsen <ralph.siemsen@linaro.org>,
+	Peter Chen <peter.chen@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [PATCH 6.14 160/311] usb: cdns3: Fix deadlock when using NCM gadget
 Date: Tue, 29 Apr 2025 18:39:57 +0200
-Message-ID: <20250429161051.661081365@linuxfoundation.org>
+Message-ID: <20250429161127.592228977@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
+commit a1059896f2bfdcebcdc7153c3be2307ea319501f upstream.
 
-Implement the workaround for erratum
-  3.3 RGMII timing may be out of spec when transmit delay is enabled
-for the 6320 family, which says:
+The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
+58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
 
-  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
-  cycle may be out of spec. Under very rare conditions this may cause
-  the attached device receive CRC errors.
+Under PREEMPT_RT the deadlock can be readily triggered by heavy network
+traffic, for example using "iperf --bidir" over NCM ethernet link.
 
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.4.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The deadlock occurs because the threaded interrupt handler gets
+preempted by a softirq, but both are protected by the same spinlock.
+Prevent deadlock by disabling softirq during threaded irq handler.
+
+Cc: stable <stable@kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/usb/cdns3/cdns3-gadget.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -2613,6 +2613,21 @@ static int mv88e6xxx_stats_setup(struct
- 	return mv88e6xxx_g1_stats_clear(chip);
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1963,6 +1963,7 @@ static irqreturn_t cdns3_device_thread_i
+ 	unsigned int bit;
+ 	unsigned long reg;
+ 
++	local_bh_disable();
+ 	spin_lock_irqsave(&priv_dev->lock, flags);
+ 
+ 	reg = readl(&priv_dev->regs->usb_ists);
+@@ -2004,6 +2005,7 @@ static irqreturn_t cdns3_device_thread_i
+ irqend:
+ 	writel(~0, &priv_dev->regs->ep_ien);
+ 	spin_unlock_irqrestore(&priv_dev->lock, flags);
++	local_bh_enable();
+ 
+ 	return ret;
  }
- 
-+static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
-+{
-+	u16 dummy;
-+	int err;
-+
-+	/* Workaround for erratum
-+	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
-+	 */
-+	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
-+}
-+
- /* Check if the errata has already been applied. */
- static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
- {
-@@ -3811,6 +3826,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
-@@ -3855,6 +3871,7 @@ static const struct mv88e6xxx_ops mv88e6
- 
- static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
 
 
 
