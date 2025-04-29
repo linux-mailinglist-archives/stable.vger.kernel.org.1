@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-137837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6314DAA152F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B62FAA1282
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90FE217F3F4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40CDF4C042B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F50F2512FD;
-	Tue, 29 Apr 2025 17:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E78224E016;
+	Tue, 29 Apr 2025 16:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpmsCUEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fleh3uZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE0224EABF;
-	Tue, 29 Apr 2025 17:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDD624C098;
+	Tue, 29 Apr 2025 16:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947281; cv=none; b=lz343zsu72fJ8z3FYhIxa2ypQJ6nPC++uA8OyS/BzGSbHnxowmuASEcy888okvqO9CNNoNzVDWQAXvMlMeGPmklJNNyz/5W+nclmRmTVfzYW3HysHfcNVitxlEmjPw56lwW2hfLr2MTF9hAI/AsfZkIevnchu6/RAEK1YZ5g5K8=
+	t=1745945589; cv=none; b=CtV6/a11q/ILW5phFQdA9fTbYY5HtvY01Rxb1tk307JRReI7xrfZZeKJCtQlO43TJ1Fk+wAWT2XdIwwyAZq9i/ObIr0A7fOF6zSmUhKbUkdW0iwcFBSCPg3Fah1Jy6vcYKN2imPMVEgT6YfO5/Vm0q4UJFWcUBzldntrOpuziW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947281; c=relaxed/simple;
-	bh=kv4y1C3BgTurkJ0D06yDAUo/inzyDj4OkZMYG7Aw8kQ=;
+	s=arc-20240116; t=1745945589; c=relaxed/simple;
+	bh=VHCNBK2d2HIbiJ1MO2eS0gOrioQRdZqav36uUIclAbg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZMKg4DbC2Gw0HH3ZVbtfGEARut8WisBjlHCGgvgqRO41/m2MBEehSSd7Jdg2tXa2+hJ9MUjBghM+dqqz/8qGbkBR/oq+Gn8FBlCy3uYqirZox4xCBgL/Z/HkXcn4JQJ6nWr0GxOwsuMyYcGXlv7I/pgfBd3kj9HaNtiHQqzDMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpmsCUEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B97C4CEEA;
-	Tue, 29 Apr 2025 17:21:20 +0000 (UTC)
+	 MIME-Version; b=SaXb8K6yRq4Lbp1IWLA5VbwMpouLyOuVU5ccXC5zx3ELEGoa0qQ35OSy21RLgUEn34T7bTo4IUbovNGCCOau0YoASAbxJyfJ6fSQEogt/NIvIAebPMlitYkQP7QTdlL0lVTQBWhrPYduKht85xqcserIGB+niue2ehZWgRI11wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fleh3uZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE8FC4CEE3;
+	Tue, 29 Apr 2025 16:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947281;
-	bh=kv4y1C3BgTurkJ0D06yDAUo/inzyDj4OkZMYG7Aw8kQ=;
+	s=korg; t=1745945589;
+	bh=VHCNBK2d2HIbiJ1MO2eS0gOrioQRdZqav36uUIclAbg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpmsCUEFvFMTl3Mq5/gru0ErDozDilIOZCnMC7tzUzZmSR/3yzJWwlRwFoB03vT75
-	 LRAa/jUVgp+m+1o/P34JKU4c4fmsT3VfKXYTU3C+PGxyHPx+5JLw4+hCBgQZlL+eBW
-	 IrTfVbO3OUOnmn6TYQ5Jsd5dmp8xunSJCh4CqWPs=
+	b=Fleh3uZ5jyzOLlEp1ILZwYoVXPb8lUIARGGADih34x5Cflhm1NzeLk1t/nSny8wdS
+	 T7wmfvuqDQGJEzEJ4PCvjgyhZoqcD5wt/Sc+m5M5lJtUk13crPRhPJ+Q8F2XAiQkQ6
+	 zUd2BZIJL8fdf4103mKZmFfhi7ZidLkHdPdfhlZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	kernel test robot <oliver.sang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 201/286] media: streamzap: fix race between device disconnection and urb callback
+Subject: [PATCH 5.4 164/179] dmaengine: dmatest: Fix dmatest waiting less when interrupted
 Date: Tue, 29 Apr 2025 18:41:45 +0200
-Message-ID: <20250429161116.224536267@linuxfoundation.org>
+Message-ID: <20250429161056.015179249@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
 
-[ Upstream commit f656cfbc7a293a039d6a0c7100e1c846845148c1 ]
+[ Upstream commit e87ca16e99118ab4e130a41bdf12abbf6a87656c ]
 
-Syzkaller has reported a general protection fault at function
-ir_raw_event_store_with_filter(). This crash is caused by a NULL pointer
-dereference of dev->raw pointer, even though it is checked for NULL in
-the same function, which means there is a race condition. It occurs due
-to the incorrect order of actions in the streamzap_disconnect() function:
-rc_unregister_device() is called before usb_kill_urb(). The dev->raw
-pointer is freed and set to NULL in rc_unregister_device(), and only
-after that usb_kill_urb() waits for in-progress requests to finish.
+Change the "wait for operation finish" logic to take interrupts into
+account.
 
-If rc_unregister_device() is called while streamzap_callback() handler is
-not finished, this can lead to accessing freed resources. Thus
-rc_unregister_device() should be called after usb_kill_urb().
+When using dmatest with idxd DMA engine, it's possible that during
+longer tests, the interrupt notifying the finish of an operation
+happens during wait_event_freezable_timeout(), which causes dmatest to
+cleanup all the resources, some of which might still be in use.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+This fix ensures that the wait logic correctly handles interrupts,
+preventing premature cleanup of resources.
 
-Fixes: 8e9e60640067 ("V4L/DVB: staging/lirc: port lirc_streamzap to ir-core")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+34008406ee9a31b13c73@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=34008406ee9a31b13c73
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202502171134.8c403348-lkp@intel.com
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20250305230007.590178-1-vinicius.gomes@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/dmatest.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
-index cd994e27362eb..c0a48f991d9d2 100644
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -433,8 +433,8 @@ static void streamzap_disconnect(struct usb_interface *interface)
- 	if (!sz)
- 		return;
+diff --git a/drivers/dma/dmatest.c b/drivers/dma/dmatest.c
+index 238936e2dfe2d..6dfa1e038726a 100644
+--- a/drivers/dma/dmatest.c
++++ b/drivers/dma/dmatest.c
+@@ -809,9 +809,9 @@ static int dmatest_func(void *data)
+ 		} else {
+ 			dma_async_issue_pending(chan);
  
--	rc_unregister_device(sz->rdev);
- 	usb_kill_urb(sz->urb_in);
-+	rc_unregister_device(sz->rdev);
- 	usb_free_urb(sz->urb_in);
- 	usb_free_coherent(usbdev, sz->buf_in_len, sz->buf_in, sz->dma_in);
+-			wait_event_freezable_timeout(thread->done_wait,
+-					done->done,
+-					msecs_to_jiffies(params->timeout));
++			wait_event_timeout(thread->done_wait,
++					   done->done,
++					   msecs_to_jiffies(params->timeout));
  
+ 			status = dma_async_is_tx_complete(chan, cookie, NULL,
+ 							  NULL);
 -- 
 2.39.5
 
