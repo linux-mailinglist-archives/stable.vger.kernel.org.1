@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7348CAA11DB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5C0AA1735
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC8EC1B67FC5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:46:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03D341B672B4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8EA248889;
-	Tue, 29 Apr 2025 16:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49DE2517AF;
+	Tue, 29 Apr 2025 17:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPiAFHM/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joa6qLmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3325427453;
-	Tue, 29 Apr 2025 16:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32DF244664;
+	Tue, 29 Apr 2025 17:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945149; cv=none; b=OP6x6wAkvmQj8e+JkCtTn/ZA6TradU9Zrv+Dp7z/vL6yjS4LUoi9CtCu/8kIvIbgmzJ/N3yYKzDOdbbA7r2Ne/B37BUv3s3s2/CdVA0QfWGzV2Bf8Jerc5kUY/KB9DZerF7XpPnVdRaJ4zJ5OuXz+MWPWipjN2y8nRvcVkqDAXw=
+	t=1745948689; cv=none; b=DWgoRL8yQn62OibKrayKHR0ecuxioJh5nMHWoMX/3WZaL1Qxx4laqR7XkUzwF6Xiy1pRiAIQkvl/xNKdVT2lH0el47Db11gBIl4G3FmY6Ubtw1zfk2D2d2xZS1xz+DnwbZJtq0dJB1JuBnTUtd3xzAy2ssPUjSueUA8bikouWv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945149; c=relaxed/simple;
-	bh=XEq4zHJmTo243ECKWgdJi8bdmeZnlF2uDDTXWEPbPK0=;
+	s=arc-20240116; t=1745948689; c=relaxed/simple;
+	bh=CoXytnKz63mTNIH+gmNNO49AmOtlXr4kQrHxUfLwqxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHx20d+Otgz2lf6uuaT9xVylU6T3mWkApY+Pk8eXaZ3VAfi6oY+iwEQ42M/suXcOVYOkB/+F8I7ijEX5vkYrL/0dOvZpq+Loqm9nSTHTlcZqRMdzWBGFQCoFtYYYxOVuL8Eglt57LP/z2hlUq2z7pLcumdawBHDjg3zFywW5pSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPiAFHM/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F42C4CEE9;
-	Tue, 29 Apr 2025 16:45:48 +0000 (UTC)
+	 MIME-Version; b=O43RBifCFGMd0ZJylPTYrH8UitD/zza1cUhU+f3Q4jeQoiMH1sVl+4/9gUptjRRpo5JjrlYGoQYxlVQwmiEUh9mgEIoX/4tL/n5Vj9l4TO0vjRRaGYBJzFCdcWuDxmMj+YJDYxwLtUcUW7CFJPOxvUtAT16KIRFkaE1AJc+Ns64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joa6qLmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0B8C4CEE3;
+	Tue, 29 Apr 2025 17:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945148;
-	bh=XEq4zHJmTo243ECKWgdJi8bdmeZnlF2uDDTXWEPbPK0=;
+	s=korg; t=1745948689;
+	bh=CoXytnKz63mTNIH+gmNNO49AmOtlXr4kQrHxUfLwqxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPiAFHM/33HlzPVhfVo+vF5M6L0ddeuXXQA/bjC1GFcUK/JrxS8PUqCiTVr+fNIFN
-	 u0c6cOfh02V/9HFp5veCFY+VHHRFQwgG8h4BlTSHFDc7jeubKW2W08ZlK185t1wQIG
-	 284FEf3sm51lmemXikOwI3+EK+N3xQU5MP/nDkak=
+	b=joa6qLmrZbblfKYSGiyr+rZ0tv9vRPDL9G0hrwU97272GHYRwQWsWptkmi2ELIBWm
+	 Tjs+8mhnq47kyopFbEJJQxo2afQPba8enJKhtGfmOhTCI/Jn4ZyBqrJcv1XRF7XBzw
+	 NaHHEY3hIg1DPdofBQxXdUkeP8qum899bblt5tpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 018/179] fs/jfs: Prevent integer overflow in AG size calculation
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 5.15 082/373] wifi: mt76: Add check for devm_kstrdup()
 Date: Tue, 29 Apr 2025 18:39:19 +0200
-Message-ID: <20250429161050.145691342@linuxfoundation.org>
+Message-ID: <20250429161126.523505191@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 7fcbf789629cdb9fbf4e2172ce31136cfed11e5e ]
+commit 4bc1da524b502999da28d287de4286c986a1af57 upstream.
 
-The JFS filesystem calculates allocation group (AG) size using 1 <<
-l2agsize in dbExtendFS(). When l2agsize exceeds 31 (possible with >2TB
-aggregates on 32-bit systems), this 32-bit shift operation causes undefined
-behavior and improper AG sizing.
+Add check for the return value of devm_kstrdup() in
+mt76_get_of_data_from_mtd() to catch potential exception.
 
-On 32-bit architectures:
-- Left-shifting 1 by 32+ bits results in 0 due to integer overflow
-- This creates invalid AG sizes (0 or garbage values) in
-sbi->bmap->db_agsize
-- Subsequent block allocations would reference invalid AG structures
-- Could lead to:
-  - Filesystem corruption during extend operations
-  - Kernel crashes due to invalid memory accesses
-  - Security vulnerabilities via malformed on-disk structures
-
-Fix by casting to s64 before shifting:
-bmp->db_agsize = (s64)1 << l2agsize;
-
-This ensures 64-bit arithmetic even on 32-bit architectures. The cast
-matches the data type of db_agsize (s64) and follows similar patterns in
-JFS block calculation code.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7a6a044f9b9 ("mt76: testmode: move mtd part to mt76_dev")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Link: https://patch.msgid.link/20250219033645.2594753-1-haoxiang_li2024@163.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/eeprom.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 3bc304d4886e6..d4e26744b2005 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -3465,7 +3465,7 @@ int dbExtendFS(struct inode *ipbmap, s64 blkno,	s64 nblocks)
- 	oldl2agsize = bmp->db_agl2size;
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -74,6 +74,10 @@ int mt76_get_of_eeprom(struct mt76_dev *
  
- 	bmp->db_agl2size = l2agsize;
--	bmp->db_agsize = 1 << l2agsize;
-+	bmp->db_agsize = (s64)1 << l2agsize;
+ #ifdef CONFIG_NL80211_TESTMODE
+ 	dev->test_mtd.name = devm_kstrdup(dev->dev, part, GFP_KERNEL);
++	if (!dev->test_mtd.name) {
++		ret = -ENOMEM;
++		goto out_put_node;
++	}
+ 	dev->test_mtd.offset = offset;
+ #endif
  
- 	/* compute new number of AG */
- 	agno = bmp->db_numag;
--- 
-2.39.5
-
 
 
 
