@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B36AA1633
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23422AA1517
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2803E17AA89
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 385373A3554
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFE9253949;
-	Tue, 29 Apr 2025 17:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99ACA253327;
+	Tue, 29 Apr 2025 17:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpvY1xmZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGeFhKRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED561253326;
-	Tue, 29 Apr 2025 17:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D2E24397A;
+	Tue, 29 Apr 2025 17:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947827; cv=none; b=gc5esEa/RsEdOVuvtQVRsj61CLewV6+Mp+LYovaGC88Vdja3TbxiA4rxxwdrzCfbozVj6uaHSAVtZCrKQ2K5c9QEXwOYkTcuPdFQOOJx/OlTGAWB2aiVYrL+4Upwi8xulVWsanLUNmJmlLCmvb+GciKMyw6f/TWyyeif+AjdvnI=
+	t=1745947042; cv=none; b=JHRyhE50WtCayO79Bb2JSdXllX2/P7OkuG2VrPBYdRu7AODLNV33oHam3zEvtzo1rNgOyAAiGz8bTtbWKTCdF77LC9KXqpWeaD+K9EzIlfwF4CAwzG8AH1fV72t56SxSo2HzEMCeu4rjqZApx4yaNa4+4sz4UL1y2BsINbMvs0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947827; c=relaxed/simple;
-	bh=Bn22ORRGsG1xlob45U2lWlIr0+7q0q/cINw10GZBkXk=;
+	s=arc-20240116; t=1745947042; c=relaxed/simple;
+	bh=NEvrXc83PR3lDpbujJ2O/+8KbFoXy85YZ5+/svu7+/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCZ2j3rAOyko378Dy8yqx2OC6YUZiOCjzdGd5i+GtDNgTTkTRzJixEhBSxKgDiU1Sa2Q6SvgW9tZKG5Qcln9hIKXpzw5ZtX3FtI9fImn2hRwQ9kUV9kBHJnVGsiNXjBjuj4XT0qdiRU6sElmoNzhTmyLvXybOy9NiXPo4y9sfm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpvY1xmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25535C4CEE9;
-	Tue, 29 Apr 2025 17:30:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BY0cTIR/eLRyw80RYVYYnXb2rw3Zhb+ydLbkT2m/RszaFC/X8a6u7f/SZQDKVE5B02lYx2TGue/B2402eHnV6Ze5Dtmjhrk3LV3OpHvMwzHu8EP+G/fJJ+b4KSROdIO9zPWZZi3tSaHwWlIWPMVS6sW/PHV0pzNRxu8Z2jG5WgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGeFhKRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA686C4CEE3;
+	Tue, 29 Apr 2025 17:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947826;
-	bh=Bn22ORRGsG1xlob45U2lWlIr0+7q0q/cINw10GZBkXk=;
+	s=korg; t=1745947042;
+	bh=NEvrXc83PR3lDpbujJ2O/+8KbFoXy85YZ5+/svu7+/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QpvY1xmZ+6j69HdgGo/4LreSOe9PFgNYfRL+icD8iL62UD4+aHdy2YCEMMCwVxKk9
-	 sNe3ImuGqym/iSOvTNH47fM2dxI9pE9wB3/STht0AvN3lARWkuxZmMayUQ4KqhLTSX
-	 rMQ6u7p8nM8n9kJO0Fkj5kSUHklPyj+HnIJd6YmY=
+	b=uGeFhKRsx85twjXdddTQAofrTp5mVAr25ZvmcPPyZZblKCdYiF4UjlGaTzvgpfq/5
+	 WIpzCdl1rkBTgxI35K8EspioWXJv2Y5Sue0cm1VF48DGIH9quoOWBw+dP+ycGgBuHY
+	 VBCDbxr1e6lWe4OH81IO+Rq8GutZxpc7Ot7pr0sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Johannes Thumshirn <jth@kernel.org>
-Subject: [PATCH 6.12 115/280] mcb: fix a double free bug in chameleon_parse_gdd()
+	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 5.10 152/286] misc: pci_endpoint_test: Fix irq_type to convey the correct type
 Date: Tue, 29 Apr 2025 18:40:56 +0200
-Message-ID: <20250429161119.817753256@linuxfoundation.org>
+Message-ID: <20250429161114.136537840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-commit 7c7f1bfdb2249f854a736d9b79778c7e5a29a150 upstream.
+commit baaef0a274cfb75f9b50eab3ef93205e604f662c upstream.
 
-In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
-would be released in mcb_device_register() via put_device().
-Thus, goto 'err' label and free 'mdev' again causes a double free.
-Just return if mcb_device_register() fails.
+There are two variables that indicate the interrupt type to be used
+in the next test execution, "irq_type" as global and "test->irq_type".
 
-Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Link: https://lore.kernel.org/r/6201d09e2975ae5789879f79a6de4c38de9edd4a.1741596225.git.jth@kernel.org
+The global is referenced from pci_endpoint_test_get_irq() to preserve
+the current type for ioctl(PCITEST_GET_IRQTYPE).
+
+The type set in this function isn't reflected in the global "irq_type",
+so ioctl(PCITEST_GET_IRQTYPE) returns the previous type.
+
+As a result, the wrong type is displayed in old version of "pcitest"
+as follows:
+
+  - Result of running "pcitest -i 0"
+
+      SET IRQ TYPE TO LEGACY:         OKAY
+
+  - Result of running "pcitest -I"
+
+      GET IRQ TYPE:           MSI
+
+Whereas running the new version of "pcitest" in kselftest results in an
+error as follows:
+
+  #  RUN           pci_ep_basic.LEGACY_IRQ_TEST ...
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Expected 0 (0) == ret (1)
+  # pci_endpoint_test.c:104:LEGACY_IRQ_TEST:Can't get Legacy IRQ type
+
+Fix this issue by propagating the current type to the global "irq_type".
+
+Fixes: b2ba9225e031 ("misc: pci_endpoint_test: Avoid using module parameter to determine irqtype")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250225110252.28866-5-hayashi.kunihiko@socionext.com
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mcb/mcb-parse.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mcb/mcb-parse.c
-+++ b/drivers/mcb/mcb-parse.c
-@@ -96,7 +96,7 @@ static int chameleon_parse_gdd(struct mc
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -718,6 +718,7 @@ static bool pci_endpoint_test_set_irq(st
+ 	if (!pci_endpoint_test_request_irq(test))
+ 		goto err;
  
- 	ret = mcb_device_register(bus, mdev);
- 	if (ret < 0)
--		goto err;
-+		return ret;
++	irq_type = test->irq_type;
+ 	return true;
  
- 	return 0;
- 
+ err:
 
 
 
