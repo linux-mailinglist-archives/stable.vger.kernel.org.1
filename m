@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4424AA1A46
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B92AA197D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:12:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 565003A91F9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:14:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 225023AFFFC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75332517A8;
-	Tue, 29 Apr 2025 18:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F98227E95;
+	Tue, 29 Apr 2025 18:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8eujtEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctwSe2Uv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8261D25335B;
-	Tue, 29 Apr 2025 18:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536122AE96;
+	Tue, 29 Apr 2025 18:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950507; cv=none; b=UgBMEmGpnS9Z3zWi0vygJ4ZZrCBHmfTL6K4d2Py8laBJxAv0POu7DvliBhE9lhfR2fB982H6HIHxn/Ibzv+yEvHpY7XuGnSLRZKvrtGX+/N62Mzzwn2H8T6PyCadpNTYJPt3yLNZEwPjWfAq+mNHPIwEGefitwmv/9qQT9qlT58=
+	t=1745950009; cv=none; b=ifacgBZ4jE2DQ1bmJORu0E8UT+0XrYPwZcL60dGirYFwXe5fzihxQ7jFSJVjWkyY5V6D5S8NTZeZF8LwYROJDBKCrVY1g569sJU+M9uCOWNZJjOgH5AMwjR/xTqmVLNw2k1qH7fTVNC5ahyY8TXgmX/H509J+gOBSrf4li/bMOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950507; c=relaxed/simple;
-	bh=ilciZuYDfmsxcTGm86QduraEIrAMuDL3Mx4cIqyt3vg=;
+	s=arc-20240116; t=1745950009; c=relaxed/simple;
+	bh=KeEHWttNwzuONz8rfPjWz7iZdxMcjlg5Yi69QUhqn+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2fjkboOGcm68RMFO8cAwDBu1XB2HVkF0tJVnZpsDWIU+8zX+H5MwW7IYrMCaKf1QSRm0Eshlop7qDXmeHMFxTLRPVx8EKEkKRuzt1torFyExzkcOY/uphEhSq+EPYAg6nzDCJVrkSA/cuG1OnZNFlm9wf5/LmGcryfmg8LJG50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8eujtEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E195DC4CEE3;
-	Tue, 29 Apr 2025 18:15:06 +0000 (UTC)
+	 MIME-Version; b=gnaf8VH7NI7RwP1gFzw3cWPUS098jtZpQiflI91PwjSdY0WT3Fmm/9wzixjDdYtnNs06YFhaJzKE91g6e9GJqtFfSvrI39Qhy1dp70f0toERMsy7jFnQ2B2Q4sdR0IQmAZc3FaHXeQrXfFUdTJvtLHgfrTnSECff9DtABUe2ldM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctwSe2Uv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CC4C4CEE3;
+	Tue, 29 Apr 2025 18:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950507;
-	bh=ilciZuYDfmsxcTGm86QduraEIrAMuDL3Mx4cIqyt3vg=;
+	s=korg; t=1745950009;
+	bh=KeEHWttNwzuONz8rfPjWz7iZdxMcjlg5Yi69QUhqn+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8eujtEx5sfqm8a8dlY3mUr9+/oLZGWjho20m36P2woYHyAQbUhuT5jPJ3+zAQ/0r
-	 z1F81LuRakyXmfLLomeH3ChUIA0ojWf3xAM1ZFOAvKnBk9wdq91tg3LgQmfSCMQpzD
-	 aEiKjBPM4RD0S3F2ey/9YjLJlFjGkvQtr88wMoNw=
+	b=ctwSe2UvVnMxE+iIRM/jAAORMSzM4QOoxv8jHDmum5mTLMG0RcqJge30eQymsKkWm
+	 UdPPlzUoK6TPO68bXhFBhMX/boeTGXHW3KsdBdGFqeAiivJJBf3YAfnc0jq1rU1ysy
+	 TpayDs+npcETJnOoneJnQavbh9p934PltShrU0tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Matthias Brugger <matthias.bgg@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/204] pinctrl: renesas: rza2: Fix potential NULL pointer dereference
+Subject: [PATCH 6.1 097/167] pinctrl: renesas: rza2: Fix potential NULL pointer dereference
 Date: Tue, 29 Apr 2025 18:43:25 +0200
-Message-ID: <20250429161104.224920894@linuxfoundation.org>
+Message-ID: <20250429161055.678277557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,10 +85,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
-index c5d733216508e..df660b7e1300c 100644
+index 2d6072e9f5a87..6f0d3fda61c24 100644
 --- a/drivers/pinctrl/renesas/pinctrl-rza2.c
 +++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
-@@ -243,6 +243,9 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
+@@ -242,6 +242,9 @@ static int rza2_gpio_register(struct rza2_pinctrl_priv *priv)
  	int ret;
  
  	chip.label = devm_kasprintf(priv->dev, GFP_KERNEL, "%pOFn", np);
