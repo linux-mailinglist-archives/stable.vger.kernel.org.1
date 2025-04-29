@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D3BAA15E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4E4AA13F3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB13A7A67E6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 519A716F77B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D68242D94;
-	Tue, 29 Apr 2025 17:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A7524A07B;
+	Tue, 29 Apr 2025 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+V+fsN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlB1eiVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E71421883E;
-	Tue, 29 Apr 2025 17:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58A4242902;
+	Tue, 29 Apr 2025 17:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947939; cv=none; b=qbzZJWLKxYyLXKhKj/M5zs+gAFQg2aCQQkZqI89BHW9LcKUa7INUQgHUxUY+/3NNeKSw560gZPzvq7HkpsALrvV4RuhYEwLSwMX2DCpAb5VkLWNoijLDijf7QNc2m+9+5JAZFmGFoGEhXOdeBdTT+BRuV0CpWR945IYmBFQlHno=
+	t=1745946491; cv=none; b=O7oOFOMnX5X0eMUMiCUGixkCbt4wHyn1VMTgpRq9wCi+97hurLepfIAzD2QhojJPRm4S6JsWgJcISDrluGAyKAw4v422Y0wsVfzHVSY8zNrNrMwkEDheTIJSAySPKbxKOfaCgaqTqYhAHze0pvVUOWpSxBmdlZ2j4uz/3Sg2Iho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947939; c=relaxed/simple;
-	bh=2RxM8alxVG6n+hNYHd+5KKy4DlXETaHWykob08/MBpU=;
+	s=arc-20240116; t=1745946491; c=relaxed/simple;
+	bh=LBs6WnlVjkD6yPY9QxQKtbiO73tNE1eSE8czxu04xfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EnONIzgNUbsTlngI1vHuJpuVuPYY+pWkn8z4vL04WOtGUCmnk5wMlh/r7/aM7gSQYakHspwpY9A9S3qYPuwhGyV0x99UzMPpxGYLyPxVN8k3Ko8U0OD5zpKtDDVatN4aX0A5IfZb9uk8bjgnzoOP5/PZlOBSgESfguV+QlXJ7+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+V+fsN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE368C4CEE3;
-	Tue, 29 Apr 2025 17:32:18 +0000 (UTC)
+	 MIME-Version; b=WszHdB//8kr3qOl/6fHwksX//+a63a2YXXT+lYfiICNyiNGX68gyWaXFy3T5Rl7n9ygJsVtjwUaccKtSVOFC9XqRMZ/dkCbrjY13Fq7maNYWToRygbJ7pUqH+Kg1HogJMiCAud68EVSndpzbA0WeGuexfrP/XRSp+3YIsAIhJVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlB1eiVi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2251EC4CEE3;
+	Tue, 29 Apr 2025 17:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947939;
-	bh=2RxM8alxVG6n+hNYHd+5KKy4DlXETaHWykob08/MBpU=;
+	s=korg; t=1745946491;
+	bh=LBs6WnlVjkD6yPY9QxQKtbiO73tNE1eSE8czxu04xfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+V+fsN6dtm+zRoPr402dYGJoLotbxvDp17+esUl5umgpqcWTL3ABS6r6zvlxQYO4
-	 oQYWKsPVyxyd5qC+hMInzshu7aGX3NdLqXDWoVR9pf0Za4aPW47gmokA7mIrG1EYn/
-	 kE8v1N4HBBHhYM8NVaptp+J8VBvAAiYiNBzufhmY=
+	b=jlB1eiViZOIQQ8iChggaXrSvVVVD3WB0WfF+hBF4couau05k3ruEUbz8Uqu/GWEIh
+	 ongdwt4puOk4HPxtULraDhHl4rObLECsgj1dUXmIQV/G0a7jZ4QsPuMGVQeqRvvQ5Y
+	 HkUHadcDP8/R6zO5M11eVU+DFpihhYXJkSpwXu/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.12 150/280] USB: wdm: wdm_wwan_port_tx_complete mutex in atomic context
-Date: Tue, 29 Apr 2025 18:41:31 +0200
-Message-ID: <20250429161121.258253796@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 255/311] objtool: Stop UNRET validation on UD2
+Date: Tue, 29 Apr 2025 18:41:32 +0200
+Message-ID: <20250429161131.469079842@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 1fdc4dca350c0b8ada0b8ebf212504e1ad55e511 upstream.
+[ Upstream commit 9f9cc012c2cbac4833746a0182e06a8eec940d19 ]
 
-wdm_wwan_port_tx_complete is called from a completion
-handler with irqs disabled and possible in IRQ context
-usb_autopm_put_interface can take a mutex.
-Hence usb_autopm_put_interface_async must be used.
+In preparation for simplifying INSN_SYSCALL, make validate_unret()
+terminate control flow on UD2 just like validate_branch() already does.
 
-Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-4-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/ce841269e7e28c8b7f32064464a9821034d724ff.1744095216.git.jpoimboe@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -879,7 +879,7 @@ static void wdm_wwan_port_tx_complete(st
- 	struct sk_buff *skb = urb->context;
- 	struct wdm_device *desc = skb_shinfo(skb)->destructor_arg;
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index bbfd81f49802e..eb9109b4aaf35 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3870,6 +3870,9 @@ static int validate_unret(struct objtool_file *file, struct instruction *insn)
+ 			break;
+ 		}
  
--	usb_autopm_put_interface(desc->intf);
-+	usb_autopm_put_interface_async(desc->intf);
- 	wwan_port_txon(desc->wwanp);
- 	kfree_skb(skb);
- }
++		if (insn->dead_end)
++			return 0;
++
+ 		if (!next) {
+ 			WARN_INSN(insn, "teh end!");
+ 			return -1;
+-- 
+2.39.5
+
 
 
 
