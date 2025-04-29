@@ -1,55 +1,64 @@
-Return-Path: <stable+bounces-138079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE04AA16D1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4EAEAA1436
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 285309A183B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D2C53B0818
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF919250C15;
-	Tue, 29 Apr 2025 17:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269B32472AA;
+	Tue, 29 Apr 2025 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESLfKRbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGsSYq90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8852459FE;
-	Tue, 29 Apr 2025 17:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A6A22A81D;
+	Tue, 29 Apr 2025 17:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948075; cv=none; b=NVXT4U7Cor+5TIYYOHuT3XKruiQ39TAir+/emfTO5TaoYJfPH06HpK5J9S5P17N0NVGe5mqNGOa9/RaJIW1cAFxfxidJJusGdYwN2BvzyzMj7yzoyu7zVRjBTRzFTglW7YEexUhW0HaytaZoBNG/ns9CpLxCfYsLM1rb/Igyuk8=
+	t=1745946500; cv=none; b=K1PAmpPYHlQObRwuNgZQPIrR0clXTOILhl8/SASH7FTyznJIRngnmzemCA3k2GX+pZnqUPf3CxsmXHf7WI3A+5QvttKHntJn9ibMLd5i7fzFXwkE/PQzxjZffGXn0hLAHbb35JjjwjbffUCoKGHfd0jJUVHzgZF8ukUHmhvIq/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948075; c=relaxed/simple;
-	bh=o2/FiH52o/YGB3VOOADEgrjkDGlF7WiUL20dEp6xosg=;
+	s=arc-20240116; t=1745946500; c=relaxed/simple;
+	bh=CF/JgNGiO5CCTLl6rXA8V7FKMecgIt/6JbkYZRYXBfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wu1F/9cyLg7s0rsafVJ3xgWzkRajytnlXXkrcPdPLw3Z9odjTdTDjDA08eqhdFoTpDpmagBJHii+jDTqy4zDkhgwGswmgxQG8/8x8xVtJOGOkVsXua1d0Kq7sZImKRbNX2mlv1qXxrOtsTj2ERBYyjTnDqRxiwzXuM8hn1iF0kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESLfKRbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A8AC4CEE3;
-	Tue, 29 Apr 2025 17:34:34 +0000 (UTC)
+	 MIME-Version; b=gEqfwtOoF3Fp1lC4TVKzfRYJaLYBX+FyCU78H76SAfzVnkJ+Dcvj0dMwTeYKZb/eOvQKatiCBNCDjdEJVBC9tqYtb3mymmxJ6PR4Yh5VFtkci5N/XgdQCDylsYaGfKfv8byRmi8htXPtxefse+ejcNJYIRgZpoN6OhbmawZPGQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGsSYq90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6C5C4CEE3;
+	Tue, 29 Apr 2025 17:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948075;
-	bh=o2/FiH52o/YGB3VOOADEgrjkDGlF7WiUL20dEp6xosg=;
+	s=korg; t=1745946500;
+	bh=CF/JgNGiO5CCTLl6rXA8V7FKMecgIt/6JbkYZRYXBfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESLfKRbg6cSuzpwlifsXaMgLT7RmGaBoSht6qLbAUMjU3nyp/mKBK2cI0eamgxFib
-	 5uk7fysEfCOK5EZRYLu8mau+cS3xL25GEBd7wwnB418QpA4ETLv4/xJm22hp4gsO2G
-	 szhs46S2RZR2xPmJdnLe0pqHJqhCTSAO+2xcvX6M=
+	b=fGsSYq90XDKoYse1je/lD2AQXPy/z1FdxipFfc8NcAtXIBHTBOYAQ3BhjPb+cyqRk
+	 QAp23tH2jCcMnu0V3nPZtF12azG66N9kciz868ViSEkbf+2w0+prJ4Uow35YRDVXMn
+	 usYf9vAuTlHKIhN+002P8cgp3rGqzkacnW9JvTLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Pi Xiange <xiange.pi@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Christian Ludloff <ludloff@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tony Luck <tony.luck@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	x86-cpuid@lists.linux.dev,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/280] usb: host: xhci-plat: mvebu: use ->quirks instead of ->init_quirk() func
+Subject: [PATCH 6.14 288/311] x86/cpu: Add CPU model number for Bartlett Lake CPUs with Raptor Cove cores
 Date: Tue, 29 Apr 2025 18:42:05 +0200
-Message-ID: <20250429161122.637059700@linuxfoundation.org>
+Message-ID: <20250429161132.802018860@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,85 +68,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Pi Xiange <xiange.pi@intel.com>
 
-[ Upstream commit 64eb182d5f7a5ec30227bce4f6922ff663432f44 ]
+[ Upstream commit d466304c4322ad391797437cd84cca7ce1660de0 ]
 
-Compatible "marvell,armada3700-xhci" match data uses the
-struct xhci_plat_priv::init_quirk() function pointer to add
-XHCI_RESET_ON_RESUME as quirk on XHCI.
+Bartlett Lake has a P-core only product with Raptor Cove.
 
-Instead, use the struct xhci_plat_priv::quirks field.
+[ mingo: Switch around the define as pointed out by Christian Ludloff:
+         Ratpr Cove is the core, Bartlett Lake is the product.
 
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-1-13658a271c3c@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pi Xiange <xiange.pi@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Christian Ludloff <ludloff@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: "Ahmed S. Darwish" <darwi@linutronix.de>
+Cc: x86-cpuid@lists.linux.dev
+Link: https://lore.kernel.org/r/20250414032839.5368-1-xiange.pi@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mvebu.c | 10 ----------
- drivers/usb/host/xhci-mvebu.h |  6 ------
- drivers/usb/host/xhci-plat.c  |  2 +-
- 3 files changed, 1 insertion(+), 17 deletions(-)
+ arch/x86/include/asm/intel-family.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
-index 87f1597a0e5ab..257e4d79971fd 100644
---- a/drivers/usb/host/xhci-mvebu.c
-+++ b/drivers/usb/host/xhci-mvebu.c
-@@ -73,13 +73,3 @@ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index 6d7b04ffc5fd0..ef5a06ddf0287 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -115,6 +115,8 @@
+ #define INTEL_GRANITERAPIDS_X		IFM(6, 0xAD)
+ #define INTEL_GRANITERAPIDS_D		IFM(6, 0xAE)
  
- 	return 0;
- }
--
--int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
--{
--	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
--
--	/* Without reset on resume, the HC won't work at all */
--	xhci->quirks |= XHCI_RESET_ON_RESUME;
--
--	return 0;
--}
-diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
-index 3be021793cc8b..9d26e22c48422 100644
---- a/drivers/usb/host/xhci-mvebu.h
-+++ b/drivers/usb/host/xhci-mvebu.h
-@@ -12,16 +12,10 @@ struct usb_hcd;
++#define INTEL_BARTLETTLAKE		IFM(6, 0xD7) /* Raptor Cove */
++
+ /* "Hybrid" Processors (P-Core/E-Core) */
  
- #if IS_ENABLED(CONFIG_USB_XHCI_MVEBU)
- int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd);
--int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd);
- #else
- static inline int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
- {
- 	return 0;
- }
--
--static inline int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
--{
--	return 0;
--}
- #endif
- #endif /* __LINUX_XHCI_MVEBU_H */
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index e6660472501e4..2379a67e34e12 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -106,7 +106,7 @@ static const struct xhci_plat_priv xhci_plat_marvell_armada = {
- };
- 
- static const struct xhci_plat_priv xhci_plat_marvell_armada3700 = {
--	.init_quirk = xhci_mvebu_a3700_init_quirk,
-+	.quirks = XHCI_RESET_ON_RESUME,
- };
- 
- static const struct xhci_plat_priv xhci_plat_brcm = {
+ #define INTEL_LAKEFIELD			IFM(6, 0x8A) /* Sunny Cove / Tremont */
 -- 
 2.39.5
 
