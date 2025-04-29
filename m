@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18FEAA1558
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:25:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D42AA169B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C03F33A5463
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B09123BE410
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA0024113C;
-	Tue, 29 Apr 2025 17:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277FF238C21;
+	Tue, 29 Apr 2025 17:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrzlAeIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0+6ioeO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC99721ADC7;
-	Tue, 29 Apr 2025 17:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77B37E110;
+	Tue, 29 Apr 2025 17:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947226; cv=none; b=YA99EOS+G4diV9d4JgH6AwoAjZ0QGe5bPgemS41FE6oHLwEveN6KijKtZCx4ZjkRrdyje1k6DXIRbJPd/hbg88gOdf5aNgJkXvlT6lqIHNHtC8jIjAs5OtvZE90TPb891p+x62Jmtn2Oa7gCa+GjVWXqWhyAbWSE9DVfiKirsUs=
+	t=1745947974; cv=none; b=GyWHVRNAcUMjdXAJ0nuNmOLV+hM7FNrP7ZZIP1ljyR3mRQ0pFOChWlxo5MMU9gRc7Iyu5d7AV1rKAmsx1oIvKjXphMiFZiwZbGVFALZnjraiupEHkc33rSN4X4FJsYJuaHLavHZKSV2UqA1AlLxpw3bPOmUDptHp1lMTLjkPbTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947226; c=relaxed/simple;
-	bh=3MBDPuu411X5wyGS0az8dU+jsD3yVqqaiP2U/4Prx5E=;
+	s=arc-20240116; t=1745947974; c=relaxed/simple;
+	bh=/WpuM2qTdWA0wAqjGIAEb2h1P6pC4JnFSzJSo1XqSEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QrR8PnjHH2Sg0oMfWpvpy91lPyTV4EmF0Xlk3y7/r3XTgIbgB5pm4Rw3KsqorpQW7CE0KkiMnRLbMarRoZJxqWQ8CGG1fYZ/0LxiMYps5tlZOLb4iGL3bXhMsrSuQESo6EJagEuiVEKTFUij+vp4gYVOxekxLbY/7KzjuqkwI0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrzlAeIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 478ECC4CEE3;
-	Tue, 29 Apr 2025 17:20:26 +0000 (UTC)
+	 MIME-Version; b=QDLnSlFM54cl8AS8ka0TkvqQFSJEhxQT8qTQzqf5/LzruEk/rrPW0Wg9yCY3cYLY/3LKsF7f19I1WdaJ/PBd/kQBcEWwZUe3RiLzkWYg53zE2PXdoNRmA8VbJGBXIWPeDO0DkQpRzaz1eXkxF/1hgV24t8Hc8tUt1cUqX06EHTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0+6ioeO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67728C4CEE3;
+	Tue, 29 Apr 2025 17:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947226;
-	bh=3MBDPuu411X5wyGS0az8dU+jsD3yVqqaiP2U/4Prx5E=;
+	s=korg; t=1745947974;
+	bh=/WpuM2qTdWA0wAqjGIAEb2h1P6pC4JnFSzJSo1XqSEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrzlAeIBf+AsspMBcmKw4BxMN8RFAeA25glznfR9PWw5F5rGxy8YdtLEg86Nr+Bb3
-	 F7Th7vGqhs/zuIdoswbbP7rENYXNS8sc1GPSG26fmoUZc0siUxYsezdeLlYf8aDhzI
-	 1b/19v0nXToNaLvVg28WTRAtrtxG1yBFk/75z3fs=
+	b=K0+6ioeO9Cos/qRlu5kKEcvigsc2LFNN5K+Smk/7kOb5d53LtD/Rz1sUItb90+Sdh
+	 hfouwtLbp3S7OFkcKi5mc/16sErBUntvPBl1OG7iwDwK5ThQOu/vh2os8Kgh+U+7kL
+	 fp46jSKW43OUYQpJ0P88jHt4yf+7SJzl7PdafHq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tom Zanussi <zanussi@kernel.org>,
-	Ross Zwisler <zwisler@google.com>,
-	Ching-lin Yu <chinglinyu@google.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 195/286] tracing: Allow synthetic events to pass around stacktraces
+Subject: [PATCH 6.12 158/280] crypto: null - Use spin lock instead of mutex
 Date: Tue, 29 Apr 2025 18:41:39 +0200
-Message-ID: <20250429161115.986254655@linuxfoundation.org>
+Message-ID: <20250429161121.584866966@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,284 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 00cf3d672a9dd409418647e9f98784c339c3ff63 ]
+[ Upstream commit dcc47a028c24e793ce6d6efebfef1a1e92f80297 ]
 
-Allow a stacktrace from one event to be displayed by the end event of a
-synthetic event. This is very useful when looking for the longest latency
-of a sleep or something blocked on I/O.
+As the null algorithm may be freed in softirq context through
+af_alg, use spin locks instead of mutexes to protect the default
+null algorithm.
 
- # cd /sys/kernel/tracing/
- # echo 's:block_lat pid_t pid; u64 delta; unsigned long[] stack;' > dynamic_events
- # echo 'hist:keys=next_pid:ts=common_timestamp.usecs,st=stacktrace  if prev_state == 1||prev_state == 2' > events/sched/sched_switch/trigger
- # echo 'hist:keys=prev_pid:delta=common_timestamp.usecs-$ts,s=$st:onmax($delta).trace(block_lat,prev_pid,$delta,$s)' >> events/sched/sched_switch/trigger
-
-The above creates a "block_lat" synthetic event that take the stacktrace of
-when a task schedules out in either the interruptible or uninterruptible
-states, and on a new per process max $delta (the time it was scheduled
-out), will print the process id and the stacktrace.
-
-  # echo 1 > events/synthetic/block_lat/enable
-  # cat trace
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-    kworker/u16:0-767     [006] d..4.   560.645045: block_lat: pid=767 delta=66 stack=STACK:
- => __schedule
- => schedule
- => pipe_read
- => vfs_read
- => ksys_read
- => do_syscall_64
- => 0x966000aa
-
-           <idle>-0       [003] d..4.   561.132117: block_lat: pid=0 delta=413787 stack=STACK:
- => __schedule
- => schedule
- => schedule_hrtimeout_range_clock
- => do_sys_poll
- => __x64_sys_poll
- => do_syscall_64
- => 0x966000aa
-
-            <...>-153     [006] d..4.   562.068407: block_lat: pid=153 delta=54 stack=STACK:
- => __schedule
- => schedule
- => io_schedule
- => rq_qos_wait
- => wbt_wait
- => __rq_qos_throttle
- => blk_mq_submit_bio
- => submit_bio_noacct_nocheck
- => ext4_bio_write_page
- => mpage_submit_page
- => mpage_process_page_bufs
- => mpage_prepare_extent_to_map
- => ext4_do_writepages
- => ext4_writepages
- => do_writepages
- => __writeback_single_inode
-
-Link: https://lkml.kernel.org/r/20230117152236.010941267@goodmis.org
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tom Zanussi <zanussi@kernel.org>
-Cc: Ross Zwisler <zwisler@google.com>
-Cc: Ching-lin Yu <chinglinyu@google.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 4d38328eb442 ("tracing: Fix synth event printk format for str fields")
+Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.h              |  4 ++
- kernel/trace/trace_events_hist.c  |  7 ++-
- kernel/trace/trace_events_synth.c | 80 ++++++++++++++++++++++++++++++-
- kernel/trace/trace_synth.h        |  1 +
- 4 files changed, 87 insertions(+), 5 deletions(-)
+ crypto/crypto_null.c | 39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 7c90872f2435d..f47938d8401a2 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -109,6 +109,10 @@ enum trace_type {
- 	unlikely(__ret_warn_once);				\
- })
+diff --git a/crypto/crypto_null.c b/crypto/crypto_null.c
+index 5b84b0f7cc178..3378670286535 100644
+--- a/crypto/crypto_null.c
++++ b/crypto/crypto_null.c
+@@ -17,10 +17,10 @@
+ #include <crypto/internal/skcipher.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/mm.h>
++#include <linux/spinlock.h>
+ #include <linux/string.h>
  
-+#define HIST_STACKTRACE_DEPTH	16
-+#define HIST_STACKTRACE_SIZE	(HIST_STACKTRACE_DEPTH * sizeof(unsigned long))
-+#define HIST_STACKTRACE_SKIP	5
-+
- /*
-  * syscalls are special, and need special handling, this is why
-  * they are not included in trace_entries.h
-diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
-index 059a106e62bec..a0342b45a06da 100644
---- a/kernel/trace/trace_events_hist.c
-+++ b/kernel/trace/trace_events_hist.c
-@@ -282,10 +282,6 @@ DEFINE_HIST_FIELD_FN(u8);
- #define for_each_hist_key_field(i, hist_data)	\
- 	for ((i) = (hist_data)->n_vals; (i) < (hist_data)->n_fields; (i)++)
+-static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
++static DEFINE_SPINLOCK(crypto_default_null_skcipher_lock);
+ static struct crypto_sync_skcipher *crypto_default_null_skcipher;
+ static int crypto_default_null_skcipher_refcnt;
  
--#define HIST_STACKTRACE_DEPTH	16
--#define HIST_STACKTRACE_SIZE	(HIST_STACKTRACE_DEPTH * sizeof(unsigned long))
--#define HIST_STACKTRACE_SKIP	5
--
- #define HITCOUNT_IDX		0
- #define HIST_KEY_SIZE_MAX	(MAX_FILTER_STR_VAL + HIST_STACKTRACE_SIZE)
+@@ -152,23 +152,32 @@ MODULE_ALIAS_CRYPTO("cipher_null");
  
-@@ -3356,6 +3352,9 @@ static int check_synth_field(struct synth_event *event,
- 	    && field->is_dynamic)
- 		return 0;
- 
-+	if (strstr(hist_field->type, "long[") && field->is_stack)
-+		return 0;
-+
- 	if (strcmp(field->type, hist_field->type) != 0) {
- 		if (field->size != hist_field->size ||
- 		    (!field->is_string && field->is_signed != hist_field->is_signed))
-diff --git a/kernel/trace/trace_events_synth.c b/kernel/trace/trace_events_synth.c
-index e43426aa12830..4878758ceea2a 100644
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -162,6 +162,14 @@ static int synth_field_is_string(char *type)
- 	return false;
- }
- 
-+static int synth_field_is_stack(char *type)
-+{
-+	if (strstr(type, "long[") != NULL)
-+		return true;
-+
-+	return false;
-+}
-+
- static int synth_field_string_size(char *type)
+ struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
  {
- 	char buf[4], *end, *start;
-@@ -237,6 +245,8 @@ static int synth_field_size(char *type)
- 		size = sizeof(gfp_t);
- 	else if (synth_field_is_string(type))
- 		size = synth_field_string_size(type);
-+	else if (synth_field_is_stack(type))
-+		size = 0;
++	struct crypto_sync_skcipher *ntfm = NULL;
+ 	struct crypto_sync_skcipher *tfm;
  
- 	return size;
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	tfm = crypto_default_null_skcipher;
+ 
+ 	if (!tfm) {
+-		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
+-		if (IS_ERR(tfm))
+-			goto unlock;
+-
+-		crypto_default_null_skcipher = tfm;
++		spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++		ntfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
++		if (IS_ERR(ntfm))
++			return ntfm;
++
++		spin_lock_bh(&crypto_default_null_skcipher_lock);
++		tfm = crypto_default_null_skcipher;
++		if (!tfm) {
++			tfm = ntfm;
++			ntfm = NULL;
++			crypto_default_null_skcipher = tfm;
++		}
+ 	}
+ 
+ 	crypto_default_null_skcipher_refcnt++;
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
+ 
+-unlock:
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	crypto_free_sync_skcipher(ntfm);
+ 
+ 	return tfm;
  }
-@@ -281,6 +291,8 @@ static const char *synth_field_fmt(char *type)
- 		fmt = "%x";
- 	else if (synth_field_is_string(type))
- 		fmt = "%.*s";
-+	else if (synth_field_is_stack(type))
-+		fmt = "%s";
+@@ -176,12 +185,16 @@ EXPORT_SYMBOL_GPL(crypto_get_default_null_skcipher);
  
- 	return fmt;
+ void crypto_put_default_null_skcipher(void)
+ {
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	struct crypto_sync_skcipher *tfm = NULL;
++
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	if (!--crypto_default_null_skcipher_refcnt) {
+-		crypto_free_sync_skcipher(crypto_default_null_skcipher);
++		tfm = crypto_default_null_skcipher;
+ 		crypto_default_null_skcipher = NULL;
+ 	}
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++	crypto_free_sync_skcipher(tfm);
  }
-@@ -360,6 +372,23 @@ static enum print_line_t print_synth_event(struct trace_iterator *iter,
- 						 i == se->n_fields - 1 ? "" : " ");
- 				n_u64 += STR_VAR_LEN_MAX / sizeof(u64);
- 			}
-+		} else if (se->fields[i]->is_stack) {
-+			u32 offset, data_offset, len;
-+			unsigned long *p, *end;
-+
-+			offset = (u32)entry->fields[n_u64];
-+			data_offset = offset & 0xffff;
-+			len = offset >> 16;
-+
-+			p = (void *)entry + data_offset;
-+			end = (void *)p + len - (sizeof(long) - 1);
-+
-+			trace_seq_printf(s, "%s=STACK:\n", se->fields[i]->name);
-+
-+			for (; *p && p < end; p++)
-+				trace_seq_printf(s, "=> %pS\n", (void *)*p);
-+			n_u64++;
-+
- 		} else {
- 			struct trace_print_flags __flags[] = {
- 			    __def_gfpflag_names, {-1, NULL} };
-@@ -427,6 +456,43 @@ static unsigned int trace_string(struct synth_trace_event *entry,
- 	return len;
- }
+ EXPORT_SYMBOL_GPL(crypto_put_default_null_skcipher);
  
-+static unsigned int trace_stack(struct synth_trace_event *entry,
-+				 struct synth_event *event,
-+				 long *stack,
-+				 unsigned int data_size,
-+				 unsigned int *n_u64)
-+{
-+	unsigned int len;
-+	u32 data_offset;
-+	void *data_loc;
-+
-+	data_offset = struct_size(entry, fields, event->n_u64);
-+	data_offset += data_size;
-+
-+	for (len = 0; len < HIST_STACKTRACE_DEPTH; len++) {
-+		if (!stack[len])
-+			break;
-+	}
-+
-+	/* Include the zero'd element if it fits */
-+	if (len < HIST_STACKTRACE_DEPTH)
-+		len++;
-+
-+	len *= sizeof(long);
-+
-+	/* Find the dynamic section to copy the stack into. */
-+	data_loc = (void *)entry + data_offset;
-+	memcpy(data_loc, stack, len);
-+
-+	/* Fill in the field that holds the offset/len combo */
-+	data_offset |= len << 16;
-+	*(u32 *)&entry->fields[*n_u64] = data_offset;
-+
-+	(*n_u64)++;
-+
-+	return len;
-+}
-+
- static notrace void trace_event_raw_event_synth(void *__data,
- 						u64 *var_ref_vals,
- 						unsigned int *var_ref_idx)
-@@ -479,6 +545,12 @@ static notrace void trace_event_raw_event_synth(void *__data,
- 					   event->fields[i]->is_dynamic,
- 					   data_size, &n_u64);
- 			data_size += len; /* only dynamic string increments */
-+		} if (event->fields[i]->is_stack) {
-+		        long *stack = (long *)(long)var_ref_vals[val_idx];
-+
-+			len = trace_stack(entry, event, stack,
-+					   data_size, &n_u64);
-+			data_size += len;
- 		} else {
- 			struct synth_field *field = event->fields[i];
- 			u64 val = var_ref_vals[val_idx];
-@@ -541,6 +613,9 @@ static int __set_synth_event_print_fmt(struct synth_event *event,
- 		    event->fields[i]->is_dynamic)
- 			pos += snprintf(buf + pos, LEN_OR_ZERO,
- 				", __get_str(%s)", event->fields[i]->name);
-+		else if (event->fields[i]->is_stack)
-+			pos += snprintf(buf + pos, LEN_OR_ZERO,
-+				", __get_stacktrace(%s)", event->fields[i]->name);
- 		else
- 			pos += snprintf(buf + pos, LEN_OR_ZERO,
- 					", REC->%s", event->fields[i]->name);
-@@ -660,7 +735,8 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- 		ret = -EINVAL;
- 		goto free;
- 	} else if (size == 0) {
--		if (synth_field_is_string(field->type)) {
-+		if (synth_field_is_string(field->type) ||
-+		    synth_field_is_stack(field->type)) {
- 			char *type;
- 
- 			len = sizeof("__data_loc ") + strlen(field->type) + 1;
-@@ -691,6 +767,8 @@ static struct synth_field *parse_synth_field(int argc, const char **argv,
- 
- 	if (synth_field_is_string(field->type))
- 		field->is_string = true;
-+	else if (synth_field_is_stack(field->type))
-+		field->is_stack = true;
- 
- 	field->is_signed = synth_field_signed(field->type);
-  out:
-diff --git a/kernel/trace/trace_synth.h b/kernel/trace/trace_synth.h
-index 4007fe95cf42c..077c748a8b3a6 100644
---- a/kernel/trace/trace_synth.h
-+++ b/kernel/trace/trace_synth.h
-@@ -18,6 +18,7 @@ struct synth_field {
- 	bool is_signed;
- 	bool is_string;
- 	bool is_dynamic;
-+	bool is_stack;
- };
- 
- struct synth_event {
 -- 
 2.39.5
 
