@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-137179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E25AA1204
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDBF7AA1625
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3E807A7F24
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B22DB981A1A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3624246326;
-	Tue, 29 Apr 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B50B1FE468;
+	Tue, 29 Apr 2025 17:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0rG86e5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10Omeq/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6158A24466C;
-	Tue, 29 Apr 2025 16:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B319478F58;
+	Tue, 29 Apr 2025 17:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945300; cv=none; b=Zo34OVU6QkQ08t9M3JWAQ8o1GSYhdVPfRyx7aXCkbuN4gxgAj1sF9U7Cdr7P7QREAUJwJcoFqljZ71LgZCaa58VaUVaMvpGaZu8WUvKy77BLr5+RHtssRC80Fz1ctWzcOWX7XDVVSmKlRjdskwl2K0sGcMIa+5koEiqQgNi1jp8=
+	t=1745947666; cv=none; b=rbUI/CRv69zi3VuB5hcJhEiSl3LkEQNwzIEda2DO+YMlODBlxBrwfv4sISVWDE/3me7yadgw8unu8YU5/wfSNKHQQiNnYpQ2kwWLWUpeUI9bYxJUF7LJJLkWqypPq+0QAiArNboje0fZGY7ucN0pQFLcYxPFgYmZwzyRX6K3ZvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945300; c=relaxed/simple;
-	bh=xLLaqyeoFYA9ZcSqame/gCXygz/tIvQv4X0ShTJSIaU=;
+	s=arc-20240116; t=1745947666; c=relaxed/simple;
+	bh=vYHFNuKOJKhntA6IiFM+ixNkER/hUywVT9rHhNxwKz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ozjVqZKBO3WxbK2mC5Nzh79gdd7XHslkeM9hOHqoh0KEOhm4WM57VqO1/AQDF9jNd6ZCyEvC6pAj4ArZ4xrMehjSOa71rK8TDoW81iHa415cTpIfuxu66L1ASQWj3GILQCwt7bllTYPwLDF4pVI7QXWk/d/+SFtDehwqGiTdqr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0rG86e5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF264C4CEE9;
-	Tue, 29 Apr 2025 16:48:19 +0000 (UTC)
+	 MIME-Version; b=kM2mAmuGSP8i2tTs03uUR91KAyvnlqwAqNYdzu4lpjHqSaxsK7ZLteBQlsjXngxP+OCI0kv6m69eRoayQMpTPgOJlG2fs0owdySiRwlVWH/LZeWUa0pw1ca1pauS9e3G+6oXKNRgx7KdXopOeXxbjfOHR889fprXVXOAP+siEb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10Omeq/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4706AC4CEE3;
+	Tue, 29 Apr 2025 17:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945300;
-	bh=xLLaqyeoFYA9ZcSqame/gCXygz/tIvQv4X0ShTJSIaU=;
+	s=korg; t=1745947666;
+	bh=vYHFNuKOJKhntA6IiFM+ixNkER/hUywVT9rHhNxwKz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0rG86e53Xki/2JrvNEpe6En57Y7Vd8kNE/9Np+EGYj2y9OsToXSSlKAKtC91Ts/h
-	 C56HUfUNLYmJRhVkxreB9HJlXV09s9Q0L1N6DiWJAhq75mFlWR7h4uq0ZDA3LVBwRD
-	 WzEa3CD04vwTvyBEx4sQeDbayJGxmH4zQZxT0BMA=
+	b=10Omeq/32HT5SR3d+J+Y+vMnctlUQCr1of3x6nTIzsppXasxPtVLcGRF5ucVez+td
+	 ZSo8r8B3EhxxS0cbt0/gp4td79/GNpI28Dgco3yef1tA0oD+Kvd4WqHU8rG8xrSyXw
+	 DcQHxhQsNpxoIp0P0z5TarFwzF8pfL0LaeQoSLo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 067/179] mm: add missing release barrier on PGDAT_RECLAIM_LOCKED unlock
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 067/280] net/mlx5: Move ttc allocation after switch case to prevent leaks
 Date: Tue, 29 Apr 2025 18:40:08 +0200
-Message-ID: <20250429161052.132059414@linuxfoundation.org>
+Message-ID: <20250429161117.851780176@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,67 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit c0ebbb3841e07c4493e6fe351698806b09a87a37 upstream.
+[ Upstream commit fa8fd315127ca48c65e7e6692a84ffcf3d07168e ]
 
-The PGDAT_RECLAIM_LOCKED bit is used to provide mutual exclusion of node
-reclaim for struct pglist_data using a single bit.
+Relocate the memory allocation for ttc table after the switch statement
+that validates params->ns_type in both mlx5_create_inner_ttc_table() and
+mlx5_create_ttc_table(). This ensures memory is only allocated after
+confirming valid input, eliminating potential memory leaks when invalid
+ns_type cases occur.
 
-It is "locked" with a test_and_set_bit (similarly to a try lock) which
-provides full ordering with respect to loads and stores done within
-__node_reclaim().
-
-It is "unlocked" with clear_bit(), which does not provide any ordering
-with respect to loads and stores done before clearing the bit.
-
-The lack of clear_bit() memory ordering with respect to stores within
-__node_reclaim() can cause a subsequent CPU to fail to observe stores from
-a prior node reclaim.  This is not an issue in practice on TSO (e.g.
-x86), but it is an issue on weakly-ordered architectures (e.g.  arm64).
-
-Fix this by using clear_bit_unlock rather than clear_bit to clear
-PGDAT_RECLAIM_LOCKED with a release memory ordering semantic.
-
-This provides stronger memory ordering (release rather than relaxed).
-
-Link: https://lkml.kernel.org/r/20250312141014.129725-1-mathieu.desnoyers@efficios.com
-Fixes: d773ed6b856a ("mm: test and set zone reclaim lock before starting reclaim")
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Cc: Andrea Parri <parri.andrea@gmail.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jade Alglave <j.alglave@ucl.ac.uk>
-Cc: Luc Maranget <luc.maranget@inria.fr>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250418023814.71789-3-bsdhenrymartin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4331,7 +4331,7 @@ int node_reclaim(struct pglist_data *pgd
- 		return NODE_RECLAIM_NOSCAN;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+index 510879e1ba30e..43b2216bc0a22 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+@@ -618,10 +618,6 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 	bool use_l4_type;
+ 	int err;
  
- 	ret = __node_reclaim(pgdat, gfp_mask, order);
--	clear_bit(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
-+	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
+-	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
+-	if (!ttc)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	switch (params->ns_type) {
+ 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
+ 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
+@@ -635,6 +631,10 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
- 	if (!ret)
- 		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
++	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
++	if (!ttc)
++		return ERR_PTR(-ENOMEM);
++
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
+ 	if (!ns) {
+ 		kvfree(ttc);
+@@ -696,10 +696,6 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 	bool use_l4_type;
+ 	int err;
+ 
+-	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
+-	if (!ttc)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	switch (params->ns_type) {
+ 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
+ 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
+@@ -713,6 +709,10 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
++	if (!ttc)
++		return ERR_PTR(-ENOMEM);
++
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
+ 	if (!ns) {
+ 		kvfree(ttc);
+-- 
+2.39.5
+
 
 
 
