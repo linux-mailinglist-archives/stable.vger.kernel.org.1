@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-138975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD6FAA3D3A
-	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:54:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4377AA3D39
+	for <lists+stable@lfdr.de>; Wed, 30 Apr 2025 01:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70CDA7ACB0F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B55D23A03DE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 23:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162382E62CA;
-	Tue, 29 Apr 2025 23:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA02A23504D;
+	Tue, 29 Apr 2025 23:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T9Y35YvA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKD9Uo2N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59122E62C3;
-	Tue, 29 Apr 2025 23:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD47235040;
+	Tue, 29 Apr 2025 23:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745970643; cv=none; b=pUQe/T6PKuPqODy7VpNFyHK6WZMBcimt9jWmBKHp+u7uHKwTQaYJT3C3I9KU+dJ99u1DIenh6pPA4y89RvctTiZVmeRslKn+lt5ASLiHNFDFwbilsFCr2k6FSZcMqLR9KhccIHH85f/Mgp9DhvQ+m7Rxfg9JqRDPvp3dHnwk41w=
+	t=1745970645; cv=none; b=LXoo9qnp0SfCTUm/JZMdl8QMr3HQSq+mlKeqxqf5kHTSLkzjQ0fhXgY599PpUfMQ8m34za2SfMQNqQWoByeXO/8RUU/Te23y15St78zKvYvXIt2QjSbOQMYtgSp0EwQzqFQvStDD3248izdm27WW1FtXrpszVPnvpWo42oTsfFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745970643; c=relaxed/simple;
-	bh=RFckZoqr3GbTVCJyvxzPdI/Ff1f3qW26zT5hV+au7tY=;
+	s=arc-20240116; t=1745970645; c=relaxed/simple;
+	bh=IzBhOCAVYFmFiUQDsYqBC9p3Z3/XGMlBkDU+3zszrB4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A47O/gt0fAGsXizd2YUUQpvqgAU2ZvPlUw1avgvCQcxVyg3SVgK16eDLNf5a4Spwpod1NLkn1w7Q7Lj4ISZtzgVusMbFd6Kutu6gmpRXkEOE/eYOG+HKMf+OzAqwmc0dcC2ZX06eo1NLMn1mGK+jNYiTlotSmwAa6Lai9me5GJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T9Y35YvA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67306C4CEE3;
-	Tue, 29 Apr 2025 23:50:42 +0000 (UTC)
+	 MIME-Version; b=oLCVCl8k/mqhnL8DiOu4oytN0hUEgdwrWMb5zIa96+iuzvnjnT+bDzmtYPGC70znnxclAc4ucEM6MumRDHBdkR2qTwCwRD3j5VYDxvRjSwEY8rezSl/OiLVR5ae3dvV2Ou8VF+yRngEFYQfG2wK69sOIkN930Q+rsRTuKnnA2DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKD9Uo2N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC36C4CEE3;
+	Tue, 29 Apr 2025 23:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1745970643;
-	bh=RFckZoqr3GbTVCJyvxzPdI/Ff1f3qW26zT5hV+au7tY=;
+	s=k20201202; t=1745970645;
+	bh=IzBhOCAVYFmFiUQDsYqBC9p3Z3/XGMlBkDU+3zszrB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9Y35YvA3D+HaIdqZYPlwS0lq9zK/rDf4xXLh3R6N2e6ty9+zdpo/368QdLDd3wv9
-	 cWVdf4rsSmBKcnLQLz1PnWzRnzwifux1I/LZNg+JqFvI0C+kWiPUObPWBd3mkzWaSs
-	 9rh4Lg43fnuE8VXPZN1yvq6o8WSy/o/DtyPf5Ve3cci4ZQbhBxpHiAiBByTwcDRfOm
-	 t9RXzeLXOAiZOHm/JMEAA6rktofWCbtO2mMmjexAGYJ7hgbLAlu3NYGrsfiQmMIi/U
-	 XoEzOYvGo5dsEz2rh/cwRaSb+kEoBxRYRK8alkVqJcQIBCUqluOPbUJotLDW/E8alz
-	 ZjIEOnGOSmFLQ==
+	b=XKD9Uo2Nwi58iZASk/WbhQQzNhSalDGsDcP51TiWgeBfCqK6Rauop5WtoQW0JPwy0
+	 VZgrVVN2YtXs9sTIpU1axF4g52msLd0SZPSDPRLEXq5yhlP/1jwqRHpOYANf0SCKF4
+	 3pxWa4Z/Lo0M12sv11ox6Sc5kLkfMPjEtuXQ2S3IfVuHt8bqDYn/NHOim6IQc5cUWy
+	 1TdhA6AFqv0nbQpnUX/y4cIoXg3Vrw1or/fBPB8wuu51cJGKlD0ae0GZiQSWk3U36W
+	 9OCCBihhsYRM4L7uKxMjT4gDa/no3G2mC7l+xQG9Vw3Y7GZq3iFlFj8jyE0r1+PEr/
+	 yxozTNgyqp6pw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: gaoxu <gaoxu2@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>,
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hannes@cmpxchg.org,
-	cgroups@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 19/39] cgroup: Fix compilation issue due to cgroup_mutex not being exported
-Date: Tue, 29 Apr 2025 19:49:46 -0400
-Message-Id: <20250429235006.536648-19-sashal@kernel.org>
+	jasowang@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 20/39] vhost_task: fix vhost_task_create() documentation
+Date: Tue, 29 Apr 2025 19:49:47 -0400
+Message-Id: <20250429235006.536648-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250429235006.536648-1-sashal@kernel.org>
 References: <20250429235006.536648-1-sashal@kernel.org>
@@ -62,49 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.4
 Content-Transfer-Encoding: 8bit
 
-From: gaoxu <gaoxu2@honor.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 87c259a7a359e73e6c52c68fcbec79988999b4e6 ]
+[ Upstream commit fec0abf52609c20279243699d08b660c142ce0aa ]
 
-When adding folio_memcg function call in the zram module for
-Android16-6.12, the following error occurs during compilation:
-ERROR: modpost: "cgroup_mutex" [../soc-repo/zram.ko] undefined!
+Commit cb380909ae3b ("vhost: return task creation error instead of NULL")
+changed the return value of vhost_task_create(), but did not update the
+documentation.
 
-This error is caused by the indirect call to lockdep_is_held(&cgroup_mutex)
-within folio_memcg. The export setting for cgroup_mutex is controlled by
-the CONFIG_PROVE_RCU macro. If CONFIG_LOCKDEP is enabled while
-CONFIG_PROVE_RCU is not, this compilation error will occur.
+Reflect the change in the documentation: on an error, vhost_task_create()
+returns an ERR_PTR() and no longer NULL.
 
-To resolve this issue, add a parallel macro CONFIG_LOCKDEP control to
-ensure cgroup_mutex is properly exported when needed.
-
-Signed-off-by: gao xu <gaoxu2@honor.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20250327124435.142831-1-sgarzare@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 2 +-
+ kernel/vhost_task.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 81f078c059e86..d1b4409ed1723 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -90,7 +90,7 @@
- DEFINE_MUTEX(cgroup_mutex);
- DEFINE_SPINLOCK(css_set_lock);
- 
--#ifdef CONFIG_PROVE_RCU
-+#if (defined CONFIG_PROVE_RCU || defined CONFIG_LOCKDEP)
- EXPORT_SYMBOL_GPL(cgroup_mutex);
- EXPORT_SYMBOL_GPL(css_set_lock);
- #endif
+diff --git a/kernel/vhost_task.c b/kernel/vhost_task.c
+index 2ef2e1b800916..2f844c279a3e0 100644
+--- a/kernel/vhost_task.c
++++ b/kernel/vhost_task.c
+@@ -111,7 +111,7 @@ EXPORT_SYMBOL_GPL(vhost_task_stop);
+  * @arg: data to be passed to fn and handled_kill
+  * @name: the thread's name
+  *
+- * This returns a specialized task for use by the vhost layer or NULL on
++ * This returns a specialized task for use by the vhost layer or ERR_PTR() on
+  * failure. The returned task is inactive, and the caller must fire it up
+  * through vhost_task_start().
+  */
 -- 
 2.39.5
 
