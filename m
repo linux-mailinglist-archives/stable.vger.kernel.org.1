@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-138117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4B9AA1666
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCFCAA1578
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B7EF7AFBB5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A12D01892D00
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691462517AB;
-	Tue, 29 Apr 2025 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5FC25334C;
+	Tue, 29 Apr 2025 17:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rJyFHGEp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CJ870V3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAD4238C21;
-	Tue, 29 Apr 2025 17:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABCFE2512C6;
+	Tue, 29 Apr 2025 17:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948209; cv=none; b=aWCeo9hFzIdA5RNMzszAR0h7vc2QIRNJk/TIplCrVTZTmTCCme4EO18vRQEiCkXLVyzE9HOd/bB16Y3jCwqp2VxmwaNMZKCAzBhUxaPxtANammX4ibSqw0WrgYm7w2q23dru32k8ymhB5A12WZLxQIBNGOu/x9730iE0BGhnsuc=
+	t=1745947368; cv=none; b=lU3Nbe6cdSpO57gYmfCBQ1pCN0Tsg3BK8AS6afu8zoLVRyRssPWqSAtKmX3Lm2sqpqWmsuhLieRdXca0f3Rtw5k8cOtEoFAi04i2x3sugjrtGtro1bwpCQLO+kqWK7K3HfmLt9u60XR+33K1OPNNTT1/RHl6ERMeOvDBACptE+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948209; c=relaxed/simple;
-	bh=EGbPXemyuJFssqM8cEJmk3XO7P4CBgcNYDV8vU/oQu8=;
+	s=arc-20240116; t=1745947368; c=relaxed/simple;
+	bh=Brt8DJ2TidKPqupRKjpX6VielThd9dK627G1jz3Q9eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXKC1YMgWWTBy5ocvNe7BtjfYS1JejxCQRiRIwaFa0CanUTGTsMXjcwf5R78wa2d4WqlvjVUGVpsecab+V6cplf11HYppCL7cDHV9QJwHsAZUypAlIBg/QiWOXEf0pxP3hWuyHBDY6+lkByCC8FzOBGbW/7PKBujaXMVwnivvC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rJyFHGEp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE8CC4CEE3;
-	Tue, 29 Apr 2025 17:36:48 +0000 (UTC)
+	 MIME-Version; b=aSDjtvPFjtphj+e9EnmGI9XOqWyspDYjhsjscEtWhLy8glT75K45E/lEjl3T6qwbOAZ3ew+eAeKEImtjTGjQH+zSpGUqeFqGoMTrUqYWUoVtChRA/3tPttsh8A0X+fyuFc6NbddeOTxV+AMzTDtlRDBdKa+IgLTwn5XN156MVk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CJ870V3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5C3C4CEE3;
+	Tue, 29 Apr 2025 17:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948208;
-	bh=EGbPXemyuJFssqM8cEJmk3XO7P4CBgcNYDV8vU/oQu8=;
+	s=korg; t=1745947368;
+	bh=Brt8DJ2TidKPqupRKjpX6VielThd9dK627G1jz3Q9eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rJyFHGEpBis9PZo4Kte0vWcRut+SYBkpqqNkUh8rlBqsDwyPn8EtkNrQmDO1WlEyZ
-	 iW4zGS8vp4CJcT0v64KQybEtN6gpCAsQS5DUfnY2yLZC08jCC7FQBedcAyx8paNwyb
-	 5KUcDpux+mCSe4cysH3KGnDdlfICyZeiRp+zbZ7Y=
+	b=0CJ870V3LvWAktmVh72izHcK2CXQRJcasmVSfXYpX8yMLarpj+S9ObQvt9KSVI5rj
+	 Yv2FUa5ww1JwyWv8pZKt7b66iI0nz18ifE52EsQ+JD4raCn8FS0gnSvth7gGhsE1oH
+	 iS3FXkm9lyKzIGDFQNY+/ovi4RvOY/aqY8PqMSsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
+	Alexander Stein <alexander.stein@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 220/280] x86/bugs: Dont fill RSB on context switch with eIBRS
+Subject: [PATCH 5.10 257/286] usb: host: max3421-hcd: Add missing spi_device_id table
 Date: Tue, 29 Apr 2025 18:42:41 +0200
-Message-ID: <20250429161124.123308078@linuxfoundation.org>
+Message-ID: <20250429161118.489971785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Alexander Stein <alexander.stein@mailbox.org>
 
-[ Upstream commit 27ce8299bc1ec6df8306073785ff82b30b3cc5ee ]
+[ Upstream commit 41d5e3806cf589f658f92c75195095df0b66f66a ]
 
-User->user Spectre v2 attacks (including RSB) across context switches
-are already mitigated by IBPB in cond_mitigation(), if enabled globally
-or if either the prev or the next task has opted in to protection.  RSB
-filling without IBPB serves no purpose for protecting user space, as
-indirect branches are still vulnerable.
+"maxim,max3421" DT compatible is missing its SPI device ID entry, not
+allowing module autoloading and leading to the following message:
+ "SPI driver max3421-hcd has no spi_device_id for maxim,max3421"
 
-User->kernel RSB attacks are mitigated by eIBRS.  In which case the RSB
-filling on context switch isn't needed, so remove it.
+Fix this by adding the spi_device_id table.
 
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/r/98cdefe42180358efebf78e3b80752850c7a3e1b.1744148254.git.jpoimboe@kernel.org
+Signed-off-by: Alexander Stein <alexander.stein@mailbox.org>
+Link: https://lore.kernel.org/r/20250128195114.56321-1-alexander.stein@mailbox.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 24 ++++++++++++------------
- arch/x86/mm/tlb.c          |  6 +++---
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/usb/host/max3421-hcd.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 589e34c0b70b5..46bddb5bb15ff 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1578,7 +1578,7 @@ static void __init spec_ctrl_disable_kernel_rrsba(void)
- 	rrsba_disabled = true;
+diff --git a/drivers/usb/host/max3421-hcd.c b/drivers/usb/host/max3421-hcd.c
+index 44a35629d68c6..db1b73486e90b 100644
+--- a/drivers/usb/host/max3421-hcd.c
++++ b/drivers/usb/host/max3421-hcd.c
+@@ -1956,6 +1956,12 @@ max3421_remove(struct spi_device *spi)
+ 	return 0;
  }
  
--static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_mitigation mode)
-+static void __init spectre_v2_select_rsb_mitigation(enum spectre_v2_mitigation mode)
- {
- 	/*
- 	 * Similar to context switches, there are two types of RSB attacks
-@@ -1602,7 +1602,7 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	 */
- 	switch (mode) {
- 	case SPECTRE_V2_NONE:
--		return;
-+		break;
- 
- 	case SPECTRE_V2_EIBRS:
- 	case SPECTRE_V2_EIBRS_LFENCE:
-@@ -1611,18 +1611,21 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
- 			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
--		return;
-+		break;
- 
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		pr_info("Spectre v2 / SpectreRSB: Filling RSB on context switch and VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
- 		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
--		return;
--	}
-+		break;
- 
--	pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation at VM exit");
--	dump_stack();
-+	default:
-+		pr_warn_once("Unknown Spectre v2 mode, disabling RSB mitigation\n");
-+		dump_stack();
-+		break;
-+	}
- }
- 
- /*
-@@ -1854,10 +1857,7 @@ static void __init spectre_v2_select_mitigation(void)
- 	 *
- 	 * FIXME: Is this pointless for retbleed-affected AMD?
- 	 */
--	setup_force_cpu_cap(X86_FEATURE_RSB_CTXSW);
--	pr_info("Spectre v2 / SpectreRSB mitigation: Filling RSB on context switch\n");
--
--	spectre_v2_determine_rsb_fill_type_at_vmexit(mode);
-+	spectre_v2_select_rsb_mitigation(mode);
- 
- 	/*
- 	 * Retpoline protects the kernel, but doesn't protect firmware.  IBRS
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 00ffa74d0dd0b..27d81cb049ff8 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -389,9 +389,9 @@ static void cond_mitigation(struct task_struct *next)
- 	prev_mm = this_cpu_read(cpu_tlbstate.last_user_mm_spec);
- 
- 	/*
--	 * Avoid user/user BTB poisoning by flushing the branch predictor
--	 * when switching between processes. This stops one process from
--	 * doing Spectre-v2 attacks on another.
-+	 * Avoid user->user BTB/RSB poisoning by flushing them when switching
-+	 * between processes. This stops one process from doing Spectre-v2
-+	 * attacks on another.
- 	 *
- 	 * Both, the conditional and the always IBPB mode use the mm
- 	 * pointer to avoid the IBPB when switching between tasks of the
++static const struct spi_device_id max3421_spi_ids[] = {
++	{ "max3421" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, max3421_spi_ids);
++
+ static const struct of_device_id max3421_of_match_table[] = {
+ 	{ .compatible = "maxim,max3421", },
+ 	{},
+@@ -1965,6 +1971,7 @@ MODULE_DEVICE_TABLE(of, max3421_of_match_table);
+ static struct spi_driver max3421_driver = {
+ 	.probe		= max3421_probe,
+ 	.remove		= max3421_remove,
++	.id_table	= max3421_spi_ids,
+ 	.driver		= {
+ 		.name	= "max3421-hcd",
+ 		.of_match_table = of_match_ptr(max3421_of_match_table),
 -- 
 2.39.5
 
