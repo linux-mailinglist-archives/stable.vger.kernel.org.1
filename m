@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48155AA15B4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C386AA16BA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E25199A0188
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A71A0188BDF2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40372528F1;
-	Tue, 29 Apr 2025 17:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F6C244670;
+	Tue, 29 Apr 2025 17:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsBITRNF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kW9rrtjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B067E24E000;
-	Tue, 29 Apr 2025 17:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2069B22172E;
+	Tue, 29 Apr 2025 17:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947437; cv=none; b=tYOkuxgLkmx42KiMf1VXzBheB3ymH0y83M7Ss5E8UV1RsTbw5vdv61akcayI8gPYTU6DOqZVLxIQQGnx9o56PmxZk2fGNoCoY3J1zDYBldzWwDxE3n56vLpGbxGlGfQS4Xmk7Nml1F1nij6BM7KJIqLxE6e1g7W6jBbOs+Zt1Gk=
+	t=1745948288; cv=none; b=l4fQ0RYrHna08YsyjsL9+Kh0KQxtjgwj03cyY2CPOI9JA/Z8Fy64u5eD+1gaEjOVMXJ0dBH863wHBjyuVqiMObKIifwzr/lK6gFrKk0z9TdHNVU1wqWbLFalASi9OqXZ1sTN7HHdgDDAeHnwawLwZF34mEt7uJ0E2TQlUHKLLyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947437; c=relaxed/simple;
-	bh=eyLGp2IvQM7Qdo8YZBJ42v/ChpCP19sgkNmI4atQM3s=;
+	s=arc-20240116; t=1745948288; c=relaxed/simple;
+	bh=isEw3xkvzfcKcLb0zXbpxUvDox4XxMAmBYVemyO+Muc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WVe8iMG4eXbkuiiPn9zI0M0QQBVdLgOi2hAmTPPpPx2lCRLeQWzzesrKY9TT80Ltd83GNhjfh8oKjBBlD1KTPZvfAJs1YRtTkGRILHKK518DGMHxhMireh/rleJM/vMEZVZKbby9RhsPVhgmkl0T4M1Ewkf2hEXNyrrmaofV5fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsBITRNF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3722AC4CEE3;
-	Tue, 29 Apr 2025 17:23:57 +0000 (UTC)
+	 MIME-Version; b=VeFf1GHIHHv2S5hiGdktDzvFM639yYNmjmAk4noCC3ah9pMdU8tAUgtRBgKbd+sRHHsKKx8rwHQ1VJKsG9rRRRWsTWhcWvpKdGXa95kqQC8RrA6W2e7zdCaiXszAEhbNKVWSSUvSEEm1Bsf26KBHbJEweu4recCn5TNWGm04iFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kW9rrtjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7204C4CEE3;
+	Tue, 29 Apr 2025 17:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947437;
-	bh=eyLGp2IvQM7Qdo8YZBJ42v/ChpCP19sgkNmI4atQM3s=;
+	s=korg; t=1745948288;
+	bh=isEw3xkvzfcKcLb0zXbpxUvDox4XxMAmBYVemyO+Muc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BsBITRNF3c2plG5Cp/VT32nnFkW8qRH4XNMcQ/Mfy75tZLpRf7gmH3zlk2VdATWFF
-	 skg9DE86pph8jZlOjutrp3I5iRWk/2jPkki3W7mNW3zTelprl4uJBwtobmWixaZmOL
-	 WB6y3g/KFXflzB3cuckgsmGabQhlFBZ7WQqVk1u4=
+	b=kW9rrtjUr6H/iz68zzxVD+vLEBnDOg+CGEtHOPk4ofEJDmjDCj1RDsG6ZIjEkDLzl
+	 Uo6TLWRwcOxiIYIRFDfFeTeM6v6KOKYcAhHUpn7aJuQ1z3HIIVV4I+MgirZjp4g/A/
+	 rxRMrBHC6sUIcISbhX33lJZ188vhLifoRYRDYD24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@kernel.org>,
-	=?UTF-8?q?Ricardo=20Ca=F1uelo=20Navarro?= <rcn@igalia.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.10 280/286] xdp: Reset bpf_redirect_info before running a xdps BPF prog.
-Date: Tue, 29 Apr 2025 18:43:04 +0200
-Message-ID: <20250429161119.429013565@linuxfoundation.org>
+	Meir Elisha <meir.elisha@volumez.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 244/280] md/raid1: Add check for missing source disk in process_checks()
+Date: Tue, 29 Apr 2025 18:43:05 +0200
+Message-ID: <20250429161125.109376778@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Meir Elisha <meir.elisha@volumez.com>
 
-Ricardo reported a KASAN discovered use after free in v6.6-stable.
+[ Upstream commit b7c178d9e57c8fd4238ff77263b877f6f16182ba ]
 
-The syzbot starts a BPF program via xdp_test_run_batch() which assigns
-ri->tgt_value via dev_hash_map_redirect() and the return code isn't
-XDP_REDIRECT it looks like nonsense. So the output in
-bpf_warn_invalid_xdp_action() appears once.
-Then the TUN driver runs another BPF program (on the same CPU) which
-returns XDP_REDIRECT without setting ri->tgt_value first. It invokes
-bpf_trace_printk() to print four characters and obtain the required
-return value. This is enough to get xdp_do_redirect() invoked which
-then accesses the pointer in tgt_value which might have been already
-deallocated.
+During recovery/check operations, the process_checks function loops
+through available disks to find a 'primary' source with successfully
+read data.
 
-This problem does not affect upstream because since commit
-	401cb7dae8130 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
+If no suitable source disk is found after checking all possibilities,
+the 'primary' index will reach conf->raid_disks * 2. Add an explicit
+check for this condition after the loop. If no source disk was found,
+print an error message and return early to prevent further processing
+without a valid primary source.
 
-the per-CPU variable is referenced via task's task_struct and exists on
-the stack during NAPI callback. Therefore it is cleared once before the
-first invocation and remains valid within the RCU section of the NAPI
-callback.
-
-Instead of performing the huge backport of the commit (plus its fix ups)
-here is an alternative version which only resets the variable in
-question prior invoking the BPF program.
-
-Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
-Reported-by: Ricardo Cañuelo Navarro <rcn@igalia.com>
-Closes: https://lore.kernel.org/all/20250226-20250204-kasan-slab-use-after-free-read-in-dev_map_enqueue__submit-v3-0-360efec441ba@igalia.com/
-Fixes: 97f91a7cf04ff ("bpf: add bpf_redirect_map helper routine")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-raid/20250408143808.1026534-1-meir.elisha@volumez.com
+Signed-off-by: Meir Elisha <meir.elisha@volumez.com>
+Suggested-and-reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/md/raid1.c | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -758,6 +758,10 @@ static __always_inline u32 bpf_prog_run_
- 	 * already takes rcu_read_lock() when fetching the program, so
- 	 * it's not necessary here anymore.
- 	 */
-+	struct bpf_redirect_info *ri = this_cpu_ptr(&bpf_redirect_info);
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 8a994a1975ca7..6b6cd753d61a9 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -2156,14 +2156,9 @@ static int fix_sync_read_error(struct r1bio *r1_bio)
+ 				if (!rdev_set_badblocks(rdev, sect, s, 0))
+ 					abort = 1;
+ 			}
+-			if (abort) {
+-				conf->recovery_disabled =
+-					mddev->recovery_disabled;
+-				set_bit(MD_RECOVERY_INTR, &mddev->recovery);
+-				md_done_sync(mddev, r1_bio->sectors, 0);
+-				put_buf(r1_bio);
++			if (abort)
+ 				return 0;
+-			}
 +
-+	if (ri->map)
-+		ri->map = NULL;
- 	return __BPF_PROG_RUN(prog, xdp, BPF_DISPATCHER_FUNC(xdp));
- }
+ 			/* Try next page */
+ 			sectors -= s;
+ 			sect += s;
+@@ -2302,10 +2297,21 @@ static void sync_request_write(struct mddev *mddev, struct r1bio *r1_bio)
+ 	int disks = conf->raid_disks * 2;
+ 	struct bio *wbio;
  
+-	if (!test_bit(R1BIO_Uptodate, &r1_bio->state))
+-		/* ouch - failed to read all of that. */
+-		if (!fix_sync_read_error(r1_bio))
++	if (!test_bit(R1BIO_Uptodate, &r1_bio->state)) {
++		/*
++		 * ouch - failed to read all of that.
++		 * No need to fix read error for check/repair
++		 * because all member disks are read.
++		 */
++		if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery) ||
++		    !fix_sync_read_error(r1_bio)) {
++			conf->recovery_disabled = mddev->recovery_disabled;
++			set_bit(MD_RECOVERY_INTR, &mddev->recovery);
++			md_done_sync(mddev, r1_bio->sectors, 0);
++			put_buf(r1_bio);
+ 			return;
++		}
++	}
+ 
+ 	if (test_bit(MD_RECOVERY_REQUESTED, &mddev->recovery))
+ 		process_checks(r1_bio);
+-- 
+2.39.5
+
 
 
 
