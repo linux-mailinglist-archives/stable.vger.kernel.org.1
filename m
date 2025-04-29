@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C62FAA14B5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:19:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC73AA123D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 592863A1340
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6153F9280D3
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E19248889;
-	Tue, 29 Apr 2025 17:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E91244668;
+	Tue, 29 Apr 2025 16:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSxQSD+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrrW9Bsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F61C21883E;
-	Tue, 29 Apr 2025 17:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A549223E340;
+	Tue, 29 Apr 2025 16:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946860; cv=none; b=g5Yqei4HcrEXmkJHeC0KASzG305E+9+PkmAHbszZK5DdRbwqEwUjqvpHCNzBHzGulj3g3plx6Rb2FFgwqA0ldziKgWChNzP2yeTgbFvjtm9m+WFwfA4RSY8xRSpRgbJ921OjRDnXtPewPXbJbahYWkPuCV9wyrxQpq+ZXHIDeR8=
+	t=1745945350; cv=none; b=Rl10m/AW1V+yuKZxSd2bt9+refNSgp9VGJ4ihGdkeQuQjy7MwuaOMhGj749x8bQifxPUFQUtdffiKaFOfS/2hbBseMaFDyn6P7OltTKUMMvizqSRe3UNjZgW55ugUkxNstnQP6ThLJAMiUtC5gnAhkZA1w+OGr7rtgi+yLGeMyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946860; c=relaxed/simple;
-	bh=yDlJv2bsZ75TXkLTlUFdcTHoB5QZ2b7u7FS/oY4BXso=;
+	s=arc-20240116; t=1745945350; c=relaxed/simple;
+	bh=vyao/Lp8UqqYyRCJaOeXL9jksTWYjKA/D3Vtqps0ufc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0JDR2jGsMKFXaVIrgst/fiEM5oSq3fXYmB9vRypPxNrhvQqV/WbibZAnvfFc4LNB/cDvOT7rTeDZHYiN5J0QBHuU5pJ0logUmRkFHnczJ6UQBu9E5qVW5aCJCDEdNG6N2A6GiGXcG1FW+yBgU5cu8dFq4ibdn7mkwO07oXqAek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSxQSD+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5693C4CEE3;
-	Tue, 29 Apr 2025 17:14:19 +0000 (UTC)
+	 MIME-Version; b=SV2NUjEcXz6wIkvVH3s2LpZS+OBmp+PAgawiPNbrvo8CsXTYpklUUfRM4KAN4zuX+qEtttyi90b33uZsUTQpDF9va68LOkWU3THcD99ipRG833d4gPo36y2WFAgqcwvbzcMJZNvXsN1pnhMEHBpnH9KnIfOhMlZWZw/Y2aqxMqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mrrW9Bsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169DEC4CEE3;
+	Tue, 29 Apr 2025 16:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946860;
-	bh=yDlJv2bsZ75TXkLTlUFdcTHoB5QZ2b7u7FS/oY4BXso=;
+	s=korg; t=1745945350;
+	bh=vyao/Lp8UqqYyRCJaOeXL9jksTWYjKA/D3Vtqps0ufc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VSxQSD+utDxFGqinaTB3Jki4Xd/CxGMP/4iHWD6MPuJJJkX4Rcl9SsZ7+DZ3JguRb
-	 Pcz3KOCXd7UBr5yeqBrrbx4m6tleIFhjpiJArLNoJf0H1v9UFzMg2q5/wqoFk76Q1D
-	 Z2ain0aHJOQE3WcU5TMbR3VkZFCVj8aSiTAU/vY4=
+	b=mrrW9BskTQa+6gtWvZI4RkP1cGLnDzIEt68MxWczIwrgiUc7jTMDo57eDoEZ7ehM4
+	 FHY63h9HLgjgryRAldmb1Wmt6t7VWAxcphAlz2ctuT9nqKzc3AWp5UgrQQopQvvUZX
+	 /kteB88aWSSHxrUpNDVVnFMMDsl902CnOPtMBcD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>
-Subject: [PATCH 5.10 092/286] of/irq: Fix device node refcount leakages in of_irq_count()
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.4 055/179] media: venus: hfi_parser: add check to avoid out of bound access
 Date: Tue, 29 Apr 2025 18:39:56 +0200
-Message-ID: <20250429161111.639731065@linuxfoundation.org>
+Message-ID: <20250429161051.623085805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit bbf71f44aaf241d853759a71de7e7ebcdb89be3d upstream.
+commit 172bf5a9ef70a399bb227809db78442dc01d9e48 upstream.
 
-of_irq_count() invokes of_irq_parse_one() to count IRQs, and successful
-invocation of the later will get device node @irq.np refcount, but the
-former does not put the refcount before next iteration invocation, hence
-causes device node refcount leakages.
+There is a possibility that init_codecs is invoked multiple times during
+manipulated payload from video firmware. In such case, if codecs_count
+can get incremented to value more than MAX_CODEC_NUM, there can be OOB
+access. Reset the count so that it always starts from beginning.
 
-Fix by putting @irq.np refcount before the next iteration invocation.
-
-Fixes: 3da5278727a8 ("of/irq: Rework of_irq_count()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250209-of_irq_fix-v2-5-93e3a2659aa7@quicinc.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -443,8 +443,10 @@ int of_irq_count(struct device_node *dev
- 	struct of_phandle_args irq;
- 	int nr = 0;
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,8 @@ static void init_codecs(struct venus_cor
+ 	struct venus_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
--	while (of_irq_parse_one(dev, nr, &irq) == 0)
-+	while (of_irq_parse_one(dev, nr, &irq) == 0) {
-+		of_node_put(irq.np);
- 		nr++;
-+	}
++	core->codecs_count = 0;
++
+ 	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
+ 		return;
  
- 	return nr;
- }
 
 
 
