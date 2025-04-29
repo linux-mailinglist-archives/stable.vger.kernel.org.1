@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D278AA1299
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C41AA1506
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7D5B1BA4AEF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66EBD16EC12
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F391242934;
-	Tue, 29 Apr 2025 16:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94126245007;
+	Tue, 29 Apr 2025 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWoyexde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtRYu52U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDE121772B;
-	Tue, 29 Apr 2025 16:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5224421ADC7;
+	Tue, 29 Apr 2025 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945614; cv=none; b=koK0CCetxX5i0uYSwW47oGgThu8Vwv7ejscheQc4n6fEcgZj+VvF4y++LUcvlFQvhWcvr48iYb6cNus8YTG9c3S6PdD0NicYG2kn2nBSss04xWISapjb7QR2JicLt3pz59/E6rprtgEMiXSpKgWaIPbBkoGFU/EZS4e1GemoRtk=
+	t=1745947211; cv=none; b=RlUQrCBRz6iJm+/7ywzkE27ixxBKRn9S2wr5fg354XhxGUVAqE6xVvbtFK4JKEGb1SNyuZB2dEfTp5I6re87X7iyGx/lpLi5KoPaZLkekNr9IyuRm1sW7GKwotD9aE9DAy1YBdci6Nx1IeszkjVfiqMLGdESaGvVYGd8Yd9BaYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945614; c=relaxed/simple;
-	bh=5KEb25LkOT87bAcMVl8PpDHCRrVI+CFqce4P0PFi+UI=;
+	s=arc-20240116; t=1745947211; c=relaxed/simple;
+	bh=62wo0MnCj3Irl8F+fWF/VgK6gxJEVydVmwQzk6LIFAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TTvvMryql1biytYOTWwVTORN1tyhRD1An2bbuOECB4ms4MEYFiE3/LqTsPv9tuUBYVQgOGYvPu0yyuFL5ub/+zKZ9cpVutxy5ZVrdm9ro0qVKNsgPH3ogBnvNL0KWyPDdU9R4Ix0cjYaaWnRp4N7BT4P10fLesuZLkBg56xwEeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWoyexde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA8FC4CEE3;
-	Tue, 29 Apr 2025 16:53:32 +0000 (UTC)
+	 MIME-Version; b=S+I8AXOpaGRUNzE3H6FO2oVCHe0AFVGk0fCdybMd3UWegDv+VGT2mM5MIki/FSr7FkloxQUgYcDrn4pLHtxIEyNwGu4owX+FgT0/rxyQFqQWkew6ZFd0WJI6jmBCJfN6jzitdtHUOzOL9WmbJwOD7Be9K48Hy7Jv0IHHXaRMG5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtRYu52U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E10C4CEE9;
+	Tue, 29 Apr 2025 17:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945613;
-	bh=5KEb25LkOT87bAcMVl8PpDHCRrVI+CFqce4P0PFi+UI=;
+	s=korg; t=1745947211;
+	bh=62wo0MnCj3Irl8F+fWF/VgK6gxJEVydVmwQzk6LIFAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gWoyexdemVBgwUfhLZv1L2yxI8FTHmbNiQ8sNnxd2POn88IGWdjIAEIPBYLjEc3Qq
-	 xOzCuYCaTgumQIDisvuZXbdFHFIRWi4nzVe+6qK9JrIiD0fVSdA5H3i21PyXLKk23l
-	 75/5CEWOIHaPNaxy8Ksr6TPRIvPJJVUWg8fTBpag=
+	b=JtRYu52UtIArgVii8w2QZXPC/PI2zuObMwMP7Xl81S6lQ3ptSG2pWf6qJStrSFBbj
+	 YlWvQ8JYPQjRmxUiGuGaKtodz/OgwPkQXnPggg5enBb1tTe5cfAtyN0sH1DrJnhMxt
+	 LxUg48C0JtmQHzk82Ck+69RBBosrhLZmCT84uqp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uday Shankar <ushankar@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Stanimir Varbanov <stanimir.varbanov@linaro.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 171/179] selftests: ublk: fix test_stripe_04
+Subject: [PATCH 5.10 208/286] media: venus: hfi_plat: Add codecs and capabilities ops
 Date: Tue, 29 Apr 2025 18:41:52 +0200
-Message-ID: <20250429161056.315028786@linuxfoundation.org>
+Message-ID: <20250429161116.508942854@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Stanimir Varbanov <stanimir.varbanov@linaro.org>
 
-[ Upstream commit 72070e57b0a518ec8e562a2b68fdfc796ef5c040 ]
+[ Upstream commit 9822291e031f6d7149ae4f3fc00bd9c33ac2a084 ]
 
-Commit 57ed58c13256 ("selftests: ublk: enable zero copy for stripe target")
-added test entry of test_stripe_04, but forgot to add the test script.
+Add ops to get the supported by the platform codecs and capabilities.
 
-So fix the test by adding the script file.
-
-Reported-by: Uday Shankar <ushankar@purestorage.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Uday Shankar <ushankar@purestorage.com>
-Link: https://lore.kernel.org/r/20250404001849.1443064-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Stanimir Varbanov <stanimir.varbanov@linaro.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 9edaaa8e3e15 ("media: venus: hfi_parser: refactor hfi packet parsing logic")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ublk/test_stripe_04.sh  | 24 +++++++++++++++++++
- 1 file changed, 24 insertions(+)
- create mode 100755 tools/testing/selftests/ublk/test_stripe_04.sh
+ drivers/media/platform/qcom/venus/hfi_platform.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/ublk/test_stripe_04.sh b/tools/testing/selftests/ublk/test_stripe_04.sh
-new file mode 100755
-index 0000000000000..1f2b642381d17
---- /dev/null
-+++ b/tools/testing/selftests/ublk/test_stripe_04.sh
-@@ -0,0 +1,24 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+. "$(cd "$(dirname "$0")" && pwd)"/test_common.sh
-+
-+TID="stripe_04"
-+ERR_CODE=0
-+
-+_prep_test "stripe" "mkfs & mount & umount on zero copy"
-+
-+backfile_0=$(_create_backfile 256M)
-+backfile_1=$(_create_backfile 256M)
-+dev_id=$(_add_ublk_dev -t stripe -z -q 2 "$backfile_0" "$backfile_1")
-+_check_add_dev $TID $? "$backfile_0" "$backfile_1"
-+
-+_mkfs_mount_test /dev/ublkb"${dev_id}"
-+ERR_CODE=$?
-+
-+_cleanup_test "stripe"
-+
-+_remove_backfile "$backfile_0"
-+_remove_backfile "$backfile_1"
-+
-+_show_result $TID $ERR_CODE
+diff --git a/drivers/media/platform/qcom/venus/hfi_platform.h b/drivers/media/platform/qcom/venus/hfi_platform.h
+index 6794232322557..50512d142662f 100644
+--- a/drivers/media/platform/qcom/venus/hfi_platform.h
++++ b/drivers/media/platform/qcom/venus/hfi_platform.h
+@@ -47,6 +47,8 @@ struct hfi_platform_codec_freq_data {
+ struct hfi_platform {
+ 	unsigned long (*codec_vpp_freq)(u32 session_type, u32 codec);
+ 	unsigned long (*codec_vsp_freq)(u32 session_type, u32 codec);
++	void (*codecs)(u32 *enc_codecs, u32 *dec_codecs, u32 *count);
++	const struct hfi_plat_caps *(*capabilities)(unsigned int *entries);
+ };
+ 
+ extern const struct hfi_platform hfi_plat_v4;
 -- 
 2.39.5
 
