@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-138034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBAEAA1647
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB80AA123C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB6291899BEE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C26474A725A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C79F238C21;
-	Tue, 29 Apr 2025 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14033247291;
+	Tue, 29 Apr 2025 16:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI74c+Kf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZx1Abgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F7E22A81D;
-	Tue, 29 Apr 2025 17:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C716021772B;
+	Tue, 29 Apr 2025 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947904; cv=none; b=ZYNWD5IHtQqGXNRFSGKAmEIXtHl23Ul+jixN1xlY2Ta2ozZF2kbGl+JNmcYYtnruSff02OebaHacMxTkuro+sd1IEmoolk74WNqqyytg8YP/yWSXJRKlGvtHxAtnL8aBvCOlfuotbKaw86GhSI3D8G4t7gOTDrQz0nsJNXUcKyo=
+	t=1745945432; cv=none; b=K0Bs+nbLk8LoWfKbOe7BXSbYrFrEA0OvLR1EiES2bJoHIOwYuniOhAsy0cBp6fZlmTumiKmQyU/44ZElj4rnAKFl4Q3v4M30yTt6IRtSkojGqQLlagWrZRnpdg8JWOAAAgK3Dxsygrp08DfvTJMH4eX1VXTZXWAFNxr9Qo1LV0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947904; c=relaxed/simple;
-	bh=uiWWJZTe/7OrMnvUAZg4hyzxKHCtgLJ0vGs1sBAeikI=;
+	s=arc-20240116; t=1745945432; c=relaxed/simple;
+	bh=2qjodBvlacIlpCk+SQKswSe0qzhUq0g2QDJdjeCz71M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fknXOmAxdL6DXcG6OKkZ4dNbtqbDq95BC3zFz5DZg5bDRA9BgTpXO71LSReNyIek1DdTiqUhpkyAff0J5qbkh1OoZ8HHHlbI2RHYuTDG5canQHmzTWwH8tdrAsECnGoGpz0ML+WJODIX4jxrpsOYkx94OBClB+PLAdthlm/OF5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI74c+Kf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A0DC4CEE3;
-	Tue, 29 Apr 2025 17:31:43 +0000 (UTC)
+	 MIME-Version; b=cf37kGU19vLnSxf/C8EzACihnC7z8r8g2HJjuwS+B72GxU5sqFMsZKVl2LjLkF2XNiMnm2GnatouTVumEY0rVAwiQjYZ4K0z7IMWOuOnrRaWSy/ghP3GU7u+xskJFCnUTbSbZA6QhRrhUmyb/CqWNiGBUp61mq4l760q1XGXf1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZx1Abgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43940C4CEE3;
+	Tue, 29 Apr 2025 16:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947904;
-	bh=uiWWJZTe/7OrMnvUAZg4hyzxKHCtgLJ0vGs1sBAeikI=;
+	s=korg; t=1745945432;
+	bh=2qjodBvlacIlpCk+SQKswSe0qzhUq0g2QDJdjeCz71M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI74c+KfQy/EZ0alrOp2o4qnyh3DWcH815hUn1/rmIM5kz5Uh9jJUsIo/vJq76XAM
-	 h8SGpmzOW8i7tEhuB5Ij49dujCqwr1KY+nfO3gefc7aG8iTs9G6CV4GI2iU4KeN4on
-	 bsvw9m195lsIugIpNQYIj2YFTDy1MNBfDgNSMABY=
+	b=qZx1AbgrheHUnNWIJLOqYwyvaUyinwdE5Y7VXGx+Zk9RER7gZaTZUgZDoyuHJqE57
+	 tqzxCODLgZezHnbnVwe+GkPsyLdRdB+zR/mlE9ruPbz4++ytkWLzZtBKCBGyRPSxTe
+	 hXD/uw8F6ZVW8A+20rx2SfaIpm2QvsI0p0izCgZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 110/280] LoongArch: KVM: Fully clear some CSRs when VM reboot
+	stable@kernel.org,
+	Rolf Eike Beer <eb@emlix.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
+Subject: [PATCH 5.4 110/179] drm/sti: remove duplicate object names
 Date: Tue, 29 Apr 2025 18:40:51 +0200
-Message-ID: <20250429161119.615337418@linuxfoundation.org>
+Message-ID: <20250429161053.855852526@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Rolf Eike Beer <eb@emlix.com>
 
-commit 9ea86232a5520d9d21832d06031ea80f055a6ff8 upstream.
+commit 7fb6afa9125fc111478615e24231943c4f76cc2e upstream.
 
-Some registers such as LOONGARCH_CSR_ESTAT and LOONGARCH_CSR_GINTC are
-partly cleared with function _kvm_setcsr(). This comes from the hardware
-specification, some bits are read only in VM mode, and however they can
-be written in host mode. So they are partly cleared in VM mode, and can
-be fully cleared in host mode.
+When merging 2 drivers common object files were not deduplicated.
 
-These read only bits show pending interrupt or exception status. When VM
-reset, the read-only bits should be cleared, otherwise vCPU will receive
-unknown interrupts in boot stage.
-
-Here registers LOONGARCH_CSR_ESTAT/LOONGARCH_CSR_GINTC are fully cleared
-in ioctl KVM_REG_LOONGARCH_VCPU_RESET vCPU reset path.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: dcec16efd677 ("drm/sti: Build monolithic driver")
+Cc: stable@kernel.org
+Signed-off-by: Rolf Eike Beer <eb@emlix.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/1920148.tdWV9SEqCh@devpool47.emlix.com
+Signed-off-by: Raphael Gallais-Pou <raphael.gallais-pou@foss.st.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kvm/vcpu.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/sti/Makefile |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -874,6 +874,13 @@ static int kvm_set_one_reg(struct kvm_vc
- 			vcpu->arch.st.guest_addr = 0;
- 			memset(&vcpu->arch.irq_pending, 0, sizeof(vcpu->arch.irq_pending));
- 			memset(&vcpu->arch.irq_clear, 0, sizeof(vcpu->arch.irq_clear));
-+
-+			/*
-+			 * When vCPU reset, clear the ESTAT and GINTC registers
-+			 * Other CSR registers are cleared with function _kvm_setcsr().
-+			 */
-+			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_GINTC, 0);
-+			kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_ESTAT, 0);
- 			break;
- 		default:
- 			ret = -EINVAL;
+--- a/drivers/gpu/drm/sti/Makefile
++++ b/drivers/gpu/drm/sti/Makefile
+@@ -7,8 +7,6 @@ sti-drm-y := \
+ 	sti_compositor.o \
+ 	sti_crtc.o \
+ 	sti_plane.o \
+-	sti_crtc.o \
+-	sti_plane.o \
+ 	sti_hdmi.o \
+ 	sti_hdmi_tx3g4c28phy.o \
+ 	sti_dvo.o \
 
 
 
