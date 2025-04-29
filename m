@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-137611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0465DAA1433
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 378D2AA16CF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D18381893DE9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2412985790
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9111DF73C;
-	Tue, 29 Apr 2025 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A534E22A4F4;
+	Tue, 29 Apr 2025 17:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOGvPwzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGz5TUNb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F3422A81D;
-	Tue, 29 Apr 2025 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633E67E110;
+	Tue, 29 Apr 2025 17:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946589; cv=none; b=RwUk9r56+33Ouw47escYm1QddAUVQk699WcUzZ0RQrqbDpZb/AmW1qQl+PCFxJfWDhU+HW/kQ6poTH2uJV4yoVzVOrcfvrUjwC8Z46hSP54evX0kAT0tMb7im0Ybz8ZOR9RPGqYUgak9vm9pLV9XTsG19dfSz9ILH2C89427QJI=
+	t=1745948072; cv=none; b=Ux6YNMl99ab0iAIGw6v+OKoOCm8JQLAkqBqL+U8JZJNxRbrGFfFzpBwTyiY/bSuwBcPjjipNs4VAin600MFuX4IY690tvdSno+eWyahGgyCkUP4bR4tHc96530ZSf4xZ5mcx3jFRFW6g2NnRWJk39ze4U1HnOkMSg1+Rg2o1D30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946589; c=relaxed/simple;
-	bh=sBuDtDvAN7iEFAzc3KaObJKEtYtjbMLmq/B3C0hKasY=;
+	s=arc-20240116; t=1745948072; c=relaxed/simple;
+	bh=hNpXyFwQ8vSoaq7Pv//9e+zBb7m+AFR5VbLf6gyGSBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIgEvGJbOY1dVzg4P4Hc2qLoQovzIFoW9Yv/geHLvl0p+2Uh8rKk9khU0Jn1G4uWbLm4hopBl3678MSwvBP7iP2c39214r97TvzQU0ycGK/k4WgzMIRqh9kAf0KiDdtx5avWSMIR1919mE92JbN/TjB15WzasXz7vnUtybch5ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOGvPwzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B436DC4CEE3;
-	Tue, 29 Apr 2025 17:09:48 +0000 (UTC)
+	 MIME-Version; b=VnxhNmkj/V+RkGXOVTMj3ogmFUIY3xK/2cLM7sH0cuEB4SsyEjKPLqRCA2qhEXlUEcq7m/eLyKbjXetuwl2qFN0DkVoif49q0dSN7LJBL/+B38qaUsalsl7bMXp15Z9+N2SzawBI1YMyZRKeTCFrH5RYyooGZc4NLGcPMRi4rL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGz5TUNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E6DC4CEE3;
+	Tue, 29 Apr 2025 17:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946589;
-	bh=sBuDtDvAN7iEFAzc3KaObJKEtYtjbMLmq/B3C0hKasY=;
+	s=korg; t=1745948072;
+	bh=hNpXyFwQ8vSoaq7Pv//9e+zBb7m+AFR5VbLf6gyGSBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOGvPwzXM290alcfrjUdUNwAZbPhxXaucOHv7ol7Cgta1vo6cjm4QnsiE2p+isehx
-	 m6W+mZrBVr8EVbZ1tR+Ad/4X1qkpCeZtARXSTJUT0Cj2RjmlNlRfUc38ZUO4N5ODla
-	 sxgIHTOhPn+FkfwGhfC1SyYz06jJAk8UC6xavnUc=
+	b=tGz5TUNbzB4MGUS6O/wi8+lXp+56/JOFNyx8qDBjnIjBMH6CJu/elIji6EfkwhZ0q
+	 8jVMyV6sccfd4wHmONbX3laqLPwPRIO1cnt23Hj7OcQ/Bg5uQgHiKrlZ+3+KgC+ajY
+	 1k12pHCcnHfdzEz+MVrigspaz7Eb6IjwRtzyVWdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 287/311] nvmet: pci-epf: cleanup link state management
+Subject: [PATCH 6.12 183/280] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
 Date: Tue, 29 Apr 2025 18:42:04 +0200
-Message-ID: <20250429161132.761928673@linuxfoundation.org>
+Message-ID: <20250429161122.596836515@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-[ Upstream commit ad91308d3bdeb9d90ef4a400f379ce461f0fb6a7 ]
+[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
 
-Since the link_up boolean field of struct nvmet_pci_epf_ctrl is always
-set to true when nvmet_pci_epf_start_ctrl() is called, assign true to
-this field in nvmet_pci_epf_start_ctrl(). Conversely, since this field
-is set to false when nvmet_pci_epf_stop_ctrl() is called, set this field
-to false directly inside that function.
+The variable d->name, returned by devm_kasprintf(), could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-While at it, also add information messages to notify the user of the PCI
-link state changes to help troubleshoot any link stability issues
-without needing to enable debug messages.
+This issue is found by our static analysis tool
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/pci-epf.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/target/pci-epf.c b/drivers/nvme/target/pci-epf.c
-index 5c4c4c1f535d4..bc1daa9aede9d 100644
---- a/drivers/nvme/target/pci-epf.c
-+++ b/drivers/nvme/target/pci-epf.c
-@@ -2109,11 +2109,18 @@ static int nvmet_pci_epf_create_ctrl(struct nvmet_pci_epf *nvme_epf,
- 
- static void nvmet_pci_epf_start_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- {
+diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+index 573109ca5b799..a09f72772e6e9 100644
+--- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
++++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
+ 	d->vhub = vhub;
+ 	d->index = idx;
+ 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
++	if (!d->name)
++		return -ENOMEM;
 +
-+	dev_info(ctrl->dev, "PCI link up\n");
-+	ctrl->link_up = true;
-+
- 	schedule_delayed_work(&ctrl->poll_cc, NVMET_PCI_EPF_CC_POLL_INTERVAL);
- }
+ 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
  
- static void nvmet_pci_epf_stop_ctrl(struct nvmet_pci_epf_ctrl *ctrl)
- {
-+	dev_info(ctrl->dev, "PCI link down\n");
-+	ctrl->link_up = false;
-+
- 	cancel_delayed_work_sync(&ctrl->poll_cc);
- 
- 	nvmet_pci_epf_disable_ctrl(ctrl, false);
-@@ -2340,10 +2347,8 @@ static int nvmet_pci_epf_epc_init(struct pci_epf *epf)
- 	if (ret)
- 		goto out_clear_bar;
- 
--	if (!epc_features->linkup_notifier) {
--		ctrl->link_up = true;
-+	if (!epc_features->linkup_notifier)
- 		nvmet_pci_epf_start_ctrl(&nvme_epf->ctrl);
--	}
- 
- 	return 0;
- 
-@@ -2359,7 +2364,6 @@ static void nvmet_pci_epf_epc_deinit(struct pci_epf *epf)
- 	struct nvmet_pci_epf *nvme_epf = epf_get_drvdata(epf);
- 	struct nvmet_pci_epf_ctrl *ctrl = &nvme_epf->ctrl;
- 
--	ctrl->link_up = false;
- 	nvmet_pci_epf_destroy_ctrl(ctrl);
- 
- 	nvmet_pci_epf_deinit_dma(nvme_epf);
-@@ -2371,7 +2375,6 @@ static int nvmet_pci_epf_link_up(struct pci_epf *epf)
- 	struct nvmet_pci_epf *nvme_epf = epf_get_drvdata(epf);
- 	struct nvmet_pci_epf_ctrl *ctrl = &nvme_epf->ctrl;
- 
--	ctrl->link_up = true;
- 	nvmet_pci_epf_start_ctrl(ctrl);
- 
- 	return 0;
-@@ -2382,7 +2385,6 @@ static int nvmet_pci_epf_link_down(struct pci_epf *epf)
- 	struct nvmet_pci_epf *nvme_epf = epf_get_drvdata(epf);
- 	struct nvmet_pci_epf_ctrl *ctrl = &nvme_epf->ctrl;
- 
--	ctrl->link_up = false;
- 	nvmet_pci_epf_stop_ctrl(ctrl);
- 
- 	return 0;
+ 	ast_vhub_init_ep0(vhub, &d->ep0, d);
 -- 
 2.39.5
 
