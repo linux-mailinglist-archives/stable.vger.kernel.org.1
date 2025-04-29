@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-138278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11610AA17A5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8061EAA1351
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48A1D3BB33A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8A94A7025
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9282135DD;
-	Tue, 29 Apr 2025 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C6582C60;
+	Tue, 29 Apr 2025 17:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KEznZR8U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOPubVub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C9C148;
-	Tue, 29 Apr 2025 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FC52459C9;
+	Tue, 29 Apr 2025 17:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948750; cv=none; b=EEjGni2UxHppw3y4wR0QUo78pBa1p0brd9tsXy6aHLokd4P/cPBHLOPayRSs8/M/MqP5w000aaDuXYvT4ZdOvTkPUqKcz3wXwzkrepmEsRGKLj4Yt2sfT0Y2KK/D0qMh/SAAOc3/TSp/xtPMQoGYARl6XUlU0+3sXbTFA8ToWzY=
+	t=1745946064; cv=none; b=XGwoXSuj1vNliRKVGpoQCCjNxx7OOHd1cscoVT+MxzQFycyajuMlnZbEWPJPubOaa7AG1VtF/EN0zvNASxwnpgcYxkaq1OPC3sEaDVa/RtKW3ClyZ3rie4jWuzQboQy8vIC4OYda9Rrr90k8A0+YPyB6TNJI2j86Z1wfSMfrb5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948750; c=relaxed/simple;
-	bh=Gt//bfCqD2BiHvcUUM+DAfT1mbNBufPIGiQHNz+jpOQ=;
+	s=arc-20240116; t=1745946064; c=relaxed/simple;
+	bh=qcCORAX05tjvsd7TTW7q2u6Tntjvd8JSU4UxPiSfMQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6LOeTAq6fbAVfbL/OVTGmbL+b5AypCIrm3Hz540LGBARy22uiiIKu7GtxDpT6l7BmHtg7Dk5OmCwvrR9B/IO6dUQRWPUFziK0Ru57fHUXO8OKU5u8pnSiSnbMF9RID1SF3bOHL2Ye+xNEi/yhyXLIe1Pyeja0oXyfny3DAPdcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KEznZR8U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27E5C4CEE3;
-	Tue, 29 Apr 2025 17:45:49 +0000 (UTC)
+	 MIME-Version; b=o2VriGitbBPgJvMzXUyBsZkXFCmpY1U4rByxzl8Ad+r8TbuW1xEKZpK+Gv5ygOH8P7ochFvmybsRzwNoMQN5cG9U4iL/hV/HNQ7vhWE3SYrfxSk3wa39g1lwM8/c6JYPzDo7r+Jdyf9yFlwnNezUKg7hTTOoPN13TTp9JDC6FAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOPubVub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F902C4CEE3;
+	Tue, 29 Apr 2025 17:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948750;
-	bh=Gt//bfCqD2BiHvcUUM+DAfT1mbNBufPIGiQHNz+jpOQ=;
+	s=korg; t=1745946064;
+	bh=qcCORAX05tjvsd7TTW7q2u6Tntjvd8JSU4UxPiSfMQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KEznZR8U21XyfHB5DER6Eoo82gdDTNXYLX8veSsb7Z+KO236uiVuJO9TgHQ/9zL9d
-	 g5m5ooBkrMMcTH8pyylCBMlUmONE+z5iExEJVUygWH7hg31Ddplvh1cWVT+LsG0215
-	 OdSrKMhcDrCaKxU9NGSsqCAQzlXyKzsq20uTrLas=
+	b=QOPubVubozKciCkVeBVuIOkN/gtxVK6owGWBBjLyAm1++LsJ7o473DLcP4S0GXXro
+	 oTarZgBOsRsOnkpqbOf9JmK4Io7FiB61/ljSbtkGK7g7Pnw4wMOqwmVMlejh5zsDeN
+	 kwo8p85s3Nne9NCDr/wvUX4IggeAaKSfRLm7PWMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Borislav Betkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jane Chu <jane.chu@oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ruidong Tian <tianruidong@linux.alibaba.com>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 101/373] mm/hwpoison: do not send SIGBUS to processes with recovered clean pages
-Date: Tue, 29 Apr 2025 18:39:38 +0200
-Message-ID: <20250429161127.311113048@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.14 142/311] scsi: Improve CDL control
+Date: Tue, 29 Apr 2025 18:39:39 +0200
+Message-ID: <20250429161126.852633064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,142 +63,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit aaf99ac2ceb7c974f758a635723eeaf48596388e upstream.
+commit 14a3cc755825ef7b34c986aa2786ea815023e9c5 upstream.
 
-When an uncorrected memory error is consumed there is a race between the
-CMCI from the memory controller reporting an uncorrected error with a UCNA
-signature, and the core reporting and SRAR signature machine check when
-the data is about to be consumed.
+With ATA devices supporting the CDL feature, using CDL requires that the
+feature be enabled with a SET FEATURES command. This command is issued
+as the translated command for the MODE SELECT command issued by
+scsi_cdl_enable() when the user enables CDL through the device
+cdl_enable sysfs attribute.
 
-- Background: why *UN*corrected errors tied to *C*MCI in Intel platform [1]
+However, the implementation of scsi_cdl_enable() always issues a MODE
+SELECT command for ATA devices when the enable argument is true, even if
+CDL is already enabled on the device. While this does not cause any
+issue with using CDL descriptors with read/write commands (the CDL
+feature will be enabled on the drive), issuing the MODE SELECT command
+even when the device CDL feature is already enabled will cause a reset
+of the ATA device CDL statistics log page (as defined in ACS, any CDL
+enable action must reset the device statistics).
 
-Prior to Icelake memory controllers reported patrol scrub events that
-detected a previously unseen uncorrected error in memory by signaling a
-broadcast machine check with an SRAO (Software Recoverable Action
-Optional) signature in the machine check bank.  This was overkill because
-it's not an urgent problem that no core is on the verge of consuming that
-bad data.  It's also found that multi SRAO UCE may cause nested MCE
-interrupts and finally become an IERR.
+Avoid this needless actions (and the implied statistics log page reset)
+by modifying scsi_cdl_enable() to issue the MODE SELECT command to
+enable CDL if and only if CDL is not reported as already enabled on the
+device.
 
-Hence, Intel downgrades the machine check bank signature of patrol scrub
-from SRAO to UCNA (Uncorrected, No Action required), and signal changed to
-#CMCI.  Just to add to the confusion, Linux does take an action (in
-uc_decode_notifier()) to try to offline the page despite the UC*NA*
-signature name.
+And while at it, simplify the initialization of the is_ata boolean
+variable and move the declaration of the scsi mode data and sense header
+variables to within the scope of ATA device handling.
 
-- Background: why #CMCI and #MCE race when poison is consuming in Intel platform [1]
-
-Having decided that CMCI/UCNA is the best action for patrol scrub errors,
-the memory controller uses it for reads too.  But the memory controller is
-executing asynchronously from the core, and can't tell the difference
-between a "real" read and a speculative read.  So it will do CMCI/UCNA if
-an error is found in any read.
-
-Thus:
-
-1) Core is clever and thinks address A is needed soon, issues a speculative read.
-2) Core finds it is going to use address A soon after sending the read request
-3) The CMCI from the memory controller is in a race with MCE from the core
-   that will soon try to retire the load from address A.
-
-Quite often (because speculation has got better) the CMCI from the memory
-controller is delivered before the core is committed to the instruction
-reading address A, so the interrupt is taken, and Linux offlines the page
-(marking it as poison).
-
-- Why user process is killed for instr case
-
-Commit 046545a661af ("mm/hwpoison: fix error page recovered but reported
-"not recovered"") tries to fix noise message "Memory error not recovered"
-and skips duplicate SIGBUSs due to the race.  But it also introduced a bug
-that kill_accessing_process() return -EHWPOISON for instr case, as result,
-kill_me_maybe() send a SIGBUS to user process.
-
-If the CMCI wins that race, the page is marked poisoned when
-uc_decode_notifier() calls memory_failure().  For dirty pages,
-memory_failure() invokes try_to_unmap() with the TTU_HWPOISON flag,
-converting the PTE to a hwpoison entry.  As a result,
-kill_accessing_process():
-
-- call walk_page_range() and return 1 regardless of whether
-  try_to_unmap() succeeds or fails,
-- call kill_proc() to make sure a SIGBUS is sent
-- return -EHWPOISON to indicate that SIGBUS is already sent to the
-  process and kill_me_maybe() doesn't have to send it again.
-
-However, for clean pages, the TTU_HWPOISON flag is cleared, leaving the
-PTE unchanged and not converted to a hwpoison entry.  Conversely, for
-clean pages where PTE entries are not marked as hwpoison,
-kill_accessing_process() returns -EFAULT, causing kill_me_maybe() to send
-a SIGBUS.
-
-Console log looks like this:
-
-    Memory failure: 0x827ca68: corrupted page was clean: dropped without side effects
-    Memory failure: 0x827ca68: recovery action for clean LRU page: Recovered
-    Memory failure: 0x827ca68: already hardware poisoned
-    mce: Memory error not recovered
-
-To fix it, return 0 for "corrupted page was clean", preventing an
-unnecessary SIGBUS to user process.
-
-[1] https://lore.kernel.org/lkml/20250217063335.22257-1-xueshuai@linux.alibaba.com/T/#mba94f1305b3009dd340ce4114d3221fe810d1871
-Link: https://lkml.kernel.org/r/20250312112852.82415-3-xueshuai@linux.alibaba.com
-Fixes: 046545a661af ("mm/hwpoison: fix error page recovered but reported "not recovered"")
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Tony Luck <tony.luck@intel.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Borislav Betkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ruidong Tian <tianruidong@linux.alibaba.com>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1b22cfb14142 ("scsi: core: Allow enabling and disabling command duration limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/scsi/scsi.c |   36 ++++++++++++++++++++++++------------
+ 1 file changed, 24 insertions(+), 12 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -707,12 +707,17 @@ static int kill_accessing_process(struct
- 	mmap_read_lock(p->mm);
- 	ret = walk_page_range(p->mm, 0, TASK_SIZE, &hwp_walk_ops,
- 			      (void *)&priv);
-+	/*
-+	 * ret = 1 when CMCI wins, regardless of whether try_to_unmap()
-+	 * succeeds or fails, then kill the process with SIGBUS.
-+	 * ret = 0 when poison page is a clean page and it's dropped, no
-+	 * SIGBUS is needed.
-+	 */
- 	if (ret == 1 && priv.tk.addr)
- 		kill_proc(&priv.tk, pfn, flags);
--	else
--		ret = 0;
- 	mmap_read_unlock(p->mm);
--	return ret > 0 ? -EHWPOISON : -EFAULT;
-+
-+	return ret > 0 ? -EHWPOISON : 0;
- }
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -695,26 +695,23 @@ void scsi_cdl_check(struct scsi_device *
+  */
+ int scsi_cdl_enable(struct scsi_device *sdev, bool enable)
+ {
+-	struct scsi_mode_data data;
+-	struct scsi_sense_hdr sshdr;
+-	struct scsi_vpd *vpd;
+-	bool is_ata = false;
+ 	char buf[64];
++	bool is_ata;
+ 	int ret;
  
- static const char *action_name[] = {
+ 	if (!sdev->cdl_supported)
+ 		return -EOPNOTSUPP;
+ 
+ 	rcu_read_lock();
+-	vpd = rcu_dereference(sdev->vpd_pg89);
+-	if (vpd)
+-		is_ata = true;
++	is_ata = rcu_dereference(sdev->vpd_pg89);
+ 	rcu_read_unlock();
+ 
+ 	/*
+ 	 * For ATA devices, CDL needs to be enabled with a SET FEATURES command.
+ 	 */
+ 	if (is_ata) {
++		struct scsi_mode_data data;
++		struct scsi_sense_hdr sshdr;
+ 		char *buf_data;
+ 		int len;
+ 
+@@ -723,16 +720,30 @@ int scsi_cdl_enable(struct scsi_device *
+ 		if (ret)
+ 			return -EINVAL;
+ 
+-		/* Enable CDL using the ATA feature page */
++		/* Enable or disable CDL using the ATA feature page */
+ 		len = min_t(size_t, sizeof(buf),
+ 			    data.length - data.header_length -
+ 			    data.block_descriptor_length);
+ 		buf_data = buf + data.header_length +
+ 			data.block_descriptor_length;
+-		if (enable)
+-			buf_data[4] = 0x02;
+-		else
+-			buf_data[4] = 0;
++
++		/*
++		 * If we want to enable CDL and CDL is already enabled on the
++		 * device, do nothing. This avoids needlessly resetting the CDL
++		 * statistics on the device as that is implied by the CDL enable
++		 * action. Similar to this, there is no need to do anything if
++		 * we want to disable CDL and CDL is already disabled.
++		 */
++		if (enable) {
++			if ((buf_data[4] & 0x03) == 0x02)
++				goto out;
++			buf_data[4] &= ~0x03;
++			buf_data[4] |= 0x02;
++		} else {
++			if ((buf_data[4] & 0x03) == 0x00)
++				goto out;
++			buf_data[4] &= ~0x03;
++		}
+ 
+ 		ret = scsi_mode_select(sdev, 1, 0, buf_data, len, 5 * HZ, 3,
+ 				       &data, &sshdr);
+@@ -744,6 +755,7 @@ int scsi_cdl_enable(struct scsi_device *
+ 		}
+ 	}
+ 
++out:
+ 	sdev->cdl_enable = enable;
+ 
+ 	return 0;
 
 
 
