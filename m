@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680E0AA1811
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B14F9AA1707
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A931B1BC58B4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F7A3A9963
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B227253930;
-	Tue, 29 Apr 2025 17:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4132D21ABB7;
+	Tue, 29 Apr 2025 17:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayzlmDOL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVEa/BTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC03625335F;
-	Tue, 29 Apr 2025 17:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12B622172E;
+	Tue, 29 Apr 2025 17:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949290; cv=none; b=dC2x8kedlsvy4T1Ak1l7kN2Ki9aE9RV5YUqgL8lJYcl/xOTRZYiKjxniiEWpZaX9jZeceGcpwXM3kuEf/2PYzt8kKZtMpK0yt/NkYhFlmXNjdQH9D5yK5FsTRtXE7vtiYCllH6kr9iXxFLurFSBBGtCKJXSYLi14K8ox+r4tBvU=
+	t=1745948265; cv=none; b=TTcEk1DUVwW6PE+lUgIn6FtpW1X0rHbjmHXc+W9M50EYP5vI8L3qAFUKiqbu0l7d+vJqwJ3NCM7xe0ZkkCfjQlziA35kIDrHG8YtvnUUiasB9BRcU/g03wBjCcjrvD4QX2pNrWHolfp0dFTY+xwFeu3KlpRSo3JwvhjyDYQvcy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949290; c=relaxed/simple;
-	bh=Vfw8vPkwXzTwf1sVYrw+C0K4aR9CedY58It+hDQXH7g=;
+	s=arc-20240116; t=1745948265; c=relaxed/simple;
+	bh=Aa8jP6Bv/iEZQ4u0TU6dFp8fFiJqJV5i5VAgUPqYOi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ue18Y9MXght8+QRajxBxNIQaAqSc6y62OzZywu7LGm1dOJqm0ibJsmRDO232Y1o0pHhGgBQ2PlN2kyoXgiy+NNFz6LlZdWDEpUnfwNeqE5Am3vEfoadd4VH42TUETaniPsU58JoIJqS1WUvgi9v7qjzQO2bgmF0XRETLFdD2tSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayzlmDOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6943AC4CEE3;
-	Tue, 29 Apr 2025 17:54:49 +0000 (UTC)
+	 MIME-Version; b=kdzjtID2RMcALzC1Ph6FFMSGUD0rN0iKgmU3GhQqDmQ7y4qiavIG5Rgm4hZeLiXCmS6lut5qOVITjkEI4XQi6evxXgoPfIFMWEBIcuUoDGqAQTPmzH6//5iLKFwn9/rwq0V/QIdbZZMi+rphq25ExWjk2IOUof9SL0/WMMZD69A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVEa/BTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A6BC4CEE3;
+	Tue, 29 Apr 2025 17:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949289;
-	bh=Vfw8vPkwXzTwf1sVYrw+C0K4aR9CedY58It+hDQXH7g=;
+	s=korg; t=1745948264;
+	bh=Aa8jP6Bv/iEZQ4u0TU6dFp8fFiJqJV5i5VAgUPqYOi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayzlmDOLJeZOipDYsgkUtpcSZz0KWq0iCV1tFPVbaxenDQ3ttgL4zJ9tKUTrg5aJb
-	 EWGaYOMNaLtJ0upqVbSR+LDjHlZBTSQEbqm2PkKE9clN7EWRG+zlzMIQJ2mDC/SOdG
-	 wNNlFFRgy4HMndih0myG/j/NtgKkeRtJLLUnEveg=
+	b=uVEa/BTYk5Wp/MpwFVx2xpnGe9wAKjDLZlubPWW8bWpTaZTczFzkppEIMaVf+QHgL
+	 tzdTAciQd7YYjmI8+D2snHUlomcZZ5WQedZfGYqOJADVkxWy5JAISTMqA9SWrfAEAO
+	 1v+xx1CA/8si9I1QSFGYu3pVj6X6XeZWRiME9Cu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Diupina <adiupina@astralinux.ru>,
-	Steve French <stfrench@microsoft.com>,
+	Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 271/373] cifs: avoid NULL pointer dereference in dbg call
+Subject: [PATCH 6.12 207/280] nvme: requeue namespace scan on missed AENs
 Date: Tue, 29 Apr 2025 18:42:28 +0200
-Message-ID: <20250429161134.275170345@linuxfoundation.org>
+Message-ID: <20250429161123.600823696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit b4885bd5935bb26f0a414ad55679a372e53f9b9b ]
+[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
 
-cifs_server_dbg() implies server to be non-NULL so
-move call under condition to avoid NULL pointer dereference.
+Scanning for namespaces can take some time, so if the target is
+reconfigured while the scan is running we may miss a Attached Namespace
+Attribute Changed AEN.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
+finished, and requeue scanning to pick up any missed change.
 
-Fixes: e79b0332ae06 ("cifs: ignore cached share root handle closing errors")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2misc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/nvme/host/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
-index 12b6684f2d372..b84e682b4cae2 100644
---- a/fs/cifs/smb2misc.c
-+++ b/fs/cifs/smb2misc.c
-@@ -788,11 +788,12 @@ smb2_handle_cancelled_close(struct cifs_tcon *tcon, __u64 persistent_fid,
- 		WARN_ONCE(tcon->tc_count < 0, "tcon refcount is negative");
- 		spin_unlock(&cifs_tcp_ses_lock);
- 
--		if (tcon->ses)
-+		if (tcon->ses) {
- 			server = tcon->ses->server;
--
--		cifs_server_dbg(FYI, "tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
--				tcon->tid, persistent_fid, volatile_fid);
-+			cifs_server_dbg(FYI,
-+					"tid=0x%x: tcon is closing, skipping async close retry of fid %llu %llu\n",
-+					tcon->tid, persistent_fid, volatile_fid);
-+		}
- 
- 		return 0;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 9bdf6fc53697c..587385b59b865 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4273,6 +4273,10 @@ static void nvme_scan_work(struct work_struct *work)
+ 			nvme_scan_ns_sequential(ctrl);
  	}
+ 	mutex_unlock(&ctrl->scan_lock);
++
++	/* Requeue if we have missed AENs */
++	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
++		nvme_queue_scan(ctrl);
+ }
+ 
+ /*
 -- 
 2.39.5
 
