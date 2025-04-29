@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF26FAA14FD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A668AA1667
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212931BA2CB0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61C98188C0B5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524312512D7;
-	Tue, 29 Apr 2025 17:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D290A23CEF9;
+	Tue, 29 Apr 2025 17:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ku7VJiOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hu+x/UhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F77921ABDB;
-	Tue, 29 Apr 2025 17:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8307E110;
+	Tue, 29 Apr 2025 17:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947115; cv=none; b=jrog+CFe08/bOdcHbuQICASRDkO/OaATa3c7wGIukGzpzijo59SFGvBW94j7wTl2HtBwLHDcWi730Z57jcaVYiv/5ZQMemCcTYT4S/51Pcso+zNdJIkUTzuo3aDgFfVmm1aQ/GLDrCVG4qlMr7rAGIlh1aXl/gpFYRUljYsyYIs=
+	t=1745948021; cv=none; b=SPX/OOxK1byZ1l9I8DvmeI1565Nmx5xFuax+zQZSoM0bUi/Bsh8sJH1n0jcosTqKRtJ5kExOmHRdWP/tnf3FCKgvjGChd/T5aZW55gU7xAY9yl8qhEv7PObx9LAjmdIwlR8voeX9l61DIsEqs/3AP8P9Mvma9EuAeAr41UKpGU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947115; c=relaxed/simple;
-	bh=Ge4kmdqfT5QjOf8EFair+b8bAofH51j1T67RDX9N32o=;
+	s=arc-20240116; t=1745948021; c=relaxed/simple;
+	bh=JNRhAtH2v5p8YDVGtRf2EEvPTZWE0x7lQNcyVeN+KiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqi0nYsXfEVsxCrCA8nSU/jK0XylDOwv1gkjGREhTZ59N92QXHCqzrjRzOc16agVaOJ8Xoa0ECxS8rkApm3D1b895fWoZ4m8tAJQa27dLOHmFSUO93kgNnVY88aNSV/P8grdke77YfdXbLKMl8QeNwENktRat5tkGW3//YYcTHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ku7VJiOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7222CC4CEEE;
-	Tue, 29 Apr 2025 17:18:34 +0000 (UTC)
+	 MIME-Version; b=YIf5DDqnm/8FbzSfWS4EStV4P4BEtP3MXcFU8HFclJpcC72tKSSQr5BFMUsZ3RvusV98y/1Rx81NCDJqCaDrBNGjEfswIbzkegHc8ccj6r3n/YXW+lz2lvy22bnGf0tkqi7oEEMQ+p7KJdxSE3y6kM7KK4XjNCgR0WqTFYIh35s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hu+x/UhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC09C4CEE3;
+	Tue, 29 Apr 2025 17:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947114;
-	bh=Ge4kmdqfT5QjOf8EFair+b8bAofH51j1T67RDX9N32o=;
+	s=korg; t=1745948021;
+	bh=JNRhAtH2v5p8YDVGtRf2EEvPTZWE0x7lQNcyVeN+KiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ku7VJiOw/MwESOG3apuwKHYVTu0K0x/TW+0xrnbRA3yfqZCq/SynQAm06/Hx2b1bJ
-	 GrTaXmfn5CTZOTyM+FiukUvlnCrth0oRpJlRPipMwxWIm1i1iIXLMFgKMC7KzcyTFK
-	 zmvzE5r3UfKJY4x2T5pnYgJvWtZaxtqZ0HKQyJm8=
+	b=hu+x/UhMfSQ3Nb+cEjlLgGdYjuDQKOiKLDlnkPy0N7LMkILLEgydkvqJ2FQvD2Xzm
+	 SJUtsi9bcDlVVVZCShJ8x1tQyWTrNvOqLohrhmtVmACNHZZuF1pppGzgzC2KFE3esV
+	 tBmM3OgrbVjYeeXZCrMBQgKDi6FNSahoG9JM9Gzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	BassCheck <bass@buaa.edu.cn>,
-	Tuo Li <islituo@gmail.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 177/286] scsi: lpfc: Fix a possible data race in lpfc_unregister_fcf_rescan()
+	stable <stable@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.12 140/280] usb: chipidea: ci_hdrc_imx: fix call balance of regulator routines
 Date: Tue, 29 Apr 2025 18:41:21 +0200
-Message-ID: <20250429161115.179634974@linuxfoundation.org>
+Message-ID: <20250429161120.853859617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 0e881c0a4b6146b7e856735226208f48251facd8 upstream.
+commit 8cab0e9a3f3e8d700179e0d6141643d54a267fd5 upstream.
 
-The variable phba->fcf.fcf_flag is often protected by the lock
-phba->hbalock() when is accessed. Here is an example in
-lpfc_unregister_fcf_rescan():
+Upon encountering errors during the HSIC pinctrl handling section the
+regulator should be disabled.
 
-  spin_lock_irq(&phba->hbalock);
-  phba->fcf.fcf_flag |= FCF_INIT_DISC;
-  spin_unlock_irq(&phba->hbalock);
+Use devm_add_action_or_reset() to let the regulator-disabling routine be
+handled by device resource management stack.
 
-However, in the same function, phba->fcf.fcf_flag is assigned with 0
-without holding the lock, and thus can cause a data race:
+Found by Linux Verification Center (linuxtesting.org).
 
-  phba->fcf.fcf_flag = 0;
-
-To fix this possible data race, a lock and unlock pair is added when
-accessing the variable phba->fcf.fcf_flag.
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/20230630024748.1035993-1-islituo@gmail.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 4d6141288c33 ("usb: chipidea: imx: pinctrl for HSIC is optional")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20250316102658.490340-3-pchelkin@ispras.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/chipidea/ci_hdrc_imx.c |   25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -6790,7 +6790,9 @@ lpfc_unregister_fcf_rescan(struct lpfc_h
- 	if (rc)
- 		return;
- 	/* Reset HBA FCF states after successful unregister FCF */
-+	spin_lock_irq(&phba->hbalock);
- 	phba->fcf.fcf_flag = 0;
-+	spin_unlock_irq(&phba->hbalock);
- 	phba->fcf.current_rec.flag = 0;
+--- a/drivers/usb/chipidea/ci_hdrc_imx.c
++++ b/drivers/usb/chipidea/ci_hdrc_imx.c
+@@ -336,6 +336,13 @@ static int ci_hdrc_imx_notify_event(stru
+ 	return ret;
+ }
  
- 	/*
++static void ci_hdrc_imx_disable_regulator(void *arg)
++{
++	struct ci_hdrc_imx_data *data = arg;
++
++	regulator_disable(data->hsic_pad_regulator);
++}
++
+ static int ci_hdrc_imx_probe(struct platform_device *pdev)
+ {
+ 	struct ci_hdrc_imx_data *data;
+@@ -394,6 +401,13 @@ static int ci_hdrc_imx_probe(struct plat
+ 					"Failed to enable HSIC pad regulator\n");
+ 				goto err_put;
+ 			}
++			ret = devm_add_action_or_reset(dev,
++					ci_hdrc_imx_disable_regulator, data);
++			if (ret) {
++				dev_err(dev,
++					"Failed to add regulator devm action\n");
++				goto err_put;
++			}
+ 		}
+ 	}
+ 
+@@ -432,11 +446,11 @@ static int ci_hdrc_imx_probe(struct plat
+ 
+ 	ret = imx_get_clks(dev);
+ 	if (ret)
+-		goto disable_hsic_regulator;
++		goto qos_remove_request;
+ 
+ 	ret = imx_prepare_enable_clks(dev);
+ 	if (ret)
+-		goto disable_hsic_regulator;
++		goto qos_remove_request;
+ 
+ 	ret = clk_prepare_enable(data->clk_wakeup);
+ 	if (ret)
+@@ -526,10 +540,7 @@ err_clk:
+ 	clk_disable_unprepare(data->clk_wakeup);
+ err_wakeup_clk:
+ 	imx_disable_unprepare_clks(dev);
+-disable_hsic_regulator:
+-	if (data->hsic_pad_regulator)
+-		/* don't overwrite original ret (cf. EPROBE_DEFER) */
+-		regulator_disable(data->hsic_pad_regulator);
++qos_remove_request:
+ 	if (pdata.flags & CI_HDRC_PMQOS)
+ 		cpu_latency_qos_remove_request(&data->pm_qos_req);
+ 	data->ci_pdev = NULL;
+@@ -557,8 +568,6 @@ static void ci_hdrc_imx_remove(struct pl
+ 		clk_disable_unprepare(data->clk_wakeup);
+ 		if (data->plat_data->flags & CI_HDRC_PMQOS)
+ 			cpu_latency_qos_remove_request(&data->pm_qos_req);
+-		if (data->hsic_pad_regulator)
+-			regulator_disable(data->hsic_pad_regulator);
+ 	}
+ 	if (data->usbmisc_data)
+ 		put_device(data->usbmisc_data->dev);
 
 
 
