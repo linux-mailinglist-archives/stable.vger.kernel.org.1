@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F689AA1865
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:59:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC892AA1732
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74B1A17FBD9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F1D85A6F47
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DD12459C5;
-	Tue, 29 Apr 2025 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA58244664;
+	Tue, 29 Apr 2025 17:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZrCuHOG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glSwf0Hp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4E72AE96;
-	Tue, 29 Apr 2025 17:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4381917E3;
+	Tue, 29 Apr 2025 17:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949488; cv=none; b=S+X9Vuoo9V97k19wqk2Ov3YKP3n8nyFtfEfynI/mr31qYJgvph8TGlO9yv99o/pLLiNQ5jAgtXZSIpboDQ8X7L0SBysYSU7p6uT1F1QxS9Jlt7qSPLTxHJuOjPF8eW1zaRzVWTT6Owg0uj0WJMX1kInoFjBFq9a4cENct+hdt6g=
+	t=1745948430; cv=none; b=qxdKMNfjKpQ3uWq5GizjDi0pZBRX8o6Tl+NhgD4EKblYn+MYlKH1j7IBlw0xosiZkQxy1PF6+lSStKiU5ekvMGz2FhYoHDsfqPEzwRYTxo9O+kjbz/5/exgLKL1Dg9sulcyqjUqxx20FEVDrfD5aic8Bu3O5EmGXSwyotauO2yw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949488; c=relaxed/simple;
-	bh=Qw26Oz5uopgj9MYpqzMmMhSGzJbvA++hKlhk0iR3hUM=;
+	s=arc-20240116; t=1745948430; c=relaxed/simple;
+	bh=maRfzqOD+b228K/eLEm9lD6T7SOwOunx9plPG03dIPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaF7JJYcoA83Kjd/Yu13G9tvZmNrHCOOex+kvtybJvg1g/5o/hJ37KkHqd6WSNFTYGLlRBKs0QQ11Enop/RBevLYkD5v5gX1Pq/emHnivEF68VqNJpylCrpGgza0uha0Hei/rULScAbe9t7P7r8y3XwoVsT0BVHMbOU/8oxb094=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZrCuHOG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EF0C4CEE3;
-	Tue, 29 Apr 2025 17:58:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=a9/PScw+wlPAHecX9VarKaLRFc16RdRI8V7qCaMRP1OS1KFElaN8a6i1kPyEMJ3WGaXI7O2TASLOjWBH1gZfEqLuwE636OKdp/x30qzPOEvKPdQ90Hmus9h/VtMiorFENQMX0z2FENdVsHNGJE3FddXY9YHpQNsRprlicCVKexU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=glSwf0Hp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F59EC4CEE3;
+	Tue, 29 Apr 2025 17:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949488;
-	bh=Qw26Oz5uopgj9MYpqzMmMhSGzJbvA++hKlhk0iR3hUM=;
+	s=korg; t=1745948430;
+	bh=maRfzqOD+b228K/eLEm9lD6T7SOwOunx9plPG03dIPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZrCuHOGQcAWEoEpCmJ+EZVaXb8F4evg/ivbECvWtdn5WN8xda/vIanu7scSY/2iU
-	 N3VCWHVMyTL6fCLDdxEiPyNYulxK6r5BmD1dZLKeaSAnpsuhA2SRaDzZIYiXWe+UOy
-	 cFsqPM1ftNNL18Xz/VRu1zRJgkujiCvKBjq/dZPQ=
+	b=glSwf0HpazeMjA9h0VM+QjKiEApkdt41TUODdw39KKEbqW9ZEmE7dBjDqi3f+XksA
+	 OqROwvOI/d6Bthrs0uZgs/QfqkBIQNhEWybeCZcecAjDd5Yv1okK7te9WAf6VV64tL
+	 xiCpiKRF3+5/fv8Idu+tmTl1eCTI2cQLTj1JVZ2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/373] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
-Date: Tue, 29 Apr 2025 18:43:31 +0200
-Message-ID: <20250429161136.869931099@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 271/280] media: i2c: imx214: Fix uninitialized variable in imx214_set_ctrl()
+Date: Tue, 29 Apr 2025 18:43:32 +0200
+Message-ID: <20250429161126.223887033@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
+commit 38985a25682c66d1a7599b0e95ceeb9c7ba89f84 upstream.
 
-Nothing prevents a broken HC from claiming that an endpoint is Running
-and repeatedly rejecting Stop Endpoint with Context State Error.
+You can't pass uninitialized "ret" variables to cci_write().  It has to
+start as zero.
 
-Avoid infinite retries and give back cancelled TDs.
-
-No such cases known so far, but HCs have bugs.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
+Fixes: 4f0aeba4f155 ("media: i2c: imx214: Convert to CCI register access helpers")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: André Apitzsch <git@apitzsch.eu>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/media/i2c/imx214.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 64bf50ea62a49..cd94b0a4e0211 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1183,16 +1183,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again, on
--			 * chips where this is known to help. Wait for 100ms.
-+			 * Keep retrying until the EP starts and stops again.
- 			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
-+			/*
-+			 * Don't retry forever if we guessed wrong or a defective HC never starts
-+			 * the EP or says 'Running' but fails the command. We must give back TDs.
-+			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -840,7 +840,7 @@ static int imx214_s_stream(struct v4l2_s
+ {
+ 	struct imx214 *imx214 = to_imx214(subdev);
+ 	struct v4l2_subdev_state *state;
+-	int ret;
++	int ret = 0;
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command)
--- 
-2.39.5
-
+ 	if (enable) {
+ 		ret = pm_runtime_resume_and_get(imx214->dev);
 
 
 
