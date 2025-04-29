@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28182AA1894
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75996AA156E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB1843A2B49
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 558DE1886C49
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CA8242D73;
-	Tue, 29 Apr 2025 17:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885B3253322;
+	Tue, 29 Apr 2025 17:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1+oJOpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1bBO9Ut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F81F253952;
-	Tue, 29 Apr 2025 17:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468C22528E9;
+	Tue, 29 Apr 2025 17:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949373; cv=none; b=pAzJ12eyL3XAS1XwRb+WK/VWt/dYQIISwOXzpknE1h/55wh2WAy2rjkUOcvJFKIHiAEetUvVC+kD7824UeU6QEFpD/YZ7I2KScxmuuLLUyc+bFLRTVsmwgmQq+IdYVa6593Fi2wQPHop+EXGkMyLoLOqAevobyaUJY9hh+U7ci0=
+	t=1745947356; cv=none; b=BXEfgDyQAqMPGkLrYNl4Sk/RaG1z9CnSRThqHgSWgnBdRM+B6JILrC1urJeJGGECec3FypJlxWmH78tMMrIVa2m17Cy59HLwo69jrVZv+XmuppMBoZiZs3Xf/cpuv8XR7hQiL7DhP8XSaXuePwSCCU/F75qLPCr8rVK5URccoiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949373; c=relaxed/simple;
-	bh=ngIuoiTSg1qODhi6V60qIoCXOWSqjjGR6uzB3zKlTnY=;
+	s=arc-20240116; t=1745947356; c=relaxed/simple;
+	bh=B5LXtBGupVbfzgFmH6rFnf39D4qpstOjXbg5e4oVDC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bRuiSUFOPnZWVUHmWnBMpKuRmXQ5OQPNUbvaVB/1MKjDpe5R1Z42xHfKapYyICjApusCV9xXWQiN4rqk7sl3PPzswu1X2h3JeUQTQ2t4+bzEftA2htXDWOcVGbstMBk3Na4ygy6q0/vEs0m+ohr4fqWAsp9dR6H2dhgfPehIRuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1+oJOpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B65C4CEEA;
-	Tue, 29 Apr 2025 17:56:12 +0000 (UTC)
+	 MIME-Version; b=rDDsiSaSS1wgwWY4e+SeMixu7GTSFFG835c3for835NWUxY+h0LrOklcToC/IjVzNOpKxbWbXeO2Ty/CxmwMJ+ATHLtsC7SjGO+s/g1VbaOBqTqKUv+bGDp/8aHZUxf2c7vKjsKbD7h9vIw40LOcLxPvJEUjHtpYgFcmwSlkXM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1bBO9Ut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA31DC4CEEA;
+	Tue, 29 Apr 2025 17:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949372;
-	bh=ngIuoiTSg1qODhi6V60qIoCXOWSqjjGR6uzB3zKlTnY=;
+	s=korg; t=1745947356;
+	bh=B5LXtBGupVbfzgFmH6rFnf39D4qpstOjXbg5e4oVDC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1+oJOpjWxHksDQxcudMgifQa/OWvLrmX5Uj7dMRBBnRuOYKQcHoYrH26TLbs44ty
-	 DMizEns68lrkRJp37k30HMH6VyhbiGH27JJ9cO7gb/+NuO0Ckd7rNE8hACbZcGg2CW
-	 50LtgDXi02qvS/t/efgEsfPUT/Ei1+RWG/uq46RA=
+	b=E1bBO9UteZaKHVYE1XsbH660RTML5KFlaQYpkey+0mfrKYhS9nWSec+Tjr3LcrdJi
+	 /cACZmDuiH//kRacVX/CwC75So3u5V5ulR+KOMZyFFwBPjw4KTE7c5ALtiQtVQJcXH
+	 BE38qGK3b9Hwc2yYsKsVPg0xhb0opq6jVheQDuQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Collingbourne <pcc@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Kees Cook <kees@kernel.org>,
+	syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 281/373] string: Add load_unaligned_zeropad() code path to sized_strscpy()
+Subject: [PATCH 5.10 254/286] crypto: null - Use spin lock instead of mutex
 Date: Tue, 29 Apr 2025 18:42:38 +0200
-Message-ID: <20250429161134.674478467@linuxfoundation.org>
+Message-ID: <20250429161118.369594628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Collingbourne <pcc@google.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit d94c12bd97d567de342fd32599e7cd9e50bfa140 ]
+[ Upstream commit dcc47a028c24e793ce6d6efebfef1a1e92f80297 ]
 
-The call to read_word_at_a_time() in sized_strscpy() is problematic
-with MTE because it may trigger a tag check fault when reading
-across a tag granule (16 bytes) boundary. To make this code
-MTE compatible, let's start using load_unaligned_zeropad()
-on architectures where it is available (i.e. architectures that
-define CONFIG_DCACHE_WORD_ACCESS). Because load_unaligned_zeropad()
-takes care of page boundaries as well as tag granule boundaries,
-also disable the code preventing crossing page boundaries when using
-load_unaligned_zeropad().
+As the null algorithm may be freed in softirq context through
+af_alg, use spin locks instead of mutexes to protect the default
+null algorithm.
 
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Link: https://linux-review.googlesource.com/id/If4b22e43b5a4ca49726b4bf98ada827fdf755548
-Fixes: 94ab5b61ee16 ("kasan, arm64: enable CONFIG_KASAN_HW_TAGS")
-Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20250403000703.2584581-2-pcc@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Reported-by: syzbot+b3e02953598f447d4d2a@syzkaller.appspotmail.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/string.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ crypto/crypto_null.c | 39 ++++++++++++++++++++++++++-------------
+ 1 file changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/lib/string.c b/lib/string.c
-index 9fb9be19a95d7..7c0c69bb5b689 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -186,6 +186,7 @@ ssize_t strscpy(char *dest, const char *src, size_t count)
- 	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
- 		return -E2BIG;
+diff --git a/crypto/crypto_null.c b/crypto/crypto_null.c
+index 5b84b0f7cc178..3378670286535 100644
+--- a/crypto/crypto_null.c
++++ b/crypto/crypto_null.c
+@@ -17,10 +17,10 @@
+ #include <crypto/internal/skcipher.h>
+ #include <linux/init.h>
+ #include <linux/module.h>
+-#include <linux/mm.h>
++#include <linux/spinlock.h>
+ #include <linux/string.h>
  
-+#ifndef CONFIG_DCACHE_WORD_ACCESS
- #ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	/*
- 	 * If src is unaligned, don't cross a page boundary,
-@@ -200,12 +201,14 @@ ssize_t strscpy(char *dest, const char *src, size_t count)
- 	/* If src or dest is unaligned, don't do word-at-a-time. */
- 	if (((long) dest | (long) src) & (sizeof(long) - 1))
- 		max = 0;
-+#endif
- #endif
+-static DEFINE_MUTEX(crypto_default_null_skcipher_lock);
++static DEFINE_SPINLOCK(crypto_default_null_skcipher_lock);
+ static struct crypto_sync_skcipher *crypto_default_null_skcipher;
+ static int crypto_default_null_skcipher_refcnt;
  
- 	/*
--	 * read_word_at_a_time() below may read uninitialized bytes after the
--	 * trailing zero and use them in comparisons. Disable this optimization
--	 * under KMSAN to prevent false positive reports.
-+	 * load_unaligned_zeropad() or read_word_at_a_time() below may read
-+	 * uninitialized bytes after the trailing zero and use them in
-+	 * comparisons. Disable this optimization under KMSAN to prevent
-+	 * false positive reports.
- 	 */
- 	if (IS_ENABLED(CONFIG_KMSAN))
- 		max = 0;
-@@ -213,7 +216,11 @@ ssize_t strscpy(char *dest, const char *src, size_t count)
- 	while (max >= sizeof(unsigned long)) {
- 		unsigned long c, data;
+@@ -152,23 +152,32 @@ MODULE_ALIAS_CRYPTO("cipher_null");
  
-+#ifdef CONFIG_DCACHE_WORD_ACCESS
-+		c = load_unaligned_zeropad(src+res);
-+#else
- 		c = read_word_at_a_time(src+res);
-+#endif
- 		if (has_zero(c, &data, &constants)) {
- 			data = prep_zero_mask(c, data, &constants);
- 			data = create_zero_mask(data);
+ struct crypto_sync_skcipher *crypto_get_default_null_skcipher(void)
+ {
++	struct crypto_sync_skcipher *ntfm = NULL;
+ 	struct crypto_sync_skcipher *tfm;
+ 
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	tfm = crypto_default_null_skcipher;
+ 
+ 	if (!tfm) {
+-		tfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
+-		if (IS_ERR(tfm))
+-			goto unlock;
+-
+-		crypto_default_null_skcipher = tfm;
++		spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++		ntfm = crypto_alloc_sync_skcipher("ecb(cipher_null)", 0, 0);
++		if (IS_ERR(ntfm))
++			return ntfm;
++
++		spin_lock_bh(&crypto_default_null_skcipher_lock);
++		tfm = crypto_default_null_skcipher;
++		if (!tfm) {
++			tfm = ntfm;
++			ntfm = NULL;
++			crypto_default_null_skcipher = tfm;
++		}
+ 	}
+ 
+ 	crypto_default_null_skcipher_refcnt++;
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
+ 
+-unlock:
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	crypto_free_sync_skcipher(ntfm);
+ 
+ 	return tfm;
+ }
+@@ -176,12 +185,16 @@ EXPORT_SYMBOL_GPL(crypto_get_default_null_skcipher);
+ 
+ void crypto_put_default_null_skcipher(void)
+ {
+-	mutex_lock(&crypto_default_null_skcipher_lock);
++	struct crypto_sync_skcipher *tfm = NULL;
++
++	spin_lock_bh(&crypto_default_null_skcipher_lock);
+ 	if (!--crypto_default_null_skcipher_refcnt) {
+-		crypto_free_sync_skcipher(crypto_default_null_skcipher);
++		tfm = crypto_default_null_skcipher;
+ 		crypto_default_null_skcipher = NULL;
+ 	}
+-	mutex_unlock(&crypto_default_null_skcipher_lock);
++	spin_unlock_bh(&crypto_default_null_skcipher_lock);
++
++	crypto_free_sync_skcipher(tfm);
+ }
+ EXPORT_SYMBOL_GPL(crypto_put_default_null_skcipher);
+ 
 -- 
 2.39.5
 
