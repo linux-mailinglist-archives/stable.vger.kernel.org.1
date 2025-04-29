@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6958FAA1A4C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF5BAA196B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 110FD9A793E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B983498571B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9073B25484A;
-	Tue, 29 Apr 2025 18:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058012451C8;
+	Tue, 29 Apr 2025 18:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JArtJp5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+8RUyCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC49253F31;
-	Tue, 29 Apr 2025 18:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EAB40C03;
+	Tue, 29 Apr 2025 18:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950526; cv=none; b=NGPIhV0hjWSlWboTvqgFYvW2Q2Uo1vx64gyJTsm68iuguQ+gh50DmTbt2hr1fj+FzVaN0y0KqlQiyr7iUtbxF9gXGLPSq9Zj6pJ7CzXoQe8Fgz0HdGx/aJx2msz+aHbDD1nbVJilqUrsObJYFCa7CKic05mvAe/m6bLEoGC9Iyw=
+	t=1745949932; cv=none; b=hm7ne0d15RNDP4aaJ3TaMMzrJSa/kns+JocAG+KCeZJCpATxDCL10Pf2ok9Hjqpj4dfMShpgyV5AOQPhXTt/Acr78El5oBOE6HBCkqeln4dOBlEiD8dILjXckcocF49HnenUaZ7/JGF0NoZWcqAgtnTbCmtu1FeP5TOD8xN/Ve4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950526; c=relaxed/simple;
-	bh=Pxnt7bds2+Xo6zq3db14/aXIT4M+r3GP2ouPiLhZNI0=;
+	s=arc-20240116; t=1745949932; c=relaxed/simple;
+	bh=0gGfRtHWroCvRP+gVINOQq/xilZ/1T2fq6u2nbtiQkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0WgwKOIO++Aaz7b35zh+tDPU7IK9YSrM+2OUvA3uGNhLyi552leLY0SdCNAMFvZtTukUrDyJwOELEGw3dyGZjDxENUmG7Dre2oDaQnOJPWyJU0lFxle2b2KVJMCy3H3Toxl0m4iIXpnJd8rg8SLpWQOI6+kkm+YaUNAHmOxrWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JArtJp5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8979AC4CEE3;
-	Tue, 29 Apr 2025 18:15:25 +0000 (UTC)
+	 MIME-Version; b=JBgDASnFHerM9BibC91TY1BMm7wcOYcPpqgCtaYiq8ezk8rdF/AiiWEdLZRNERavV6lTPsTWyaP1Ae/3mPdOKoeiA+/Ylcu5ajfm1kRJXBTBXpnbQVL3ujpmwMzUVRZHca5R35GYUNZSPBsXlFo1XPzUATST+F9buEtgytNEOXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+8RUyCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD373C4CEE3;
+	Tue, 29 Apr 2025 18:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950526;
-	bh=Pxnt7bds2+Xo6zq3db14/aXIT4M+r3GP2ouPiLhZNI0=;
+	s=korg; t=1745949932;
+	bh=0gGfRtHWroCvRP+gVINOQq/xilZ/1T2fq6u2nbtiQkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JArtJp5wd8wAFEe3za6fZMoaFRE3JDcrasE3hybYinijXEBG9/WOg9Hehfvka5kqt
-	 Oi7FA5CYYqOVtA2GA9FK4bnnrCQGEVrhDQtw8e5OLYSkwOc6p3CQ+IcvMjbFyu9kmp
-	 q/HEhPYMR0MEYnSytXDPipUdBnIrfNzfhOXLLKiY=
+	b=f+8RUyCb+lW4GHPcPaTYXxR3b9nzXqUSEtizBdmhqATVWeTufc1c4uhUsQHZsAKHc
+	 Dv9t6fjAdvPhg6MBcCFNjm98HxEEpTkXTcXzARxM/9j19QJVjFxaoWdZju5vYHvA1g
+	 glzZ7acBZPv44zYOnzgNvTbhvaJ4uNtorlnUkvNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/204] clk: check for disabled clock-provider in of_clk_get_hw_from_clkspec()
-Date: Tue, 29 Apr 2025 18:43:30 +0200
-Message-ID: <20250429161104.424653819@linuxfoundation.org>
+Subject: [PATCH 6.1 103/167] s390/sclp: Add check for get_zeroed_page()
+Date: Tue, 29 Apr 2025 18:43:31 +0200
+Message-ID: <20250429161055.916021733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit b20150d499b3ee5c2d632fbc5ac94f98dd33accf ]
+[ Upstream commit 3db42c75a921854a99db0a2775814fef97415bac ]
 
-of_clk_get_hw_from_clkspec() checks all available clock-providers by
-comparing their of nodes to the one from the clkspec. If no matching
-clock provider is found, the function returns -EPROBE_DEFER to cause a
-re-check at a later date. If a matching clock provider is found, an
-authoritative answer can be retrieved from it whether the clock exists
-or not.
+Add check for the return value of get_zeroed_page() in
+sclp_console_init() to prevent null pointer dereference.
+Furthermore, to solve the memory leak caused by the loop
+allocation, add a free helper to do the free job.
 
-This does not take into account that the clock-provider may never
-appear, because it's node is disabled. This can happen when a clock is
-optional, provided by a separate block which never gets enabled.
-
-One example of this happening is the rk3588's VOP, which has optional
-additional display clocks coming from PLLs inside the hdmiphy blocks.
-These can be used for better rates, but the system will also work
-without them.
-
-The problem around that is described in the followups to[1]. As we
-already know the of node of the presumed clock provider, add a check via
-of_device_is_available() whether this is a "valid" device node. This
-prevents eternal defer loops.
-
-Link: https://lore.kernel.org/dri-devel/20250215-vop2-hdmi1-disp-modes-v1-3-81962a7151d6@collabora.com/ [1]
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250222223733.2990179-1-heiko@sntech.de
-[sboyd@kernel.org: Reword commit text a bit]
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218025216.2421548-1-haoxiang_li2024@163.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index 5bbd036f5295f..8474099e2cac1 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -5216,6 +5216,10 @@ of_clk_get_hw_from_clkspec(struct of_phandle_args *clkspec)
- 	if (!clkspec)
- 		return ERR_PTR(-EINVAL);
+diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
+index e5d947c763ea5..6a030ba38bf36 100644
+--- a/drivers/s390/char/sclp_con.c
++++ b/drivers/s390/char/sclp_con.c
+@@ -263,6 +263,19 @@ static struct console sclp_console =
+ 	.index = 0 /* ttyS0 */
+ };
  
-+	/* Check if node in clkspec is in disabled/fail state */
-+	if (!of_device_is_available(clkspec->np))
-+		return ERR_PTR(-ENOENT);
++/*
++ *  Release allocated pages.
++ */
++static void __init __sclp_console_free_pages(void)
++{
++	struct list_head *page, *p;
 +
- 	mutex_lock(&of_clk_mutex);
- 	list_for_each_entry(provider, &of_clk_providers, link) {
- 		if (provider->node == clkspec->np) {
++	list_for_each_safe(page, p, &sclp_con_pages) {
++		list_del(page);
++		free_page((unsigned long)page);
++	}
++}
++
+ /*
+  * called by console_init() in drivers/char/tty_io.c at boot-time.
+  */
+@@ -282,6 +295,10 @@ sclp_console_init(void)
+ 	/* Allocate pages for output buffering */
+ 	for (i = 0; i < sclp_console_pages; i++) {
+ 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
++		if (!page) {
++			__sclp_console_free_pages();
++			return -ENOMEM;
++		}
+ 		list_add_tail(page, &sclp_con_pages);
+ 	}
+ 	sclp_conbuf = NULL;
 -- 
 2.39.5
 
