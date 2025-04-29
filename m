@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-138176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2FBAA16DF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95800AA1879
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A41B16C459
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:40:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125711661BA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9BB251780;
-	Tue, 29 Apr 2025 17:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF7B243964;
+	Tue, 29 Apr 2025 17:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em2Q/SEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/mkgMAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABE41917E3;
-	Tue, 29 Apr 2025 17:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FC92AE96;
+	Tue, 29 Apr 2025 17:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948410; cv=none; b=ZpxZYDHekjnWnDdqxh772kYhadcxsnSI2CIGTlEykfrJ9cIMc4I3F1W0n9mHZy4ILL8f0Pe+PSmbUjlYgnOnv+eWwBpbNpT/zjaP/pVjzouP1q4rKUXhjQ/ikN1bE5IVJ0sUzRjyLdMjbM+REg5mlyuXifS0avOHsaxgCcUDeko=
+	t=1745949541; cv=none; b=t25GLDRXE9kjVRDvfqIGkVdGgGEvqbhjXEJ+dN4gR2scL29K0BXR17F7l+/cemp08MMSqy+agzj4AFJFnFh6TSApY8HP4EElImnpaqr6TVgW8x2R/qHRSqqiPeSEI4KKRbQUtAxD2kpKdnrTGOPZw1D8xr/CHlpc17uXGoNXSuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948410; c=relaxed/simple;
-	bh=H978HMNV2rmYPflarVEVee5TDY1tJ67cxkC1bKwMOoY=;
+	s=arc-20240116; t=1745949541; c=relaxed/simple;
+	bh=dU9fsw8+iVQv92k0of37Cr0C3KpHm/ElnoDVCEUJVt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilVJk2pvHm/DAcktF7BIHRfiq/3TE+2JQOirJfSUDK4xiDzr1VAQKFrIjQ6IwR8prFrK5goUI3Jk2vDXTbnP3+ID5c0brBQgp0JD4Qr1hW5tGDbCiJZx6waJyrSaktVDpDD+k4MHY9+zz8xxx/PhAVxiLM2+u5+Ki5IN1EEzjZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em2Q/SEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D70C4CEE3;
-	Tue, 29 Apr 2025 17:40:09 +0000 (UTC)
+	 MIME-Version; b=KzriClG9LiCJz5V8lBzczo74vBJ868iMmwM5jpjlNBDbV54Xptv2K1F8Oi5cOJa2H5tnDIJdcZybYi7OcQNEOazPvRHNUrqrogZQtHJxQitv/vL86pRUwKb//Xs86Ot1PYbP1he4OmKuf3QDVjnJDg/NL7Yi5jEZOgetiyKhOKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/mkgMAL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573A0C4CEE9;
+	Tue, 29 Apr 2025 17:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948410;
-	bh=H978HMNV2rmYPflarVEVee5TDY1tJ67cxkC1bKwMOoY=;
+	s=korg; t=1745949540;
+	bh=dU9fsw8+iVQv92k0of37Cr0C3KpHm/ElnoDVCEUJVt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=em2Q/SElZXTd1odbVZpkTF9R0zclYua1mSnHfb9dJjHjOGtlWo52Or8IQajsa4CEF
-	 VE8LV1wYKbNefVEDHT6mbOgqZR9SFOf268oSeG2+Fl6uolz0mZgzx9fHHvnr4za7/5
-	 rykap2crBAnHs1zJHlvoCTAU2ETB4/W314RSCCeU=
+	b=Z/mkgMALHiCLrDeCVOL/y8Wiien74NX60TDddpYV+z6ZnZeampdiy3FpEGk5N4mXv
+	 iEwcs8x9X29e6TS/TAv4sBLUuMrc60wQaXMgA4gzvJoJrrfAGTZMYSDk7Dtr4GpUSH
+	 ZXIY+nSq0mtWCLLHjtWwAdzmn1L0sfaE/iaGKW9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
+	Hannes Reinecke <hare@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 280/280] mq-deadline: dont call req_get_ioprio from the I/O completion handler
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 344/373] nvme: requeue namespace scan on missed AENs
 Date: Tue, 29 Apr 2025 18:43:41 +0200
-Message-ID: <20250429161126.588690301@linuxfoundation.org>
+Message-ID: <20250429161137.286448628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Hannes Reinecke <hare@kernel.org>
 
-commit 1b0cab327e060ccf397ae634a34c84dd1d4d2bb2 upstream.
+[ Upstream commit 9546ad1a9bda7362492114f5866b95b0ac4a100e ]
 
-req_get_ioprio looks at req->bio to find the I/O priority, which is not
-set when completing bios that the driver fully iterated through.
+Scanning for namespaces can take some time, so if the target is
+reconfigured while the scan is running we may miss a Attached Namespace
+Attribute Changed AEN.
 
-Stash away the dd_per_prio in the elevator private data instead of looking
-it up again to optimize the code a bit while fixing the regression from
-removing the per-request ioprio value.
+Check if the NVME_AER_NOTICE_NS_CHANGED bit is set once the scan has
+finished, and requeue scanning to pick up any missed change.
 
-Fixes: 6975c1a486a4 ("block: remove the ioprio field from struct request")
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Reported-by: Sam Protsenko <semen.protsenko@linaro.org>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Reviewed-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Tested-by: Sam Protsenko <semen.protsenko@linaro.org>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20241126102136.619067-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/mq-deadline.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/nvme/host/core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/block/mq-deadline.c
-+++ b/block/mq-deadline.c
-@@ -685,10 +685,9 @@ static void dd_insert_request(struct blk
- 
- 	prio = ioprio_class_to_prio[ioprio_class];
- 	per_prio = &dd->per_prio[prio];
--	if (!rq->elv.priv[0]) {
-+	if (!rq->elv.priv[0])
- 		per_prio->stats.inserted++;
--		rq->elv.priv[0] = (void *)(uintptr_t)1;
--	}
-+	rq->elv.priv[0] = per_prio;
- 
- 	if (blk_mq_sched_try_insert_merge(q, rq, free))
- 		return;
-@@ -753,18 +752,14 @@ static void dd_prepare_request(struct re
-  */
- static void dd_finish_request(struct request *rq)
- {
--	struct request_queue *q = rq->q;
--	struct deadline_data *dd = q->elevator->elevator_data;
--	const u8 ioprio_class = dd_rq_ioclass(rq);
--	const enum dd_prio prio = ioprio_class_to_prio[ioprio_class];
--	struct dd_per_prio *per_prio = &dd->per_prio[prio];
-+	struct dd_per_prio *per_prio = rq->elv.priv[0];
- 
- 	/*
- 	 * The block layer core may call dd_finish_request() without having
- 	 * called dd_insert_requests(). Skip requests that bypassed I/O
- 	 * scheduling. See also blk_mq_request_bypass_insert().
- 	 */
--	if (rq->elv.priv[0])
-+	if (per_prio)
- 		atomic_inc(&per_prio->stats.completed);
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 6748532c776b8..85d965fe8838c 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4221,6 +4221,10 @@ static void nvme_scan_work(struct work_struct *work)
+ 	if (nvme_scan_ns_list(ctrl) != 0)
+ 		nvme_scan_ns_sequential(ctrl);
+ 	mutex_unlock(&ctrl->scan_lock);
++
++	/* Requeue if we have missed AENs */
++	if (test_bit(NVME_AER_NOTICE_NS_CHANGED, &ctrl->events))
++		nvme_queue_scan(ctrl);
  }
  
+ /*
+-- 
+2.39.5
+
 
 
 
