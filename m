@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-137765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B64AA151A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B2E6AA1636
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35FCF3BD4FE
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDE8617BE15
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FF12459E1;
-	Tue, 29 Apr 2025 17:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B418624BBE4;
+	Tue, 29 Apr 2025 17:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wO8eEGPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zL71p3+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBEE251791;
-	Tue, 29 Apr 2025 17:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD1982C60;
+	Tue, 29 Apr 2025 17:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947060; cv=none; b=ZYl95TT5tWri3++xsv5aD7tRBoXitFISgyk7A5vboJ+JpI6kbCwkiIFFZtXHScAcmeNjohBYozREM+0FOtjkCvf9qSpwFfGs1icEnc7X8EfKZwYObQOUNAFCfPpOzRQSvwpdsU+1TFgbVgcdGOKSRekO5TGXYNivoF0/ePJ/Kd8=
+	t=1745947846; cv=none; b=Q1/lRWyYj1kfD/iOrhpSR/bF+XR8fJBS9F3HalFTXyGvZShofx34mdwy20vXExurFkFJTD1jvGaEVLS8JANkjqv4R3RULRHirxwnagGNmNutQEdQlAJemWYiV4azhKhNtg1f7wRfyJbRLlVyXnayTasxXBF1ndwDRFrayhxbDgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947060; c=relaxed/simple;
-	bh=RkqjY7VNQaa2eD4GsZMBceRMykMKJUgnVhXDyUG8Vzs=;
+	s=arc-20240116; t=1745947846; c=relaxed/simple;
+	bh=kp8RwjHHfzCBccdxbGuqtA70Xa6IQppwFi+4BKTY4Eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlcAvBx7c6w6TfUIGJKDXqFRPs1dKe6cesEm9JRLmgkduSjLwqOr6lYIzNLunoxeHN+lZS51siVFa3RjWdiPBv+2bTbSrakp/Mx0gnsgIlKyo2oJKXdUR8kiuRFmLKTASh6yJ7XNGEtCKJNOYtTU0ZIs6fEmWudH7Ev1ST0qauE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wO8eEGPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2023C4CEE3;
-	Tue, 29 Apr 2025 17:17:39 +0000 (UTC)
+	 MIME-Version; b=bQxF7RCmXWTGXY4WY8AX/g3NL6X4ZTxf7r2mvwCErm2rDup1nWePROtgvSEOyjcKnO29l0HRI+jAtv5pU9rQBjB5dNXlsfpji7UoRs7Grso9+duKJSDKnw/cbJpwOxbgLSx+8DmYe7QlEhU3osPedTExHQ0iLqiPI+wBnGHYLUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zL71p3+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0249DC4CEE9;
+	Tue, 29 Apr 2025 17:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947060;
-	bh=RkqjY7VNQaa2eD4GsZMBceRMykMKJUgnVhXDyUG8Vzs=;
+	s=korg; t=1745947846;
+	bh=kp8RwjHHfzCBccdxbGuqtA70Xa6IQppwFi+4BKTY4Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wO8eEGPwXY7a+Z82bKgbbZXLkJxLN6SHEqqG4yx6NxipfAMIEqbhcSYIIChPUzZtg
-	 TTskviBp/NB6cv/NQ84qns1MwdsNoX90oLqoPlq+7d6wpikngly08nYptBXH8CkPYD
-	 71GZeEOb/TSOSCbm6hrqwl7+++YzP3um1uoHlfF8=
+	b=zL71p3+BmyhSpeIdB+c+JWGFPelnPsrhzK7jPk7kjyA4S5rAJ4pqzBpyoVEkvh43O
+	 9dHgGI02WHGN3h52UoyLWu0oMzH/igZPJmkLZg/fBrFoba5yYfoa4K6IWQzAIOU9TE
+	 j1D36Xfg9O5WyqGOYQ2eEBa6dZgT58W2mXOIuO8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 158/286] drm/amd/display: Stop amdgpu_dm initialize when link nums greater than max_links
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.12 121/280] mei: me: add panther lake H DID
 Date: Tue, 29 Apr 2025 18:41:02 +0200
-Message-ID: <20250429161114.385496731@linuxfoundation.org>
+Message-ID: <20250429161120.061690660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit cf8b16857db702ceb8d52f9219a4613363e2b1cf upstream.
+commit 86ce5c0a1dec02e21b4c864b2bc0cc5880a2c13c upstream.
 
-[Why]
-Coverity report OVERRUN warning. There are
-only max_links elements within dc->links. link
-count could up to AMDGPU_DM_MAX_DISPLAY_INDEX 31.
+Add Panther Lake H device id.
 
-[How]
-Make sure link count less than max_links.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[Minor conflict resolved due to code context change. And the macro MAX_LINKS
- is introduced by Commit 60df5628144b ("drm/amd/display: handle invalid
- connector indices") after 6.10. So here we still use the original array
- length MAX_PIPES * 2]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250408130005.1358140-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -3397,17 +3397,17 @@ static int amdgpu_dm_initialize_drm_devi
- 			goto fail;
- 		}
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,7 @@
  
-+	if (link_cnt > (MAX_PIPES * 2)) {
-+		DRM_ERROR(
-+			"KMS: Cannot support more than %d display indexes\n",
-+				MAX_PIPES * 2);
-+		goto fail;
-+	}
-+
- 	/* loops over all connectors on the board */
- 	for (i = 0; i < link_cnt; i++) {
- 		struct dc_link *link = NULL;
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
  
--		if (i > AMDGPU_DM_MAX_DISPLAY_INDEX) {
--			DRM_ERROR(
--				"KMS: Cannot support more than %d display indexes\n",
--					AMDGPU_DM_MAX_DISPLAY_INDEX);
--			continue;
--		}
--
- 		aconnector = kzalloc(sizeof(*aconnector), GFP_KERNEL);
- 		if (!aconnector)
- 			goto fail;
++#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
+ 
+ /*
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,7 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
 
 
 
