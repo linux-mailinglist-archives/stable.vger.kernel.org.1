@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87578AA17A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F73AA1612
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1706F1BC5061
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E5101683DF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633B724500A;
-	Tue, 29 Apr 2025 17:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717EF242D73;
+	Tue, 29 Apr 2025 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcXQEy+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXgTtXFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BE521ABC1;
-	Tue, 29 Apr 2025 17:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCA178F58;
+	Tue, 29 Apr 2025 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949004; cv=none; b=pgI2ckMzdWQtiLuxzaea1e61/563o/K+l0y08OgsZDJq9OYdOMce1qangMma0SNt76Mfjrv/6oUykvC9Uom6/MeMlbx/OqUJJAvfVZmX9goAFnhy/ARog7IzcWkOYN6i3/kwK5v+JB6Sn/2wPaist0kYNqUJPYFvlDcBQxHT1XU=
+	t=1745947754; cv=none; b=KUGxQTMOuwyA1imBMYZrtUspviCfrfSsbUCrQYc1+3hvkx5cEMyB2NpQLUKdDmss+OKUb7xrVO1fq3GW3MowBEJdy77SZ5jyYC68ejT3vRHsAAltddHMuGJdCkEsjzkt062nvyUxWYB7fenAJEQAV/JxSX79FU5rPoMx9G0XyNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949004; c=relaxed/simple;
-	bh=a6eL0LCyrLUXPOviMqsAxmcK2p3fu/QAoZTg/9v055c=;
+	s=arc-20240116; t=1745947754; c=relaxed/simple;
+	bh=evdSZMpeyYiJ6CaIdaaFe8X/KL1lXbfe4L8ECLNIO28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i2c/mWrkF+pWfM4VzXnVJiecofQRvZMrCjimN+IGzPsm3Wj1UOOjumIXXI0GsZcI9oPSmYt0ybyu6osTPrkQTTa4QFl60WXOghOCaOcB857iNPC+gj9HsOa+FtCYiB3j1LqFtpH2Dov6lMFWHV5EdXMnfoHNDl/9xWRx5mZuMTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcXQEy+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ADCC4CEE9;
-	Tue, 29 Apr 2025 17:50:03 +0000 (UTC)
+	 MIME-Version; b=sNt4Fv/5VUnfxlCJ1vDGcYLFz/wdNrvlawXoZs97TY2fCgc0fMdySdDQ8PNGfnZHdWmnyFeOyX5TDR7PGlcNDosfoeCMymJFA04g171RRM/RB3vqeKOk+tdxkRtTxwIGBx4MlevCdHibJbUSHBQE4t2GwoQpkyFSYuUkBLEcQ8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXgTtXFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96D6C4CEE9;
+	Tue, 29 Apr 2025 17:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949004;
-	bh=a6eL0LCyrLUXPOviMqsAxmcK2p3fu/QAoZTg/9v055c=;
+	s=korg; t=1745947754;
+	bh=evdSZMpeyYiJ6CaIdaaFe8X/KL1lXbfe4L8ECLNIO28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcXQEy+iX1bmhIePlNQJqwo3c9NQWAX0S7UtwfyrmEk5cTREZ/JAkwMymeEViDCfx
-	 7L9FWsVeG5eiFYGIznG2XoSJn9RZOmj59KxCOnqpcvsWQrq50vHec7Lr4E7d9ZDx5F
-	 PK4mZD4ygkzoJvp25oNYdxZU1SMwd6e2WyHxZJQ8=
+	b=QXgTtXFsSRjNAjkEjfju6aTKtOtdQa/+L/+8UaSoenQ2LAPFf96TtV2mVxIme42d7
+	 devTDvCgE7Sk2O8CkoH+aDe4WYW3wS/e1gEEVO7fNWBsGpsfoHivGelj0oRU4p2Cwo
+	 6v9rmphXKz18xSypSNUDh8jw34gesuOn7LSIfaAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 158/373] asus-laptop: Fix an uninitialized variable
+	Halil Pasic <pasic@linux.ibm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.12 094/280] virtio_console: fix missing byte order handling for cols and rows
 Date: Tue, 29 Apr 2025 18:40:35 +0200
-Message-ID: <20250429161129.644008753@linuxfoundation.org>
+Message-ID: <20250429161118.952596771@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,61 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Halil Pasic <pasic@linux.ibm.com>
 
-commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
+commit fbd3039a64b01b769040677c4fc68badeca8e3b2 upstream.
 
-The value returned by acpi_evaluate_integer() is not checked,
-but the result is not always successful, so it is necessary to
-add a check of the returned value.
+As per virtio spec the fields cols and rows are specified as little
+endian. Although there is no legacy interface requirement that would
+state that cols and rows need to be handled as native endian when legacy
+interface is used, unlike for the fields of the adjacent struct
+virtio_console_control, I decided to err on the side of caution based
+on some non-conclusive virtio spec repo archaeology and opt for using
+virtio16_to_cpu() much like for virtio_console_control.event. Strictly
+by the letter of the spec virtio_le_to_cpu() would have been sufficient.
+But when the legacy interface is not used, it boils down to the same.
 
-If the result remains negative during three iterations of the loop,
-then the uninitialized variable 'val' will be used in the clamp_val()
-macro, so it must be initialized with the current value of the 'curr'
-variable.
+And when using the legacy interface, the device formatting these as
+little endian when the guest is big endian would surprise me more than
+it using guest native byte order (which would make it compatible with
+the current implementation). Nevertheless somebody trying to implement
+the spec following it to the letter could end up forcing little endian
+byte order when the legacy interface is in use. So IMHO this ultimately
+needs a judgement call by the maintainers.
 
-In this case, the algorithm should be less noisy.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 8345adbf96fc1 ("virtio: console: Accept console size along with resize control message")
+Signed-off-by: Halil Pasic <pasic@linux.ibm.com>
+Cc: stable@vger.kernel.org # v2.6.35+
+Message-Id: <20250322002954.3129282-1-pasic@linux.ibm.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-laptop.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/char/virtio_console.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/platform/x86/asus-laptop.c
-+++ b/drivers/platform/x86/asus-laptop.c
-@@ -427,11 +427,14 @@ static int asus_pega_lucid_set(struct as
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -1579,8 +1579,8 @@ static void handle_control_message(struc
+ 		break;
+ 	case VIRTIO_CONSOLE_RESIZE: {
+ 		struct {
+-			__u16 rows;
+-			__u16 cols;
++			__virtio16 rows;
++			__virtio16 cols;
+ 		} size;
  
- static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
- {
-+	unsigned long long val = (unsigned long long)curr;
-+	acpi_status status;
- 	int i, delta;
--	unsigned long long val;
--	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
--		acpi_evaluate_integer(asus->handle, method, NULL, &val);
+ 		if (!is_console_port(port))
+@@ -1588,7 +1588,8 @@ static void handle_control_message(struc
  
-+	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
-+		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
-+		if (ACPI_FAILURE(status))
-+			continue;
- 		/* The output is noisy.  From reading the ASL
- 		 * dissassembly, timeout errors are returned with 1's
- 		 * in the high word, and the lack of locking around
+ 		memcpy(&size, buf->buf + buf->offset + sizeof(*cpkt),
+ 		       sizeof(size));
+-		set_console_size(port, size.rows, size.cols);
++		set_console_size(port, virtio16_to_cpu(vdev, size.rows),
++				 virtio16_to_cpu(vdev, size.cols));
+ 
+ 		port->cons.hvc->irq_requested = 1;
+ 		resize_console(port);
 
 
 
