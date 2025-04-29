@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-137288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B3EAA129C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:56:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D81AA18AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CE1B1BA4B6E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06E7A4A5A92
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C2424A067;
-	Tue, 29 Apr 2025 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D03921ABC6;
+	Tue, 29 Apr 2025 18:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SabriPpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+ieZkPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 052CD21772B;
-	Tue, 29 Apr 2025 16:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A684252905;
+	Tue, 29 Apr 2025 18:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945620; cv=none; b=HrdRpmT98A3So5gNLJzZJdAixVPoh5/NNCyspQsUWGG3oyIOOu0mDNbfmRAUMp6Gsvbl70GbT6jeSEdRkx46UvCkKM+rhZZTdFCOcHmUZd2ce/AfXgyj+wEaDBDobruHmz6VU9Zy/vpBoebyWuQWrfuPVqlxZ7vJCNNSGnUSx5A=
+	t=1745949703; cv=none; b=sWZu8XBFYS/j0sfli+t0orsAWXEEQvxw90js5b39RAW3s64OR1UHJNhOWUj22Be+RgvStX75lpcYYvQSh3Ixl5KB4gG8b3TGmGi+Lgnn9wWP4HRBVIgLiTD5IMI05FdA6OPBwJtf5ELVMyHJJgHuQoqBNXzw/qSaXh4K8WW4E78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945620; c=relaxed/simple;
-	bh=inuRLI9xkoKFOKHm2I76b56dKxL8l/BiZL59RStelFY=;
+	s=arc-20240116; t=1745949703; c=relaxed/simple;
+	bh=G74FP6qlEzUNNDSsv68y0azF0kCaaDYNYstZNIFOxSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8wx5n1CcT/lxx2MESz+UdA4aqzVP+rFYyf9dW8Z8SPnHN3QOibhze7ud8kCwqMISBrJr9k/nCH/WN1FpoR6EbhcrzeGN43xySedRNQ1tedPZRUVUO0Miwo2HAMAP+TRbZVpk/J18x8LVtnEgNBe1AwU4VLIvnm1dEg+n7tGM7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SabriPpn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1835FC4CEE3;
-	Tue, 29 Apr 2025 16:53:38 +0000 (UTC)
+	 MIME-Version; b=WqkTKiz2uLZkhiIB2AtXrFLqxvLt312XHBFC9MXU3oChc2mLtxvaeHfQEcE1Hsps/nbBGySFmC2nErIYYIr1QlKCpfAnJPdn7UYaqnT76dfGdniCSTaRJlmjxL+0bSZsV68/SoMj6xFiGtkNDIqFH0jjDDDl572d5NSEx7SULn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+ieZkPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE0BC4CEEE;
+	Tue, 29 Apr 2025 18:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945619;
-	bh=inuRLI9xkoKFOKHm2I76b56dKxL8l/BiZL59RStelFY=;
+	s=korg; t=1745949703;
+	bh=G74FP6qlEzUNNDSsv68y0azF0kCaaDYNYstZNIFOxSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SabriPpnZRxtxF0rOvWzk8zt8LgttoyOqFzT9cYPOADj2qdfdZWOX25v0eQ6+mOe1
-	 0uWK9FUsqC6zgf6n/9AbwYjljoj3l9fNX8CSiE3gek2a8YY4G3UNO7ldgpkRE/OWql
-	 Df4Y2EiNCrvwfDLOrQ5f090Mt9EzD2sldaMeTmUQ=
+	b=b+ieZkPGElcuSVQfwexMCEQqYJ5DgcxEWLMBmLVpu5JkT8w5lbTyvKuawCV7TZ2Jq
+	 yrh6Kz40a5x/uq3OqCj9V03lq0doHJznIRi1bg707jIXMA4ze0m0qph5PPdM5KZ1hh
+	 4loBn54Dpr9DMIpbUVSBRCXWSGT6TVaZV1nDTcLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Amit Shah <amit.shah@amd.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	David Woodhouse <dwmw2@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Libo Chen <libo.chen@oracle.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 173/179] x86/bugs: Dont fill RSB on VMEXIT with eIBRS+retpoline
-Date: Tue, 29 Apr 2025 18:41:54 +0200
-Message-ID: <20250429161056.394306314@linuxfoundation.org>
+Subject: [PATCH 6.1 007/167] tracing: Verify event formats that have "%*p.."
+Date: Tue, 29 Apr 2025 18:41:55 +0200
+Message-ID: <20250429161052.048388375@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 18bae0dfec15b24ec14ca17dc18603372f5f254f ]
+[ Upstream commit ea8d7647f9ddf1f81e2027ed305299797299aa03 ]
 
-eIBRS protects against guest->host RSB underflow/poisoning attacks.
-Adding retpoline to the mix doesn't change that.  Retpoline has a
-balanced CALL/RET anyway.
+The trace event verifier checks the formats of trace events to make sure
+that they do not point at memory that is not in the trace event itself or
+in data that will never be freed. If an event references data that was
+allocated when the event triggered and that same data is freed before the
+event is read, then the kernel can crash by reading freed memory.
 
-So the current full RSB filling on VMEXIT with eIBRS+retpoline is
-overkill.  Disable it or do the VMEXIT_LITE mitigation if needed.
+The verifier runs at boot up (or module load) and scans the print formats
+of the events and checks their arguments to make sure that dereferenced
+pointers are safe. If the format uses "%*p.." the verifier will ignore it,
+and that could be dangerous. Cover this case as well.
 
-Suggested-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Reviewed-by: Amit Shah <amit.shah@amd.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Link: https://lore.kernel.org/r/84a1226e5c9e2698eae1b5ade861f1b8bf3677dc.1744148254.git.jpoimboe@kernel.org
+Also add to the sample code a use case of "%*pbl".
+
+Link: https://lore.kernel.org/all/bcba4d76-2c3f-4d11-baf0-02905db953dd@oracle.com/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 5013f454a352c ("tracing: Add check of trace event print fmts for dereferencing pointers")
+Link: https://lore.kernel.org/20250327195311.2d89ec66@gandalf.local.home
+Reported-by: Libo Chen <libo.chen@oracle.com>
+Reviewed-by: Libo Chen <libo.chen@oracle.com>
+Tested-by: Libo Chen <libo.chen@oracle.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/trace/trace_events.c                | 7 +++++++
+ samples/trace_events/trace-events-sample.h | 8 ++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index af748d1c78d41..4f803aed2ef0e 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1348,20 +1348,20 @@ static void __init spectre_v2_determine_rsb_fill_type_at_vmexit(enum spectre_v2_
- 	case SPECTRE_V2_NONE:
- 		return;
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index ed0d0c8a2b4bb..8723ad2f9c63b 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -456,6 +456,7 @@ static void test_event_printk(struct trace_event_call *call)
+ 			case '%':
+ 				continue;
+ 			case 'p':
++ do_pointer:
+ 				/* Find dereferencing fields */
+ 				switch (fmt[i + 1]) {
+ 				case 'B': case 'R': case 'r':
+@@ -484,6 +485,12 @@ static void test_event_printk(struct trace_event_call *call)
+ 						continue;
+ 					if (fmt[i + j] == '*') {
+ 						star = true;
++						/* Handle %*pbl case */
++						if (!j && fmt[i + 1] == 'p') {
++							arg++;
++							i++;
++							goto do_pointer;
++						}
+ 						continue;
+ 					}
+ 					if ((fmt[i + j] == 's')) {
+diff --git a/samples/trace_events/trace-events-sample.h b/samples/trace_events/trace-events-sample.h
+index 24ec968d481fb..06be777b3b14b 100644
+--- a/samples/trace_events/trace-events-sample.h
++++ b/samples/trace_events/trace-events-sample.h
+@@ -317,7 +317,8 @@ TRACE_EVENT(foo_bar,
+ 		__assign_cpumask(cpum, cpumask_bits(mask));
+ 	),
  
--	case SPECTRE_V2_EIBRS_LFENCE:
- 	case SPECTRE_V2_EIBRS:
-+	case SPECTRE_V2_EIBRS_LFENCE:
-+	case SPECTRE_V2_EIBRS_RETPOLINE:
- 		if (boot_cpu_has_bug(X86_BUG_EIBRS_PBRSB)) {
--			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 			pr_info("Spectre v2 / PBRSB-eIBRS: Retire a single CALL on VMEXIT\n");
-+			setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT_LITE);
- 		}
- 		return;
+-	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s", __entry->foo, __entry->bar,
++	TP_printk("foo %s %d %s %s %s %s %s %s (%s) (%s) %s [%d] %*pbl",
++		  __entry->foo, __entry->bar,
  
--	case SPECTRE_V2_EIBRS_RETPOLINE:
- 	case SPECTRE_V2_RETPOLINE:
- 	case SPECTRE_V2_LFENCE:
- 	case SPECTRE_V2_IBRS:
--		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		pr_info("Spectre v2 / SpectreRSB : Filling RSB on VMEXIT\n");
-+		setup_force_cpu_cap(X86_FEATURE_RSB_VMEXIT);
- 		return;
- 	}
+ /*
+  * Notice here the use of some helper functions. This includes:
+@@ -368,7 +369,10 @@ TRACE_EVENT(foo_bar,
  
+ 		  __get_str(str), __get_str(lstr),
+ 		  __get_bitmask(cpus), __get_cpumask(cpum),
+-		  __get_str(vstr))
++		  __get_str(vstr),
++		  __get_dynamic_array_len(cpus),
++		  __get_dynamic_array_len(cpus),
++		  __get_dynamic_array(cpus))
+ );
+ 
+ /*
 -- 
 2.39.5
 
