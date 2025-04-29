@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C004AA14A9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B07AA15F8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB0E916C2CB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:16:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0002D177F04
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189B6221DA7;
-	Tue, 29 Apr 2025 17:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEED22459E1;
+	Tue, 29 Apr 2025 17:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxJHD4q+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgLx8EO+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1AC248878;
-	Tue, 29 Apr 2025 17:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3F01FE468;
+	Tue, 29 Apr 2025 17:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946956; cv=none; b=CO5SjKtYH5qkgJDDZjgcT9L2aDKkborOwWytZa1EO7hcvUynIv+WrqZW7kOTLst6uTITSSr474WMK+fYN09JFwN3l23wiaE4bVHzb/u5yf10er832+1XzM14InPw1MED9ggpnKQlfp3V61tk6ImMS4Nn7LSq/0aPNFgBZzlwZJs=
+	t=1745947725; cv=none; b=pp/Pw0Skblcj7CwNbjfx0uXXN/2UqhD1/fF5ZbGP5c8+OdF1PN4DwBzudV9GwoXXRN+bfWX/FXsciaImmn2fEZKvBVbH9R/bXuETjh//YR0psq3yN6+IdMEAKxI5MHcYvaYepJPSbHm7myrkIsGEM8ExUtn+vR9hsnyIC/VZt3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946956; c=relaxed/simple;
-	bh=4ZNk0B+JMIjnSdG3vbgckKmhLvxuGzQCA1eCt+mzUTE=;
+	s=arc-20240116; t=1745947725; c=relaxed/simple;
+	bh=wujIosWUttdoZxQ+kQlYJ7cfzDWjilgB0Tz9sx8i554=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3SPkwbKjyS0V3UmqpYrdl+UItgV2CnxEHEac0e9Nv0i7hKOio0bbCtgICcq/EgVC1v44yNouDRYTcj2LLA7D/4nCGhqxL1FVPg9Jj7/BYcjrlf0DrhS1KsK+p5QGDOuo6jEjIAx4WFV7IeVUDCeNwpR+2yzX/spVXIC1+ZbkPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxJHD4q+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E026C4CEE3;
-	Tue, 29 Apr 2025 17:15:56 +0000 (UTC)
+	 MIME-Version; b=gc5bQvjoC5VPEuV3fFCbzDJ963RoQlgTJSSEOhqQPLNAWRfvcSuhB9+xj9+h7f0zYtbjHsHRIA3U/nf7QHN7HXPForTEn7ffZjlK91ufCdlgF/Hw1c8M+Ckr/GnlWDmJN3Nammzi0zX/FJbC4MtiUwanb4TPtdH2+EtvFCv88So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgLx8EO+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 630C8C4CEE9;
+	Tue, 29 Apr 2025 17:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946956;
-	bh=4ZNk0B+JMIjnSdG3vbgckKmhLvxuGzQCA1eCt+mzUTE=;
+	s=korg; t=1745947725;
+	bh=wujIosWUttdoZxQ+kQlYJ7cfzDWjilgB0Tz9sx8i554=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxJHD4q+Dar5HNGg4pO8KQaG8t87nCfpSdVbdRvoOgecj3U9gFw8mhs6/H46eOr54
-	 AC1qEuf9VNBssj8/wJ5BKneTspGsZZZFbeS33NbyM/n9OFDDydglmAY1NnVxMkFRgF
-	 bZWhz8E9JxXRxMvTPEtw0Fusf1PPncN7CKVNCCjg=
+	b=jgLx8EO+aNrwqkLFH9V0tIThLF0DscCA76LcXQoiPQDzfyBaQA+jiW3oMBpqVoize
+	 2RqhJW/x3Eez6MEdes12geMLVx0n8pV3CWjqr7qSgH9ECceCnNzlkQn8bZXi5DJpRt
+	 UxQUaMa7fYcde1yfVfdr4sRNGomIZxGW8F5tIdFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 124/286] nfs: add missing selections of CONFIG_CRC32
+Subject: [PATCH 6.12 087/280] bpf: Add namespace to BPF internal symbols
 Date: Tue, 29 Apr 2025 18:40:28 +0200
-Message-ID: <20250429161112.960036564@linuxfoundation.org>
+Message-ID: <20250429161118.669603433@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit cd35b6cb46649750b7dbd0df0e2d767415d8917b ]
+[ Upstream commit f88886de0927a2adf4c1b4c5c1f1d31d2023ef74 ]
 
-nfs.ko, nfsd.ko, and lockd.ko all use crc32_le(), which is available
-only when CONFIG_CRC32 is enabled.  But the only NFS kconfig option that
-selected CONFIG_CRC32 was CONFIG_NFS_DEBUG, which is client-specific and
-did not actually guard the use of crc32_le() even on the client.
+Add namespace to BPF internal symbols used by light skeleton
+to prevent abuse and document with the code their allowed usage.
 
-The code worked around this bug by only actually calling crc32_le() when
-CONFIG_CRC32 is built-in, instead hard-coding '0' in other cases.  This
-avoided randconfig build errors, and in real kernels the fallback code
-was unlikely to be reached since CONFIG_CRC32 is 'default y'.  But, this
-really needs to just be done properly, especially now that I'm planning
-to update CONFIG_CRC32 to not be 'default y'.
-
-Therefore, make CONFIG_NFS_FS, CONFIG_NFSD, and CONFIG_LOCKD select
-CONFIG_CRC32.  Then remove the fallback code that becomes unnecessary,
-as well as the selection of CONFIG_CRC32 from CONFIG_NFS_DEBUG.
-
-Fixes: 1264a2f053a3 ("NFS: refactor code for calculating the crc32 hash of a filehandle")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: b1d18a7574d0 ("bpf: Extend sys_bpf commands for bpf_syscall programs.")
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/bpf/20250425014542.62385-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/Kconfig           | 1 +
- fs/nfs/Kconfig       | 2 +-
- fs/nfs/internal.h    | 7 -------
- fs/nfs/nfs4session.h | 4 ----
- fs/nfsd/Kconfig      | 1 +
- fs/nfsd/nfsfh.h      | 7 -------
- include/linux/nfs.h  | 7 -------
- 7 files changed, 3 insertions(+), 26 deletions(-)
+ Documentation/bpf/bpf_devel_QA.rst    |    8 ++++++++
+ kernel/bpf/preload/bpf_preload_kern.c |    1 +
+ kernel/bpf/syscall.c                  |    6 +++---
+ 3 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/fs/Kconfig b/fs/Kconfig
-index 11b60d160f88f..b2d01d27d4c39 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -316,6 +316,7 @@ config GRACE_PERIOD
- config LOCKD
- 	tristate
- 	depends on FILE_LOCKING
-+	select CRC32
- 	select GRACE_PERIOD
+--- a/Documentation/bpf/bpf_devel_QA.rst
++++ b/Documentation/bpf/bpf_devel_QA.rst
+@@ -382,6 +382,14 @@ In case of new BPF instructions, once th
+ into the Linux kernel, please implement support into LLVM's BPF back
+ end. See LLVM_ section below for further information.
  
- config LOCKD_V4
-diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
-index 14a72224b6571..899e25e9b4eb5 100644
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -2,6 +2,7 @@
- config NFS_FS
- 	tristate "NFS client support"
- 	depends on INET && FILE_LOCKING && MULTIUSER
-+	select CRC32
- 	select LOCKD
- 	select SUNRPC
- 	select NFS_ACL_SUPPORT if NFS_V3_ACL
-@@ -194,7 +195,6 @@ config NFS_USE_KERNEL_DNS
- config NFS_DEBUG
- 	bool
- 	depends on NFS_FS && SUNRPC_DEBUG
--	select CRC32
- 	default y
++Q: What "BPF_INTERNAL" symbol namespace is for?
++-----------------------------------------------
++A: Symbols exported as BPF_INTERNAL can only be used by BPF infrastructure
++like preload kernel modules with light skeleton. Most symbols outside
++of BPF_INTERNAL are not expected to be used by code outside of BPF either.
++Symbols may lack the designation because they predate the namespaces,
++or due to an oversight.
++
+ Stable submission
+ =================
  
- config NFS_DISABLE_UDP_SUPPORT
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 05e807a0ba225..2fdc7c2a17fe8 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -775,18 +775,11 @@ u64 nfs_timespec_to_change_attr(const struct timespec64 *ts)
- 	return ((u64)ts->tv_sec << 30) + ts->tv_nsec;
+--- a/kernel/bpf/preload/bpf_preload_kern.c
++++ b/kernel/bpf/preload/bpf_preload_kern.c
+@@ -89,4 +89,5 @@ static void __exit fini(void)
  }
+ late_initcall(load);
+ module_exit(fini);
++MODULE_IMPORT_NS("BPF_INTERNAL");
+ MODULE_LICENSE("GPL");
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1457,7 +1457,7 @@ struct bpf_map *bpf_map_get(u32 ufd)
  
--#ifdef CONFIG_CRC32
- static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
+ 	return map;
+ }
+-EXPORT_SYMBOL(bpf_map_get);
++EXPORT_SYMBOL_NS(bpf_map_get, BPF_INTERNAL);
+ 
+ struct bpf_map *bpf_map_get_with_uref(u32 ufd)
  {
- 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
- 				NFS4_STATEID_OTHER_SIZE);
+@@ -3223,7 +3223,7 @@ struct bpf_link *bpf_link_get_from_fd(u3
+ 	bpf_link_inc(link);
+ 	return link;
  }
--#else
--static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
--{
--	return 0;
--}
--#endif
+-EXPORT_SYMBOL(bpf_link_get_from_fd);
++EXPORT_SYMBOL_NS(bpf_link_get_from_fd, BPF_INTERNAL);
  
- static inline bool nfs_error_is_fatal(int err)
+ static void bpf_tracing_link_release(struct bpf_link *link)
  {
-diff --git a/fs/nfs/nfs4session.h b/fs/nfs/nfs4session.h
-index b996ee23f1bae..8ad99938aae18 100644
---- a/fs/nfs/nfs4session.h
-+++ b/fs/nfs/nfs4session.h
-@@ -147,16 +147,12 @@ static inline void nfs4_copy_sessionid(struct nfs4_sessionid *dst,
- 	memcpy(dst->data, src->data, NFS4_MAX_SESSIONID_LEN);
+@@ -5853,7 +5853,7 @@ int kern_sys_bpf(int cmd, union bpf_attr
+ 		return ____bpf_sys_bpf(cmd, attr, size);
+ 	}
  }
+-EXPORT_SYMBOL(kern_sys_bpf);
++EXPORT_SYMBOL_NS(kern_sys_bpf, BPF_INTERNAL);
  
--#ifdef CONFIG_CRC32
- /*
-  * nfs_session_id_hash - calculate the crc32 hash for the session id
-  * @session - pointer to session
-  */
- #define nfs_session_id_hash(sess_id) \
- 	(~crc32_le(0xFFFFFFFF, &(sess_id)->data[0], sizeof((sess_id)->data)))
--#else
--#define nfs_session_id_hash(session) (0)
--#endif
- #else /* defined(CONFIG_NFS_V4_1) */
- 
- static inline int nfs4_init_session(struct nfs_client *clp)
-diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
-index 6d2d498a59573..ba6cfc8caee33 100644
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -4,6 +4,7 @@ config NFSD
- 	depends on INET
- 	depends on FILE_LOCKING
- 	depends on FSNOTIFY
-+	select CRC32
- 	select LOCKD
- 	select SUNRPC
- 	select EXPORTFS
-diff --git a/fs/nfsd/nfsfh.h b/fs/nfsd/nfsfh.h
-index 513e028b0bbee..40aee06ebd952 100644
---- a/fs/nfsd/nfsfh.h
-+++ b/fs/nfsd/nfsfh.h
-@@ -263,7 +263,6 @@ static inline bool fh_fsid_match(const struct knfsd_fh *fh1,
- 	return true;
- }
- 
--#ifdef CONFIG_CRC32
- /**
-  * knfsd_fh_hash - calculate the crc32 hash for the filehandle
-  * @fh - pointer to filehandle
-@@ -275,12 +274,6 @@ static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
- {
- 	return ~crc32_le(0xFFFFFFFF, fh->fh_raw, fh->fh_size);
- }
--#else
--static inline u32 knfsd_fh_hash(const struct knfsd_fh *fh)
--{
--	return 0;
--}
--#endif
- 
- /**
-  * fh_clear_pre_post_attrs - Reset pre/post attributes
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index ceb70a926b95e..095a95c1fae82 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -46,7 +46,6 @@ enum nfs3_stable_how {
- 	NFS_INVALID_STABLE_HOW = -1
- };
- 
--#ifdef CONFIG_CRC32
- /**
-  * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-  * @fh - pointer to filehandle
-@@ -58,10 +57,4 @@ static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
- {
- 	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
- }
--#else /* CONFIG_CRC32 */
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return 0;
--}
--#endif /* CONFIG_CRC32 */
- #endif /* _LINUX_NFS_H */
--- 
-2.39.5
-
+ static const struct bpf_func_proto bpf_sys_bpf_proto = {
+ 	.func		= bpf_sys_bpf,
 
 
 
