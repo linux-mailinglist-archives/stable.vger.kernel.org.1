@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-138655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80E4AA196F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:11:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DD8AA19F9
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F58985D67
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E57354C2C84
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1340B24E00F;
-	Tue, 29 Apr 2025 18:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9238253F21;
+	Tue, 29 Apr 2025 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQWQQ61/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBXowlaF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93908248883;
-	Tue, 29 Apr 2025 18:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3E1253B71;
+	Tue, 29 Apr 2025 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949935; cv=none; b=Y7S49nJ3NxSRS/jpdYJlx4Mlgfx41YpZxVMF9HiYYMTmaqTrkMmip21z6cjHXPNKqbPDvLu8XIFDuvCxmBWQTqyMMJt0k2WtMf0ek5+sf7BF7b4RP1dsxSAHEkkqFIqe0M/4zHzsVRU6ApIsELe1+77nh63C58H7OaYVrlNVlvY=
+	t=1745950539; cv=none; b=guMYow2kzEf+gu4d+GBuRaL8IS0VzzIF27lvWBKXMHSw7p+efJx5ZcAuE80LlUdISI1VxJUBpYcDn/nasWzSa8zjOUoSY6H53ioCVBF5Tq5sGz52IrDVjRSllO/k9mXQoI/AeyuXJQfY0VX0CYBbL9ONVqA/ZNiZLlYiwxAvIOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949935; c=relaxed/simple;
-	bh=rmsYIhGr+VqVvJHzJS1s3XT7F8NpqOroFCnu1WF9UjY=;
+	s=arc-20240116; t=1745950539; c=relaxed/simple;
+	bh=nLaq6WgnEYcOqlAuG0T80BJXCZ/1LxN0bGvXqwGGHto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K8YHRIavYQSlH6kgA/jtTAkXZztlG3HoQvMaNlcWaBJ3lmu49LlewxGevIP9mDH4//5EkjpP+fheypNshQ4ZocyuOP9yT5OlDwq6dpd7EyOkkDzItkdpY41bRKdgrO7cuf2Z9PIQGBSz+BmAI2PzbNEWpIMbk3OyIxBwfYqueRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQWQQ61/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03004C4CEE3;
-	Tue, 29 Apr 2025 18:05:34 +0000 (UTC)
+	 MIME-Version; b=rppi1zy7PzE213oHSyeZzwolDE1kl19f5fDs6dnx7Kgna2Z9uASrloyQ6f8iv1pI0uDpcdoaHm42+neuaDLOi2E5mjXkCzMjTzcKJ7XfEd8pYCfKMcpX1/BbCqqBISvm1zeSeySOFFhbfBd8s4u/kBypRkC/dxC1bYRtzZjhSLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBXowlaF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A10DC4CEE3;
+	Tue, 29 Apr 2025 18:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949935;
-	bh=rmsYIhGr+VqVvJHzJS1s3XT7F8NpqOroFCnu1WF9UjY=;
+	s=korg; t=1745950538;
+	bh=nLaq6WgnEYcOqlAuG0T80BJXCZ/1LxN0bGvXqwGGHto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQWQQ61/kDPoCI6xf2uf1N/vt4NWBDG9Gj6cT0ySA7hfOMHxOKNyy+RlVnZcXeV7A
-	 OiQq7Zc/7YGJ0d5keBavnFC0P5DRGw+GtEA3y310gYQs+BrdsSgqfJg0i9vz+AvRY7
-	 9S8ICOEiWCOBgYvSnH9A3GFrbixlVwnLIVYXea+4=
+	b=XBXowlaFEVo9EhMjCn38g04vf0OutHAksK/YJCx4kzvFfZl2L5ggR43aClXE0K0zI
+	 sJOx4MQUi2/JoO25Et7Ld2dp6sVJ35IfwlkuQAGNqJLWRA7OcclljjeQk0CzCE3Xas
+	 Cu3zaschDuv5+NvGvUEQ7Nhu61teVcHjWD3TY2Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/167] s390/tty: Fix a potential memory leak bug
-Date: Tue, 29 Apr 2025 18:43:32 +0200
-Message-ID: <20250429161055.956245798@linuxfoundation.org>
+Subject: [PATCH 6.6 125/204] s390/tty: Fix a potential memory leak bug
+Date: Tue, 29 Apr 2025 18:43:33 +0200
+Message-ID: <20250429161104.545983420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -85,7 +85,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 12 insertions(+)
 
 diff --git a/drivers/s390/char/sclp_tty.c b/drivers/s390/char/sclp_tty.c
-index 971fbb52740bf..432dad2a22664 100644
+index 892c18d2f87e9..d3edacb6ee148 100644
 --- a/drivers/s390/char/sclp_tty.c
 +++ b/drivers/s390/char/sclp_tty.c
 @@ -490,6 +490,17 @@ static const struct tty_operations sclp_ops = {
