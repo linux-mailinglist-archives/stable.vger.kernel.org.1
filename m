@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EEE2AA14CB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4DCFAA123B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44DBC4A760D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1668A188E26F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84A3C1C6B4;
-	Tue, 29 Apr 2025 17:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999F0247291;
+	Tue, 29 Apr 2025 16:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJRlIuoC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFL7OTgM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43276253322;
-	Tue, 29 Apr 2025 17:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E89F215060;
+	Tue, 29 Apr 2025 16:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947036; cv=none; b=Kg0vfIPmsVVfK4z66DWmHWuJJY4ZN00wb2VEFk67j8qg0Y7alSooan/rp0MYLJKEAu0bxAxqaoqXIWJeqGpSq3Gfzo2u2Gxrjm5TBr47fQ5bq/hoEfQYeTyu/6Z1+/RMA4vCJY0S4loMmXeRwBcdfs/k3kAhdUSUc7UPuSrZk1s=
+	t=1745945441; cv=none; b=R2nC6sBKBk3Rt+qWy4i98oKx5FeN3jrE1+hrf7AbTaO2UVFoLLXOK8AH8g4TUt2nq8pTjTNIYXBzh1pV3y+CvgLatjlGYSiaaluBN8bzQ2jZNjSy0hT69+kPeaNL18ffkBRoef9DW4qRnQk5zCcUhe8qutfSbJxQLM99tLxO7VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947036; c=relaxed/simple;
-	bh=sX578whMLxgK10kVG7LmyTiw+2F2/C6R3fMvzO3t76g=;
+	s=arc-20240116; t=1745945441; c=relaxed/simple;
+	bh=VpkalxLZsGgvIMANy0Q5UGoBRz+a4Gsq6/zpQXVrI+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N8xitE7p624FRAqmxpDA/1DE7ARCZlIftQinje4JGgHM7G3QKW6FHhIjVV5bKHoYIXpv6tWFbe6cHBtOIIqNb/lhVQeLKunB5/XVs8hrW3U4WU0KGdf94V0XBnSfQciS/Baja+FM4+8rpHsodlMrGQM3Ycnqm7sswL0iWrKPYZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJRlIuoC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90F3C4CEE9;
-	Tue, 29 Apr 2025 17:17:15 +0000 (UTC)
+	 MIME-Version; b=mcHVM3Phfgt43QsfC4oC1y2iDbeZ4WNZ56R0AJ/pc++zI/vEwL4cCA5+ozq9HnzHUfvVOcvmZ7zn578qB8j6b/iDQL+QV8O/l8ae1KpLilyXH+Pf7gjZjyXky9ZWTneCLZYCI98iecks+oCRm4WmKKk3G9eWxF8fhtNQjp7n8ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFL7OTgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB445C4CEE3;
+	Tue, 29 Apr 2025 16:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947036;
-	bh=sX578whMLxgK10kVG7LmyTiw+2F2/C6R3fMvzO3t76g=;
+	s=korg; t=1745945441;
+	bh=VpkalxLZsGgvIMANy0Q5UGoBRz+a4Gsq6/zpQXVrI+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJRlIuoC6yRlwZdWXd45PRAoIivbQpZ/PocxANXDCUPmVJJVdV+IfGBuroSVLbRAo
-	 EPVpJ1BhjHvXWpNY3cdFx66ejICCsldVgRszSYE9Ya8cGUtMM7r9amErB8Y+DWEOZd
-	 f242iDcLEy3zxEhMBWAl0zsEtwZ0f89b3XAMCd8c=
+	b=EFL7OTgM9Et6A5jiwZU7j0rw+fdEsGslnQ3QShmiQlv+jZEMRqcLcofOciaoWoxW3
+	 wsmz3ETYdxuZGerqDWhvucxb2UA5B0PE7VmYO/tZj4RGsxzlz0Ys0ZT2Sdcd3HZcma
+	 q6J0QBhCspzipri6yOuwNt+oxm7zrlQZdRDtN5v8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 5.10 150/286] misc: pci_endpoint_test: Avoid issue of interrupts remaining after request_irq error
+	Nick Desaulneris <ndesaulniers@google.com>,
+	Nathan Chancellor <natechancellor@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.4 113/179] powerpc/prom_init: Use -ffreestanding to avoid a reference to bcmp
 Date: Tue, 29 Apr 2025 18:40:54 +0200
-Message-ID: <20250429161114.054340441@linuxfoundation.org>
+Message-ID: <20250429161053.978458168@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-commit f6cb7828c8e17520d4f5afb416515d3fae1af9a9 upstream.
+commit 8dcd71b45df34d9b903450fab147ee8c1e6c16b5 upstream.
 
-After devm_request_irq() fails with error in pci_endpoint_test_request_irq(),
-the pci_endpoint_test_free_irq_vectors() is called assuming that all IRQs
-have been released.
+LLVM revision r374662 gives LLVM the ability to convert certain loops
+into a reference to bcmp as an optimization; this breaks
+prom_init_check.sh:
 
-However, some requested IRQs remain unreleased, so there are still
-/proc/irq/* entries remaining, and this results in WARN() with the
-following message:
+    CALL    arch/powerpc/kernel/prom_init_check.sh
+  Error: External symbol 'bcmp' referenced from prom_init.c
+  make[2]: *** [arch/powerpc/kernel/Makefile:196: prom_init_check] Error 1
 
-  remove_proc_entry: removing non-empty directory 'irq/30', leaking at least 'pci-endpoint-test.0'
-  WARNING: CPU: 0 PID: 202 at fs/proc/generic.c:719 remove_proc_entry +0x190/0x19c
+bcmp is defined in lib/string.c as a wrapper for memcmp so this could
+be added to the whitelist. However, commit
+450e7dd4001f ("powerpc/prom_init: don't use string functions from
+lib/") copied memcmp as prom_memcmp to avoid KASAN instrumentation so
+having bcmp be resolved to regular memcmp would break that assumption.
+Furthermore, because the compiler is the one that inserted bcmp, we
+cannot provide something like prom_bcmp.
 
-To solve this issue, set the number of remaining IRQs to test->num_irqs,
-and release IRQs in advance by calling pci_endpoint_test_release_irq().
+To prevent LLVM from being clever with optimizations like this, use
+-ffreestanding to tell LLVM we are not hosted so it is not free to
+make transformations like this.
 
-Cc: stable@vger.kernel.org
-Fixes: e03327122e2c ("pci_endpoint_test: Add 2 ioctl commands")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Link: https://lore.kernel.org/r/20250225110252.28866-3-hayashi.kunihiko@socionext.com
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Reviewed-by: Nick Desaulneris <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20191119045712.39633-4-natechancellor@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kernel/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -263,6 +263,9 @@ fail:
- 		break;
- 	}
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -21,6 +21,7 @@ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROP
  
-+	test->num_irqs = i;
-+	pci_endpoint_test_release_irq(test);
-+
- 	return false;
- }
+ CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector)
+ CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
++CFLAGS_prom_init.o += -ffreestanding
  
+ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code
 
 
 
