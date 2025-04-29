@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4B9AA1748
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03AEAA1327
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:03:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EEED4A48DA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E1D217226E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC310242D68;
-	Tue, 29 Apr 2025 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC2D242934;
+	Tue, 29 Apr 2025 16:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGu5ozAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMxIZIKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C7A1D7E35;
-	Tue, 29 Apr 2025 17:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DB5215060;
+	Tue, 29 Apr 2025 16:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948716; cv=none; b=X2fCe+BiVtP2JaMbAzYLjr14Q+gRQqrjxLIb6qHZPXwkOUonbCQXvpGssXugJEW6zMJQBcqGaTMDrMD9xv7h0ZPFWo4S6Hk/S6xcSKaWqPSPmjq5mjivXHopvIWkPPHLKUnS32mBPitbzZIzIVswQmiKey4P8T/06BvaRgS9xkM=
+	t=1745945936; cv=none; b=KtZXCcRhuHjwWT6ggWNhLzvWdGtYEhNb8fkH7m03KK8G1b3x7VN51lZ6+qPPrCDagrJj/OgQkYJoBTZEPBlLOsQKYQMkymb/mJKTTU3inHP3sdChvu3l+2GMONGb7njkMsiX3bM9lKa3a6RfJyzf/20oSsKO4ZXHgOWwG65MZsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948716; c=relaxed/simple;
-	bh=a0barJ5Ic9R2xok7rAx3tBdXlNlKZUH0G9t80ZPRBDQ=;
+	s=arc-20240116; t=1745945936; c=relaxed/simple;
+	bh=7V14beKryKiEyQsF/f1vLKaXByvfDatq2d/puiPpB+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UfoLS1WWTJtJScds9MYJrip9hz9RYwVRaRrjLbUV2Zn5izeXetfjgIJmHA/eBvwOW4IR8pXeaFtFTYpTmWYYGkOlWab3XNCMmrgTRtuzCoNbdaIHvTqJhkujyCGzxxC8FH4oA3lnhYRaQxTKIxbjNLltg8vZlk6oSWW2WXOQvKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGu5ozAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18A8C4CEE9;
-	Tue, 29 Apr 2025 17:45:15 +0000 (UTC)
+	 MIME-Version; b=qlq9zWMR7JFkniLmTI7Ymn3wa1FxK3FAS42/B66xUn1ZIIrpBn+y1p1pyYshIHm+fqXsXQJgTMFe4D/3En83JbYPWOkkiEVcRlsZ3Vz+b5lZ849FPmIU3+h1rmHWBIOzh2Z762P8Hn8Ng6SPlEAtyVvsrKDPc4zkboT3Sn5VSU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMxIZIKG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E59EC4CEE3;
+	Tue, 29 Apr 2025 16:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948716;
-	bh=a0barJ5Ic9R2xok7rAx3tBdXlNlKZUH0G9t80ZPRBDQ=;
+	s=korg; t=1745945936;
+	bh=7V14beKryKiEyQsF/f1vLKaXByvfDatq2d/puiPpB+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EGu5ozABEvSGuUf0+LgWI2CVbF35cxWuPO6ROs87qbLkNYNiDIbe/WMAmPd5BIXGv
-	 //Ku1FLdsxeRAlF30HTDMYDJ2eJ/4QQH4HJFawyTGInPlp6SWdBsn3CEiI0+UZhA++
-	 h8hoi2QQ7toEPmR+NHk6S72ZADyswulQylBwT25c=
+	b=sMxIZIKGYp2UQ7NlkHdfACmfi477Wwfgn6LiHhT40fObNWYfVLGH8EqtTe1q4B97Z
+	 Vbb0D0oOdTIva0cWWoo2F2ywtcj4wbNdOB9DuEuNLVRSxULX/+cMUY+ZTwp3vnTCpI
+	 jg1S3ptBQgbwKy4zbA9klHXnsrV8JniYe0QXh7p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 060/373] media: venus: hfi: add check to handle incorrect queue size
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 100/311] LoongArch: Make regs_irqs_disabled() more clear
 Date: Tue, 29 Apr 2025 18:38:57 +0200
-Message-ID: <20250429161125.594068618@linuxfoundation.org>
+Message-ID: <20250429161125.136143852@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
+[ Upstream commit bb0511d59db9b3e40c8d51f0d151ccd0fd44071d ]
 
-qsize represents size of shared queued between driver and video
-firmware. Firmware can modify this value to an invalid large value. In
-such situation, empty_space will be bigger than the space actually
-available. Since new_wr_idx is not checked, so the following code will
-result in an OOB write.
-...
-qsize = qhdr->q_size
+In the current code, the definition of regs_irqs_disabled() is actually
+"!(regs->csr_prmd & CSR_CRMD_IE)" because arch_irqs_disabled_flags() is
+defined as "!(flags & CSR_CRMD_IE)", it looks a little strange.
 
-if (wr_idx >= rd_idx)
- empty_space = qsize - (wr_idx - rd_idx)
-....
-if (new_wr_idx < qsize) {
- memcpy(wr_ptr, packet, dwords << 2) --> OOB write
+Define regs_irqs_disabled() as !(regs->csr_prmd & CSR_PRMD_PIE) directly
+to make it more clear, no functional change.
 
-Add check to ensure qsize is within the allocated size while
-reading and writing packets into the queue.
+While at it, the return value of regs_irqs_disabled() is true or false,
+so change its type to reflect that and also make it always inline.
 
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 803b0fc5c3f2 ("LoongArch: Add process management")
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/loongarch/include/asm/ptrace.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -187,6 +187,9 @@ static int venus_write_queue(struct venu
- 	/* ensure rd/wr indices's are read from memory */
- 	rmb();
+diff --git a/arch/loongarch/include/asm/ptrace.h b/arch/loongarch/include/asm/ptrace.h
+index f3ddaed9ef7f0..a5b63c84f8541 100644
+--- a/arch/loongarch/include/asm/ptrace.h
++++ b/arch/loongarch/include/asm/ptrace.h
+@@ -33,9 +33,9 @@ struct pt_regs {
+ 	unsigned long __last[];
+ } __aligned(8);
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	if (wr_idx >= rd_idx)
- 		empty_space = qsize - (wr_idx - rd_idx);
- 	else
-@@ -255,6 +258,9 @@ static int venus_read_queue(struct venus
- 	wr_idx = qhdr->write_idx;
- 	qsize = qhdr->q_size;
+-static inline int regs_irqs_disabled(struct pt_regs *regs)
++static __always_inline bool regs_irqs_disabled(struct pt_regs *regs)
+ {
+-	return arch_irqs_disabled_flags(regs->csr_prmd);
++	return !(regs->csr_prmd & CSR_PRMD_PIE);
+ }
  
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	/* make sure data is valid before using it */
- 	rmb();
- 
+ static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+-- 
+2.39.5
+
 
 
 
