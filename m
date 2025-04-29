@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A40AA1A03
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:17:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F2CAA199C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93D181BC7B62
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B91F69A6E11
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE86624889B;
-	Tue, 29 Apr 2025 18:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3C722AE68;
+	Tue, 29 Apr 2025 18:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jt0JqE5/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOJVkc6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994C2155A4E;
-	Tue, 29 Apr 2025 18:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFEE20C488;
+	Tue, 29 Apr 2025 18:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950584; cv=none; b=peD2vV66fvGZZqz4RJwzO4hL2VABPwopecJzSw0x1s+MWgwgWENyN2wObfgIr6KdBMnYZYS/8QzdyZ3vVswa0CJfBO6OWNgQMZXsYpleZnx7BKrNMbhthq2dnmNCzYqKhDtFifEOH7SlyvP53pv8q0IODh1La8faKX9m0ZBkebY=
+	t=1745950118; cv=none; b=rLQt+EfUOq7SspGWEKTv3FUZcbcLsWkqJBkVeSXjD+v5p3S+2MIIQnqu6zJ4L6AZb3Uv0Q95WiofWOSs1sBc8OPCTZY4VbVueOgoxdnkQm102vLjXxBA5WNsdA8Jf2ofXT7yLw2hF5zwXrjgRepPs9V0ducK6/htJnOx+yzcM9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950584; c=relaxed/simple;
-	bh=ZQhUasssEDVT3HRrLAfHLJ3eBGfIDJJnjmC1O9XAdN4=;
+	s=arc-20240116; t=1745950118; c=relaxed/simple;
+	bh=qXQBp7YfNYYWFn4JeLwdun329a5gxmuwvY1N5qKI2iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiyG9J41giNdR3BNeL8ovnD5z0PY7dxQh+3LZjHntOIJjBb5DgJ8WfO5icPtBrJ5aC5eS0/V9MUz2lCw9LqEvabD8Wkvq0oWTzRlEulDiT+cIBAeYAPlWEXcTnwvHXAO054dvRgFGtQptjz4gL1Ibw91ctfNRTEDxyb+bZ7ShA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jt0JqE5/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2118CC4CEE3;
-	Tue, 29 Apr 2025 18:16:23 +0000 (UTC)
+	 MIME-Version; b=eCfnPI6oQZqAdGsp3l6rOTCN5wX4k8VRgmscs8kwJ63NwSlKxdqQKKjGpMPU5fJlpVPb/vivh8g2MX4ymDVH92bqjwCgL7hlnj21Zxyy4oc1/glSngCVhnrWky10BssoaQ9dgsovXhzU8Q2nSJloDxfe6b/kP+UvA2ztgA7mIWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOJVkc6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461BFC4CEE3;
+	Tue, 29 Apr 2025 18:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950584;
-	bh=ZQhUasssEDVT3HRrLAfHLJ3eBGfIDJJnjmC1O9XAdN4=;
+	s=korg; t=1745950117;
+	bh=qXQBp7YfNYYWFn4JeLwdun329a5gxmuwvY1N5qKI2iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jt0JqE5/FjaZzDiFslJOAqftMOJJ+EiCkMZsL/aOEe6xwFA9eTS7ls8ioKZn9/My8
-	 qdM9LzUftj6noIcIUdKN3uQBRDC1Uyo6Ka/MjdTEz9piUKg86hvRkJTIFO7Sb34lF7
-	 axO/uz3fHX13XyD+XLkIyIxxO6CMXYiaP3GWiAg8=
+	b=jOJVkc6OsHAhKsEunNNFFyFAOx+wqXjb2Q2B87ANYkeFmBjST8fFO7K1/TAvJI9uO
+	 gNMZQ1HXGIF3Ia5LR4dRZNVBSvmDT+7cDB2IfJvQrzsNI23pT7bMLmksWPejIXWqth
+	 JabuRurgBWm8P3JqJvAdZdDlXV372T7HvgtKo5d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Lukas Stockmann <lukas.stockmann@siemens.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/204] objtool, panic: Disable SMAP in __stack_chk_fail()
+Subject: [PATCH 6.1 122/167] rtc: pcf85063: do a SW reset if POR failed
 Date: Tue, 29 Apr 2025 18:43:50 +0200
-Message-ID: <20250429161105.236421416@linuxfoundation.org>
+Message-ID: <20250429161056.679252748@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Lukas Stockmann <lukas.stockmann@siemens.com>
 
-[ Upstream commit 72c774aa9d1e16bfd247096935e7dae194d84929 ]
+[ Upstream commit 2b7cbd98495f6ee4cd6422fe77828a19e9edf87f ]
 
-__stack_chk_fail() can be called from uaccess-enabled code.  Make sure
-uaccess gets disabled before calling panic().
+Power-on Reset has a documented issue in PCF85063, refer to its datasheet,
+section "Software reset":
 
-Fixes the following warning:
+"There is a low probability that some devices will have corruption of the
+registers after the automatic power-on reset if the device is powered up
+with a residual VDD level. It is required that the VDD starts at zero volts
+at power up or upon power cycling to ensure that there is no corruption of
+the registers. If this is not possible, a reset must be initiated after
+power-up (i.e. when power is stable) with the software reset command"
 
-  kernel/trace/trace_branch.o: error: objtool: ftrace_likely_update+0x1ea: call to __stack_chk_fail() with UACCESS enabled
+Trigger SW reset if there is an indication that POR has failed.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/a3e97e0119e1b04c725a8aa05f7bc83d98e657eb.1742852847.git.jpoimboe@kernel.org
+Link: https://www.nxp.com/docs/en/data-sheet/PCF85063A.pdf
+Signed-off-by: Lukas Stockmann <lukas.stockmann@siemens.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20250120093451.30778-1-alexander.sverdlin@siemens.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/panic.c        | 6 ++++++
- tools/objtool/check.c | 5 ++++-
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-pcf85063.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/panic.c b/kernel/panic.c
-index ef9f9a4e928de..d7973e9754748 100644
---- a/kernel/panic.c
-+++ b/kernel/panic.c
-@@ -763,9 +763,15 @@ device_initcall(register_warn_debugfs);
-  */
- __visible noinstr void __stack_chk_fail(void)
- {
-+	unsigned long flags;
+diff --git a/drivers/rtc/rtc-pcf85063.c b/drivers/rtc/rtc-pcf85063.c
+index 6ffdc10b32d32..4a29b44e75e6a 100644
+--- a/drivers/rtc/rtc-pcf85063.c
++++ b/drivers/rtc/rtc-pcf85063.c
+@@ -35,6 +35,7 @@
+ #define PCF85063_REG_CTRL1_CAP_SEL	BIT(0)
+ #define PCF85063_REG_CTRL1_STOP		BIT(5)
+ #define PCF85063_REG_CTRL1_EXT_TEST	BIT(7)
++#define PCF85063_REG_CTRL1_SWR		0x58
+ 
+ #define PCF85063_REG_CTRL2		0x01
+ #define PCF85063_CTRL2_AF		BIT(6)
+@@ -606,7 +607,7 @@ static int pcf85063_probe(struct i2c_client *client)
+ 
+ 	i2c_set_clientdata(client, pcf85063);
+ 
+-	err = regmap_read(pcf85063->regmap, PCF85063_REG_CTRL1, &tmp);
++	err = regmap_read(pcf85063->regmap, PCF85063_REG_SC, &tmp);
+ 	if (err) {
+ 		dev_err(&client->dev, "RTC chip is not present\n");
+ 		return err;
+@@ -616,6 +617,22 @@ static int pcf85063_probe(struct i2c_client *client)
+ 	if (IS_ERR(pcf85063->rtc))
+ 		return PTR_ERR(pcf85063->rtc);
+ 
++	/*
++	 * If a Power loss is detected, SW reset the device.
++	 * From PCF85063A datasheet:
++	 * There is a low probability that some devices will have corruption
++	 * of the registers after the automatic power-on reset...
++	 */
++	if (tmp & PCF85063_REG_SC_OS) {
++		dev_warn(&client->dev,
++			 "POR issue detected, sending a SW reset\n");
++		err = regmap_write(pcf85063->regmap, PCF85063_REG_CTRL1,
++				   PCF85063_REG_CTRL1_SWR);
++		if (err < 0)
++			dev_warn(&client->dev,
++				 "SW reset failed, trying to continue\n");
++	}
 +
- 	instrumentation_begin();
-+	flags = user_access_save();
-+
- 	panic("stack-protector: Kernel stack is corrupted in: %pB",
- 		__builtin_return_address(0));
-+
-+	user_access_restore(flags);
- 	instrumentation_end();
- }
- EXPORT_SYMBOL(__stack_chk_fail);
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index ddf3da6eccd0d..eb6d7025ee49c 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1225,12 +1225,15 @@ static const char *uaccess_safe_builtin[] = {
- 	"__ubsan_handle_load_invalid_value",
- 	/* STACKLEAK */
- 	"stackleak_track_stack",
-+	/* TRACE_BRANCH_PROFILING */
-+	"ftrace_likely_update",
-+	/* STACKPROTECTOR */
-+	"__stack_chk_fail",
- 	/* misc */
- 	"csum_partial_copy_generic",
- 	"copy_mc_fragile",
- 	"copy_mc_fragile_handle_tail",
- 	"copy_mc_enhanced_fast_string",
--	"ftrace_likely_update", /* CONFIG_TRACE_BRANCH_PROFILING */
- 	"rep_stos_alternative",
- 	"rep_movs_alternative",
- 	"__copy_user_nocache",
+ 	err = pcf85063_load_capacitance(pcf85063, client->dev.of_node,
+ 					config->force_cap_7000 ? 7000 : 0);
+ 	if (err < 0)
 -- 
 2.39.5
 
