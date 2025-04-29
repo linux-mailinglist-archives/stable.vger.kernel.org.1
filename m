@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0568CAA1730
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:44:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75EDAA1381
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14EAA1B64CDA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA6A5A3B1F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16776253331;
-	Tue, 29 Apr 2025 17:44:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FD9244679;
+	Tue, 29 Apr 2025 17:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPofiLxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eCuDO3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C626B221719;
-	Tue, 29 Apr 2025 17:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D3B7E110;
+	Tue, 29 Apr 2025 17:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948679; cv=none; b=KMqo85kHqfeMHvX6OlYD7lu00Bf5JZ1RtMdN02bTCUM4iBmHFom7ZRI7vWUiIcxt0xeiV3T/E5C/+Pigbex5+INDgNr6GAGHS8Azui9za2RdaznRa7e4O20YzQNo7OJcIucnIlSzvS4GVM7DGkSy1wnlqjD4i1PBpQRfp0UuLTY=
+	t=1745946085; cv=none; b=kIg3MXmBBLbKQPu8PjUaEmxamtj5lM8y3i6eVa7aRUvjTLXljJzU5Ji/1l8j8eO80yLZld8/dYaZSFMiWNj5BnBAmCP57rScxEzE0h0cjQtFoAVeW8MsuTNqo1E8lidV3v9QY2qEGhHg/MFPBKcltI3N968wDr9ZqGT+FxcqxpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948679; c=relaxed/simple;
-	bh=T7FvCwzBeWpyN8wRXfiZYxIeYS9lBCufghOm+EjjaAk=;
+	s=arc-20240116; t=1745946085; c=relaxed/simple;
+	bh=txD6A/0eVHSZBqD3X88bOQaLSohW/GerBKjOplxDPiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qYnUY6G+YQ4U78KH2kZtDkgXZ9Q6p0TtQbXRE5wHo9t44hPLm1gyHiOF71OIYETnfmGsqQqHrnPn2B7XMFyDp6zRz1y9+z8Duy0yDqUoQC2KF1S/nafrU8MI1c7pkbYNjAF+RGXync1ceE5ETWVEUXiwaDdQsb944iQTkIHIJZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xPofiLxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595F3C4CEE9;
-	Tue, 29 Apr 2025 17:44:39 +0000 (UTC)
+	 MIME-Version; b=d0fXSfqygBaJYud1lPYhZJgjxgE0wQAs1lhHEr8Tf2YCyOFklzo+EX7j4cdoNfvwq5rU+NaokNWC1CEPfgij7fPn7fbOxR+rJ4YPM7yVp85WtvpkIyErVuA3AlFNDygV8hn+UENH9ALXKPax9xcvDXaof53z7XrHuxJTSo2Rn8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eCuDO3B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C469EC4CEEA;
+	Tue, 29 Apr 2025 17:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948679;
-	bh=T7FvCwzBeWpyN8wRXfiZYxIeYS9lBCufghOm+EjjaAk=;
+	s=korg; t=1745946085;
+	bh=txD6A/0eVHSZBqD3X88bOQaLSohW/GerBKjOplxDPiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xPofiLxJyF//WyctgYv7rJXJRQmTjugj7J8WYgUCXW3RwUQShZ6hnbip2fba5aHW/
-	 gqLA7UG/K9iqZ7BJU10vh8n5wFuoOhsfJHjn5rhrqJ4uZng3eHPSRijkt6iEEuXLcn
-	 G79BLqARq67jYrDBFskwLRsf3hBwdORuKAQfVPbA=
+	b=1eCuDO3BCi0uW7mPCwwk7kLFbUAalroUztM8ZsDmzM7fPbCXWdW1G4SSc+Q1tybUs
+	 V4Mmwam0Ig6MKqMAS30Pnj0LjQHE9u01jkhv+xH7/b6aQeuSvYYM+i9quaUmoYrfCH
+	 oRaM3SJ7tf4K9H5BmQJsh3HCkrhJuIu3UmnT5G7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 079/373] net: dsa: mv88e6xxx: workaround RGMII transmit delay erratum for 6320 family
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.14 119/311] drm: panel: jd9365da: fix reset signal polarity in unprepare
 Date: Tue, 29 Apr 2025 18:39:16 +0200
-Message-ID: <20250429161126.402303208@linuxfoundation.org>
+Message-ID: <20250429161125.914209111@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 1ebc8e1ef906db9c08e9abe9776d85ddec837725 upstream.
+commit 095c8e61f4c71cd4630ee11a82e82cc341b38464 upstream.
 
-Implement the workaround for erratum
-  3.3 RGMII timing may be out of spec when transmit delay is enabled
-for the 6320 family, which says:
+commit a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
+fixed reset signal polarity in jadard_dsi_probe() and jadard_prepare().
 
-  When transmit delay is enabled via Port register 1 bit 14 = 1, duty
-  cycle may be out of spec. Under very rare conditions this may cause
-  the attached device receive CRC errors.
+It was not done in jadard_unprepare() because of an incorrect assumption
+about reset line handling in power off mode. After looking into the
+datasheet, it now appears that before disabling regulators, the reset line
+is deasserted first, and if reset_before_power_off_vcioo is true, then the
+reset line is asserted.
 
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Cc: <stable@vger.kernel.org> # 5.4.x
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250317173250.28780-8-kabel@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix reset polarity by inverting gpiod_set_value() second argument in
+in jadard_unprepare().
+
+Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
+Fixes: 2b976ad760dc ("drm/panel: jd9365da: Support for kd101ne3-40ti MIPI-DSI panel")
+Fixes: a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250417195507.778731-1-hugo@hugovil.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250417195507.778731-1-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3192,6 +3192,21 @@ static int mv88e6xxx_stats_setup(struct
- 	return mv88e6xxx_g1_stats_clear(chip);
- }
- 
-+static int mv88e6320_setup_errata(struct mv88e6xxx_chip *chip)
-+{
-+	u16 dummy;
-+	int err;
-+
-+	/* Workaround for erratum
-+	 *   3.3 RGMII timing may be out of spec when transmit delay is enabled
-+	 */
-+	err = mv88e6xxx_port_hidden_write(chip, 0, 0xf, 0x7, 0xe000);
-+	if (err)
-+		return err;
-+
-+	return mv88e6xxx_port_hidden_read(chip, 0, 0xf, 0x7, &dummy);
-+}
-+
- /* Check if the errata has already been applied. */
- static bool mv88e6390_setup_errata_applied(struct mv88e6xxx_chip *chip)
+--- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
++++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
+@@ -129,11 +129,11 @@ static int jadard_unprepare(struct drm_p
  {
-@@ -4569,6 +4584,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	struct jadard *jadard = panel_to_jadard(panel);
  
- static const struct mv88e6xxx_ops mv88e6320_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
-@@ -4615,6 +4631,7 @@ static const struct mv88e6xxx_ops mv88e6
+-	gpiod_set_value(jadard->reset, 1);
++	gpiod_set_value(jadard->reset, 0);
+ 	msleep(120);
  
- static const struct mv88e6xxx_ops mv88e6321_ops = {
- 	/* MV88E6XXX_FAMILY_6320 */
-+	.setup_errata = mv88e6320_setup_errata,
- 	.ieee_pri_map = mv88e6085_g1_ieee_pri_map,
- 	.ip_pri_map = mv88e6085_g1_ip_pri_map,
- 	.irl_init_all = mv88e6352_g2_irl_init_all,
+ 	if (jadard->desc->reset_before_power_off_vcioo) {
+-		gpiod_set_value(jadard->reset, 0);
++		gpiod_set_value(jadard->reset, 1);
+ 
+ 		usleep_range(1000, 2000);
+ 	}
 
 
 
