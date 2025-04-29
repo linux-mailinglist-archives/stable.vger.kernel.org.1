@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-138188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F63AA16E2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:41:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02885AA12FA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 443591891455
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:41:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2364B189CDCF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6AC2528ED;
-	Tue, 29 Apr 2025 17:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A85A2512D8;
+	Tue, 29 Apr 2025 16:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEnjVAgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q44nYq5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F83227E95;
-	Tue, 29 Apr 2025 17:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97E72459FA;
+	Tue, 29 Apr 2025 16:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948450; cv=none; b=ELAhL1wXeLt3lmOEKvwXGruPYdDG0KTX+PKYEaDYZJPpFL5ZeUPwHr9fZ8emmA3HZ7MI7qR0xa15gGYCqkevoOVHO2y3eIcEmLOzQVHim5pnVwlc6Any15paCODKZnSoN7S1L9mKqN+BjLAxfrMl4QnK+a+YyBGw64v8svfJDtc=
+	t=1745945814; cv=none; b=BCenmbvn3UXuFibZnt7sCgdZ/gdnxWKeRJQk33oI1A/oD6F3eknLrJp+ToACjXlipewH6N3j6zvoxq4A1bHSBKg0grCgzyJzBMGRaEL4QA8XiKPE7WLgsS8UC0V1zYk9L8WmHejZ7G15Zw1T2+WBCqBsPzUm4mZUSkrgH6sxa/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948450; c=relaxed/simple;
-	bh=H2FPHnH4KV+ld/XhjCM7wnZ7Ni+1cTv6AhFEhn93zjQ=;
+	s=arc-20240116; t=1745945814; c=relaxed/simple;
+	bh=EbFb0twjB33FdfI6fzOzOo/IVTjY5cXpKGrhybxx0NA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4xj/9kABDMGY7VW+lzhYrc48rjiWudma+YkcsHWWRKX7vHFQZbNWJmwMRH7Wg4q8Wgt8M+e3Rug/ZsV4OjbXaQ1XLA4ndTN8/w/ffVfqJy7OKjrzoWhsLhsOJhwM26/owJQsA/HYoulLZ8g7rkumjmHkz97mwab+v//RCPVx+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wEnjVAgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D51C4CEE3;
-	Tue, 29 Apr 2025 17:40:49 +0000 (UTC)
+	 MIME-Version; b=dCRWWS3HDo6vls0qBSDXzL/tWjTPOwPHxCZzLpIQduLKyKzzYbekpqc5SE0vUrHVthxNQkDb6b7K/FnASsd9f2R5odrpYGdL3+6LGQwB4ATOEdb6kZLx0WywO//b+/tDZIKAzHiyDJdMrdysSIiNoDMFegRAu5+R6GheuGvdJ8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q44nYq5g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587B2C4CEE3;
+	Tue, 29 Apr 2025 16:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948450;
-	bh=H2FPHnH4KV+ld/XhjCM7wnZ7Ni+1cTv6AhFEhn93zjQ=;
+	s=korg; t=1745945814;
+	bh=EbFb0twjB33FdfI6fzOzOo/IVTjY5cXpKGrhybxx0NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wEnjVAgwGhSBV0LrilrVR84VsdZyQ43kVWr1EMSPznBx4loM0yyPIRzzx81UZMFmw
-	 7go0oH22xBH8ER0RpuqVoWv46lQXxT9X0bzSNQ6yjANQRXy0d93jp+rUQLIRCEexqt
-	 X3NQGGSc1aq+gMtXlACigLhr27N/oYHypPa8N5Yw=
+	b=Q44nYq5g6HcCueGowSBSiz9ZyOigdurfPJNWQVbfYhZzqf4FsNh0sssXkYsh6HxhW
+	 hRQ5E6Zk9oDznV+TRfrSSWiMQ1HGAqILn5V0XVWkeUZi29jeIcRF0oMAx487CtEeu2
+	 WwBR+2sb+wzmYUf3Z8a3IG0EFht++7NNmKHj1AOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	"Eric W. Biederman" <ebiederm@xmission.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 011/373] umount: Allow superblock owners to force umount
+Subject: [PATCH 6.14 051/311] net/mlx5: Move ttc allocation after switch case to prevent leaks
 Date: Tue, 29 Apr 2025 18:38:08 +0200
-Message-ID: <20250429161123.598595551@linuxfoundation.org>
+Message-ID: <20250429161123.123395429@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit e1ff7aa34dec7e650159fd7ca8ec6af7cc428d9f ]
+[ Upstream commit fa8fd315127ca48c65e7e6692a84ffcf3d07168e ]
 
-Loosen the permission check on forced umount to allow users holding
-CAP_SYS_ADMIN privileges in namespaces that are privileged with respect
-to the userns that originally mounted the filesystem.
+Relocate the memory allocation for ttc table after the switch statement
+that validates params->ns_type in both mlx5_create_inner_ttc_table() and
+mlx5_create_ttc_table(). This ensures memory is only allocated after
+confirming valid input, eliminating potential memory leaks when invalid
+ns_type cases occur.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Link: https://lore.kernel.org/r/12f212d4ef983714d065a6bb372fbb378753bf4c.1742315194.git.trond.myklebust@hammerspace.com
-Acked-by: "Eric W. Biederman" <ebiederm@xmission.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 137f3d50ad2a ("net/mlx5: Support matching on l4_type for ttc_table")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250418023814.71789-3-bsdhenrymartin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 22af4b6c737f4..642baef4d9aaa 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -1734,6 +1734,7 @@ static void warn_mandlock(void)
- static int can_umount(const struct path *path, int flags)
- {
- 	struct mount *mnt = real_mount(path->mnt);
-+	struct super_block *sb = path->dentry->d_sb;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+index 510879e1ba30e..43b2216bc0a22 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/fs_ttc.c
+@@ -618,10 +618,6 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 	bool use_l4_type;
+ 	int err;
  
- 	if (!may_mount())
- 		return -EPERM;
-@@ -1743,7 +1744,7 @@ static int can_umount(const struct path *path, int flags)
- 		return -EINVAL;
- 	if (mnt->mnt.mnt_flags & MNT_LOCKED) /* Check optimistically */
- 		return -EINVAL;
--	if (flags & MNT_FORCE && !capable(CAP_SYS_ADMIN))
-+	if (flags & MNT_FORCE && !ns_capable(sb->s_user_ns, CAP_SYS_ADMIN))
- 		return -EPERM;
- 	return 0;
- }
+-	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
+-	if (!ttc)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	switch (params->ns_type) {
+ 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
+ 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
+@@ -635,6 +631,10 @@ struct mlx5_ttc_table *mlx5_create_inner_ttc_table(struct mlx5_core_dev *dev,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
++	if (!ttc)
++		return ERR_PTR(-ENOMEM);
++
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
+ 	if (!ns) {
+ 		kvfree(ttc);
+@@ -696,10 +696,6 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 	bool use_l4_type;
+ 	int err;
+ 
+-	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
+-	if (!ttc)
+-		return ERR_PTR(-ENOMEM);
+-
+ 	switch (params->ns_type) {
+ 	case MLX5_FLOW_NAMESPACE_PORT_SEL:
+ 		use_l4_type = MLX5_CAP_GEN_2(dev, pcc_ifa2) &&
+@@ -713,6 +709,10 @@ struct mlx5_ttc_table *mlx5_create_ttc_table(struct mlx5_core_dev *dev,
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	ttc = kvzalloc(sizeof(*ttc), GFP_KERNEL);
++	if (!ttc)
++		return ERR_PTR(-ENOMEM);
++
+ 	ns = mlx5_get_flow_namespace(dev, params->ns_type);
+ 	if (!ns) {
+ 		kvfree(ttc);
 -- 
 2.39.5
 
