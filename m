@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49ED3AA1882
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:00:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395B3AA167B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 343E67ADE60
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:59:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4C4516F7A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27BA8221D92;
-	Tue, 29 Apr 2025 18:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37402528FB;
+	Tue, 29 Apr 2025 17:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7jyPa0E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2OlHghr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3DC3FFD;
-	Tue, 29 Apr 2025 18:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A5982C60;
+	Tue, 29 Apr 2025 17:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949654; cv=none; b=eN2CH1kdWoFNW7zfxzeF01KfswtHaqPT1aKYDBoUy0etoBtIsBaUHGAkrHkzKoT/fAYfRwAh8L0EnXfQiCE33nYskw4mSxIcgQ7BzFw217iBXrs0hDpGJ+hOat4f0Mvfxzbbpi/UsTMdnVYLyhsw0hUNMZZZ6itNofA3E8loDjY=
+	t=1745948064; cv=none; b=SQyy500pcCSjIBkvQBiwvDU7Njvs5KRBJ+Vz+OykZpSI/3F5jtZt/zJHdlMWypQ5iilxnlpsssvveiA4g6J8YajdYvf7hE0xXBBIiKIB25rkcatj7PpekOWM9luMnBr500sDj4vjzqvuFwZkbJDFkMLpjJrnoQNhpBMVW57tSes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949654; c=relaxed/simple;
-	bh=Gtc+4jiHd4mKXEOZ5hYIqvBzUA22SY7/nJZvWPvD5Tw=;
+	s=arc-20240116; t=1745948064; c=relaxed/simple;
+	bh=dV7otym06O1vR2wG/yWgZRkj83j34WW/3tbXV0y5VlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oapj2p+GXZG3dZ0zVXqdJ127f24DYSq6L5XOZBq82uqBDrLov/pZm/YaVVtKxO8NzzPjKrmcMHGWF6XQm9vVcNo+rcn8jkeAw+M04L+LMAnA8nYCs/5d9M1TMi2o7xLg7hzlLwo9foebv3OD6t+Mb4oTnujtfSUQzjee1opP0Vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7jyPa0E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DACDC4CEE3;
-	Tue, 29 Apr 2025 18:00:54 +0000 (UTC)
+	 MIME-Version; b=D3MrdTZWAWup1STAT3abnr09Lrma7jVP4pCH0TXEvxpo7aSoQRsB+HD4j3dD6tE6tnln2R8zrUV5DqrnjRbFr8WkO3uG2pN5DMLgEWjNjOjey8b5x5A/YT21XRU8aeFrbtOX0wO8GZWsg4tMjq4qg2kexYDrclJfWESHf+guL30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2OlHghr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99940C4CEE3;
+	Tue, 29 Apr 2025 17:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949654;
-	bh=Gtc+4jiHd4mKXEOZ5hYIqvBzUA22SY7/nJZvWPvD5Tw=;
+	s=korg; t=1745948064;
+	bh=dV7otym06O1vR2wG/yWgZRkj83j34WW/3tbXV0y5VlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7jyPa0Er10fIBbYVHSjxkv0IVnQiI0MHyeky6CxBzMyZO+glZZGGvUF8m6LEs3f6
-	 7PJoOwz1sevHdX9055NgXiiZLJFPsbeXRH5xUgqsLeGXOavIzsPscHSXQwZAGOpaIL
-	 Lj1u5sfODqZCdC4j6FGvw9rAN3AMJbeaMwiivmyw=
+	b=n2OlHghrJ/Ad+ksLy0CcS7akM/6xjVjxt4uhNJQfhhVLqFGSnzGvU15WacLPmUq9Q
+	 cPLl3Y9zh3MtUNUrLuQul9FE7o919OEsupQr35QhDedwWbLCDk6ilgLUboq7PmNPkb
+	 BG7gF0X39Yb+qK1qSea6ieJj3lSMx+gD4FcT7x1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michal Pecio <michal.pecio@gmail.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/167] net: dsa: mv88e6xxx: add field to specify internal phys layout
+Subject: [PATCH 6.12 181/280] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
 Date: Tue, 29 Apr 2025 18:42:02 +0200
-Message-ID: <20250429161052.328815989@linuxfoundation.org>
+Message-ID: <20250429161122.513672692@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Michal Pecio <michal.pecio@gmail.com>
 
-[ Upstream commit 3ba89b28adb21a5d5d78e905e2c3972816606bb4 ]
+[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
 
-mv88e6xxx currently assumes that switch equipped with internal phys have
-those phys mapped contiguously starting from port 0 (see
-mv88e6xxx_phy_is_internal). However, some switches have internal PHYs but
-NOT starting from port 0. For example 88e6393X, 88E6193X and 88E6191X have
-integrated PHYs available on ports 1 to 8
-To properly support this offset, add a new field to allow specifying an
-internal PHYs layout. If field is not set, default layout is assumed (start
-at port 0)
+Nothing prevents a broken HC from claiming that an endpoint is Running
+and repeatedly rejecting Stop Endpoint with Context State Error.
 
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 52fdc41c3278 ("net: dsa: mv88e6xxx: fix internal PHYs for 6320 family")
+Avoid infinite retries and give back cancelled TDs.
+
+No such cases known so far, but HCs have bugs.
+
+Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c    | 4 +++-
- drivers/net/dsa/mv88e6xxx/chip.h    | 5 +++++
- drivers/net/dsa/mv88e6xxx/global2.c | 5 ++++-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-ring.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index cabf97a902b52..c1a322d6432c0 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -472,7 +472,9 @@ static int mv88e6xxx_port_setup_mac(struct mv88e6xxx_chip *chip, int port,
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 653e24bb3e9ad..cb2a047213075 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1190,16 +1190,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
+ 			 * Stopped state, but it will soon change to Running.
+ 			 *
+ 			 * Assume this bug on unexpected Stop Endpoint failures.
+-			 * Keep retrying until the EP starts and stops again, on
+-			 * chips where this is known to help. Wait for 100ms.
++			 * Keep retrying until the EP starts and stops again.
+ 			 */
+-			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
+-				break;
+ 			fallthrough;
+ 		case EP_STATE_RUNNING:
+ 			/* Race, HW handled stop ep cmd before ep was running */
+ 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
+ 					GET_EP_CTX_STATE(ep_ctx));
++			/*
++			 * Don't retry forever if we guessed wrong or a defective HC never starts
++			 * the EP or says 'Running' but fails the command. We must give back TDs.
++			 */
++			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
++				break;
  
- static int mv88e6xxx_phy_is_internal(struct mv88e6xxx_chip *chip, int port)
- {
--	return port < chip->info->num_internal_phys;
-+	return port >= chip->info->internal_phys_offset &&
-+		port < chip->info->num_internal_phys +
-+			chip->info->internal_phys_offset;
- }
- 
- static int mv88e6xxx_port_ppu_updates(struct mv88e6xxx_chip *chip, int port)
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index b34e96e689d5c..4a8b56ed1bd6c 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -167,6 +167,11 @@ struct mv88e6xxx_info {
- 
- 	/* Supports PTP */
- 	bool ptp_support;
-+
-+	/* Internal PHY start index. 0 means that internal PHYs range starts at
-+	 * port 0, 1 means internal PHYs range starts at port 1, etc
-+	 */
-+	unsigned int internal_phys_offset;
- };
- 
- struct mv88e6xxx_atu_entry {
-diff --git a/drivers/net/dsa/mv88e6xxx/global2.c b/drivers/net/dsa/mv88e6xxx/global2.c
-index 79954e580c335..8480d08e6f944 100644
---- a/drivers/net/dsa/mv88e6xxx/global2.c
-+++ b/drivers/net/dsa/mv88e6xxx/global2.c
-@@ -1184,9 +1184,12 @@ int mv88e6xxx_g2_irq_setup(struct mv88e6xxx_chip *chip)
- int mv88e6xxx_g2_irq_mdio_setup(struct mv88e6xxx_chip *chip,
- 				struct mii_bus *bus)
- {
-+	int phy_start = chip->info->internal_phys_offset;
-+	int phy_end = chip->info->internal_phys_offset +
-+		      chip->info->num_internal_phys;
- 	int phy, irq;
- 
--	for (phy = 0; phy < chip->info->num_internal_phys; phy++) {
-+	for (phy = phy_start; phy < phy_end; phy++) {
- 		irq = irq_find_mapping(chip->g2_irq.domain, phy);
- 		if (irq < 0)
- 			return irq;
+ 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
+ 			if (!command) {
 -- 
 2.39.5
 
