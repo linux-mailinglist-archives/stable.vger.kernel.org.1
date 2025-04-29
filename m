@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B836AA141F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 570AAAA16A8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B483B1143
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64593BA655
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7E922A81D;
-	Tue, 29 Apr 2025 17:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3027223CEF9;
+	Tue, 29 Apr 2025 17:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6d5kC9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUXuElJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B0EC211A0B;
-	Tue, 29 Apr 2025 17:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB584238C21;
+	Tue, 29 Apr 2025 17:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946448; cv=none; b=On2xY0NPrE06Bta+70vaT7HrOqKYRdOUYvI54DRMBylWhxrRY84XPbJCLidWUZR5ORujr8S/lWMgcsFJBesFT/ctgeJkV/6Oo4wYs00mAMMXDallfjRIbSpJ+MzpaJTJChFNJuY9GZ19RllKOWH+pD3PSX0GVYzAaYCubFkMvIU=
+	t=1745948008; cv=none; b=cEwj7X6IJueCN0Zd8UpbLiDESXVqXaFkodTx2dddeCZblsl80XarwhStopJt63LMr97B29beKmMZNHXxfRLAPpbWhJYD2T3K+rvaopCUpt5vTFJk/BduWPPbGAKjiMOGOqd7uBkTu6ve2KVvHorRIrGZO02VZxjgJaqrniOBleg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946448; c=relaxed/simple;
-	bh=Y21z6VkR9fCw4LN9kCQeS8E6KlGBC9PcPC4vjduyXs0=;
+	s=arc-20240116; t=1745948008; c=relaxed/simple;
+	bh=vBuJejzMUjFM3bTjk0/hQYlT43+oC7l/0zR0YoOG+zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRLg/pLLMKWqpvsvNDjLr+9qgifWoiC5S5cpw/HGcNmNYdCHvPOr5Mu/uydDdYTFfeEw9r2tZfJgwscRBPU1r1KOMMwOTFtcfUUv4KLOS58YkjdVsQF8rHbgH3jsH9UnXWA2lA+Q1DxEIADizsVLUpf16x8Xc3PJT5+2Hk0ahDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6d5kC9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22765C4CEE3;
-	Tue, 29 Apr 2025 17:07:27 +0000 (UTC)
+	 MIME-Version; b=SrNuGIqXHzQeTt5TWIq+pQvkDiGtf+TfwuYTJxIl4WMxNtBqXymemcYn5hkfKGal39o+zmSfKG2fDNK1YcNaoz4yCUVMU9yihu5YAvmOPjEW9MHGaUeHRV3fWD6QfF3DqlE03ALxbe5MsmPaBGkJTAffc8ec9/EHExA+u1c4Uus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUXuElJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F96FC4CEE3;
+	Tue, 29 Apr 2025 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946448;
-	bh=Y21z6VkR9fCw4LN9kCQeS8E6KlGBC9PcPC4vjduyXs0=;
+	s=korg; t=1745948007;
+	bh=vBuJejzMUjFM3bTjk0/hQYlT43+oC7l/0zR0YoOG+zI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6d5kC9RuwTAS8FKGFxumFR93c7P2dcPl4SxTpuzXPwMYQwVX9db0O1bM9AU0jW+A
-	 K4V+2IHO5o7Lj5Til0iDN4qkQS7GwNYfNWBzJ0gIThwqnDSEyR+EkoyXMzPC7zbrXb
-	 y6zkfV3Gs3rL92pM+DT6KkemMNaMmOvk2Jmi+aMU=
+	b=eUXuElJcZWeLfWH1Fz4GeLujWXcXfth43urt6UORWQL7qcCT1bx0pyTpzZTACnBwG
+	 Su6ATBCMP8otqQ30iKZeCFHnr105nJhmYXO7Zki7dWq8CV3PXViCXrRtMvr3qYmCPQ
+	 71NXVHnWtPWSfUr/ROMfsoXtT5MPaBi/fPNQ0ZtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 270/311] scsi: ufs: exynos: Ensure pre_link() executes before exynos_ufs_phy_init()
+Subject: [PATCH 6.12 166/280] bpf: Only fails the busy counter check in bpf_cgrp_storage_get if it creates storage
 Date: Tue, 29 Apr 2025 18:41:47 +0200
-Message-ID: <20250429161132.084723021@linuxfoundation.org>
+Message-ID: <20250429161121.902623754@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 3d101165e72316775947d71321d97194f03dfef3 ]
+[ Upstream commit f4edc66e48a694b3e6d164cc71f059de542dfaec ]
 
-Ensure clocks are enabled before configuring unipro. Additionally move
-the pre_link() hook before the exynos_ufs_phy_init() calls. This means
-the register write sequence more closely resembles the ordering of the
-downstream driver.
+The current cgrp storage has a percpu counter, bpf_cgrp_storage_busy,
+to detect potential deadlock at a spin_lock that the local storage
+acquires during new storage creation.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-1-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+There are false positives. It turns out to be too noisy in
+production. For example, a bpf prog may be doing a
+bpf_cgrp_storage_get on map_a. An IRQ comes in and triggers
+another bpf_cgrp_storage_get on a different map_b. It will then
+trigger the false positive deadlock check in the percpu counter.
+On top of that, both are doing lookup only and no need to create
+new storage, so practically it does not need to acquire
+the spin_lock.
+
+The bpf_task_storage_get already has a strategy to minimize this
+false positive by only failing if the bpf_task_storage_get needs
+to create a new storage and the percpu counter is busy. Creating
+a new storage is the only time it must acquire the spin_lock.
+
+This patch borrows the same idea. Unlike task storage that
+has a separate variant for tracing (_recur) and non-tracing, this
+patch stays with one bpf_cgrp_storage_get helper to keep it simple
+for now in light of the upcoming res_spin_lock.
+
+The variable could potentially use a better name noTbusy instead
+of nobusy. This patch follows the same naming in
+bpf_task_storage_get for now.
+
+I have tested it by temporarily adding noinline to
+the cgroup_storage_lookup(), traced it by fentry, and the fentry
+program succeeded in calling bpf_cgrp_storage_get().
+
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20250318182759.3676094-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/bpf/bpf_cgrp_storage.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 5ea3f9beb1bd9..e77b3c63e6981 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -1060,9 +1060,14 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
- 	exynos_ufs_config_intr(ufs, DFES_DEF_L4_ERRS, UNIPRO_L4);
- 	exynos_ufs_set_unipro_pclk_div(ufs);
+diff --git a/kernel/bpf/bpf_cgrp_storage.c b/kernel/bpf/bpf_cgrp_storage.c
+index 6547fb7ac0dcb..129a51b1da1b1 100644
+--- a/kernel/bpf/bpf_cgrp_storage.c
++++ b/kernel/bpf/bpf_cgrp_storage.c
+@@ -162,6 +162,7 @@ BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
+ 	   void *, value, u64, flags, gfp_t, gfp_flags)
+ {
+ 	struct bpf_local_storage_data *sdata;
++	bool nobusy;
  
-+	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
-+
- 	/* unipro */
- 	exynos_ufs_config_unipro(ufs);
+ 	WARN_ON_ONCE(!bpf_rcu_lock_held());
+ 	if (flags & ~(BPF_LOCAL_STORAGE_GET_F_CREATE))
+@@ -170,21 +171,21 @@ BPF_CALL_5(bpf_cgrp_storage_get, struct bpf_map *, map, struct cgroup *, cgroup,
+ 	if (!cgroup)
+ 		return (unsigned long)NULL;
  
-+	if (ufs->drv_data->pre_link)
-+		ufs->drv_data->pre_link(ufs);
-+
- 	/* m-phy */
- 	exynos_ufs_phy_init(ufs);
- 	if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR)) {
-@@ -1070,11 +1075,6 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
- 		exynos_ufs_config_phy_cap_attr(ufs);
- 	}
+-	if (!bpf_cgrp_storage_trylock())
+-		return (unsigned long)NULL;
++	nobusy = bpf_cgrp_storage_trylock();
  
--	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
--
--	if (ufs->drv_data->pre_link)
--		ufs->drv_data->pre_link(ufs);
--
- 	return 0;
+-	sdata = cgroup_storage_lookup(cgroup, map, true);
++	sdata = cgroup_storage_lookup(cgroup, map, nobusy);
+ 	if (sdata)
+ 		goto unlock;
+ 
+ 	/* only allocate new storage, when the cgroup is refcounted */
+ 	if (!percpu_ref_is_dying(&cgroup->self.refcnt) &&
+-	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE))
++	    (flags & BPF_LOCAL_STORAGE_GET_F_CREATE) && nobusy)
+ 		sdata = bpf_local_storage_update(cgroup, (struct bpf_local_storage_map *)map,
+ 						 value, BPF_NOEXIST, gfp_flags);
+ 
+ unlock:
+-	bpf_cgrp_storage_unlock();
++	if (nobusy)
++		bpf_cgrp_storage_unlock();
+ 	return IS_ERR_OR_NULL(sdata) ? (unsigned long)NULL : (unsigned long)sdata->data;
  }
  
 -- 
