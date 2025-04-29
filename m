@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44847AA13E4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97732AA1630
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90F2C982202
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FE883B1991
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A2C23F413;
-	Tue, 29 Apr 2025 17:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C8B24A07D;
+	Tue, 29 Apr 2025 17:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UH+8jUAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6kZSpmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48431FE468;
-	Tue, 29 Apr 2025 17:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E74C78F58;
+	Tue, 29 Apr 2025 17:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946296; cv=none; b=OYMTvs04OTi9xAlrhlIOBFEVNg2wksaEG9lmYb+9ATIRp6WR26UIee+xGvcrRDnzYxLKKedxoNJ4voHmEMTonEqCVieUDG9vWEJEfUmqUyJMQBiD+wnqnbzbMbZmXS2YHeKjvTAP1Ib3ykbOyKOmYcBAulzh8mCoTu/HWKolIIs=
+	t=1745947719; cv=none; b=DDVwTmGndTN7U43wN3+iJ1KCkeNwIpafgnT9OPBc/nH7dJqVJPfe2RNJjdevePDlmabSbE1gLa7dCXvVvGlN4uEM5mf7bKtMPf1LMRyJPWtXY2BQBAq9s7UFouypIdyxRkHCXA8JV8wnfpbMVk8oc839s5CwozCSRddsCuyHJoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946296; c=relaxed/simple;
-	bh=PBIogwSgEm6mXvDBIdArn+Gw3It6q1MPL3rtvFv2x/U=;
+	s=arc-20240116; t=1745947719; c=relaxed/simple;
+	bh=hOvueZHfna5lyAwVS9K++GDfjHXce2st15TxQgocjV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lU3hcVSrKI9ptyVcxkZtNWLVaqBYs4xqXx9aFJhYIAqF4P+rtvJiKPvkyzHE537yg410VBtKb74z8+246prjMjvPsBLdAwql+o1KB9F7v6M1L4GbeyLTlKfJMdC392DuvSZEqd3U30adA820YIPJBga79pMZryWKV1VSupPYE10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UH+8jUAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE774C4CEE3;
-	Tue, 29 Apr 2025 17:04:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WYNfm788+4QDK1XSLbyDc6n3wS7PBaNSQY4fRHkW0SGGd21e4rXqAhCUeLqDtkzf0rx/Bdoq5PbBzSe/ROLKLjTcZaLiU0OFStDuxgMg2rbVjn0cIvYLT2CBWPvmyt/NoW0Yb7pReLQnc1ffTqvGwK5lAm7ygxBIHPZnL7oua34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6kZSpmW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD029C4CEE9;
+	Tue, 29 Apr 2025 17:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946295;
-	bh=PBIogwSgEm6mXvDBIdArn+Gw3It6q1MPL3rtvFv2x/U=;
+	s=korg; t=1745947719;
+	bh=hOvueZHfna5lyAwVS9K++GDfjHXce2st15TxQgocjV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UH+8jUAuwhqY5/fIsMzH9H9OcnbdEhWSBm54lGEZeWaAHvSD6UVbJA10vVKMhXijd
-	 eUm2l4TvWspgIy1pZWskhI6t32/j8GMfFIsm4ehwvJ/xRE/EqgEV3vm9q+2rYrqsl+
-	 DRWMRt4WuMTuQXboa6Gb06olojRtPK647jDs+A3M=
+	b=r6kZSpmWbQmaqqFtFlXgkhGxL9p7pPfshGJ5E0S6LYP5qXdEQ7I3SLby97MfSD71A
+	 WIyJNnJpu4vF4cIYfd5Wgzqrr/GleWrrsqp3NZ/o0g7HlOFklFXLVdGUxwNTK/JSXk
+	 JfdsK+ahL3+oSIfqxd/DYl0ofaTxrs6HeXNoykPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Guo Ren <guoren@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 189/311] s390/sclp: Add check for get_zeroed_page()
+Subject: [PATCH 6.12 085/280] riscv: uprobes: Add missing fence.i after building the XOL buffer
 Date: Tue, 29 Apr 2025 18:40:26 +0200
-Message-ID: <20250429161128.758132733@linuxfoundation.org>
+Message-ID: <20250429161118.589697929@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit 3db42c75a921854a99db0a2775814fef97415bac ]
+[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
 
-Add check for the return value of get_zeroed_page() in
-sclp_console_init() to prevent null pointer dereference.
-Furthermore, to solve the memory leak caused by the loop
-allocation, add a free helper to do the free job.
+The XOL (execute out-of-line) buffer is used to single-step the
+replaced instruction(s) for uprobes. The RISC-V port was missing a
+proper fence.i (i$ flushing) after constructing the XOL buffer, which
+can result in incorrect execution of stale/broken instructions.
 
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250218025216.2421548-1-haoxiang_li2024@163.com
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+This was found running the BPF selftests "test_progs:
+uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
+uprobes tests randomly blew up.
+
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Fixes: 74784081aac8 ("riscv: Add uprobes supported")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/riscv/kernel/probes/uprobes.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
-index e5d947c763ea5..6a030ba38bf36 100644
---- a/drivers/s390/char/sclp_con.c
-+++ b/drivers/s390/char/sclp_con.c
-@@ -263,6 +263,19 @@ static struct console sclp_console =
- 	.index = 0 /* ttyS0 */
- };
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index 4b3dc8beaf77d..cc15f7ca6cc17 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -167,6 +167,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 	/* Initialize the slot */
+ 	void *kaddr = kmap_atomic(page);
+ 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
++	unsigned long start = (unsigned long)dst;
  
-+/*
-+ *  Release allocated pages.
-+ */
-+static void __init __sclp_console_free_pages(void)
-+{
-+	struct list_head *page, *p;
-+
-+	list_for_each_safe(page, p, &sclp_con_pages) {
-+		list_del(page);
-+		free_page((unsigned long)page);
-+	}
-+}
-+
- /*
-  * called by console_init() in drivers/char/tty_io.c at boot-time.
-  */
-@@ -282,6 +295,10 @@ sclp_console_init(void)
- 	/* Allocate pages for output buffering */
- 	for (i = 0; i < sclp_console_pages; i++) {
- 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+		if (!page) {
-+			__sclp_console_free_pages();
-+			return -ENOMEM;
-+		}
- 		list_add_tail(page, &sclp_con_pages);
+ 	memcpy(dst, src, len);
+ 
+@@ -176,13 +177,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
  	}
- 	sclp_conbuf = NULL;
+ 
++	flush_icache_range(start, start + len);
+ 	kunmap_atomic(kaddr);
+-
+-	/*
+-	 * We probably need flush_icache_user_page() but it needs vma.
+-	 * This should work on most of architectures by default. If
+-	 * architecture needs to do something different it can define
+-	 * its own version of the function.
+-	 */
+-	flush_dcache_page(page);
+ }
 -- 
 2.39.5
 
