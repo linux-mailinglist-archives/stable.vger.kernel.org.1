@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 420C1AA18B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C3AAA16F0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769641BC680B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E2033BBE41
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A8822AE68;
-	Tue, 29 Apr 2025 18:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A1A1C6B4;
+	Tue, 29 Apr 2025 17:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwqoNUuf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBdwQRMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7C024111D;
-	Tue, 29 Apr 2025 18:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FAF215F7C;
+	Tue, 29 Apr 2025 17:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949762; cv=none; b=IytoVy14fhSbPvOMjz1BGsIY5/Z2dQf2GZCikSCA+BM1NJrBjTLHcMeJUER4UIZnHq16lHWcIN8KhTEU+R74NxhXVwrw4A72nQV9IMsP2Wml8wh2Gr86mvr46udi4R8o6Q8VhA8lL9Q2QoDZq9cBzPp/MAbpg4oiqOjuMBZlcaQ=
+	t=1745948190; cv=none; b=TgU+8FcUkCo6NaduivEI4kwchAcNeGf6pjX+utp4ydPEW8MzeW8FxdEITa4pePuADOFNcBRrVdXLjHaXMn5zgjEPTHfKkbd/sFKgc5X+T6+mMmc/8rTIXGusaZIOLlsuHcnR0oECnAc0vfnMSzRog3KDiycjSPugwBycYF04JWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949762; c=relaxed/simple;
-	bh=XVhZDnMsaTfmJMuAo2xN9W7iLHrqNuBSPDDcoRWB89c=;
+	s=arc-20240116; t=1745948190; c=relaxed/simple;
+	bh=nP6hhQ2AwJNz4sZVtcEOte9LFRQGbR/4mafVumfBPEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dl48rsCiLc+E5pw2UnRZe2zL02jhU4kwoSrKDKDF2OZBFy8irwgYnX1Gez8BiT+LQYTebTDIMdXZscDlsB5nuI9bBy2niT+8NxkPSnJ4CVGWL+tC/XJmHCeGaluRSy181QsZJ8Jrl/GKVny75RFUTsSW9cpoJhc0rsXuTrJWaEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwqoNUuf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97ADEC4CEE3;
-	Tue, 29 Apr 2025 18:02:41 +0000 (UTC)
+	 MIME-Version; b=OIUguIq2CdsHX4cee+GrknuATJFrnOBB3PoLdSxUQkN9kX8qfAYppmF5ldafblI7Qb1x2bBQ1xA0jxmaMwj7HJqP3gU/Su9TbxAvFkC27RMkJw/pSq47Xiv6hFc08m7UdXDSRQg36Lr7TitxlyCYB8dqniRWq2vTtHvIZW0TSG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBdwQRMk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B0CC4CEE3;
+	Tue, 29 Apr 2025 17:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949762;
-	bh=XVhZDnMsaTfmJMuAo2xN9W7iLHrqNuBSPDDcoRWB89c=;
+	s=korg; t=1745948189;
+	bh=nP6hhQ2AwJNz4sZVtcEOte9LFRQGbR/4mafVumfBPEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwqoNUufSjoriSkRR8konTpNR9u2VW96KoFgEReNQcNNtltlOtt6HhhWkiAO30Io7
-	 7RJvVcJPgi/MzU5usGlDQvZn5WZgDIxl8hdorziqHxth9UALykNzyfcWw6nexJ8WlW
-	 CfBFKjVqKjnPq8Jraysr/UEgGqywk+wteDpQTnDo=
+	b=xBdwQRMkptbxb5mV2QGpu5CwFwtIYC5GXVVlGtuDSPIxWF4hU4o+dSiQithsNZkC5
+	 iWHzpnzgbHaTF89Hi8iKX0irEkTnVbMSqQm97vZqEO9lK7J7U9BDb1a7PPUcPaLfLE
+	 P9srPFbEGQ6y69UtXnAunmMr6r7pycdFc1XhHbic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anastasia Kovaleva <a.kovaleva@yadro.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/167] scsi: core: Clear flags for scsi_cmnd that did not complete
+Subject: [PATCH 6.12 215/280] gpiolib: of: Move Atmel HSMCI quirk up out of the regulator comment
 Date: Tue, 29 Apr 2025 18:42:36 +0200
-Message-ID: <20250429161053.705708325@linuxfoundation.org>
+Message-ID: <20250429161123.922246782@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 54bebe46871d4e56e05fcf55c1a37e7efa24e0a8 ]
+[ Upstream commit b8c7a1ac884cc267d1031f8de07f1a689a69fbab ]
 
-Commands that have not been completed with scsi_done() do not clear the
-SCMD_INITIALIZED flag and therefore will not be properly reinitialized.
-Thus, the next time the scsi_cmnd structure is used, the command may
-fail in scsi_cmd_runtime_exceeded() due to the old jiffies_at_alloc
-value:
+The regulator comment in of_gpio_set_polarity_by_property()
+made on top of a couple of the cases, while Atmel HSMCI quirk
+is not related to that. Make it clear by moving Atmel HSMCI
+quirk up out of the scope of the regulator comment.
 
-  kernel: sd 16:0:1:84: [sdts] tag#405 timing out command, waited 720s
-  kernel: sd 16:0:1:84: [sdts] tag#405 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=66636s
-
-Clear flags for commands that have not been completed by SCSI.
-
-Fixes: 4abafdc4360d ("block: remove the initialize_rq_fn blk_mq_ops method")
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Link: https://lore.kernel.org/r/20250324084933.15932-2-a.kovaleva@yadro.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20250402122058.1517393-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_lib.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-of.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 8e75eb1b6eab8..df61d7b906653 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1158,8 +1158,12 @@ EXPORT_SYMBOL_GPL(scsi_alloc_request);
-  */
- static void scsi_cleanup_rq(struct request *rq)
- {
-+	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(rq);
-+
-+	cmd->flags = 0;
-+
- 	if (rq->rq_flags & RQF_DONTPREP) {
--		scsi_mq_uninit_cmd(blk_mq_rq_to_pdu(rq));
-+		scsi_mq_uninit_cmd(cmd);
- 		rq->rq_flags &= ~RQF_DONTPREP;
- 	}
- }
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index e543129d36050..626daedb01698 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -259,6 +259,9 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
+ 		{ "fsl,imx8qm-fec",  "phy-reset-gpios", "phy-reset-active-high" },
+ 		{ "fsl,s32v234-fec", "phy-reset-gpios", "phy-reset-active-high" },
+ #endif
++#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
++		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
++#endif
+ #if IS_ENABLED(CONFIG_PCI_IMX6)
+ 		{ "fsl,imx6q-pcie",  "reset-gpio", "reset-gpio-active-high" },
+ 		{ "fsl,imx6sx-pcie", "reset-gpio", "reset-gpio-active-high" },
+@@ -284,9 +287,6 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
+ #if IS_ENABLED(CONFIG_REGULATOR_GPIO)
+ 		{ "regulator-gpio",    "enable-gpio",  "enable-active-high" },
+ 		{ "regulator-gpio",    "enable-gpios", "enable-active-high" },
+-#endif
+-#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
+-		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
+ #endif
+ 	};
+ 	unsigned int i;
 -- 
 2.39.5
 
