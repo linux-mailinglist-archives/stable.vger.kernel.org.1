@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52BFAA15B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4868AA16C1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3E01987A71
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8461BA16ED
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA9824BC1A;
-	Tue, 29 Apr 2025 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F2622DF91;
+	Tue, 29 Apr 2025 17:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1RgrKfN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4iukIZP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FF8224AE6;
-	Tue, 29 Apr 2025 17:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C49244670;
+	Tue, 29 Apr 2025 17:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947404; cv=none; b=cm0ZjOlCtpMIOlMLuPAWjBAcyqucsQTckqV0hC/ZCxOUtEX9v9TnJyy0fkzT1xXfbUxivwpTr/FK/SrToAjLQ3/p0keGSrArSOvt/IEyP6w8UAc9NSnCQDOjCO3e306oLzmFDNwmkUCZnO0twmmL3aPXIurp3YFx2dm2A4VDvBE=
+	t=1745948316; cv=none; b=DR5jShhanvKnJVei46lNFnaPeuXWxE9NKnBE1/Ek6jVApLe71HPNzJJeVEk3jd/Ma/afRh5Lnf4liVCCf/jweUD8kDLQo5XHZ0Z2qEKU6hXsxZ0G/IEaMUVIkGY880wXMD6/pXcSpL92XCAyGdrUX6JTVdsUk4/xd47Hd+6vs8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947404; c=relaxed/simple;
-	bh=zD5MpW9WDe9jwuEf5perCXueZIzBuoqYjNuohgnQA7I=;
+	s=arc-20240116; t=1745948316; c=relaxed/simple;
+	bh=QgOBLXC1VtaQn8gDNxOg3yrvJe5hcUH1tJfNKrqaTZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jRa2BoWF5PRgRex3omlEiaZ9JlJETeb/UvoUx0L//3CxYm1xlZnJPtX09fq0ffGsBfUU5njkYS22L1VZ9bUT02qc/Li0WkSM/LHvMC/hXYRbO6l2wtzNwhudoz2U33G8/0G/gl5U160ZA141iG27cIf72Y1SgRM5K03QIQJeaWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1RgrKfN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D6DC4CEE3;
-	Tue, 29 Apr 2025 17:23:22 +0000 (UTC)
+	 MIME-Version; b=D7mVkrwFd9sMx8ZszOllVZ5JpphEyZ05bQ1QCeHUNYIg9OrR3xcQnf9I6RS4VsG5vmssgKEuDidFCbNTSE1UCCz9NNUeE/qga6VZfMSzOrCLS5InqSLA3HySX79B/BJ9uk9ucjWdXPu/29DZlnNX4uO336y/j8+20aKm4KPgaSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4iukIZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88008C4CEE3;
+	Tue, 29 Apr 2025 17:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947403;
-	bh=zD5MpW9WDe9jwuEf5perCXueZIzBuoqYjNuohgnQA7I=;
+	s=korg; t=1745948316;
+	bh=QgOBLXC1VtaQn8gDNxOg3yrvJe5hcUH1tJfNKrqaTZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1RgrKfN3O11ZN1hcy34X+KaE0i2i/9Luu3HjLVMQ/DMmP6NUzZF3jV2XGueofZ1F
-	 42EMvH1YLueH729i6HIlwy8i+TjZxC32cm1H5g+gflJAAQIsQAXT/mpREaP+fvJHIO
-	 ZThfzBSOY56ZMVFQge7Ex9O3rBC7Pq2eb8zUqMyA=
+	b=m4iukIZPcpH3FdSwBXTpHW3yGYJ/V1sYJzNehFnMxr4vkAhLN8YDrvsQ2uD5NH/ec
+	 HxO/MKBpULAhi9iOji/L1G6v8IDSX9G+SRXbs/IVjQePfqByhkYSWSJW80Z1eRx/ON
+	 YNvWvaVdGN/py9UrdNbnqNvmJwHGbXKRwMQKGm1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 270/286] objtool: Stop UNRET validation on UD2
-Date: Tue, 29 Apr 2025 18:42:54 +0200
-Message-ID: <20250429161119.026645853@linuxfoundation.org>
+Subject: [PATCH 6.12 234/280] ASoC: fsl_asrc_dma: get codec or cpu dai from backend
+Date: Tue, 29 Apr 2025 18:42:55 +0200
+Message-ID: <20250429161124.691965775@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 9f9cc012c2cbac4833746a0182e06a8eec940d19 ]
+[ Upstream commit ef5c23ae9ab380fa756f257411024a9b4518d1b9 ]
 
-In preparation for simplifying INSN_SYSCALL, make validate_unret()
-terminate control flow on UD2 just like validate_branch() already does.
+With audio graph card, original cpu dai is changed to codec device in
+backend, so if cpu dai is dummy device in backend, get the codec dai
+device, which is the real hardware device connected.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/ce841269e7e28c8b7f32064464a9821034d724ff.1744095216.git.jpoimboe@kernel.org
+The specific case is ASRC->SAI->AMIX->CODEC.
+
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250319033504.2898605-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/fsl/fsl_asrc_dma.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index bcc9948645a00..20ccdd60353be 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3249,6 +3249,9 @@ static int validate_entry(struct objtool_file *file, struct instruction *insn)
- 			break;
- 		}
+diff --git a/sound/soc/fsl/fsl_asrc_dma.c b/sound/soc/fsl/fsl_asrc_dma.c
+index f501f47242fb0..1bba48318e2dd 100644
+--- a/sound/soc/fsl/fsl_asrc_dma.c
++++ b/sound/soc/fsl/fsl_asrc_dma.c
+@@ -156,11 +156,24 @@ static int fsl_asrc_dma_hw_params(struct snd_soc_component *component,
+ 	for_each_dpcm_be(rtd, stream, dpcm) {
+ 		struct snd_soc_pcm_runtime *be = dpcm->be;
+ 		struct snd_pcm_substream *substream_be;
+-		struct snd_soc_dai *dai = snd_soc_rtd_to_cpu(be, 0);
++		struct snd_soc_dai *dai_cpu = snd_soc_rtd_to_cpu(be, 0);
++		struct snd_soc_dai *dai_codec = snd_soc_rtd_to_codec(be, 0);
++		struct snd_soc_dai *dai;
  
-+		if (insn->dead_end)
-+			return 0;
+ 		if (dpcm->fe != rtd)
+ 			continue;
+ 
++		/*
++		 * With audio graph card, original cpu dai is changed to codec
++		 * device in backend, so if cpu dai is dummy device in backend,
++		 * get the codec dai device, which is the real hardware device
++		 * connected.
++		 */
++		if (!snd_soc_dai_is_dummy(dai_cpu))
++			dai = dai_cpu;
++		else
++			dai = dai_codec;
 +
- 		if (!next) {
- 			WARN_FUNC("teh end!", insn->sec, insn->offset);
- 			return -1;
+ 		substream_be = snd_soc_dpcm_get_substream(be, stream);
+ 		dma_params_be = snd_soc_dai_get_dma_data(dai, substream_be);
+ 		dev_be = dai->dev;
 -- 
 2.39.5
 
