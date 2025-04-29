@@ -1,73 +1,111 @@
-Return-Path: <stable+bounces-137009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D7BAA04A3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 09:36:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D426AA04AF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 09:38:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 454E63A8BE5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:35:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B3C94831C8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 07:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB59B277811;
-	Tue, 29 Apr 2025 07:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skucnygv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437B7292904;
+	Tue, 29 Apr 2025 07:37:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABAA1F76A5
-	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 07:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06245289367
+	for <stable@vger.kernel.org>; Tue, 29 Apr 2025 07:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745912159; cv=none; b=bVvSWWkD/6yoF8De625DOZ3siswsSLfMtRLqAHHo5d+8sEXK4wVkkvMY3JwY0n4EY3EVOiq7BVYBt2qLYpIpmiTWZFZhkgZk++ASJvauMjqZ3O1l5szslf8HMUBFOffoGmliF6BpFJMszfkCX15S4puCtgxMd4stinxl0IWQduw=
+	t=1745912221; cv=none; b=qR/OoAVt5e0sTgwoAnHAOnqwc10mb8lOjTWzQlPRykNCS+3WjQp10o4YRJSn6gRC+P/qBN1LaSbUx4LZX0q8GYgp/BQotZXkf0h/mxyztmd0C6wNOizasbw7bkghzRc91QVidFUozTdyUQMT6RBwDmd3UKmuPiG497v4Ts1T0iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745912159; c=relaxed/simple;
-	bh=ZQpWfgy+xxBSfwcaZp6Tosn5xJjUdFeUF/Jc6BCdYtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D79Cg+fIzCrdeao3ot+/LpgK40vrmPIHVBm1nOZI6xnFjQBfWCrQ7FdAHallGvkzW2EmWh+7qYXeDK4DFGjIfk/TOpSsam1oSbGVjA8D/FIotErWJ+vthQEyBal84PtfsiZW/tIwjKQhcIVrBtvJM7G0ANNb5gCM7e1800LHrmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skucnygv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAE8C4CEE3;
-	Tue, 29 Apr 2025 07:35:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745912159;
-	bh=ZQpWfgy+xxBSfwcaZp6Tosn5xJjUdFeUF/Jc6BCdYtI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=skucnygv7JWcJH5B66x9ocQtPiVEJ0zyKIQjL3oFbtaJYR+RmuORhcaaBNaCqgpLp
-	 BvY47RCMJmmlvDTZ0Q+RxwKB4EuBqEwIYrU0HDPWv1tCh3GRP6vMXnAihPgSHZCGaM
-	 p/SsQcasQN5Yamu2mjL6aqLdl8Z0CKlYIUj1Yl7w=
-Date: Tue, 29 Apr 2025 09:35:53 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: stable@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>
-Subject: Re: [PATCH 6.6] iommu: Handle race with default domain setup
-Message-ID: <2025042955-pelt-scorebook-dd4d@gregkh>
-References: <e1e5d56a9821b3428c561cf4b3c5017a9c41b0b5.1739903836.git.robin.murphy@arm.com>
+	s=arc-20240116; t=1745912221; c=relaxed/simple;
+	bh=0DjVB5bsxhzbNAMeRyZa4FifU108HCJLKTchWTnfluc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=orIBgpFIY8RBSWQJROGE/TX1xia4bYmw8D8g0rgaUa92TktgDRtT0TXxucFuHwd4QWcsW5AqoVSdO9/CV6M5bE4UsuboCnhPBxtLSKEJ9Gm0jgEtqV36DeNl4l5dgF1oimHWUIvCU6oJPvdJsc3WDSCa6TbFDJB8DAlxro2ZTPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u9fWI-0004BB-1Z; Tue, 29 Apr 2025 09:36:46 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u9fWH-000E2W-1x;
+	Tue, 29 Apr 2025 09:36:45 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1u9fWH-00CX8L-1g;
+	Tue, 29 Apr 2025 09:36:45 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	"Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	kernel@pengutronix.de,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	UNGLinuxDriver@microchip.com,
+	stable@vger.kernel.org
+Subject: [PATCH net v3 0/2] address EEE regressions on KSZ switches since v6.9 (v6.14+)
+Date: Tue, 29 Apr 2025 09:36:42 +0200
+Message-Id: <20250429073644.2987282-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e1e5d56a9821b3428c561cf4b3c5017a9c41b0b5.1739903836.git.robin.murphy@arm.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Fri, Apr 25, 2025 at 03:19:22PM +0100, Robin Murphy wrote:
-> [ Upstream commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 ]
+This patch series addresses a regression in Energy Efficient Ethernet
+(EEE) handling for KSZ switches with integrated PHYs, introduced in
+kernel v6.9 by commit fe0d4fd9285e ("net: phy: Keep track of EEE
+configuration").
 
-<snip>
+The first patch updates the DSA driver to allow phylink to properly
+manage PHY EEE configuration. Since integrated PHYs handle LPI
+internally and ports without integrated PHYs do not document MAC-level
+LPI support, dummy MAC LPI callbacks are provided.
 
-You seem to have forgotten about a backport for 6.12.y as well.  You
-know we can't take backports that skip stable branches, otherwise users
-will have regressions when they upgrade.
+The second patch removes outdated EEE workarounds from the micrel PHY
+driver, as they are no longer needed with correct phylink handling.
 
-Please resend this when you also send a 6.12.y backport, and we will be
-glad to queue both up.
+This series addresses the regression for mainline and kernels starting
+from v6.14. It is not easily possible to fully fix older kernels due
+to missing infrastructure changes.
 
-thanks,
+Tested on KSZ9893 hardware.
 
-greg k-h
+Oleksij Rempel (2):
+  net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ
+    switches
+  net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
+
+ drivers/net/dsa/microchip/ksz_common.c | 134 +++++++++++++++++++------
+ drivers/net/phy/micrel.c               |   7 --
+ include/linux/micrel_phy.h             |   1 -
+ 3 files changed, 106 insertions(+), 36 deletions(-)
+
+--
+2.39.5
+
 
