@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-138128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18DFAAA16B4
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8119FAA183B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 652D81891A72
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D0AD176598
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1CF2512D8;
-	Tue, 29 Apr 2025 17:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B479F253930;
+	Tue, 29 Apr 2025 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aQ6TL6a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ4xjQCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BA221ABB7;
-	Tue, 29 Apr 2025 17:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AF82512D8;
+	Tue, 29 Apr 2025 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948246; cv=none; b=qIgthUa6Xiu1Ey40jl8vHs5BiT0yY5q1XsJehu54Zw54l2UXKoyiAYkArtjatFOkrcDGOmAWcWZHgIdEcq5F9qEI3jDyzy+8PeQZNHW3lwFl9zCMUlYctLqampGCQvSSXgYlFGgPTZkaf9DiYCYAhlej65RkdMhqZguMVHbmMXo=
+	t=1745949361; cv=none; b=AJ403u6isP37YCtGgcnkKBLP87j3XWGLzueJiedyBRsFBxZHL8n/vaywEDUZpqKp9E5RmY8VMuhO4ASPCcq/FLYR5zdG0fgWNRt0jiu6osAhaQ3K+JpyN9wdTAmkc3sVAmCGSk1hXCImgN/OePpHNnahc6yVknhBnATH7oOzpys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948246; c=relaxed/simple;
-	bh=6CDYcRv/r2df/0DrE8qkTFBUhZXaEmCbBCqUreOX7t0=;
+	s=arc-20240116; t=1745949361; c=relaxed/simple;
+	bh=HXI82mMeE3WmJayrvDGqQm8f6HMVIpNgLndKw1byLWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Za6DiEfIthK9ERLyk6dLRkID7IbgfNYF/UmdL1w2G/QMQyZa0hxCg2+vc0iM8FkUyipgsBpTgPWkGkAym+gq5oPJmtfl+aR96xFdvYoZTphwBQPSPDo9dHTGNSQYw7m18H68RN+oVHuECmpGEiCvnGD2NS/k1EtGRNPTjAhMLJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aQ6TL6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BFCC4CEE3;
-	Tue, 29 Apr 2025 17:37:26 +0000 (UTC)
+	 MIME-Version; b=ozx7owhAQqBujYlXUuJXvMc0Ig662pAtENSDSiodBiQVV6J9IDOcWhXd8rGBomkMOqgLhMTuj/XmHM9SXWxT21qKNOscowkz11f1hoEZey9KHra7CRSnBxGAM8HSayJf4sR/hDH82xyXnMlircILFSNQHtkRnBL81V+Xt/XReGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ4xjQCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4765DC4CEE3;
+	Tue, 29 Apr 2025 17:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948246;
-	bh=6CDYcRv/r2df/0DrE8qkTFBUhZXaEmCbBCqUreOX7t0=;
+	s=korg; t=1745949360;
+	bh=HXI82mMeE3WmJayrvDGqQm8f6HMVIpNgLndKw1byLWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2aQ6TL6az+f/v6UkGZlWFDBP3YT+AFkxby9cHYCi8re43V17e8tgin3Vuw45B7mS5
-	 YrT3iKgzIH/G5O025n8BYGpxqwiZyaZdrtvT7qPJSm2Dyz/B/oMCx/+1oKNhDV96Gf
-	 pyFlvnJ2CQxMMv0qS69KLmoYx9Zt4DPmNYv/FNks=
+	b=GZ4xjQCqlwR4bNmINO6WQc4344ZeOM7AFg8bDVsXH5NkZG3c2766HvtLGEDm6W6Q0
+	 fzSh1RUxsgK6tIMxkWRdrySSNqY3Jc39R7PuKKuYYMrKHLDgtCRtDatNyyQ79IiCsc
+	 BcAm9MVfpOQr+WXGyd4QV7uvPSHNnP/CrWe0bAXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/280] scsi: ufs: exynos: Enable PRDT pre-fetching with UFSHCD_CAP_CRYPTO
-Date: Tue, 29 Apr 2025 18:42:51 +0200
-Message-ID: <20250429161124.531605230@linuxfoundation.org>
+Subject: [PATCH 5.15 295/373] iommu/amd: Return an error if vCPU affinity is set for non-vCPU IRTE
+Date: Tue, 29 Apr 2025 18:42:52 +0200
+Message-ID: <20250429161135.250448696@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit deac9ad496ec17e1ec06848964ecc635bdaca703 ]
+[ Upstream commit 07172206a26dcf3f0bf7c3ecaadd4242b008ea54 ]
 
-PRDT_PREFETCH_ENABLE[31] bit should be set when desctype field of
-fmpsecurity0 register is type2 (double file encryption) or type3
-(support for file and disk encryption). Setting this bit enables PRDT
-pre-fetching on both TXPRDT and RXPRDT.
+Return -EINVAL instead of success if amd_ir_set_vcpu_affinity() is
+invoked without use_vapic; lying to KVM about whether or not the IRTE was
+configured to post IRQs is all kinds of bad.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-5-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d98de49a53e4 ("iommu/amd: Enable vAPIC interrupt remapping mode by default")
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-6-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index 75bb0ff07b07e..626187100316b 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -34,7 +34,7 @@
-  * Exynos's Vendor specific registers for UFSHCI
-  */
- #define HCI_TXPRDT_ENTRY_SIZE	0x00
--#define PRDT_PREFECT_EN		BIT(31)
-+#define PRDT_PREFETCH_EN	BIT(31)
- #define HCI_RXPRDT_ENTRY_SIZE	0x04
- #define HCI_1US_TO_CNT_VAL	0x0C
- #define CNT_VAL_1US_MASK	0x3FF
-@@ -1066,12 +1066,17 @@ static int exynos_ufs_post_link(struct ufs_hba *hba)
- 	struct exynos_ufs *ufs = ufshcd_get_variant(hba);
- 	struct phy *generic_phy = ufs->phy;
- 	struct exynos_ufs_uic_attr *attr = ufs->drv_data->uic_attr;
-+	u32 val = ilog2(DATA_UNIT_SIZE);
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index d9251af7f3cf6..7d38cc5c04e68 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -3381,7 +3381,7 @@ static int amd_ir_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
+ 	 * we should not modify the IRTE
+ 	 */
+ 	if (!dev_data || !dev_data->use_vapic)
+-		return 0;
++		return -EINVAL;
  
- 	exynos_ufs_establish_connt(ufs);
- 	exynos_ufs_fit_aggr_timeout(ufs);
- 
- 	hci_writel(ufs, 0xa, HCI_DATA_REORDER);
--	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_TXPRDT_ENTRY_SIZE);
-+
-+	if (hba->caps & UFSHCD_CAP_CRYPTO)
-+		val |= PRDT_PREFETCH_EN;
-+	hci_writel(ufs, val, HCI_TXPRDT_ENTRY_SIZE);
-+
- 	hci_writel(ufs, ilog2(DATA_UNIT_SIZE), HCI_RXPRDT_ENTRY_SIZE);
- 	hci_writel(ufs, (1 << hba->nutrs) - 1, HCI_UTRL_NEXUS_TYPE);
- 	hci_writel(ufs, (1 << hba->nutmrs) - 1, HCI_UTMRL_NEXUS_TYPE);
+ 	ir_data->cfg = irqd_cfg(data);
+ 	pi_data->ir_data = ir_data;
 -- 
 2.39.5
 
