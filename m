@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3336AA1584
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:28:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E62AA16D7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE353172861
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1282E17772C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E336B24503E;
-	Tue, 29 Apr 2025 17:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055E6244670;
+	Tue, 29 Apr 2025 17:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQiC9ez0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INtd/vCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1499224AE6;
-	Tue, 29 Apr 2025 17:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82BF242D68;
+	Tue, 29 Apr 2025 17:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947419; cv=none; b=hnsGcyM33qqeGXeCyOyN1AbYEzPO+kgq7Cz2n8vh4B8zwnjuVUTpqdm9YDFDyXLFhuf44PWzJue1yPoymF37cYgsiqBBq1TCXsTbacFdPZvMVV+k1+20W60MsjSxo+jNs2Xh9Hvq2uXNb8xz6nBX/KR+eQ2K+cEo9VbJLbFdjdQ=
+	t=1745948371; cv=none; b=hDic383QCthIyzujnDsrUFsxo6XOjf848QG9oKmi7+J4U4N0q3hsYferk4sYMaYinayV8z4qcohuy595Uw/vkP4chU9fFbrWXPh6thH7aJKk4Eghs6AFM7zU91AEjl2S7Ej2KFMe6uDdqDdVvVttq1UIEKuwZYgS1OG8fEnZAGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947419; c=relaxed/simple;
-	bh=Sd2jqNNkeZyAAqDx8XGJL9veqSSFp9PBieXNnvZsDQI=;
+	s=arc-20240116; t=1745948371; c=relaxed/simple;
+	bh=U2zG9EimSFUOxWp+zjcChNw9qhpGXk71bCA9qjzYTow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1HtkjIRgb5HVZw+osRA1RLMEB7IRf+mTfRwBpCJ1vcm1tpiKX5LuSRr2X7Yzz2qh30791gEKO4NmbDCFhl1KrZ19VR2olpNz3ZszwgssXhLsvl5Ex/ERAvFqdAeHVd9DKbhvu4HyQNyMeu2qHpVXdZxu8y+4s4ZXWYGSidUpfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OQiC9ez0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022A4C4CEF5;
-	Tue, 29 Apr 2025 17:23:38 +0000 (UTC)
+	 MIME-Version; b=dTtxJ5ziZcAIbeacV4FzPNE5HprTcfx6TU3h26t9FLmPKlUI+2IIV+tuR+LORkKCILps01wCX2kLSTiNlFPUx+3hWu8E9HaceAZdTNhQuIYCXgatw5+Uxh/rqzuaNeC9sqIsL5P+wHpapODRMQmXIaS32bHv48cq6oDyNOtbGYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INtd/vCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1DFC4CEE3;
+	Tue, 29 Apr 2025 17:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947419;
-	bh=Sd2jqNNkeZyAAqDx8XGJL9veqSSFp9PBieXNnvZsDQI=;
+	s=korg; t=1745948371;
+	bh=U2zG9EimSFUOxWp+zjcChNw9qhpGXk71bCA9qjzYTow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQiC9ez0RvupBEgLIyEuuuKYxy898D6NlM98vhAiOvqdRDDSl4YhjPbcqHB2hFyzp
-	 laGlosS23XIE6jNC49axgkkykYiUQtdiDnBgUJG+7gck//tzezVXcoSNkBcbZfk97r
-	 saIuJliZXiCEuUeKN7xa4GCnSrIqZS7luA52JtGo=
+	b=INtd/vCDntQvV8TtgG5kbM1RjosA26+DbxCB61jrqdYKpuSnTMf6WrSJc7oYx7zoA
+	 AAcsHmO0C3yQDDHIJ8K8/0J1N8IJtpyX/AS5MH05l/KoqBYrdicsnTjZI/ozkvsgQT
+	 I98Vhrg5qgvzCIfxOIZ037WHcywTs+QQs6gXprbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Salomon Dushimirimana <salomondush@google.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	kernel test robot <lkp@intel.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 275/286] scsi: pm80xx: Set phy_attached to zero when device is gone
+Subject: [PATCH 6.12 238/280] riscv: Provide all alternative macros all the time
 Date: Tue, 29 Apr 2025 18:42:59 +0200
-Message-ID: <20250429161119.230264853@linuxfoundation.org>
+Message-ID: <20250429161124.858942726@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit f7b705c238d1483f0a766e2b20010f176e5c0fb7 ]
+[ Upstream commit fb53a9aa5f5b8bf302f3260a7f1f5a24345ce62a ]
 
-When a fatal error occurs, a phy down event may not be received to set
-phy->phy_attached to zero.
+We need to provide all six forms of the alternative macros
+(ALTERNATIVE, ALTERNATIVE_2, _ALTERNATIVE_CFG, _ALTERNATIVE_CFG_2,
+__ALTERNATIVE_CFG, __ALTERNATIVE_CFG_2) for all four cases derived
+from the two ifdefs (RISCV_ALTERNATIVE, __ASSEMBLY__) in order to
+ensure all configs can compile. Define this missing ones and ensure
+all are defined to consume all parameters passed.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
-Link: https://lore.kernel.org/r/20250319230305.3172920-1-salomondush@google.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202504130710.3IKz6Ibs-lkp@intel.com/
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250414120947.135173-2-ajones@ventanamicro.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/include/asm/alternative-macros.h | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index a16ed0695f1ae..3244f30dffec2 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -892,6 +892,7 @@ static void pm8001_dev_gone_notify(struct domain_device *dev)
- 			spin_lock_irqsave(&pm8001_ha->lock, flags);
- 		}
- 		PM8001_CHIP_DISP->dereg_dev_req(pm8001_ha, device_id);
-+		pm8001_ha->phy[pm8001_dev->attached_phy].phy_attached = 0;
- 		pm8001_free_dev(pm8001_dev);
- 	} else {
- 		pm8001_dbg(pm8001_ha, DISC, "Found dev has gone.\n");
+diff --git a/arch/riscv/include/asm/alternative-macros.h b/arch/riscv/include/asm/alternative-macros.h
+index 721ec275ce57e..231d777d936c2 100644
+--- a/arch/riscv/include/asm/alternative-macros.h
++++ b/arch/riscv/include/asm/alternative-macros.h
+@@ -115,24 +115,19 @@
+ 	\old_c
+ .endm
+ 
+-#define _ALTERNATIVE_CFG(old_c, ...)	\
+-	ALTERNATIVE_CFG old_c
+-
+-#define _ALTERNATIVE_CFG_2(old_c, ...)	\
+-	ALTERNATIVE_CFG old_c
++#define __ALTERNATIVE_CFG(old_c, ...)		ALTERNATIVE_CFG old_c
++#define __ALTERNATIVE_CFG_2(old_c, ...)		ALTERNATIVE_CFG old_c
+ 
+ #else /* !__ASSEMBLY__ */
+ 
+-#define __ALTERNATIVE_CFG(old_c)	\
+-	old_c "\n"
++#define __ALTERNATIVE_CFG(old_c, ...)		old_c "\n"
++#define __ALTERNATIVE_CFG_2(old_c, ...)		old_c "\n"
+ 
+-#define _ALTERNATIVE_CFG(old_c, ...)	\
+-	__ALTERNATIVE_CFG(old_c)
++#endif /* __ASSEMBLY__ */
+ 
+-#define _ALTERNATIVE_CFG_2(old_c, ...)	\
+-	__ALTERNATIVE_CFG(old_c)
++#define _ALTERNATIVE_CFG(old_c, ...)		__ALTERNATIVE_CFG(old_c)
++#define _ALTERNATIVE_CFG_2(old_c, ...)		__ALTERNATIVE_CFG_2(old_c)
+ 
+-#endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_RISCV_ALTERNATIVE */
+ 
+ /*
 -- 
 2.39.5
 
