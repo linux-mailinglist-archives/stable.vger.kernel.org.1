@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-137680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02879AA14A6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:18:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFE1AA11EA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E703A85EC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:13:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B7AD4A57FA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38472459FA;
-	Tue, 29 Apr 2025 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027CB24C071;
+	Tue, 29 Apr 2025 16:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQAuwt2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbDF9+9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B045538FB0;
-	Tue, 29 Apr 2025 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B336727453;
+	Tue, 29 Apr 2025 16:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946801; cv=none; b=jIciZCudByXH2dZGJFClFWZsAt4XVAkrBGQigKiXQtRj8v701N9GIFE/XAY9IHR3T6CnmzwbwH4/LNHlcIAIOOrLIW5Ri5Q78zcfqKpWcghJ5jBKDwt5J0/KHKa8MRODvfaWIKOmng1hwahXs+bGM5vjqP07JInYzyW60e/+fUc=
+	t=1745945207; cv=none; b=sMgFEGNZxC0I3wFwadAG37faYhv6UrU9B1Odo5WiCxRvqto+QXfV3byoOPUWQMQlycQrAU9/p0jKVEb0r8ictacap5T6JdcHaU+3TmdO0X21YLFNcuCztYOzTJaZVp9VbBpsfIzDE0rjV8lDEJW09x/mMf4Yp5D9kjar05zdmIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946801; c=relaxed/simple;
-	bh=pNdIv1Hx7vKcgVJHLzU7+KeNpwQQU/IA1oHbJ7DPxho=;
+	s=arc-20240116; t=1745945207; c=relaxed/simple;
+	bh=G70ibjgZ1yDHo+/D8On58rWwu/LAjQXh2Nte9ZhrPHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iN48shSyBAE6HNZTt2f3yEFnu8Wwdq0dpp8HzpqwzfQ6Mt9wkErzNf5weZqnyI67r6cBSU/Q3gmxujmNUaFCFxAaOThJek7jokM2L1aERds8i7yfTY07HlDpMje/k0taB5NoetHXUoinQaoXzUqnyl1SjQ/H5rviUSIXnWvfEwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQAuwt2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5FABC4CEE3;
-	Tue, 29 Apr 2025 17:13:20 +0000 (UTC)
+	 MIME-Version; b=tM1Fj7ArRnTb9d4DX0WbrXxydfNBVw1YPEqVCzf1bayUQ5gEUcqlGKLPBhog+oVJm9lQFW4GcaMzdJwVuzhjHpU9trnY340odI4zd8g4Yl7kQHB7pk9Is7Sj1IjJgeMnwlnJm+0bxhbRe1Nv3gJcKZNIikRg7VVNB3oCU+cEgQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbDF9+9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F29C4CEE3;
+	Tue, 29 Apr 2025 16:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946801;
-	bh=pNdIv1Hx7vKcgVJHLzU7+KeNpwQQU/IA1oHbJ7DPxho=;
+	s=korg; t=1745945207;
+	bh=G70ibjgZ1yDHo+/D8On58rWwu/LAjQXh2Nte9ZhrPHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQAuwt2QynnQNzmBtkqw43JYLygtJsBOSbDz0l9sit1qnZj12JYg1U6h2xvTZzOjW
-	 8hxUk0w6Ewt+uNLqq0UlDnXBfOVUNrhnLzs+d1cjrIT1ckTjxndoxkRjwBjV/+XOLc
-	 5cByPbmZRYM6N0E6O6oHcZURw0GG7DQboF6wiDr0=
+	b=KbDF9+9ngwzwRlxk8fM/0ambxCmWmorZim4H8uBDdSCbCSelBBfYRnU/R2qCYU9DO
+	 /CQ6XpTrrkqW6nx46naxulqvb1lNqiCb/gJ+WqcVfb8acek4oLKE3kcITLJ61BennE
+	 vgUa4uBEP0mfM9Mycrcn6PWyhtvgZU8YbuM1sZ64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Meng <cong.meng@oracle.com>,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 5.10 074/286] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+	Fabien Parent <fparent@baylibre.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 037/179] pwm: mediatek: Always use bus clock
 Date: Tue, 29 Apr 2025 18:39:38 +0200
-Message-ID: <20250429161110.896651226@linuxfoundation.org>
+Message-ID: <20250429161050.915125167@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Fabien Parent <fparent@baylibre.com>
 
-commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
+[ Upstream commit 0c0ead76235db0bcfaab83f04db546995449d002 ]
 
-create_user_mr() has correct code to count the number of null keys
-used to fill in a hole for the memory map. However, fill_indir()
-does not follow the same to cap the range up to the 1GB limit
-correspondingly. Fill in more null keys for the gaps in between,
-so that null keys are correctly populated.
+The MediaTek PWM IP can sometimes use the 26 MHz source clock to
+generate the PWM signal, but the driver currently assumes that we always
+use the PWM bus clock to generate the PWM signal.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
-Cc: stable@vger.kernel.org
-Reported-by: Cong Meng <cong.meng@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit modifies the PWM driver in order to force the PWM IP to
+always use the bus clock as source clock.
+
+I do not have the datasheet of all the MediaTek SoC, so I don't know if
+the register to choose the source clock is present in all the SoCs or
+only in subset. As a consequence I made this change optional by using a
+platform data paremeter to says whether this register is supported or
+not. On all the SoCs I don't have the datasheet (MT2712, MT7622, MT7623,
+MT7628, MT7629) I kept the behavior to be the same as before this
+change.
+
+Signed-off-by: Fabien Parent <fparent@baylibre.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 7ca59947b5fc ("pwm: mediatek: Prevent divide-by-zero in pwm_mediatek_config()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/mlx5/core/mr.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-mediatek.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -165,9 +165,12 @@ again:
- 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
- 			preve = dmr->end;
- 		} else {
-+			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
+diff --git a/drivers/pwm/pwm-mediatek.c b/drivers/pwm/pwm-mediatek.c
+index b94e0d09c300f..2bece32e62dad 100644
+--- a/drivers/pwm/pwm-mediatek.c
++++ b/drivers/pwm/pwm-mediatek.c
+@@ -30,12 +30,14 @@
+ #define PWM45DWIDTH_FIXUP	0x30
+ #define PWMTHRES		0x30
+ #define PWM45THRES_FIXUP	0x34
++#define PWM_CK_26M_SEL		0x210
+ 
+ #define PWM_CLK_DIV_MAX		7
+ 
+ struct pwm_mediatek_of_data {
+ 	unsigned int num_pwms;
+ 	bool pwm45_fixup;
++	bool has_ck_26m_sel;
+ };
+ 
+ /**
+@@ -131,6 +133,10 @@ static int pwm_mediatek_config(struct pwm_chip *chip, struct pwm_device *pwm,
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/* Make sure we use the bus clock and not the 26MHz clock */
++	if (pc->soc->has_ck_26m_sel)
++		writel(0, pc->regs + PWM_CK_26M_SEL);
 +
- 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
--			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
--			preve = dmr->start;
-+			klm->bcount = cpu_to_be32(klm_bcount(bcount));
-+			preve += bcount;
-+
- 			goto again;
- 		}
- 	}
+ 	/* Using resolution in picosecond gets accuracy higher */
+ 	resolution = (u64)NSEC_PER_SEC * 1000;
+ 	do_div(resolution, clk_get_rate(pc->clk_pwms[pwm->hwpwm]));
+@@ -280,31 +286,37 @@ static int pwm_mediatek_remove(struct platform_device *pdev)
+ static const struct pwm_mediatek_of_data mt2712_pwm_data = {
+ 	.num_pwms = 8,
+ 	.pwm45_fixup = false,
++	.has_ck_26m_sel = false,
+ };
+ 
+ static const struct pwm_mediatek_of_data mt7622_pwm_data = {
+ 	.num_pwms = 6,
+ 	.pwm45_fixup = false,
++	.has_ck_26m_sel = false,
+ };
+ 
+ static const struct pwm_mediatek_of_data mt7623_pwm_data = {
+ 	.num_pwms = 5,
+ 	.pwm45_fixup = true,
++	.has_ck_26m_sel = false,
+ };
+ 
+ static const struct pwm_mediatek_of_data mt7628_pwm_data = {
+ 	.num_pwms = 4,
+ 	.pwm45_fixup = true,
++	.has_ck_26m_sel = false,
+ };
+ 
+ static const struct pwm_mediatek_of_data mt7629_pwm_data = {
+ 	.num_pwms = 1,
+ 	.pwm45_fixup = false,
++	.has_ck_26m_sel = false,
+ };
+ 
+ static const struct pwm_mediatek_of_data mt8516_pwm_data = {
+ 	.num_pwms = 5,
+ 	.pwm45_fixup = false,
++	.has_ck_26m_sel = true,
+ };
+ 
+ static const struct of_device_id pwm_mediatek_of_match[] = {
+-- 
+2.39.5
+
 
 
 
