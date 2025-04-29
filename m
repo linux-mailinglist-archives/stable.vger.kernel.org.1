@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-137226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22623AA1232
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D619DAA1402
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6412F7B4111
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC86D9857EB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB512248878;
-	Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2DA229B05;
+	Tue, 29 Apr 2025 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOV4Dg5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkYwB6rb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E462472AA;
-	Tue, 29 Apr 2025 16:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589EE7E110;
+	Tue, 29 Apr 2025 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945438; cv=none; b=QcWfzQDWuyMSyG1w0T/j6OUzWVHgCrdWa3X+G3NK/fh0u2kzZS83YjiOI5C4PFM6VpUbGPkfhCIuv0MZ9hHAQ26DL1g92fcB/qlM6Dk3dOe98qIP8fFpDrSrZW9xplSDMjt2Ss7NPiuBIDio3uf5Pb6dXJm5OPt9b0cr22WhWV4=
+	t=1745946368; cv=none; b=PcWtgR1B49bAZOBCpO4wwc0GYxAQ062+gZjVpBfGx+cOh5HcYmTw/dbEfuV1wlnLTWi/B9oKh9YDURf2tpKISftvzI3CorkTI6F4R5iQnYf6po7AYekGONN5tnyCMnkinKmtPtWIlBMfKWul5KyIrXARNsMeuDEDRkkUE/xSM9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945438; c=relaxed/simple;
-	bh=RAYZW4OJ+ESdxaxfmvHbQiqCqrHwKGCS+D9bqUOKG4o=;
+	s=arc-20240116; t=1745946368; c=relaxed/simple;
+	bh=CdaYYYlc1Q8vvhjweixPexjUovSPdyZbT9e/+1wxBaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFrX/tvQ23NNOweguMJGzRygctXZV+T5RokQ/xtZ/1cBGVIE37v+IwgVimgDqm4noDjF/SuAzBs9F41G6P73rs6EU0w4mulVZiBh/jHaYi1xc/svLR3423DR0h4IJubV5xatKWzScpD/aMcy8SoWv+OZjVoduabu3pid74xYHmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOV4Dg5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0192CC4CEE3;
-	Tue, 29 Apr 2025 16:50:37 +0000 (UTC)
+	 MIME-Version; b=al6X1vODAViihgL4+RK9C76WawozTIxED8M4yd9TqJu/Bwx8bF4f9vHc03zcCZ7jRyvclI19YvRo4UliwCP1eO1Hu1y+oBcww8pKNA1APBHBs1HYvFwhfGRXzFOeqITSS/wWAUcEnuHRRlhbw7CZ5yPGI35qIJNRg+qjXX2IdWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkYwB6rb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD03C4CEE3;
+	Tue, 29 Apr 2025 17:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945438;
-	bh=RAYZW4OJ+ESdxaxfmvHbQiqCqrHwKGCS+D9bqUOKG4o=;
+	s=korg; t=1745946368;
+	bh=CdaYYYlc1Q8vvhjweixPexjUovSPdyZbT9e/+1wxBaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZOV4Dg5fBU3CsFM2vMqrQ2frQ9TfKbNwsyBobdHuhxLVBcq6A/8t2fQt2v1EfGxIz
-	 pC0FfeR8cVV98r54rDAtpeHwl3CzBQaOmxI8PBULcH13qsOSYAjnSsxL8rabXHJF/0
-	 zwrzHQNPH5NaOfgYLlOdxoalJgkfopNdSd5sOv4Q=
+	b=bkYwB6rbvD37pwrNj9ZUKrYhqWN5B/sO/3EtIox8wBYhst3xxsMxf2kEetUWudtdm
+	 bdakwovuJgHryekecthKQLYndPOi3iDuT/aSd0Lsr4XgFGQdZ1ptkObNGbhtvqngJM
+	 cL2eJSjgq0C5g15pwINks7i86aJ3moppEjALk5b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 112/179] kbuild: Add -fno-builtin-wcslen
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 216/311] usb: gadget: aspeed: Add NULL pointer check in ast_vhub_init_dev()
 Date: Tue, 29 Apr 2025 18:40:53 +0200
-Message-ID: <20250429161053.937628257@linuxfoundation.org>
+Message-ID: <20250429161129.844561794@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
+[ Upstream commit 8c75f3e6a433d92084ad4e78b029ae680865420f ]
 
-A recent optimization change in LLVM [1] aims to transform certain loop
-idioms into calls to strlen() or wcslen(). This change transforms the
-first while loop in UniStrcat() into a call to wcslen(), breaking the
-build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
+The variable d->name, returned by devm_kasprintf(), could be NULL.
+A pointer check is added to prevent potential NULL pointer dereference.
+This is similar to the fix in commit 3027e7b15b02
+("ice: Fix some null pointer dereference issues in ice_ptp.c").
 
-  ld.lld: error: undefined symbol: wcslen
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
-  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
-  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+This issue is found by our static analysis tool
 
-Disable this optimization with '-fno-builtin-wcslen', which prevents the
-compiler from assuming that wcslen() is available in the kernel's C
-library.
-
-[ More to the point - it's not that we couldn't implement wcslen(), it's
-  that this isn't an optimization at all in the context of the kernel.
-
-  Replacing a simple inlined loop with a function call to the same loop
-  is just stupid and pointless if you don't have long strings and fancy
-  libraries with vectorization support etc.
-
-  For the regular 'strlen()' cases, we want the compiler to do this in
-  order to handle the trivial case of constant strings. And we do have
-  optimized versions of 'strlen()' on some architectures. But for
-  wcslen? Just no.    - Linus ]
-
-Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[nathan: Resolve small conflict in older trees]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://lore.kernel.org/r/20250311012705.1233829-1-chenyuan0y@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    3 +++
+ drivers/usb/gadget/udc/aspeed-vhub/dev.c | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/Makefile
-+++ b/Makefile
-@@ -930,6 +930,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Wer
- # Require designated initializers for all marked structures
- KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
- 
-+# Ensure compilers do not transform certain loops into calls to wcslen()
-+KBUILD_CFLAGS += -fno-builtin-wcslen
+diff --git a/drivers/usb/gadget/udc/aspeed-vhub/dev.c b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+index 573109ca5b799..a09f72772e6e9 100644
+--- a/drivers/usb/gadget/udc/aspeed-vhub/dev.c
++++ b/drivers/usb/gadget/udc/aspeed-vhub/dev.c
+@@ -548,6 +548,9 @@ int ast_vhub_init_dev(struct ast_vhub *vhub, unsigned int idx)
+ 	d->vhub = vhub;
+ 	d->index = idx;
+ 	d->name = devm_kasprintf(parent, GFP_KERNEL, "port%d", idx+1);
++	if (!d->name)
++		return -ENOMEM;
 +
- # change __FILE__ to the relative path from the srctree
- KBUILD_CFLAGS	+= $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
+ 	d->regs = vhub->regs + 0x100 + 0x10 * idx;
  
+ 	ast_vhub_init_ep0(vhub, &d->ep0, d);
+-- 
+2.39.5
+
 
 
 
