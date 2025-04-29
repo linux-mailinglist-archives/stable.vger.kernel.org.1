@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-138424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B74AA17F3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:53:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2285FAA152B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07621BC144D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:53:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321B1188F108
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CFF24EAB2;
-	Tue, 29 Apr 2025 17:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D3244683;
+	Tue, 29 Apr 2025 17:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgzVAfcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oytWZ3Ir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117E722AE68;
-	Tue, 29 Apr 2025 17:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7401582C60;
+	Tue, 29 Apr 2025 17:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949209; cv=none; b=BfjxFKwRCJkXtEFwLYUKDwMXBgyU8mcsrMIKGr7FVOowy/r5CZa8z5+QD4DG/vuQSCKog+pUJnHk3PNW6z6d1rQ37y6wOXeEieJaFZCxN0WmbnEJBlEIauo3oOZDWoe/rjYsMdn8B0Zgx7C0C5Dbgmh+MLkCIqSvxxmUBLSMJR4=
+	t=1745947245; cv=none; b=G/ztFbDvCM4OQeUc4nIXuxZkCgP9W11pvQbaWzbWmVaeU5y1cIBoGuHsBiKd24J3V7V97lgvZzLKcA98cmo8ubKDL96lnBTtIg4OeAuGGYyrordzmV91kEjHpfXqyCsTpuBS9E78Ao76VOfWg3Hz0BG9VTPmr0W8I2eSepmnfeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949209; c=relaxed/simple;
-	bh=bqCMHSxsSQjJ2cZ5dFmUdd0Q1tOiFL9zd1KJqkQxm6U=;
+	s=arc-20240116; t=1745947245; c=relaxed/simple;
+	bh=1dvONnsbDilOfUCpbC1n3kNxPy2+cJY7133b+P7PTA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e98J0B64hOPcNjkerHaVahFuOGnTwjzKqqdh580ZuifHPDZ2eebLoIccoPlN4xyYvyo2q6JGrKeuAm2Z3REmZl6sjPNlNAzQBbFrBBmWvC1b+Haw81lGRI0rNj5lzVury8Kzx59biB7Ou4WBAJYJ4lxMWMhGuAtiieNN8gx2e+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QgzVAfcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AACC4CEE3;
-	Tue, 29 Apr 2025 17:53:28 +0000 (UTC)
+	 MIME-Version; b=DMRWa+SRpSK26JiYzO7aFxATi4tFa2vdYTnfMX1nN7bcpBLZprsO/JVRuq/qCkH7vCZqYJcLusqfg1YQ5sX0xgcawpDPwEEoG81WkusyT9RszDtTbP0U1Yn7vG4VHVWXi4wLlJX//ln7DbWLvMyX9vDL6TwaWXZrPzkfpcPxrJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oytWZ3Ir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01994C4CEE3;
+	Tue, 29 Apr 2025 17:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949208;
-	bh=bqCMHSxsSQjJ2cZ5dFmUdd0Q1tOiFL9zd1KJqkQxm6U=;
+	s=korg; t=1745947245;
+	bh=1dvONnsbDilOfUCpbC1n3kNxPy2+cJY7133b+P7PTA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QgzVAfcKR6PMBZClOmYB6bBaKtriPX4tosR8rBGanHfFLynKiRhUgLd7aupb3ZWPe
-	 3P/qYGDcif4YBXdFfXS0GUl1k4AudDQowV0GPR4Zmetjo7EJvua4s1HE+DlXUH4rQR
-	 3T3f8b6kVoxcERgq70IFUKq3dmms6YWvpkdFy89Y=
+	b=oytWZ3IrWTUS7yaj3f0XaOycB686i1EmjVuicS2F+eP3SUR7A1JlW4+I8PhiyjfiG
+	 2e2Kbv9thuLRyf/QTVoHZDxRXkyQlfuInPFquby78tf4Zw1LfwN0MPKe26hS6pDrXv
+	 GE09SjSifGcsLKac5p8vOhatDK9affYpbOf6pkck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Joe Thornber <thornber@redhat.com>,
-	Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Subject: [PATCH 5.15 245/373] dm cache: fix flushing uninitialized delayed_work on cache_ctr error
+	David Lechner <dlechner@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Sergiu Cuciurean <sergiu.cuciurean@analog.com>,
+	Jonathan Santos <Jonathan.Santos@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 218/286] iio: adc: ad7768-1: Fix conversion result sign
 Date: Tue, 29 Apr 2025 18:42:02 +0200
-Message-ID: <20250429161133.204361732@linuxfoundation.org>
+Message-ID: <20250429161116.914157548@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,113 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
 
-commit 135496c208ba26fd68cdef10b64ed7a91ac9a7ff upstream.
+[ Upstream commit 8236644f5ecb180e80ad92d691c22bc509b747bb ]
 
-An unexpected WARN_ON from flush_work() may occur when cache creation
-fails, caused by destroying the uninitialized delayed_work waker in the
-error path of cache_create(). For example, the warning appears on the
-superblock checksum error.
+The ad7768-1 ADC output code is two's complement, meaning that the voltage
+conversion result is a signed value.. Since the value is a 24 bit one,
+stored in a 32 bit variable, the sign should be extended in order to get
+the correct representation.
 
-Reproduce steps:
+Also the channel description has been updated to signed representation,
+to match the ADC specifications.
 
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dd if=/dev/urandom of=/dev/mapper/cmeta bs=4k count=1 oflag=direct
-dmsetup create cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-
-Kernel logs:
-
-(snip)
-WARNING: CPU: 0 PID: 84 at kernel/workqueue.c:4178 __flush_work+0x5d4/0x890
-
-Fix by pulling out the cancel_delayed_work_sync() from the constructor's
-error path. This patch doesn't affect the use-after-free fix for
-concurrent dm_resume and dm_destroy (commit 6a459d8edbdb ("dm cache: Fix
-UAF in destroy()")) as cache_dtr is not changed.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Fixes: 6a459d8edbdb ("dm cache: Fix UAF in destroy()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Joe Thornber <thornber@redhat.com>
-Signed-off-by: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a5f8c7da3dbe ("iio: adc: Add AD7768-1 ADC basic support")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Signed-off-by: Sergiu Cuciurean <sergiu.cuciurean@analog.com>
+Signed-off-by: Jonathan Santos <Jonathan.Santos@analog.com>
+Cc: <Stable@vger.kernel.org>
+Link: https://patch.msgid.link/505994d3b71c2aa38ba714d909a68e021f12124c.1741268122.git.Jonathan.Santos@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/iio/adc/ad7768-1.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -1890,16 +1890,13 @@ static void check_migrations(struct work
-  * This function gets called on the error paths of the constructor, so we
-  * have to cope with a partially initialised struct.
-  */
--static void destroy(struct cache *cache)
-+static void __destroy(struct cache *cache)
- {
--	unsigned i;
--
- 	mempool_exit(&cache->migration_pool);
+diff --git a/drivers/iio/adc/ad7768-1.c b/drivers/iio/adc/ad7768-1.c
+index c409b498fc313..2445ebc551dd1 100644
+--- a/drivers/iio/adc/ad7768-1.c
++++ b/drivers/iio/adc/ad7768-1.c
+@@ -142,7 +142,7 @@ static const struct iio_chan_spec ad7768_channels[] = {
+ 		.channel = 0,
+ 		.scan_index = 0,
+ 		.scan_type = {
+-			.sign = 'u',
++			.sign = 's',
+ 			.realbits = 24,
+ 			.storagebits = 32,
+ 			.shift = 8,
+@@ -373,7 +373,7 @@ static int ad7768_read_raw(struct iio_dev *indio_dev,
+ 		iio_device_release_direct_mode(indio_dev);
+ 		if (ret < 0)
+ 			return ret;
+-		*val = ret;
++		*val = sign_extend32(ret, chan->scan_type.realbits - 1);
  
- 	if (cache->prison)
- 		dm_bio_prison_destroy_v2(cache->prison);
+ 		return IIO_VAL_INT;
  
--	cancel_delayed_work_sync(&cache->waker);
- 	if (cache->wq)
- 		destroy_workqueue(cache->wq);
- 
-@@ -1927,13 +1924,22 @@ static void destroy(struct cache *cache)
- 	if (cache->policy)
- 		dm_cache_policy_destroy(cache->policy);
- 
-+	bioset_exit(&cache->bs);
-+
-+	kfree(cache);
-+}
-+
-+static void destroy(struct cache *cache)
-+{
-+	unsigned int i;
-+
-+	cancel_delayed_work_sync(&cache->waker);
-+
- 	for (i = 0; i < cache->nr_ctr_args ; i++)
- 		kfree(cache->ctr_args[i]);
- 	kfree(cache->ctr_args);
- 
--	bioset_exit(&cache->bs);
--
--	kfree(cache);
-+	__destroy(cache);
- }
- 
- static void cache_dtr(struct dm_target *ti)
-@@ -2546,7 +2552,7 @@ static int cache_create(struct cache_arg
- 	*result = cache;
- 	return 0;
- bad:
--	destroy(cache);
-+	__destroy(cache);
- 	return r;
- }
- 
-@@ -2597,7 +2603,7 @@ static int cache_ctr(struct dm_target *t
- 
- 	r = copy_ctr_args(cache, argc - 3, (const char **)argv + 3);
- 	if (r) {
--		destroy(cache);
-+		__destroy(cache);
- 		goto out;
- 	}
- 
+-- 
+2.39.5
+
 
 
 
