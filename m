@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344C1AA1493
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A805DAA1759
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:46:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F400E18958B7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:14:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189F717F291
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701AB247280;
-	Tue, 29 Apr 2025 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1490F22A81D;
+	Tue, 29 Apr 2025 17:46:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDzJylpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNsW/Auu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8BF242D6E;
-	Tue, 29 Apr 2025 17:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D7BC148;
+	Tue, 29 Apr 2025 17:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946851; cv=none; b=KBnfxOE7BaxiLdAyL1vUWXyHUzpxWeOZrT7hycChwdpiY+V9/rP0sZHqPhLSHf8ycUfxxoedevzyZejIDD5qSupD/e0gck5l06SiBvVSjmYj/p/uQdWXD/RCSbhb90piQucPOhkx4Smv9mibpURuWKRQaf28OozTYv3zNw8Mu2I=
+	t=1745948796; cv=none; b=FluB/Ba9pZKEQRwlCJmR1tUXt145RUX/umxWvmc/bXj8Yy80H+Hc7MKhrH5qy2+ckPOJkRqdENbleVzCZRtKzoyj2hSHeWsCumi9WYKdA9fcw7zcRtHTVMqozbOM2mYYSPrjt0QCQJNwwWPwVgYq7hnliJihr0BKhbYqDHtj2xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946851; c=relaxed/simple;
-	bh=k++T/4YMjhA4i1Cxb5cbEXU8LehiFOoTcNKb1vm4Rc8=;
+	s=arc-20240116; t=1745948796; c=relaxed/simple;
+	bh=3WB7mIRx15b4R4Zl3Wor/D5u1pYkeCpzJjk1iMKWNDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sw3LurhtOQ2NikV1RoGREwlfz+ZNFaOSygPaJG2U3/fDXPnsE2X7WOV4vWwdi7x2aLUXH56JsCWPYykjokkXujsI5kN1pv3kYLWiAaj1r+teBgABvgZpnAByUdEClxv9loJJ0wV4BgxVHSEKHbpaKN2j7DaP91pkk8suC6Ghw6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDzJylpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D455C4CEE3;
-	Tue, 29 Apr 2025 17:14:10 +0000 (UTC)
+	 MIME-Version; b=baN/kRuf3yQz6R86nl3tnTS+cDopbO37RCklbw15mTLPArGnMKiYUym7vbkojv6lWyXzIZx7pD/YWvsRiatPxICFSy8RxmdysJ5be6idY4Va05L2r+H2iIAGBfwyq4tbB0aY5UjfHNqJLkWpaTX4xLva4mjKWn7NDU1VijZErBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNsW/Auu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5985AC4CEE3;
+	Tue, 29 Apr 2025 17:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946851;
-	bh=k++T/4YMjhA4i1Cxb5cbEXU8LehiFOoTcNKb1vm4Rc8=;
+	s=korg; t=1745948796;
+	bh=3WB7mIRx15b4R4Zl3Wor/D5u1pYkeCpzJjk1iMKWNDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDzJylpBVYJwMYTiBO7ShHxPEyA4syX0JJ/GaCdmG7/DCOu3CKs8102XuZqEVW1Y0
-	 tF67+vt7UE7JT5jra1yn7Md7a+Bl+tZb6SUuw/hzvtJiEW1bQwRWs9EHjA48mnWecl
-	 tuyrZ3s82sJVb6527nlyzBny4OSw809cVn3gn6jk=
+	b=MNsW/AuuNQUA20/0XvNHjNzUAgw2SNgg6NU6Mgn1oN+RLPx9Ip0NzKz+uLZbQR5Zx
+	 /Vx5yigtmIt+bZyGtdNBsFepb3PWLDcGIpMrkD2219BCPNeJwpxhcwxOM5yShGz1vg
+	 gSmNwyxX5u4xr/SxLfoK8166ZK6TzyctIKnJtOZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhoumin <teczm@foxmail.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 089/286] ftrace: Add cond_resched() to ftrace_graph_set_hash()
+	Douglas Anderson <dianders@chromium.org>,
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 116/373] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
 Date: Tue, 29 Apr 2025 18:39:53 +0200
-Message-ID: <20250429161111.520663289@linuxfoundation.org>
+Message-ID: <20250429161127.947903746@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhoumin <teczm@foxmail.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 42ea22e754ba4f2b86f8760ca27f6f71da2d982c upstream.
+commit a5951389e58d2e816eed3dbec5877de9327fd881 upstream.
 
-When the kernel contains a large number of functions that can be traced,
-the loop in ftrace_graph_set_hash() may take a lot of time to execute.
-This may trigger the softlockup watchdog.
+When comparing to the ARM list [1], it appears that several ARM cores
+were missing from the lists in spectre_bhb_loop_affected(). Add them.
 
-Add cond_resched() within the loop to allow the kernel to remain
-responsive even when processing a large number of functions.
+NOTE: for some of these cores it may not matter since other ways of
+clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
+but it still seems good to have all the info from ARM's whitepaper
+included.
 
-This matches the cond_resched() that is used in other locations of the
-code that iterates over all functions that can be traced.
+[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
 
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
 Cc: stable@vger.kernel.org
-Fixes: b9b0c831bed26 ("ftrace: Convert graph filter to use hash tables")
-Link: https://lore.kernel.org/tencent_3E06CE338692017B5809534B9C5C03DA7705@qq.com
-Signed-off-by: zhoumin <teczm@foxmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: James Morse <james.morse@arm.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -6096,6 +6096,7 @@ ftrace_graph_set_hash(struct ftrace_hash
- 				}
- 			}
- 		}
-+		cond_resched();
- 	} while_for_each_ftrace_rec();
- out:
- 	mutex_unlock(&ftrace_lock);
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -876,6 +876,14 @@ static u8 spectre_bhb_loop_affected(void
+ {
+ 	u8 k = 0;
+ 
++	static const struct midr_range spectre_bhb_k132_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
++		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
++	};
++	static const struct midr_range spectre_bhb_k38_list[] = {
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++	};
+ 	static const struct midr_range spectre_bhb_k32_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+@@ -889,6 +897,7 @@ static u8 spectre_bhb_loop_affected(void
+ 	};
+ 	static const struct midr_range spectre_bhb_k24_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+@@ -904,7 +913,11 @@ static u8 spectre_bhb_loop_affected(void
+ 		{},
+ 	};
+ 
+-	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
++	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
++		k = 132;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
++		k = 38;
++	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
+ 		k = 32;
+ 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
+ 		k = 24;
 
 
 
