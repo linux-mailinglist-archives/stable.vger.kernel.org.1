@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27A2AA16C9
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:40:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17FA1AA152C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D6D7986AA0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:34:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32C6B1890027
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFAB24EF6B;
-	Tue, 29 Apr 2025 17:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA240245007;
+	Tue, 29 Apr 2025 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ufaop5uN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOAwwFT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E247215F7C;
-	Tue, 29 Apr 2025 17:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BDA21ABDB;
+	Tue, 29 Apr 2025 17:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948067; cv=none; b=mPnqtC3EYw4MY5BKEJCECTfOFwoV7JehI52g8StWn1aXu+h/3b17FFHngSNDccIeZn8n/hTny3LRjROf4H7akHuo3EgvpUaXLSLBTXacAX/Ui1rWaisribJLQ4KNdBlPQO9CVHDJ+dd+PQgf/+STEc3Sa6RpHmYyV6zCGbxy6y8=
+	t=1745947248; cv=none; b=Gjxfpn6hu0/qLeprdBIv3FkQ+fyCFxuCtoOQellDFgzLP87t9QjaqDYeF35qCF2gwYjAoJ8neMNpx9n9aWSGMUwcdliXOW68Pcs9i3cMmwEDvHmoB7bsK1nf+UjUV1N61cRUeyla2sH8OJsKXYdQFp9madcOZRR0WSks+f5xAGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948067; c=relaxed/simple;
-	bh=88CJpDiiqLrpe8diGmUlTPTmI7nC9w25DQ/Lup4WX8U=;
+	s=arc-20240116; t=1745947248; c=relaxed/simple;
+	bh=f3u+l5icYdG7KnNdskH/WSP7B79pq0jvsUqIwUhAOAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scKkWRWJ3JrkgTNRS8pPSPYDbw3xXSpe592WVqYGiGcokvWBYyCtWKK12aIUoZN6WRJA+m6Tfa5hs2G1IayaAocQvmTwrl2KOz07gkGJfQvsfgrCQPPTFmxhOllluOHxTKqhfuGnOZJRp3WrQX0KUmc+TXA0KBc9exTacaRqREE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ufaop5uN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45006C4CEE3;
-	Tue, 29 Apr 2025 17:34:26 +0000 (UTC)
+	 MIME-Version; b=rdimplg4+zDUMiBYagJZtOh02Ie0tLKjY4QTt/pv6a0Q+Mgk7HeBR4pR3pZfIdlxpuRX4IJL/cIPuVAvkyXa3yJj6k/sT5XthjU4gyYeVg6XIMzL37/PGFN+U4bN5NNB7Hyiavg6VhbK8Gc0m/VwBDPaqsdmM3/r5wf/UWd4A8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOAwwFT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B151C4CEE3;
+	Tue, 29 Apr 2025 17:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948066;
-	bh=88CJpDiiqLrpe8diGmUlTPTmI7nC9w25DQ/Lup4WX8U=;
+	s=korg; t=1745947248;
+	bh=f3u+l5icYdG7KnNdskH/WSP7B79pq0jvsUqIwUhAOAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ufaop5uNHQKhU7Lw0teExQSCvQUjCEFEh3GLtr4ptUQyjWvSegRbJCU0uNWGgHSHM
-	 p+lZAUExy4dFUiKnKFhFYdzVzqZ+iTiETuAouUx8i47LQP8adqRGrQXj8zALqdll6b
-	 CciAmcQSuDqZ+aPPyO5OajCuhBhsWMDwmtFLFpOk=
+	b=JOAwwFT+e7hYJOrFG89q5EypSJ92x+3f6k5OFNf9v+CbP4n2oAMWSqJGpEyqOoOrE
+	 CCABS+vevQ7OO9oZbVNsDdQmcA4S3IoLozpKpUGVWoL9UODndjXtKi4jBgYSOCY/Fc
+	 tXibmc0d7b6Zdo1hjc7SjgA9PCAE76AuhG/672rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/280] phy: rockchip: usbdp: Avoid call hpd_event_trigger in dp_phy_init
+Subject: [PATCH 5.10 219/286] backlight: led_bl: Hold led_access lock when calling led_sysfs_disable()
 Date: Tue, 29 Apr 2025 18:42:03 +0200
-Message-ID: <20250429161122.555838975@linuxfoundation.org>
+Message-ID: <20250429161116.955469616@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 28dc672a1a877c77b000c896abd8f15afcdc1b0c ]
+[ Upstream commit 276822a00db3c1061382b41e72cafc09d6a0ec30 ]
 
-Function rk_udphy_dp_hpd_event_trigger will set vogrf let it
-trigger HPD interrupt to DP by Type-C. This configuration is only
-required when the DP work in Alternate Mode, and called by
-typec_mux_set. In standard DP mode, such settings will prevent
-the DP from receiving HPD interrupts.
+Lockdep detects the following issue on led-backlight removal:
+  [  142.315935] ------------[ cut here ]------------
+  [  142.315954] WARNING: CPU: 2 PID: 292 at drivers/leds/led-core.c:455 led_sysfs_enable+0x54/0x80
+  ...
+  [  142.500725] Call trace:
+  [  142.503176]  led_sysfs_enable+0x54/0x80 (P)
+  [  142.507370]  led_bl_remove+0x80/0xa8 [led_bl]
+  [  142.511742]  platform_remove+0x30/0x58
+  [  142.515501]  device_remove+0x54/0x90
+  ...
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Link: https://lore.kernel.org/r/20250302115257.188774-1-andyshrk@163.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Indeed, led_sysfs_enable() has to be called with the led_access
+lock held.
+
+Hold the lock when calling led_sysfs_disable().
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20250122091914.309533-1-herve.codina@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-usbdp.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/video/backlight/led_bl.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-usbdp.c b/drivers/phy/rockchip/phy-rockchip-usbdp.c
-index 2c51e5c62d3eb..f5c6d264d89ed 100644
---- a/drivers/phy/rockchip/phy-rockchip-usbdp.c
-+++ b/drivers/phy/rockchip/phy-rockchip-usbdp.c
-@@ -1045,7 +1045,6 @@ static int rk_udphy_dp_phy_init(struct phy *phy)
- 	mutex_lock(&udphy->mutex);
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -226,8 +226,11 @@ static int led_bl_remove(struct platform
+ 	backlight_device_unregister(bl);
  
- 	udphy->dp_in_use = true;
--	rk_udphy_dp_hpd_event_trigger(udphy, udphy->dp_sink_hpd_cfg);
+ 	led_bl_power_off(priv);
+-	for (i = 0; i < priv->nb_leds; i++)
++	for (i = 0; i < priv->nb_leds; i++) {
++		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_enable(priv->leds[i]);
++		mutex_unlock(&priv->leds[i]->led_access);
++	}
  
- 	mutex_unlock(&udphy->mutex);
- 
--- 
-2.39.5
-
+ 	return 0;
+ }
 
 
 
