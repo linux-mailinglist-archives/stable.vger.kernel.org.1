@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D4CAA17D6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:52:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80701AA14EE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78EF24C6126
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:52:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA3ED1888308
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CAE12512E0;
-	Tue, 29 Apr 2025 17:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E7C24EF6B;
+	Tue, 29 Apr 2025 17:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAsFfYPS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9Xg8L80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC60242D73;
-	Tue, 29 Apr 2025 17:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A278253345;
+	Tue, 29 Apr 2025 17:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949129; cv=none; b=U8xIo7PDheDSxe9NFQfYMxBEssnArEZMdHnveKZlqEvnDSOYfhXw/HG2GTY1boOaleYahJnzPRJwkbY7xnwmt/xoeXz+qbqYM89Vbn4fEIxRW4FAsV38KGoGdwXhZ9m5fCJcsi6nB8d+06ofFf7BCliqUwGmBXtS/7n08mCp77U=
+	t=1745947054; cv=none; b=YUtzXGqtTMR5LdkpkD02bZ/AX7I5rmt66EkocCd7DrmGDHXqfYgVGEqSbeRsRZNWJPzdIvz/dWU471cZvvJFGszYeDIM3hX8TInpY53KU3NQQOyKE+HeURiZvPhhKcegxo6z1MYq320/5p9DF/e3/OaGkxpvx/Dyy7h75orhPjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949129; c=relaxed/simple;
-	bh=x8UL9Fx91CSyn/hVtA7O0R8Z/lZU4Y2oR7lWcsCA11s=;
+	s=arc-20240116; t=1745947054; c=relaxed/simple;
+	bh=v250DgBIpD/Diz6ksqaOU6GO0lj2OIVH3aEbTH4QNn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c4SJBvbmDT5qBIxH/4w4lhyQwo/khB/GRbHXHF+UP9zzrh6illUuT13+u/BUw46A6uU4Oe6/SC2mCvL3aTykFKdp80V6pepJWda7bLKFZ4YSzy5MW3wpH4aTZVzPL3wS3x4Tcvcy1dSv1wBUFYFDzUZ+3FHsT29c4Eqe6H7Go1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAsFfYPS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1422C4CEE3;
-	Tue, 29 Apr 2025 17:52:08 +0000 (UTC)
+	 MIME-Version; b=i0xgW6JQRm6skppKsWxjqjRJeZtlCstKM0TxpTzoJAC1AWvfKqDyFrkhX/rVatANuuUwJRmP/5Os6qE8rPUsB/tMu2tzUN9R3jO08TCR0wrMkbFx6GBN7SlgEOoxtagNC/F3JTLCRYlhiu95rwFY5OEnC1qAUTnITp8mX1PUZ78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9Xg8L80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C0EC4CEE3;
+	Tue, 29 Apr 2025 17:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949129;
-	bh=x8UL9Fx91CSyn/hVtA7O0R8Z/lZU4Y2oR7lWcsCA11s=;
+	s=korg; t=1745947054;
+	bh=v250DgBIpD/Diz6ksqaOU6GO0lj2OIVH3aEbTH4QNn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAsFfYPSKIE62IsUxYz7ZkgFloT2tMIpk+FTWMziePcALHd0WJS/9IL6f70VW2lEb
-	 8JhXgPabARpfGYhuhgpMQAC2UkwoECJqY+NDx3bAZOV7vNBEQqYq3FZ4ORUPUzlyHi
-	 3p8xB03aRNoQGs/f/vuaqg/v1R84oRGceBrXl3dI=
+	b=f9Xg8L80jqVwnB5N4BYUTly06M2DJhGu2mRVtb0tP34It1/fT+nh5rKAVx3yp34L4
+	 bcIxcSCF/A91IdvuYOucfJK+dXdSC9nbA5dKiQdWe/x78BVzDDESfgUmiYlY5Rx/3B
+	 cYcNS4nit3exiHq5BwwVHlfx2SsvNuGyoBHdNlVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 183/373] drm/amdgpu/dma_buf: fix page_link check
+	Miaoqian Lin <linmq006@gmail.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.10 156/286] phy: tegra: xusb: Fix return value of tegra_xusb_find_port_node function
 Date: Tue, 29 Apr 2025 18:41:00 +0200
-Message-ID: <20250429161130.688822528@linuxfoundation.org>
+Message-ID: <20250429161114.301218987@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit c0dd8a9253fadfb8e5357217d085f1989da4ef0a upstream.
+commit 045a31b95509c8f25f5f04ec5e0dec5cd09f2c5f upstream.
 
-The page_link lower bits of the first sg could contain something like
-SG_END, if we are mapping a single VRAM page or contiguous blob which
-fits into one sg entry. Rather pull out the struct page, and use that in
-our check to know if we mapped struct pages vs VRAM.
+callers of tegra_xusb_find_port_node() function only do NULL checking for
+the return value. return NULL instead of ERR_PTR(-ENOMEM) to keep
+consistent.
 
-Fixes: f44ffd677fb3 ("drm/amdgpu: add support for exporting VRAM using DMA-buf v3")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: amd-gfx@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20211213020507.1458-1-linmq006@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c |    2 +-
+ drivers/phy/tegra/xusb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -225,7 +225,7 @@ static void amdgpu_dma_buf_unmap(struct
- 				 struct sg_table *sgt,
- 				 enum dma_data_direction dir)
- {
--	if (sgt->sgl->page_link) {
-+	if (sg_page(sgt->sgl)) {
- 		dma_unmap_sgtable(attach->dev, sgt, dir, 0);
- 		sg_free_table(sgt);
- 		kfree(sgt);
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -449,7 +449,7 @@ tegra_xusb_find_port_node(struct tegra_x
+ 	name = kasprintf(GFP_KERNEL, "%s-%u", type, index);
+ 	if (!name) {
+ 		of_node_put(ports);
+-		return ERR_PTR(-ENOMEM);
++		return NULL;
+ 	}
+ 	np = of_get_child_by_name(ports, name);
+ 	kfree(name);
 
 
 
