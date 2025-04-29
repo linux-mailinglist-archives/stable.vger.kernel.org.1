@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD19FAA13E7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B8CAA17D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E14C4982916
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40C074C5B56
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411381DF73C;
-	Tue, 29 Apr 2025 17:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F86D2472B9;
+	Tue, 29 Apr 2025 17:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe6vsQiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdPXr9HK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35231FE468;
-	Tue, 29 Apr 2025 17:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D077522AE68;
+	Tue, 29 Apr 2025 17:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946317; cv=none; b=WEKQg3G1U/PtlsHv08e16O6T2Y+avDDegSP9aL04grAUHLxlvmvvoY+BkM+2/uMY+mroa6lbxP2BDKtWm4TOCSFbgzK2Vgpv+Z84aSstXBItDbWAureoYKnoGxsDfe/SMSUJXg2hAIfNRn0VqQK1wfbrw4LeODRHugfi9b9TQ0I=
+	t=1745949112; cv=none; b=eyK9xXdOI2G9tAng/we8C4iADSmvQDL5jaXdKM2KBuUPCTnP/sSMhYvhHWHf9fqIgw5yVq2iiG4BFtAI349jlFJXO7Z5WPVDvLYu37zjvazOf2aZD1NiOSlP5OzENBUkBmJUztXd2uwxQO24giCPjXjOFbxW9lkPSmsz8XZqL2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946317; c=relaxed/simple;
-	bh=DP+5ObCn55GgYXwxrzHcEwEPGMEDOIHPtWgQ1Mbi4Rg=;
+	s=arc-20240116; t=1745949112; c=relaxed/simple;
+	bh=8xDundAfZRFXGu55LaL0LXk0YyN4kTWs97em5FEsx3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+aGILUCAQ+5d56LM1o3snWcJT/ROMWrDF9qqzoXakhTk6L9dMbqgeriy6mWkwKQ5vJIEUhjBDMCpDi+IRW5Oz7vJDJEptlXBCqB/LZpvVcna4tJfnpf0FPf6eTHTDP/650vvQyPyhEsbfRFEjbgTp9SPh9Xa4wQnJwP9L1p5XE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe6vsQiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BB7C4CEE9;
-	Tue, 29 Apr 2025 17:05:16 +0000 (UTC)
+	 MIME-Version; b=bSn1H8Yrl0wViQaK8zv1e2yu22XPMzgFeRPpKKCg1M7M53dVP+SknxIhExiPYvbxi9TLXKQJ9NCHwK2ccGA1oOwsNIUrwr7oftImzN4FselV/DZ0VemNdqtwyP0kmIBKhl9BlhcCAL18NbfjHf6B+//gSDptAqoCYcJBAgNawRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdPXr9HK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CC2C4CEE3;
+	Tue, 29 Apr 2025 17:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946316;
-	bh=DP+5ObCn55GgYXwxrzHcEwEPGMEDOIHPtWgQ1Mbi4Rg=;
+	s=korg; t=1745949112;
+	bh=8xDundAfZRFXGu55LaL0LXk0YyN4kTWs97em5FEsx3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe6vsQivV6nYDkc+98yxAc/F28f2nn7To21vR/rA+PPTZKQ0iyPhDBl4kzkzIzJ9O
-	 x9Fm5a0IY4TmFIdeUZRSLotuPGKBolmkcpbd4VdJfuHQGxnkyyTS+6R4706ehtxIR3
-	 5/ktbYZTckBnz0vChM5i5h00RcCuZ8eXdIOnCwwo=
+	b=pdPXr9HKRlQobVTYqHs1DTCWKkROyGEtcHljNsaKORtC24lB+QH1gJPl8j6DQonKr
+	 +4rI5iIoWBCuSH5fjAU3EPaoG+zCijU/WmkLGdUMhgqDbw/z7anajuOSttpu4B9Fi0
+	 kpSAAtlvgK7jQqPHsyS3vEAraOdfuuKXhS4lxS3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 227/311] riscv: tracing: Fix __write_overflow_field in ftrace_partial_regs()
-Date: Tue, 29 Apr 2025 18:41:04 +0200
-Message-ID: <20250429161130.333346626@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 5.15 188/373] KVM: arm64: Discard any SVE state when entering KVM guests
+Date: Tue, 29 Apr 2025 18:41:05 +0200
+Message-ID: <20250429161130.896599660@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlie Jenkins <charlie@rivosinc.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit bba547810c66434475d8800b3411c59ef71eafe9 ]
+[ Upstream commit 93ae6b01bafee8fa385aa25ee7ebdb40057f6abe ]
 
-The size of &regs->a0 is unknown, causing the error:
+Since 8383741ab2e773a99 (KVM: arm64: Get rid of host SVE tracking/saving)
+KVM has not tracked the host SVE state, relying on the fact that we
+currently disable SVE whenever we perform a syscall. This may not be true
+in future since performance optimisation may result in us keeping SVE
+enabled in order to avoid needing to take access traps to reenable it.
+Handle this by clearing TIF_SVE and converting the stored task state to
+FPSIMD format when preparing to run the guest.  This is done with a new
+call fpsimd_kvm_prepare() to keep the direct state manipulation
+functions internal to fpsimd.c.
 
-../include/linux/fortify-string.h:571:25: warning: call to
-'__write_overflow_field' declared with attribute warning: detected write
-beyond size of field (1st parameter); maybe use struct_group()?
-[-Wattribute-warning]
-
-Fix this by wrapping the required registers in pt_regs with
-struct_group() and reference the group when doing the offending
-memcpy().
-
-Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Tested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250224-fix_ftrace_partial_regs-v1-1-54b906417e86@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20221115094640.112848-2-broonie@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Mark: trivial backport to v6.1 ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/ftrace.h |  2 +-
- arch/riscv/include/asm/ptrace.h | 18 ++++++++++--------
- 2 files changed, 11 insertions(+), 9 deletions(-)
+ arch/arm64/include/asm/fpsimd.h |    1 +
+ arch/arm64/kernel/fpsimd.c      |   23 +++++++++++++++++++++++
+ arch/arm64/kvm/fpsimd.c         |    4 +++-
+ 3 files changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/ftrace.h b/arch/riscv/include/asm/ftrace.h
-index 2636ee00ccf0f..9704a73e515a5 100644
---- a/arch/riscv/include/asm/ftrace.h
-+++ b/arch/riscv/include/asm/ftrace.h
-@@ -207,7 +207,7 @@ ftrace_partial_regs(const struct ftrace_regs *fregs, struct pt_regs *regs)
- {
- 	struct __arch_ftrace_regs *afregs = arch_ftrace_regs(fregs);
+--- a/arch/arm64/include/asm/fpsimd.h
++++ b/arch/arm64/include/asm/fpsimd.h
+@@ -44,6 +44,7 @@ extern void fpsimd_signal_preserve_curre
+ extern void fpsimd_preserve_current_state(void);
+ extern void fpsimd_restore_current_state(void);
+ extern void fpsimd_update_current_state(struct user_fpsimd_state const *state);
++extern void fpsimd_kvm_prepare(void);
  
--	memcpy(&regs->a0, afregs->args, sizeof(afregs->args));
-+	memcpy(&regs->a_regs, afregs->args, sizeof(afregs->args));
- 	regs->epc = afregs->epc;
- 	regs->ra = afregs->ra;
- 	regs->sp = afregs->sp;
-diff --git a/arch/riscv/include/asm/ptrace.h b/arch/riscv/include/asm/ptrace.h
-index b5b0adcc85c18..2910231977cb7 100644
---- a/arch/riscv/include/asm/ptrace.h
-+++ b/arch/riscv/include/asm/ptrace.h
-@@ -23,14 +23,16 @@ struct pt_regs {
- 	unsigned long t2;
- 	unsigned long s0;
- 	unsigned long s1;
--	unsigned long a0;
--	unsigned long a1;
--	unsigned long a2;
--	unsigned long a3;
--	unsigned long a4;
--	unsigned long a5;
--	unsigned long a6;
--	unsigned long a7;
-+	struct_group(a_regs,
-+		unsigned long a0;
-+		unsigned long a1;
-+		unsigned long a2;
-+		unsigned long a3;
-+		unsigned long a4;
-+		unsigned long a5;
-+		unsigned long a6;
-+		unsigned long a7;
-+	);
- 	unsigned long s2;
- 	unsigned long s3;
- 	unsigned long s4;
--- 
-2.39.5
-
+ extern void fpsimd_bind_state_to_cpu(struct user_fpsimd_state *state,
+ 				     void *sve_state, unsigned int sve_vl);
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1109,6 +1109,29 @@ void fpsimd_signal_preserve_current_stat
+ }
+ 
+ /*
++ * Called by KVM when entering the guest.
++ */
++void fpsimd_kvm_prepare(void)
++{
++	if (!system_supports_sve())
++		return;
++
++	/*
++	 * KVM does not save host SVE state since we can only enter
++	 * the guest from a syscall so the ABI means that only the
++	 * non-saved SVE state needs to be saved.  If we have left
++	 * SVE enabled for performance reasons then update the task
++	 * state to be FPSIMD only.
++	 */
++	get_cpu_fpsimd_context();
++
++	if (test_and_clear_thread_flag(TIF_SVE))
++		sve_to_fpsimd(current);
++
++	put_cpu_fpsimd_context();
++}
++
++/*
+  * Associate current's FPSIMD context with this cpu
+  * The caller must have ownership of the cpu FPSIMD context before calling
+  * this function.
+--- a/arch/arm64/kvm/fpsimd.c
++++ b/arch/arm64/kvm/fpsimd.c
+@@ -70,12 +70,14 @@ error:
+ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+ {
+ 	BUG_ON(!current->mm);
+-	BUG_ON(test_thread_flag(TIF_SVE));
+ 
+ 	vcpu->arch.flags &= ~KVM_ARM64_FP_ENABLED;
+ 	vcpu->arch.flags |= KVM_ARM64_FP_HOST;
+ 
++	fpsimd_kvm_prepare();
++
+ 	vcpu->arch.flags &= ~KVM_ARM64_HOST_SVE_ENABLED;
++
+ 	if (read_sysreg(cpacr_el1) & CPACR_EL1_ZEN_EL0EN)
+ 		vcpu->arch.flags |= KVM_ARM64_HOST_SVE_ENABLED;
+ }
 
 
 
