@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DEDBAA1A61
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2E9AA191C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 277789C1C6B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:16:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768B018941AE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D296240611;
-	Tue, 29 Apr 2025 18:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00771A5BBB;
+	Tue, 29 Apr 2025 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjjAD6Fo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoL0K6ze"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC65253334;
-	Tue, 29 Apr 2025 18:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EDD620C488;
+	Tue, 29 Apr 2025 18:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950618; cv=none; b=rceUD+v6pyp4YY9Xt+sAxgS/NTqW8gRoSpnkf5V0uREIZF0bfz0yApuBgSCb9z2Y4OIPTTk77uTAYBFbPYLZ8x78TbWcswV5uvTme8XDYYwTRx9xIXqFTmBrNi6un6MyzFIo57ve/SG31e35dPgfPl4oBcGRoVwo7pm1oxjhz+U=
+	t=1745950021; cv=none; b=FFylarFtDjEqfKMAoeto1QncDoQJ1A6OxW8wMgZpp5KXvstfw8nsAAeuAS4y4riq1x32MXo+KAwZDF5ZG72awYq3WStOAawNYqhgywe32NgVMeiyie0DFsA654bQJZIQ0AgpUwq/UzwGPGH63TT6VGI706Tm6g+wXM95XP1iLt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950618; c=relaxed/simple;
-	bh=zJOCUCcMDayc2RYoepOeO1eOzyaBT8qac+nb7vSVsnE=;
+	s=arc-20240116; t=1745950021; c=relaxed/simple;
+	bh=+xpH7Olh84OO+b4p+lH+XYW5n5Uad8gzdEx/iChBm9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJmRYE6nDXyLEMD/RqsnoLtpFiMl+/SvozBUN5a9FKgBpB65luI0y7CLfuUfrsXeX2ryA9qx3rWmD7XPro7+gy9m8HRfId79RiM3kihA6duRSxDXXAQH191IYpQ8lwJeOhMsgLpl44U2fw13B0pkvA1F+lZ8MrrUt3IyPmN1rHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjjAD6Fo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9425FC4CEE3;
-	Tue, 29 Apr 2025 18:16:57 +0000 (UTC)
+	 MIME-Version; b=GQuOM+/+rze+kFp7mf0d/IYteaPk7xtJocMJiBBV9VZXbEBAuZO7SNmFeYOL1WXWL0LSeWvoW5dTBi1LAHt4oDYYvwgawYF4Zp172eMvZdARSpvQu7eZW9+uatqPp2hc6Y6MwS/SwjNXM19zyYfXRl4enqdzJ56GkCf5lax+wKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoL0K6ze; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA742C4CEE3;
+	Tue, 29 Apr 2025 18:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950618;
-	bh=zJOCUCcMDayc2RYoepOeO1eOzyaBT8qac+nb7vSVsnE=;
+	s=korg; t=1745950021;
+	bh=+xpH7Olh84OO+b4p+lH+XYW5n5Uad8gzdEx/iChBm9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjjAD6FoCdYIb06bdnWixnheCFcZ2Hytxm2XoQWPZCUK3tflN9mR4lupvtj+Bb5oF
-	 0rhcLWna7DzgOAlY3KFutjn+5MSBUnl+bz+kw0w3YM+2CNQrj4Gof2ofFg8H/2fBhy
-	 rXWZ9LDXfRlQfxrf061qYBPbAFuyHXEgRKIA8Ms0=
+	b=VoL0K6ze3eOBmkLNNTWmOQyNhmjCa99T3lA06iK7Y6mhD/+63JzhaMWNw7CxV89Jv
+	 YGJ1l7yAHjRR96UPzGVzr94Oyog8c0Srn+kkADTeS1fxKE2cBQP5ytgFEonPOT44QG
+	 U8SSd307CiaYjn5s9aE4Xe8wdrrGyP0oguUwsWXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/204] sched/isolation: Make CONFIG_CPU_ISOLATION depend on CONFIG_SMP
+Subject: [PATCH 6.1 132/167] objtool: Stop UNRET validation on UD2
 Date: Tue, 29 Apr 2025 18:44:00 +0200
-Message-ID: <20250429161105.638813566@linuxfoundation.org>
+Message-ID: <20250429161057.076169065@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 975776841e689dd8ba36df9fa72ac3eca3c2957a ]
+[ Upstream commit 9f9cc012c2cbac4833746a0182e06a8eec940d19 ]
 
-kernel/sched/isolation.c obviously makes no sense without CONFIG_SMP, but
-the Kconfig entry we have right now:
+In preparation for simplifying INSN_SYSCALL, make validate_unret()
+terminate control flow on UD2 just like validate_branch() already does.
 
-	config CPU_ISOLATION
-		bool "CPU isolation"
-		depends on SMP || COMPILE_TEST
-
-allows the creation of pointless .config's which cause
-build failures.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250330134955.GA7910@redhat.com
-
-Closes: https://lore.kernel.org/oe-kbuild-all/202503260646.lrUqD3j5-lkp@intel.com/
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/ce841269e7e28c8b7f32064464a9821034d724ff.1744095216.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/objtool/check.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 1105cb53f391a..8b630143c720f 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -689,7 +689,7 @@ endmenu # "CPU/Task time and stats accounting"
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index b6c91bb5ce3e3..828c91aaf55bd 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3737,6 +3737,9 @@ static int validate_entry(struct objtool_file *file, struct instruction *insn)
+ 			break;
+ 		}
  
- config CPU_ISOLATION
- 	bool "CPU isolation"
--	depends on SMP || COMPILE_TEST
-+	depends on SMP
- 	default y
- 	help
- 	  Make sure that CPUs running critical tasks are not disturbed by
++		if (insn->dead_end)
++			return 0;
++
+ 		if (!next) {
+ 			WARN_FUNC("teh end!", insn->sec, insn->offset);
+ 			return -1;
 -- 
 2.39.5
 
