@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-137227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4DCFAA123B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42EFAAA13C7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1668A188E26F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2146617B922
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999F0247291;
-	Tue, 29 Apr 2025 16:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721582472AA;
+	Tue, 29 Apr 2025 17:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFL7OTgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWY4JlXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E89F215060;
-	Tue, 29 Apr 2025 16:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCE2211A0B;
+	Tue, 29 Apr 2025 17:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945441; cv=none; b=R2nC6sBKBk3Rt+qWy4i98oKx5FeN3jrE1+hrf7AbTaO2UVFoLLXOK8AH8g4TUt2nq8pTjTNIYXBzh1pV3y+CvgLatjlGYSiaaluBN8bzQ2jZNjSy0hT69+kPeaNL18ffkBRoef9DW4qRnQk5zCcUhe8qutfSbJxQLM99tLxO7VY=
+	t=1745946380; cv=none; b=UNPlSw42aCGCSTP8HtgldkEzukr06xhKo7SfYEPym1mxA/MHvjARscbCMi+ryH2+2Va2kpt2npaTrpAdFiVHIlWCMyiUvQgIhrPdZsyKNEBoHfwXzjYfy3VxIkPr/KOKPa74AnuZC13r99V4kTkfuBe9kTZqAjvaetnq/ov7pD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945441; c=relaxed/simple;
-	bh=VpkalxLZsGgvIMANy0Q5UGoBRz+a4Gsq6/zpQXVrI+4=;
+	s=arc-20240116; t=1745946380; c=relaxed/simple;
+	bh=sH0rWO//qvCN3xo18oIiHQMv3Zr8UqSGyR+wyekfa1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcHVM3Phfgt43QsfC4oC1y2iDbeZ4WNZ56R0AJ/pc++zI/vEwL4cCA5+ozq9HnzHUfvVOcvmZ7zn578qB8j6b/iDQL+QV8O/l8ae1KpLilyXH+Pf7gjZjyXky9ZWTneCLZYCI98iecks+oCRm4WmKKk3G9eWxF8fhtNQjp7n8ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFL7OTgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB445C4CEE3;
-	Tue, 29 Apr 2025 16:50:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iktSmhS5jFL1mGgqLWLugVXN5/Bkb5LIc7FHy7ywkAtForFQoTcBXdhEhAiKEvCQ2ropEUvPEKzKInNizW0aRZYDFcCAxAlAIYPs/XhmdaQ/riIQkD9w3U1OJFGXoyTCn9vYCu3CuZMyeprKOjy5pqKIUYtojLHiO6kNKXQKKQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWY4JlXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50182C4CEE3;
+	Tue, 29 Apr 2025 17:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945441;
-	bh=VpkalxLZsGgvIMANy0Q5UGoBRz+a4Gsq6/zpQXVrI+4=;
+	s=korg; t=1745946379;
+	bh=sH0rWO//qvCN3xo18oIiHQMv3Zr8UqSGyR+wyekfa1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EFL7OTgM9Et6A5jiwZU7j0rw+fdEsGslnQ3QShmiQlv+jZEMRqcLcofOciaoWoxW3
-	 wsmz3ETYdxuZGerqDWhvucxb2UA5B0PE7VmYO/tZj4RGsxzlz0Ys0ZT2Sdcd3HZcma
-	 q6J0QBhCspzipri6yOuwNt+oxm7zrlQZdRDtN5v8=
+	b=aWY4JlXCdv76YpBIVdGt3iPjD4O2uHdRHBwWkPHTaaaDDNBhsZEdEGWNznbYkyzN8
+	 aUqze9jdd70/kcFVmDBwpXw04gEpbWy3uI2P7mpYjGPy6uBy0XBFITuZT9k6jiIiyr
+	 5yAdrmC90/TpG/snRJWGLg9frqpVJFL36aYEUGys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Desaulneris <ndesaulniers@google.com>,
-	Nathan Chancellor <natechancellor@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.4 113/179] powerpc/prom_init: Use -ffreestanding to avoid a reference to bcmp
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 217/311] usb: host: xhci-plat: mvebu: use ->quirks instead of ->init_quirk() func
 Date: Tue, 29 Apr 2025 18:40:54 +0200
-Message-ID: <20250429161053.978458168@linuxfoundation.org>
+Message-ID: <20250429161129.885451945@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <natechancellor@gmail.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-commit 8dcd71b45df34d9b903450fab147ee8c1e6c16b5 upstream.
+[ Upstream commit 64eb182d5f7a5ec30227bce4f6922ff663432f44 ]
 
-LLVM revision r374662 gives LLVM the ability to convert certain loops
-into a reference to bcmp as an optimization; this breaks
-prom_init_check.sh:
+Compatible "marvell,armada3700-xhci" match data uses the
+struct xhci_plat_priv::init_quirk() function pointer to add
+XHCI_RESET_ON_RESUME as quirk on XHCI.
 
-    CALL    arch/powerpc/kernel/prom_init_check.sh
-  Error: External symbol 'bcmp' referenced from prom_init.c
-  make[2]: *** [arch/powerpc/kernel/Makefile:196: prom_init_check] Error 1
+Instead, use the struct xhci_plat_priv::quirks field.
 
-bcmp is defined in lib/string.c as a wrapper for memcmp so this could
-be added to the whitelist. However, commit
-450e7dd4001f ("powerpc/prom_init: don't use string functions from
-lib/") copied memcmp as prom_memcmp to avoid KASAN instrumentation so
-having bcmp be resolved to regular memcmp would break that assumption.
-Furthermore, because the compiler is the one that inserted bcmp, we
-cannot provide something like prom_bcmp.
-
-To prevent LLVM from being clever with optimizations like this, use
--ffreestanding to tell LLVM we are not hosted so it is not free to
-make transformations like this.
-
-Reviewed-by: Nick Desaulneris <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20191119045712.39633-4-natechancellor@gmail.com
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-1-13658a271c3c@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/host/xhci-mvebu.c | 10 ----------
+ drivers/usb/host/xhci-mvebu.h |  6 ------
+ drivers/usb/host/xhci-plat.c  |  2 +-
+ 3 files changed, 1 insertion(+), 17 deletions(-)
 
---- a/arch/powerpc/kernel/Makefile
-+++ b/arch/powerpc/kernel/Makefile
-@@ -21,6 +21,7 @@ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROP
+diff --git a/drivers/usb/host/xhci-mvebu.c b/drivers/usb/host/xhci-mvebu.c
+index 87f1597a0e5ab..257e4d79971fd 100644
+--- a/drivers/usb/host/xhci-mvebu.c
++++ b/drivers/usb/host/xhci-mvebu.c
+@@ -73,13 +73,3 @@ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
  
- CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector)
- CFLAGS_prom_init.o += -DDISABLE_BRANCH_PROFILING
-+CFLAGS_prom_init.o += -ffreestanding
+ 	return 0;
+ }
+-
+-int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
+-{
+-	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+-
+-	/* Without reset on resume, the HC won't work at all */
+-	xhci->quirks |= XHCI_RESET_ON_RESUME;
+-
+-	return 0;
+-}
+diff --git a/drivers/usb/host/xhci-mvebu.h b/drivers/usb/host/xhci-mvebu.h
+index 3be021793cc8b..9d26e22c48422 100644
+--- a/drivers/usb/host/xhci-mvebu.h
++++ b/drivers/usb/host/xhci-mvebu.h
+@@ -12,16 +12,10 @@ struct usb_hcd;
  
- ifdef CONFIG_FUNCTION_TRACER
- # Do not trace early boot code
+ #if IS_ENABLED(CONFIG_USB_XHCI_MVEBU)
+ int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd);
+-int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd);
+ #else
+ static inline int xhci_mvebu_mbus_init_quirk(struct usb_hcd *hcd)
+ {
+ 	return 0;
+ }
+-
+-static inline int xhci_mvebu_a3700_init_quirk(struct usb_hcd *hcd)
+-{
+-	return 0;
+-}
+ #endif
+ #endif /* __LINUX_XHCI_MVEBU_H */
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index d85ffa9ffaa70..ff813dca2d1d3 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -106,7 +106,7 @@ static const struct xhci_plat_priv xhci_plat_marvell_armada = {
+ };
+ 
+ static const struct xhci_plat_priv xhci_plat_marvell_armada3700 = {
+-	.init_quirk = xhci_mvebu_a3700_init_quirk,
++	.quirks = XHCI_RESET_ON_RESUME,
+ };
+ 
+ static const struct xhci_plat_priv xhci_plat_brcm = {
+-- 
+2.39.5
+
 
 
 
