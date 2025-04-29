@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-138266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627C1AA179E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BFFAA1448
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A90579A3FFF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:44:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D23BC1605C5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96452522AA;
-	Tue, 29 Apr 2025 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CE5221DA7;
+	Tue, 29 Apr 2025 17:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grY2V8/D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edq4gTqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93DA424BD02;
-	Tue, 29 Apr 2025 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A404724728A;
+	Tue, 29 Apr 2025 17:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948710; cv=none; b=tW6ujwKPYAevKjZ3k8s7vXejbudZkGltWxIAtHvzW8Wnf7QIxw0ZxCprEUd0bJAJKJCBCSfDafVY0QTC58unzmTNUMa1JuuFay5dVa4+CCUdftDzgweSH3ZoRBYsQKf4igdmxljuCqiQ6h4WCdk6XF51Pv5vrmGbQWNccYSW50k=
+	t=1745946759; cv=none; b=NfqbjxNGgF7wlV4jzGz24aCtTN5cGWIx2lWWwz53E/QTtw19BqTNRYRKZGxIqBb+A4d4GhcTVRMhB8o+V6EIpbK36DfqTC1xz3DRF03jlMFjjxfhjy/8gxV0flwhbh752xn8SoXqcdTLApCc/h9MKzW0kh6OMAF4f/rsZr9NRvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948710; c=relaxed/simple;
-	bh=FCGZ/+WNy6Oliy/+Q8AvQGot0MJjETgVU9id5LanNEE=;
+	s=arc-20240116; t=1745946759; c=relaxed/simple;
+	bh=SWUCgY8tFvifKEd73KwEeU0dk5pK0HbzfqysnKFlbMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BgAQlEiXpkLtFVS5nUmxUaKCc4fqM7J33EYvqGGGPYrTNoNXrWXclcTvWa+qs7skkV5xb8XtuBnRtZyUhg9AwENwhM8z4T+tyeBGrtXyEswSEItaOyT6CzZT+TyuHoeZeJm7poHR2fzSLGHKcFaLk8NW3CTOs1frWoSMj8U6JGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grY2V8/D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5438C4CEE3;
-	Tue, 29 Apr 2025 17:45:09 +0000 (UTC)
+	 MIME-Version; b=WDvLG+iDQJ/e71mFc0QUMOt/efMVOc4/pr7lekj0HMhEvNnB0vimSgDLY4A0fmczl6Kzh6cd0tqL9wuElYySjIYYjWS831q8a+/Zg1axSrfpewtwqO3Vdq3K0aL6TD0W3dve/i2tdGP41i2UHj6+nKZycxjizSHIQMEWbzWnFq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edq4gTqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39FD1C4CEE3;
+	Tue, 29 Apr 2025 17:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948710;
-	bh=FCGZ/+WNy6Oliy/+Q8AvQGot0MJjETgVU9id5LanNEE=;
+	s=korg; t=1745946759;
+	bh=SWUCgY8tFvifKEd73KwEeU0dk5pK0HbzfqysnKFlbMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=grY2V8/DyBqsKEmNQ2LyQFNxezHdANDwq2nDRq9L2gX18tbjtoQ5v9Cv7tGGMsFUM
-	 D7TjddpuxW99IqVWOuiZ/hS65G0SLm413Ys8mvLZBjSFvtzbI+kPgOEv7WKT9GLGgd
-	 c4JGdioOlfUy+od0ylWPcLX9qis6mhUeR+o0o3Gc=
+	b=edq4gTqda31gwev5BzLU9HIq6NBIDdqASaXM+QDpwKCSUeVrUtMje7mAG7ABm9gwP
+	 1MAWD35PU6Azco/1BIk8jVY9jqOu2coiHlg9ZO0zyEParOY4COzIVzKASZ5j/EqEC9
+	 dWB1ZpPTHJlkXn9J+urFdRKPPz9XokugUQRqPKqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cong Meng <cong.meng@oracle.com>,
-	Si-Wei Liu <si-wei.liu@oracle.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 5.15 087/373] vdpa/mlx5: Fix oversized null mkey longer than 32bit
+	Scott Bauer <sbauer@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Trilok Soni <quic_tsoni@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.10 060/286] arm64: errata: Add QCOM_KRYO_4XX_GOLD to the spectre_bhb_k24_list
 Date: Tue, 29 Apr 2025 18:39:24 +0200
-Message-ID: <20250429161126.743803061@linuxfoundation.org>
+Message-ID: <20250429161110.315551051@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Si-Wei Liu <si-wei.liu@oracle.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit a6097e0a54a5c24f8d577ffecbc35289ae281c2e upstream.
+commit ed1ce841245d8febe3badf51c57e81c3619d0a1d upstream.
 
-create_user_mr() has correct code to count the number of null keys
-used to fill in a hole for the memory map. However, fill_indir()
-does not follow the same to cap the range up to the 1GB limit
-correspondingly. Fill in more null keys for the gaps in between,
-so that null keys are correctly populated.
+Qualcomm Kryo 400-series Gold cores have a derivative of an ARM Cortex
+A76 in them. Since A76 needs Spectre mitigation via looping then the
+Kyro 400-series Gold cores also need Spectre mitigation via looping.
 
-Fixes: 94abbccdf291 ("vdpa/mlx5: Add shared memory registration code")
+Qualcomm has confirmed that the proper "k" value for Kryo 400-series
+Gold cores is 24.
+
+Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
 Cc: stable@vger.kernel.org
-Reported-by: Cong Meng <cong.meng@oracle.com>
-Signed-off-by: Si-Wei Liu <si-wei.liu@oracle.com>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20250220193732.521462-2-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Cc: Scott Bauer <sbauer@quicinc.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Trilok Soni <quic_tsoni@quicinc.com>
+Link: https://lore.kernel.org/r/20250107120555.v4.1.Ie4ef54abe02e7eb0eee50f830575719bf23bda48@changeid
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vdpa/mlx5/core/mr.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/proton-pack.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/vdpa/mlx5/core/mr.c
-+++ b/drivers/vdpa/mlx5/core/mr.c
-@@ -166,9 +166,12 @@ again:
- 			klm->bcount = cpu_to_be32(klm_bcount(dmr->end - dmr->start));
- 			preve = dmr->end;
- 		} else {
-+			u64 bcount = min_t(u64, dmr->start - preve, MAX_KLM_SIZE);
-+
- 			klm->key = cpu_to_be32(mvdev->res.null_mkey);
--			klm->bcount = cpu_to_be32(klm_bcount(dmr->start - preve));
--			preve = dmr->start;
-+			klm->bcount = cpu_to_be32(klm_bcount(bcount));
-+			preve += bcount;
-+
- 			goto again;
- 		}
- 	}
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -874,6 +874,7 @@ u8 spectre_bhb_loop_affected(int scope)
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
+ 			MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 			MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
++			MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
+ 			{},
+ 		};
+ 		static const struct midr_range spectre_bhb_k11_list[] = {
 
 
 
