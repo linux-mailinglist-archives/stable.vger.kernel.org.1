@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-137562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74220AA1419
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0C1AA1601
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB7009840BB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 742A27AA83F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED9F24C098;
-	Tue, 29 Apr 2025 17:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80832512D8;
+	Tue, 29 Apr 2025 17:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSWsMEXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E7HA3M14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB9C24BD02;
-	Tue, 29 Apr 2025 17:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8628023CEF9;
+	Tue, 29 Apr 2025 17:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946439; cv=none; b=Sm7WTfOc37J0Rz+kidogWDo1NZ9iNh0+JeriZl+HhjxYovxDUZ4R83+rEN6SlM0I4cmMZr0vzQw7letWvkzwXYwKHfu5iRp0YP1ODqwUdqdxGmr703EixlJufUQt/BmyVsjhcAKEIyERY7r6vVLiHXZOfSYBVQwPYWMtnuOdQV8=
+	t=1745947991; cv=none; b=aXh71q3j6yD0w34NOjwH14f9bd0/nygsUYcZbYpCviX/9o0I5k1O+sl0pY5hoKdbmqBAoVfr+l0xsHGRIXJ41Kor6AzK3kiJWzSTeaaGBOJwHa7vJsO0wC8BWxAfsrBLfF9jXrLWX5/jAjyIZc21svJODxiamjhcMhbDGoZQKWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946439; c=relaxed/simple;
-	bh=Zkuk6hTP8ve8VN9VBe02HV5jAYCj2jLmNtSPZvQ5GwI=;
+	s=arc-20240116; t=1745947991; c=relaxed/simple;
+	bh=MdusGSW4yAuKZ1hyB0hn0H6Ogk8wLgIvDEM2ASx+apI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a+6+rH3dx/FTeARrszmcJotdzLL2vj2L3xOuIuvb8Bnj4mKxxysyn9ZtN7GT46o93qdXVLKHCx3qjxQFQyyaiNI8qpEYQh/By30FZiibs704jFFbOj7GhPzIV1l18Ytt7pJsxx/bL/UKkaLEoAm9nSymw+Lhx3iWl7kYttTu29E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSWsMEXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2724C4CEE9;
-	Tue, 29 Apr 2025 17:07:18 +0000 (UTC)
+	 MIME-Version; b=eHiEzJPEBDs58GGRgMXQPxfrXeb4LC0zwELhqMrP87uVEWSVHTRL0GB1AuBj/t8LUMEMne4SyXON+BR9KsE04l33GHBFoYBdwRmPHuRB5X6J2AD+ugyrYjBKcxlCcBWT+svFHIqFppahkEaR6khvh79HFyyt7cKHQVHyy2oOmxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E7HA3M14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FECC4CEE3;
+	Tue, 29 Apr 2025 17:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946439;
-	bh=Zkuk6hTP8ve8VN9VBe02HV5jAYCj2jLmNtSPZvQ5GwI=;
+	s=korg; t=1745947991;
+	bh=MdusGSW4yAuKZ1hyB0hn0H6Ogk8wLgIvDEM2ASx+apI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSWsMEXBEwJLv41V6A0mtfyK2PTFPlvcPWxRNdth1xS2uXBVd2Ug6dHGm5+zof8ni
-	 y0EpVBxj5vOo3HQDc/bnFMDR6s5VSltYQLcMQvr/+dX37V8KV+ksUfRcLxQHYZ0Zti
-	 j91EoPJ/GtpaKp1uwMKkfTygMEDZPRKMxqhjKsJ8=
+	b=E7HA3M14ggjNacqmNf+993+EP0iwmo+PgdAo8cGIdy5sDYHlTn3HroRZBjyFicC/1
+	 pl/PftOictr5Olm3oTXRvtMWbgYIDiVuLMqpIxGhvRh3fHpi77AfmVSRYZkQ+LH30h
+	 eX94B2aEeqy5eNZiDiIca5nAp8JuqCVpLaT3UmK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 267/311] iommu: Clear iommu-dma ops on cleanup
+Subject: [PATCH 6.12 163/280] s390/sclp: Add check for get_zeroed_page()
 Date: Tue, 29 Apr 2025 18:41:44 +0200
-Message-ID: <20250429161131.965605044@linuxfoundation.org>
+Message-ID: <20250429161121.783438688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 280e5a30100578106a4305ce0118e0aa9b866f12 ]
+[ Upstream commit 3db42c75a921854a99db0a2775814fef97415bac ]
 
-If iommu_device_register() encounters an error, it can end up tearing
-down already-configured groups and default domains, however this
-currently still leaves devices hooked up to iommu-dma (and even
-historically the behaviour in this area was at best inconsistent across
-architectures/drivers...) Although in the case that an IOMMU is present
-whose driver has failed to probe, users cannot necessarily expect DMA to
-work anyway, it's still arguable that we should do our best to put
-things back as if the IOMMU driver was never there at all, and certainly
-the potential for crashing in iommu-dma itself is undesirable. Make sure
-we clean up the dev->dma_iommu flag along with everything else.
+Add check for the return value of get_zeroed_page() in
+sclp_console_init() to prevent null pointer dereference.
+Furthermore, to solve the memory leak caused by the loop
+allocation, add a free helper to do the free job.
 
-Reported-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Closes: https://lore.kernel.org/all/CAGXv+5HJpTYmQ2h-GD7GjyeYT7bL9EBCvu0mz5LgpzJZtzfW0w@mail.gmail.com/
-Tested-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/e788aa927f6d827dd4ea1ed608fada79f2bab030.1744284228.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218025216.2421548-1-haoxiang_li2024@163.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/s390/char/sclp_con.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index e3df1f06afbeb..1efe7cddb4fe3 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -508,6 +508,9 @@ static void iommu_deinit_device(struct device *dev)
- 	dev->iommu_group = NULL;
- 	module_put(ops->owner);
- 	dev_iommu_free(dev);
-+#ifdef CONFIG_IOMMU_DMA
-+	dev->dma_iommu = false;
-+#endif
- }
+diff --git a/drivers/s390/char/sclp_con.c b/drivers/s390/char/sclp_con.c
+index e5d947c763ea5..6a030ba38bf36 100644
+--- a/drivers/s390/char/sclp_con.c
++++ b/drivers/s390/char/sclp_con.c
+@@ -263,6 +263,19 @@ static struct console sclp_console =
+ 	.index = 0 /* ttyS0 */
+ };
  
- DEFINE_MUTEX(iommu_probe_device_lock);
++/*
++ *  Release allocated pages.
++ */
++static void __init __sclp_console_free_pages(void)
++{
++	struct list_head *page, *p;
++
++	list_for_each_safe(page, p, &sclp_con_pages) {
++		list_del(page);
++		free_page((unsigned long)page);
++	}
++}
++
+ /*
+  * called by console_init() in drivers/char/tty_io.c at boot-time.
+  */
+@@ -282,6 +295,10 @@ sclp_console_init(void)
+ 	/* Allocate pages for output buffering */
+ 	for (i = 0; i < sclp_console_pages; i++) {
+ 		page = (void *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
++		if (!page) {
++			__sclp_console_free_pages();
++			return -ENOMEM;
++		}
+ 		list_add_tail(page, &sclp_con_pages);
+ 	}
+ 	sclp_conbuf = NULL;
 -- 
 2.39.5
 
