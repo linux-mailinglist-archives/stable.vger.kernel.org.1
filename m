@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D588EAA1818
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F7FAA164C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8FC49A79BD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:51:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9D218843E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6DFA2522A1;
-	Tue, 29 Apr 2025 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC94238C21;
+	Tue, 29 Apr 2025 17:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvGsJN2j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxRaFM68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FC1233735;
-	Tue, 29 Apr 2025 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E987E110;
+	Tue, 29 Apr 2025 17:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949085; cv=none; b=gTajetTsFW+NG0bENvCDNIdN4B+aORJ3nju2W6TyvNfUDPeYR05a/YB4fYGJyoVyXSrrQuekn3zXqf3X6jyhVgf3H5gm4oPuLm3Jg66cHUn7UdEVxQZWbOl6lLoxijqQR9WbxDg4ufbMgrNdic0CpPCLTDEduPGRUhN+NCE6JWQ=
+	t=1745947921; cv=none; b=oR2wbFjmM9jpVRby7EQn+i91zxHWHzzP7eTQb0DyNCfYcvXewnSP+qaClqYAkpo+KnDq1jXtWHCCHd/e2bl0BdDAkkFqcCG5f6yyxsMr4tdbFSa30R+SqxiqFz6QkDHpfW4hbYFbGkvYZakUcGN0QUVmGrZAW+T04k4MC3ymb1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949085; c=relaxed/simple;
-	bh=uqx7ElJL6aZRHsqHKMR5gKfSNAGZL6knqWUhQEnzguI=;
+	s=arc-20240116; t=1745947921; c=relaxed/simple;
+	bh=cH8vP567O8DyDXEP2qOsDb9/QzYvlnXQQ9F0ZNyyiNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sh1zp0ZQXPMNES6DnE2nTCHYuk9c0QIasFYsz8qlKROrIPJ6XRSYqzRvzZbpnaukhcWhY9WHsUW0i+Gb0DJ9IxEdPpwVx4uKTnWtegMK+rkkA5IJ+KFLatg7bZYcDu1XyzxRGpoKS4APBOcz430ZrWcoFGBINMbR9Be5MK2UKE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvGsJN2j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E189C4CEE3;
-	Tue, 29 Apr 2025 17:51:24 +0000 (UTC)
+	 MIME-Version; b=J9kUX/TSZ8lhbnRXbUuxjG3yxg9/j8djEd3Zarz6liWTC/OJpaHsjIlPEk19ha2DkztgwnjwU6N1TLr7vtXq2NLj2845HYu3uzQS3r7ko8HP4TtTiTHjNbXwIIYktgPiSM5yu4OH6GX8fU8nXO6A72h0QDEvDoBQ5zikspeeuxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxRaFM68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C500C4CEE3;
+	Tue, 29 Apr 2025 17:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949085;
-	bh=uqx7ElJL6aZRHsqHKMR5gKfSNAGZL6knqWUhQEnzguI=;
+	s=korg; t=1745947920;
+	bh=cH8vP567O8DyDXEP2qOsDb9/QzYvlnXQQ9F0ZNyyiNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvGsJN2j8mGI6T+UT3kF8QaMaXK8S+H9gWAFpIjn4m7o/E0DVaQELVdkwY8ptv38F
-	 SfdKeQllUeBSzrEXlfImyQq+QR/SuHb6lYkrEGoTPz/xakRRLi9VzBojbzNHRzY2ZT
-	 PGxdIwnhQlyR/3RPyQUlk+cd2iEmPIYlJCmCyzxU=
+	b=WxRaFM68b29a+wJoICChS5AmginZyWWeJJGasQg3jPz+KRik1m92zoqIn++dwWWN8
+	 joGkp69sxRIYSMb2QZOI+JSXyDosm1BIBDWzX0dU53aaRgAl5NujuUBHesEp77NKYR
+	 45vmEIbMB6vSJ2Em9EH510Cr9O+AYV2LhUVJLE9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 209/373] x86/pvh: Call C code via the kernel virtual mapping
+	Miao Li <limiao@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 145/280] usb: quirks: add DELAY_INIT quirk for Silicon Motion Flash Drive
 Date: Tue, 29 Apr 2025 18:41:26 +0200
-Message-ID: <20250429161131.760027217@linuxfoundation.org>
+Message-ID: <20250429161121.059919320@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Miao Li <limiao@kylinos.cn>
 
-commit e8fbc0d9cab6c1ee6403f42c0991b0c1d5dbc092 upstream.
+commit 2932b6b547ec36ad2ed60fbf2117c0e46bb7d40a upstream.
 
-Calling C code via a different mapping than it was linked at is
-problematic, because the compiler assumes that RIP-relative and absolute
-symbol references are interchangeable. GCC in particular may use
-RIP-relative per-CPU variable references even when not using -fpic.
+Silicon Motion Flash Drive connects to Huawei hisi platforms and
+performs a system reboot test for two thousand circles, it will
+randomly work incorrectly on boot, set DELAY_INIT quirk can workaround
+this issue.
 
-So call xen_prepare_pvh() via its kernel virtual mapping on x86_64, so
-that those RIP-relative references produce the correct values. This
-matches the pre-existing behavior for i386, which also invokes
-xen_prepare_pvh() via the kernel virtual mapping before invoking
-startup_32 with paging disabled again.
-
-Fixes: 7243b93345f7 ("xen/pvh: Bootstrap PVH guest")
-Tested-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Message-ID: <20241009160438.3884381-8-ardb+git@google.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-[ Stable context update ]
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/platform/pvh/head.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/platform/pvh/head.S
-+++ b/arch/x86/platform/pvh/head.S
-@@ -99,7 +99,12 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
- 	xor %edx, %edx
- 	wrmsr
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -383,6 +383,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0904, 0x6103), .driver_info =
+ 			USB_QUIRK_LINEAR_FRAME_INTR_BINTERVAL },
  
--	call xen_prepare_pvh
-+	/* Call xen_prepare_pvh() via the kernel virtual mapping */
-+	leaq xen_prepare_pvh(%rip), %rax
-+	subq phys_base(%rip), %rax
-+	addq $__START_KERNEL_map, %rax
-+	ANNOTATE_RETPOLINE_SAFE
-+	call *%rax
- 
- 	/* startup_64 expects boot_params in %rsi. */
- 	mov $_pa(pvh_bootparams), %rsi
++	/* Silicon Motion Flash Drive */
++	{ USB_DEVICE(0x090c, 0x1000), .driver_info = USB_QUIRK_DELAY_INIT },
++
+ 	/* Sound Devices USBPre2 */
+ 	{ USB_DEVICE(0x0926, 0x0202), .driver_info =
+ 			USB_QUIRK_ENDPOINT_IGNORE },
 
 
 
