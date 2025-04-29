@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0ADEAA1252
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82423AA13A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29BF23B2A25
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2379816E2FB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542FA126BF7;
-	Tue, 29 Apr 2025 16:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DA82522BA;
+	Tue, 29 Apr 2025 17:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwYU48Td"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6Ml7Q/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE46215060;
-	Tue, 29 Apr 2025 16:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37DB2522A1;
+	Tue, 29 Apr 2025 17:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945392; cv=none; b=RAG2XUeoJUucLPiRAxL00NLk4vh9fhFVUUEBBSRZGG5iBEgv7J4M9K0I7emVX/SmRz/sKVoA4O601N5kmxGnnKXV4GXlIr8BlCsRkp7fkYE/sX0o7WiHTR8dqrw6yi/831TXiPXTprf2bhaO0L3qYRhTVm315PsksSq4e9aXY/M=
+	t=1745946241; cv=none; b=dcu9xGwYi7KsJLEljIEIVGuK3QjLT2Qoee/XQudWo/bC5rvQA8/H65hdrs66T+t7VKsBNiyXd2bgMhjGxVMLuC6Fn5GDceUnL3JP0s401KVDvxgSg/+vG0lCZr5/K1Vr3muvFunczcE+CvIdRMISrZPw/ztW6BDSzEkVvG7j0uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945392; c=relaxed/simple;
-	bh=NgGXARZUv0/23C2O4XkRAxnjkXuWlYKb9e0xnBYZLW4=;
+	s=arc-20240116; t=1745946241; c=relaxed/simple;
+	bh=IJptYgRhMSUZxNwGECoFJjf4EhmkdsNIfJd0jQkgfyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoOEPLiJtvFP99levbH3HgumrV7ooOgzp04IeE22Ua3xJqNLDC3iDiFgdHqXeLMs1VKX/xU/1/0A6hr9IwV+j19OTgqGJwrmNXk6rl/VilKdvdaToWIh4IWzbETvjeoQQKyxQ2clRpZRucWQCk0mFV2gsF883nux1ClC2rjrSjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwYU48Td; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96135C4CEE3;
-	Tue, 29 Apr 2025 16:49:51 +0000 (UTC)
+	 MIME-Version; b=d5GmY5Nb0Mf9VpYxzai2DgvPYj4yrpPEey2phCOe3QJZBSvPIz0Z6WGjWPuZz4OhlC+RiZE96cRdUDfn/vHPgfY2JebMviKapSoQL5GiHqRiYR0e3l5F6ISh0cdHW0h8K0BPSpCcnIDAC8HWnvrLrrEsAtw3tGJt2vbz2Y56fCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6Ml7Q/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1143C4CEE3;
+	Tue, 29 Apr 2025 17:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945391;
-	bh=NgGXARZUv0/23C2O4XkRAxnjkXuWlYKb9e0xnBYZLW4=;
+	s=korg; t=1745946240;
+	bh=IJptYgRhMSUZxNwGECoFJjf4EhmkdsNIfJd0jQkgfyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwYU48TdOwwul7/vfFKpYSgD6yydP/TTpVgW0TsIqVMs8V3mRx8La0GJtDOFtsmVW
-	 syQyspEmrjINMZw99eyJo7cBSTwBInCiTaP9VsNnc09fisljX65I9df1Rcw9Zo1oA7
-	 jlm/HG0WgAY3T7tNxQqphEeK6YsjCfbWF/uVj+5w=
+	b=W6Ml7Q/jZi0tnDd9OsAep3WemNrJtC0Lqyru1LmyzWLxdQJTtxPgRMnQgysb74JjS
+	 ryuDZkPw5Q6hXoiruLop4OUdCNSYRXHDlI+RbVJBGUMWNg3zBuTLrenXpTBSdCbe24
+	 A8wZFHsy2pgzNzjsSPsuX0ClXPQV4YhMJ1Qu2s+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 097/179] nfs: move nfs_fhandle_hash to common include file
+Subject: [PATCH 6.14 201/311] usb: typec: ucsi: ccg: move command quirks to ucsi_ccg_sync_control()
 Date: Tue, 29 Apr 2025 18:40:38 +0200
-Message-ID: <20250429161053.321027287@linuxfoundation.org>
+Message-ID: <20250429161129.247433244@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit e59fb6749ed833deee5b3cfd7e89925296d41f49 ]
+[ Upstream commit 7f82635494ef3391ff6b542249793c7febf99c3f ]
 
-lockd needs to be able to hash filehandles for tracepoints. Move the
-nfs_fhandle_hash() helper to a common nfs include file.
+It is easier to keep all command-specific quirks in a single place. Move
+them to ucsi_ccg_sync_control() as the code now allows us to return
+modified messages data.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: cd35b6cb4664 ("nfs: add missing selections of CONFIG_CRC32")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250120-ucsi-merge-commands-v2-2-462a1ec22ecc@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h   | 15 ---------------
- include/linux/nfs.h | 20 ++++++++++++++++++++
- 2 files changed, 20 insertions(+), 15 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c | 62 +++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 33 deletions(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index e8b692d41b26e..5c9166357ae7c 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -721,27 +721,12 @@ u64 nfs_timespec_to_change_attr(const struct timespec *ts)
- }
+diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+index 43a8a67159d84..c1d776c82fc2e 100644
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -222,7 +222,6 @@ struct ucsi_ccg {
+ 	u16 fw_build;
+ 	struct work_struct pm_work;
  
- #ifdef CONFIG_CRC32
--/**
-- * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-- * @fh - pointer to filehandle
-- *
-- * returns a crc32 hash for the filehandle that is compatible with
-- * the one displayed by "wireshark".
-- */
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
--}
- static inline u32 nfs_stateid_hash(const nfs4_stateid *stateid)
+-	u64 last_cmd_sent;
+ 	bool has_multiple_dp;
+ 	struct ucsi_ccg_altmode orig[UCSI_MAX_ALTMODES];
+ 	struct ucsi_ccg_altmode updated[UCSI_MAX_ALTMODES];
+@@ -538,9 +537,10 @@ static void ucsi_ccg_update_set_new_cam_cmd(struct ucsi_ccg *uc,
+  * first and then vdo=0x3
+  */
+ static void ucsi_ccg_nvidia_altmode(struct ucsi_ccg *uc,
+-				    struct ucsi_altmode *alt)
++				    struct ucsi_altmode *alt,
++				    u64 command)
  {
- 	return ~crc32_le(0xFFFFFFFF, &stateid->other[0],
- 				NFS4_STATEID_OTHER_SIZE);
- }
- #else
--static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
--{
--	return 0;
--}
- static inline u32 nfs_stateid_hash(nfs4_stateid *stateid)
+-	switch (UCSI_ALTMODE_OFFSET(uc->last_cmd_sent)) {
++	switch (UCSI_ALTMODE_OFFSET(command)) {
+ 	case NVIDIA_FTB_DP_OFFSET:
+ 		if (alt[0].mid == USB_TYPEC_NVIDIA_VLINK_DBG_VDO)
+ 			alt[0].mid = USB_TYPEC_NVIDIA_VLINK_DP_VDO |
+@@ -578,37 +578,11 @@ static int ucsi_ccg_read_cci(struct ucsi *ucsi, u32 *cci)
+ static int ucsi_ccg_read_message_in(struct ucsi *ucsi, void *val, size_t val_len)
  {
+ 	struct ucsi_ccg *uc = ucsi_get_drvdata(ucsi);
+-	struct ucsi_capability *cap;
+-	struct ucsi_altmode *alt;
+ 
+ 	spin_lock(&uc->op_lock);
+ 	memcpy(val, uc->op_data.message_in, val_len);
+ 	spin_unlock(&uc->op_lock);
+ 
+-	switch (UCSI_COMMAND(uc->last_cmd_sent)) {
+-	case UCSI_GET_CURRENT_CAM:
+-		if (uc->has_multiple_dp)
+-			ucsi_ccg_update_get_current_cam_cmd(uc, (u8 *)val);
+-		break;
+-	case UCSI_GET_ALTERNATE_MODES:
+-		if (UCSI_ALTMODE_RECIPIENT(uc->last_cmd_sent) ==
+-		    UCSI_RECIPIENT_SOP) {
+-			alt = val;
+-			if (alt[0].svid == USB_TYPEC_NVIDIA_VLINK_SID)
+-				ucsi_ccg_nvidia_altmode(uc, alt);
+-		}
+-		break;
+-	case UCSI_GET_CAPABILITY:
+-		if (uc->fw_build == CCG_FW_BUILD_NVIDIA_TEGRA) {
+-			cap = val;
+-			cap->features &= ~UCSI_CAP_ALT_MODE_DETAILS;
+-		}
+-		break;
+-	default:
+-		break;
+-	}
+-	uc->last_cmd_sent = 0;
+-
  	return 0;
-diff --git a/include/linux/nfs.h b/include/linux/nfs.h
-index 0dc7ad38a0da4..a8b62a08e784f 100644
---- a/include/linux/nfs.h
-+++ b/include/linux/nfs.h
-@@ -10,6 +10,7 @@
+ }
  
- #include <linux/sunrpc/msg_prot.h>
- #include <linux/string.h>
-+#include <linux/crc32.h>
- #include <uapi/linux/nfs.h>
+@@ -639,11 +613,9 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command, u32 *cci,
+ 	mutex_lock(&uc->lock);
+ 	pm_runtime_get_sync(uc->dev);
  
- /*
-@@ -52,4 +53,23 @@ enum nfs3_stable_how {
- 	/* used by direct.c to mark verf as invalid */
- 	NFS_INVALID_STABLE_HOW = -1
- };
+-	uc->last_cmd_sent = command;
+-
+-	if (UCSI_COMMAND(uc->last_cmd_sent) == UCSI_SET_NEW_CAM &&
++	if (UCSI_COMMAND(command) == UCSI_SET_NEW_CAM &&
+ 	    uc->has_multiple_dp) {
+-		con_index = (uc->last_cmd_sent >> 16) &
++		con_index = (command >> 16) &
+ 			UCSI_CMD_CONNECTOR_MASK;
+ 		if (con_index == 0) {
+ 			ret = -EINVAL;
+@@ -655,6 +627,30 @@ static int ucsi_ccg_sync_control(struct ucsi *ucsi, u64 command, u32 *cci,
+ 
+ 	ret = ucsi_sync_control_common(ucsi, command, cci, data, size);
+ 
++	switch (UCSI_COMMAND(command)) {
++	case UCSI_GET_CURRENT_CAM:
++		if (uc->has_multiple_dp)
++			ucsi_ccg_update_get_current_cam_cmd(uc, (u8 *)data);
++		break;
++	case UCSI_GET_ALTERNATE_MODES:
++		if (UCSI_ALTMODE_RECIPIENT(command) == UCSI_RECIPIENT_SOP) {
++			struct ucsi_altmode *alt = data;
 +
-+#ifdef CONFIG_CRC32
-+/**
-+ * nfs_fhandle_hash - calculate the crc32 hash for the filehandle
-+ * @fh - pointer to filehandle
-+ *
-+ * returns a crc32 hash for the filehandle that is compatible with
-+ * the one displayed by "wireshark".
-+ */
-+static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
-+{
-+	return ~crc32_le(0xFFFFFFFF, &fh->data[0], fh->size);
-+}
-+#else /* CONFIG_CRC32 */
-+static inline u32 nfs_fhandle_hash(const struct nfs_fh *fh)
-+{
-+	return 0;
-+}
-+#endif /* CONFIG_CRC32 */
- #endif /* _LINUX_NFS_H */
++			if (alt[0].svid == USB_TYPEC_NVIDIA_VLINK_SID)
++				ucsi_ccg_nvidia_altmode(uc, alt, command);
++		}
++		break;
++	case UCSI_GET_CAPABILITY:
++		if (uc->fw_build == CCG_FW_BUILD_NVIDIA_TEGRA) {
++			struct ucsi_capability *cap = data;
++
++			cap->features &= ~UCSI_CAP_ALT_MODE_DETAILS;
++		}
++		break;
++	default:
++		break;
++	}
++
+ err_put:
+ 	pm_runtime_put_sync(uc->dev);
+ 	mutex_unlock(&uc->lock);
 -- 
 2.39.5
 
