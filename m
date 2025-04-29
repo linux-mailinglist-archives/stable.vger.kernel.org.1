@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9C0AA12BC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10335AA1382
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BAC93B890B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FFAF7B1FEA
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D262512D7;
-	Tue, 29 Apr 2025 16:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF316211A0B;
+	Tue, 29 Apr 2025 17:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ScfW/zW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a7GGEYsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1179A251788;
-	Tue, 29 Apr 2025 16:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6D822A81D;
+	Tue, 29 Apr 2025 17:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945646; cv=none; b=K3kY25YVxTgVUp3vlimTEbaE0T7Ac+ciiT65nd4OXZ4fupbqPl3vm3kRhwplr0XYuog8IUsadVlGxfvdHrVvtMfBhFyoZ5bZdD9AC5YPT6F9QKjOuUIdwYUkks+5agYhBywCJgEiy3z5Qi3PmB5nBnSigsVbjAaxNemrr5Laog4=
+	t=1745946406; cv=none; b=Mfls0jhoI4rfGAx2l0xja/G0JLhELPJpJrLMQBadTpX6zkA7AP9LppXtFfacQZyPi/ncQ8T79do6uubn1b8ydHqkZG2dVDInwbIMBCngbhtL+dtUhLdm4L8FiIKTTCYdyGgBNXzBKrXYScekPXIvjinNF88r6uvearAfBwK1TM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945646; c=relaxed/simple;
-	bh=Cge39suPAAIrdX2qfTX0t/OxJJIwM18xGaCkBKJjKQY=;
+	s=arc-20240116; t=1745946406; c=relaxed/simple;
+	bh=v3y9TtIhB/Jr7Fa5FtiluUroeQ99iH85SOzgIDI2pI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JP5hkHuZYUa71Z6vjiBWSpk7b5HCa1ADarSWXIsPh/0Hr4kLz1NCqYVyXhZOQwU4VGhNGtgHJ3PpIXvVLMfLwgNCGtfHTd6dA1BSr8LEU2SoPwmZMw+bWk84P+IfTslMSRBLke3E/4anVfpp160wsun09JNYDgQnXp+PRYaIjPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ScfW/zW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D22DC4CEE9;
-	Tue, 29 Apr 2025 16:54:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ny1P0moG6xd3Q1QwCtEq91SGulbpwC9cwJmcF4Bz1uPK8X8mjrGiQjyNwvjN8EhwOE9Hfzmj74rtO1WQtJSidlEUoM3ZupAnKkMXrg24pAVQ6UXl9/tBI7cbDlZISNLY91NKLOarBTEhUiFy2kCY04a41iz64cpmfOeQPjTb7pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a7GGEYsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2021FC4CEE3;
+	Tue, 29 Apr 2025 17:06:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945645;
-	bh=Cge39suPAAIrdX2qfTX0t/OxJJIwM18xGaCkBKJjKQY=;
+	s=korg; t=1745946406;
+	bh=v3y9TtIhB/Jr7Fa5FtiluUroeQ99iH85SOzgIDI2pI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ScfW/zWLe7MGb48WhPTipGe6S+a66B9p6O/pd3A1Wr/32dV1hBV+OPEkShytj+0j
-	 m09Zq1iEAQVnHQ+jG0ABXmN0+8AzstKj7BmRD81tWB1iaEaqK/eRTmAIjC+NdYhbkV
-	 KeEWsHVfXDu+0jbJ3zBVh7u6VLyAqdFhhuQcTZi8=
+	b=a7GGEYsFeuCsacEskehD+HZnN5VQpRVOT9fn7FR3/emfv/xfqh76GxrgbHQb6IR6M
+	 rFZx0cp0cGIa0CORrR9oYCy31T+tTAQzIN9Qifqjt7emBG4O+MULR1fynbeb5KyI84
+	 AUetDT20KuuxJhP4e2f4qlFT8IHhtUYsRiZRFomg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ralph Siemsen <ralph.siemsen@linaro.org>,
-	Peter Chen <peter.chen@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 5.4 153/179] usb: cdns3: Fix deadlock when using NCM gadget
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 257/311] x86/xen: disable CPU idle and frequency drivers for PVH dom0
 Date: Tue, 29 Apr 2025 18:41:34 +0200
-Message-ID: <20250429161055.573171960@linuxfoundation.org>
+Message-ID: <20250429161131.548400691@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ralph Siemsen <ralph.siemsen@linaro.org>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit a1059896f2bfdcebcdc7153c3be2307ea319501f upstream.
+[ Upstream commit 64a66e2c3b3113dc78a6124e14825d68ddc2e188 ]
 
-The cdns3 driver has the same NCM deadlock as fixed in cdnsp by commit
-58f2fcb3a845 ("usb: cdnsp: Fix deadlock issue during using NCM gadget").
+When running as a PVH dom0 the ACPI tables exposed to Linux are (mostly)
+the native ones, thus exposing the C and P states, that can lead to
+attachment of CPU idle and frequency drivers.  However the entity in
+control of the CPU C and P states is Xen, as dom0 doesn't have a full view
+of the system load, neither has all CPUs assigned and identity pinned.
 
-Under PREEMPT_RT the deadlock can be readily triggered by heavy network
-traffic, for example using "iperf --bidir" over NCM ethernet link.
+Like it's done for classic PV guests, prevent Linux from using idle or
+frequency state drivers when running as a PVH dom0.
 
-The deadlock occurs because the threaded interrupt handler gets
-preempted by a softirq, but both are protected by the same spinlock.
-Prevent deadlock by disabling softirq during threaded irq handler.
+On an AMD EPYC 7543P system without this fix a Linux PVH dom0 will keep the
+host CPUs spinning at 100% even when dom0 is completely idle, as it's
+attempting to use the acpi_idle driver.
 
-Cc: stable <stable@kernel.org>
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250318-rfs-cdns3-deadlock-v2-1-bfd9cfcee732@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250407101842.67228-1-roger.pau@citrix.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/gadget.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/xen/enlighten_pvh.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -1920,6 +1920,7 @@ static int cdns3_gadget_ep_disable(struc
- 			  "%s is already disabled\n", priv_ep->name))
- 		return 0;
+diff --git a/arch/x86/xen/enlighten_pvh.c b/arch/x86/xen/enlighten_pvh.c
+index 0e3d930bcb89e..9d25d9373945c 100644
+--- a/arch/x86/xen/enlighten_pvh.c
++++ b/arch/x86/xen/enlighten_pvh.c
+@@ -1,5 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/acpi.h>
++#include <linux/cpufreq.h>
++#include <linux/cpuidle.h>
+ #include <linux/export.h>
+ #include <linux/mm.h>
  
-+	local_bh_disable();
- 	spin_lock_irqsave(&priv_dev->lock, flags);
+@@ -123,8 +125,23 @@ static void __init pvh_arch_setup(void)
+ {
+ 	pvh_reserve_extra_memory();
  
- 	trace_cdns3_gadget_ep_disable(priv_ep);
-@@ -1976,6 +1977,7 @@ static int cdns3_gadget_ep_disable(struc
- 	priv_ep->flags &= ~EP_ENABLED;
- 
- 	spin_unlock_irqrestore(&priv_dev->lock, flags);
-+	local_bh_enable();
- 
- 	return ret;
+-	if (xen_initial_domain())
++	if (xen_initial_domain()) {
+ 		xen_add_preferred_consoles();
++
++		/*
++		 * Disable usage of CPU idle and frequency drivers: when
++		 * running as hardware domain the exposed native ACPI tables
++		 * causes idle and/or frequency drivers to attach and
++		 * malfunction.  It's Xen the entity that controls the idle and
++		 * frequency states.
++		 *
++		 * For unprivileged domains the exposed ACPI tables are
++		 * fabricated and don't contain such data.
++		 */
++		disable_cpuidle();
++		disable_cpufreq();
++		WARN_ON(xen_set_default_idle());
++	}
  }
+ 
+ void __init xen_pvh_init(struct boot_params *boot_params)
+-- 
+2.39.5
+
 
 
 
