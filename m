@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-138038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB59AA164E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8E1AA1535
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1E4165066
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 506F598683B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55FD233713;
-	Tue, 29 Apr 2025 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8088A24500A;
+	Tue, 29 Apr 2025 17:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eq3yI68N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcAeuC1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8257E110;
-	Tue, 29 Apr 2025 17:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D3E21ABDB;
+	Tue, 29 Apr 2025 17:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947916; cv=none; b=BeQpg4xyYajdiXZq5I7YUdzimrdIumzFgwl82QxbynPPhD81Y6D/3Bj2hOxzkxiq7+Oabk2T0GOxBce7m4s6sv6rjAQbZEarqp+1ZNdkBdBuqAgRbfvfZGzvmJCYz3QKQCqWLdj84b9gDesrlboHq7nBjTzA9xDL9SdRblJoUOQ=
+	t=1745947130; cv=none; b=LFwTOQjpLzo6gzkOsFNqUlTfC896RY7c1DL06BVd1q15p+RiTnWgXZa/hOBLCVHSgE8CRtEI6M+IBnYZuiL8K05xp6vj1aCwHOsuCKD5bxKQwsvPnz3abczYnLwI++qRol0h3d7WP+1+MwDhI6GCNlksTG5bFPvdYNTPUL5syFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947916; c=relaxed/simple;
-	bh=5rNWIyfvwMOk6lSNCF30gV36fw/PgjG/f+maxiMGU1I=;
+	s=arc-20240116; t=1745947130; c=relaxed/simple;
+	bh=dDrIap+7EXZEmZYsIeXG9Tp5usIvJandtGa6RAwiixw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6Vk909rxOP2pfb0oKsl05K/nGyAULjP6fkGPfs0UJrzjX45vnZRSYXqZDMzAStLf7wiKryVtoyC7FveqvculRwPXEcQPNZEG8l3MW6Qu7mGWPiABJmxbU9wHu0uSiTTp+rH93+0HtlWAJijZnoBbzTj6ZA3NO0Jm5vQionGYN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eq3yI68N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC65C4CEE3;
-	Tue, 29 Apr 2025 17:31:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i9MhTyagnTEULWRTCij/ZaPKToG/pZbAkmrZS4s/S+rvomhZ7pzJJtRRYw98cAkGr16usKtFfZk61iYsw+012/vfn+u+ta8EaOviTIGViKUMlD0M8bFGNepKOrGekpivlflO1qJEFB4IllvaS8Gu6ePQVTlN6iYmaG6/aVsZJnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcAeuC1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1395C4CEE3;
+	Tue, 29 Apr 2025 17:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947916;
-	bh=5rNWIyfvwMOk6lSNCF30gV36fw/PgjG/f+maxiMGU1I=;
+	s=korg; t=1745947130;
+	bh=dDrIap+7EXZEmZYsIeXG9Tp5usIvJandtGa6RAwiixw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eq3yI68NU/TX0ZOLqym68wLcRBXleLHsxbayl59wFL4MkV/DzpTa+QZKwOB8o1lED
-	 h7z6XRuPUnpm1RzML4//F9NTGw7AWkKGkbOa7ivctYR6qdEqw+3GOI/bntEbalS3Gj
-	 DeDRb6N736DQLFhyR0lIjWGfwc/oZcGlKbXUnjGs=
+	b=kcAeuC1x15WvPkstG1wFl1N+nUrtr0rUjWYniPife9yXQDkOIkFyRWHdQacnlS8To
+	 bEUwdjH9UkrSoS//gRiVL4YZSTEiWrsTZ1Ko3DV+Jllfu2uxLWMvIYFDQEtwl+n+u7
+	 TzplxHtGdIKnLO9k+BrWIpk1WjwoDWqcObbDh44w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 144/280] usb: dwc3: xilinx: Prevent spike in reset signal
+	WangYuli <wangyuli@uniontech.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 181/286] MIPS: cevt-ds1287: Add missing ds1287.h include
 Date: Tue, 29 Apr 2025 18:41:25 +0200
-Message-ID: <20250429161121.020080243@linuxfoundation.org>
+Message-ID: <20250429161115.417814526@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +59,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Looijmans <mike.looijmans@topic.nl>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit 38d6e60b6f3a99f8f13bee22eab616136c2c0675 upstream.
+commit f3be225f338a578851a7b607a409f476354a8deb upstream.
 
-The "reset" GPIO controls the RESET signal to an external, usually
-ULPI PHY, chip. The original code path acquires the signal in LOW
-state, and then immediately asserts it HIGH again, if the reset
-signal defaulted to asserted, there'd be a short "spike" before the
-reset.
+Address the issue of cevt-ds1287.c not including the ds1287.h header
+file.
 
-Here is what happens depending on the pre-existing state of the reset
-signal:
-Reset (previously asserted):   ~~~|_|~~~~|_______
-Reset (previously deasserted): _____|~~~~|_______
-                                  ^ ^    ^
-                                  A B    C
+Fix follow errors with gcc-14 when -Werror:
 
-At point A, the low going transition is because the reset line is
-requested using GPIOD_OUT_LOW. If the line is successfully requested,
-the first thing we do is set it high _without_ any delay. This is
-point B. So, a glitch occurs between A and B.
+arch/mips/kernel/cevt-ds1287.c:15:5: error: no previous prototype for ‘ds1287_timer_state’ [-Werror=missing-prototypes]
+   15 | int ds1287_timer_state(void)
+      |     ^~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:20:5: error: no previous prototype for ‘ds1287_set_base_clock’ [-Werror=missing-prototypes]
+   20 | int ds1287_set_base_clock(unsigned int hz)
+      |     ^~~~~~~~~~~~~~~~~~~~~
+arch/mips/kernel/cevt-ds1287.c:103:12: error: no previous prototype for ‘ds1287_clockevent_init’ [-Werror=missing-prototypes]
+  103 | int __init ds1287_clockevent_init(int irq)
+      |            ^~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[7]: *** [scripts/Makefile.build:207: arch/mips/kernel/cevt-ds1287.o] Error 1
+make[7]: *** Waiting for unfinished jobs....
+make[6]: *** [scripts/Makefile.build:465: arch/mips/kernel] Error 2
+make[6]: *** Waiting for unfinished jobs....
 
-Requesting the line using GPIOD_OUT_HIGH eliminates the A and B
-transitions. Instead we get:
-
-Reset (previously asserted)  : ~~~~~~~~~~|______
-Reset (previously deasserted): ____|~~~~~|______
-                                   ^     ^
-                                   A     C
-
-Where A and C are the points described above in the code. Point B
-has been eliminated.
-
-The issue was found during code inspection.
-
-Also remove the cryptic "toggle ulpi .." comment.
-
-Fixes: ca05b38252d7 ("usb: dwc3: xilinx: Add gpio-reset support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250318064518.9320-1-mike.looijmans@topic.nl
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-xilinx.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/mips/kernel/cevt-ds1287.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/dwc3-xilinx.c
-+++ b/drivers/usb/dwc3/dwc3-xilinx.c
-@@ -207,15 +207,13 @@ static int dwc3_xlnx_init_zynqmp(struct
+--- a/arch/mips/kernel/cevt-ds1287.c
++++ b/arch/mips/kernel/cevt-ds1287.c
+@@ -10,6 +10,7 @@
+ #include <linux/mc146818rtc.h>
+ #include <linux/irq.h>
  
- skip_usb3_phy:
- 	/* ulpi reset via gpio-modepin or gpio-framework driver */
--	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
-+	reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(reset_gpio)) {
- 		return dev_err_probe(dev, PTR_ERR(reset_gpio),
- 				     "Failed to request reset GPIO\n");
- 	}
++#include <asm/ds1287.h>
+ #include <asm/time.h>
  
- 	if (reset_gpio) {
--		/* Toggle ulpi to reset the phy. */
--		gpiod_set_value_cansleep(reset_gpio, 1);
- 		usleep_range(5000, 10000);
- 		gpiod_set_value_cansleep(reset_gpio, 0);
- 		usleep_range(5000, 10000);
+ int ds1287_timer_state(void)
 
 
 
