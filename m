@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-137504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF314AA13DB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E115BAA1793
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B338981B29
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 887EF1BC4D7D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7C924EAB2;
-	Tue, 29 Apr 2025 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBCC253326;
+	Tue, 29 Apr 2025 17:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUc6zdt1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebxmhpt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0081DF73C;
-	Tue, 29 Apr 2025 17:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A962522B4;
+	Tue, 29 Apr 2025 17:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946265; cv=none; b=MbH0IWSQTGemXxEcMdAkyu2Hu9o1ROo8xVEfDGaQ1EC9bY9uXXOBosYfFbFJV1YhLn86NUhqj2WDimuWaZS3UHpn1bDaU0gsATpQwz65WRM7s66SVWVaqjThJpui2SEXegCU/nxds9c8ZTDTWSVjqvm1+BvmWiiiA4qbAhi2T0A=
+	t=1745948932; cv=none; b=tDDvI+Sn7HsTIUSQo34wLFl/Aqc4N0tcrBKoYojY0DqO91p9WRJUTMXuJo2FOWn7AYRQeHmN2+fe3Cj3Gx+aoN16y+Nbwu9hx1kcpi17wcVT50OpcmQ2OxoLpYe6+coa11ngUsmOXdJqUkguMPrBb9T1EQmERnol9VGnSPjcWgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946265; c=relaxed/simple;
-	bh=BDv+0fVXC7ErWrkHeuCNQt5KR0AZcfZDJqhybr2jPnI=;
+	s=arc-20240116; t=1745948932; c=relaxed/simple;
+	bh=Y0JcT4uLNEXD5OcvlyBeUCLvuAgODgtzWJOaqRvZiVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgeknVhlwwZyo+2TSuSVqY685TPRQ3KbvELXoAFaMn2OO8rtQTEosYrkGT5Apfx7NeuiYt+RpIT7503QZ9T0Lj5k7L0Z3Ox9REY1jbFzQZ/QTz9nvKb6mRb0UhiSUma3XUBntDCuzi7/lyJd7x3jqAjEehe754FGpbmh7agVixE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUc6zdt1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B6DC4CEE3;
-	Tue, 29 Apr 2025 17:04:24 +0000 (UTC)
+	 MIME-Version; b=lV2+5IATwmL4w/QygA6OroeWpGdlADmyKi1ZaGS7Y+EF4RRrtQ4S9ycg9g2kmL24PqI5d0fvSineTd0IWo3ynp0OMhoAE4+Nl2WZQyM1Hr05/eWBJ7qauDNE8aokMpPn7UD0oW7NCCxJfrCZ0oB9q9QN2LdhOJlMYgqxPH0fTOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebxmhpt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39661C4CEE3;
+	Tue, 29 Apr 2025 17:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946264;
-	bh=BDv+0fVXC7ErWrkHeuCNQt5KR0AZcfZDJqhybr2jPnI=;
+	s=korg; t=1745948932;
+	bh=Y0JcT4uLNEXD5OcvlyBeUCLvuAgODgtzWJOaqRvZiVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUc6zdt11y//emdyx9gHkQ0O8w1P1Uh0wYIXJUJZCu52tQItBxR+ojrO+afEn0NNZ
-	 j+k8V5Lh5E8FcvCdTtcBHJzC59Oao7rK+prIPxlsAvQNDm6oQ/4joX3hCsjHju3Hqk
-	 uf0r8q7M+B6bnqZKjLWsdyORz2l/1QIBKDdPEXro=
+	b=ebxmhpt5Mn/lx3MuBN0D01poV1PGo4rrYmn/Tlk4XyZlH6DDgMYgNh0+r3Blbrw1i
+	 pmimDkOSrTHs7LPAW7/b4L5p3UEvEfcxTR4hWgdZwp7N6F6cSvMLPeBPot8O92ht4q
+	 932H/fgCThXujzbG8kC4vsniFB8NNHIL29yTuslk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 209/311] usb: xhci: Complete error mid TD transfers when handling Missed Service
+	Baoquan He <bhe@redhat.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	"Yanjun.Zhu" <yanjun.zhu@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 169/373] mm/gup: fix wrongly calculated returned value in fault_in_safe_writeable()
 Date: Tue, 29 Apr 2025 18:40:46 +0200
-Message-ID: <20250429161129.565239871@linuxfoundation.org>
+Message-ID: <20250429161130.126884175@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit bfa8459942822bdcc86f0e87f237c0723ae64948 ]
+commit 8c03ebd7cdc06bd0d2fecb4d1a609ef1dbb7d0aa upstream.
 
-Missed Service Error after an error mid TD means that the failed TD has
-already been passed by the xHC without acknowledgment of the final TRB,
-a known hardware bug. So don't wait any more and give back the TD.
+Not like fault_in_readable() or fault_in_writeable(), in
+fault_in_safe_writeable() local variable 'start' is increased page by page
+to loop till the whole address range is handled.  However, it mistakenly
+calculates the size of the handled range with 'uaddr - start'.
 
-Reproduced on NEC uPD720200 under conditions of ludicrously bad USB link
-quality, confirmed to behave as expected using dynamic debug.
+Fix it here.
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-5-mathias.nyman@linux.intel.com
+Andreas said:
+
+: In gfs2, fault_in_iov_iter_writeable() is used in
+: gfs2_file_direct_read() and gfs2_file_read_iter(), so this potentially
+: affects buffered as well as direct reads.  This bug could cause those
+: gfs2 functions to spin in a loop.
+
+Link: https://lkml.kernel.org/r/20250410035717.473207-1-bhe@redhat.com
+Link: https://lkml.kernel.org/r/20250410035717.473207-2-bhe@redhat.com
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Fixes: fe673d3f5bf1 ("mm: gup: make fault_in_safe_writeable() use fixup_user_fault()")
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Yanjun.Zhu <yanjun.zhu@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/gup.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index c64316638350e..7721215be79ff 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2789,7 +2789,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		xhci_dbg(xhci,
- 			 "Miss service interval error for slot %u ep %u, set skip flag\n",
- 			 slot_id, ep_index);
--		return 0;
-+		break;
- 	case COMP_NO_PING_RESPONSE_ERROR:
- 		ep->skip = true;
- 		xhci_dbg(xhci,
-@@ -2837,6 +2837,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		xhci_dequeue_td(xhci, td, ep_ring, td->status);
- 	}
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -1768,8 +1768,8 @@ size_t fault_in_safe_writeable(const cha
+ 	} while (start != end);
+ 	mmap_read_unlock(mm);
  
-+	/* Missed TDs will be skipped on the next event */
-+	if (trb_comp_code == COMP_MISSED_SERVICE_ERROR)
-+		return 0;
-+
- 	if (list_empty(&ep_ring->td_list)) {
- 		/*
- 		 * Don't print wanings if ring is empty due to a stopped endpoint generating an
--- 
-2.39.5
-
+-	if (size > (unsigned long)uaddr - start)
+-		return size - ((unsigned long)uaddr - start);
++	if (size > start - (unsigned long)uaddr)
++		return size - (start - (unsigned long)uaddr);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(fault_in_safe_writeable);
 
 
 
