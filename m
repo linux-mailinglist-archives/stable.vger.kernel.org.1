@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-137582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EAEAA1436
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E08AA1859
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D2C53B0818
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:08:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 025819A61F8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269B32472AA;
-	Tue, 29 Apr 2025 17:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC553253F2C;
+	Tue, 29 Apr 2025 17:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGsSYq90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LfxKZ41j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A6A22A81D;
-	Tue, 29 Apr 2025 17:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692AF253F27;
+	Tue, 29 Apr 2025 17:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946500; cv=none; b=K1PAmpPYHlQObRwuNgZQPIrR0clXTOILhl8/SASH7FTyznJIRngnmzemCA3k2GX+pZnqUPf3CxsmXHf7WI3A+5QvttKHntJn9ibMLd5i7fzFXwkE/PQzxjZffGXn0hLAHbb35JjjwjbffUCoKGHfd0jJUVHzgZF8ukUHmhvIq/I=
+	t=1745949236; cv=none; b=dlt5KQGzxV9sm8xSDPmYFc1oPVxDI0JgYN2l4hsTUxrNulb5gpDU0nriHrQ7XvRcvENZm1CmGqgSubke5SPfKuRtvGoHCto0+0aLvFDxQ2CN5IEnCD5H3kKrAF0LXcGNcuO0J3jghKJR7npvqsywCL7PLH+ue9tgqWUXDDP84bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946500; c=relaxed/simple;
-	bh=CF/JgNGiO5CCTLl6rXA8V7FKMecgIt/6JbkYZRYXBfI=;
+	s=arc-20240116; t=1745949236; c=relaxed/simple;
+	bh=3XvXLXKEj8KM340idEwMW6OdiADseoQc4JbB7N7cquQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEqfwtOoF3Fp1lC4TVKzfRYJaLYBX+FyCU78H76SAfzVnkJ+Dcvj0dMwTeYKZb/eOvQKatiCBNCDjdEJVBC9tqYtb3mymmxJ6PR4Yh5VFtkci5N/XgdQCDylsYaGfKfv8byRmi8htXPtxefse+ejcNJYIRgZpoN6OhbmawZPGQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGsSYq90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6C5C4CEE3;
-	Tue, 29 Apr 2025 17:08:20 +0000 (UTC)
+	 MIME-Version; b=PuE9QV3WM9VMjkz4F3nYBG/O00zf2hyEkeb0dy2njN8ZJc4c0f6oljODHa0fR8uIHyZhx5dwg0UObxuqIZC7UwssFACXLHlV6IMP1SjKNDd1JzWQoGQH+wvsG0iRJ12XnLKgkKNMdpH0GG+PBAl7FZBQUYMSitVAQViH2qtUNpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LfxKZ41j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1671C4CEE3;
+	Tue, 29 Apr 2025 17:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946500;
-	bh=CF/JgNGiO5CCTLl6rXA8V7FKMecgIt/6JbkYZRYXBfI=;
+	s=korg; t=1745949236;
+	bh=3XvXLXKEj8KM340idEwMW6OdiADseoQc4JbB7N7cquQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGsSYq90XDKoYse1je/lD2AQXPy/z1FdxipFfc8NcAtXIBHTBOYAQ3BhjPb+cyqRk
-	 QAp23tH2jCcMnu0V3nPZtF12azG66N9kciz868ViSEkbf+2w0+prJ4Uow35YRDVXMn
-	 usYf9vAuTlHKIhN+002P8cgp3rGqzkacnW9JvTLw=
+	b=LfxKZ41j4ydF9yTMLHeSJ58SzhuY0ltgNkV+h7l+swLU50E0RKPwYXtIlZEVqy+Vx
+	 BXUUEYbHN3SzC9EunJ+onFhBuuzyBS6tpkI5C3N5QN0q0QFpUaCX55etbrlwXmhDme
+	 UgFu0k9ggX4BL+b9cUMbDSmNTc2Hn5ZQLUB0Xka0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pi Xiange <xiange.pi@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Christian Ludloff <ludloff@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Tony Luck <tony.luck@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	x86-cpuid@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 288/311] x86/cpu: Add CPU model number for Bartlett Lake CPUs with Raptor Cove cores
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Daniel Axtens <dja@axtens.net>,
+	David Hildenbrand <david@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 248/373] mm: fix apply_to_existing_page_range()
 Date: Tue, 29 Apr 2025 18:42:05 +0200
-Message-ID: <20250429161132.802018860@linuxfoundation.org>
+Message-ID: <20250429161133.326434189@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,51 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pi Xiange <xiange.pi@intel.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit d466304c4322ad391797437cd84cca7ce1660de0 ]
+commit a995199384347261bb3f21b2e171fa7f988bd2f8 upstream.
 
-Bartlett Lake has a P-core only product with Raptor Cove.
+In the case of apply_to_existing_page_range(), apply_to_pte_range() is
+reached with 'create' set to false.  When !create, the loop over the PTE
+page table is broken.
 
-[ mingo: Switch around the define as pointed out by Christian Ludloff:
-         Ratpr Cove is the core, Bartlett Lake is the product.
+apply_to_pte_range() will only move to the next PTE entry if 'create' is
+true or if the current entry is not pte_none().
 
-Signed-off-by: Pi Xiange <xiange.pi@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Christian Ludloff <ludloff@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: "Ahmed S. Darwish" <darwi@linutronix.de>
-Cc: x86-cpuid@lists.linux.dev
-Link: https://lore.kernel.org/r/20250414032839.5368-1-xiange.pi@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This means that the user of apply_to_existing_page_range() will not have
+'fn' called for any entries after the first pte_none() in the PTE page
+table.
+
+Fix the loop logic in apply_to_pte_range().
+
+There are no known runtime issues from this, but the fix is trivial enough
+for stable@ even without a known buggy user.
+
+Link: https://lkml.kernel.org/r/20250409094043.1629234-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: be1db4753ee6 ("mm/memory.c: add apply_to_existing_page_range() helper")
+Cc: Daniel Axtens <dja@axtens.net>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/intel-family.h | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
-index 6d7b04ffc5fd0..ef5a06ddf0287 100644
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -115,6 +115,8 @@
- #define INTEL_GRANITERAPIDS_X		IFM(6, 0xAD)
- #define INTEL_GRANITERAPIDS_D		IFM(6, 0xAE)
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2570,11 +2570,11 @@ static int apply_to_pte_range(struct mm_
+ 	if (fn) {
+ 		do {
+ 			if (create || !pte_none(*pte)) {
+-				err = fn(pte++, addr, data);
++				err = fn(pte, addr, data);
+ 				if (err)
+ 					break;
+ 			}
+-		} while (addr += PAGE_SIZE, addr != end);
++		} while (pte++, addr += PAGE_SIZE, addr != end);
+ 	}
+ 	*mask |= PGTBL_PTE_MODIFIED;
  
-+#define INTEL_BARTLETTLAKE		IFM(6, 0xD7) /* Raptor Cove */
-+
- /* "Hybrid" Processors (P-Core/E-Core) */
- 
- #define INTEL_LAKEFIELD			IFM(6, 0x8A) /* Sunny Cove / Tremont */
--- 
-2.39.5
-
 
 
 
