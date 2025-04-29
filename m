@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-138908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2861AAA1A42
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB9BAA1A45
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4D3E1883FBD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68D6318851E6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699E924E01F;
-	Tue, 29 Apr 2025 18:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE4E24E01F;
+	Tue, 29 Apr 2025 18:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNOQiLwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M04m4ub2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26007155A4E;
-	Tue, 29 Apr 2025 18:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9105219A63;
+	Tue, 29 Apr 2025 18:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950737; cv=none; b=UWAbadFFpPXUJqLFwDffRbwiMYrNk3MBOwuTI96WtyK37eytQpPzEoH4OjRoJgdj6/SQmVgYAVlw9U60Tb7gfgeYBYB11HCDOIUl8erD3gzXg+DOYotpHvtuBBx062f6X0maLqSjtAbNxT+ZGkc4JP0PXVp84sXaQT6Fn4N4B+Y=
+	t=1745950743; cv=none; b=fN6ip76ChanHi2OqC4DfQjwmISAqrsWW3n7CR4XJpyfW5nP+ZgJyEnpqwYA+buelOeKt07cVEAV+6D47sWVEmWfpyCqCiry1VgOBm8cij/5/GnXQZAFNqQWJ7aR0d9alShZebibLLauFSyEuO+ByTXjr99s+/pXvbSHElLBm1RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950737; c=relaxed/simple;
-	bh=MQV7VVe4djKJN83oYg9O7vWRqIxiHRe6ayCPmwPct7Q=;
+	s=arc-20240116; t=1745950743; c=relaxed/simple;
+	bh=8DVz515NtWxBPvpn+9XUS6Tbf4RB850uaMedIwx4/Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbsvyLuFVl3Zto5jpjfjo5eya/V7oq5pNABu1a3EV+sdjurxfy2n17PjZqhUW0FqHy2Xhkzf6MA+hJg5ZOPeEsiUZ/GxfUka5ysl8s9dCSNiu4PIhlMfVPRokFUDpyagF+5VytxVQv//RhEL9AcBsfpD498CVAkFuft2C6ekdfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNOQiLwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FDAC4CEE3;
-	Tue, 29 Apr 2025 18:18:56 +0000 (UTC)
+	 MIME-Version; b=V22CsM91zrpBGBrAAG0ROb4k/xeSUg5Yz2zY9h2D7U01bR/dngrXoR2UURHAqhxc2AOlojBZT9uJ5vXHj3+qgbEkpgPrCBwCyakFoepve0N8eFo1laRStUjMomFko+elPKO80ml4cANqEWFcHbbyY8fHHWSfgpC1GXFUd76BMXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M04m4ub2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BB2C4CEE3;
+	Tue, 29 Apr 2025 18:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950737;
-	bh=MQV7VVe4djKJN83oYg9O7vWRqIxiHRe6ayCPmwPct7Q=;
+	s=korg; t=1745950743;
+	bh=8DVz515NtWxBPvpn+9XUS6Tbf4RB850uaMedIwx4/Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNOQiLwApzHBw0+cBuhSGFU8BJk8iDOoi6RLKmp0ZpSS9gCUjbfkAU4ikLt1b9kpF
-	 34LOpfo0K3GoBqC6o+2HY7td1KISq/ThR3WQFzjT3ejtpMMMn6DRLHqB/QyEzMi9c4
-	 LoOh9Q9xyTIt8HyM4Xu9NcCujtywDwye2xKvJx5c=
+	b=M04m4ub2mZvQAzhJd/nsckyAOmDUZz+kGHoi4hYBIvc9KIV/d490tEmC26YK+iI8m
+	 3BBeVI9Xu3AqaaPUTXwArFXbRce/aPI18JQFFDLVIW0RL0d2TCmZGyNIKdQWV5Emjv
+	 XviHFoeIoM5LOfp1/pZWGclh2ds20CrlPoi9Exys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tamura Dai <kirinode0@gmail.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/204] spi: spi-imx: Add check for spi_imx_setupxfer()
-Date: Tue, 29 Apr 2025 18:44:36 +0200
-Message-ID: <20250429161107.076426913@linuxfoundation.org>
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 189/204] x86/pvh: Call C code via the kernel virtual mapping
+Date: Tue, 29 Apr 2025 18:44:37 +0200
+Message-ID: <20250429161107.115398187@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
 References: <20250429161059.396852607@linuxfoundation.org>
@@ -67,55 +66,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tamura Dai <kirinode0@gmail.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 951a04ab3a2db4029debfa48d380ef834b93207e ]
+commit e8fbc0d9cab6c1ee6403f42c0991b0c1d5dbc092 upstream.
 
-Add check for the return value of spi_imx_setupxfer().
-spi_imx->rx and spi_imx->tx function pointer can be NULL when
-spi_imx_setupxfer() return error, and make NULL pointer dereference.
+Calling C code via a different mapping than it was linked at is
+problematic, because the compiler assumes that RIP-relative and absolute
+symbol references are interchangeable. GCC in particular may use
+RIP-relative per-CPU variable references even when not using -fpic.
 
- Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
- Call trace:
-  0x0
-  spi_imx_pio_transfer+0x50/0xd8
-  spi_imx_transfer_one+0x18c/0x858
-  spi_transfer_one_message+0x43c/0x790
-  __spi_pump_transfer_message+0x238/0x5d4
-  __spi_sync+0x2b0/0x454
-  spi_write_then_read+0x11c/0x200
+So call xen_prepare_pvh() via its kernel virtual mapping on x86_64, so
+that those RIP-relative references produce the correct values. This
+matches the pre-existing behavior for i386, which also invokes
+xen_prepare_pvh() via the kernel virtual mapping before invoking
+startup_32 with paging disabled again.
 
-Signed-off-by: Tamura Dai <kirinode0@gmail.com>
-Reviewed-by: Carlos Song <carlos.song@nxp.com>
-Link: https://patch.msgid.link/20250417011700.14436-1-kirinode0@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7243b93345f7 ("xen/pvh: Bootstrap PVH guest")
+Tested-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Message-ID: <20241009160438.3884381-8-ardb+git@google.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+[ Stable context update ]
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-imx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/platform/pvh/head.S |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index daa32bde61556..da4442954375b 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -1614,10 +1614,13 @@ static int spi_imx_transfer_one(struct spi_controller *controller,
- 				struct spi_device *spi,
- 				struct spi_transfer *transfer)
- {
-+	int ret;
- 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(spi->controller);
- 	unsigned long hz_per_byte, byte_limit;
+--- a/arch/x86/platform/pvh/head.S
++++ b/arch/x86/platform/pvh/head.S
+@@ -100,7 +100,12 @@ SYM_CODE_START_LOCAL(pvh_start_xen)
+ 	xor %edx, %edx
+ 	wrmsr
  
--	spi_imx_setupxfer(spi, transfer);
-+	ret = spi_imx_setupxfer(spi, transfer);
-+	if (ret < 0)
-+		return ret;
- 	transfer->effective_speed_hz = spi_imx->spi_bus_clk;
+-	call xen_prepare_pvh
++	/* Call xen_prepare_pvh() via the kernel virtual mapping */
++	leaq xen_prepare_pvh(%rip), %rax
++	subq phys_base(%rip), %rax
++	addq $__START_KERNEL_map, %rax
++	ANNOTATE_RETPOLINE_SAFE
++	call *%rax
  
- 	/* flush rxfifo before transfer */
--- 
-2.39.5
-
+ 	/* startup_64 expects boot_params in %rsi. */
+ 	mov $_pa(pvh_bootparams), %rsi
 
 
 
