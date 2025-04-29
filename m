@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-137385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB24FAA131E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF27BAA13DC
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6458A16EA91
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 226DA7AEF4B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E392472B9;
-	Tue, 29 Apr 2025 16:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E0E248889;
+	Tue, 29 Apr 2025 17:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIHJiHI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnhunaPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75A5251798;
-	Tue, 29 Apr 2025 16:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717F21DF73C;
+	Tue, 29 Apr 2025 17:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945910; cv=none; b=lGBpyRO2XVo3y4iytcgov7V8WgbWlaky6tpblIxWfQ3qkhHVYO10PzTVb0+WT3rowoI5Y1pPNHkMQ1TxpKpY3Qkyenmt73TO583wsrn30zhoro2qjzZGentbTRINKDCeRsfBgV4TAGjFNASNlGNs0xrJIDs7JbldfjB1msqjoss=
+	t=1745946622; cv=none; b=pJePpRcWp++rrpoWTgXAcwY0al3l7i5bBYvaFEh85TLAVFStbs6EDJoHqv4SIvHGEqgrEC7Dz6laXLqegU8IBxyXavV4W0wZhUegmzEbWgcb7LsfQAYj62pyqrjaNBwxfG98jUywGga3rlG1NidPMIC/Eb71mluCgVVTmnsuuT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945910; c=relaxed/simple;
-	bh=K5akmzlX/6eHRFx+NZpHukgzTtOHcYHknzWL/sKCfQQ=;
+	s=arc-20240116; t=1745946622; c=relaxed/simple;
+	bh=ar25cQXZkknTnrlI3R9tt1nFb3swPJ/JXPzBp5rW4ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K7GqTlG7D4I91ejRPIgt4f/E6Po+eTduhCqp7LCkFNKsmy9mFSP9SYHQGPHn6BeFfYukGXJuLTJTugZepnSWESqg2AB9yE9qYOLVN1XBM9BF11aE6bZnXPsw5t2lxrO2VC3usgUFLgCUf7+v5ZL9NgfXnJSyHGhd6Ut8SS7qOLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIHJiHI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458D0C4CEE9;
-	Tue, 29 Apr 2025 16:58:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AwYAq+VNrnek2/NP4Px2IUPdmIq1uoofoJRk7dx+B5oEu5iKd4D+kBtz3DU1ztDcWVaKYVgoERE7Y8SJtzDV8EFYq44In0QVKs1KRjiYRsSji6URVgMNypFm5jallg/L6jVuHPcSt2Ztc8UVdjrjDoFoz8iEQyYOvqLN/dPztuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PnhunaPb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFA99C4CEE3;
+	Tue, 29 Apr 2025 17:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945910;
-	bh=K5akmzlX/6eHRFx+NZpHukgzTtOHcYHknzWL/sKCfQQ=;
+	s=korg; t=1745946622;
+	bh=ar25cQXZkknTnrlI3R9tt1nFb3swPJ/JXPzBp5rW4ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIHJiHI7Dy0EF9i1xFnMcsyUrhEmX8rucfddiEEN2z63aIa4KE2h1/dIMiwhMVlG2
-	 ry6tiC2MuDZvPdeUg6LZSrN0Nxas838qum0S9JsYv3g7KIsnhQXS7yI3vc9IjlzH9t
-	 VKOGF1hxlbouB/quJXg8yQBaLfFR/6t1bjPe0u4k=
+	b=PnhunaPbPEq6u7Gf5v7rEMp61rJKiOTRZErktXwUoX1teYLDFvphyKNVOourpkm+G
+	 vM7/cSnmDo7icOQZsOAz1/jDFeoQFrjO/MraYptXg2m36JjIvxsDn/Mgdr1gi1MPLK
+	 504thHzGIOxpqc0bLkcAuzZnlr3GCjeHz0GkwxCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Makarenko Oleg <oleg@makarenk.ooo>,
+	=?UTF-8?q?Tomasz=20Paku=C5=82a?= <tomasz.pakula.oficjalny@gmail.com>,
+	=?UTF-8?q?Micha=C5=82=20Kope=C4=87?= <michal@nozomi.space>,
+	Paul Dino Jones <paul@spacefreak18.xyz>,
+	=?UTF-8?q?Crist=C3=B3ferson=20Bueno?= <cbueno81@gmail.com>,
+	Pablo Cisneros <patchkez@protonmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 083/311] block: remove the backing_inode variable in bdev_statx
+Subject: [PATCH 5.10 016/286] HID: pidff: Convert infinite length from Linux API to PID standard
 Date: Tue, 29 Apr 2025 18:38:40 +0200
-Message-ID: <20250429161124.454622067@linuxfoundation.org>
+Message-ID: <20250429161108.520676766@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
 
-[ Upstream commit d13b7090b2510abaa83a25717466decca23e8226 ]
+[ Upstream commit 37e0591fe44dce39d1ebc7a82d5b6e4dba1582eb ]
 
-backing_inode is only used once, so remove it and update the comment
-describing the bdev lookup to be a bit more clear.
+Software uses 0 as de-facto infinite lenght on Linux FF apis (SDL),
+Linux doesn't actually define anythi as of now, while USB PID defines
+NULL (0xffff). Most PID devices do not expect a 0-length effect and
+can't interpret it as infinite. This change fixes Force Feedback for
+most PID compliant devices.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20250423053810.1683309-3-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 5f33b5226c9d ("block: don't autoload drivers on stat")
+As most games depend on updating the values of already playing infinite
+effects, this is crucial to ensure they will actually work.
+
+Previously, users had to rely on third-party software to do this conversion
+and make their PID devices usable.
+
+Co-developed-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Makarenko Oleg <oleg@makarenk.ooo>
+Signed-off-by: Tomasz Pakuła <tomasz.pakula.oficjalny@gmail.com>
+Reviewed-by: Michał Kopeć <michal@nozomi.space>
+Reviewed-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Paul Dino Jones <paul@spacefreak18.xyz>
+Tested-by: Cristóferson Bueno <cbueno81@gmail.com>
+Tested-by: Pablo Cisneros <patchkez@protonmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bdev.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ drivers/hid/usbhid/hid-pidff.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index 8453f6a795d9a..89235796e51a5 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -1271,18 +1271,15 @@ void sync_bdevs(bool wait)
- void bdev_statx(struct path *path, struct kstat *stat,
- 		u32 request_mask)
- {
--	struct inode *backing_inode;
- 	struct block_device *bdev;
+diff --git a/drivers/hid/usbhid/hid-pidff.c b/drivers/hid/usbhid/hid-pidff.c
+index 07a9fe97d2e05..badcb5f28607e 100644
+--- a/drivers/hid/usbhid/hid-pidff.c
++++ b/drivers/hid/usbhid/hid-pidff.c
+@@ -21,6 +21,7 @@
+ #include "usbhid.h"
  
--	backing_inode = d_backing_inode(path->dentry);
--
- 	/*
--	 * Note that backing_inode is the inode of a block device node file,
--	 * not the block device's internal inode.  Therefore it is *not* valid
--	 * to use I_BDEV() here; the block device has to be looked up by i_rdev
-+	 * Note that d_backing_inode() returns the block device node inode, not
-+	 * the block device's internal inode.  Therefore it is *not* valid to
-+	 * use I_BDEV() here; the block device has to be looked up by i_rdev
- 	 * instead.
- 	 */
--	bdev = blkdev_get_no_open(backing_inode->i_rdev);
-+	bdev = blkdev_get_no_open(d_backing_inode(path->dentry)->i_rdev);
- 	if (!bdev)
- 		return;
+ #define	PID_EFFECTS_MAX		64
++#define	PID_INFINITE		0xffff
  
+ /* Report usage table used to put reports into an array */
+ 
+@@ -301,7 +302,12 @@ static void pidff_set_effect_report(struct pidff_device *pidff,
+ 		pidff->block_load[PID_EFFECT_BLOCK_INDEX].value[0];
+ 	pidff->set_effect_type->value[0] =
+ 		pidff->create_new_effect_type->value[0];
+-	pidff->set_effect[PID_DURATION].value[0] = effect->replay.length;
++
++	/* Convert infinite length from Linux API (0)
++	   to PID standard (NULL) if needed */
++	pidff->set_effect[PID_DURATION].value[0] =
++		effect->replay.length == 0 ? PID_INFINITE : effect->replay.length;
++
+ 	pidff->set_effect[PID_TRIGGER_BUTTON].value[0] = effect->trigger.button;
+ 	pidff->set_effect[PID_TRIGGER_REPEAT_INT].value[0] =
+ 		effect->trigger.interval;
 -- 
 2.39.5
 
