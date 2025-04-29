@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-138900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8925BAA1A2D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E430AAA193C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1EE9165B28
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FDB27AC9C0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2789219A63;
-	Tue, 29 Apr 2025 18:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195C024633C;
+	Tue, 29 Apr 2025 18:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ri1B+G9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDe9dRJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685F824889B;
-	Tue, 29 Apr 2025 18:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C964F20C488;
+	Tue, 29 Apr 2025 18:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950712; cv=none; b=FPD8PcgIcLViSTb1zMUGn08myEynaF87QfxHjgcnu6qHKKtZe4tuxM4lwXS6km2AklRnA0zEOvwiGlsKkKgy+x5ihexsXGS1sA0S+p6W66k9GcxpeUEHDbrP3e68cWE01lqQA9TbC9feBqGDP/yRMz5WC0Orc+5v9//HHFpJQUo=
+	t=1745950149; cv=none; b=g4ADbiKv37NBup7VxB7/jeI7/+SM2KE0SpfUFA6S3PUdp3iI8AQqKQsSOFmfG+DDocUdBH2eWNk+B3bF50u4fUHYS7qw0197b7xMt+C47MigSYvk9Yc+uANvSLUA43ub2gUJWAXAm8/F6CDeHPS/5GN2HaJrYY5B0QZc2nAP6K8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950712; c=relaxed/simple;
-	bh=cRL7TCffumZHGrQO9qTKfg74LcwoGBnavBHb/86S4H4=;
+	s=arc-20240116; t=1745950149; c=relaxed/simple;
+	bh=o3GwYfMoqEuL3D3BkxdQkoKgz588JM95Mo3Gv7ASgvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNQ4XTxOHa7+qyudre5wyMe8GafD4baKOxHJplIHoBFz+V1Co5dbUjJ/+IBylNWuC+RbSxKH8JAq4FgKY0XhcjElOfq3cX+qJsNIQJ3Ehrii1YmLnuhPBWY6/kv+jrurslX/FCNBhQiGdYEuWoK7YRzLrv30K6WXqRF8rgXlBZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ri1B+G9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6708EC4CEE3;
-	Tue, 29 Apr 2025 18:18:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ac/k/MB68aURl8qzsXhC7gjPoFx9XQVHffGOEuNtGlqBSXU/0CnPtqok5csk1sQoTOgTrziw82g9cTdSAnlF3Zc/wYdNrx6CCYQZDf3l6qjA/jaijxyAQiR6kgNXQuwSIi+i/de0bTtpI5kk7b4OsZm3lBUitgE6BJOArGHo1LE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDe9dRJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D3CC4CEE3;
+	Tue, 29 Apr 2025 18:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950711;
-	bh=cRL7TCffumZHGrQO9qTKfg74LcwoGBnavBHb/86S4H4=;
+	s=korg; t=1745950149;
+	bh=o3GwYfMoqEuL3D3BkxdQkoKgz588JM95Mo3Gv7ASgvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ri1B+G9CCHJXwyTPdfnOL16VNXOf/bNM0sjlqxEBnvXlRKqN/ON2k6JapvNfydVKA
-	 H6TQ6S841DAM1q2biPJJeo33uFXaY4yr0ZjFWwq5iae7r7CxyceArS2i8uGC0I44Qe
-	 a1hxiVFVj2aBegvUdEkFQCGHbLeTHnqf86cPDiCY=
+	b=HDe9dRJL/PxGnCIa7TprrbIbLBPSfDOoK5H9nyfpLS7N//SQR8s8/LxnvYVFdWID4
+	 w6VTynfQFctwD55UY7n3plGn5Ax58OBeOnmZowVAsn7uHTNjfOhwOtsxN+ebIcz1it
+	 LxjccKRxa2Xwc2nQSgzKzA9P4+Of+mUf4bf79Cus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gou Hao <gouhao@uniontech.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Christoph Hellwig <hch@infradead.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/204] iomap: skip unnecessary ifs_block_is_uptodate check
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 160/167] MIPS: cm: Fix warning if MIPS_CM is disabled
 Date: Tue, 29 Apr 2025 18:44:28 +0200
-Message-ID: <20250429161106.759721278@linuxfoundation.org>
+Message-ID: <20250429161058.200096926@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +58,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gou Hao <gouhao@uniontech.com>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-[ Upstream commit 8e3c15ee0d292c413c66fe10201d1b035a0bea72 ]
+commit b73c3ccdca95c237750c981054997c71d33e09d7 upstream.
 
-In iomap_adjust_read_range, i is either the first !uptodate block, or it
-is past last for the second loop looking for trailing uptodate blocks.
-Assuming there's no overflow (there's no combination of huge folios and
-tiny blksize) then yeah, there is no point in retesting that the same
-block pointed to by i is uptodate since we hold the folio lock so nobody
-else could have set it uptodate.
+Commit e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
+introduced
 
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Link: https://lore.kernel.org/20250410071236.16017-1-gouhao@uniontech.com
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+arch/mips/include/asm/mips-cm.h:119:13: error: ‘mips_cm_update_property’
+	defined but not used [-Werror=unused-function]
+
+Fix this by making empty function implementation inline
+
+Fixes: e27fbe16af5c ("MIPS: cm: Detect CM quirks from device tree")
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c | 2 +-
+ arch/mips/include/asm/mips-cm.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index e7e6701806ad2..7ffdf0d037fae 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -224,7 +224,7 @@ static void iomap_adjust_read_range(struct inode *inode, struct folio *folio,
- 		}
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -104,7 +104,7 @@ static inline bool mips_cm_present(void)
+ #ifdef CONFIG_MIPS_CM
+ extern void mips_cm_update_property(void);
+ #else
+-static void mips_cm_update_property(void) {}
++static inline void mips_cm_update_property(void) {}
+ #endif
  
- 		/* truncate len if we find any trailing uptodate block(s) */
--		for ( ; i <= last; i++) {
-+		while (++i <= last) {
- 			if (ifs_block_is_uptodate(ifs, i)) {
- 				plen -= (last - i + 1) * block_size;
- 				last = i - 1;
--- 
-2.39.5
-
+ /**
 
 
 
