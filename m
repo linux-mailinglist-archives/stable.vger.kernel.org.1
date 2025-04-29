@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-137656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219E1AA1470
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0453AA1348
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6531E188A120
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2533E4A2B1E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92101242D6E;
-	Tue, 29 Apr 2025 17:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540B082C60;
+	Tue, 29 Apr 2025 17:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC3Rudr4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeyevQXL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A0027453;
-	Tue, 29 Apr 2025 17:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BC21A43D;
+	Tue, 29 Apr 2025 17:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946727; cv=none; b=F+Pp3M/isaPmiD2Mpzf3R+L+JDDscicgkivggp9rdzrbEa/BT7PKM7Hi5Oa74Vrcpz7yB3wuKHgPRR3QmKczy979CWOOrUVwoaGWZm95M9yFBeM1FSRxdxAubiV3Yh2ZT0ofck9RawKB7sZDha1SErJw7EHcENuNhKoLRV8Idyo=
+	t=1745946041; cv=none; b=k04TvGDUroXCDAeoYI9eYI9pKebSy45/qGitW85eNWK61XjPmuyF3iMEmdTHHZ4fUJqpa4r5jmDkxm3cDewKl6JMp5j7dZae5XeO/3WC0LlSFYZuvW2L3oCeH0qoomiPTQfrzCKUCy0dGavptLP8xYQggyhIiWPIsdnDK0ZFHtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946727; c=relaxed/simple;
-	bh=Sy8UMR2qsX8UBpi7S6uQVwnTVIefuPF2L1k/N+18Wsg=;
+	s=arc-20240116; t=1745946041; c=relaxed/simple;
+	bh=Hg52meg4sgG0qfTQ4/l6hsqrjWPCylf9aFmzXfFcPUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qZD1oKrLfsQcY9/EkPzXgnBr/hHoO3S41U00VQwUbgoFCy+jEALW2fvQkesuaEh7SfeSaTQTcsKrRbE0B+EACFhi7DWeU9gX8zMGdhBHeM1hitDOvqBp0x1/opIwSFD9aBb3jVlELKQgUVxX19NrhqIY8qIxbxnoM1+zHaeZmeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC3Rudr4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757E8C4CEE3;
-	Tue, 29 Apr 2025 17:12:06 +0000 (UTC)
+	 MIME-Version; b=eEd5z4mcE+NHwxyw1+L+YjeHlaZp6bZKsQNzXz1SdQ03FeJAJ+fMKQijv4tCKnupv/Re6W9X8rCyBMHs2t64GUSgUBciBl/7T+5zLTtCLSO33lw6HgPZ69G3xp/R88FfzSrnZnJAqTbX1ppy015c+qJDZUb+IBfsRoRsEuGLz0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeyevQXL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75679C4CEE3;
+	Tue, 29 Apr 2025 17:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946726;
-	bh=Sy8UMR2qsX8UBpi7S6uQVwnTVIefuPF2L1k/N+18Wsg=;
+	s=korg; t=1745946040;
+	bh=Hg52meg4sgG0qfTQ4/l6hsqrjWPCylf9aFmzXfFcPUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC3Rudr49oyA7sgmlEoDJNm9TV2fxsahImiToWD34Vd33OKvh9cb+7NZUFb2xMFFw
-	 4rIZWZQC8ItVBLiMZBZe+Lta+wsc0WfHIvGA9nISbS8MOYBPWGj2homp+CRqB0TCYg
-	 7aQnLTDJlFzr2w59MZ8YVgNPDnwCqHt/ypFEbXug=
+	b=MeyevQXLgNmWRZUzSSxutxB/qZukTkLSNKkgZ87OX77lG7CMtyJ/LOPhf9U8b9Qrq
+	 ZwloEsLSRocPXuEiRvicE1QqW59nia4OF1wYqug8mJXiAl1KeMqW6yx0OBlBwuwCaK
+	 EpG+K3wDm6NgglwGZzFLOYYlMSNZPcF7lqjjYsR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Moeller <moeller.matt@gmail.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/286] bpf: support SKF_NET_OFF and SKF_LL_OFF on skb frags
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.14 117/311] scsi: mpi3mr: Fix pending I/O counter
 Date: Tue, 29 Apr 2025 18:39:14 +0200
-Message-ID: <20250429161109.915289347@linuxfoundation.org>
+Message-ID: <20250429161125.833681721@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,187 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit d4bac0288a2b444e468e6df9cb4ed69479ddf14a ]
+commit cdd445258db9919e9dde497a6d5c3477ea7faf4d upstream.
 
-Classic BPF socket filters with SKB_NET_OFF and SKB_LL_OFF fail to
-read when these offsets extend into frags.
+Commit 199510e33dea ("scsi: mpi3mr: Update consumer index of reply
+queues after every 100 replies") introduced a regression with the
+per-reply queue pending I/O counter which was erroneously decremented,
+leading to the counter going negative.
 
-This has been observed with iwlwifi and reproduced with tun with
-IFF_NAPI_FRAGS. The below straightforward socket filter on UDP port,
-applied to a RAW socket, will silently miss matching packets.
+Drop the incorrect atomic decrement for the pending I/O counter.
 
-    const int offset_proto = offsetof(struct ip6_hdr, ip6_nxt);
-    const int offset_dport = sizeof(struct ip6_hdr) + offsetof(struct udphdr, dest);
-    struct sock_filter filter_code[] = {
-            BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, SKF_AD_OFF + SKF_AD_PKTTYPE),
-            BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, PACKET_HOST, 0, 4),
-            BPF_STMT(BPF_LD  + BPF_B   + BPF_ABS, SKF_NET_OFF + offset_proto),
-            BPF_JUMP(BPF_JMP + BPF_JEQ + BPF_K, IPPROTO_UDP, 0, 2),
-            BPF_STMT(BPF_LD  + BPF_H   + BPF_ABS, SKF_NET_OFF + offset_dport),
-
-This is unexpected behavior. Socket filter programs should be
-consistent regardless of environment. Silent misses are
-particularly concerning as hard to detect.
-
-Use skb_copy_bits for offsets outside linear, same as done for
-non-SKF_(LL|NET) offsets.
-
-Offset is always positive after subtracting the reference threshold
-SKB_(LL|NET)_OFF, so is always >= skb_(mac|network)_offset. The sum of
-the two is an offset against skb->data, and may be negative, but it
-cannot point before skb->head, as skb_(mac|network)_offset would too.
-
-This appears to go back to when frag support was introduced to
-sk_run_filter in linux-2.4.4, before the introduction of git.
-
-The amount of code change and 8/16/32 bit duplication are unfortunate.
-But any attempt I made to be smarter saved very few LoC while
-complicating the code.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/netdev/20250122200402.3461154-1-maze@google.com/
-Link: https://elixir.bootlin.com/linux/2.4.4/source/net/core/filter.c#L244
-Reported-by: Matt Moeller <moeller.matt@gmail.com>
-Co-developed-by: Maciej Żenczykowski <maze@google.com>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Link: https://lore.kernel.org/r/20250408132833.195491-2-willemdebruijn.kernel@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 199510e33dea ("scsi: mpi3mr: Update consumer index of reply queues after every 100 replies")
+Cc: stable@vger.kernel.org
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20250411111419.135485-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 80 ++++++++++++++++++++++++++---------------------
- 1 file changed, 44 insertions(+), 36 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 07fa811917380..b262cad02bad9 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -208,24 +208,36 @@ BPF_CALL_3(bpf_skb_get_nlattr_nest, struct sk_buff *, skb, u32, a, u32, x)
- 	return 0;
- }
- 
-+static int bpf_skb_load_helper_convert_offset(const struct sk_buff *skb, int offset)
-+{
-+	if (likely(offset >= 0))
-+		return offset;
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -563,7 +563,7 @@ int mpi3mr_process_op_reply_q(struct mpi
+ 		WRITE_ONCE(op_req_q->ci, le16_to_cpu(reply_desc->request_queue_ci));
+ 		mpi3mr_process_op_reply_desc(mrioc, reply_desc, &reply_dma,
+ 		    reply_qidx);
+-		atomic_dec(&op_reply_q->pend_ios);
 +
-+	if (offset >= SKF_NET_OFF)
-+		return offset - SKF_NET_OFF + skb_network_offset(skb);
-+
-+	if (offset >= SKF_LL_OFF && skb_mac_header_was_set(skb))
-+		return offset - SKF_LL_OFF + skb_mac_offset(skb);
-+
-+	return INT_MIN;
-+}
-+
- BPF_CALL_4(bpf_skb_load_helper_8, const struct sk_buff *, skb, const void *,
- 	   data, int, headlen, int, offset)
- {
--	u8 tmp, *ptr;
-+	u8 tmp;
- 	const int len = sizeof(tmp);
- 
--	if (offset >= 0) {
--		if (headlen - offset >= len)
--			return *(u8 *)(data + offset);
--		if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
--			return tmp;
--	} else {
--		ptr = bpf_internal_load_pointer_neg_helper(skb, offset, len);
--		if (likely(ptr))
--			return *(u8 *)ptr;
--	}
-+	offset = bpf_skb_load_helper_convert_offset(skb, offset);
-+	if (offset == INT_MIN)
-+		return -EFAULT;
- 
--	return -EFAULT;
-+	if (headlen - offset >= len)
-+		return *(u8 *)(data + offset);
-+	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
-+		return tmp;
-+	else
-+		return -EFAULT;
- }
- 
- BPF_CALL_2(bpf_skb_load_helper_8_no_cache, const struct sk_buff *, skb,
-@@ -238,21 +250,19 @@ BPF_CALL_2(bpf_skb_load_helper_8_no_cache, const struct sk_buff *, skb,
- BPF_CALL_4(bpf_skb_load_helper_16, const struct sk_buff *, skb, const void *,
- 	   data, int, headlen, int, offset)
- {
--	__be16 tmp, *ptr;
-+	__be16 tmp;
- 	const int len = sizeof(tmp);
- 
--	if (offset >= 0) {
--		if (headlen - offset >= len)
--			return get_unaligned_be16(data + offset);
--		if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
--			return be16_to_cpu(tmp);
--	} else {
--		ptr = bpf_internal_load_pointer_neg_helper(skb, offset, len);
--		if (likely(ptr))
--			return get_unaligned_be16(ptr);
--	}
-+	offset = bpf_skb_load_helper_convert_offset(skb, offset);
-+	if (offset == INT_MIN)
-+		return -EFAULT;
- 
--	return -EFAULT;
-+	if (headlen - offset >= len)
-+		return get_unaligned_be16(data + offset);
-+	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
-+		return be16_to_cpu(tmp);
-+	else
-+		return -EFAULT;
- }
- 
- BPF_CALL_2(bpf_skb_load_helper_16_no_cache, const struct sk_buff *, skb,
-@@ -265,21 +275,19 @@ BPF_CALL_2(bpf_skb_load_helper_16_no_cache, const struct sk_buff *, skb,
- BPF_CALL_4(bpf_skb_load_helper_32, const struct sk_buff *, skb, const void *,
- 	   data, int, headlen, int, offset)
- {
--	__be32 tmp, *ptr;
-+	__be32 tmp;
- 	const int len = sizeof(tmp);
- 
--	if (likely(offset >= 0)) {
--		if (headlen - offset >= len)
--			return get_unaligned_be32(data + offset);
--		if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
--			return be32_to_cpu(tmp);
--	} else {
--		ptr = bpf_internal_load_pointer_neg_helper(skb, offset, len);
--		if (likely(ptr))
--			return get_unaligned_be32(ptr);
--	}
-+	offset = bpf_skb_load_helper_convert_offset(skb, offset);
-+	if (offset == INT_MIN)
-+		return -EFAULT;
- 
--	return -EFAULT;
-+	if (headlen - offset >= len)
-+		return get_unaligned_be32(data + offset);
-+	if (!skb_copy_bits(skb, offset, &tmp, sizeof(tmp)))
-+		return be32_to_cpu(tmp);
-+	else
-+		return -EFAULT;
- }
- 
- BPF_CALL_2(bpf_skb_load_helper_32_no_cache, const struct sk_buff *, skb,
--- 
-2.39.5
-
+ 		if (reply_dma)
+ 			mpi3mr_repost_reply_buf(mrioc, reply_dma);
+ 		num_op_reply++;
 
 
 
