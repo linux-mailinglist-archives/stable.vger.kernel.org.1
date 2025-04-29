@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-138263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65285AA1738
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:45:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9A1AA1345
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE60F1BA7A03
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:45:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC68981712
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEBB2528E8;
-	Tue, 29 Apr 2025 17:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1746424466C;
+	Tue, 29 Apr 2025 16:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0o7ZIrtl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQbRmw1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD37221719;
-	Tue, 29 Apr 2025 17:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91A524113C;
+	Tue, 29 Apr 2025 16:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948700; cv=none; b=KnUDAQXwwNWcuK5t4Ve6mS6OJT9PONcJw7gx7trvm8Yt/Ykb2xsVUXbKnUKDbOspgpIN6Qgy9tzvIigA7jXFpl9s+dOByAls4OnzYBUwDUbuBD5AehJ3/XgBTlgYjCMNwwHK4sS3BAMb86L1wVRwX6u4CEDwchLQbuD3TEiDC7I=
+	t=1745945930; cv=none; b=QXYo39UpGrF70CAxOnGlvoHsBXEpw1Ag+EZKd8cdjJ5AtMx84w8NWg7zJUR1uBOoybpwGRwr7ixjyJb1+aCmCfoefOWjJNFwBKH2x3KA6xJ3x0TiVbeme2oJFrrGzKS+opgW11PjoZXdrx68tyqVYvVKG815o9AApXlaBeWNdys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948700; c=relaxed/simple;
-	bh=5kV/9+tLBK8Pu6LJGyzOBp//XOS6XFCi1mCKXYfinC0=;
+	s=arc-20240116; t=1745945930; c=relaxed/simple;
+	bh=HhpsSZ96xsXWKXGfVN5t+004QE2KNRi5n8KxK0eeha8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Miva8KSeOJvRwuSqPWNS3YSK8ru1bHDr7erLKlB0IomxY+p3dwE7o5gAgGrUA4a99fyq7APDH5CVhWUlRaWNdDHIuJouQerNNGCyO5c6vSbh0mdPqA4M9fSlqynrhgXVOsrnQjsFCAPRu2FXzwM/zQ+UTeiUut5L8RhPU797G5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0o7ZIrtl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FACC4CEE3;
-	Tue, 29 Apr 2025 17:44:59 +0000 (UTC)
+	 MIME-Version; b=W/cvwYr69GP3zEZLW66E+UWuzGNP+zuTjBqVNBViAsys5n7Rj22YSG/xtN4w/KMHoM9LEp3e3LvWAVA2dfk8kowO4qJyiH/AIq5F7RzP/TU/R14fTSUE6tJP4uvtom6O+9xY6oIaW47ktNO3htvinu3a5Y/qbPW6qjQQllsFAdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQbRmw1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA24C4CEE9;
+	Tue, 29 Apr 2025 16:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948700;
-	bh=5kV/9+tLBK8Pu6LJGyzOBp//XOS6XFCi1mCKXYfinC0=;
+	s=korg; t=1745945930;
+	bh=HhpsSZ96xsXWKXGfVN5t+004QE2KNRi5n8KxK0eeha8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0o7ZIrtlzG+iTG0TtOOuBUpzGTmSzq8mZBBRZUjh8hfQ3/SmJJ1UTgK3wNAZtYI15
-	 nxpeCwzyd8JacP3h4EZveaSvbXYWLPhTLcpJOC8VD6ZU4tqPwik4dAShEN9m1ceWu6
-	 5jzrODEe0XC11C0DNGNTtEDtZ6jVVPh2/00fzzxU=
+	b=GQbRmw1j83Ly4glvRP0ClU0GLOKNg3HJVdV4rwV/D6aSMMcIi83gvHNBdMW2Dxzo1
+	 qmgLyhXIybxUGtKp2Hk/NJQuy2SnppgSS0ZGPMCqcVbakX8C2WC6PW9JD8jdd8QgZF
+	 fog7Svnh8QRanwhOiILZrTTQ733QuE1/HR52p21M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 058/373] media: i2c: adv748x: Fix test pattern selection mask
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jiri Olsa <jolsa@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 098/311] perf/x86: Fix non-sampling (counting) events on certain x86 platforms
 Date: Tue, 29 Apr 2025 18:38:55 +0200
-Message-ID: <20250429161125.513834996@linuxfoundation.org>
+Message-ID: <20250429161125.055247325@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +68,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-commit 9e38acacb9d809b97a0bdc5c76e725355a47158a upstream.
+[ Upstream commit 1a97fea9db9e9b9c4839d4232dde9f505ff5b4cc ]
 
-The mask to select the test-pattern in register ADV748X_SDP_FRP is
-incorrect, it's the lower 3 bits which controls the pattern. The
-GENMASK() macro is used incorrectly and the generated mask is 0x0e
-instead of 0x07.
+Perf doesn't work at perf stat for hardware events on certain x86 platforms:
 
-The result is that not all test patterns are selectable, and that in
-some cases the wrong test pattern is activated. Fix this by correcting
-the GENMASK().
+ $perf stat -- sleep 1
+ Performance counter stats for 'sleep 1':
+             16.44 msec task-clock                       #    0.016 CPUs utilized
+                 2      context-switches                 #  121.691 /sec
+                 0      cpu-migrations                   #    0.000 /sec
+                54      page-faults                      #    3.286 K/sec
+   <not supported>	cycles
+   <not supported>	instructions
+   <not supported>	branches
+   <not supported>	branch-misses
 
-Fixes: 3e89586a64df ("media: i2c: adv748x: add adv748x driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-[hverkuil: fixed tiny typo in commit log: my -> by]
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The reason is that the check in x86_pmu_hw_config() for sampling events is
+unexpectedly applied to counting events as well.
+
+It should only impact x86 platforms with limit_period used for non-PEBS
+events. For Intel platforms, it should only impact some older platforms,
+e.g., HSW, BDW and NHM.
+
+Fixes: 88ec7eedbbd2 ("perf/x86: Fix low freqency setting issue")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20250423064724.3716211-1-luogengkun@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/adv748x/adv748x.h |    2 +-
+ arch/x86/events/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/adv748x/adv748x.h
-+++ b/drivers/media/i2c/adv748x/adv748x.h
-@@ -322,7 +322,7 @@ struct adv748x_state {
+diff --git a/arch/x86/events/core.c b/arch/x86/events/core.c
+index 3a27c50080f4f..ce8d4fdf54fbb 100644
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -628,7 +628,7 @@ int x86_pmu_hw_config(struct perf_event *event)
+ 	if (event->attr.type == event->pmu->type)
+ 		event->hw.config |= x86_pmu_get_event_config(event);
  
- /* Free run pattern select */
- #define ADV748X_SDP_FRP			0x14
--#define ADV748X_SDP_FRP_MASK		GENMASK(3, 1)
-+#define ADV748X_SDP_FRP_MASK		GENMASK(2, 0)
- 
- /* Saturation */
- #define ADV748X_SDP_SD_SAT_U		0xe3	/* user_map_rw_reg_e3 */
+-	if (!event->attr.freq && x86_pmu.limit_period) {
++	if (is_sampling_event(event) && !event->attr.freq && x86_pmu.limit_period) {
+ 		s64 left = event->attr.sample_period;
+ 		x86_pmu.limit_period(event, &left);
+ 		if (left > event->attr.sample_period)
+-- 
+2.39.5
+
 
 
 
