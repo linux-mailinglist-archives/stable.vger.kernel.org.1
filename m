@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-137662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ECC8AA149A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:17:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87341AA1366
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AFF792196F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F4C216154E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 935182472B0;
-	Tue, 29 Apr 2025 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14A23F413;
+	Tue, 29 Apr 2025 17:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2DDlO7y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WtX1KFqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA1427453;
-	Tue, 29 Apr 2025 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A8CA7E110;
+	Tue, 29 Apr 2025 17:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946744; cv=none; b=Ze0X02NodtWcFxM3xEaCo3BjYaVWsa5tjPODWI2rzbTRBZ+IYQSdYaYWUt6vWECOm6zgxWw+eUFSMffQOvRH886LqWNTvAAFY709bRDOI68xmc3+UzmGQns49hgFR/WRs+UiFATJTywCSDUTFlzOwU+YmgRjg5lSzFaVOyBWKjo=
+	t=1745946094; cv=none; b=qpXvRLc1pkrtPTQ5EUZFdqLkDLd0yMqUwbgfVx+LX9/lzLgyRbaJWdE5dHvG8ZIY7qnBC6Xviy+Y1ieNwpg6MckmoKzaei0PypxKZuTA3F1VFt1PdxvytjsKc/meAFsg7VD3FKGkuiVMbjkP9kSLugprLzfNYGuLw3myOBD/efA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946744; c=relaxed/simple;
-	bh=Cp347MWo4sn3G4YybbN1ucA2UuwBHJDnQcdxMIJx7Vk=;
+	s=arc-20240116; t=1745946094; c=relaxed/simple;
+	bh=Ufi5vIWrMIu+2wh35DutQ4JNOgWWnsiIkGLFLSG5pLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G9dDLds2s479goh8WZ/A7IkuZzIBX3sKoCkRwDoJKUe2ksXELBeb/KxAX1yWsi8ZPHaMe3E4L5gKxO5fxd+cxsbwMPlNOAk/zbTUKeAU8I2wz2nm5UCWd46/uZbkXbxaJTAZaKgzu7ZlbCGcuBMkXDG7nqr9EtM2j+kbjtJ6cwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2DDlO7y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD179C4CEE3;
-	Tue, 29 Apr 2025 17:12:23 +0000 (UTC)
+	 MIME-Version; b=BMZpe3iz9fChGrOJsyBoV9mrInBmH1RzG4uw0zCvDR+9w7EKWawr+j1CaDTLUmEnEEucxukFn2WR7D38ZrTCTK2AEAkwZq7HGcZ2yVmemacOD1jOu/DQY2u0o5xHDw9L/LxNwe5sySxnL9H4uRyRFAi+7l6emySq+OBlQuhmo50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WtX1KFqL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1995C4CEE3;
+	Tue, 29 Apr 2025 17:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946744;
-	bh=Cp347MWo4sn3G4YybbN1ucA2UuwBHJDnQcdxMIJx7Vk=;
+	s=korg; t=1745946094;
+	bh=Ufi5vIWrMIu+2wh35DutQ4JNOgWWnsiIkGLFLSG5pLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2DDlO7y1POrOfY7mxhgTSE53yrEUbDy6HaMAQ8IR4jaW6M3U1GQk+EsmY6itfDlp
-	 G9yFquoZ1a8wyMadovNOYsOBGC6sA7EjvuGdwjuj/6MKl2jJ5wbdhlNb5NipNGmS8E
-	 EuhV+9o2g2iRqJjTTz2Q1xFQ8UGM1wmE0oWKdnLc=
+	b=WtX1KFqLc6k4KoXWHG5auyUTHDJUFk0Gq0ROll4q7cGOWUFiS3KRrJ1pc6+RzhEr9
+	 z2e9J06i3KHfVXTjTEvGWhStXHqupPr6RI8bzZrhovEYTpf0kyLVSt0bkCLtDoVR0P
+	 AS7A6CPRDjT7fksyOdfOWoqsQfG9geCIOs2frQ4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 055/286] media: venus: hfi: add check to handle incorrect queue size
+	Renjith Pananchikkal <renjith.pananchikkal@amd.com>,
+	Mark Pearson <mpearson@lenovo.com>,
+	David Ober <dober@lenovo.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.14 122/311] drm/amd/display: Fix ACPI edid parsing on some Lenovo systems
 Date: Tue, 29 Apr 2025 18:39:19 +0200
-Message-ID: <20250429161110.113581211@linuxfoundation.org>
+Message-ID: <20250429161126.036239887@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +67,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 69baf245b23e20efda0079238b27fc63ecf13de1 upstream.
+commit 870bea21fdf88f45c94c0a3dbb0e3cc1b219680f upstream.
 
-qsize represents size of shared queued between driver and video
-firmware. Firmware can modify this value to an invalid large value. In
-such situation, empty_space will be bigger than the space actually
-available. Since new_wr_idx is not checked, so the following code will
-result in an OOB write.
-...
-qsize = qhdr->q_size
+[Why]
+The ACPI EDID in the BIOS of a Lenovo laptop includes 3 blocks, but
+dm_helpers_probe_acpi_edid() has a start that is 'char'.  The 3rd
+block index starts after 255, so it can't be indexed properly.
+This leads to problems with the display when the EDID is parsed.
 
-if (wr_idx >= rd_idx)
- empty_space = qsize - (wr_idx - rd_idx)
-....
-if (new_wr_idx < qsize) {
- memcpy(wr_ptr, packet, dwords << 2) --> OOB write
+[How]
+Change the variable type to 'short' so that larger values can be indexed.
 
-Add check to ensure qsize is within the allocated size while
-reading and writing packets into the queue.
-
+Cc: Renjith Pananchikkal <renjith.pananchikkal@amd.com>
+Reported-by: Mark Pearson <mpearson@lenovo.com>
+Suggested-by: David Ober <dober@lenovo.com>
+Fixes: c6a837088bed ("drm/amd/display: Fetch the EDID from _DDC if available for eDP")
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a918bb4a90d423ced2976a794f2724c362c1f063)
 Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -188,6 +188,9 @@ static int venus_write_queue(struct venu
- 	/* ensure rd/wr indices's are read from memory */
- 	rmb();
- 
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	if (wr_idx >= rd_idx)
- 		empty_space = qsize - (wr_idx - rd_idx);
- 	else
-@@ -256,6 +259,9 @@ static int venus_read_queue(struct venus
- 	wr_idx = qhdr->write_idx;
- 	qsize = qhdr->q_size;
- 
-+	if (qsize > IFACEQ_QUEUE_SIZE / 4)
-+		return -EINVAL;
-+
- 	/* make sure data is valid before using it */
- 	rmb();
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -912,7 +912,7 @@ dm_helpers_probe_acpi_edid(void *data, u
+ {
+ 	struct drm_connector *connector = data;
+ 	struct acpi_device *acpidev = ACPI_COMPANION(connector->dev->dev);
+-	unsigned char start = block * EDID_LENGTH;
++	unsigned short start = block * EDID_LENGTH;
+ 	struct edid *edid;
+ 	int r;
  
 
 
