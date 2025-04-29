@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F5DAA12CC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:58:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5064AA145E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA0E7A4DF6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:57:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C6A31B64E49
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80EE52472B0;
-	Tue, 29 Apr 2025 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8712023C8D6;
+	Tue, 29 Apr 2025 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtt+M54X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7Uxv0pK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C11C82C60;
-	Tue, 29 Apr 2025 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5F71DF73C;
+	Tue, 29 Apr 2025 17:11:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945865; cv=none; b=iA5asuivjaAdF1YoDUeC0ruced/i2ACQYz/th2bdp08FPxkxjZGbtY6nvrSbOGNjQPwRFH2GE5wx9U8CsXoId1aMFhX9kbE2pmmv4UrWW1BLcv/vbyHkb3rVfIXPLFi5D12FYkxagJ+zvuuh6TtQ1MuEV24ch2cxqCnCR9B1X28=
+	t=1745946688; cv=none; b=Eo80CcQsHTeUp8tPuwvo5HOGp3hH2oN10dsJz7uJs0naUvxL9X2qJ7lyYmO73qqBrv0f2M5rYpRj3/hLqgCK38qJXbY9cDn1mpZtvsFs2l4a6tQ8GuESz9gtIhTssGxbdnGYhqL0C0N31kRcAowT/f5zVlWuHahzpZ/5bBgnCvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945865; c=relaxed/simple;
-	bh=fTZz1P2L/VUeNKjq2YK29/KRmxN0opi43Z2670M8jdA=;
+	s=arc-20240116; t=1745946688; c=relaxed/simple;
+	bh=y+qaibwtMKyTMHBbE4Wc/5wad6EqNSH4gfndDLn8E+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=su+sgoouTL/NkJDVvzidOJysEeO0KYsnQeLttswAxCoEDHNUIVXeS/4lNef260NdXDuyz0JRwplu6pM5YDB+9/Lzywk44gSSFdFUI/U2W9oSZbHf6XgqiJ9+NGO8b5dPzKEpUZkaE0ftljdm1vvz+djtGC7aB8QH2i8LYqD12VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtt+M54X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D78C4CEE3;
-	Tue, 29 Apr 2025 16:57:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c8GbKWfixjJzA791RR0t6O0d1A6PcnIW7F3Y3rv58XxypSC4TkyWB821zlSw3JQp4zq18y8mJnvdUMNc73dhYlKHXsXh5mBwos4OiPIk/GeLUj6PGTHxNBWqoVxSKEHcqe+mngqQJOPXZUUq+fnUE3hbOPROEyZbO0Ispqn3pM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i7Uxv0pK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5534C4CEE3;
+	Tue, 29 Apr 2025 17:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945865;
-	bh=fTZz1P2L/VUeNKjq2YK29/KRmxN0opi43Z2670M8jdA=;
+	s=korg; t=1745946688;
+	bh=y+qaibwtMKyTMHBbE4Wc/5wad6EqNSH4gfndDLn8E+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtt+M54X0hNxFjj5WKTL7drV0JvFMeggRRAcqfAo7uQ38o04G3Zh32KMYI30+NnW+
-	 wp0m5vEFQiVfPlT0arjgVpKVYEV2nYn7ly6fMW9nqwtL4xwe6MlQv12Vca1JYjgW/u
-	 nUyc+F/HTuRr7kCY6DwknsX5cZb9t2lLosJWqok4=
+	b=i7Uxv0pK3s60U031BBYtVLo+J29YQGptFsGsh+ltbL5zxpnsf7eZL12F0lLNJscNL
+	 AgUQhO379Q0U3eYtuqAJTx8vWIy4DWWGEgB86bhpHKQ7ScTvbirIGCDS6D4+z5EUmx
+	 /gwt3hNy/mfj5SdREVgbPUVqV/7DjTlZdODLmdys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com,
+	Arnaud Lecomte <contact@arnaud-lcm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 075/311] net: phy: Add helper for getting tx amplitude gain
+Subject: [PATCH 5.10 008/286] net: ppp: Add bound checking for skb data on ppp_sync_txmung
 Date: Tue, 29 Apr 2025 18:38:32 +0200
-Message-ID: <20250429161124.118086902@linuxfoundation.org>
+Message-ID: <20250429161108.197791791@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+From: Arnaud Lecomte <contact@arnaud-lcm.com>
 
-[ Upstream commit 961ee5aeea048aa292f28d61f3a96a48554e91af ]
+[ Upstream commit aabc6596ffb377c4c9c8f335124b92ea282c9821 ]
 
-Add helper which returns the tx amplitude gain defined in device tree.
-Modifying it can be necessary to compensate losses on the PCB and
-connector, so the voltages measured on the RJ45 pins are conforming.
+Ensure we have enough data in linear buffer from skb before accessing
+initial bytes. This prevents potential out-of-bounds accesses
+when processing short packets.
 
-Signed-off-by: Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250214-dp83822-tx-swing-v5-2-02ca72620599@liebherr.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 607b310ada5e ("net: dp83822: Fix OF_MDIO config check")
+When ppp_sync_txmung receives an incoming package with an empty
+payload:
+(remote) gef➤  p *(struct pppoe_hdr *) (skb->head + skb->network_header)
+$18 = {
+	type = 0x1,
+	ver = 0x1,
+	code = 0x0,
+	sid = 0x2,
+        length = 0x0,
+	tag = 0xffff8880371cdb96
+}
+
+from the skb struct (trimmed)
+      tail = 0x16,
+      end = 0x140,
+      head = 0xffff88803346f400 "4",
+      data = 0xffff88803346f416 ":\377",
+      truesize = 0x380,
+      len = 0x0,
+      data_len = 0x0,
+      mac_len = 0xe,
+      hdr_len = 0x0,
+
+it is not safe to access data[2].
+
+Reported-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29fc8991b0ecb186cf40
+Tested-by: syzbot+29fc8991b0ecb186cf40@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Arnaud Lecomte <contact@arnaud-lcm.com>
+Link: https://patch.msgid.link/20250408-bound-checking-ppp_txmung-v2-1-94bb6e1b92d0@arnaud-lcm.com
+[pabeni@redhat.com: fixed subj typo]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phy_device.c | 53 ++++++++++++++++++++++++------------
- include/linux/phy.h          |  4 +++
- 2 files changed, 39 insertions(+), 18 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 92161af788afd..2a01887c5617e 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -3123,19 +3123,12 @@ void phy_get_pause(struct phy_device *phydev, bool *tx_pause, bool *rx_pause)
- EXPORT_SYMBOL(phy_get_pause);
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 7174316362758..11725cab4912b 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -517,6 +517,11 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
+ 	unsigned char *data;
+ 	int islcp;
  
- #if IS_ENABLED(CONFIG_OF_MDIO)
--static int phy_get_int_delay_property(struct device *dev, const char *name)
-+static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
- {
--	s32 int_delay;
--	int ret;
--
--	ret = device_property_read_u32(dev, name, &int_delay);
--	if (ret)
--		return ret;
--
--	return int_delay;
-+	return device_property_read_u32(dev, name, val);
- }
- #else
--static int phy_get_int_delay_property(struct device *dev, const char *name)
-+static int phy_get_u32_property(struct device *dev, const char *name, u32 *val)
- {
- 	return -EINVAL;
- }
-@@ -3160,12 +3153,12 @@ static int phy_get_int_delay_property(struct device *dev, const char *name)
- s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- 			   const int *delay_values, int size, bool is_rx)
- {
--	s32 delay;
--	int i;
-+	int i, ret;
-+	u32 delay;
- 
- 	if (is_rx) {
--		delay = phy_get_int_delay_property(dev, "rx-internal-delay-ps");
--		if (delay < 0 && size == 0) {
-+		ret = phy_get_u32_property(dev, "rx-internal-delay-ps", &delay);
-+		if (ret < 0 && size == 0) {
- 			if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
- 			    phydev->interface == PHY_INTERFACE_MODE_RGMII_RXID)
- 				return 1;
-@@ -3174,8 +3167,8 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- 		}
- 
- 	} else {
--		delay = phy_get_int_delay_property(dev, "tx-internal-delay-ps");
--		if (delay < 0 && size == 0) {
-+		ret = phy_get_u32_property(dev, "tx-internal-delay-ps", &delay);
-+		if (ret < 0 && size == 0) {
- 			if (phydev->interface == PHY_INTERFACE_MODE_RGMII_ID ||
- 			    phydev->interface == PHY_INTERFACE_MODE_RGMII_TXID)
- 				return 1;
-@@ -3184,8 +3177,8 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- 		}
- 	}
- 
--	if (delay < 0)
--		return delay;
-+	if (ret < 0)
-+		return ret;
- 
- 	if (size == 0)
- 		return delay;
-@@ -3220,6 +3213,30 @@ s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- }
- EXPORT_SYMBOL(phy_get_internal_delay);
- 
-+/**
-+ * phy_get_tx_amplitude_gain - stores tx amplitude gain in @val
-+ * @phydev: phy_device struct
-+ * @dev: pointer to the devices device struct
-+ * @linkmode: linkmode for which the tx amplitude gain should be retrieved
-+ * @val: tx amplitude gain
-+ *
-+ * Returns: 0 on success, < 0 on failure
-+ */
-+int phy_get_tx_amplitude_gain(struct phy_device *phydev, struct device *dev,
-+			      enum ethtool_link_mode_bit_indices linkmode,
-+			      u32 *val)
-+{
-+	switch (linkmode) {
-+	case ETHTOOL_LINK_MODE_100baseT_Full_BIT:
-+		return phy_get_u32_property(dev,
-+					    "tx-amplitude-100base-tx-percent",
-+					    val);
-+	default:
-+		return -EINVAL;
++	/* Ensure we can safely access protocol field and LCP code */
++	if (!pskb_may_pull(skb, 3)) {
++		kfree_skb(skb);
++		return NULL;
 +	}
-+}
-+EXPORT_SYMBOL_GPL(phy_get_tx_amplitude_gain);
-+
- static int phy_led_set_brightness(struct led_classdev *led_cdev,
- 				  enum led_brightness value)
- {
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 19f076a71f946..7c9da26145d30 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2114,6 +2114,10 @@ void phy_get_pause(struct phy_device *phydev, bool *tx_pause, bool *rx_pause);
- s32 phy_get_internal_delay(struct phy_device *phydev, struct device *dev,
- 			   const int *delay_values, int size, bool is_rx);
- 
-+int phy_get_tx_amplitude_gain(struct phy_device *phydev, struct device *dev,
-+			      enum ethtool_link_mode_bit_indices linkmode,
-+			      u32 *val);
-+
- void phy_resolve_pause(unsigned long *local_adv, unsigned long *partner_adv,
- 		       bool *tx_pause, bool *rx_pause);
+ 	data  = skb->data;
+ 	proto = get_unaligned_be16(data);
  
 -- 
 2.39.5
