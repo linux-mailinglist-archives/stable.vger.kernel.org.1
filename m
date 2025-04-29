@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-137444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C75EDAA1381
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FE8AA11E7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:47:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA6A5A3B1F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACDB83A674F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FD9244679;
-	Tue, 29 Apr 2025 17:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A83248879;
+	Tue, 29 Apr 2025 16:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eCuDO3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jk/orcUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D3B7E110;
-	Tue, 29 Apr 2025 17:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C001B2472BC;
+	Tue, 29 Apr 2025 16:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946085; cv=none; b=kIg3MXmBBLbKQPu8PjUaEmxamtj5lM8y3i6eVa7aRUvjTLXljJzU5Ji/1l8j8eO80yLZld8/dYaZSFMiWNj5BnBAmCP57rScxEzE0h0cjQtFoAVeW8MsuTNqo1E8lidV3v9QY2qEGhHg/MFPBKcltI3N968wDr9ZqGT+FxcqxpU=
+	t=1745945140; cv=none; b=qr+ixa2uiWBI8LzNktjyYfWaUn+Lq18O06nhVMzZN0oxmxjhoO0ux8Q+oE0E+C1ssoN3CQ2Jvx6UPQw+q0BTvAP2F33KiNF8PhlS+okWayBVFDTba1nYqGxPc0M0lwQM+ecXbgEfQBW1A5TJ3l+shm8uRqif8MlpZcvxR5i7wdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946085; c=relaxed/simple;
-	bh=txD6A/0eVHSZBqD3X88bOQaLSohW/GerBKjOplxDPiE=;
+	s=arc-20240116; t=1745945140; c=relaxed/simple;
+	bh=Y6ge5ZTWNb7gk7aZUpHbimcvzG24Lbp+6Orpe6/QV+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0fXSfqygBaJYud1lPYhZJgjxgE0wQAs1lhHEr8Tf2YCyOFklzo+EX7j4cdoNfvwq5rU+NaokNWC1CEPfgij7fPn7fbOxR+rJ4YPM7yVp85WtvpkIyErVuA3AlFNDygV8hn+UENH9ALXKPax9xcvDXaof53z7XrHuxJTSo2Rn8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eCuDO3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C469EC4CEEA;
-	Tue, 29 Apr 2025 17:01:24 +0000 (UTC)
+	 MIME-Version; b=P1VPW0xDG4E2+PPL3KfnG2hC/S0v7gp5OokqHCb/kWnEwUbPUJsP+sSvsVZ9gB1P2coKeIr7tpqFEszO68khrtzY8SJ9uOMz3bfMSrCMGmuRdJHTOmL95w9sRybczvBuiNx41x9qVtzLJsK6rhESQIosEnw/Y8SNgRLHOgiseVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jk/orcUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B911EC4CEE3;
+	Tue, 29 Apr 2025 16:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946085;
-	bh=txD6A/0eVHSZBqD3X88bOQaLSohW/GerBKjOplxDPiE=;
+	s=korg; t=1745945140;
+	bh=Y6ge5ZTWNb7gk7aZUpHbimcvzG24Lbp+6Orpe6/QV+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1eCuDO3BCi0uW7mPCwwk7kLFbUAalroUztM8ZsDmzM7fPbCXWdW1G4SSc+Q1tybUs
-	 V4Mmwam0Ig6MKqMAS30Pnj0LjQHE9u01jkhv+xH7/b6aQeuSvYYM+i9quaUmoYrfCH
-	 oRaM3SJ7tf4K9H5BmQJsh3HCkrhJuIu3UmnT5G7E=
+	b=Jk/orcUU3CF3pZSlYTkeUZDgehGSMkBUQhiVz66dE0K7BcWA1dMJ1EH7V8foavMRk
+	 Tg05kYQ6J41v1OFYC87J6AxjrMYvKmpOTShH0/RrTgjIy0Ic5vBL04SCfL8q489xxC
+	 cH96hdDdejJfQX9W85CWq6kmkVVjgI4St0m3iDW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.14 119/311] drm: panel: jd9365da: fix reset signal polarity in unprepare
+	Ricard Wanderlof <ricard2013@butoba.net>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 015/179] ALSA: usb-audio: Fix CME quirk for UF series keyboards
 Date: Tue, 29 Apr 2025 18:39:16 +0200
-Message-ID: <20250429161125.914209111@linuxfoundation.org>
+Message-ID: <20250429161050.020574796@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Ricard Wanderlof <ricard2013@butoba.net>
 
-commit 095c8e61f4c71cd4630ee11a82e82cc341b38464 upstream.
+[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
 
-commit a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
-fixed reset signal polarity in jadard_dsi_probe() and jadard_prepare().
+Fix quirk for CME master keyboards so it not only handles
+sysex but also song position pointer, MIDI timing clock, start
+and stop messages, and active sensing. All of these can be
+output by the CME UF series master keyboards.
 
-It was not done in jadard_unprepare() because of an incorrect assumption
-about reset line handling in power off mode. After looking into the
-datasheet, it now appears that before disabling regulators, the reset line
-is deasserted first, and if reset_before_power_off_vcioo is true, then the
-reset line is asserted.
+Tested with a CME UF6 in a desktop Linux environment as
+well as on the Zynthian Raspberry Pi based platform.
 
-Fix reset polarity by inverting gpiod_set_value() second argument in
-in jadard_unprepare().
-
-Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
-Fixes: 2b976ad760dc ("drm/panel: jd9365da: Support for kd101ne3-40ti MIPI-DSI panel")
-Fixes: a8972d5a49b4 ("drm: panel: jd9365da-h3: fix reset signal polarity")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250417195507.778731-1-hugo@hugovil.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250417195507.778731-1-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
+Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-+++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-@@ -129,11 +129,11 @@ static int jadard_unprepare(struct drm_p
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index f175c537353a0..2dded1f2ca05e 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -505,16 +505,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
+ 
+ /*
+  * CME protocol: like the standard protocol, but SysEx commands are sent as a
+- * single USB packet preceded by a 0x0F byte.
++ * single USB packet preceded by a 0x0F byte, as are system realtime
++ * messages and MIDI Active Sensing.
++ * Also, multiple messages can be sent in the same packet.
+  */
+ static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
+ 				  uint8_t *buffer, int buffer_length)
  {
- 	struct jadard *jadard = panel_to_jadard(panel);
+-	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
+-		snd_usbmidi_standard_input(ep, buffer, buffer_length);
+-	else
+-		snd_usbmidi_input_data(ep, buffer[0] >> 4,
+-				       &buffer[1], buffer_length - 1);
++	int remaining = buffer_length;
++
++	/*
++	 * CME send sysex, song position pointer, system realtime
++	 * and active sensing using CIN 0x0f, which in the standard
++	 * is only intended for single byte unparsed data.
++	 * So we need to interpret these here before sending them on.
++	 * By default, we assume single byte data, which is true
++	 * for system realtime (midi clock, start, stop and continue)
++	 * and active sensing, and handle the other (known) cases
++	 * separately.
++	 * In contrast to the standard, CME does not split sysex
++	 * into multiple 4-byte packets, but lumps everything together
++	 * into one. In addition, CME can string multiple messages
++	 * together in the same packet; pressing the Record button
++	 * on an UF6 sends a sysex message directly followed
++	 * by a song position pointer in the same packet.
++	 * For it to have any reasonable meaning, a sysex message
++	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
++	 * corresponding to a packet size of 4 bytes, and the ones sent
++	 * by CME devices are 6 or 7 bytes, making the packet fragments
++	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
++	 * For the other types, the packet size is always 4 bytes,
++	 * as per the standard, with the data size being 3 for SPP
++	 * and 1 for the others.
++	 * Thus all packet fragments are at least 4 bytes long, so we can
++	 * skip anything that is shorter; this also conveniantly skips
++	 * packets with size 0, which CME devices continuously send when
++	 * they have nothing better to do.
++	 * Another quirk is that sometimes multiple messages are sent
++	 * in the same packet. This has been observed for midi clock
++	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
++	 * but also multiple note ons/offs, and control change together
++	 * with MIDI clock. Similarly, some sysex messages are followed by
++	 * the song position pointer in the same packet, and occasionally
++	 * additionally by a midi clock or active sensing.
++	 * We handle this by looping over all data and parsing it along the way.
++	 */
++	while (remaining >= 4) {
++		int source_length = 4; /* default */
++
++		if ((buffer[0] & 0x0f) == 0x0f) {
++			int data_length = 1; /* default */
++
++			if (buffer[1] == 0xf0) {
++				/* Sysex: Find EOX and send on whole message. */
++				/* To kick off the search, skip the first
++				 * two bytes (CN+CIN and SYSEX (0xf0).
++				 */
++				uint8_t *tmp_buf = buffer + 2;
++				int tmp_length = remaining - 2;
++
++				while (tmp_length > 1 && *tmp_buf != 0xf7) {
++					tmp_buf++;
++					tmp_length--;
++				}
++				data_length = tmp_buf - buffer;
++				source_length = data_length + 1;
++			} else if (buffer[1] == 0xf2) {
++				/* Three byte song position pointer */
++				data_length = 3;
++			}
++			snd_usbmidi_input_data(ep, buffer[0] >> 4,
++					       &buffer[1], data_length);
++		} else {
++			/* normal channel events */
++			snd_usbmidi_standard_input(ep, buffer, source_length);
++		}
++		buffer += source_length;
++		remaining -= source_length;
++	}
+ }
  
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(120);
- 
- 	if (jadard->desc->reset_before_power_off_vcioo) {
--		gpiod_set_value(jadard->reset, 0);
-+		gpiod_set_value(jadard->reset, 1);
- 
- 		usleep_range(1000, 2000);
- 	}
+ /*
+-- 
+2.39.5
+
 
 
 
