@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-137839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A39AA1569
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA20AA15F4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:32:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10D3C984D0B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87D987A5889
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8521C6B4;
-	Tue, 29 Apr 2025 17:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F23582C60;
+	Tue, 29 Apr 2025 17:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjLdLCDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zk3biIjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2749D82C60;
-	Tue, 29 Apr 2025 17:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5387E110;
+	Tue, 29 Apr 2025 17:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947287; cv=none; b=lnDee97RbFk2Z/ZhoKHGdr3l3Xvt9ARMaCBfsZOgxI5fo5DvnQKTV3LnfP2vinCEPluk0OZo9YZw5p2vlTbqja7oWViEpkV4UymXh0ftIagCY9pdURbQC2JqQAg6Az87F5fj+GS9cweBFiY/NTPDDEOh+eFTTQP8UR2/u737nAA=
+	t=1745947965; cv=none; b=uX0iT/Y/Gj8oLO30tPu0EabTNsuLN/tgRjxxz6/TCoBUpe+gNefMNMsR7F5D0mN0g7kBooNAOI/nLgF+bPRdabCHtyl1sGXG9/SxevS/AVFZBnoopfZa8+zbIE5BWxGEj0LPjNqqgd/6oc5qQPOWhBIkhIDqaDqOUPIT20IW/uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947287; c=relaxed/simple;
-	bh=EDPWvSE0UWghsvgVN3LgiZq60bb230qKfdOAlVVRD8E=;
+	s=arc-20240116; t=1745947965; c=relaxed/simple;
+	bh=SevTV9PqGdSC0gSdOiRZflo0RYl8vXi9hHNSnTbT+gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I5PAzpjJZI69uxQLCC3ennirJ0IB2j3f4+GDtMVcJUIbG93sX+nJpEBANkzTtNTBEbqaIY0hhqHqlkASeNXqJMp+oXeGwNztl/BlxxbS3TuwZoglEdbuYxR5VRbHKCabOoZE+d8hJM9tBIcYgjEuw4DEUKBl+KLMqLpFRa9GHVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjLdLCDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFE1C4CEE3;
-	Tue, 29 Apr 2025 17:21:26 +0000 (UTC)
+	 MIME-Version; b=AeCCyZBb/jx89gC1YLcmT6/PUNvMyRI51JQ4OA/cDGCEJ0bp8zuTK5P9e0O/9m40WggAiKlf0zRhM5QhZQngOg7vbOKcgctiadswY6fTbdgt/zsjTdxsGFtrzhrf53EKyRzC0lQiPxjL5YPNHmIW6sWe70dISgpbIXswki+twzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zk3biIjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E6AC4CEE3;
+	Tue, 29 Apr 2025 17:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947287;
-	bh=EDPWvSE0UWghsvgVN3LgiZq60bb230qKfdOAlVVRD8E=;
+	s=korg; t=1745947965;
+	bh=SevTV9PqGdSC0gSdOiRZflo0RYl8vXi9hHNSnTbT+gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MjLdLCDSYvV8efSzf5/fvCFKkxwro8zMc7MwEdKLOcC6fh7Pv2mbIfEjUPdf2xCfy
-	 7/9MieFftJni0e7sYT7f0+nCFwnvrMsXgDyQGPEtxTQ+Nme/hVcx/XARkO3Gye8Dd+
-	 wjew6973eVKeTwOulnyZ6TuYRIs4okyKlOEC0C7E=
+	b=Zk3biIjjrld9gvvHqh5w5rBkDeDbS/lRd2/wXrJW2JocWTYPTrNUl4WeijWeqLfiR
+	 Oa/mMz4itdsoS0WfBm+/p7zCC7xus19YplVvmlzPaWygb3qGQNeYHJ8XIeYB65jlTA
+	 Z82eJjif7vpITglkMawrCMmBNY7AXmy0uboo1Utc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.10 193/286] drivers: staging: rtl8723bs: Fix locking in rtw_scan_timeout_handler()
+	Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 156/280] crypto: ccp - Add support for PCI device 0x1134
 Date: Tue, 29 Apr 2025 18:41:37 +0200
-Message-ID: <20250429161115.906554220@linuxfoundation.org>
+Message-ID: <20250429161121.503082593@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
 
-commit 3f467036093fedd7e231924327455fc609b5ef02 upstream.
+[ Upstream commit 6cb345939b8cc4be79909875276aa9dc87d16757 ]
 
-Commit cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in
-rtw_surveydone_event_callback()") besides fixing the deadlock also
-modified rtw_scan_timeout_handler() to use spin_[un]lock_irq()
-instead of spin_[un]lock_bh().
+PCI device 0x1134 shares same register features as PCI device 0x17E0.
+Hence reuse same data for the new PCI device ID 0x1134.
 
-Disabling the IRQs is not necessary since all code taking this lock
-runs from either user contexts or from softirqs
-
-rtw_scan_timeout_handler() is the only function taking pmlmepriv->lock
-which uses spin_[un]lock_irq() for this. Switch back to
-spin_[un]lock_bh() to make it consistent with the rest of the code.
-
-Fixes: cc7ad0d77b51 ("drivers: staging: rtl8723bs: Fix deadlock in rtw_surveydone_event_callback()")
-Cc: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20230221145326.7808-2-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/ccp/sp-pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -1755,11 +1755,11 @@ void rtw_scan_timeout_handler(struct tim
- 
- 	DBG_871X(FUNC_ADPT_FMT" fw_state =%x\n", FUNC_ADPT_ARG(adapter), get_fwstate(pmlmepriv));
- 
--	spin_lock_irq(&pmlmepriv->lock);
-+	spin_lock_bh(&pmlmepriv->lock);
- 
- 	_clr_fwstate_(pmlmepriv, _FW_UNDER_SURVEY);
- 
--	spin_unlock_irq(&pmlmepriv->lock);
-+	spin_unlock_bh(&pmlmepriv->lock);
- 
- 	rtw_indicate_scan_done(adapter, true);
- }
+diff --git a/drivers/crypto/ccp/sp-pci.c b/drivers/crypto/ccp/sp-pci.c
+index 157f9a9ed6361..2ebc878da1609 100644
+--- a/drivers/crypto/ccp/sp-pci.c
++++ b/drivers/crypto/ccp/sp-pci.c
+@@ -532,6 +532,7 @@ static const struct pci_device_id sp_pci_table[] = {
+ 	{ PCI_VDEVICE(AMD, 0x14CA), (kernel_ulong_t)&dev_vdata[5] },
+ 	{ PCI_VDEVICE(AMD, 0x15C7), (kernel_ulong_t)&dev_vdata[6] },
+ 	{ PCI_VDEVICE(AMD, 0x1649), (kernel_ulong_t)&dev_vdata[6] },
++	{ PCI_VDEVICE(AMD, 0x1134), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x17E0), (kernel_ulong_t)&dev_vdata[7] },
+ 	{ PCI_VDEVICE(AMD, 0x156E), (kernel_ulong_t)&dev_vdata[8] },
+ 	/* Last entry must be zero */
+-- 
+2.39.5
+
 
 
 
