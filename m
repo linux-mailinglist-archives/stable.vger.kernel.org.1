@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC7AAA15AB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:30:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D613AA18BD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA0598446D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15DC11BC71E2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50127253B71;
-	Tue, 29 Apr 2025 17:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356DF250C0C;
+	Tue, 29 Apr 2025 18:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tTu2Egr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="og5LOWVu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E05D25334C;
-	Tue, 29 Apr 2025 17:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E644A2AE96;
+	Tue, 29 Apr 2025 18:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947366; cv=none; b=ibImrTUTfggFbOBk/hD6FQJf9t+QFG2glXUICVHna5eLDJnpek6J9RNnMS8HPEodLNPrKKkW9ZE2aJjDMvXQ/I/Mnu+pH5EfacjuFR8+g10Fxxy/pRkQyaqYK8e6tbiQcgGQhR/PSjutHSvAjbzBOsbCBu5xoQ7N3RMQXWo/Srw=
+	t=1745949775; cv=none; b=nDkO99wzzxZ24H97jG5A74JmMjpkd3Z11RQznMaT9DN130+QfrxE/txun2Qcjm/7UYNHvwW69UudDyYSZhSa/2Xi/Mv2rcKelHpS47NIQCLwz7dlaLbkoQie8GdJOQPfNtla4mIr4aGzL1rj6ZfIxjfwOscKDKoNCDmJjLctUGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947366; c=relaxed/simple;
-	bh=ccbyw7ebxQwd0Obuz3Urs6eUF85m8kEZEs+vAGf4Xug=;
+	s=arc-20240116; t=1745949775; c=relaxed/simple;
+	bh=0dITH4oH+yOCWr3iazbWD86UiUFWVLRPKS3LEhC8N24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJVL5J5KQM11QGE9OP3DgP1dpokRGflh+zRG0Abys6YsDAOIeB+IBGl8STkbHKjkRYuNyQNEXpp9E6FBTYxTst08ERmbGxC1pt9XWJJsfYDNC3EKLlfPQmbyVskNw+jo2ADl0flxj+QTP/NTw/rF4IQs5ut+NdsT7TAbUAqGqgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tTu2Egr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B08C4CEE3;
-	Tue, 29 Apr 2025 17:22:44 +0000 (UTC)
+	 MIME-Version; b=m0LVkRbSMxjsV17kpYHr3jnLizQEtZMG8yiSUVPvF9BK1AwrYgRHC7a0vO3v41kCtgG/YsrFgFBaXICAUrPbII2G955qgriTMxKtgU5ZRYWBYy9Zk04pdMXJ44VNRcCJlIZu9y+tZKT5Of0Kq02o1Izgw5ygBE6n+ffbbKXkerU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=og5LOWVu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A49C4CEE3;
+	Tue, 29 Apr 2025 18:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947365;
-	bh=ccbyw7ebxQwd0Obuz3Urs6eUF85m8kEZEs+vAGf4Xug=;
+	s=korg; t=1745949774;
+	bh=0dITH4oH+yOCWr3iazbWD86UiUFWVLRPKS3LEhC8N24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tTu2EgrwVJOLmodOr+RUkJRBNZQaUVmAa9ts+y2rXZzNDc1EqZ1SR00G/H56eQNy
-	 vjg/PVnQWlGDJ+8r/tfQLO9aCl0YN5wSAGx8rUBzW+Xf77wP2TRnWxmpEOV9VeUk5q
-	 8xJmG5sdibvH0qeVf1moUYirGX1hUSKep2NCCPAE=
+	b=og5LOWVuIFmbfLQ3hAqul6MUYTvHQYENK9QTHVksHE8uTOkBpHCrbADHGW0N5/sZ7
+	 XX9jxnWPkFuimnlgs0m8wMMkK1iMfhuy+xkaI1UuGrUxMOBPgF3CEzVE2TLpSRvdcz
+	 mkuOR7/hHKAestAzbYt8uQcJG6vSbQ391nZvpvPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 256/286] parisc: PDT: Fix missing prototype warning
+Subject: [PATCH 6.1 052/167] net_sched: hfsc: Fix a UAF vulnerability in class handling
 Date: Tue, 29 Apr 2025 18:42:40 +0200
-Message-ID: <20250429161118.449840419@linuxfoundation.org>
+Message-ID: <20250429161053.869662175@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu-Chun Lin <eleanor15x@gmail.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit b899981750dcb958ceffa4462d903963ee494aa2 ]
+[ Upstream commit 3df275ef0a6ae181e8428a6589ef5d5231e58b5c ]
 
-As reported by the kernel test robot, the following error occurs:
+This patch fixes a Use-After-Free vulnerability in the HFSC qdisc class
+handling. The issue occurs due to a time-of-check/time-of-use condition
+in hfsc_change_class() when working with certain child qdiscs like netem
+or codel.
 
-arch/parisc/kernel/pdt.c:65:6: warning: no previous prototype for 'arch_report_meminfo' [-Wmissing-prototypes]
-      65 | void arch_report_meminfo(struct seq_file *m)
-         |      ^~~~~~~~~~~~~~~~~~~
+The vulnerability works as follows:
+1. hfsc_change_class() checks if a class has packets (q.qlen != 0)
+2. It then calls qdisc_peek_len(), which for certain qdiscs (e.g.,
+   codel, netem) might drop packets and empty the queue
+3. The code continues assuming the queue is still non-empty, adding
+   the class to vttree
+4. This breaks HFSC scheduler assumptions that only non-empty classes
+   are in vttree
+5. Later, when the class is destroyed, this can lead to a Use-After-Free
 
-arch_report_meminfo() is declared in include/linux/proc_fs.h and only
-defined when CONFIG_PROC_FS is enabled. Wrap its definition in #ifdef
-CONFIG_PROC_FS to fix the -Wmissing-prototypes warning.
+The fix adds a second queue length check after qdisc_peek_len() to verify
+the queue wasn't emptied.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502082315.IPaHaTyM-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 21f4d5cc25ec ("net_sched/hfsc: fix curve activation in hfsc_change_class()")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Reviewed-by: Konstantin Khlebnikov <koct9i@gmail.com>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250417184732.943057-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/pdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_hfsc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/kernel/pdt.c b/arch/parisc/kernel/pdt.c
-index fcc761b0e11b9..d20e8283c5b8a 100644
---- a/arch/parisc/kernel/pdt.c
-+++ b/arch/parisc/kernel/pdt.c
-@@ -62,6 +62,7 @@ static unsigned long pdt_entry[MAX_PDT_ENTRIES] __page_aligned_bss;
- #define PDT_ADDR_PERM_ERR	(pdt_type != PDT_PDC ? 2UL : 0UL)
- #define PDT_ADDR_SINGLE_ERR	1UL
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index 54dddc2ff5025..901bc93ece5aa 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -959,6 +959,7 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
  
-+#ifdef CONFIG_PROC_FS
- /* report PDT entries via /proc/meminfo */
- void arch_report_meminfo(struct seq_file *m)
- {
-@@ -73,6 +74,7 @@ void arch_report_meminfo(struct seq_file *m)
- 	seq_printf(m, "PDT_cur_entries: %7lu\n",
- 			pdt_status.pdt_entries);
- }
-+#endif
+ 	if (cl != NULL) {
+ 		int old_flags;
++		int len = 0;
  
- static int get_info_pat_new(void)
- {
+ 		if (parentid) {
+ 			if (cl->cl_parent &&
+@@ -989,9 +990,13 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 		if (usc != NULL)
+ 			hfsc_change_usc(cl, usc, cur_time);
+ 
++		if (cl->qdisc->q.qlen != 0)
++			len = qdisc_peek_len(cl->qdisc);
++		/* Check queue length again since some qdisc implementations
++		 * (e.g., netem/codel) might empty the queue during the peek
++		 * operation.
++		 */
+ 		if (cl->qdisc->q.qlen != 0) {
+-			int len = qdisc_peek_len(cl->qdisc);
+-
+ 			if (cl->cl_flags & HFSC_RSC) {
+ 				if (old_flags & HFSC_RSC)
+ 					update_ed(cl, len);
 -- 
 2.39.5
 
