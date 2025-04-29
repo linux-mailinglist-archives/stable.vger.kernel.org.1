@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2BEAA1307
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:02:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D910FAA1709
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78D6A16983A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07141A8648E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5053924E016;
-	Tue, 29 Apr 2025 16:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1499B253321;
+	Tue, 29 Apr 2025 17:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsusWBQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G93oZPSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D82B244668;
-	Tue, 29 Apr 2025 16:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D6F227E95;
+	Tue, 29 Apr 2025 17:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945878; cv=none; b=pTnJK495g9/zEYe+j+Mrr/qK4qIwB14qjfVzAKGqYDCaV4d7c5WODLpMSvbfiT59DOZkBRsXUKuHPa0ChPNCG2kO0KdLjKJPbSUJS3qu/IVzmCAywkCraVbTKpIS5qlovu5/p+ZF1LgpT1SZybz01LaHXVIrLDkNW8vRwqN5pF8=
+	t=1745948538; cv=none; b=aDp6yNSaL7oEmezoDSYCzJsxY0jkvNPNVBPfed/5SelEYut7aJobxz16cAeo5wm3kPPHtpe7dVslTD5KKIQ8eH1WYwkjqtjQ9wGskzy4s2Sjc5jNR6fNVouYLJsxCUR1geKVg14FfwET1fETqxzivWgG5hEQ/5XfN8rzc736Lfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945878; c=relaxed/simple;
-	bh=K9VGDbvHvKE4O47DwC0Yclzh9ZMN/IBAwN2YGU/jFmc=;
+	s=arc-20240116; t=1745948538; c=relaxed/simple;
+	bh=Y9gEAkrfFJgjc+1G2AC3gCIF55d8w45ineqfxgZiuyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OBhquStpa44mlEPsJRFmQqC2abq/TY3M/caX9ap4raJ0LmPHyEn35RcvrZb09kqj5UotnyBg7TqDrj2w5sBdyxL792cWwmYZeHriqllr4P9KkLxVkqV8ONNvrOf4pnTTkT4dbyPvP0lTwnBYF0fh+SR4S0xrJQNuAA9V/jWNtbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HsusWBQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A43DC4CEE9;
-	Tue, 29 Apr 2025 16:57:57 +0000 (UTC)
+	 MIME-Version; b=ttqmZzY0G96SiviT5EvJA+2xnpiV2kuYUhQUe0e1QYKX3TG1nJQ3KCt4UhmNfKkzNd1lzkwy2DJs9fgbEBdCiq8/kcTjBFHqXtcHDWAR11vIki4VQRxD5zkpfTLqtTzPCKTQNwuOKKfGeErSN57a3BpOSJHL+d8vZ1b15oXfZ0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G93oZPSs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F8BC4CEE3;
+	Tue, 29 Apr 2025 17:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945877;
-	bh=K9VGDbvHvKE4O47DwC0Yclzh9ZMN/IBAwN2YGU/jFmc=;
+	s=korg; t=1745948538;
+	bh=Y9gEAkrfFJgjc+1G2AC3gCIF55d8w45ineqfxgZiuyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsusWBQIid69xPmkb4PriG/Rlrigj1MzWa8iN9jVmNru8f1x8w3AGJsHX5eGMGA+h
-	 Aqybl9/9wBTQ/V6/MhMatuFA7uPG0x4AAGTAoI2HIAEYTvlZ9dbOf7eBu+a/wYyOqn
-	 Hwv5HcwKf4qj2YpghMZt2oJUfqihv7dPxyDhMg40=
+	b=G93oZPSsTvRyVHEXBPT76jC/gMzmikyl9CaayO5n+cFgF1C+I6icFga4sIMG2LVxG
+	 JSOv426iZVlrlnH8tsX+yTyl0m8rtf05rEAf0CWs2x3L6mu2HH0Kf3DxlPEXwUdbX6
+	 yk5HCbaAz2OkAel/PozbaFUieWtaZpgwZ6dPO9AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 079/311] net: stmmac: fix multiplication overflow when reading timestamp
+Subject: [PATCH 5.15 039/373] drm: allow encoder mode_set even when connectors change for crtc
 Date: Tue, 29 Apr 2025 18:38:36 +0200
-Message-ID: <20250429161124.283014066@linuxfoundation.org>
+Message-ID: <20250429161124.738544739@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit 7b7491372f8ec2d8c08da18e5d629e55f41dda89 ]
+[ Upstream commit 7e182cb4f5567f53417b762ec0d679f0b6f0039d ]
 
-The current way of reading a timestamp snapshot in stmmac can lead to
-integer overflow, as the computation is done on 32 bits. The issue has
-been observed on a dwmac-socfpga platform returning chaotic timestamp
-values due to this overflow. The corresponding multiplication is done
-with a MUL instruction, which returns 32 bit values. Explicitly casting
-the value to 64 bits replaced the MUL with a UMLAL, which computes and
-returns the result on 64 bits, and so returns correctly the timestamps.
+In certain use-cases, a CRTC could switch between two encoders
+and because the mode being programmed on the CRTC remains
+the same during this switch, the CRTC's mode_changed remains false.
+In such cases, the encoder's mode_set also gets skipped.
 
-Prevent this overflow by explicitly casting the intermediate value to
-u64 to make sure that the whole computation is made on u64. While at it,
-apply the same cast on the other dwmac variant (GMAC4) method for
-snapshot retrieval.
+Skipping mode_set on the encoder for such cases could cause an issue
+because even though the same CRTC mode was being used, the encoder
+type could have changed like the CRTC could have switched from a
+real time encoder to a writeback encoder OR vice-versa.
 
-Fixes: 477c3e1f6363 ("net: stmmac: Introduce dwmac1000 timestamping operations")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://patch.msgid.link/20250423-stmmac_ts-v2-2-e2cf2bbd61b1@bootlin.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Allow encoder's mode_set to happen even when connectors changed on a
+CRTC and not just when the mode changed.
+
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241211-abhinavk-modeset-fix-v3-1-0de4bf3e7c32@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c  | 2 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-index 96bcda0856ec6..11c525b8d2698 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac1000_core.c
-@@ -560,7 +560,7 @@ void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time)
- 	u64 ns;
+diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
+index 2c3883d79f531..bd01d925769db 100644
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -1279,7 +1279,7 @@ crtc_set_mode(struct drm_device *dev, struct drm_atomic_state *old_state)
+ 		mode = &new_crtc_state->mode;
+ 		adjusted_mode = &new_crtc_state->adjusted_mode;
  
- 	ns = readl(ptpaddr + GMAC_PTP_ATNR);
--	ns += readl(ptpaddr + GMAC_PTP_ATSR) * NSEC_PER_SEC;
-+	ns += (u64)readl(ptpaddr + GMAC_PTP_ATSR) * NSEC_PER_SEC;
+-		if (!new_crtc_state->mode_changed)
++		if (!new_crtc_state->mode_changed && !new_crtc_state->connectors_changed)
+ 			continue;
  
- 	*ptp_time = ns;
- }
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-index 0f59aa9826040..e2840fa241f29 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -222,7 +222,7 @@ static void get_ptptime(void __iomem *ptpaddr, u64 *ptp_time)
- 	u64 ns;
- 
- 	ns = readl(ptpaddr + PTP_ATNR);
--	ns += readl(ptpaddr + PTP_ATSR) * NSEC_PER_SEC;
-+	ns += (u64)readl(ptpaddr + PTP_ATSR) * NSEC_PER_SEC;
- 
- 	*ptp_time = ns;
- }
+ 		DRM_DEBUG_ATOMIC("modeset on [ENCODER:%d:%s]\n",
 -- 
 2.39.5
 
