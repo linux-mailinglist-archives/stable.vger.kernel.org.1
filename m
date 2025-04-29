@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-137239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D26AA124C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:51:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34ED0AA14ED
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52CDC188A527
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:51:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82DAC189FFD2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5462459C9;
-	Tue, 29 Apr 2025 16:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BBA24113A;
+	Tue, 29 Apr 2025 17:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+7vtFQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h0yzfQGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3BA244668;
-	Tue, 29 Apr 2025 16:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0EB25178C;
+	Tue, 29 Apr 2025 17:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945476; cv=none; b=n7iixkDWO0Yv0hj27ulv143rg59cyzJ8WOfMQUwHtv26dKPGUPLuqqrmY5PrH8mOc/swSzou7gWDZ2enGqJbbeXQCbaGL3yk7+mhqYwKRw4mIavIZbHsAB/IitVsFSOIhdkvtjdlr4QKT7ihbVY1hBmkALYOqzyxOVZjPxOQG/Y=
+	t=1745947051; cv=none; b=pc3R1vANBY0NMPHL+XQJ5ZSEhvE3DAlgVD4C3Qqb3ftgVvhvgZqg/Zj8G5sa6zxOR5wUDz/5U2/fi3Xmuwk2O4RcLw/V9K7Nm1Xmp30ZDuiEUvRsw2u7JeZ4fMNg4cZw0i3MptufJoTB2Vn0yhbboCOoHJode+/np4iKomkK6pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945476; c=relaxed/simple;
-	bh=dppGJTzn2kqnwbVdX/mHpA+96jw3gfFKUUApwUxOhOM=;
+	s=arc-20240116; t=1745947051; c=relaxed/simple;
+	bh=lY0m13+f1HoCvVXg13XLEm42isQ1BDo1lAprtzdWQGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gXa1J/FwoBwG9GZJ3qpSnTq868VeDxanaMvbSpfp7uBvHy4MI8aVF82uKfXT9Bg6j4GqmlBeOuhS91dOxshQpnq0zvSwAWWv75HvUGOViVkFvHUhTb5ACxwT6Sn/kt/i+iXe2+l1ul0FUMZWV2998Uh1C5wcFo2iwiQcFMVvpAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+7vtFQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5273FC4CEE3;
-	Tue, 29 Apr 2025 16:51:16 +0000 (UTC)
+	 MIME-Version; b=lCHHNvxPk/Lsa19Th40eBYH1ubbfizOWqINCzmlioZEtBNwZhrL6OVDADPwS6NiNf6iDkQe4VsJ1Lux87VuzXcEiso73vIGlOFg5YtJy5qn+qxcMGoZ7IxdsZPtYCuGSj8LZ90A0Pxzw1KOQmINnt4HZzig10T43A1svlerLDdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h0yzfQGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6210C4CEE3;
+	Tue, 29 Apr 2025 17:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945476;
-	bh=dppGJTzn2kqnwbVdX/mHpA+96jw3gfFKUUApwUxOhOM=;
+	s=korg; t=1745947051;
+	bh=lY0m13+f1HoCvVXg13XLEm42isQ1BDo1lAprtzdWQGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+7vtFQhvxSx7J53r4rhHOAzz1OuEAc47fKiblDb9oKBUroiwLxW3I/7TCF5B0Q5M
-	 qapP/ykjmC0715i5DoY0UhX5CKSq7xg2FITFWHSBJApnPBH67hh2yr/En4qkp/ArF7
-	 gx+6o7Ha/0qZvMTf9rVDajs//wfpynSRoPQAv0Fg=
+	b=h0yzfQGqeKz3DQrGrtjOXwNT/ZmwpshvpQSDIVsUp0wIr2qTwXz/teV6J3b31BBt3
+	 56EEW7iVtuwNo+OGUsWfV8ghjJZBL5zAPPN2+wS96ZjAbTMoYAfvZo+8c0nFSckwGs
+	 6LdkZckcf6mrKZt2Uk6AZ6bTag1Y2XnE5hhXeHBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.4 118/179] nvmet-fc: Remove unused functions
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Breno Leitao <leitao@debian.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Cliff Liu <donghua.liu@windriver.com>,
+	He Zhe <Zhe.He@windriver.com>
+Subject: [PATCH 5.10 155/286] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
 Date: Tue, 29 Apr 2025 18:40:59 +0200
-Message-ID: <20250429161054.176327916@linuxfoundation.org>
+Message-ID: <20250429161114.260362565@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-commit 1b304c006b0fb4f0517a8c4ba8c46e88f48a069c upstream.
+commit 0974d03eb479384466d828d65637814bee6b26d7 upstream.
 
-The functions nvmet_fc_iodnum() and nvmet_fc_fodnum() are currently
-unutilized.
+Smatch warns:
 
-Following commit c53432030d86 ("nvme-fabrics: Add target support for FC
-transport"), which introduced these two functions, they have not been
-used at all in practice.
+  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
+  spectre issue 'args.args' [r] (local cap)
 
-Remove them to resolve the compiler warnings.
+The 'nargs' and 'nret' locals come directly from a user-supplied
+buffer and are used as indexes into a small stack-based array and as
+inputs to copy_to_user() after they are subject to bounds checks.
 
-Fix follow errors with clang-19 when W=1e:
-  drivers/nvme/target/fc.c:177:1: error: unused function 'nvmet_fc_iodnum' [-Werror,-Wunused-function]
-    177 | nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
-        | ^~~~~~~~~~~~~~~
-  drivers/nvme/target/fc.c:183:1: error: unused function 'nvmet_fc_fodnum' [-Werror,-Wunused-function]
-    183 | nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
-        | ^~~~~~~~~~~~~~~
-  2 errors generated.
-  make[8]: *** [scripts/Makefile.build:207: drivers/nvme/target/fc.o] Error 1
-  make[7]: *** [scripts/Makefile.build:465: drivers/nvme/target] Error 2
-  make[6]: *** [scripts/Makefile.build:465: drivers/nvme] Error 2
-  make[6]: *** Waiting for unfinished jobs....
+Use array_index_nospec() after the bounds checks to clamp these values
+for speculative execution.
 
-Fixes: c53432030d86 ("nvme-fabrics: Add target support for FC transport")
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
+[Minor context change fixed]
+Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
+Signed-off-by: He Zhe <Zhe.He@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fc.c |   14 --------------
- 1 file changed, 14 deletions(-)
+ arch/powerpc/kernel/rtas.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -146,20 +146,6 @@ struct nvmet_fc_tgt_assoc {
- 	struct work_struct		del_work;
- };
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -16,6 +16,7 @@
+ #include <linux/capability.h>
+ #include <linux/delay.h>
+ #include <linux/cpu.h>
++#include <linux/nospec.h>
+ #include <linux/sched.h>
+ #include <linux/smp.h>
+ #include <linux/completion.h>
+@@ -1173,6 +1174,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args _
+ 	    || nargs + nret > ARRAY_SIZE(args.args))
+ 		return -EINVAL;
  
--
--static inline int
--nvmet_fc_iodnum(struct nvmet_fc_ls_iod *iodptr)
--{
--	return (iodptr - iodptr->tgtport->iod);
--}
--
--static inline int
--nvmet_fc_fodnum(struct nvmet_fc_fcp_iod *fodptr)
--{
--	return (fodptr - fodptr->queue->fod);
--}
--
--
- /*
-  * Association and Connection IDs:
-  *
++	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
++	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
++
+ 	/* Copy in args. */
+ 	if (copy_from_user(args.args, uargs->args,
+ 			   nargs * sizeof(rtas_arg_t)) != 0)
 
 
 
