@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-138688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98FD1AA1920
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB913AA1A1A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2419E1BA3F87
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:07:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A52DC179D12
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EEC221D92;
-	Tue, 29 Apr 2025 18:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F092517AC;
+	Tue, 29 Apr 2025 18:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UELRJItz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVc2IUgS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1520540C03;
-	Tue, 29 Apr 2025 18:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C228155A4E;
+	Tue, 29 Apr 2025 18:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950037; cv=none; b=nPMz0Qxmxh2eqwULNN/v1AeF7dhs9OkMm5WyoClVFPj99bmYLgsvwePeoZ4pn2zo2C5YKn99FRPT7UqO30OkayA/fYVZC/Ry/1Kl1OXvY8/MeJmcKJdZeOqgXoEaQuIqbmohJyqh+2zuizfHvKvaiaJTwH2tro3sleL00NUVi9s=
+	t=1745950638; cv=none; b=ehCxwlBWl/LXsBqqZfhRbMQFjnzKvIzj6/f7/6rc/BfsBMRj+XdghdQf+15kcWUTpF1Dw0SS8PXj0ETiRHy4BINaPfCcTpx6Kpm1noILF7NwR4yauaN1Gh/FNJ5Ja0QIIzD+2f+pfLhQOSbDK65M+GJi1kOkjkQAe7RavpADHUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950037; c=relaxed/simple;
-	bh=2f2BFX0ix6FYTAjaHFLSpPt2UGs3zlou4/dHcTY0zxQ=;
+	s=arc-20240116; t=1745950638; c=relaxed/simple;
+	bh=hfiFDYG5oUflXYIILtfYK2IwRwCi4sQe1P+jEL5bCU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tDeeMLg1sTPpMEM6pVdgn1+fJoJaZi4wPpveo+gTOWJ2T0/DyVmFwmxbPf4/Si+orUn0EW8QvGDtB5cbridWjqjmDoRNqS0oS9SxBo8fc6eT1nNsA7pe8KPCMxJUoSao/LEDGVodBRYP5JmtOxPIIUq43j4pcLM6RnQGmYkJiCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UELRJItz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78838C4CEE3;
-	Tue, 29 Apr 2025 18:07:16 +0000 (UTC)
+	 MIME-Version; b=Rg9ZUC1bQlld8Uh0f6GX14Dprk1HDbiSWFxsQl4GwBD1Fp1vjEuGLHqKCB/lXd0Ei3199ltmGj9l5kSDswr8v/xuTzle4ZjeBHq4P3R0A2HMjyO41f7NO2ybmtP4PlgdZRofdeLUuJUfDQoG+URk2fuOxrITOiqTb/Ge15HXymI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVc2IUgS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E448C4CEE3;
+	Tue, 29 Apr 2025 18:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950037;
-	bh=2f2BFX0ix6FYTAjaHFLSpPt2UGs3zlou4/dHcTY0zxQ=;
+	s=korg; t=1745950637;
+	bh=hfiFDYG5oUflXYIILtfYK2IwRwCi4sQe1P+jEL5bCU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UELRJItzKEExkGIUb5vj5m4p5C5sDXKx3ZG2fGAzLLfJs0vnU3hoDG0i9JGoj6yeJ
-	 pyfEhYqyMHJQz4r85jIKdIy+BL1BtTS8LeQcSuR/W8dZgYnUGW75Adx50y01QKyZIS
-	 1ZDM4A8XLznaNVgtr6s58G9MLnL3A1SbEk+rFhQA=
+	b=jVc2IUgSden92HkDWDDrLVNS4RCAK+MGADvStWJtU28Nw9Uqx+KsUG9eyPRkWasf0
+	 w9NmueIZJsycL9Og3k5/HzHuEaCsSqTOFfROO918VrJAe23Ex63bMliluYcN3e2WUF
+	 7pYg9ruhgiotH8LaszDWRZwKd4TZoFTBqdeqm+p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
+	syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com,
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/167] nvmet-fc: take tgtport reference only once
+Subject: [PATCH 6.6 157/204] perf/core: Fix WARN_ON(!ctx) in __free_event() for partial init
 Date: Tue, 29 Apr 2025 18:44:05 +0200
-Message-ID: <20250429161057.272460283@linuxfoundation.org>
+Message-ID: <20250429161105.839044339@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +68,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-[ Upstream commit b0b26ad0e1943de25ce82a7e5af3574f31b1cf99 ]
+[ Upstream commit 0ba3a4ab76fd3367b9cb680cad70182c896c795c ]
 
-The reference counting code can be simplified. Instead taking a tgtport
-refrerence at the beginning of nvmet_fc_alloc_hostport and put it back
-if not a new hostport object is allocated, only take it when a new
-hostport object is allocated.
+Move the get_ctx(child_ctx) call and the child_event->ctx assignment to
+occur immediately after the child event is allocated. Ensure that
+child_event->ctx is non-NULL before any subsequent error path within
+inherit_event calls free_event(), satisfying the assumptions of the
+cleanup code.
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Details:
+
+There's no clear Fixes tag, because this bug is a side-effect of
+multiple interacting commits over time (up to 15 years old), not
+a single regression.
+
+The code initially incremented refcount then assigned context
+immediately after the child_event was created. Later, an early
+validity check for child_event was added before the
+refcount/assignment. Even later, a WARN_ON_ONCE() cleanup check was
+added, assuming event->ctx is valid if the pmu_ctx is valid.
+The problem is that the WARN_ON_ONCE() could trigger after the initial
+check passed but before child_event->ctx was assigned, violating its
+precondition. The solution is to assign child_event->ctx right after
+its initial validation. This ensures the context exists for any
+subsequent checks or cleanup routines, resolving the WARN_ON_ONCE().
+
+To resolve it, defer the refcount update and child_event->ctx assignment
+directly after child_event->pmu_ctx is set but before checking if the
+parent event is orphaned. The cleanup routine depends on
+event->pmu_ctx being non-NULL before it verifies event->ctx is
+non-NULL. This also maintains the author's original intent of passing
+in child_ctx to find_get_pmu_context before its refcount/assignment.
+
+[ mingo: Expanded the changelog from another email by Gabriel Shahrouzi. ]
+
+Reported-by: syzbot+ff3aa851d46ab82953a3@syzkaller.appspotmail.com
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Link: https://lore.kernel.org/r/20250405203036.582721-1-gshahrouzi@gmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ff3aa851d46ab82953a3
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 22 +++++++---------------
- 1 file changed, 7 insertions(+), 15 deletions(-)
+ kernel/events/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index d40d5a4ea932e..68ff9540e2d13 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -1030,33 +1030,24 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 	struct nvmet_fc_hostport *newhost, *match = NULL;
- 	unsigned long flags;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index b710976fb01b1..987807b1040ae 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -13419,6 +13419,9 @@ inherit_event(struct perf_event *parent_event,
+ 	if (IS_ERR(child_event))
+ 		return child_event;
  
-+	/*
-+	 * Caller holds a reference on tgtport.
-+	 */
++	get_ctx(child_ctx);
++	child_event->ctx = child_ctx;
 +
- 	/* if LLDD not implemented, leave as NULL */
- 	if (!hosthandle)
+ 	pmu_ctx = find_get_pmu_context(child_event->pmu, child_ctx, child_event);
+ 	if (IS_ERR(pmu_ctx)) {
+ 		free_event(child_event);
+@@ -13441,8 +13444,6 @@ inherit_event(struct perf_event *parent_event,
  		return NULL;
+ 	}
  
--	/*
--	 * take reference for what will be the newly allocated hostport if
--	 * we end up using a new allocation
--	 */
--	if (!nvmet_fc_tgtport_get(tgtport))
--		return ERR_PTR(-EINVAL);
+-	get_ctx(child_ctx);
 -
- 	spin_lock_irqsave(&tgtport->lock, flags);
- 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
- 	spin_unlock_irqrestore(&tgtport->lock, flags);
+ 	/*
+ 	 * Make the child state follow the state of the parent event,
+ 	 * not its attr.disabled bit.  We hold the parent's mutex,
+@@ -13463,7 +13464,6 @@ inherit_event(struct perf_event *parent_event,
+ 		local64_set(&hwc->period_left, sample_period);
+ 	}
  
--	if (match) {
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
-+	if (match)
- 		return match;
--	}
- 
- 	newhost = kzalloc(sizeof(*newhost), GFP_KERNEL);
--	if (!newhost) {
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
-+	if (!newhost)
- 		return ERR_PTR(-ENOMEM);
--	}
- 
- 	spin_lock_irqsave(&tgtport->lock, flags);
- 	match = nvmet_fc_match_hostport(tgtport, hosthandle);
-@@ -1065,6 +1056,7 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 		kfree(newhost);
- 		newhost = match;
- 	} else {
-+		nvmet_fc_tgtport_get(tgtport);
- 		newhost->tgtport = tgtport;
- 		newhost->hosthandle = hosthandle;
- 		INIT_LIST_HEAD(&newhost->host_list);
+-	child_event->ctx = child_ctx;
+ 	child_event->overflow_handler = parent_event->overflow_handler;
+ 	child_event->overflow_handler_context
+ 		= parent_event->overflow_handler_context;
 -- 
 2.39.5
 
