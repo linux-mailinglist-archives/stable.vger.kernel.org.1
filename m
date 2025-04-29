@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABED9AA1982
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:12:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FB1AA190E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3540174525
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:11:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8B69A7257
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BC0254842;
-	Tue, 29 Apr 2025 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F47A24633C;
+	Tue, 29 Apr 2025 18:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQPuAQnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1R062et2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE0E16A94A;
-	Tue, 29 Apr 2025 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D300221D92;
+	Tue, 29 Apr 2025 18:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950228; cv=none; b=S1kHFSbn3rRS+UW9l6Gts3o3HQMFeqIQRPv9nsfXW0d0G148hWweLYX6j6B7JPVHvMbaAiz63DT8iS7Z8dlKXxk+z9fazxjhgVi2JVe7TnfvMKvPnk3lkUMit9YIDm6ZwluIS8eOmMUQWfM5lHGF+dDG/DRMPbrklIVFA5NmMBw=
+	t=1745949706; cv=none; b=OSV28T75zXB/aG2MYtHaRZ8mdnZ7Ld89wH/XJxffuI+ClTdbi0ICWZzSQ215PN+g1phP2zPYE9C9HWpZbsTHpAMKhclLSmla5CRTzXiJvgd8RfXBEUduOcPC7HTtbx3JEqsE2NjYUSqKCq2bG7xO9uS20UmS2AY8D21GwUIwdsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950228; c=relaxed/simple;
-	bh=Y1selg0APHkISXqeyow7Z54Qvlo3EhQZWICrjQQx9uc=;
+	s=arc-20240116; t=1745949706; c=relaxed/simple;
+	bh=0HuXTdtDnNFYO+jQFw9AGhAhtYo44bHbbifhRdqWcsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib69+lJYU827dzsjsdy6yX3iuo4Ltzu92LJtEqTjSH0GBZg6LdB5H/5d+95iyC5VR2PRTrPUs30dGfd5A3hzbVyEGQr9Ud1c6Fcnq3MYirQEa3+RoRQ/qKWc66N/Q/Q4EdfmCAE+/eFQpEKYEmDTIXk1iMhJ8kfQLFB1zQBB3nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQPuAQnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F178DC4CEE3;
-	Tue, 29 Apr 2025 18:10:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LCmfJ1IQ5EggiMy8gwmW7XRE5b/PFpUdmdy3yM0QTRToeuyZD+Egook9okqUhtOX6tnwqPXS5uUkc4lfD/7l7MY2mp9/uD2CUxFKfQN0dgSotr/ejh4yL6B/1494iRpz6a866EK2tdNyMMiQVr01p5oYIhQt4mG+Mn/n4B5F1OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1R062et2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B0AC4CEE3;
+	Tue, 29 Apr 2025 18:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950228;
-	bh=Y1selg0APHkISXqeyow7Z54Qvlo3EhQZWICrjQQx9uc=;
+	s=korg; t=1745949706;
+	bh=0HuXTdtDnNFYO+jQFw9AGhAhtYo44bHbbifhRdqWcsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQPuAQnnGDIpuw2ZxShJ5rA6V36oxJF8/0cEeDYY0HEXJFQZ5trSdUd4fOHp7ist1
-	 8nuDJnWnT21BCa+TPmNMGGClSsCUjfj69pMuXxN7Qq9WIqiFChTe7eiyw76zs2lU7v
-	 aYgfM5eUHzNbU/dYlcWZs3WnLnMX9kFwFFfgzows=
+	b=1R062et2PmeCOczVS1FMXu0PknWUkxxCd1DP8r4vG+0Gq3OvCF9h9esCGBag7aeno
+	 ODD4lR1PLc9h+8lZ11y23Uds+eLHgqYvifi0/qLNnQiAwAN/oLD6K9wNb3/hk3Cnbq
+	 ulIKeil3qBGd3VudFQsvgJzDyUgF0t6FCqPDNNhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/204] clk: renesas: rzg2l: Remove CPG_SDHI_DSEL from generic header
+Subject: [PATCH 6.1 008/167] auxdisplay: hd44780: Convert to platform remove callback returning void
 Date: Tue, 29 Apr 2025 18:41:56 +0200
-Message-ID: <20250429161100.569096540@linuxfoundation.org>
+Message-ID: <20250429161052.088280452@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 3e8008fcf6b7f7c65ad2718c18fb79f37007f1a5 ]
+[ Upstream commit 9ea02f7cc39d484d16e8a14f3713fefcd33407c0 ]
 
-Remove CPG_SDHI_DSEL and its bits from the generic header as RZ/G3S has
-different offset registers and bits for this, thus avoid mixing them.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230929053915.1530607-10-claudiu.beznea@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: 7f22a298d926 ("clk: renesas: r9a07g043: Fix HP clock source for RZ/Five")
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
+
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 9b98a7d2e5f4 ("auxdisplay: hd44780: Fix an API misuse in hd44780.c")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/r9a07g043-cpg.c | 7 +++++++
- drivers/clk/renesas/r9a07g044-cpg.c | 7 +++++++
- drivers/clk/renesas/rzg2l-cpg.h     | 4 ----
- 3 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/auxdisplay/hd44780.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/renesas/r9a07g043-cpg.c b/drivers/clk/renesas/r9a07g043-cpg.c
-index 6c6bc79b2e9ce..8181ddf652fdc 100644
---- a/drivers/clk/renesas/r9a07g043-cpg.c
-+++ b/drivers/clk/renesas/r9a07g043-cpg.c
-@@ -14,6 +14,13 @@
+diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
+index d56a5d508ccd7..7ac0b1b1d5482 100644
+--- a/drivers/auxdisplay/hd44780.c
++++ b/drivers/auxdisplay/hd44780.c
+@@ -319,7 +319,7 @@ static int hd44780_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- #include "rzg2l-cpg.h"
+-static int hd44780_remove(struct platform_device *pdev)
++static void hd44780_remove(struct platform_device *pdev)
+ {
+ 	struct charlcd *lcd = platform_get_drvdata(pdev);
+ 	struct hd44780_common *hdc = lcd->drvdata;
+@@ -329,7 +329,6 @@ static int hd44780_remove(struct platform_device *pdev)
+ 	kfree(lcd->drvdata);
  
-+/* Specific registers. */
-+#define CPG_PL2SDHI_DSEL	(0x218)
-+
-+/* Clock select configuration. */
-+#define SEL_SDHI0		SEL_PLL_PACK(CPG_PL2SDHI_DSEL, 0, 2)
-+#define SEL_SDHI1		SEL_PLL_PACK(CPG_PL2SDHI_DSEL, 4, 2)
-+
- enum clk_ids {
- 	/* Core Clock Outputs exported to DT */
- 	LAST_DT_CORE_CLK = R9A07G043_CLK_P0_DIV2,
-diff --git a/drivers/clk/renesas/r9a07g044-cpg.c b/drivers/clk/renesas/r9a07g044-cpg.c
-index c597414a94d8a..d4dcf5d896d40 100644
---- a/drivers/clk/renesas/r9a07g044-cpg.c
-+++ b/drivers/clk/renesas/r9a07g044-cpg.c
-@@ -15,6 +15,13 @@
+ 	kfree(lcd);
+-	return 0;
+ }
  
- #include "rzg2l-cpg.h"
+ static const struct of_device_id hd44780_of_match[] = {
+@@ -340,7 +339,7 @@ MODULE_DEVICE_TABLE(of, hd44780_of_match);
  
-+/* Specific registers. */
-+#define CPG_PL2SDHI_DSEL	(0x218)
-+
-+/* Clock select configuration. */
-+#define SEL_SDHI0		SEL_PLL_PACK(CPG_PL2SDHI_DSEL, 0, 2)
-+#define SEL_SDHI1		SEL_PLL_PACK(CPG_PL2SDHI_DSEL, 4, 2)
-+
- enum clk_ids {
- 	/* Core Clock Outputs exported to DT */
- 	LAST_DT_CORE_CLK = R9A07G054_CLK_DRP_A,
-diff --git a/drivers/clk/renesas/rzg2l-cpg.h b/drivers/clk/renesas/rzg2l-cpg.h
-index 097fd8f616806..705898bef438c 100644
---- a/drivers/clk/renesas/rzg2l-cpg.h
-+++ b/drivers/clk/renesas/rzg2l-cpg.h
-@@ -19,7 +19,6 @@
- #define CPG_PL2_DDIV		(0x204)
- #define CPG_PL3A_DDIV		(0x208)
- #define CPG_PL6_DDIV		(0x210)
--#define CPG_PL2SDHI_DSEL	(0x218)
- #define CPG_CLKSTATUS		(0x280)
- #define CPG_PL3_SSEL		(0x408)
- #define CPG_PL6_SSEL		(0x414)
-@@ -69,9 +68,6 @@
- #define SEL_PLL6_2	SEL_PLL_PACK(CPG_PL6_ETH_SSEL, 0, 1)
- #define SEL_GPU2	SEL_PLL_PACK(CPG_PL6_SSEL, 12, 1)
- 
--#define SEL_SDHI0	DDIV_PACK(CPG_PL2SDHI_DSEL, 0, 2)
--#define SEL_SDHI1	DDIV_PACK(CPG_PL2SDHI_DSEL, 4, 2)
--
- #define EXTAL_FREQ_IN_MEGA_HZ	(24)
- 
- /**
+ static struct platform_driver hd44780_driver = {
+ 	.probe = hd44780_probe,
+-	.remove = hd44780_remove,
++	.remove_new = hd44780_remove,
+ 	.driver		= {
+ 		.name	= "hd44780",
+ 		.of_match_table = hd44780_of_match,
 -- 
 2.39.5
 
