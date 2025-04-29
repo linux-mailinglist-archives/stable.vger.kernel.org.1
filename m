@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-137560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A421DAA1411
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275E4AA126B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71E12980248
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:06:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 966BF1899244
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBB623F413;
-	Tue, 29 Apr 2025 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542D62459E0;
+	Tue, 29 Apr 2025 16:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nouWPjWD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6gldFdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C639211A0B;
-	Tue, 29 Apr 2025 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C0624113C;
+	Tue, 29 Apr 2025 16:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946433; cv=none; b=DJaqfpmuvgf2ZnWWBFzRankwMP+kTB16VilbzZPpV2BKqWR/xbxcoX2SKP8ktDoNN43tbllHNgXmGFcW7u2YcFHcvqKTiaZYq+xseaCJ8JksKPMR7b4In/jfbRy5B8Biy257wzOT1KjU5+MGFVn1NNzZLg5v7R3JYUvT3vnIiU8=
+	t=1745945532; cv=none; b=sUoEyQmgMQE/vzC5X66eW2DFJ4fTc3jacJ/W1MII3S9tuZH4vX0XbsNT+WlxH/FffWEiAKGOLay7IpzYnWCDaFDs4AzexafbY6MIqJ2IUTzfhxNB5byh3rnqrXrtOIgCLl7qyL71HqOTWB4fn2cMfHG2TUnJhEoebvrlxLq0eF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946433; c=relaxed/simple;
-	bh=sNlvuSqtNnjoffiLglioY1P9X0Bl9NrdjO3fsryDajI=;
+	s=arc-20240116; t=1745945532; c=relaxed/simple;
+	bh=iH/1V4Lz3Lfyfqjrbb3TdbEw+uYC54F3wpLtYKoYX9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJSf2V7RCZ+AE8GHUwiRaNmrIahQKkohwZi748Uj3Of2Kug9QqY/9fQ3gvMamEUtnc3pYlEMaJqQTwCk1XBuLHenzHOnux4hx52lv18cX120Q+l3t4UZ7dT3KS67Qrxg8L9i2En8FaBVX/uZrmCBYj6UAqoTgcGwU4YGLbwi62c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nouWPjWD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D24C4CEE3;
-	Tue, 29 Apr 2025 17:07:12 +0000 (UTC)
+	 MIME-Version; b=FWTHuhnNySw7H5DsqeXM7uUnzaU67CY8uFYr9nO9UtZe/Yios1wEm8xnHQwa5rh37BSzVRyRsAcWSGlvMXylgQQq60AKPwQygbjm0Ii/YQ7cHpRxjsvKsQPq9FX0ehQT982cLqDlSXIGJ5FcAlxTXMDeFiBwJ2kk0adcml5ndaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U6gldFdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E5FC4CEE3;
+	Tue, 29 Apr 2025 16:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946433;
-	bh=sNlvuSqtNnjoffiLglioY1P9X0Bl9NrdjO3fsryDajI=;
+	s=korg; t=1745945531;
+	bh=iH/1V4Lz3Lfyfqjrbb3TdbEw+uYC54F3wpLtYKoYX9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nouWPjWDJ+RzXRDjZwp0d2sWJDTTQg9TZaup9jNccp1l+QjYiQJqnS1PwZzSRJPNn
-	 istbZC6iryac1EkxntgOPtOx0kePrkB5ueo6jZtC3xwGd00am/4gzRUt5mQAl/hgx8
-	 be17TSfeyuM1x/KsaXYYxMySKwZlksDowTZHDdQI=
+	b=U6gldFdkiEFgmUmIEVmp/heFwKlM4S3A7Paei3x3i+V5/SRAxLpI//ai51MXsa9/2
+	 4GO0ZkM2CAoSH+Qtxqjkuk/k+zzSGTB/Ea8KwPZNpyESE0dM2X6Di99fCWABl+pdk4
+	 bcJ0LZFS9soxB2tLdO2i62/sJGXUv6Qz3tKwobSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Konstantin Khlebnikov <koct9i@gmail.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 248/311] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
+Subject: [PATCH 5.4 144/179] net_sched: hfsc: Fix a UAF vulnerability in class handling
 Date: Tue, 29 Apr 2025 18:41:25 +0200
-Message-ID: <20250429161131.186092055@linuxfoundation.org>
+Message-ID: <20250429161055.217425762@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit b988685388effd648150aab272533f833a2a70f0 ]
+[ Upstream commit 3df275ef0a6ae181e8428a6589ef5d5231e58b5c ]
 
-When AC adapter is unplugged or plugged in EC wakes from HW sleep but
-APU doesn't enter back into HW sleep.
+This patch fixes a Use-After-Free vulnerability in the HFSC qdisc class
+handling. The issue occurs due to a time-of-check/time-of-use condition
+in hfsc_change_class() when working with certain child qdiscs like netem
+or codel.
 
-The reason this happens is that, when the APU exits HW sleep, the power
-rails controlled by the EC will power up the TCON.  The TCON has a GPIO
-that will be toggled at this time.  The GPIO is not marked as a wakeup
-source, but the GPIO controller still has an unserviced interrupt.
-Unserviced interrupts will block entering HW sleep again. Clearing the
-GPIO doesn't help as the TCON continues to assert it until it's been
-initialized by i2c-hid.
+The vulnerability works as follows:
+1. hfsc_change_class() checks if a class has packets (q.qlen != 0)
+2. It then calls qdisc_peek_len(), which for certain qdiscs (e.g.,
+   codel, netem) might drop packets and empty the queue
+3. The code continues assuming the queue is still non-empty, adding
+   the class to vttree
+4. This breaks HFSC scheduler assumptions that only non-empty classes
+   are in vttree
+5. Later, when the class is destroyed, this can lead to a Use-After-Free
 
-Fixing this would require TCON F/W changes and it's already broken in
-the wild on production hardware.
+The fix adds a second queue length check after qdisc_peek_len() to verify
+the queue wasn't emptied.
 
-To avoid triggering this issue add a quirk to avoid letting EC wake
-up system at all.  The power button still works properly on this system.
-
-Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-Link: https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
-Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20250401133858.1892077-1-superm1@kernel.org
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 21f4d5cc25ec ("net_sched/hfsc: fix curve activation in hfsc_change_class()")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Reviewed-by: Konstantin Khlebnikov <koct9i@gmail.com>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20250417184732.943057-2-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ net/sched/sch_hfsc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
-index 8db09d81918fb..3c5f34892734e 100644
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -2301,6 +2301,34 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
- 		},
- 	},
-+	/*
-+	 * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up from EC
-+	 * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
-+	 */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
-+		}
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
-+		}
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
-+		}
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
-+		}
-+	},
- 	{ },
- };
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index 9ebae0d07a9c6..eabc62df6f4e4 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -959,6 +959,7 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
  
+ 	if (cl != NULL) {
+ 		int old_flags;
++		int len = 0;
+ 
+ 		if (parentid) {
+ 			if (cl->cl_parent &&
+@@ -989,9 +990,13 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
+ 		if (usc != NULL)
+ 			hfsc_change_usc(cl, usc, cur_time);
+ 
++		if (cl->qdisc->q.qlen != 0)
++			len = qdisc_peek_len(cl->qdisc);
++		/* Check queue length again since some qdisc implementations
++		 * (e.g., netem/codel) might empty the queue during the peek
++		 * operation.
++		 */
+ 		if (cl->qdisc->q.qlen != 0) {
+-			int len = qdisc_peek_len(cl->qdisc);
+-
+ 			if (cl->cl_flags & HFSC_RSC) {
+ 				if (old_flags & HFSC_RSC)
+ 					update_ed(cl, len);
 -- 
 2.39.5
 
