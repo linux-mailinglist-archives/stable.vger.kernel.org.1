@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 380EDAA1471
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F80AAA1354
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F12B31895049
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3FF94A74D4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B155422A81D;
-	Tue, 29 Apr 2025 17:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADB822A81D;
+	Tue, 29 Apr 2025 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtDXQuwa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpz2+TaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D76327453;
-	Tue, 29 Apr 2025 17:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCEDE7E110;
+	Tue, 29 Apr 2025 17:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946732; cv=none; b=Mvhb5HWGDeCNK586wqTtyr/gaDYHVRQ+YsSWFJbcP016gTxcnlaF47gPhqe92WRTSJiN7P21H4WirA/tzClXbKYI+B7IELOOfWVLoXFXROt/BbOrm2iSXH4GmSVId2Epc2D7o6duF0AuATVy/B8O6vXe/N/N5DdrkoPHGIuKcic=
+	t=1745946073; cv=none; b=cCrhA/iseXhnrh8aDsxoHgQ2lqh2FNZiVSn2cuo8z8+y6vTDapmbdI+XxqKmNcJMa5gblJa56Kqc8n8x1AyQGrM+UJ7dUMeQ0w3OselQ7OOstfXt+rWetl99o/XgBQ4BJ6/QXM0nPbozoze0gTNlS531rdB+mdLGBzxlXzQJRCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946732; c=relaxed/simple;
-	bh=o6ZRuLa9gSXqQuMm0S3t45sNdCAdh/mw/3Bdl82xVpo=;
+	s=arc-20240116; t=1745946073; c=relaxed/simple;
+	bh=PsnABcpbRq+AH44q4SWYhLyNhP7FNLizAKmWFXgtrhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkvKMmQRAmfoI3DTX3TL7J+rLvmFamV27SStnYV4XOsGuXNN202eQrfwgQddG2834I599NCRVky0+OukOaqFDiV319AjVK/vJPYur1d0KwkIBJG+RR7bGj/YN+axIY/xfa0GszRDBfQcXt+85KeWM5OYE31+TV8mm4rd8zNeRS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtDXQuwa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA32C4CEF1;
-	Tue, 29 Apr 2025 17:12:11 +0000 (UTC)
+	 MIME-Version; b=qfqGSz1MckSNQSj3kow/SvrUN4rgliYoBZ1o7sGDYM545/FT8ZLAjOH+mgvn6JkQAqjTuLzJz7oTzzM/dhywxQwyorKJwFIEbWkLNepjn+/y7dUm4yA50vmnlno83A4lo8YW8llsDodAjpe+d0i6CsbL0xRQqP+/y5LhTgTz1go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpz2+TaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E85BC4CEE3;
+	Tue, 29 Apr 2025 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946732;
-	bh=o6ZRuLa9gSXqQuMm0S3t45sNdCAdh/mw/3Bdl82xVpo=;
+	s=korg; t=1745946073;
+	bh=PsnABcpbRq+AH44q4SWYhLyNhP7FNLizAKmWFXgtrhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CtDXQuwa4wmlpTWZ0vlW2G3lFaDcOThUp8yQGFaB5m9zxcRaTyOxLZky0xhW5gQ2f
-	 1KUmMgJemIT81LfvVXjBsUMDIOJxxN3D3qXIrCQXaYI+xFhYAKPEjD8xNVtoxm9ioM
-	 M5r8n40fV2e+jF+BVUWahrAwJje5Fp3LRiAjui1Q=
+	b=hpz2+TaCJDMsawUAIsPqlP1j1qla2YsiuyGd5NRC5JXR9bS3psj55iQHrCAx7Ix4M
+	 9ZkAAvJ1MJUVdxPam/oTW+XYjT1i7N60Qy63tQ8Gm1PjMVcwN++N1XnprRFS8TIwCJ
+	 EHhcYBIK9iBk/Sn/C7Y504wpYaM3gs6dGcWNPIXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/286] ext4: reject casefold inode flag without casefold feature
+	Benno Lossin <benno.lossin@proton.me>,
+	Christian Schrefl <chrisi.schrefl@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.14 118/311] rust: firmware: Use `ffi::c_char` type in `FwFunc`
 Date: Tue, 29 Apr 2025 18:39:15 +0200
-Message-ID: <20250429161109.953905352@linuxfoundation.org>
+Message-ID: <20250429161125.873585868@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
 
-[ Upstream commit 8216776ccff6fcd40e3fdaa109aa4150ebe760b3 ]
+commit 53bd97801632c940767f4c8407c2cbdeb56b40e7 upstream.
 
-It is invalid for the casefold inode flag to be set without the casefold
-superblock feature flag also being set.  e2fsck already considers this
-case to be invalid and handles it by offering to clear the casefold flag
-on the inode.  __ext4_iget() also already considered this to be invalid,
-sort of, but it only got so far as logging an error message; it didn't
-actually reject the inode.  Make it reject the inode so that other code
-doesn't have to handle this case.  This matches what f2fs does.
+The `FwFunc` struct contains an function with a char pointer argument,
+for which a `*const u8` pointer was used. This is not really the
+"proper" type for this, so use a `*const kernel::ffi::c_char` pointer
+instead.
 
-Note: we could check 's_encoding != NULL' instead of
-ext4_has_feature_casefold().  This would make the check robust against
-the casefold feature being enabled by userspace writing to the page
-cache of the mounted block device.  However, it's unsolvable in general
-for filesystems to be robust against concurrent writes to the page cache
-of the mounted block device.  Though this very particular scenario
-involving the casefold feature is solvable, we should not pretend that
-we can support this model, so let's just check the casefold feature.
-tune2fs already forbids enabling casefold on a mounted filesystem.
+This has no real functionality changes, since now `kernel::ffi::c_char`
+(which bindgen uses for `char`) is now a type alias to `u8` anyways,
+but before commit 1bae8729e50a ("rust: map `long` to `isize` and `char`
+to `u8`") the concrete type of `kernel::ffi::c_char` depended on the
+architecture (However all supported architectures at the time mapped to
+`i8`).
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Link: https://lore.kernel.org/r/20230814182903.37267-2-ebiggers@kernel.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 642335f3ea2b ("ext4: don't treat fhandle lookup of ea_inode as FS corruption")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This caused problems on the v6.13 tag when building for 32 bit arm (with
+my patches), since back then `*const i8` was used in the function
+argument and the function that bindgen generated used
+`*const core::ffi::c_char` which Rust mapped to `*const u8` on 32 bit
+arm. The stable v6.13.y branch does not have this issue since commit
+1bae8729e50a ("rust: map `long` to `isize` and `char` to `u8`") was
+backported.
+
+This caused the following build error:
+```
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:20:4
+   |
+20 |         Self(bindings::request_firmware)
+   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {request_firmware}`
+note: tuple struct defined here
+  --> rust/kernel/firmware.rs:14:8
+   |
+14 | struct FwFunc(
+   |        ^^^^^^
+
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:24:14
+   |
+24 |         Self(bindings::firmware_request_nowarn)
+   |         ---- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected fn pointer, found fn item
+   |         |
+   |         arguments to this function are incorrect
+   |
+   = note: expected fn pointer `unsafe extern "C" fn(_, *const i8, _) -> _`
+                 found fn item `unsafe extern "C" fn(_, *const u8, _) -> _ {firmware_request_nowarn}`
+note: tuple struct defined here
+  --> rust/kernel/firmware.rs:14:8
+   |
+14 | struct FwFunc(
+   |        ^^^^^^
+
+error[E0308]: mismatched types
+  --> rust/kernel/firmware.rs:64:45
+   |
+64 |         let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+   |                            ------           ^^^^^^^^^^^^^^^^^^ expected `*const i8`, found `*const u8`
+   |                            |
+   |                            arguments to this function are incorrect
+   |
+   = note: expected raw pointer `*const i8`
+              found raw pointer `*const u8`
+
+error: aborting due to 3 previous errors
+```
+
+Fixes: de6582833db0 ("rust: add firmware abstractions")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20250413-rust_arm_fix_fw_abstaction-v3-1-8dd7c0bbcd47@gmail.com
+[ Add firmware prefix to commit subject. - Danilo ]
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ rust/kernel/firmware.rs |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index c991955412a49..d0fcf91ec9d62 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5004,9 +5004,12 @@ struct inode *__ext4_iget(struct super_block *sb, unsigned long ino,
- 				 "iget: bogus i_mode (%o)", inode->i_mode);
- 		goto bad_inode;
- 	}
--	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb))
-+	if (IS_CASEFOLDED(inode) && !ext4_has_feature_casefold(inode->i_sb)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "casefold flag without casefold feature");
-+		ret = -EFSCORRUPTED;
-+		goto bad_inode;
-+	}
- 	if ((err_str = check_igot_inode(inode, flags)) != NULL) {
- 		ext4_error_inode(inode, function, line, 0, err_str);
- 		ret = -EFSCORRUPTED;
--- 
-2.39.5
-
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -4,7 +4,7 @@
+ //!
+ //! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+ 
+-use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
++use crate::{bindings, device::Device, error::Error, error::Result, ffi, str::CStr};
+ use core::ptr::NonNull;
+ 
+ /// # Invariants
+@@ -12,7 +12,11 @@ use core::ptr::NonNull;
+ /// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+ /// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
+ struct FwFunc(
+-    unsafe extern "C" fn(*mut *const bindings::firmware, *const u8, *mut bindings::device) -> i32,
++    unsafe extern "C" fn(
++        *mut *const bindings::firmware,
++        *const ffi::c_char,
++        *mut bindings::device,
++    ) -> i32,
+ );
+ 
+ impl FwFunc {
 
 
 
