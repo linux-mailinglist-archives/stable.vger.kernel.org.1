@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-137647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 940C9AA1469
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:15:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD68BAA135B
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE2918896FB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:12:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0422C982A3F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7985B24BC1A;
-	Tue, 29 Apr 2025 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572222472AC;
+	Tue, 29 Apr 2025 16:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKW+QFG2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b+ZDxNM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351FA242D9A;
-	Tue, 29 Apr 2025 17:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E86229B05;
+	Tue, 29 Apr 2025 16:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946701; cv=none; b=PkS4N9UAnfGuIzcn5XimaFX93aWgKO92SL6ch7yln3lOqEa2iBl3zaipMOCiMW0Zq4Po+qtmR5JAboxPDrZAAepzKwHvmw0OdGzW+H3L3pfAJoZW9irKXzBgbZ4zadOtsyg5Rmw91cdtibOngAz99orA5eW0EsLTXVbVjXySCGg=
+	t=1745945963; cv=none; b=jlRa+4jzDJ2JTS1jh6NUx/5sa+3s8kVRv5KhmoyOso9g0rsXBEDh8ARuViTar8oZNsQNoVQ/jMJDxsU/JXrEeT1sXjEZYGR34VeEmG9GFoMk+o2zatDgzdxiy0DEayDc6j8kJrFfkQ92/hAYwxSM9ktMTf/7YfFZGI1xLsK2x1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946701; c=relaxed/simple;
-	bh=zqxZOAFb3tbjVFsJDmDFmgHBzxChgBVkSh2YIsKuQeo=;
+	s=arc-20240116; t=1745945963; c=relaxed/simple;
+	bh=qGgH82uzwFYFtHzFycyuQknGoWtMXagd1ZQqfTGl8/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYE73m2FahiYJGwR3+lOlWCa4xFlPnUQ5OlDdfEDKUyM2IR0SG50I+VQtTsnq3HGTy3xG39e5Ze9C63/hxsClfYfH9i2U69+Lv7ameNMm7Rb7mA6Csj3QA7sK6oHbbeCRBro3X2p1STEFU/cIsBybbE53dPLO4FLRK5DIC9bajk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKW+QFG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F6CC4CEE3;
-	Tue, 29 Apr 2025 17:11:40 +0000 (UTC)
+	 MIME-Version; b=p+c8VoYIx4UF1E5EQXfDADLKZxHtDQeBjdOhZBQQSU6TkIoC7wOVxfrMZOPhMKR+lRzD4Pi/0Sras+92tS71QbOeOLaScFWOJJ/3fGidIZYJ8whK0YzOxNg6Eize7jkE8XF1FPfO1PfLnFPWpE6Wc8RkHp7iLE8Xd7Q9SgvXF4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b+ZDxNM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875B6C4CEE3;
+	Tue, 29 Apr 2025 16:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946701;
-	bh=zqxZOAFb3tbjVFsJDmDFmgHBzxChgBVkSh2YIsKuQeo=;
+	s=korg; t=1745945963;
+	bh=qGgH82uzwFYFtHzFycyuQknGoWtMXagd1ZQqfTGl8/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKW+QFG2TrA99v+1VMI9kzmaOzcm3QRPrHmrhmlg6Fhru6ciUAi15vu6sXsDU1w15
-	 Vk1j0wxSEtzRFJ0aHSFkTN9CyOLmIyEwMUts8hPwJsB95UrnMavUP7Pbg8pjM6TBXx
-	 G+h70wEbd4lzWPykJcKmsK2D5lYWKQ48guzNDEP8=
+	b=0b+ZDxNMqz1KqS3FRZzuQB09ahvZFy5/ZwxfFwINCcvvGkUsPiJou8nWM1Mwyr59m
+	 ZgDn7R2deFFZsxT9kc6JQ2FQF+LzXKJg8OX/gG2syQSw1+61lKQbRkv/T5InpnRAlE
+	 8CD4VWdSUlyrO4fj0osolixefTAXGpTZ9xcI2BXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/286] drm/amdkfd: Fix pqm_destroy_queue race with GPU reset
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.14 108/311] net: stmmac: block PHY RXC clock-stop
 Date: Tue, 29 Apr 2025 18:39:05 +0200
-Message-ID: <20250429161109.552346515@linuxfoundation.org>
+Message-ID: <20250429161125.460539537@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 7919b4cad5545ed93778f11881ceee72e4dbed66 ]
+commit dd557266cf5fb01a8cd85482dd258c1e172301d1 upstream.
 
-If GPU in reset, destroy_queue return -EIO, pqm_destroy_queue should
-delete the queue from process_queue_list and free the resource.
+The DesignWare core requires the receive clock to be running during
+certain operations. Ensure that we block PHY RXC clock-stop during
+these operations.
 
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is a best-efforts change - not everywhere can be covered by this
+because of net's core locking, which means we can't access the MDIO
+bus to configure the PHY to disable RXC clock-stop in certain areas.
+These are marked with FIXME comments.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/E1tvO6p-008Vjz-Qy@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index 43c07ac2c6fce..cabe0012ab5b1 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -384,7 +384,7 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
- 			pr_err("Pasid 0x%x destroy queue %d failed, ret %d\n",
- 				pqm->process->pasid,
- 				pqn->q->properties.queue_id, retval);
--			if (retval != -ETIME)
-+			if (retval != -ETIME && retval != -EIO)
- 				goto err_destroy_queue;
- 		}
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3448,9 +3448,18 @@ static int stmmac_hw_setup(struct net_de
+ 	if (priv->hw->phylink_pcs)
+ 		phylink_pcs_pre_init(priv->phylink, priv->hw->phylink_pcs);
  
--- 
-2.39.5
-
++	/* Note that clk_rx_i must be running for reset to complete. This
++	 * clock may also be required when setting the MAC address.
++	 *
++	 * Block the receive clock stop for LPI mode at the PHY in case
++	 * the link is established with EEE mode active.
++	 */
++	phylink_rx_clk_stop_block(priv->phylink);
++
+ 	/* DMA initialization and SW reset */
+ 	ret = stmmac_init_dma_engine(priv);
+ 	if (ret < 0) {
++		phylink_rx_clk_stop_unblock(priv->phylink);
+ 		netdev_err(priv->dev, "%s: DMA engine initialization failed\n",
+ 			   __func__);
+ 		return ret;
+@@ -3458,6 +3467,7 @@ static int stmmac_hw_setup(struct net_de
+ 
+ 	/* Copy the MAC addr into the HW  */
+ 	stmmac_set_umac_addr(priv, priv->hw, dev->dev_addr, 0);
++	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+ 	/* PS and related bits will be programmed according to the speed */
+ 	if (priv->hw->pcs) {
+@@ -3568,7 +3578,9 @@ static int stmmac_hw_setup(struct net_de
+ 	/* Start the ball rolling... */
+ 	stmmac_start_all_dma(priv);
+ 
++	phylink_rx_clk_stop_block(priv->phylink);
+ 	stmmac_set_hw_vlan_mode(priv, priv->hw);
++	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+ 	return 0;
+ }
+@@ -5853,6 +5865,9 @@ static void stmmac_tx_timeout(struct net
+  *  whenever multicast addresses must be enabled/disabled.
+  *  Return value:
+  *  void.
++ *
++ *  FIXME: This may need RXC to be running, but it may be called with BH
++ *  disabled, which means we can't call phylink_rx_clk_stop*().
+  */
+ static void stmmac_set_rx_mode(struct net_device *dev)
+ {
+@@ -5985,7 +6000,9 @@ static int stmmac_set_features(struct ne
+ 	else
+ 		priv->hw->hw_vlan_en = false;
+ 
++	phylink_rx_clk_stop_block(priv->phylink);
+ 	stmmac_set_hw_vlan_mode(priv, priv->hw);
++	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+ 	return 0;
+ }
+@@ -6269,7 +6286,9 @@ static int stmmac_set_mac_address(struct
+ 	if (ret)
+ 		goto set_mac_error;
+ 
++	phylink_rx_clk_stop_block(priv->phylink);
+ 	stmmac_set_umac_addr(priv, priv->hw, ndev->dev_addr, 0);
++	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+ set_mac_error:
+ 	pm_runtime_put(priv->device);
+@@ -6625,6 +6644,9 @@ static int stmmac_vlan_update(struct stm
+ 	return stmmac_update_vlan_hash(priv, priv->hw, hash, pmatch, is_double);
+ }
+ 
++/* FIXME: This may need RXC to be running, but it may be called with BH
++ * disabled, which means we can't call phylink_rx_clk_stop*().
++ */
+ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+@@ -6656,6 +6678,9 @@ err_pm_put:
+ 	return ret;
+ }
+ 
++/* FIXME: This may need RXC to be running, but it may be called with BH
++ * disabled, which means we can't call phylink_rx_clk_stop*().
++ */
+ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
+ {
+ 	struct stmmac_priv *priv = netdev_priv(ndev);
+@@ -7922,9 +7947,11 @@ int stmmac_resume(struct device *dev)
+ 
+ 	stmmac_hw_setup(ndev, false);
+ 	stmmac_init_coalesce(priv);
++	phylink_rx_clk_stop_block(priv->phylink);
+ 	stmmac_set_rx_mode(ndev);
+ 
+ 	stmmac_restore_hw_vlan_rx_fltr(priv, ndev, priv->hw);
++	phylink_rx_clk_stop_unblock(priv->phylink);
+ 
+ 	stmmac_enable_all_queues(priv);
+ 	stmmac_enable_all_dma_irq(priv);
 
 
 
