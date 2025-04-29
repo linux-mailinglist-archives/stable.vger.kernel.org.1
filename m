@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-138607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C22AA18C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9221FAA13B4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36AFA1BC6C01
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50D177A57D0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8679523E32B;
-	Tue, 29 Apr 2025 18:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335ED2459E1;
+	Tue, 29 Apr 2025 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBnykdEf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF9Fs+E5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AD422AE68;
-	Tue, 29 Apr 2025 18:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A21221719;
+	Tue, 29 Apr 2025 17:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949784; cv=none; b=rVcz0mjnSrMtbUa87TCcwEFpLSyr3uEkthSSbWTrFi8p7HXfAqluBMLvfIuR9CrLGNkB3cO7UrRFCY9vrbNm3zI7OZs8hRlonQw/lumD/mlHTogfS1wjpMpvQ3krOXM03EoSlJakxiXpwiMKxk5rZOIuJ+JiKow/EyAgc548N+c=
+	t=1745946538; cv=none; b=VvjWgYKykphxG7qfrR5dlTUeD2ms94unA9+sFjm40Ox1GspDbvNygsovB4lZHX3CsSgzBxaOLDlUYdq+J5iGF9qrowxx09yRNJK+QRQeThcj4+eJBjw3/G18+IUGVdrOC10dITSoVSuRPVtmK12NhUfbvNUfNl7byRBwcX/zIsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949784; c=relaxed/simple;
-	bh=y5yXJzd1EFKFjlTkRBMJBat6cfDoxVGu4jCRyx4vDxg=;
+	s=arc-20240116; t=1745946538; c=relaxed/simple;
+	bh=yaoVX8QjtpF7Z2jrdFdNwhTE/519U5Vxn0niJ7qqVpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hu1i1lZHbz/lTBpbIPHU4i1tRg6vsln1ABV0R+laggxoggSinfrvAE5aBNIc0f9946DIk48N/5ZVYQVv8Dq6JQmWZTDoS2kwSZtfm/rv9Mdy1hjyGUMK4no8avdRdQ+6HKc73skGIfKD44isyskM+btavESDU9W5lXYFagHJBi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBnykdEf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB126C4CEE3;
-	Tue, 29 Apr 2025 18:03:03 +0000 (UTC)
+	 MIME-Version; b=bjCVFpdYOdpk9mCC+9iOFUsrBivaFW3mRPZTa19jFmrWpTJLiedbhgdBLQcLSDB5vyAsJovE4Pfh6buSEW8c2le3J5s1YZT09oSx8qJZHwleRj27jAwbjBRG+8KWv0q5AVZFhiClqojIfIZ8Zokbnz/EGA1mB1Z/R/w3p3WXr7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF9Fs+E5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51CE7C4CEE3;
+	Tue, 29 Apr 2025 17:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949784;
-	bh=y5yXJzd1EFKFjlTkRBMJBat6cfDoxVGu4jCRyx4vDxg=;
+	s=korg; t=1745946537;
+	bh=yaoVX8QjtpF7Z2jrdFdNwhTE/519U5Vxn0niJ7qqVpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBnykdEfRkV9blmQ8I5MWdp+7bYxEd8r5M9U8zSMS7nkWAgA/AvZGZk2una5CuaBM
-	 Yn32zL5mvAm/N1aQdlKUAXYur2RRv7CR/zfhw034VSvPBNXVF9BfkRq9Rr/UnuU5N1
-	 O3+FLiPrAGUlLLF94vEkXvnCBD/NQhsDyC7oCuLU=
+	b=oF9Fs+E5oTIu/nnaaGb8nR7G9qm3bj+4EmkhDlU2RaC7/OeW+HuEqg+3TV939HGcj
+	 Bmq3NSJjZ1MUBj4Vel+R1lrLG4f+GPxw1JI+G5G5bMOsWdgdlsD2ja8tb2MOBwy5Y/
+	 p11stfoQeZeXBdOGHdZiR87c1bzgw4bMnPIQx+Zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/167] of: resolver: Simplify of_resolve_phandles() using __free()
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Andrew Sauber <andrew.sauber@isovalent.com>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	William Tu <witu@nvidia.com>,
+	Martin Zaharinov <micron10@gmail.com>,
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.14 299/311] vmxnet3: Fix malformed packet sizing in vmxnet3_process_xdp
 Date: Tue, 29 Apr 2025 18:42:16 +0200
-Message-ID: <20250429161052.885505634@linuxfoundation.org>
+Message-ID: <20250429161133.248277933@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +67,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit 5275e8b5293f65cc82a5ee5eab02dd573b911d6e ]
+commit 4c2227656d9003f4d77afc76f34dd81b95e4c2c4 upstream.
 
-Use the __free() cleanup to simplify of_resolve_phandles() and remove
-all the goto's.
+vmxnet3 driver's XDP handling is buggy for packet sizes using ring0 (that
+is, packet sizes between 128 - 3k bytes).
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Stable-dep-of: a46a0805635d ("of: resolver: Fix device node refcount leakage in of_resolve_phandles()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We noticed MTU-related connectivity issues with Cilium's service load-
+balancing in case of vmxnet3 as NIC underneath. A simple curl to a HTTP
+backend service where the XDP LB was doing IPIP encap led to overly large
+packet sizes but only for *some* of the packets (e.g. HTTP GET request)
+while others (e.g. the prior TCP 3WHS) looked completely fine on the wire.
+
+In fact, the pcap recording on the backend node actually revealed that the
+node with the XDP LB was leaking uninitialized kernel data onto the wire
+for the affected packets, for example, while the packets should have been
+152 bytes their actual size was 1482 bytes, so the remainder after 152 bytes
+was padded with whatever other data was in that page at the time (e.g. we
+saw user/payload data from prior processed packets).
+
+We only noticed this through an MTU issue, e.g. when the XDP LB node and
+the backend node both had the same MTU (e.g. 1500) then the curl request
+got dropped on the backend node's NIC given the packet was too large even
+though the IPIP-encapped packet normally would never even come close to
+the MTU limit. Lowering the MTU on the XDP LB (e.g. 1480) allowed to let
+the curl request succeed (which also indicates that the kernel ignored the
+padding, and thus the issue wasn't very user-visible).
+
+Commit e127ce7699c1 ("vmxnet3: Fix missing reserved tailroom") was too eager
+to also switch xdp_prepare_buff() from rcd->len to rbi->len. It really needs
+to stick to rcd->len which is the actual packet length from the descriptor.
+The latter we also feed into vmxnet3_process_xdp_small(), by the way, and
+it indicates the correct length needed to initialize the xdp->{data,data_end}
+parts. For e127ce7699c1 ("vmxnet3: Fix missing reserved tailroom") the
+relevant part was adapting xdp_init_buff() to address the warning given the
+xdp_data_hard_end() depends on xdp->frame_sz. With that fixed, traffic on
+the wire looks good again.
+
+Fixes: e127ce7699c1 ("vmxnet3: Fix missing reserved tailroom")
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Andrew Sauber <andrew.sauber@isovalent.com>
+Cc: Anton Protopopov <aspsk@isovalent.com>
+Cc: William Tu <witu@nvidia.com>
+Cc: Martin Zaharinov <micron10@gmail.com>
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250423133600.176689-1-daniel@iogearbox.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/resolver.c | 34 +++++++++++-----------------------
- 1 file changed, 11 insertions(+), 23 deletions(-)
+ drivers/net/vmxnet3/vmxnet3_xdp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/resolver.c b/drivers/of/resolver.c
-index b278ab4338ceb..2dd19dc6987c7 100644
---- a/drivers/of/resolver.c
-+++ b/drivers/of/resolver.c
-@@ -263,24 +263,20 @@ static int adjust_local_phandle_references(struct device_node *local_fixups,
- int of_resolve_phandles(struct device_node *overlay)
- {
- 	struct device_node *child, *local_fixups, *refnode;
--	struct device_node *tree_symbols, *overlay_fixups;
-+	struct device_node *overlay_fixups;
- 	struct property *prop;
- 	const char *refpath;
- 	phandle phandle, phandle_delta;
- 	int err;
+--- a/drivers/net/vmxnet3/vmxnet3_xdp.c
++++ b/drivers/net/vmxnet3/vmxnet3_xdp.c
+@@ -397,7 +397,7 @@ vmxnet3_process_xdp(struct vmxnet3_adapt
  
--	tree_symbols = NULL;
--
- 	if (!overlay) {
- 		pr_err("null overlay\n");
--		err = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
+ 	xdp_init_buff(&xdp, PAGE_SIZE, &rq->xdp_rxq);
+ 	xdp_prepare_buff(&xdp, page_address(page), rq->page_pool->p.offset,
+-			 rbi->len, false);
++			 rcd->len, false);
+ 	xdp_buff_clear_frags_flag(&xdp);
  
- 	if (!of_node_check_flag(overlay, OF_DETACHED)) {
- 		pr_err("overlay not detached\n");
--		err = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	phandle_delta = live_tree_max_phandle() + 1;
-@@ -292,7 +288,7 @@ int of_resolve_phandles(struct device_node *overlay)
- 
- 	err = adjust_local_phandle_references(local_fixups, overlay, phandle_delta);
- 	if (err)
--		goto out;
-+		return err;
- 
- 	overlay_fixups = NULL;
- 
-@@ -301,16 +297,13 @@ int of_resolve_phandles(struct device_node *overlay)
- 			overlay_fixups = child;
- 	}
- 
--	if (!overlay_fixups) {
--		err = 0;
--		goto out;
--	}
-+	if (!overlay_fixups)
-+		return 0;
- 
--	tree_symbols = of_find_node_by_path("/__symbols__");
-+	struct device_node __free(device_node) *tree_symbols = of_find_node_by_path("/__symbols__");
- 	if (!tree_symbols) {
- 		pr_err("no symbols in root of device tree.\n");
--		err = -EINVAL;
--		goto out;
-+		return -EINVAL;
- 	}
- 
- 	for_each_property_of_node(overlay_fixups, prop) {
-@@ -324,14 +317,12 @@ int of_resolve_phandles(struct device_node *overlay)
- 		if (err) {
- 			pr_err("node label '%s' not found in live devicetree symbols table\n",
- 			       prop->name);
--			goto out;
-+			return err;
- 		}
- 
- 		refnode = of_find_node_by_path(refpath);
--		if (!refnode) {
--			err = -ENOENT;
--			goto out;
--		}
-+		if (!refnode)
-+			return -ENOENT;
- 
- 		phandle = refnode->phandle;
- 		of_node_put(refnode);
-@@ -341,11 +332,8 @@ int of_resolve_phandles(struct device_node *overlay)
- 			break;
- 	}
- 
--out:
- 	if (err)
- 		pr_err("overlay phandle fixup failed: %d\n", err);
--	of_node_put(tree_symbols);
--
- 	return err;
- }
- EXPORT_SYMBOL_GPL(of_resolve_phandles);
--- 
-2.39.5
-
+ 	xdp_prog = rcu_dereference(rq->adapter->xdp_bpf_prog);
 
 
 
