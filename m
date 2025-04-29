@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-137959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B294AA15D8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D09AA137F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:06:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC54165295
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FBA24C2BBD
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8570B2459E1;
-	Tue, 29 Apr 2025 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB982522A8;
+	Tue, 29 Apr 2025 17:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSg8qcMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJ6c+h+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428101FE468;
-	Tue, 29 Apr 2025 17:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04AD2522A1;
+	Tue, 29 Apr 2025 17:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947654; cv=none; b=bzjsRyPjC1b0Mz3MQ6A2kLDuW5bnDNCzpu2iF8YRvaTphEX1Z49YStxZ/FcRFehc+BHfEOXsdxHDCv3dSKJkmPqecofeXsQNEEYp3DUl+ApSbCNjRLp/5jWpISHUteM3tBD4wHcMFHQODZ8S567wn0olfe+WS6Yz32z0nf7e4sE=
+	t=1745946139; cv=none; b=nY0DOYarv372E/tWvep0CJVdnJp1kAlABKbXNfk/pULxEOGw0bFHoSofvPCuZNsNV/9TQhlOCSxGGVe4k5IgNDZD/HWzu5xgV5/+FO3z0Strb/AhRZAPbOz9LsegvHe2kVQ8uaSMvy/Hy106E5SRSD+ixn9Q7x/E0x+mTXX9u6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947654; c=relaxed/simple;
-	bh=MFmh/7pfgYNfm0b3wdS13dDnWaZnh6t7SHWKeO/VhI8=;
+	s=arc-20240116; t=1745946139; c=relaxed/simple;
+	bh=gdow9pz0D3HM7z2Hrp13rZZ1skAUYW0kT27sCBogILg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUolMZOsOn7GWmfe6XlFMn8kHr7HpEloMJ5tfWroMzTlc7n9v+uPFEAOWlR/+26PyruTynlUBlks/MRceKa0xvgZ0jDrTWMTUEfcQm1sglkfIg3xz4Eo6sOqCwEnDd21UNUA7miMJihlJcVDMhrycqdXjs01UjEdWmOgQ1crerY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSg8qcMF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C83C1C4CEE3;
-	Tue, 29 Apr 2025 17:27:33 +0000 (UTC)
+	 MIME-Version; b=E0bZNN8luFPjjGWPvnss/IlMcTK8hTPUtjjk44AbNHKpxp9pNffKsBjnVPlk6hX1dIsh4iUEjUrnCBbyHjotB8AdMPhw8qKpClgufPOhQ+Ww/DFYbsPDNJXpBXSgslUHpHuRalgkw6nO1S/N0iCwrNevgF6LfRpp1Yg56/R01Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJ6c+h+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACE8C4CEE3;
+	Tue, 29 Apr 2025 17:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947654;
-	bh=MFmh/7pfgYNfm0b3wdS13dDnWaZnh6t7SHWKeO/VhI8=;
+	s=korg; t=1745946139;
+	bh=gdow9pz0D3HM7z2Hrp13rZZ1skAUYW0kT27sCBogILg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSg8qcMFm25lLILesZ9kEWxs/oiuR7XT+hBE2zGASkHrBdkvtFIKfDQaFWYokFKjA
-	 JxVVRjga0i0fxecjy5ciyN5V8anYdxMPLbmm/snglai9BH6AtMYrumOBhYAQKfNZj/
-	 2B+9suk8ldoVHdFfV/aLumsTZR9u9voNIlMVpdCc=
+	b=XJ6c+h+uBxpFZo/pFvXIhZ4VV8080cnonvJF8vY79Sh/ikWv1kJ1SA+MffP/GUz0O
+	 +ccCCXayFCnEJfbI9G3CW5nQLn4rPll4sqnKvKGysxU9iWH9FGP/camsxBRsXSzShU
+	 q9pTFcol5Mjam09EwCY2ibKv/jjqYwNLy4zTay8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/280] vhost-scsi: Fix vhost_scsi_send_bad_target()
+	stable <stable@kernel.org>,
+	Miao Li <limiao@kylinos.cn>,
+	Lei Huang <huanglei@kylinos.cn>
+Subject: [PATCH 6.14 168/311] usb: quirks: Add delay init quirk for SanDisk 3.2Gen1 Flash Drive
 Date: Tue, 29 Apr 2025 18:40:05 +0200
-Message-ID: <20250429161117.733091747@linuxfoundation.org>
+Message-ID: <20250429161127.920516686@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Miao Li <limiao@kylinos.cn>
 
-[ Upstream commit b182687135474d7ed905a07cc6cb2734b359e13e ]
+commit 37ffdbd695c02189dbf23d6e7d2385e0299587ca upstream.
 
-Although the support of VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 was
-signaled by the commit 664ed90e621c ("vhost/scsi: Set
-VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits"),
-vhost_scsi_send_bad_target() still assumes the response in a single
-descriptor.
+The SanDisk 3.2Gen1 Flash Drive, which VID:PID is in 0781:55a3,
+just like Silicon Motion Flash Drive:
+https://lore.kernel.org/r/20250401023027.44894-1-limiao870622@163.com
+also needs the DELAY_INIT quirk, or it will randomly work incorrectly
+(e.g.: lsusb and can't list this device info) when connecting Huawei
+hisi platforms and doing thousand of reboot test circles.
 
-In addition, although vhost_scsi_send_bad_target() is used by both I/O
-queue and control queue, the response header is always
-virtio_scsi_cmd_resp. It is required to use virtio_scsi_ctrl_tmf_resp or
-virtio_scsi_ctrl_an_resp for control queue.
-
-Fixes: 664ed90e621c ("vhost/scsi: Set VIRTIO_F_ANY_LAYOUT + VIRTIO_F_VERSION_1 feature bits")
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20250403063028.16045-3-dongli.zhang@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Miao Li <limiao@kylinos.cn>
+Signed-off-by: Lei Huang <huanglei@kylinos.cn>
+Link: https://lore.kernel.org/r/20250414062935.159024-1-limiao870622@163.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/scsi.c | 48 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index ad7fa5bc0f5fc..7bfe5e5865fe9 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -947,23 +947,46 @@ vhost_scsi_send_status(struct vhost_scsi *vs, struct vhost_virtqueue *vq,
- 		pr_err("Faulted on virtio_scsi_cmd_resp\n");
- }
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -369,6 +369,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0781, 0x5583), .driver_info = USB_QUIRK_NO_LPM },
+ 	{ USB_DEVICE(0x0781, 0x5591), .driver_info = USB_QUIRK_NO_LPM },
  
-+#define TYPE_IO_CMD    0
-+#define TYPE_CTRL_TMF  1
-+#define TYPE_CTRL_AN   2
++	/* SanDisk Corp. SanDisk 3.2Gen1 */
++	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
 +
- static void
- vhost_scsi_send_bad_target(struct vhost_scsi *vs,
- 			   struct vhost_virtqueue *vq,
--			   int head, unsigned out)
-+			   struct vhost_scsi_ctx *vc, int type)
- {
--	struct virtio_scsi_cmd_resp __user *resp;
--	struct virtio_scsi_cmd_resp rsp;
-+	union {
-+		struct virtio_scsi_cmd_resp cmd;
-+		struct virtio_scsi_ctrl_tmf_resp tmf;
-+		struct virtio_scsi_ctrl_an_resp an;
-+	} rsp;
-+	struct iov_iter iov_iter;
-+	size_t rsp_size;
- 	int ret;
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
  
- 	memset(&rsp, 0, sizeof(rsp));
--	rsp.response = VIRTIO_SCSI_S_BAD_TARGET;
--	resp = vq->iov[out].iov_base;
--	ret = __copy_to_user(resp, &rsp, sizeof(rsp));
--	if (!ret)
--		vhost_add_used_and_signal(&vs->dev, vq, head, 0);
-+
-+	if (type == TYPE_IO_CMD) {
-+		rsp_size = sizeof(struct virtio_scsi_cmd_resp);
-+		rsp.cmd.response = VIRTIO_SCSI_S_BAD_TARGET;
-+	} else if (type == TYPE_CTRL_TMF) {
-+		rsp_size = sizeof(struct virtio_scsi_ctrl_tmf_resp);
-+		rsp.tmf.response = VIRTIO_SCSI_S_BAD_TARGET;
-+	} else {
-+		rsp_size = sizeof(struct virtio_scsi_ctrl_an_resp);
-+		rsp.an.response = VIRTIO_SCSI_S_BAD_TARGET;
-+	}
-+
-+	iov_iter_init(&iov_iter, ITER_DEST, &vq->iov[vc->out], vc->in,
-+		      rsp_size);
-+
-+	ret = copy_to_iter(&rsp, rsp_size, &iov_iter);
-+
-+	if (likely(ret == rsp_size))
-+		vhost_add_used_and_signal(&vs->dev, vq, vc->head, 0);
- 	else
--		pr_err("Faulted on virtio_scsi_cmd_resp\n");
-+		pr_err("Faulted on virtio scsi type=%d\n", type);
- }
- 
- static int
-@@ -1277,7 +1300,7 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		if (ret == -ENXIO)
- 			break;
- 		else if (ret == -EIO)
--			vhost_scsi_send_bad_target(vs, vq, vc.head, vc.out);
-+			vhost_scsi_send_bad_target(vs, vq, &vc, TYPE_IO_CMD);
- 		else if (ret == -ENOMEM)
- 			vhost_scsi_send_status(vs, vq, vc.head, vc.out,
- 					       SAM_STAT_TASK_SET_FULL);
-@@ -1510,7 +1533,10 @@ vhost_scsi_ctl_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 		if (ret == -ENXIO)
- 			break;
- 		else if (ret == -EIO)
--			vhost_scsi_send_bad_target(vs, vq, vc.head, vc.out);
-+			vhost_scsi_send_bad_target(vs, vq, &vc,
-+						   v_req.type == VIRTIO_SCSI_T_TMF ?
-+						   TYPE_CTRL_TMF :
-+						   TYPE_CTRL_AN);
- 	} while (likely(!vhost_exceeds_weight(vq, ++c, 0)));
- out:
- 	mutex_unlock(&vq->mutex);
--- 
-2.39.5
-
 
 
 
