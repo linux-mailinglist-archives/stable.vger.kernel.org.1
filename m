@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D078CAA12E8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:00:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A6BAA1421
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF0647A8951
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:58:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80F094A2FE5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315C6248879;
-	Tue, 29 Apr 2025 16:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D522441A6;
+	Tue, 29 Apr 2025 17:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvP6bEFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkL/2c+d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22DB244668;
-	Tue, 29 Apr 2025 16:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D7824728A;
+	Tue, 29 Apr 2025 17:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945988; cv=none; b=ZgGvagA5MNsBDqShonDQ3lw2UnzPK2nI4BqaXD61S0fN3btk4Hc7a+uwuJ8Z/cpiQV8t5ScpfdSpgVW/x38CTsUYDEOsvJ1hj/NJwq0h7kOnQaswE/LQGIdjgqAiVEgCfgEXRpAIBns8c7BA/spilk8ZmngS2bXoOfyKL2fXhUE=
+	t=1745946639; cv=none; b=hf7phq1kfxzbtnHdzJ3Hrk0MKdUAOthbkKXxrCbBdVY4Akpdm+ysHZ/GaTzx/st9acYhvN5BbMMDhP+zwn+sbO1sRxWzImrOdX3pr2Gm3FF1pOGKcN3BvnfeNLBuOhwMJzRHRCxXNKxyjrzK9uqbbF30z3bSD+0eyBIgxnjbubM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945988; c=relaxed/simple;
-	bh=HRPOBqUSEx58FIzZrU+6mD0su9MIvyWDkmT007rIXRQ=;
+	s=arc-20240116; t=1745946639; c=relaxed/simple;
+	bh=6SiVI/8pXzsPueqBKBHcfmKsiH0EGGbsgdglYX5L+Ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ysc+bZ1/qpquNje1cMOVy9wKvQvmE121jZzgxRRQlo7WJhdOURlu7LtGT3cJfJtcTqULh7nNkAkyk/Mxk3KpSAo6216I9G12fYxR33X3BykVxgJCdyBofhKL6rN7um+jkNZTTC+kDn9MpfnQgh+3zvYNvUagFEgmtd09VGv7Cyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rvP6bEFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6171DC4CEE3;
-	Tue, 29 Apr 2025 16:59:47 +0000 (UTC)
+	 MIME-Version; b=kyILbqp3RLkaX1a5fiXwjfR99z7JYJXkzV8wlK8ydoCx1GOZBzB6uoumy3moY/UdbeYnJ9FnQNGjvd5gR9EZVD6Xl+7vy7u35tcXxil5qERhIKz1szWNJWZOuYYlpMCaqHgkmrnjN8dEZoFNaD9Zy7tbFyuerR7qjG0ZpX92mxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkL/2c+d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629EAC4CEE3;
+	Tue, 29 Apr 2025 17:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945987;
-	bh=HRPOBqUSEx58FIzZrU+6mD0su9MIvyWDkmT007rIXRQ=;
+	s=korg; t=1745946638;
+	bh=6SiVI/8pXzsPueqBKBHcfmKsiH0EGGbsgdglYX5L+Ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rvP6bEFtOYPei/q0ib6bipM9uzdLK3Kz72BYst8aFWefTORSdw/Tg+ryR+SQZruej
-	 /JSxEub9RGN11wOoEgSoKugvA32wj6HKrs8ZgU9G2y/ECanY/a2neVVIupJXcl9QY8
-	 +cnYCJaobJaBDVwTF31ypyWsVhE/HjdsStouZm3E=
+	b=bkL/2c+dLIcNNNRdOp0o6vuAphdjA0zEDYaigOF6vfTrxbYVvGoMGMu9yROuZrCYf
+	 5+Qbiyk7YmA7HNyNetH6DTSDxKERC5a2pG52Qmu/E2ntyA23vFGFfbh8tpMWUOI8Sy
+	 oYj0Xyr6N1POGO3pCEPY1zof2VKTo8te8gTDNNBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Ricard Wanderlof <ricard2013@butoba.net>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 086/311] riscv: Replace function-like macro by static inline function
-Date: Tue, 29 Apr 2025 18:38:43 +0200
-Message-ID: <20250429161124.573368156@linuxfoundation.org>
+Subject: [PATCH 5.10 020/286] ALSA: usb-audio: Fix CME quirk for UF series keyboards
+Date: Tue, 29 Apr 2025 18:38:44 +0200
+Message-ID: <20250429161108.684688157@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +60,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Ricard Wanderlof <ricard2013@butoba.net>
 
-[ Upstream commit 121f34341d396b666d8a90b24768b40e08ca0d61 ]
+[ Upstream commit c2820405ba55a38932aa2177f026b70064296663 ]
 
-The flush_icache_range() function is implemented as a "function-like
-macro with unused parameters", which can result in "unused variables"
-warnings.
+Fix quirk for CME master keyboards so it not only handles
+sysex but also song position pointer, MIDI timing clock, start
+and stop messages, and active sensing. All of these can be
+output by the CME UF series master keyboards.
 
-Replace the macro with a static inline function, as advised by
-Documentation/process/coding-style.rst.
+Tested with a CME UF6 in a desktop Linux environment as
+well as on the Zynthian Raspberry Pi based platform.
 
-Fixes: 08f051eda33b ("RISC-V: Flush I$ when making a dirty page executable")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/r/20250419111402.1660267-1-bjorn@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Ricard Wanderlof <ricard2013@butoba.net>
+Link: https://patch.msgid.link/20250313-cme-fix-v1-1-d404889e4de8@butoba.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/cacheflush.h | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ sound/usb/midi.c | 80 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 74 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/include/asm/cacheflush.h b/arch/riscv/include/asm/cacheflush.h
-index 8de73f91bfa37..b59ffeb668d6a 100644
---- a/arch/riscv/include/asm/cacheflush.h
-+++ b/arch/riscv/include/asm/cacheflush.h
-@@ -34,11 +34,6 @@ static inline void flush_dcache_page(struct page *page)
- 	flush_dcache_folio(page_folio(page));
+diff --git a/sound/usb/midi.c b/sound/usb/midi.c
+index f0a70e912bddc..b09b7b3c0110e 100644
+--- a/sound/usb/midi.c
++++ b/sound/usb/midi.c
+@@ -505,16 +505,84 @@ static void ch345_broken_sysex_input(struct snd_usb_midi_in_endpoint *ep,
+ 
+ /*
+  * CME protocol: like the standard protocol, but SysEx commands are sent as a
+- * single USB packet preceded by a 0x0F byte.
++ * single USB packet preceded by a 0x0F byte, as are system realtime
++ * messages and MIDI Active Sensing.
++ * Also, multiple messages can be sent in the same packet.
+  */
+ static void snd_usbmidi_cme_input(struct snd_usb_midi_in_endpoint *ep,
+ 				  uint8_t *buffer, int buffer_length)
+ {
+-	if (buffer_length < 2 || (buffer[0] & 0x0f) != 0x0f)
+-		snd_usbmidi_standard_input(ep, buffer, buffer_length);
+-	else
+-		snd_usbmidi_input_data(ep, buffer[0] >> 4,
+-				       &buffer[1], buffer_length - 1);
++	int remaining = buffer_length;
++
++	/*
++	 * CME send sysex, song position pointer, system realtime
++	 * and active sensing using CIN 0x0f, which in the standard
++	 * is only intended for single byte unparsed data.
++	 * So we need to interpret these here before sending them on.
++	 * By default, we assume single byte data, which is true
++	 * for system realtime (midi clock, start, stop and continue)
++	 * and active sensing, and handle the other (known) cases
++	 * separately.
++	 * In contrast to the standard, CME does not split sysex
++	 * into multiple 4-byte packets, but lumps everything together
++	 * into one. In addition, CME can string multiple messages
++	 * together in the same packet; pressing the Record button
++	 * on an UF6 sends a sysex message directly followed
++	 * by a song position pointer in the same packet.
++	 * For it to have any reasonable meaning, a sysex message
++	 * needs to be at least 3 bytes in length (0xf0, id, 0xf7),
++	 * corresponding to a packet size of 4 bytes, and the ones sent
++	 * by CME devices are 6 or 7 bytes, making the packet fragments
++	 * 7 or 8 bytes long (six or seven bytes plus preceding CN+CIN byte).
++	 * For the other types, the packet size is always 4 bytes,
++	 * as per the standard, with the data size being 3 for SPP
++	 * and 1 for the others.
++	 * Thus all packet fragments are at least 4 bytes long, so we can
++	 * skip anything that is shorter; this also conveniantly skips
++	 * packets with size 0, which CME devices continuously send when
++	 * they have nothing better to do.
++	 * Another quirk is that sometimes multiple messages are sent
++	 * in the same packet. This has been observed for midi clock
++	 * and active sensing i.e. 0x0f 0xf8 0x00 0x00 0x0f 0xfe 0x00 0x00,
++	 * but also multiple note ons/offs, and control change together
++	 * with MIDI clock. Similarly, some sysex messages are followed by
++	 * the song position pointer in the same packet, and occasionally
++	 * additionally by a midi clock or active sensing.
++	 * We handle this by looping over all data and parsing it along the way.
++	 */
++	while (remaining >= 4) {
++		int source_length = 4; /* default */
++
++		if ((buffer[0] & 0x0f) == 0x0f) {
++			int data_length = 1; /* default */
++
++			if (buffer[1] == 0xf0) {
++				/* Sysex: Find EOX and send on whole message. */
++				/* To kick off the search, skip the first
++				 * two bytes (CN+CIN and SYSEX (0xf0).
++				 */
++				uint8_t *tmp_buf = buffer + 2;
++				int tmp_length = remaining - 2;
++
++				while (tmp_length > 1 && *tmp_buf != 0xf7) {
++					tmp_buf++;
++					tmp_length--;
++				}
++				data_length = tmp_buf - buffer;
++				source_length = data_length + 1;
++			} else if (buffer[1] == 0xf2) {
++				/* Three byte song position pointer */
++				data_length = 3;
++			}
++			snd_usbmidi_input_data(ep, buffer[0] >> 4,
++					       &buffer[1], data_length);
++		} else {
++			/* normal channel events */
++			snd_usbmidi_standard_input(ep, buffer, source_length);
++		}
++		buffer += source_length;
++		remaining -= source_length;
++	}
  }
  
--/*
-- * RISC-V doesn't have an instruction to flush parts of the instruction cache,
-- * so instead we just flush the whole thing.
-- */
--#define flush_icache_range(start, end) flush_icache_all()
- #define flush_icache_user_page(vma, pg, addr, len)	\
- do {							\
- 	if (vma->vm_flags & VM_EXEC)			\
-@@ -78,6 +73,16 @@ void flush_icache_mm(struct mm_struct *mm, bool local);
- 
- #endif /* CONFIG_SMP */
- 
-+/*
-+ * RISC-V doesn't have an instruction to flush parts of the instruction cache,
-+ * so instead we just flush the whole thing.
-+ */
-+#define flush_icache_range flush_icache_range
-+static inline void flush_icache_range(unsigned long start, unsigned long end)
-+{
-+	flush_icache_all();
-+}
-+
- extern unsigned int riscv_cbom_block_size;
- extern unsigned int riscv_cboz_block_size;
- void riscv_init_cbo_blocksizes(void);
+ /*
 -- 
 2.39.5
 
