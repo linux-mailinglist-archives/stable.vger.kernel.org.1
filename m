@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-138809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A69CAA1A32
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:19:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C69CAAA1950
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC6DB98646A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E5889C3095
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EE1227E95;
-	Tue, 29 Apr 2025 18:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E7124E4BF;
+	Tue, 29 Apr 2025 18:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bq2dN7Lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+6YhPlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2534BCA5A;
-	Tue, 29 Apr 2025 18:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A500121ABC6;
+	Tue, 29 Apr 2025 18:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950419; cv=none; b=IU1s/Je/RaBUZ2e7A2F1CnyJ2mPwL75HMxgnjut9NyDNIv9znLTPbiCD2LTuZJKBXQCte2lwDq2hjxUWwdh9nmBvY9kONqgXNELG4mT2qYnGDe2TCkk1M9nu3g9YE5Rzszp3/lvmRE8jmIrnC6TkX4fA+RQatpupLo7HWRyqXnY=
+	t=1745949827; cv=none; b=owwotHkXl6fwfintSorHS+rzAA1iZH/Q22UjBwoECs5c6tjtjmiAndyePMsUhN1yQwXOQPpOMy+J3Wpnuh7CmEXotZlTaY1/CIK0eUKZN1f9SdMIHEGdJX7eK+gvH7Af9gf3RYQqX95JM0brdJkGFA6MY+xUIp9UudAMzKCXeok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950419; c=relaxed/simple;
-	bh=vw8IKCIAkykIShM9FSj6zTchn4b/i0+rFN0bJIfDWSg=;
+	s=arc-20240116; t=1745949827; c=relaxed/simple;
+	bh=Z/lpXFI3rNzdj+gGgwpGJ96iB/7UE+MBiqSeDJf4t7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TJCjxz7bG5WGdj0uPh6CiUxO8H0meSkuZeihsuQej9DiCS+iOFU7Cx3qG57zHVH+r+uyWXdi3Tb1U7H+HD93eMqR29s8Ldtw9Y310q8WLF3HTh8ENTNNqDfIme8Qzy0qE7FDoVY2Ey6piEbTSC6TgXCp0hahPraZMdzF9XdqFKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bq2dN7Lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87475C4CEE3;
-	Tue, 29 Apr 2025 18:13:38 +0000 (UTC)
+	 MIME-Version; b=NSu3jXbPUyM4vgHvkrLy+DKIDPU+OfNO6RGLr3DV6kiHvbMH5Agt56xW6XqX0oQ/XFx5Ub0aEGPXRS7FJykJSH57DAiH9jH03JFojLMeUEFXavYtYdfTz68gr+upUbQgaS1RrzOeVR3AjG6rtmBvHatWzjwJce9zGBnVjU/o33U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+6YhPlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226FFC4CEE3;
+	Tue, 29 Apr 2025 18:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950419;
-	bh=vw8IKCIAkykIShM9FSj6zTchn4b/i0+rFN0bJIfDWSg=;
+	s=korg; t=1745949827;
+	bh=Z/lpXFI3rNzdj+gGgwpGJ96iB/7UE+MBiqSeDJf4t7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bq2dN7LhGq1CDU9M3IqHM3zybas5q4rXGJDxYlQ7LPtEMtlnfB/jdQuP/A3C+WzQa
-	 avcoMHiY2KvLol8GuHzDAGZ8gR11bNRQ3aPyTqGAKsgG9cegMCe28IMeRnSun6NA5N
-	 MyfznKLt9fRibpRQT9dylbFZOIYTxqFZPqzIL038=
+	b=u+6YhPlrnxJzpHUb6aW5hgAntz8aR9n6nU3qFrtJz++6OrGAQvE+nYGqR91DBw0Mj
+	 Md9xjw6espu9Qjw4tujP69CKQQbViNLztsWk3hq3StkDLwNgicW+2E6ykRGfsGf1po
+	 JAgDVbV8Ca0NJNFABL/j+Axfj/tRmSfhoxEGubDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.6 089/204] USB: storage: quirk for ADATA Portable HDD CH94
-Date: Tue, 29 Apr 2025 18:42:57 +0200
-Message-ID: <20250429161103.065583366@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 070/167] KVM: SVM: Allocate IR data using atomic allocation
+Date: Tue, 29 Apr 2025 18:42:58 +0200
+Message-ID: <20250429161054.601449387@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 9ab75eee1a056f896b87d139044dd103adc532b9 upstream.
+commit 7537deda36521fa8fff9133b39c46e31893606f2 upstream.
 
-Version 1.60 specifically needs this quirk.
-Version 2.00 is known good.
+Allocate SVM's interrupt remapping metadata using GFP_ATOMIC as
+svm_ir_list_add() is called with IRQs are disabled and irqfs.lock held
+when kvm_irq_routing_update() reacts to GSI routing changes.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250403180004.343133-1-oneukum@suse.com
+Fixes: 411b44ba80ab ("svm: Implements update_pi_irte hook to setup posted interrupt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-ID: <20250404193923.1413163-2-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kvm/svm/avic.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -83,6 +83,13 @@ UNUSUAL_DEV(0x0bc2, 0x331a, 0x0000, 0x99
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
- 		US_FL_NO_REPORT_LUNS),
- 
-+/* Reported-by: Oliver Neukum <oneukum@suse.com> */
-+UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
-+		"ADATA",
-+		"Portable HDD CH94",
-+		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
-+		US_FL_NO_ATA_1X),
-+
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
- UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
- 		"Initio Corporation",
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -839,7 +839,7 @@ static int svm_ir_list_add(struct vcpu_s
+ 	 * Allocating new amd_iommu_pi_data, which will get
+ 	 * add to the per-vcpu ir_list.
+ 	 */
+-	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_KERNEL_ACCOUNT);
++	ir = kzalloc(sizeof(struct amd_svm_iommu_ir), GFP_ATOMIC | __GFP_ACCOUNT);
+ 	if (!ir) {
+ 		ret = -ENOMEM;
+ 		goto out;
 
 
 
