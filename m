@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7DAA1360
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:05:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AB71AA1238
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB54F7AFEF5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096221BA2A79
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD812512E0;
-	Tue, 29 Apr 2025 17:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E5B215060;
+	Tue, 29 Apr 2025 16:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dun7l+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIgs3ugJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DC324887D;
-	Tue, 29 Apr 2025 17:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C753D243364;
+	Tue, 29 Apr 2025 16:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946277; cv=none; b=bT3wBY9RFhl/KMEZVwmtISziBa8cufQ0FmXwy3OLzSbiIgLY0EfCMAk6EDuTBLrwcqPHYnMl7KTAOYx/QWfB/VygR3Gp/tDvBHHT0cQ3CqAsWg2v3/8UBQBKYWa1Xqa/kl9QSKGdtREgAr5kGfd6rmxHiANX0yI3VQSP1SnwDJ8=
+	t=1745945426; cv=none; b=KXYEiBOWYJg1LlF8AptPLeQJ56VQYunxHkRuAWUPH/zfYBk+0cMuaBjXtnZ8fp2sMSOQKpWz7vN/mQ6D8kzHeCZt901cVj4oxaa7NNomB91e3ZBkWaRDz/lZLYrX/Cv1CCy3tHtyBMPvv2uj+HkMMTh0HZRnTWNaDgON1cF3Gv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946277; c=relaxed/simple;
-	bh=4tcFvjojyiLTGahshqU8tNGI/t6d7+Q4Q/zoLNQZD2c=;
+	s=arc-20240116; t=1745945426; c=relaxed/simple;
+	bh=jSQQJ6d6MyKByPgfu5UxgPovwba2SfKyHJYO7ZH5Fvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pHn4k9HR9louzKDrHe6qO/KI2jWapOw6DyvgHXnNd2/FaqoBCVVfXMbvdT9MVcKrV2F2Z6f/SGizyaZWGSCfALwhniRAYb9Nxdgd/Mgy07n13nONqu4cm4WZwv2zn/CJKEAu8BQxvQaItymRh31nM+IG0d4VbTSd6xhOAWuvMlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2dun7l+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97338C4CEE3;
-	Tue, 29 Apr 2025 17:04:36 +0000 (UTC)
+	 MIME-Version; b=aClmc9u0HzIFYyKyL1lAGJlY7fTKJCtK6XMZLMTZdxFIX9rd6xEMYuH48A9mHWsbIgXoZK76U2LuWgdPedW6HVVKr62Yd3/9tIVWSmu+BxRUU+3AMEEEVXb/3k3LTMpXRQobpeuA2vKDQQP6Hd0lX7X5XZR6FtrcUX7qBLHOr0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIgs3ugJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AAB9C4CEE3;
+	Tue, 29 Apr 2025 16:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946277;
-	bh=4tcFvjojyiLTGahshqU8tNGI/t6d7+Q4Q/zoLNQZD2c=;
+	s=korg; t=1745945426;
+	bh=jSQQJ6d6MyKByPgfu5UxgPovwba2SfKyHJYO7ZH5Fvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dun7l+Ov7Dj59O0NQPM8Ai+QnZc2gXnA4AR7OOznwoQhlo6CcUgUdfWNAR4v5E/4
-	 M+4ScwKtG0qhu3m2xezXUPdUQPVSte+ODHv8xjYFY/UnLVCXzDhNNA4EpiQYwfnbQA
-	 rRlcar9HAh4MtMngxrqgwf8An/2xYxRZ6LgXkqRQ=
+	b=aIgs3ugJ7WV7Ml8Vdy74sdf8vXookvEO4vYllCfnqEXuElSciKfX/MfyWjKARTezH
+	 6aPSWIvd9Zx/WKuERGB/vimfw1h0a5SaX0cm7msPqount9rJly5W5ybdgVN3/CFJPt
+	 OyA02SAvpP1MlWTfmmnOntCVr6zO6poytCfV+CrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanley Chu <yschu@nuvoton.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 212/311] i3c: master: svc: Add support for Nuvoton npcm845 i3c
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Lanzano <lanzano.alex@gmail.com>
+Subject: [PATCH 5.4 108/179] drm/repaper: fix integer overflows in repeat functions
 Date: Tue, 29 Apr 2025 18:40:49 +0200
-Message-ID: <20250429161129.683487374@linuxfoundation.org>
+Message-ID: <20250429161053.773267259@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley Chu <yschu@nuvoton.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 98d87600a04e42282797631aa6b98dd43999e274 ]
+commit 4d098000ac193f359e6b8ca4801dbdbd6a27b41f upstream.
 
-Nuvoton npcm845 SoC uses an older IP version, which has specific
-hardware issues that need to be addressed with a different compatible
-string.
+There are conditions, albeit somewhat unlikely, under which right hand
+expressions, calculating the end of time period in functions like
+repaper_frame_fixed_repeat(), may overflow.
 
-Add driver data for different compatible strings to define platform
-specific quirks.
-Add compatible string for npcm845 to define its own driver data.
+For instance, if 'factor10x' in repaper_get_temperature() is high
+enough (170), as is 'epd->stage_time' in repaper_probe(), then the
+resulting value of 'end' will not fit in unsigned int expression.
 
-Signed-off-by: Stanley Chu <yschu@nuvoton.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20250306075429.2265183-3-yschu@nuvoton.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mitigate this by casting 'epd->factored_stage_time' to wider type before
+any multiplication is done.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 3589211e9b03 ("drm/tinydrm: Add RePaper e-ink driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Lanzano <lanzano.alex@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250116134801.22067-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/repaper.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index ed7b9d7f688cc..0fc03bb5d0a6e 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -158,6 +158,10 @@ struct svc_i3c_regs_save {
- 	u32 mdynaddr;
- };
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -454,7 +454,7 @@ static void repaper_frame_fixed_repeat(s
+ 				       enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
  
-+struct svc_i3c_drvdata {
-+	u32 quirks;
-+};
-+
- /**
-  * struct svc_i3c_master - Silvaco I3C Master structure
-  * @base: I3C master controller
-@@ -183,6 +187,7 @@ struct svc_i3c_regs_save {
-  * @ibi.tbq_slot: To be queued IBI slot
-  * @ibi.lock: IBI lock
-  * @lock: Transfer lock, protect between IBI work thread and callbacks from master
-+ * @drvdata: Driver data
-  * @enabled_events: Bit masks for enable events (IBI, HotJoin).
-  * @mctrl_config: Configuration value in SVC_I3C_MCTRL for setting speed back.
-  */
-@@ -214,6 +219,7 @@ struct svc_i3c_master {
- 		spinlock_t lock;
- 	} ibi;
- 	struct mutex lock;
-+	const struct svc_i3c_drvdata *drvdata;
- 	u32 enabled_events;
- 	u32 mctrl_config;
- };
-@@ -1817,6 +1823,10 @@ static int svc_i3c_master_probe(struct platform_device *pdev)
- 	if (!master)
- 		return -ENOMEM;
+ 	do {
+ 		repaper_frame_fixed(epd, fixed_value, stage);
+@@ -465,7 +465,7 @@ static void repaper_frame_data_repeat(st
+ 				      const u8 *mask, enum repaper_stage stage)
+ {
+ 	u64 start = local_clock();
+-	u64 end = start + (epd->factored_stage_time * 1000 * 1000);
++	u64 end = start + ((u64)epd->factored_stage_time * 1000 * 1000);
  
-+	master->drvdata = of_device_get_match_data(dev);
-+	if (!master->drvdata)
-+		return -EINVAL;
-+
- 	master->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(master->regs))
- 		return PTR_ERR(master->regs);
-@@ -1958,8 +1968,13 @@ static const struct dev_pm_ops svc_i3c_pm_ops = {
- 			   svc_i3c_runtime_resume, NULL)
- };
- 
-+static const struct svc_i3c_drvdata npcm845_drvdata = {};
-+
-+static const struct svc_i3c_drvdata svc_default_drvdata = {};
-+
- static const struct of_device_id svc_i3c_master_of_match_tbl[] = {
--	{ .compatible = "silvaco,i3c-master-v1"},
-+	{ .compatible = "nuvoton,npcm845-i3c", .data = &npcm845_drvdata },
-+	{ .compatible = "silvaco,i3c-master-v1", .data = &svc_default_drvdata },
- 	{ /* sentinel */ },
- };
- MODULE_DEVICE_TABLE(of, svc_i3c_master_of_match_tbl);
--- 
-2.39.5
-
+ 	do {
+ 		repaper_frame_data(epd, image, mask, stage);
 
 
 
