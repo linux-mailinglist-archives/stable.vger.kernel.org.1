@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-137282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CFB4AA12B1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:57:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC5DAA1855
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21F3B982A4F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:54:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFB409A5E14
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A6324E008;
-	Tue, 29 Apr 2025 16:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200C2522AA;
+	Tue, 29 Apr 2025 17:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLtrapYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qG/dz3KS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B1024113C;
-	Tue, 29 Apr 2025 16:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E21625332D;
+	Tue, 29 Apr 2025 17:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945604; cv=none; b=FHYyeJd5E3tlRobUe3JSKIpE0z0UwFqbJIkdPdXMWM2+PRCubYT7dqwMmLE9DAmMDicT8xgDqXouwtzYOd4QMn1Z2ARiNx/EmUVj4mpprr3uxujQe/JMOjAalH8VOyOEb54Km+8ow54bWRp8ZeIgTTia7LMGaGrwZ/ugJn3imrE=
+	t=1745949233; cv=none; b=jIHY3ZZrCJ2F2LcbGtnKPqHIZ9BZtG0W9kT/EWJxsWLKJC25hetPibvIAsYx4hwVHuPojpZ3Q1c4vvoMxYJf5sxGZdRqH2a+31xe0+6J0F6DKBgAmea0XLQuPIteQaGPYKp7SFQzEEmzZwUuGt9Jvrfj41IrTZpQ3F+z7nAmMvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945604; c=relaxed/simple;
-	bh=LDmDeJdVDi88r63AOdSx/FMHoanszkiC1J4b32vISJk=;
+	s=arc-20240116; t=1745949233; c=relaxed/simple;
+	bh=7xa2vWcf/0d3q4uhco7rADcOws83RaB6VEI21gxYn0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rvr8Rk5EJHLAPxB8vmmzrycIjvAyenEMbUa9nPfGPhjJ9EbLh1O1WwMopgEEdy/Wzw10CX/aLoBPWV5o1tdFt4E7OHmrqPm5OjeCKvQ561GCQ3Q08SbPHzk6XGqSP8aCNG2zZL9tcervJXC5rVQpDkD9zWJm6jVmzIoEBTNM/Dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tLtrapYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01381C4CEE3;
-	Tue, 29 Apr 2025 16:53:23 +0000 (UTC)
+	 MIME-Version; b=gStOY789XBgCeONFfiT5Wl5x/wEIC6dwti+ai5wP2E5zlL12zE4tDzgmvmO3hQNdA2wzSgfHQM/LM39IQUjYnESxNFoc2La5yJNS94WKEruTbIrcasT5i1SVC/z5nGfpg03Lr/S+tt8fV/Atm8R6E9loI8BZHkuAeGKqgxcbEgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qG/dz3KS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFE1C4CEE3;
+	Tue, 29 Apr 2025 17:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945604;
-	bh=LDmDeJdVDi88r63AOdSx/FMHoanszkiC1J4b32vISJk=;
+	s=korg; t=1745949233;
+	bh=7xa2vWcf/0d3q4uhco7rADcOws83RaB6VEI21gxYn0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLtrapYvp0jNTgRMD97GVbZ5vITdGpw2btXXzDd9rdXIQGq0A61PxDVKTLsNzEQv4
-	 ZQOAvxISU1A3DGbNBLqHF1ruPoYAYz3kBztPzB0FK4ocZm8OjF6jV3yTKQ1iByovyQ
-	 08dduTm51hLJd2u1AjSYdn4Va9eiLSb6dwmv93FQ=
+	b=qG/dz3KSD3hAKhEuSKnn4HOu/Sxp9COQJWjiZBYPiacgDyhMtdy1FoCwLN5ksLlL8
+	 9uLq5jsi1ZzB96HxXUedOnQ9HA7e0YQ4a/t3R0nIZ71N65w/9Z4Sp4iKb11WugLs3b
+	 Zknztkr6E0qRRbiF/EWyZnIQS3ZohJKvtTEq7mKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Xue <zxue@semtech.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 151/179] USB: serial: option: add Sierra Wireless EM9291
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Zhi Yang <Zhi.Yang@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 5.15 215/373] drm/amd/display: Add null checks for stream and plane before dereferencing
 Date: Tue, 29 Apr 2025 18:41:32 +0200
-Message-ID: <20250429161055.494589647@linuxfoundation.org>
+Message-ID: <20250429161132.001659857@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +72,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Xue <zxue@semtech.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 968e1cbb1f6293c3add9607f80b5ce3d29f57583 upstream.
+commit 15c2990e0f0108b9c3752d7072a97d45d4283aea upstream.
 
-Add Sierra Wireless EM9291.
+This commit adds null checks for the 'stream' and 'plane' variables in
+the dcn30_apply_idle_power_optimizations function. These variables were
+previously assumed to be null at line 922, but they were used later in
+the code without checking if they were null. This could potentially lead
+to a null pointer dereference, which would cause a crash.
 
-Interface 0: MBIM control
-          1: MBIM data
-          3: AT port
-          4: Diagnostic port
+The null checks ensure that 'stream' and 'plane' are not null before
+they are used, preventing potential crashes.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1199 ProdID=90e3 Rev=00.06
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Sierra Wireless EM9291
-S:  SerialNumber=xxxxxxxxxxxxxxxx
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=(none)
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fixes the below static smatch checker:
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:938 dcn30_apply_idle_power_optimizations() error: we previously assumed 'stream' could be null (see line 922)
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:940 dcn30_apply_idle_power_optimizations() error: we previously assumed 'plane' could be null (see line 922)
 
-Signed-off-by: Adam Xue <zxue@semtech.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -611,6 +611,7 @@ static void option_instat_callback(struc
- /* Sierra Wireless products */
- #define SIERRA_VENDOR_ID			0x1199
- #define SIERRA_PRODUCT_EM9191			0x90d3
-+#define SIERRA_PRODUCT_EM9291			0x90e3
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
+@@ -784,6 +784,9 @@ bool dcn30_apply_idle_power_optimization
+ 			stream = dc->current_state->streams[0];
+ 			plane = (stream ? dc->current_state->stream_status[0].plane_states[0] : NULL);
  
- /* UNISOC (Spreadtrum) products */
- #define UNISOC_VENDOR_ID			0x1782
-@@ -2432,6 +2433,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9291, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1bbb, 0x0530, 0xff),			/* TCL IK512 MBIM */
++			if (!stream || !plane)
++				return false;
++
+ 			if (stream && plane) {
+ 				cursor_cache_enable = stream->cursor_position.enable &&
+ 						plane->address.grph.cursor_cache_addr.quad_part;
 
 
 
