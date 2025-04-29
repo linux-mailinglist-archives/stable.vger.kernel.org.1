@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-137492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81B5AA13C3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:09:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87578AA17A7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA3D39218CF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1706F1BC5061
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD81246326;
-	Tue, 29 Apr 2025 17:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633B724500A;
+	Tue, 29 Apr 2025 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsQ9aLrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcXQEy+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC411DF73C;
-	Tue, 29 Apr 2025 17:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BE521ABC1;
+	Tue, 29 Apr 2025 17:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946227; cv=none; b=Z8uQYHjPm7cuUrJtcbehneBOO7cjKF04LUjdE4So83N2OG/kW633ZMpGvCEfYfhiLtQyhy8q/GVW1vdMa7UR09BwSPdOwToLX4d3cm5Aj9qYwv2UDYULOCBqgLOUJcwouF25O1fHy+YGiYY78+39yBbPOt4vzf1CtONYZHhonJY=
+	t=1745949004; cv=none; b=pgI2ckMzdWQtiLuxzaea1e61/563o/K+l0y08OgsZDJq9OYdOMce1qangMma0SNt76Mfjrv/6oUykvC9Uom6/MeMlbx/OqUJJAvfVZmX9goAFnhy/ARog7IzcWkOYN6i3/kwK5v+JB6Sn/2wPaist0kYNqUJPYFvlDcBQxHT1XU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946227; c=relaxed/simple;
-	bh=xN5MwScdJXpZJWm74hIx/PxBfbwvrJSWC1B91KoWtSo=;
+	s=arc-20240116; t=1745949004; c=relaxed/simple;
+	bh=a6eL0LCyrLUXPOviMqsAxmcK2p3fu/QAoZTg/9v055c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mlTFpKK3R7Oowb7HBLwV+cE9gwl5oJJkM1U+QVzplsb26P7l1t6rxN2dB2RfxcfZ5mRUTEZbaCB+tQy7GXwnlXpmdnHGU+FAr1VRn282ddFV71johaDv9+X38/YGtPfpjgPNO2S+llF5Ah+mkSScaHRlJ0mZ7RBrGMDMw60hdT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsQ9aLrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033F4C4CEE3;
-	Tue, 29 Apr 2025 17:03:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i2c/mWrkF+pWfM4VzXnVJiecofQRvZMrCjimN+IGzPsm3Wj1UOOjumIXXI0GsZcI9oPSmYt0ybyu6osTPrkQTTa4QFl60WXOghOCaOcB857iNPC+gj9HsOa+FtCYiB3j1LqFtpH2Dov6lMFWHV5EdXMnfoHNDl/9xWRx5mZuMTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcXQEy+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ADCC4CEE9;
+	Tue, 29 Apr 2025 17:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946227;
-	bh=xN5MwScdJXpZJWm74hIx/PxBfbwvrJSWC1B91KoWtSo=;
+	s=korg; t=1745949004;
+	bh=a6eL0LCyrLUXPOviMqsAxmcK2p3fu/QAoZTg/9v055c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsQ9aLrFtEjVYYJ+HCEsJTRFwc81bxoNRIG2iCUGhhdU4aSVVHLn95vP43nKFrAfF
-	 w4O2KgfGKfmkhq5GQ8PKtxJQbK9Z6WKmGo1PQuNgltmTcW2mSeBCHxQWUnVruIQ3Gk
-	 0+WqD1TpplO/oqgUgddTpwMl+BFm0ctRrIBE+Q8c=
+	b=hcXQEy+iX1bmhIePlNQJqwo3c9NQWAX0S7UtwfyrmEk5cTREZ/JAkwMymeEViDCfx
+	 7L9FWsVeG5eiFYGIznG2XoSJn9RZOmj59KxCOnqpcvsWQrq50vHec7Lr4E7d9ZDx5F
+	 PK4mZD4ygkzoJvp25oNYdxZU1SMwd6e2WyHxZJQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Dave Penkler <dpenkler@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 198/311] staging: gpib: Use min for calculating transfer length
+	Denis Arefev <arefev@swemel.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5.15 158/373] asus-laptop: Fix an uninitialized variable
 Date: Tue, 29 Apr 2025 18:40:35 +0200
-Message-ID: <20250429161129.124134505@linuxfoundation.org>
+Message-ID: <20250429161129.644008753@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 76d54fd5471b10ee993c217928a39d7351eaff5c ]
+commit 6c683c6887e4addcd6bd1ddce08cafccb0a21e32 upstream.
 
-In the accel read and write functions the transfer length
-was being calculated by an if statement setting it to
-the lesser of the remaining bytes to read/write and the
-fifo size.
+The value returned by acpi_evaluate_integer() is not checked,
+but the result is not always successful, so it is necessary to
+add a check of the returned value.
 
-Replace both instances with min() which is clearer and
-more compact.
+If the result remains negative during three iterations of the loop,
+then the uninitialized variable 'val' will be used in the clamp_val()
+macro, so it must be initialized with the current value of the 'curr'
+variable.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Julia Lawall <julia.lawall@inria.fr>
-Closes: https://lore.kernel.org/r/202501182153.qHfL4Fbc-lkp@intel.com/
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250120145030.29684-1-dpenkler@gmail.com
+In this case, the algorithm should be less noisy.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: b23910c2194e ("asus-laptop: Pegatron Lucid accelerometer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Link: https://lore.kernel.org/r/20250403122603.18172-1-arefev@swemel.ru
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/gpib/agilent_82350b/agilent_82350b.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/platform/x86/asus-laptop.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/gpib/agilent_82350b/agilent_82350b.c b/drivers/staging/gpib/agilent_82350b/agilent_82350b.c
-index c62407077d37f..cd7fe7d814cea 100644
---- a/drivers/staging/gpib/agilent_82350b/agilent_82350b.c
-+++ b/drivers/staging/gpib/agilent_82350b/agilent_82350b.c
-@@ -66,10 +66,7 @@ int agilent_82350b_accel_read(gpib_board_t *board, uint8_t *buffer, size_t lengt
- 		int j;
- 		int count;
+--- a/drivers/platform/x86/asus-laptop.c
++++ b/drivers/platform/x86/asus-laptop.c
+@@ -427,11 +427,14 @@ static int asus_pega_lucid_set(struct as
  
--		if (num_fifo_bytes - i < agilent_82350b_fifo_size)
--			block_size = num_fifo_bytes - i;
--		else
--			block_size = agilent_82350b_fifo_size;
-+		block_size = min(num_fifo_bytes - i, agilent_82350b_fifo_size);
- 		set_transfer_counter(a_priv, block_size);
- 		writeb(ENABLE_TI_TO_SRAM | DIRECTION_GPIB_TO_HOST,
- 		       a_priv->gpib_base + SRAM_ACCESS_CONTROL_REG);
-@@ -200,10 +197,7 @@ int agilent_82350b_accel_write(gpib_board_t *board, uint8_t *buffer, size_t leng
- 	for (i = 1; i < fifotransferlength;) {
- 		clear_bit(WRITE_READY_BN, &tms_priv->state);
+ static int pega_acc_axis(struct asus_laptop *asus, int curr, char *method)
+ {
++	unsigned long long val = (unsigned long long)curr;
++	acpi_status status;
+ 	int i, delta;
+-	unsigned long long val;
+-	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
+-		acpi_evaluate_integer(asus->handle, method, NULL, &val);
  
--		if (fifotransferlength - i < agilent_82350b_fifo_size)
--			block_size = fifotransferlength - i;
--		else
--			block_size = agilent_82350b_fifo_size;
-+		block_size = min(fifotransferlength - i, agilent_82350b_fifo_size);
- 		set_transfer_counter(a_priv, block_size);
- 		for (j = 0; j < block_size; ++j, ++i) {
- 			// load data into board's sram
--- 
-2.39.5
-
++	for (i = 0; i < PEGA_ACC_RETRIES; i++) {
++		status = acpi_evaluate_integer(asus->handle, method, NULL, &val);
++		if (ACPI_FAILURE(status))
++			continue;
+ 		/* The output is noisy.  From reading the ASL
+ 		 * dissassembly, timeout errors are returned with 1's
+ 		 * in the high word, and the lack of locking around
 
 
 
