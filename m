@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-137469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F43AA13AA
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:08:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5374AA1774
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:47:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D35E984869
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:02:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 831A41B674F1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434812512C0;
-	Tue, 29 Apr 2025 17:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827CB2512D8;
+	Tue, 29 Apr 2025 17:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBKNUbv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9pzQClI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C88229B05;
-	Tue, 29 Apr 2025 17:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFCE221DA7;
+	Tue, 29 Apr 2025 17:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946158; cv=none; b=eBRMTRWXJPsSRrlCr8sCi2VuVAaczNXiHjM7sISSHi4sHW6dbV4fv6qQ5sWLChXOKKPTzptjj3cps1Xo9Ww3ZWmuVE0O6Vg9FgvpvVqDzCWo2gB3Z+JvNqR0cRPNGR9o6S+GQDgYnXK+KX4qL3iKMWNCB2itx+GbyJoxQ63Ie1o=
+	t=1745948842; cv=none; b=MnFk2Al9vX5HwO5WjVRKHAr/N/TNEgjv6KXQkYixn0X4fa0WaLfKgwzFvqP7Vs1X8ZQOFLlnj/JNVvi2R1PY5e2LqnJg94S0SvDT33lfTCxCKsk114Wqh2UjZ7MkFxpkTGT0x8kKU/ecqOG8kdJfObBX7ZQGNosd2BvCjSRnijA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946158; c=relaxed/simple;
-	bh=IyGqhyrVj/0iXG12+0ADfoufjHPLSABZ+CZHMN+mYgg=;
+	s=arc-20240116; t=1745948842; c=relaxed/simple;
+	bh=20yHXa2VTPfLDnlWwcQsCvf9Lyp8JCXPiQyVhuFcqOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5O7bVYe6w9Mcc7cQHkIkgz8pgzxPbWWv/TXxo9Hdk8g5w5OzZCGRTzjrnpejlvKXgT1jP7o7EUuiN58N4ctJ2yavU6cqH5OsDVWRjaqKLti4jOZY2upnqFr1syiDA+ov99ZXootf15HgCgB/b0WUW1d7UjuHnBU7G63S4aSHns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBKNUbv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80488C4CEE3;
-	Tue, 29 Apr 2025 17:02:37 +0000 (UTC)
+	 MIME-Version; b=kwp9BtoSqpk5j2F5oncRQo8lO1cEjbQNXzEZP1/oFhQuh12XkDAEh00Uw7qEZ8TmNLYwEAEfFI5kVNna0uqeZ1BI9y6up4P5Q3YUbo54gu1IV0RB6hjSHmzHEUpcCBqApQAdm9DBKa8sQ/tC6TaGidl5eIuWqCjtEMC3au9MdOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9pzQClI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBC8C4CEE3;
+	Tue, 29 Apr 2025 17:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946157;
-	bh=IyGqhyrVj/0iXG12+0ADfoufjHPLSABZ+CZHMN+mYgg=;
+	s=korg; t=1745948841;
+	bh=20yHXa2VTPfLDnlWwcQsCvf9Lyp8JCXPiQyVhuFcqOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBKNUbv0qr2ICuH5/Yheiuu9kgtGQ6DbHOZC33zzqBRGAknC7+G3seGrL+AYugvF/
-	 XIGwruR7dyPzVoMfW/Kn8usM5/vfbeG7R/6RR89ejpQ8kdJSyupgDV/eYWoVjXIYIS
-	 PUZKm3tk4QDboyE3Y0R3s5SUoVSNu1CD/+SO2Dzs=
+	b=D9pzQClIb7QQ5N4JHUeSEfbCygb7iDZEFldvpPp60jt91f0Lidsc9uvbh9+TkKqze
+	 mEDyFhF+M3IV0LEjgGyr6CQjzCyYIbkVS9OGUllegcy2eU/Vz19bfKHbL5cIrVg57b
+	 IXca4Kg5B13DLSmejQH6PPnixriSkU/O+nzVSrwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.14 174/311] USB: wdm: close race between wdm_open and wdm_wwan_port_stop
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 134/373] RDMA/hns: Fix wrong maximum DMA segment size
 Date: Tue, 29 Apr 2025 18:40:11 +0200
-Message-ID: <20250429161128.158707359@linuxfoundation.org>
+Message-ID: <20250429161128.679205313@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-commit c1846ed4eb527bdfe6b3b7dd2c78e2af4bf98f4f upstream.
+[ Upstream commit 9beb2c91fb86e0be70a5833c6730441fa3c9efa8 ]
 
-Clearing WDM_WWAN_IN_USE must be the last action or
-we can open a chardev whose URBs are still poisoned
+Set maximum DMA segment size to 2G instead of UINT_MAX due to HW limit.
 
-Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250401084749.175246-3-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0477b34d9d1 ("RDMA: Explicitly pass in the dma_device to ib_register_device")
+Link: https://patch.msgid.link/r/20250327114724.3454268-3-huangjunxian6@hisilicon.com
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/cdc-wdm.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -726,7 +726,7 @@ static int wdm_open(struct inode *inode,
- 		rv = -EBUSY;
- 		goto out;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 83a6b8fbe10f0..4fc8e0c8b7ab0 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -544,7 +544,7 @@ static int hns_roce_register_device(struct hns_roce_dev *hr_dev)
+ 		if (ret)
+ 			return ret;
  	}
--
-+	smp_rmb(); /* ordered against wdm_wwan_port_stop() */
- 	rv = usb_autopm_get_interface(desc->intf);
- 	if (rv < 0) {
- 		dev_err(&desc->intf->dev, "Error autopm - %d\n", rv);
-@@ -868,8 +868,10 @@ static void wdm_wwan_port_stop(struct ww
- 	poison_urbs(desc);
- 	desc->manage_power(desc->intf, 0);
- 	clear_bit(WDM_READ, &desc->flags);
--	clear_bit(WDM_WWAN_IN_USE, &desc->flags);
- 	unpoison_urbs(desc);
-+	smp_wmb(); /* ordered against wdm_open() */
-+	/* this must be last lest we open a poisoned device */
-+	clear_bit(WDM_WWAN_IN_USE, &desc->flags);
- }
- 
- static void wdm_wwan_port_tx_complete(struct urb *urb)
+-	dma_set_max_seg_size(dev, UINT_MAX);
++	dma_set_max_seg_size(dev, SZ_2G);
+ 	ret = ib_register_device(ib_dev, "hns_%d", dev);
+ 	if (ret) {
+ 		dev_err(dev, "ib_register_device failed!\n");
+-- 
+2.39.5
+
 
 
 
