@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C51A5AA1657
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:36:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5678AA1528
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 287B47AECCF
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E709188DE5F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B175253322;
-	Tue, 29 Apr 2025 17:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2232B24500A;
+	Tue, 29 Apr 2025 17:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2idGIW72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrYb90mJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3FB1C6B4;
-	Tue, 29 Apr 2025 17:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D342A24337C;
+	Tue, 29 Apr 2025 17:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948161; cv=none; b=on6QhNm3w6+hJM6Ps/X5X2B0Zp7d0QLWUE4Hd1335L4pLiCYy3thAK1yM9EuyUErW/V+A+iz41gt2w7qZTwM13LLRq3Hkn7/m29euU/f006DnMktIpvOrz/7DGdvtdjU1dAqmjiGZxtVfwV5Ygak8HMeIY42bwqFzJ8jC1ql004=
+	t=1745947233; cv=none; b=FKiZiVNNZxwL7HPWkO64LRwyn2HfzeeROc8sreZd2v4F7IcTSJEIpQwwpC9ggdY7qrXsQYcmqLot90WVsMLYyx0GzTWXD60im51s621txopFwKfu6nOh7D0o8PQ0XtwyRTsOyE2v1zJ+h982a3okTOGSnayhu2sJKLv9QD5Ye8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948161; c=relaxed/simple;
-	bh=UVZ39jJjHYpwi9TGahg2ysCOnt3L3vG3m53CSi1Pr7o=;
+	s=arc-20240116; t=1745947233; c=relaxed/simple;
+	bh=lw7xV+1YW+IHIQ8gLWwlRjGE/nTqNPQfvifou7q5ZVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxOCLdMuUAo8pu3g75A75yYGlrQIjyt9bfRULreBLk7/rSLGUfFdDwZ0EcctBYfjM8OamxOF80vrAZHd3pr0Mx2kuAL+Fm3U5NDRKFOZKDOARh52+Y7BMrt2fw/dgNgO1mSzgyis7Pl84ZHzEAwHaYc4w+6eFlTSTlZYJ1NgZ2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2idGIW72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D35CC4CEE3;
-	Tue, 29 Apr 2025 17:35:59 +0000 (UTC)
+	 MIME-Version; b=hRO1lKpIOn+oKwCifti0TWlWAW9tWRFwoJ1UdV7v8dD7EoL3bM2jn0ZslhUbWySDPbQcziibFeZisgKV58hwrOpSfv8XsqE9t152PUgOpkNfPuuB7+DmWl+F+R0u6qNAqvp9eLNbM57gYFw2YaQExMSLVmqf/niG7Rv5mN94eHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrYb90mJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DCAC4CEE3;
+	Tue, 29 Apr 2025 17:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948160;
-	bh=UVZ39jJjHYpwi9TGahg2ysCOnt3L3vG3m53CSi1Pr7o=;
+	s=korg; t=1745947233;
+	bh=lw7xV+1YW+IHIQ8gLWwlRjGE/nTqNPQfvifou7q5ZVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2idGIW72WWYoMBafG7Tse2s5W1uOvX6Ykv2BpgzvOXdR63xl6XIyOrsgMGFe1aU3A
-	 oEReazcoDnoaNJ8U3IS4W2Y6wrtwvCSEEhlwgcuwnffSH8IZuLB8theZDToounihV0
-	 84s31Bh3osLCoNo/IVv7h+I3zMLQPsRnhiG0hjXw=
+	b=zrYb90mJ5r9NOTgjT/rQDwmtL1RFAUWPql1ETAHz0F7DS4c1BO4DyrI7raFVvvs/K
+	 50FcP8PmuEcgFBuG5wmx+u9DBCjpeBFMuUX2tfoRvmfUsmx9r3Oi5zr53MjSVGEGko
+	 EOsr5uBiJX7CdACNOQpe47G+HIOdbtyPuhSpxqZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+	Sylwester Nawrocki <snawrocki@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 176/280] usb: xhci: Complete error mid TD transfers when handling Missed Service
-Date: Tue, 29 Apr 2025 18:41:57 +0200
-Message-ID: <20250429161122.310265491@linuxfoundation.org>
+Subject: [PATCH 5.10 214/286] soc: samsung: exynos-chipid: avoid soc_device_to_device()
+Date: Tue, 29 Apr 2025 18:41:58 +0200
+Message-ID: <20250429161116.751035172@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 
-[ Upstream commit bfa8459942822bdcc86f0e87f237c0723ae64948 ]
+[ Upstream commit d1141886c8d72ad77920e6e4b617d366e6e3ee8a ]
 
-Missed Service Error after an error mid TD means that the failed TD has
-already been passed by the xHC without acknowledgment of the final TRB,
-a known hardware bug. So don't wait any more and give back the TD.
+soc_device_to_device() seems to be discouraged [1] so remove it in favor
+of printing info message with platform device.  This will only change
+the prefix in the info message from "soc soc0: " to "exynos-chipid
+10000000.chipid:".
 
-Reproduced on NEC uPD720200 under conditions of ludicrously bad USB link
-quality, confirmed to behave as expected using dynamic debug.
+[1] https://lore.kernel.org/lkml/20191111052741.GB3176397@kroah.com/
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-5-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Reviewed-by: Sylwester Nawrocki <snawrocki@kernel.org>
+Tested-by: Sylwester Nawrocki <snawrocki@kernel.org>
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Tested-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20210919093114.35987-2-krzysztof.kozlowski@canonical.com
+Stable-dep-of: c8222ef6cf29 ("soc: samsung: exynos-chipid: Add NULL pointer check in exynos_chipid_probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/soc/samsung/exynos-chipid.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index f3266fe406baf..7001f9725cf7c 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2787,7 +2787,7 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		xhci_dbg(xhci,
- 			 "Miss service interval error for slot %u ep %u, set skip flag\n",
- 			 slot_id, ep_index);
--		return 0;
-+		break;
- 	case COMP_NO_PING_RESPONSE_ERROR:
- 		ep->skip = true;
- 		xhci_dbg(xhci,
-@@ -2838,6 +2838,10 @@ static int handle_tx_event(struct xhci_hcd *xhci,
- 		xhci_td_cleanup(xhci, td, ep_ring, td->status);
- 	}
+diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
+index 2ab6ce71e9be5..2b02af5d2faff 100644
+--- a/drivers/soc/samsung/exynos-chipid.c
++++ b/drivers/soc/samsung/exynos-chipid.c
+@@ -103,8 +103,7 @@ static int exynos_chipid_probe(struct platform_device *pdev)
  
-+	/* Missed TDs will be skipped on the next event */
-+	if (trb_comp_code == COMP_MISSED_SERVICE_ERROR)
-+		return 0;
-+
- 	if (list_empty(&ep_ring->td_list)) {
- 		/*
- 		 * Don't print wanings if ring is empty due to a stopped endpoint generating an
+ 	platform_set_drvdata(pdev, soc_dev);
+ 
+-	dev_info(soc_device_to_device(soc_dev),
+-		 "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
++	dev_info(&pdev->dev, "Exynos: CPU[%s] PRO_ID[0x%x] REV[0x%x] Detected\n",
+ 		 soc_dev_attr->soc_id, product_id, revision);
+ 
+ 	return 0;
 -- 
 2.39.5
 
