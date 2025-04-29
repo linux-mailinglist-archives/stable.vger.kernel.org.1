@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-137777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9942AA14D3
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D468AA1806
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEE564C50C2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:18:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 724189A6AAE
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5B024E01D;
-	Tue, 29 Apr 2025 17:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F8121ABC1;
+	Tue, 29 Apr 2025 17:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MDo83hLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3f3x8rs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096BE21ABDB;
-	Tue, 29 Apr 2025 17:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F71D221DA7;
+	Tue, 29 Apr 2025 17:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947097; cv=none; b=Wr/ApXZ3ZBk2ggRJdh0VyW1EdhfDKDOuOhC/KJ5KOPwHi+W3PX9sxKNGNd1r27XzvR2Fpa8ytTL/lDVhM9XhNqTFJ7TixfoeHIsO0c4p3IaxFxPwqd1A7uv/jZg5Oqqn/z/93me4ZQQCZPLpTmb98KmfJzU9qB90ZTIfHI6Dvbs=
+	t=1745949046; cv=none; b=C457hoBvcWJAdsuW1GUBc63FpZrSV3DWMF2jIlQYyKhHY0ITED7pjvJwvdjo7Hg5fr6tEXU/ZYx3amiV+NISXOJJAdq1M1Wcenya4E0eUzhLp2VTkD2QwkGWzxlT7A/7H13yUloIDfAs3+aPUK8rQT2HK8l15bPFDtYrxS3tSdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947097; c=relaxed/simple;
-	bh=SFlTHHUFZKAZonWGlsFmoGkgf8FSevkDsRX+/v+Vgqw=;
+	s=arc-20240116; t=1745949046; c=relaxed/simple;
+	bh=7PotjZRFMNOhogpvEsKeMUmwZk4wRQt0LhHooU+VLV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rosG52/bSsaXr6GkGK6QyMzN1YMtOz6M98rd3EC8b1FHiYssX7J+SWLmW/izuEB4sLKFaIOUYjAw/Q48hU2hZpSEL5sGVdqcY/N3vbkvSFrPcUtHtOklE4AfixFwal3VxBBgsO0nv5UGqqnOYfvPEiGzdxV71Lq98u+jxgzBzDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MDo83hLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEF2C4CEE3;
-	Tue, 29 Apr 2025 17:18:16 +0000 (UTC)
+	 MIME-Version; b=gmMaUjdI7QN/0ujvfxFPhClzPjcHMM613L+glCG3XcDxLTF6q7s0gg+m6lsndNQcIpGdemvDbKpfngxkEyEYrtMw3v4uJCIF9UmNT/yd5EYcLEyhtkY7V6MlD1sEyvVv38+OcdixTrDmtLbyqhSSVbE18dErn/ZiJsMBqgYXk9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X3f3x8rs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE0FC4CEE3;
+	Tue, 29 Apr 2025 17:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947096;
-	bh=SFlTHHUFZKAZonWGlsFmoGkgf8FSevkDsRX+/v+Vgqw=;
+	s=korg; t=1745949046;
+	bh=7PotjZRFMNOhogpvEsKeMUmwZk4wRQt0LhHooU+VLV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MDo83hLn7nqtyDyEWw1fc5RCoPCS5ZRNu5FT2TwyjFmK+r8abfF0ej5dx+6Trp+kK
-	 P8j6jEepoiZ06QmrcLJ9ZrPSZOr+cd6ptErVdWpgJs1x/pk9q8+IEOzs2sF+OD8d71
-	 QEWz0p7SaJv6z/hjOlcVH2XQScrPHxdnmbwapR6k=
+	b=X3f3x8rsOUTlLd+uVM6pGPBiVyGiUqZpz54r1B1C4SztlWfDwQ0gmtQbJ833Kojor
+	 qJNNVJDblZC2b0yesRZrYDQqgkjGsK6/hRxtqMiRZ0OnPVphem1zLxQ9W6YUeZc1VT
+	 WfXvHoLFvRNQegzun6SzQDcN+LMYMlmR+BGDxBVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.10 171/286] blk-iocost: do not WARN if iocg was already offlined
+	Nathan Chancellor <nathan@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 198/373] kbuild: Add -fno-builtin-wcslen
 Date: Tue, 29 Apr 2025 18:41:15 +0200
-Message-ID: <20250429161114.920070733@linuxfoundation.org>
+Message-ID: <20250429161131.315341063@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 01bc4fda9ea0a6b52f12326486f07a4910666cf6 upstream.
+commit 84ffc79bfbf70c779e60218563f2f3ad45288671 upstream.
 
-In iocg_pay_debt(), warn is triggered if 'active_list' is empty, which
-is intended to confirm iocg is active when it has debt. However, warn
-can be triggered during a blkcg or disk removal, if iocg_waitq_timer_fn()
-is run at that time:
+A recent optimization change in LLVM [1] aims to transform certain loop
+idioms into calls to strlen() or wcslen(). This change transforms the
+first while loop in UniStrcat() into a call to wcslen(), breaking the
+build when UniStrcat() gets inlined into alloc_path_with_tree_prefix():
 
-  WARNING: CPU: 0 PID: 2344971 at block/blk-iocost.c:1402 iocg_pay_debt+0x14c/0x190
-  Call trace:
-  iocg_pay_debt+0x14c/0x190
-  iocg_kick_waitq+0x438/0x4c0
-  iocg_waitq_timer_fn+0xd8/0x130
-  __run_hrtimer+0x144/0x45c
-  __hrtimer_run_queues+0x16c/0x244
-  hrtimer_interrupt+0x2cc/0x7b0
+  ld.lld: error: undefined symbol: wcslen
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
+  >>> referenced by nls_ucs2_utils.h:54 (fs/smb/client/../../nls/nls_ucs2_utils.h:54)
+  >>>               vmlinux.o:(alloc_path_with_tree_prefix)
 
-The warn in this situation is meaningless. Since this iocg is being
-removed, the state of the 'active_list' is irrelevant, and 'waitq_timer'
-is canceled after removing 'active_list' in ioc_pd_free(), which ensures
-iocg is freed after iocg_waitq_timer_fn() returns.
+Disable this optimization with '-fno-builtin-wcslen', which prevents the
+compiler from assuming that wcslen() is available in the kernel's C
+library.
 
-Therefore, add the check if iocg was already offlined to avoid warn
-when removing a blkcg or disk.
+[ More to the point - it's not that we couldn't implement wcslen(), it's
+  that this isn't an optimization at all in the context of the kernel.
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Tejun Heo <tj@kernel.org>
-Link: https://lore.kernel.org/r/20240419093257.3004211-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+  Replacing a simple inlined loop with a function call to the same loop
+  is just stupid and pointless if you don't have long strings and fancy
+  libraries with vectorization support etc.
+
+  For the regular 'strlen()' cases, we want the compiler to do this in
+  order to handle the trivial case of constant strings. And we do have
+  optimized versions of 'strlen()' on some architectures. But for
+  wcslen? Just no.    - Linus ]
+
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/commit/9694844d7e36fd5e01011ab56b64f27b867aa72d [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+[nathan: Resolve small conflict in older trees]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-iocost.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Makefile |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1389,8 +1389,11 @@ static void iocg_pay_debt(struct ioc_gq
- 	lockdep_assert_held(&iocg->ioc->lock);
- 	lockdep_assert_held(&iocg->waitq.lock);
+--- a/Makefile
++++ b/Makefile
+@@ -1066,6 +1066,9 @@ KBUILD_CFLAGS   += $(call cc-option,-Wer
+ # Require designated initializers for all marked structures
+ KBUILD_CFLAGS   += $(call cc-option,-Werror=designated-init)
  
--	/* make sure that nobody messed with @iocg */
--	WARN_ON_ONCE(list_empty(&iocg->active_list));
-+	/*
-+	 * make sure that nobody messed with @iocg. Check iocg->pd.online
-+	 * to avoid warn when removing blkcg or disk.
-+	 */
-+	WARN_ON_ONCE(list_empty(&iocg->active_list) && iocg->pd.online);
- 	WARN_ON_ONCE(iocg->inuse > 1);
++# Ensure compilers do not transform certain loops into calls to wcslen()
++KBUILD_CFLAGS += -fno-builtin-wcslen
++
+ # change __FILE__ to the relative path from the srctree
+ KBUILD_CPPFLAGS += $(call cc-option,-fmacro-prefix-map=$(srctree)/=)
  
- 	iocg->abs_vdebt -= min(abs_vpay, iocg->abs_vdebt);
 
 
 
