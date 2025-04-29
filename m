@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-137732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEC3AA14C5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:20:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C69AA1602
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C3AD188A0E0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299951634A2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D191A24C098;
-	Tue, 29 Apr 2025 17:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069312472B4;
+	Tue, 29 Apr 2025 17:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEBoiXTo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4GDT6Ee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EA832459EA;
-	Tue, 29 Apr 2025 17:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CDB23F405;
+	Tue, 29 Apr 2025 17:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946959; cv=none; b=Z6+1CsG/qalR+bq3/Ycp2Aya2rv0/KpGn9HfKfN9XLQcFcgpLQttnKdoUcKbKC8Rh/5dQct/QygMDjtB0CRRQ4ze6fvfu+iPHrPtFfAvuoRKvX3ENg5UJnL4NcDnHHYzR4HtY1bJWFejmHv1oabqs8iZZJx1JsEjVLMVYv3krk0=
+	t=1745947737; cv=none; b=KpnqDV/r+VutnlGm+nm9JyA0oeIDlU7Z2Noj+AHQjTW0xstVVXtAfQDXph3sgSb8mYtNvI57DZ+7kGnK+9uMWxNw+dr11U/UWkuvfCCEtp+CDudhCytLutDQ9xoQRin9x/sSeh82fb0sVALyZPDlLFOKy/SElpafQ9d41iDEq/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946959; c=relaxed/simple;
-	bh=Pa6S6gyXxAXp2d6xhBRd6IOv0EQJXyeJ7xU3kq2AlrU=;
+	s=arc-20240116; t=1745947737; c=relaxed/simple;
+	bh=VJ7ZR/bzFsNIpj55r4tHZxFtejs8yrQsR9yQQvm8ziI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdOHoS3vvLCAT7r1+vOKLW+Hn2SF6Eba33SU9+AvuRbVkiSN0E7tXiLj/l13Nnnnahegwombb44iDTvZqQUNSLDDyDg0Fw9NVPQtJJO9kKNTs4HCUi46yvsWZefoTHxfevGy6aMtIJB/3TK7PTNS8f4XUWuwBTO1INZjv1d+9Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEBoiXTo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22616C4CEE3;
-	Tue, 29 Apr 2025 17:15:58 +0000 (UTC)
+	 MIME-Version; b=ezEPu+zlLJ4kQUgBmxoCMoWh5VZjrqNQgTqvP3fZHI1U1MNMFIeBIBIhpmJszftOPC0RI0RFCZpuZ4yrr6Ucq9eNvlguQ7WAr77/Ey+bnv1iub3DEl6cG7EChyZrRzzgUDJcTu10sL5t69ROve3DpdJ1hPbmSllJPv/w29hXa+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4GDT6Ee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3108CC4CEE9;
+	Tue, 29 Apr 2025 17:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946959;
-	bh=Pa6S6gyXxAXp2d6xhBRd6IOv0EQJXyeJ7xU3kq2AlrU=;
+	s=korg; t=1745947737;
+	bh=VJ7ZR/bzFsNIpj55r4tHZxFtejs8yrQsR9yQQvm8ziI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEBoiXTo8xOtl7N9lXC9C1IXSzaVD7ar7AnZOfq6bYeacVE5tzuHxal+GiRXeYSQH
-	 hu5nbsUpsU5FENw57BuFVODqDhHt4dHqWHpX6VZV5xvRG/EUbok7raeMQNDHnb+uF/
-	 DPWe3gn1gN+eQ/8jKv1Zc7b5EPN4U5HjwFT01f50=
+	b=p4GDT6EemsrQS3uwuhGNj3GIHd5ZqH5V/hQW3lVoA2k1yS3cPYLe0Ea5DVXpbnAA9
+	 TcfsdX1w6+rFiu1qC//gY0hsS4IfPGKdfpNDj5BJZXRDdvQNiej6InwNpxgbGGJREK
+	 w8xxwfclz5gtW5uHxNNXt8f5gdqPbjljjyUzSu0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Erpeng Xu <xuerpeng@uniontech.com>,
+	Yuli Wang <wangyuli@uniontech.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/286] nfsd: decrease sc_count directly if fail to queue dl_recall
-Date: Tue, 29 Apr 2025 18:40:29 +0200
-Message-ID: <20250429161113.001164124@linuxfoundation.org>
+Subject: [PATCH 6.12 089/280] LoongArch: Select ARCH_USE_MEMTEST
+Date: Tue, 29 Apr 2025 18:40:30 +0200
+Message-ID: <20250429161118.751837102@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Yuli Wang <wangyuli@uniontech.com>
 
-[ Upstream commit a1d14d931bf700c1025db8c46d6731aa5cf440f9 ]
+[ Upstream commit fb8e9f59d6f292c3d9fea6c155c22ea5fc3053ab ]
 
-A deadlock warning occurred when invoking nfs4_put_stid following a failed
-dl_recall queue operation:
-            T1                            T2
-                                nfs4_laundromat
-                                 nfs4_get_client_reaplist
-                                  nfs4_anylock_blockers
-__break_lease
- spin_lock // ctx->flc_lock
-                                   spin_lock // clp->cl_lock
-                                   nfs4_lockowner_has_blockers
-                                    locks_owner_has_blockers
-                                     spin_lock // flctx->flc_lock
- nfsd_break_deleg_cb
-  nfsd_break_one_deleg
-   nfs4_put_stid
-    refcount_dec_and_lock
-     spin_lock // clp->cl_lock
+As of commit dce44566192e ("mm/memtest: add ARCH_USE_MEMTEST"),
+architectures must select ARCH_USE_MEMTESET to enable CONFIG_MEMTEST.
 
-When a file is opened, an nfs4_delegation is allocated with sc_count
-initialized to 1, and the file_lease holds a reference to the delegation.
-The file_lease is then associated with the file through kernel_setlease.
+Commit 628c3bb40e9a ("LoongArch: Add boot and setup routines") added
+support for early_memtest but did not select ARCH_USE_MEMTESET.
 
-The disassociation is performed in nfsd4_delegreturn via the following
-call chain:
-nfsd4_delegreturn --> destroy_delegation --> destroy_unhashed_deleg -->
-nfs4_unlock_deleg_lease --> kernel_setlease --> generic_delete_lease
-The corresponding sc_count reference will be released after this
-disassociation.
-
-Since nfsd_break_one_deleg executes while holding the flc_lock, the
-disassociation process becomes blocked when attempting to acquire flc_lock
-in generic_delete_lease. This means:
-1) sc_count in nfsd_break_one_deleg will not be decremented to 0;
-2) The nfs4_put_stid called by nfsd_break_one_deleg will not attempt to
-acquire cl_lock;
-3) Consequently, no deadlock condition is created.
-
-Given that sc_count in nfsd_break_one_deleg remains non-zero, we can
-safely perform refcount_dec on sc_count directly. This approach
-effectively avoids triggering deadlock warnings.
-
-Fixes: 230ca758453c ("nfsd: put dl_stid if fail to queue dl_recall")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 628c3bb40e9a ("LoongArch: Add boot and setup routines")
+Tested-by: Erpeng Xu <xuerpeng@uniontech.com>
+Tested-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Yuli Wang <wangyuli@uniontech.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 311409be73745..bf78745b19ca9 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4940,7 +4940,7 @@ static void nfsd_break_one_deleg(struct nfs4_delegation *dp)
- 	queued = nfsd4_run_cb(&dp->dl_recall);
- 	WARN_ON_ONCE(!queued);
- 	if (!queued)
--		nfs4_put_stid(&dp->dl_stid);
-+		refcount_dec(&dp->dl_stid.sc_count);
- }
- 
- /* Called from break_lease() with flc_lock held. */
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index fe9f895138dba..a7a1f15bcc672 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -68,6 +68,7 @@ config LOONGARCH
+ 	select ARCH_SUPPORTS_NUMA_BALANCING
+ 	select ARCH_USE_BUILTIN_BSWAP
+ 	select ARCH_USE_CMPXCHG_LOCKREF
++	select ARCH_USE_MEMTEST
+ 	select ARCH_USE_QUEUED_RWLOCKS
+ 	select ARCH_USE_QUEUED_SPINLOCKS
+ 	select ARCH_WANT_DEFAULT_BPF_JIT
 -- 
 2.39.5
 
