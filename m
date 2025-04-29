@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49499AA193D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35558AA19CB
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D093AEEF6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC84D1C0184F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBB8221D92;
-	Tue, 29 Apr 2025 18:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F9024728A;
+	Tue, 29 Apr 2025 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GymE9wQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ArOjmwLt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0EA2AE96;
-	Tue, 29 Apr 2025 18:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12501519A6;
+	Tue, 29 Apr 2025 18:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949831; cv=none; b=TrdVS6UVkDB31YvN/GGxPU1/W0lIk2UR4w1hPMzyLKFZ1wwNI1CodEsCi98Go35mvOUBjxef7YWhSAV2Wrv2k0IG6raYFapnSsFryUFGFZv31gFShK9tq+3jeak0O7mjNAwo1xX+na3jX1WbC6DiWv1+kIk9htRuORq5G3SjO20=
+	t=1745950425; cv=none; b=YBayWU2gQpAxTgJuNt13UNZy7TUiZ3Hgcj3kVV9OHUFfFUoa+nBpYcIwAI5Oc/zXB7+2hr9K17qpcQTr1yucR+EFm+rV92WcAFzXoAlVI43UUxcN5S+8F/fAA/mz/rYKCIAzVIR9TXRTqt8PnpiYXbhTX0hqzgnnUMCN8XlODmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949831; c=relaxed/simple;
-	bh=5utZ+PkDzOmd3mtjhPX5I2w6zhnYq8ChIZghx7jG0mU=;
+	s=arc-20240116; t=1745950425; c=relaxed/simple;
+	bh=KQA/2FGJZU544z83ofAhdz9otrIdbaguL/cOlPRMQ6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dt2etExb0IjYKPvoontZGdle+Uj31jIIMFTjO/akpYFLjlNqK9CemMXy8Qw3iq4OP7e6iNJ403u1z2w/2KUX1ygZ8A5o1hoWVqqDTOvkRrAbXpZwu69o37Eh9y9vnbhfCW6YIs0a2yFB372LoTIfI43DDncTlejy7PDw4T2wB74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GymE9wQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEECC4CEE3;
-	Tue, 29 Apr 2025 18:03:50 +0000 (UTC)
+	 MIME-Version; b=I9r/OSa07RhtgUTiJ3OfFDe6Jr/vjAEPqAkvdv7dJZz3a+mkA1SueXjeNToBi7IqroBNsSn6f0lkSTeAaXv37Ut44i9/uzgqvzZvm2f/6UdpKssMTPv9RTLeUXQJVEY5kjuiIB5Y0ti+nJAS0iBQicoF1+xQXY6KbvZmswyBmgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ArOjmwLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79883C4CEE3;
+	Tue, 29 Apr 2025 18:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949830;
-	bh=5utZ+PkDzOmd3mtjhPX5I2w6zhnYq8ChIZghx7jG0mU=;
+	s=korg; t=1745950424;
+	bh=KQA/2FGJZU544z83ofAhdz9otrIdbaguL/cOlPRMQ6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GymE9wQ0UTtSP2/TAYwaXsPkM5eYIurX+rfiI67rjBd2MqnK39P7QV8yRjsyhRHxz
-	 ouju5whxLLyGUOrenUHR19E49XiIbAF0/n6HRMXySniL5jkh10i+ZtLNScnblsci74
-	 axTNiXel8Z39edNqZPlRUrYtSu0fcwwnSvumJxDA=
+	b=ArOjmwLtUxg4AKERk6PYhMyDgwWZQxdis2+PFpujUC8dlL2tN/b7rSgSu0dGsJpX6
+	 UNTGRYpRH3obGdeVT/lNTZDk1IX6LFu3NwdfjjJr6WJKnnHc3+i+4DCrqfPGFbjABO
+	 5nA6NmFp0Itq3J/DylA8cp0fL0lAp1W6b1jI6dR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Johannes Thumshirn <jth@kernel.org>
-Subject: [PATCH 6.1 071/167] mcb: fix a double free bug in chameleon_parse_gdd()
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.6 091/204] mei: me: add panther lake H DID
 Date: Tue, 29 Apr 2025 18:42:59 +0200
-Message-ID: <20250429161054.640245402@linuxfoundation.org>
+Message-ID: <20250429161103.156810145@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-commit 7c7f1bfdb2249f854a736d9b79778c7e5a29a150 upstream.
+commit 86ce5c0a1dec02e21b4c864b2bc0cc5880a2c13c upstream.
 
-In chameleon_parse_gdd(), if mcb_device_register() fails, 'mdev'
-would be released in mcb_device_register() via put_device().
-Thus, goto 'err' label and free 'mdev' again causes a double free.
-Just return if mcb_device_register() fails.
+Add Panther Lake H device id.
 
-Fixes: 3764e82e5150 ("drivers: Introduce MEN Chameleon Bus")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Link: https://lore.kernel.org/r/6201d09e2975ae5789879f79a6de4c38de9edd4a.1741596225.git.jth@kernel.org
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://lore.kernel.org/r/20250408130005.1358140-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mcb/mcb-parse.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    1 +
+ drivers/misc/mei/pci-me.c     |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/mcb/mcb-parse.c
-+++ b/drivers/mcb/mcb-parse.c
-@@ -101,7 +101,7 @@ static int chameleon_parse_gdd(struct mc
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -117,6 +117,7 @@
  
- 	ret = mcb_device_register(bus, mdev);
- 	if (ret < 0)
--		goto err;
-+		return ret;
+ #define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
  
- 	return 0;
++#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+ #define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
  
+ /*
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -124,6 +124,7 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
 
 
 
