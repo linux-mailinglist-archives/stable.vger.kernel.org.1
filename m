@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0453AA1348
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:04:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D2EAA1606
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2533E4A2B1E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:00:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 298F89A2078
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540B082C60;
-	Tue, 29 Apr 2025 17:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55E12472B4;
+	Tue, 29 Apr 2025 17:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeyevQXL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6NhfP3A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082BC21A43D;
-	Tue, 29 Apr 2025 17:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9266618BBBB;
+	Tue, 29 Apr 2025 17:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946041; cv=none; b=k04TvGDUroXCDAeoYI9eYI9pKebSy45/qGitW85eNWK61XjPmuyF3iMEmdTHHZ4fUJqpa4r5jmDkxm3cDewKl6JMp5j7dZae5XeO/3WC0LlSFYZuvW2L3oCeH0qoomiPTQfrzCKUCy0dGavptLP8xYQggyhIiWPIsdnDK0ZFHtI=
+	t=1745947585; cv=none; b=NCIjzAuOJJKIcaRB4SIy48MWKxlGdr7pXtOttrGKCzwCt7FQTJ06gfPQgqM6u5sKQN+//SKMoo92cU9VFIRb1F/ylQS58fKKLGAmKXj2KR7qY4CdHs/OX5HZGureyZpV1jDrp6zteTXva30qjRaJ52UP8dS0XGMKBAbwxC6cPI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946041; c=relaxed/simple;
-	bh=Hg52meg4sgG0qfTQ4/l6hsqrjWPCylf9aFmzXfFcPUU=;
+	s=arc-20240116; t=1745947585; c=relaxed/simple;
+	bh=PnA1hLunUNHvVIOIKJNSaaKBHjkI2SYxe/48frftqFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eEd5z4mcE+NHwxyw1+L+YjeHlaZp6bZKsQNzXz1SdQ03FeJAJ+fMKQijv4tCKnupv/Re6W9X8rCyBMHs2t64GUSgUBciBl/7T+5zLTtCLSO33lw6HgPZ69G3xp/R88FfzSrnZnJAqTbX1ppy015c+qJDZUb+IBfsRoRsEuGLz0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MeyevQXL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75679C4CEE3;
-	Tue, 29 Apr 2025 17:00:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sGwotQM9cRJgNjiWGaWykF0iGZoU0qRMZgRIfoTPjh7Kqx6VkSFp5pZ4xbZEYG6EUZg85z97LlxeW9Lihifz/MruOgYY0TcP5zsdr+iG4VfhDidarQORst1x4t5aTzStden8TSgvnDcklUmiMBx+xgYHba5uaH4h6nabWe+n8Kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6NhfP3A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A3AC4CEE3;
+	Tue, 29 Apr 2025 17:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946040;
-	bh=Hg52meg4sgG0qfTQ4/l6hsqrjWPCylf9aFmzXfFcPUU=;
+	s=korg; t=1745947585;
+	bh=PnA1hLunUNHvVIOIKJNSaaKBHjkI2SYxe/48frftqFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeyevQXLgNmWRZUzSSxutxB/qZukTkLSNKkgZ87OX77lG7CMtyJ/LOPhf9U8b9Qrq
-	 ZwloEsLSRocPXuEiRvicE1QqW59nia4OF1wYqug8mJXiAl1KeMqW6yx0OBlBwuwCaK
-	 EpG+K3wDm6NgglwGZzFLOYYlMSNZPcF7lqjjYsR0=
+	b=P6NhfP3AZjGaVv6uj5z1hc3g3kDZtPS/Ajflr0QQ9dd1CCnIalkBfQXkQlfFTnqpT
+	 ib5yQ5Bwo1XcnF/bUfa6rtZaqOviXIi2mYPFYWcs5PyppuhZFYbrOrqtqLCwx3XDKZ
+	 zKInjT12MJmZsLeta69AtR5jpC7ZrszeDqH0JDDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash <sathya.prakash@broadcom.com>,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.14 117/311] scsi: mpi3mr: Fix pending I/O counter
+	Ricardo Ribalda <ribalda@chromium.org>,
+	=?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 013/280] media: i2c: imx214: Check number of lanes from device tree
 Date: Tue, 29 Apr 2025 18:39:14 +0200
-Message-ID: <20250429161125.833681721@linuxfoundation.org>
+Message-ID: <20250429161115.626896590@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: André Apitzsch <git@apitzsch.eu>
 
-commit cdd445258db9919e9dde497a6d5c3477ea7faf4d upstream.
+[ Upstream commit 3d55f4eb03fce69f3a72615fe9c5ca171f7b846b ]
 
-Commit 199510e33dea ("scsi: mpi3mr: Update consumer index of reply
-queues after every 100 replies") introduced a regression with the
-per-reply queue pending I/O counter which was erroneously decremented,
-leading to the counter going negative.
+The imx214 camera is capable of either two-lane or four-lane operation.
 
-Drop the incorrect atomic decrement for the pending I/O counter.
+Currently only the four-lane mode is supported, as proper pixel rates
+and link frequences for the two-lane mode are unknown.
 
-Fixes: 199510e33dea ("scsi: mpi3mr: Update consumer index of reply queues after every 100 replies")
-Cc: stable@vger.kernel.org
-Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250411111419.135485-2-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: André Apitzsch <git@apitzsch.eu>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Stable-dep-of: acc294519f17 ("media: i2c: imx214: Fix link frequency validation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/imx214.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -563,7 +563,7 @@ int mpi3mr_process_op_reply_q(struct mpi
- 		WRITE_ONCE(op_req_q->ci, le16_to_cpu(reply_desc->request_queue_ci));
- 		mpi3mr_process_op_reply_desc(mrioc, reply_desc, &reply_dma,
- 		    reply_qidx);
--		atomic_dec(&op_reply_q->pend_ios);
+diff --git a/drivers/media/i2c/imx214.c b/drivers/media/i2c/imx214.c
+index 8bac5a1f1cb18..fdc2dfb4ebcdd 100644
+--- a/drivers/media/i2c/imx214.c
++++ b/drivers/media/i2c/imx214.c
+@@ -197,7 +197,6 @@ struct imx214 {
+ 
+ /*From imx214_mode_tbls.h*/
+ static const struct cci_reg_sequence mode_4096x2304[] = {
+-	{ IMX214_REG_CSI_LANE_MODE, IMX214_CSI_4_LANE_MODE },
+ 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
+ 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
+ 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
+@@ -271,7 +270,6 @@ static const struct cci_reg_sequence mode_4096x2304[] = {
+ };
+ 
+ static const struct cci_reg_sequence mode_1920x1080[] = {
+-	{ IMX214_REG_CSI_LANE_MODE, IMX214_CSI_4_LANE_MODE },
+ 	{ IMX214_REG_HDR_MODE, IMX214_HDR_MODE_OFF },
+ 	{ IMX214_REG_HDR_RES_REDUCTION, IMX214_HDR_RES_REDU_THROUGH },
+ 	{ IMX214_REG_EXPOSURE_RATIO, 1 },
+@@ -789,6 +787,13 @@ static int imx214_start_streaming(struct imx214 *imx214)
+ 		return ret;
+ 	}
+ 
++	ret = cci_write(imx214->regmap, IMX214_REG_CSI_LANE_MODE,
++			IMX214_CSI_4_LANE_MODE, NULL);
++	if (ret) {
++		dev_err(imx214->dev, "failed to configure lanes\n");
++		return ret;
++	}
 +
- 		if (reply_dma)
- 			mpi3mr_repost_reply_buf(mrioc, reply_dma);
- 		num_op_reply++;
+ 	state = v4l2_subdev_get_locked_active_state(&imx214->sd);
+ 	fmt = v4l2_subdev_state_get_format(state, 0);
+ 	mode = v4l2_find_nearest_size(imx214_modes, ARRAY_SIZE(imx214_modes),
+@@ -953,6 +958,13 @@ static int imx214_parse_fwnode(struct device *dev)
+ 		goto done;
+ 	}
+ 
++	/* Check the number of MIPI CSI2 data lanes */
++	if (bus_cfg.bus.mipi_csi2.num_data_lanes != 4) {
++		ret = dev_err_probe(dev, -EINVAL,
++				    "only 4 data lanes are currently supported\n");
++		goto done;
++	}
++
+ 	for (i = 0; i < bus_cfg.nr_of_link_frequencies; i++)
+ 		if (bus_cfg.link_frequencies[i] == IMX214_DEFAULT_LINK_FREQ)
+ 			break;
+-- 
+2.39.5
+
 
 
 
