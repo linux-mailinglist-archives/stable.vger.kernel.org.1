@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-137201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBFAAA1227
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:50:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7136DAA15D1
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1B71BA37E5
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:49:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7CD34C7DF2
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26142472A5;
-	Tue, 29 Apr 2025 16:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC2B244694;
+	Tue, 29 Apr 2025 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LObLQgmO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGkXv7cN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDD52459C9;
-	Tue, 29 Apr 2025 16:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBCE82C60;
+	Tue, 29 Apr 2025 17:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745945366; cv=none; b=FC9HugCu5CCPqepeXe9H0ejuUEfuno8vbAE3+IQTLottUw1mVGuzrpcLbbNEvBmbnOzZGklDV9QEm8/Xcj6M6xHIpmRMMA95bs3c/B1UvDgtX7qatGcX/Sa8ygh8LBCX4m+DDf9kBIt8ejgswhM/pcTxxxY8vdjOvg52yx5EYXo=
+	t=1745947639; cv=none; b=iSbHXyhU3x+ICEZfIm6tzFR6ZGTtoJDeR4RWiOXolWkiaVfVgAgt/WWnCm+666rickeIjXpJQDOiTUFNtJrvv/K6lAE8oCD8Bj1N0CuevjzzZqYVCYt27z8oCIVHeYxWf7MH6i6goONVNbVJQ/2DsLscPFzirhmGF1yMpCaAwSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745945366; c=relaxed/simple;
-	bh=BEWQA7Ftn/CF8qUfbFjBrJcPVEuiNBtrXe980fv8Q4A=;
+	s=arc-20240116; t=1745947639; c=relaxed/simple;
+	bh=XEgV/arYb4KvN1lYw5GrhHeB0j4d+2ZrvJi6rVBgAS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqRu7DXfO+CqNc2P1fZkrv5p1WHuiJSgy7+yupdSa9mLO2OCbkK7vJyspUl0XVt7s7zFboSz6oXjZVVnxwePmPnEP0ZTuFZ7SNkv0H2mjgzBoZGCxktXrG9JnTXkFi3kyC1uOfpygJjZE7yz/4lTf7iNyjEFJRC6K8miaeQDJfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LObLQgmO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D236BC4CEE3;
-	Tue, 29 Apr 2025 16:49:25 +0000 (UTC)
+	 MIME-Version; b=alx/uST2cuUhDXQVGL/Uny6Y8VD5QwsgEy88z5XquGk0s25oPy1LCoBoiEnzDe3zCSSG/XyUnI+NjALdCssscKeoCh1zc1Z/icqPKG+8HYn+VmeMzZrSVRyU9q3OuSHas8Zss0Vjbab18mBonjl3jfM/CJOjzzaHaNuOF6S3PoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YGkXv7cN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4CCC4CEE3;
+	Tue, 29 Apr 2025 17:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745945366;
-	bh=BEWQA7Ftn/CF8qUfbFjBrJcPVEuiNBtrXe980fv8Q4A=;
+	s=korg; t=1745947639;
+	bh=XEgV/arYb4KvN1lYw5GrhHeB0j4d+2ZrvJi6rVBgAS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LObLQgmORwRKGSQWY+6OPTU7yDl9lCMMYXHSaQy/Q368oXyiXeq3YdJGlWOb82RVs
-	 u0TcoiH9ia2DEqZWzAN6+UIJCZYvTS2HYpS07WNe2CoP1f7uj4xL+f9GFYXMp8eXmY
-	 LPpKJWPo9si6FysI2Q3ctIvwEDXevvrNDtlqjHGw=
+	b=YGkXv7cN3BRMuMTNZ/rezP8WlmV1s5Uikgd+4iwTj0sOlGYJcXKPprfHTUS2rz1nb
+	 2WjhB6CzefXzpmoAbXaEB5mrRHD1BxkA37DwUb6tiLlJiX2jjVZT33ljTDUYPIfW5V
+	 1QIC20gaxpORCaaDPVHXTPhMevjyGWAosdriYkVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 058/179] ext4: fix off-by-one error in do_split
-Date: Tue, 29 Apr 2025 18:39:59 +0200
-Message-ID: <20250429161051.746091516@linuxfoundation.org>
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 059/280] cpufreq: fix compile-test defaults
+Date: Tue, 29 Apr 2025 18:40:00 +0200
+Message-ID: <20250429161117.528235976@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
-References: <20250429161049.383278312@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 94824ac9a8aaf2fb3c54b4bdde842db80ffa555d upstream.
+[ Upstream commit a374f28700abd20e8a7d026f89aa26f759445918 ]
 
-Syzkaller detected a use-after-free issue in ext4_insert_dentry that was
-caused by out-of-bounds access due to incorrect splitting in do_split.
+Commit 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+enabled compile testing of most Arm CPUFreq drivers but left the
+existing default values unchanged so that many drivers are enabled by
+default whenever COMPILE_TEST is selected.
 
-BUG: KASAN: use-after-free in ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
-Write of size 251 at addr ffff888074572f14 by task syz-executor335/5847
+This specifically results in the S3C64XX CPUFreq driver being enabled
+and initialised during boot of non-S3C64XX platforms with the following
+error logged:
 
-CPU: 0 UID: 0 PID: 5847 Comm: syz-executor335 Not tainted 6.12.0-rc6-syzkaller-00318-ga9cda7c0ffed #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/30/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
- __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
- ext4_insert_dentry+0x36a/0x6d0 fs/ext4/namei.c:2109
- add_dirent_to_buf+0x3d9/0x750 fs/ext4/namei.c:2154
- make_indexed_dir+0xf98/0x1600 fs/ext4/namei.c:2351
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2455
- ext4_add_nondir+0x8d/0x290 fs/ext4/namei.c:2796
- ext4_symlink+0x920/0xb50 fs/ext4/namei.c:3431
- vfs_symlink+0x137/0x2e0 fs/namei.c:4615
- do_symlinkat+0x222/0x3a0 fs/namei.c:4641
- __do_sys_symlink fs/namei.c:4662 [inline]
- __se_sys_symlink fs/namei.c:4660 [inline]
- __x64_sys_symlink+0x7a/0x90 fs/namei.c:4660
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+	cpufreq: Unable to obtain ARMCLK: -2
 
-The following loop is located right above 'if' statement.
+Commit d4f610a9bafd ("cpufreq: Do not enable by default during compile
+testing") recently fixed most of the default values, but two entries
+were missed and two could use a more specific default condition.
 
-for (i = count-1; i >= 0; i--) {
-	/* is more than half of this entry in 2nd half of the block? */
-	if (size + map[i].size/2 > blocksize/2)
-		break;
-	size += map[i].size;
-	move++;
-}
+Fix the default values for drivers that can be compile tested and that
+should be enabled by default when not compile testing.
 
-'i' in this case could go down to -1, in which case sum of active entries
-wouldn't exceed half the block size, but previous behaviour would also do
-split in half if sum would exceed at the very last block, which in case of
-having too many long name files in a single block could lead to
-out-of-bounds access and following use-after-free.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Cc: stable@vger.kernel.org
-Fixes: 5872331b3d91 ("ext4: fix potential negative array index in do_split()")
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250404082804.2567-3-a.sadovnikov@ispras.ru
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f66425a4fc8 ("cpufreq: Enable COMPILE_TEST on Arm drivers")
+Cc: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/Kconfig.arm | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -1918,7 +1918,7 @@ static struct ext4_dir_entry_2 *do_split
- 	 * split it in half by count; each resulting block will have at least
- 	 * half the space free.
- 	 */
--	if (i > 0)
-+	if (i >= 0)
- 		split = count - move;
- 	else
- 		split = count/2;
+diff --git a/drivers/cpufreq/Kconfig.arm b/drivers/cpufreq/Kconfig.arm
+index f6e6066e2e64b..71f4b612dd971 100644
+--- a/drivers/cpufreq/Kconfig.arm
++++ b/drivers/cpufreq/Kconfig.arm
+@@ -67,7 +67,7 @@ config ARM_VEXPRESS_SPC_CPUFREQ
+ config ARM_BRCMSTB_AVS_CPUFREQ
+ 	tristate "Broadcom STB AVS CPUfreq driver"
+ 	depends on (ARCH_BRCMSTB && !ARM_SCMI_CPUFREQ) || COMPILE_TEST
+-	default ARCH_BRCMSTB
++	default y if ARCH_BRCMSTB && !ARM_SCMI_CPUFREQ
+ 	help
+ 	  Some Broadcom STB SoCs use a co-processor running proprietary firmware
+ 	  ("AVS") to handle voltage and frequency scaling. This driver provides
+@@ -79,7 +79,7 @@ config ARM_HIGHBANK_CPUFREQ
+ 	tristate "Calxeda Highbank-based"
+ 	depends on ARCH_HIGHBANK || COMPILE_TEST
+ 	depends on CPUFREQ_DT && REGULATOR && PL320_MBOX
+-	default m
++	default m if ARCH_HIGHBANK
+ 	help
+ 	  This adds the CPUFreq driver for Calxeda Highbank SoC
+ 	  based boards.
+@@ -124,7 +124,7 @@ config ARM_MEDIATEK_CPUFREQ
+ config ARM_MEDIATEK_CPUFREQ_HW
+ 	tristate "MediaTek CPUFreq HW driver"
+ 	depends on ARCH_MEDIATEK || COMPILE_TEST
+-	default m
++	default m if ARCH_MEDIATEK
+ 	help
+ 	  Support for the CPUFreq HW driver.
+ 	  Some MediaTek chipsets have a HW engine to offload the steps
+@@ -247,7 +247,7 @@ config ARM_TEGRA194_CPUFREQ
+ 	tristate "Tegra194 CPUFreq support"
+ 	depends on ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC || (64BIT && COMPILE_TEST)
+ 	depends on TEGRA_BPMP
+-	default ARCH_TEGRA
++	default ARCH_TEGRA_194_SOC || ARCH_TEGRA_234_SOC
+ 	help
+ 	  This adds CPU frequency driver support for Tegra194 SOCs.
+ 
+-- 
+2.39.5
+
 
 
 
