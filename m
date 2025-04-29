@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-138591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B43AA18AB
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:03:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3E06AA16B7
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6566B1BC68B2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:02:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADACE16BE67
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F66F253358;
-	Tue, 29 Apr 2025 18:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DBE24A07D;
+	Tue, 29 Apr 2025 17:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbYtpjWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ic2Kd7Gx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5CF25228D;
-	Tue, 29 Apr 2025 18:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97083238C21;
+	Tue, 29 Apr 2025 17:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949734; cv=none; b=LKCLPoCEAuDipvIeJ5t40+tNfImlMb/lN8QSsVyo1L1U0qxDXXti0NFTfcZHNVZY8oVEUkMkiJE6xaFuuK6jZdoGLBjVEosoc67qqozsx5ZSILBDcEuVRBS+WcBmvIOUjaoQKxLJ2XZRvaMpbIGe8CuZzHZM2wiJfvJV8ho3DQM=
+	t=1745948268; cv=none; b=DKICpc/LDWhWWKUQAaozHzma7ZbV/fhLpy6C0+ym9GDG7nx/YGwqlyy1zGzwj7n7+yZVPAv92Gq0siQzpPw7fFL9LkFutSeLAax9EPoJGTovve+M8ueDWa8Xi1evUKa5IdF1gKAtyOIc7yg6lVOE4BxZEeZTt2m9Pg6+54IY39o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949734; c=relaxed/simple;
-	bh=XKduWQlQ8zUvVoeEYdZCkYqW8QEvRJM4Gvw6qe8k8tw=;
+	s=arc-20240116; t=1745948268; c=relaxed/simple;
+	bh=6BMeIXW6UWam4BMJggSIUW2xVgQy+xOteowJ2DPQTEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCgAQUBJbo5hbyzryJjXP+1fyrlLjTbLkVCHhXaIVtvYyVW0bKtzI7Llc3+MYA1svOAgmQ3DV5SE84tzNIvl4N+9C/p6UueC7x/B57LRBUubk+/04OYqhkuYKBVZJFHrESfrX8HzFnsoRraDdiqDmVfRYKkX9aOjObhfdHfhhMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbYtpjWO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC4DC4CEF4;
-	Tue, 29 Apr 2025 18:02:13 +0000 (UTC)
+	 MIME-Version; b=kZW4LP+nMI0Tfgx2pAhb+dLZsfujOYcXYGOdDxPTacSZQI/Ea6gRo8FIIgpKJukvg5oA2X0Gas5KDnly7sha9H9fIeo16fe05oqA+e7GlJ6O/WEAXvYCj1frzAbksU+VUciAB+zk/weT+kfdrPh1sDJ37pAc0pQYIRNqbc0Ynbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ic2Kd7Gx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E239C4CEE3;
+	Tue, 29 Apr 2025 17:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949733;
-	bh=XKduWQlQ8zUvVoeEYdZCkYqW8QEvRJM4Gvw6qe8k8tw=;
+	s=korg; t=1745948268;
+	bh=6BMeIXW6UWam4BMJggSIUW2xVgQy+xOteowJ2DPQTEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CbYtpjWOoqZJXKkmyQw/q2sCsaPHSoc9dl7t0l1fc5NaOwvFJHPPYk3lF8jscGPZf
-	 dqchp+XWp+DAQZjMEoL6lh7/4uaJ0xFX5v8YVo9k54qqZWFIjXvTK4MvpHnjJifl32
-	 NyWADWCsI9IzrOrzGQChe6MG2FTyBcmLvYHp+/D8=
+	b=ic2Kd7GxebDIZ4m68pbNv5RpjD23AzRAcixU5WbKkxsWjXdj0EG7pZjB5VvxsSBXL
+	 7T1c2O/94VcmKjNdJMsVUtlkGbHcGg1QAUsVyvx+1x4UICBXcowjpHf4Ypd+qULDlB
+	 S+z2co7YWChg2Eub6C+aq2jCsMga24sdrcyOUuG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/167] ASoC: qcom: q6dsp: add support to more display ports
-Date: Tue, 29 Apr 2025 18:42:28 +0200
-Message-ID: <20250429161053.377987662@linuxfoundation.org>
+Subject: [PATCH 6.12 208/280] ACPI: EC: Set ec_no_wakeup for Lenovo Go S
+Date: Tue, 29 Apr 2025 18:42:29 +0200
+Message-ID: <20250429161123.641040983@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 90848a2557fec0a6f1a35e58031a1f6f5e44e7d6 ]
+[ Upstream commit b988685388effd648150aab272533f833a2a70f0 ]
 
-Existing code base only supports one display port, this patch adds
-support upto 8 display ports. This support is required to allow platforms
-like X13s which have 3 display ports, and some of the Qualcomm SoCs
-there are upto 7 Display ports.
+When AC adapter is unplugged or plugged in EC wakes from HW sleep but
+APU doesn't enter back into HW sleep.
 
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org
-Link: https://lore.kernel.org/r/20230509112202.21471-4-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org
-Stable-dep-of: a31a4934b31f ("ASoC: qcom: Fix sc7280 lpass potential buffer overflow")
+The reason this happens is that, when the APU exits HW sleep, the power
+rails controlled by the EC will power up the TCON.  The TCON has a GPIO
+that will be toggled at this time.  The GPIO is not marked as a wakeup
+source, but the GPIO controller still has an unserviced interrupt.
+Unserviced interrupts will block entering HW sleep again. Clearing the
+GPIO doesn't help as the TCON continues to assert it until it's been
+initialized by i2c-hid.
+
+Fixing this would require TCON F/W changes and it's already broken in
+the wild on production hardware.
+
+To avoid triggering this issue add a quirk to avoid letting EC wake
+up system at all.  The power button still works properly on this system.
+
+Reported-by: Antheas Kapenekakis <lkml@antheas.dev>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3929
+Link: https://github.com/bazzite-org/patchwork/commit/95b93b2852718ee1e808c72e6b1836da4a95fc63
+Co-developed-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250401133858.1892077-1-superm1@kernel.org
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../sound/qcom,q6dsp-lpass-ports.h            |  8 ++++
- sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c      | 43 ++++++++++++-------
- 2 files changed, 35 insertions(+), 16 deletions(-)
+ drivers/acpi/ec.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h b/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
-index 9f7c5103bc82b..39f203256c4f6 100644
---- a/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
-+++ b/include/dt-bindings/sound/qcom,q6dsp-lpass-ports.h
-@@ -131,6 +131,14 @@
- #define RX_CODEC_DMA_RX_7	126
- #define QUINARY_MI2S_RX		127
- #define QUINARY_MI2S_TX		128
-+#define DISPLAY_PORT_RX_0	DISPLAY_PORT_RX
-+#define DISPLAY_PORT_RX_1	129
-+#define DISPLAY_PORT_RX_2	130
-+#define DISPLAY_PORT_RX_3	131
-+#define DISPLAY_PORT_RX_4	132
-+#define DISPLAY_PORT_RX_5	133
-+#define DISPLAY_PORT_RX_6	134
-+#define DISPLAY_PORT_RX_7	135
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 25399f6dde7e2..e614e4bef9ea1 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -2301,6 +2301,34 @@ static const struct dmi_system_id acpi_ec_no_wakeup[] = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "103C_5336AN HP ZHAN 66 Pro"),
+ 		},
+ 	},
++	/*
++	 * Lenovo Legion Go S; touchscreen blocks HW sleep when woken up from EC
++	 * https://gitlab.freedesktop.org/drm/amd/-/issues/3929
++	 */
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83L3"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83N6"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q2"),
++		}
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83Q3"),
++		}
++	},
+ 	{ },
+ };
  
- #define LPASS_CLK_ID_PRI_MI2S_IBIT	1
- #define LPASS_CLK_ID_PRI_MI2S_EBIT	2
-diff --git a/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c b/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c
-index f67c16fd90b9b..ac937a6bf909b 100644
---- a/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c
-+++ b/sound/soc/qcom/qdsp6/q6dsp-lpass-ports.c
-@@ -79,6 +79,22 @@
- 		.id = did,						\
- 	}
- 
-+#define Q6AFE_DP_RX_DAI(did) {						\
-+		.playback = {						\
-+			.stream_name = #did" Playback",			\
-+			.rates = SNDRV_PCM_RATE_48000 |			\
-+				SNDRV_PCM_RATE_96000 |			\
-+				SNDRV_PCM_RATE_192000,			\
-+			.formats = SNDRV_PCM_FMTBIT_S16_LE |		\
-+				   SNDRV_PCM_FMTBIT_S24_LE,		\
-+			.channels_min = 2,				\
-+			.channels_max = 8,				\
-+			.rate_min = 48000,				\
-+			.rate_max = 192000,				\
-+		},							\
-+		.name = #did,						\
-+		.id = did,						\
-+	}
- 
- static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
- 	{
-@@ -528,22 +544,14 @@ static struct snd_soc_dai_driver q6dsp_audio_fe_dais[] = {
- 	Q6AFE_TDM_CAP_DAI("Quinary", 5, QUINARY_TDM_TX_5),
- 	Q6AFE_TDM_CAP_DAI("Quinary", 6, QUINARY_TDM_TX_6),
- 	Q6AFE_TDM_CAP_DAI("Quinary", 7, QUINARY_TDM_TX_7),
--	{
--		.playback = {
--			.stream_name = "Display Port Playback",
--			.rates = SNDRV_PCM_RATE_48000 |
--				 SNDRV_PCM_RATE_96000 |
--				 SNDRV_PCM_RATE_192000,
--			.formats = SNDRV_PCM_FMTBIT_S16_LE |
--				   SNDRV_PCM_FMTBIT_S24_LE,
--			.channels_min = 2,
--			.channels_max = 8,
--			.rate_max =     192000,
--			.rate_min =	48000,
--		},
--		.id = DISPLAY_PORT_RX,
--		.name = "DISPLAY_PORT",
--	},
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_0),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_1),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_2),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_3),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_4),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_5),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_6),
-+	Q6AFE_DP_RX_DAI(DISPLAY_PORT_RX_7),
- 	Q6AFE_CDC_DMA_RX_DAI(WSA_CODEC_DMA_RX_0),
- 	Q6AFE_CDC_DMA_TX_DAI(WSA_CODEC_DMA_TX_0),
- 	Q6AFE_CDC_DMA_RX_DAI(WSA_CODEC_DMA_RX_1),
-@@ -603,6 +611,9 @@ struct snd_soc_dai_driver *q6dsp_audio_ports_set_config(struct device *dev,
- 		case DISPLAY_PORT_RX:
- 			q6dsp_audio_fe_dais[i].ops = cfg->q6hdmi_ops;
- 			break;
-+		case DISPLAY_PORT_RX_1 ... DISPLAY_PORT_RX_7:
-+			q6dsp_audio_fe_dais[i].ops = cfg->q6hdmi_ops;
-+			break;
- 		case SLIMBUS_0_RX ... SLIMBUS_6_TX:
- 			q6dsp_audio_fe_dais[i].ops = cfg->q6slim_ops;
- 			break;
 -- 
 2.39.5
 
