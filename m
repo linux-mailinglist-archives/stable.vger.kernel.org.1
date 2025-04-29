@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-137835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3630CAA14E1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:21:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1724AA1416
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 763227AF91A
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFED95A540E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172D42512D7;
-	Tue, 29 Apr 2025 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1CD24728A;
+	Tue, 29 Apr 2025 17:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBZa9E+1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="McTBNgSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96B52459EA;
-	Tue, 29 Apr 2025 17:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E3423F413;
+	Tue, 29 Apr 2025 17:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947275; cv=none; b=V+zMf5Hu1feO/Ku30r+zbG5JkxiBpcp1AAU4bZPrh4a3SIDBqbIO70EaVRRFp580k5OA0+sDUv6cZKXZevk1KwQ3OJnwuLwnmpZQLxQ2FWx25qcoDx1tTms9f9InbKlfKjYxrHM4kcv7CEBXXtiRrmnxF50FDDN4JwOipQ8FNXA=
+	t=1745946436; cv=none; b=BO/PKtHdywkjE8B9acsxbXuVVn18RP0qY1H5+8LilY1BLL/6WxUtDebM6/1o5+blXkAlssMeuxFT/HTRV42G4ypy09sHoWg/H1aJ2dDBlTaWtvC5db4VfVRTEWz62jcEVBrIP0N+XEvYPqxBl3t+zLo5YyBYvuXjYypdB5wsjOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947275; c=relaxed/simple;
-	bh=XPJ/6vTqhLrJmGmddTQ1ioZ3ZP06OW7bCUBcazK6aWY=;
+	s=arc-20240116; t=1745946436; c=relaxed/simple;
+	bh=4BJ6s/YR51Mdmcu6rOHuM3nrHkHMYfQug1A9DnXCaFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFZXl3HDN54/wDy5Qxyoc7Gp01hRV8mB+/zi7vXXa2AZDlKw/wiOp0LA/OknC5fWrvu+jYvRmL4cvtNmwP6QanFBtx7Y9yirxcisORsWlE4sgJy6NBPmn0f8QnIKdf0qxxBdn7ElNAs0JcBBdujo9lGd2kBAf8gzRv4d0IkiQrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBZa9E+1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C36BC4CEE3;
-	Tue, 29 Apr 2025 17:21:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=srmrRZuY1RBnCWsJZxrMAND/LGFmsispW9hH+kuQIDrHAl6rsQacPYnxE+VWov/ZEU/jPpbQoxBClqoQp68Zl5bGoRUNqdBrDqMEvD8dwEfzYq9aOKU3U8Y5KbdwJt471QNyMxr4FDfUipeke1k1sMA9Tm+aSnQdURKve8S/R9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=McTBNgSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7368C4CEE3;
+	Tue, 29 Apr 2025 17:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947275;
-	bh=XPJ/6vTqhLrJmGmddTQ1ioZ3ZP06OW7bCUBcazK6aWY=;
+	s=korg; t=1745946436;
+	bh=4BJ6s/YR51Mdmcu6rOHuM3nrHkHMYfQug1A9DnXCaFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oBZa9E+1Uki8FxO6TQDEN7ikIDxRj2wOw6AoKbNX435iMhlP0jzUI+p1OsTLZuMHC
-	 0cZK/aSLtnumqTV/b2rDgD0l3TMYK6fmj7uIABhjEpmenrvNGz/NXm/YE0xWHByfjK
-	 zzOhWTERNgQ0khqCW4zST/oLaTH8A5YfKBWazLtc=
+	b=McTBNgSXgya+XoMu3j4V0GMe91g5lKgACkXMAiCVzji9G6fqb2z1siZgs5+cg19Hw
+	 TD09POjiROw2/ujfmNOyZxrhf+yosT1lBp3JwI1Mji/oN8nlUdvdi/IFh7uu/qFrIV
+	 RG5+py8fRTnZ+I5sJfgHbp9pp5CUODVgC1I3SCZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 199/286] media: streamzap: less chatter
+Subject: [PATCH 6.14 266/311] cifs: Fix querying of WSL CHR and BLK reparse points over SMB1
 Date: Tue, 29 Apr 2025 18:41:43 +0200
-Message-ID: <20250429161116.145659376@linuxfoundation.org>
+Message-ID: <20250429161131.925387299@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 35088717ad24140b6ab0ec00ef357709be607526 ]
+[ Upstream commit ef86ab131d9127dfbfa8f06e12441d05fdfb090b ]
 
-Remove superfluous messages which add no information.
+When reparse point in SMB1 query_path_info() callback was detected then
+query also for EA $LXDEV. In this EA are stored device major and minor
+numbers used by WSL CHR and BLK reparse points. Without major and minor
+numbers, stat() syscall does not work for char and block devices.
 
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Stable-dep-of: f656cfbc7a29 ("media: streamzap: fix race between device disconnection and urb callback")
+Similar code is already in SMB2+ query_path_info() callback function.
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/streamzap.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ fs/smb/client/smb1ops.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/media/rc/streamzap.c b/drivers/media/rc/streamzap.c
-index b6391ad383143..e862a866b9b0f 100644
---- a/drivers/media/rc/streamzap.c
-+++ b/drivers/media/rc/streamzap.c
-@@ -26,7 +26,6 @@
- #include <linux/usb/input.h>
- #include <media/rc-core.h>
+diff --git a/fs/smb/client/smb1ops.c b/fs/smb/client/smb1ops.c
+index d6e2fb669c401..808970e4a7142 100644
+--- a/fs/smb/client/smb1ops.c
++++ b/fs/smb/client/smb1ops.c
+@@ -573,6 +573,42 @@ static int cifs_query_path_info(const unsigned int xid,
+ 		data->reparse_point = le32_to_cpu(fi.Attributes) & ATTR_REPARSE;
+ 	}
  
--#define DRIVER_VERSION	"1.61"
- #define DRIVER_NAME	"streamzap"
- #define DRIVER_DESC	"Streamzap Remote Control driver"
++#ifdef CONFIG_CIFS_XATTR
++	/*
++	 * For WSL CHR and BLK reparse points it is required to fetch
++	 * EA $LXDEV which contains major and minor device numbers.
++	 */
++	if (!rc && data->reparse_point) {
++		struct smb2_file_full_ea_info *ea;
++
++		ea = (struct smb2_file_full_ea_info *)data->wsl.eas;
++		rc = CIFSSMBQAllEAs(xid, tcon, full_path, SMB2_WSL_XATTR_DEV,
++				    &ea->ea_data[SMB2_WSL_XATTR_NAME_LEN + 1],
++				    SMB2_WSL_XATTR_DEV_SIZE, cifs_sb);
++		if (rc == SMB2_WSL_XATTR_DEV_SIZE) {
++			ea->next_entry_offset = cpu_to_le32(0);
++			ea->flags = 0;
++			ea->ea_name_length = SMB2_WSL_XATTR_NAME_LEN;
++			ea->ea_value_length = cpu_to_le16(SMB2_WSL_XATTR_DEV_SIZE);
++			memcpy(&ea->ea_data[0], SMB2_WSL_XATTR_DEV, SMB2_WSL_XATTR_NAME_LEN + 1);
++			data->wsl.eas_len = sizeof(*ea) + SMB2_WSL_XATTR_NAME_LEN + 1 +
++					    SMB2_WSL_XATTR_DEV_SIZE;
++			rc = 0;
++		} else if (rc >= 0) {
++			/* It is an error if EA $LXDEV has wrong size. */
++			rc = -EINVAL;
++		} else {
++			/*
++			 * In all other cases ignore error if fetching
++			 * of EA $LXDEV failed. It is needed only for
++			 * WSL CHR and BLK reparse points and wsl_to_fattr()
++			 * handle the case when EA is missing.
++			 */
++			rc = 0;
++		}
++	}
++#endif
++
+ 	return rc;
+ }
  
-@@ -281,10 +280,8 @@ static struct rc_dev *streamzap_init_rc_dev(struct streamzap_ir *sz)
- 	int ret;
- 
- 	rdev = rc_allocate_device(RC_DRIVER_IR_RAW);
--	if (!rdev) {
--		dev_err(dev, "remote dev allocation failed\n");
-+	if (!rdev)
- 		goto out;
--	}
- 
- 	usb_make_path(sz->usbdev, sz->phys, sizeof(sz->phys));
- 	strlcat(sz->phys, "/input0", sizeof(sz->phys));
-@@ -324,7 +321,6 @@ static int streamzap_probe(struct usb_interface *intf,
- 	struct usb_device *usbdev = interface_to_usbdev(intf);
- 	struct usb_host_interface *iface_host;
- 	struct streamzap_ir *sz = NULL;
--	char buf[63], name[128] = "";
- 	int retval = -ENOMEM;
- 	int pipe, maxp;
- 
-@@ -383,17 +379,6 @@ static int streamzap_probe(struct usb_interface *intf,
- 	sz->dev = &intf->dev;
- 	sz->buf_in_len = maxp;
- 
--	if (usbdev->descriptor.iManufacturer
--	    && usb_string(usbdev, usbdev->descriptor.iManufacturer,
--			  buf, sizeof(buf)) > 0)
--		strscpy(name, buf, sizeof(name));
--
--	if (usbdev->descriptor.iProduct
--	    && usb_string(usbdev, usbdev->descriptor.iProduct,
--			  buf, sizeof(buf)) > 0)
--		snprintf(name + strlen(name), sizeof(name) - strlen(name),
--			 " %s", buf);
--
- 	sz->rdev = streamzap_init_rc_dev(sz);
- 	if (!sz->rdev)
- 		goto rc_dev_fail;
-@@ -424,9 +409,6 @@ static int streamzap_probe(struct usb_interface *intf,
- 	if (usb_submit_urb(sz->urb_in, GFP_ATOMIC))
- 		dev_err(sz->dev, "urb submit failed\n");
- 
--	dev_info(sz->dev, "Registered %s on usb%d:%d\n", name,
--		 usbdev->bus->busnum, usbdev->devnum);
--
- 	return 0;
- 
- rc_dev_fail:
 -- 
 2.39.5
 
