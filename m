@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C3AAA16F0
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:42:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 630F1AA156C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E2033BBE41
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A501887947
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A1A1C6B4;
-	Tue, 29 Apr 2025 17:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8D62522B4;
+	Tue, 29 Apr 2025 17:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBdwQRMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwpwF7Lb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FAF215F7C;
-	Tue, 29 Apr 2025 17:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A90724E000;
+	Tue, 29 Apr 2025 17:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948190; cv=none; b=TgU+8FcUkCo6NaduivEI4kwchAcNeGf6pjX+utp4ydPEW8MzeW8FxdEITa4pePuADOFNcBRrVdXLjHaXMn5zgjEPTHfKkbd/sFKgc5X+T6+mMmc/8rTIXGusaZIOLlsuHcnR0oECnAc0vfnMSzRog3KDiycjSPugwBycYF04JWI=
+	t=1745947353; cv=none; b=QuyVmVWV0/90r45UdOeXAytL06VIGG8kzKAm/NzVxtjZQKcCveePVpDZ8eTa52hpiCFe2OoPAgxeKyvZUTsk4dlNNb46P0avNFF6tawg6tN67tAsdw8cwZuG7zlawe7HKMvZTeJpC4EQUb21Sf46ms4Z6FvNs5CeVcJWYUL5W60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948190; c=relaxed/simple;
-	bh=nP6hhQ2AwJNz4sZVtcEOte9LFRQGbR/4mafVumfBPEI=;
+	s=arc-20240116; t=1745947353; c=relaxed/simple;
+	bh=t30eBTavlueM0VqzB8OBefmkxGcD4mYNPjqclQvbAWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OIUguIq2CdsHX4cee+GrknuATJFrnOBB3PoLdSxUQkN9kX8qfAYppmF5ldafblI7Qb1x2bBQ1xA0jxmaMwj7HJqP3gU/Su9TbxAvFkC27RMkJw/pSq47Xiv6hFc08m7UdXDSRQg36Lr7TitxlyCYB8dqniRWq2vTtHvIZW0TSG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBdwQRMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B0CC4CEE3;
-	Tue, 29 Apr 2025 17:36:28 +0000 (UTC)
+	 MIME-Version; b=LfaGlY5coDOpAojCcsHWBburfSSxPNzSG7uuPrPDEydiXJNkAhsrFj8zx3e1L/nR+FXchfzYKJJjb8FEYvIaC5OG1w/bK7B3okIpMwTS4XUMEM26WsdWchKD0J6Vw4yl929ru6OopCojb0RocC6tZ+cxaNJR7vPcVX7m2mjzRM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwpwF7Lb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE532C4CEE3;
+	Tue, 29 Apr 2025 17:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948189;
-	bh=nP6hhQ2AwJNz4sZVtcEOte9LFRQGbR/4mafVumfBPEI=;
+	s=korg; t=1745947353;
+	bh=t30eBTavlueM0VqzB8OBefmkxGcD4mYNPjqclQvbAWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBdwQRMkptbxb5mV2QGpu5CwFwtIYC5GXVVlGtuDSPIxWF4hU4o+dSiQithsNZkC5
-	 iWHzpnzgbHaTF89Hi8iKX0irEkTnVbMSqQm97vZqEO9lK7J7U9BDb1a7PPUcPaLfLE
-	 P9srPFbEGQ6y69UtXnAunmMr6r7pycdFc1XhHbic=
+	b=uwpwF7Lblhs1NI2aJib5WBFAEVlyqj94r/K0vULON6lG1uad+5jpoROTeDFzBQ083
+	 oYD9rmygMTTu8SeT34KgUkN6LTSCurziDxvbGY9zMQ7qjTlfBZq9hEoLM+g1O9idx0
+	 7glQNW7U4/cmnFisrtQ93wM+3qpeg4LfySrPVZoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 215/280] gpiolib: of: Move Atmel HSMCI quirk up out of the regulator comment
-Date: Tue, 29 Apr 2025 18:42:36 +0200
-Message-ID: <20250429161123.922246782@linuxfoundation.org>
+Subject: [PATCH 5.10 253/286] MIPS: cm: Detect CM quirks from device tree
+Date: Tue, 29 Apr 2025 18:42:37 +0200
+Message-ID: <20250429161118.328609307@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Gregory CLEMENT <gregory.clement@bootlin.com>
 
-[ Upstream commit b8c7a1ac884cc267d1031f8de07f1a689a69fbab ]
+[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
 
-The regulator comment in of_gpio_set_polarity_by_property()
-made on top of a couple of the cases, while Atmel HSMCI quirk
-is not related to that. Make it clear by moving Atmel HSMCI
-quirk up out of the scope of the regulator comment.
+Some information that should be retrieved at runtime for the Coherence
+Manager can be either absent or wrong. This patch allows checking if
+some of this information is available from the device tree and updates
+the internal variable accordingly.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20250402122058.1517393-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+For now, only the compatible string associated with the broken HCI is
+being retrieved.
+
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-of.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
+ arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
+ 2 files changed, 36 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index e543129d36050..626daedb01698 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -259,6 +259,9 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- 		{ "fsl,imx8qm-fec",  "phy-reset-gpios", "phy-reset-active-high" },
- 		{ "fsl,s32v234-fec", "phy-reset-gpios", "phy-reset-active-high" },
+diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
+index 696b40beb774f..0f31324998c0a 100644
+--- a/arch/mips/include/asm/mips-cm.h
++++ b/arch/mips/include/asm/mips-cm.h
+@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
+  */
+ extern int mips_cm_is64;
+ 
++/*
++ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
++ *
++ * Some CM reports show that Hardware Cache Initialization is
++ * complete, but in reality it's not the case. They also incorrectly
++ * indicate that Hardware Cache Initialization is supported. This
++ * flags allows warning about this broken feature.
++ */
++extern bool mips_cm_is_l2_hci_broken;
++
+ /**
+  * mips_cm_error_report - Report CM cache errors
+  */
+@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
  #endif
-+#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
-+		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
+ }
+ 
++/**
++ * mips_cm_update_property - update property from the device tree
++ *
++ * Retrieve the properties from the device tree if a CM node exist and
++ * update the internal variable based on this.
++ */
++#ifdef CONFIG_MIPS_CM
++extern void mips_cm_update_property(void);
++#else
++static void mips_cm_update_property(void) {}
 +#endif
- #if IS_ENABLED(CONFIG_PCI_IMX6)
- 		{ "fsl,imx6q-pcie",  "reset-gpio", "reset-gpio-active-high" },
- 		{ "fsl,imx6sx-pcie", "reset-gpio", "reset-gpio-active-high" },
-@@ -284,9 +287,6 @@ static void of_gpio_set_polarity_by_property(const struct device_node *np,
- #if IS_ENABLED(CONFIG_REGULATOR_GPIO)
- 		{ "regulator-gpio",    "enable-gpio",  "enable-active-high" },
- 		{ "regulator-gpio",    "enable-gpios", "enable-active-high" },
--#endif
--#if IS_ENABLED(CONFIG_MMC_ATMELMCI)
--		{ "atmel,hsmci",       "cd-gpios",     "cd-inverted" },
- #endif
- 	};
- 	unsigned int i;
++
+ /**
+  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
+  *
+diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
+index 72c8374a39002..a0d9cde26dc5b 100644
+--- a/arch/mips/kernel/mips-cm.c
++++ b/arch/mips/kernel/mips-cm.c
+@@ -5,6 +5,7 @@
+  */
+ 
+ #include <linux/errno.h>
++#include <linux/of.h>
+ #include <linux/percpu.h>
+ #include <linux/spinlock.h>
+ 
+@@ -14,6 +15,7 @@
+ void __iomem *mips_gcr_base;
+ void __iomem *mips_cm_l2sync_base;
+ int mips_cm_is64;
++bool mips_cm_is_l2_hci_broken;
+ 
+ static char *cm2_tr[8] = {
+ 	"mem",	"gcr",	"gic",	"mmio",
+@@ -238,6 +240,18 @@ static void mips_cm_probe_l2sync(void)
+ 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
+ }
+ 
++void mips_cm_update_property(void)
++{
++	struct device_node *cm_node;
++
++	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
++	if (!cm_node)
++		return;
++	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
++	mips_cm_is_l2_hci_broken = true;
++	of_node_put(cm_node);
++}
++
+ int mips_cm_probe(void)
+ {
+ 	phys_addr_t addr;
 -- 
 2.39.5
 
