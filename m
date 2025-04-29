@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-137516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1CCAA13E2
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:10:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F22EAA150F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 395A0982284
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:04:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39E473BA058
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94625221719;
-	Tue, 29 Apr 2025 17:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6CD2522B0;
+	Tue, 29 Apr 2025 17:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbUAmaZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM8wz77j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519881FE468;
-	Tue, 29 Apr 2025 17:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6412512C6;
+	Tue, 29 Apr 2025 17:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946301; cv=none; b=STqeh6poz4/pzFRZBf+30XY5Wrmq3whctLeA6uMVB1dzXj6MEfzU+4UnGvoTUaUyHuXJ/04Q94+UKNN7/gDZ15pbyGDv7xu/ETZO61E8sOFKkVoABh4iqrEBmpESWOM03yThJ2xaizeBS8OpH7M+dBBAT8EJZT8RaACfPNWfxfU=
+	t=1745947024; cv=none; b=fUledQ1AG0XM5tnGhaABCzgXqJHEzxcoWOeoGfGETKYABGeiovlQbZ9wCZXiW4zFT9wMTAuN4GYT6gxlKSdqeRRUbf4Aaz0E6QW4dtfO+gSPdTzh/0Hb5U7pNIA3Om48H33hC4Hc2HA1tEqSBED+8gV/8P8jbkDODnj0gSf7BBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946301; c=relaxed/simple;
-	bh=Ok+cYwS3Y++nGIcmqPWJSNKb8d5/vu92rVtz3wioRec=;
+	s=arc-20240116; t=1745947024; c=relaxed/simple;
+	bh=GsEvI4kiD2dBp5EHV1rA+hBMIVZ+WzJ3CxSkHDudMSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGxoJTYgpSg6pHvLoc0VkzdIysO6n3OUWQKcsqzMs/r9LiK15irjv6pxomHBAI96C6I1wI58c5nYrD7vKU7EGxIA43xHQu67vwnh3JMZfbgR1oBxmB6x6LvgmSIQyBgzKdCUFWHq/u/5WEZMXwae3miL/5osiVuzsgRJiN6kPPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbUAmaZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DB0C4CEE3;
-	Tue, 29 Apr 2025 17:05:00 +0000 (UTC)
+	 MIME-Version; b=A2ZZ2depOLMw3zJASLT58ig/kUasnvxILVHqhjDbVRzHQwso0i8JhAZ9qOJcFyLK5zGS+s1VboB9w/rrEdc0wHbYrFuJHoFygusajSG57Pr86kNF0Fq7FjZl1ZFdpo2UD4BT62UTfpjp6JsmD85kN9TRxxusY9wBS1A6CYKyJIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM8wz77j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BB5C4CEE9;
+	Tue, 29 Apr 2025 17:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946301;
-	bh=Ok+cYwS3Y++nGIcmqPWJSNKb8d5/vu92rVtz3wioRec=;
+	s=korg; t=1745947024;
+	bh=GsEvI4kiD2dBp5EHV1rA+hBMIVZ+WzJ3CxSkHDudMSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbUAmaZS/9Y/3QWAac3Rh7wFxwdIcyrks4wa6iX26txeXJkxQrEhEPa6cT6MD0uvR
-	 1yr8eqBKD5GdAgOxRlNeB0pM/xZLLW7R0VgM5SvzjzRxRujjgF9lESHEfuA+94z2Q+
-	 jpZv5Z8g8XDtxgV7hwtlQhpi7AsleYY9jQ6zpM/0=
+	b=DM8wz77j1dUEahtjR5g1T2IR8UtCgemz0xMUa9KbmD5yGRVZkvbs93u99M8wS1VH7
+	 OYY/HI65/Lw9gyDue6t902F1ECo6NBQgIb0ksyfXJln/FVt/1h3gocCZPxIqnYXudO
+	 GvOZ4wpUQ32uanym5MwsGBtX+qOnKtOHZBt1c21E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 214/311] usb: xhci: Avoid Stop Endpoint retry loop if the endpoint seems Running
+	Paolo Abeni <pabeni@redhat.com>,
+	Gang Yan <yangang@kylinos.cn>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 147/286] mptcp: fix NULL pointer in can_accept_new_subflow
 Date: Tue, 29 Apr 2025 18:40:51 +0200
-Message-ID: <20250429161129.762446884@linuxfoundation.org>
+Message-ID: <20250429161113.930439467@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
+References: <20250429161107.848008295@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Gang Yan <yangang@kylinos.cn>
 
-[ Upstream commit 28a76fcc4c85dd39633fb96edb643c91820133e3 ]
+commit 443041deb5ef6a1289a99ed95015ec7442f141dc upstream.
 
-Nothing prevents a broken HC from claiming that an endpoint is Running
-and repeatedly rejecting Stop Endpoint with Context State Error.
+When testing valkey benchmark tool with MPTCP, the kernel panics in
+'mptcp_can_accept_new_subflow' because subflow_req->msk is NULL.
 
-Avoid infinite retries and give back cancelled TDs.
+Call trace:
 
-No such cases known so far, but HCs have bugs.
+  mptcp_can_accept_new_subflow (./net/mptcp/subflow.c:63 (discriminator 4)) (P)
+  subflow_syn_recv_sock (./net/mptcp/subflow.c:854)
+  tcp_check_req (./net/ipv4/tcp_minisocks.c:863)
+  tcp_v4_rcv (./net/ipv4/tcp_ipv4.c:2268)
+  ip_protocol_deliver_rcu (./net/ipv4/ip_input.c:207)
+  ip_local_deliver_finish (./net/ipv4/ip_input.c:234)
+  ip_local_deliver (./net/ipv4/ip_input.c:254)
+  ip_rcv_finish (./net/ipv4/ip_input.c:449)
+  ...
 
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250311154551.4035726-4-mathias.nyman@linux.intel.com
+According to the debug log, the same req received two SYN-ACK in a very
+short time, very likely because the client retransmits the syn ack due
+to multiple reasons.
+
+Even if the packets are transmitted with a relevant time interval, they
+can be processed by the server on different CPUs concurrently). The
+'subflow_req->msk' ownership is transferred to the subflow the first,
+and there will be a risk of a null pointer dereference here.
+
+This patch fixes this issue by moving the 'subflow_req->msk' under the
+`own_req == true` conditional.
+
+Note that the !msk check in subflow_hmac_valid() can be dropped, because
+the same check already exists under the own_req mpj branch where the
+code has been moved to.
+
+Fixes: 9466a1ccebbe ("mptcp: enable JOIN requests even if cookies are in use")
+Cc: stable@vger.kernel.org
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20250328-net-mptcp-misc-fixes-6-15-v1-1-34161a482a7f@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in subflow.c because commit 74c7dfbee3e1 ("mptcp: consolidate
+  in_opt sub-options fields in a bitmask") is not in this version. The
+  conflict is in the context, and the modification can still be applied.
+  Note that subflow_add_reset_reason() is not needed here, because the
+  related feature is not supported in this version. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/mptcp/subflow.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 6b20072424f0c..3a284c68e37a0 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1198,16 +1198,19 @@ static void xhci_handle_cmd_stop_ep(struct xhci_hcd *xhci, int slot_id,
- 			 * Stopped state, but it will soon change to Running.
- 			 *
- 			 * Assume this bug on unexpected Stop Endpoint failures.
--			 * Keep retrying until the EP starts and stops again, on
--			 * chips where this is known to help. Wait for 100ms.
-+			 * Keep retrying until the EP starts and stops again.
- 			 */
--			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
--				break;
- 			fallthrough;
- 		case EP_STATE_RUNNING:
- 			/* Race, HW handled stop ep cmd before ep was running */
- 			xhci_dbg(xhci, "Stop ep completion ctx error, ctx_state %d\n",
- 					GET_EP_CTX_STATE(ep_ctx));
-+			/*
-+			 * Don't retry forever if we guessed wrong or a defective HC never starts
-+			 * the EP or says 'Running' but fails the command. We must give back TDs.
-+			 */
-+			if (time_is_before_jiffies(ep->stop_time + msecs_to_jiffies(100)))
-+				break;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -454,8 +454,6 @@ static bool subflow_hmac_valid(const str
  
- 			command = xhci_alloc_command(xhci, false, GFP_ATOMIC);
- 			if (!command) {
--- 
-2.39.5
-
+ 	subflow_req = mptcp_subflow_rsk(req);
+ 	msk = subflow_req->msk;
+-	if (!msk)
+-		return false;
+ 
+ 	subflow_generate_hmac(msk->remote_key, msk->local_key,
+ 			      subflow_req->remote_nonce,
+@@ -578,11 +576,8 @@ static struct sock *subflow_syn_recv_soc
+ 			fallback = true;
+ 	} else if (subflow_req->mp_join) {
+ 		mptcp_get_options(skb, &mp_opt);
+-		if (!mp_opt.mp_join || !subflow_hmac_valid(req, &mp_opt) ||
+-		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
+-			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
++		if (!mp_opt.mp_join)
+ 			fallback = true;
+-		}
+ 	}
+ 
+ create_child:
+@@ -636,6 +631,12 @@ create_child:
+ 			if (!owner)
+ 				goto dispose_child;
+ 
++			if (!subflow_hmac_valid(req, &mp_opt) ||
++			    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
++				SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
++				goto dispose_child;
++			}
++
+ 			/* move the msk reference ownership to the subflow */
+ 			subflow_req->msk = NULL;
+ 			ctx->conn = (struct sock *)owner;
 
 
 
