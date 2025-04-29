@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1329AA1A6F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:22:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC70DAA19A5
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E55B3AFFFD
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:18:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28BC3A5CB4
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9305D25332D;
-	Tue, 29 Apr 2025 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1A322AE68;
+	Tue, 29 Apr 2025 18:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZ0BxJtb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMqhVeBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50293155A4E;
-	Tue, 29 Apr 2025 18:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8DC21ABC6;
+	Tue, 29 Apr 2025 18:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950699; cv=none; b=Flb4eVoWChpYlJgpNHydpIsmIig4eXtaPBjTikBzeo8ehcAFpYUfhWabk9uvJHtQ8GngOLYJu0RhKHGvDn6mdcbEybXmkbptfyfCavstusSBKPeKU2moQ4egO0qhbxh9o/uPN1Wq8fxJ/5rme39kqJ7ZqyChWFzah5fQTjnNVOI=
+	t=1745950140; cv=none; b=U2WOLB8cOhViCbmAevu65as2QzAcURXSBKIQQWQ9D03lVR26X6DgmbjX6+yz25zmhQq76L6bYp7Z7N8xa6afaJlHUcGoKUqRRcaRxafDcZI1xyRzhVdnY2zpTsrfl8G3z8SzaUvW1TsL25XHbKJtvpTkqps2gWfq358DLsyKt2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950699; c=relaxed/simple;
-	bh=yIxrS9BYN7x+QnLSjHuOtEFyPRlIyd1qYHusHeXsDRQ=;
+	s=arc-20240116; t=1745950140; c=relaxed/simple;
+	bh=DvxolArIFTpQeR91qMLFR4qDstFiZUTF+MW/wbKQC3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5HsANLZFY8PTPH1PCuLpzw3EUecpC0JKbLBtcEebKAVxe8YP2mV1gIFMcja4xBz/hLM/MtMLWE/2iHU6wpCCGyNnkv2qZqKzNdX4Xstxkvw/vBRZbbIISLDE4DWqdP6VTpdtMLpkUyjFuMI1rUSB1MgeynM+r/CAEYvG3Mb/bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZ0BxJtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0575C4CEE3;
-	Tue, 29 Apr 2025 18:18:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=R6FDs0O1j9Ijc0WqwMtpaKV4kitYz01CmNapqO67YSyDnNqbGKpSCCyyBYM+sv3MILDfO/ENJqzxuC+jWL7wY+zpg6UvSmwNNlUNvEWYufPAJEBIAUvlxJTf3AERnL+NIhfCLGhNiFyubJSr1M4g314bzFN4WFAnwc+ebtmZHDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMqhVeBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6FFC4CEE3;
+	Tue, 29 Apr 2025 18:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950699;
-	bh=yIxrS9BYN7x+QnLSjHuOtEFyPRlIyd1qYHusHeXsDRQ=;
+	s=korg; t=1745950139;
+	bh=DvxolArIFTpQeR91qMLFR4qDstFiZUTF+MW/wbKQC3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZ0BxJtbuvQN2uBnvQeekk95ClP92xEDnod3oolv5iFKvWeNSGm2Et7gULUE9dy7l
-	 NwGVGyoHY068Nv5jsGN4I+pHwmPE6DpRtcovsOn3eI5Z9iCwMasswKb7iG+NjRrUMl
-	 OWpgtEToQlICYORK9FB8wdjAsZ2MrZgdR5C1LETE=
+	b=hMqhVeBhmXawp69Q3Nip8+uzA56LKqaTWFohjMfzKqvQzOfbO6DJwAI/rH+n/q2oA
+	 5kBFHhI0jJ6tKNZ2eKsOyPxGOonBBKZSarkDtSKWWt+9PPsFQ1vz8pk1rcEjWsWL17
+	 IFNAbGbP0RpuWXzldVq611qJ05z07iIxInjifFHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Sasha Levin" <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/204] scsi: ufs: exynos: Ensure pre_link() executes before exynos_ufs_phy_init()
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 157/167] net: dsa: mv88e6xxx: enable .port_set_policy() for 6320 family
 Date: Tue, 29 Apr 2025 18:44:25 +0200
-Message-ID: <20250429161106.641454817@linuxfoundation.org>
+Message-ID: <20250429161058.078142459@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
-References: <20250429161059.396852607@linuxfoundation.org>
+In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
+References: <20250429161051.743239894@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: "Marek Behún" <kabel@kernel.org>
 
-[ Upstream commit 3d101165e72316775947d71321d97194f03dfef3 ]
+commit a2ef58e2c4aea4de166fc9832eb2b621e88c98d5 upstream.
 
-Ensure clocks are enabled before configuring unipro. Additionally move
-the pre_link() hook before the exynos_ufs_phy_init() calls. This means
-the register write sequence more closely resembles the ordering of the
-downstream driver.
+Commit f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
+did not add the .port_set_policy() method for the 6320 family. Fix it.
 
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-Link: https://lore.kernel.org/r/20250319-exynos-ufs-stability-fixes-v2-1-96722cc2ba1b@linaro.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f3a2cd326e44 ("net: dsa: mv88e6xxx: introduce .port_set_policy")
+Signed-off-by: Marek BehÃºn <kabel@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250317173250.28780-5-kabel@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/host/ufs-exynos.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/host/ufs-exynos.c b/drivers/ufs/host/ufs-exynos.c
-index d138b66d5e350..f61126189876e 100644
---- a/drivers/ufs/host/ufs-exynos.c
-+++ b/drivers/ufs/host/ufs-exynos.c
-@@ -990,9 +990,14 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
- 	exynos_ufs_config_intr(ufs, DFES_DEF_L4_ERRS, UNIPRO_L4);
- 	exynos_ufs_set_unipro_pclk_div(ufs);
- 
-+	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
-+
- 	/* unipro */
- 	exynos_ufs_config_unipro(ufs);
- 
-+	if (ufs->drv_data->pre_link)
-+		ufs->drv_data->pre_link(ufs);
-+
- 	/* m-phy */
- 	exynos_ufs_phy_init(ufs);
- 	if (!(ufs->opts & EXYNOS_UFS_OPT_SKIP_CONFIG_PHY_ATTR)) {
-@@ -1000,11 +1005,6 @@ static int exynos_ufs_pre_link(struct ufs_hba *hba)
- 		exynos_ufs_config_phy_cap_attr(ufs);
- 	}
- 
--	exynos_ufs_setup_clocks(hba, true, PRE_CHANGE);
--
--	if (ufs->drv_data->pre_link)
--		ufs->drv_data->pre_link(ufs);
--
- 	return 0;
- }
- 
--- 
-2.39.5
-
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -5173,6 +5173,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	.port_set_rgmii_delay = mv88e6320_port_set_rgmii_delay,
+ 	.port_set_speed_duplex = mv88e6185_port_set_speed_duplex,
+ 	.port_tag_remap = mv88e6095_port_tag_remap,
++	.port_set_policy = mv88e6352_port_set_policy,
+ 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
+ 	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
+ 	.port_set_mcast_flood = mv88e6352_port_set_mcast_flood,
+@@ -5221,6 +5222,7 @@ static const struct mv88e6xxx_ops mv88e6
+ 	.port_set_rgmii_delay = mv88e6320_port_set_rgmii_delay,
+ 	.port_set_speed_duplex = mv88e6185_port_set_speed_duplex,
+ 	.port_tag_remap = mv88e6095_port_tag_remap,
++	.port_set_policy = mv88e6352_port_set_policy,
+ 	.port_set_frame_mode = mv88e6351_port_set_frame_mode,
+ 	.port_set_ucast_flood = mv88e6352_port_set_ucast_flood,
+ 	.port_set_mcast_flood = mv88e6352_port_set_mcast_flood,
 
 
 
