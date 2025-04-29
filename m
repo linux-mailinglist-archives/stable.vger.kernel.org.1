@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-138613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4B8AA194E
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:09:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD36AA199E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B45D3A74A7
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:03:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D51AB4E326C
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104592AE96;
-	Tue, 29 Apr 2025 18:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5825325485C;
+	Tue, 29 Apr 2025 18:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQwSt23F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id1DTPL8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1282243964;
-	Tue, 29 Apr 2025 18:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325E40C03;
+	Tue, 29 Apr 2025 18:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949802; cv=none; b=qPI72izv4pKpGn1pVjj8OJa3slkUKG7AUifnCU5AHnw7i8pdYNw56zeEdFYlNtQH1qUD7nqCsqsJEfdhcc6/IOWbsCp1AUCdym9wfnKyjaCjvuBVEwR4s0kI7J5MDqvo2E1dZzvnw4TiKWEie/+gkfatvwpSqdI7pnL0S+3TVdI=
+	t=1745950303; cv=none; b=UO4FWNbGNJcqIllicl7RXN0F0exgLYckQO3Bvy06yDGryvQdZ7Ml1Mku3SUCtTcmyBob7dMWycQ7lH8aidTjz0BND3Yr5EGj6hJHEneKcS1blIg+lgEeQAxhE6D7Gto0OJG5gbnunNfg6PFsetxVlekFY9gOPLgfXosQzt8a9Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949802; c=relaxed/simple;
-	bh=OiC9x6u+kQ66iRJ1S8VBoJqUyF+QhTCnVsXf3l2nSK0=;
+	s=arc-20240116; t=1745950303; c=relaxed/simple;
+	bh=+8vKhwmAanMqhy6vBzbWPU7xl9FZrOC3IM8cRUPGAec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxUBxIRC6gy1D0vuuWeOvJPahaa52Mxbl0pBl06RrPjc/a2a1j60Al842p+qANhnP3qoKqFjZ1pQAVuFtfDy8+85TXePEF7AUyiOMwORcs3csHXlEcrma/ORgupjEyGO0zb0O/07mDrgrChVO3OzziHHq0/S0M1fgmOxYIa4c/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQwSt23F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D170C4CEE3;
-	Tue, 29 Apr 2025 18:03:22 +0000 (UTC)
+	 MIME-Version; b=h8RELzjshzR49lUxTEWqcKAQqazSHHuo3s3lbzsLWiLcJG+2IolEDfBw9hnk4nDuA7UKEarOOb0wxjTHdWd6T7lPwq54yb7Hji58caN6/+ZI2YIS/f1FDqMDFr3+craG5LR/Yt7lWHgu+5snapHVcjwIWD68CQT2HGUCHLAOsjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id1DTPL8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE74C4CEE3;
+	Tue, 29 Apr 2025 18:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949802;
-	bh=OiC9x6u+kQ66iRJ1S8VBoJqUyF+QhTCnVsXf3l2nSK0=;
+	s=korg; t=1745950302;
+	bh=+8vKhwmAanMqhy6vBzbWPU7xl9FZrOC3IM8cRUPGAec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQwSt23F6PT3t5spd76EI75ZphvRSXU7uShgsAKxQPbOaFIah9UhgdlUI0TcIz8Lx
-	 hw/YYDus3LeT6U+HhHCaKqvvsaE7tbRJjUeVIQgoARuz+IA3Dn/Hkf8W7Kplir1LUx
-	 fsLZw9TjzGqSHD1M00Gd42PlcbZAa+kMUT7/7/VE=
+	b=id1DTPL8gQbUXa5hfK970uMAohj2peZO1/RevlnVOFeACZBQflHy88HRo6+kxfRBm
+	 tDBaT3D3IZ4WLO945oCjyAg8d8WRROs1KuFTsay+W3SoCVc0/grSsAoZshrF79NfKj
+	 64HZsK2K3iyhkiGSEtk1356Hf6XJZPFoBSK/VTcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/167] s390/virtio: sort out physical vs virtual pointers usage
+Subject: [PATCH 6.6 052/204] btrfs: avoid page_lockend underflow in btrfs_punch_hole_lock_range()
 Date: Tue, 29 Apr 2025 18:42:20 +0200
-Message-ID: <20250429161053.053723137@linuxfoundation.org>
+Message-ID: <20250429161101.537626314@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,211 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 5fc5b94a273655128159186c87662105db8afeb5 ]
+[ Upstream commit bc2dbc4983afedd198490cca043798f57c93e9bf ]
 
-This does not fix a real bug, since virtual addresses
-are currently indentical to physical ones.
+[BUG]
+When running btrfs/004 with 4K fs block size and 64K page size,
+sometimes fsstress workload can take 100% CPU for a while, but not long
+enough to trigger a 120s hang warning.
 
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Stable-dep-of: 2ccd42b959aa ("s390/virtio_ccw: Don't allocate/assign airqs for non-existing queues")
+[CAUSE]
+When such 100% CPU usage happens, btrfs_punch_hole_lock_range() is
+always in the call trace.
+
+One example when this problem happens, the function
+btrfs_punch_hole_lock_range() got the following parameters:
+
+  lock_start = 4096, lockend = 20469
+
+Then we calculate @page_lockstart by rounding up lock_start to page
+boundary, which is 64K (page size is 64K).
+
+For @page_lockend, we round down the value towards page boundary, which
+result 0.  Then since we need to pass an inclusive end to
+filemap_range_has_page(), we subtract 1 from the rounded down value,
+resulting in (u64)-1.
+
+In the above case, the range is inside the same page, and we do not even
+need to call filemap_range_has_page(), not to mention to call it with
+(u64)-1 at the end.
+
+This behavior will cause btrfs_punch_hole_lock_range() to busy loop
+waiting for irrelevant range to have its pages dropped.
+
+[FIX]
+Calculate @page_lockend by just rounding down @lockend, without
+decreasing the value by one.  So @page_lockend will no longer overflow.
+
+Then exit early if @page_lockend is no larger than @page_lockstart.
+As it means either the range is inside the same page, or the two pages
+are adjacent already.
+
+Finally only decrease @page_lockend when calling filemap_range_has_page().
+
+Fixes: 0528476b6ac7 ("btrfs: fix the filemap_range_has_page() call in btrfs_punch_hole_lock_range()")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/virtio/virtio_ccw.c | 46 +++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 22 deletions(-)
+ fs/btrfs/file.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/virtio/virtio_ccw.c b/drivers/s390/virtio/virtio_ccw.c
-index a10dbe632ef9b..954fc31b4bc74 100644
---- a/drivers/s390/virtio/virtio_ccw.c
-+++ b/drivers/s390/virtio/virtio_ccw.c
-@@ -363,7 +363,7 @@ static void virtio_ccw_drop_indicator(struct virtio_ccw_device *vcdev,
- 		thinint_area->isc = VIRTIO_AIRQ_ISC;
- 		ccw->cmd_code = CCW_CMD_SET_IND_ADAPTER;
- 		ccw->count = sizeof(*thinint_area);
--		ccw->cda = (__u32)(unsigned long) thinint_area;
-+		ccw->cda = (__u32)virt_to_phys(thinint_area);
- 	} else {
- 		/* payload is the address of the indicators */
- 		indicatorp = ccw_device_dma_zalloc(vcdev->cdev,
-@@ -373,7 +373,7 @@ static void virtio_ccw_drop_indicator(struct virtio_ccw_device *vcdev,
- 		*indicatorp = 0;
- 		ccw->cmd_code = CCW_CMD_SET_IND;
- 		ccw->count = sizeof(indicators(vcdev));
--		ccw->cda = (__u32)(unsigned long) indicatorp;
-+		ccw->cda = (__u32)virt_to_phys(indicatorp);
- 	}
- 	/* Deregister indicators from host. */
- 	*indicators(vcdev) = 0;
-@@ -417,7 +417,7 @@ static int virtio_ccw_read_vq_conf(struct virtio_ccw_device *vcdev,
- 	ccw->cmd_code = CCW_CMD_READ_VQ_CONF;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(struct vq_config_block);
--	ccw->cda = (__u32)(unsigned long)(&vcdev->dma_area->config_block);
-+	ccw->cda = (__u32)virt_to_phys(&vcdev->dma_area->config_block);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_READ_VQ_CONF);
- 	if (ret)
- 		return ret;
-@@ -454,7 +454,7 @@ static void virtio_ccw_del_vq(struct virtqueue *vq, struct ccw1 *ccw)
- 	}
- 	ccw->cmd_code = CCW_CMD_SET_VQ;
- 	ccw->flags = 0;
--	ccw->cda = (__u32)(unsigned long)(info->info_block);
-+	ccw->cda = (__u32)virt_to_phys(info->info_block);
- 	ret = ccw_io_helper(vcdev, ccw,
- 			    VIRTIO_CCW_DOING_SET_VQ | index);
- 	/*
-@@ -556,7 +556,7 @@ static struct virtqueue *virtio_ccw_setup_vq(struct virtio_device *vdev,
- 	}
- 	ccw->cmd_code = CCW_CMD_SET_VQ;
- 	ccw->flags = 0;
--	ccw->cda = (__u32)(unsigned long)(info->info_block);
-+	ccw->cda = (__u32)virt_to_phys(info->info_block);
- 	err = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_SET_VQ | i);
- 	if (err) {
- 		dev_warn(&vcdev->cdev->dev, "SET_VQ failed\n");
-@@ -590,6 +590,7 @@ static int virtio_ccw_register_adapter_ind(struct virtio_ccw_device *vcdev,
- {
- 	int ret;
- 	struct virtio_thinint_area *thinint_area = NULL;
-+	unsigned long indicator_addr;
- 	struct airq_info *info;
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index 68092b64e29ea..e794606e7c780 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -2225,15 +2225,20 @@ static void btrfs_punch_hole_lock_range(struct inode *inode,
+ 	 * will always return true.
+ 	 * So here we need to do extra page alignment for
+ 	 * filemap_range_has_page().
++	 *
++	 * And do not decrease page_lockend right now, as it can be 0.
+ 	 */
+ 	const u64 page_lockstart = round_up(lockstart, PAGE_SIZE);
+-	const u64 page_lockend = round_down(lockend + 1, PAGE_SIZE) - 1;
++	const u64 page_lockend = round_down(lockend + 1, PAGE_SIZE);
  
- 	thinint_area = ccw_device_dma_zalloc(vcdev->cdev,
-@@ -599,21 +600,22 @@ static int virtio_ccw_register_adapter_ind(struct virtio_ccw_device *vcdev,
- 		goto out;
- 	}
- 	/* Try to get an indicator. */
--	thinint_area->indicator = get_airq_indicator(vqs, nvqs,
--						     &thinint_area->bit_nr,
--						     &vcdev->airq_info);
--	if (!thinint_area->indicator) {
-+	indicator_addr = get_airq_indicator(vqs, nvqs,
-+					    &thinint_area->bit_nr,
-+					    &vcdev->airq_info);
-+	if (!indicator_addr) {
- 		ret = -ENOSPC;
- 		goto out;
- 	}
-+	thinint_area->indicator = virt_to_phys((void *)indicator_addr);
- 	info = vcdev->airq_info;
- 	thinint_area->summary_indicator =
--		(unsigned long) get_summary_indicator(info);
-+		virt_to_phys(get_summary_indicator(info));
- 	thinint_area->isc = VIRTIO_AIRQ_ISC;
- 	ccw->cmd_code = CCW_CMD_SET_IND_ADAPTER;
- 	ccw->flags = CCW_FLAG_SLI;
- 	ccw->count = sizeof(*thinint_area);
--	ccw->cda = (__u32)(unsigned long)thinint_area;
-+	ccw->cda = (__u32)virt_to_phys(thinint_area);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_SET_IND_ADAPTER);
- 	if (ret) {
- 		if (ret == -EOPNOTSUPP) {
-@@ -686,7 +688,7 @@ static int virtio_ccw_find_vqs(struct virtio_device *vdev, unsigned nvqs,
- 		ccw->cmd_code = CCW_CMD_SET_IND;
- 		ccw->flags = 0;
- 		ccw->count = sizeof(indicators(vcdev));
--		ccw->cda = (__u32)(unsigned long) indicatorp;
-+		ccw->cda = (__u32)virt_to_phys(indicatorp);
- 		ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_SET_IND);
- 		if (ret)
- 			goto out;
-@@ -697,7 +699,7 @@ static int virtio_ccw_find_vqs(struct virtio_device *vdev, unsigned nvqs,
- 	ccw->cmd_code = CCW_CMD_SET_CONF_IND;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(indicators2(vcdev));
--	ccw->cda = (__u32)(unsigned long) indicatorp;
-+	ccw->cda = (__u32)virt_to_phys(indicatorp);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_SET_CONF_IND);
- 	if (ret)
- 		goto out;
-@@ -759,7 +761,7 @@ static u64 virtio_ccw_get_features(struct virtio_device *vdev)
- 	ccw->cmd_code = CCW_CMD_READ_FEAT;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(*features);
--	ccw->cda = (__u32)(unsigned long)features;
-+	ccw->cda = (__u32)virt_to_phys(features);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_READ_FEAT);
- 	if (ret) {
- 		rc = 0;
-@@ -776,7 +778,7 @@ static u64 virtio_ccw_get_features(struct virtio_device *vdev)
- 	ccw->cmd_code = CCW_CMD_READ_FEAT;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(*features);
--	ccw->cda = (__u32)(unsigned long)features;
-+	ccw->cda = (__u32)virt_to_phys(features);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_READ_FEAT);
- 	if (ret == 0)
- 		rc |= (u64)le32_to_cpu(features->features) << 32;
-@@ -829,7 +831,7 @@ static int virtio_ccw_finalize_features(struct virtio_device *vdev)
- 	ccw->cmd_code = CCW_CMD_WRITE_FEAT;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(*features);
--	ccw->cda = (__u32)(unsigned long)features;
-+	ccw->cda = (__u32)virt_to_phys(features);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_WRITE_FEAT);
- 	if (ret)
- 		goto out_free;
-@@ -843,7 +845,7 @@ static int virtio_ccw_finalize_features(struct virtio_device *vdev)
- 	ccw->cmd_code = CCW_CMD_WRITE_FEAT;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(*features);
--	ccw->cda = (__u32)(unsigned long)features;
-+	ccw->cda = (__u32)virt_to_phys(features);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_WRITE_FEAT);
+ 	while (1) {
+ 		truncate_pagecache_range(inode, lockstart, lockend);
  
- out_free:
-@@ -875,7 +877,7 @@ static void virtio_ccw_get_config(struct virtio_device *vdev,
- 	ccw->cmd_code = CCW_CMD_READ_CONF;
- 	ccw->flags = 0;
- 	ccw->count = offset + len;
--	ccw->cda = (__u32)(unsigned long)config_area;
-+	ccw->cda = (__u32)virt_to_phys(config_area);
- 	ret = ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_READ_CONFIG);
- 	if (ret)
- 		goto out_free;
-@@ -922,7 +924,7 @@ static void virtio_ccw_set_config(struct virtio_device *vdev,
- 	ccw->cmd_code = CCW_CMD_WRITE_CONF;
- 	ccw->flags = 0;
- 	ccw->count = offset + len;
--	ccw->cda = (__u32)(unsigned long)config_area;
-+	ccw->cda = (__u32)virt_to_phys(config_area);
- 	ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_WRITE_CONFIG);
+ 		lock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
+ 			    cached_state);
++		/* The same page or adjacent pages. */
++		if (page_lockend <= page_lockstart)
++			break;
+ 		/*
+ 		 * We can't have ordered extents in the range, nor dirty/writeback
+ 		 * pages, because we have locked the inode's VFS lock in exclusive
+@@ -2245,7 +2250,7 @@ static void btrfs_punch_hole_lock_range(struct inode *inode,
+ 		 * we do, unlock the range and retry.
+ 		 */
+ 		if (!filemap_range_has_page(inode->i_mapping, page_lockstart,
+-					    page_lockend))
++					    page_lockend - 1))
+ 			break;
  
- out_free:
-@@ -946,7 +948,7 @@ static u8 virtio_ccw_get_status(struct virtio_device *vdev)
- 	ccw->cmd_code = CCW_CMD_READ_STATUS;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(vcdev->dma_area->status);
--	ccw->cda = (__u32)(unsigned long)&vcdev->dma_area->status;
-+	ccw->cda = (__u32)virt_to_phys(&vcdev->dma_area->status);
- 	ccw_io_helper(vcdev, ccw, VIRTIO_CCW_DOING_READ_STATUS);
- /*
-  * If the channel program failed (should only happen if the device
-@@ -975,7 +977,7 @@ static void virtio_ccw_set_status(struct virtio_device *vdev, u8 status)
- 	ccw->cmd_code = CCW_CMD_WRITE_STATUS;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(status);
--	ccw->cda = (__u32)(unsigned long)&vcdev->dma_area->status;
-+	ccw->cda = (__u32)virt_to_phys(&vcdev->dma_area->status);
- 	/* We use ssch for setting the status which is a serializing
- 	 * instruction that guarantees the memory writes have
- 	 * completed before ssch.
-@@ -1274,7 +1276,7 @@ static int virtio_ccw_set_transport_rev(struct virtio_ccw_device *vcdev)
- 	ccw->cmd_code = CCW_CMD_SET_VIRTIO_REV;
- 	ccw->flags = 0;
- 	ccw->count = sizeof(*rev);
--	ccw->cda = (__u32)(unsigned long)rev;
-+	ccw->cda = (__u32)virt_to_phys(rev);
- 
- 	vcdev->revision = VIRTIO_CCW_REV_MAX;
- 	do {
+ 		unlock_extent(&BTRFS_I(inode)->io_tree, lockstart, lockend,
 -- 
 2.39.5
 
