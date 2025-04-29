@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-138152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176DDAA171B
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:43:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06AEDAA18C8
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A5A13B8047
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC24B3AAA1A
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90372517AF;
-	Tue, 29 Apr 2025 17:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559361DC988;
+	Tue, 29 Apr 2025 17:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vp++dWzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiYLLBIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F4522DF91;
-	Tue, 29 Apr 2025 17:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1266D2AE96;
+	Tue, 29 Apr 2025 17:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745948330; cv=none; b=S1fbdZ7XoOGCevD/kcJmq5t6z8dz5c9hjLvDqwpZQBwQJVDWXNRCZOruHlrooVOYmoerbl4zaNvAzI3ocwfT9palEyhGyJkoSzCsDeuUld1yCws14lxCCumfiPHudqeTa5xvH0ceTjo99H5UpjnHk/lFW5a8YnLvLwEfCqRQY4A=
+	t=1745949535; cv=none; b=phi19uKeH/4KQr1Nx7FEuj6/YQRJcEhf3NU3FM3fSDF2L5yubcRxO4q2JMhMN4rt4FeYWkyRdFgsP9GUPGYzM1LJwRV6zVW4GBNR2GSKrNvKBN878Ih/zd7S5sG4qaGCGipTqOuBmlLGx2fa5oKf+FEe0kXA7wSouXQZZl+p4wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745948330; c=relaxed/simple;
-	bh=wnEFQU7EI1pc967G9YvhjiLyk67UxBM7u3NLf4AmPWQ=;
+	s=arc-20240116; t=1745949535; c=relaxed/simple;
+	bh=D6Jr4aYGpBQ/Hvs7+N3FEur9gfFoiebulJuuji49jys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DOqrOGt7KCOTmG2sM2x7lgox8ivmFMbCqMZ9VWNVS+eGn+zuMh7ePu/w0MNq7+aumlTZJxI75X7mZUAaGWz3i3sUU848xkHwdPC229cA7mEcwRFvl1ichHwwkDb8B6O8s2Y1rZAdARXv9n7eO46/ttlUziQ1eqQt3lcj3xjrKws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vp++dWzc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA221C4CEE3;
-	Tue, 29 Apr 2025 17:38:49 +0000 (UTC)
+	 MIME-Version; b=iKuyftOSf6Ph1u5o3ixbY0unnRWzPssktYPzlGDXHOfFYXenPKPKV9UdPuypI176z3Q9oTIfDt8Wkoh09IlC2NUtu/tfnP/vT0JEB/JY3yjYrMp1ttVWR5tIEWBfoGdYanu74QlOKj1SMZIO1gOJEb22YtGoQyGZ3UKicDrCps8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiYLLBIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A21C4CEE3;
+	Tue, 29 Apr 2025 17:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745948330;
-	bh=wnEFQU7EI1pc967G9YvhjiLyk67UxBM7u3NLf4AmPWQ=;
+	s=korg; t=1745949534;
+	bh=D6Jr4aYGpBQ/Hvs7+N3FEur9gfFoiebulJuuji49jys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vp++dWzcIoPctYDgjlPi23vhlUjkMaMj9WiwCsc4QDMWc/dyjW5QHdjlIMBYk2aok
-	 3Yk7tuuNHdJ9ud64Wd0K0ApN3FRbJPoOdD5QmNdSviEsU9XiaIVKbWi8ekADRtH6zf
-	 LzipngofWJi8aPUw3ITC4maygSfdPZP/b016bfsw=
+	b=SiYLLBIinLrkT+zXfgwDvfDoRMQZAJvHV4gD6/vYAHR6UyrPFC+SWwCEb9xGo3ILK
+	 lWammM+SoIAU3gh3VjGGSfsNbEgoCF/eRa79B1YqZmUKUKynVVurT9LKw+xS0s1LPy
+	 CPtqLIBcH/KpNj5xUpdgqOQJM+4xE3FP7zKObTT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9=20 ?= <alexis.lothore@bootlin.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.12 255/280] selftests/bpf: fix bpf_map_redirect call for cpu map test
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 5.15 319/373] USB: wdm: handle IO errors in wdm_wwan_port_start
 Date: Tue, 29 Apr 2025 18:43:16 +0200
-Message-ID: <20250429161125.567678902@linuxfoundation.org>
+Message-ID: <20250429161136.240438401@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit ac8d16b2d3772934f4cba44cb01bad05b4b2864c upstream.
+commit 9697f5efcf5fdea65b8390b5eb81bebe746ceedc upstream.
 
-xdp_redir_prog currently redirects packets based on the entry at index 1
-in cpu_map, but the corresponding test only manipulates the entry at
-index 0. This does not really affect the test in its current form since
-the program is detached before having the opportunity to execute, but it
-needs to be fixed before being able improve the corresponding test (ie,
-not only test attach/detach but also the redirect feature)
+In case submitting the URB fails we must undo
+what we've done so far.
 
-Fix this XDP program by making it redirect packets based on entry 0 in
-cpu_map instead of entry 1.
-
-Signed-off-by: Alexis Lothoré (eBPF Foundation) <alexis.lothore@bootlin.com>
-Link: https://lore.kernel.org/r/20241009-convert_xdp_tests-v3-1-51cea913710c@bootlin.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Fixes: cac6fb015f71 ("usb: class: cdc-wdm: WWAN framework integration")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250401084749.175246-2-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_with_cpumap_helpers.c
-@@ -15,7 +15,7 @@ struct {
- SEC("xdp")
- int xdp_redir_prog(struct xdp_md *ctx)
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -829,6 +829,7 @@ static struct usb_class_driver wdm_class
+ static int wdm_wwan_port_start(struct wwan_port *port)
  {
--	return bpf_redirect_map(&cpu_map, 1, 0);
-+	return bpf_redirect_map(&cpu_map, 0, 0);
+ 	struct wdm_device *desc = wwan_port_get_drvdata(port);
++	int rv;
+ 
+ 	/* The interface is both exposed via the WWAN framework and as a
+ 	 * legacy usbmisc chardev. If chardev is already open, just fail
+@@ -848,7 +849,15 @@ static int wdm_wwan_port_start(struct ww
+ 	wwan_port_txon(port);
+ 
+ 	/* Start getting events */
+-	return usb_submit_urb(desc->validity, GFP_KERNEL);
++	rv = usb_submit_urb(desc->validity, GFP_KERNEL);
++	if (rv < 0) {
++		wwan_port_txoff(port);
++		desc->manage_power(desc->intf, 0);
++		/* this must be last lest we race with chardev open */
++		clear_bit(WDM_WWAN_IN_USE, &desc->flags);
++	}
++
++	return rv;
  }
  
- SEC("xdp")
+ static void wdm_wwan_port_stop(struct wwan_port *port)
 
 
 
