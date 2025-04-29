@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-138552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CA9AA18E8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:06:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22801AA1A44
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08BAB9A40B6
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:00:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBD22168133
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546E12512C6;
-	Tue, 29 Apr 2025 18:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AF5245022;
+	Tue, 29 Apr 2025 18:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry7Xx1Lm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mzmBmB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B3C3FFD;
-	Tue, 29 Apr 2025 18:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2078155A4E;
+	Tue, 29 Apr 2025 18:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949614; cv=none; b=cgkxZKzzIPy5JziB3A/X4XzmzgIYDkEO8LdWEyIUSYCTzq62N9EUL6ax5yVQ6YM6gurd8JgRVa9mm5GZhxWyeC9LnWXQgk6pIIy8DNOm+XkfBurRfnKjgok7B5Ei9NAgOZkEROvdMD0uZDSICGGbwHtuj+BvED8PpOCo5kGLbk4=
+	t=1745950749; cv=none; b=j39fVyHOrKTqYfMm6CoRvWJmCfcC+3beRYz/o3XX2a/A/vtfKVjcso3iT+3KRMFN6lfY7Pr1pFvROG1sPChX1AQ7l4f87AFTGXhLtlSQzuK2Nsh+rUpkXYkqllMwXfgO04bcNW12Idvt0QnijfrwTgUb2LQ0D6oXiKRJJirzApA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949614; c=relaxed/simple;
-	bh=Qc9kSb1FQHxbwIDfMnenj8ki59a4aTq3ho15MkJkzyU=;
+	s=arc-20240116; t=1745950749; c=relaxed/simple;
+	bh=2zNklv0WkDYYMAHvEoQHVefNihShRlG9cq+sijKIzPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyF8izLmEIPSX/DHCpTGmsH7AF/vZX1U0RWqj4sPmxXYqYpf/X10xzbLdrijhfTXeaTqwiDeqMSFgKmnNVy72gEzgdQskrhG+vwDuZn5oHJYpjq2o9z+hbFvhYJqLZHHVAGEBEFfX131F+OKnk0wmtwuCTTtaNzQ2bHA8gfJk5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry7Xx1Lm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740ADC4CEE3;
-	Tue, 29 Apr 2025 18:00:13 +0000 (UTC)
+	 MIME-Version; b=McmQlm0bfgMdwrbDltzOw0UZSHxKVgLFDEi3+8CKKET2KlGcN/eE9UgHel3FM4fWkqpbHc2xtuZW1DIp6HGR26OAg4yy82EYivH4oGZKqVN5LSkdjwRoDnZDmI4GFElHqdiaYVw8b6Rryz0fVAgMf11J+jrX4G1i/Ed1cccMHw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mzmBmB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33342C4CEE9;
+	Tue, 29 Apr 2025 18:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949613;
-	bh=Qc9kSb1FQHxbwIDfMnenj8ki59a4aTq3ho15MkJkzyU=;
+	s=korg; t=1745950749;
+	bh=2zNklv0WkDYYMAHvEoQHVefNihShRlG9cq+sijKIzPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry7Xx1LmAI0UoESBXoGq8XCLhxeihTVThcB8n1rXO/xfZU+iGmuLVf3ADyX992/SJ
-	 HPQVm5HOI2ifiVvhcLHiLptHZtrWGHEPmMrn/h3tjYLO8glERNRLhsio+JYuauNE3S
-	 xftn7ikYMMtXdKWEbcNZf8aMWLXdFKgjhHiPccI0=
+	b=1mzmBmB4B6IFUx+kQ9pw1xGtgRbra2Z/guf/XB3HrJgFfdntS7HUtMsKyW+pziJJp
+	 VUYo+CCAH2+53vY9z1B1r0NmWhBC1nfMpwTtMXNGiFejVXXwAM9Mr0hSkKYfBWTr78
+	 MLfDWVH4W+6sEYr7mLL0grPEHPTVgaL5uG7xRy3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Lagerwall <ross.lagerwall@citrix.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.15 373/373] PCI: Release resource invalidated by coalescing
-Date: Tue, 29 Apr 2025 18:44:10 +0200
-Message-ID: <20250429161138.475585812@linuxfoundation.org>
+	Uday Shankar <ushankar@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 163/204] nvme: multipath: fix return value of nvme_available_path
+Date: Tue, 29 Apr 2025 18:44:11 +0200
+Message-ID: <20250429161106.079482956@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Uday Shankar <ushankar@purestorage.com>
 
-commit e54223275ba1bc6f704a6bab015fcd2ae4f72572 upstream.
+[ Upstream commit e3105f54a51554fb1bbf19dcaf93c4411d2d6c8a ]
 
-When contiguous windows are coalesced by pci_register_host_bridge(), the
-second resource is expanded to include the first, and the first is
-invalidated and consequently not added to the bus. However, it remains in
-the resource hierarchy.  For example, these windows:
+The function returns bool so we should return false, not NULL. No
+functional changes are expected.
 
-  fec00000-fec7ffff : PCI Bus 0000:00
-  fec80000-fecbffff : PCI Bus 0000:00
-
-are coalesced into this, where the first resource remains in the tree with
-start/end zeroed out:
-
-  00000000-00000000 : PCI Bus 0000:00
-  fec00000-fecbffff : PCI Bus 0000:00
-
-In some cases (e.g. the Xen scratch region), this causes future calls to
-allocate_resource() to choose an inappropriate location which the caller
-cannot handle.
-
-Fix by releasing the zeroed-out resource and removing it from the resource
-hierarchy.
-
-[bhelgaas: commit log]
-Fixes: 7c3855c423b1 ("PCI: Coalesce host bridge contiguous apertures")
-Link: https://lore.kernel.org/r/20230525153248.712779-1-ross.lagerwall@citrix.com
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org	# v5.16+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/probe.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/host/multipath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -999,8 +999,10 @@ static int pci_register_host_bridge(stru
- 	resource_list_for_each_entry_safe(window, n, &resources) {
- 		offset = window->offset;
- 		res = window->res;
--		if (!res->flags && !res->start && !res->end)
-+		if (!res->flags && !res->start && !res->end) {
-+			release_resource(res);
- 			continue;
-+		}
+diff --git a/drivers/nvme/host/multipath.c b/drivers/nvme/host/multipath.c
+index 32283301199f0..119afdfe4b91e 100644
+--- a/drivers/nvme/host/multipath.c
++++ b/drivers/nvme/host/multipath.c
+@@ -426,7 +426,7 @@ static bool nvme_available_path(struct nvme_ns_head *head)
+ 	struct nvme_ns *ns;
  
- 		list_move_tail(&window->node, &bridge->windows);
+ 	if (!test_bit(NVME_NSHEAD_DISK_LIVE, &head->flags))
+-		return NULL;
++		return false;
  
+ 	list_for_each_entry_srcu(ns, &head->list, siblings,
+ 				 srcu_read_lock_held(&head->srcu)) {
+-- 
+2.39.5
+
 
 
 
