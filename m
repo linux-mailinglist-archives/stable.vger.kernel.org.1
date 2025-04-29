@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-138484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1567AA18A1
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:02:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB366AA167F
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A09593BEA5F
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3EA87A84D6
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0154E2AE96;
-	Tue, 29 Apr 2025 17:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5462244670;
+	Tue, 29 Apr 2025 17:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3Frioay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg9lj8E5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3940215F6C;
-	Tue, 29 Apr 2025 17:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CABE244668;
+	Tue, 29 Apr 2025 17:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745949399; cv=none; b=Vrpc2QRwLQ7KMKurB6RcGk+jB74zZg4UBpSVKeE1wMXtWUvAFfo47rzjxF/Mt96zfc2z5/UDzXkT4bgpGMbLEzeDKYfBSHgfmFhlW2poRtrMWajZ/keJrN/9KXCLzqLy8ob0hua1g6Hm/BEuAiMzLdWQ8ZaG2nx7Pz0Uu0ca45s=
+	t=1745948282; cv=none; b=fqoSwuM9IIHzEtZQO5KSaSV6PiLyuz2JN8NGGuvKYt8EKNtfMto9kSkn22LLGy2kE6OngTvy2AabRMb2S/IHbuSftJsEI9fyIJO8G4xoyleklWXJ58EyEj8+213AbW69tnlXRR/xQnDqVTevl3blaYBW9mtDqC5jhr3RfFYOcoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745949399; c=relaxed/simple;
-	bh=m9Umx7Rmkh+X0HXArvwTOHy1PURza1GjRCPs9Bp9Isw=;
+	s=arc-20240116; t=1745948282; c=relaxed/simple;
+	bh=fvuzA5Y3Qxk9m/9mYT3APlhJrFVGyxX7ZQd3Ra6YsPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q7DHNI1KHCZsNETjvpKQCXty8eOU5RRZZcEz5QRQoNTIPwy+UdqSfRxnxPcypVLaqpHbkftvF+czO2cC+LDVW7z2A5mjWWXJCMBochPyCXPujuEHpdVq7L3kWroSg2ubLlt7W8ShXGF+sn38H00YF5rzCOcoTEPLbJtzeLx3/+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3Frioay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398E0C4CEE3;
-	Tue, 29 Apr 2025 17:56:39 +0000 (UTC)
+	 MIME-Version; b=WXxq58pgoZgUbEzZq+dBlckwt3cP21zM3jOkRfpDM7bHmGgbAsi5OZWWQmhJldRxOhS2jwyCT0Xx9/nK6B5iMHEksAx0QflBdTmv8KAHBThxlhZCbA/jMeUauS2SI1pjz+zhjMVHLEhplvfQdSgeoN/A0Hs1ke3E2GnHRrSxuyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg9lj8E5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5679C4CEE3;
+	Tue, 29 Apr 2025 17:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745949399;
-	bh=m9Umx7Rmkh+X0HXArvwTOHy1PURza1GjRCPs9Bp9Isw=;
+	s=korg; t=1745948282;
+	bh=fvuzA5Y3Qxk9m/9mYT3APlhJrFVGyxX7ZQd3Ra6YsPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3FrioayMqtHMsSayNc56UFLU3fHbtJ6GujxJ7No2qiMhOHd8kqZ3u8Xb+G83ayHJ
-	 SdP+UovGLyGBuDKwU96uqDy6l4QtcKpJY1UWlxgx1NwnwhaH2cmWYxn0n/zRTH9L+f
-	 Xs/Kk15/d/9lp4ZOpFeVQ62FJwWp8uiwWDlpzSPg=
+	b=Zg9lj8E56spXLNg5Q+Vis1YB0LfKdJ73CCd4MhwWMxZNhu53gug48XHvJ5Uuplm+y
+	 v+MNgyk48RyHlK4VJLTXtRulmYJlk2uh3OEMzi2O2a4fZ/YnTXdeqHyoeNlvf9jmfo
+	 jq9SHqQwlI+2CXUG/CWkKRMlEORwOeLmppkWZS20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryo Takakura <ryotkkr98@gmail.com>,
-	Petr Mladek <pmladek@suse.com>,
-	John Ogness <john.ogness@linutronix.de>
-Subject: [PATCH 5.15 306/373] serial: sifive: lock port in startup()/shutdown() callbacks
+	Mostafa Saleh <smostafa@google.com>,
+	Kees Cook <kees@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 242/280] ubsan: Fix panic from test_ubsan_out_of_bounds
 Date: Tue, 29 Apr 2025 18:43:03 +0200
-Message-ID: <20250429161135.703640414@linuxfoundation.org>
+Message-ID: <20250429161125.028201222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
-References: <20250429161123.119104857@linuxfoundation.org>
+In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
+References: <20250429161115.008747050@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Mostafa Saleh <smostafa@google.com>
 
-commit e1ca3ff28ab1e2c1e70713ef3fa7943c725742c3 upstream.
+[ Upstream commit 9b044614be12d78d3a93767708b8d02fb7dfa9b0 ]
 
-startup()/shutdown() callbacks access SIFIVE_SERIAL_IE_OFFS.
-The register is also accessed from write() callback.
+Running lib_ubsan.ko on arm64 (without CONFIG_UBSAN_TRAP) panics the
+kernel:
 
-If console were printing and startup()/shutdown() callback
-gets called, its access to the register could be overwritten.
+[   31.616546] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: test_ubsan_out_of_bounds+0x158/0x158 [test_ubsan]
+[   31.646817] CPU: 3 UID: 0 PID: 179 Comm: insmod Not tainted 6.15.0-rc2 #1 PREEMPT
+[   31.648153] Hardware name: linux,dummy-virt (DT)
+[   31.648970] Call trace:
+[   31.649345]  show_stack+0x18/0x24 (C)
+[   31.650960]  dump_stack_lvl+0x40/0x84
+[   31.651559]  dump_stack+0x18/0x24
+[   31.652264]  panic+0x138/0x3b4
+[   31.652812]  __ktime_get_real_seconds+0x0/0x10
+[   31.653540]  test_ubsan_load_invalid_value+0x0/0xa8 [test_ubsan]
+[   31.654388]  init_module+0x24/0xff4 [test_ubsan]
+[   31.655077]  do_one_initcall+0xd4/0x280
+[   31.655680]  do_init_module+0x58/0x2b4
 
-Add port->lock to startup()/shutdown() callbacks to make sure
-their access to SIFIVE_SERIAL_IE_OFFS is synchronized against
-write() callback.
+That happens because the test corrupts other data in the stack:
+400:   d5384108        mrs     x8, sp_el0
+404:   f9426d08        ldr     x8, [x8, #1240]
+408:   f85f83a9        ldur    x9, [x29, #-8]
+40c:   eb09011f        cmp     x8, x9
+410:   54000301        b.ne    470 <test_ubsan_out_of_bounds+0x154>  // b.any
 
-Fixes: 45c054d0815b ("tty: serial: add driver for the SiFive UART")
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Rule: add
-Link: https://lore.kernel.org/stable/20250330003522.386632-1-ryotkkr98%40gmail.com
-Link: https://lore.kernel.org/r/20250412001847.183221-1-ryotkkr98@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As there is no guarantee the compiler will order the local variables
+as declared in the module:
+        volatile char above[4] = { }; /* Protect surrounding memory. */
+        volatile int arr[4];
+        volatile char below[4] = { }; /* Protect surrounding memory. */
+
+There is another problem where the out-of-bound index is 5 which is larger
+than the extra surrounding memory for protection.
+
+So, use a struct to enforce the ordering, and fix the index to be 4.
+Also, remove some of the volatiles and rely on OPTIMIZER_HIDE_VAR()
+
+Signed-off-by: Mostafa Saleh <smostafa@google.com>
+Link: https://lore.kernel.org/r/20250415203354.4109415-1-smostafa@google.com
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sifive.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/test_ubsan.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/sifive.c
-+++ b/drivers/tty/serial/sifive.c
-@@ -595,8 +595,11 @@ static void sifive_serial_break_ctl(stru
- static int sifive_serial_startup(struct uart_port *port)
+diff --git a/lib/test_ubsan.c b/lib/test_ubsan.c
+index 5d7b10e986107..63b7566e78639 100644
+--- a/lib/test_ubsan.c
++++ b/lib/test_ubsan.c
+@@ -68,18 +68,22 @@ static void test_ubsan_shift_out_of_bounds(void)
+ 
+ static void test_ubsan_out_of_bounds(void)
  {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
+-	volatile int i = 4, j = 5, k = -1;
+-	volatile char above[4] = { }; /* Protect surrounding memory. */
+-	volatile int arr[4];
+-	volatile char below[4] = { }; /* Protect surrounding memory. */
++	int i = 4, j = 4, k = -1;
++	volatile struct {
++		char above[4]; /* Protect surrounding memory. */
++		int arr[4];
++		char below[4]; /* Protect surrounding memory. */
++	} data;
  
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_enable_rxwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
+-	above[0] = below[0];
++	OPTIMIZER_HIDE_VAR(i);
++	OPTIMIZER_HIDE_VAR(j);
++	OPTIMIZER_HIDE_VAR(k);
  
- 	return 0;
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "above");
+-	arr[j] = i;
++	data.arr[j] = i;
+ 
+ 	UBSAN_TEST(CONFIG_UBSAN_BOUNDS, "below");
+-	arr[k] = i;
++	data.arr[k] = i;
  }
-@@ -604,9 +607,12 @@ static int sifive_serial_startup(struct
- static void sifive_serial_shutdown(struct uart_port *port)
- {
- 	struct sifive_serial_port *ssp = port_to_sifive_serial_port(port);
-+	unsigned long flags;
  
-+	uart_port_lock_irqsave(&ssp->port, &flags);
- 	__ssp_disable_rxwm(ssp);
- 	__ssp_disable_txwm(ssp);
-+	uart_port_unlock_irqrestore(&ssp->port, flags);
- }
- 
- /**
+ enum ubsan_test_enum {
+-- 
+2.39.5
+
 
 
 
