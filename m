@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-138022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D478BAA163D
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:35:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A406AA13EF
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A7271BC52FC
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F27819213A0
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC9F2528F1;
-	Tue, 29 Apr 2025 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE5C2459E1;
+	Tue, 29 Apr 2025 17:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMODK/qE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q57r4qvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389CD2512C0;
-	Tue, 29 Apr 2025 17:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFAA8211A0B;
+	Tue, 29 Apr 2025 17:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947868; cv=none; b=jCpEwcBBPPwY9JK1vmlceQL6r50+MrgfaR1r+Noda7ABEeP2vobLr/D77An7gqUkg8ntOE2peZPt0SyIbRn+UL9YJY0LWAnmiGtZvkfH7c8pGbsF6ePF4/tTViMhXCb3qktfov09KrawiU9myTxGKlPSFy7OxoOtRPXHl8XVpAk=
+	t=1745946329; cv=none; b=ZkA1uZs2uuTWJcWb4lo7jpFkbQoA7z4B4Bp/cQ3HXuUaKmG5qAcVcn3Vpk7JKMMROSV0TxmN8c6CQu9zFOiGSub5jCzM83BCOCyjte+NRTW4HmaFGCbmp8lBd0Pe9T7JgpxuYRNheGdKxSFvot7AKvLSq0c/kHEBvnCb03dp9x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947868; c=relaxed/simple;
-	bh=JsyBuK7280POxxpA7eDPmd+3QaZhrrV1YXGC3UKU+Vg=;
+	s=arc-20240116; t=1745946329; c=relaxed/simple;
+	bh=M5dgp+PX5OutkYuzBYqMtxSytw4IXZYMB3KHpnv9UWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AugFnpTfx3Wo7qRvskbUF9bPzNY++P3SfetGxhwbmqMRj4GRbfmf7TlG5K5jvtV8IVCHQtHOLvCpAmSuMoKZCi1i7u1Bvc7aNcisqR5Ah8n1vXoUaBgT37EM4Rn/LIn8M3y31h6GZ7N/viq19JpVYV6oId14CT5KqPrOZBXLSIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMODK/qE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA32EC4CEE3;
-	Tue, 29 Apr 2025 17:31:07 +0000 (UTC)
+	 MIME-Version; b=WTIVEtPSri5CEG/3Mvf4oe9IZMG0kxhYqjIzuRGRUrjzvDzBiYtR6tTHxdTlHuLYsy68t/qK13P67W4VI5WRgxlDgLd5VC0wEX7fNVqf3TF8iIV09uU8CbMXHhJeIjwWD0erq38UesfpjKYJpxsNk08IEL4AJeN0q6n2/jMwU2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q57r4qvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511F5C4CEE3;
+	Tue, 29 Apr 2025 17:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947868;
-	bh=JsyBuK7280POxxpA7eDPmd+3QaZhrrV1YXGC3UKU+Vg=;
+	s=korg; t=1745946328;
+	bh=M5dgp+PX5OutkYuzBYqMtxSytw4IXZYMB3KHpnv9UWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMODK/qEAzJMJaZBFAKLC8EVpnTbe8ViDddTcclH62mT1dwlID6sGsWQ8WO5xJ19Q
-	 /LVWzlbm+CO3Y92sHFBWyh2Hc14pU6Cb+Atla5721+DzRqwNXYAPXvzLrEUbn8cmYV
-	 OQbx3aWunK7y0OIY8VxgjAeUWCfV7gTRzpOq709U=
+	b=Q57r4qvY8htY/bNUqbh+zpupJ7AbAnmcgY8UAWNGh5yv+v64gluljJMrn5Qm63MjZ
+	 LY90z2TShwUcKwxd1Sz+E/TBXqNTc/eA++AEhVCl5Dc8hbfAtjf/DRsPsa6ts1LzHS
+	 jGHav0A0AYLWtWu9LtudvNIW+3Qy7kqwvQgW8kkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Rengarajan S <rengarajan.s@microchip.com>
-Subject: [PATCH 6.12 127/280] misc: microchip: pci1xxxx: Fix Kernel panic during IRQ handler registration
+	syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com,
+	syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com,
+	Ignacio Encinas <ignacio@iencinas.com>,
+	Dominique Martinet <asmadeus@codewreck.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 231/311] 9p/trans_fd: mark concurrent read and writes to p9_conn->err
 Date: Tue, 29 Apr 2025 18:41:08 +0200
-Message-ID: <20250429161120.320629206@linuxfoundation.org>
+Message-ID: <20250429161130.493977290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161115.008747050@linuxfoundation.org>
-References: <20250429161115.008747050@linuxfoundation.org>
+In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
+References: <20250429161121.011111832@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rengarajan S <rengarajan.s@microchip.com>
+From: Ignacio Encinas <ignacio@iencinas.com>
 
-commit 18eb77c75ed01439f96ae5c0f33461eb5134b907 upstream.
+[ Upstream commit fbc0283fbeae27b88448c90305e738991457fee2 ]
 
-Resolve kernel panic while accessing IRQ handler associated with the
-generated IRQ. This is done by acquiring the spinlock and storing the
-current interrupt state before handling the interrupt request using
-generic_handle_irq.
+Writes for the error value of a connection are spinlock-protected inside
+p9_conn_cancel, but lockless reads are present elsewhere to avoid
+performing unnecessary work after an error has been met.
 
-A previous fix patch was submitted where 'generic_handle_irq' was
-replaced with 'handle_nested_irq'. However, this change also causes
-the kernel panic where after determining which GPIO triggered the
-interrupt and attempting to call handle_nested_irq with the mapped
-IRQ number, leads to a failure in locating the registered handler.
+Mark the write and lockless reads to make KCSAN happy. Mark the write as
+exclusive following the recommendation in "Lock-Protected Writes with
+Lockless Reads" in tools/memory-model/Documentation/access-marking.txt
+while we are at it.
 
-Fixes: 194f9f94a516 ("misc: microchip: pci1xxxx: Resolve kernel panic during GPIO IRQ handling")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
-Link: https://lore.kernel.org/r/20250313170856.20868-2-rengarajan.s@microchip.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Mark p9_fd_request and p9_conn_cancel m->err reads despite the fact that
+they do not race with concurrent writes for stylistic reasons.
+
+Reported-by: syzbot+d69a7cc8c683c2cb7506@syzkaller.appspotmail.com
+Reported-by: syzbot+483d6c9b9231ea7e1851@syzkaller.appspotmail.com
+Signed-off-by: Ignacio Encinas <ignacio@iencinas.com>
+Message-ID: <20250318-p9_conn_err_benign_data_race-v3-1-290bb18335cc@iencinas.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/9p/trans_fd.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
-+++ b/drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gpio.c
-@@ -37,6 +37,7 @@
- struct pci1xxxx_gpio {
- 	struct auxiliary_device *aux_dev;
- 	void __iomem *reg_base;
-+	raw_spinlock_t wa_lock;
- 	struct gpio_chip gpio;
- 	spinlock_t lock;
- 	int irq_base;
-@@ -254,6 +255,7 @@ static irqreturn_t pci1xxxx_gpio_irq_han
- 	struct pci1xxxx_gpio *priv = dev_id;
- 	struct gpio_chip *gc =  &priv->gpio;
- 	unsigned long int_status = 0;
-+	unsigned long wa_flags;
- 	unsigned long flags;
- 	u8 pincount;
- 	int bit;
-@@ -277,7 +279,9 @@ static irqreturn_t pci1xxxx_gpio_irq_han
- 			writel(BIT(bit), priv->reg_base + INTR_STATUS_OFFSET(gpiobank));
- 			spin_unlock_irqrestore(&priv->lock, flags);
- 			irq = irq_find_mapping(gc->irq.domain, (bit + (gpiobank * 32)));
--			handle_nested_irq(irq);
-+			raw_spin_lock_irqsave(&priv->wa_lock, wa_flags);
-+			generic_handle_irq(irq);
-+			raw_spin_unlock_irqrestore(&priv->wa_lock, wa_flags);
- 		}
+diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
+index 196060dc6138a..791e4868f2d4e 100644
+--- a/net/9p/trans_fd.c
++++ b/net/9p/trans_fd.c
+@@ -191,12 +191,13 @@ static void p9_conn_cancel(struct p9_conn *m, int err)
+ 
+ 	spin_lock(&m->req_lock);
+ 
+-	if (m->err) {
++	if (READ_ONCE(m->err)) {
+ 		spin_unlock(&m->req_lock);
+ 		return;
  	}
- 	spin_lock_irqsave(&priv->lock, flags);
+ 
+-	m->err = err;
++	WRITE_ONCE(m->err, err);
++	ASSERT_EXCLUSIVE_WRITER(m->err);
+ 
+ 	list_for_each_entry_safe(req, rtmp, &m->req_list, req_list) {
+ 		list_move(&req->req_list, &cancel_list);
+@@ -283,7 +284,7 @@ static void p9_read_work(struct work_struct *work)
+ 
+ 	m = container_of(work, struct p9_conn, rq);
+ 
+-	if (m->err < 0)
++	if (READ_ONCE(m->err) < 0)
+ 		return;
+ 
+ 	p9_debug(P9_DEBUG_TRANS, "start mux %p pos %zd\n", m, m->rc.offset);
+@@ -450,7 +451,7 @@ static void p9_write_work(struct work_struct *work)
+ 
+ 	m = container_of(work, struct p9_conn, wq);
+ 
+-	if (m->err < 0) {
++	if (READ_ONCE(m->err) < 0) {
+ 		clear_bit(Wworksched, &m->wsched);
+ 		return;
+ 	}
+@@ -622,7 +623,7 @@ static void p9_poll_mux(struct p9_conn *m)
+ 	__poll_t n;
+ 	int err = -ECONNRESET;
+ 
+-	if (m->err < 0)
++	if (READ_ONCE(m->err) < 0)
+ 		return;
+ 
+ 	n = p9_fd_poll(m->client, NULL, &err);
+@@ -665,6 +666,7 @@ static void p9_poll_mux(struct p9_conn *m)
+ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+ {
+ 	__poll_t n;
++	int err;
+ 	struct p9_trans_fd *ts = client->trans;
+ 	struct p9_conn *m = &ts->conn;
+ 
+@@ -673,9 +675,10 @@ static int p9_fd_request(struct p9_client *client, struct p9_req_t *req)
+ 
+ 	spin_lock(&m->req_lock);
+ 
+-	if (m->err < 0) {
++	err = READ_ONCE(m->err);
++	if (err < 0) {
+ 		spin_unlock(&m->req_lock);
+-		return m->err;
++		return err;
+ 	}
+ 
+ 	WRITE_ONCE(req->status, REQ_STATUS_UNSENT);
+-- 
+2.39.5
+
 
 
 
