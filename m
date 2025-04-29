@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-137466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9498EAA1387
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:07:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E25AA1204
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:48:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 584744C3161
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:03:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3E807A7F24
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 16:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3596E2528FC;
-	Tue, 29 Apr 2025 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3624246326;
+	Tue, 29 Apr 2025 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXrHl/oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0rG86e5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E560582C60;
-	Tue, 29 Apr 2025 17:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6158A24466C;
+	Tue, 29 Apr 2025 16:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745946149; cv=none; b=hTP6Cl5/gOYHjbOuBxWxMHuV+mvQ9CQ9WqFS6UHwYH154mwpAsHJ9f1OHYxTixA1UTEDd+Ov21mjEro+NIPWzc8gkgS15B/ut7a7wB5H1QN25f9sYZbIYGu2PxBlPkO2s1pb1Qmhejy7G17ctljzeA9onEsryJ/8A3H+KBMwLas=
+	t=1745945300; cv=none; b=Zo34OVU6QkQ08t9M3JWAQ8o1GSYhdVPfRyx7aXCkbuN4gxgAj1sF9U7Cdr7P7QREAUJwJcoFqljZ71LgZCaa58VaUVaMvpGaZu8WUvKy77BLr5+RHtssRC80Fz1ctWzcOWX7XDVVSmKlRjdskwl2K0sGcMIa+5koEiqQgNi1jp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745946149; c=relaxed/simple;
-	bh=a/OyIXTUuEMXr9SIdeywt6hVL+UlUdh5myPtHAio6/s=;
+	s=arc-20240116; t=1745945300; c=relaxed/simple;
+	bh=xLLaqyeoFYA9ZcSqame/gCXygz/tIvQv4X0ShTJSIaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlK8a9WIFdtGBQrUTbe+va4Q096KBxyR8Do06KkFJuZiH1IPLM9TOKt2QDclpZ60MzJFOU4DrDheIb8w5UtimsiZ26UufR+eXqUsX9Z/uPshb9xKzOZrPvNoHNuvaeYlwIshNJ1Hntm5a34Ow6TBwWwnliYY+ZyTlS3lZJUpggE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXrHl/oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D35BC4CEE3;
-	Tue, 29 Apr 2025 17:02:28 +0000 (UTC)
+	 MIME-Version; b=ozjVqZKBO3WxbK2mC5Nzh79gdd7XHslkeM9hOHqoh0KEOhm4WM57VqO1/AQDF9jNd6ZCyEvC6pAj4ArZ4xrMehjSOa71rK8TDoW81iHa415cTpIfuxu66L1ASQWj3GILQCwt7bllTYPwLDF4pVI7QXWk/d/+SFtDehwqGiTdqr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0rG86e5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF264C4CEE9;
+	Tue, 29 Apr 2025 16:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745946148;
-	bh=a/OyIXTUuEMXr9SIdeywt6hVL+UlUdh5myPtHAio6/s=;
+	s=korg; t=1745945300;
+	bh=xLLaqyeoFYA9ZcSqame/gCXygz/tIvQv4X0ShTJSIaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXrHl/oJ+l07o2IHKhCZXpgvZCubeUpO2FkTJkDDpu5oMVkJDlH/k80aaYokrPO+q
-	 vaaL9XhhoUxCVWzfoZMwqB6U2AK/czhN/5wwWzzl4ujzLQUsLpvxUx40v0IeksSn7C
-	 pB2YCvUkmI97JhbOgtIXbMSzKSx8UMNH6NLThN0U=
+	b=r0rG86e53Xki/2JrvNEpe6En57Y7Vd8kNE/9Np+EGYj2y9OsToXSSlKAKtC91Ts/h
+	 C56HUfUNLYmJRhVkxreB9HJlXV09s9Q0L1N6DiWJAhq75mFlWR7h4uq0ZDA3LVBwRD
+	 WzEa3CD04vwTvyBEx4sQeDbayJGxmH4zQZxT0BMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>
-Subject: [PATCH 6.14 171/311] usb: typec: class: Invalidate USB device pointers on partner unregistration
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 067/179] mm: add missing release barrier on PGDAT_RECLAIM_LOCKED unlock
 Date: Tue, 29 Apr 2025 18:40:08 +0200
-Message-ID: <20250429161128.038251891@linuxfoundation.org>
+Message-ID: <20250429161052.132059414@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161121.011111832@linuxfoundation.org>
-References: <20250429161121.011111832@linuxfoundation.org>
+In-Reply-To: <20250429161049.383278312@linuxfoundation.org>
+References: <20250429161049.383278312@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +73,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 
-commit 66e1a887273c6b89f09bc11a40d0a71d5a081a8e upstream.
+commit c0ebbb3841e07c4493e6fe351698806b09a87a37 upstream.
 
-To avoid using invalid USB device pointers after a Type-C partner
-disconnects, this patch clears the pointers upon partner unregistration.
-This ensures a clean state for future connections.
+The PGDAT_RECLAIM_LOCKED bit is used to provide mutual exclusion of node
+reclaim for struct pglist_data using a single bit.
 
-Cc: stable@vger.kernel.org
-Fixes: 59de2a56d127 ("usb: typec: Link enumerated USB devices with Type-C partner")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250321143728.4092417-3-akuchynski@chromium.org
+It is "locked" with a test_and_set_bit (similarly to a try lock) which
+provides full ordering with respect to loads and stores done within
+__node_reclaim().
+
+It is "unlocked" with clear_bit(), which does not provide any ordering
+with respect to loads and stores done before clearing the bit.
+
+The lack of clear_bit() memory ordering with respect to stores within
+__node_reclaim() can cause a subsequent CPU to fail to observe stores from
+a prior node reclaim.  This is not an issue in practice on TSO (e.g.
+x86), but it is an issue on weakly-ordered architectures (e.g.  arm64).
+
+Fix this by using clear_bit_unlock rather than clear_bit to clear
+PGDAT_RECLAIM_LOCKED with a release memory ordering semantic.
+
+This provides stronger memory ordering (release rather than relaxed).
+
+Link: https://lkml.kernel.org/r/20250312141014.129725-1-mathieu.desnoyers@efficios.com
+Fixes: d773ed6b856a ("mm: test and set zone reclaim lock before starting reclaim")
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Andrea Parri <parri.andrea@gmail.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jade Alglave <j.alglave@ucl.ac.uk>
+Cc: Luc Maranget <luc.maranget@inria.fr>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ mm/vmscan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -1086,10 +1086,14 @@ void typec_unregister_partner(struct typ
- 	port = to_typec_port(partner->dev.parent);
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4331,7 +4331,7 @@ int node_reclaim(struct pglist_data *pgd
+ 		return NODE_RECLAIM_NOSCAN;
  
- 	mutex_lock(&port->partner_link_lock);
--	if (port->usb2_dev)
-+	if (port->usb2_dev) {
- 		typec_partner_unlink_device(partner, port->usb2_dev);
--	if (port->usb3_dev)
-+		port->usb2_dev = NULL;
-+	}
-+	if (port->usb3_dev) {
- 		typec_partner_unlink_device(partner, port->usb3_dev);
-+		port->usb3_dev = NULL;
-+	}
+ 	ret = __node_reclaim(pgdat, gfp_mask, order);
+-	clear_bit(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
++	clear_bit_unlock(PGDAT_RECLAIM_LOCKED, &pgdat->flags);
  
- 	device_unregister(&partner->dev);
- 	mutex_unlock(&port->partner_link_lock);
+ 	if (!ret)
+ 		count_vm_event(PGSCAN_ZONE_RECLAIM_FAILED);
 
 
 
