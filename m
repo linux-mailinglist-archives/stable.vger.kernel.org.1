@@ -1,56 +1,89 @@
-Return-Path: <stable+bounces-137861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630F1AA156C
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:27:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1B91AA181D
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 19:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08A501887947
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B89BF1BC5A3E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 17:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8D62522B4;
-	Tue, 29 Apr 2025 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FC5253348;
+	Tue, 29 Apr 2025 17:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwpwF7Lb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAsGh7aq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A90724E000;
-	Tue, 29 Apr 2025 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B85253F21;
+	Tue, 29 Apr 2025 17:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745947353; cv=none; b=QuyVmVWV0/90r45UdOeXAytL06VIGG8kzKAm/NzVxtjZQKcCveePVpDZ8eTa52hpiCFe2OoPAgxeKyvZUTsk4dlNNb46P0avNFF6tawg6tN67tAsdw8cwZuG7zlawe7HKMvZTeJpC4EQUb21Sf46ms4Z6FvNs5CeVcJWYUL5W60=
+	t=1745949339; cv=none; b=c8v0jStB5WAb2tw2gXh+3jQ4gFI0JOzLpcWGu+6lMOpYFTTeLBIujJVdrofQAPUhcdZUl0M/7LwaX6bnDt1uVg7ggk5hDXna0mBSlaou2lAvfAZZyUsuqkVlK1PjUtrkeOb4eJJQ4mdjiEYlD0iY2WL/b2hnd5QQ/N0WZW+dch0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745947353; c=relaxed/simple;
-	bh=t30eBTavlueM0VqzB8OBefmkxGcD4mYNPjqclQvbAWE=;
+	s=arc-20240116; t=1745949339; c=relaxed/simple;
+	bh=NVGufydM4TklOuB9f+NCGplCNnj1VYmHipZt+nlGoqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfaGlY5coDOpAojCcsHWBburfSSxPNzSG7uuPrPDEydiXJNkAhsrFj8zx3e1L/nR+FXchfzYKJJjb8FEYvIaC5OG1w/bK7B3okIpMwTS4XUMEM26WsdWchKD0J6Vw4yl929ru6OopCojb0RocC6tZ+cxaNJR7vPcVX7m2mjzRM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwpwF7Lb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE532C4CEE3;
-	Tue, 29 Apr 2025 17:22:32 +0000 (UTC)
+	 MIME-Version; b=ot9647g9rrYoxZSsPu2a4Xjz83wdo5SopFSwKl8IpG0LN9f1nC0MOpsqL0wvNC/VqaBqiyql1V8TlblYrkziYHhCXxdSdOJVHY184uTxo6RpWbNIiEhZeaEG7pSJXFXYP9dCFbkjZC55S3y1I9gftj/qDR6qJMg3HmyP0iYO51w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAsGh7aq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFDFC4CEE3;
+	Tue, 29 Apr 2025 17:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745947353;
-	bh=t30eBTavlueM0VqzB8OBefmkxGcD4mYNPjqclQvbAWE=;
+	s=korg; t=1745949339;
+	bh=NVGufydM4TklOuB9f+NCGplCNnj1VYmHipZt+nlGoqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwpwF7Lblhs1NI2aJib5WBFAEVlyqj94r/K0vULON6lG1uad+5jpoROTeDFzBQ083
-	 oYD9rmygMTTu8SeT34KgUkN6LTSCurziDxvbGY9zMQ7qjTlfBZq9hEoLM+g1O9idx0
-	 7glQNW7U4/cmnFisrtQ93wM+3qpeg4LfySrPVZoM=
+	b=ZAsGh7aqUQWP6bQwllBDfDqnJenCptWVkwH+TjLgz6o6snhBPBQRy0D1gqx5CA2kQ
+	 ABC8H1jurowUfdCLVbY3VkRNUPAKS0qPuwJnRk3LRFcAUBNE1Q1eHxjSqo7x29vW9T
+	 rICEaacsYoxPk7zGBeEbPKRIYVwlvyi7HUZGK3Z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Alexander Potapenko <glider@google.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Konovalov <andreyknvl@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Borislav Petkov <bp@alien8.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Christoph Lameter <cl@linux.com>,
+	David Rientjes <rientjes@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Kees Cook <keescook@chromium.org>,
+	Marco Elver <elver@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 253/286] MIPS: cm: Detect CM quirks from device tree
+Subject: [PATCH 5.15 280/373] kmsan: disable strscpy() optimization under KMSAN
 Date: Tue, 29 Apr 2025 18:42:37 +0200
-Message-ID: <20250429161118.328609307@linuxfoundation.org>
+Message-ID: <20250429161134.634442961@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161107.848008295@linuxfoundation.org>
-References: <20250429161107.848008295@linuxfoundation.org>
+In-Reply-To: <20250429161123.119104857@linuxfoundation.org>
+References: <20250429161123.119104857@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +95,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory CLEMENT <gregory.clement@bootlin.com>
+From: Alexander Potapenko <glider@google.com>
 
-[ Upstream commit e27fbe16af5cfc40639de4ced67d1a866a1953e9 ]
+[ Upstream commit 2de6f3bf75058e35eff04e6fab7ca41533bdb027 ]
 
-Some information that should be retrieved at runtime for the Coherence
-Manager can be either absent or wrong. This patch allows checking if
-some of this information is available from the device tree and updates
-the internal variable accordingly.
+Disable the efficient 8-byte reading under KMSAN to avoid false positives.
 
-For now, only the compatible string associated with the broken HCI is
-being retrieved.
-
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lkml.kernel.org/r/20220915150417.722975-26-glider@google.com
+Signed-off-by: Alexander Potapenko <glider@google.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Konovalov <andreyknvl@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Eric Biggers <ebiggers@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d94c12bd97d5 ("string: Add load_unaligned_zeropad() code path to sized_strscpy()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mips-cm.h | 22 ++++++++++++++++++++++
- arch/mips/kernel/mips-cm.c      | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ lib/string.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/mips/include/asm/mips-cm.h b/arch/mips/include/asm/mips-cm.h
-index 696b40beb774f..0f31324998c0a 100644
---- a/arch/mips/include/asm/mips-cm.h
-+++ b/arch/mips/include/asm/mips-cm.h
-@@ -47,6 +47,16 @@ extern phys_addr_t __mips_cm_phys_base(void);
-  */
- extern int mips_cm_is64;
- 
-+/*
-+ * mips_cm_is_l2_hci_broken  - determine if HCI is broken
-+ *
-+ * Some CM reports show that Hardware Cache Initialization is
-+ * complete, but in reality it's not the case. They also incorrectly
-+ * indicate that Hardware Cache Initialization is supported. This
-+ * flags allows warning about this broken feature.
-+ */
-+extern bool mips_cm_is_l2_hci_broken;
-+
- /**
-  * mips_cm_error_report - Report CM cache errors
-  */
-@@ -85,6 +95,18 @@ static inline bool mips_cm_present(void)
+diff --git a/lib/string.c b/lib/string.c
+index b2de45a581f4f..9fb9be19a95d7 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -202,6 +202,14 @@ ssize_t strscpy(char *dest, const char *src, size_t count)
+ 		max = 0;
  #endif
- }
  
-+/**
-+ * mips_cm_update_property - update property from the device tree
-+ *
-+ * Retrieve the properties from the device tree if a CM node exist and
-+ * update the internal variable based on this.
-+ */
-+#ifdef CONFIG_MIPS_CM
-+extern void mips_cm_update_property(void);
-+#else
-+static void mips_cm_update_property(void) {}
-+#endif
++	/*
++	 * read_word_at_a_time() below may read uninitialized bytes after the
++	 * trailing zero and use them in comparisons. Disable this optimization
++	 * under KMSAN to prevent false positive reports.
++	 */
++	if (IS_ENABLED(CONFIG_KMSAN))
++		max = 0;
 +
- /**
-  * mips_cm_has_l2sync - determine whether an L2-only sync region is present
-  *
-diff --git a/arch/mips/kernel/mips-cm.c b/arch/mips/kernel/mips-cm.c
-index 72c8374a39002..a0d9cde26dc5b 100644
---- a/arch/mips/kernel/mips-cm.c
-+++ b/arch/mips/kernel/mips-cm.c
-@@ -5,6 +5,7 @@
-  */
+ 	while (max >= sizeof(unsigned long)) {
+ 		unsigned long c, data;
  
- #include <linux/errno.h>
-+#include <linux/of.h>
- #include <linux/percpu.h>
- #include <linux/spinlock.h>
- 
-@@ -14,6 +15,7 @@
- void __iomem *mips_gcr_base;
- void __iomem *mips_cm_l2sync_base;
- int mips_cm_is64;
-+bool mips_cm_is_l2_hci_broken;
- 
- static char *cm2_tr[8] = {
- 	"mem",	"gcr",	"gic",	"mmio",
-@@ -238,6 +240,18 @@ static void mips_cm_probe_l2sync(void)
- 	mips_cm_l2sync_base = ioremap(addr, MIPS_CM_L2SYNC_SIZE);
- }
- 
-+void mips_cm_update_property(void)
-+{
-+	struct device_node *cm_node;
-+
-+	cm_node = of_find_compatible_node(of_root, NULL, "mobileye,eyeq6-cm");
-+	if (!cm_node)
-+		return;
-+	pr_info("HCI (Hardware Cache Init for the L2 cache) in GCR_L2_RAM_CONFIG from the CM3 is broken");
-+	mips_cm_is_l2_hci_broken = true;
-+	of_node_put(cm_node);
-+}
-+
- int mips_cm_probe(void)
- {
- 	phys_addr_t addr;
 -- 
 2.39.5
 
