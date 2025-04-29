@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-138698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-138915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34143AA1928
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:08:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083AEAA1A52
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 20:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB086188E9A8
-	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:08:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F1A4A258E
+	for <lists+stable@lfdr.de>; Tue, 29 Apr 2025 18:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63C8924633C;
-	Tue, 29 Apr 2025 18:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE56254861;
+	Tue, 29 Apr 2025 18:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlGWlGy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEfJP9BS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD9322AE68;
-	Tue, 29 Apr 2025 18:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EC2254B0E;
+	Tue, 29 Apr 2025 18:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745950069; cv=none; b=sKysjbaNsRsKl3XDxYrgf5GUK6IkZGuXsSZXx+BIyoKR4PnS04aJmkxDzFgz1F10Wo8u4lpUOHl7W4Q0pWZlx9dEMgJGHxTJK8ZfmbBk7vUHMHg2XvzH8Yut4NyR4/67M+ODYxm1lMp6UwhlSJGNyS2KHLHwBuZ/VnEXhxZOD4M=
+	t=1745950760; cv=none; b=SAY/Mi+0FcIa0mt/rrCOQTT10U1VcjSc4qW/3YdmQOF0Iexgh2pzoAzL4T47JE1cdBPPaxSl5ZMxnQT8vmrRCMAYw7ZzbHQr6PHvvP/l7xO72AKZf4Epg4Vbcv5TAEtbUoHWzXFEHgu7+jVj9ehjscs4hGp6LUgG5WY1r6Dx6WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745950069; c=relaxed/simple;
-	bh=bOkFb9H0aKWhniY//yVxLL5DTlPQ8nKmd0cq42JfwCA=;
+	s=arc-20240116; t=1745950760; c=relaxed/simple;
+	bh=W1PSbjRX385k4I3J7TGdMZNsgQjIkOp52ZhvW+YgQBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Up9Q6+9HCJC9BC7wBssyhl7OQ7PEPo5sIeW579wAUUZm/bZ4aLP8Ol0uQ1hdSoty2RuunYCyh9txd8tRK4OVMmCledc0rePm05xiawYcokKhMTtnzwE1k6YT4jJEReN+FKZ52Tkx38pWBdrhlWuq7ar2FOdg41wcmMU+40rASNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlGWlGy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088AAC4CEE3;
-	Tue, 29 Apr 2025 18:07:47 +0000 (UTC)
+	 MIME-Version; b=ZyyLvklIh53l4+BHKTw57YQRjYxvQSS/epAppwMLbjaUC26wEJ47uH9cVSZWgkS5vkQElsxUsdxCNJFBObRHGM7nraO6OeCoccL0JcmNL0N5HaotfKegXU6TJnUAPsIWk837EPb36bb1emB7+/IzBofqTWSvbE8sNC01eaGexxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEfJP9BS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DCDC4CEE3;
+	Tue, 29 Apr 2025 18:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1745950068;
-	bh=bOkFb9H0aKWhniY//yVxLL5DTlPQ8nKmd0cq42JfwCA=;
+	s=korg; t=1745950759;
+	bh=W1PSbjRX385k4I3J7TGdMZNsgQjIkOp52ZhvW+YgQBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlGWlGy0aHXb75gShMpWNRl6TwBVgqN3hWO3FRYhcAbIrsVOW33XQlCYrwA3snC/K
-	 NkkSLE/IRnNJID21ELBDDEmu5B/Tuu+oWZ0ulyGP+4ZqQ7jtDa9JPkD1/FPOehAjZL
-	 KtN7xcD5MiwLFLdPzyiu0ruaHoZk2qxqtq8AFW2I=
+	b=EEfJP9BSPttqJK6LOk2OJEMUQxjtR83aDBYcWq8CLqheopsXXhStZsDIVi57HxrQb
+	 y5OLr8DW8Du55f/OgJgSsa87LfGVUdPWhocsHmf3VYzjIKUli/WKQGyHQH+YXra1JG
+	 HcTP/GYoLGjxMLeF976zCbcPHxwh2eIOR6ih2Uk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Mark Brown <broonie@kernel.org>,
+	Yi Lai <yi1.lai@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/167] spi: tegra210-quad: add rate limiting and simplify timeout error message
+Subject: [PATCH 6.6 166/204] selftests/mincore: Allow read-ahead pages to reach the end of the file
 Date: Tue, 29 Apr 2025 18:44:14 +0200
-Message-ID: <20250429161057.633965782@linuxfoundation.org>
+Message-ID: <20250429161106.195509222@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250429161051.743239894@linuxfoundation.org>
-References: <20250429161051.743239894@linuxfoundation.org>
+In-Reply-To: <20250429161059.396852607@linuxfoundation.org>
+References: <20250429161059.396852607@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 21f4314e66ed8d40b2ee24185d1a06a07a512eb1 ]
+[ Upstream commit 197c1eaa7ba633a482ed7588eea6fd4aa57e08d4 ]
 
-On malfunctioning hardware, timeout error messages can appear thousands
-of times, creating unnecessary system pressure and log bloat. This patch
-makes two improvements:
+When running the mincore_selftest on a system with an XFS file system, it
+failed the "check_file_mmap" test case due to the read-ahead pages reaching
+the end of the file. The failure log is as below:
 
-1. Replace dev_err() with dev_err_ratelimited() to prevent log flooding
-   when hardware errors persist
-2. Remove the redundant timeout value parameter from the error message,
-   as 'ret' is always zero in this error path
+   RUN           global.check_file_mmap ...
+  mincore_selftest.c:264:check_file_mmap:Expected i (1024) < vec_size (1024)
+  mincore_selftest.c:265:check_file_mmap:Read-ahead pages reached the end of the file
+  check_file_mmap: Test failed
+           FAIL  global.check_file_mmap
 
-These changes reduce logging overhead while maintaining necessary error
-reporting for debugging purposes.
+This is because the read-ahead window size of the XFS file system on this
+machine is 4 MB, which is larger than the size from the #PF address to the
+end of the file. As a result, all the pages for this file are populated.
 
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20250401-tegra-v2-2-126c293ec047@debian.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  blockdev --getra /dev/nvme0n1p5
+    8192
+  blockdev --getbsz /dev/nvme0n1p5
+    512
+
+This issue can be fixed by extending the current FILE_SIZE 4MB to a larger
+number, but it will still fail if the read-ahead window size of the file
+system is larger enough. Additionally, in the real world, read-ahead pages
+reaching the end of the file can happen and is an expected behavior.
+Therefore, allowing read-ahead pages to reach the end of the file is a
+better choice for the "check_file_mmap" test case.
+
+Link: https://lore.kernel.org/r/20250311080940.21413-1-qiuxu.zhuo@intel.com
+Reported-by: Yi Lai <yi1.lai@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mincore/mincore_selftest.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 97f3a4d3c31a9..442d42130ec87 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1111,8 +1111,8 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 					QSPI_DMA_TIMEOUT);
+diff --git a/tools/testing/selftests/mincore/mincore_selftest.c b/tools/testing/selftests/mincore/mincore_selftest.c
+index e949a43a61450..efabfcbe0b498 100644
+--- a/tools/testing/selftests/mincore/mincore_selftest.c
++++ b/tools/testing/selftests/mincore/mincore_selftest.c
+@@ -261,9 +261,6 @@ TEST(check_file_mmap)
+ 		TH_LOG("No read-ahead pages found in memory");
+ 	}
  
- 			if (WARN_ON_ONCE(ret == 0)) {
--				dev_err(tqspi->dev, "QSPI Transfer failed with timeout: %d\n",
--					ret);
-+				dev_err_ratelimited(tqspi->dev,
-+						    "QSPI Transfer failed with timeout\n");
- 				if (tqspi->is_curr_dma_xfer &&
- 				    (tqspi->cur_direction & DATA_DIR_TX))
- 					dmaengine_terminate_all
+-	EXPECT_LT(i, vec_size) {
+-		TH_LOG("Read-ahead pages reached the end of the file");
+-	}
+ 	/*
+ 	 * End of the readahead window. The rest of the pages shouldn't
+ 	 * be in memory.
 -- 
 2.39.5
 
